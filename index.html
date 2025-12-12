@@ -6,6 +6,11 @@
     <title>MyCuscoTrip - Tours y Paquetes Turísticos en Cusco y Machu Picchu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
+    
     <style>
         :root {
             --primary: #062803;
@@ -229,176 +234,551 @@
             }
         }
         
-        /* Search Box - Updated Design */
-        .search-box {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            backdrop-filter: blur(5px);
-            border: none;
-        }
-        
-        .search-box h3 {
-            color: var(--primary);
-            margin-bottom: 25px;
-            text-align: left;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .search-box h3 i {
-            color: var(--accent);
-        }
-        
-        .search-form-compact {
-            display: grid;
-            grid-template-columns: 2fr 2fr 2fr 1.5fr;
-            gap: 15px;
-            align-items: end;
-        }
-        
-        .form-group-compact {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group-compact label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--primary);
-            text-align: left;
-            font-size: 0.9rem;
-        }
-        
-        .form-group-compact .form-control {
-            padding: 14px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        /* CSS GENERAL MCT SEARCH - CORREGIDO */
+        .u_1310989460 {
+            --mct-surface:#ffffff;
+            --mct-primary:#062803;
+            --mct-primary-ink:#ffffff;
+            --mct-ink:#172b27;
+            --mct-muted:#6c7a76;
+            --mct-border:rgba(23,43,39,.12);
+            --mct-sep:rgba(23,43,39,.15);
+            --mct-shadow:0 8px 24px rgba(0,0,0,.12);
+            --mct-radius:16px;
+            --mct-pill:999px;
+            --mct-accent:#eb09a7;
+            --mct-sel:#062803;
             font-family: 'Open Sans', sans-serif;
-            background-color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .form-group-compact .form-control:hover {
-            border-color: var(--accent);
-        }
-        
-        .form-control .value {
-            color: var(--text);
-        }
-        
-        .form-control .arrow-icon {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        
-        /* Passenger Selector Dropdown */
-        .passenger-selector {
+            width: 100%;
             position: relative;
-        }
-        
-        .passenger-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            padding: 20px;
             z-index: 100;
-            margin-top: 5px;
-            display: none;
-            border: 1px solid #eee;
         }
-        
-        .passenger-dropdown.active {
-            display: block;
+
+        /* ESTILOS BASE PARA MÓVIL (default) */
+        .u_1310989460 .mct-card {
+            position:relative;
+            z-index: 1000;
+            background:#fff;
+            border-radius:18px;
+            box-shadow:var(--mct-shadow);
+            padding:10px 10px 12px;
+            padding-top:68px;
+            overflow:visible;
         }
-        
-        .passenger-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+
+        .u_1310989460 .mct-tabs {
+            position:absolute;
+            left:10px;
+            right:10px;
+            top:0;
+            transform:translateY(-50%);
+            display:flex;
+            gap:0;
+            padding:0;
+            background:transparent;
+            pointer-events:none;
+            z-index:5;
         }
-        
-        .passenger-item:last-child {
-            margin-bottom: 0;
+
+        .u_1310989460 .mct-tab {
+            pointer-events:auto;
+            appearance:none;
+            border:0;
+            cursor:pointer;
+            height:42px;
+            border-radius:12px;
+            font-weight:800;
+            color:var(--mct-muted);
+            background:#f2f5f4;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex:1 1 0;
+            margin:0;
+            font-family: 'Montserrat', sans-serif;
         }
-        
-        .passenger-info h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            color: var(--primary);
+
+        .u_1310989460 .mct-tab:first-child {
+            border-top-right-radius:0;
+            border-bottom-right-radius:0;
         }
-        
-        .passenger-info p {
-            font-size: 0.85rem;
-            color: var(--text-light);
+
+        .u_1310989460 .mct-tab:last-child {
+            border-top-left-radius:0;
+            border-bottom-left-radius:0;
         }
-        
-        .passenger-counter {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+
+        .u_1310989460 .mct-tab+.mct-tab { 
+            margin-left:-1px;
         }
-        
-        .counter-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: var(--light);
-            border: 1px solid #ddd;
+
+        .u_1310989460 .mct-tab.is-active {
+            background:var(--mct-primary);
+            color:#fff;
+        }
+
+        .u_1310989460 .mct-bar {
+            display:flex;
+            flex-direction:column;
+            align-items:stretch;
+            gap:12px;
+        }
+
+        .u_1310989460 .mct-divider { 
+            display:none;
+        }
+
+        .u_1310989460 .mct-field {
+            padding:0 2px;
+            min-width:0;
+            display:flex;
+            flex-direction:column;
+            justify-content:flex-end;
+            position: relative;
+            z-index: 10;
+        }
+
+        .u_1310989460 .mct-label {
+            display:block;
+            margin:0 0 6px;
+            font-size:13px;
+            font-weight:700;
+            color:var(--mct-muted);
+        }
+
+        .u_1310989460 .mct-input,
+        .u_1310989460 .mct-select,
+        .u_1310989460 .mct-qty-toggle {
+            width:100%;
+            height:46px;
+            border:1px solid var(--mct-border);
+            border-radius:12px;
+            padding:0 12px;
+            font-weight:700;
+            color:var(--mct-ink);
+            background:#fff;
+            font-size:16px;
+            cursor:pointer;
+            user-select:none;
+            -webkit-user-select:none;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .u_1310989460 .mct-fecha-field {
+            position:relative;
+            z-index: 100;
+            cursor:pointer;
+        }
+
+        .u_1310989460 .mct-cantidad {
+            position:relative;
+            z-index: 100;
+        }
+
+        .u_1310989460 .mct-qty-panel {
+            position:absolute;
+            left:0;
+            right:0;
+            top:100%;
+            width:100%;
+            margin-top:8px;
+            overflow:visible;
+            background:#fff;
+            border:1px solid var(--mct-border);
+            border-radius:14px;
+            box-shadow:var(--mct-shadow);
+            padding:10px;
+            z-index: 1100;
+        }
+
+        .u_1310989460 .mct-qty-toggle {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            height:46px;
+        }
+
+        .u_1310989460 .mct-qty-row {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin:6px 0;
+        }
+
+        .u_1310989460 .mct-qty-ctrl {
+            display:flex;
+            align-items:center;
+            gap:6px;
+            background:#f7f9f8;
+            border-radius:var(--mct-pill);
+            padding:4px 6px;
+        }
+
+        .u_1310989460 .mct-qty-ctrl input {
+            width:36px;
+            text-align:center;
+            border:0;
+            background:transparent;
+            font-weight:800;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .u_1310989460 .mct-btn {
+            width:28px;
+            height:28px;
+            border-radius:50%;
+            border:1px solid var(--mct-border);
+            background:#fff;
+            cursor:pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--primary);
-            transition: all 0.3s;
         }
-        
-        .counter-btn:hover {
-            background-color: var(--accent2);
-            color: white;
-            border-color: var(--accent2);
+
+        .u_1310989460 .mct-qty-done {
+            width:100%;
+            height:40px;
+            border:0;
+            border-radius:10px;
+            background:var(--mct-primary);
+            color:#fff;
+            font-weight:800;
+            cursor:pointer;
+            font-family: 'Montserrat', sans-serif;
         }
-        
-        .counter-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+
+        .u_1310989460 .mct-submit {
+            display:block;
+            width:55%;
+            height:50px;
+            margin:8px auto 0;
+            padding:0 20px;
+            border:0;
+            border-radius:14px;
+            background:var(--mct-accent);
+            color:#fff;
+            font-weight:900;
+            text-align:center;
+            white-space:nowrap;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
         }
-        
-        .counter-btn.disabled:hover {
-            background-color: var(--light);
-            color: var(--primary);
-            border-color: #ddd;
+
+        /* FLATPICKR STYLES - CORREGIDOS */
+        .u_1310989460 .flatpickr-calendar {
+            z-index: 2000 !important;
+            box-shadow:var(--mct-shadow) !important;
+            border:1px solid var(--mct-border) !important;
+            font-family:'Open Sans', sans-serif !important;
         }
-        
-        .counter-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            min-width: 30px;
-            text-align: center;
-            color: var(--primary);
+
+        .u_1310989460 .flatpickr-calendar * { 
+            font-family:'Open Sans', sans-serif !important;
         }
-        
-        .passenger-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
+
+        .u_1310989460 .flatpickr-months .flatpickr-month { 
+            font-weight:700 !important;
+        }
+
+        .u_1310989460 .flatpickr-weekday { 
+            font-weight:700 !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-day { 
+            border:0 !important;
+        }
+
+        /* CORREGIDO: Días seleccionados sin barra blanca */
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.inRange {
+            background: #e8f5e8 !important;
+            box-shadow: none !important;
+            color: var(--mct-primary) !important;
+            border-radius: 0 !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.startRange {
+            background: var(--mct-primary) !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.endRange {
+            background: var(--mct-primary) !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected {
+            background: var(--mct-primary) !important;
+            color: #fff !important;
+            border-radius: 50% !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected.startRange + .flatpickr-day.inRange,
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected.endRange,
+        .u_1310989460 .flatpickr-calendar .flatpickr-day.inRange {
+            background: #e8f5e8 !important;
+            color: var(--mct-primary) !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .dayContainer { 
+            gap: 0 !important;
+            padding: 0 10px !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-confirm {
+            background:var(--mct-primary) !important;
+            color:#fff !important;
+            font-weight:800 !important;
+            border:0 !important;
+            border-radius:10px !important;
+            height:40px !important;
+            padding:0 18px !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+            gap:8px !important;
+            cursor:pointer !important;
+            margin: 10px !important;
+            width: calc(100% - 20px) !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-confirm svg { 
+            display:none !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-confirm::before {
+            content:"OK" !important;
+            font-weight:900 !important;
+        }
+
+        /* CORREGIDO: Espaciado del mes */
+        .u_1310989460 .flatpickr-calendar .flatpickr-month {
+            padding: 10px !important;
+            height: 50px !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-current-month {
+            padding-top: 5px !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-weekdays {
+            padding: 0 10px !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-weekday {
+            padding: 10px 0 !important;
+        }
+
+        .u_1310989460 .flatpickr-calendar .flatpickr-days {
+            padding: 10px !important;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA MÓVILES */
+        @media (max-width: 1023px) {
+            .u_1310989460 .mct-tab {
+                min-height: 44px;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+            }
+            
+            .u_1310989460 .mct-qty-panel {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                top: 100% !important;
+                width: 100% !important;
+                margin: 8px 0 0 0 !important;
+                border-radius: 14px !important;
+                z-index: 1100 !important;
+            }
+            
+            .u_1310989460 .flatpickr-calendar {
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 95vw !important;
+                max-width: 400px !important;
+                height: auto !important;
+                max-height: 80vh !important;
+                z-index: 2000 !important;
+                border-radius: 16px !important;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.4) !important;
+                overflow: hidden !important;
+            }
+            
+            /* CORREGIDO: Centrado del calendario */
+            .u_1310989460 .flatpickr-calendar.open {
+                animation: mct-fadeIn 0.3s ease !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            
+            .u_1310989460 .flatpickr-innerContainer {
+                overflow-x: hidden !important;
+                max-height: 60vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            
+            .u_1310989460 .dayContainer {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                display: grid !important;
+                grid-template-columns: repeat(7, 1fr) !important;
+                gap: 2px !important;
+            }
+            
+            .u_1310989460 .flatpickr-day {
+                min-height: 44px !important;
+                line-height: 44px !important;
+                font-size: 16px !important;
+                max-width: 44px !important;
+                margin: 0 auto !important;
+            }
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA DESKTOP */
+        @media (min-width: 1024px) {
+            .u_1310989460 .mct-card {
+                border-radius:20px;
+                padding:12px;
+                padding-top:64px;
+            }
+            
+            .u_1310989460 .mct-tabs {
+                left:12px;
+                right:12px;
+            }
+            
+            .u_1310989460 .mct-tab { 
+                height:44px; 
+            }
+            
+            .u_1310989460 .mct-bar {
+                display:grid;
+                grid-template-columns:1.1fr 1px 1.2fr 1px 1.1fr auto;
+                gap:0;
+                align-items:end;
+            }
+            
+            .u_1310989460 .mct-divider {
+                display:block;
+                width:1px;
+                height:56px;
+                background:var(--mct-sep);
+                border-radius:1px;
+            }
+            
+            .u_1310989460 .mct-field {
+                padding:10px 12px;
+            }
+            
+            .u_1310989460 .mct-label {
+                font-size:12px;
+                white-space:nowrap;
+            }
+            
+            .u_1310989460 .mct-input,
+            .u_1310989460 .mct-select,
+            .u_1310989460 .mct-qty-toggle {
+                height:42px;
+                border-radius:14px;
+                white-space:nowrap;
+            }
+            
+            .u_1310989460 .mct-cantidad {
+                align-self:end;
+            }
+            
+            .u_1310989460 .mct-qty-toggle { 
+                height:42px; 
+            }
+            
+            .u_1310989460 .mct-qty-panel {
+                right:0;
+                width:280px;
+                margin-top:8px;
+                top: 100%;
+                bottom: auto;
+                left: auto;
+            }
+            
+            .u_1310989460 .mct-submit {
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                height:48px;
+                min-width:170px;
+                padding:0 26px;
+                border-radius:999px;
+                align-self:end;
+                margin:0 12px 10px 0;
+                transition: all 0.3s ease;
+            }
+            
+            .u_1310989460 .mct-submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(235, 9, 167, 0.4);
+            }
+            
+            /* FLATPICKR EN DESKTOP - CORREGIDO */
+            .u_1310989460 .flatpickr-calendar {
+                position: absolute !important;
+                top: 100% !important;
+                left: 12px !important;
+                right: auto !important;
+                width: 350px !important;
+                margin-top: 8px !important;
+                transform: translateY(0) !important;
+                z-index: 2000 !important;
+            }
+            
+            .u_1310989460 .flatpickr-calendar.open {
+                animation: mct-fadeInDown 0.3s ease !important;
+            }
+            
+            /* CORREGIDO: Sin espacio en blanco */
+            .u_1310989460 .flatpickr-calendar .flatpickr-innerContainer {
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            
+            .u_1310989460 .flatpickr-calendar .dayContainer {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                padding: 10px !important;
+                display: grid !important;
+                grid-template-columns: repeat(7, 1fr) !important;
+                gap: 2px !important;
+            }
+            
+            .u_1310989460 .flatpickr-calendar .flatpickr-day {
+                max-width: 38px !important;
+                margin: 0 auto !important;
+            }
+        }
+
+        @keyframes mct-fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        @keyframes mct-fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Section Styles */
@@ -715,10 +1095,6 @@
                 display: none;
             }
             
-            .search-form-compact {
-                grid-template-columns: 1fr;
-            }
-            
             .nav-menu {
                 position: fixed;
                 top: 70px;
@@ -745,17 +1121,6 @@
             
             .mobile-menu-btn {
                 display: block;
-            }
-            
-            .passenger-dropdown {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 90%;
-                max-width: 400px;
-                max-height: 80vh;
-                overflow-y: auto;
             }
         }
         
@@ -788,9 +1153,7 @@
         }
         
         @media (min-width: 769px) and (max-width: 1100px) {
-            .search-form-compact {
-                grid-template-columns: 1fr 1fr;
-            }
+            /* Ajustes para tablet */
         }
         
         @media (min-width: 769px) {
@@ -838,70 +1201,63 @@
                     </div>
                 </div>
                 
-                <div class="search-box">
-                    <h3><i class="fas fa-search"></i> Tours</h3>
-                    <form class="search-form-compact" id="tours-form">
-                        <div class="form-group-compact">
-                            <label for="destino-tour">Destino</label>
-                            <div class="form-control" id="destino-selector">
-                                <span class="value" id="destino-value">Machu Picchu</span>
-                                <span class="arrow-icon"><i class="fas fa-chevron-down"></i></span>
-                            </div>
+                <!-- Nueva Barra de Búsqueda My Cusco Trip -->
+                <div class="u_1310989460 mct-search">
+                    <form class="mct-card" id="mctForm" autocomplete="off">
+                        <!-- Tabs pegadas -->
+                        <div class="mct-tabs" role="tablist">
+                            <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
+                            <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
                         </div>
                         
-                        <div class="form-group-compact">
-                            <label for="fecha-tour">Fechas de viaje</label>
-                            <div class="form-control" id="fecha-selector">
-                                <span class="value" id="fecha-value">Selecciona fecha</span>
-                                <span class="arrow-icon"><i class="fas fa-calendar-alt"></i></span>
+                        <div class="mct-bar">
+                            <!-- Destino -->
+                            <div class="mct-field">
+                                <span class="mct-label">Destino</span>
+                                <select id="mctDestino" class="mct-select">
+                                    <option value="machu-picchu" selected>Machu Picchu</option>
+                                    <option value="cusco">Cusco</option>
+                                    <option value="otros">Otros destinos Perú</option>
+                                </select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group-compact passenger-selector">
-                            <label for="cantidad-tour">Cantidad</label>
-                            <div class="form-control" id="passenger-trigger">
-                                <span class="value" id="passenger-value">2 Pasajeros</span>
-                                <span class="arrow-icon"><i class="fas fa-chevron-down"></i></span>
+                            <div class="mct-divider"></div>
+                            
+                            <!-- Fechas -->
+                            <div class="mct-field mct-fecha-field">
+                                <span class="mct-label">Fechas de viaje</span>
+                                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha">
+                            </div>
+                            <div class="mct-divider"></div>
+                            
+                            <!-- Cantidad -->
+                            <div class="mct-field mct-cantidad">
+                                <span class="mct-label">Cantidad</span>
+                                <button type="button" class="mct-qty-toggle">
+                                    <span id="mctQtyLabel">2 Pasajeros</span>
+                                </button>
+                                <div class="mct-qty-panel" hidden>
+                                    <div class="mct-qty-row">
+                                        <span>Adultos</span>
+                                        <div class="mct-qty-ctrl" data-type="adultos">
+                                            <button type="button" class="mct-btn minus">−</button>
+                                            <input type="text" value="2" readonly>
+                                            <button type="button" class="mct-btn plus">＋</button>
+                                        </div>
+                                    </div>
+                                    <div class="mct-qty-row">
+                                        <span>Niños</span>
+                                        <div class="mct-qty-ctrl" data-type="ninos">
+                                            <button type="button" class="mct-btn minus">−</button>
+                                            <input type="text" value="0" readonly>
+                                            <button type="button" class="mct-btn plus">＋</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="mct-qty-done">Listo</button>
+                                </div>
                             </div>
                             
-                            <!-- Passenger Dropdown -->
-                            <div class="passenger-dropdown" id="passenger-dropdown">
-                                <div class="passenger-item">
-                                    <div class="passenger-info">
-                                        <h4>Adultos</h4>
-                                        <p>13 años o más</p>
-                                    </div>
-                                    <div class="passenger-counter">
-                                        <button type="button" class="counter-btn" id="minus-adult">-</button>
-                                        <span class="counter-value" id="adult-count">2</span>
-                                        <button type="button" class="counter-btn" id="plus-adult">+</button>
-                                    </div>
-                                </div>
-                                
-                                <div class="passenger-item">
-                                    <div class="passenger-info">
-                                        <h4>Niños</h4>
-                                        <p>0-12 años</p>
-                                    </div>
-                                    <div class="passenger-counter">
-                                        <button type="button" class="counter-btn" id="minus-child">-</button>
-                                        <span class="counter-value" id="child-count">0</span>
-                                        <button type="button" class="counter-btn" id="plus-child">+</button>
-                                    </div>
-                                </div>
-                                
-                                <div class="passenger-actions">
-                                    <button type="button" class="btn" id="clear-passengers">Limpiar</button>
-                                    <button type="button" class="btn btn-accent2" id="apply-passengers">Aplicar</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group-compact">
-                            <label>&nbsp;</label>
-                            <button type="submit" class="btn btn-accent2" style="height: 50px; font-size: 1.1rem;">
-                                <i class="fas fa-search"></i> Buscar
-                            </button>
+                            <!-- Buscar -->
+                            <button type="submit" class="mct-submit">Buscar</button>
                         </div>
                     </form>
                 </div>
@@ -1160,6 +1516,11 @@
         </div>
     </footer>
 
+    <!-- Scripts Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+
     <script>
         // Mobile Menu Toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -1205,143 +1566,6 @@
             });
         });
         
-        // Passenger selector functionality
-        const passengerTrigger = document.getElementById('passenger-trigger');
-        const passengerDropdown = document.getElementById('passenger-dropdown');
-        const adultCountElement = document.getElementById('adult-count');
-        const childCountElement = document.getElementById('child-count');
-        const passengerValueElement = document.getElementById('passenger-value');
-        
-        let adultCount = 2;
-        let childCount = 0;
-        
-        // Toggle passenger dropdown
-        passengerTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            passengerDropdown.classList.toggle('active');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!passengerDropdown.contains(e.target) && !passengerTrigger.contains(e.target)) {
-                passengerDropdown.classList.remove('active');
-            }
-        });
-        
-        // Update passenger count
-        function updatePassengerCount() {
-            const totalPassengers = adultCount + childCount;
-            passengerValueElement.textContent = `${totalPassengers} Pasajero${totalPassengers !== 1 ? 's' : ''}`;
-            
-            // Update counter buttons state
-            document.getElementById('minus-adult').classList.toggle('disabled', adultCount <= 0);
-            document.getElementById('minus-child').classList.toggle('disabled', childCount <= 0);
-        }
-        
-        // Adult counter buttons
-        document.getElementById('plus-adult').addEventListener('click', () => {
-            adultCount++;
-            adultCountElement.textContent = adultCount;
-            updatePassengerCount();
-        });
-        
-        document.getElementById('minus-adult').addEventListener('click', () => {
-            if (adultCount > 0) {
-                adultCount--;
-                adultCountElement.textContent = adultCount;
-                updatePassengerCount();
-            }
-        });
-        
-        // Child counter buttons
-        document.getElementById('plus-child').addEventListener('click', () => {
-            childCount++;
-            childCountElement.textContent = childCount;
-            updatePassengerCount();
-        });
-        
-        document.getElementById('minus-child').addEventListener('click', () => {
-            if (childCount > 0) {
-                childCount--;
-                childCountElement.textContent = childCount;
-                updatePassengerCount();
-            }
-        });
-        
-        // Clear passengers button
-        document.getElementById('clear-passengers').addEventListener('click', () => {
-            adultCount = 0;
-            childCount = 0;
-            adultCountElement.textContent = adultCount;
-            childCountElement.textContent = childCount;
-            updatePassengerCount();
-        });
-        
-        // Apply passengers button
-        document.getElementById('apply-passengers').addEventListener('click', () => {
-            passengerDropdown.classList.remove('active');
-        });
-        
-        // Initialize passenger count
-        updatePassengerCount();
-        
-        // Date selector functionality
-        const fechaSelector = document.getElementById('fecha-selector');
-        const fechaValue = document.getElementById('fecha-value');
-        
-        // Create date picker
-        fechaSelector.addEventListener('click', () => {
-            // In a real implementation, you would integrate a date picker library here
-            // For this example, we'll just set a default date
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            const formattedDate = tomorrow.toLocaleDateString('es-ES', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            fechaValue.textContent = formattedDate;
-        });
-        
-        // Destination selector functionality
-        const destinoSelector = document.getElementById('destino-selector');
-        const destinoValue = document.getElementById('destino-value');
-        
-        const destinations = [
-            "Machu Picchu",
-            "Valle Sagrado",
-            "Montaña de 7 Colores",
-            "Laguna Humantay",
-            "City Tour Cusco",
-            "Cusco Completo"
-        ];
-        
-        destinoSelector.addEventListener('click', () => {
-            // In a real implementation, you would show a dropdown with destinations
-            // For this example, we'll cycle through destinations
-            const currentIndex = destinations.indexOf(destinoValue.textContent);
-            const nextIndex = (currentIndex + 1) % destinations.length;
-            destinoValue.textContent = destinations[nextIndex];
-        });
-        
-        // Set minimum date to today for date inputs
-        const today = new Date().toISOString().split('T')[0];
-        
-        // Form submission
-        document.getElementById('tours-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const destination = destinoValue.textContent;
-            const date = fechaValue.textContent;
-            const passengers = adultCount + childCount;
-            
-            alert(`¡Gracias por tu búsqueda!\n\nDestino: ${destination}\nFecha: ${date}\nPasajeros: ${passengers}\n\nTe contactaremos pronto con las mejores opciones.`);
-        });
-        
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1358,6 +1582,341 @@
                     });
                 }
             });
+        });
+        
+        // Nueva funcionalidad de la barra de búsqueda
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const root = document.querySelector('.u_1310989460.mct-search');
+                if (!root) return;
+                
+                // ----------- REFS -----------
+                const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
+                const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
+                const dateInput = root.querySelector('#mctFecha');
+                const dateField = root.querySelector('.mct-fecha-field');
+                const qtyPanel = root.querySelector('.mct-qty-panel');
+                const qtyToggle = root.querySelector('.mct-qty-toggle');
+                const qtyDone = root.querySelector('.mct-qty-done');
+                const qtyLabel = root.querySelector('#mctQtyLabel');
+                const form = root.querySelector('#mctForm');
+                const destinoSelect = root.querySelector('#mctDestino');
+                const isMobile = window.innerWidth < 1024;
+                
+                // ----------- CALENDARIO -----------
+                let fp;
+                
+                if (dateInput._flatpickr) {
+                    dateInput._flatpickr.destroy();
+                }
+                
+                const fpOptions = {
+                    locale: 'es',
+                    altInput: true,
+                    altFormat: "d M Y",
+                    dateFormat: "Y-m-d",
+                    mode: "single",
+                    minDate: "today",
+                    clickOpens: true,
+                    disableMobile: true,
+                    showMonths: isMobile ? 1 : 2,
+                    closeOnSelect: false,
+                    static: isMobile,
+                    position: "below",
+                    inline: false,
+                    plugins: [
+                        new confirmDatePlugin({
+                            confirmText: "",
+                            showAlways: true,
+                            theme: "light"
+                        })
+                    ],
+                    onReady: function(selectedDates, dateStr, instance) {
+                        const confirmBtn = instance.calendarContainer.querySelector('.flatpickr-confirm');
+                        if (confirmBtn) {
+                            confirmBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                instance.close();
+                            });
+                        }
+                        
+                        instance._input.style.cursor = 'pointer';
+                        
+                        // Asegurar que el calendario se renderice correctamente
+                        setTimeout(() => {
+                            instance.redraw();
+                        }, 10);
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Actualizar el placeholder cuando se selecciona una fecha
+                        if (selectedDates.length > 0) {
+                            if (instance.config.mode === "range" && selectedDates.length === 2) {
+                                const start = selectedDates[0];
+                                const end = selectedDates[1];
+                                const formattedStart = start.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                                const formattedEnd = end.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                                dateInput.value = `${formattedStart} → ${formattedEnd}`;
+                            }
+                        }
+                    }
+                };
+                
+                if (!isMobile) {
+                    fpOptions.appendTo = dateField;
+                    fpOptions.position = "below left";
+                } else {
+                    fpOptions.position = "center";
+                }
+                
+                fp = flatpickr(dateInput, fpOptions);
+                dateInput._flatpickr = fp;
+                
+                // EVENTOS PARA CALENDARIO
+                function openCalendar(e) {
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    
+                    if (qtyPanel && !qtyPanel.hidden) {
+                        qtyPanel.hidden = true;
+                    }
+                    
+                    if (fp && !fp.isOpen) {
+                        fp.open();
+                    }
+                }
+                
+                if (dateInput) {
+                    dateInput.addEventListener('click', openCalendar);
+                }
+                
+                if (dateField) {
+                    dateField.addEventListener('click', openCalendar);
+                }
+                
+                if (isMobile) {
+                    dateInput.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        openCalendar(e);
+                    });
+                    
+                    dateField.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        openCalendar(e);
+                    });
+                }
+                
+                // ----------- TABS -----------
+                function setTab(mode) {
+                    if (mode === 'tours') {
+                        tabTours.classList.add('is-active');
+                        tabPaq.classList.remove('is-active');
+                        fp.set('mode', 'single');
+                        dateInput.placeholder = "Selecciona fecha";
+                        fp.clear();
+                        dateInput.value = "";
+                    } else {
+                        tabPaq.classList.add('is-active');
+                        tabTours.classList.remove('is-active');
+                        fp.set('mode', 'range');
+                        dateInput.placeholder = "Inicio → Fin";
+                        fp.clear();
+                        dateInput.value = "";
+                    }
+                }
+                
+                function handleTabClick(e, mode) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTab(mode);
+                }
+                
+                tabTours.addEventListener('click', (e) => handleTabClick(e, 'tours'));
+                tabPaq.addEventListener('click', (e) => handleTabClick(e, 'paquetes'));
+                
+                if (isMobile) {
+                    tabTours.addEventListener('touchend', (e) => handleTabClick(e, 'tours'));
+                    tabPaq.addEventListener('touchend', (e) => handleTabClick(e, 'paquetes'));
+                }
+                
+                setTab('tours');
+                
+                // ----------- SELECTOR DE CANTIDADES -----------
+                const updateQtyLabel = () => {
+                    const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
+                    const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
+                    const adultos = parseInt(adultosInput.value) || 0;
+                    const ninos = parseInt(ninosInput.value) || 0;
+                    const total = adultos + ninos;
+                    qtyLabel.textContent = total + " " + (total === 1 ? "Pasajero" : "Pasajeros");
+                };
+                
+                updateQtyLabel();
+                
+                let qtyPanelJustOpened = false;
+                
+                function toggleQtyPanel(e) {
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    
+                    if (fp.isOpen) {
+                        fp.close();
+                    }
+                    
+                    const willOpen = qtyPanel.hidden;
+                    qtyPanel.hidden = !willOpen;
+                    
+                    if (willOpen) {
+                        qtyPanelJustOpened = true;
+                        setTimeout(() => { 
+                            qtyPanelJustOpened = false; 
+                        }, 300);
+                    }
+                }
+                
+                function closeQtyPanel() {
+                    qtyPanel.hidden = true;
+                }
+                
+                qtyToggle.addEventListener('click', toggleQtyPanel);
+                
+                if (isMobile) {
+                    qtyToggle.addEventListener('touchend', toggleQtyPanel);
+                }
+                
+                function handleQtyButton(e) {
+                    const btn = e.target.closest('.mct-btn');
+                    if (!btn) return;
+                    
+                    e.stopPropagation();
+                    
+                    const ctrl = btn.closest('.mct-qty-ctrl');
+                    const input = ctrl.querySelector('input');
+                    let value = parseInt(input.value) || 0;
+                    
+                    if (btn.classList.contains('plus')) {
+                        value++;
+                    } else if (btn.classList.contains('minus')) {
+                        value = Math.max(0, value - 1);
+                    }
+                    
+                    input.value = value;
+                    updateQtyLabel();
+                }
+                
+                qtyPanel.addEventListener('click', handleQtyButton);
+                
+                if (isMobile) {
+                    qtyPanel.addEventListener('touchend', handleQtyButton);
+                }
+                
+                qtyDone.addEventListener('click', closeQtyPanel);
+                
+                if (isMobile) {
+                    qtyDone.addEventListener('touchend', closeQtyPanel);
+                }
+                
+                document.addEventListener('click', function(e) {
+                    if (qtyPanelJustOpened || qtyPanel.hidden) return;
+                    
+                    const isInsideQty = e.target.closest('.mct-cantidad') || 
+                                     e.target.closest('.mct-qty-panel');
+                    
+                    if (!isInsideQty) {
+                        closeQtyPanel();
+                    }
+                });
+                
+                if (isMobile) {
+                    document.addEventListener('touchend', function(e) {
+                        if (qtyPanelJustOpened || qtyPanel.hidden) return;
+                        
+                        const isInsideQty = e.target.closest('.mct-cantidad') || 
+                                         e.target.closest('.mct-qty-panel');
+                        
+                        if (!isInsideQty) {
+                            closeQtyPanel();
+                        }
+                    });
+                }
+                
+                // ----------- SUBMIT CON REDIRECCIÓN -----------
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const tipo = tabTours.classList.contains('is-active') ? 'tours' : 'paquetes';
+                    const destino = destinoSelect.value;
+                    const fecha = dateInput.value;
+                    const pasajeros = qtyLabel.textContent;
+                    
+                    console.log('Búsqueda:', {tipo, destino, fecha, pasajeros});
+                    
+                    // Mapeo de URLs
+                    const urlMap = {
+                        'tours': {
+                            'machu-picchu': 'https://www.mycuscotrip.com/machu-picchu',
+                            'cusco': 'https://www.mycuscotrip.com/tours-en-cusco',
+                            'otros': 'https://www.mycuscotrip.com/explora-peru'
+                        },
+                        'paquetes': {
+                            'machu-picchu': 'https://www.mycuscotrip.com/machu-picchu',
+                            'cusco': 'https://www.mycuscotrip.com/paquetes-completos',
+                            'otros': 'https://www.mycuscotrip.com/explora-peru'
+                        }
+                    };
+                    
+                    // Obtener la URL correspondiente
+                    let url;
+                    if (urlMap[tipo] && urlMap[tipo][destino]) {
+                        url = urlMap[tipo][destino];
+                    } else {
+                        url = 'https://www.mycuscotrip.com/';
+                    }
+                    
+                    // Construir parámetros
+                    const params = new URLSearchParams();
+                    
+                    // Agregar fecha
+                    if (fecha) {
+                        if (tipo === 'tours') {
+                            params.append('fecha', fecha);
+                        } else {
+                            const fechas = fecha.split(' → ');
+                            if (fechas.length === 2) {
+                                params.append('fecha_inicio', fechas[0]);
+                                params.append('fecha_fin', fechas[1]);
+                            } else if (fechas.length === 1) {
+                                params.append('fecha_inicio', fechas[0]);
+                            }
+                        }
+                    }
+                    
+                    // Agregar cantidad de pasajeros
+                    const totalPasajeros = pasajeros.split(' ')[0];
+                    params.append('pasajeros', totalPasajeros);
+                    
+                    // Construir URL final
+                    const urlFinal = params.toString() ? `${url}?${params.toString()}` : url;
+                    
+                    console.log('Redirigiendo a:', urlFinal);
+                    
+                    // Redirigir
+                    window.location.href = urlFinal;
+                });
+                
+                // ----------- RESPONSIVE -----------
+                window.addEventListener('resize', function() {
+                    const nowMobile = window.innerWidth < 1024;
+                    if (nowMobile !== isMobile) {
+                        location.reload();
+                    }
+                });
+                
+            }, 100);
         });
     </script>
 </body>
