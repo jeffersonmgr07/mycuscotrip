@@ -164,155 +164,241 @@
             color: white;
             text-align: center;
             margin-top: 70px;
+            position: relative;
         }
         
         .hero-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
         }
         
-        .hero h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        .hero-text {
+            text-align: left;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .hero-text h2 {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
             color: white;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            line-height: 1.1;
         }
         
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
+        .hero-text h2 span {
+            color: var(--accent2);
+            display: block;
         }
         
-        /* Search Box */
+        .hero-arrows {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .arrow {
+            font-size: 2rem;
+            color: var(--accent2);
+            animation: bounce 2s infinite;
+        }
+        
+        .arrow:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .arrow:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(0);
+            }
+            40% {
+                transform: translateX(-10px);
+            }
+            60% {
+                transform: translateX(-5px);
+            }
+        }
+        
+        /* Search Box - Updated Design */
         .search-box {
-            background-color: var(--light);
-            border-radius: 8px;
-            padding: 25px;
-            margin-top: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border: 2px solid var(--accent);
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+            border: none;
         }
         
         .search-box h3 {
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-align: left;
-        }
-        
-        .search-tabs {
+            font-size: 1.5rem;
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+            align-items: center;
+            gap: 10px;
         }
         
-        .search-tab {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--text-light);
-            position: relative;
+        .search-box h3 i {
+            color: var(--accent);
         }
         
-        .search-tab.active {
-            color: var(--primary);
-        }
-        
-        .search-tab.active:after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: var(--accent);
-            bottom: -1px;
-            left: 0;
-            border-radius: 2px;
-        }
-        
-        .tab-pane {
-            display: none;
-        }
-        
-        .tab-pane.active {
-            display: block;
-        }
-        
-        .search-form {
+        .search-form-compact {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 2fr 2fr 2fr 1.5fr;
             gap: 15px;
+            align-items: end;
         }
         
-        .form-group {
+        .form-group-compact {
             display: flex;
             flex-direction: column;
         }
         
-        .form-group label {
+        .form-group-compact label {
             font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text);
+            margin-bottom: 8px;
+            color: var(--primary);
             text-align: left;
+            font-size: 0.9rem;
         }
         
-        .form-group input, .form-group select {
-            padding: 12px;
+        .form-group-compact .form-control {
+            padding: 14px 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
             font-family: 'Open Sans', sans-serif;
             background-color: white;
-        }
-        
-        .date-range {
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        .date-range .form-group {
-            flex: 1;
+        .form-group-compact .form-control:hover {
+            border-color: var(--accent);
         }
         
-        .days-info {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background-color: #e9f7e9;
-            border-radius: 4px;
-            color: var(--primary);
-            font-weight: 600;
+        .form-control .value {
+            color: var(--text);
+        }
+        
+        .form-control .arrow-icon {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Passenger Selector Dropdown */
+        .passenger-selector {
+            position: relative;
+        }
+        
+        .passenger-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 20px;
+            z-index: 100;
+            margin-top: 5px;
             display: none;
+            border: 1px solid #eee;
         }
         
-        .counter-group {
+        .passenger-dropdown.active {
+            display: block;
+        }
+        
+        .passenger-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .passenger-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .passenger-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .passenger-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        .passenger-counter {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 8px 12px;
+            gap: 15px;
         }
         
         .counter-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
+            background-color: var(--light);
+            border: 1px solid #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .counter-btn:hover {
+            background-color: var(--accent2);
+            color: white;
+            border-color: var(--accent2);
+        }
+        
+        .counter-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .counter-btn.disabled:hover {
+            background-color: var(--light);
+            color: var(--primary);
+            border-color: #ddd;
         }
         
         .counter-value {
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            min-width: 30px;
+            text-align: center;
+            color: var(--primary);
+        }
+        
+        .passenger-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
         }
         
         /* Section Styles */
@@ -490,83 +576,6 @@
             margin-bottom: 15px;
         }
         
-        /* Trenes */
-        .trenes-section {
-            background-color: #f8f9fa;
-        }
-        
-        .tren-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .tren-card:hover {
-            border-color: var(--accent);
-        }
-        
-        .tren-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .tren-content {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .tren-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        /* Circuitos Gastronómicos */
-        .circuitos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .circuito-card {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .circuito-card:hover {
-            border-color: var(--accent2);
-            transform: translateY(-5px);
-        }
-        
-        .circuito-img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .circuito-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(6, 40, 3, 0.9), transparent);
-            color: white;
-            padding: 25px;
-        }
-        
         /* Why Choose Us */
         .why-choose-us {
             background-color: var(--secondary);
@@ -698,8 +707,16 @@
         
         /* Responsive */
         @media (max-width: 992px) {
-            .hero h2 {
+            .hero-text h2 {
                 font-size: 2.5rem;
+            }
+            
+            .hero-arrows {
+                display: none;
+            }
+            
+            .search-form-compact {
+                grid-template-columns: 1fr;
             }
             
             .nav-menu {
@@ -730,19 +747,22 @@
                 display: block;
             }
             
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-            
-            .date-range {
-                flex-direction: column;
-                gap: 15px;
+            .passenger-dropdown {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 400px;
+                max-height: 80vh;
+                overflow-y: auto;
             }
         }
         
         @media (max-width: 768px) {
-            .hero h2 {
-                font-size: 2rem;
+            .hero-text h2 {
+                font-size: 2.2rem;
+                text-align: center;
             }
             
             section {
@@ -764,6 +784,12 @@
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 30px;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1100px) {
+            .search-form-compact {
+                grid-template-columns: 1fr 1fr;
             }
         }
         
@@ -802,108 +828,82 @@
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h2>Vive la Experiencia Inca en Cusco y Machu Picchu</h2>
-                <p>Paquetes turísticos completos desde 3 días/2 noches hasta 15 días combinando los mejores destinos de Perú</p>
-                <a href="#paquetes" class="btn">Ver Paquetes</a>
+                <div class="hero-text">
+                    <h2>¿Planes para<br><span>Machu Picchu?</span></h2>
+                    <h2>encuentra el plan perfecto aquí</h2>
+                    <div class="hero-arrows">
+                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                    </div>
+                </div>
                 
                 <div class="search-box">
-                    <div class="search-tabs">
-                        <button class="search-tab active" data-tab="tours">Tours</button>
-                        <button class="search-tab" data-tab="paquetes">Paquetes Completos</button>
-                    </div>
-                    
-                    <div id="tours" class="tab-pane active">
-                        <form class="search-form" id="tours-form">
-                            <div class="form-group">
-                                <label for="destino-tour">Destino</label>
-                                <select id="destino-tour">
-                                    <option value="cusco">Cusco y Machu Picchu</option>
-                                    <option value="valle-sagrado">Valle Sagrado</option>
-                                    <option value="montana-7-colores">Montaña de 7 Colores</option>
-                                    <option value="laguna-humantay">Laguna Humantay</option>
-                                    <option value="city-tour">City Tour Cusco</option>
-                                </select>
+                    <h3><i class="fas fa-search"></i> Tours</h3>
+                    <form class="search-form-compact" id="tours-form">
+                        <div class="form-group-compact">
+                            <label for="destino-tour">Destino</label>
+                            <div class="form-control" id="destino-selector">
+                                <span class="value" id="destino-value">Machu Picchu</span>
+                                <span class="arrow-icon"><i class="fas fa-chevron-down"></i></span>
                             </div>
-                            <div class="form-group">
-                                <label for="fecha-tour">Fecha de viaje</label>
-                                <input type="date" id="fecha-tour">
+                        </div>
+                        
+                        <div class="form-group-compact">
+                            <label for="fecha-tour">Fechas de viaje</label>
+                            <div class="form-control" id="fecha-selector">
+                                <span class="value" id="fecha-value">Selecciona fecha</span>
+                                <span class="arrow-icon"><i class="fas fa-calendar-alt"></i></span>
                             </div>
-                            <div class="form-group">
-                                <label for="cantidad-tour">Cantidad</label>
-                                <div class="counter-group">
-                                    <div>
-                                        <small>Adultos</small>
-                                        <div class="counter-control">
-                                            <button type="button" class="counter-btn minus-adult-tour">-</button>
-                                            <span class="counter-value" id="adultos-tour">2</span>
-                                            <button type="button" class="counter-btn plus-adult-tour">+</button>
-                                        </div>
+                        </div>
+                        
+                        <div class="form-group-compact passenger-selector">
+                            <label for="cantidad-tour">Cantidad</label>
+                            <div class="form-control" id="passenger-trigger">
+                                <span class="value" id="passenger-value">2 Pasajeros</span>
+                                <span class="arrow-icon"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            
+                            <!-- Passenger Dropdown -->
+                            <div class="passenger-dropdown" id="passenger-dropdown">
+                                <div class="passenger-item">
+                                    <div class="passenger-info">
+                                        <h4>Adultos</h4>
+                                        <p>13 años o más</p>
                                     </div>
-                                    <div>
-                                        <small>Niños (0-12)</small>
-                                        <div class="counter-control">
-                                            <button type="button" class="counter-btn minus-child-tour">-</button>
-                                            <span class="counter-value" id="niños-tour">0</span>
-                                            <button type="button" class="counter-btn plus-child-tour">+</button>
-                                        </div>
+                                    <div class="passenger-counter">
+                                        <button type="button" class="counter-btn" id="minus-adult">-</button>
+                                        <span class="counter-value" id="adult-count">2</span>
+                                        <button type="button" class="counter-btn" id="plus-adult">+</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-accent2">Buscar Tours</button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div id="paquetes" class="tab-pane">
-                        <form class="search-form" id="paquetes-form">
-                            <div class="form-group">
-                                <label for="destino-paquete">Destino</label>
-                                <select id="destino-paquete">
-                                    <option value="cusco-machu">Cusco + Machu Picchu</option>
-                                    <option value="peru-completo">Perú Completo (Lima, Cusco, Puno, Arequipa)</option>
-                                    <option value="cusco-puno">Cusco + Puno (Titicaca)</option>
-                                    <option value="lima-paracas">Lima + Paracas + Huacachina</option>
-                                    <option value="cusco-selva">Cusco + Selva Amazónica</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha-inicio">Fecha de inicio</label>
-                                <input type="date" id="fecha-inicio">
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha-fin">Fecha de fin</label>
-                                <input type="date" id="fecha-fin">
-                            </div>
-                            <div class="days-info" id="dias-noches">4 días / 3 noches</div>
-                            <div class="form-group">
-                                <label for="cantidad-paquete">Cantidad</label>
-                                <div class="counter-group">
-                                    <div>
-                                        <small>Adultos</small>
-                                        <div class="counter-control">
-                                            <button type="button" class="counter-btn minus-adult-paquete">-</button>
-                                            <span class="counter-value" id="adultos-paquete">2</span>
-                                            <button type="button" class="counter-btn plus-adult-paquete">+</button>
-                                        </div>
+                                
+                                <div class="passenger-item">
+                                    <div class="passenger-info">
+                                        <h4>Niños</h4>
+                                        <p>0-12 años</p>
                                     </div>
-                                    <div>
-                                        <small>Niños (0-12)</small>
-                                        <div class="counter-control">
-                                            <button type="button" class="counter-btn minus-child-paquete">-</button>
-                                            <span class="counter-value" id="niños-paquete">0</span>
-                                            <button type="button" class="counter-btn plus-child-paquete">+</button>
-                                        </div>
+                                    <div class="passenger-counter">
+                                        <button type="button" class="counter-btn" id="minus-child">-</button>
+                                        <span class="counter-value" id="child-count">0</span>
+                                        <button type="button" class="counter-btn" id="plus-child">+</button>
                                     </div>
                                 </div>
+                                
+                                <div class="passenger-actions">
+                                    <button type="button" class="btn" id="clear-passengers">Limpiar</button>
+                                    <button type="button" class="btn btn-accent2" id="apply-passengers">Aplicar</button>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-accent2">Buscar Paquetes</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        
+                        <div class="form-group-compact">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-accent2" style="height: 50px; font-size: 1.1rem;">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -949,7 +949,7 @@
     </section>
 
     <!-- Tours en Cusco -->
-    <section id="tours-cusco" class="trenes-section">
+    <section id="tours-cusco" style="background-color: #f8f9fa;">
         <div class="container">
             <div class="section-header">
                 <h2>Tours en Cusco</h2>
@@ -988,7 +988,7 @@
     </section>
 
     <!-- Paquetes Completos -->
-    <section id="paquetes-completos">
+    <section id="paquetes">
         <div class="container">
             <div class="section-header">
                 <h2>Paquetes Completos</h2>
@@ -1039,30 +1039,6 @@
                                 </ul>
                             </div>
                             <div class="paquete-precio">Desde $349</div>
-                            <a href="#" class="btn">Más Información</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="clasico" class="tab-content">
-                <div class="destinos-grid">
-                    <div class="paquete-card">
-                        <div class="paquete-img" style="background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
-                        <div class="paquete-info">
-                            <h3>Clásico Peruano</h3>
-                            <div class="duracion">8 días / 7 noches</div>
-                            <p>Lima, Cusco, Valle Sagrado, Machu Picchu y Lago Titicaca en un viaje inolvidable.</p>
-                            <div class="incluye">
-                                <ul>
-                                    <li>Lima - City tour gastronómico</li>
-                                    <li>Cusco y Valle Sagrado completo</li>
-                                    <li>Machu Picchu con tren Vistadome</li>
-                                    <li>Puno y Lago Titicaca</li>
-                                    <li>7 noches en hoteles 4 estrellas</li>
-                                </ul>
-                            </div>
-                            <div class="paquete-precio">Desde $1,299</div>
                             <a href="#" class="btn">Más Información</a>
                         </div>
                     </div>
@@ -1229,91 +1205,141 @@
             });
         });
         
-        // Search tabs functionality
-        const searchTabs = document.querySelectorAll('.search-tab');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+        // Passenger selector functionality
+        const passengerTrigger = document.getElementById('passenger-trigger');
+        const passengerDropdown = document.getElementById('passenger-dropdown');
+        const adultCountElement = document.getElementById('adult-count');
+        const childCountElement = document.getElementById('child-count');
+        const passengerValueElement = document.getElementById('passenger-value');
         
-        searchTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and panes
-                searchTabs.forEach(t => t.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Show corresponding pane
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
+        let adultCount = 2;
+        let childCount = 0;
+        
+        // Toggle passenger dropdown
+        passengerTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            passengerDropdown.classList.toggle('active');
         });
         
-        // Counter functionality
-        function setupCounter(plusBtnClass, minusBtnClass, valueId) {
-            const plusBtn = document.querySelector(`.${plusBtnClass}`);
-            const minusBtn = document.querySelector(`.${minusBtnClass}`);
-            const valueElement = document.getElementById(valueId);
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!passengerDropdown.contains(e.target) && !passengerTrigger.contains(e.target)) {
+                passengerDropdown.classList.remove('active');
+            }
+        });
+        
+        // Update passenger count
+        function updatePassengerCount() {
+            const totalPassengers = adultCount + childCount;
+            passengerValueElement.textContent = `${totalPassengers} Pasajero${totalPassengers !== 1 ? 's' : ''}`;
             
-            if (plusBtn && minusBtn && valueElement) {
-                plusBtn.addEventListener('click', () => {
-                    let value = parseInt(valueElement.textContent);
-                    valueElement.textContent = value + 1;
-                });
-                
-                minusBtn.addEventListener('click', () => {
-                    let value = parseInt(valueElement.textContent);
-                    if (value > 0) {
-                        valueElement.textContent = value - 1;
-                    }
-                });
-            }
+            // Update counter buttons state
+            document.getElementById('minus-adult').classList.toggle('disabled', adultCount <= 0);
+            document.getElementById('minus-child').classList.toggle('disabled', childCount <= 0);
         }
         
-        // Setup all counters
-        setupCounter('plus-adult-tour', 'minus-adult-tour', 'adultos-tour');
-        setupCounter('plus-child-tour', 'minus-child-tour', 'niños-tour');
-        setupCounter('plus-adult-paquete', 'minus-adult-paquete', 'adultos-paquete');
-        setupCounter('plus-child-paquete', 'minus-child-paquete', 'niños-paquete');
+        // Adult counter buttons
+        document.getElementById('plus-adult').addEventListener('click', () => {
+            adultCount++;
+            adultCountElement.textContent = adultCount;
+            updatePassengerCount();
+        });
         
-        // Calculate days between dates for packages
-        const fechaInicio = document.getElementById('fecha-inicio');
-        const fechaFin = document.getElementById('fecha-fin');
-        const diasInfo = document.getElementById('dias-noches');
-        
-        function calculateDays() {
-            if (fechaInicio.value && fechaFin.value) {
-                const start = new Date(fechaInicio.value);
-                const end = new Date(fechaFin.value);
-                
-                // Calculate difference in days
-                const diffTime = Math.abs(end - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                if (diffDays >= 0) {
-                    diasInfo.textContent = `${diffDays + 1} días / ${diffDays} noches`;
-                    diasInfo.style.display = 'block';
-                }
+        document.getElementById('minus-adult').addEventListener('click', () => {
+            if (adultCount > 0) {
+                adultCount--;
+                adultCountElement.textContent = adultCount;
+                updatePassengerCount();
             }
-        }
+        });
         
-        fechaInicio.addEventListener('change', calculateDays);
-        fechaFin.addEventListener('change', calculateDays);
+        // Child counter buttons
+        document.getElementById('plus-child').addEventListener('click', () => {
+            childCount++;
+            childCountElement.textContent = childCount;
+            updatePassengerCount();
+        });
+        
+        document.getElementById('minus-child').addEventListener('click', () => {
+            if (childCount > 0) {
+                childCount--;
+                childCountElement.textContent = childCount;
+                updatePassengerCount();
+            }
+        });
+        
+        // Clear passengers button
+        document.getElementById('clear-passengers').addEventListener('click', () => {
+            adultCount = 0;
+            childCount = 0;
+            adultCountElement.textContent = adultCount;
+            childCountElement.textContent = childCount;
+            updatePassengerCount();
+        });
+        
+        // Apply passengers button
+        document.getElementById('apply-passengers').addEventListener('click', () => {
+            passengerDropdown.classList.remove('active');
+        });
+        
+        // Initialize passenger count
+        updatePassengerCount();
+        
+        // Date selector functionality
+        const fechaSelector = document.getElementById('fecha-selector');
+        const fechaValue = document.getElementById('fecha-value');
+        
+        // Create date picker
+        fechaSelector.addEventListener('click', () => {
+            // In a real implementation, you would integrate a date picker library here
+            // For this example, we'll just set a default date
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const formattedDate = tomorrow.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            fechaValue.textContent = formattedDate;
+        });
+        
+        // Destination selector functionality
+        const destinoSelector = document.getElementById('destino-selector');
+        const destinoValue = document.getElementById('destino-value');
+        
+        const destinations = [
+            "Machu Picchu",
+            "Valle Sagrado",
+            "Montaña de 7 Colores",
+            "Laguna Humantay",
+            "City Tour Cusco",
+            "Cusco Completo"
+        ];
+        
+        destinoSelector.addEventListener('click', () => {
+            // In a real implementation, you would show a dropdown with destinations
+            // For this example, we'll cycle through destinations
+            const currentIndex = destinations.indexOf(destinoValue.textContent);
+            const nextIndex = (currentIndex + 1) % destinations.length;
+            destinoValue.textContent = destinations[nextIndex];
+        });
         
         // Set minimum date to today for date inputs
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha-tour').min = today;
-        document.getElementById('fecha-inicio').min = today;
-        document.getElementById('fecha-fin').min = today;
         
         // Form submission
         document.getElementById('tours-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('¡Gracias por tu búsqueda de tours! Te contactaremos pronto con las mejores opciones.');
-        });
-        
-        document.getElementById('paquetes-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('¡Gracias por tu búsqueda de paquetes completos! Te contactaremos pronto con las mejores opciones para tu viaje.');
+            
+            const destination = destinoValue.textContent;
+            const date = fechaValue.textContent;
+            const passengers = adultCount + childCount;
+            
+            alert(`¡Gracias por tu búsqueda!\n\nDestino: ${destination}\nFecha: ${date}\nPasajeros: ${passengers}\n\nTe contactaremos pronto con las mejores opciones.`);
         });
         
         // Smooth scrolling for anchor links
