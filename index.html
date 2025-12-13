@@ -16,7 +16,7 @@
     :root{
       --primary:#062803;
       --secondary:#053220;
-      --accent:#eb09a7; /* fucsia */
+      --accent:#eb09a7;
       --accent2:#0deb09;
       --text:#333;
       --text-light:#666;
@@ -60,7 +60,7 @@
       background:var(--secondary);
       box-shadow:0 2px 10px rgba(0,0,0,.2);
       position:fixed;width:100%;z-index:1000;top:0;
-      border-bottom:none; /* evita línea extra */
+      border-bottom:none;
     }
 
     .header-container{
@@ -69,20 +69,10 @@
       align-items:center;
       padding:12px 20px;
       gap:14px;
-      border-bottom:none; /* evita línea extra */
     }
 
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .logo img{
-      height:42px;
-      width:auto;
-      display:block;
-      object-fit:contain;
-    }
+    .logo{display:flex;align-items:center;gap:10px;}
+    .logo img{height:42px;width:auto;display:block;object-fit:contain;}
 
     nav{display:flex;justify-content:center;}
     .nav-menu{
@@ -103,7 +93,7 @@
       position:relative;
     }
 
-    /* Línea fucsia en hover y active */
+    /* Línea fucsia hover/active */
     .nav-menu a::after{
       content:'';
       position:absolute;
@@ -118,9 +108,7 @@
       transition:transform .18s ease;
     }
     .nav-menu a:hover::after,
-    .nav-menu a.active::after{
-      transform:scaleX(1);
-    }
+    .nav-menu a.active::after{transform:scaleX(1);}
 
     .mobile-menu-btn{
       display:none;
@@ -135,21 +123,12 @@
     .mobile-menu-btn:hover{background:rgba(255,255,255,.08);}
 
     /* WhatsApp header (desktop) */
-    .wa-header{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-    }
+    .wa-header{display:flex;align-items:center;justify-content:flex-end;gap:10px;}
     .wa-header a{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:44px;height:44px;
-      border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      width:44px;height:44px;border-radius:999px;
       background:rgba(255,255,255,.08);
       transition:transform .2s ease;
-      position:relative;
       overflow:visible;
     }
     .wa-header a:hover{transform:scale(1.06);}
@@ -175,7 +154,6 @@
     }
     .wa-float:hover{transform:scale(1.06);}
     .wa-float img{width:30px;height:30px;object-fit:contain;display:block;}
-
     .wa-float::before,
     .wa-float::after{
       content:'';
@@ -206,7 +184,6 @@
       margin-top:70px;
       position:relative;
       overflow:visible;
-      border-top:0; /* evita línea rara */
     }
     .hero-media{position:absolute;inset:0;z-index:0;background:#000;overflow:hidden;}
     .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);}
@@ -225,36 +202,14 @@
     }
     .hero-text{text-align:left;margin-bottom:26px;}
     .hero-text h2{
-      font-size:3.2rem;
-      margin-bottom:10px;
-      color:#fff;
+      font-size:3.2rem;margin-bottom:10px;color:#fff;
       text-shadow:0 10px 30px rgba(0,0,0,.35);
       line-height:1.1;
     }
     .hero-text h2 span{color:var(--accent2);display:block;}
 
-    /* ===================== Backdrop global (móvil UX) ===================== */
-    /* IMPORTANTE:
-       backdrop por debajo de calendarios/paneles (z menor),
-       por encima del contenido base */
-    .mct-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.45);
-      z-index:2000;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .2s ease;
-      backdrop-filter: blur(1px);
-    }
-    .mct-backdrop.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    /* ===================== MCT SEARCH (UX) ===================== */
+    /* ===================== MCT SEARCH ===================== */
     .u_1310989460{width:100%;position:relative;z-index:100;display:flex;justify-content:center;overflow:visible;}
-
     .u_1310989460 .mct-card{
       width:min(920px, 98vw);
       background:var(--mct-surface);
@@ -268,22 +223,15 @@
     }
 
     .u_1310989460 .mct-tabs{
-      position:absolute;
-      left:14px;right:14px;top:0;
+      position:absolute;left:14px;right:14px;top:0;
       transform:translateY(-50%);
-      display:flex;
-      pointer-events:none;
-      z-index:5;
+      display:flex;pointer-events:none;z-index:5;
     }
     .u_1310989460 .mct-tab{
-      pointer-events:auto;
-      appearance:none;
+      pointer-events:auto;appearance:none;
       border:1px solid rgba(0,0,0,.06);
-      cursor:pointer;
-      height:44px;
-      border-radius:14px;
-      font-weight:900;
-      color:var(--mct-muted);
+      cursor:pointer;height:44px;border-radius:14px;
+      font-weight:900;color:var(--mct-muted);
       background:#f2f5f4;
       display:flex;align-items:center;justify-content:center;
       flex:1 1 0;
@@ -295,31 +243,16 @@
     .u_1310989460 .mct-tab+.mct-tab{margin-left:-1px;}
     .u_1310989460 .mct-tab.is-active{
       background:var(--mct-primary);
-      color:#fff;
-      border-color:transparent;
+      color:#fff;border-color:transparent;
       box-shadow:0 10px 20px rgba(6,40,3,.18);
     }
 
-    .u_1310989460 .mct-bar{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    /* mobile stack */
+    .u_1310989460 .mct-bar{display:flex;flex-direction:column;gap:10px;}
     .u_1310989460 .mct-divider{display:none;}
 
-    .u_1310989460 .mct-field{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      position:relative;
-    }
-
-    .u_1310989460 .mct-label{
-      margin:0 0 6px;
-      font-size:12px;
-      font-weight:800;
-      color:var(--mct-muted);
-    }
+    .u_1310989460 .mct-field{min-width:0;display:flex;flex-direction:column;position:relative;}
+    .u_1310989460 .mct-label{margin:0 0 6px;font-size:12px;font-weight:800;color:var(--mct-muted);}
 
     .u_1310989460 .mct-input,
     .u_1310989460 .mct-select,
@@ -345,10 +278,9 @@
     }
 
     .u_1310989460 .mct-fecha-field{
-      z-index:130;
+      z-index:10;
       padding-bottom:22px;
     }
-
     .u_1310989460 .mct-hint.in-card{
       position:absolute;
       left:2px;
@@ -360,17 +292,12 @@
       white-space:nowrap;
       line-height:1.2;
     }
-    .u_1310989460 .mct-hint.in-card i{
-      margin-right:6px;
-      opacity:.75;
-      font-size:12px;
-    }
+    .u_1310989460 .mct-hint.in-card i{margin-right:6px;opacity:.75;font-size:12px;}
 
     .u_1310989460 .mct-submit{
       width:100%;
       height:48px;
-      border:0;
-      border-radius:16px;
+      border:0;border-radius:16px;
       background:linear-gradient(90deg, var(--mct-accent), #d90895);
       color:#fff;
       font-weight:950;
@@ -383,21 +310,17 @@
     .u_1310989460 .mct-submit:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(235,9,167,.28);}
 
     /* ===================== Cantidad ===================== */
-    .u_1310989460 .mct-cantidad{z-index:150;}
+    /* IMPORTANTE: bajamos z-index base para que NO tape el calendario en móvil */
+    .u_1310989460 .mct-cantidad{z-index:8;}
     .u_1310989460 .mct-qty-toggle{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       position:relative;
-      z-index:2;
+      z-index:1;
     }
 
-    /* Animaciones sin romper el centrado (no animar transform base) */
     @keyframes fadeScaleIn{
       from{opacity:0;transform:scale(.985);}
       to{opacity:1;transform:scale(1);}
-    }
-    @keyframes fadeIn{
-      from{opacity:0;}
-      to{opacity:1;}
     }
 
     .u_1310989460 .mct-qty-panel{
@@ -410,7 +333,7 @@
       border-radius:16px;
       box-shadow:0 18px 50px rgba(0,0,0,.18);
       padding:12px;
-      z-index:2105; /* > backdrop */
+      z-index:3800;
       overflow:visible;
       transform-origin:top right;
       animation:fadeScaleIn .16s ease both;
@@ -447,9 +370,10 @@
     }
     .u_1310989460 .mct-qty-done:hover{transform:translateY(-1px);}
 
-    /* ===================== FLATPICKR ===================== */
-    .u_1310989460 .flatpickr-calendar{
-      z-index:2106 !important; /* > backdrop */
+    /* ===================== FLATPICKR (SIEMPRE ENCIMA) ===================== */
+    /* Esto evita que el campo cantidad o cualquier cosa lo “interrumpa” */
+    .flatpickr-calendar{
+      z-index:4000 !important;
       border:1px solid var(--mct-border) !important;
       border-radius:16px !important;
       overflow:hidden !important;
@@ -458,20 +382,20 @@
       animation:fadeScaleIn .16s ease both;
       background:#fff !important;
     }
-    .u_1310989460 .flatpickr-months{
+    .flatpickr-months{
       padding:8px 10px 6px !important;
       background:#fff !important;
       border-bottom:1px solid rgba(23,43,39,.08) !important;
     }
-    .u_1310989460 .flatpickr-weekdays{padding:4px 10px !important;background:#fff !important;}
-    .u_1310989460 .flatpickr-days{padding:10px !important;background:#fff !important;}
-    .u_1310989460 .dayContainer{
+    .flatpickr-weekdays{padding:4px 10px !important;background:#fff !important;}
+    .flatpickr-days{padding:10px !important;background:#fff !important;}
+    .dayContainer{
       display:grid !important;
       grid-template-columns:repeat(7, 1fr) !important;
       gap:6px !important;
       width:100% !important;min-width:100% !important;max-width:100% !important;
     }
-    .u_1310989460 .flatpickr-day{
+    .flatpickr-day{
       height:40px !important;
       line-height:40px !important;
       border-radius:12px !important;
@@ -479,19 +403,19 @@
       font-size:14px !important;
       border:0 !important;
     }
-    .u_1310989460 .flatpickr-day.selected,
-    .u_1310989460 .flatpickr-day.startRange,
-    .u_1310989460 .flatpickr-day.endRange{
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange{
       background:var(--mct-primary) !important;
       color:#fff !important;
       box-shadow:0 12px 24px rgba(6,40,3,.22) !important;
     }
-    .u_1310989460 .flatpickr-day.inRange{
+    .flatpickr-day.inRange{
       background:rgba(6,40,3,.12) !important;
       color:var(--mct-primary) !important;
     }
 
-    .u_1310989460 .flatpickr-confirm{
+    .flatpickr-confirm{
       background:var(--mct-primary) !important;
       color:#fff !important;
       font-weight:950 !important;
@@ -504,20 +428,19 @@
       cursor:pointer !important;
       box-shadow:0 14px 30px rgba(6,40,3,.18) !important;
     }
-    .u_1310989460 .flatpickr-confirm svg{display:none !important;}
-    .u_1310989460 .flatpickr-confirm::before{content:"OK"; font-weight:950 !important;}
+    .flatpickr-confirm svg{display:none !important;}
+    .flatpickr-confirm::before{content:"OK"; font-weight:950 !important;}
 
-    /* ===================== Mobile behavior ===================== */
+    /* ===================== Mobile adjustments ===================== */
     @media (max-width: 1023px){
-      /* barra más ancha y compacta */
       .u_1310989460 .mct-card{
         width:99vw;
         padding:12px 10px 18px;
         padding-top:68px;
       }
 
-      /* calendario centrado + 1 mes + sin corte */
-      .u_1310989460 .flatpickr-calendar{
+      /* Calendario modal centrado: ya no se corta ni se va a la derecha */
+      .flatpickr-calendar{
         position:fixed !important;
         top:50% !important;
         left:50% !important;
@@ -526,7 +449,7 @@
         max-height:78vh !important;
       }
 
-      /* panel cantidad como modal centrado y sin transform conflicting */
+      /* Panel cantidad modal centrado */
       .u_1310989460 .mct-qty-panel{
         position:fixed;
         top:56%;
@@ -556,23 +479,19 @@
       }
       .u_1310989460 .mct-field{padding:10px 14px;}
       .u_1310989460 .mct-divider{
-        display:block;
-        width:1px;height:64px;
+        display:block;width:1px;height:64px;
         background:rgba(23,43,39,.14);
         border-radius:1px;
         align-self:center;
       }
       .u_1310989460 .mct-submit{
-        width:auto;
-        min-width:170px;
-        height:48px;
-        border-radius:999px;
-        margin:0 14px 10px 0;
-        align-self:end;
-        justify-self:end;
+        width:auto;min-width:170px;height:48px;
+        border-radius:999px;margin:0 14px 10px 0;
+        align-self:end;justify-self:end;
       }
+
       .u_1310989460 .mct-qty-panel{width:320px;right:0;position:absolute;transform:none;}
-      .u_1310989460 .flatpickr-calendar{
+      .flatpickr-calendar{
         position:absolute !important;
         top:calc(100% + 8px) !important;
         left:0 !important;
@@ -606,8 +525,6 @@
     .destino-content{padding:20px;}
     .destino-content h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
     .destino-content p{color:var(--text-light);margin-bottom:15px;}
-
-    /* Botón centrado en tarjeta */
     .destino-content .btn{
       display:block;
       width:max-content;
@@ -641,7 +558,7 @@
       transition:transform .2s ease;
       color:#fff;
     }
-    .social-icons a:hover{transform:scale(1.12);} /* sin cambio de color */
+    .social-icons a:hover{transform:scale(1.12);}
     .copyright{text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:.9rem;color:#aaa;}
 
     /* ===================== RESPONSIVE NAV + WA ===================== */
@@ -679,9 +596,6 @@
 </head>
 
 <body>
-  <!-- Backdrop -->
-  <div class="mct-backdrop" id="mctBackdrop" aria-hidden="true"></div>
-
   <!-- Header -->
   <header>
     <div class="container header-container">
@@ -881,10 +795,10 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <div class="footer-content">
+      <div class="footer-content" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;margin-bottom:40px;">
         <div class="footer-column">
           <div class="footer-logo">
-            <img src="img/Logo2.png" alt="My Cusco Trip" />
+            <img src="img/Logo2.png" alt="My Cusco Trip" style="height:48px;margin-bottom:14px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.25));" />
             <p>Especialistas en viajes a Cusco y Machu Picchu. Creamos experiencias únicas desde hace más de 15 años.</p>
           </div>
           <div class="social-icons">
@@ -897,7 +811,7 @@
 
         <div class="footer-column">
           <h3>CONÓCENOS</h3>
-          <ul>
+          <ul style="list-style:none;">
             <li><a href="#">NOSOTROS</a></li>
             <li><a href="#">¿POR QUÉ MYCUSCOTRIP?</a></li>
             <li><a href="#">RESPONSABILIDAD SOCIAL</a></li>
@@ -910,7 +824,7 @@
 
         <div class="footer-column">
           <h3>SERVICIOS</h3>
-          <ul>
+          <ul style="list-style:none;">
             <li><a href="#">Tours en Cusco</a></li>
             <li><a href="#">Tours a Machu Picchu</a></li>
             <li><a href="#">Paquetes Completos</a></li>
@@ -923,7 +837,7 @@
 
         <div class="footer-column">
           <h3>INFORMACIÓN ÚTIL</h3>
-          <ul>
+          <ul style="list-style:none;">
             <li><a href="#">¿Cómo llegar a Machu Picchu?</a></li>
             <li><a href="#">Planifica tu viaje</a></li>
             <li><a href="#">Blog</a></li>
@@ -969,23 +883,10 @@
       });
     });
 
-    // ===== MCT Search + Flatpickr + Qty + Backdrop UX
+    // ===== MCT Search + Flatpickr + Qty
     document.addEventListener('DOMContentLoaded', () => {
       const root = document.querySelector('.u_1310989460.mct-search');
       if (!root) return;
-
-      const backdrop = document.getElementById('mctBackdrop');
-      const isMobile = () => window.innerWidth < 1024;
-
-      const showBackdrop = () => {
-        if (!backdrop) return;
-        // solo móvil
-        if (isMobile()) backdrop.classList.add('show');
-      };
-      const hideBackdrop = () => {
-        if (!backdrop) return;
-        backdrop.classList.remove('show');
-      };
 
       const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
       const tabPaq   = root.querySelector('.mct-tab[data-tab="paquetes"]');
@@ -1003,6 +904,7 @@
       const destinoSelect = root.querySelector('#mctDestino');
 
       const DAY = 24 * 60 * 60 * 1000;
+      const isMobile = () => window.innerWidth < 1024;
       const getShowMonths = () => (isMobile() ? 1 : (window.innerWidth >= 1280 ? 2 : 1));
 
       function setDurationText(text){
@@ -1037,7 +939,7 @@
         minDate: "today",
         clickOpens: true,
         disableMobile: true,
-        showMonths: getShowMonths(),
+        showMonths: getShowMonths(),   // móvil = 1 mes
         closeOnSelect: false,
         static: isMobile(),
         position: isMobile() ? "center" : "below left",
@@ -1052,16 +954,14 @@
               e.preventDefault();
               e.stopPropagation();
               instance.close();
-              hideBackdrop();
             });
           }
           if (!isMobile()) instance.set('appendTo', dateField);
         },
         onOpen: () => {
+          // clave: evita que "cantidad" interfiera
           if (!qtyPanel.hidden) closeQtyPanel();
-          showBackdrop();
         },
-        onClose: () => hideBackdrop(),
         onChange: (selectedDates, dateStr, instance) => {
           const isPaq = tabPaq.classList.contains('is-active');
           if (isPaq && instance.config.mode === 'range' && selectedDates.length === 2) {
@@ -1117,8 +1017,7 @@
       let qtyPanelJustOpened = false;
 
       function openQtyPanel(){
-        if (fp.isOpen) fp.close();
-        showBackdrop();
+        if (fp.isOpen) fp.close(); // clave: no conviven
         qtyPanel.hidden = false;
         qtyToggle.setAttribute('aria-expanded', 'true');
         qtyPanelJustOpened = true;
@@ -1128,7 +1027,6 @@
       function closeQtyPanel(){
         qtyPanel.hidden = true;
         qtyToggle.setAttribute('aria-expanded', 'false');
-        hideBackdrop();
       }
 
       function toggleQtyPanel(e){
@@ -1156,16 +1054,9 @@
         updateQtyLabel();
       });
 
-      // Cerrar al tocar backdrop o fuera
+      // Cerrar al click fuera
       document.addEventListener('click', (e) => {
         if (qtyPanelJustOpened) return;
-
-        if (e.target === backdrop) {
-          if (!qtyPanel.hidden) closeQtyPanel();
-          if (fp.isOpen) fp.close();
-          hideBackdrop();
-          return;
-        }
 
         const insideQty = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
         if (!insideQty && !qtyPanel.hidden) closeQtyPanel();
@@ -1234,7 +1125,6 @@
 
         if (nowMobile !== lastMobile) {
           fp.close();
-          hideBackdrop();
           fp.set('static', nowMobile);
           fp.set('position', nowMobile ? "center" : "below left");
           if (!nowMobile) fp.set('appendTo', dateField);
