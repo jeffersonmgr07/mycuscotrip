@@ -1,1923 +1,1131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyCuscoTrip - Tours y Paquetes Turísticos en Cusco y Machu Picchu</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
-    
-    <style>
-        :root {
-            --primary: #062803;
-            --secondary: #053220;
-            --accent: #eb09a7;
-            --accent2: #0deb09;
-            --light: #f9f7f0;
-            --dark: #062803;
-            --text: #333333;
-            --text-light: #666666;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Open Sans', sans-serif;
-            color: var(--text);
-            line-height: 1.6;
-            background-color: #fff;
-        }
-        
-        h1, h2, h3, h4, h5 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(to right, var(--accent), #d90895);
-            color: white;
-            border-radius: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(235, 9, 167, 0.3);
-        }
-        
-        .btn:hover {
-            background: linear-gradient(to right, #d90895, var(--accent));
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(235, 9, 167, 0.4);
-        }
-        
-        .btn-accent2 {
-            background: linear-gradient(to right, var(--accent2), #0bd009);
-            box-shadow: 0 4px 10px rgba(13, 235, 9, 0.3);
-        }
-        
-        .btn-accent2:hover {
-            background: linear-gradient(to right, #0bd009, var(--accent2));
-            box-shadow: 0 6px 15px rgba(13, 235, 9, 0.4);
-        }
-        
-        /* Header */
-        header {
-            background-color: var(--secondary);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            top: 0;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            color: white;
-        }
-        
-        .logo span {
-            color: var(--accent2);
-        }
-        
-        .nav-menu {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-menu li {
-            margin-left: 25px;
-            position: relative;
-        }
-        
-        .nav-menu a {
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            color: white;
-            padding: 5px 0;
-        }
-        
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: var(--accent2);
-        }
-        
-        .nav-menu a.active:after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: var(--accent);
-            bottom: -5px;
-            left: 0;
-            border-radius: 2px;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: white;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(6, 40, 3, 0.8), rgba(5, 50, 32, 0.8)), url('https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            min-height: 700px;
-            display: flex;
-            align-items: center;
-            color: white;
-            text-align: center;
-            margin-top: 70px;
-            position: relative;
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-            width: 100%;
-        }
-        
-        .hero-text {
-            text-align: left;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .hero-text h2 {
-            font-size: 3.2rem;
-            margin-bottom: 10px;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            line-height: 1.1;
-        }
-        
-        .hero-text h2 span {
-            color: var(--accent2);
-            display: block;
-        }
-        
-        .hero-arrows {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .arrow {
-            font-size: 2rem;
-            color: var(--accent2);
-            animation: bounce 2s infinite;
-        }
-        
-        .arrow:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .arrow:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(0);
-            }
-            40% {
-                transform: translateX(-10px);
-            }
-            60% {
-                transform: translateX(-5px);
-            }
-        }
-        
-        /* CSS GENERAL MCT SEARCH - CORREGIDO */
-        .u_1310989460 {
-            --mct-surface:#ffffff;
-            --mct-primary:#062803;
-            --mct-primary-ink:#ffffff;
-            --mct-ink:#172b27;
-            --mct-muted:#6c7a76;
-            --mct-border:rgba(23,43,39,.12);
-            --mct-sep:rgba(23,43,39,.15);
-            --mct-shadow:0 8px 24px rgba(0,0,0,.12);
-            --mct-radius:16px;
-            --mct-pill:999px;
-            --mct-accent:#eb09a7;
-            --mct-sel:#062803;
-            font-family: 'Open Sans', sans-serif;
-            width: 100%;
-            position: relative;
-            z-index: 100;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyCuscoTrip - Tours y Paquetes Turísticos en Cusco y Machu Picchu</title>
 
-        /* ESTILOS BASE PARA MÓVIL (default) */
-        .u_1310989460 .mct-card {
-            position:relative;
-            z-index: 1000;
-            background:#fff;
-            border-radius:18px;
-            box-shadow:var(--mct-shadow);
-            padding:10px 10px 12px;
-            padding-top:68px;
-            overflow:visible;
-        }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-        .u_1310989460 .mct-tabs {
-            position:absolute;
-            left:10px;
-            right:10px;
-            top:0;
-            transform:translateY(-50%);
-            display:flex;
-            gap:0;
-            padding:0;
-            background:transparent;
-            pointer-events:none;
-            z-index:5;
-        }
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css" />
 
-        .u_1310989460 .mct-tab {
-            pointer-events:auto;
-            appearance:none;
-            border:0;
-            cursor:pointer;
-            height:42px;
-            border-radius:12px;
-            font-weight:800;
-            color:var(--mct-muted);
-            background:#f2f5f4;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex:1 1 0;
-            margin:0;
-            font-family: 'Montserrat', sans-serif;
-        }
+  <style>
+    :root{
+      --primary:#062803;
+      --secondary:#053220;
+      --accent:#eb09a7;
+      --accent2:#0deb09;
+      --light:#f9f7f0;
+      --dark:#062803;
+      --text:#333;
+      --text-light:#666;
+    }
 
-        .u_1310989460 .mct-tab:first-child {
-            border-top-right-radius:0;
-            border-bottom-right-radius:0;
-        }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Open Sans',sans-serif;color:var(--text);line-height:1.6;background:#fff;}
+    h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;font-weight:600;color:var(--dark);}
+    a{text-decoration:none;color:inherit;}
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px;}
 
-        .u_1310989460 .mct-tab:last-child {
-            border-top-left-radius:0;
-            border-bottom-left-radius:0;
-        }
+    .btn{
+      display:inline-block;padding:12px 30px;
+      background:linear-gradient(to right,var(--accent),#d90895);
+      color:#fff;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+      transition:all .3s ease;border:none;cursor:pointer;
+      box-shadow:0 4px 10px rgba(235,9,167,.3);
+    }
+    .btn:hover{background:linear-gradient(to right,#d90895,var(--accent));transform:translateY(-2px);box-shadow:0 6px 15px rgba(235,9,167,.4);}
+    .btn-accent2{background:linear-gradient(to right,var(--accent2),#0bd009);box-shadow:0 4px 10px rgba(13,235,9,.3);}
+    .btn-accent2:hover{background:linear-gradient(to right,#0bd009,var(--accent2));box-shadow:0 6px 15px rgba(13,235,9,.4);}
 
-        .u_1310989460 .mct-tab+.mct-tab { 
-            margin-left:-1px;
-        }
+    /* =======================
+       HEADER (MENÚ CENTRADO PC)
+       ======================= */
+    header{
+      background-color:var(--secondary);
+      box-shadow:0 2px 10px rgba(0,0,0,.2);
+      position:fixed;width:100%;z-index:1000;top:0;
+    }
 
-        .u_1310989460 .mct-tab.is-active {
-            background:var(--mct-primary);
-            color:#fff;
-        }
+    /* Grid: logo (izq) | nav (centro) | botón móvil (der) */
+    .header-container{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      padding:15px 20px;
+      gap:14px;
+    }
 
-        .u_1310989460 .mct-bar {
-            display:flex;
-            flex-direction:column;
-            align-items:stretch;
-            gap:12px;
-        }
+    .logo{display:flex;align-items:center;justify-content:flex-start;}
+    .logo h1{font-size:1.8rem;color:#fff;white-space:nowrap;}
+    .logo span{color:var(--accent2);}
 
-        .u_1310989460 .mct-divider { 
-            display:none;
-        }
+    nav{display:flex;justify-content:center;}
+    .nav-menu{display:flex;list-style:none;justify-content:center;gap:26px;}
+    .nav-menu li{position:relative;}
+    .nav-menu a{
+      font-weight:600;font-size:.95rem;color:#fff;
+      padding:5px 0;transition:color .3s;
+    }
+    .nav-menu a:hover,.nav-menu a.active{color:var(--accent2);}
+    .nav-menu a.active:after{
+      content:'';
+      position:absolute;width:100%;height:3px;background:var(--accent);
+      bottom:-5px;left:0;border-radius:2px;
+    }
 
-        .u_1310989460 .mct-field {
-            padding:0 2px;
-            min-width:0;
-            display:flex;
-            flex-direction:column;
-            justify-content:flex-end;
-            position: relative;
-            z-index: 10;
-        }
+    .mobile-menu-btn{
+      display:none;
+      font-size:1.5rem;cursor:pointer;color:#fff;
+      justify-self:end;
+    }
 
-        .u_1310989460 .mct-label {
-            display:block;
-            margin:0 0 6px;
-            font-size:13px;
-            font-weight:700;
-            color:var(--mct-muted);
-        }
+    /* =======================
+       HERO (VIDEO BACKGROUND)
+       ======================= */
+    .hero{
+      height:100vh;min-height:700px;
+      display:flex;align-items:center;
+      color:#fff;text-align:center;
+      margin-top:70px;
+      position:relative;
+      overflow:hidden;
+    }
 
-        .u_1310989460 .mct-input,
-        .u_1310989460 .mct-select,
-        .u_1310989460 .mct-qty-toggle {
-            width:100%;
-            height:46px;
-            border:1px solid var(--mct-border);
-            border-radius:12px;
-            padding:0 12px;
-            font-weight:700;
-            color:var(--mct-ink);
-            background:#fff;
-            font-size:16px;
-            cursor:pointer;
-            user-select:none;
-            -webkit-user-select:none;
-            font-family: 'Open Sans', sans-serif;
-        }
+    /* Video layer */
+    .hero-media{
+      position:absolute;inset:0;
+      z-index:0;
+      background:#000;
+    }
+    .hero-media video{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      transform:scale(1.02); /* evita bordes */
+    }
 
-        .u_1310989460 .mct-fecha-field {
-            position:relative;
-            z-index: 100;
-            cursor:pointer;
-        }
+    /* Overlay oscuro encima del video */
+    .hero::before{
+      content:'';
+      position:absolute;inset:0;
+      background:linear-gradient(rgba(6,40,3,.75),rgba(5,50,32,.75));
+      z-index:1;
+    }
 
-        .u_1310989460 .mct-cantidad {
-            position:relative;
-            z-index: 100;
-        }
+    .hero-content{
+      max-width:900px;margin:0 auto;padding:0 20px;width:100%;
+      position:relative;z-index:2;
+    }
 
-        .u_1310989460 .mct-qty-panel {
-            position:absolute;
-            left:0;
-            right:0;
-            top:100%;
-            width:100%;
-            margin-top:8px;
-            overflow:visible;
-            background:#fff;
-            border:1px solid var(--mct-border);
-            border-radius:14px;
-            box-shadow:var(--mct-shadow);
-            padding:10px;
-            z-index: 1100;
-        }
+    .hero-text{text-align:left;margin-bottom:30px;}
+    .hero-text h2{
+      font-size:3.2rem;margin-bottom:10px;color:#fff;
+      text-shadow:1px 1px 3px rgba(0,0,0,.5);
+      line-height:1.1;
+    }
+    .hero-text h2 span{color:var(--accent2);display:block;}
 
-        .u_1310989460 .mct-qty-toggle {
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            height:46px;
-        }
+    /* =======================
+       MCT SEARCH (tu bloque)
+       ======================= */
+    .u_1310989460{
+      --mct-surface:#fff;
+      --mct-primary:#062803;
+      --mct-primary-ink:#fff;
+      --mct-ink:#172b27;
+      --mct-muted:#6c7a76;
+      --mct-border:rgba(23,43,39,.12);
+      --mct-sep:rgba(23,43,39,.15);
+      --mct-shadow:0 8px 24px rgba(0,0,0,.12);
+      --mct-radius:16px;
+      --mct-pill:999px;
+      --mct-accent:#eb09a7;
+      --mct-sel:#062803;
+      font-family:'Open Sans',sans-serif;
+      width:100%;
+      position:relative;
+      z-index:100;
+    }
 
-        .u_1310989460 .mct-qty-row {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin:6px 0;
-        }
+    .u_1310989460 .mct-card{
+      position:relative;
+      z-index:1000;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:var(--mct-shadow);
+      padding:10px 10px 12px;
+      padding-top:68px;
+      overflow:visible;
+    }
 
-        .u_1310989460 .mct-qty-ctrl {
-            display:flex;
-            align-items:center;
-            gap:6px;
-            background:#f7f9f8;
-            border-radius:var(--mct-pill);
-            padding:4px 6px;
-        }
+    .u_1310989460 .mct-tabs{
+      position:absolute;
+      left:10px;right:10px;top:0;
+      transform:translateY(-50%);
+      display:flex;gap:0;
+      background:transparent;
+      pointer-events:none;
+      z-index:5;
+    }
 
-        .u_1310989460 .mct-qty-ctrl input {
-            width:36px;
-            text-align:center;
-            border:0;
-            background:transparent;
-            font-weight:800;
-            font-family: 'Open Sans', sans-serif;
-        }
+    .u_1310989460 .mct-tab{
+      pointer-events:auto;
+      appearance:none;border:0;cursor:pointer;
+      height:42px;border-radius:12px;
+      font-weight:800;color:var(--mct-muted);
+      background:#f2f5f4;
+      display:flex;align-items:center;justify-content:center;
+      flex:1 1 0;margin:0;
+      font-family:'Montserrat',sans-serif;
+    }
+    .u_1310989460 .mct-tab:first-child{border-top-right-radius:0;border-bottom-right-radius:0;}
+    .u_1310989460 .mct-tab:last-child{border-top-left-radius:0;border-bottom-left-radius:0;}
+    .u_1310989460 .mct-tab+.mct-tab{margin-left:-1px;}
+    .u_1310989460 .mct-tab.is-active{background:var(--mct-primary);color:#fff;}
 
-        .u_1310989460 .mct-btn {
-            width:28px;
-            height:28px;
-            border-radius:50%;
-            border:1px solid var(--mct-border);
-            background:#fff;
-            cursor:pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+    .u_1310989460 .mct-bar{
+      display:flex;flex-direction:column;align-items:stretch;gap:12px;
+    }
+    .u_1310989460 .mct-divider{display:none;}
 
-        .u_1310989460 .mct-qty-done {
-            width:100%;
-            height:40px;
-            border:0;
-            border-radius:10px;
-            background:var(--mct-primary);
-            color:#fff;
-            font-weight:800;
-            cursor:pointer;
-            font-family: 'Montserrat', sans-serif;
-        }
+    .u_1310989460 .mct-field{
+      padding:0 2px;min-width:0;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      position:relative;z-index:10;
+    }
 
-        .u_1310989460 .mct-submit {
-            display:block;
-            width:55%;
-            height:50px;
-            margin:8px auto 0;
-            padding:0 20px;
-            border:0;
-            border-radius:14px;
-            background:var(--mct-accent);
-            color:#fff;
-            font-weight:900;
-            text-align:center;
-            white-space:nowrap;
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            cursor: pointer;
-        }
+    .u_1310989460 .mct-label{
+      display:block;margin:0 0 6px;font-size:13px;font-weight:700;color:var(--mct-muted);
+    }
 
-        /* FLATPICKR STYLES - CORREGIDOS */
-        .u_1310989460 .flatpickr-calendar {
-            z-index: 2000 !important;
-            box-shadow:var(--mct-shadow) !important;
-            border:1px solid var(--mct-border) !important;
-            font-family:'Open Sans', sans-serif !important;
-        }
+    .u_1310989460 .mct-input,
+    .u_1310989460 .mct-select,
+    .u_1310989460 .mct-qty-toggle{
+      width:100%;
+      height:46px;
+      border:1px solid var(--mct-border);
+      border-radius:12px;
+      padding:0 12px;
+      font-weight:700;
+      color:var(--mct-ink);
+      background:#fff;
+      font-size:16px;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      font-family:'Open Sans',sans-serif;
+    }
 
-        .u_1310989460 .flatpickr-calendar * { 
-            font-family:'Open Sans', sans-serif !important;
-        }
+    .u_1310989460 .mct-fecha-field{position:relative;z-index:100;cursor:pointer;}
+    .u_1310989460 .mct-cantidad{position:relative;z-index:100;}
 
-        .u_1310989460 .flatpickr-months .flatpickr-month { 
-            font-weight:700 !important;
-        }
+    .u_1310989460 .mct-qty-panel{
+      position:absolute;left:0;right:0;top:100%;
+      width:100%;margin-top:8px;
+      background:#fff;border:1px solid var(--mct-border);
+      border-radius:14px;box-shadow:var(--mct-shadow);
+      padding:10px;z-index:1100;
+    }
 
-        .u_1310989460 .flatpickr-weekday { 
-            font-weight:700 !important;
-        }
+    .u_1310989460 .mct-qty-toggle{
+      display:flex;align-items:center;justify-content:space-between;height:46px;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-day { 
-            border:0 !important;
-        }
+    .u_1310989460 .mct-qty-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0;}
+    .u_1310989460 .mct-qty-ctrl{display:flex;align-items:center;gap:6px;background:#f7f9f8;border-radius:var(--mct-pill);padding:4px 6px;}
+    .u_1310989460 .mct-qty-ctrl input{width:36px;text-align:center;border:0;background:transparent;font-weight:800;font-family:'Open Sans',sans-serif;}
+    .u_1310989460 .mct-btn{
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid var(--mct-border);background:#fff;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-weight:bold;
+    }
+    .u_1310989460 .mct-qty-done{
+      width:100%;height:40px;border:0;border-radius:10px;
+      background:var(--mct-primary);color:#fff;font-weight:800;cursor:pointer;
+      font-family:'Montserrat',sans-serif;
+    }
 
-        /* CORREGIDO: Días seleccionados sin barra blanca */
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.inRange {
-            background: #e8f5e8 !important;
-            box-shadow: none !important;
-            color: var(--mct-primary) !important;
-            border-radius: 0 !important;
-        }
+    .u_1310989460 .mct-submit{
+      display:block;width:55%;height:50px;margin:8px auto 0;
+      padding:0 20px;border:0;border-radius:14px;background:var(--mct-accent);
+      color:#fff;font-weight:900;text-align:center;white-space:nowrap;
+      font-family:'Montserrat',sans-serif;text-transform:uppercase;cursor:pointer;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.startRange {
-            background: var(--mct-primary) !important;
-            color: #fff !important;
-            border-radius: 50% !important;
-        }
+    /* =======================
+       FLATPICKR (MEJOR RESPONSIVO + SELECCIÓN MÁS NOTORIA)
+       ======================= */
+    .u_1310989460 .flatpickr-calendar{
+      z-index:2000 !important;
+      box-shadow:var(--mct-shadow) !important;
+      border:1px solid var(--mct-border) !important;
+      font-family:'Open Sans',sans-serif !important;
+      border-radius:16px !important;
+      overflow:hidden !important;
+    }
+    .u_1310989460 .flatpickr-calendar *{font-family:'Open Sans',sans-serif !important;}
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.endRange {
-            background: var(--mct-primary) !important;
-            color: #fff !important;
-            border-radius: 50% !important;
-        }
+    /* Header del mes/año (más legible) */
+    .u_1310989460 .flatpickr-months{
+      padding:10px 10px 4px !important;
+      background:#fff !important;
+    }
+    .u_1310989460 .flatpickr-current-month{
+      font-size:16px !important;
+      padding:6px 0 !important;
+    }
+    .u_1310989460 .flatpickr-current-month .cur-month{
+      font-weight:800 !important;
+    }
+    .u_1310989460 .flatpickr-current-month .numInputWrapper{
+      width:92px !important; /* año visible */
+    }
+    .u_1310989460 .flatpickr-current-month input.cur-year{
+      font-weight:800 !important;
+      font-size:16px !important;
+      width:92px !important;
+      padding:0 4px !important;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected {
-            background: var(--mct-primary) !important;
-            color: #fff !important;
-            border-radius: 50% !important;
-        }
+    .u_1310989460 .flatpickr-weekdays{padding:0 10px 6px !important;}
+    .u_1310989460 .flatpickr-weekday{font-weight:800 !important;padding:8px 0 !important;}
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected.startRange + .flatpickr-day.inRange,
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.selected.endRange,
-        .u_1310989460 .flatpickr-calendar .flatpickr-day.inRange {
-            background: #e8f5e8 !important;
-            color: var(--mct-primary) !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-        }
+    /* Grid compacto */
+    .u_1310989460 .flatpickr-days{padding:10px !important;}
+    .u_1310989460 .flatpickr-innerContainer{padding:0 !important;}
+    .u_1310989460 .dayContainer{
+      width:100% !important;
+      min-width:100% !important;
+      max-width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(7, 1fr) !important;
+      gap:6px !important; /* antes quedaba raro */
+      padding:0 !important;
+    }
 
-        .u_1310989460 .flatpickr-calendar .dayContainer { 
-            gap: 0 !important;
-            padding: 0 10px !important;
-        }
+    /* Celdas más grandes (selección se nota) */
+    .u_1310989460 .flatpickr-day{
+      border:0 !important;
+      width:42px !important;
+      height:42px !important;
+      line-height:42px !important;
+      margin:0 !important;
+      border-radius:12px !important; /* más “pill” */
+      font-weight:700 !important;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-confirm {
-            background:var(--mct-primary) !important;
-            color:#fff !important;
-            font-weight:800 !important;
-            border:0 !important;
-            border-radius:10px !important;
-            height:40px !important;
-            padding:0 18px !important;
-            display:flex !important;
-            align-items:center !important;
-            justify-content:center !important;
-            gap:8px !important;
-            cursor:pointer !important;
-            margin: 10px !important;
-            width: calc(100% - 20px) !important;
-        }
+    /* Selección MUCHO más visible */
+    .u_1310989460 .flatpickr-day.selected,
+    .u_1310989460 .flatpickr-day.startRange,
+    .u_1310989460 .flatpickr-day.endRange{
+      background:var(--mct-primary) !important;
+      color:#fff !important;
+      box-shadow:0 6px 14px rgba(6,40,3,.25) !important;
+      border-radius:12px !important;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-confirm svg { 
-            display:none !important;
-        }
+    .u_1310989460 .flatpickr-day.inRange{
+      background:rgba(6,40,3,.12) !important;
+      color:var(--mct-primary) !important;
+      box-shadow:none !important;
+      border-radius:12px !important;
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-confirm::before {
-            content:"OK" !important;
-            font-weight:900 !important;
-        }
+    /* Botón OK */
+    .u_1310989460 .flatpickr-confirm{
+      background:var(--mct-primary) !important;
+      color:#fff !important;
+      font-weight:900 !important;
+      border:0 !important;
+      border-radius:12px !important;
+      height:44px !important;
+      margin:10px !important;
+      width:calc(100% - 20px) !important;
+      display:flex !important;align-items:center !important;justify-content:center !important;
+      cursor:pointer !important;
+    }
+    .u_1310989460 .flatpickr-confirm svg{display:none !important;}
+    .u_1310989460 .flatpickr-confirm::before{content:"OK" !important;}
 
-        /* CORREGIDO: Espaciado del mes */
-        .u_1310989460 .flatpickr-calendar .flatpickr-month {
-            padding: 10px !important;
-            height: 50px !important;
-        }
+    /* MOBILE calendar centrado */
+    @media (max-width:1023px){
+      .u_1310989460 .flatpickr-calendar{
+        position:fixed !important;
+        top:50% !important;left:50% !important;
+        transform:translate(-50%,-50%) !important;
+        width:95vw !important;
+        max-width:420px !important;
+        max-height:80vh !important;
+        box-shadow:0 20px 60px rgba(0,0,0,.4) !important;
+      }
+      .u_1310989460 .flatpickr-day{
+        width:44px !important;height:44px !important;line-height:44px !important;
+        border-radius:14px !important;
+      }
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-current-month {
-            padding-top: 5px !important;
-        }
+    /* DESKTOP: calendar debajo del input, más ancho */
+    @media (min-width:1024px){
+      .u_1310989460 .flatpickr-calendar{
+        position:absolute !important;
+        top:100% !important;
+        left:0 !important;
+        width:380px !important; /* más espacio para mes/año y grid */
+        margin-top:8px !important;
+        transform:none !important;
+      }
+    }
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-weekdays {
-            padding: 0 10px !important;
-        }
+    /* =======================
+       SECTIONS
+       ======================= */
+    section{padding:80px 0;}
+    .section-header{text-align:center;margin-bottom:50px;}
+    .section-header h2{font-size:2.5rem;margin-bottom:15px;position:relative;display:inline-block;}
+    .section-header h2:after{
+      content:'';position:absolute;width:70px;height:3px;background:var(--accent);
+      bottom:-10px;left:50%;transform:translateX(-50%);
+    }
+    .section-header p{color:var(--text-light);max-width:700px;margin:0 auto;}
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-weekday {
-            padding: 10px 0 !important;
-        }
+    .destinos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;}
+    .destino-card{border-radius:8px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.1);transition:transform .3s ease;border:2px solid transparent;}
+    .destino-card:hover{transform:translateY(-10px);border-color:var(--accent);}
+    .destino-img{height:200px;background-size:cover;background-position:center;}
+    .destino-content{padding:20px;}
+    .destino-content h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
+    .destino-content p{color:var(--text-light);margin-bottom:15px;}
 
-        .u_1310989460 .flatpickr-calendar .flatpickr-days {
-            padding: 10px !important;
-        }
+    .paquetes-tabs{display:flex;justify-content:center;margin-bottom:40px;flex-wrap:wrap;}
+    .tab-btn{padding:12px 25px;background:#f0f0f0;border:none;font-weight:600;cursor:pointer;transition:all .3s;margin:0 5px 10px;border-radius:4px;}
+    .tab-btn.active{background:var(--primary);color:#fff;}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
 
-        /* ESTILOS ESPECÍFICOS PARA MÓVILES */
-        @media (max-width: 1023px) {
-            .u_1310989460 .mct-tab {
-                min-height: 44px;
-                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
-            }
-            
-            .u_1310989460 .mct-qty-panel {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                top: 100% !important;
-                width: 100% !important;
-                margin: 8px 0 0 0 !important;
-                border-radius: 14px !important;
-                z-index: 1100 !important;
-            }
-            
-            .u_1310989460 .flatpickr-calendar {
-                position: fixed !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
-                width: 95vw !important;
-                max-width: 400px !important;
-                height: auto !important;
-                max-height: 80vh !important;
-                z-index: 2000 !important;
-                border-radius: 16px !important;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.4) !important;
-                overflow: hidden !important;
-            }
-            
-            /* CORREGIDO: Centrado del calendario */
-            .u_1310989460 .flatpickr-calendar.open {
-                animation: mct-fadeIn 0.3s ease !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            
-            .u_1310989460 .flatpickr-innerContainer {
-                overflow-x: hidden !important;
-                max-height: 60vh !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            
-            .u_1310989460 .dayContainer {
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                display: grid !important;
-                grid-template-columns: repeat(7, 1fr) !important;
-                gap: 2px !important;
-            }
-            
-            .u_1310989460 .flatpickr-day {
-                min-height: 44px !important;
-                line-height: 44px !important;
-                font-size: 16px !important;
-                max-width: 44px !important;
-                margin: 0 auto !important;
-            }
-        }
+    .paquete-card{
+      background:#fff;border-radius:8px;overflow:hidden;
+      box-shadow:0 5px 15px rgba(0,0,0,.1);
+      margin-bottom:30px;display:flex;flex-direction:column;
+      border:2px solid transparent;transition:all .3s;
+    }
+    .paquete-card:hover{border-color:var(--accent2);box-shadow:0 8px 20px rgba(13,235,9,.1);}
+    .paquete-img{height:250px;background-size:cover;background-position:center;}
+    .paquete-info{padding:25px;flex-grow:1;display:flex;flex-direction:column;}
+    .paquete-info h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
+    .paquete-info .duracion{color:var(--accent);font-weight:600;margin-bottom:15px;}
+    .paquete-info .incluye{margin-bottom:20px;flex-grow:1;}
+    .incluye li{margin-bottom:5px;position:relative;padding-left:20px;}
+    .incluye li:before{content:'✓';position:absolute;left:0;color:var(--accent2);font-weight:bold;}
+    .paquete-precio{font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:15px;}
 
-        /* ESTILOS ESPECÍFICOS PARA DESKTOP */
-        @media (min-width: 1024px) {
-            .u_1310989460 .mct-card {
-                border-radius:20px;
-                padding:12px;
-                padding-top:64px;
-            }
-            
-            .u_1310989460 .mct-tabs {
-                left:12px;
-                right:12px;
-            }
-            
-            .u_1310989460 .mct-tab { 
-                height:44px; 
-            }
-            
-            .u_1310989460 .mct-bar {
-                display:grid;
-                grid-template-columns:1.1fr 1px 1.2fr 1px 1.1fr auto;
-                gap:0;
-                align-items:end;
-            }
-            
-            .u_1310989460 .mct-divider {
-                display:block;
-                width:1px;
-                height:56px;
-                background:var(--mct-sep);
-                border-radius:1px;
-            }
-            
-            .u_1310989460 .mct-field {
-                padding:10px 12px;
-            }
-            
-            .u_1310989460 .mct-label {
-                font-size:12px;
-                white-space:nowrap;
-            }
-            
-            .u_1310989460 .mct-input,
-            .u_1310989460 .mct-select,
-            .u_1310989460 .mct-qty-toggle {
-                height:42px;
-                border-radius:14px;
-                white-space:nowrap;
-            }
-            
-            .u_1310989460 .mct-cantidad {
-                align-self:end;
-            }
-            
-            .u_1310989460 .mct-qty-toggle { 
-                height:42px; 
-            }
-            
-            .u_1310989460 .mct-qty-panel {
-                right:0;
-                width:280px;
-                margin-top:8px;
-                top: 100%;
-                bottom: auto;
-                left: auto;
-            }
-            
-            .u_1310989460 .mct-submit {
-                display:inline-flex;
-                align-items:center;
-                justify-content:center;
-                height:48px;
-                min-width:170px;
-                padding:0 26px;
-                border-radius:999px;
-                align-self:end;
-                margin:0 12px 10px 0;
-                transition: all 0.3s ease;
-            }
-            
-            .u_1310989460 .mct-submit:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(235, 9, 167, 0.4);
-            }
-            
-            /* FLATPICKR EN DESKTOP - CORREGIDO */
-            .u_1310989460 .flatpickr-calendar {
-                position: absolute !important;
-                top: 100% !important;
-                left: 12px !important;
-                right: auto !important;
-                width: 350px !important;
-                margin-top: 8px !important;
-                transform: translateY(0) !important;
-                z-index: 2000 !important;
-            }
-            
-            .u_1310989460 .flatpickr-calendar.open {
-                animation: mct-fadeInDown 0.3s ease !important;
-            }
-            
-            /* CORREGIDO: Sin espacio en blanco */
-            .u_1310989460 .flatpickr-calendar .flatpickr-innerContainer {
-                width: 100% !important;
-                padding: 0 !important;
-            }
-            
-            .u_1310989460 .flatpickr-calendar .dayContainer {
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                padding: 10px !important;
-                display: grid !important;
-                grid-template-columns: repeat(7, 1fr) !important;
-                gap: 2px !important;
-            }
-            
-            .u_1310989460 .flatpickr-calendar .flatpickr-day {
-                max-width: 38px !important;
-                margin: 0 auto !important;
-            }
-        }
+    .why-choose-us{background:var(--secondary);color:#fff;}
+    .why-choose-us .section-header h2,.why-choose-us .section-header p{color:#fff;}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+    .feature{text-align:center;padding:30px 20px;background:rgba(255,255,255,.05);border-radius:8px;transition:transform .3s ease;border:1px solid transparent;}
+    .feature:hover{transform:translateY(-5px);background:rgba(255,255,255,.1);border-color:var(--accent2);}
+    .feature-icon{font-size:2.5rem;color:var(--accent2);margin-bottom:20px;}
+    .feature h3{color:#fff;margin-bottom:15px;font-size:1.3rem;}
 
-        @keyframes mct-fadeIn {
-            from { opacity: 0; transform: translate(-50%, -45%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
+    footer{background:var(--primary);color:#ddd;padding:60px 0 20px;}
+    .footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;margin-bottom:40px;}
+    .footer-column h3{color:#fff;font-size:1.2rem;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--accent);}
+    .footer-column ul{list-style:none;}
+    .footer-column li{margin-bottom:10px;}
+    .footer-column a{transition:color .3s;font-size:.9rem;}
+    .footer-column a:hover{color:var(--accent2);padding-left:5px;}
+    .footer-logo h2{color:#fff;font-size:1.8rem;margin-bottom:15px;}
+    .footer-logo span{color:var(--accent2);}
+    .footer-logo p{margin-bottom:20px;font-size:.9rem;}
+    .social-icons{display:flex;gap:15px;margin-top:20px;}
+    .social-icons a{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(255,255,255,.1);border-radius:50%;transition:all .3s;}
+    .social-icons a:hover{background:var(--accent);transform:translateY(-3px);}
+    .copyright{text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:.9rem;color:#aaa;}
 
-        @keyframes mct-fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Section Styles */
-        section {
-            padding: 80px 0;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .section-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-header h2:after {
-            content: '';
-            position: absolute;
-            width: 70px;
-            height: 3px;
-            background-color: var(--accent);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .section-header p {
-            color: var(--text-light);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        /* Destinos */
-        .destinos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .destino-card {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .destino-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-        }
-        
-        .destino-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .destino-content {
-            padding: 20px;
-        }
-        
-        .destino-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .destino-content p {
-            color: var(--text-light);
-            margin-bottom: 15px;
-        }
-        
-        /* Paquetes */
-        .paquetes-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .tab-btn {
-            padding: 12px 25px;
-            background-color: #f0f0f0;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 0 5px 10px;
-            border-radius: 4px;
-        }
-        
-        .tab-btn.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .paquete-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .paquete-card:hover {
-            border-color: var(--accent2);
-            box-shadow: 0 8px 20px rgba(13, 235, 9, 0.1);
-        }
-        
-        .paquete-img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .paquete-info {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .paquete-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .paquete-info .duracion {
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        
-        .paquete-info .incluye {
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-        
-        .incluye li {
-            margin-bottom: 5px;
-            position: relative;
-            padding-left: 20px;
-        }
-        
-        .incluye li:before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent2);
-            font-weight: bold;
-        }
-        
-        .paquete-precio {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        /* Why Choose Us */
-        .why-choose-us {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .why-choose-us .section-header h2,
-        .why-choose-us .section-header p {
-            color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature {
-            text-align: center;
-            padding: 30px 20px;
-            background-color: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-            border: 1px solid transparent;
-        }
-        
-        .feature:hover {
-            transform: translateY(-5px);
-            background-color: rgba(255,255,255,0.1);
-            border-color: var(--accent2);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--accent2);
-            margin-bottom: 20px;
-        }
-        
-        .feature h3 {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--primary);
-            color: #ddd;
-            padding: 60px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-column h3 {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent);
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-column a {
-            transition: color 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .footer-column a:hover {
-            color: var(--accent2);
-            padding-left: 5px;
-        }
-        
-        .footer-logo h2 {
-            color: white;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-        
-        .footer-logo span {
-            color: var(--accent2);
-        }
-        
-        .footer-logo p {
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-        
-        .social-icons a:hover {
-            background-color: var(--accent);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-text h2 {
-                font-size: 2.5rem;
-            }
-            
-            .hero-arrows {
-                display: none;
-            }
-            
-            .nav-menu {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background-color: var(--secondary);
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                padding-top: 40px;
-                transition: left 0.3s ease;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                z-index: 999;
-            }
-            
-            .nav-menu.active {
-                left: 0;
-            }
-            
-            .nav-menu li {
-                margin: 0 0 25px 0;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-text h2 {
-                font-size: 2.2rem;
-                text-align: center;
-            }
-            
-            section {
-                padding: 60px 0;
-            }
-            
-            .section-header h2 {
-                font-size: 2rem;
-            }
-            
-            .paquete-card {
-                flex-direction: column;
-            }
-            
-            .paquete-img {
-                height: 200px;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1100px) {
-            /* Ajustes para tablet */
-        }
-        
-        @media (min-width: 769px) {
-            .footer-content {
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-            }
-        }
-    </style>
+    /* Responsive header/nav + hero text */
+    @media (max-width:992px){
+      .hero-text h2{font-size:2.5rem;text-align:center;}
+      nav{justify-content:flex-end;} /* en móvil el nav se vuelve overlay, esto no afecta */
+      .nav-menu{
+        position:fixed;
+        top:70px;left:-100%;
+        width:100%;height:calc(100vh - 70px);
+        background:var(--secondary);
+        flex-direction:column;
+        align-items:center;
+        justify-content:flex-start;
+        padding-top:40px;
+        transition:left .3s ease;
+        box-shadow:0 5px 15px rgba(0,0,0,.1);
+        z-index:999;
+        gap:22px;
+      }
+      .nav-menu.active{left:0;}
+      .mobile-menu-btn{display:block;}
+      .header-container{grid-template-columns:auto auto;} /* logo | botón (nav overlay) */
+      nav{display:block;}
+    }
+
+    @media (max-width:768px){
+      .hero-text h2{font-size:2.2rem;}
+      section{padding:60px 0;}
+      .section-header h2{font-size:2rem;}
+      .paquete-img{height:200px;}
+      .footer-content{grid-template-columns:1fr;gap:30px;}
+    }
+
+    @media (min-width:769px){
+      .footer-content{grid-template-columns:2fr 1fr 1fr 1fr;}
+    }
+
+    /* Accesibilidad: reducir movimiento */
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto !important;transition:none !important;animation:none !important;}
+      .hero-media video{display:none;}
+      .hero-media{background:#000;}
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <h1>My<span>Cusco</span>Trip</h1>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <h1>My<span>Cusco</span>Trip</h1>
+      </div>
+
+      <div class="mobile-menu-btn" aria-label="Abrir menú">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <nav aria-label="Menú principal">
+        <ul class="nav-menu">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#machu-picchu">Machu Picchu</a></li>
+          <li><a href="#tours-cusco">Tours en Cusco</a></li>
+          <li><a href="#paquetes">Paquetes Completos</a></li>
+          <li><a href="#explora-peru">Explora Perú</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <!-- VIDEO BACKGROUND -->
+    <div class="hero-media" aria-hidden="true">
+      <!-- Recomendado: MP4/WebM en tu repo -->
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg">
+        <source src="assets/hero.mp4" type="video/mp4" />
+        <source src="assets/hero.webm" type="video/webm" />
+      </video>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h2>¿Planes para<br><span>Machu Picchu?</span></h2>
+          <h2>encuentra el plan perfecto aquí</h2>
+          <!-- Flechas eliminadas -->
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="u_1310989460 mct-search">
+          <form class="mct-card" id="mctForm" autocomplete="off">
+            <div class="mct-tabs" role="tablist">
+              <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
+              <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
             </div>
-            
-            <div class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
+
+            <div class="mct-bar">
+              <div class="mct-field">
+                <span class="mct-label">Destino</span>
+                <select id="mctDestino" class="mct-select">
+                  <option value="machu-picchu" selected>Machu Picchu</option>
+                  <option value="cusco">Cusco</option>
+                  <option value="otros">Otros destinos Perú</option>
+                </select>
+              </div>
+
+              <div class="mct-divider"></div>
+
+              <div class="mct-field mct-fecha-field">
+                <span class="mct-label">Fechas de viaje</span>
+                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha" />
+              </div>
+
+              <div class="mct-divider"></div>
+
+              <div class="mct-field mct-cantidad">
+                <span class="mct-label">Cantidad</span>
+                <button type="button" class="mct-qty-toggle">
+                  <span id="mctQtyLabel">2 Pasajeros</span>
+                </button>
+
+                <div class="mct-qty-panel" hidden>
+                  <div class="mct-qty-row">
+                    <span>Adultos</span>
+                    <div class="mct-qty-ctrl" data-type="adultos">
+                      <button type="button" class="mct-btn minus">−</button>
+                      <input type="text" value="2" readonly />
+                      <button type="button" class="mct-btn plus">＋</button>
+                    </div>
+                  </div>
+
+                  <div class="mct-qty-row">
+                    <span>Niños</span>
+                    <div class="mct-qty-ctrl" data-type="ninos">
+                      <button type="button" class="mct-btn minus">−</button>
+                      <input type="text" value="0" readonly />
+                      <button type="button" class="mct-btn plus">＋</button>
+                    </div>
+                  </div>
+
+                  <button type="button" class="mct-qty-done">Listo</button>
+                </div>
+              </div>
+
+              <button type="submit" class="mct-submit">Buscar</button>
             </div>
-            
-            <nav>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#machu-picchu">Machu Picchu</a></li>
-                    <li><a href="#tours-cusco">Tours en Cusco</a></li>
-                    <li><a href="#paquetes">Paquetes Completos</a></li>
-                    <li><a href="#explora-peru">Explora Perú</a></li>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Machu Picchu -->
+  <section id="machu-picchu">
+    <div class="container">
+      <div class="section-header">
+        <h2>Machu Picchu</h2>
+        <p>Descubre la maravilla del mundo moderno con nuestros tours exclusivos</p>
+      </div>
+
+      <div class="destinos-grid">
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1170&q=80');"></div>
+          <div class="destino-content">
+            <h3>Tour Clásico a Machu Picchu</h3>
+            <p>Visita completa a la ciudadela inca con guía profesional, transporte y entradas incluidas.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1598974357801-cbca100e5d10?auto=format&fit=crop&w=1074&q=80');"></div>
+          <div class="destino-content">
+            <h3>Montaña Huayna Picchu</h3>
+            <p>Sube a la montaña emblemática detrás de Machu Picchu para vistas panorámicas increíbles.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1170&q=80');"></div>
+          <div class="destino-content">
+            <h3>Camino Inca 2 Días</h3>
+            <p>Experiencia corta del famoso Camino Inca llegando a Machu Picchu por la Puerta del Sol.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tours en Cusco -->
+  <section id="tours-cusco" style="background-color:#f8f9fa;">
+    <div class="container">
+      <div class="section-header">
+        <h2>Tours en Cusco</h2>
+        <p>Explora la capital del Imperio Inca y sus alrededores con nuestras experiencias únicas</p>
+      </div>
+
+      <div class="destinos-grid">
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1552530775-8832c5e1c7b7?auto=format&fit=crop&w=1170&q=80');"></div>
+          <div class="destino-content">
+            <h3>City Tour Cusco</h3>
+            <p>Recorrido por los principales atractivos de la ciudad: Koricancha, Sacsayhuamán, Q'enqo y más.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1573843989-c9d7ad2bd89b?auto=format&fit=crop&w=1074&q=80');"></div>
+          <div class="destino-content">
+            <h3>Valle Sagrado</h3>
+            <p>Visita a Pisac, Ollantaytambo y el mercado de Chinchero con almuerzo buffet incluido.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+
+        <div class="destino-card">
+          <div class="destino-img" style="background-image:url('https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=1074&q=80');"></div>
+          <div class="destino-content">
+            <h3>Montaña de 7 Colores</h3>
+            <p>Aventura de día completo para llegar a la famosa montaña Vinicunca, a más de 5,000 msnm.</p>
+            <a href="#" class="btn">Reservar Ahora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paquetes Completos -->
+  <section id="paquetes">
+    <div class="container">
+      <div class="section-header">
+        <h2>Paquetes Completos</h2>
+        <p>Desde tours cortos hasta experiencias completas por todo Perú. ¡Tenemos el viaje perfecto para ti!</p>
+      </div>
+
+      <div class="paquetes-tabs">
+        <button class="tab-btn active" data-tab="corto">Tours Cortos (3-5 días)</button>
+        <button class="tab-btn" data-tab="clasico">Clásicos (7-10 días)</button>
+        <button class="tab-btn" data-tab="completo">Completos (12-15 días)</button>
+      </div>
+
+      <div id="corto" class="tab-content active">
+        <div class="destinos-grid">
+          <div class="paquete-card">
+            <div class="paquete-img" style="background-image:url('https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1170&q=80');"></div>
+            <div class="paquete-info">
+              <h3>Cusco Esencial</h3>
+              <div class="duracion">4 días / 3 noches</div>
+              <p>Lo mejor de Cusco y Machu Picchu en un tour express perfecto para viajeros con poco tiempo.</p>
+              <div class="incluye">
+                <ul>
+                  <li>Tour por la ciudad de Cusco</li>
+                  <li>Visita al Valle Sagrado</li>
+                  <li>Excursión a Machu Picchu</li>
+                  <li>3 noches de alojamiento</li>
+                  <li>Todas las entradas incluidas</li>
                 </ul>
-            </nav>
+              </div>
+              <div class="paquete-precio">Desde $499</div>
+              <a href="#" class="btn">Más Información</a>
+            </div>
+          </div>
+
+          <div class="paquete-card">
+            <div class="paquete-img" style="background-image:url('https://images.unsplash.com/photo-1573843989-c9d7ad2bd89b?auto=format&fit=crop&w=1074&q=80');"></div>
+            <div class="paquete-info">
+              <h3>Lima y Paracas</h3>
+              <div class="duracion">3 días / 2 noches</div>
+              <p>Descubre la capital gastronómica de América y las islas balleneras de Paracas.</p>
+              <div class="incluye">
+                <ul>
+                  <li>City tour por Lima</li>
+                  <li>Excursión a las Islas Ballestas</li>
+                  <li>Visita a Huacachina</li>
+                  <li>2 noches de alojamiento</li>
+                  <li>Desayunos incluidos</li>
+                </ul>
+              </div>
+              <div class="paquete-precio">Desde $349</div>
+              <a href="#" class="btn">Más Información</a>
+            </div>
+          </div>
         </div>
-    </header>
+      </div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h2>¿Planes para<br><span>Machu Picchu?</span></h2>
-                    <h2>encuentra el plan perfecto aquí</h2>
-                    <div class="hero-arrows">
-                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                        <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                    </div>
-                </div>
-                
-                <!-- Nueva Barra de Búsqueda My Cusco Trip -->
-                <div class="u_1310989460 mct-search">
-                    <form class="mct-card" id="mctForm" autocomplete="off">
-                        <!-- Tabs pegadas -->
-                        <div class="mct-tabs" role="tablist">
-                            <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
-                            <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
-                        </div>
-                        
-                        <div class="mct-bar">
-                            <!-- Destino -->
-                            <div class="mct-field">
-                                <span class="mct-label">Destino</span>
-                                <select id="mctDestino" class="mct-select">
-                                    <option value="machu-picchu" selected>Machu Picchu</option>
-                                    <option value="cusco">Cusco</option>
-                                    <option value="otros">Otros destinos Perú</option>
-                                </select>
-                            </div>
-                            <div class="mct-divider"></div>
-                            
-                            <!-- Fechas -->
-                            <div class="mct-field mct-fecha-field">
-                                <span class="mct-label">Fechas de viaje</span>
-                                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha">
-                            </div>
-                            <div class="mct-divider"></div>
-                            
-                            <!-- Cantidad -->
-                            <div class="mct-field mct-cantidad">
-                                <span class="mct-label">Cantidad</span>
-                                <button type="button" class="mct-qty-toggle">
-                                    <span id="mctQtyLabel">2 Pasajeros</span>
-                                </button>
-                                <div class="mct-qty-panel" hidden>
-                                    <div class="mct-qty-row">
-                                        <span>Adultos</span>
-                                        <div class="mct-qty-ctrl" data-type="adultos">
-                                            <button type="button" class="mct-btn minus">−</button>
-                                            <input type="text" value="2" readonly>
-                                            <button type="button" class="mct-btn plus">＋</button>
-                                        </div>
-                                    </div>
-                                    <div class="mct-qty-row">
-                                        <span>Niños</span>
-                                        <div class="mct-qty-ctrl" data-type="ninos">
-                                            <button type="button" class="mct-btn minus">−</button>
-                                            <input type="text" value="0" readonly>
-                                            <button type="button" class="mct-btn plus">＋</button>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="mct-qty-done">Listo</button>
-                                </div>
-                            </div>
-                            
-                            <!-- Buscar -->
-                            <button type="submit" class="mct-submit">Buscar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+      <!-- (Puedes pegar aquí los otros tabs si los tenías completos) -->
+
+    </div>
+  </section>
+
+  <!-- Explora Perú -->
+  <section id="explora-peru" class="why-choose-us">
+    <div class="container">
+      <div class="section-header">
+        <h2>Explora Perú</h2>
+        <p>Más allá de Cusco, descubre la diversidad de paisajes y culturas que ofrece nuestro país</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon"><i class="fas fa-umbrella-beach"></i></div>
+          <h3>Playas de Paracas</h3>
+          <p>Reserva natural con islas llenas de vida marina y las misteriosas Líneas de Nazca.</p>
         </div>
-    </section>
 
-    <!-- Machu Picchu -->
-    <section id="machu-picchu">
-        <div class="container">
-            <div class="section-header">
-                <h2>Machu Picchu</h2>
-                <p>Descubre la maravilla del mundo moderno con nuestros tours exclusivos</p>
-            </div>
-            
-            <div class="destinos-grid">
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>Tour Clásico a Machu Picchu</h3>
-                        <p>Visita completa a la ciudadela inca con guía profesional, transporte y entradas incluidas.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-                
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1598974357801-cbca100e5d10?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>Montaña Huayna Picchu</h3>
-                        <p>Sube a la montaña emblemática detrás de Machu Picchu para vistas panorámicas increíbles.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-                
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>Camino Inca 2 Días</h3>
-                        <p>Experiencia corta del famoso Camino Inca llegando a Machu Picchu por la Puerta del Sol.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-            </div>
+        <div class="feature">
+          <div class="feature-icon"><i class="fas fa-mountain"></i></div>
+          <h3>Cañón del Colca</h3>
+          <p>Uno de los cañones más profundos del mundo, hogar del majestuoso cóndor andino.</p>
         </div>
-    </section>
 
-    <!-- Tours en Cusco -->
-    <section id="tours-cusco" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="section-header">
-                <h2>Tours en Cusco</h2>
-                <p>Explora la capital del Imperio Inca y sus alrededores con nuestras experiencias únicas</p>
-            </div>
-            
-            <div class="destinos-grid">
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1552530775-8832c5e1c7b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>City Tour Cusco</h3>
-                        <p>Recorrido por los principales atractivos de la ciudad: Koricancha, Sacsayhuamán, Q'enqo y más.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-                
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1573843989-c9d7ad2bd89b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>Valle Sagrado</h3>
-                        <p>Visita a Pisac, Ollantaytambo y el mercado de Chinchero con almuerzo buffet incluido.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-                
-                <div class="destino-card">
-                    <div class="destino-img" style="background-image: url('https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80');"></div>
-                    <div class="destino-content">
-                        <h3>Montaña de 7 Colores</h3>
-                        <p>Aventura de día completo para llegar a la famosa montaña Vinicunca, a más de 5,000 msnm.</p>
-                        <a href="#" class="btn">Reservar Ahora</a>
-                    </div>
-                </div>
-            </div>
+        <div class="feature">
+          <div class="feature-icon"><i class="fas fa-ship"></i></div>
+          <h3>Lago Titicaca</h3>
+          <p>Navega por el lago navegable más alto del mundo y conoce las islas flotantes de los Uros.</p>
         </div>
-    </section>
 
-    <!-- Paquetes Completos -->
-    <section id="paquetes">
-        <div class="container">
-            <div class="section-header">
-                <h2>Paquetes Completos</h2>
-                <p>Desde tours cortos hasta experiencias completas por todo Perú. ¡Tenemos el viaje perfecto para ti!</p>
-            </div>
-            
-            <div class="paquetes-tabs">
-                <button class="tab-btn active" data-tab="corto">Tours Cortos (3-5 días)</button>
-                <button class="tab-btn" data-tab="clasico">Clásicos (7-10 días)</button>
-                <button class="tab-btn" data-tab="completo">Completos (12-15 días)</button>
-            </div>
-            
-            <div id="corto" class="tab-content active">
-                <div class="destinos-grid">
-                    <div class="paquete-card">
-                        <div class="paquete-img" style="background-image: url('https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
-                        <div class="paquete-info">
-                            <h3>Cusco Esencial</h3>
-                            <div class="duracion">4 días / 3 noches</div>
-                            <p>Lo mejor de Cusco y Machu Picchu en un tour express perfecto para viajeros con poco tiempo.</p>
-                            <div class="incluye">
-                                <ul>
-                                    <li>Tour por la ciudad de Cusco</li>
-                                    <li>Visita al Valle Sagrado</li>
-                                    <li>Excursión a Machu Picchu</li>
-                                    <li>3 noches de alojamiento</li>
-                                    <li>Todas las entradas incluidas</li>
-                                </ul>
-                            </div>
-                            <div class="paquete-precio">Desde $499</div>
-                            <a href="#" class="btn">Más Información</a>
-                        </div>
-                    </div>
-                    
-                    <div class="paquete-card">
-                        <div class="paquete-img" style="background-image: url('https://images.unsplash.com/photo-1573843989-c9d7ad2bd89b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80');"></div>
-                        <div class="paquete-info">
-                            <h3>Lima y Paracas</h3>
-                            <div class="duracion">3 días / 2 noches</div>
-                            <p>Descubre la capital gastronómica de América y las islas balleneras de Paracas.</p>
-                            <div class="incluye">
-                                <ul>
-                                    <li>City tour por Lima</li>
-                                    <li>Excursión a las Islas Ballestas</li>
-                                    <li>Visita a Huacachina</li>
-                                    <li>2 noches de alojamiento</li>
-                                    <li>Desayunos incluidos</li>
-                                </ul>
-                            </div>
-                            <div class="paquete-precio">Desde $349</div>
-                            <a href="#" class="btn">Más Información</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="feature">
+          <div class="feature-icon"><i class="fas fa-tree"></i></div>
+          <h3>Selva Amazónica</h3>
+          <p>Explora la biodiversidad de la Amazonía peruana desde Puerto Maldonado o Iquitos.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Explora Perú -->
-    <section id="explora-peru" class="why-choose-us">
-        <div class="container">
-            <div class="section-header">
-                <h2>Explora Perú</h2>
-                <p>Más allá de Cusco, descubre la diversidad de paisajes y culturas que ofrece nuestro país</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-umbrella-beach"></i>
-                    </div>
-                    <h3>Playas de Paracas</h3>
-                    <p>Reserva natural con islas llenas de vida marina y las misteriosas Líneas de Nazca.</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-mountain"></i>
-                    </div>
-                    <h3>Cañón del Colca</h3>
-                    <p>Uno de los cañones más profundos del mundo, hogar del majestuoso cóndor andino.</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-ship"></i>
-                    </div>
-                    <h3>Lago Titicaca</h3>
-                    <p>Navega por el lago navegable más alto del mundo y conoce las islas flotantes de los Uros.</p>
-                </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">
-                        <i class="fas fa-tree"></i>
-                    </div>
-                    <h3>Selva Amazónica</h3>
-                    <p>Explora la biodiversidad de la Amazonía peruana desde Puerto Maldonado o Iquitos.</p>
-                </div>
-            </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <h2>My<span>Cusco</span>Trip</h2>
+            <p>Especialistas en viajes a Cusco y Machu Picchu. Creamos experiencias únicas desde hace más de 15 años.</p>
+          </div>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="footer-logo">
-                        <h2>My<span>Cusco</span>Trip</h2>
-                        <p>Especialistas en viajes a Cusco y Machu Picchu. Creamos experiencias únicas desde hace más de 15 años.</p>
-                    </div>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>CONÓCENOS</h3>
-                    <ul>
-                        <li><a href="#">NOSOTROS</a></li>
-                        <li><a href="#">¿POR QUÉ MYCUSCOTRIP?</a></li>
-                        <li><a href="#">RESPONSABILIDAD SOCIAL</a></li>
-                        <li><a href="#">NOTICIAS</a></li>
-                        <li><a href="#">PROTOCOLOS COVID-19</a></li>
-                        <li><a href="#">EMPRESAS & SOCIOS</a></li>
-                        <li><a href="#">PROVEEDORES</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>SERVICIOS</h3>
-                    <ul>
-                        <li><a href="#">Tours en Cusco</a></li>
-                        <li><a href="#">Tours a Machu Picchu</a></li>
-                        <li><a href="#">Paquetes Completos</a></li>
-                        <li><a href="#">Circuitos Gastronómicos</a></li>
-                        <li><a href="#">Trenes a Machu Picchu</a></li>
-                        <li><a href="#">Viajes en Grupo</a></li>
-                        <li><a href="#">Tours Privados</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>INFORMACIÓN ÚTIL</h3>
-                    <ul>
-                        <li><a href="#">¿Cómo llegar a Machu Picchu?</a></li>
-                        <li><a href="#">Planifica tu viaje</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Centro de ayuda</a></li>
-                        <li><a href="#">Preguntas frecuentes</a></li>
-                        <li><a href="#">Cambios y devoluciones</a></li>
-                        <li><a href="#">Contacto</a></li>
-                        <li><a href="#">Libro de reclamaciones</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 MyCuscoTrip. Todos los derechos reservados. | Agencia de viajes y turismo autorizada</p>
-                <p style="margin-top: 10px; font-size: 0.8rem;">
-                    <a href="#" style="margin-right: 15px;">Términos y Condiciones</a> | 
-                    <a href="#" style="margin: 0 15px;">Políticas de Privacidad</a> | 
-                    <a href="#" style="margin-left: 15px;">Política de cookies</a>
-                </p>
-            </div>
+        <div class="footer-column">
+          <h3>CONÓCENOS</h3>
+          <ul>
+            <li><a href="#">NOSOTROS</a></li>
+            <li><a href="#">¿POR QUÉ MYCUSCOTRIP?</a></li>
+            <li><a href="#">RESPONSABILIDAD SOCIAL</a></li>
+            <li><a href="#">NOTICIAS</a></li>
+            <li><a href="#">PROTOCOLOS COVID-19</a></li>
+            <li><a href="#">EMPRESAS & SOCIOS</a></li>
+            <li><a href="#">PROVEEDORES</a></li>
+          </ul>
         </div>
-    </footer>
 
-    <!-- Scripts Flatpickr -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+        <div class="footer-column">
+          <h3>SERVICIOS</h3>
+          <ul>
+            <li><a href="#">Tours en Cusco</a></li>
+            <li><a href="#">Tours a Machu Picchu</a></li>
+            <li><a href="#">Paquetes Completos</a></li>
+            <li><a href="#">Circuitos Gastronómicos</a></li>
+            <li><a href="#">Trenes a Machu Picchu</a></li>
+            <li><a href="#">Viajes en Grupo</a></li>
+            <li><a href="#">Tours Privados</a></li>
+          </ul>
+        </div>
 
-    <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
-            mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
+        <div class="footer-column">
+          <h3>INFORMACIÓN ÚTIL</h3>
+          <ul>
+            <li><a href="#">¿Cómo llegar a Machu Picchu?</a></li>
+            <li><a href="#">Planifica tu viaje</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Centro de ayuda</a></li>
+            <li><a href="#">Preguntas frecuentes</a></li>
+            <li><a href="#">Cambios y devoluciones</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Libro de reclamaciones</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">
+        <p>&copy; 2023 MyCuscoTrip. Todos los derechos reservados. | Agencia de viajes y turismo autorizada</p>
+        <p style="margin-top:10px;font-size:.8rem;">
+          <a href="#" style="margin-right:15px;">Términos y Condiciones</a> |
+          <a href="#" style="margin:0 15px;">Políticas de Privacidad</a> |
+          <a href="#" style="margin-left:15px;">Política de cookies</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navMenu = document.querySelector('.nav-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
+      mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // Close mobile menu when clicking a link + active state
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+        mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+
+        document.querySelectorAll('.nav-menu a').forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    // Tabs de paquetes
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.getAttribute('data-tab'))?.classList.add('active');
+      });
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetElement = document.querySelector(targetId);
+        if (!targetElement) return;
+
+        e.preventDefault();
+        window.scrollTo({
+          top: targetElement.offsetTop - 70,
+          behavior: 'smooth'
         });
-        
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-                
-                // Set active menu item
-                document.querySelectorAll('.nav-menu a').forEach(item => {
-                    item.classList.remove('active');
-                });
-                link.classList.add('active');
-            });
-        });
-        
-        // Tab functionality for packages
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons and contents
-                tabBtns.forEach(b => b.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                
-                // Add active class to clicked button
-                btn.classList.add('active');
-                
-                // Show corresponding content
-                const tabId = btn.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+      });
+    });
+
+    // MCT Search + Flatpickr
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const root = document.querySelector('.u_1310989460.mct-search');
+        if (!root) return;
+
+        const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
+        const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
+        const dateInput = root.querySelector('#mctFecha');
+        const dateField = root.querySelector('.mct-fecha-field');
+
+        const qtyPanel = root.querySelector('.mct-qty-panel');
+        const qtyToggle = root.querySelector('.mct-qty-toggle');
+        const qtyDone = root.querySelector('.mct-qty-done');
+        const qtyLabel = root.querySelector('#mctQtyLabel');
+
+        const form = root.querySelector('#mctForm');
+        const destinoSelect = root.querySelector('#mctDestino');
+
+        const getIsMobile = () => window.innerWidth < 1024;
+
+        // Destroy previo si existiera
+        if (dateInput._flatpickr) dateInput._flatpickr.destroy();
+
+        // showMonths responsivo (1 en tablet, 2 solo pantallas grandes)
+        const getShowMonths = () => (window.innerWidth >= 1280 ? 2 : 1);
+
+        const fpOptions = {
+          locale: flatpickr.l10ns.es,
+          altInput: true,
+          altFormat: "d M Y",
+          dateFormat: "Y-m-d",
+          mode: "single",
+          minDate: "today",
+          clickOpens: true,
+          disableMobile: true,
+          showMonths: getShowMonths(),
+          closeOnSelect: false,
+          static: getIsMobile(),         // en móvil: modal centrado (CSS fixed)
+          position: getIsMobile() ? "center" : "below left",
+          rangeSeparator: " → ",
+          plugins: [
+            new confirmDatePlugin({
+              confirmText: "",
+              showAlways: true,
+              theme: "light"
+            })
+          ],
+          onReady: function(selectedDates, dateStr, instance) {
+            const confirmBtn = instance.calendarContainer.querySelector('.flatpickr-confirm');
+            if (confirmBtn) {
+              confirmBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+                e.stopPropagation();
+                instance.close();
+              });
+            }
+            instance._input.style.cursor = 'pointer';
+            setTimeout(() => instance.redraw(), 10);
+          }
+        };
+
+        // En desktop lo pegamos al field (mejor posicionamiento)
+        if (!getIsMobile()) {
+          fpOptions.appendTo = dateField;
+        }
+
+        const fp = flatpickr(dateInput, fpOptions);
+        dateInput._flatpickr = fp;
+
+        function openCalendar(e){
+          if (e) { e.preventDefault(); e.stopPropagation(); }
+          if (qtyPanel && !qtyPanel.hidden) qtyPanel.hidden = true;
+          if (fp && !fp.isOpen) fp.open();
+        }
+
+        dateInput.addEventListener('click', openCalendar);
+        dateField.addEventListener('click', openCalendar);
+
+        // Tabs
+        function setTab(mode){
+          if (mode === 'tours') {
+            tabTours.classList.add('is-active');
+            tabPaq.classList.remove('is-active');
+            fp.set('mode', 'single');
+            fp.clear();
+          } else {
+            tabPaq.classList.add('is-active');
+            tabTours.classList.remove('is-active');
+            fp.set('mode', 'range');
+            fp.clear();
+          }
+        }
+        tabTours.addEventListener('click', (e) => { e.preventDefault(); setTab('tours'); });
+        tabPaq.addEventListener('click', (e) => { e.preventDefault(); setTab('paquetes'); });
+        setTab('tours');
+
+        // Cantidades
+        const updateQtyLabel = () => {
+          const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
+          const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
+          const adultos = parseInt(adultosInput.value) || 0;
+          const ninos = parseInt(ninosInput.value) || 0;
+          const total = adultos + ninos;
+          qtyLabel.textContent = total + " " + (total === 1 ? "Pasajero" : "Pasajeros");
+        };
+        updateQtyLabel();
+
+        let qtyPanelJustOpened = false;
+
+        function toggleQtyPanel(e){
+          if (e) { e.preventDefault(); e.stopPropagation(); }
+          if (fp.isOpen) fp.close();
+          const willOpen = qtyPanel.hidden;
+          qtyPanel.hidden = !willOpen;
+          if (willOpen) {
+            qtyPanelJustOpened = true;
+            setTimeout(() => qtyPanelJustOpened = false, 300);
+          }
+        }
+        function closeQtyPanel(){ qtyPanel.hidden = true; }
+
+        qtyToggle.addEventListener('click', toggleQtyPanel);
+
+        function handleQtyButton(e){
+          const btn = e.target.closest('.mct-btn');
+          if (!btn) return;
+          e.stopPropagation();
+          const ctrl = btn.closest('.mct-qty-ctrl');
+          const input = ctrl.querySelector('input');
+          let value = parseInt(input.value) || 0;
+          if (btn.classList.contains('plus')) value++;
+          if (btn.classList.contains('minus')) value = Math.max(0, value - 1);
+          input.value = value;
+          updateQtyLabel();
+        }
+        qtyPanel.addEventListener('click', handleQtyButton);
+        qtyDone.addEventListener('click', closeQtyPanel);
+
+        document.addEventListener('click', function(e){
+          if (qtyPanelJustOpened || qtyPanel.hidden) return;
+          const isInsideQty = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
+          if (!isInsideQty) closeQtyPanel();
         });
-        
-        // Nueva funcionalidad de la barra de búsqueda
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                const root = document.querySelector('.u_1310989460.mct-search');
-                if (!root) return;
-                
-                // ----------- REFS -----------
-                const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
-                const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
-                const dateInput = root.querySelector('#mctFecha');
-                const dateField = root.querySelector('.mct-fecha-field');
-                const qtyPanel = root.querySelector('.mct-qty-panel');
-                const qtyToggle = root.querySelector('.mct-qty-toggle');
-                const qtyDone = root.querySelector('.mct-qty-done');
-                const qtyLabel = root.querySelector('#mctQtyLabel');
-                const form = root.querySelector('#mctForm');
-                const destinoSelect = root.querySelector('#mctDestino');
-                const isMobile = window.innerWidth < 1024;
-                
-                // ----------- CALENDARIO -----------
-                let fp;
-                
-                if (dateInput._flatpickr) {
-                    dateInput._flatpickr.destroy();
-                }
-                
-                const fpOptions = {
-                    locale: 'es',
-                    altInput: true,
-                    altFormat: "d M Y",
-                    dateFormat: "Y-m-d",
-                    mode: "single",
-                    minDate: "today",
-                    clickOpens: true,
-                    disableMobile: true,
-                    showMonths: isMobile ? 1 : 2,
-                    closeOnSelect: false,
-                    static: isMobile,
-                    position: "below",
-                    inline: false,
-                    plugins: [
-                        new confirmDatePlugin({
-                            confirmText: "",
-                            showAlways: true,
-                            theme: "light"
-                        })
-                    ],
-                    onReady: function(selectedDates, dateStr, instance) {
-                        const confirmBtn = instance.calendarContainer.querySelector('.flatpickr-confirm');
-                        if (confirmBtn) {
-                            confirmBtn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                instance.close();
-                            });
-                        }
-                        
-                        instance._input.style.cursor = 'pointer';
-                        
-                        // Asegurar que el calendario se renderice correctamente
-                        setTimeout(() => {
-                            instance.redraw();
-                        }, 10);
-                    },
-                    onChange: function(selectedDates, dateStr, instance) {
-                        // Actualizar el placeholder cuando se selecciona una fecha
-                        if (selectedDates.length > 0) {
-                            if (instance.config.mode === "range" && selectedDates.length === 2) {
-                                const start = selectedDates[0];
-                                const end = selectedDates[1];
-                                const formattedStart = start.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                                const formattedEnd = end.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                                dateInput.value = `${formattedStart} → ${formattedEnd}`;
-                            }
-                        }
-                    }
-                };
-                
-                if (!isMobile) {
-                    fpOptions.appendTo = dateField;
-                    fpOptions.position = "below left";
-                } else {
-                    fpOptions.position = "center";
-                }
-                
-                fp = flatpickr(dateInput, fpOptions);
-                dateInput._flatpickr = fp;
-                
-                // EVENTOS PARA CALENDARIO
-                function openCalendar(e) {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    
-                    if (qtyPanel && !qtyPanel.hidden) {
-                        qtyPanel.hidden = true;
-                    }
-                    
-                    if (fp && !fp.isOpen) {
-                        fp.open();
-                    }
-                }
-                
-                if (dateInput) {
-                    dateInput.addEventListener('click', openCalendar);
-                }
-                
-                if (dateField) {
-                    dateField.addEventListener('click', openCalendar);
-                }
-                
-                if (isMobile) {
-                    dateInput.addEventListener('touchend', function(e) {
-                        e.preventDefault();
-                        openCalendar(e);
-                    });
-                    
-                    dateField.addEventListener('touchend', function(e) {
-                        e.preventDefault();
-                        openCalendar(e);
-                    });
-                }
-                
-                // ----------- TABS -----------
-                function setTab(mode) {
-                    if (mode === 'tours') {
-                        tabTours.classList.add('is-active');
-                        tabPaq.classList.remove('is-active');
-                        fp.set('mode', 'single');
-                        dateInput.placeholder = "Selecciona fecha";
-                        fp.clear();
-                        dateInput.value = "";
-                    } else {
-                        tabPaq.classList.add('is-active');
-                        tabTours.classList.remove('is-active');
-                        fp.set('mode', 'range');
-                        dateInput.placeholder = "Inicio → Fin";
-                        fp.clear();
-                        dateInput.value = "";
-                    }
-                }
-                
-                function handleTabClick(e, mode) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setTab(mode);
-                }
-                
-                tabTours.addEventListener('click', (e) => handleTabClick(e, 'tours'));
-                tabPaq.addEventListener('click', (e) => handleTabClick(e, 'paquetes'));
-                
-                if (isMobile) {
-                    tabTours.addEventListener('touchend', (e) => handleTabClick(e, 'tours'));
-                    tabPaq.addEventListener('touchend', (e) => handleTabClick(e, 'paquetes'));
-                }
-                
-                setTab('tours');
-                
-                // ----------- SELECTOR DE CANTIDADES -----------
-                const updateQtyLabel = () => {
-                    const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
-                    const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
-                    const adultos = parseInt(adultosInput.value) || 0;
-                    const ninos = parseInt(ninosInput.value) || 0;
-                    const total = adultos + ninos;
-                    qtyLabel.textContent = total + " " + (total === 1 ? "Pasajero" : "Pasajeros");
-                };
-                
-                updateQtyLabel();
-                
-                let qtyPanelJustOpened = false;
-                
-                function toggleQtyPanel(e) {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    
-                    if (fp.isOpen) {
-                        fp.close();
-                    }
-                    
-                    const willOpen = qtyPanel.hidden;
-                    qtyPanel.hidden = !willOpen;
-                    
-                    if (willOpen) {
-                        qtyPanelJustOpened = true;
-                        setTimeout(() => { 
-                            qtyPanelJustOpened = false; 
-                        }, 300);
-                    }
-                }
-                
-                function closeQtyPanel() {
-                    qtyPanel.hidden = true;
-                }
-                
-                qtyToggle.addEventListener('click', toggleQtyPanel);
-                
-                if (isMobile) {
-                    qtyToggle.addEventListener('touchend', toggleQtyPanel);
-                }
-                
-                function handleQtyButton(e) {
-                    const btn = e.target.closest('.mct-btn');
-                    if (!btn) return;
-                    
-                    e.stopPropagation();
-                    
-                    const ctrl = btn.closest('.mct-qty-ctrl');
-                    const input = ctrl.querySelector('input');
-                    let value = parseInt(input.value) || 0;
-                    
-                    if (btn.classList.contains('plus')) {
-                        value++;
-                    } else if (btn.classList.contains('minus')) {
-                        value = Math.max(0, value - 1);
-                    }
-                    
-                    input.value = value;
-                    updateQtyLabel();
-                }
-                
-                qtyPanel.addEventListener('click', handleQtyButton);
-                
-                if (isMobile) {
-                    qtyPanel.addEventListener('touchend', handleQtyButton);
-                }
-                
-                qtyDone.addEventListener('click', closeQtyPanel);
-                
-                if (isMobile) {
-                    qtyDone.addEventListener('touchend', closeQtyPanel);
-                }
-                
-                document.addEventListener('click', function(e) {
-                    if (qtyPanelJustOpened || qtyPanel.hidden) return;
-                    
-                    const isInsideQty = e.target.closest('.mct-cantidad') || 
-                                     e.target.closest('.mct-qty-panel');
-                    
-                    if (!isInsideQty) {
-                        closeQtyPanel();
-                    }
-                });
-                
-                if (isMobile) {
-                    document.addEventListener('touchend', function(e) {
-                        if (qtyPanelJustOpened || qtyPanel.hidden) return;
-                        
-                        const isInsideQty = e.target.closest('.mct-cantidad') || 
-                                         e.target.closest('.mct-qty-panel');
-                        
-                        if (!isInsideQty) {
-                            closeQtyPanel();
-                        }
-                    });
-                }
-                
-                // ----------- SUBMIT CON REDIRECCIÓN -----------
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const tipo = tabTours.classList.contains('is-active') ? 'tours' : 'paquetes';
-                    const destino = destinoSelect.value;
-                    const fecha = dateInput.value;
-                    const pasajeros = qtyLabel.textContent;
-                    
-                    console.log('Búsqueda:', {tipo, destino, fecha, pasajeros});
-                    
-                    // Mapeo de URLs
-                    const urlMap = {
-                        'tours': {
-                            'machu-picchu': 'https://www.mycuscotrip.com/machu-picchu',
-                            'cusco': 'https://www.mycuscotrip.com/tours-en-cusco',
-                            'otros': 'https://www.mycuscotrip.com/explora-peru'
-                        },
-                        'paquetes': {
-                            'machu-picchu': 'https://www.mycuscotrip.com/machu-picchu',
-                            'cusco': 'https://www.mycuscotrip.com/paquetes-completos',
-                            'otros': 'https://www.mycuscotrip.com/explora-peru'
-                        }
-                    };
-                    
-                    // Obtener la URL correspondiente
-                    let url;
-                    if (urlMap[tipo] && urlMap[tipo][destino]) {
-                        url = urlMap[tipo][destino];
-                    } else {
-                        url = 'https://www.mycuscotrip.com/';
-                    }
-                    
-                    // Construir parámetros
-                    const params = new URLSearchParams();
-                    
-                    // Agregar fecha
-                    if (fecha) {
-                        if (tipo === 'tours') {
-                            params.append('fecha', fecha);
-                        } else {
-                            const fechas = fecha.split(' → ');
-                            if (fechas.length === 2) {
-                                params.append('fecha_inicio', fechas[0]);
-                                params.append('fecha_fin', fechas[1]);
-                            } else if (fechas.length === 1) {
-                                params.append('fecha_inicio', fechas[0]);
-                            }
-                        }
-                    }
-                    
-                    // Agregar cantidad de pasajeros
-                    const totalPasajeros = pasajeros.split(' ')[0];
-                    params.append('pasajeros', totalPasajeros);
-                    
-                    // Construir URL final
-                    const urlFinal = params.toString() ? `${url}?${params.toString()}` : url;
-                    
-                    console.log('Redirigiendo a:', urlFinal);
-                    
-                    // Redirigir
-                    window.location.href = urlFinal;
-                });
-                
-                // ----------- RESPONSIVE -----------
-                window.addEventListener('resize', function() {
-                    const nowMobile = window.innerWidth < 1024;
-                    if (nowMobile !== isMobile) {
-                        location.reload();
-                    }
-                });
-                
-            }, 100);
+
+        // Submit + redirect
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+
+          const tipo = tabTours.classList.contains('is-active') ? 'tours' : 'paquetes';
+          const destino = destinoSelect.value;
+
+          // Usa el valor ISO del input real (flatpickr lo maneja)
+          const fechaISO = dateInput.value;
+
+          const pasajeros = qtyLabel.textContent;
+          const urlMap = {
+            tours: {
+              "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
+              "cusco": "https://www.mycuscotrip.com/tours-en-cusco",
+              "otros": "https://www.mycuscotrip.com/explora-peru"
+            },
+            paquetes: {
+              "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
+              "cusco": "https://www.mycuscotrip.com/paquetes-completos",
+              "otros": "https://www.mycuscotrip.com/explora-peru"
+            }
+          };
+
+          let url = (urlMap[tipo] && urlMap[tipo][destino]) ? urlMap[tipo][destino] : "https://www.mycuscotrip.com/";
+          const params = new URLSearchParams();
+
+          if (fechaISO) {
+            if (tipo === 'tours') {
+              params.append('fecha', fechaISO);
+            } else {
+              // range: "YYYY-MM-DD → YYYY-MM-DD" (por rangeSeparator)
+              const partes = fechaISO.split(" → ");
+              if (partes.length === 2) {
+                params.append('fecha_inicio', partes[0]);
+                params.append('fecha_fin', partes[1]);
+              } else {
+                params.append('fecha_inicio', fechaISO);
+              }
+            }
+          }
+
+          const totalPasajeros = pasajeros.split(' ')[0];
+          params.append('pasajeros', totalPasajeros);
+
+          const urlFinal = params.toString() ? `${url}?${params.toString()}` : url;
+          window.location.href = urlFinal;
         });
-    </script>
+
+        // Resize: actualiza meses / modo móvil sin recargar la página
+        let lastIsMobile = getIsMobile();
+        let lastShowMonths = getShowMonths();
+
+        window.addEventListener('resize', () => {
+          const nowMobile = getIsMobile();
+          const nowShowMonths = getShowMonths();
+
+          if (nowShowMonths !== lastShowMonths) {
+            fp.set('showMonths', nowShowMonths);
+            lastShowMonths = nowShowMonths;
+          }
+
+          if (nowMobile !== lastIsMobile) {
+            // Reconfigurar static/appendTo/position de forma simple
+            fp.close();
+            fp.set('static', nowMobile);
+            fp.set('position', nowMobile ? "center" : "below left");
+
+            // En desktop: pegamos al contenedor para posicionar mejor
+            if (!nowMobile) {
+              fp.set('appendTo', dateField);
+            } else {
+              fp.set('appendTo', document.body);
+            }
+
+            lastIsMobile = nowMobile;
+          }
+        });
+
+      }, 100);
+    });
+  </script>
 </body>
 </html>
