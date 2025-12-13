@@ -16,7 +16,7 @@
     :root{
       --primary:#062803;
       --secondary:#053220;
-      --accent:#eb09a7;
+      --accent:#eb09a7; /* fucsia */
       --accent2:#0deb09;
       --text:#333;
       --text-light:#666;
@@ -25,7 +25,6 @@
       --mct-ink:#172b27;
       --mct-muted:#6c7a76;
       --mct-border:rgba(23,43,39,.14);
-      --mct-sep:rgba(23,43,39,.18);
       --mct-shadow:0 12px 34px rgba(0,0,0,.14);
       --mct-radius:18px;
       --mct-primary:var(--primary);
@@ -61,15 +60,16 @@
       background:var(--secondary);
       box-shadow:0 2px 10px rgba(0,0,0,.2);
       position:fixed;width:100%;z-index:1000;top:0;
+      border-bottom:none; /* evita línea extra */
     }
 
-    /* logo | nav | whatsapp (desktop) / btn mobile */
     .header-container{
       display:grid;
       grid-template-columns:auto 1fr auto;
       align-items:center;
       padding:12px 20px;
       gap:14px;
+      border-bottom:none; /* evita línea extra */
     }
 
     .logo{
@@ -90,23 +90,36 @@
       list-style:none;
       justify-content:center;
       gap:26px;
+      margin:0;
+      padding:0;
     }
     .nav-menu li{position:relative;}
     .nav-menu a{
       font-weight:700;
       font-size:.95rem;
       color:#fff;
-      padding:6px 0;
-      transition:transform .15s ease, color .15s ease;
+      padding:8px 0;
       display:inline-block;
+      position:relative;
     }
-    .nav-menu a:hover{color:#e9fff0;transform:translateY(-1px);}
-    .nav-menu a.active{color:#fff;}
-    .nav-menu a.active:after{
+
+    /* Línea fucsia en hover y active */
+    .nav-menu a::after{
       content:'';
-      position:absolute;width:100%;height:3px;background:#fff;
-      bottom:-6px;left:0;border-radius:2px;
-      opacity:.9;
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:100%;
+      height:3px;
+      border-radius:2px;
+      background:var(--accent);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .18s ease;
+    }
+    .nav-menu a:hover::after,
+    .nav-menu a.active::after{
+      transform:scaleX(1);
     }
 
     .mobile-menu-btn{
@@ -154,7 +167,7 @@
       width:58px;height:58px;
       border-radius:999px;
       background:#25D366;
-      display:none; /* solo móvil */
+      display:none;
       align-items:center;justify-content:center;
       box-shadow:0 16px 40px rgba(0,0,0,.25);
       cursor:pointer;
@@ -163,7 +176,6 @@
     .wa-float:hover{transform:scale(1.06);}
     .wa-float img{width:30px;height:30px;object-fit:contain;display:block;}
 
-    /* Ondas alrededor */
     .wa-float::before,
     .wa-float::after{
       content:'';
@@ -176,8 +188,8 @@
     }
     .wa-float::after{
       inset:-16px;
-      animation-delay: .55s;
-      border-color: rgba(37,211,102,.35);
+      animation-delay:.55s;
+      border-color:rgba(37,211,102,.35);
     }
     @keyframes waRipple{
       0%{transform:scale(.70);opacity:0;}
@@ -193,7 +205,8 @@
       color:#fff;
       margin-top:70px;
       position:relative;
-      overflow:visible; /* evita corte */
+      overflow:visible;
+      border-top:0; /* evita línea rara */
     }
     .hero-media{position:absolute;inset:0;z-index:0;background:#000;overflow:hidden;}
     .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);}
@@ -220,12 +233,15 @@
     }
     .hero-text h2 span{color:var(--accent2);display:block;}
 
-    /* ===================== Backdrop global (mobile UX) ===================== */
+    /* ===================== Backdrop global (móvil UX) ===================== */
+    /* IMPORTANTE:
+       backdrop por debajo de calendarios/paneles (z menor),
+       por encima del contenido base */
     .mct-backdrop{
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      z-index:2400;
+      z-index:2000;
       opacity:0;
       pointer-events:none;
       transition:opacity .2s ease;
@@ -244,7 +260,7 @@
       background:var(--mct-surface);
       border-radius:var(--mct-radius);
       box-shadow:var(--mct-shadow);
-      padding:14px 14px 22px; /* más espacio inferior */
+      padding:14px 14px 22px;
       padding-top:72px;
       position:relative;
       overflow:visible;
@@ -284,7 +300,6 @@
       box-shadow:0 10px 20px rgba(6,40,3,.18);
     }
 
-    /* Mobile first: stack */
     .u_1310989460 .mct-bar{
       display:flex;
       flex-direction:column;
@@ -310,7 +325,7 @@
     .u_1310989460 .mct-select,
     .u_1310989460 .mct-qty-toggle{
       width:100%;
-      height:44px;              /* móvil compacto */
+      height:44px;
       border:1px solid var(--mct-border);
       border-radius:14px;
       padding:0 14px;
@@ -329,17 +344,15 @@
       box-shadow:0 0 0 4px rgba(235,9,167,.14);
     }
 
-    /* Fecha: reserva espacio sin desalinear */
     .u_1310989460 .mct-fecha-field{
-      z-index:130;              /* más alto para evitar “tapado” */
-      padding-bottom:22px;      /* reserva altura para el hint (PC y móvil) */
+      z-index:130;
+      padding-bottom:22px;
     }
 
-    /* Hint absoluto: con avioncito + más separación */
     .u_1310989460 .mct-hint.in-card{
       position:absolute;
       left:2px;
-      bottom:-10px;             /* más aire debajo del input */
+      bottom:-10px;
       font-size:12px;
       font-weight:800;
       color:var(--mct-muted);
@@ -355,7 +368,7 @@
 
     .u_1310989460 .mct-submit{
       width:100%;
-      height:48px;              /* compacto */
+      height:48px;
       border:0;
       border-radius:16px;
       background:linear-gradient(90deg, var(--mct-accent), #d90895);
@@ -369,12 +382,22 @@
     }
     .u_1310989460 .mct-submit:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(235,9,167,.28);}
 
-    /* ===================== Cantidad (dropdown) ===================== */
-    .u_1310989460 .mct-cantidad{z-index:140;} /* encima del campo fecha */
+    /* ===================== Cantidad ===================== */
+    .u_1310989460 .mct-cantidad{z-index:150;}
     .u_1310989460 .mct-qty-toggle{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       position:relative;
       z-index:2;
+    }
+
+    /* Animaciones sin romper el centrado (no animar transform base) */
+    @keyframes fadeScaleIn{
+      from{opacity:0;transform:scale(.985);}
+      to{opacity:1;transform:scale(1);}
+    }
+    @keyframes fadeIn{
+      from{opacity:0;}
+      to{opacity:1;}
     }
 
     .u_1310989460 .mct-qty-panel{
@@ -387,14 +410,10 @@
       border-radius:16px;
       box-shadow:0 18px 50px rgba(0,0,0,.18);
       padding:12px;
-      z-index:2501; /* por encima de todo el hero */
+      z-index:2105; /* > backdrop */
       overflow:visible;
       transform-origin:top right;
-      animation:panelIn .16s ease both;
-    }
-    @keyframes panelIn{
-      from{opacity:0;transform:translateY(-6px) scale(.98);}
-      to{opacity:1;transform:translateY(0) scale(1);}
+      animation:fadeScaleIn .16s ease both;
     }
 
     .u_1310989460 .mct-qty-row{
@@ -428,29 +447,16 @@
     }
     .u_1310989460 .mct-qty-done:hover{transform:translateY(-1px);}
 
-    /* Móviles: panel cantidad modal fixed (no se corta, no se tapa con fecha) */
-    @media (max-width: 520px){
-      .u_1310989460 .mct-qty-panel{
-        position:fixed;
-        left:50%;
-        top:56%;
-        transform:translate(-50%,-50%);
-        width:min(360px, 92vw);
-        max-height:70vh;
-        overflow:auto;
-        transform-origin:center;
-      }
-    }
-
-    /* ===================== FLATPICKR (compacto y alineado) ===================== */
+    /* ===================== FLATPICKR ===================== */
     .u_1310989460 .flatpickr-calendar{
-      z-index:2600 !important;
+      z-index:2106 !important; /* > backdrop */
       border:1px solid var(--mct-border) !important;
       border-radius:16px !important;
       overflow:hidden !important;
       box-shadow:0 20px 60px rgba(0,0,0,.22) !important;
       font-family:'Open Sans',sans-serif !important;
-      animation:panelIn .16s ease both;
+      animation:fadeScaleIn .16s ease both;
+      background:#fff !important;
     }
     .u_1310989460 .flatpickr-months{
       padding:8px 10px 6px !important;
@@ -462,7 +468,7 @@
     .u_1310989460 .dayContainer{
       display:grid !important;
       grid-template-columns:repeat(7, 1fr) !important;
-      gap:6px !important; /* menos separación */
+      gap:6px !important;
       width:100% !important;min-width:100% !important;max-width:100% !important;
     }
     .u_1310989460 .flatpickr-day{
@@ -501,29 +507,44 @@
     .u_1310989460 .flatpickr-confirm svg{display:none !important;}
     .u_1310989460 .flatpickr-confirm::before{content:"OK"; font-weight:950 !important;}
 
-    /* Mobile calendar modal: un poco más pequeño */
+    /* ===================== Mobile behavior ===================== */
     @media (max-width: 1023px){
-      .u_1310989460 .flatpickr-calendar{
-        position:fixed !important;
-        top:50% !important; left:50% !important;
-        transform:translate(-50%,-50%) !important;
-        width:min(392px, 92vw) !important;
-        max-height:78vh !important;
-      }
-
-      /* Barra más ancha a los lados y un poco más baja */
+      /* barra más ancha y compacta */
       .u_1310989460 .mct-card{
         width:99vw;
         padding:12px 10px 18px;
         padding-top:68px;
       }
+
+      /* calendario centrado + 1 mes + sin corte */
+      .u_1310989460 .flatpickr-calendar{
+        position:fixed !important;
+        top:50% !important;
+        left:50% !important;
+        transform:translate(-50%,-50%) !important;
+        width:min(360px, 92vw) !important;
+        max-height:78vh !important;
+      }
+
+      /* panel cantidad como modal centrado y sin transform conflicting */
+      .u_1310989460 .mct-qty-panel{
+        position:fixed;
+        top:56%;
+        left:50%;
+        right:auto;
+        transform:translate(-50%,-50%);
+        width:min(360px, 92vw);
+        max-height:70vh;
+        overflow:auto;
+        transform-origin:center;
+      }
     }
 
-    /* Desktop: una fila + separadores + espacio extra hint sin desalinear */
+    /* Desktop: una fila + separadores */
     @media (min-width: 1024px){
       .u_1310989460 .mct-card{
         width:min(980px, 92vw);
-        padding:14px 14px 30px; /* más espacio inferior para el hint */
+        padding:14px 14px 30px;
         padding-top:70px;
       }
 
@@ -550,15 +571,14 @@
         align-self:end;
         justify-self:end;
       }
-      .u_1310989460 .mct-qty-panel{width:320px;right:0;}
+      .u_1310989460 .mct-qty-panel{width:320px;right:0;position:absolute;transform:none;}
       .u_1310989460 .flatpickr-calendar{
         position:absolute !important;
         top:calc(100% + 8px) !important;
         left:0 !important;
         transform:none !important;
+        width:auto !important;
       }
-
-      /* En desktop, baja un poquito más el hint (más aire) */
       .u_1310989460 .mct-hint.in-card{bottom:-14px;}
     }
 
@@ -587,12 +607,12 @@
     .destino-content h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
     .destino-content p{color:var(--text-light);margin-bottom:15px;}
 
-    /* botón centrado en tarjeta */
+    /* Botón centrado en tarjeta */
     .destino-content .btn{
       display:block;
       width:max-content;
       margin:0 auto;
-      min-width:180px;
+      min-width:190px;
     }
 
     footer{background:var(--primary);color:#ddd;padding:60px 0 20px;}
@@ -612,7 +632,6 @@
       filter:drop-shadow(0 10px 20px rgba(0,0,0,.25));
     }
 
-    /* Footer social: solo agranda, sin cambio de color */
     .social-icons{display:flex;gap:15px;margin-top:20px;}
     .social-icons a{
       display:flex;align-items:center;justify-content:center;
@@ -620,8 +639,9 @@
       background:rgba(255,255,255,.10);
       border-radius:50%;
       transition:transform .2s ease;
+      color:#fff;
     }
-    .social-icons a:hover{transform:scale(1.12);}
+    .social-icons a:hover{transform:scale(1.12);} /* sin cambio de color */
     .copyright{text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:.9rem;color:#aaa;}
 
     /* ===================== RESPONSIVE NAV + WA ===================== */
@@ -644,21 +664,22 @@
       }
       .nav-menu.active{left:0;}
       .mobile-menu-btn{display:block;}
-      .header-container{grid-template-columns:auto auto; }
+      .header-container{grid-template-columns:auto auto;}
       nav{display:block;}
-      .wa-header{display:none;} /* oculto en móvil */
-      .wa-float{display:flex;}  /* flotante en móvil */
+      .wa-header{display:none;}
+      .wa-float{display:flex;}
     }
 
     @media (max-width: 768px){
       section{padding:60px 0;}
       .section-header h2{font-size:2rem;}
+      .hero-text h2{font-size:2.1rem;}
     }
   </style>
 </head>
 
 <body>
-  <!-- Backdrop UX para modales (móvil) -->
+  <!-- Backdrop -->
   <div class="mct-backdrop" id="mctBackdrop" aria-hidden="true"></div>
 
   <!-- Header -->
@@ -682,7 +703,7 @@
         </ul>
       </nav>
 
-      <!-- WhatsApp en header (solo desktop) -->
+      <!-- WhatsApp en header (desktop) -->
       <div class="wa-header">
         <a href="https://wa.me/51999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
           <img src="img/LogoWhatsapp.png" alt="WhatsApp" />
@@ -691,7 +712,7 @@
     </div>
   </header>
 
-  <!-- WhatsApp flotante (solo móvil) -->
+  <!-- WhatsApp flotante (móvil) -->
   <a class="wa-float" href="https://wa.me/51999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
     <img src="img/LogoWhatsapp.png" alt="WhatsApp" />
   </a>
@@ -857,16 +878,6 @@
     </div>
   </section>
 
-  <!-- Explora Perú -->
-  <section id="explora-peru" style="background:var(--secondary); color:#fff;">
-    <div class="container">
-      <div class="section-header">
-        <h2 style="color:#fff;">Explora Perú</h2>
-        <p style="color:#fff;">Más allá de Cusco, descubre la diversidad de paisajes y culturas que ofrece nuestro país</p>
-      </div>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer>
     <div class="container">
@@ -940,16 +951,19 @@
     // ===== Header mobile menu
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navMenu = document.querySelector('.nav-menu');
+
     mobileMenuBtn.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
       mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
     });
+
     document.querySelectorAll('.nav-menu a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
         mobileMenuBtn.querySelector('i').classList.remove('fa-times');
         mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+
         document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
         link.classList.add('active');
       });
@@ -961,9 +975,12 @@
       if (!root) return;
 
       const backdrop = document.getElementById('mctBackdrop');
+      const isMobile = () => window.innerWidth < 1024;
+
       const showBackdrop = () => {
         if (!backdrop) return;
-        backdrop.classList.add('show');
+        // solo móvil
+        if (isMobile()) backdrop.classList.add('show');
       };
       const hideBackdrop = () => {
         if (!backdrop) return;
@@ -971,23 +988,22 @@
       };
 
       const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
-      const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
+      const tabPaq   = root.querySelector('.mct-tab[data-tab="paquetes"]');
 
-      const dateInput = root.querySelector('#mctFecha');
-      const dateField = root.querySelector('.mct-fecha-field');
+      const dateInput  = root.querySelector('#mctFecha');
+      const dateField  = root.querySelector('.mct-fecha-field');
       const durationEl = root.querySelector('#mctDuration');
 
-      const qtyPanel = root.querySelector('.mct-qty-panel');
+      const qtyPanel  = root.querySelector('.mct-qty-panel');
       const qtyToggle = root.querySelector('.mct-qty-toggle');
-      const qtyDone = root.querySelector('.mct-qty-done');
-      const qtyLabel = root.querySelector('#mctQtyLabel');
+      const qtyDone   = root.querySelector('.mct-qty-done');
+      const qtyLabel  = root.querySelector('#mctQtyLabel');
 
       const form = root.querySelector('#mctForm');
       const destinoSelect = root.querySelector('#mctDestino');
 
       const DAY = 24 * 60 * 60 * 1000;
-      const isMobile = () => window.innerWidth < 1024;
-      const getShowMonths = () => (window.innerWidth >= 1280 ? 2 : 1);
+      const getShowMonths = () => (isMobile() ? 1 : (window.innerWidth >= 1280 ? 2 : 1));
 
       function setDurationText(text){
         if (!durationEl) return;
@@ -1039,20 +1055,13 @@
               hideBackdrop();
             });
           }
-
-          if (!isMobile()) {
-            instance.set('appendTo', dateField);
-          }
+          if (!isMobile()) instance.set('appendTo', dateField);
         },
         onOpen: () => {
-          // Backdrop solo móvil
-          if (isMobile()) showBackdrop();
-          // Cierra panel qty si estuviera abierto
           if (!qtyPanel.hidden) closeQtyPanel();
+          showBackdrop();
         },
-        onClose: () => {
-          hideBackdrop();
-        },
+        onClose: () => hideBackdrop(),
         onChange: (selectedDates, dateStr, instance) => {
           const isPaq = tabPaq.classList.contains('is-active');
           if (isPaq && instance.config.mode === 'range' && selectedDates.length === 2) {
@@ -1099,7 +1108,7 @@
       // Cantidades
       function updateQtyLabel(){
         const adultos = parseInt(qtyPanel.querySelector('[data-type="adultos"] input').value) || 0;
-        const ninos = parseInt(qtyPanel.querySelector('[data-type="ninos"] input').value) || 0;
+        const ninos   = parseInt(qtyPanel.querySelector('[data-type="ninos"] input').value) || 0;
         const total = adultos + ninos;
         qtyLabel.textContent = `${total} ${total === 1 ? 'Pasajero' : 'Pasajeros'}`;
       }
@@ -1108,8 +1117,8 @@
       let qtyPanelJustOpened = false;
 
       function openQtyPanel(){
-        // backrop solo móvil (y siempre por encima)
-        if (isMobile()) showBackdrop();
+        if (fp.isOpen) fp.close();
+        showBackdrop();
         qtyPanel.hidden = false;
         qtyToggle.setAttribute('aria-expanded', 'true');
         qtyPanelJustOpened = true;
@@ -1124,7 +1133,6 @@
 
       function toggleQtyPanel(e){
         if (e) { e.preventDefault(); e.stopPropagation(); }
-        if (fp.isOpen) { fp.close(); hideBackdrop(); }
         if (qtyPanel.hidden) openQtyPanel();
         else closeQtyPanel();
       }
@@ -1137,7 +1145,7 @@
         if (!btn) return;
         e.stopPropagation();
 
-        const ctrl = btn.closest('.mct-qty-ctrl');
+        const ctrl  = btn.closest('.mct-qty-ctrl');
         const input = ctrl.querySelector('input');
         let value = parseInt(input.value) || 0;
 
@@ -1148,18 +1156,19 @@
         updateQtyLabel();
       });
 
-      // Click fuera cierra (con cuidado al abrir)
+      // Cerrar al tocar backdrop o fuera
       document.addEventListener('click', (e) => {
         if (qtyPanelJustOpened) return;
 
-        const insideQty = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
-        if (!insideQty && !qtyPanel.hidden) closeQtyPanel();
-
-        // si backdrop visible y tocó fuera, cerramos
         if (e.target === backdrop) {
           if (!qtyPanel.hidden) closeQtyPanel();
-          if (fp.isOpen) { fp.close(); hideBackdrop(); }
+          if (fp.isOpen) fp.close();
+          hideBackdrop();
+          return;
         }
+
+        const insideQty = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
+        if (!insideQty && !qtyPanel.hidden) closeQtyPanel();
       });
 
       // Submit + validación UX para paquetes
@@ -1170,12 +1179,9 @@
         const destino = destinoSelect.value;
         const fechaISO = dateInput.value;
 
-        // UX: si es paquetes, exige rango completo
         if (tipo === 'paquetes') {
           const partes = fechaISO.split(" → ");
           if (partes.length !== 2) {
-            // feedback ligero (puedes cambiar por toast si quieres)
-            setDurationText('');
             fp.open();
             return;
           }
