@@ -147,7 +147,12 @@
       display:block;
     }
 
-    /* ===================== MCT SEARCH (UX) ===================== */
+    /* ===================== MCT SEARCH (UX v2) ===================== */
+
+    /* Evita recortes en algunos móviles */
+    .hero { overflow: visible; }
+    .u_1310989460 { overflow: visible; }
+    
     .u_1310989460{
       width:100%;
       position:relative;
@@ -155,20 +160,20 @@
       display:flex;
       justify-content:center;
     }
-
-    /* más ancho en móvil */
+    
+    /* un poquito más “alto” abajo para permitir hint sin mover layout */
     .u_1310989460 .mct-card{
-      width:min(920px, 96vw);
+      width:min(920px, 98vw);
       background:var(--mct-surface);
       border-radius:var(--mct-radius);
       box-shadow:var(--mct-shadow);
-      padding:14px 14px 16px;
+      padding:14px 14px 22px;       /* + espacio inferior */
       padding-top:72px;
       position:relative;
       overflow:visible;
-      backdrop-filter: blur(6px);
     }
-
+    
+    /* Tabs */
     .u_1310989460 .mct-tabs{
       position:absolute;
       left:14px; right:14px; top:0;
@@ -190,7 +195,7 @@
       display:flex; align-items:center; justify-content:center;
       flex:1 1 0;
       font-family:'Montserrat',sans-serif;
-      transition:background .2s ease, color .2s ease, transform .2s ease;
+      transition:background .2s ease, color .2s ease;
     }
     .u_1310989460 .mct-tab:first-child{ border-top-right-radius:0; border-bottom-right-radius:0; }
     .u_1310989460 .mct-tab:last-child{ border-top-left-radius:0; border-bottom-left-radius:0; }
@@ -198,41 +203,39 @@
     .u_1310989460 .mct-tab.is-active{
       background:var(--mct-primary);
       color:#fff;
-      border-color:rgba(0,0,0,.0);
+      border-color:transparent;
       box-shadow:0 10px 20px rgba(6,40,3,.18);
     }
-
-    /* Mobile first: columnas */
+    
+    /* Mobile: columnas */
     .u_1310989460 .mct-bar{
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:10px; /* un poco más compacto */
     }
-
-    .u_1310989460 .mct-divider{
-      display:none;
-    }
-
+    .u_1310989460 .mct-divider{ display:none; }
+    
     .u_1310989460 .mct-field{
       min-width:0;
       display:flex;
       flex-direction:column;
       position:relative;
     }
-
+    
+    /* Label */
     .u_1310989460 .mct-label{
       margin:0 0 6px;
       font-size:12px;
       font-weight:800;
       color:var(--mct-muted);
-      letter-spacing:.2px;
     }
-
+    
+    /* Inputs un poco más bajos en móvil */
     .u_1310989460 .mct-input,
     .u_1310989460 .mct-select,
     .u_1310989460 .mct-qty-toggle{
       width:100%;
-      height:48px;
+      height:44px; /* ↓ antes 48 */
       border:1px solid var(--mct-border);
       border-radius:14px;
       padding:0 14px;
@@ -241,10 +244,8 @@
       background:#fff;
       font-size:16px;
       cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
       outline:none;
-      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+      transition:border-color .2s ease, box-shadow .2s ease;
     }
     .u_1310989460 .mct-input:focus,
     .u_1310989460 .mct-select:focus,
@@ -252,28 +253,34 @@
       border-color:rgba(235,9,167,.45);
       box-shadow:0 0 0 4px rgba(235,9,167,.14);
     }
-
-    .u_1310989460 .mct-fecha-field{ z-index:120; }
-    .u_1310989460 .mct-cantidad{ z-index:110; }
-
-    .u_1310989460 .mct-hint{
-      margin-top:6px;
-      font-size:12px;
-      font-weight:700;
-      color:rgba(255,255,255,.9);
-      text-shadow:0 8px 16px rgba(0,0,0,.35);
-      display:none;
+    
+    /* Reserve un “carril” para el hint SIN mover los campos */
+    .u_1310989460 .mct-fecha-field{
+      z-index:120;
+      padding-bottom:18px; /* espacio reservado para el hint */
     }
-    /* hint dentro de la card (texto oscuro) */
+    
+    /* Hint: absoluto, con flecha ↳ */
     .u_1310989460 .mct-hint.in-card{
+      position:absolute;
+      left:0;
+      bottom:-2px;
+      font-size:12px;
+      font-weight:800;
       color:var(--mct-muted);
-      text-shadow:none;
-      display:block;
+      display:none;
+      white-space:nowrap;
     }
-
+    .u_1310989460 .mct-hint.in-card::before{
+      content:"↳ ";
+      font-weight:900;
+      color:rgba(23,43,39,.6);
+    }
+    
+    /* Submit */
     .u_1310989460 .mct-submit{
       width:100%;
-      height:52px;
+      height:48px; /* ↓ antes 52 */
       border:0;
       border-radius:16px;
       background:linear-gradient(90deg, var(--mct-accent), #d90895);
@@ -285,18 +292,16 @@
       box-shadow:0 14px 30px rgba(235,9,167,.22);
       transition:transform .2s ease, box-shadow .2s ease;
     }
-    .u_1310989460 .mct-submit:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 36px rgba(235,9,167,.28);
-    }
+    .u_1310989460 .mct-submit:hover{ transform:translateY(-2px); box-shadow:0 18px 36px rgba(235,9,167,.28); }
     .u_1310989460 .mct-submit:active{ transform:translateY(0); }
-
-    /* ===================== QTY PANEL (UX) ===================== */
+    
+    /* ===================== QTY PANEL (anti-corte) ===================== */
+    .u_1310989460 .mct-cantidad{ z-index:110; }
+    
     .u_1310989460 .mct-qty-toggle{
       display:flex; align-items:center; justify-content:space-between;
       gap:10px;
     }
-
     .u_1310989460 .mct-qty-panel{
       position:absolute;
       top:calc(100% + 10px);
@@ -307,9 +312,9 @@
       border-radius:16px;
       box-shadow:0 18px 50px rgba(0,0,0,.18);
       padding:12px;
-      z-index:1400;
+      z-index:2001;
+      overflow:visible;
     }
-
     .u_1310989460 .mct-qty-row{
       display:flex;
       justify-content:space-between;
@@ -320,12 +325,10 @@
     .u_1310989460 .mct-qty-row + .mct-qty-row{
       border-top:1px solid rgba(23,43,39,.08);
     }
-
     .u_1310989460 .mct-qty-row span{
       font-weight:800;
       color:var(--mct-ink);
     }
-
     .u_1310989460 .mct-qty-ctrl{
       display:flex;
       align-items:center;
@@ -335,7 +338,6 @@
       border-radius:999px;
       border:1px solid rgba(23,43,39,.08);
     }
-
     .u_1310989460 .mct-qty-ctrl input{
       width:34px;
       text-align:center;
@@ -345,24 +347,18 @@
       font-size:15px;
       color:var(--mct-ink);
     }
-
     .u_1310989460 .mct-btn{
-      width:34px;
-      height:34px;
+      width:34px; height:34px;
       border-radius:50%;
       border:1px solid rgba(23,43,39,.12);
       background:#fff;
       cursor:pointer;
       display:flex; align-items:center; justify-content:center;
       font-weight:900;
-      transition:transform .15s ease, box-shadow .15s ease;
     }
-    .u_1310989460 .mct-btn:hover{ transform:translateY(-1px); box-shadow:0 10px 18px rgba(0,0,0,.08); }
-    .u_1310989460 .mct-btn:active{ transform:translateY(0); }
-
     .u_1310989460 .mct-qty-done{
       width:100%;
-      height:44px;
+      height:42px;
       margin-top:12px;
       border:0;
       border-radius:14px;
@@ -371,12 +367,22 @@
       font-weight:950;
       font-family:'Montserrat',sans-serif;
       cursor:pointer;
-      box-shadow:0 12px 26px rgba(6,40,3,.18);
-      transition:transform .2s ease;
     }
-    .u_1310989460 .mct-qty-done:hover{ transform:translateY(-1px); }
-
-    /* ===================== FLATPICKR (FIX DESCUADRE) ===================== */
+    
+    /* En móviles pequeños: panel de cantidad como modal fixed (nunca se corta) */
+    @media (max-width: 480px){
+      .u_1310989460 .mct-qty-panel{
+        position:fixed;
+        left:50%;
+        top:55%;
+        transform:translate(-50%,-50%);
+        width:min(360px, 92vw);
+        max-height:70vh;
+        overflow:auto;
+      }
+    }
+    
+    /* ===================== FLATPICKR (más compacto en móvil) ===================== */
     .u_1310989460 .flatpickr-calendar{
       z-index:2000 !important;
       border:1px solid var(--mct-border) !important;
@@ -385,9 +391,115 @@
       box-shadow:0 20px 60px rgba(0,0,0,.22) !important;
       font-family:'Open Sans',sans-serif !important;
     }
-    .u_1310989460 .flatpickr-calendar *{
-      font-family:'Open Sans',sans-serif !important;
+    .u_1310989460 .flatpickr-months{
+      padding:8px 10px 6px !important;
+      background:#fff !important;
+      border-bottom:1px solid rgba(23,43,39,.08) !important;
     }
+    .u_1310989460 .flatpickr-weekdays{
+      padding:4px 10px !important;
+    }
+    .u_1310989460 .flatpickr-days{
+      padding:10px !important;
+    }
+    
+    /* Grid real: menos separación */
+    .u_1310989460 .dayContainer{
+      display:grid !important;
+      grid-template-columns:repeat(7, 1fr) !important;
+      gap:6px !important; /* ↓ antes 8 */
+      width:100% !important;
+      min-width:100% !important;
+      max-width:100% !important;
+      padding:0 !important;
+    }
+    
+    /* Celdas un poco más pequeñas y menos separadas */
+    .u_1310989460 .flatpickr-day{
+      height:40px !important;     /* ↓ antes 44 */
+      line-height:40px !important;
+      border-radius:12px !important;
+      font-weight:900 !important;
+      font-size:14px !important;
+      border:0 !important;
+    }
+    .u_1310989460 .flatpickr-day.selected,
+    .u_1310989460 .flatpickr-day.startRange,
+    .u_1310989460 .flatpickr-day.endRange{
+      background:var(--mct-primary) !important;
+      color:#fff !important;
+      box-shadow:0 12px 24px rgba(6,40,3,.22) !important;
+    }
+    .u_1310989460 .flatpickr-day.inRange{
+      background:rgba(6,40,3,.12) !important;
+      color:var(--mct-primary) !important;
+    }
+    
+    /* Mobile calendar: un poquito más pequeño */
+    @media (max-width: 1023px){
+      .u_1310989460 .flatpickr-calendar{
+        position:fixed !important;
+        top:50% !important; left:50% !important;
+        transform:translate(-50%,-50%) !important;
+        width:min(400px, 92vw) !important; /* ↓ antes ~440 */
+        max-height:78vh !important;
+      }
+    
+      /* Barra un poco más ancha y con menos “aire” lateral */
+      .u_1310989460 .mct-card{
+        width:99vw;               /* ↑ ancho */
+        padding:12px 10px 18px;   /* ↓ altura */
+        padding-top:68px;
+      }
+    }
+    
+    /* Desktop: 1 fila con separadores grises + no se desalinean campos */
+    @media (min-width: 1024px){
+      .u_1310989460 .mct-card{
+        width:min(980px, 92vw);
+        padding:14px 14px 26px; /* + espacio inferior para hints sin mover layout */
+        padding-top:70px;
+      }
+    
+      .u_1310989460 .mct-bar{
+        display:grid;
+        grid-template-columns: 1.05fr 1px 1.15fr 1px 0.95fr auto;
+        align-items:end;
+        gap:0;
+      }
+      .u_1310989460 .mct-field{ padding:10px 14px; }
+    
+      .u_1310989460 .mct-divider{
+        display:block;
+        width:1px;
+        height:64px;
+        background:rgba(23,43,39,.14);
+        border-radius:1px;
+        align-self:center;
+      }
+    
+      .u_1310989460 .mct-submit{
+        width:auto;
+        min-width:170px;
+        height:48px;
+        border-radius:999px;
+        margin:0 14px 10px 0;
+        align-self:end;
+        justify-self:end;
+      }
+    
+      /* dropdown más estable en desktop */
+      .u_1310989460 .mct-qty-panel{ width:320px; right:0; }
+    
+      /* Flatpickr desktop alineado */
+      .u_1310989460 .flatpickr-calendar{
+        position:absolute !important;
+        top:calc(100% + 8px) !important;
+        left:0 !important;
+        transform:none !important;
+      }
+    }
+
 
     /* Header mes/año claro */
     .u_1310989460 .flatpickr-months{
@@ -765,72 +877,71 @@
 
         <!-- Barra de búsqueda -->
         <div class="u_1310989460 mct-search">
-          <form class="mct-card" id="mctForm" autocomplete="off">
-            <div class="mct-tabs" role="tablist">
-              <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
-              <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
+        <form class="mct-card" id="mctForm" autocomplete="off">
+          <div class="mct-tabs" role="tablist">
+            <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
+            <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
+          </div>
+      
+          <div class="mct-bar">
+            <!-- Destino -->
+            <div class="mct-field">
+              <span class="mct-label">Destino</span>
+              <select id="mctDestino" class="mct-select">
+                <option value="machu-picchu" selected>Machu Picchu</option>
+                <option value="cusco">Cusco</option>
+                <option value="otros">Otros destinos Perú</option>
+              </select>
             </div>
-
-            <div class="mct-bar">
-              <!-- Destino -->
-              <div class="mct-field">
-                <span class="mct-label">Destino</span>
-                <select id="mctDestino" class="mct-select">
-                  <option value="machu-picchu" selected>Machu Picchu</option>
-                  <option value="cusco">Cusco</option>
-                  <option value="otros">Otros destinos Perú</option>
-                </select>
-              </div>
-
-              <div class="mct-divider"></div>
-
-              <!-- Fechas -->
-              <div class="mct-field mct-fecha-field">
-                <span class="mct-label">Fechas de viaje</span>
-                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha">
-                <!-- NUEVO: duración días/noches -->
-                <div id="mctDuration" class="mct-hint in-card" aria-live="polite"></div>
-              </div>
-
-              <div class="mct-divider"></div>
-
-              <!-- Cantidad -->
-              <div class="mct-field mct-cantidad">
-                <span class="mct-label">Cantidad</span>
-                <button type="button" class="mct-qty-toggle" aria-haspopup="dialog" aria-expanded="false">
-                  <span id="mctQtyLabel">2 Pasajeros</span>
-                  <i class="fa-solid fa-chevron-down" style="opacity:.6;"></i>
-                </button>
-
-                <div class="mct-qty-panel" hidden>
-                  <div class="mct-qty-row">
-                    <span>Adultos</span>
-                    <div class="mct-qty-ctrl" data-type="adultos">
-                      <button type="button" class="mct-btn minus" aria-label="Disminuir adultos">−</button>
-                      <input type="text" value="2" readonly />
-                      <button type="button" class="mct-btn plus" aria-label="Aumentar adultos">＋</button>
-                    </div>
+      
+            <div class="mct-divider"></div>
+      
+            <!-- Fechas -->
+            <div class="mct-field mct-fecha-field">
+              <span class="mct-label">Fechas de viaje</span>
+              <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha" />
+              <!-- Se renderiza como “nota” sin desalinear (absoluta) -->
+              <div id="mctDuration" class="mct-hint in-card" aria-live="polite"></div>
+            </div>
+      
+            <div class="mct-divider"></div>
+      
+            <!-- Cantidad -->
+            <div class="mct-field mct-cantidad">
+              <span class="mct-label">Cantidad</span>
+              <button type="button" class="mct-qty-toggle" aria-haspopup="dialog" aria-expanded="false">
+                <span id="mctQtyLabel">2 Pasajeros</span>
+                <i class="fa-solid fa-chevron-down" style="opacity:.6;"></i>
+              </button>
+      
+              <div class="mct-qty-panel" hidden>
+                <div class="mct-qty-row">
+                  <span>Adultos</span>
+                  <div class="mct-qty-ctrl" data-type="adultos">
+                    <button type="button" class="mct-btn minus" aria-label="Disminuir adultos">−</button>
+                    <input type="text" value="2" readonly />
+                    <button type="button" class="mct-btn plus" aria-label="Aumentar adultos">＋</button>
                   </div>
-
-                  <div class="mct-qty-row">
-                    <span>Niños</span>
-                    <div class="mct-qty-ctrl" data-type="ninos">
-                      <button type="button" class="mct-btn minus" aria-label="Disminuir niños">−</button>
-                      <input type="text" value="0" readonly />
-                      <button type="button" class="mct-btn plus" aria-label="Aumentar niños">＋</button>
-                    </div>
-                  </div>
-
-                  <button type="button" class="mct-qty-done">Listo</button>
                 </div>
+      
+                <div class="mct-qty-row">
+                  <span>Niños</span>
+                  <div class="mct-qty-ctrl" data-type="ninos">
+                    <button type="button" class="mct-btn minus" aria-label="Disminuir niños">−</button>
+                    <input type="text" value="0" readonly />
+                    <button type="button" class="mct-btn plus" aria-label="Aumentar niños">＋</button>
+                  </div>
+                </div>
+      
+                <button type="button" class="mct-qty-done">Listo</button>
               </div>
-
-              <!-- Buscar -->
-              <button type="submit" class="mct-submit">Buscar</button>
             </div>
-          </form>
-        </div>
-
+      
+            <!-- Buscar -->
+            <button type="submit" class="mct-submit">Buscar</button>
+          </div>
+        </form>
+      </div>
       </div>
     </div>
   </section>
@@ -1139,9 +1250,10 @@
           durationEl.style.display = 'none';
           return;
         }
-        durationEl.textContent = text;
+        durationEl.textContent = text;   // ya incluye la flecha via CSS ::before
         durationEl.style.display = 'block';
       }
+
 
       function computeDaysNights(start, end) {
         if (!start || !end) return null;
@@ -1253,16 +1365,17 @@
       function toggleQtyPanel(e){
         if (e) { e.preventDefault(); e.stopPropagation(); }
         if (fp.isOpen) fp.close();
-
+      
         const willOpen = qtyPanel.hidden;
         qtyPanel.hidden = !willOpen;
         qtyToggle.setAttribute('aria-expanded', String(willOpen));
-
+      
         if (willOpen) {
           qtyPanelJustOpened = true;
           setTimeout(() => qtyPanelJustOpened = false, 250);
         }
       }
+
       function closeQtyPanel(){
         qtyPanel.hidden = true;
         qtyToggle.setAttribute('aria-expanded', 'false');
