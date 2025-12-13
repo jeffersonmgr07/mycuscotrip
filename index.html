@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MyCuscoTrip - Tours y Paquetes Turísticos en Cusco y Machu Picchu</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <!-- Flatpickr CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css"/>
 
   <style>
-    :root{
+    :root {
       --primary:#062803;
       --secondary:#053220;
       --accent:#eb09a7;
@@ -22,35 +22,47 @@
       --dark:#062803;
       --text:#333;
       --text-light:#666;
+
+      --mct-surface:#fff;
+      --mct-ink:#172b27;
+      --mct-muted:#6c7a76;
+      --mct-border:rgba(23,43,39,.14);
+      --mct-sep:rgba(23,43,39,.18);
+      --mct-shadow:0 12px 34px rgba(0,0,0,.14);
+      --mct-radius:18px;
+      --mct-pill:999px;
+      --mct-accent:var(--accent);
+      --mct-primary:var(--primary);
+      --mct-primary-ink:#fff;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Open Sans',sans-serif;color:var(--text);line-height:1.6;background:#fff;}
-    h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;font-weight:600;color:var(--dark);}
-    a{text-decoration:none;color:inherit;}
-    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px;}
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Open Sans',sans-serif;
+      color:var(--text);
+      line-height:1.6;
+      background:#fff;
+    }
+    h1,h2,h3,h4,h5 { font-family:'Montserrat',sans-serif; font-weight:600; color:var(--dark); }
+    a { text-decoration:none; color:inherit; }
+    .container { width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
 
     .btn{
       display:inline-block;padding:12px 30px;
       background:linear-gradient(to right,var(--accent),#d90895);
-      color:#fff;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
-      transition:all .3s ease;border:none;cursor:pointer;
-      box-shadow:0 4px 10px rgba(235,9,167,.3);
+      color:#fff;border-radius:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+      border:none;cursor:pointer; box-shadow:0 8px 18px rgba(235,9,167,.22);
     }
-    .btn:hover{background:linear-gradient(to right,#d90895,var(--accent));transform:translateY(-2px);box-shadow:0 6px 15px rgba(235,9,167,.4);}
-    .btn-accent2{background:linear-gradient(to right,var(--accent2),#0bd009);box-shadow:0 4px 10px rgba(13,235,9,.3);}
-    .btn-accent2:hover{background:linear-gradient(to right,#0bd009,var(--accent2));box-shadow:0 6px 15px rgba(13,235,9,.4);}
+    .btn:hover{ transform:translateY(-2px); box-shadow:0 12px 22px rgba(235,9,167,.28); }
+    .btn:active{ transform:translateY(0); }
 
-    /* =======================
-       HEADER (MENÚ CENTRADO PC)
-       ======================= */
+    /* ===================== HEADER ===================== */
     header{
-      background-color:var(--secondary);
+      background:var(--secondary);
       box-shadow:0 2px 10px rgba(0,0,0,.2);
-      position:fixed;width:100%;z-index:1000;top:0;
+      position:fixed; width:100%; z-index:1000; top:0;
     }
-
-    /* Grid: logo (izq) | nav (centro) | botón móvil (der) */
     .header-container{
       display:grid;
       grid-template-columns:auto 1fr auto;
@@ -58,434 +70,655 @@
       padding:15px 20px;
       gap:14px;
     }
+    .logo{ display:flex; align-items:center; }
+    .logo h1{ font-size:1.8rem; color:#fff; white-space:nowrap; }
+    .logo span{ color:var(--accent2); }
 
-    .logo{display:flex;align-items:center;justify-content:flex-start;}
-    .logo h1{font-size:1.8rem;color:#fff;white-space:nowrap;}
-    .logo span{color:var(--accent2);}
-
-    nav{display:flex;justify-content:center;}
-    .nav-menu{display:flex;list-style:none;justify-content:center;gap:26px;}
-    .nav-menu li{position:relative;}
-    .nav-menu a{
-      font-weight:600;font-size:.95rem;color:#fff;
-      padding:5px 0;transition:color .3s;
+    nav{ display:flex; justify-content:center; }
+    .nav-menu{
+      display:flex; list-style:none; justify-content:center; gap:26px;
     }
-    .nav-menu a:hover,.nav-menu a.active{color:var(--accent2);}
+    .nav-menu li{ position:relative; }
+    .nav-menu a{
+      font-weight:700; font-size:.95rem;
+      transition:color .2s ease;
+      color:#fff; padding:6px 0;
+    }
+    .nav-menu a:hover, .nav-menu a.active{ color:var(--accent2); }
     .nav-menu a.active:after{
-      content:'';
-      position:absolute;width:100%;height:3px;background:var(--accent);
-      bottom:-5px;left:0;border-radius:2px;
+      content:''; position:absolute; left:0; bottom:-6px;
+      width:100%; height:3px; border-radius:2px;
+      background:var(--accent);
     }
 
     .mobile-menu-btn{
       display:none;
-      font-size:1.5rem;cursor:pointer;color:#fff;
+      font-size:1.5rem;
+      cursor:pointer;
+      color:#fff;
       justify-self:end;
+      padding:6px 10px;
+      border-radius:10px;
+      transition:background .2s ease;
     }
+    .mobile-menu-btn:hover{ background:rgba(255,255,255,.08); }
 
-    /* =======================
-       HERO (VIDEO BACKGROUND)
-       ======================= */
+    /* ===================== HERO VIDEO ===================== */
     .hero{
-      height:100vh;min-height:700px;
-      display:flex;align-items:center;
-      color:#fff;text-align:center;
+      height:100vh; min-height:700px;
+      display:flex; align-items:center;
+      color:#fff;
       margin-top:70px;
       position:relative;
       overflow:hidden;
     }
-
-    /* Video layer */
-    .hero-media{
-      position:absolute;inset:0;
-      z-index:0;
-      background:#000;
-    }
+    .hero-media{ position:absolute; inset:0; z-index:0; background:#000; }
     .hero-media video{
-      position:absolute;inset:0;
-      width:100%;height:100%;
-      object-fit:cover;
-      transform:scale(1.02); /* evita bordes */
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; transform:scale(1.02);
     }
-
-    /* Overlay oscuro encima del video */
     .hero::before{
       content:'';
-      position:absolute;inset:0;
-      background:linear-gradient(rgba(6,40,3,.75),rgba(5,50,32,.75));
-      z-index:1;
+      position:absolute; inset:0; z-index:1;
+      background:linear-gradient(rgba(6,40,3,.72), rgba(5,50,32,.78));
     }
 
     .hero-content{
-      max-width:900px;margin:0 auto;padding:0 20px;width:100%;
-      position:relative;z-index:2;
+      position:relative; z-index:2;
+      width:100%;
+      max-width:1000px;
+      margin:0 auto;
+      padding:0 20px;
     }
 
-    .hero-text{text-align:left;margin-bottom:30px;}
+    .hero-text{
+      text-align:left;
+      margin-bottom:28px;
+    }
     .hero-text h2{
-      font-size:3.2rem;margin-bottom:10px;color:#fff;
-      text-shadow:1px 1px 3px rgba(0,0,0,.5);
+      font-size:3.2rem;
+      margin-bottom:10px;
+      color:#fff;
+      text-shadow:0 10px 30px rgba(0,0,0,.35);
       line-height:1.1;
     }
-    .hero-text h2 span{color:var(--accent2);display:block;}
+    .hero-text h2 span{
+      color:var(--accent2);
+      display:block;
+    }
 
-    /* =======================
-       MCT SEARCH (tu bloque)
-       ======================= */
+    /* ===================== MCT SEARCH (UX) ===================== */
     .u_1310989460{
-      --mct-surface:#fff;
-      --mct-primary:#062803;
-      --mct-primary-ink:#fff;
-      --mct-ink:#172b27;
-      --mct-muted:#6c7a76;
-      --mct-border:rgba(23,43,39,.12);
-      --mct-sep:rgba(23,43,39,.15);
-      --mct-shadow:0 8px 24px rgba(0,0,0,.12);
-      --mct-radius:16px;
-      --mct-pill:999px;
-      --mct-accent:#eb09a7;
-      --mct-sel:#062803;
-      font-family:'Open Sans',sans-serif;
       width:100%;
       position:relative;
       z-index:100;
+      display:flex;
+      justify-content:center;
     }
 
+    /* más ancho en móvil */
     .u_1310989460 .mct-card{
-      position:relative;
-      z-index:1000;
-      background:#fff;
-      border-radius:18px;
+      width:min(920px, 96vw);
+      background:var(--mct-surface);
+      border-radius:var(--mct-radius);
       box-shadow:var(--mct-shadow);
-      padding:10px 10px 12px;
-      padding-top:68px;
+      padding:14px 14px 16px;
+      padding-top:72px;
+      position:relative;
       overflow:visible;
+      backdrop-filter: blur(6px);
     }
 
     .u_1310989460 .mct-tabs{
       position:absolute;
-      left:10px;right:10px;top:0;
+      left:14px; right:14px; top:0;
       transform:translateY(-50%);
-      display:flex;gap:0;
-      background:transparent;
+      display:flex;
       pointer-events:none;
       z-index:5;
     }
-
     .u_1310989460 .mct-tab{
       pointer-events:auto;
-      appearance:none;border:0;cursor:pointer;
-      height:42px;border-radius:12px;
-      font-weight:800;color:var(--mct-muted);
+      appearance:none;
+      border:1px solid rgba(0,0,0,.06);
+      cursor:pointer;
+      height:44px;
+      border-radius:14px;
+      font-weight:900;
+      color:var(--mct-muted);
       background:#f2f5f4;
-      display:flex;align-items:center;justify-content:center;
-      flex:1 1 0;margin:0;
+      display:flex; align-items:center; justify-content:center;
+      flex:1 1 0;
       font-family:'Montserrat',sans-serif;
+      transition:background .2s ease, color .2s ease, transform .2s ease;
     }
-    .u_1310989460 .mct-tab:first-child{border-top-right-radius:0;border-bottom-right-radius:0;}
-    .u_1310989460 .mct-tab:last-child{border-top-left-radius:0;border-bottom-left-radius:0;}
-    .u_1310989460 .mct-tab+.mct-tab{margin-left:-1px;}
-    .u_1310989460 .mct-tab.is-active{background:var(--mct-primary);color:#fff;}
+    .u_1310989460 .mct-tab:first-child{ border-top-right-radius:0; border-bottom-right-radius:0; }
+    .u_1310989460 .mct-tab:last-child{ border-top-left-radius:0; border-bottom-left-radius:0; }
+    .u_1310989460 .mct-tab+.mct-tab{ margin-left:-1px; }
+    .u_1310989460 .mct-tab.is-active{
+      background:var(--mct-primary);
+      color:#fff;
+      border-color:rgba(0,0,0,.0);
+      box-shadow:0 10px 20px rgba(6,40,3,.18);
+    }
 
+    /* Mobile first: columnas */
     .u_1310989460 .mct-bar{
-      display:flex;flex-direction:column;align-items:stretch;gap:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
-    .u_1310989460 .mct-divider{display:none;}
+
+    .u_1310989460 .mct-divider{
+      display:none;
+    }
 
     .u_1310989460 .mct-field{
-      padding:0 2px;min-width:0;
-      display:flex;flex-direction:column;justify-content:flex-end;
-      position:relative;z-index:10;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      position:relative;
     }
 
     .u_1310989460 .mct-label{
-      display:block;margin:0 0 6px;font-size:13px;font-weight:700;color:var(--mct-muted);
+      margin:0 0 6px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--mct-muted);
+      letter-spacing:.2px;
     }
 
     .u_1310989460 .mct-input,
     .u_1310989460 .mct-select,
     .u_1310989460 .mct-qty-toggle{
       width:100%;
-      height:46px;
+      height:48px;
       border:1px solid var(--mct-border);
-      border-radius:12px;
-      padding:0 12px;
-      font-weight:700;
+      border-radius:14px;
+      padding:0 14px;
+      font-weight:800;
       color:var(--mct-ink);
       background:#fff;
       font-size:16px;
       cursor:pointer;
       user-select:none;
       -webkit-user-select:none;
-      font-family:'Open Sans',sans-serif;
+      outline:none;
+      transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    .u_1310989460 .mct-input:focus,
+    .u_1310989460 .mct-select:focus,
+    .u_1310989460 .mct-qty-toggle:focus{
+      border-color:rgba(235,9,167,.45);
+      box-shadow:0 0 0 4px rgba(235,9,167,.14);
     }
 
-    .u_1310989460 .mct-fecha-field{position:relative;z-index:100;cursor:pointer;}
-    .u_1310989460 .mct-cantidad{position:relative;z-index:100;}
+    .u_1310989460 .mct-fecha-field{ z-index:120; }
+    .u_1310989460 .mct-cantidad{ z-index:110; }
 
-    .u_1310989460 .mct-qty-panel{
-      position:absolute;left:0;right:0;top:100%;
-      width:100%;margin-top:8px;
-      background:#fff;border:1px solid var(--mct-border);
-      border-radius:14px;box-shadow:var(--mct-shadow);
-      padding:10px;z-index:1100;
+    .u_1310989460 .mct-hint{
+      margin-top:6px;
+      font-size:12px;
+      font-weight:700;
+      color:rgba(255,255,255,.9);
+      text-shadow:0 8px 16px rgba(0,0,0,.35);
+      display:none;
     }
-
-    .u_1310989460 .mct-qty-toggle{
-      display:flex;align-items:center;justify-content:space-between;height:46px;
-    }
-
-    .u_1310989460 .mct-qty-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0;}
-    .u_1310989460 .mct-qty-ctrl{display:flex;align-items:center;gap:6px;background:#f7f9f8;border-radius:var(--mct-pill);padding:4px 6px;}
-    .u_1310989460 .mct-qty-ctrl input{width:36px;text-align:center;border:0;background:transparent;font-weight:800;font-family:'Open Sans',sans-serif;}
-    .u_1310989460 .mct-btn{
-      width:28px;height:28px;border-radius:50%;
-      border:1px solid var(--mct-border);background:#fff;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;font-weight:bold;
-    }
-    .u_1310989460 .mct-qty-done{
-      width:100%;height:40px;border:0;border-radius:10px;
-      background:var(--mct-primary);color:#fff;font-weight:800;cursor:pointer;
-      font-family:'Montserrat',sans-serif;
+    /* hint dentro de la card (texto oscuro) */
+    .u_1310989460 .mct-hint.in-card{
+      color:var(--mct-muted);
+      text-shadow:none;
+      display:block;
     }
 
     .u_1310989460 .mct-submit{
-      display:block;width:55%;height:50px;margin:8px auto 0;
-      padding:0 20px;border:0;border-radius:14px;background:var(--mct-accent);
-      color:#fff;font-weight:900;text-align:center;white-space:nowrap;
-      font-family:'Montserrat',sans-serif;text-transform:uppercase;cursor:pointer;
+      width:100%;
+      height:52px;
+      border:0;
+      border-radius:16px;
+      background:linear-gradient(90deg, var(--mct-accent), #d90895);
+      color:#fff;
+      font-weight:950;
+      font-family:'Montserrat',sans-serif;
+      text-transform:uppercase;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(235,9,167,.22);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .u_1310989460 .mct-submit:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 36px rgba(235,9,167,.28);
+    }
+    .u_1310989460 .mct-submit:active{ transform:translateY(0); }
+
+    /* ===================== QTY PANEL (UX) ===================== */
+    .u_1310989460 .mct-qty-toggle{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
     }
 
-    /* =======================
-       FLATPICKR (MEJOR RESPONSIVO + SELECCIÓN MÁS NOTORIA)
-       ======================= */
+    .u_1310989460 .mct-qty-panel{
+      position:absolute;
+      top:calc(100% + 10px);
+      right:0;
+      width:100%;
+      background:#fff;
+      border:1px solid var(--mct-border);
+      border-radius:16px;
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      padding:12px;
+      z-index:1400;
+    }
+
+    .u_1310989460 .mct-qty-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 8px;
+      border-radius:12px;
+    }
+    .u_1310989460 .mct-qty-row + .mct-qty-row{
+      border-top:1px solid rgba(23,43,39,.08);
+    }
+
+    .u_1310989460 .mct-qty-row span{
+      font-weight:800;
+      color:var(--mct-ink);
+    }
+
+    .u_1310989460 .mct-qty-ctrl{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:6px 10px;
+      background:#f7f9f8;
+      border-radius:999px;
+      border:1px solid rgba(23,43,39,.08);
+    }
+
+    .u_1310989460 .mct-qty-ctrl input{
+      width:34px;
+      text-align:center;
+      border:0;
+      background:transparent;
+      font-weight:900;
+      font-size:15px;
+      color:var(--mct-ink);
+    }
+
+    .u_1310989460 .mct-btn{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:1px solid rgba(23,43,39,.12);
+      background:#fff;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .u_1310989460 .mct-btn:hover{ transform:translateY(-1px); box-shadow:0 10px 18px rgba(0,0,0,.08); }
+    .u_1310989460 .mct-btn:active{ transform:translateY(0); }
+
+    .u_1310989460 .mct-qty-done{
+      width:100%;
+      height:44px;
+      margin-top:12px;
+      border:0;
+      border-radius:14px;
+      background:var(--mct-primary);
+      color:#fff;
+      font-weight:950;
+      font-family:'Montserrat',sans-serif;
+      cursor:pointer;
+      box-shadow:0 12px 26px rgba(6,40,3,.18);
+      transition:transform .2s ease;
+    }
+    .u_1310989460 .mct-qty-done:hover{ transform:translateY(-1px); }
+
+    /* ===================== FLATPICKR (FIX DESCUADRE) ===================== */
     .u_1310989460 .flatpickr-calendar{
       z-index:2000 !important;
-      box-shadow:var(--mct-shadow) !important;
       border:1px solid var(--mct-border) !important;
-      font-family:'Open Sans',sans-serif !important;
       border-radius:16px !important;
       overflow:hidden !important;
+      box-shadow:0 20px 60px rgba(0,0,0,.22) !important;
+      font-family:'Open Sans',sans-serif !important;
     }
-    .u_1310989460 .flatpickr-calendar *{font-family:'Open Sans',sans-serif !important;}
+    .u_1310989460 .flatpickr-calendar *{
+      font-family:'Open Sans',sans-serif !important;
+    }
 
-    /* Header del mes/año (más legible) */
+    /* Header mes/año claro */
     .u_1310989460 .flatpickr-months{
-      padding:10px 10px 4px !important;
+      padding:10px 12px 6px !important;
       background:#fff !important;
+      border-bottom:1px solid rgba(23,43,39,.08) !important;
     }
     .u_1310989460 .flatpickr-current-month{
+      padding:4px 0 !important;
       font-size:16px !important;
-      padding:6px 0 !important;
+      font-weight:900 !important;
     }
     .u_1310989460 .flatpickr-current-month .cur-month{
-      font-weight:800 !important;
+      font-weight:950 !important;
     }
     .u_1310989460 .flatpickr-current-month .numInputWrapper{
-      width:92px !important; /* año visible */
+      width:96px !important;
     }
     .u_1310989460 .flatpickr-current-month input.cur-year{
-      font-weight:800 !important;
+      font-weight:950 !important;
       font-size:16px !important;
-      width:92px !important;
+      width:96px !important;
       padding:0 4px !important;
     }
 
-    .u_1310989460 .flatpickr-weekdays{padding:0 10px 6px !important;}
-    .u_1310989460 .flatpickr-weekday{font-weight:800 !important;padding:8px 0 !important;}
+    /* Weekdays y grid uniforme */
+    .u_1310989460 .flatpickr-weekdays{
+      padding:6px 12px !important;
+      background:#fff !important;
+    }
+    .u_1310989460 .flatpickr-weekday{
+      font-weight:900 !important;
+      color:rgba(23,43,39,.7) !important;
+      padding:8px 0 !important;
+    }
 
-    /* Grid compacto */
-    .u_1310989460 .flatpickr-days{padding:10px !important;}
-    .u_1310989460 .flatpickr-innerContainer{padding:0 !important;}
+    .u_1310989460 .flatpickr-days{
+      padding:12px !important;
+      background:#fff !important;
+    }
+
+    .u_1310989460 .flatpickr-innerContainer{
+      padding:0 !important;
+      background:#fff !important;
+    }
+
+    /* Convertimos a grid real (evita descuadres) */
     .u_1310989460 .dayContainer{
+      display:grid !important;
+      grid-template-columns:repeat(7, 1fr) !important;
+      gap:8px !important;
       width:100% !important;
       min-width:100% !important;
       max-width:100% !important;
-      display:grid !important;
-      grid-template-columns:repeat(7, 1fr) !important;
-      gap:6px !important; /* antes quedaba raro */
       padding:0 !important;
     }
 
-    /* Celdas más grandes (selección se nota) */
     .u_1310989460 .flatpickr-day{
+      width:auto !important;
+      max-width:none !important;
+      height:44px !important;
+      line-height:44px !important;
       border:0 !important;
-      width:42px !important;
-      height:42px !important;
-      line-height:42px !important;
-      margin:0 !important;
-      border-radius:12px !important; /* más “pill” */
-      font-weight:700 !important;
+      border-radius:14px !important;
+      font-weight:900 !important;
+      font-size:15px !important;
+      color:var(--mct-ink) !important;
+      background:transparent !important;
+      transition:transform .12s ease, background .12s ease, color .12s ease, box-shadow .12s ease;
+    }
+    .u_1310989460 .flatpickr-day:hover{
+      background:rgba(6,40,3,.08) !important;
+      transform:translateY(-1px);
     }
 
-    /* Selección MUCHO más visible */
+    /* selección MUY visible */
     .u_1310989460 .flatpickr-day.selected,
     .u_1310989460 .flatpickr-day.startRange,
     .u_1310989460 .flatpickr-day.endRange{
       background:var(--mct-primary) !important;
       color:#fff !important;
-      box-shadow:0 6px 14px rgba(6,40,3,.25) !important;
-      border-radius:12px !important;
+      box-shadow:0 12px 24px rgba(6,40,3,.22) !important;
     }
-
     .u_1310989460 .flatpickr-day.inRange{
       background:rgba(6,40,3,.12) !important;
       color:var(--mct-primary) !important;
       box-shadow:none !important;
-      border-radius:12px !important;
     }
 
-    /* Botón OK */
     .u_1310989460 .flatpickr-confirm{
       background:var(--mct-primary) !important;
       color:#fff !important;
-      font-weight:900 !important;
+      font-weight:950 !important;
       border:0 !important;
-      border-radius:12px !important;
-      height:44px !important;
-      margin:10px !important;
-      width:calc(100% - 20px) !important;
-      display:flex !important;align-items:center !important;justify-content:center !important;
+      border-radius:14px !important;
+      height:46px !important;
+      margin:12px !important;
+      width:calc(100% - 24px) !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
       cursor:pointer !important;
+      box-shadow:0 14px 30px rgba(6,40,3,.18) !important;
     }
-    .u_1310989460 .flatpickr-confirm svg{display:none !important;}
-    .u_1310989460 .flatpickr-confirm::before{content:"OK" !important;}
+    .u_1310989460 .flatpickr-confirm svg{ display:none !important; }
+    .u_1310989460 .flatpickr-confirm::before{ content:"OK"; font-weight:950 !important; }
 
-    /* MOBILE calendar centrado */
-    @media (max-width:1023px){
+    /* Mobile calendar centrado */
+    @media (max-width: 1023px){
       .u_1310989460 .flatpickr-calendar{
         position:fixed !important;
-        top:50% !important;left:50% !important;
+        top:50% !important; left:50% !important;
         transform:translate(-50%,-50%) !important;
-        width:95vw !important;
-        max-width:420px !important;
-        max-height:80vh !important;
-        box-shadow:0 20px 60px rgba(0,0,0,.4) !important;
-      }
-      .u_1310989460 .flatpickr-day{
-        width:44px !important;height:44px !important;line-height:44px !important;
-        border-radius:14px !important;
+        width:min(440px, 94vw) !important;
+        max-height:82vh !important;
       }
     }
 
-    /* DESKTOP: calendar debajo del input, más ancho */
-    @media (min-width:1024px){
+    /* Desktop: barra en una fila + separadores grises */
+    @media (min-width: 1024px){
+      .u_1310989460 .mct-card{
+        width:min(980px, 92vw);
+        padding:14px;
+        padding-top:70px;
+      }
+
+      .u_1310989460 .mct-bar{
+        display:grid;
+        grid-template-columns: 1.05fr 1px 1.15fr 1px 0.95fr auto;
+        align-items:end;
+        gap:0;
+        border:1px solid rgba(255,255,255,0); /* solo para mantener layout */
+      }
+
+      .u_1310989460 .mct-field{
+        padding:10px 14px;
+      }
+
+      .u_1310989460 .mct-divider{
+        display:block;
+        width:1px;
+        height:64px;
+        background:rgba(23,43,39,.14);
+        border-radius:1px;
+        align-self:center;
+      }
+
+      .u_1310989460 .mct-submit{
+        width:auto;
+        min-width:170px;
+        height:52px;
+        border-radius:999px;
+        margin:0 14px 10px 0;
+        align-self:end;
+        justify-self:end;
+      }
+
+      /* qty panel más “dropdown” en desktop */
+      .u_1310989460 .mct-qty-panel{
+        width:320px;
+        right:0;
+      }
+
+      /* Flatpickr desktop alineado bajo el input */
       .u_1310989460 .flatpickr-calendar{
         position:absolute !important;
-        top:100% !important;
+        top:calc(100% + 8px) !important;
         left:0 !important;
-        width:380px !important; /* más espacio para mes/año y grid */
-        margin-top:8px !important;
         transform:none !important;
       }
     }
 
-    /* =======================
-       SECTIONS
-       ======================= */
-    section{padding:80px 0;}
-    .section-header{text-align:center;margin-bottom:50px;}
-    .section-header h2{font-size:2.5rem;margin-bottom:15px;position:relative;display:inline-block;}
+    /* ===================== SECTIONS ===================== */
+    section{ padding:80px 0; }
+    .section-header{ text-align:center; margin-bottom:50px; }
+    .section-header h2{ font-size:2.5rem; margin-bottom:15px; position:relative; display:inline-block; }
     .section-header h2:after{
-      content:'';position:absolute;width:70px;height:3px;background:var(--accent);
-      bottom:-10px;left:50%;transform:translateX(-50%);
+      content:'';
+      position:absolute; width:70px; height:3px;
+      background:var(--accent);
+      bottom:-10px; left:50%;
+      transform:translateX(-50%);
+      border-radius:2px;
     }
-    .section-header p{color:var(--text-light);max-width:700px;margin:0 auto;}
+    .section-header p{ color:var(--text-light); max-width:700px; margin:0 auto; }
 
-    .destinos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;}
-    .destino-card{border-radius:8px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.1);transition:transform .3s ease;border:2px solid transparent;}
-    .destino-card:hover{transform:translateY(-10px);border-color:var(--accent);}
-    .destino-img{height:200px;background-size:cover;background-position:center;}
-    .destino-content{padding:20px;}
-    .destino-content h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
-    .destino-content p{color:var(--text-light);margin-bottom:15px;}
+    .destinos-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:30px;
+    }
+    .destino-card{
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 10px 26px rgba(0,0,0,.10);
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      border:2px solid transparent;
+      background:#fff;
+    }
+    .destino-card:hover{
+      transform:translateY(-8px);
+      border-color:var(--accent);
+      box-shadow:0 16px 34px rgba(0,0,0,.12);
+    }
+    .destino-img{ height:200px; background-size:cover; background-position:center; }
+    .destino-content{ padding:20px; }
+    .destino-content h3{ font-size:1.5rem; margin-bottom:10px; color:var(--primary); }
+    .destino-content p{ color:var(--text-light); margin-bottom:15px; }
 
-    .paquetes-tabs{display:flex;justify-content:center;margin-bottom:40px;flex-wrap:wrap;}
-    .tab-btn{padding:12px 25px;background:#f0f0f0;border:none;font-weight:600;cursor:pointer;transition:all .3s;margin:0 5px 10px;border-radius:4px;}
-    .tab-btn.active{background:var(--primary);color:#fff;}
-    .tab-content{display:none;}
-    .tab-content.active{display:block;}
+    .paquetes-tabs{ display:flex; justify-content:center; margin-bottom:40px; flex-wrap:wrap; }
+    .tab-btn{
+      padding:12px 25px;
+      background:#f0f0f0;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      transition:all .2s ease;
+      margin:0 5px 10px;
+      border-radius:8px;
+    }
+    .tab-btn.active{ background:var(--primary); color:#fff; }
+    .tab-content{ display:none; }
+    .tab-content.active{ display:block; }
 
     .paquete-card{
-      background:#fff;border-radius:8px;overflow:hidden;
-      box-shadow:0 5px 15px rgba(0,0,0,.1);
-      margin-bottom:30px;display:flex;flex-direction:column;
-      border:2px solid transparent;transition:all .3s;
+      background:#fff;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 10px 26px rgba(0,0,0,.10);
+      margin-bottom:30px;
+      display:flex;
+      flex-direction:column;
+      border:2px solid transparent;
+      transition:all .2s ease;
     }
-    .paquete-card:hover{border-color:var(--accent2);box-shadow:0 8px 20px rgba(13,235,9,.1);}
-    .paquete-img{height:250px;background-size:cover;background-position:center;}
-    .paquete-info{padding:25px;flex-grow:1;display:flex;flex-direction:column;}
-    .paquete-info h3{font-size:1.5rem;margin-bottom:10px;color:var(--primary);}
-    .paquete-info .duracion{color:var(--accent);font-weight:600;margin-bottom:15px;}
-    .paquete-info .incluye{margin-bottom:20px;flex-grow:1;}
-    .incluye li{margin-bottom:5px;position:relative;padding-left:20px;}
-    .incluye li:before{content:'✓';position:absolute;left:0;color:var(--accent2);font-weight:bold;}
-    .paquete-precio{font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:15px;}
+    .paquete-card:hover{
+      border-color:var(--accent2);
+      box-shadow:0 16px 34px rgba(13,235,9,.10);
+      transform:translateY(-6px);
+    }
+    .paquete-img{ height:250px; background-size:cover; background-position:center; }
+    .paquete-info{ padding:25px; flex-grow:1; display:flex; flex-direction:column; }
+    .paquete-info h3{ font-size:1.5rem; margin-bottom:10px; color:var(--primary); }
+    .paquete-info .duracion{ color:var(--accent); font-weight:700; margin-bottom:15px; }
+    .paquete-info .incluye{ margin-bottom:20px; flex-grow:1; }
+    .incluye li{ margin-bottom:5px; position:relative; padding-left:20px; }
+    .incluye li:before{ content:'✓'; position:absolute; left:0; color:var(--accent2); font-weight:900; }
+    .paquete-precio{ font-size:1.8rem; font-weight:900; color:var(--primary); margin-bottom:15px; }
 
-    .why-choose-us{background:var(--secondary);color:#fff;}
-    .why-choose-us .section-header h2,.why-choose-us .section-header p{color:#fff;}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
-    .feature{text-align:center;padding:30px 20px;background:rgba(255,255,255,.05);border-radius:8px;transition:transform .3s ease;border:1px solid transparent;}
-    .feature:hover{transform:translateY(-5px);background:rgba(255,255,255,.1);border-color:var(--accent2);}
-    .feature-icon{font-size:2.5rem;color:var(--accent2);margin-bottom:20px;}
-    .feature h3{color:#fff;margin-bottom:15px;font-size:1.3rem;}
+    .why-choose-us{ background:var(--secondary); color:#fff; }
+    .why-choose-us .section-header h2, .why-choose-us .section-header p{ color:#fff; }
+    .features-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:30px; }
+    .feature{
+      text-align:center;
+      padding:30px 20px;
+      background:rgba(255,255,255,.06);
+      border-radius:12px;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      border:1px solid transparent;
+    }
+    .feature:hover{
+      transform:translateY(-4px);
+      background:rgba(255,255,255,.10);
+      border-color:rgba(13,235,9,.35);
+    }
+    .feature-icon{ font-size:2.5rem; color:var(--accent2); margin-bottom:20px; }
+    .feature h3{ color:#fff; margin-bottom:15px; font-size:1.3rem; }
 
-    footer{background:var(--primary);color:#ddd;padding:60px 0 20px;}
-    .footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;margin-bottom:40px;}
-    .footer-column h3{color:#fff;font-size:1.2rem;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--accent);}
-    .footer-column ul{list-style:none;}
-    .footer-column li{margin-bottom:10px;}
-    .footer-column a{transition:color .3s;font-size:.9rem;}
-    .footer-column a:hover{color:var(--accent2);padding-left:5px;}
-    .footer-logo h2{color:#fff;font-size:1.8rem;margin-bottom:15px;}
-    .footer-logo span{color:var(--accent2);}
-    .footer-logo p{margin-bottom:20px;font-size:.9rem;}
-    .social-icons{display:flex;gap:15px;margin-top:20px;}
-    .social-icons a{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(255,255,255,.1);border-radius:50%;transition:all .3s;}
-    .social-icons a:hover{background:var(--accent);transform:translateY(-3px);}
-    .copyright{text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:.9rem;color:#aaa;}
+    footer{ background:var(--primary); color:#ddd; padding:60px 0 20px; }
+    .footer-content{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:40px; margin-bottom:40px; }
+    .footer-column h3{ color:#fff; font-size:1.2rem; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--accent); }
+    .footer-column ul{ list-style:none; }
+    .footer-column li{ margin-bottom:10px; }
+    .footer-column a{ transition:color .2s ease, padding-left .2s ease; font-size:.9rem; }
+    .footer-column a:hover{ color:var(--accent2); padding-left:5px; }
+    .footer-logo h2{ color:#fff; font-size:1.8rem; margin-bottom:15px; }
+    .footer-logo span{ color:var(--accent2); }
+    .footer-logo p{ margin-bottom:20px; font-size:.9rem; }
+    .social-icons{ display:flex; gap:15px; margin-top:20px; }
+    .social-icons a{
+      display:flex; align-items:center; justify-content:center;
+      width:40px; height:40px;
+      background:rgba(255,255,255,.1);
+      border-radius:50%;
+      transition:all .2s ease;
+    }
+    .social-icons a:hover{ background:var(--accent); transform:translateY(-3px); }
+    .copyright{
+      text-align:center;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.1);
+      font-size:.9rem;
+      color:#aaa;
+    }
 
-    /* Responsive header/nav + hero text */
-    @media (max-width:992px){
-      .hero-text h2{font-size:2.5rem;text-align:center;}
-      nav{justify-content:flex-end;} /* en móvil el nav se vuelve overlay, esto no afecta */
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 992px){
+      .hero-text{ text-align:center; }
+      .hero-text h2{ font-size:2.4rem; }
+
       .nav-menu{
         position:fixed;
-        top:70px;left:-100%;
-        width:100%;height:calc(100vh - 70px);
+        top:70px; left:-100%;
+        width:100%;
+        height:calc(100vh - 70px);
         background:var(--secondary);
         flex-direction:column;
         align-items:center;
         justify-content:flex-start;
         padding-top:40px;
-        transition:left .3s ease;
+        transition:left .25s ease;
         box-shadow:0 5px 15px rgba(0,0,0,.1);
         z-index:999;
         gap:22px;
       }
-      .nav-menu.active{left:0;}
-      .mobile-menu-btn{display:block;}
-      .header-container{grid-template-columns:auto auto;} /* logo | botón (nav overlay) */
-      nav{display:block;}
+      .nav-menu.active{ left:0; }
+      .mobile-menu-btn{ display:block; }
+      .header-container{ grid-template-columns:auto auto; }
+      nav{ justify-content:flex-end; }
     }
 
-    @media (max-width:768px){
-      .hero-text h2{font-size:2.2rem;}
-      section{padding:60px 0;}
-      .section-header h2{font-size:2rem;}
-      .paquete-img{height:200px;}
-      .footer-content{grid-template-columns:1fr;gap:30px;}
+    @media (max-width: 768px){
+      .hero-text h2{ font-size:2.1rem; }
+      section{ padding:60px 0; }
+      .section-header h2{ font-size:2rem; }
+      .paquete-img{ height:200px; }
+      .footer-content{ grid-template-columns:1fr; gap:30px; }
     }
 
-    @media (min-width:769px){
-      .footer-content{grid-template-columns:2fr 1fr 1fr 1fr;}
-    }
-
-    /* Accesibilidad: reducir movimiento */
-    @media (prefers-reduced-motion: reduce){
-      *{scroll-behavior:auto !important;transition:none !important;animation:none !important;}
-      .hero-media video{display:none;}
-      .hero-media{background:#000;}
+    @media (min-width: 769px){
+      .footer-content{ grid-template-columns:2fr 1fr 1fr 1fr; }
     }
   </style>
 </head>
@@ -516,9 +749,7 @@
 
   <!-- Hero Section -->
   <section class="hero" id="home">
-    <!-- VIDEO BACKGROUND -->
     <div class="hero-media" aria-hidden="true">
-      <!-- Recomendado: MP4/WebM en tu repo -->
       <video autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg">
         <source src="assets/hero.mp4" type="video/mp4" />
         <source src="assets/hero.webm" type="video/webm" />
@@ -530,7 +761,6 @@
         <div class="hero-text">
           <h2>¿Planes para<br><span>Machu Picchu?</span></h2>
           <h2>encuentra el plan perfecto aquí</h2>
-          <!-- Flechas eliminadas -->
         </div>
 
         <!-- Barra de búsqueda -->
@@ -542,6 +772,7 @@
             </div>
 
             <div class="mct-bar">
+              <!-- Destino -->
               <div class="mct-field">
                 <span class="mct-label">Destino</span>
                 <select id="mctDestino" class="mct-select">
@@ -553,35 +784,40 @@
 
               <div class="mct-divider"></div>
 
+              <!-- Fechas -->
               <div class="mct-field mct-fecha-field">
                 <span class="mct-label">Fechas de viaje</span>
-                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha" />
+                <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha">
+                <!-- NUEVO: duración días/noches -->
+                <div id="mctDuration" class="mct-hint in-card" aria-live="polite"></div>
               </div>
 
               <div class="mct-divider"></div>
 
+              <!-- Cantidad -->
               <div class="mct-field mct-cantidad">
                 <span class="mct-label">Cantidad</span>
-                <button type="button" class="mct-qty-toggle">
+                <button type="button" class="mct-qty-toggle" aria-haspopup="dialog" aria-expanded="false">
                   <span id="mctQtyLabel">2 Pasajeros</span>
+                  <i class="fa-solid fa-chevron-down" style="opacity:.6;"></i>
                 </button>
 
                 <div class="mct-qty-panel" hidden>
                   <div class="mct-qty-row">
                     <span>Adultos</span>
                     <div class="mct-qty-ctrl" data-type="adultos">
-                      <button type="button" class="mct-btn minus">−</button>
+                      <button type="button" class="mct-btn minus" aria-label="Disminuir adultos">−</button>
                       <input type="text" value="2" readonly />
-                      <button type="button" class="mct-btn plus">＋</button>
+                      <button type="button" class="mct-btn plus" aria-label="Aumentar adultos">＋</button>
                     </div>
                   </div>
 
                   <div class="mct-qty-row">
                     <span>Niños</span>
                     <div class="mct-qty-ctrl" data-type="ninos">
-                      <button type="button" class="mct-btn minus">−</button>
+                      <button type="button" class="mct-btn minus" aria-label="Disminuir niños">−</button>
                       <input type="text" value="0" readonly />
-                      <button type="button" class="mct-btn plus">＋</button>
+                      <button type="button" class="mct-btn plus" aria-label="Aumentar niños">＋</button>
                     </div>
                   </div>
 
@@ -589,6 +825,7 @@
                 </div>
               </div>
 
+              <!-- Buscar -->
               <button type="submit" class="mct-submit">Buscar</button>
             </div>
           </form>
@@ -676,7 +913,7 @@
     </div>
   </section>
 
-  <!-- Paquetes Completos -->
+  <!-- Paquetes (recortado, puedes pegar tus tabs completos aquí si faltan) -->
   <section id="paquetes">
     <div class="container">
       <div class="section-header">
@@ -711,31 +948,8 @@
               <a href="#" class="btn">Más Información</a>
             </div>
           </div>
-
-          <div class="paquete-card">
-            <div class="paquete-img" style="background-image:url('https://images.unsplash.com/photo-1573843989-c9d7ad2bd89b?auto=format&fit=crop&w=1074&q=80');"></div>
-            <div class="paquete-info">
-              <h3>Lima y Paracas</h3>
-              <div class="duracion">3 días / 2 noches</div>
-              <p>Descubre la capital gastronómica de América y las islas balleneras de Paracas.</p>
-              <div class="incluye">
-                <ul>
-                  <li>City tour por Lima</li>
-                  <li>Excursión a las Islas Ballestas</li>
-                  <li>Visita a Huacachina</li>
-                  <li>2 noches de alojamiento</li>
-                  <li>Desayunos incluidos</li>
-                </ul>
-              </div>
-              <div class="paquete-precio">Desde $349</div>
-              <a href="#" class="btn">Más Información</a>
-            </div>
-          </div>
         </div>
       </div>
-
-      <!-- (Puedes pegar aquí los otros tabs si los tenías completos) -->
-
     </div>
   </section>
 
@@ -753,19 +967,16 @@
           <h3>Playas de Paracas</h3>
           <p>Reserva natural con islas llenas de vida marina y las misteriosas Líneas de Nazca.</p>
         </div>
-
         <div class="feature">
           <div class="feature-icon"><i class="fas fa-mountain"></i></div>
           <h3>Cañón del Colca</h3>
           <p>Uno de los cañones más profundos del mundo, hogar del majestuoso cóndor andino.</p>
         </div>
-
         <div class="feature">
           <div class="feature-icon"><i class="fas fa-ship"></i></div>
           <h3>Lago Titicaca</h3>
           <p>Navega por el lago navegable más alto del mundo y conoce las islas flotantes de los Uros.</p>
         </div>
-
         <div class="feature">
           <div class="feature-icon"><i class="fas fa-tree"></i></div>
           <h3>Selva Amazónica</h3>
@@ -844,13 +1055,13 @@
     </div>
   </footer>
 
-  <!-- Scripts Flatpickr -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
 
   <script>
-    // Mobile Menu Toggle
+    // ======= Header mobile menu
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -860,19 +1071,18 @@
       mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
     });
 
-    // Close mobile menu when clicking a link + active state
     document.querySelectorAll('.nav-menu a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
         mobileMenuBtn.querySelector('i').classList.remove('fa-times');
         mobileMenuBtn.querySelector('i').classList.add('fa-bars');
 
-        document.querySelectorAll('.nav-menu a').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
         link.classList.add('active');
       });
     });
 
-    // Tabs de paquetes
+    // ======= Tabs de paquetes (sección)
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     tabBtns.forEach(btn => {
@@ -880,251 +1090,274 @@
         tabBtns.forEach(b => b.classList.remove('active'));
         tabContents.forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
-        document.getElementById(btn.getAttribute('data-tab'))?.classList.add('active');
+        document.getElementById(btn.dataset.tab)?.classList.add('active');
       });
     });
 
-    // Smooth scrolling
+    // ======= Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        const targetElement = document.querySelector(targetId);
-        if (!targetElement) return;
-
+        const target = document.querySelector(targetId);
+        if (!target) return;
         e.preventDefault();
-        window.scrollTo({
-          top: targetElement.offsetTop - 70,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
       });
     });
 
-    // MCT Search + Flatpickr
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        const root = document.querySelector('.u_1310989460.mct-search');
-        if (!root) return;
+    // ======= MCT Search + Flatpickr + Qty UX
+    document.addEventListener('DOMContentLoaded', () => {
+      const root = document.querySelector('.u_1310989460.mct-search');
+      if (!root) return;
 
-        const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
-        const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
-        const dateInput = root.querySelector('#mctFecha');
-        const dateField = root.querySelector('.mct-fecha-field');
+      const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
+      const tabPaq = root.querySelector('.mct-tab[data-tab="paquetes"]');
 
-        const qtyPanel = root.querySelector('.mct-qty-panel');
-        const qtyToggle = root.querySelector('.mct-qty-toggle');
-        const qtyDone = root.querySelector('.mct-qty-done');
-        const qtyLabel = root.querySelector('#mctQtyLabel');
+      const dateInput = root.querySelector('#mctFecha');
+      const dateField = root.querySelector('.mct-fecha-field');
+      const durationEl = root.querySelector('#mctDuration');
 
-        const form = root.querySelector('#mctForm');
-        const destinoSelect = root.querySelector('#mctDestino');
+      const qtyPanel = root.querySelector('.mct-qty-panel');
+      const qtyToggle = root.querySelector('.mct-qty-toggle');
+      const qtyDone = root.querySelector('.mct-qty-done');
+      const qtyLabel = root.querySelector('#mctQtyLabel');
 
-        const getIsMobile = () => window.innerWidth < 1024;
+      const form = root.querySelector('#mctForm');
+      const destinoSelect = root.querySelector('#mctDestino');
 
-        // Destroy previo si existiera
-        if (dateInput._flatpickr) dateInput._flatpickr.destroy();
+      const DAY = 24 * 60 * 60 * 1000;
 
-        // showMonths responsivo (1 en tablet, 2 solo pantallas grandes)
-        const getShowMonths = () => (window.innerWidth >= 1280 ? 2 : 1);
+      const getShowMonths = () => (window.innerWidth >= 1280 ? 2 : 1);
+      const isMobile = () => window.innerWidth < 1024;
 
-        const fpOptions = {
-          locale: flatpickr.l10ns.es,
-          altInput: true,
-          altFormat: "d M Y",
-          dateFormat: "Y-m-d",
-          mode: "single",
-          minDate: "today",
-          clickOpens: true,
-          disableMobile: true,
-          showMonths: getShowMonths(),
-          closeOnSelect: false,
-          static: getIsMobile(),         // en móvil: modal centrado (CSS fixed)
-          position: getIsMobile() ? "center" : "below left",
-          rangeSeparator: " → ",
-          plugins: [
-            new confirmDatePlugin({
-              confirmText: "",
-              showAlways: true,
-              theme: "light"
-            })
-          ],
-          onReady: function(selectedDates, dateStr, instance) {
-            const confirmBtn = instance.calendarContainer.querySelector('.flatpickr-confirm');
-            if (confirmBtn) {
-              confirmBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                instance.close();
-              });
-            }
-            instance._input.style.cursor = 'pointer';
-            setTimeout(() => instance.redraw(), 10);
+      // Helpers
+      function setDurationText(text) {
+        if (!durationEl) return;
+        if (!text) {
+          durationEl.textContent = '';
+          durationEl.style.display = 'none';
+          return;
+        }
+        durationEl.textContent = text;
+        durationEl.style.display = 'block';
+      }
+
+      function computeDaysNights(start, end) {
+        if (!start || !end) return null;
+        const diffNights = Math.round((end.setHours(12,0,0,0) - start.setHours(12,0,0,0)) / DAY);
+        if (diffNights < 0) return null;
+        const days = diffNights + 1;
+        const nights = diffNights;
+        return { days, nights };
+      }
+
+      // Flatpickr init
+      if (dateInput._flatpickr) dateInput._flatpickr.destroy();
+
+      const fpOptions = {
+        locale: flatpickr.l10ns.es,
+        altInput: true,
+        altFormat: "d M Y",
+        dateFormat: "Y-m-d",
+        mode: "single",
+        minDate: "today",
+        clickOpens: true,
+        disableMobile: true,
+        showMonths: getShowMonths(),
+        closeOnSelect: false,
+        static: isMobile(),
+        position: isMobile() ? "center" : "below left",
+        rangeSeparator: " → ",
+        plugins: [
+          new confirmDatePlugin({
+            confirmText: "",
+            showAlways: true,
+            theme: "light"
+          })
+        ],
+        onReady: (selectedDates, dateStr, instance) => {
+          const confirmBtn = instance.calendarContainer.querySelector('.flatpickr-confirm');
+          if (confirmBtn) {
+            confirmBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              instance.close();
+            });
           }
-        };
+          instance._input.style.cursor = 'pointer';
 
-        // En desktop lo pegamos al field (mejor posicionamiento)
-        if (!getIsMobile()) {
-          fpOptions.appendTo = dateField;
-        }
-
-        const fp = flatpickr(dateInput, fpOptions);
-        dateInput._flatpickr = fp;
-
-        function openCalendar(e){
-          if (e) { e.preventDefault(); e.stopPropagation(); }
-          if (qtyPanel && !qtyPanel.hidden) qtyPanel.hidden = true;
-          if (fp && !fp.isOpen) fp.open();
-        }
-
-        dateInput.addEventListener('click', openCalendar);
-        dateField.addEventListener('click', openCalendar);
-
-        // Tabs
-        function setTab(mode){
-          if (mode === 'tours') {
-            tabTours.classList.add('is-active');
-            tabPaq.classList.remove('is-active');
-            fp.set('mode', 'single');
-            fp.clear();
+          // Desktop: appendTo para que quede alineado bajo el campo
+          if (!isMobile()) {
+            instance.set('appendTo', dateField);
+          }
+          setTimeout(() => instance.redraw(), 10);
+        },
+        onChange: (selectedDates, dateStr, instance) => {
+          // si es paquetes y ya hay rango completo => mostrar duración
+          const isPaq = tabPaq.classList.contains('is-active');
+          if (isPaq && instance.config.mode === 'range' && selectedDates.length === 2) {
+            const res = computeDaysNights(new Date(selectedDates[0]), new Date(selectedDates[1]));
+            if (res) setDurationText(`${res.days} días / ${res.nights} noches`);
           } else {
-            tabPaq.classList.add('is-active');
-            tabTours.classList.remove('is-active');
-            fp.set('mode', 'range');
-            fp.clear();
+            setDurationText('');
           }
         }
-        tabTours.addEventListener('click', (e) => { e.preventDefault(); setTab('tours'); });
-        tabPaq.addEventListener('click', (e) => { e.preventDefault(); setTab('paquetes'); });
-        setTab('tours');
+      };
 
-        // Cantidades
-        const updateQtyLabel = () => {
-          const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
-          const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
-          const adultos = parseInt(adultosInput.value) || 0;
-          const ninos = parseInt(ninosInput.value) || 0;
-          const total = adultos + ninos;
-          qtyLabel.textContent = total + " " + (total === 1 ? "Pasajero" : "Pasajeros");
-        };
+      const fp = flatpickr(dateInput, fpOptions);
+      dateInput._flatpickr = fp;
+
+      function openCalendar(e){
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        if (qtyPanel && !qtyPanel.hidden) qtyPanel.hidden = true;
+        if (fp && !fp.isOpen) fp.open();
+      }
+      dateInput.addEventListener('click', openCalendar);
+      dateField.addEventListener('click', openCalendar);
+
+      // Tabs Tours / Paquetes completos
+      function setTab(mode){
+        const isTours = mode === 'tours';
+        tabTours.classList.toggle('is-active', isTours);
+        tabPaq.classList.toggle('is-active', !isTours);
+
+        fp.clear();
+        setDurationText('');
+
+        if (isTours) {
+          fp.set('mode','single');
+          dateInput.placeholder = "Selecciona fecha";
+        } else {
+          fp.set('mode','range');
+          dateInput.placeholder = "Inicio → Fin";
+        }
+      }
+
+      tabTours.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); setTab('tours'); });
+      tabPaq.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); setTab('paquetes'); });
+
+      setTab('tours');
+
+      // Cantidades
+      function updateQtyLabel(){
+        const adultos = parseInt(qtyPanel.querySelector('[data-type="adultos"] input').value) || 0;
+        const ninos = parseInt(qtyPanel.querySelector('[data-type="ninos"] input').value) || 0;
+        const total = adultos + ninos;
+        qtyLabel.textContent = `${total} ${total === 1 ? 'Pasajero' : 'Pasajeros'}`;
+      }
+      updateQtyLabel();
+
+      let qtyPanelJustOpened = false;
+
+      function toggleQtyPanel(e){
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        if (fp.isOpen) fp.close();
+
+        const willOpen = qtyPanel.hidden;
+        qtyPanel.hidden = !willOpen;
+        qtyToggle.setAttribute('aria-expanded', String(willOpen));
+
+        if (willOpen) {
+          qtyPanelJustOpened = true;
+          setTimeout(() => qtyPanelJustOpened = false, 250);
+        }
+      }
+      function closeQtyPanel(){
+        qtyPanel.hidden = true;
+        qtyToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      qtyToggle.addEventListener('click', toggleQtyPanel);
+      qtyDone.addEventListener('click', closeQtyPanel);
+
+      qtyPanel.addEventListener('click', (e) => {
+        const btn = e.target.closest('.mct-btn');
+        if (!btn) return;
+        e.stopPropagation();
+
+        const ctrl = btn.closest('.mct-qty-ctrl');
+        const input = ctrl.querySelector('input');
+        let value = parseInt(input.value) || 0;
+
+        if (btn.classList.contains('plus')) value++;
+        if (btn.classList.contains('minus')) value = Math.max(0, value - 1);
+
+        input.value = value;
         updateQtyLabel();
+      });
 
-        let qtyPanelJustOpened = false;
+      document.addEventListener('click', (e) => {
+        if (qtyPanelJustOpened || qtyPanel.hidden) return;
+        const inside = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
+        if (!inside) closeQtyPanel();
+      });
 
-        function toggleQtyPanel(e){
-          if (e) { e.preventDefault(); e.stopPropagation(); }
-          if (fp.isOpen) fp.close();
-          const willOpen = qtyPanel.hidden;
-          qtyPanel.hidden = !willOpen;
-          if (willOpen) {
-            qtyPanelJustOpened = true;
-            setTimeout(() => qtyPanelJustOpened = false, 300);
+      // Submit (mantengo tu redirect)
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const tipo = tabTours.classList.contains('is-active') ? 'tours' : 'paquetes';
+        const destino = destinoSelect.value;
+        const fechaISO = dateInput.value; // single: YYYY-MM-DD | range: YYYY-MM-DD → YYYY-MM-DD
+        const pasajeros = qtyLabel.textContent;
+
+        const urlMap = {
+          tours: {
+            "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
+            "cusco": "https://www.mycuscotrip.com/tours-en-cusco",
+            "otros": "https://www.mycuscotrip.com/explora-peru"
+          },
+          paquetes: {
+            "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
+            "cusco": "https://www.mycuscotrip.com/paquetes-completos",
+            "otros": "https://www.mycuscotrip.com/explora-peru"
+          }
+        };
+
+        const url = (urlMap[tipo] && urlMap[tipo][destino]) ? urlMap[tipo][destino] : "https://www.mycuscotrip.com/";
+        const params = new URLSearchParams();
+
+        if (fechaISO) {
+          if (tipo === 'tours') {
+            params.append('fecha', fechaISO);
+          } else {
+            const partes = fechaISO.split(" → ");
+            if (partes.length === 2) {
+              params.append('fecha_inicio', partes[0]);
+              params.append('fecha_fin', partes[1]);
+            } else {
+              params.append('fecha_inicio', fechaISO);
+            }
           }
         }
-        function closeQtyPanel(){ qtyPanel.hidden = true; }
 
-        qtyToggle.addEventListener('click', toggleQtyPanel);
+        params.append('pasajeros', pasajeros.split(' ')[0]);
+        const urlFinal = params.toString() ? `${url}?${params.toString()}` : url;
+        window.location.href = urlFinal;
+      });
 
-        function handleQtyButton(e){
-          const btn = e.target.closest('.mct-btn');
-          if (!btn) return;
-          e.stopPropagation();
-          const ctrl = btn.closest('.mct-qty-ctrl');
-          const input = ctrl.querySelector('input');
-          let value = parseInt(input.value) || 0;
-          if (btn.classList.contains('plus')) value++;
-          if (btn.classList.contains('minus')) value = Math.max(0, value - 1);
-          input.value = value;
-          updateQtyLabel();
+      // Resize: actualizar showMonths y static/appendTo sin recargar
+      let lastShowMonths = getShowMonths();
+      let lastMobile = isMobile();
+
+      window.addEventListener('resize', () => {
+        const nowShow = getShowMonths();
+        const nowMobile = isMobile();
+
+        if (nowShow !== lastShowMonths) {
+          fp.set('showMonths', nowShow);
+          lastShowMonths = nowShow;
         }
-        qtyPanel.addEventListener('click', handleQtyButton);
-        qtyDone.addEventListener('click', closeQtyPanel);
 
-        document.addEventListener('click', function(e){
-          if (qtyPanelJustOpened || qtyPanel.hidden) return;
-          const isInsideQty = e.target.closest('.mct-cantidad') || e.target.closest('.mct-qty-panel');
-          if (!isInsideQty) closeQtyPanel();
-        });
-
-        // Submit + redirect
-        form.addEventListener('submit', function(e){
-          e.preventDefault();
-
-          const tipo = tabTours.classList.contains('is-active') ? 'tours' : 'paquetes';
-          const destino = destinoSelect.value;
-
-          // Usa el valor ISO del input real (flatpickr lo maneja)
-          const fechaISO = dateInput.value;
-
-          const pasajeros = qtyLabel.textContent;
-          const urlMap = {
-            tours: {
-              "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
-              "cusco": "https://www.mycuscotrip.com/tours-en-cusco",
-              "otros": "https://www.mycuscotrip.com/explora-peru"
-            },
-            paquetes: {
-              "machu-picchu": "https://www.mycuscotrip.com/machu-picchu",
-              "cusco": "https://www.mycuscotrip.com/paquetes-completos",
-              "otros": "https://www.mycuscotrip.com/explora-peru"
-            }
-          };
-
-          let url = (urlMap[tipo] && urlMap[tipo][destino]) ? urlMap[tipo][destino] : "https://www.mycuscotrip.com/";
-          const params = new URLSearchParams();
-
-          if (fechaISO) {
-            if (tipo === 'tours') {
-              params.append('fecha', fechaISO);
-            } else {
-              // range: "YYYY-MM-DD → YYYY-MM-DD" (por rangeSeparator)
-              const partes = fechaISO.split(" → ");
-              if (partes.length === 2) {
-                params.append('fecha_inicio', partes[0]);
-                params.append('fecha_fin', partes[1]);
-              } else {
-                params.append('fecha_inicio', fechaISO);
-              }
-            }
-          }
-
-          const totalPasajeros = pasajeros.split(' ')[0];
-          params.append('pasajeros', totalPasajeros);
-
-          const urlFinal = params.toString() ? `${url}?${params.toString()}` : url;
-          window.location.href = urlFinal;
-        });
-
-        // Resize: actualiza meses / modo móvil sin recargar la página
-        let lastIsMobile = getIsMobile();
-        let lastShowMonths = getShowMonths();
-
-        window.addEventListener('resize', () => {
-          const nowMobile = getIsMobile();
-          const nowShowMonths = getShowMonths();
-
-          if (nowShowMonths !== lastShowMonths) {
-            fp.set('showMonths', nowShowMonths);
-            lastShowMonths = nowShowMonths;
-          }
-
-          if (nowMobile !== lastIsMobile) {
-            // Reconfigurar static/appendTo/position de forma simple
-            fp.close();
-            fp.set('static', nowMobile);
-            fp.set('position', nowMobile ? "center" : "below left");
-
-            // En desktop: pegamos al contenedor para posicionar mejor
-            if (!nowMobile) {
-              fp.set('appendTo', dateField);
-            } else {
-              fp.set('appendTo', document.body);
-            }
-
-            lastIsMobile = nowMobile;
-          }
-        });
-
-      }, 100);
+        if (nowMobile !== lastMobile) {
+          fp.close();
+          fp.set('static', nowMobile);
+          fp.set('position', nowMobile ? "center" : "below left");
+          if (!nowMobile) fp.set('appendTo', dateField);
+          lastMobile = nowMobile;
+        }
+      });
     });
   </script>
 </body>
