@@ -379,7 +379,7 @@
       to{opacity:1}
     }
 
-    /* Panel de cantidad - SOLUCIÓN CON MODAL OVERLAY */
+    /* Panel de cantidad - ESTILOS COMPLETOS */
     .u_1310989460 .mct-qty-panel{
       position:absolute;
       top:calc(100% + 5px);
@@ -419,6 +419,7 @@
     .u_1310989460 .mct-qty-row span{
       font-weight:800;
       color:var(--mct-ink);
+      font-size: 14px;
     }
 
     .u_1310989460 .mct-qty-ctrl{
@@ -452,6 +453,8 @@
       align-items:center;
       justify-content:center;
       font-weight:900;
+      color: var(--mct-ink);
+      font-size: 16px;
       transition:transform .15s ease, box-shadow .15s ease;
     }
     
@@ -473,6 +476,9 @@
       cursor:pointer;
       box-shadow:0 12px 26px rgba(6,40,3,.18);
       transition:transform .2s ease;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .u_1310989460 .mct-qty-done:hover{
@@ -585,7 +591,7 @@
       font-weight:950 !important;
     }
 
-    /* ===== MODAL OVERLAY PARA MÓVILES - SOLUCIÓN DEFINITIVA ===== */
+    /* ===== MODAL OVERLAY PARA MÓVILES ===== */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -606,11 +612,12 @@
     .modal-content {
       background: white;
       border-radius: 16px;
-      max-width: 95vw;
+      width: min(380px, 94vw);
       max-height: 90vh;
       overflow: auto;
       position: relative;
       z-index: 9999;
+      padding: 20px;
     }
 
     /* ===== Mobile ===== */
@@ -645,12 +652,94 @@
       }
 
       /* PANEL DE CANTIDAD EN MÓVILES - DENTRO DE MODAL */
-      .u_1310989460 .mct-qty-panel{
-        position: static !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
+      .modal-qty-panel {
+        width: 100%;
+        background: #fff;
+        border: 1px solid var(--mct-border);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.18);
+      }
+      
+      .modal-qty-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 8px;
+        border-radius: 12px;
+      }
+      
+      .modal-qty-row + .modal-qty-row {
+        border-top: 1px solid rgba(23,43,39,.08);
+      }
+      
+      .modal-qty-row span {
+        font-weight: 800;
+        color: var(--mct-ink);
+        font-size: 14px;
+      }
+      
+      .modal-qty-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 10px;
+        background: #f7f9f8;
+        border-radius: 999px;
+        border: 1px solid rgba(23,43,39,.08);
+      }
+      
+      .modal-qty-ctrl input {
+        width: 34px;
+        text-align: center;
+        border: 0;
+        background: transparent;
+        font-weight: 900;
+        font-size: 15px;
+        color: var(--mct-ink);
+      }
+      
+      .modal-qty-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid rgba(23,43,39,.12);
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: var(--mct-ink);
+        font-size: 16px;
+        transition: transform .15s ease, box-shadow .15s ease;
+      }
+      
+      .modal-qty-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      }
+      
+      .modal-qty-done {
+        width: 100%;
+        height: 42px;
+        margin-top: 16px;
+        border: 0;
+        border-radius: 14px;
+        background: var(--mct-primary);
+        color: #fff;
+        font-weight: 950;
+        font-family: 'Montserrat', sans-serif;
+        cursor: pointer;
+        box-shadow: 0 12px 26px rgba(6,40,3,.18);
+        transition: transform .2s ease;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .modal-qty-done:hover {
+        transform: translateY(-1px);
       }
 
       .u_1310989460 .mct-cantidad {
@@ -658,42 +747,48 @@
       }
     }
 
-    /* Desktop: una fila + separadores */
+    /* Desktop: una fila + separadores - ALINEACIÓN CORREGIDA */
     @media (min-width: 1024px){
       .u_1310989460 .mct-card{
         width:min(980px, 92vw);
-        padding:14px 14px 30px;
+        padding:20px 20px 30px;
         padding-top:70px;
       }
 
       .u_1310989460 .mct-bar{
         display:grid;
-        grid-template-columns:1.05fr 1px 1.15fr 1px .95fr auto;
+        grid-template-columns:1.1fr 1px 1.2fr 1px 1fr auto;
         align-items:end;
         gap:0;
       }
       
       .u_1310989460 .mct-field{
-        padding:10px 14px;
+        padding:12px 16px 8px;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        height: 100%;
       }
       
       .u_1310989460 .mct-divider{
         display:block;
         width:1px;
-        height:64px;
+        height:54px;
         background:rgba(23,43,39,.14);
         border-radius:1px;
         align-self:center;
+        margin: 0;
       }
       
       .u_1310989460 .mct-submit{
         width:auto;
-        min-width:170px;
+        min-width:160px;
         height:48px;
         border-radius:999px;
-        margin:0 14px 10px 0;
+        margin:0 0 8px 10px;
         align-self:end;
         justify-self:end;
+        padding: 0 24px;
       }
 
       .u_1310989460 .mct-qty-panel{
@@ -736,6 +831,26 @@
       
       .u_1310989460 .mct-cantidad {
         padding-bottom: 28px;
+      }
+      
+      /* ALINEACIÓN DE LABELS */
+      .u_1310989460 .mct-label {
+        margin-bottom: 8px;
+        font-size: 11px;
+        letter-spacing: 0.3px;
+      }
+      
+      /* ALINEACIÓN DE INPUTS */
+      .u_1310989460 .mct-input,
+      .u_1310989460 .mct-select,
+      .u_1310989460 .mct-qty-toggle {
+        height: 46px;
+        padding: 0 16px;
+      }
+      
+      /* ESPACIADO UNIFORME */
+      .u_1310989460 .mct-bar > * {
+        margin-bottom: 0;
       }
     }
 
@@ -1022,7 +1137,7 @@
       });
     });
 
-    // ===== Search + Flatpickr + Qty - SOLUCIÓN DEFINITIVA CON MODAL =====
+    // ===== Search + Flatpickr + Qty - VERSIÓN FINAL =====
     document.addEventListener('DOMContentLoaded', () => {
       const root = document.querySelector('.u_1310989460.mct-search');
       if (!root) return;
@@ -1051,7 +1166,7 @@
       const getShowMonths = () => (isMobile() ? 1 : (window.innerWidth >= 1280 ? 2 : 1));
 
       // Sistema de gestión
-      let currentOpenComponent = null; // 'datepicker' o 'qtyPanel'
+      let currentOpenComponent = null;
       
       function setDurationText(text){
         if (!durationEl) return;
@@ -1158,15 +1273,24 @@
 
       dateInput._flatpickr = fp;
 
-      // Funciones para modal en móviles
+      // Funciones para modal en móviles - VERSIÓN CORREGIDA CON ESTILOS
       function openDatepickerModal(instance) {
-        if (currentOpenComponent === 'qtyPanel') {
-          closeQtyPanel();
-        }
+        closeAllComponents();
         
+        // Crear un nuevo contenedor para el calendar
+        const calendarContainer = document.createElement('div');
+        calendarContainer.style.width = '100%';
+        calendarContainer.style.padding = '0';
+        
+        // Clonar el calendar
         const calendarClone = instance.calendarContainer.cloneNode(true);
+        calendarClone.style.display = 'block';
+        calendarClone.style.position = 'relative';
+        calendarClone.style.width = '100%';
+        
+        calendarContainer.appendChild(calendarClone);
         modalContent.innerHTML = '';
-        modalContent.appendChild(calendarClone);
+        modalContent.appendChild(calendarContainer);
         
         // Reconfigurar eventos en el clon
         const confirmBtn = calendarClone.querySelector('.flatpickr-confirm');
@@ -1184,28 +1308,63 @@
       }
       
       function openQtyPanelModal() {
-        if (currentOpenComponent === 'datepicker') {
-          if (isMobile()) {
-            closeModal();
-          } else {
-            fp.close();
-          }
-        }
+        closeAllComponents();
         
-        const qtyPanelClone = qtyPanel.cloneNode(true);
-        modalContent.innerHTML = '';
-        modalContent.appendChild(qtyPanelClone);
+        // Obtener valores actuales
+        const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
+        const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
+        const adultosValue = adultosInput ? adultosInput.value : '2';
+        const ninosValue = ninosInput ? ninosInput.value : '0';
         
-        // Reconfigurar eventos en el clon
-        const doneBtn = qtyPanelClone.querySelector('.mct-qty-done');
+        // Crear HTML del panel de cantidad para el modal CON CLASES ESPECÍFICAS
+        const qtyPanelHTML = `
+          <div class="modal-qty-panel">
+            <div class="modal-qty-row">
+              <span>Adultos</span>
+              <div class="modal-qty-ctrl" data-type="adultos">
+                <button type="button" class="modal-qty-btn minus" aria-label="Disminuir adultos">−</button>
+                <input type="text" value="${adultosValue}" readonly />
+                <button type="button" class="modal-qty-btn plus" aria-label="Aumentar adultos">＋</button>
+              </div>
+            </div>
+            <div class="modal-qty-row">
+              <span>Niños</span>
+              <div class="modal-qty-ctrl" data-type="ninos">
+                <button type="button" class="modal-qty-btn minus" aria-label="Disminuir niños">−</button>
+                <input type="text" value="${ninosValue}" readonly />
+                <button type="button" class="modal-qty-btn plus" aria-label="Aumentar niños">＋</button>
+              </div>
+            </div>
+            <button type="button" class="modal-qty-done">Listo</button>
+          </div>
+        `;
+        
+        modalContent.innerHTML = qtyPanelHTML;
+        
+        // Reconfigurar eventos en los controles
+        const modalPanel = modalContent.querySelector('.modal-qty-panel');
+        const doneBtn = modalPanel.querySelector('.modal-qty-done');
+        
         if (doneBtn) {
-          doneBtn.addEventListener('click', closeModal);
+          doneBtn.addEventListener('click', () => {
+            // Actualizar valores en el panel original
+            const modalAdultosInput = modalPanel.querySelector('[data-type="adultos"] input');
+            const modalNinosInput = modalPanel.querySelector('[data-type="ninos"] input');
+            
+            if (modalAdultosInput && modalNinosInput && adultosInput && ninosInput) {
+              adultosInput.value = modalAdultosInput.value;
+              ninosInput.value = modalNinosInput.value;
+              updateQtyLabel();
+            }
+            
+            closeModal();
+          });
         }
         
         // Reconfigurar controles de cantidad
-        qtyPanelClone.querySelectorAll('.mct-btn').forEach(btn => {
+        modalPanel.querySelectorAll('.modal-qty-btn').forEach(btn => {
           btn.addEventListener('click', function(e) {
-            const ctrl = this.closest('.mct-qty-ctrl');
+            const ctrl = this.closest('.modal-qty-ctrl');
             const input = ctrl.querySelector('input');
             let value = parseInt(input.value) || 0;
             
@@ -1213,7 +1372,6 @@
             if (this.classList.contains('minus')) value = Math.max(0, value - 1);
             
             input.value = value;
-            updateQtyLabel();
             e.stopPropagation();
           });
         });
@@ -1227,6 +1385,16 @@
         modalContent.innerHTML = '';
         currentOpenComponent = null;
       }
+      
+      function closeAllComponents() {
+        if (!isMobile()) {
+          fp.close();
+          closeQtyPanel();
+        } else {
+          closeModal();
+        }
+        currentOpenComponent = null;
+      }
 
       // Tabs
       function setTab(mode){
@@ -1235,10 +1403,7 @@
         tabPaq.classList.toggle('is-active', !isTours);
 
         fp.close();
-        if (isMobile()) {
-          closeModal();
-        }
-        currentOpenComponent = null;
+        closeAllComponents();
         fp.clear();
         setDurationText('');
 
@@ -1321,7 +1486,8 @@
       qtyToggle.addEventListener('click', toggleQtyPanel);
       qtyDone.addEventListener('click', function() {
         if (isMobile()) {
-          closeModal();
+          // En móviles, el botón "Listo" está dentro del modal
+          // La funcionalidad se maneja en openQtyPanelModal()
         } else {
           closeQtyPanel();
         }
@@ -1360,11 +1526,7 @@
                                 e.target.closest('#mctFecha');
         
         if (!insideQty && !insideDatepicker) {
-          if (currentOpenComponent === 'qtyPanel') {
-            closeQtyPanel();
-          } else if (currentOpenComponent === 'datepicker') {
-            fp.close();
-          }
+          closeAllComponents();
         }
       });
 
@@ -1445,14 +1607,7 @@
         }
 
         if (nowMobile !== lastMobile) {
-          if (isMobile()) {
-            fp.close();
-            closeModal();
-          } else {
-            fp.close();
-            closeQtyPanel();
-          }
-          currentOpenComponent = null;
+          closeAllComponents();
           fp.set('static', nowMobile);
           fp.set('position', nowMobile ? "center" : "below left");
           if (!nowMobile) {
