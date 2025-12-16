@@ -799,10 +799,12 @@
         min-width:160px;
         height:48px;
         border-radius:999px;
-        margin:0 0 0 0;
         align-self:end;
         justify-self:end;
-        padding: 0 24px;
+    
+        margin:0 0 28px 10px !important; /* ✅ esto lo alinea con los inputs */
+        transform:none !important;       /* opcional: para que no confunda */
+        padding:0 24px;
       }
 
       .search-bar .mct-qty-panel{
