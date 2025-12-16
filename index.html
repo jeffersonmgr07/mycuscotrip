@@ -1,14 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cusco Trip | Tours y Paquetes en Cusco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO básico -->
+  <meta name="description" content="Descubre los mejores tours y paquetes a Cusco y Machu Picchu con My Cusco Trip. Viajes auténticos, seguros y personalizados.">
+
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS BASE -->
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/search-bar.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/tour-card.css">
+  <link rel="stylesheet" href="assets/css/footer.css">
+</head>
+
 <body>
+
+  <!-- ================= HEADER ================= -->
   <div id="site-header"></div>
 
+  <!-- ================= HERO ================= -->
   <section class="hero" id="home">
-    ...
-    <div id="site-search"></div>
+
+    <div class="hero-media">
+      <video autoplay muted loop playsinline>
+        <source src="assets/videos/hero-cusco.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <h2>
+          Vive la magia de <span>Cusco</span>
+        </h2>
+        <p>Explora Machu Picchu, el Valle Sagrado y más experiencias inolvidables.</p>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div id="site-search"></div>
+    </div>
   </section>
 
+  <!-- ================= MAIN ================= -->
   <main>
+
+    <!-- ===== HOME TOURS ===== -->
     <section id="home-tours">
       <div class="container">
+
         <div class="section-header">
           <h2>Recomendados</h2>
           <p>Los tours más populares para comenzar tu aventura.</p>
@@ -16,17 +61,25 @@
 
         <div id="toursGrid" class="destinos-grid"></div>
 
-        <div style="text-align:center; margin-top:24px;">
-          <a class="btn" href="all-experiences.html?list=Recomendados">Explorar más</a>
+        <div class="home-more">
+          <a class="btn" href="all-experiences.html?list=Recomendados">
+            Explorar más
+          </a>
         </div>
+
       </div>
     </section>
+
   </main>
 
+  <!-- ================= FOOTER ================= -->
   <div id="site-footer"></div>
 
-  <script src="/assets/js/includes.js"></script>
-  <script src="/assets/js/header.js"></script>
-  <script src="/assets/js/search-bar.js"></script>
-  <script src="/assets/js/home-tours.js"></script>
+  <!-- ================= JS ================= -->
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/search-bar.js"></script>
+  <script src="assets/js/includes.js"></script>
+  <script src="assets/js/home-tours.js"></script>
+
 </body>
+</html>
