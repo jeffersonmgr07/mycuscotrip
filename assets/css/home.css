@@ -1,0 +1,214 @@
+/* ===================== HOME / HERO ===================== */
+.hero{
+  height:100vh;
+  min-height:700px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  margin-top:70px; /* header fixed */
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-media{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#000;
+  overflow:hidden;
+}
+
+.hero-media video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.02);
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(rgba(6,40,3,.72), rgba(5,50,32,.78));
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+.hero-text{
+  text-align:left;
+  margin-bottom:26px;
+}
+
+.hero-text h2{
+  font-size:3.2rem;
+  margin-bottom:10px;
+  color:#fff;
+  text-shadow:0 10px 30px rgba(0,0,0,.35);
+  line-height:1.1;
+  font-family:'Montserrat', sans-serif;
+  font-weight:800;
+}
+
+.hero-text h2 span{
+  color:var(--accent2);
+  display:block;
+}
+
+/* Ajuste para móvil */
+@media (max-width: 992px){
+  .hero{
+    min-height:640px;
+  }
+  .hero-text{
+    text-align:center;
+  }
+  .hero-text h2{
+    font-size:2.3rem;
+  }
+}
+
+@media (max-width: 768px){
+  .hero-text h2{
+    font-size:2.1rem;
+  }
+}
+
+/* ===================== SECTIONS ===================== */
+section{
+  padding:80px 0;
+}
+
+.section-header{
+  text-align:center;
+  margin-bottom:50px;
+}
+
+.section-header h2{
+  font-size:2.5rem;
+  margin-bottom:15px;
+  position:relative;
+  display:inline-block;
+  color:var(--primary);
+  font-family:'Montserrat', sans-serif;
+}
+
+.section-header h2::after{
+  content:'';
+  position:absolute;
+  width:70px;
+  height:3px;
+  background:var(--accent);
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  border-radius:2px;
+}
+
+.section-header p{
+  color:var(--text-light);
+  max-width:700px;
+  margin:0 auto;
+}
+
+@media (max-width: 768px){
+  section{ padding:60px 0; }
+  .section-header h2{ font-size:2rem; }
+}
+
+/* ===================== HOME TOURS GRID ===================== */
+.destinos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:24px;
+}
+
+/* Card base (si aún no usas tour-card.css) */
+.tour-card,
+.destino-card{
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 26px rgba(0,0,0,.10);
+  border:2px solid transparent;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.tour-card:hover,
+.destino-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--accent);
+  box-shadow:0 16px 34px rgba(0,0,0,.12);
+}
+
+.tour-card a,
+.destino-card a{
+  display:block;
+}
+
+.tour-card__img,
+.destino-img{
+  height:200px;
+  background-size:cover;
+  background-position:center;
+}
+
+.tour-card__body,
+.destino-content{
+  padding:18px;
+}
+
+.tour-card__body h3,
+.destino-content h3{
+  font-size:1.2rem;
+  margin-bottom:8px;
+  color:var(--primary);
+  font-family:'Montserrat', sans-serif;
+}
+
+.tour-card__body p,
+.destino-content p{
+  color:var(--text-light);
+  margin-bottom:12px;
+  font-size:14px;
+}
+
+.tour-card__meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:12px;
+  font-size:12px;
+  color:var(--text-light);
+  font-weight:700;
+}
+
+.tour-card__price{
+  font-weight:900;
+  color:var(--primary);
+  font-family:'Montserrat', sans-serif;
+}
+
+/* ===================== CTA / Explorar más ===================== */
+.home-more{
+  text-align:center;
+  margin-top:26px;
+}
+
+.home-more .btn{
+  display:inline-block;
+  min-width:210px;
+}
+
+/* ===================== Helpers ===================== */
+.mt-24{ margin-top:24px; }
+.text-center{ text-align:center; }
