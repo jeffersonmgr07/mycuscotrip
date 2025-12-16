@@ -1,0 +1,139 @@
+/* ===================== BOOKING STATUS ===================== */
+.booking-page{
+  padding-top:90px; /* header fixed */
+  padding-bottom:60px;
+}
+
+.booking-wrapper{
+  max-width:900px;
+  margin:0 auto;
+}
+
+.booking-card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 12px 34px rgba(0,0,0,.10);
+  padding:18px;
+}
+
+.booking-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.booking-title{
+  font-family:'Montserrat', sans-serif;
+  font-weight:950;
+  color:var(--primary);
+  font-size:1.4rem;
+}
+
+.booking-id{
+  font-size:12px;
+  font-weight:900;
+  color:var(--text-light);
+  background:rgba(23,43,39,.06);
+  padding:8px 10px;
+  border-radius:999px;
+}
+
+.booking-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:950;
+  font-size:12px;
+}
+
+.booking-status--pending{
+  background:rgba(235, 9, 167, .10);
+  color:#a10673;
+}
+
+.booking-status--confirmed{
+  background:rgba(13, 235, 9, .12);
+  color:#0b6e0a;
+}
+
+.booking-status--cancelled{
+  background:rgba(255, 0, 0, .10);
+  color:#9b1111;
+}
+
+.booking-grid{
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:18px;
+  margin-top:12px;
+}
+
+@media (max-width: 900px){
+  .booking-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.booking-block{
+  border:1px solid rgba(23,43,39,.12);
+  border-radius:16px;
+  padding:14px;
+}
+
+.booking-block h3{
+  font-family:'Montserrat', sans-serif;
+  font-weight:950;
+  margin-bottom:10px;
+  color:var(--primary);
+  font-size:1rem;
+}
+
+.booking-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 0;
+  border-top:1px dashed rgba(23,43,39,.12);
+}
+
+.booking-row:first-of-type{
+  border-top:0;
+}
+
+.booking-row span{
+  font-size:13px;
+  color:var(--text-light);
+  font-weight:800;
+}
+
+.booking-row strong{
+  font-size:13px;
+  color:var(--primary);
+  font-weight:950;
+  text-align:right;
+}
+
+.booking-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.booking-actions .btn{
+  border-radius:999px;
+  padding:12px 18px;
+  font-size:12px;
+}
+
+.booking-help{
+  margin-top:16px;
+  font-size:12px;
+  color:var(--text-light);
+  text-align:center;
+}
