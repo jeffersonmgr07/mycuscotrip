@@ -1,0 +1,70 @@
+<!-- SEARCH BAR -->
+<div class="search-bar mct-search">
+  <form class="mct-card" id="mctForm" autocomplete="off">
+
+    <div class="mct-tabs" role="tablist">
+      <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
+      <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
+    </div>
+
+    <div class="mct-bar">
+
+      <div class="mct-field">
+        <span class="mct-label">Destino</span>
+        <select id="mctDestino" class="mct-select">
+          <option value="machu-picchu" selected>Machu Picchu</option>
+          <option value="cusco">Cusco</option>
+          <option value="otros">Otros destinos Perú</option>
+        </select>
+      </div>
+
+      <div class="mct-divider"></div>
+
+      <div class="mct-field mct-fecha-field">
+        <span class="mct-label">Fechas de viaje</span>
+        <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha" />
+        <div id="mctDuration" class="mct-hint in-card"></div>
+      </div>
+
+      <div class="mct-divider"></div>
+
+      <div class="mct-field mct-cantidad">
+        <span class="mct-label">Cantidad</span>
+        <button type="button" class="mct-qty-toggle">
+          <span id="mctQtyLabel">2 Pasajeros</span>
+          <i class="fa-solid fa-chevron-down" style="opacity:.6;"></i>
+        </button>
+
+        <div class="mct-qty-panel" hidden>
+          <div class="mct-qty-row">
+            <span>Adultos</span>
+            <div class="mct-qty-ctrl" data-type="adultos">
+              <button type="button" class="mct-btn minus">−</button>
+              <input type="text" value="2" readonly />
+              <button type="button" class="mct-btn plus">＋</button>
+            </div>
+          </div>
+
+          <div class="mct-qty-row">
+            <span>Niños</span>
+            <div class="mct-qty-ctrl" data-type="ninos">
+              <button type="button" class="mct-btn minus">−</button>
+              <input type="text" value="0" readonly />
+              <button type="button" class="mct-btn plus">＋</button>
+            </div>
+          </div>
+
+          <button type="button" class="mct-qty-done">Listo</button>
+        </div>
+      </div>
+
+      <button type="submit" class="mct-submit">Buscar</button>
+
+    </div>
+  </form>
+</div>
+
+<!-- MODAL (MÓVIL) -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content" id="modalContent"></div>
+</div>
