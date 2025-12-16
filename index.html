@@ -195,7 +195,7 @@
     .hero-text h2 span{color:var(--accent2);display:block;}
 
     /* ===================== SEARCH ===================== */
-    .u_1310989460{
+    .search-bar{
       width:100%;
       position:relative;
       z-index:100;
@@ -204,7 +204,7 @@
       overflow:visible;
     }
 
-    .u_1310989460 .mct-card{
+    .search-bar .mct-card{
       width:min(920px, 98vw);
       background:var(--mct-surface);
       border-radius:var(--mct-radius);
@@ -215,7 +215,7 @@
       overflow:visible;
     }
 
-    .u_1310989460 .mct-tabs{
+    .search-bar .mct-tabs{
       position:absolute;
       left:14px;
       right:14px;
@@ -226,7 +226,7 @@
       z-index:5;
     }
 
-    .u_1310989460 .mct-tab{
+    .search-bar .mct-tab{
       pointer-events:auto;
       appearance:none;
       border:1px solid rgba(0,0,0,.06);
@@ -244,54 +244,54 @@
       transition:background .2s ease, color .2s ease;
     }
 
-    .u_1310989460 .mct-tab:first-child{
+    .search-bar .mct-tab:first-child{
       border-top-right-radius:0;
       border-bottom-right-radius:0;
     }
 
-    .u_1310989460 .mct-tab:last-child{
+    .search-bar .mct-tab:last-child{
       border-top-left-radius:0;
       border-bottom-left-radius:0;
     }
 
-    .u_1310989460 .mct-tab+.mct-tab{
+    .search-bar .mct-tab+.mct-tab{
       margin-left:-1px;
     }
 
-    .u_1310989460 .mct-tab.is-active{
+    .search-bar .mct-tab.is-active{
       background:var(--mct-primary);
       color:#fff;
       border-color:transparent;
       box-shadow:0 10px 20px rgba(6,40,3,.18);
     }
 
-    .u_1310989460 .mct-bar{
+    .search-bar .mct-bar{
       display:flex;
       flex-direction:column;
       gap:10px;
     }
 
-    .u_1310989460 .mct-divider{
+    .search-bar .mct-divider{
       display:none;
     }
 
-    .u_1310989460 .mct-field{
+    .search-bar .mct-field{
       min-width:0;
       display:flex;
       flex-direction:column;
       position:relative;
     }
 
-    .u_1310989460 .mct-label{
+    .search-bar .mct-label{
       margin:0 0 6px;
       font-size:12px;
       font-weight:800;
       color:var(--mct-muted);
     }
 
-    .u_1310989460 .mct-input,
-    .u_1310989460 .mct-select,
-    .u_1310989460 .mct-qty-toggle{
+    .search-bar .mct-input,
+    .search-bar .mct-select,
+    .search-bar .mct-qty-toggle{
       width:100%;
       height:44px;
       border:1px solid var(--mct-border);
@@ -307,26 +307,26 @@
     }
 
     /* FIX PC: evitar estilos nativos de botón (alineación consistente) */
-    .u_1310989460 .mct-qty-toggle{
+    .search-bar .mct-qty-toggle{
       appearance:none;
       -webkit-appearance:none;
       line-height:1;
     }
 
-    .u_1310989460 .mct-input:focus,
-    .u_1310989460 .mct-select:focus,
-    .u_1310989460 .mct-qty-toggle:focus{
+    .search-bar .mct-input:focus,
+    .search-bar .mct-select:focus,
+    .search-bar .mct-qty-toggle:focus{
       border-color:rgba(235,9,167,.45);
       box-shadow:0 0 0 4px rgba(235,9,167,.14);
     }
 
-    .u_1310989460 .mct-fecha-field{
+    .search-bar .mct-fecha-field{
       z-index:10;
       padding-bottom:28px;
       position:relative;
     }
 
-    .u_1310989460 .mct-hint.in-card{
+    .search-bar .mct-hint.in-card{
       position:absolute;
       left:0;
       right:0;
@@ -339,13 +339,13 @@
       line-height:1.2;
     }
 
-    .u_1310989460 .mct-hint.in-card i{
+    .search-bar .mct-hint.in-card i{
       margin-right:6px;
       opacity:.75;
       font-size:12px;
     }
 
-    .u_1310989460 .mct-submit{
+    .search-bar .mct-submit{
       width:100%;
       height:48px;
       border:0;
@@ -360,19 +360,19 @@
       transition:transform .2s ease, box-shadow .2s ease;
     }
 
-    .u_1310989460 .mct-submit:hover{
+    .search-bar .mct-submit:hover{
       transform:translateY(-2px);
       box-shadow:0 18px 36px rgba(235,9,167,.28);
     }
 
     /* ===== Cantidad ===== */
-    .u_1310989460 .mct-cantidad{
+    .search-bar .mct-cantidad{
       position:relative;
       z-index:100;
       padding-bottom:22px;
     }
 
-    .u_1310989460 .mct-qty-toggle{
+    .search-bar .mct-qty-toggle{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -387,7 +387,7 @@
     }
 
     /* Panel de cantidad - ESTILOS COMPLETOS */
-    .u_1310989460 .mct-qty-panel{
+    .search-bar .mct-qty-panel{
       position:absolute;
       top:calc(100% + 5px);
       left:0;
@@ -403,15 +403,15 @@
       display:none;
     }
 
-    .u_1310989460 .mct-qty-panel[hidden] {
+    .search-bar .mct-qty-panel[hidden] {
       display: none;
     }
 
-    .u_1310989460 .mct-qty-panel:not([hidden]) {
+    .search-bar .mct-qty-panel:not([hidden]) {
       display: block;
     }
 
-    .u_1310989460 .mct-qty-row{
+    .search-bar .mct-qty-row{
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -419,17 +419,17 @@
       border-radius:12px;
     }
 
-    .u_1310989460 .mct-qty-row + .mct-qty-row{
+    .search-bar .mct-qty-row + .mct-qty-row{
       border-top:1px solid rgba(23,43,39,.08);
     }
 
-    .u_1310989460 .mct-qty-row span{
+    .search-bar .mct-qty-row span{
       font-weight:800;
       color:var(--mct-ink);
       font-size: 14px;
     }
 
-    .u_1310989460 .mct-qty-ctrl{
+    .search-bar .mct-qty-ctrl{
       display:flex;
       align-items:center;
       gap:10px;
@@ -439,7 +439,7 @@
       border:1px solid rgba(23,43,39,.08);
     }
 
-    .u_1310989460 .mct-qty-ctrl input{
+    .search-bar .mct-qty-ctrl input{
       width:34px;
       text-align:center;
       border:0;
@@ -449,7 +449,7 @@
       color:var(--mct-ink);
     }
 
-    .u_1310989460 .mct-btn{
+    .search-bar .mct-btn{
       width:34px;
       height:34px;
       border-radius:50%;
@@ -465,12 +465,12 @@
       transition:transform .15s ease, box-shadow .15s ease;
     }
 
-    .u_1310989460 .mct-btn:hover{
+    .search-bar .mct-btn:hover{
       transform:translateY(-1px);
       box-shadow:0 10px 18px rgba(0,0,0,.08);
     }
 
-    .u_1310989460 .mct-qty-done{
+    .search-bar .mct-qty-done{
       width:100%;
       height:42px;
       margin-top:12px;
@@ -488,7 +488,7 @@
       letter-spacing: 0.5px;
     }
 
-    .u_1310989460 .mct-qty-done:hover{
+    .search-bar .mct-qty-done:hover{
       transform:translateY(-1px);
     }
 
@@ -629,7 +629,7 @@
 
     /* ===== Mobile ===== */
     @media (max-width: 1023px){
-      .u_1310989460 .mct-card{
+      .search-bar .mct-card{
         width:99vw;
         padding:12px 10px 18px;
         padding-top:68px;
@@ -749,20 +749,20 @@
         transform: translateY(-1px);
       }
 
-      .u_1310989460 .mct-cantidad {
+      .search-bar .mct-cantidad {
         padding-bottom: 28px;
       }
     }
 
     /* Desktop: una fila + separadores - ALINEACIÓN CORREGIDA */
     @media (min-width: 1024px){
-      .u_1310989460 .mct-card{
+      .search-bar .mct-card{
         width:min(980px, 92vw);
         padding:20px 20px 30px;
         padding-top:70px;
       }
 
-      .u_1310989460 .mct-bar{
+      .search-bar .mct-bar{
         display:grid;
         grid-template-columns:1.1fr 1px 1.2fr 1px 1fr auto;
         align-items:end;
@@ -770,7 +770,7 @@
       }
 
       /* FIX PC: mismo padding inferior para TODOS los campos (alineación perfecta) */
-      .u_1310989460 .mct-field{
+      .search-bar .mct-field{
         padding:12px 16px 28px;
         display:flex;
         flex-direction:column;
@@ -779,10 +779,10 @@
       }
 
       /* FIX PC: ya no dependemos de padding-bottom distinto por campo */
-      .u_1310989460 .mct-fecha-field{ padding-bottom:28px; }
-      .u_1310989460 .mct-cantidad{ padding-bottom:28px; }
+      .search-bar .mct-fecha-field{ padding-bottom:28px; }
+      .search-bar .mct-cantidad{ padding-bottom:28px; }
 
-      .u_1310989460 .mct-divider{
+      .search-bar .mct-divider{
         display:block;
         width:1px;
         height:54px;
@@ -792,7 +792,7 @@
         margin: 0;
       }
 
-      .u_1310989460 .mct-submit{
+      .search-bar .mct-submit{
         width:auto;
         min-width:160px;
         height:48px;
@@ -803,7 +803,7 @@
         padding: 0 24px;
       }
 
-      .u_1310989460 .mct-qty-panel{
+      .search-bar .mct-qty-panel{
         width:320px;
         right:0;
         left:auto;
@@ -835,27 +835,27 @@
         padding: 10px !important;
       }
 
-      .u_1310989460 .mct-hint.in-card{
+      .search-bar .mct-hint.in-card{
         bottom:0;
       }
 
       /* ALINEACIÓN DE LABELS */
-      .u_1310989460 .mct-label {
+      .search-bar .mct-label {
         margin-bottom: 8px;
         font-size: 11px;
         letter-spacing: 0.3px;
       }
 
       /* ALINEACIÓN DE INPUTS */
-      .u_1310989460 .mct-input,
-      .u_1310989460 .mct-select,
-      .u_1310989460 .mct-qty-toggle {
+      .search-bar .mct-input,
+      .search-bar .mct-select,
+      .search-bar .mct-qty-toggle {
         height: 46px;
         padding: 0 16px;
       }
 
       /* ESPACIADO UNIFORME */
-      .u_1310989460 .mct-bar > * {
+      .search-bar .mct-bar > * {
         margin-bottom: 0;
       }
     }
@@ -1004,7 +1004,7 @@
           <h2>encuentra el plan perfecto aquí</h2>
         </div>
 
-        <div class="u_1310989460 mct-search">
+        <div class="search-bar mct-search">
           <form class="mct-card" id="mctForm" autocomplete="off">
             <div class="mct-tabs" role="tablist">
               <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
@@ -1145,7 +1145,7 @@
 
     // ===== Search + Flatpickr + Qty - VERSIÓN FINAL =====
     document.addEventListener('DOMContentLoaded', () => {
-      const root = document.querySelector('.u_1310989460.mct-search');
+      const root = document.querySelector('.search-bar.mct-search');
       if (!root) return;
 
       const tabTours = root.querySelector('.mct-tab[data-tab="tours"]');
