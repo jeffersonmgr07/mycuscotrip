@@ -305,6 +305,13 @@
       outline:none;
       transition:border-color .2s ease, box-shadow .2s ease;
     }
+
+    /* FIX PC: evitar estilos nativos de botón (alineación consistente) */
+    .u_1310989460 .mct-qty-toggle{
+      appearance:none;
+      -webkit-appearance:none;
+      line-height:1;
+    }
     
     .u_1310989460 .mct-input:focus,
     .u_1310989460 .mct-select:focus,
@@ -761,15 +768,20 @@
         align-items:end;
         gap:0;
       }
-      
+
+      /* FIX PC: mismo padding inferior para TODOS los campos (alineación perfecta) */
       .u_1310989460 .mct-field{
-        padding:12px 16px 8px;
+        padding:12px 16px 28px;
         display:flex;
         flex-direction:column;
         justify-content:flex-end;
         height: 100%;
       }
-      
+
+      /* FIX PC: ya no dependemos de padding-bottom distinto por campo */
+      .u_1310989460 .mct-fecha-field{ padding-bottom:28px; }
+      .u_1310989460 .mct-cantidad{ padding-bottom:28px; }
+
       .u_1310989460 .mct-divider{
         display:block;
         width:1px;
@@ -827,10 +839,6 @@
       
       .u_1310989460 .mct-hint.in-card{
         bottom:0;
-      }
-      
-      .u_1310989460 .mct-cantidad {
-        padding-bottom: 28px;
       }
       
       /* ALINEACIÓN DE LABELS */
@@ -1231,24 +1239,19 @@
             instance.set('appendTo', dateField);
           }
 
-          // Eventos para abrir el datepicker
+          // Cursor en el input visible
           const visibleInput = instance.altInput || dateInput;
           visibleInput.style.cursor = 'pointer';
-          
-          visibleInput.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (isMobile()) {
+
+          // FIX PC: NO interceptar el click en desktop (Flatpickr abre solo)
+          // SOLO en móvil usamos el modal con click custom
+          if (isMobile()) {
+            visibleInput.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
               openDatepickerModal(instance);
-            } else {
-              closeQtyPanel();
-              setTimeout(() => {
-                instance.open();
-                currentOpenComponent = 'datepicker';
-              }, 10);
-            }
-          });
+            });
+          }
         },
         onOpen: () => {
           if (!isMobile() && currentOpenComponent === 'qtyPanel') {
@@ -1273,16 +1276,14 @@
 
       dateInput._flatpickr = fp;
 
-      // Funciones para modal en móviles - VERSIÓN CORREGIDA CON ESTILOS
+      // Funciones para modal en móviles
       function openDatepickerModal(instance) {
         closeAllComponents();
         
-        // Crear un nuevo contenedor para el calendar
         const calendarContainer = document.createElement('div');
         calendarContainer.style.width = '100%';
         calendarContainer.style.padding = '0';
         
-        // Clonar el calendar
         const calendarClone = instance.calendarContainer.cloneNode(true);
         calendarClone.style.display = 'block';
         calendarClone.style.position = 'relative';
@@ -1292,7 +1293,6 @@
         modalContent.innerHTML = '';
         modalContent.appendChild(calendarContainer);
         
-        // Reconfigurar eventos en el clon
         const confirmBtn = calendarClone.querySelector('.flatpickr-confirm');
         if (confirmBtn) {
           confirmBtn.addEventListener('click', (e) => {
@@ -1310,13 +1310,11 @@
       function openQtyPanelModal() {
         closeAllComponents();
         
-        // Obtener valores actuales
         const adultosInput = qtyPanel.querySelector('[data-type="adultos"] input');
         const ninosInput = qtyPanel.querySelector('[data-type="ninos"] input');
         const adultosValue = adultosInput ? adultosInput.value : '2';
         const ninosValue = ninosInput ? ninosInput.value : '0';
         
-        // Crear HTML del panel de cantidad para el modal CON CLASES ESPECÍFICAS
         const qtyPanelHTML = `
           <div class="modal-qty-panel">
             <div class="modal-qty-row">
@@ -1341,13 +1339,11 @@
         
         modalContent.innerHTML = qtyPanelHTML;
         
-        // Reconfigurar eventos en los controles
         const modalPanel = modalContent.querySelector('.modal-qty-panel');
         const doneBtn = modalPanel.querySelector('.modal-qty-done');
         
         if (doneBtn) {
           doneBtn.addEventListener('click', () => {
-            // Actualizar valores en el panel original
             const modalAdultosInput = modalPanel.querySelector('[data-type="adultos"] input');
             const modalNinosInput = modalPanel.querySelector('[data-type="ninos"] input');
             
@@ -1361,7 +1357,6 @@
           });
         }
         
-        // Reconfigurar controles de cantidad
         modalPanel.querySelectorAll('.modal-qty-btn').forEach(btn => {
           btn.addEventListener('click', function(e) {
             const ctrl = this.closest('.modal-qty-ctrl');
@@ -1485,12 +1480,7 @@
 
       qtyToggle.addEventListener('click', toggleQtyPanel);
       qtyDone.addEventListener('click', function() {
-        if (isMobile()) {
-          // En móviles, el botón "Listo" está dentro del modal
-          // La funcionalidad se maneja en openQtyPanelModal()
-        } else {
-          closeQtyPanel();
-        }
+        if (!isMobile()) closeQtyPanel();
       });
 
       qtyPanel.addEventListener('click', (e) => {
@@ -1523,7 +1513,8 @@
                          e.target.closest('.mct-qty-panel');
         
         const insideDatepicker = e.target.closest('.flatpickr-calendar') ||
-                                e.target.closest('#mctFecha');
+                                e.target.closest('#mctFecha') ||
+                                (fp.altInput && e.target === fp.altInput);
         
         if (!insideQty && !insideDatepicker) {
           closeAllComponents();
