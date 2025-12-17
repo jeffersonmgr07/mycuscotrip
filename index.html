@@ -267,5 +267,14 @@
   <!-- Después de los otros scripts -->
   <script src="./assets/js/lib/utils.js"></script>
   <script src="./assets/js/lib/flatpickr-config.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const desktopVideos = document.querySelectorAll(".hero-video-desktop");
+    const mobileVideos = document.querySelectorAll(".hero-video-mobile");
+
+    desktopVideos.forEach(v => v.playbackRate = 0.6);
+    mobileVideos.forEach(v => v.playbackRate = 0.8);
+  });
+</script>
 </body>
 </html>
