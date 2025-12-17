@@ -1,0 +1,315 @@
+/* ============================================
+   HEADER.CSS
+   Estilos específicos del encabezado
+   ============================================ */
+
+/* Header principal */
+.header {
+  background: var(--color-secondary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  top: 0;
+  border-bottom: none;
+  transition: all var(--transition-base);
+}
+
+.header.scrolled {
+  background: rgba(5, 50, 32, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.header-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 14px;
+  height: 70px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform var(--transition-base);
+}
+
+.logo:hover {
+  transform: scale(1.02);
+}
+
+.logo img {
+  height: 42px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.logo-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-text-white);
+  letter-spacing: 0.5px;
+}
+
+/* Navegación principal */
+.nav {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li {
+  position: relative;
+}
+
+.nav-menu a {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text-white);
+  padding: 8px 0;
+  display: inline-block;
+  position: relative;
+  transition: color var(--transition-fast);
+  letter-spacing: 0.3px;
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.nav-menu a:hover {
+  color: var(--color-accent-light);
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+  transform: scaleX(1);
+}
+
+.nav-menu a.active {
+  color: var(--color-accent-light);
+}
+
+/* Submenú (futura implementación) */
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--mct-surface);
+  border-radius: var(--mct-radius);
+  box-shadow: var(--mct-shadow-lg);
+  min-width: 200px;
+  padding: var(--spacing-sm) 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all var(--transition-base);
+  z-index: 100;
+}
+
+.nav-menu li:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.submenu li {
+  width: 100%;
+}
+
+.submenu a {
+  color: var(--mct-ink) !important;
+  padding: 10px 20px !important;
+  display: block !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.submenu a:hover {
+  background: var(--mct-surface-secondary);
+  color: var(--color-accent) !important;
+}
+
+.submenu a::after {
+  display: none;
+}
+
+/* Botón menú móvil */
+.mobile-menu-btn {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-text-white);
+  justify-self: end;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background var(--transition-base);
+  background: transparent;
+  border: none;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* WhatsApp header */
+.wa-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.wa-header a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--mct-radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  transition: all var(--transition-base);
+  overflow: visible;
+}
+
+.wa-header a:hover {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.wa-header img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+}
+
+/* WhatsApp flotante */
+.wa-float {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2500;
+  width: 58px;
+  height: 58px;
+  border-radius: var(--mct-radius-full);
+  background: #25D366;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform var(--transition-base);
+  text-decoration: none;
+}
+
+.wa-float:hover {
+  transform: scale(1.06);
+}
+
+.wa-float img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+}
+
+.wa-float::before,
+.wa-float::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: var(--mct-radius-full);
+  border: 2px solid rgba(37, 211, 102, 0.55);
+  opacity: 0;
+  animation: waRipple 2.2s infinite;
+}
+
+.wa-float::after {
+  inset: -16px;
+  animation-delay: 0.55s;
+  border-color: rgba(37, 211, 102, 0.35);
+}
+
+/* User menu (futuro) */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--mct-radius-full);
+  overflow: hidden;
+  border: 2px solid var(--color-accent);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--color-text-white);
+  font-size: 0.9rem;
+}
+
+/* Language selector (futuro) */
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--mct-radius);
+  background: rgba(255, 255, 255, 0.08);
+  transition: background var(--transition-base);
+}
+
+.lang-selector:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lang-flag {
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.lang-code {
+  color: var(--color-text-white);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
