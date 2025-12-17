@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>My Cusco Trip | Tours y Paquetes en Cusco</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyCuscoTrip - Tours y Paquetes Turísticos en Cusco y Machu Picchu</title>
 
-  <!-- SEO básico -->
-  <meta name="description" content="Descubre los mejores tours y paquetes a Cusco y Machu Picchu con My Cusco Trip. Viajes auténticos, seguros y personalizados.">
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css"/>
 
-  <!-- ICONS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS BASE -->
-  <link rel="stylesheet" href="assets/css/base.css">
+  <!-- Estilos -->
+  <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/search-bar.css">
-  <link rel="stylesheet" href="assets/css/home.css">
-  <link rel="stylesheet" href="assets/css/tour-card.css">
   <link rel="stylesheet" href="assets/css/footer.css">
+  <link rel="stylesheet" href="assets/css/search-bar.css">
+  <link rel="stylesheet" href="assets/css/components.css">
 </head>
 
 <body>
+  <!-- Header (se cargará dinámicamente) -->
+  <div id="header-container"></div>
 
-  <!-- ================= HEADER ================= -->
-  <div id="site-header"></div>
+  <!-- WhatsApp flotante (móvil) -->
+  <a class="wa-float" href="https://wa.me/51999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img src="assets/img/LogoWhatsapp.png" alt="WhatsApp" />
+  </a>
 
-  <!-- ================= HERO ================= -->
+  <!-- Hero -->
   <section class="hero" id="home">
-
-    <div class="hero-media">
-      <video autoplay muted loop playsinline>
-        <source src="assets/videos/hero-cusco.mp4" type="video/mp4">
+    <div class="hero-media" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/img/hero-poster.jpg">
+        <source src="assets/videos/hero.mp4" type="video/mp4" />
+        <source src="assets/videos/hero.webm" type="video/webm" />
       </video>
     </div>
 
-    <div class="hero-content">
-      <div class="hero-text">
-        <h2>
-          Vive la magia de <span>Cusco</span>
-        </h2>
-        <p>Explora Machu Picchu, el Valle Sagrado y más experiencias inolvidables.</p>
-      </div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h2>¿Planes para<br><span>Machu Picchu?</span></h2>
+          <h2>encuentra el plan perfecto aquí</h2>
+        </div>
 
-      <!-- SEARCH BAR -->
-      <div id="site-search"></div>
+        <!-- Componente Search Bar -->
+        <div id="search-bar-container"></div>
+      </div>
     </div>
   </section>
 
-  <!-- ================= MAIN ================= -->
-  <main>
+  <!-- MODAL OVERLAY PARA COMPONENTES (MÓVILES) -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
 
-    <!-- ===== HOME TOURS ===== -->
-    <section id="home-tours">
-      <div class="container">
-
-        <div class="section-header">
-          <h2>Recomendados</h2>
-          <p>Los tours más populares para comenzar tu aventura.</p>
-        </div>
-
-        <div id="toursGrid" class="destinos-grid"></div>
-
-        <div class="home-more">
-          <a class="btn" href="all-experiences.html?list=Recomendados">
-            Explorar más
-          </a>
-        </div>
-
+  <!-- Sección de Destinos -->
+  <section id="machu-picchu">
+    <div class="container">
+      <div class="section-header">
+        <h2>Machu Picchu</h2>
+        <p>Descubre la maravilla del mundo moderno con nuestros tours exclusivos</p>
       </div>
-    </section>
+      <div class="destinos-grid" id="products-container">
+        <!-- Los productos se cargarán aquí dinámicamente -->
+      </div>
+    </div>
+  </section>
 
-  </main>
+  <!-- Footer (se cargará dinámicamente) -->
+  <div id="footer-container"></div>
 
-  <!-- ================= FOOTER ================= -->
-  <div id="site-footer"></div>
-
-  <!-- ================= JS ================= -->
-  <script src="assets/js/header.js"></script>
-  <script src="assets/js/search-bar.js"></script>
-  <script src="assets/js/includes.js"></script>
-  <script src="assets/js/home-tours.js"></script>
-
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+  
+  <script src="assets/js/main.js" type="module"></script>
 </body>
 </html>
