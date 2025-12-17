@@ -15,14 +15,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css"/>
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/footer.css">
-  <link rel="stylesheet" href="assets/css/search-bar.css">
-  <link rel="stylesheet" href="assets/css/products.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
+  <!-- Estilos con rutas relativas -->
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/header.css">
+  <link rel="stylesheet" href="./assets/css/footer.css">
+  <link rel="stylesheet" href="./assets/css/search-bar.css">
+  <link rel="stylesheet" href="./assets/css/products.css">
+  <link rel="stylesheet" href="./assets/css/responsive.css">
 </head>
 
 <body>
@@ -31,16 +31,14 @@
 
   <!-- WhatsApp flotante (móvil) -->
   <a class="wa-float" href="https://wa.me/51999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="assets/img/LogoWhatsapp.png" alt="WhatsApp" />
+    <img src="./assets/img/LogoWhatsapp.png" alt="WhatsApp" />
   </a>
 
   <!-- Hero -->
   <section class="hero" id="home">
     <div class="hero-media" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/img/hero-poster.jpg">
-        <source src="assets/videos/hero.mp4" type="video/mp4" />
-        <source src="assets/videos/hero.webm" type="video/webm" />
-      </video>
+      <!-- Video placeholder - puedes agregar videos después -->
+      <div style="width:100%;height:100%;background:linear-gradient(rgba(6,40,3,.8),rgba(5,50,32,.9));"></div>
     </div>
 
     <div class="container">
@@ -77,79 +75,172 @@
   <!-- Footer (se cargará dinámicamente) -->
   <div id="footer-container"></div>
 
-  <!-- Scripts -->
+  <!-- Scripts EXTERNOS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
   
-  <!-- Script principal SIMPLIFICADO (sin módulos) -->
+  <!-- Script para cargar componentes dinámicamente - INLINE para evitar problemas de ruta -->
   <script>
-    // Cargar componentes dinámicamente - VERSIÓN SIMPLIFICADA
+    // Configuración para GitHub Pages
+    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
+    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+    
+    console.log('🚀 Configuración:', { IS_GITHUB_PAGES, BASE_PATH });
+    
+    // Función para cargar componentes
     async function loadComponent(componentName, targetId) {
       try {
-        const response = await fetch(`components/${componentName}.html`);
+        // Construir ruta correcta para GitHub Pages
+        const componentPath = `${BASE_PATH}components/${componentName}.html`;
+        console.log(`📁 Cargando: ${componentPath}`);
+        
+        const response = await fetch(componentPath);
+        
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
+        
         const html = await response.text();
-        document.getElementById(targetId).innerHTML = html;
+        const target = document.getElementById(targetId);
         
-        console.log(`✅ Componente ${componentName} cargado`);
-        
-        // Inicializar scripts específicos del componente
-        if (componentName === 'header' && window.MyCuscoTripHeader) {
-          console.log('✅ Header JS inicializado');
+        if (target) {
+          target.innerHTML = html;
+          console.log(`✅ ${componentName} cargado en #${targetId}`);
+          
+          // Corregir rutas de imágenes dentro del componente cargado
+          fixImagePaths(target);
+          
+          return true;
         }
+        
+        return false;
         
       } catch (error) {
         console.error(`❌ Error cargando ${componentName}:`, error);
-        // Mostrar fallback
-        document.getElementById(targetId).innerHTML = 
-          `<div style="color: red; padding: 20px; text-align: center;">
-             Error cargando ${componentName}: ${error.message}
-           </div>`;
+        
+        // Mostrar contenido de fallback
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.innerHTML = getFallbackContent(componentName);
+        }
+        
+        return false;
       }
     }
-
-    // Cargar todos los componentes al iniciar
-    document.addEventListener('DOMContentLoaded', async () => {
-      console.log('🚀 DOM cargado, iniciando carga de componentes...');
+    
+    // Corregir rutas de imágenes
+    function fixImagePaths(container) {
+      const images = container.querySelectorAll('img[src*="assets/"]');
+      images.forEach(img => {
+        const currentSrc = img.getAttribute('src');
+        if (currentSrc.startsWith('assets/')) {
+          const newSrc = `.${currentSrc}`;
+          img.setAttribute('src', newSrc);
+          console.log(`🔄 Ruta corregida: ${currentSrc} -> ${newSrc}`);
+        }
+      });
+    }
+    
+    // Contenido de fallback si no se puede cargar un componente
+    function getFallbackContent(componentName) {
+      const fallbacks = {
+        'header': `
+          <header style="background:#053220;padding:15px 0;">
+            <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="color:white;font-weight:bold;font-size:1.2rem;">MyCuscoTrip</div>
+              <nav>
+                <a href="#home" style="color:white;margin:0 10px;">Home</a>
+                <a href="#machu-picchu" style="color:white;margin:0 10px;">Machu Picchu</a>
+              </nav>
+            </div>
+          </header>
+        `,
+        'search-bar': `
+          <div style="background:white;padding:20px;border-radius:10px;margin-top:20px;">
+            <div style="text-align:center;color:#666;padding:20px;">
+              Barra de búsqueda temporalmente no disponible
+            </div>
+          </div>
+        `,
+        'footer': `
+          <footer style="background:#062803;color:white;padding:40px 0;margin-top:40px;">
+            <div class="container">
+              <div style="text-align:center;">
+                <p>© 2023 MyCuscoTrip</p>
+                <p>Especialistas en viajes a Cusco y Machu Picchu</p>
+              </div>
+            </div>
+          </footer>
+        `
+      };
       
-      // Cargar componentes en paralelo
+      return fallbacks[componentName] || `<div>Componente ${componentName} no disponible</div>`;
+    }
+    
+    // Función para inicializar componentes JS
+    function initializeComponents() {
+      console.log('🔄 Inicializando componentes JS...');
+      
+      // Header
+      if (typeof MyCuscoTripHeader === 'function') {
+        try {
+          new MyCuscoTripHeader();
+          console.log('✅ Header JS inicializado');
+        } catch (e) {
+          console.error('❌ Error en Header JS:', e);
+        }
+      }
+      
+      // SearchBar (necesita Flatpickr)
+      if (typeof MyCuscoTripSearchBar === 'function' && typeof flatpickr !== 'undefined') {
+        setTimeout(() => {
+          try {
+            new MyCuscoTripSearchBar();
+            console.log('✅ SearchBar JS inicializado');
+          } catch (e) {
+            console.error('❌ Error en SearchBar JS:', e);
+          }
+        }, 500);
+      }
+      
+      // Products
+      if (typeof MyCuscoTripProducts === 'function') {
+        try {
+          new MyCuscoTripProducts();
+          console.log('✅ Products JS inicializado');
+        } catch (e) {
+          console.error('❌ Error en Products JS:', e);
+        }
+      }
+    }
+    
+    // Cargar e inicializar todo
+    async function initializeApp() {
+      console.log('🎬 Iniciando aplicación en GitHub Pages...');
+      
+      // Cargar componentes HTML
       await Promise.all([
         loadComponent('header', 'header-container'),
         loadComponent('search-bar', 'search-bar-container'),
         loadComponent('footer', 'footer-container')
       ]);
       
-      console.log('✅ Todos los componentes cargados');
-      
-      // Inicializar scripts de componentes (asegurarse que estén cargados)
-      setTimeout(() => {
-        if (typeof MyCuscoTripHeader !== 'undefined') {
-          new MyCuscoTripHeader();
-        }
-        if (typeof MyCuscoTripSearchBar !== 'undefined') {
-          new MyCuscoTripSearchBar();
-        }
-        if (typeof MyCuscoTripProducts !== 'undefined') {
-          new MyCuscoTripProducts();
-        }
-      }, 100);
-    });
+      // Inicializar JS después de cargar HTML
+      setTimeout(initializeComponents, 300);
+    }
+    
+    // Iniciar cuando esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
   </script>
   
- <!-- Scripts EXTERNOS primero -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
-  
-  <!-- Scripts PROPIOS después -->
-  <script src="assets/js/components/header.js"></script>
-  <script src="assets/js/components/search-bar.js"></script>
-  <script src="assets/js/components/products.js"></script>
-  
-  <!-- Script principal ÚLTIMO -->
-  <script src="assets/js/main.js"></script>
+  <!-- Scripts de componentes (con rutas relativas) -->
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/components/search-bar.js"></script>
+  <script src="./assets/js/components/products.js"></script>
 </body>
 </html>
