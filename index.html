@@ -82,10 +82,74 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
   
-  <script src="assets/js/main.js" type="module"></script>
-  <!-- Scripts propios -->
-  <script src="assets/js/components/header.js" defer></script>
-  <script src="assets/js/components/search-bar.js" defer></script>
-  <script src="assets/js/components/products.js" defer></script>
+  <!-- Script principal SIMPLIFICADO (sin módulos) -->
+  <script>
+    // Cargar componentes dinámicamente - VERSIÓN SIMPLIFICADA
+    async function loadComponent(componentName, targetId) {
+      try {
+        const response = await fetch(`components/${componentName}.html`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = await response.text();
+        document.getElementById(targetId).innerHTML = html;
+        
+        console.log(`✅ Componente ${componentName} cargado`);
+        
+        // Inicializar scripts específicos del componente
+        if (componentName === 'header' && window.MyCuscoTripHeader) {
+          console.log('✅ Header JS inicializado');
+        }
+        
+      } catch (error) {
+        console.error(`❌ Error cargando ${componentName}:`, error);
+        // Mostrar fallback
+        document.getElementById(targetId).innerHTML = 
+          `<div style="color: red; padding: 20px; text-align: center;">
+             Error cargando ${componentName}: ${error.message}
+           </div>`;
+      }
+    }
+
+    // Cargar todos los componentes al iniciar
+    document.addEventListener('DOMContentLoaded', async () => {
+      console.log('🚀 DOM cargado, iniciando carga de componentes...');
+      
+      // Cargar componentes en paralelo
+      await Promise.all([
+        loadComponent('header', 'header-container'),
+        loadComponent('search-bar', 'search-bar-container'),
+        loadComponent('footer', 'footer-container')
+      ]);
+      
+      console.log('✅ Todos los componentes cargados');
+      
+      // Inicializar scripts de componentes (asegurarse que estén cargados)
+      setTimeout(() => {
+        if (typeof MyCuscoTripHeader !== 'undefined') {
+          new MyCuscoTripHeader();
+        }
+        if (typeof MyCuscoTripSearchBar !== 'undefined') {
+          new MyCuscoTripSearchBar();
+        }
+        if (typeof MyCuscoTripProducts !== 'undefined') {
+          new MyCuscoTripProducts();
+        }
+      }, 100);
+    });
+  </script>
+  
+ <!-- Scripts EXTERNOS primero -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+  
+  <!-- Scripts PROPIOS después -->
+  <script src="assets/js/components/header.js"></script>
+  <script src="assets/js/components/search-bar.js"></script>
+  <script src="assets/js/components/products.js"></script>
+  
+  <!-- Script principal ÚLTIMO -->
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
