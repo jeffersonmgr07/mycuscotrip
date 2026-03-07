@@ -1,15 +1,379 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Full Day Machu Picchu | My Cusco Trip</title>
-  <meta http-equiv="refresh" content="0; url=/mycuscotrip/Product-page-full-day-machu-picchu.html" />
-  <script>
-    window.location.replace("/mycuscotrip/Product-page-full-day-machu-picchu.html");
-  </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Full Day Machu Picchu en tren | My Cusco Trip</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f7f6;
+color:#1d2b28;
+}
+
+.container{
+width:1100px;
+max-width:95%;
+margin:auto;
+}
+
+.hero{
+background:url("https://images.unsplash.com/photo-1526392060635-9d6019884377") center/cover;
+padding:120px 0;
+color:white;
+}
+
+.hero h1{
+font-size:46px;
+margin-bottom:10px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:14px;
+margin-top:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+h2{
+margin-bottom:15px;
+}
+
+select,input{
+width:100%;
+padding:12px;
+margin-top:8px;
+margin-bottom:15px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+padding:14px 20px;
+border:none;
+border-radius:30px;
+background:#eb09a7;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.timeline{
+margin-top:20px;
+}
+
+.timeline-item{
+border-left:4px solid #eb09a7;
+padding-left:15px;
+margin-bottom:15px;
+}
+
+.price{
+font-size:28px;
+font-weight:bold;
+}
+
+.booking{
+position:sticky;
+top:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:30px;
+}
+
+@media(max-width:900px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+
 </head>
+
 <body>
-  <p>Redirigiendo al tour...</p>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>Full Day Machu Picchu en tren</h1>
+
+<p>
+Explora Machu Picchu en un tour full day desde Cusco con tren turístico,
+bus ecológico y guía profesional.
+</p>
+
+</div>
+
+</section>
+
+<div class="container grid">
+
+<div>
+
+<div class="card">
+
+<h2>Itinerario del tour</h2>
+
+<div class="timeline" id="timeline"></div>
+
+</div>
+
+</div>
+
+<div class="booking">
+
+<div class="card">
+
+<h2>Reserva</h2>
+
+<label>Fecha</label>
+<input type="date">
+
+<label>Empresa</label>
+<select id="company"></select>
+
+<label>Categoría ida</label>
+<select id="outboundCategory"></select>
+
+<label>Categoría retorno</label>
+<select id="returnCategory"></select>
+
+<label>Horario ida</label>
+<select id="outboundSchedule"></select>
+
+<label>Horario retorno</label>
+<select id="returnSchedule"></select>
+
+<div class="price" id="price">USD 389</div>
+
+<br>
+
+<button>Reservar</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const trains = {
+
+incaRail:{
+name:"Inca Rail",
+
+categories:{
+
+voyager:{
+name:"The Voyager",
+price:389,
+outbound:[
+{time:"06:40",arrival:"08:01"},
+{time:"11:15",arrival:"12:41"}
+],
+return:[
+{time:"14:30",arrival:"15:56"},
+{time:"19:00",arrival:"20:41"}
+]
+},
+
+prime:{
+name:"The Prime",
+price:480,
+outbound:[
+{time:"06:40",arrival:"08:01"},
+{time:"11:15",arrival:"12:41"}
+],
+return:[
+{time:"14:30",arrival:"15:56"},
+{time:"19:00",arrival:"20:41"}
+]
+}
+
+}
+
+},
+
+peruRail:{
+name:"PeruRail",
+
+categories:{
+
+expedition:{
+name:"Expedition",
+price:399,
+outbound:[
+{time:"06:10",arrival:"07:40"},
+{time:"15:37",arrival:"17:02"}
+],
+return:[
+{time:"14:55",arrival:"16:55"},
+{time:"18:20",arrival:"20:22"}
+]
+},
+
+vistadome:{
+name:"Vistadome",
+price:469,
+outbound:[
+{time:"07:22",arrival:"08:52"}
+],
+return:[
+{time:"17:10",arrival:"18:41"}
+]
+}
+
+}
+
+}
+
+}
+
+let state={
+company:"incaRail",
+outboundCategory:"voyager",
+returnCategory:"prime",
+outbound:0,
+return:1
+}
+
+const companySelect=document.getElementById("company")
+const outCat=document.getElementById("outboundCategory")
+const retCat=document.getElementById("returnCategory")
+const outSch=document.getElementById("outboundSchedule")
+const retSch=document.getElementById("returnSchedule")
+
+function init(){
+
+for(const key in trains){
+companySelect.innerHTML+=`<option value="${key}">${trains[key].name}</option>`
+}
+
+companySelect.value=state.company
+
+renderCategories()
+
+}
+
+function renderCategories(){
+
+const company=trains[state.company]
+
+outCat.innerHTML=""
+retCat.innerHTML=""
+
+for(const key in company.categories){
+
+outCat.innerHTML+=`<option value="${key}">${company.categories[key].name}</option>`
+retCat.innerHTML+=`<option value="${key}">${company.categories[key].name}</option>`
+
+}
+
+outCat.value=state.outboundCategory
+retCat.value=state.returnCategory
+
+renderSchedules()
+
+}
+
+function renderSchedules(){
+
+const company=trains[state.company]
+
+const outbound=company.categories[state.outboundCategory]
+const ret=company.categories[state.returnCategory]
+
+outSch.innerHTML=""
+retSch.innerHTML=""
+
+outbound.outbound.forEach((t,i)=>{
+outSch.innerHTML+=`<option value="${i}">${t.time} → ${t.arrival}</option>`
+})
+
+ret.return.forEach((t,i)=>{
+retSch.innerHTML+=`<option value="${i}">${t.time} → ${t.arrival}</option>`
+})
+
+renderTimeline()
+
+}
+
+function renderTimeline(){
+
+const company=trains[state.company]
+
+const outbound=company.categories[state.outboundCategory]
+const ret=company.categories[state.returnCategory]
+
+const o=outbound.outbound[outSch.value||0]
+const r=ret.return[retSch.value||0]
+
+document.getElementById("price").innerText=
+"USD "+((outbound.price+ret.price)/2)
+
+document.getElementById("timeline").innerHTML=
+
+`<div class="timeline-item">
+Recojo en Cusco temprano por la mañana
+</div>
+
+<div class="timeline-item">
+Tren ida ${o.time} → ${o.arrival}
+</div>
+
+<div class="timeline-item">
+Tour guiado en Machu Picchu
+</div>
+
+<div class="timeline-item">
+Tiempo libre en Aguas Calientes
+</div>
+
+<div class="timeline-item">
+Tren retorno ${r.time} → ${r.arrival}
+</div>
+
+<div class="timeline-item">
+Retorno a Cusco por la noche
+</div>`
+
+}
+
+companySelect.onchange=e=>{
+state.company=e.target.value
+renderCategories()
+}
+
+outCat.onchange=e=>{
+state.outboundCategory=e.target.value
+renderSchedules()
+}
+
+retCat.onchange=e=>{
+state.returnCategory=e.target.value
+renderSchedules()
+}
+
+outSch.onchange=renderTimeline
+retSch.onchange=renderTimeline
+
+init()
+
+</script>
+
 </body>
 </html>
