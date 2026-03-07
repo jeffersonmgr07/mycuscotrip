@@ -37,6 +37,8 @@ function renderTour(tour, content, reviews) {
   renderList("[data-tour-excludes]", content.excludes);
   renderItinerary(content.itinerary);
   renderReviews(reviews);
+  renderTrainCategories(tour);
+  document.querySelector("[data-tour-price]").textContent = `USD ${getInitialPrice(tour)}`;
 }
 
 function renderList(selector, items = []) {
