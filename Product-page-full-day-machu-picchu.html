@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Day Machu Picchu | My Cusco Trip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <style>
+    :root {
+      --primary: #062803;
+      --secondary: #053220;
+      --accent: #eb09a7;
+      --accent-2: #0deb09;
+      --text: #22302d;
+      --muted: #64706d;
+      --bg: #f7faf8;
+      --card: #ffffff;
+      --border: rgba(23, 43, 39, 0.12);
+      --shadow: 0 18px 44px rgba(10, 26, 21, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      line-height: 1.15;
+    }
+
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select { font: inherit; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(6, 40, 3, 0.08);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #d90895);
+      box-shadow: 0 16px 34px rgba(235, 9, 167, 0.28);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .product-hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(6,40,3,.90), rgba(5,50,32,.72)),
+        url('https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80') center/cover;
+      color: #fff;
+      padding: 110px 0 72px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .hero-copy h1 {
+      color: #fff;
+      font-size: clamp(2.3rem, 5vw, 4.1rem);
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-copy .subtitle {
+      max-width: 720px;
+      color: rgba(255,255,255,.9);
+      font-size: 1.08rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0 26px;
+    }
+
+    .hero-meta .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      min-height: 360px;
+    }
+
+    .hero-gallery .main,
+    .hero-gallery .stack > div {
+      border-radius: 22px;
+      overflow: hidden;
+      min-height: 170px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .hero-gallery .main::after,
+    .hero-gallery .stack > div::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.30), transparent 40%);
+    }
+
+    .hero-gallery .main {
+      background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1200&q=80');
+    }
+
+    .hero-gallery .stack {
+      display: grid;
+      gap: 12px;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .hero-gallery .stack .img-2 {
+      background-image: url('https://images.unsplash.com/photo-1531065208531-4036c0dba3ca?auto=format&fit=crop&w=900&q=80');
+    }
+
+    .hero-gallery .stack .img-3 {
+      background-image: url('https://images.unsplash.com/photo-1520637736862-4d197d17c55a?auto=format&fit=crop&w=900&q=80');
+    }
+
+    .summary-strip {
+      margin-top: -28px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card small {
+      display: block;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .summary-card span {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .product-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 28px;
+      padding: 42px 0 80px;
+      align-items: start;
+    }
+
+    .content-col {
+      display: grid;
+      gap: 26px;
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .highlight {
+      display: flex;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fbfdfc;
+    }
+
+    .highlight i {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .trip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .trip-box {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fcfffd;
+    }
+
+    .trip-box ul,
+    .included-list,
+    .faq-list,
+    .timeline-list,
+    .policy-list { margin: 0; padding-left: 18px; }
+
+    .trip-box li,
+    .included-list li,
+    .faq-list li,
+    .policy-list li { margin-bottom: 10px; }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: rgba(6, 40, 3, 0.15);
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .timeline-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      z-index: 1;
+      margin-top: 4px;
+      box-shadow: 0 10px 18px rgba(6,40,3,.18);
+    }
+
+    .timeline-card {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .timeline-card small {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .reviews-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .rating-big {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .rating-score {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .stars { color: #f5b301; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .review-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .review-card .author {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .review-card .author strong { color: var(--primary); }
+    .review-card p { color: var(--muted); font-size: .96rem; }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .faq-item + .faq-item { margin-top: 12px; }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 18px 20px;
+      text-align: left;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      display: none;
+    }
+
+    .faq-item.is-open .faq-answer { display: block; }
+    .faq-item.is-open .faq-question i { transform: rotate(180deg); }
+
+    .booking-card {
+      position: sticky;
+      top: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .price-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-row .from {
+      color: var(--muted);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .price-row .price {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .booking-rating {
+      text-align: right;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    .booking-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: .88rem;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 52px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 0 16px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(235,9,167,.38);
+      box-shadow: 0 0 0 4px rgba(235,9,167,.12);
+    }
+
+    .travelers {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      background: #fbfdfc;
+    }
+
+    .traveler-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .traveler-copy small {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+    }
+
+    .stepper button {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 0;
+      background: #eff4f1;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .stepper span {
+      width: 28px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .price-breakdown {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .price-line,
+    .price-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .price-line {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .price-total {
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.08rem;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .booking-note {
+      display: flex;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .92rem;
+      background: #f7fbf8;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 9px 14px;
+      background: #f3f7f4;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: .92rem;
+    }
+
+    .foot-cta {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: 28px;
+      padding: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .foot-cta h3,
+    .foot-cta p { color: #fff; }
+    .foot-cta p { opacity: .88; }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .product-layout,
+      .summary-grid,
+      .reviews-grid,
+      .trip-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-gallery {
+        min-height: unset;
+      }
+
+      .booking-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .product-hero { padding: 92px 0 52px; }
+      .section-card { padding: 22px; }
+      .highlights { grid-template-columns: 1fr; }
+      .hero-gallery { grid-template-columns: 1fr; }
+      .hero-gallery .stack { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+      .foot-cta { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <section class="product-hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="pill"><i class="fa-solid fa-train"></i> Full Day · Machu Picchu por tren</span>
+        <h1>Full Day Machu Picchu</h1>
+        <p class="subtitle">Una página de producto orientada a conversión, con estructura tipo experiencias de TripAdvisor: resumen claro, itinerario detallado, reseñas, preguntas frecuentes y un motor de reserva visible en todo momento.</p>
+        <div class="hero-meta">
+          <div class="meta-item"><i class="fa-solid fa-star"></i> 4.9 · 326 reseñas</div>
+          <div class="meta-item"><i class="fa-regular fa-clock"></i> 1 día completo</div>
+          <div class="meta-item"><i class="fa-solid fa-bus"></i> Recojo en Cusco</div>
+          <div class="meta-item"><i class="fa-solid fa-language"></i> Español / Inglés</div>
+        </div>
+        <div class="hero-actions">
+          <a href="#booking" class="btn btn-primary">Reservar ahora</a>
+          <a href="#itinerario" class="btn btn-secondary">Ver itinerario</a>
+        </div>
+      </div>
+
+      <div class="hero-gallery" aria-label="Galería del tour">
+        <div class="main"></div>
+        <div class="stack">
+          <div class="img-2"></div>
+          <div class="img-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="summary-strip">
+    <div class="container summary-grid">
+      <article class="summary-card">
+        <small>Duración</small>
+        <strong>15 a 17 horas</strong>
+        <span>Salida madrugada y retorno por la noche.</span>
+      </article>
+      <article class="summary-card">
+        <small>Ideal para</small>
+        <strong>Viajeros con poco tiempo</strong>
+        <span>La forma más eficiente de visitar Machu Picchu.</span>
+      </article>
+      <article class="summary-card">
+        <small>Incluye</small>
+        <strong>Tren + bus + guía</strong>
+        <span>Armado para que el cliente entienda valor rápido.</span>
+      </article>
+      <article class="summary-card">
+        <small>Desde</small>
+        <strong>US$ 289</strong>
+        <span>Precio dinámico según fecha y pasajeros.</span>
+      </article>
+    </div>
+  </section>
+
+  <main class="container product-layout">
+    <div class="content-col">
+      <section class="section-card">
+        <div class="section-head">
+          <div>
+            <h2>Qué hace especial esta experiencia</h2>
+            <p>Este bloque reemplaza la típica introducción larga con beneficios claros, escaneables y orientados a decisión de compra.</p>
+          </div>
+        </div>
+
+        <div class="highlights">
+          <article class="highlight">
+            <i class="fa-solid fa-route"></i>
+            <div>
+              <h3>Logística resuelta</h3>
+              <p>Recojo, traslados, tren, bus y coordinación completa para que el viajero no tenga que organizar varias piezas por separado.</p>
+            </div>
+          </article>
+          <article class="highlight">
+            <i class="fa-solid fa-user-group"></i>
+            <div>
+              <h3>Guía profesional</h3>
+              <p>Visita guiada dentro de la ciudadela con contexto histórico y acompañamiento en los momentos clave.</p>
+            </div>
+          </article>
+          <article class="highlight">
+            <i class="fa-solid fa-camera-retro"></i>
+            <div>
+              <h3>Tiempo para fotos</h3>
+              <p>Espacios pensados para contemplar, tomar fotos y disfrutar del santuario sin sensación de recorrido apresurado.</p>
+            </div>
+          </article>
+          <article class="highlight">
+            <i class="fa-solid fa-shield-heart"></i>
+            <div>
+              <h3>Reserva con confianza</h3>
+              <p>Política clara, disponibilidad visible y resumen de precio transparente desde el primer momento.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card" id="itinerario">
+        <div class="section-head">
+          <div>
+            <h2>Itinerario del Full Day Machu Picchu</h2>
+            <p>Un timeline visual ayuda mucho más que un párrafo largo. Sirve para percepción de valor y claridad operativa.</p>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-badge">1</div>
+            <div class="timeline-card">
+              <small>03:30 – 05:00</small>
+              <h3>Recojo y traslado a estación</h3>
+              <p>Salida desde tu hotel en Cusco o punto acordado. Traslado privado o compartido hacia la estación según el servicio elegido.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-badge">2</div>
+            <div class="timeline-card">
+              <small>06:00 – 09:00</small>
+              <h3>Viaje en tren hacia Aguas Calientes</h3>
+              <p>Trayecto panorámico por el Valle Sagrado con vistas del río Urubamba y paisajes andinos.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-badge">3</div>
+            <div class="timeline-card">
+              <small>09:30 – 13:00</small>
+              <h3>Ingreso y tour guiado en Machu Picchu</h3>
+              <p>Ascenso en bus Consettur, ingreso con tickets y visita guiada por los sectores habilitados del circuito reservado.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-badge">4</div>
+            <div class="timeline-card">
+              <small>13:00 – 15:30</small>
+              <h3>Tiempo libre y almuerzo</h3>
+              <p>Espacio libre en Aguas Calientes para almorzar, caminar o comprar recuerdos antes del retorno.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-badge">5</div>
+            <div class="timeline-card">
+              <small>15:30 – 22:30</small>
+              <h3>Regreso a Cusco</h3>
+              <p>Tren de retorno, conexión terrestre y llegada a Cusco por la noche. Horarios finales dependen de disponibilidad ferroviaria.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-head">
+          <div>
+            <h2>Qué incluye y qué no incluye</h2>
+            <p>Esta sección es clave para bajar fricción y evitar dudas frecuentes antes del pago.</p>
+          </div>
+        </div>
+
+        <div class="trip-grid">
+          <div class="trip-box">
+            <h3>Incluye</h3>
+            <ul class="included-list">
+              <li>Briefing previo a la salida.</li>
+              <li>Recojo desde hotel en Cusco.</li>
+              <li>Traslado a estación de tren.</li>
+              <li>Ticket de tren ida y vuelta.</li>
+              <li>Bus subida y bajada a Machu Picchu.</li>
+              <li>Entrada a Machu Picchu según circuito disponible.</li>
+              <li>Guía profesional compartido o privado.</li>
+              <li>Asistencia permanente durante la ruta.</li>
+            </ul>
+          </div>
+          <div class="trip-box">
+            <h3>No incluye</h3>
+            <ul class="included-list">
+              <li>Alimentación no especificada.</li>
+              <li>Seguro de viaje.</li>
+              <li>Propinas opcionales.</li>
+              <li>Upgrade de tren o servicios premium.</li>
+              <li>Ingresos extra a montañas o circuitos especiales.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tag-list">
+          <span class="tag">Confirmación inmediata</span>
+          <span class="tag">Ideal para parejas</span>
+          <span class="tag">Grupos pequeños</span>
+          <span class="tag">Soporte por WhatsApp</span>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="reviews-head">
+          <div class="rating-big">
+            <div class="rating-score">4.9</div>
+            <div>
+              <h2>Reseñas de viajeros</h2>
+              <div class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i></div>
+              <p>Basado en 326 opiniones verificadas</p>
+            </div>
+          </div>
+          <span class="pill"><i class="fa-solid fa-thumbs-up"></i> 97% lo recomendaría</span>
+        </div>
+
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="author">
+              <div>
+                <strong>Camila · Chile</strong>
+                <div class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i></div>
+              </div>
+              <span>Abr 2026</span>
+            </div>
+            <p>Todo estuvo bien coordinado. Nos gustó que el itinerario fuera claro y el guía explicara muy bien cada punto importante.</p>
+          </article>
+          <article class="review-card">
+            <div class="author">
+              <div>
+                <strong>Andrés · Colombia</strong>
+                <div class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i></div>
+              </div>
+              <span>Feb 2026</span>
+            </div>
+            <p>La mejor parte fue tener todo organizado desde el recojo. Recomiendo mucho esta versión full day para quienes tienen poco tiempo.</p>
+          </article>
+          <article class="review-card">
+            <div class="author">
+              <div>
+                <strong>Sophie · Francia</strong>
+                <div class="stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-regular fa-star"></i></div>
+              </div>
+              <span>Ene 2026</span>
+            </div>
+            <p>Muy buena atención antes y durante el viaje. Añadiría una tabla más detallada de horarios, pero en general fue una gran experiencia.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-head">
+          <div>
+            <h2>Información útil antes de reservar</h2>
+            <p>Sirve para responder objeciones típicas y reforzar confianza sin sacar al usuario del flujo de compra.</p>
+          </div>
+        </div>
+
+        <div class="trip-grid">
+          <div class="trip-box">
+            <h3>Recomendaciones</h3>
+            <ul class="policy-list">
+              <li>Llevar pasaporte original o documento usado en la reserva.</li>
+              <li>Usar ropa en capas y llevar impermeable ligero.</li>
+              <li>Llevar agua, bloqueador, gorra y snack personal.</li>
+              <li>Reservar con anticipación en temporada alta.</li>
+            </ul>
+          </div>
+          <div class="trip-box">
+            <h3>Políticas</h3>
+            <ul class="policy-list">
+              <li>Tarifas sujetas a disponibilidad de tickets y trenes.</li>
+              <li>El itinerario puede variar según horarios ferroviarios.</li>
+              <li>Reprogramaciones sujetas a condiciones operativas.</li>
+              <li>Los circuitos dependen de disponibilidad oficial.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-head">
+          <div>
+            <h2>Preguntas frecuentes</h2>
+            <p>Formato acordeón para mantener la página limpia y responder lo que más influye en la compra.</p>
+          </div>
+        </div>
+
+        <div class="faq-item is-open">
+          <button class="faq-question" type="button">
+            ¿Con cuánto tiempo debo reservar?
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">Lo ideal es reservar con varias semanas de anticipación, especialmente en temporada alta o si deseas un horario específico de ingreso o tren.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            ¿El tour es apto para niños o adultos mayores?
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">Sí, siempre que puedan manejar una jornada larga. El tour full day prioriza la logística eficiente, pero implica una salida muy temprana y bastante movimiento.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            ¿Puedo elegir tren o circuito?
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">Sí. Se puede mostrar como opciones o upgrades dentro del módulo de reserva, según disponibilidad real.</div>
+        </div>
+      </section>
+
+      <section class="foot-cta">
+        <div>
+          <h3>¿Listo para vender esta experiencia mejor?</h3>
+          <p>La siguiente etapa sería convertir este demo en tu estructura real de archivos con partials, data y JS reutilizable.</p>
+        </div>
+        <a href="#booking" class="btn btn-primary">Ir al motor de reserva</a>
+      </section>
+    </div>
+
+    <aside class="booking-card" id="booking">
+      <div class="price-row">
+        <div>
+          <span class="from">Desde</span>
+          <div class="price" id="pricePerAdult">US$ 289</div>
+        </div>
+        <div class="booking-rating">
+          <div class="stars"><i class="fa-solid fa-star"></i> 4.9</div>
+          <div>326 reseñas</div>
+        </div>
+      </div>
+
+      <form class="booking-form" id="bookingForm">
+        <div class="field">
+          <label for="tourDate">Fecha de viaje</label>
+          <input type="text" id="tourDate" placeholder="Selecciona tu fecha" readonly>
+        </div>
+
+        <div class="field">
+          <label for="serviceType">Tipo de servicio</label>
+          <select id="serviceType">
+            <option value="shared">Servicio compartido</option>
+            <option value="private">Servicio privado</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Cantidad de viajeros</label>
+          <div class="travelers">
+            <div class="traveler-row">
+              <div class="traveler-copy">
+                <strong>Adultos</strong>
+                <small>12+ años</small>
+              </div>
+              <div class="stepper" data-type="adult">
+                <button type="button" class="minus">−</button>
+                <span id="adultCount">2</span>
+                <button type="button" class="plus">+</button>
+              </div>
+            </div>
+            <div class="traveler-row">
+              <div class="traveler-copy">
+                <strong>Niños</strong>
+                <small>3 a 11 años</small>
+              </div>
+              <div class="stepper" data-type="child">
+                <button type="button" class="minus">−</button>
+                <span id="childCount">0</span>
+                <button type="button" class="plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-breakdown">
+          <div class="price-line"><span>Adultos</span><strong id="adultLine">US$ 578</strong></div>
+          <div class="price-line"><span>Niños</span><strong id="childLine">US$ 0</strong></div>
+          <div class="price-line"><span>Tipo de servicio</span><strong id="serviceLine">Compartido</strong></div>
+          <div class="price-total"><span>Total estimado</span><strong id="totalLine">US$ 578</strong></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Comprobar disponibilidad</button>
+
+        <div class="booking-note">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Este bloque puede conectarse luego con disponibilidad real, WhatsApp o checkout. Por ahora calcula precio estimado en tiempo real.</span>
+        </div>
+      </form>
+    </aside>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script>
+    const state = {
+      adult: 2,
+      child: 0,
+      baseAdult: 289,
+      baseChild: 249,
+      multiplier: 1
+    };
+
+    const serviceType = document.getElementById('serviceType');
+    const adultCount = document.getElementById('adultCount');
+    const childCount = document.getElementById('childCount');
+    const adultLine = document.getElementById('adultLine');
+    const childLine = document.getElementById('childLine');
+    const serviceLine = document.getElementById('serviceLine');
+    const totalLine = document.getElementById('totalLine');
+    const pricePerAdult = document.getElementById('pricePerAdult');
+
+    flatpickr('#tourDate', {
+      locale: flatpickr.l10ns.es,
+      minDate: 'today',
+      dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: 'd M Y'
+    });
+
+    document.querySelectorAll('.stepper').forEach(stepper => {
+      const type = stepper.dataset.type;
+      const minus = stepper.querySelector('.minus');
+      const plus = stepper.querySelector('.plus');
+
+      minus.addEventListener('click', () => {
+        if (type === 'adult') state.adult = Math.max(1, state.adult - 1);
+        if (type === 'child') state.child = Math.max(0, state.child - 1);
+        renderPricing();
+      });
+
+      plus.addEventListener('click', () => {
+        if (type === 'adult') state.adult += 1;
+        if (type === 'child') state.child += 1;
+        renderPricing();
+      });
+    });
+
+    serviceType.addEventListener('change', () => {
+      const isPrivate = serviceType.value === 'private';
+      state.multiplier = isPrivate ? 1.35 : 1;
+      serviceLine.textContent = isPrivate ? 'Privado' : 'Compartido';
+      renderPricing();
+    });
+
+    function money(value) {
+      return `US$ ${Math.round(value)}`;
+    }
+
+    function renderPricing() {
+      const adultPrice = state.baseAdult * state.multiplier;
+      const childPrice = state.baseChild * state.multiplier;
+      const adultSubtotal = state.adult * adultPrice;
+      const childSubtotal = state.child * childPrice;
+      const total = adultSubtotal + childSubtotal;
+
+      adultCount.textContent = state.adult;
+      childCount.textContent = state.child;
+      adultLine.textContent = money(adultSubtotal);
+      childLine.textContent = money(childSubtotal);
+      totalLine.textContent = money(total);
+      pricePerAdult.textContent = money(adultPrice);
+    }
+
+    renderPricing();
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.classList.toggle('is-open');
+      });
+    });
+
+    document.getElementById('bookingForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const dateValue = document.getElementById('tourDate').value;
+      const query = new URLSearchParams({
+        product: 'full-day-machu-picchu',
+        date: dateValue || '',
+        adults: state.adult,
+        children: state.child,
+        service: serviceType.value,
+        total: totalLine.textContent.replace('US$ ', '')
+      });
+
+      alert(`Siguiente paso sugerido: redirigir a booking-status.html o WhatsApp con estos datos:\n\n${query.toString()}`);
+    });
+  </script>
+</body>
+</html>
