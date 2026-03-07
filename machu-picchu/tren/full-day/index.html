@@ -4,658 +4,607 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Full Day Machu Picchu en tren desde Cusco | My Cusco Trip</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-
   <style>
-    :root{
-      --primary:#062803;
-      --secondary:#0f4a31;
-      --accent:#eb09a7;
-      --text:#20302c;
-      --muted:#677572;
-      --bg:#f6faf8;
-      --card:#ffffff;
-      --border:rgba(20,46,38,.12);
-      --shadow:0 18px 40px rgba(8,24,18,.10);
-      --radius-xl:24px;
-      --radius-lg:18px;
-      --radius-md:14px;
-      --max:1200px;
+    :root {
+      --primary: #062803;
+      --secondary: #0f4a31;
+      --accent: #eb09a7;
+      --text: #20302c;
+      --muted: #677572;
+      --bg: #f6faf8;
+      --card: #ffffff;
+      --border: rgba(20, 46, 38, 0.12);
+      --shadow: 0 18px 40px rgba(8, 24, 18, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --max: 1200px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:'Open Sans',sans-serif;
-      color:var(--text);
-      background:var(--bg);
-      line-height:1.6;
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
     }
-    h1,h2,h3,h4{
-      margin:0;
-      font-family:'Montserrat',sans-serif;
-      color:var(--primary);
-      line-height:1.15;
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      line-height: 1.15;
     }
-    p{margin:0}
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-    button,input,select{font:inherit}
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select { font: inherit; }
 
-    .container{
-      width:min(var(--max),calc(100% - 32px));
-      margin:0 auto;
-    }
-
-    .btn{
-      border:0;
-      border-radius:999px;
-      padding:14px 22px;
-      font-weight:800;
-      cursor:pointer;
-      transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary{
-      color:#fff;
-      background:linear-gradient(135deg,var(--accent),#c7078b);
-      box-shadow:0 14px 28px rgba(235,9,167,.26);
-    }
-    .btn-secondary{
-      background:#fff;
-      color:var(--primary);
-      border:1px solid var(--border);
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
     }
 
-    .hero{
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #c7078b);
+      box-shadow: 0 14px 28px rgba(235, 9, 167, .26);
+    }
+    .btn-secondary {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .tag {
+      padding: 9px 14px;
+      background: #f3f7f4;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: .92rem;
+    }
+
+    .hero {
       background:
         linear-gradient(135deg, rgba(6,40,3,.88), rgba(15,74,49,.72)),
         url('https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80') center/cover;
-      color:#fff;
-      padding:100px 0 60px;
+      color: #fff;
+      padding: 100px 0 60px;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.08fr .92fr;
-      gap:28px;
-      align-items:end;
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 28px;
+      align-items: start;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.16);
-      font-weight:700;
-      font-size:.92rem;
+    .hero .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      font-weight: 700;
+      font-size: .92rem;
     }
 
-    .hero h1{
-      color:#fff;
-      font-size:clamp(2.2rem,5vw,4rem);
-      margin:16px 0 14px;
+    .hero h1 {
+      color: #fff;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin: 16px 0 14px;
     }
 
-    .hero .intro{
-      color:rgba(255,255,255,.92);
-      max-width:720px;
-      font-size:1.04rem;
+    .hero .intro {
+      color: rgba(255,255,255,.92);
+      max-width: 720px;
+      font-size: 1.04rem;
     }
 
-    .hero-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin:22px 0 24px;
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
     }
 
-    .hero-meta span{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.14);
-      font-weight:700;
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      min-height: 300px;
     }
-
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-
-    .hero-gallery{
-      display:grid;
-      grid-template-columns:2fr 1fr;
-      gap:12px;
-      min-height:340px;
-    }
-
     .hero-gallery .main,
-    .hero-gallery .side{
-      border-radius:22px;
-      overflow:hidden;
-      background-size:cover;
-      background-position:center;
-      box-shadow:var(--shadow);
-      position:relative;
+    .hero-gallery .side {
+      border-radius: 22px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+      position: relative;
     }
-
     .hero-gallery .main::after,
-    .hero-gallery .side::after{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to top, rgba(0,0,0,.28), transparent 42%);
+    .hero-gallery .side::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.28), transparent 42%);
+    }
+    .hero-gallery .main { background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1200&q=80'); }
+    .hero-gallery .col { display: grid; gap: 12px; }
+    .hero-gallery .side-1 { background-image: url('https://images.unsplash.com/photo-1531065208531-4036c0dba3ca?auto=format&fit=crop&w=900&q=80'); }
+    .hero-gallery .side-2 { background-image: url('https://images.unsplash.com/photo-1520637736862-4d197d17c55a?auto=format&fit=crop&w=900&q=80'); }
+
+    .summary-strip {
+      margin-top: -28px;
+      position: relative;
+      z-index: 3;
     }
 
-    .hero-gallery .main{
-      background-image:url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1200&q=80');
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
 
-    .hero-gallery .col{
-      display:grid;
-      gap:12px;
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
     }
 
-    .hero-gallery .side-1{
-      background-image:url('https://images.unsplash.com/photo-1531065208531-4036c0dba3ca?auto=format&fit=crop&w=900&q=80');
+    .summary-card small {
+      display: block;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
     }
 
-    .hero-gallery .side-2{
-      background-image:url('https://images.unsplash.com/photo-1520637736862-4d197d17c55a?auto=format&fit=crop&w=900&q=80');
+    .summary-card strong {
+      display: block;
+      font-size: 1.08rem;
+      color: var(--primary);
     }
 
-    .summary-strip{
-      margin-top:-28px;
-      position:relative;
-      z-index:3;
+    .summary-card span {
+      color: var(--muted);
+      font-size: .95rem;
     }
 
-    .summary-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 28px;
+      padding: 42px 0 80px;
+      align-items: start;
     }
 
-    .summary-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:20px;
-      box-shadow:var(--shadow);
+    .content-col { display: grid; gap: 26px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow);
     }
 
-    .summary-card small{
-      display:block;
-      color:var(--muted);
-      font-weight:700;
-      margin-bottom:6px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
     }
 
-    .summary-card strong{
-      display:block;
-      font-size:1.08rem;
-      color:var(--primary);
+    .section-head p {
+      color: var(--muted);
+      max-width: 700px;
     }
 
-    .summary-card span{
-      color:var(--muted);
-      font-size:.95rem;
+    .overview-copy {
+      display: grid;
+      gap: 14px;
     }
 
-    .layout{
-      display:grid;
-      grid-template-columns:minmax(0,1fr) 390px;
-      gap:28px;
-      padding:42px 0 80px;
-      align-items:start;
+    .overview-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    .content-col{display:grid;gap:26px}
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius-xl);
-      padding:28px;
-      box-shadow:var(--shadow);
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      margin-top: 8px;
     }
 
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:end;
-      margin-bottom:18px;
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: rgba(6, 40, 3, 0.15);
     }
 
-    .section-head p{
-      color:var(--muted);
-      max-width:700px;
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: start;
     }
 
-    .overview-copy{
-      display:grid;
-      gap:14px;
+    .timeline-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      z-index: 1;
+      margin-top: 4px;
+      box-shadow: 0 10px 18px rgba(6,40,3,.18);
     }
 
-    .overview-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:16px;
+    .timeline-card {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
     }
 
-    .tag{
-      padding:9px 14px;
-      background:#f3f7f4;
-      border:1px solid var(--border);
-      border-radius:999px;
-      font-weight:700;
-      color:var(--primary);
-      font-size:.92rem;
-    }
-
-    .timeline{
-      position:relative;
-      display:grid;
-      gap:14px;
-      margin-top:8px;
-    }
-
-    .timeline::before{
-      content:'';
-      position:absolute;
-      left:17px;
-      top:10px;
-      bottom:10px;
-      width:2px;
-      background:rgba(6,40,3,.15);
-    }
-
-    .timeline-item{
-      position:relative;
-      display:grid;
-      grid-template-columns:48px 1fr;
-      gap:16px;
-      align-items:start;
-    }
-
-    .timeline-badge{
-      width:36px;
-      height:36px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:var(--primary);
-      color:#fff;
-      font-weight:800;
-      z-index:1;
-      margin-top:4px;
-      box-shadow:0 10px 18px rgba(6,40,3,.18);
-    }
-
-    .timeline-card{
-      border:1px solid var(--border);
-      background:#fff;
-      border-radius:18px;
-      padding:18px;
-    }
-
-    .timeline-card small{
-      display:inline-block;
-      margin-bottom:8px;
-      color:var(--accent);
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.04em;
+    .timeline-card small {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
     }
 
     .timeline-card p,
-    .box li,
     .faq-answer,
     .booking-note,
     .note,
     .price-line,
     .summary-box,
-    .table-row,
-    .table-row-header{
-      color:var(--muted);
+    .box li {
+      color: var(--muted);
     }
 
-    .schedule-chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-top:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(6,40,3,.08);
-      color:var(--primary);
-      font-size:.9rem;
-      font-weight:700;
+    .schedule-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(245,179,1,.12);
+      color: #8a5b00;
+      font-size: .9rem;
+      font-weight: 700;
     }
 
-    .columns-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
+    .columns-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
     }
 
-    .box{
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:18px;
-      background:#fcfffd;
+    .box {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fcfffd;
     }
 
-    .box ul{
-      margin:0;
-      padding-left:18px;
+    .box ul {
+      margin: 0;
+      padding-left: 18px;
     }
 
-    .box li{margin-bottom:10px}
+    .box li { margin-bottom: 10px; }
 
-    .note{
-      margin-top:14px;
-      padding:14px 16px;
-      border-radius:16px;
-      background:#f8fbf9;
-      border:1px solid var(--border);
-      font-size:.95rem;
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #f8fbf9;
+      border: 1px solid var(--border);
+      font-size: .95rem;
     }
 
-    .train-table{
-      display:grid;
-      gap:10px;
-      margin-top:14px;
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .faq-item + .faq-item { margin-top: 12px; }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 18px 20px;
+      text-align: left;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
     }
 
-    .table-row,
-    .table-row-header{
-      display:grid;
-      grid-template-columns:1.4fr .8fr .9fr;
-      gap:12px;
-      padding:14px 16px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      background:#fff;
-      align-items:center;
+    .faq-answer {
+      padding: 0 20px 18px;
+      display: none;
     }
 
-    .table-row-header{
-      background:#f6faf8;
-      font-weight:800;
-      color:var(--primary);
+    .faq-item.is-open .faq-answer { display: block; }
+    .faq-item.is-open .faq-question i { transform: rotate(180deg); }
+
+    .booking-card {
+      position: sticky;
+      top: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: var(--shadow);
     }
 
-    .table-row strong{
-      color:var(--primary);
+    .price-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .faq-item{
-      border:1px solid var(--border);
-      border-radius:18px;
-      overflow:hidden;
-      background:#fff;
+    .price-row .from {
+      color: var(--muted);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
     }
 
-    .faq-item + .faq-item{margin-top:12px}
-
-    .faq-question{
-      width:100%;
-      border:0;
-      background:transparent;
-      padding:18px 20px;
-      text-align:left;
-      font-weight:800;
-      color:var(--primary);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      cursor:pointer;
+    .price-row .price {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      font-size: 2rem;
+      font-weight: 800;
     }
 
-    .faq-answer{
-      padding:0 20px 18px;
-      display:none;
+    .booking-rating {
+      text-align: right;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .95rem;
     }
 
-    .faq-item.is-open .faq-answer{display:block}
-    .faq-item.is-open .faq-question i{transform:rotate(180deg)}
-
-    .booking-card{
-      position:sticky;
-      top:20px;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:24px;
-      box-shadow:var(--shadow);
+    .booking-form {
+      display: grid;
+      gap: 14px;
     }
 
-    .price-row{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-      padding-bottom:16px;
-      border-bottom:1px solid var(--border);
-    }
-
-    .price-row .from{
-      color:var(--muted);
-      font-weight:700;
-      display:block;
-      margin-bottom:4px;
-    }
-
-    .price-row .price{
-      font-family:'Montserrat',sans-serif;
-      color:var(--primary);
-      font-size:2rem;
-      font-weight:800;
-    }
-
-    .booking-rating{
-      text-align:right;
-      color:var(--muted);
-      font-weight:700;
-      font-size:.95rem;
-    }
-
-    .booking-form{
-      display:grid;
-      gap:14px;
-    }
-
-    .field label{
-      display:block;
-      font-size:.88rem;
-      color:var(--muted);
-      font-weight:800;
-      margin-bottom:8px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
+    .field label {
+      display: block;
+      font-size: .88rem;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
     }
 
     .field input,
-    .field select{
-      width:100%;
-      height:52px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      padding:0 16px;
-      background:#fff;
-      color:var(--text);
-      outline:none;
-      transition:border-color .2s ease, box-shadow .2s ease;
+    .field select {
+      width: 100%;
+      height: 52px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 0 16px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
 
     .field input:focus,
-    .field select:focus{
-      border-color:rgba(235,9,167,.38);
-      box-shadow:0 0 0 4px rgba(235,9,167,.12);
+    .field select:focus {
+      border-color: rgba(235,9,167,.38);
+      box-shadow: 0 0 0 4px rgba(235,9,167,.12);
     }
 
-    .travelers{
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:14px;
-      display:grid;
-      gap:12px;
-      background:#fbfdfc;
+    .travelers {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      background: #fbfdfc;
     }
 
-    .traveler-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+    .traveler-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    .traveler-copy small{
-      display:block;
-      color:var(--muted);
-      font-size:.82rem;
+    .traveler-copy small {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
     }
 
-    .stepper{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:4px;
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
     }
 
-    .stepper button{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      border:0;
-      background:#eff4f1;
-      color:var(--primary);
-      cursor:pointer;
-      font-weight:900;
+    .stepper button {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 0;
+      background: #eff4f1;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 900;
     }
 
-    .stepper span{
-      width:28px;
-      text-align:center;
-      font-weight:800;
+    .stepper span {
+      width: 28px;
+      text-align: center;
+      font-weight: 800;
     }
 
-    .summary-box{
-      border-radius:18px;
-      border:1px solid var(--border);
-      background:#f8fbf9;
-      padding:16px;
-      display:grid;
-      gap:10px;
+    .summary-box {
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: #f8fbf9;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
     }
 
-    .summary-box strong{color:var(--primary)}
+    .summary-box strong { color: var(--primary); }
 
-    .price-breakdown{
-      border-top:1px solid var(--border);
-      padding-top:14px;
-      display:grid;
-      gap:10px;
+    .price-breakdown {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
     }
 
     .price-line,
-    .price-total{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:center;
+    .price-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
     }
 
-    .price-total{
-      color:var(--primary);
-      font-family:'Montserrat',sans-serif;
-      font-weight:800;
-      font-size:1.08rem;
-      padding-top:8px;
-      border-top:1px dashed var(--border);
+    .price-total {
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.08rem;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
     }
 
-    .booking-note{
-      display:flex;
-      gap:10px;
-      font-size:.92rem;
-      background:#f7fbf8;
-      border-radius:16px;
-      padding:14px;
-      border:1px solid var(--border);
+    .booking-note {
+      display: flex;
+      gap: 10px;
+      font-size: .92rem;
+      background: #f7fbf8;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border);
     }
 
-    .foot-cta{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:#fff;
-      border-radius:28px;
-      padding:32px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
+    .foot-cta {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: 28px;
+      padding: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
     }
+    .foot-cta h3, .foot-cta p { color: #fff; }
+    .foot-cta p { opacity: .88; }
 
-    .foot-cta h3,.foot-cta p{color:#fff}
-    .foot-cta p{opacity:.88}
-
-    @media (max-width:1100px){
+    @media (max-width: 1100px) {
       .hero-grid,
       .layout,
       .summary-grid,
-      .columns-2{
-        grid-template-columns:1fr;
+      .columns-2 {
+        grid-template-columns: 1fr;
       }
-      .booking-card{position:static}
+      .booking-card { position: static; }
     }
 
-    @media (max-width:760px){
-      .hero{padding:88px 0 50px}
-      .hero-gallery{grid-template-columns:1fr}
-      .hero-gallery .col{grid-template-columns:1fr 1fr}
-      .card{padding:22px}
-      .hero-actions{flex-direction:column}
-      .hero-actions .btn{width:100%}
-      .foot-cta{flex-direction:column;align-items:stretch}
-      .table-row,.table-row-header{grid-template-columns:1fr}
+    @media (max-width: 760px) {
+      .hero { padding: 88px 0 50px; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-gallery {
+        order: 2;
+        grid-template-columns: 1fr;
+        min-height: 220px;
+        margin-top: 18px;
+      }
+
+      .hero-gallery .main {
+        min-height: 220px;
+      }
+
+      .hero-gallery .col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-gallery .side {
+        min-height: 110px;
+      }
+
+      .card { padding: 22px; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+      .foot-cta { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
-
   <section class="hero">
     <div class="container hero-grid">
       <div>
         <span class="eyebrow"><i class="fa-solid fa-train"></i> Full Day Machu Picchu · Tren desde Cusco</span>
         <h1>Full Day Machu Picchu en tren desde Cusco</h1>
-        <p class="intro">
-          Explora Machu Picchu en una experiencia full day con recojo en Cusco, traslado a Ollantaytambo, tren turístico ida y vuelta, bus ecológico, entrada oficial y guía profesional. Los horarios de ida y retorno se asignan automáticamente según la categoría de tren que elijas.
-        </p>
-        <div class="hero-meta">
-          <span><i class="fa-regular fa-clock"></i> 18–20 horas</span>
-          <span><i class="fa-solid fa-language"></i> Guía en español / inglés</span>
-          <span><i class="fa-solid fa-user-group"></i> Máximo 15 viajeros</span>
-          <span><i class="fa-solid fa-ticket"></i> Entrada incluida</span>
-        </div>
+        <p class="intro">Explora Machu Picchu en una experiencia full day con recojo en Cusco, traslado a Ollantaytambo, tren turístico ida y vuelta, bus ecológico, entrada oficial y guía profesional. Los horarios se asignan automáticamente según la categoría de tren elegida.</p>
         <div class="hero-actions">
           <a href="#booking" class="btn btn-primary">Reservar ahora</a>
           <a href="#itinerario" class="btn btn-secondary">Ver itinerario</a>
@@ -676,12 +625,12 @@
     <div class="container summary-grid">
       <article class="summary-card">
         <small>Duración</small>
-        <strong>18–20 horas</strong>
-        <span>Jornada completa desde madrugada hasta retorno nocturno.</span>
+        <strong>Full Day</strong>
+        <span>Salida desde Cusco y retorno el mismo día.</span>
       </article>
       <article class="summary-card">
         <small>Modalidad</small>
-        <strong>Full Day en tren</strong>
+        <strong>Tour en tren</strong>
         <span>Ideal para viajeros con poco tiempo en Cusco.</span>
       </article>
       <article class="summary-card">
@@ -699,21 +648,18 @@
 
   <main class="container layout">
     <div class="content-col">
-
       <section class="card">
         <div class="section-head">
           <div>
             <h2>Resumen de la experiencia</h2>
-            <p>Una presentación limpia del producto, sin repetir información innecesaria.</p>
+            <p>Una versión clara y directa para presentar el producto sin repetir información innecesaria.</p>
           </div>
         </div>
-
         <div class="overview-copy">
           <p>Vive una visita completa a Machu Picchu en un solo día. Viajarás desde Cusco hasta Ollantaytambo y luego en tren turístico a Aguas Calientes. Desde allí ascenderás en bus ecológico hasta la ciudadela para realizar una visita guiada por sus sectores más importantes.</p>
           <p>Después del guiado tendrás tiempo libre para fotografías y para disfrutar del entorno antes de regresar al pueblo de Aguas Calientes. Más tarde abordarás el tren de retorno y finalmente el transporte hacia Cusco.</p>
           <p>Este tour es ideal para viajeros que desean conocer Machu Picchu con una logística organizada desde el inicio, manteniendo una reserva simple: eliges fecha, pasajeros y categoría de tren; el sistema asigna automáticamente horarios compatibles para ida y retorno.</p>
         </div>
-
         <div class="overview-tags">
           <span class="tag">Recojo en Cusco</span>
           <span class="tag">Tren ida y vuelta</span>
@@ -723,75 +669,14 @@
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <h2>Categorías de tren disponibles</h2>
-            <p>El sistema asigna automáticamente horarios de ida y retorno según la categoría elegida.</p>
-          </div>
-        </div>
-
-        <div class="train-table">
-          <div class="table-row-header">
-            <div>Categoría</div>
-            <div>Empresa</div>
-            <div>Desde</div>
-          </div>
-          <div class="table-row">
-            <div><strong>The Voyager</strong></div>
-            <div>Inca Rail</div>
-            <div>USD 389</div>
-          </div>
-          <div class="table-row">
-            <div><strong>Expedition</strong></div>
-            <div>PeruRail</div>
-            <div>USD 399</div>
-          </div>
-          <div class="table-row">
-            <div><strong>Vistadome</strong></div>
-            <div>PeruRail</div>
-            <div>USD 469.90</div>
-          </div>
-          <div class="table-row">
-            <div><strong>The Prime</strong></div>
-            <div>Inca Rail</div>
-            <div>USD 479.90</div>
-          </div>
-          <div class="table-row">
-            <div><strong>Vistadome Observatory</strong></div>
-            <div>PeruRail</div>
-            <div>USD 479.90</div>
-          </div>
-          <div class="table-row">
-            <div><strong>The 360°</strong></div>
-            <div>Inca Rail</div>
-            <div>USD 489.90</div>
-          </div>
-          <div class="table-row">
-            <div><strong>Hiram Bingham</strong></div>
-            <div>PeruRail</div>
-            <div>USD 1450</div>
-          </div>
-        </div>
-
-        <div class="note">
-          Los horarios mostrados en este demo son referenciales según tablas publicadas por Inca Rail y PeruRail, y deben tratarse como sujetos a cambios operativos.
-        </div>
-      </section>
-
       <section class="card" id="itinerario">
         <div class="section-head">
           <div>
             <h2>Itinerario del tour</h2>
-            <p>Este itinerario cambia automáticamente según la categoría de tren seleccionada.</p>
+            <p>El itinerario cambia automáticamente según la categoría de tren seleccionada.</p>
           </div>
         </div>
-
-        <span class="schedule-chip" id="scheduleChip">
-          <i class="fa-solid fa-train-subway"></i>
-          Inca Rail · The Voyager · ida 06:40 / retorno 19:00
-        </span>
-
+        <span class="schedule-chip" id="scheduleChip"><i class="fa-solid fa-train-subway"></i> Inca Rail · The Voyager · ida 06:40 / retorno 19:00</span>
         <div class="timeline" id="timelineContainer"></div>
       </section>
 
@@ -802,7 +687,6 @@
             <p>Resumen práctico para resolver dudas antes de pasar al formulario de reserva.</p>
           </div>
         </div>
-
         <div class="columns-2">
           <div class="box">
             <h3>Incluye</h3>
@@ -816,7 +700,6 @@
               <li>Asistencia permanente del equipo de operaciones.</li>
             </ul>
           </div>
-
           <div class="box">
             <h3>No incluye</h3>
             <ul>
@@ -827,10 +710,7 @@
             </ul>
           </div>
         </div>
-
-        <div class="note">
-          La disponibilidad final depende de cupos de tren, cupos de ingreso a Machu Picchu y condiciones operativas del día.
-        </div>
+        <div class="note">La disponibilidad puede variar según temporada, empresa ferroviaria, horarios operativos y cupos de ingreso a Machu Picchu.</div>
       </section>
 
       <section class="card">
@@ -840,56 +720,31 @@
             <p>Preguntas rápidas para mejorar conversión sin sobrecargar la página.</p>
           </div>
         </div>
-
         <div class="faq-item is-open">
-          <button class="faq-question" type="button">
-            ¿Puedo elegir el horario del tren?
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="faq-answer">
-            No en esta versión del producto. El sistema asigna automáticamente los horarios según la categoría de tren elegida.
-          </div>
+          <button class="faq-question" type="button">¿Puedo elegir el horario del tren?<i class="fa-solid fa-chevron-down"></i></button>
+          <div class="faq-answer">No en esta versión del producto. El sistema asigna automáticamente los horarios según la categoría de tren elegida.</div>
         </div>
-
         <div class="faq-item">
-          <button class="faq-question" type="button">
-            ¿Desde dónde me recogen?
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="faq-answer">
-            El recojo está planteado desde hoteles ubicados en el centro histórico de Cusco.
-          </div>
+          <button class="faq-question" type="button">¿Desde dónde me recogen?<i class="fa-solid fa-chevron-down"></i></button>
+          <div class="faq-answer">El recojo está planteado desde hoteles ubicados en el centro histórico de Cusco.</div>
         </div>
-
         <div class="faq-item">
-          <button class="faq-question" type="button">
-            ¿El almuerzo está incluido?
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="faq-answer">
-            No. El almuerzo es por cuenta del pasajero. Puedes añadir luego el buffet como extra.
-          </div>
+          <button class="faq-question" type="button">¿El almuerzo está incluido?<i class="fa-solid fa-chevron-down"></i></button>
+          <div class="faq-answer">No. El almuerzo es por cuenta del pasajero. Puedes añadir luego el buffet como extra.</div>
         </div>
-
         <div class="faq-item">
-          <button class="faq-question" type="button">
-            ¿La hora de retorno a Cusco es exacta?
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="faq-answer">
-            No. Se muestra una hora estimada calculada con el horario ferroviario y un tiempo referencial de traslado terrestre desde Ollantaytambo hasta Cusco.
-          </div>
+          <button class="faq-question" type="button">¿La hora de retorno a Cusco es exacta?<i class="fa-solid fa-chevron-down"></i></button>
+          <div class="faq-answer">No. Se muestra una hora estimada calculada con el horario ferroviario y un tiempo referencial de traslado terrestre desde Ollantaytambo hasta Cusco.</div>
         </div>
       </section>
 
       <section class="foot-cta">
         <div>
           <h3>Listo para convertir</h3>
-          <p>Este primer producto ya tiene contenido real, lógica de trenes automática y una base visual mucho más cercana a la página que quieres replicar para otros tours.</p>
+          <p>Este primer producto ya tiene contenido real, lógica automática de trenes y una base visual limpia para replicar en otros tours.</p>
         </div>
         <a href="#booking" class="btn btn-primary">Ir a la reserva</a>
       </section>
-
     </div>
 
     <aside class="booking-card" id="booking">
@@ -970,7 +825,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
   <script>
     const TRAIN_OPTIONS = {
       voyager: {
