@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Cusco Trip | Producto</title>
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/header.css" />
+  <link rel="stylesheet" href="/assets/css/footer.css" />
+  <link rel="stylesheet" href="/assets/css/product.css" />
+  <link rel="stylesheet" href="/assets/css/booking.css" />
+  <link rel="stylesheet" href="/assets/css/portal.css" />
+</head>
+<body data-page="product">
+  <div id="headerMount"></div>
+
+  <main class="product-page" data-product-page>
+    <section class="product-hero">
+      <div class="container">
+        <div class="product-hero__grid">
+          <div class="product-hero__content">
+            <span class="product-badge" data-product-type></span>
+            <h1 data-tour-name></h1>
+            <p data-tour-summary></p>
+
+            <div class="product-meta">
+              <span data-tour-duration></span>
+              <span data-tour-rating></span>
+              <span data-tour-location></span>
+            </div>
+          </div>
+
+          <div class="product-booking-card" data-booking-card>
+            <div class="price-box">
+              <small data-i18n="from">Desde</small>
+              <strong data-tour-price></strong>
+            </div>
+
+            <form id="productBookingForm">
+              <div class="field">
+                <label data-i18n="travelDate">Fecha de viaje</label>
+                <input type="text" id="travelDate" readonly />
+              </div>
+
+              <div class="field">
+                <label data-i18n="travelers">Viajeros</label>
+                <button type="button" id="travelerToggle">2 pasajeros</button>
+              </div>
+
+              <div class="field">
+                <label data-i18n="serviceType">Tipo de servicio</label>
+                <select id="serviceType"></select>
+              </div>
+
+              <div class="field">
+                <label data-i18n="discountCode">Código de descuento</label>
+                <div class="discount-row">
+                  <input type="text" id="discountCode" />
+                  <button type="button" id="applyDiscountBtn" data-i18n="apply">Aplicar</button>
+                </div>
+              </div>
+
+              <div class="booking-summary" data-booking-summary></div>
+
+              <button type="submit" class="btn-primary" data-i18n="continueBooking">
+                Continuar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-gallery container" data-tour-gallery></section>
+
+    <section class="product-section container">
+      <h2 data-i18n="itinerary">Itinerario</h2>
+      <div data-tour-itinerary></div>
+    </section>
+
+    <section class="product-section container">
+      <div class="columns-2">
+        <div>
+          <h2 data-i18n="includes">Incluye</h2>
+          <ul data-tour-includes></ul>
+        </div>
+        <div>
+          <h2 data-i18n="excludes">No incluye</h2>
+          <ul data-tour-excludes></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-section container">
+      <h2 data-i18n="reviews">Reseñas</h2>
+      <div data-tour-reviews></div>
+    </section>
+
+    <section class="product-section container">
+      <h2 data-i18n="faq">Preguntas frecuentes</h2>
+      <div data-tour-faq></div>
+    </section>
+  </main>
+
+  <div id="bookingModalMount"></div>
+  <div id="footerMount"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+  <script type="module" src="/assets/js/product.js"></script>
+</body>
+</html>
