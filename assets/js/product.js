@@ -78,3 +78,15 @@ function setupDatePicker(tour) {
     dateFormat: "Y-m-d"
   });
 }
+function renderTrainCategories(tour) {
+  const select = document.getElementById("trainCategory");
+  if (!select || !tour.trainCategories) return;
+
+  select.innerHTML = tour.trainCategories
+    .map(option => `<option value="${option.code}">${option.label} — USD ${option.price}</option>`)
+    .join("");
+}
+
+function getInitialPrice(tour) {
+  return tour.trainCategories?.[0]?.price || tour.basePricing?.adult || 0;
+}
