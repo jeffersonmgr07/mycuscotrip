@@ -12,6 +12,7 @@ Sitio web para agencia de viajes especializada en tours a Cusco y Machu Picchu.
 - Estructura escalable para futuras integraciones
 
 ## 📁 Estructura del Proyecto
+
 / (root)
   index.html
   all-experiences.html
