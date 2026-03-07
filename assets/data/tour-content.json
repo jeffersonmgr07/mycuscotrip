@@ -36,3 +36,85 @@
     }
   }
 }
+{
+        {
+          "time": "Mañana",
+          "title": "Viaje en tren por el Valle Sagrado",
+          "description": "Abordarás el tren turístico hacia Aguas Calientes. Durante el recorrido viajarás junto al río Urubamba y atravesarás valles, montañas y bosque nuboso. El trayecto en tren dura aproximadamente 1 hora 40 minutos."
+        },
+        {
+          "time": "Llegada a Aguas Calientes",
+          "title": "Asistencia previa al ingreso",
+          "description": "A tu llegada, el equipo te asistirá antes de continuar hacia la ciudadela. Tendrás unos minutos para usar servicios, comprar snacks o prepararte para la visita."
+        },
+        {
+          "time": "Siguiente tramo",
+          "title": "Bus ecológico a Machu Picchu",
+          "description": "Subirás en bus ecológico por una carretera serpenteante hasta la entrada de Machu Picchu. El viaje dura aproximadamente 25 minutos y ofrece vistas del bosque nuboso y las montañas."
+        },
+        {
+          "time": "Visita principal",
+          "title": "Tour guiado por Machu Picchu",
+          "description": "Recorrerás con tu guía las terrazas panorámicas, terrazas agrícolas, Templo del Sol, Templo de las Tres Ventanas, Plaza Sagrada y áreas residenciales y ceremoniales. La visita guiada dura entre 2 y 2.5 horas."
+        },
+        {
+          "time": "Después del guiado",
+          "title": "Tiempo libre para fotos",
+          "description": "Luego del recorrido guiado dispondrás de tiempo para tomar fotografías, disfrutar del paisaje y vivir la atmósfera del santuario antes de descender nuevamente en bus."
+        },
+        {
+          "time": "Mediodía / tarde",
+          "title": "Tiempo libre en Aguas Calientes",
+          "description": "Tendrás tiempo libre para caminar por el pueblo, visitar el mercado artesanal, descansar en un café o almorzar por cuenta propia. Existe la opción de buffet en Tinkuy con costo adicional."
+        },
+        {
+          "time": "Tarde / noche",
+          "title": "Retorno en tren y traslado a Cusco",
+          "description": "Por la tarde o noche regresarás en tren a Ollantaytambo. Allí el transporte estará esperándote para llevarte de vuelta a Cusco. La llegada estimada es alrededor de las 12:30 a. m., con descenso cerca de Plaza San Francisco."
+        }
+      ],
+      "includes": [
+        "Recojo en hotel en Cusco",
+        "Transporte turístico entre Cusco y estación de Ollantaytambo",
+        "Ticket de tren turístico ida y vuelta",
+        "Bus ida y vuelta entre Aguas Calientes y Machu Picchu",
+        "Entrada oficial a Machu Picchu",
+        "Guía profesional certificado en español o inglés",
+        "Asistencia permanente de coordinador de viajes"
+      ],
+      "excludes": [
+        "Alimentos y bebidas no especificados",
+        "Buffet opcional en restaurante Tinkuy",
+        "Gastos personales",
+        "Servicios no mencionados en el itinerario"
+      ],
+      "importantInfo": [
+        "Los precios varían según la categoría de tren elegida.",
+        "La disponibilidad puede cambiar por temporada, cupos de tren y cupos de ingreso a Machu Picchu.",
+        "Se recomienda reservar con anticipación para asegurar mejores horarios y circuitos."
+      ],
+      "faq": [
+        {
+          "q": "¿Desde dónde me recogen?",
+          "a": "El recojo está incluido desde hoteles ubicados en el centro histórico de Cusco."
+        },
+        {
+          "q": "¿Cuánto dura el tour?",
+          "a": "La experiencia completa dura aproximadamente entre 18 y 20 horas."
+        },
+        {
+          "q": "¿Qué idioma habla el guía?",
+          "a": "El servicio incluye guía profesional en español o inglés."
+        },
+        {
+          "q": "¿El almuerzo está incluido?",
+          "a": "No. El almuerzo es por cuenta del pasajero. Existe buffet opcional en Tinkuy con costo adicional."
+        },
+        {
+          "q": "¿A qué hora se regresa a Cusco?",
+          "a": "La llegada estimada es alrededor de las 12:30 a. m., cerca de Plaza San Francisco."
+        }
+      ]
+    }
+  }
+}
