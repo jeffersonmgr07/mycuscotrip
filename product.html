@@ -114,5 +114,11 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
   <script type="module" src="/assets/js/product.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
+    document.getElementById("title").textContent = "Tour cargado correctamente";
+    document.getElementById("slug").textContent = "Slug: " + slug;
+  </script>
 </body>
 </html>
