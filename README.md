@@ -12,16 +12,55 @@ Sitio web para agencia de viajes especializada en tours a Cusco y Machu Picchu.
 - Estructura escalable para futuras integraciones
 
 ## 📁 Estructura del Proyecto
-my-cusco-trip/
-├── index.html # Página principal
-├── assets/ # Recursos estáticos
-│ ├── css/ # Estilos organizados
-│ ├── js/ # Scripts organizados
-│ ├── img/ # Imágenes
-│ └── videos/ # Videos
-├── components/ # Componentes HTML reutilizables
-├── pages/ # Otras páginas del sitio
-└── README.md # Documentación
+/ (root)
+  index.html
+  all-experiences.html
+  product.html
+  booking-status.html
+
+  /partials
+    header.html
+    search-bar.html
+    footer.html
+    booking-modal.html
+    reservation-login.html
+
+  /assets
+    /css
+      base.css
+      header.css
+      search-bar.css
+      footer.css
+      home.css
+      tour-card.css
+      product.css
+      booking.css
+      portal.css
+
+    /js
+      header.js
+      search-bar.js
+      home-tours.js
+      filters.js
+      product.js
+      booking-modal.js
+      booking-status.js
+      pricing.js
+      discounts.js
+      reservation-code.js
+      storage.js
+      api.js
+      i18n.js
+
+    /data
+      tours.json
+      tour-content.json
+      reviews.json
+      ui-translations.json
+      discounts.json
+
+    /img
+    /videos
 
 ## 🛠️ Tecnologías
 
