@@ -1,0 +1,38 @@
+{
+  "machu-picchu-full-day": {
+    "es": {
+      "name": "Full Day Machu Picchu",
+      "shortDescription": "Visita Machu Picchu en un solo día con logística organizada.",
+      "durationLabel": "1 día",
+      "includes": ["Recojo", "Tren", "Bus", "Guía"],
+      "excludes": ["Almuerzo", "Seguro"],
+      "itinerary": [
+        {
+          "time": "03:30 - 05:00",
+          "title": "Recojo y traslado",
+          "description": "Recojo desde hotel en Cusco."
+        },
+        {
+          "time": "06:00 - 09:00",
+          "title": "Viaje en tren",
+          "description": "Trayecto panorámico hasta Aguas Calientes."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Con cuánto tiempo debo reservar?",
+          "a": "Lo ideal es reservar con anticipación."
+        }
+      ]
+    },
+    "en": {
+      "name": "Machu Picchu Full Day",
+      "shortDescription": "Visit Machu Picchu in one day with organized logistics.",
+      "durationLabel": "1 day",
+      "includes": ["Pickup", "Train", "Bus", "Guide"],
+      "excludes": ["Lunch", "Insurance"],
+      "itinerary": [],
+      "faq": []
+    }
+  }
+}
