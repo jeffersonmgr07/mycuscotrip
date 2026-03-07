@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "machu-picchu-full-day",
+    "category": "machu-picchu",
+    "type": "full-day-tour",
+    "typeLabel": "Full Day",
+    "route": "/machu-picchu/tren/full-day",
+    "location": "Cusco / Machu Picchu",
+    "currency": "USD",
+    "supportsDateRange": false,
+    "availableLocales": ["es", "en", "pt", "fr", "de", "ja", "ru", "it"],
+    "basePricing": {
+      "adult": 289,
+      "child": 249
+    },
+    "serviceModes": [
+      { "code": "shared", "label": "Compartido", "multiplier": 1 },
+      { "code": "private", "label": "Privado", "multiplier": 1.35 }
+    ],
+    "hasAccommodation": false,
+    "images": {
+      "cover": "/assets/img/tours/machu-picchu-full-day/cover.jpg",
+      "gallery": [
+        "/assets/img/tours/machu-picchu-full-day/1.jpg",
+        "/assets/img/tours/machu-picchu-full-day/2.jpg"
+      ]
+    },
+    "extras": [
+      { "code": "vistadome-upgrade", "label": "Upgrade tren Vistadome", "type": "per_person", "price": 70 }
+    ]
+  }
+]
