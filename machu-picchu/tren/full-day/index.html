@@ -34,16 +34,18 @@
       background: var(--bg);
       line-height: 1.6;
     }
+
     h1, h2, h3, h4 {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       color: var(--primary);
       line-height: 1.15;
     }
+
     p { margin: 0; }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
-    button, input, select { font: inherit; }
+    button, input, select, textarea { font: inherit; }
 
     .container {
       width: min(var(--max), calc(100% - 32px));
@@ -58,12 +60,15 @@
       cursor: pointer;
       transition: transform .2s ease, box-shadow .2s ease;
     }
+
     .btn:hover { transform: translateY(-2px); }
+
     .btn-primary {
       color: #fff;
       background: linear-gradient(135deg, var(--accent), #c7078b);
       box-shadow: 0 14px 28px rgba(235, 9, 167, .26);
     }
+
     .btn-secondary {
       background: #fff;
       color: var(--primary);
@@ -132,6 +137,7 @@
       gap: 12px;
       min-height: 300px;
     }
+
     .hero-gallery .main,
     .hero-gallery .side {
       border-radius: 22px;
@@ -141,6 +147,7 @@
       box-shadow: var(--shadow);
       position: relative;
     }
+
     .hero-gallery .main::after,
     .hero-gallery .side::after {
       content: '';
@@ -148,10 +155,23 @@
       inset: 0;
       background: linear-gradient(to top, rgba(0,0,0,.28), transparent 42%);
     }
-    .hero-gallery .main { background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1200&q=80'); }
-    .hero-gallery .col { display: grid; gap: 12px; }
-    .hero-gallery .side-1 { background-image: url('https://images.unsplash.com/photo-1531065208531-4036c0dba3ca?auto=format&fit=crop&w=900&q=80'); }
-    .hero-gallery .side-2 { background-image: url('https://images.unsplash.com/photo-1520637736862-4d197d17c55a?auto=format&fit=crop&w=900&q=80'); }
+
+    .hero-gallery .main {
+      background-image: url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1200&q=80');
+    }
+
+    .hero-gallery .col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-gallery .side-1 {
+      background-image: url('https://images.unsplash.com/photo-1531065208531-4036c0dba3ca?auto=format&fit=crop&w=900&q=80');
+    }
+
+    .hero-gallery .side-2 {
+      background-image: url('https://images.unsplash.com/photo-1520637736862-4d197d17c55a?auto=format&fit=crop&w=900&q=80');
+    }
 
     .summary-strip {
       margin-top: -28px;
@@ -201,7 +221,10 @@
       align-items: start;
     }
 
-    .content-col { display: grid; gap: 26px; }
+    .content-col {
+      display: grid;
+      gap: 26px;
+    }
 
     .card {
       background: var(--card);
@@ -297,7 +320,9 @@
     .note,
     .price-line,
     .summary-box,
-    .box li {
+    .box li,
+    .modal-summary,
+    .modal-note {
       color: var(--muted);
     }
 
@@ -349,6 +374,7 @@
       overflow: hidden;
       background: #fff;
     }
+
     .faq-item + .faq-item { margin-top: 12px; }
 
     .faq-question {
@@ -430,20 +456,27 @@
     }
 
     .field input,
-    .field select {
+    .field select,
+    .field textarea {
       width: 100%;
-      height: 52px;
+      min-height: 52px;
       border-radius: 16px;
       border: 1px solid var(--border);
-      padding: 0 16px;
+      padding: 14px 16px;
       background: #fff;
       color: var(--text);
       outline: none;
       transition: border-color .2s ease, box-shadow .2s ease;
     }
 
+    .field textarea {
+      resize: vertical;
+      min-height: 96px;
+    }
+
     .field input:focus,
-    .field select:focus {
+    .field select:focus,
+    .field textarea:focus {
       border-color: rgba(235,9,167,.38);
       box-shadow: 0 0 0 4px rgba(235,9,167,.12);
     }
@@ -552,8 +585,129 @@
       align-items: center;
       gap: 20px;
     }
-    .foot-cta h3, .foot-cta p { color: #fff; }
-    .foot-cta p { opacity: .88; }
+
+    .foot-cta h3,
+    .foot-cta p {
+      color: #fff;
+    }
+
+    .foot-cta p {
+      opacity: .88;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+    }
+
+    .modal.is-open {
+      display: block;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 18, 15, 0.58);
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-dialog {
+      position: relative;
+      width: min(980px, calc(100% - 24px));
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.22);
+      max-height: calc(100vh - 80px);
+      overflow: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--primary);
+      font-size: 1.1rem;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .modal-content {
+      padding: 28px;
+    }
+
+    .modal-head {
+      margin-bottom: 20px;
+      padding-right: 48px;
+    }
+
+    .modal-head p {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .modal-card {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      background: #fcfffd;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .modal-summary {
+      display: grid;
+      gap: 12px;
+      font-size: .95rem;
+    }
+
+    .modal-summary strong {
+      color: var(--primary);
+    }
+
+    .modal-divider {
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .modal-note {
+      margin-top: 14px;
+      font-size: .92rem;
+      background: #f8fbf9;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
 
     @media (max-width: 1100px) {
       .hero-grid,
@@ -562,11 +716,15 @@
       .columns-2 {
         grid-template-columns: 1fr;
       }
-      .booking-card { position: static; }
+      .booking-card {
+        position: static;
+      }
     }
 
     @media (max-width: 760px) {
-      .hero { padding: 88px 0 50px; }
+      .hero {
+        padding: 88px 0 50px;
+      }
 
       .hero-grid {
         grid-template-columns: 1fr;
@@ -595,18 +753,41 @@
         min-height: 110px;
       }
 
-      .card { padding: 22px; }
-      .hero-actions { flex-direction: column; }
-      .hero-actions .btn { width: 100%; }
-      .foot-cta { flex-direction: column; align-items: stretch; }
-    }
-    .hero-grid > div:first-child {
-      order: 2;
-    }
-    
-    .hero-gallery {
-      order: 1;
-      margin-bottom: 18px;
+      .card,
+      .modal-content {
+        padding: 22px;
+      }
+
+      .hero-actions,
+      .modal-actions {
+        flex-direction: column;
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions .btn,
+      .modal-actions .btn {
+        width: 100%;
+      }
+
+      .foot-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-dialog {
+        margin: 12px auto;
+        max-height: calc(100vh - 24px);
+        border-radius: 20px;
+      }
+
+      .modal-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid .full {
+        grid-column: auto;
+      }
     }
   </style>
 </head>
@@ -835,6 +1016,89 @@
     </aside>
   </main>
 
+  <div class="modal" id="reservationModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-dialog">
+      <button type="button" class="modal-close" id="closeModal" aria-label="Cerrar modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2>Completa tu reserva</h2>
+          <p>Revisa el resumen del tour y completa los datos del titular de la reserva.</p>
+        </div>
+
+        <div class="modal-grid">
+          <div class="modal-card">
+            <h3>Datos del titular</h3>
+            <div class="form-grid" style="margin-top:16px;">
+              <div class="field full">
+                <label for="holderFullName">Nombre completo</label>
+                <input type="text" id="holderFullName" placeholder="Ej. Juan Pérez Gómez">
+              </div>
+
+              <div class="field">
+                <label for="holderEmail">Correo electrónico</label>
+                <input type="email" id="holderEmail" placeholder="Ej. correo@email.com">
+              </div>
+
+              <div class="field">
+                <label for="holderWhatsapp">WhatsApp</label>
+                <input type="text" id="holderWhatsapp" placeholder="Ej. +51 999 999 999">
+              </div>
+
+              <div class="field">
+                <label for="holderNationality">Nacionalidad</label>
+                <input type="text" id="holderNationality" placeholder="Ej. Perú">
+              </div>
+
+              <div class="field">
+                <label for="holderDocumentType">Tipo de documento</label>
+                <select id="holderDocumentType">
+                  <option value="passport">Pasaporte</option>
+                  <option value="dni">DNI</option>
+                  <option value="id-card">ID Card</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="holderDocumentNumber">Número de documento</label>
+                <input type="text" id="holderDocumentNumber" placeholder="Ej. X1234567">
+              </div>
+
+              <div class="field full">
+                <label for="holderNotes">Observaciones</label>
+                <textarea id="holderNotes" placeholder="Ej. Quiero asiento junto a la ventana, alergias, solicitud especial, etc."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-card">
+            <h3>Resumen de reserva</h3>
+            <div class="modal-summary" id="modalSummary" style="margin-top:16px;"></div>
+
+            <div class="modal-divider"></div>
+
+            <div class="modal-summary">
+              <div><strong>Código de reserva:</strong> <span id="reservationCodePreview">Se generará al confirmar</span></div>
+              <div><strong>Estado:</strong> <span id="reservationStatusPreview">Pendiente de confirmación</span></div>
+            </div>
+
+            <div class="modal-note">
+              Al continuar, podrás elegir entre guardar la reserva sin pago inmediato o continuar al siguiente paso de pago cuando lo conectes con PayPal.
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-secondary" id="reserveOnlyBtn">Solo reservar</button>
+              <button type="button" class="btn btn-primary" id="payNowBtn">Pagar ahora</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script>
@@ -923,6 +1187,14 @@
     const adultCount = document.getElementById('adultCount');
     const childCount = document.getElementById('childCount');
 
+    const reservationModal = document.getElementById('reservationModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalSummary = document.getElementById('modalSummary');
+    const reserveOnlyBtn = document.getElementById('reserveOnlyBtn');
+    const payNowBtn = document.getElementById('payNowBtn');
+    const reservationCodePreview = document.getElementById('reservationCodePreview');
+
     flatpickr('#tourDate', {
       locale: flatpickr.l10ns.es,
       minDate: 'today',
@@ -956,6 +1228,19 @@
       return minutesToTime(parseTimeToMinutes(option.return.arrival) + option.shuttleToCuscoMins);
     }
 
+    function getReservationCode() {
+      const hex = Math.random().toString(16).substring(2, 8).toUpperCase();
+      return `CUZ${hex}`;
+    }
+
+    function getCurrentOption() {
+      return TRAIN_OPTIONS[state.trainCategory];
+    }
+
+    function getCurrentTotal() {
+      return (state.adults * getCurrentOption().price) + (state.children * getCurrentOption().price);
+    }
+
     function populateTrainCategories() {
       trainCategorySelect.innerHTML = Object.entries(TRAIN_OPTIONS).map(([key, item]) => {
         return `<option value="${key}">${item.company} · ${item.name} — ${money(item.price)}</option>`;
@@ -964,7 +1249,7 @@
     }
 
     function renderTimeline() {
-      const option = TRAIN_OPTIONS[state.trainCategory];
+      const option = getCurrentOption();
       const pickupTime = getPickupTime(option.outbound.departure);
       const cuscoArrival = getCuscoArrival(option);
 
@@ -1030,7 +1315,7 @@
     }
 
     function renderPricing() {
-      const option = TRAIN_OPTIONS[state.trainCategory];
+      const option = getCurrentOption();
       const perPerson = option.price;
       const adultsTotal = state.adults * perPerson;
       const childrenTotal = state.children * perPerson;
@@ -1049,6 +1334,58 @@
     function renderAll() {
       renderTimeline();
       renderPricing();
+    }
+
+    function openModal() {
+      const option = getCurrentOption();
+      const date = document.getElementById('tourDate').value || 'Por definir';
+      const total = money(getCurrentTotal());
+      const reservationCode = getReservationCode();
+      const cuscoArrival = getCuscoArrival(option);
+
+      reservationCodePreview.textContent = reservationCode;
+
+      modalSummary.innerHTML = `
+        <div><strong>Tour:</strong> Full Day Machu Picchu en tren desde Cusco</div>
+        <div><strong>Fecha:</strong> ${date}</div>
+        <div><strong>Empresa:</strong> ${option.company}</div>
+        <div><strong>Categoría:</strong> ${option.name}</div>
+        <div><strong>Ida:</strong> ${option.outbound.departure} → ${option.outbound.arrival}</div>
+        <div><strong>Retorno:</strong> ${option.return.departure} → ${option.return.arrival}</div>
+        <div><strong>Llegada estimada a Cusco:</strong> ${cuscoArrival}</div>
+        <div><strong>Adultos:</strong> ${state.adults}</div>
+        <div><strong>Niños:</strong> ${state.children}</div>
+        <div><strong>Total estimado:</strong> ${total}</div>
+      `;
+
+      reservationModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      reservationModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function getHolderData() {
+      return {
+        fullName: document.getElementById('holderFullName').value.trim(),
+        email: document.getElementById('holderEmail').value.trim(),
+        whatsapp: document.getElementById('holderWhatsapp').value.trim(),
+        nationality: document.getElementById('holderNationality').value.trim(),
+        documentType: document.getElementById('holderDocumentType').value,
+        documentNumber: document.getElementById('holderDocumentNumber').value.trim(),
+        notes: document.getElementById('holderNotes').value.trim()
+      };
+    }
+
+    function validateHolderData() {
+      const data = getHolderData();
+      if (!data.fullName || !data.email || !data.whatsapp || !data.nationality || !data.documentNumber) {
+        alert('Completa nombre, correo, WhatsApp, nacionalidad y número de documento.');
+        return false;
+      }
+      return true;
     }
 
     populateTrainCategories();
@@ -1085,20 +1422,62 @@
 
     document.getElementById('bookingForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const option = TRAIN_OPTIONS[state.trainCategory];
-      const params = new URLSearchParams({
-        product: 'machu-picchu-full-day',
-        date: document.getElementById('tourDate').value || '',
-        company: option.company,
-        category: option.name,
-        outbound: `${option.outbound.departure}-${option.outbound.arrival}`,
-        return: `${option.return.departure}-${option.return.arrival}`,
-        adults: state.adults,
-        children: state.children,
-        total: totalLine.textContent.replace('USD ', '')
-      });
+      openModal();
+    });
 
-      alert(`Siguiente paso sugerido: abrir tu modal de reserva con estos datos:\n\n${params.toString()}`);
+    modalOverlay.addEventListener('click', closeModal);
+    closeModalBtn.addEventListener('click', closeModal);
+
+    reserveOnlyBtn.addEventListener('click', () => {
+      if (!validateHolderData()) return;
+
+      const option = getCurrentOption();
+      const holder = getHolderData();
+      const code = reservationCodePreview.textContent;
+      const date = document.getElementById('tourDate').value || 'Por definir';
+
+      alert(
+        `Reserva creada correctamente\n\n` +
+        `Código: ${code}\n` +
+        `Titular: ${holder.fullName}\n` +
+        `Correo: ${holder.email}\n` +
+        `WhatsApp: ${holder.whatsapp}\n` +
+        `Fecha: ${date}\n` +
+        `Empresa: ${option.company}\n` +
+        `Categoría: ${option.name}\n` +
+        `Adultos: ${state.adults}\n` +
+        `Niños: ${state.children}\n` +
+        `Total estimado: ${money(getCurrentTotal())}\n\n` +
+        `Siguiente paso real: guardar en tu backend y enviar correo al cliente + copia a tu empresa.`
+      );
+
+      closeModal();
+    });
+
+    payNowBtn.addEventListener('click', () => {
+      if (!validateHolderData()) return;
+
+      const option = getCurrentOption();
+      const holder = getHolderData();
+      const code = reservationCodePreview.textContent;
+
+      alert(
+        `Reserva preparada para pago\n\n` +
+        `Código: ${code}\n` +
+        `Titular: ${holder.fullName}\n` +
+        `Empresa: ${option.company}\n` +
+        `Categoría: ${option.name}\n` +
+        `Total estimado: ${money(getCurrentTotal())}\n\n` +
+        `Siguiente paso real: crear orden PayPal y redirigir al checkout.`
+      );
+
+      closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && reservationModal.classList.contains('is-open')) {
+        closeModal();
+      }
     });
   </script>
 </body>
