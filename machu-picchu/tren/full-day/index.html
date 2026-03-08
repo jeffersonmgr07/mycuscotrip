@@ -572,11 +572,15 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-gallery {
+      .hero-grid > div:first-child {
         order: 2;
+      }
+
+      .hero-gallery {
+        order: 1;
         grid-template-columns: 1fr;
         min-height: 220px;
-        margin-top: 18px;
+        margin-bottom: 18px;
       }
 
       .hero-gallery .main {
