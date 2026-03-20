@@ -1,13 +1,10 @@
-export async function createReservation(payload) {
-  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]");
+export async function getTourBySlug(slug) {
+  const local = JSON.parse(localStorage.getItem("experiences") || "[]");
 
-  const newReservation = {
-    ...payload,
-    createdAt: new Date().toISOString()
-  };
+  const found = local.find(t => t.slug === slug);
+  if (found) return found;
 
-  reservations.push(newReservation);
-  localStorage.setItem("reservations", JSON.stringify(reservations));
-
-  return newReservation;
+  const response = await fetch("/assets/data/tours.json");
+  const tours = await response.json();
+  return tours.find(t => t.slug === slug);
 }
