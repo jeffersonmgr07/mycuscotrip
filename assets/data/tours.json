@@ -1,23 +1,27 @@
 [
   {
+    "id": "exp_001",
     "slug": "machu-picchu-full-day",
+    "title": "Full Day Machu Picchu",
     "category": "machu-picchu",
     "type": "full-day-tour",
     "typeLabel": "Full Day",
-    "route": "/machu-picchu/tren/full-day",
     "location": "Cusco / Machu Picchu",
     "currency": "USD",
-    "supportsDateRange": false,
-    "availableLocales": ["es", "en", "pt", "fr", "de", "ja", "ru", "it"],
-    "basePricing": {
-      "adult": 289,
-      "child": 249
+
+    "duration": {
+      "label": "18–20 horas",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
     },
-    "serviceModes": [
-      { "code": "shared", "label": "Compartido", "multiplier": 1 },
-      { "code": "private", "label": "Privado", "multiplier": 1.35 }
-    ],
-    "hasAccommodation": false,
+
+    "basePricing": {
+      "adult": 389,
+      "child": 389
+    },
+
+    "capacity": 15,
+
     "images": {
       "cover": "/assets/img/tours/machu-picchu-full-day/cover.jpg",
       "gallery": [
@@ -25,74 +29,19 @@
         "/assets/img/tours/machu-picchu-full-day/2.jpg"
       ]
     },
-    "extras": [
-      { "code": "vistadome-upgrade", "label": "Upgrade tren Vistadome", "type": "per_person", "price": 70 }
-    ]
-  }
-]
-[
-  {
-    "slug": "machu-picchu-full-day",
-    "category": "machu-picchu",
-    "type": "full-day-tour",
-    "typeLabel": "Full Day",
-    "route": "/machu-picchu/tren/full-day",
-    "location": "Cusco / Machu Picchu",
-    "currency": "USD",
-    "supportsDateRange": false,
-    "availableLocales": ["es", "en", "pt", "fr", "de", "ja", "ru", "it"],
-    "duration": {
-      "label": "18–20 horas",
-      "maxGroupSize": 15,
-      "guideLanguages": ["es", "en"]
-    },
-    "basePricing": {
-      "adult": 389,
-      "child": 389
-    },
-    "serviceModes": [
-      {
-        "code": "shared",
-        "label": "Compartido",
-        "multiplier": 1
-      }
-    ],
-    "trainCategories": [
-      { "code": "voyager", "label": "The Voyager", "price": 389.0 },
-      { "code": "expedition", "label": "Expedition", "price": 399.0 },
-      { "code": "vistadome", "label": "Vistadome (Panoramic)", "price": 469.9 },
-      { "code": "vistadome-observatory", "label": "Vistadome Observatory", "price": 479.9 },
-      { "code": "the-prime", "label": "The Prime (Observatory)", "price": 479.9 },
-      { "code": "the-360", "label": "The 360° (Panoramic)", "price": 489.9 },
-      { "code": "first-class", "label": "First Class", "price": 1200.0 },
-      { "code": "hiram-bingham", "label": "Hiram Bingham Luxury Train", "price": 1450.0 }
-    ],
-    "hasAccommodation": false,
-    "images": {
-      "cover": "/assets/img/tours/machu-picchu-full-day/cover.jpg",
-      "gallery": [
-        "/assets/img/tours/machu-picchu-full-day/1.jpg",
-        "/assets/img/tours/machu-picchu-full-day/2.jpg",
-        "/assets/img/tours/machu-picchu-full-day/3.jpg"
-      ]
-    },
+
     "extras": [
       {
         "code": "tinkuy-lunch",
-        "label": "Buffet lunch at Tinkuy Restaurant",
-        "type": "per_person",
+        "label": "Buffet lunch",
         "price": 40
       }
     ],
+
     "booking": {
-      "pickupIncluded": true,
-      "pickupArea": "Cusco historic center",
-      "dropoffArea": "Near Plaza San Francisco",
       "reservationCodePrefix": "CUZ"
     },
-    "seo": {
-      "title": "Full Day Machu Picchu by Train from Cusco | My Cusco Trip",
-      "description": "Guided full-day Machu Picchu tour with round-trip train, bus, entrance ticket and professional guide from Cusco."
-    }
+
+    "status": "published"
   }
 ]
