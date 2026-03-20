@@ -1,58 +1,28 @@
-import { getReservationStatus } from "./api.js";
-import { loadTranslations, applyTranslations, getLocaleFromUrl } from "./i18n.js";
+export async function getReservationStatus(code, lastName) {
+  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]");
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const locale = getLocaleFromUrl();
-  const dict = await loadTranslations(locale);
-  applyTranslations(dict);
+  const found = reservations.find(
+    r =>
+      r.reservationCode === code &&
+      r.holder.lastName.toLowerCase() === lastName.toLowerCase()
+  );
 
-  const form = document.getElementById("reservationLookupForm");
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const lastName = params.get("lastName");
-
-  if (code && lastName) {
-    await loadReservation(code, lastName);
+  if (!found) {
+    throw new Error("Reserva no encontrada");
   }
 
-  form?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const reservationCode = document.getElementById("reservationCode").value.trim();
-    const reservationLastName = document.getElementById("reservationLastName").value.trim();
-
-    await loadReservation(reservationCode, reservationLastName);
-  });
-});
-
-async function loadReservation(code, lastName) {
-  const data = await getReservationStatus(code, lastName);
-
-  document.getElementById("reservationStatusResult").hidden = false;
-  document.querySelector("[data-reservation-code]").textContent = data.reservationCode;
-  document.querySelector("[data-booking-status]").textContent = data.bookingStatus;
-  document.querySelector("[data-days-until-trip]").textContent = getDaysUntilTrip(data.travelDate);
-
-  document.querySelector("[data-reservation-tour]").innerHTML = `
-    <p><strong>${data.tourName}</strong></p>
-    <p>${data.travelDate}</p>
-    <p>${data.locale}</p>
-  `;
-
-  document.querySelector("[data-reservation-passengers]").innerHTML =
-    data.passengers.map(p => `<p>${p.firstName} ${p.lastName}</p>`).join("");
-
-  document.querySelector("[data-reservation-payment]").innerHTML = `
-    <p>Estado: ${data.paymentStatus}</p>
-    <p>Total: ${data.pricing.currency} ${data.pricing.total}</p>
-  `;
-
-  document.querySelector("[data-reservation-services]").innerHTML =
-    (data.extras || []).map(s => `<p>${s.label}</p>`).join("") || "<p>Sin extras</p>";
-}
-
-function getDaysUntilTrip(travelDate) {
-  const today = new Date();
-  const trip = new Date(travelDate);
-  const diff = trip - today;
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return {
+    reservationCode: found.reservationCode,
+    bookingStatus: found.bookingStatus,
+    paymentStatus: found.paymentStatus,
+    travelDate: found.travelDate || "2026-06-18",
+    locale: found.locale,
+    tourName: found.tour?.title || "Experiencia",
+    passengers: [{ firstName: found.holder.fullName, lastName: "" }],
+    pricing: {
+      currency: found.tour?.currency || "USD",
+      total: 100
+    },
+    extras: []
+  };
 }
