@@ -82,17 +82,95 @@
   </div>
 
   <!-- Sección de Destinos -->
-  <section id="machu-picchu">
-    <div class="container">
-      <div class="section-header">
-        <h2>Machu Picchu</h2>
-        <p>Descubre la maravilla del mundo moderno con nuestros tours exclusivos</p>
+  <section id="experiencias" class="featured-products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Experiencias recomendadas</h2>
+      <p>Mostramos aquí algunos de los tours más vendibles y más consultados.</p>
+    </div>
+
+    <div class="destinos-grid featured-products-grid" id="products-container"></div>
+  </div>
+</section>
+
+<section id="video-section" class="home-video-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Descubre la experiencia</h2>
+      <p>Agrega aquí un video de presentación de tu marca, destino o tour estrella.</p>
+    </div>
+
+    <div class="video-showcase">
+      <div class="video-showcase__media">
+        <video controls playsinline preload="metadata" poster="./assets/img/tours/machu-picchu-full-day/cover.jpg">
+          <source src="./assets/videos/hero.mp4" type="video/mp4" />
+        </video>
       </div>
-      <div class="destinos-grid" id="products-container">
-        <!-- Los productos se cargarán aquí dinámicamente -->
+
+      <div class="video-showcase__content">
+        <h3>Video principal de ventas</h3>
+        <p>
+          Esta sección te sirve para colocar un video promocional del tour, de la agencia,
+          testimonios o una pieza corta para aumentar conversiones.
+        </p>
+        <ul>
+          <li>Ideal para mostrar la experiencia real</li>
+          <li>Funciona bien en desktop y móvil</li>
+          <li>Puedes reemplazar el archivo cuando quieras</li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+<section id="contacto" class="home-contact-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Solicita tu viaje a medida</h2>
+      <p>Cuéntanos qué necesitas y te ayudamos a armar la mejor experiencia.</p>
+    </div>
+
+    <div class="contact-request-wrap">
+      <form id="homeContactForm" class="contact-request-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="contactName">Nombre</label>
+            <input type="text" id="contactName" required />
+          </div>
+
+          <div class="form-field">
+            <label for="contactEmail">Correo</label>
+            <input type="email" id="contactEmail" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="contactWhatsapp">WhatsApp</label>
+            <input type="text" id="contactWhatsapp" />
+          </div>
+
+          <div class="form-field">
+            <label for="contactTravelDate">Fecha tentativa</label>
+            <input type="text" id="contactTravelDate" placeholder="Ej. Julio 2026" />
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-field">
+            <label for="contactMessage">Requerimientos</label>
+            <textarea id="contactMessage" rows="6" placeholder="Ej. Somos 4 personas, queremos Machu Picchu + Valle Sagrado, hotel 3 estrellas y tren panorámico."></textarea>
+          </div>
+        </div>
+
+        <div class="contact-form-actions">
+          <button type="submit" class="btn">Enviar solicitud</button>
+          <p class="contact-form-note">La solicitud abrirá WhatsApp con el mensaje listo para enviar.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
   <!-- Footer (se cargará dinámicamente) -->
   <div id="footer-container"></div>
