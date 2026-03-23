@@ -354,5 +354,36 @@
     mobileVideos.forEach(v => v.playbackRate = 0.8);
   });
 </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("homeContactForm");
+    if (!form) return;
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById("contactName")?.value.trim() || "";
+      const email = document.getElementById("contactEmail")?.value.trim() || "";
+      const whatsapp = document.getElementById("contactWhatsapp")?.value.trim() || "";
+      const travelDate = document.getElementById("contactTravelDate")?.value.trim() || "";
+      const message = document.getElementById("contactMessage")?.value.trim() || "";
+
+      const text = [
+        "Hola, quiero solicitar información para mi viaje.",
+        "",
+        `Nombre: ${name}`,
+        `Correo: ${email}`,
+        `WhatsApp: ${whatsapp}`,
+        `Fecha tentativa: ${travelDate}`,
+        "",
+        "Requerimientos:",
+        message
+      ].join("\n");
+
+      const url = `https://wa.me/51900608980?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank", "noopener");
+    });
+  });
+</script>
 </body>
 </html>
