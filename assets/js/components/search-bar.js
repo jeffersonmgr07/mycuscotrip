@@ -241,6 +241,7 @@ class MyCuscoTripSearchBar {
 
     window.addEventListener("resize", () => {
       this.closeQuantityPanel();
+      this.flatpickrInstance?.close();
     });
   }
 
