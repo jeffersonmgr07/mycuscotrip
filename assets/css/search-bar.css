@@ -71,8 +71,8 @@
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  padding: 12px 16px;
-  min-height: 86px;
+  padding: 12px 16px 26px;
+  min-height: 96px;
 }
 
 .search-bar .mct-label {
@@ -130,22 +130,23 @@
 
 .search-bar .mct-fecha-field {
   z-index: 30;
+  padding-bottom: 28px;
 }
 
 .search-bar .mct-hint.in-card {
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: 10px;
-  min-height: 16px;
+  bottom: 8px;
+  min-height: 14px;
   font-size: 11px;
   font-weight: 800;
   color: #6c7a76;
   display: none;
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.1;
   pointer-events: none;
-}
+}  
 
 .search-bar .mct-hint.in-card i {
   margin-right: 5px;
@@ -373,12 +374,11 @@
   }
 
   .search-bar .mct-submit {
-    width: calc(100% - 16px);
-    height: 50px;
-    margin: 8px;
-    border-radius: 14px;
+    height: calc(100% - 20px);
+    align-self: center;
+    margin: 10px 8px;
+    min-width: 200px;
   }
-}
 
 @media (max-width: 768px) {
   .search-bar .mct-card {
