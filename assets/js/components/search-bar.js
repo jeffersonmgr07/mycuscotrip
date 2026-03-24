@@ -5,9 +5,6 @@ class MyCuscoTripSearchBar {
 
     this.form = this.root.querySelector("#mctForm");
     this.tabs = this.root.querySelectorAll(".mct-tab");
-    this.tabTours = this.root.querySelector('.mct-tab[data-tab="tours"]');
-    this.tabPackages = this.root.querySelector('.mct-tab[data-tab="paquetes"]');
-
     this.destinoSelect = this.root.querySelector("#mctDestino");
     this.dateInput = this.root.querySelector("#mctFecha");
     this.dateField = this.root.querySelector(".mct-fecha-field");
@@ -85,6 +82,17 @@ class MyCuscoTripSearchBar {
     }
 
     const locale = flatpickr.l10ns.es || flatpickr.l10ns.default;
+    const plugins = [];
+
+    if (typeof confirmDatePlugin !== "undefined") {
+      plugins.push(
+        new confirmDatePlugin({
+          confirmText: "OK",
+          showAlways: true,
+          theme: "light"
+        })
+      );
+    }
 
     this.flatpickrInstance = flatpickr(this.dateInput, {
       locale,
@@ -96,6 +104,7 @@ class MyCuscoTripSearchBar {
       clickOpens: true,
       disableMobile: true,
       static: false,
+      plugins,
       onOpen: () => {
         this.closeQuantityPanel();
       },
@@ -142,7 +151,7 @@ class MyCuscoTripSearchBar {
         calendar.style.visibility = "visible";
         calendar.style.display = "block";
       }
-    }, 20);
+    }, 30);
   }
 
   handleDateChange(selectedDates) {
