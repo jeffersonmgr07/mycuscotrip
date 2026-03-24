@@ -148,10 +148,11 @@
 }
 
 .nav-menu a {
+  align-items: flex-start;
   color: #fff;
   font-weight: 600;
   font-size: 0.94rem;
-  padding: 8px 2px;
+  padding: 4px 2px;
   transition: 0.2s;
   white-space: nowrap;
 }
