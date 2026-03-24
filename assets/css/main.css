@@ -71,7 +71,6 @@ a {
   box-shadow: 0 12px 22px rgba(235, 9, 167, 0.28);
 }
 
-/* HERO */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -79,7 +78,8 @@ a {
   color: #fff;
   padding-top: 100px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1;
 }
 
 .hero-media {
@@ -117,11 +117,12 @@ a {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   max-width: 980px;
   margin: 0 auto;
   padding: 0 20px;
+  overflow: visible;
 }
 
 .hero-text {
@@ -146,7 +147,7 @@ a {
   width: 100%;
   margin-top: 18px;
   position: relative;
-  z-index: 30;
+  z-index: 50;
   overflow: visible;
 }
 
@@ -155,7 +156,6 @@ a {
   overflow: visible;
 }
 
-/* SECTIONS */
 section {
   padding: 80px 0;
 }
@@ -191,9 +191,10 @@ section {
   margin: 0 auto;
 }
 
-/* PRODUCTOS */
 .featured-products-section {
   background: #fff;
+  position: relative;
+  z-index: 1;
 }
 
 .featured-products-grid {
@@ -274,7 +275,6 @@ section {
   margin-top: auto;
 }
 
-/* VIDEO */
 .home-video-section {
   background: #f7faf8;
 }
@@ -319,7 +319,6 @@ section {
   color: #444;
 }
 
-/* CONTACTO */
 .home-contact-section {
   background: #fff;
 }
@@ -383,7 +382,6 @@ section {
   color: #666;
 }
 
-/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -412,7 +410,6 @@ section {
   padding: 20px;
 }
 
-/* WHATSAPP FLOAT */
 .wa-float {
   position: fixed;
   right: 16px;
@@ -477,12 +474,12 @@ section {
 
 @media (max-width: 992px) {
   .hero {
-    padding-top: 84px;
+    padding-top: 92px;
     min-height: auto;
   }
 
   .hero-content {
-    padding: 28px 18px 42px;
+    padding: 22px 16px 30px;
   }
 
   .hero-text {
@@ -514,7 +511,7 @@ section {
   }
 
   .hero-content {
-    padding: 22px 12px 34px;
+    padding: 18px 10px 24px;
   }
 
   .hero-text h2 {
