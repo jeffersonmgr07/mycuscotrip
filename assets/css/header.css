@@ -1,3 +1,6 @@
+/* =========================
+   HEADER BASE
+========================= */
 .header {
   position: fixed;
   top: 0;
@@ -12,18 +15,22 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 10px 20px;
-  gap: 18px;
+  padding: 10px 24px;
+  gap: 20px;
   min-height: 100px;
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 .logo img {
-  height: 70px;
+  height: 68px;
   display: block;
 }
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
 .nav {
   display: flex;
   justify-content: center;
@@ -31,40 +38,110 @@
 
 .nav-menu {
   display: flex;
-  gap: 22px;
+  gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
+  align-items: center;
+}
+
+.nav-menu li {
+  display: flex;
 }
 
 .nav-menu a {
   color: #fff;
   font-weight: 600;
+  font-size: 0.95rem;
   transition: 0.2s;
+  padding: 6px 4px;
 }
 
 .nav-menu a:hover {
   color: #eb09a7;
 }
 
-/* BOTÓN MI RESERVA */
+/* =========================
+   BOTÓN RESERVA
+========================= */
 .nav-reserva {
   padding: 10px 16px !important;
   border-radius: 999px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
 }
 
 .nav-reserva:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.22);
 }
 
-/* WHATSAPP */
+/* =========================
+   HEADER ACTIONS
+========================= */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* =========================
+   IDIOMAS
+========================= */
+.lang-switcher {
+  position: relative;
+}
+
+.lang-switcher__toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.lang-switcher__toggle i {
+  font-size: 0.8rem;
+}
+
+.lang-switcher__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.12);
+  overflow: hidden;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.lang-switcher__menu a {
+  display: block;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: #053220;
+  transition: 0.2s;
+}
+
+.lang-switcher__menu a:hover {
+  background: #f5f7f6;
+}
+
+/* =========================
+   WHATSAPP
+========================= */
 .wa-header img {
   height: 40px;
 }
 
-/* MOBILE */
+/* =========================
+   BOTÓN MOBILE
+========================= */
 .mobile-menu-btn {
   display: none;
   background: none;
@@ -73,7 +150,9 @@
   font-size: 1.5rem;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 992px) {
 
   .header-container {
@@ -88,6 +167,10 @@
 
   .mobile-menu-btn {
     display: block;
+  }
+
+  .nav {
+    justify-content: flex-end;
   }
 
   .nav-menu {
@@ -106,8 +189,40 @@
     display: flex;
   }
 
+  .nav-menu li {
+    width: 100%;
+  }
+
   .nav-menu a {
-    padding: 14px 0;
     display: block;
+    width: 100%;
+    padding: 14px 0;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .lang-switcher__menu {
+    right: auto;
+    left: 0;
+  }
+}
+
+/* =========================
+   MOBILE EXTRA
+========================= */
+@media (max-width: 600px) {
+
+  .header-container {
+    padding: 10px 12px;
+  }
+
+  .logo img {
+    height: 54px;
+  }
+
+  .lang-switcher__toggle span {
+    display: none;
   }
 }
