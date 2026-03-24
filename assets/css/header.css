@@ -15,16 +15,17 @@
 
 .header-container {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   padding: 10px 22px;
-  gap: 18px;
+  gap: 16px;
   min-height: 100px;
 }
 
 .logo {
   display: inline-flex;
   align-items: center;
+  grid-column: 1 / 2;
 }
 
 .logo img {
@@ -32,11 +33,26 @@
   display: block;
 }
 
-/* NAV */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  grid-column: 4 / 5;
+  justify-self: end;
+}
+
 .nav {
   display: flex;
   justify-content: center;
   min-width: 0;
+  grid-column: 2 / 3;
 }
 
 .nav-menu {
@@ -79,17 +95,15 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* ACTIONS */
 .header-actions {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  flex-wrap: nowrap;
   white-space: nowrap;
+  grid-column: 3 / 4;
 }
 
-/* LANGUAGE */
 .lang-switcher {
   position: relative;
   flex: 0 0 auto;
@@ -139,12 +153,10 @@
   background: #f5f7f6;
 }
 
-/* WHATSAPP */
 .wa-header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
 }
 
 .wa-header a {
@@ -160,49 +172,74 @@
   display: block;
 }
 
-/* MOBILE BUTTON */
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 auto;
-}
-
-/* TABLET / MOBILE */
+/* MOBILE */
 @media (max-width: 992px) {
   .header-container {
     grid-template-columns: 50% 25% 25%;
     align-items: center;
-    min-height: 96px;
+    min-height: 92px;
     padding: 8px 10px;
     gap: 0;
   }
 
   .logo {
+    grid-column: 1 / 2;
     justify-self: start;
-    min-width: 0;
     width: 100%;
+    min-width: 0;
   }
 
   .logo img {
-    height: 118px;
+    height: 110px;
     max-width: 100%;
   }
 
+  .header-actions {
+    grid-column: 2 / 3;
+    justify-self: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0;
+  }
+
+  .lang-switcher {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .lang-switcher__toggle {
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  .lang-switcher__menu {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .wa-header {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    grid-column: 3 / 4;
+    justify-self: end;
+    width: 40px;
+    height: 40px;
+    font-size: 1.35rem;
+  }
+
   .nav {
-    justify-content: flex-end;
+    grid-column: 1 / -1;
+    display: block;
   }
 
   .nav-menu {
     position: fixed;
-    top: 96px;
+    top: 92px;
     left: 0;
     right: 0;
     background: #053220;
@@ -211,7 +248,7 @@
     padding: 18px 20px 24px;
     display: none;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-    max-height: calc(100vh - 96px);
+    max-height: calc(100vh - 92px);
     overflow-y: auto;
     z-index: 999;
   }
@@ -229,71 +266,26 @@
     width: 100%;
     padding: 14px 0;
   }
-
-  .header-actions {
-    justify-self: center;
-    justify-content: center;
-    width: 100%;
-    gap: 0;
-  }
-
-  .wa-header {
-    display: none;
-  }
-
-  .lang-switcher {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .lang-switcher__toggle {
-    min-height: 40px;
-    padding: 8px 10px;
-    width: auto;
-  }
-
-  .lang-switcher__menu {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .mobile-menu-btn {
-    display: inline-flex;
-    justify-self: end;
-  }
 }
 
 @media (max-width: 640px) {
   .header-container {
     grid-template-columns: 50% 25% 25%;
-    min-height: 92px;
+    min-height: 88px;
     padding: 8px 8px;
   }
 
   .logo img {
-    height: 112px;
+    height: 104px;
   }
 
   .nav-menu {
-    top: 92px;
-    max-height: calc(100vh - 92px);
-  }
-
-  .lang-switcher__toggle {
-    padding: 8px 10px;
-    min-height: 38px;
+    top: 88px;
+    max-height: calc(100vh - 88px);
   }
 
   .lang-switcher__toggle span {
     display: inline;
     font-size: 0.82rem;
-  }
-
-  .mobile-menu-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1.35rem;
   }
 }
