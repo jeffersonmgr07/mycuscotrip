@@ -22,14 +22,21 @@
   min-height: 100px;
 }
 
+.logo {
+  display: inline-flex;
+  align-items: center;
+}
+
 .logo img {
-  height: 78px;
+  height: 82px;
   display: block;
 }
 
+/* NAV */
 .nav {
   display: flex;
   justify-content: center;
+  min-width: 0;
 }
 
 .nav-menu {
@@ -39,6 +46,12 @@
   margin: 0;
   padding: 0;
   align-items: center;
+  flex-wrap: nowrap;
+}
+
+.nav-menu li {
+  display: flex;
+  align-items: center;
 }
 
 .nav-menu a {
@@ -47,6 +60,7 @@
   font-size: 0.94rem;
   padding: 8px 2px;
   transition: 0.2s;
+  white-space: nowrap;
 }
 
 .nav-menu a:hover,
@@ -65,16 +79,88 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-.wa-header {
-  display: flex;
+/* ACTIONS */
+.header-actions {
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+/* LANGUAGE */
+.lang-switcher {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.lang-switcher__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.lang-switcher__toggle i {
+  font-size: 0.8rem;
+}
+
+.lang-switcher__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.lang-switcher__menu a {
+  display: block;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: #053220;
+  transition: 0.2s;
+}
+
+.lang-switcher__menu a:hover {
+  background: #f5f7f6;
+}
+
+/* WHATSAPP */
+.wa-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.wa-header a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wa-header img {
   height: 40px;
+  width: 40px;
+  object-fit: contain;
+  display: block;
 }
 
+/* MOBILE BUTTON */
 .mobile-menu-btn {
   display: none;
   background: none;
@@ -82,21 +168,30 @@
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
 }
 
+/* TABLET / MOBILE */
 @media (max-width: 992px) {
   .header-container {
-    grid-template-columns: auto auto auto;
-    min-height: 84px;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    min-height: 96px;
     padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .logo {
+    min-width: 0;
   }
 
   .logo img {
-    height: 62px;
-  }
-
-  .mobile-menu-btn {
-    display: block;
+    height: 118px;
+    max-width: 100%;
   }
 
   .nav {
@@ -105,7 +200,7 @@
 
   .nav-menu {
     position: fixed;
-    top: 84px;
+    top: 96px;
     left: 0;
     right: 0;
     background: #053220;
@@ -114,8 +209,9 @@
     padding: 18px 20px 24px;
     display: none;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-    max-height: calc(100vh - 84px);
+    max-height: calc(100vh - 96px);
     overflow-y: auto;
+    z-index: 999;
   }
 
   .nav-menu.active {
@@ -130,5 +226,62 @@
     display: block;
     width: 100%;
     padding: 14px 0;
+  }
+
+  .header-actions {
+    order: 2;
+    gap: 8px;
+  }
+
+  .wa-header {
+    display: none;
+  }
+
+  .lang-switcher__toggle {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  .lang-switcher__menu {
+    right: 0;
+    left: auto;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    order: 3;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    min-height: 92px;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .logo img {
+    height: 112px;
+  }
+
+  .nav-menu {
+    top: 92px;
+    max-height: calc(100vh - 92px);
+  }
+
+  .lang-switcher__toggle {
+    padding: 8px 10px;
+    min-height: 38px;
+  }
+
+  .lang-switcher__toggle span {
+    display: inline;
+    font-size: 0.82rem;
+  }
+
+  .mobile-menu-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.35rem;
   }
 }
