@@ -1,6 +1,6 @@
 <div class="search-bar mct-search">
   <form class="mct-card" id="mctForm" autocomplete="off">
-    <div class="mct-tabs" role="tablist">
+    <div class="mct-tabs" role="tablist" aria-label="Tipos de búsqueda">
       <button type="button" class="mct-tab is-active" data-tab="tours">Tours</button>
       <button type="button" class="mct-tab" data-tab="paquetes">Paquetes completos</button>
     </div>
@@ -11,7 +11,8 @@
         <select id="mctDestino" class="mct-select">
           <option value="machu-picchu" selected>Machu Picchu</option>
           <option value="cusco">Cusco</option>
-          <option value="otros">Otros destinos Perú</option>
+          <option value="paquetes">Paquetes completos</option>
+          <option value="peru">Explora Perú</option>
         </select>
       </div>
 
@@ -19,17 +20,23 @@
 
       <div class="mct-field mct-fecha-field">
         <span class="mct-label">Fechas de viaje</span>
-        <input id="mctFecha" class="mct-input" type="text" readonly placeholder="Selecciona fecha" />
+        <input
+          id="mctFecha"
+          class="mct-input"
+          type="text"
+          readonly
+          placeholder="Selecciona fecha"
+        />
         <div id="mctDuration" class="mct-hint in-card" aria-live="polite"></div>
       </div>
 
       <div class="mct-divider"></div>
 
       <div class="mct-field mct-cantidad">
-        <span class="mct-label">Cantidad</span>
+        <span class="mct-label">Viajeros</span>
         <button type="button" class="mct-qty-toggle" aria-haspopup="dialog" aria-expanded="false">
-          <span id="mctQtyLabel">2 Pasajeros</span>
-          <i class="fa-solid fa-chevron-down" style="opacity:.6;"></i>
+          <span id="mctQtyLabel">2 pasajeros</span>
+          <i class="fa-solid fa-chevron-down" style="opacity:.65;"></i>
         </button>
 
         <div class="mct-qty-panel" hidden>
@@ -55,7 +62,17 @@
         </div>
       </div>
 
-      <button type="submit" class="mct-submit">Buscar</button>
+      <button type="submit" class="mct-submit">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Buscar experiencias</span>
+      </button>
+    </div>
+
+    <div class="mct-popular-searches">
+      <span class="mct-popular-label">Búsquedas populares:</span>
+      <button type="button" class="mct-chip" data-destino="machu-picchu">Machu Picchu Full Day</button>
+      <button type="button" class="mct-chip" data-destino="cusco">Tours en Cusco</button>
+      <button type="button" class="mct-chip" data-destino="paquetes">Paquetes 3D/2N</button>
     </div>
   </form>
 </div>
