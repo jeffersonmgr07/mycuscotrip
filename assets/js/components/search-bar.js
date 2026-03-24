@@ -94,13 +94,14 @@ class MyCuscoTripSearchBar {
       dateFormat: "Y-m-d",
       mode: "single",
       minDate: "today",
-      clickOpens: true,
+      clickOpens: false,
       disableMobile: true,
       static: false,
       plugins,
       onOpen: () => {
         this.closeQuantityPanel();
       },
+      onClose: () => {},
       onChange: (selectedDates) => {
         this.handleDateChange(selectedDates);
       }
@@ -109,17 +110,24 @@ class MyCuscoTripSearchBar {
     this.dateInput._flatpickr = this.flatpickrInstance;
 
     const visibleInput = this.flatpickrInstance.altInput || this.dateInput;
+    visibleInput.setAttribute("readonly", "readonly");
     visibleInput.style.cursor = "pointer";
 
     const openCalendar = (event) => {
       event.preventDefault();
       event.stopPropagation();
       this.closeQuantityPanel();
-      this.flatpickrInstance.open();
+
+      if (!this.flatpickrInstance.isOpen) {
+        this.flatpickrInstance.open();
+      }
     };
 
     visibleInput.addEventListener("click", openCalendar);
+    visibleInput.addEventListener("touchstart", openCalendar, { passive: false });
+
     this.dateField?.addEventListener("click", openCalendar);
+    this.dateField?.addEventListener("touchstart", openCalendar, { passive: false });
   }
 
   handleDateChange(selectedDates) {
@@ -171,6 +179,19 @@ class MyCuscoTripSearchBar {
         this.closeQuantityPanel();
       }
     });
+
+    this.qtyToggle.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const isHidden = this.qtyPanel.hasAttribute("hidden");
+      if (isHidden) {
+        this.qtyPanel.removeAttribute("hidden");
+        this.qtyToggle.setAttribute("aria-expanded", "true");
+      } else {
+        this.closeQuantityPanel();
+      }
+    }, { passive: false });
 
     this.qtyDone?.addEventListener("click", () => {
       this.closeQuantityPanel();
@@ -241,7 +262,6 @@ class MyCuscoTripSearchBar {
 
     window.addEventListener("resize", () => {
       this.closeQuantityPanel();
-      this.flatpickrInstance?.close();
     });
   }
 
