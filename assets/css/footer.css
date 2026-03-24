@@ -169,6 +169,10 @@
     padding-bottom: 4px;
   }
 
+  .footer-accordion[open] {
+    open: false;
+  }
+
   .footer-accordion summary {
     cursor: pointer;
     pointer-events: auto;
