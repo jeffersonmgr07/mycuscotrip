@@ -4,24 +4,40 @@
       <img src="./assets/img/logos/Logo1.png" alt="My Cusco Trip" />
     </a>
 
-    <button class="mobile-menu-btn" aria-label="Abrir menú">
+    <button class="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNavigation">
       <i class="fas fa-bars"></i>
     </button>
 
-    <nav class="nav" aria-label="Menú principal">
+    <nav class="nav" id="mainNavigation" aria-label="Menú principal">
       <ul class="nav-menu">
-        <li><a href="./index.html#home" class="active">Inicio</a></li>
-        <li><a href="./index.html#experiencias">Experiencias</a></li>
-        <li><a href="./index.html#video-section">Video</a></li>
-        <li><a href="./index.html#contacto">Contacto</a></li>
-        <li><a href="./booking-status.html" class="nav-reserva">Mi reserva</a></li>
+        <li><a href="./index.html#machu-picchu">Tours a Machu Picchu</a></li>
+        <li><a href="./index.html#tours-cusco">Tours en Cusco</a></li>
+        <li><a href="./index.html#paquetes">Paquetes completos</a></li>
+        <li><a href="./index.html#explora-peru">Explora Perú</a></li>
+        <li><a href="./booking-status.html" class="nav-reserva">Mi Reserva</a></li>
       </ul>
     </nav>
 
-    <div class="wa-header">
-      <a href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-      </a>
+    <div class="header-actions">
+      <div class="lang-switcher" aria-label="Selector de idioma">
+        <button type="button" class="lang-switcher__toggle" aria-expanded="false">
+          <i class="fas fa-globe"></i>
+          <span>ES</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <div class="lang-switcher__menu" hidden>
+          <a href="?lang=es" data-lang="es">Español</a>
+          <a href="?lang=en" data-lang="en">English</a>
+          <a href="?lang=pt" data-lang="pt">Português</a>
+        </div>
+      </div>
+
+      <div class="wa-header">
+        <a href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
+        </a>
+      </div>
     </div>
   </div>
 </header>
