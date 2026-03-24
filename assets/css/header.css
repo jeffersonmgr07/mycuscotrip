@@ -33,68 +33,6 @@
   display: block;
 }
 
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  grid-column: 4 / 5;
-  justify-self: end;
-}
-
-.nav {
-  display: flex;
-  justify-content: center;
-  min-width: 0;
-  grid-column: 2 / 3;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-
-.nav-menu li {
-  display: flex;
-  align-items: center;
-}
-
-.nav-menu a {
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.94rem;
-  padding: 8px 2px;
-  transition: 0.2s;
-  white-space: nowrap;
-}
-
-.nav-menu a:hover,
-.nav-menu a.active {
-  color: #eb09a7;
-}
-
-.nav-reserva {
-  padding: 10px 16px !important;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.nav-reserva:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
 .header-actions {
   display: inline-flex;
   align-items: center;
@@ -172,7 +110,68 @@
   display: block;
 }
 
-/* MOBILE */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  grid-column: 4 / 5;
+  justify-self: end;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  grid-column: 2 / 3;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.nav-menu li {
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu a {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.94rem;
+  padding: 8px 2px;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: #eb09a7;
+}
+
+.nav-reserva {
+  padding: 10px 16px !important;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.nav-reserva:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 @media (max-width: 992px) {
   .header-container {
     grid-template-columns: 50% 25% 25%;
@@ -190,7 +189,7 @@
   }
 
   .logo img {
-    height: 110px;
+    height: 108px;
     max-width: 100%;
   }
 
@@ -234,7 +233,11 @@
 
   .nav {
     grid-column: 1 / -1;
-    display: block;
+    width: 0;
+    height: 0;
+    min-width: 0;
+    overflow: visible;
+    justify-content: initial;
   }
 
   .nav-menu {
@@ -276,7 +279,7 @@
   }
 
   .logo img {
-    height: 104px;
+    height: 100px;
   }
 
   .nav-menu {
