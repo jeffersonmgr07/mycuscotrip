@@ -72,14 +72,12 @@ class MyCuscoTripHeader {
   }
 
   openMobileMenu() {
-    if (!this.navMenu) return;
-    this.navMenu.classList.add("active");
+    this.navMenu?.classList.add("active");
     document.body.style.overflow = "hidden";
   }
 
   closeMobileMenu() {
-    if (!this.navMenu) return;
-    this.navMenu.classList.remove("active");
+    this.navMenu?.classList.remove("active");
     document.body.style.overflow = "";
   }
 
@@ -105,10 +103,7 @@ class MyCuscoTripHeader {
       const currentPage = window.location.pathname.split("/").pop() || "index.html";
       const targetElement = document.getElementById(targetId);
 
-      if (
-        (currentPage === "index.html" || currentPage === "" || currentPage === "/") &&
-        targetElement
-      ) {
+      if ((currentPage === "index.html" || currentPage === "" || currentPage === "/") && targetElement) {
         event.preventDefault();
         const headerHeight = this.header?.offsetHeight || 90;
         const targetPosition =
@@ -116,7 +111,7 @@ class MyCuscoTripHeader {
 
         window.scrollTo({
           top: targetPosition,
-          behavior: "smooth",
+          behavior: "smooth"
         });
       }
     }
@@ -260,7 +255,7 @@ class MyCuscoTripHeader {
     const labels = {
       es: "ES",
       en: "EN",
-      pt: "PT",
+      pt: "PT"
     };
 
     this.langLabel.textContent = labels[lang] || "ES";
