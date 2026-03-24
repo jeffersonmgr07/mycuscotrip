@@ -1,5 +1,74 @@
+:root {
+  --primary: #062803;
+  --secondary: #053220;
+  --accent: #eb09a7;
+  --accent2: #0deb09;
+  --text: #333;
+  --text-light: #666;
+  --mct-surface: #fff;
+  --mct-ink: #172b27;
+  --mct-muted: #6c7a76;
+  --mct-border: rgba(23, 43, 39, .14);
+  --mct-shadow: 0 12px 34px rgba(0, 0, 0, .14);
+  --mct-radius: 18px;
+  --mct-primary: var(--primary);
+  --mct-accent: var(--accent);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  background: #fff;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(to right, var(--accent), #d90895);
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(235, 9, 167, .22);
+  transition: transform .2s ease, box-shadow .2s ease;
+  text-align: center;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(235, 9, 167, .28);
+}
+
 /* =========================
-   HERO FIX (CLAVE)
+   HERO
 ========================= */
 .hero {
   min-height: 100vh;
@@ -11,15 +80,125 @@
   overflow: hidden;
 }
 
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.hero-media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+}
+
+.hero-video-mobile {
+  display: none;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(rgba(6, 40, 3, .78), rgba(5, 50, 32, .82));
+}
+
+.hero-overlay {
+  display: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-text {
+  text-align: left;
+  margin-bottom: 26px;
+}
+
+.hero-text h2 {
+  font-size: 3.2rem;
+  margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  line-height: 1.1;
+}
+
+.hero-text h2 span {
+  color: var(--accent2);
+  display: block;
+}
+
+/* SEARCH BAR DENTRO DEL HERO */
+#search-bar-container {
+  width: 100%;
+  margin-top: 28px;
+  position: relative;
+  z-index: 3;
+}
+
+#search-bar-container .search-bar {
+  width: 100%;
+}
+
 /* =========================
-   SECCIÓN PRODUCTOS
+   SECTIONS
+========================= */
+section {
+  padding: 80px 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+  color: var(--primary);
+}
+
+.section-header h2:after {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 3px;
+  background: var(--accent);
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.section-header p {
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* =========================
+   PRODUCTOS DESTACADOS
 ========================= */
 .featured-products-section {
   background: #fff;
 }
 
 .featured-products-grid {
-  display: grid; /* 🔥 FIX IMPORTANTE */
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   align-items: stretch;
@@ -45,6 +224,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .featured-card__badge {
@@ -96,7 +276,7 @@
 }
 
 /* =========================
-   VIDEO
+   VIDEO SECTION
 ========================= */
 .home-video-section {
   background: #f7faf8;
@@ -143,7 +323,7 @@
 }
 
 /* =========================
-   FORMULARIO
+   CONTACTO
 ========================= */
 .home-contact-section {
   background: #fff;
@@ -209,22 +389,149 @@
 }
 
 /* =========================
+   MODAL OVERLAY GLOBAL
+========================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  width: min(380px, 94vw);
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* =========================
+   WHATSAPP FLOAT
+========================= */
+.wa-float {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2500;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  background: #25D366;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .25);
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.wa-float:hover {
+  transform: scale(1.06);
+}
+
+.wa-float img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+}
+
+.wa-float::before,
+.wa-float::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  border: 2px solid rgba(37, 211, 102, .55);
+  opacity: 0;
+  animation: waRipple 2.2s infinite;
+}
+
+.wa-float::after {
+  inset: -16px;
+  animation-delay: .55s;
+  border-color: rgba(37, 211, 102, .35);
+}
+
+@keyframes waRipple {
+  0% {
+    transform: scale(.70);
+    opacity: 0;
+  }
+  20% {
+    opacity: .9;
+  }
+  60% {
+    opacity: .25;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 992px) {
-
   .hero {
     padding-top: 86px;
     min-height: auto;
+  }
+
+  .hero-content {
+    padding: 40px 20px 60px;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-text h2 {
+    font-size: 2.3rem;
   }
 
   .featured-products-grid,
   .video-showcase {
     grid-template-columns: 1fr;
   }
+
+  .wa-float {
+    display: flex;
+  }
 }
 
 @media (max-width: 768px) {
+  section {
+    padding: 60px 0;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .hero-text h2 {
+    font-size: 2.1rem;
+    line-height: 1.15;
+  }
+
+  .hero-content {
+    padding: 30px 16px 50px;
+  }
 
   .featured-products-grid {
     grid-template-columns: 1fr;
@@ -241,5 +548,13 @@
 
   .featured-card__image {
     height: 210px;
+  }
+
+  .hero-video-desktop {
+    display: none;
+  }
+
+  .hero-video-mobile {
+    display: block;
   }
 }
