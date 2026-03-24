@@ -15,9 +15,6 @@ class MyCuscoTripSearchBar {
     this.qtyDone = this.root.querySelector(".mct-qty-done");
     this.qtyLabel = this.root.querySelector("#mctQtyLabel");
 
-    this.modalOverlay = document.getElementById("modalOverlay");
-    this.modalContent = document.getElementById("modalContent");
-
     this.adults = 2;
     this.children = 0;
     this.currentTab = "tours";
@@ -36,10 +33,6 @@ class MyCuscoTripSearchBar {
     this.setupEventListeners();
     this.updateQuantityLabel();
     this.applyTabRules();
-  }
-
-  isMobile() {
-    return window.innerWidth < 768;
   }
 
   setupTabs() {
@@ -121,37 +114,12 @@ class MyCuscoTripSearchBar {
     const openCalendar = (event) => {
       event.preventDefault();
       event.stopPropagation();
-
-      if (this.isMobile()) {
-        this.openDatepickerModal();
-      } else {
-        this.closeQuantityPanel();
-        this.flatpickrInstance.open();
-      }
+      this.closeQuantityPanel();
+      this.flatpickrInstance.open();
     };
 
     visibleInput.addEventListener("click", openCalendar);
     this.dateField?.addEventListener("click", openCalendar);
-  }
-
-  openDatepickerModal() {
-    if (!this.modalOverlay || !this.modalContent || !this.flatpickrInstance) return;
-
-    this.modalContent.innerHTML = "";
-    this.modalOverlay.classList.add("active");
-    this.flatpickrInstance.open();
-
-    setTimeout(() => {
-      const calendar = document.querySelector(".flatpickr-calendar");
-      if (calendar) {
-        this.modalContent.appendChild(calendar);
-        calendar.style.position = "relative";
-        calendar.style.left = "0";
-        calendar.style.top = "0";
-        calendar.style.visibility = "visible";
-        calendar.style.display = "block";
-      }
-    }, 30);
   }
 
   handleDateChange(selectedDates) {
@@ -197,7 +165,6 @@ class MyCuscoTripSearchBar {
 
       const isHidden = this.qtyPanel.hasAttribute("hidden");
       if (isHidden) {
-        this.closeModal();
         this.qtyPanel.removeAttribute("hidden");
         this.qtyToggle.setAttribute("aria-expanded", "true");
       } else {
@@ -272,22 +239,9 @@ class MyCuscoTripSearchBar {
       }
     });
 
-    this.modalOverlay?.addEventListener("click", (event) => {
-      if (event.target === this.modalOverlay) {
-        this.closeModal();
-      }
-    });
-
     window.addEventListener("resize", () => {
       this.closeQuantityPanel();
-      this.closeModal();
     });
-  }
-
-  closeModal() {
-    if (this.modalOverlay) {
-      this.modalOverlay.classList.remove("active");
-    }
   }
 
   handleSubmit(event) {
@@ -298,22 +252,14 @@ class MyCuscoTripSearchBar {
     const fecha = this.dateInput?.value || "";
 
     if (tipo === "tours" && !fecha) {
-      if (this.isMobile()) {
-        this.openDatepickerModal();
-      } else {
-        this.flatpickrInstance?.open();
-      }
+      this.flatpickrInstance?.open();
       return;
     }
 
     if (tipo === "paquetes") {
       const parts = fecha.split(" to ").length > 1 ? fecha.split(" to ") : fecha.split(" → ");
       if (!fecha || parts.length < 2) {
-        if (this.isMobile()) {
-          this.openDatepickerModal();
-        } else {
-          this.flatpickrInstance?.open();
-        }
+        this.flatpickrInstance?.open();
         return;
       }
     }
