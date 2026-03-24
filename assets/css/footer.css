@@ -1,232 +1,155 @@
-/* =========================
-   FOOTER PREMIUM
-========================= */
-
-.footer {
-  position: relative;
+.footer-incarail {
   background: #003b25;
   color: #f4f7f5;
-  overflow: hidden;
+  padding: 56px 0 22px;
 }
-
-.footer-incarail {
-  padding: 64px 0 24px;
-}
-
-.footer::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(90deg, #eb09a7, #0deb09);
-}
-
-/* =========================
-   LAYOUT
-========================= */
 
 .footer-top-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 42px;
+  grid-template-columns: 320px 1fr;
+  gap: 34px;
   align-items: start;
 }
-
-.footer-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.footer-links-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(180px, 1fr));
-  gap: 30px 34px;
-}
-
-/* =========================
-   BRAND
-========================= */
 
 .footer-logo-block img {
   max-width: 220px;
   height: auto;
-  display: block;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .footer-tagline {
   color: rgba(255, 255, 255, 0.82);
-  line-height: 1.7;
-  font-size: 0.96rem;
+  line-height: 1.35;
+  margin-bottom: 18px;
+  font-size: 0.95rem;
 }
-
-/* =========================
-   TITLES
-========================= */
 
 .footer-contact-box h3,
-.footer-link-col h3 {
-  color: #ffffff;
-  font-size: 1.05rem;
-  margin: 0 0 16px;
+.footer-accordion summary {
+  color: #fff;
+  font-size: 1.02rem;
+  margin-bottom: 10px;
   font-weight: 800;
-  line-height: 1.3;
 }
-
-/* =========================
-   CONTACT BOX
-========================= */
 
 .footer-contact-box {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .footer-pill {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  gap: 10px;
+  padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
   transition: 0.2s ease;
-  font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 .footer-pill:hover {
-  background: rgba(255, 255, 255, 0.10);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.footer-pill i {
-  font-size: 1rem;
-  width: 18px;
-  text-align: center;
+.footer-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 18px 24px;
 }
 
-/* =========================
-   SOCIALS
-========================= */
+.footer-accordion {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+}
 
-.footer-socials {
+.footer-accordion summary {
+  list-style: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 6px;
+  justify-content: space-between;
+  line-height: 1.2;
 }
 
-.footer-socials a {
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  transition: 0.2s ease;
+.footer-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.footer-accordion summary::after {
+  content: "+";
   font-size: 1rem;
+  opacity: 0.9;
 }
 
-.footer-socials a:hover {
-  background: #eb09a7;
-  transform: translateY(-2px);
+.footer-accordion[open] summary::after {
+  content: "−";
 }
-
-/* =========================
-   LINKS
-========================= */
 
 .footer-link-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
+  padding-top: 8px;
 }
 
 .footer-link-col a,
-.footer-link-col span {
+.payment-grid span {
   color: rgba(255, 255, 255, 0.86);
-  line-height: 1.55;
-  font-size: 0.95rem;
-  transition: 0.2s ease;
+  line-height: 1.2;
+  font-size: 0.93rem;
 }
 
 .footer-link-col a:hover {
-  color: #ffffff;
-  transform: translateX(2px);
+  color: #fff;
 }
-
-/* =========================
-   PAYMENT
-========================= */
 
 .payment-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 8px 12px;
+  padding-top: 8px;
 }
 
 .payment-grid span {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
+  gap: 8px;
+  font-weight: 600;
 }
 
 .payment-grid i {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
-/* =========================
-   FOOTER BOTTOM
-========================= */
-
 .footer-bottom {
-  margin-top: 38px;
-  padding-top: 18px;
+  margin-top: 28px;
+  padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
   flex-wrap: wrap;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  line-height: 1.25;
 }
 
-/* =========================
-   RESPONSIVE TABLET
-========================= */
-
 @media (max-width: 992px) {
-  .footer-incarail {
-    padding: 54px 0 24px;
-  }
-
   .footer-top-grid {
     grid-template-columns: 1fr;
-    gap: 34px;
   }
 
   .footer-links-grid {
     grid-template-columns: repeat(2, minmax(160px, 1fr));
-    gap: 26px 24px;
   }
 }
 
-/* =========================
-   RESPONSIVE MOBILE
-========================= */
-
 @media (max-width: 640px) {
   .footer-incarail {
-    padding-top: 46px;
+    padding-top: 42px;
   }
 
   .footer-links-grid,
@@ -241,19 +164,13 @@
 
   .footer-bottom {
     flex-direction: column;
-    gap: 10px;
   }
 
-  .footer-socials {
-    flex-wrap: wrap;
+  .footer-links-grid {
+    gap: 8px;
   }
 
-  .footer-tagline {
-    font-size: 0.94rem;
-  }
-
-  .footer-link-col a,
-  .footer-link-col span {
-    font-size: 0.94rem;
+  .footer-accordion {
+    padding-bottom: 4px;
   }
 }
