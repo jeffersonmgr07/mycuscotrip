@@ -10,7 +10,6 @@
 .search-bar .mct-card {
   width: min(1280px, 100%);
   background: #ececeb;
-  backdrop-filter: blur(10px);
   border-radius: 42px;
   box-shadow: 0 20px 38px rgba(0, 0, 0, 0.12);
   padding: 34px 0 0 0;
