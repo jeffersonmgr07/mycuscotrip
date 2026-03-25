@@ -124,10 +124,8 @@ class MyCuscoTripSearchBar {
     };
 
     visibleInput.addEventListener("click", openCalendar);
-    visibleInput.addEventListener("touchstart", openCalendar, { passive: false });
 
     this.dateField?.addEventListener("click", openCalendar);
-    this.dateField?.addEventListener("touchstart", openCalendar, { passive: false });
   }
 
   handleDateChange(selectedDates) {
@@ -179,19 +177,6 @@ class MyCuscoTripSearchBar {
         this.closeQuantityPanel();
       }
     });
-
-    this.qtyToggle.addEventListener("touchstart", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const isHidden = this.qtyPanel.hasAttribute("hidden");
-      if (isHidden) {
-        this.qtyPanel.removeAttribute("hidden");
-        this.qtyToggle.setAttribute("aria-expanded", "true");
-      } else {
-        this.closeQuantityPanel();
-      }
-    }, { passive: false });
 
     this.qtyDone?.addEventListener("click", () => {
       this.closeQuantityPanel();
