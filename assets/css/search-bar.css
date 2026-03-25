@@ -160,7 +160,7 @@
 }
 
 .search-bar .mct-submit {
-  height: calc(100% - 16px);
+  height: calc(100% - 36px);
   align-self: center;
   margin: 8px;
   min-width: 200px;
