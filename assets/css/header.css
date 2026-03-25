@@ -18,9 +18,9 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 6px 22px;
-  gap: 16px;
-  min-height: 84px;
+  padding: 2px 22px;
+  gap: 14px;
+  min-height: 66px;
 }
 
 .logo {
@@ -30,7 +30,7 @@
 }
 
 .logo img {
-  height: 72px;
+  height: 54px;
   display: block;
 }
 
@@ -61,9 +61,10 @@
   color: #fff;
   font-weight: 600;
   font-size: 0.94rem;
-  padding: 4px 2px;
+  padding: 2px 2px;
   transition: 0.2s;
   white-space: nowrap;
+  line-height: 1.1;
 }
 
 .nav-menu a:hover,
@@ -72,7 +73,7 @@
 }
 
 .nav-reserva {
-  padding: 10px 16px !important;
+  padding: 8px 14px !important;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -86,7 +87,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
   white-space: nowrap;
   grid-column: 3 / 4;
 }
@@ -105,10 +106,10 @@
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: #fff;
   border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 0.85rem;
+  padding: 6px 10px;
+  font-size: 0.84rem;
   cursor: pointer;
-  min-height: 40px;
+  min-height: 36px;
   white-space: nowrap;
 }
 
@@ -153,8 +154,8 @@
 }
 
 .wa-header img {
-  height: 40px;
-  width: 40px;
+  height: 38px;
+  width: 38px;
   object-fit: contain;
   display: block;
 }
@@ -197,9 +198,9 @@
   .header-actions {
     grid-column: 2 / 3;
     justify-self: end;
-    align-items: center;
     justify-content: flex-end;
-    gap: 6px;
+    width: auto;
+    gap: 0;
     margin-right: 0;
   }
 
