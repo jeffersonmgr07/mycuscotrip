@@ -57,6 +57,7 @@
   border-radius: 18px;
   background: #fff;
   overflow: visible;
+  padding-bottom: 4px;
 }
 
 .search-bar .mct-divider {
@@ -71,7 +72,7 @@
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  padding: 10px 14px 18px;
+  padding: 10px 14px 22px;
   min-height: 65px;
 }
 
