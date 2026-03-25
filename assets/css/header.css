@@ -18,19 +18,20 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 2px 22px;
+  padding: 4px 22px;
   gap: 14px;
-  min-height: 66px;
+  min-height: 72px;
 }
 
 .logo {
   display: inline-flex;
   align-items: center;
   grid-column: 1 / 2;
+  grid-row: 1 / 2;
 }
 
 .logo img {
-  height: 54px;
+  height: 58px;
   display: block;
 }
 
@@ -40,6 +41,7 @@
   align-items: center;
   min-width: 0;
   grid-column: 2 / 3;
+  grid-row: 1 / 2;
 }
 
 .nav-menu {
@@ -61,7 +63,7 @@
   color: #fff;
   font-weight: 600;
   font-size: 0.94rem;
-  padding: 2px 2px;
+  padding: 4px 2px;
   transition: 0.2s;
   white-space: nowrap;
   line-height: 1.1;
@@ -90,6 +92,7 @@
   gap: 10px;
   white-space: nowrap;
   grid-column: 3 / 4;
+  grid-row: 1 / 2;
 }
 
 .lang-switcher {
@@ -185,6 +188,7 @@
 
   .logo {
     grid-column: 1 / 2;
+    grid-row: 1 / 2;
     justify-self: start;
     width: 100%;
     min-width: 0;
@@ -197,11 +201,11 @@
 
   .header-actions {
     grid-column: 2 / 3;
+    grid-row: 1 / 2;
     justify-self: end;
     justify-content: flex-end;
     width: auto;
     gap: 0;
-    margin-right: 0;
   }
 
   .lang-switcher {
@@ -228,6 +232,7 @@
   .mobile-menu-btn {
     display: inline-flex;
     grid-column: 3 / 4;
+    grid-row: 1 / 2;
     justify-self: end;
     width: 40px;
     height: 40px;
@@ -236,6 +241,7 @@
 
   .nav {
     grid-column: 1 / -1;
+    grid-row: 1 / 2;
     width: 0;
     height: 0;
     min-width: 0;
