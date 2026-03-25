@@ -69,7 +69,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   padding: 10px 14px 18px;
   min-height: 65px;
@@ -130,6 +130,7 @@
 
 .search-bar .mct-fecha-field {
   z-index: 30;
+  padding-top: 10px;
   padding-bottom: 28px;
 }
 
@@ -415,6 +416,8 @@
   .search-bar .mct-qty-toggle {
     height: 40px;
     font-size: 15px;
+    position: relative;
+    top: 1px;
   }
 
   .search-bar .mct-submit {
