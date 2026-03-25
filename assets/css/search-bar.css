@@ -374,12 +374,12 @@
   }
 
   .search-bar .mct-submit {
-    height: calc(100% - 20px);
-    align-self: center;
-    margin: 10px 8px;
-    min-width: 200px;
+    width: calc(100% - 16px);
+    height: 48px;
+    margin: 8px;
+    border-radius: 18px;
   }
-
+}
 @media (max-width: 768px) {
   .search-bar .mct-card {
     width: min(100%, 100%);
@@ -417,6 +417,7 @@
   }
 
   .search-bar .mct-submit {
-    font-size: 0.86rem;
+    ffont-size: 0.88rem;
+    letter-spacing: 0.3px;
   }
 }
