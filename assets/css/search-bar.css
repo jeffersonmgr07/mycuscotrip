@@ -58,7 +58,7 @@
   display: grid;
   grid-template-columns: 1.18fr 1px 1.45fr 1px 1.08fr auto;
   align-items: center;
-  background: #ececeb;
+  background: transparent;
   border-radius: 42px;
   padding: 10px 16px 16px;
   overflow: visible;
