@@ -15,12 +15,13 @@
 
   <style>
     :root {
-      --brand-dark: #1f2937;
       --brand-primary: #0f172a;
+      --brand-dark-green: #253b2f;
       --brand-accent: #c8a96b;
       --brand-accent-soft: #f7f1e7;
       --text-main: #1f2937;
       --text-soft: #667085;
+      --text-mid: #7b7b7b;
       --line: #e6e8ec;
       --bg-soft: #f7f8fa;
       --white: #ffffff;
@@ -61,10 +62,46 @@
 
     .top-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
       margin-bottom: 18px;
       flex-wrap: wrap;
+    }
+
+    .top-actions-right {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .lang-switcher label {
+      font-size: .85rem;
+      color: var(--text-soft);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .lang-switcher select {
+      border: none;
+      background: transparent;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--brand-primary);
+      outline: none;
+      cursor: pointer;
     }
 
     .action-btn {
@@ -103,7 +140,7 @@
 
     .voucher-top {
       display: grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1.05fr 1fr;
       gap: 28px;
       padding: 34px 34px 26px;
       border-bottom: 1px solid var(--line);
@@ -113,65 +150,84 @@
     .voucher-brand {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
+      align-items: flex-start;
+      gap: 16px;
     }
 
     .voucher-brand img {
-      width: 220px;
+      width: 290px;
       max-width: 100%;
       height: auto;
       display: block;
     }
 
     .voucher-brand .subcopy {
-      max-width: 520px;
-      color: var(--text-soft);
-      line-height: 1.75;
-      font-size: .98rem;
+      width: 290px;
+      max-width: 100%;
+      color: var(--text-mid);
+      line-height: 1.45;
+      font-size: .96rem;
+      text-align: left;
     }
 
     .voucher-brand .contact {
+      width: 290px;
+      max-width: 100%;
       display: grid;
-      gap: 6px;
-      color: var(--text-soft);
+      gap: 4px;
+      color: var(--brand-dark-green);
       font-size: .92rem;
+      line-height: 1.5;
+      text-align: center;
     }
 
     .voucher-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .voucher-head-main {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 18px;
-      text-align: right;
+      align-items: center;
+      justify-content: center;
     }
 
     .voucher-head .date {
-      color: var(--text-soft);
+      color: var(--text-mid);
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .voucher-head .title {
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(2.2rem, 4vw, 4rem);
-      line-height: .95;
-      letter-spacing: -.03em;
-      color: var(--brand-primary);
-      margin: 0;
+      font-size: clamp(2rem, 3vw, 3.1rem);
+      line-height: 1;
+      letter-spacing: .02em;
+      color: var(--brand-dark-green);
+      margin: 0 0 16px;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .voucher-code {
-      display: inline-flex;
+      display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 18px 20px;
+      padding: 16px 20px;
       border-radius: 20px;
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--line);
-      min-width: 280px;
+      min-width: 300px;
+      text-align: center;
     }
 
     .voucher-code span {
@@ -184,9 +240,27 @@
 
     .voucher-code strong {
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.6rem;
-      letter-spacing: .08em;
+      font-size: 1.5rem;
+      letter-spacing: .1em;
       color: var(--brand-primary);
+      text-align: center;
+    }
+
+    .voucher-qr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .voucher-qr img {
+      width: 122px;
+      height: 122px;
+      object-fit: contain;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 8px;
+      background: white;
     }
 
     .summary-grid {
@@ -540,66 +614,124 @@
 
     .pv-top {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 320px 1fr 130px;
       gap: 24px;
       margin-bottom: 16px;
       align-items: start;
     }
 
+    .pv-logo {
+      text-align: left;
+    }
+
     .pv-logo img {
-      width: 220px;
+      width: 290px;
       max-width: 100%;
       display: block;
       margin-bottom: 10px;
     }
 
-    .pv-logo p {
-      margin: 6px 0;
-      font-size: 13px;
-      color: #555;
+    .pv-logo .subcopy {
+      width: 290px;
+      max-width: 100%;
+      color: #7b7b7b;
       line-height: 1.45;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .pv-logo .contact {
+      width: 290px;
+      max-width: 100%;
+      text-align: center;
+      color: #253b2f;
+      font-size: 12.5px;
+      line-height: 1.5;
     }
 
     .pv-head-right {
-      text-align: right;
+      text-align: center;
+      align-self: center;
     }
 
     .pv-head-right .date {
       color: #7b7b7b;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      white-space: nowrap;
     }
 
     .pv-head-right .title {
-      color: #111827;
-      font-size: 2.2rem;
+      color: #253b2f;
+      font-size: 2rem;
       font-weight: 800;
       font-family: 'Montserrat', sans-serif;
       margin-bottom: 12px;
+      white-space: nowrap;
     }
 
     .pv-code {
-      display: inline-block;
-      padding: 8px 14px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       border: 1px solid #d7dbe0;
       border-radius: 12px;
-      font-weight: 800;
+      padding: 10px 16px;
+      min-width: 240px;
+      text-align: center;
+    }
+
+    .pv-code span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #667085;
+      margin-bottom: 4px;
+    }
+
+    .pv-code strong {
+      font-size: 1.15rem;
+      font-family: 'Montserrat', sans-serif;
       letter-spacing: .08em;
-      margin-bottom: 10px;
+    }
+
+    .pv-qr {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .pv-qr img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      border: 1px solid #d8dde3;
+      padding: 6px;
+      background: white;
     }
 
     .pv-meta {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px 18px;
-      text-align: left;
       font-size: 13px;
+      margin-bottom: 12px;
     }
 
-    .pv-meta div strong {
-      display: inline-block;
-      min-width: 126px;
+    .pv-meta-box {
+      border: 1px solid #d8dde3;
+      padding: 8px 10px;
+      min-height: 58px;
+    }
+
+    .pv-meta-box strong {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #667085;
+      margin-bottom: 4px;
     }
 
     .pv-section-title {
@@ -684,8 +816,8 @@
     }
 
     .pv-assist .qr img {
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       object-fit: contain;
       border: 1px solid #d8dde3;
       padding: 6px;
@@ -700,6 +832,14 @@
       .voucher-content {
         grid-template-columns: 1fr;
       }
+
+      .pv-top {
+        grid-template-columns: 1fr;
+      }
+
+      .pv-meta {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 900px) {
@@ -708,12 +848,17 @@
       }
 
       .voucher-head {
-        align-items: flex-start;
-        text-align: left;
+        grid-template-columns: 1fr;
+        justify-items: center;
       }
 
-      .voucher-code {
-        align-items: flex-start;
+      .voucher-brand {
+        align-items: center;
+      }
+
+      .voucher-brand .subcopy,
+      .voucher-brand .contact {
+        text-align: center;
       }
     }
 
@@ -740,11 +885,26 @@
       }
 
       .top-actions {
-        justify-content: stretch;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-actions-right {
+        width: 100%;
+        flex-direction: column;
       }
 
       .action-btn {
         width: 100%;
+      }
+
+      .lang-switcher {
+        justify-content: space-between;
+      }
+
+      .voucher-head .date,
+      .voucher-head .title {
+        white-space: normal;
       }
     }
 
@@ -772,20 +932,30 @@
   <main class="voucher-page">
     <div class="voucher-shell">
       <div class="top-actions">
-        <button class="action-btn secondary" onclick="window.location.href='./mi-reserva.html'">
-          <i class="fa-solid fa-arrow-left"></i> Volver
-        </button>
-        <button class="action-btn primary" onclick="window.print()">
-          <i class="fa-solid fa-print"></i> Imprimir voucher
-        </button>
+        <div class="lang-switcher">
+          <label for="languageSelect" id="langLabel">Idioma</label>
+          <select id="languageSelect">
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+
+        <div class="top-actions-right">
+          <button class="action-btn secondary" onclick="window.location.href='./mi-reserva.html'" id="backBtn">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+          </button>
+          <button class="action-btn primary" onclick="window.print()" id="printBtn">
+            <i class="fa-solid fa-print"></i> Imprimir voucher
+          </button>
+        </div>
       </div>
 
       <section id="voucherWeb" class="voucher-web" style="display:none;"></section>
 
       <section id="voucherEmpty" class="empty-state" style="display:none;">
-        <h1>Reserva no encontrada</h1>
-        <p>No hay una reserva cargada para mostrar.</p>
-        <a href="./mi-reserva.html" class="back-home">Ir a Mi Reserva</a>
+        <h1 id="emptyTitle">Reserva no encontrada</h1>
+        <p id="emptyText">No hay una reserva cargada para mostrar.</p>
+        <a href="./mi-reserva.html" class="back-home" id="emptyBtn">Ir a Mi Reserva</a>
       </section>
 
       <section id="voucherPrint" class="print-voucher"></section>
@@ -797,6 +967,137 @@
   <script>
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+
+    let currentLanguage = localStorage.getItem("voucherLanguage") || "es";
+
+    const i18n = {
+      es: {
+        langLabel: "Idioma",
+        back: "Volver",
+        print: "Imprimir voucher",
+        emptyTitle: "Reserva no encontrada",
+        emptyText: "No hay una reserva cargada para mostrar.",
+        emptyBtn: "Ir a Mi Reserva",
+        subtitle: "Especialistas diseñando viajes llenos de emociones al Valle Sagrado de los Incas",
+        contact1: "Portal de Panes 123 - Plaza de Armas Cusco",
+        contact2: "Whatsapp: +51 900 608 980",
+        contact3: "Email: reservas@mycuscotrip.com",
+        contact4: "Web: www.mycuscotrip.com",
+        travelVoucher: "TRAVEL VOUCHER",
+        bookingCode: "Código de reserva",
+        holder: "Titular reserva",
+        travelDate: "Fecha de viaje",
+        destination: "Destino",
+        pack: "Pack / programa",
+        passengersCount: "Cantidad de pasajeros",
+        language: "Idioma",
+        phone: "Teléfono de contacto",
+        coupon: "Cupón / referencia",
+        passengers: "Pasajeros de la reserva",
+        travelers: "viajero(s)",
+        document: "Documento",
+        nationality: "Nacionalidad",
+        birthDate: "Fecha nacimiento",
+        lodging: "Alojamiento",
+        hotels: "hotel(es)",
+        services: "Servicios e itinerario",
+        serviceLabel: "servicio(s)",
+        code: "Código",
+        service: "Servicio",
+        date: "Fecha",
+        start: "Inicio",
+        end: "Fin",
+        status: "Estado",
+        included: "Incluido",
+        extra: "Extra / No incluido",
+        transfers: "Traslados, vuelos o buses",
+        operator: "Operador",
+        number: "Número",
+        origin: "Origen",
+        arrival: "Llegada",
+        verification: "Verificación de reserva",
+        verifiedTitle: "Reserva verificable",
+        verifiedCopy: "Escanea este código para abrir la página de validación con el código de reserva, titular y fecha de viaje.",
+        assistance: "Asistencia personalizada",
+        assignedAgent: "Agente asignado",
+        includes: "Incluye",
+        notIncludes: "No incluye / adicionales",
+        recommendations: "Recomendaciones",
+        pendingPayments: "Pagos pendientes y extras",
+        payNow: "Pagar ahora",
+        goToPayment: "Ir al pago",
+        completePayment: "Completar pago total",
+        printPassengers: "Pasajeros",
+        printLodging: "Alojamiento",
+        printServices: "Servicios",
+        printTransfers: "Traslados / vuelos",
+        printAdditionalInfo: "Información adicional",
+        noData: "-"
+      },
+      en: {
+        langLabel: "Language",
+        back: "Back",
+        print: "Print voucher",
+        emptyTitle: "Reservation not found",
+        emptyText: "There is no reservation loaded to display.",
+        emptyBtn: "Go to My Reservation",
+        subtitle: "Specialists in designing emotional journeys to the Sacred Valley of the Incas",
+        contact1: "Portal de Panes 123 - Plaza de Armas Cusco",
+        contact2: "WhatsApp: +51 900 608 980",
+        contact3: "Email: reservas@mycuscotrip.com",
+        contact4: "Web: www.mycuscotrip.com",
+        travelVoucher: "TRAVEL VOUCHER",
+        bookingCode: "Booking code",
+        holder: "Reservation holder",
+        travelDate: "Travel date",
+        destination: "Destination",
+        pack: "Package / program",
+        passengersCount: "Passengers",
+        language: "Language",
+        phone: "Contact phone",
+        coupon: "Coupon / reference",
+        passengers: "Reservation travelers",
+        travelers: "traveler(s)",
+        document: "Document",
+        nationality: "Nationality",
+        birthDate: "Birth date",
+        lodging: "Accommodation",
+        hotels: "hotel(s)",
+        services: "Services and itinerary",
+        serviceLabel: "service(s)",
+        code: "Code",
+        service: "Service",
+        date: "Date",
+        start: "Start",
+        end: "End",
+        status: "Status",
+        included: "Included",
+        extra: "Extra / Not included",
+        transfers: "Transfers, flights or buses",
+        operator: "Operator",
+        number: "Number",
+        origin: "Origin",
+        arrival: "Arrival",
+        verification: "Reservation verification",
+        verifiedTitle: "Verifiable reservation",
+        verifiedCopy: "Scan this code to open the validation page with the booking code, holder and travel date.",
+        assistance: "Personal assistance",
+        assignedAgent: "Assigned agent",
+        includes: "Includes",
+        notIncludes: "Not included / extras",
+        recommendations: "Recommendations",
+        pendingPayments: "Pending and extra payments",
+        payNow: "Pay now",
+        goToPayment: "Go to payment",
+        completePayment: "Complete total payment",
+        printPassengers: "Travelers",
+        printLodging: "Accommodation",
+        printServices: "Services",
+        printTransfers: "Transfers / flights",
+        printAdditionalInfo: "Additional information",
+        noData: "-"
+      }
+    };
 
     async function loadComponent(componentName, targetId) {
       try {
@@ -872,7 +1173,65 @@
       return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(text)}`;
     }
 
+    function formatDateLocalized(input, lang = "es") {
+      if (!input) return i18n[lang].noData;
+
+      const normalized = String(input).trim();
+
+      const isoMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      const slashMatch = normalized.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+
+      let date;
+
+      if (isoMatch) {
+        date = new Date(`${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}T12:00:00`);
+      } else if (slashMatch) {
+        date = new Date(`${slashMatch[3]}-${slashMatch[2]}-${slashMatch[1]}T12:00:00`);
+      } else {
+        const tentative = new Date(normalized);
+        if (!Number.isNaN(tentative.getTime())) {
+          date = tentative;
+        } else {
+          return normalized;
+        }
+      }
+
+      const locale = lang === "en" ? "en-US" : "es-PE";
+      const formatted = date.toLocaleDateString(locale, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+      if (lang === "es") {
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      }
+      return formatted;
+    }
+
+    function getLocalizedField(field, lang) {
+      if (field == null) return "";
+      if (typeof field === "object" && !Array.isArray(field)) {
+        return field[lang] || field.es || field.en || "";
+      }
+      return field;
+    }
+
+    function applyStaticTranslations() {
+      const t = i18n[currentLanguage];
+      document.documentElement.lang = currentLanguage;
+      document.getElementById("langLabel").textContent = t.langLabel;
+      document.getElementById("backBtn").innerHTML = `<i class="fa-solid fa-arrow-left"></i> ${t.back}`;
+      document.getElementById("printBtn").innerHTML = `<i class="fa-solid fa-print"></i> ${t.print}`;
+      document.getElementById("emptyTitle").textContent = t.emptyTitle;
+      document.getElementById("emptyText").textContent = t.emptyText;
+      document.getElementById("emptyBtn").textContent = t.emptyBtn;
+      document.getElementById("languageSelect").value = currentLanguage;
+    }
+
     function renderWebVoucher(reserva) {
+      const t = i18n[currentLanguage];
       const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
       const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
       const servicios = Array.isArray(reserva.servicios) ? reserva.servicios : [];
@@ -889,49 +1248,54 @@
       return `
         <div class="voucher-top">
           <div class="voucher-brand">
-            <div>
-              <img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip">
-              <div class="subcopy">
-                Tu voucher de viaje con toda la información importante de la reserva:
-                viajeros, servicios, pagos adicionales y verificación digital.
-              </div>
+            <img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip">
+
+            <div class="subcopy">
+              ${esc(t.subtitle)}
             </div>
 
             <div class="contact">
-              <div><strong>Web:</strong> www.mycuscotrip.com</div>
-              <div><strong>Email:</strong> reservas@mycuscotrip.com</div>
-              <div><strong>Teléfono:</strong> +51 900 608 980</div>
+              <div>${esc(t.contact1)}</div>
+              <div>${esc(t.contact2)}</div>
+              <div>${esc(t.contact3)}</div>
+              <div>${esc(t.contact4)}</div>
             </div>
           </div>
 
           <div class="voucher-head">
-            <div class="date">${esc(reserva.fechaVoucher || reserva.fechaEmision || "")}</div>
-            <h1 class="title">TRAVEL<br>VOUCHER</h1>
+            <div class="voucher-head-main">
+              <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
+              <h1 class="title">${esc(t.travelVoucher)}</h1>
 
-            <div class="voucher-code">
-              <span>Código de reserva</span>
-              <strong>${esc(reserva.codigo || "-")}</strong>
+              <div class="voucher-code">
+                <span>${esc(t.bookingCode)}</span>
+                <strong>${esc(reserva.codigo || t.noData)}</strong>
+              </div>
+            </div>
+
+            <div class="voucher-qr">
+              <img src="${qrUrl}" alt="QR">
             </div>
           </div>
         </div>
 
         <div class="summary-grid">
-          <div class="summary-card"><span class="label">Titular reserva</span><div class="value">${esc(reserva.titularReserva || "-")}</div></div>
-          <div class="summary-card"><span class="label">Fecha de viaje</span><div class="value">${esc(reserva.fechaViaje || reserva.fechaEmision || "-")}</div></div>
-          <div class="summary-card"><span class="label">Destino</span><div class="value">${esc(reserva.destino || "-")}</div></div>
-          <div class="summary-card"><span class="label">Pack / programa</span><div class="value">${esc(reserva.packTour || "-")}</div></div>
-          <div class="summary-card"><span class="label">Cantidad de pasajeros</span><div class="value">${esc(reserva.cantidadPaxs || turistas.length || "-")}</div></div>
-          <div class="summary-card"><span class="label">Idioma</span><div class="value">${esc(reserva.idioma || "-")}</div></div>
-          <div class="summary-card"><span class="label">Teléfono de contacto</span><div class="value">${esc(reserva.telefonoContacto || "-")}</div></div>
-          <div class="summary-card"><span class="label">Cupón / referencia</span><div class="value">${esc(reserva.codigoCupon || "-")}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.holder)}</span><div class="value">${esc(reserva.titularReserva || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaEmision || "", currentLanguage))}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.pack)}</span><div class="value">${esc(reserva.packTour || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.passengersCount)}</span><div class="value">${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.language)}</span><div class="value">${esc(reserva.idioma || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.phone)}</span><div class="value">${esc(reserva.telefonoContacto || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.coupon)}</span><div class="value">${esc(reserva.codigoCupon || t.noData)}</div></div>
         </div>
 
         <div class="voucher-content">
           <div class="main-column">
             <article class="card">
               <div class="card-head">
-                <h2>Pasajeros de la reserva</h2>
-                <span class="card-kicker">${turistas.length} viajero(s)</span>
+                <h2>${esc(t.passengers)}</h2>
+                <span class="card-kicker">${turistas.length} ${esc(t.travelers)}</span>
               </div>
               <div class="card-body">
                 <div style="overflow:auto;">
@@ -939,20 +1303,20 @@
                     <thead>
                       <tr>
                         <th>Nombre completo</th>
-                        <th>Documento</th>
-                        <th>Nacionalidad</th>
-                        <th>Fecha nacimiento</th>
-                        <th>Teléfono</th>
+                        <th>${esc(t.document)}</th>
+                        <th>${esc(t.nationality)}</th>
+                        <th>${esc(t.birthDate)}</th>
+                        <th>${esc(t.phone)}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      ${turistas.map(t => `
+                      ${turistas.map(turista => `
                         <tr>
-                          <td>${esc(t.nombreCompleto || `${t.nombres || ""} ${t.apellidos || ""}`.trim())}</td>
-                          <td>${esc(t.tipoDocumento || "-")} ${t.numeroDocumento || t.documento ? `- ${esc(t.numeroDocumento || t.documento)}` : ""}</td>
-                          <td>${esc(t.nacionalidad || "-")}</td>
-                          <td>${esc(t.fechaNacimiento || "-")}</td>
-                          <td>${esc(t.telefono || "-")}</td>
+                          <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
+                          <td>${esc(turista.tipoDocumento || t.noData)} ${turista.numeroDocumento || turista.documento ? `- ${esc(turista.numeroDocumento || turista.documento)}` : ""}</td>
+                          <td>${esc(turista.nacionalidad || t.noData)}</td>
+                          <td>${esc(turista.fechaNacimiento || t.noData)}</td>
+                          <td>${esc(turista.telefono || t.noData)}</td>
                         </tr>
                       `).join("")}
                     </tbody>
@@ -964,23 +1328,23 @@
             ${hoteles.length ? `
             <article class="card">
               <div class="card-head">
-                <h2>Alojamiento</h2>
-                <span class="card-kicker">${hoteles.length} hotel(es)</span>
+                <h2>${esc(t.lodging)}</h2>
+                <span class="card-kicker">${hoteles.length} ${esc(t.hotels)}</span>
               </div>
               <div class="card-body">
                 <div class="hotel-grid">
                   ${hoteles.map(h => `
                     <div class="hotel-card">
-                      <h3>${esc(h.nombre || "-")}</h3>
-                      <p><strong>Ubicación:</strong> ${esc(h.ubicacion || "-")}</p>
-                      <p><strong>Check-in:</strong> ${esc(h.checkIn || "-")}</p>
-                      <p><strong>Check-out:</strong> ${esc(h.checkOut || "-")}</p>
-                      <p><strong>Noches:</strong> ${esc(h.noches || "-")}</p>
-                      <p><strong>Categoría:</strong> ${esc(h.categoria || "-")}</p>
-                      <p><strong>Habitación:</strong> ${esc(h.habitacion || "-")}</p>
-                      <p><strong>Dirección:</strong> ${esc(h.direccion || "-")}</p>
-                      <p><strong>Teléfono:</strong> ${esc(h.telefono || "-")}</p>
-                      <p><strong>Observaciones:</strong> ${esc(h.observaciones || "-")}</p>
+                      <h3>${esc(h.nombre || t.noData)}</h3>
+                      <p><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</p>
+                      <p><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</p>
+                      <p><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</p>
+                      <p><strong>Noches:</strong> ${esc(h.noches || t.noData)}</p>
+                      <p><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</p>
+                      <p><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</p>
+                      <p><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</p>
+                      <p><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</p>
+                      <p><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</p>
                     </div>
                   `).join("")}
                 </div>
@@ -989,33 +1353,33 @@
 
             <article class="card">
               <div class="card-head">
-                <h2>Servicios e itinerario</h2>
-                <span class="card-kicker">${servicios.length} servicio(s)</span>
+                <h2>${esc(t.services)}</h2>
+                <span class="card-kicker">${servicios.length} ${esc(t.serviceLabel)}</span>
               </div>
               <div class="card-body">
                 <div style="overflow:auto;">
                   <table>
                     <thead>
                       <tr>
-                        <th>Código</th>
-                        <th>Servicio</th>
-                        <th>Fecha</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
-                        <th>Estado</th>
+                        <th>${esc(t.code)}</th>
+                        <th>${esc(t.service)}</th>
+                        <th>${esc(t.date)}</th>
+                        <th>${esc(t.start)}</th>
+                        <th>${esc(t.end)}</th>
+                        <th>${esc(t.status)}</th>
                       </tr>
                     </thead>
                     <tbody>
                       ${servicios.map(s => `
                         <tr>
-                          <td>${esc(s.codigo || "-")}</td>
-                          <td>${esc(s.nombre || "-")}</td>
-                          <td>${esc(s.fecha || "-")}</td>
-                          <td>${esc(s.horaInicio || "-")}</td>
-                          <td>${esc(s.horaFin || "-")}</td>
+                          <td>${esc(s.codigo || t.noData)}</td>
+                          <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
+                          <td>${esc(s.fecha || t.noData)}</td>
+                          <td>${esc(s.horaInicio || t.noData)}</td>
+                          <td>${esc(s.horaFin || t.noData)}</td>
                           <td>${s.incluido
-                            ? `<span class="pill included">Incluido</span>`
-                            : `<span class="pill extra">Extra / No incluido</span>`}</td>
+                            ? `<span class="pill included">${esc(t.included)}</span>`
+                            : `<span class="pill extra">${esc(t.extra)}</span>`}</td>
                         </tr>
                       `).join("")}
                     </tbody>
@@ -1027,30 +1391,30 @@
             ${vuelos.length ? `
             <article class="card">
               <div class="card-head">
-                <h2>Traslados, vuelos o buses</h2>
+                <h2>${esc(t.transfers)}</h2>
               </div>
               <div class="card-body">
                 <div style="overflow:auto;">
                   <table>
                     <thead>
                       <tr>
-                        <th>Operador</th>
-                        <th>Número</th>
-                        <th>Origen</th>
-                        <th>Destino</th>
-                        <th>Salida</th>
-                        <th>Llegada</th>
+                        <th>${esc(t.operator)}</th>
+                        <th>${esc(t.number)}</th>
+                        <th>${esc(t.origin)}</th>
+                        <th>${esc(t.destination)}</th>
+                        <th>${esc(t.start)}</th>
+                        <th>${esc(t.arrival)}</th>
                       </tr>
                     </thead>
                     <tbody>
                       ${vuelos.map(v => `
                         <tr>
-                          <td>${esc(v.operador || "-")}</td>
-                          <td>${esc(v.numero || "-")}</td>
-                          <td>${esc(v.origen || "-")}</td>
-                          <td>${esc(v.destino || "-")}</td>
-                          <td>${esc(v.salida || "-")}</td>
-                          <td>${esc(v.llegada || "-")}</td>
+                          <td>${esc(v.operador || t.noData)}</td>
+                          <td>${esc(v.numero || t.noData)}</td>
+                          <td>${esc(v.origen || t.noData)}</td>
+                          <td>${esc(v.destino || t.noData)}</td>
+                          <td>${esc(v.salida || t.noData)}</td>
+                          <td>${esc(v.llegada || t.noData)}</td>
                         </tr>
                       `).join("")}
                     </tbody>
@@ -1063,15 +1427,14 @@
           <aside class="side-column">
             <article class="card">
               <div class="card-head">
-                <h2>Verificación de reserva</h2>
+                <h2>${esc(t.verification)}</h2>
               </div>
               <div class="card-body">
                 <div class="verify-card">
-                  <img class="qr" src="${qrUrl}" alt="QR verificación">
-                  <h3 class="verify-title">Reserva verificable</h3>
+                  <img class="qr" src="${qrUrl}" alt="QR">
+                  <h3 class="verify-title">${esc(t.verifiedTitle)}</h3>
                   <div class="verify-copy">
-                    Escanea este código para abrir la página de validación con el
-                    código de reserva, titular y fecha de viaje.
+                    ${esc(t.verifiedCopy)}
                   </div>
                 </div>
               </div>
@@ -1079,13 +1442,13 @@
 
             <article class="card">
               <div class="card-head">
-                <h2>Asistencia personalizada</h2>
+                <h2>${esc(t.assistance)}</h2>
               </div>
               <div class="card-body">
                 <div class="agent-box">
-                  <span class="label">Agente asignado</span>
-                  <div class="name">${esc(reserva.agenteAsignado || "-")}</div>
-                  <div class="phone">${esc(reserva.agenteTelefono || "-")}</div>
+                  <span class="label">${esc(t.assignedAgent)}</span>
+                  <div class="name">${esc(reserva.agenteAsignado || t.noData)}</div>
+                  <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
                 </div>
               </div>
             </article>
@@ -1093,11 +1456,11 @@
             ${incluye.length ? `
             <article class="card">
               <div class="card-head">
-                <h2>Incluye</h2>
+                <h2>${esc(t.includes)}</h2>
               </div>
               <div class="card-body">
                 <ul class="list-clean">
-                  ${incluye.map(i => `<li>${esc(i)}</li>`).join("")}
+                  ${incluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}
                 </ul>
               </div>
             </article>` : ""}
@@ -1105,11 +1468,11 @@
             ${noIncluye.length ? `
             <article class="card">
               <div class="card-head">
-                <h2>No incluye / adicionales</h2>
+                <h2>${esc(t.notIncludes)}</h2>
               </div>
               <div class="card-body">
                 <ul class="list-clean">
-                  ${noIncluye.map(i => `<li>${esc(i)}</li>`).join("")}
+                  ${noIncluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}
                 </ul>
               </div>
             </article>` : ""}
@@ -1117,11 +1480,11 @@
             ${infoAdicional.length ? `
             <article class="card">
               <div class="card-head">
-                <h2>Recomendaciones</h2>
+                <h2>${esc(t.recommendations)}</h2>
               </div>
               <div class="card-body">
                 <div class="soft-note">
-                  ${infoAdicional.map(i => `• ${esc(i)}`).join("<br>")}
+                  ${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}
                 </div>
               </div>
             </article>` : ""}
@@ -1129,25 +1492,25 @@
             ${(pagoTotal || pagosExtras.length) ? `
             <article class="card">
               <div class="card-head">
-                <h2>Pagos pendientes y extras</h2>
+                <h2>${esc(t.pendingPayments)}</h2>
               </div>
               <div class="card-body">
                 <div class="pay-stack">
                   ${pagoTotal ? `
                     <div class="pay-card">
-                      <h3>${esc(pagoTotal.label || "Completar pago total")}</h3>
-                      <p>${esc(pagoTotal.descripcion || "Usa este enlace para completar el pago total de la reserva.")}</p>
+                      <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
+                      <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
                       <div class="amounts">${buildAmountPills(pagoTotal)}</div>
-                      ${pagoTotal.url ? `<a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">Pagar ahora</a>` : ""}
+                      ${pagoTotal.url ? `<a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">${esc(t.payNow)}</a>` : ""}
                     </div>
                   ` : ""}
 
                   ${pagosExtras.map(p => `
                     <div class="pay-card">
-                      <h3>${esc(p.label || "Pagar servicio extra")}</h3>
-                      <p>${esc(p.descripcion || "Enlace para un servicio adicional o no incluido.")}</p>
+                      <h3>${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</h3>
+                      <p>${esc(getLocalizedField(p.descripcion, currentLanguage) || "")}</p>
                       <div class="amounts">${buildAmountPills(p)}</div>
-                      ${p.url ? `<a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">Ir al pago</a>` : ""}
+                      ${p.url ? `<a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t.goToPayment)}</a>` : ""}
                     </div>
                   `).join("")}
                 </div>
@@ -1159,6 +1522,7 @@
     }
 
     function renderPrintVoucher(reserva) {
+      const t = i18n[currentLanguage];
       const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
       const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
       const servicios = Array.isArray(reserva.servicios) ? reserva.servicios : [];
@@ -1174,135 +1538,147 @@
         <div class="pv-top">
           <div class="pv-logo">
             <img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip">
-            <p>Travel & Tourism Agency</p>
-            <p>www.mycuscotrip.com</p>
-            <p>reservas@mycuscotrip.com</p>
+            <div class="subcopy">${esc(t.subtitle)}</div>
+            <div class="contact">
+              <div>${esc(t.contact1)}</div>
+              <div>${esc(t.contact2)}</div>
+              <div>${esc(t.contact3)}</div>
+              <div>${esc(t.contact4)}</div>
+            </div>
           </div>
 
           <div class="pv-head-right">
-            <div class="date">${esc(reserva.fechaVoucher || reserva.fechaEmision || "")}</div>
-            <div class="title">TRAVEL VOUCHER</div>
-            <div class="pv-code">${esc(reserva.codigo || "-")}</div>
-
-            <div class="pv-meta">
-              <div><strong>Titular:</strong> ${esc(reserva.titularReserva || "-")}</div>
-              <div><strong>Fecha viaje:</strong> ${esc(reserva.fechaViaje || "-")}</div>
-              <div><strong>Destino:</strong> ${esc(reserva.destino || "-")}</div>
-              <div><strong>Pasajeros:</strong> ${esc(reserva.cantidadPaxs || turistas.length || "-")}</div>
-              <div><strong>Idioma:</strong> ${esc(reserva.idioma || "-")}</div>
-              <div><strong>Pack:</strong> ${esc(reserva.packTour || "-")}</div>
+            <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
+            <div class="title">${esc(t.travelVoucher)}</div>
+            <div class="pv-code">
+              <span>${esc(t.bookingCode)}</span>
+              <strong>${esc(reserva.codigo || t.noData)}</strong>
             </div>
+          </div>
+
+          <div class="pv-qr">
+            <img src="${qrUrl}" alt="QR">
           </div>
         </div>
 
-        <div class="pv-section-title">Pasajeros</div>
+        <div class="pv-meta">
+          <div class="pv-meta-box"><strong>${esc(t.holder)}</strong>${esc(reserva.titularReserva || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.travelDate)}</strong>${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaEmision || "", currentLanguage))}</div>
+          <div class="pv-meta-box"><strong>${esc(t.destination)}</strong>${esc(reserva.destino || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.pack)}</strong>${esc(reserva.packTour || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.passengersCount)}</strong>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.language)}</strong>${esc(reserva.idioma || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.phone)}</strong>${esc(reserva.telefonoContacto || t.noData)}</div>
+          <div class="pv-meta-box"><strong>${esc(t.coupon)}</strong>${esc(reserva.codigoCupon || t.noData)}</div>
+        </div>
+
+        <div class="pv-section-title">${esc(t.printPassengers)}</div>
         <table class="pv-table">
           <thead>
             <tr>
               <th>Nombre completo</th>
-              <th>Documento</th>
-              <th>Nacionalidad</th>
-              <th>Fecha nacimiento</th>
+              <th>${esc(t.document)}</th>
+              <th>${esc(t.nationality)}</th>
+              <th>${esc(t.birthDate)}</th>
             </tr>
           </thead>
           <tbody>
-            ${turistas.map(t => `
+            ${turistas.map(turista => `
               <tr>
-                <td>${esc(t.nombreCompleto || `${t.nombres || ""} ${t.apellidos || ""}`.trim())}</td>
-                <td>${esc(t.tipoDocumento || "-")} ${t.numeroDocumento || t.documento ? `- ${esc(t.numeroDocumento || t.documento)}` : ""}</td>
-                <td>${esc(t.nacionalidad || "-")}</td>
-                <td>${esc(t.fechaNacimiento || "-")}</td>
+                <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
+                <td>${esc(turista.tipoDocumento || t.noData)} ${turista.numeroDocumento || turista.documento ? `- ${esc(turista.numeroDocumento || turista.documento)}` : ""}</td>
+                <td>${esc(turista.nacionalidad || t.noData)}</td>
+                <td>${esc(turista.fechaNacimiento || t.noData)}</td>
               </tr>
             `).join("")}
           </tbody>
         </table>
 
         ${hoteles.length ? `
-          <div class="pv-section-title">Alojamiento</div>
+          <div class="pv-section-title">${esc(t.printLodging)}</div>
           <div class="pv-hotels">
             ${hoteles.map(h => `
               <div class="pv-hotel">
-                <strong>${esc(h.nombre || "-")}</strong><br>
-                Ubicación: ${esc(h.ubicacion || "-")}<br>
-                Check-in: ${esc(h.checkIn || "-")}<br>
-                Check-out: ${esc(h.checkOut || "-")}<br>
-                Noches: ${esc(h.noches || "-")}<br>
-                Habitación: ${esc(h.habitacion || "-")}<br>
-                Categoría: ${esc(h.categoria || "-")}
+                <strong>${esc(h.nombre || t.noData)}</strong><br>
+                Ubicación: ${esc(h.ubicacion || t.noData)}<br>
+                Check-in: ${esc(h.checkIn || t.noData)}<br>
+                Check-out: ${esc(h.checkOut || t.noData)}<br>
+                Noches: ${esc(h.noches || t.noData)}<br>
+                Habitación: ${esc(h.habitacion || t.noData)}<br>
+                Categoría: ${esc(h.categoria || t.noData)}
               </div>
             `).join("")}
           </div>
         ` : ""}
 
-        <div class="pv-section-title">Servicios</div>
+        <div class="pv-section-title">${esc(t.printServices)}</div>
         <table class="pv-table">
           <thead>
             <tr>
-              <th>Código</th>
-              <th>Servicio</th>
-              <th>Fecha</th>
-              <th>Inicio</th>
-              <th>Fin</th>
-              <th>Estado</th>
+              <th>${esc(t.code)}</th>
+              <th>${esc(t.service)}</th>
+              <th>${esc(t.date)}</th>
+              <th>${esc(t.start)}</th>
+              <th>${esc(t.end)}</th>
+              <th>${esc(t.status)}</th>
             </tr>
           </thead>
           <tbody>
             ${servicios.map(s => `
               <tr>
-                <td>${esc(s.codigo || "-")}</td>
-                <td>${esc(s.nombre || "-")}</td>
-                <td>${esc(s.fecha || "-")}</td>
-                <td>${esc(s.horaInicio || "-")}</td>
-                <td>${esc(s.horaFin || "-")}</td>
-                <td>${s.incluido ? "Incluido" : "Extra / No incluido"}</td>
+                <td>${esc(s.codigo || t.noData)}</td>
+                <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
+                <td>${esc(s.fecha || t.noData)}</td>
+                <td>${esc(s.horaInicio || t.noData)}</td>
+                <td>${esc(s.horaFin || t.noData)}</td>
+                <td>${s.incluido ? esc(t.included) : esc(t.extra)}</td>
               </tr>
             `).join("")}
           </tbody>
         </table>
 
         ${vuelos.length ? `
-          <div class="pv-section-title">Traslados / vuelos</div>
+          <div class="pv-section-title">${esc(t.printTransfers)}</div>
           <table class="pv-table">
             <thead>
               <tr>
-                <th>Operador</th>
-                <th>Número</th>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Salida</th>
-                <th>Llegada</th>
+                <th>${esc(t.operator)}</th>
+                <th>${esc(t.number)}</th>
+                <th>${esc(t.origin)}</th>
+                <th>${esc(t.destination)}</th>
+                <th>${esc(t.start)}</th>
+                <th>${esc(t.arrival)}</th>
               </tr>
             </thead>
             <tbody>
               ${vuelos.map(v => `
                 <tr>
-                  <td>${esc(v.operador || "-")}</td>
-                  <td>${esc(v.numero || "-")}</td>
-                  <td>${esc(v.origen || "-")}</td>
-                  <td>${esc(v.destino || "-")}</td>
-                  <td>${esc(v.salida || "-")}</td>
-                  <td>${esc(v.llegada || "-")}</td>
+                  <td>${esc(v.operador || t.noData)}</td>
+                  <td>${esc(v.numero || t.noData)}</td>
+                  <td>${esc(v.origen || t.noData)}</td>
+                  <td>${esc(v.destino || t.noData)}</td>
+                  <td>${esc(v.salida || t.noData)}</td>
+                  <td>${esc(v.llegada || t.noData)}</td>
                 </tr>
               `).join("")}
             </tbody>
           </table>
         ` : ""}
 
-        <div class="pv-section-title">Información adicional</div>
+        <div class="pv-section-title">${esc(t.printAdditionalInfo)}</div>
         <div class="pv-bottom">
           <div class="pv-box">
-            ${infoAdicional.length ? infoAdicional.map(i => `• ${esc(i)}`).join("<br>") : "• Revisar el itinerario antes del viaje.<br>• Presentar documento original en cada servicio."}
-            ${noIncluye.length ? `<br><br><strong>No incluye:</strong><br>${noIncluye.map(i => `• ${esc(i)}`).join("<br>")}` : ""}
-            ${(pagoTotal || pagosExtras.length) ? `<br><br><strong>Pagos pendientes:</strong><br>` : ""}
-            ${pagoTotal ? `• ${esc(pagoTotal.label || "Completar pago total")} — ${esc(moneyPen(pagoTotal.montoPen) || "")} ${esc(moneyUsd(pagoTotal.montoUsd) || "")}<br>` : ""}
-            ${pagosExtras.map(p => `• ${esc(p.label || "Pago extra")} — ${esc(moneyPen(p.montoPen) || "")} ${esc(moneyUsd(p.montoUsd) || "")}`).join("<br>")}
+            ${infoAdicional.length ? infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>") : ""}
+            ${noIncluye.length ? `<br><br><strong>${esc(t.notIncludes)}:</strong><br>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}` : ""}
+            ${(pagoTotal || pagosExtras.length) ? `<br><br><strong>${esc(t.pendingPayments)}:</strong><br>` : ""}
+            ${pagoTotal ? `• ${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)} — ${esc(moneyPen(pagoTotal.montoPen) || "")} ${esc(moneyUsd(pagoTotal.montoUsd) || "")}<br>` : ""}
+            ${pagosExtras.map(p => `• ${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)} — ${esc(moneyPen(p.montoPen) || "")} ${esc(moneyUsd(p.montoUsd) || "")}`).join("<br>")}
           </div>
 
           <div class="pv-box pv-assist">
-            <div class="agent">${esc(reserva.agenteAsignado || "-")}</div>
-            <div class="phone">${esc(reserva.agenteTelefono || "-")}</div>
-            <div class="qr"><img src="${qrUrl}" alt="QR verificación"></div>
-            <div>Escanea para verificar la reserva</div>
+            <div class="agent">${esc(reserva.agenteAsignado || t.noData)}</div>
+            <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
+            <div class="qr"><img src="${qrUrl}" alt="QR"></div>
           </div>
         </div>
       `;
@@ -1314,6 +1690,8 @@
       const emptyEl = document.getElementById("voucherEmpty");
       const printEl = document.getElementById("voucherPrint");
 
+      applyStaticTranslations();
+
       if (!reservaRaw) {
         emptyEl.style.display = "block";
         return;
@@ -1324,19 +1702,35 @@
         webEl.innerHTML = renderWebVoucher(reserva);
         printEl.innerHTML = renderPrintVoucher(reserva);
         webEl.style.display = "block";
+        emptyEl.style.display = "none";
       } catch (error) {
         console.error("Error leyendo reserva:", error);
         emptyEl.style.display = "block";
       }
     }
 
+    function setupLanguageSwitcher() {
+      const select = document.getElementById("languageSelect");
+      select.value = currentLanguage;
+
+      select.addEventListener("change", (e) => {
+        currentLanguage = e.target.value;
+        localStorage.setItem("voucherLanguage", currentLanguage);
+        initVoucher();
+      });
+    }
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', async () => {
         await initializeSharedComponents();
+        setupLanguageSwitcher();
         initVoucher();
       });
     } else {
-      initializeSharedComponents().then(initVoucher);
+      initializeSharedComponents().then(() => {
+        setupLanguageSwitcher();
+        initVoucher();
+      });
     }
   </script>
 
