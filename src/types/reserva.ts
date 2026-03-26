@@ -21,6 +21,7 @@ export type Turista = {
   nacionalidad: string;
 };
 
+
 export type Reserva = {
   codigo: string;
   apellido: string;
