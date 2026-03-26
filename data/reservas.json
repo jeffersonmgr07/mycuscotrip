@@ -1,0 +1,64 @@
+[
+  {
+    "codigo": "CUS12345",
+    "apellido": "GARCIA",
+    "destino": "Cusco Mágico 4D/3N",
+    "itinerario": [
+      {
+        "titulo": "Día 1",
+        "detalle": "Llegada, traslado y city tour."
+      }
+    ],
+    "tarifaBase": {
+      "pen": 1850,
+      "usd": 495
+    },
+    "tarifasExtras": [
+      {
+        "concepto": "Upgrade hotel",
+        "pen": 320,
+        "usd": 85
+      }
+    ],
+    "paypalUrl": "https://www.paypal.com/payment-link-aqui",
+    "turistas": [
+      {
+        "nombres": "Juan",
+        "apellidos": "Garcia",
+        "documento": "12345678",
+        "nacionalidad": "Peruana"
+      }
+    ]
+  },
+  {
+    "codigo": "CUS99999",
+    "apellido": "PEREZ",
+    "destino": "Machu Picchu Full Day",
+    "itinerario": [
+      {
+        "titulo": "Día 1",
+        "detalle": "Recojo del hotel, viaje en tren y visita guiada."
+      }
+    ],
+    "tarifaBase": {
+      "pen": 980,
+      "usd": 260
+    },
+    "tarifasExtras": [
+      {
+        "concepto": "Bus Consettur",
+        "pen": 90,
+        "usd": 25
+      }
+    ],
+    "paypalUrl": "https://www.paypal.com/payment-link-2",
+    "turistas": [
+      {
+        "nombres": "Maria",
+        "apellidos": "Perez",
+        "documento": "99887766",
+        "nacionalidad": "Argentina"
+      }
+    ]
+  }
+]
