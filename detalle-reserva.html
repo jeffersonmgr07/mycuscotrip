@@ -35,6 +35,9 @@
       --radius-lg: 22px;
       --radius-md: 16px;
       --radius-sm: 12px;
+
+      /* CAMBIA ESTE COLOR SI QUIERES OTRO PARA LOS TITULOS DE SECCION */
+      --section-title-bg: #ffd400;
     }
 
     * { box-sizing: border-box; }
@@ -48,9 +51,9 @@
 
     .voucher-page {
       min-height: 100vh;
-      padding: 120px 0 70px;
+      padding: 92px 0 60px;
       background:
-        linear-gradient(rgba(255,255,255,.84), rgba(255,255,255,.84)),
+        linear-gradient(rgba(255,255,255,.86), rgba(255,255,255,.86)),
         url("./assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
     }
 
@@ -65,7 +68,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
@@ -142,7 +145,7 @@
       display: grid;
       grid-template-columns: 1.05fr 1fr;
       gap: 28px;
-      padding: 34px 34px 26px;
+      padding: 26px 34px 20px;
       border-bottom: 1px solid var(--line);
       background: white;
     }
@@ -151,27 +154,28 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
+      gap: 14px;
     }
 
     .voucher-brand img {
-      width: 290px;
+      width: 319px; /* 10% mas grande aprox */
       max-width: 100%;
       height: auto;
       display: block;
     }
 
     .voucher-brand .subcopy {
-      width: 290px;
+      width: 319px;
       max-width: 100%;
       color: var(--text-mid);
-      line-height: 1.45;
+      line-height: 1.42;
       font-size: .96rem;
-      text-align: left;
+      text-align: center;
+      margin: 0;
     }
 
     .voucher-brand .contact {
-      width: 290px;
+      width: 319px;
       max-width: 100%;
       display: grid;
       gap: 4px;
@@ -182,10 +186,10 @@
     }
 
     .voucher-head {
-      display: grid;
-      grid-template-columns: 1fr auto;
+      display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: center;
+      gap: 18px;
     }
 
     .voucher-head-main {
@@ -198,7 +202,7 @@
     .voucher-head .date {
       color: var(--text-mid);
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.44rem; /* 20% mas grande aprox */
       line-height: 1.2;
       margin-bottom: 10px;
       text-align: center;
@@ -211,7 +215,7 @@
       line-height: 1;
       letter-spacing: .02em;
       color: var(--brand-dark-green);
-      margin: 0 0 16px;
+      margin: 0 0 14px;
       text-align: center;
       white-space: nowrap;
     }
@@ -267,7 +271,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
-      padding: 22px 34px 28px;
+      padding: 18px 34px 22px;
       background: #fcfcfd;
       border-bottom: 1px solid var(--line);
     }
@@ -302,7 +306,7 @@
       display: grid;
       grid-template-columns: 1.35fr .75fr;
       gap: 22px;
-      padding: 28px 34px 34px;
+      padding: 24px 34px 30px;
       background: #fafbfc;
     }
 
@@ -326,9 +330,9 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      padding: 18px 22px;
+      padding: 14px 22px;
       border-bottom: 1px solid var(--line);
-      background: white;
+      background: var(--section-title-bg);
     }
 
     .card-head h2 {
@@ -344,8 +348,8 @@
       align-items: center;
       padding: 6px 10px;
       border-radius: 999px;
-      background: var(--brand-accent-soft);
-      color: #8a6a2f;
+      background: rgba(255,255,255,.55);
+      color: #7a5c00;
       font-size: .76rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -621,32 +625,34 @@
     }
 
     .pv-logo {
-      text-align: left;
+      text-align: center;
     }
 
     .pv-logo img {
-      width: 290px;
+      width: 319px;
       max-width: 100%;
       display: block;
-      margin-bottom: 10px;
+      margin: 0 auto 10px;
     }
 
     .pv-logo .subcopy {
-      width: 290px;
+      width: 319px;
       max-width: 100%;
       color: #7b7b7b;
-      line-height: 1.45;
+      line-height: 1.42;
       font-size: 13px;
-      margin-bottom: 10px;
+      margin: 0 auto 10px;
+      text-align: center;
     }
 
     .pv-logo .contact {
-      width: 290px;
+      width: 319px;
       max-width: 100%;
       text-align: center;
       color: #253b2f;
       font-size: 12.5px;
       line-height: 1.5;
+      margin: 0 auto;
     }
 
     .pv-head-right {
@@ -656,7 +662,7 @@
 
     .pv-head-right .date {
       color: #7b7b7b;
-      font-size: 1.05rem;
+      font-size: 1.26rem;
       font-weight: 700;
       margin-bottom: 8px;
       white-space: nowrap;
@@ -699,7 +705,7 @@
 
     .pv-qr {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
     }
 
@@ -736,7 +742,7 @@
 
     .pv-section-title {
       margin-top: 14px;
-      background: #f3f4f6;
+      background: var(--section-title-bg);
       padding: 8px 10px;
       font-size: 13px;
       font-weight: 800;
@@ -848,8 +854,7 @@
       }
 
       .voucher-head {
-        grid-template-columns: 1fr;
-        justify-items: center;
+        flex-direction: column;
       }
 
       .voucher-brand {
@@ -864,7 +869,7 @@
 
     @media (max-width: 640px) {
       .voucher-page {
-        padding: 105px 0 50px;
+        padding: 95px 0 40px;
       }
 
       .voucher-top,
@@ -903,8 +908,15 @@
       }
 
       .voucher-head .date,
-      .voucher-head .title {
+      .voucher-head .title,
+      .pv-head-right .date,
+      .pv-head-right .title {
         white-space: normal;
+      }
+
+      .voucher-qr img {
+        width: 108px;
+        height: 108px;
       }
     }
 
