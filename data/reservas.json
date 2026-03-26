@@ -1,64 +1,117 @@
 [
   {
-    "codigo": "CUS12345",
-    "apellido": "GARCIA",
-    "destino": "Cusco Mágico 4D/3N",
-    "itinerario": [
+    "codigo": "CUZ14D7A9",
+    "apellido": "MUCKLE",
+    "fechaVoucher": "Tuesday, March 17, 2026",
+    "fechaEmision": "2026-03-17",
+    "idioma": "English",
+    "titularReserva": "Jadarious Muckle",
+    "telefonoContacto": "+1 678-209-5705",
+    "cantidadPaxs": 1,
+    "destino": "Cusco - Perú",
+    "packTour": "Machu Picchu Full Day + Panoramic Tour",
+    "agenteAsignado": "Jefferson García",
+    "agenteTelefono": "+51900608980",
+    "hotelInfo": [
       {
-        "titulo": "Día 1",
-        "detalle": "Llegada, traslado y city tour."
+        "nombre": "Hotel de ejemplo",
+        "ubicacion": "Cusco",
+        "checkIn": "March 17, 2026 - 11:00 AM",
+        "checkOut": "March 19, 2026 - 10:00 AM",
+        "noches": "02",
+        "categoria": "3 estrellas",
+        "habitacion": "Matrimonial",
+        "direccion": "Cusco, Perú",
+        "telefono": "084-000000",
+        "observaciones": "Desayuno incluido / WiFi / Agua caliente"
       }
     ],
-    "tarifaBase": {
-      "pen": 1850,
-      "usd": 495
-    },
-    "tarifasExtras": [
-      {
-        "concepto": "Upgrade hotel",
-        "pen": 320,
-        "usd": 85
-      }
-    ],
-    "paypalUrl": "https://www.paypal.com/payment-link-aqui",
     "turistas": [
       {
-        "nombres": "Juan",
-        "apellidos": "Garcia",
-        "documento": "12345678",
-        "nacionalidad": "Peruana"
-      }
-    ]
-  },
-  {
-    "codigo": "CUS99999",
-    "apellido": "PEREZ",
-    "destino": "Machu Picchu Full Day",
-    "itinerario": [
-      {
-        "titulo": "Día 1",
-        "detalle": "Recojo del hotel, viaje en tren y visita guiada."
+        "nombreCompleto": "Jadarious Muckle",
+        "tipoDocumento": "Passport",
+        "numeroDocumento": "A06359811",
+        "nacionalidad": "United States",
+        "fechaNacimiento": "March 19, 1996",
+        "telefono": "+1 678-209-5705"
       }
     ],
-    "tarifaBase": {
-      "pen": 980,
-      "usd": 260
+    "servicios": [
+      {
+        "codigo": "CUS100",
+        "nombre": "Panoramic Tour Cusco + Andean Ceremony",
+        "fecha": "March 17, 2026",
+        "horaInicio": "03:00 PM",
+        "horaFin": "06:00 PM",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA001",
+        "nombre": "Transfer Cusco → Ollantaytambo Train Station",
+        "fecha": "March 19, 2026",
+        "horaInicio": "04:00 AM",
+        "horaFin": "06:00 AM",
+        "incluido": true
+      },
+      {
+        "codigo": "EX001",
+        "nombre": "Vistadome upgrade",
+        "fecha": "March 19, 2026",
+        "horaInicio": "-",
+        "horaFin": "-",
+        "incluido": false
+      }
+    ],
+    "incluye": [
+      "Panoramic Tour of Cusco",
+      "Andean Ceremony 'Pago a la Tierra' with local shaman",
+      "Round-trip train tickets The Voyager",
+      "Bus tickets Machu Picchu Pueblo ↔ Machu Picchu Citadel",
+      "Entrance ticket to Machu Picchu Citadel"
+    ],
+    "noIncluye": [
+      "Almuerzos y cenas",
+      "Servicios personales",
+      "Seguro de viaje"
+    ],
+    "vuelos": [
+      {
+        "operador": "LATAM",
+        "numero": "LA2378",
+        "origen": "LA PAZ",
+        "destino": "CUSCO",
+        "salida": "13/8/2019 10:50 AM",
+        "llegada": "13/8/2019 11:50 AM"
+      }
+    ],
+    "pagos": {
+      "totalPendiente": {
+        "label": "Completar pago total",
+        "montoPen": 850,
+        "montoUsd": 230,
+        "url": "https://www.paypal.com/"
+      },
+      "extras": [
+        {
+          "label": "Pagar Boleto Turístico",
+          "descripcion": "Pago pendiente de boleto turístico general",
+          "montoPen": 150,
+          "montoUsd": 41,
+          "url": "https://www.paypal.com/"
+        },
+        {
+          "label": "Pagar ticket de tren",
+          "descripcion": "Pago pendiente de ticket de tren",
+          "montoPen": 490,
+          "montoUsd": 134,
+          "url": "https://www.paypal.com/"
+        }
+      ]
     },
-    "tarifasExtras": [
-      {
-        "concepto": "Bus Consettur",
-        "pen": 90,
-        "usd": 25
-      }
-    ],
-    "paypalUrl": "https://www.paypal.com/payment-link-2",
-    "turistas": [
-      {
-        "nombres": "Maria",
-        "apellidos": "Perez",
-        "documento": "99887766",
-        "nacionalidad": "Argentina"
-      }
+    "informacionAdicional": [
+      "Presentarse con anticipación a cada servicio.",
+      "Llevar documento original.",
+      "Coordinar cambios con su agente."
     ]
   }
 ]
