@@ -36,8 +36,8 @@
       --radius-md: 16px;
       --radius-sm: 12px;
 
-      /* CAMBIA ESTE COLOR SI QUIERES OTRO PARA LOS TITULOS DE SECCION */
-      --section-title-bg: #ffd400;
+      /* Cambia este color si quieres otro tono para los titulos */
+      --section-title-bg: #ffe97a;
     }
 
     * { box-sizing: border-box; }
@@ -158,7 +158,7 @@
     }
 
     .voucher-brand img {
-      width: 319px; /* 10% mas grande aprox */
+      width: 319px;
       max-width: 100%;
       height: auto;
       display: block;
@@ -187,9 +187,10 @@
 
     .voucher-head {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 18px;
+      gap: 14px;
     }
 
     .voucher-head-main {
@@ -202,7 +203,7 @@
     .voucher-head .date {
       color: var(--text-mid);
       font-weight: 700;
-      font-size: 1.44rem; /* 20% mas grande aprox */
+      font-size: 1.44rem;
       line-height: 1.2;
       margin-bottom: 10px;
       text-align: center;
@@ -218,6 +219,13 @@
       margin: 0 0 14px;
       text-align: center;
       white-space: nowrap;
+    }
+
+    .voucher-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
     }
 
     .voucher-code {
@@ -618,7 +626,7 @@
 
     .pv-top {
       display: grid;
-      grid-template-columns: 320px 1fr 130px;
+      grid-template-columns: 320px 1fr;
       gap: 24px;
       margin-bottom: 16px;
       align-items: start;
@@ -677,6 +685,13 @@
       white-space: nowrap;
     }
 
+    .pv-code-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
     .pv-code {
       display: inline-flex;
       flex-direction: column;
@@ -704,7 +719,7 @@
     }
 
     .pv-qr {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
     }
@@ -857,6 +872,10 @@
         flex-direction: column;
       }
 
+      .voucher-code-row {
+        flex-direction: column;
+      }
+
       .voucher-brand {
         align-items: center;
       }
@@ -917,6 +936,10 @@
       .voucher-qr img {
         width: 108px;
         height: 108px;
+      }
+
+      .pv-code-row {
+        flex-direction: column;
       }
     }
 
@@ -1279,14 +1302,16 @@
               <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
               <h1 class="title">${esc(t.travelVoucher)}</h1>
 
-              <div class="voucher-code">
-                <span>${esc(t.bookingCode)}</span>
-                <strong>${esc(reserva.codigo || t.noData)}</strong>
-              </div>
-            </div>
+              <div class="voucher-code-row">
+                <div class="voucher-code">
+                  <span>${esc(t.bookingCode)}</span>
+                  <strong>${esc(reserva.codigo || t.noData)}</strong>
+                </div>
 
-            <div class="voucher-qr">
-              <img src="${qrUrl}" alt="QR">
+                <div class="voucher-qr">
+                  <img src="${qrUrl}" alt="QR">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1562,14 +1587,15 @@
           <div class="pv-head-right">
             <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
             <div class="title">${esc(t.travelVoucher)}</div>
-            <div class="pv-code">
-              <span>${esc(t.bookingCode)}</span>
-              <strong>${esc(reserva.codigo || t.noData)}</strong>
+            <div class="pv-code-row">
+              <div class="pv-code">
+                <span>${esc(t.bookingCode)}</span>
+                <strong>${esc(reserva.codigo || t.noData)}</strong>
+              </div>
+              <div class="pv-qr">
+                <img src="${qrUrl}" alt="QR">
+              </div>
             </div>
-          </div>
-
-          <div class="pv-qr">
-            <img src="${qrUrl}" alt="QR">
           </div>
         </div>
 
