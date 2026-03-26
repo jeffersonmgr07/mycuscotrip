@@ -1,0 +1,61 @@
+[
+  {
+    "codigo": "CUS12345",
+    "apellido": "GARCIA",
+    "destino": "Cusco Mágico 4D/3N",
+    "itinerario": [
+      {
+        "titulo": "Día 1",
+        "detalle": "Llegada al aeropuerto, traslado al hotel y city tour en Cusco."
+      },
+      {
+        "titulo": "Día 2",
+        "detalle": "Excursión al Valle Sagrado con visitas guiadas."
+      },
+      {
+        "titulo": "Día 3",
+        "detalle": "Viaje a Machu Picchu full day."
+      },
+      {
+        "titulo": "Día 4",
+        "detalle": "Check-out y traslado al aeropuerto."
+      }
+    ],
+    "tarifaBase": {
+      "pen": 1850,
+      "usd": 495
+    },
+    "tarifasExtras": [
+      {
+        "concepto": "Upgrade de hotel",
+        "pen": 320,
+        "usd": 85
+      },
+      {
+        "concepto": "Traslado privado",
+        "pen": 190,
+        "usd": 50
+      },
+      {
+        "concepto": "Ingreso adicional",
+        "pen": 150,
+        "usd": 40
+      }
+    ],
+    "paypalUrl": "https://www.paypal.com/payment-link-aqui",
+    "turistas": [
+      {
+        "nombres": "Jefferson",
+        "apellidos": "Garcia",
+        "documento": "12345678",
+        "nacionalidad": "Peruana"
+      },
+      {
+        "nombres": "María",
+        "apellidos": "Lopez",
+        "documento": "87654321",
+        "nacionalidad": "Peruana"
+      }
+    ]
+  }
+]
