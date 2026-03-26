@@ -29,3 +29,4 @@ export function obtenerReservaPorCodigo(codigo: string) {
     (reserva) => normalizarTexto(reserva.codigo) === codigoNormalizado
   );
 }
+
