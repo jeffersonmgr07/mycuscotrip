@@ -625,10 +625,10 @@
     }
 
     .pay-link {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: auto; /* mas corto */
+      width: fit-content;
       min-width: 180px;
       max-width: 230px;
       min-height: 44px;
@@ -713,6 +713,31 @@
     @media (max-width: 640px) {
       .voucher-page {
         padding: 84px 0 34px;
+      }
+
+      th,
+      .summary-card .label,
+      .summary-card .value,
+      .card-head h2,
+      .card-kicker,
+      .voucher-code span,
+      .voucher-code strong,
+      .pay-card h3,
+      .amount-pill,
+      .pay-link {
+        white-space: nowrap;
+      }
+      
+      th {
+        font-size: .72rem;
+      }
+      
+      .summary-card .label {
+        font-size: .7rem;
+      }
+      
+      .summary-card .value {
+        font-size: .88rem;
       }
 
       .voucher-top,
