@@ -575,6 +575,54 @@
       font-weight: 700;
       color: #344054;
     }
+    .billing-card {
+      position: relative;
+    }
+    
+    .pay-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    
+    .pay-badge.offer {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      color: #c2410c;
+    }
+    
+    .billing-box {
+      border: 1px dashed #d6dae1;
+      border-radius: 14px;
+      background: #fafbfd;
+      padding: 12px 14px;
+      margin: 12px 0 14px;
+    }
+    
+    .billing-line {
+      display: block;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e5e7eb;
+      color: #334155;
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+    
+    .billing-line:last-child {
+      border-bottom: none;
+      font-weight: 800;
+      color: #0f172a;
+    }
 
     .pay-stack {
       display: grid;
@@ -1436,20 +1484,46 @@
                 <div class="card-body">
                   <div class="pay-stack">
                     ${pagoTotal ? `
-                      <div class="pay-card">
+                      <div class="pay-card billing-card">
+                        ${pagoTotal.badge ? `<div class="pay-badge">${esc(getLocalizedField(pagoTotal.badge, currentLanguage) || pagoTotal.badge)}</div>` : ""}
                         <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
                         <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
+              
+                        ${Array.isArray(pagoTotal.detalle) && pagoTotal.detalle.length ? `
+                          <div class="billing-box">
+                            ${pagoTotal.detalle.map(item => `<div class="billing-line">${esc(item)}</div>`).join("")}
+                          </div>
+                        ` : ""}
+              
                         <div class="amounts">${buildAmountPills(pagoTotal)}</div>
-                        ${pagoTotal.url ? `<a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">${esc(t.payNow)}</a>` : ""}
+              
+                        ${pagoTotal.url ? `
+                          <a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">
+                            ${esc(t.payNow)}
+                          </a>
+                        ` : ""}
                       </div>
                     ` : ""}
-
+              
                     ${pagosExtras.map(p => `
                       <div class="pay-card">
+                        ${p.badge ? `<div class="pay-badge offer">${esc(getLocalizedField(p.badge, currentLanguage) || p.badge)}</div>` : ""}
                         <h3>${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</h3>
                         <p>${esc(getLocalizedField(p.descripcion, currentLanguage) || "")}</p>
+              
+                        ${Array.isArray(p.detalle) && p.detalle.length ? `
+                          <div class="billing-box">
+                            ${p.detalle.map(item => `<div class="billing-line">${esc(item)}</div>`).join("")}
+                          </div>
+                        ` : ""}
+              
                         <div class="amounts">${buildAmountPills(p)}</div>
-                        ${p.url ? `<a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t.goToPayment)}</a>` : ""}
+              
+                        ${p.url ? `
+                          <a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">
+                            ${esc(t.goToPayment)}
+                          </a>
+                        ` : ""}
                       </div>
                     `).join("")}
                   </div>
