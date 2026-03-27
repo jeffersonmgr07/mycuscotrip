@@ -334,7 +334,7 @@
         "descripcion": "Detalle de facturación pendiente. Saldo total por pagar de la reserva.",
         "montoPen": 1049.7,
         "montoUsd": 306.2,
-        "url": "https://www.paypal.com/",
+        "url": "https://www.paypal.com/invoice/p/#ZLVNXH3KAQN5BXSK",
         "detalle": [
           "PAXS #01 - S/ 559.90 - USD 163.70",
           "PAXS #02 - S/ 559.90 - USD 163.70",
@@ -364,7 +364,7 @@
           "descripcion": "Pago pendiente de ticket de tren.",
           "montoPen": null,
           "montoUsd": 387,
-          "url": "https://www.paypal.com/",
+          "url": "https://www.paypal.com/invoice/p/#DCX3WF2XU9MGDWCE",
           "detalle": [
             "PAXS #01 - USD 129.00",
             "PAXS #02 - USD 129.00",
