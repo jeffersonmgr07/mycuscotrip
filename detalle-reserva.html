@@ -35,8 +35,6 @@
       --radius-lg: 22px;
       --radius-md: 16px;
       --radius-sm: 12px;
-
-      /* Cambia este color si quieres otro tono para los titulos */
       --section-title-bg: #ffe97a;
     }
 
@@ -51,9 +49,9 @@
 
     .voucher-page {
       min-height: 100vh;
-      padding: 92px 0 60px;
+      padding: 78px 0 54px;
       background:
-        linear-gradient(rgba(255,255,255,.86), rgba(255,255,255,.86)),
+        linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.88)),
         url("./assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
     }
 
@@ -68,7 +66,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
@@ -82,15 +80,16 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: white;
-      border: 1px solid var(--line);
+      background: transparent;
+      border: 1px solid rgba(15, 23, 42, 0.08);
       border-radius: 14px;
-      padding: 10px 12px;
-      box-shadow: var(--shadow-md);
+      padding: 8px 10px;
+      box-shadow: none;
+      backdrop-filter: blur(2px);
     }
 
     .lang-switcher label {
-      font-size: .85rem;
+      font-size: .8rem;
       color: var(--text-soft);
       font-weight: 700;
       text-transform: uppercase;
@@ -100,11 +99,15 @@
     .lang-switcher select {
       border: none;
       background: transparent;
-      font-size: .95rem;
+      font-size: .92rem;
       font-weight: 700;
       color: var(--brand-primary);
       outline: none;
       cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 4px;
     }
 
     .action-btn {
@@ -144,8 +147,8 @@
     .voucher-top {
       display: grid;
       grid-template-columns: 1.05fr 1fr;
-      gap: 28px;
-      padding: 26px 34px 20px;
+      gap: 26px;
+      padding: 18px 34px 16px;
       border-bottom: 1px solid var(--line);
       background: white;
     }
@@ -154,7 +157,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 14px;
+      gap: 10px;
     }
 
     .voucher-brand img {
@@ -168,8 +171,8 @@
       width: 319px;
       max-width: 100%;
       color: var(--text-mid);
-      line-height: 1.42;
-      font-size: .96rem;
+      line-height: 1.32;
+      font-size: .95rem;
       text-align: center;
       margin: 0;
     }
@@ -178,10 +181,10 @@
       width: 319px;
       max-width: 100%;
       display: grid;
-      gap: 4px;
+      gap: 1px;
       color: var(--brand-dark-green);
-      font-size: .92rem;
-      line-height: 1.5;
+      font-size: .9rem;
+      line-height: 1.24;
       text-align: center;
     }
 
@@ -190,7 +193,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .voucher-head-main {
@@ -204,8 +207,8 @@
       color: var(--text-mid);
       font-weight: 700;
       font-size: 1.44rem;
-      line-height: 1.2;
-      margin-bottom: 10px;
+      line-height: 1.1;
+      margin-bottom: 8px;
       text-align: center;
       white-space: nowrap;
     }
@@ -216,7 +219,7 @@
       line-height: 1;
       letter-spacing: .02em;
       color: var(--brand-dark-green);
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       text-align: center;
       white-space: nowrap;
     }
@@ -233,8 +236,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 16px 20px;
+      gap: 7px;
+      padding: 14px 18px;
       border-radius: 20px;
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--line);
@@ -243,7 +246,7 @@
     }
 
     .voucher-code span {
-      font-size: .8rem;
+      font-size: .78rem;
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--text-soft);
@@ -252,7 +255,7 @@
 
     .voucher-code strong {
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       letter-spacing: .1em;
       color: var(--brand-primary);
       text-align: center;
@@ -265,8 +268,8 @@
     }
 
     .voucher-qr img {
-      width: 122px;
-      height: 122px;
+      width: 124px;
+      height: 124px;
       object-fit: contain;
       display: block;
       border: 1px solid var(--line);
@@ -278,24 +281,24 @@
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding: 18px 34px 22px;
+      gap: 12px;
+      padding: 14px 34px 18px;
       background: #fcfcfd;
       border-bottom: 1px solid var(--line);
     }
 
     .summary-card {
-      padding: 15px 16px;
+      padding: 11px 14px;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 14px;
       background: white;
-      min-height: 98px;
+      min-height: 76px;
     }
 
     .summary-card .label {
       display: block;
-      margin-bottom: 7px;
-      font-size: .78rem;
+      margin-bottom: 5px;
+      font-size: .74rem;
       letter-spacing: .04em;
       text-transform: uppercase;
       color: var(--text-soft);
@@ -303,8 +306,8 @@
     }
 
     .summary-card .value {
-      font-size: .98rem;
-      line-height: 1.55;
+      font-size: .94rem;
+      line-height: 1.42;
       font-weight: 700;
       color: var(--brand-primary);
       word-break: break-word;
@@ -312,16 +315,35 @@
 
     .voucher-content {
       display: grid;
-      grid-template-columns: 1.35fr .75fr;
-      gap: 22px;
-      padding: 24px 34px 30px;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 20px 34px 28px;
       background: #fafbfc;
+    }
+
+    .row-full {
+      display: grid;
+      gap: 18px;
+    }
+
+    .row-secondary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .row-bottom {
+      display: grid;
+      grid-template-columns: 1fr .92fr;
+      gap: 18px;
+      align-items: start;
     }
 
     .main-column,
     .side-column {
       display: grid;
-      gap: 20px;
+      gap: 18px;
       align-content: start;
     }
 
@@ -365,7 +387,7 @@
     }
 
     .card-body {
-      padding: 20px 22px;
+      padding: 18px 22px;
     }
 
     .soft-note {
@@ -374,8 +396,8 @@
       border-radius: 14px;
       background: #fbfcfd;
       color: var(--text-soft);
-      line-height: 1.7;
-      font-size: .93rem;
+      line-height: 1.65;
+      font-size: .92rem;
     }
 
     table {
@@ -384,15 +406,15 @@
     }
 
     th, td {
-      padding: 12px 10px;
+      padding: 11px 10px;
       border-bottom: 1px solid #edf1f4;
       text-align: left;
       vertical-align: top;
-      font-size: .92rem;
+      font-size: .91rem;
     }
 
     th {
-      font-size: .78rem;
+      font-size: .76rem;
       text-transform: uppercase;
       letter-spacing: .05em;
       color: var(--text-soft);
@@ -446,8 +468,8 @@
 
     .hotel-card p {
       margin: 6px 0;
-      font-size: .91rem;
-      line-height: 1.55;
+      font-size: .9rem;
+      line-height: 1.5;
       color: #475467;
     }
 
@@ -458,38 +480,8 @@
 
     .list-clean li {
       margin-bottom: 10px;
-      line-height: 1.65;
+      line-height: 1.62;
       color: #475467;
-    }
-
-    .verify-card {
-      display: grid;
-      gap: 14px;
-      text-align: center;
-    }
-
-    .verify-card img.qr {
-      width: 150px;
-      height: 150px;
-      object-fit: contain;
-      margin: 0 auto;
-      padding: 8px;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-    }
-
-    .verify-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1rem;
-      color: var(--brand-primary);
-      margin: 0;
-    }
-
-    .verify-copy {
-      color: var(--text-soft);
-      line-height: 1.65;
-      font-size: .92rem;
     }
 
     .agent-box {
@@ -497,6 +489,34 @@
       border-radius: 16px;
       padding: 16px;
       background: linear-gradient(180deg, #fff 0%, #fbfcfd 100%);
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .agent-photo {
+      width: 86px;
+      height: 86px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .agent-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .agent-photo i {
+      font-size: 28px;
+      color: #94a3b8;
     }
 
     .agent-box .label {
@@ -543,8 +563,8 @@
     .pay-card p {
       margin: 0 0 12px;
       color: var(--text-soft);
-      line-height: 1.65;
-      font-size: .92rem;
+      line-height: 1.6;
+      font-size: .91rem;
     }
 
     .amounts {
@@ -647,9 +667,9 @@
       width: 319px;
       max-width: 100%;
       color: #7b7b7b;
-      line-height: 1.42;
+      line-height: 1.32;
       font-size: 13px;
-      margin: 0 auto 10px;
+      margin: 0 auto 8px;
       text-align: center;
     }
 
@@ -659,7 +679,7 @@
       text-align: center;
       color: #253b2f;
       font-size: 12.5px;
-      line-height: 1.5;
+      line-height: 1.24;
       margin: 0 auto;
     }
 
@@ -802,7 +822,7 @@
 
     .pv-bottom {
       display: grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: 1fr .92fr;
       gap: 14px;
       margin-top: 12px;
     }
@@ -850,7 +870,8 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .voucher-content {
+      .row-secondary,
+      .row-bottom {
         grid-template-columns: 1fr;
       }
 
@@ -873,7 +894,7 @@
       }
 
       .voucher-code-row {
-        flex-direction: column;
+        flex-direction: row;
       }
 
       .voucher-brand {
@@ -888,14 +909,14 @@
 
     @media (max-width: 640px) {
       .voucher-page {
-        padding: 95px 0 40px;
+        padding: 88px 0 38px;
       }
 
       .voucher-top,
       .summary-grid,
       .voucher-content {
-        padding-left: 18px;
-        padding-right: 18px;
+        padding-left: 16px;
+        padding-right: 16px;
       }
 
       .summary-grid {
@@ -904,8 +925,8 @@
 
       .card-head,
       .card-body {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 15px;
+        padding-right: 15px;
       }
 
       .top-actions {
@@ -926,20 +947,53 @@
         justify-content: space-between;
       }
 
+      .voucher-brand img,
+      .pv-logo img {
+        width: 272px;
+      }
+
+      .voucher-brand .subcopy,
+      .voucher-brand .contact,
+      .pv-logo .subcopy,
+      .pv-logo .contact {
+        width: 272px;
+      }
+
       .voucher-head .date,
+      .pv-head-right .date {
+        white-space: nowrap;
+        font-size: 1.08rem;
+      }
+
       .voucher-head .title,
-      .pv-head-right .date,
       .pv-head-right .title {
-        white-space: normal;
+        white-space: nowrap;
+      }
+
+      .voucher-code-row,
+      .pv-code-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .voucher-code {
+        min-width: 210px;
+        padding: 12px 14px;
       }
 
       .voucher-qr img {
-        width: 108px;
-        height: 108px;
+        width: 132px;
+        height: 132px;
       }
 
-      .pv-code-row {
-        flex-direction: column;
+      .agent-box {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .agent-photo {
+        width: 72px;
+        height: 72px;
       }
     }
 
@@ -1033,7 +1087,7 @@
         document: "Documento",
         nationality: "Nacionalidad",
         birthDate: "Fecha nacimiento",
-        lodging: "Alojamiento",
+        lodging: "Información de hoteles / alojamiento",
         hotels: "hotel(es)",
         services: "Servicios e itinerario",
         serviceLabel: "servicio(s)",
@@ -1045,27 +1099,24 @@
         status: "Estado",
         included: "Incluido",
         extra: "Extra / No incluido",
-        transfers: "Traslados, vuelos o buses",
+        transfers: "Información de vuelos o buses",
         operator: "Operador",
         number: "Número",
         origin: "Origen",
         arrival: "Llegada",
-        verification: "Verificación de reserva",
-        verifiedTitle: "Reserva verificable",
-        verifiedCopy: "Escanea este código para abrir la página de validación con el código de reserva, titular y fecha de viaje.",
         assistance: "Asistencia personalizada",
         assignedAgent: "Agente asignado",
-        includes: "Incluye",
-        notIncludes: "No incluye / adicionales",
+        includes: "Servicios incluidos",
+        notIncludes: "Servicios no incluidos / adicionales",
         recommendations: "Recomendaciones",
         pendingPayments: "Pagos pendientes y extras",
         payNow: "Pagar ahora",
         goToPayment: "Ir al pago",
         completePayment: "Completar pago total",
         printPassengers: "Pasajeros",
-        printLodging: "Alojamiento",
-        printServices: "Servicios",
-        printTransfers: "Traslados / vuelos",
+        printLodging: "Información de hoteles / alojamiento",
+        printServices: "Servicios e itinerario",
+        printTransfers: "Información de vuelos o buses",
         printAdditionalInfo: "Información adicional",
         noData: "-"
       },
@@ -1096,7 +1147,7 @@
         document: "Document",
         nationality: "Nationality",
         birthDate: "Birth date",
-        lodging: "Accommodation",
+        lodging: "Hotel / accommodation information",
         hotels: "hotel(s)",
         services: "Services and itinerary",
         serviceLabel: "service(s)",
@@ -1108,27 +1159,24 @@
         status: "Status",
         included: "Included",
         extra: "Extra / Not included",
-        transfers: "Transfers, flights or buses",
+        transfers: "Flight or bus information",
         operator: "Operator",
         number: "Number",
         origin: "Origin",
         arrival: "Arrival",
-        verification: "Reservation verification",
-        verifiedTitle: "Verifiable reservation",
-        verifiedCopy: "Scan this code to open the validation page with the booking code, holder and travel date.",
         assistance: "Personal assistance",
         assignedAgent: "Assigned agent",
-        includes: "Includes",
-        notIncludes: "Not included / extras",
+        includes: "Included services",
+        notIncludes: "Not included / additional services",
         recommendations: "Recommendations",
         pendingPayments: "Pending and extra payments",
         payNow: "Pay now",
         goToPayment: "Go to payment",
         completePayment: "Complete total payment",
         printPassengers: "Travelers",
-        printLodging: "Accommodation",
-        printServices: "Services",
-        printTransfers: "Transfers / flights",
+        printLodging: "Hotel / accommodation information",
+        printServices: "Services and itinerary",
+        printTransfers: "Flight or bus information",
         printAdditionalInfo: "Additional information",
         noData: "-"
       }
@@ -1276,9 +1324,7 @@
       const infoAdicional = Array.isArray(reserva.informacionAdicional) ? reserva.informacionAdicional : [];
       const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
       const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
-
-      const verificationUrl = buildVerificationUrl(reserva);
-      const qrUrl = buildQrUrl(verificationUrl);
+      const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
 
       return `
         <div class="voucher-top">
@@ -1328,7 +1374,7 @@
         </div>
 
         <div class="voucher-content">
-          <div class="main-column">
+          <div class="row-full">
             <article class="card">
               <div class="card-head">
                 <h2>${esc(t.passengers)}</h2>
@@ -1461,35 +1507,7 @@
             </article>` : ""}
           </div>
 
-          <aside class="side-column">
-            <article class="card">
-              <div class="card-head">
-                <h2>${esc(t.verification)}</h2>
-              </div>
-              <div class="card-body">
-                <div class="verify-card">
-                  <img class="qr" src="${qrUrl}" alt="QR">
-                  <h3 class="verify-title">${esc(t.verifiedTitle)}</h3>
-                  <div class="verify-copy">
-                    ${esc(t.verifiedCopy)}
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <h2>${esc(t.assistance)}</h2>
-              </div>
-              <div class="card-body">
-                <div class="agent-box">
-                  <span class="label">${esc(t.assignedAgent)}</span>
-                  <div class="name">${esc(reserva.agenteAsignado || t.noData)}</div>
-                  <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
-                </div>
-              </div>
-            </article>
-
+          <div class="row-secondary">
             ${incluye.length ? `
             <article class="card">
               <div class="card-head">
@@ -1500,7 +1518,7 @@
                   ${incluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}
                 </ul>
               </div>
-            </article>` : ""}
+            </article>` : '<div></div>'}
 
             ${noIncluye.length ? `
             <article class="card">
@@ -1512,48 +1530,75 @@
                   ${noIncluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}
                 </ul>
               </div>
-            </article>` : ""}
+            </article>` : '<div></div>'}
+          </div>
 
-            ${infoAdicional.length ? `
-            <article class="card">
-              <div class="card-head">
-                <h2>${esc(t.recommendations)}</h2>
-              </div>
-              <div class="card-body">
-                <div class="soft-note">
-                  ${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}
+          <div class="row-bottom">
+            <div class="main-column">
+              ${infoAdicional.length ? `
+              <article class="card">
+                <div class="card-head">
+                  <h2>${esc(t.recommendations)}</h2>
                 </div>
-              </div>
-            </article>` : ""}
-
-            ${(pagoTotal || pagosExtras.length) ? `
-            <article class="card">
-              <div class="card-head">
-                <h2>${esc(t.pendingPayments)}</h2>
-              </div>
-              <div class="card-body">
-                <div class="pay-stack">
-                  ${pagoTotal ? `
-                    <div class="pay-card">
-                      <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
-                      <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
-                      <div class="amounts">${buildAmountPills(pagoTotal)}</div>
-                      ${pagoTotal.url ? `<a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">${esc(t.payNow)}</a>` : ""}
-                    </div>
-                  ` : ""}
-
-                  ${pagosExtras.map(p => `
-                    <div class="pay-card">
-                      <h3>${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</h3>
-                      <p>${esc(getLocalizedField(p.descripcion, currentLanguage) || "")}</p>
-                      <div class="amounts">${buildAmountPills(p)}</div>
-                      ${p.url ? `<a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t.goToPayment)}</a>` : ""}
-                    </div>
-                  `).join("")}
+                <div class="card-body">
+                  <div class="soft-note">
+                    ${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}
+                  </div>
                 </div>
-              </div>
-            </article>` : ""}
-          </aside>
+              </article>` : ""}
+
+              <article class="card">
+                <div class="card-head">
+                  <h2>${esc(t.assistance)}</h2>
+                </div>
+                <div class="card-body">
+                  <div class="agent-box">
+                    <div class="agent-photo">
+                      ${reserva.agenteFoto
+                        ? `<img src="${esc(reserva.agenteFoto)}" alt="${esc(reserva.agenteAsignado || t.noData)}">`
+                        : `<i class="fa-solid fa-user"></i>`}
+                    </div>
+
+                    <div>
+                      <span class="label">${esc(t.assignedAgent)}</span>
+                      <div class="name">${esc(reserva.agenteAsignado || t.noData)}</div>
+                      <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="side-column">
+              ${(pagoTotal || pagosExtras.length) ? `
+              <article class="card">
+                <div class="card-head">
+                  <h2>${esc(t.pendingPayments)}</h2>
+                </div>
+                <div class="card-body">
+                  <div class="pay-stack">
+                    ${pagoTotal ? `
+                      <div class="pay-card">
+                        <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
+                        <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
+                        <div class="amounts">${buildAmountPills(pagoTotal)}</div>
+                        ${pagoTotal.url ? `<a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">${esc(t.payNow)}</a>` : ""}
+                      </div>
+                    ` : ""}
+
+                    ${pagosExtras.map(p => `
+                      <div class="pay-card">
+                        <h3>${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</h3>
+                        <p>${esc(getLocalizedField(p.descripcion, currentLanguage) || "")}</p>
+                        <div class="amounts">${buildAmountPills(p)}</div>
+                        ${p.url ? `<a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t.goToPayment)}</a>` : ""}
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              </article>` : ""}
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1568,8 +1613,7 @@
       const infoAdicional = Array.isArray(reserva.informacionAdicional) ? reserva.informacionAdicional : [];
       const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
       const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
-      const verificationUrl = buildVerificationUrl(reserva);
-      const qrUrl = buildQrUrl(verificationUrl);
+      const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
 
       return `
         <div class="pv-top">
