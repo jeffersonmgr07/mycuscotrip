@@ -17,8 +17,7 @@
     :root {
       --brand-primary: #0f172a;
       --brand-dark-green: #253b2f;
-      --brand-accent: #c8a96b;
-      --brand-accent-soft: #f7f1e7;
+      --brand-gold-dark: #b08a2d;
       --text-main: #1f2937;
       --text-soft: #667085;
       --text-mid: #7b7b7b;
@@ -47,11 +46,15 @@
       background: #f3f5f7;
     }
 
+    a {
+      text-decoration: none;
+    }
+
     .voucher-page {
       min-height: 100vh;
-      padding: 78px 0 54px;
+      padding: 74px 0 50px;
       background:
-        linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.88)),
+        linear-gradient(rgba(255,255,255,.90), rgba(255,255,255,.90)),
         url("./assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
     }
 
@@ -184,8 +187,17 @@
       gap: 1px;
       color: var(--brand-dark-green);
       font-size: .9rem;
-      line-height: 1.24;
+      line-height: 1.22;
       text-align: center;
+    }
+
+    .voucher-divider {
+      width: 100%;
+      max-width: 340px;
+      height: 1px;
+      background: var(--brand-gold-dark);
+      opacity: .9;
+      margin: 0 auto 4px;
     }
 
     .voucher-head {
@@ -201,6 +213,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .voucher-head .date {
@@ -288,29 +301,31 @@
     }
 
     .summary-card {
-      padding: 11px 14px;
+      padding: 10px 14px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: white;
-      min-height: 76px;
+      min-height: 70px;
     }
 
     .summary-card .label {
       display: block;
-      margin-bottom: 5px;
-      font-size: .74rem;
+      margin-bottom: 4px;
+      font-size: .73rem;
       letter-spacing: .04em;
       text-transform: uppercase;
       color: var(--text-soft);
       font-weight: 700;
+      text-align: center;
     }
 
     .summary-card .value {
-      font-size: .94rem;
-      line-height: 1.42;
+      font-size: .93rem;
+      line-height: 1.38;
       font-weight: 700;
       color: var(--brand-primary);
       word-break: break-word;
+      text-align: center;
     }
 
     .voucher-content {
@@ -367,6 +382,8 @@
 
     .card-head h2 {
       margin: 0;
+      width: 100%;
+      text-align: center;
       font-family: 'Montserrat', sans-serif;
       font-size: 1.08rem;
       color: var(--brand-primary);
@@ -384,6 +401,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .04em;
+      white-space: nowrap;
     }
 
     .card-body {
@@ -408,7 +426,6 @@
     th, td {
       padding: 11px 10px;
       border-bottom: 1px solid #edf1f4;
-      text-align: left;
       vertical-align: top;
       font-size: .91rem;
     }
@@ -420,6 +437,11 @@
       color: var(--text-soft);
       font-weight: 700;
       background: #f8fafc;
+      text-align: center;
+    }
+
+    td {
+      text-align: center;
     }
 
     tbody tr:last-child td {
@@ -429,6 +451,7 @@
     .pill {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       border-radius: 999px;
       padding: 6px 10px;
       font-size: .76rem;
@@ -448,8 +471,9 @@
 
     .hotel-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 340px));
       gap: 14px;
+      justify-content: start;
     }
 
     .hotel-card {
@@ -457,6 +481,7 @@
       background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
       border-radius: 18px;
       padding: 16px;
+      width: 100%;
     }
 
     .hotel-card h3 {
@@ -464,6 +489,7 @@
       font-size: 1rem;
       color: var(--brand-primary);
       font-family: 'Montserrat', sans-serif;
+      text-align: center;
     }
 
     .hotel-card p {
@@ -471,6 +497,7 @@
       font-size: .9rem;
       line-height: 1.5;
       color: #475467;
+      text-align: center;
     }
 
     .list-clean {
@@ -519,9 +546,16 @@
       color: #94a3b8;
     }
 
+    .agent-box .helper {
+      margin-bottom: 10px;
+      color: var(--text-soft);
+      font-size: .91rem;
+      line-height: 1.55;
+    }
+
     .agent-box .label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: var(--text-soft);
       font-size: .78rem;
       text-transform: uppercase;
@@ -533,7 +567,7 @@
       font-weight: 800;
       font-size: 1.02rem;
       color: var(--brand-primary);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .agent-box .phone {
@@ -558,6 +592,7 @@
       font-size: 1rem;
       color: var(--brand-primary);
       font-family: 'Montserrat', sans-serif;
+      text-align: center;
     }
 
     .pay-card p {
@@ -565,6 +600,7 @@
       color: var(--text-soft);
       line-height: 1.6;
       font-size: .91rem;
+      text-align: center;
     }
 
     .amounts {
@@ -572,6 +608,7 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 14px;
+      justify-content: center;
     }
 
     .amount-pill {
@@ -683,6 +720,15 @@
       margin: 0 auto;
     }
 
+    .pv-divider {
+      width: 100%;
+      max-width: 340px;
+      height: 1px;
+      background: var(--brand-gold-dark);
+      opacity: .9;
+      margin: 0 auto 6px;
+    }
+
     .pv-head-right {
       text-align: center;
       align-self: center;
@@ -765,6 +811,7 @@
       border: 1px solid #d8dde3;
       padding: 8px 10px;
       min-height: 58px;
+      text-align: center;
     }
 
     .pv-meta-box strong {
@@ -781,7 +828,7 @@
       padding: 8px 10px;
       font-size: 13px;
       font-weight: 800;
-      text-align: left;
+      text-align: center;
       text-transform: uppercase;
       letter-spacing: .04em;
       border: 1px solid #d8dde3;
@@ -798,6 +845,7 @@
       border: 1px solid #d8dde3;
       padding: 7px 8px;
       vertical-align: top;
+      text-align: center;
     }
 
     .pv-table th {
@@ -806,8 +854,9 @@
 
     .pv-hotels {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
       gap: 12px;
+      justify-content: start;
       margin-top: 8px;
     }
 
@@ -818,6 +867,7 @@
       background: #fff;
       font-size: 13px;
       line-height: 1.5;
+      text-align: center;
     }
 
     .pv-bottom {
@@ -893,10 +943,6 @@
         flex-direction: column;
       }
 
-      .voucher-code-row {
-        flex-direction: row;
-      }
-
       .voucher-brand {
         align-items: center;
       }
@@ -909,7 +955,7 @@
 
     @media (max-width: 640px) {
       .voucher-page {
-        padding: 88px 0 38px;
+        padding: 84px 0 34px;
       }
 
       .voucher-top,
@@ -949,20 +995,39 @@
 
       .voucher-brand img,
       .pv-logo img {
-        width: 272px;
+        width: 271px; /* 15% menos aprox */
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .voucher-brand .subcopy,
       .voucher-brand .contact,
       .pv-logo .subcopy,
       .pv-logo .contact {
-        width: 272px;
+        width: 271px;
+        text-align: center;
+      }
+
+      .voucher-brand .contact,
+      .pv-logo .contact {
+        font-size: .82rem;
+        line-height: 1.18;
+      }
+
+      .voucher-brand .contact div,
+      .pv-logo .contact div {
+        white-space: nowrap;
+      }
+
+      .voucher-divider,
+      .pv-divider {
+        max-width: 271px;
       }
 
       .voucher-head .date,
       .pv-head-right .date {
         white-space: nowrap;
-        font-size: 1.08rem;
+        font-size: 1.05rem;
       }
 
       .voucher-head .title,
@@ -970,21 +1035,19 @@
         white-space: nowrap;
       }
 
-      .voucher-code-row,
-      .pv-code-row {
-        flex-direction: row;
-        align-items: center;
+      .voucher-code-row {
+        flex-direction: column;
         gap: 12px;
       }
 
       .voucher-code {
-        min-width: 210px;
+        min-width: 220px;
         padding: 12px 14px;
       }
 
       .voucher-qr img {
-        width: 132px;
-        height: 132px;
+        width: 142px;
+        height: 142px;
       }
 
       .agent-box {
@@ -1084,7 +1147,9 @@
         coupon: "Cupón / referencia",
         passengers: "Pasajeros de la reserva",
         travelers: "viajero(s)",
-        document: "Documento",
+        fullName: "Nombre completo",
+        documentType: "Tipo documento",
+        documentNumber: "Nro documento",
         nationality: "Nacionalidad",
         birthDate: "Fecha nacimiento",
         lodging: "Información de hoteles / alojamiento",
@@ -1106,6 +1171,7 @@
         arrival: "Llegada",
         assistance: "Asistencia personalizada",
         assignedAgent: "Agente asignado",
+        assignedAgentText: "Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:",
         includes: "Servicios incluidos",
         notIncludes: "Servicios no incluidos / adicionales",
         recommendations: "Recomendaciones",
@@ -1144,7 +1210,9 @@
         coupon: "Coupon / reference",
         passengers: "Reservation travelers",
         travelers: "traveler(s)",
-        document: "Document",
+        fullName: "Full name",
+        documentType: "Document type",
+        documentNumber: "Document No.",
         nationality: "Nationality",
         birthDate: "Birth date",
         lodging: "Hotel / accommodation information",
@@ -1166,6 +1234,7 @@
         arrival: "Arrival",
         assistance: "Personal assistance",
         assignedAgent: "Assigned agent",
+        assignedAgentText: "For any assistance during your trip, please contact your assigned travel agent:",
         includes: "Included services",
         notIncludes: "Not included / additional services",
         recommendations: "Recommendations",
@@ -1325,6 +1394,7 @@
       const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
       const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
       const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
+      const agenteFoto = reserva.agenteFoto || "./assets/img/agentes/jefferson-garcia.jpg";
 
       return `
         <div class="voucher-top">
@@ -1345,6 +1415,7 @@
 
           <div class="voucher-head">
             <div class="voucher-head-main">
+              <div class="voucher-divider"></div>
               <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
               <h1 class="title">${esc(t.travelVoucher)}</h1>
 
@@ -1385,21 +1456,21 @@
                   <table>
                     <thead>
                       <tr>
-                        <th>Nombre completo</th>
-                        <th>${esc(t.document)}</th>
+                        <th>${esc(t.fullName)}</th>
+                        <th>${esc(t.documentType)}</th>
+                        <th>${esc(t.documentNumber)}</th>
                         <th>${esc(t.nationality)}</th>
                         <th>${esc(t.birthDate)}</th>
-                        <th>${esc(t.phone)}</th>
                       </tr>
                     </thead>
                     <tbody>
                       ${turistas.map(turista => `
                         <tr>
                           <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
-                          <td>${esc(turista.tipoDocumento || t.noData)} ${turista.numeroDocumento || turista.documento ? `- ${esc(turista.numeroDocumento || turista.documento)}` : ""}</td>
+                          <td>${esc(turista.tipoDocumento || t.noData)}</td>
+                          <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                           <td>${esc(turista.nacionalidad || t.noData)}</td>
                           <td>${esc(turista.fechaNacimiento || t.noData)}</td>
-                          <td>${esc(turista.telefono || t.noData)}</td>
                         </tr>
                       `).join("")}
                     </tbody>
@@ -1554,12 +1625,13 @@
                 <div class="card-body">
                   <div class="agent-box">
                     <div class="agent-photo">
-                      ${reserva.agenteFoto
-                        ? `<img src="${esc(reserva.agenteFoto)}" alt="${esc(reserva.agenteAsignado || t.noData)}">`
+                      ${agenteFoto
+                        ? `<img src="${esc(agenteFoto)}" alt="${esc(reserva.agenteAsignado || t.noData)}">`
                         : `<i class="fa-solid fa-user"></i>`}
                     </div>
 
                     <div>
+                      <div class="helper">${esc(t.assignedAgentText)}</div>
                       <span class="label">${esc(t.assignedAgent)}</span>
                       <div class="name">${esc(reserva.agenteAsignado || t.noData)}</div>
                       <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
@@ -1629,6 +1701,7 @@
           </div>
 
           <div class="pv-head-right">
+            <div class="pv-divider"></div>
             <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
             <div class="title">${esc(t.travelVoucher)}</div>
             <div class="pv-code-row">
@@ -1658,8 +1731,9 @@
         <table class="pv-table">
           <thead>
             <tr>
-              <th>Nombre completo</th>
-              <th>${esc(t.document)}</th>
+              <th>${esc(t.fullName)}</th>
+              <th>${esc(t.documentType)}</th>
+              <th>${esc(t.documentNumber)}</th>
               <th>${esc(t.nationality)}</th>
               <th>${esc(t.birthDate)}</th>
             </tr>
@@ -1668,7 +1742,8 @@
             ${turistas.map(turista => `
               <tr>
                 <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
-                <td>${esc(turista.tipoDocumento || t.noData)} ${turista.numeroDocumento || turista.documento ? `- ${esc(turista.numeroDocumento || turista.documento)}` : ""}</td>
+                <td>${esc(turista.tipoDocumento || t.noData)}</td>
+                <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                 <td>${esc(turista.nacionalidad || t.noData)}</td>
                 <td>${esc(turista.fechaNacimiento || t.noData)}</td>
               </tr>
