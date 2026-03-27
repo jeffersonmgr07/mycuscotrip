@@ -933,7 +933,7 @@
         travelVoucher: "TRAVEL VOUCHER",
         bookingCode: "Código de reserva",
         holder: "Titular reserva",
-        travelDate: "Fecha de viaje",
+        travelDate: "Duración",
         destination: "Destino",
         pack: "Pack / programa",
         passengersCount: "Cantidad de pasajeros",
@@ -992,7 +992,7 @@
         travelVoucher: "TRAVEL VOUCHER",
         bookingCode: "Booking code",
         holder: "Reservation holder",
-        travelDate: "Travel date",
+        travelDate: "Duración",
         destination: "Destination",
         pack: "Package / program",
         passengersCount: "Passengers",
@@ -1222,8 +1222,7 @@
 
         <div class="summary-grid">
           <div class="summary-card"><span class="label">${esc(t.holder)}</span><div class="value">${esc(reserva.titularReserva || t.noData)}</div></div>
-          <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaEmision || "", currentLanguage))}</div></div>
-          <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(reserva.duracion || t.noData)}</div></div>          <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.pack)}</span><div class="value">${esc(reserva.packTour || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.passengersCount)}</span><div class="value">${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.language)}</span><div class="value">${esc(reserva.idioma || t.noData)}</div></div>
