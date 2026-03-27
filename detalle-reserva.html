@@ -192,7 +192,7 @@
     }
 
     .voucher-divider {
-      display: none; /* solo movil */
+      display: none;
       width: 100%;
       max-width: 340px;
       height: 1px;
@@ -282,7 +282,7 @@
     }
 
     .voucher-qr img {
-      width: 130px; /* +5% aprox en desktop */
+      width: 130px;
       height: 130px;
       object-fit: contain;
       display: block;
@@ -384,7 +384,7 @@
     .card-head h2 {
       margin: 0;
       width: 100%;
-      text-align: left; /* titulos izquierda */
+      text-align: left;
       font-family: 'Montserrat', sans-serif;
       font-size: 1.08rem;
       color: var(--brand-primary);
@@ -438,11 +438,11 @@
       color: var(--text-soft);
       font-weight: 700;
       background: #f8fafc;
-      text-align: center; /* nombres de campos centrados */
+      text-align: center;
     }
 
     td {
-      text-align: left; /* datos izquierda */
+      text-align: left;
     }
 
     tbody tr:last-child td {
@@ -490,7 +490,7 @@
       font-size: 1rem;
       color: var(--brand-primary);
       font-family: 'Montserrat', sans-serif;
-      text-align: center; /* nombre hotel centrado */
+      text-align: center;
     }
 
     .hotel-card p {
@@ -498,7 +498,7 @@
       font-size: .9rem;
       line-height: 1.5;
       color: #475467;
-      text-align: left; /* datos hotel izquierda */
+      text-align: left;
     }
 
     .list-clean {
@@ -575,54 +575,6 @@
       font-weight: 700;
       color: #344054;
     }
-    .billing-card {
-      position: relative;
-    }
-    
-    .pay-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 12px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      color: #3730a3;
-      font-size: .78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    
-    .pay-badge.offer {
-      background: #fff7ed;
-      border: 1px solid #fdba74;
-      color: #c2410c;
-    }
-    
-    .billing-box {
-      border: 1px dashed #d6dae1;
-      border-radius: 14px;
-      background: #fafbfd;
-      padding: 12px 14px;
-      margin: 12px 0 14px;
-    }
-    
-    .billing-line {
-      display: block;
-      padding: 6px 0;
-      border-bottom: 1px dashed #e5e7eb;
-      color: #334155;
-      font-size: .9rem;
-      line-height: 1.45;
-    }
-    
-    .billing-line:last-child {
-      border-bottom: none;
-      font-weight: 800;
-      color: #0f172a;
-    }
 
     .pay-stack {
       display: grid;
@@ -695,6 +647,55 @@
       transform: translateY(-1px);
     }
 
+    .billing-card {
+      position: relative;
+    }
+
+    .pay-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .pay-badge.offer {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      color: #c2410c;
+    }
+
+    .billing-box {
+      border: 1px dashed #d6dae1;
+      border-radius: 14px;
+      background: #fafbfd;
+      padding: 12px 14px;
+      margin: 12px 0 14px;
+    }
+
+    .billing-line {
+      display: block;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e5e7eb;
+      color: #334155;
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+
+    .billing-line:last-child {
+      border-bottom: none;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
     .empty-state {
       background: white;
       border-radius: var(--radius-xl);
@@ -725,6 +726,10 @@
     }
 
     .print-voucher {
+      display: none;
+    }
+
+    .pv-classic {
       display: none;
     }
 
@@ -763,31 +768,6 @@
         padding: 84px 0 34px;
       }
 
-      th,
-      .summary-card .label,
-      .summary-card .value,
-      .card-head h2,
-      .card-kicker,
-      .voucher-code span,
-      .voucher-code strong,
-      .pay-card h3,
-      .amount-pill,
-      .pay-link {
-        white-space: nowrap;
-      }
-      
-      th {
-        font-size: .72rem;
-      }
-      
-      .summary-card .label {
-        font-size: .7rem;
-      }
-      
-      .summary-card .value {
-        font-size: .88rem;
-      }
-
       .voucher-top,
       .summary-grid,
       .voucher-content {
@@ -824,7 +804,7 @@
       }
 
       .voucher-brand img {
-        width: 271px; /* 15% menos aprox */
+        width: 271px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -852,7 +832,7 @@
       .voucher-divider {
         display: block;
         max-width: 271px;
-        margin-bottom: 10px; /* mas espacio con la fecha */
+        margin-bottom: 10px;
       }
 
       .voucher-head .date {
@@ -876,7 +856,7 @@
       }
 
       .voucher-qr img {
-        width: 142px; /* +10% aprox en movil */
+        width: 142px;
         height: 142px;
       }
 
@@ -889,8 +869,30 @@
         height: 72px;
       }
 
+      th,
+      .summary-card .label,
+      .summary-card .value,
+      .card-head h2,
+      .card-kicker,
+      .voucher-code span,
+      .voucher-code strong,
+      .pay-card h3,
+      .amount-pill,
+      .pay-link {
+        white-space: nowrap;
+      }
+
       th {
+        font-size: .72rem;
         text-align: center;
+      }
+
+      .summary-card .label {
+        font-size: .7rem;
+      }
+
+      .summary-card .value {
+        font-size: .88rem;
       }
 
       td {
@@ -911,6 +913,274 @@
       #header-container, #footer-container, .wa-float, .top-actions { display: none !important; }
       .voucher-page { background: white !important; padding: 0 !important; min-height: auto !important; }
       .voucher-shell { max-width: none; padding: 0; }
+
+      .voucher-web,
+      #voucherWeb,
+      #voucherEmpty {
+        display: none !important;
+      }
+
+      #voucherPrint,
+      .print-voucher,
+      .pv-classic {
+        display: block !important;
+      }
+
+      .pv-classic {
+        background: #fff;
+        color: #222;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .pv-top {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+        align-items: start;
+        margin-bottom: 14px;
+      }
+
+      .pv-left img {
+        width: 240px;
+        max-width: 100%;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .pv-subcopy {
+        width: 240px;
+        color: #666;
+        font-size: 12px;
+        line-height: 1.25;
+        margin-bottom: 8px;
+      }
+
+      .pv-contact {
+        width: 240px;
+        color: #253b2f;
+        font-size: 11.5px;
+        line-height: 1.2;
+      }
+
+      .pv-right {
+        text-align: center;
+        padding-top: 10px;
+      }
+
+      .pv-date {
+        color: #777;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .pv-title {
+        color: #253b2f;
+        font-size: 28px;
+        font-weight: 800;
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 10px;
+      }
+
+      .pv-code-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .pv-code-box {
+        border: 1px solid #cfd4dc;
+        border-radius: 10px;
+        padding: 8px 14px;
+        min-width: 220px;
+        text-align: center;
+        background: #fff;
+      }
+
+      .pv-code-box span {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 3px;
+        font-weight: 700;
+      }
+
+      .pv-code-box strong {
+        font-size: 18px;
+        letter-spacing: .08em;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      .pv-qr-box img {
+        width: 92px;
+        height: 92px;
+        object-fit: contain;
+        border: 1px solid #cfd4dc;
+        padding: 4px;
+        background: #fff;
+      }
+
+      .pv-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .pv-meta-item {
+        border: 1px solid #d7dbe0;
+        padding: 7px 8px;
+        min-height: 52px;
+      }
+
+      .pv-meta-item strong {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 3px;
+      }
+
+      .pv-meta-item span {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .pv-section-title {
+        background: #ece2b0;
+        border: 1px solid #d2c48c;
+        padding: 6px 8px;
+        font-weight: 800;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+
+      .pv-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+      }
+
+      .pv-table th,
+      .pv-table td {
+        border: 1px solid #d7dbe0;
+        padding: 6px 7px;
+        vertical-align: top;
+      }
+
+      .pv-table th {
+        background: #f6f6f6;
+        text-align: center;
+        font-size: 10.5px;
+        text-transform: uppercase;
+      }
+
+      .pv-table td {
+        text-align: left;
+        font-size: 11.5px;
+      }
+
+      .pv-hotels-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 8px;
+        margin-bottom: 10px;
+      }
+
+      .pv-hotel-card {
+        border: 1px solid #d7dbe0;
+        padding: 8px;
+        min-height: 160px;
+        font-size: 11.5px;
+        line-height: 1.35;
+      }
+
+      .pv-hotel-name {
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 6px;
+        font-size: 12px;
+      }
+
+      .pv-bottom {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 12px;
+        margin-top: 10px;
+      }
+
+      .pv-info-box,
+      .pv-side-box {
+        border: 1px solid #d7dbe0;
+        padding: 10px;
+        min-height: 220px;
+      }
+
+      .pv-subtitle {
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        font-size: 11px;
+        color: #253b2f;
+      }
+
+      .pv-assist-box {
+        margin-bottom: 12px;
+      }
+
+      .pv-assist-text {
+        font-size: 11px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+      }
+
+      .pv-agent-name {
+        font-weight: 800;
+        font-size: 12px;
+      }
+
+      .pv-agent-phone {
+        font-weight: 700;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .pv-payment-card {
+        border: 1px dashed #cfd4dc;
+        padding: 8px;
+        margin-top: 8px;
+      }
+
+      .pv-payment-title {
+        font-weight: 800;
+        font-size: 11px;
+        margin-bottom: 4px;
+      }
+
+      .pv-payment-badge {
+        display: inline-block;
+        border: 1px solid #f59e0b;
+        background: #fff7ed;
+        color: #b45309;
+        font-size: 10px;
+        font-weight: 800;
+        padding: 3px 8px;
+        border-radius: 999px;
+        margin-bottom: 6px;
+      }
+
+      .pv-payment-lines div {
+        font-size: 10.8px;
+        line-height: 1.35;
+        margin-bottom: 2px;
+      }
 
       @page {
         size: A4 portrait;
@@ -948,6 +1218,7 @@
       </div>
 
       <section id="voucherWeb" class="voucher-web" style="display:none;"></section>
+      <section id="voucherPrint" class="print-voucher"></section>
 
       <section id="voucherEmpty" class="empty-state" style="display:none;">
         <h1 id="emptyTitle">Reserva no encontrada</h1>
@@ -1040,7 +1311,7 @@
         travelVoucher: "TRAVEL VOUCHER",
         bookingCode: "Booking code",
         holder: "Reservation holder",
-        travelDate: "Duración",
+        travelDate: "Duration",
         destination: "Destination",
         pack: "Package / program",
         passengersCount: "Passengers",
@@ -1234,7 +1505,7 @@
       return `
         <div class="voucher-top">
           <div class="voucher-brand">
-            <img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip">
+            <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
 
             <div class="subcopy">
               ${esc(t.subtitle)}
@@ -1270,7 +1541,8 @@
 
         <div class="summary-grid">
           <div class="summary-card"><span class="label">${esc(t.holder)}</span><div class="value">${esc(reserva.titularReserva || t.noData)}</div></div>
-          <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(reserva.duracion || t.noData)}</div></div>          <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(reserva.duracion || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.pack)}</span><div class="value">${esc(reserva.packTour || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.passengersCount)}</span><div class="value">${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.language)}</span><div class="value">${esc(reserva.idioma || t.noData)}</div></div>
@@ -1488,15 +1760,15 @@
                         ${pagoTotal.badge ? `<div class="pay-badge">${esc(getLocalizedField(pagoTotal.badge, currentLanguage) || pagoTotal.badge)}</div>` : ""}
                         <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
                         <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
-              
+
                         ${Array.isArray(pagoTotal.detalle) && pagoTotal.detalle.length ? `
                           <div class="billing-box">
                             ${pagoTotal.detalle.map(item => `<div class="billing-line">${esc(item)}</div>`).join("")}
                           </div>
                         ` : ""}
-              
+
                         <div class="amounts">${buildAmountPills(pagoTotal)}</div>
-              
+
                         ${pagoTotal.url ? `
                           <a class="pay-link" href="${esc(pagoTotal.url)}" target="_blank" rel="noopener">
                             ${esc(t.payNow)}
@@ -1504,21 +1776,21 @@
                         ` : ""}
                       </div>
                     ` : ""}
-              
+
                     ${pagosExtras.map(p => `
                       <div class="pay-card">
                         ${p.badge ? `<div class="pay-badge offer">${esc(getLocalizedField(p.badge, currentLanguage) || p.badge)}</div>` : ""}
                         <h3>${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</h3>
                         <p>${esc(getLocalizedField(p.descripcion, currentLanguage) || "")}</p>
-              
+
                         ${Array.isArray(p.detalle) && p.detalle.length ? `
                           <div class="billing-box">
                             ${p.detalle.map(item => `<div class="billing-line">${esc(item)}</div>`).join("")}
                           </div>
                         ` : ""}
-              
+
                         <div class="amounts">${buildAmountPills(p)}</div>
-              
+
                         ${p.url ? `
                           <a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">
                             ${esc(t.goToPayment)}
@@ -1535,9 +1807,204 @@
       `;
     }
 
+    function renderPrintVoucher(reserva) {
+      const t = i18n[currentLanguage];
+      const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
+      const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
+      const servicios = Array.isArray(reserva.servicios) ? reserva.servicios : [];
+      const vuelos = Array.isArray(reserva.vuelos) ? reserva.vuelos : [];
+      const noIncluye = Array.isArray(reserva.noIncluye) ? reserva.noIncluye : [];
+      const incluye = Array.isArray(reserva.incluye) ? reserva.incluye : [];
+      const infoAdicional = Array.isArray(reserva.informacionAdicional) ? reserva.informacionAdicional : [];
+      const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
+      const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
+      const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
+
+      return `
+        <div class="pv-classic">
+          <div class="pv-top">
+            <div class="pv-left">
+              <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
+              <div class="pv-subcopy">${esc(t.subtitle)}</div>
+              <div class="pv-contact">
+                <div>${esc(t.contact1)}</div>
+                <div>${esc(t.contact2)}</div>
+                <div>${esc(t.contact3)}</div>
+                <div>${esc(t.contact4)}</div>
+              </div>
+            </div>
+
+            <div class="pv-right">
+              <div class="pv-date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
+              <div class="pv-title">${esc(t.travelVoucher)}</div>
+
+              <div class="pv-code-row">
+                <div class="pv-code-box">
+                  <span>${esc(t.bookingCode)}</span>
+                  <strong>${esc(reserva.codigo || t.noData)}</strong>
+                </div>
+                <div class="pv-qr-box">
+                  <img src="${qrUrl}" alt="QR">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pv-meta-grid">
+            <div class="pv-meta-item"><strong>${esc(t.holder)}</strong><span>${esc(reserva.titularReserva || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.travelDate)}</strong><span>${esc(reserva.duracion || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.destination)}</strong><span>${esc(reserva.destino || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.pack)}</strong><span>${esc(reserva.packTour || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.passengersCount)}</strong><span>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.language)}</strong><span>${esc(reserva.idioma || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.phone)}</strong><span>${esc(reserva.telefonoContacto || t.noData)}</span></div>
+            <div class="pv-meta-item"><strong>${esc(t.coupon)}</strong><span>${esc(reserva.codigoCupon || t.noData)}</span></div>
+          </div>
+
+          <div class="pv-section-title">${esc(t.passengers)}</div>
+          <table class="pv-table">
+            <thead>
+              <tr>
+                <th>${esc(t.fullName)}</th>
+                <th>${esc(t.documentType)}</th>
+                <th>${esc(t.documentNumber)}</th>
+                <th>${esc(t.nationality)}</th>
+                <th>${esc(t.birthDate)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${turistas.map(turista => `
+                <tr>
+                  <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
+                  <td>${esc(turista.tipoDocumento || t.noData)}</td>
+                  <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
+                  <td>${esc(turista.nacionalidad || t.noData)}</td>
+                  <td>${esc(turista.fechaNacimiento || t.noData)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+
+          ${hoteles.length ? `
+            <div class="pv-section-title">${esc(t.lodging)}</div>
+            <div class="pv-hotels-grid">
+              ${hoteles.map(h => `
+                <div class="pv-hotel-card">
+                  <div class="pv-hotel-name">${esc(h.nombre || t.noData)}</div>
+                  <div><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</div>
+                  <div><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</div>
+                  <div><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</div>
+                  <div><strong>Noches:</strong> ${esc(h.noches || t.noData)}</div>
+                  <div><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</div>
+                  <div><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</div>
+                  <div><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</div>
+                  <div><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</div>
+                  <div><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</div>
+                </div>
+              `).join("")}
+            </div>
+          ` : ""}
+
+          <div class="pv-section-title">${esc(t.services)}</div>
+          <table class="pv-table">
+            <thead>
+              <tr>
+                <th>${esc(t.code)}</th>
+                <th>${esc(t.service)}</th>
+                <th>${esc(t.date)}</th>
+                <th>${esc(t.start)}</th>
+                <th>${esc(t.end)}</th>
+                <th>${esc(t.status)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${servicios.map(s => `
+                <tr>
+                  <td>${esc(s.codigo || t.noData)}</td>
+                  <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
+                  <td>${esc(s.fecha || t.noData)}</td>
+                  <td>${esc(s.horaInicio || t.noData)}</td>
+                  <td>${esc(s.horaFin || t.noData)}</td>
+                  <td>${esc(s.incluido ? t.included : t.extra)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+
+          ${vuelos.length ? `
+            <div class="pv-section-title">${esc(t.transfers)}</div>
+            <table class="pv-table">
+              <thead>
+                <tr>
+                  <th>${esc(t.operator)}</th>
+                  <th>${esc(t.number)}</th>
+                  <th>${esc(t.origin)}</th>
+                  <th>${esc(t.destination)}</th>
+                  <th>${esc(t.departure)}</th>
+                  <th>${esc(t.arrival)}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${vuelos.map(v => `
+                  <tr>
+                    <td>${esc(v.operador || t.noData)}</td>
+                    <td>${esc(v.numero || t.noData)}</td>
+                    <td>${esc(v.origen || t.noData)}</td>
+                    <td>${esc(v.destino || t.noData)}</td>
+                    <td>${esc(v.salida || t.noData)}</td>
+                    <td>${esc(v.llegada || t.noData)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          ` : ""}
+
+          <div class="pv-section-title">Información adicional</div>
+          <div class="pv-bottom">
+            <div class="pv-info-box">
+              ${incluye.length ? `<div class="pv-subtitle">Servicios incluidos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${noIncluye.length ? `<div class="pv-subtitle">Servicios no incluidos / adicionales</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${infoAdicional.length ? `<div class="pv-subtitle">Recomendaciones</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
+            </div>
+
+            <div class="pv-side-box">
+              <div class="pv-assist-box">
+                <div class="pv-subtitle">Asistencia personalizada</div>
+                <div class="pv-assist-text">Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
+                <div class="pv-agent-name">${esc(reserva.agenteAsignado || t.noData)}</div>
+                <div class="pv-agent-phone">${esc(reserva.agenteTelefono || t.noData)}</div>
+              </div>
+
+              ${(pagoTotal || pagosExtras.length) ? `
+                <div class="pv-payments-box">
+                  <div class="pv-subtitle">${esc(t.pendingPayments)}</div>
+
+                  ${pagoTotal ? `
+                    <div class="pv-payment-card">
+                      <div class="pv-payment-title">${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</div>
+                      ${Array.isArray(pagoTotal.detalle) ? `<div class="pv-payment-lines">${pagoTotal.detalle.map(d => `<div>${esc(d)}</div>`).join("")}</div>` : ""}
+                    </div>
+                  ` : ""}
+
+                  ${pagosExtras.map(p => `
+                    <div class="pv-payment-card">
+                      <div class="pv-payment-title">${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</div>
+                      ${p.badge ? `<div class="pv-payment-badge">${esc(getLocalizedField(p.badge, currentLanguage) || p.badge)}</div>` : ""}
+                      ${Array.isArray(p.detalle) ? `<div class="pv-payment-lines">${p.detalle.map(d => `<div>${esc(d)}</div>`).join("")}</div>` : ""}
+                    </div>
+                  `).join("")}
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     function initVoucher() {
       const reservaRaw = localStorage.getItem("reservaSeleccionada");
       const webEl = document.getElementById("voucherWeb");
+      const printEl = document.getElementById("voucherPrint");
       const emptyEl = document.getElementById("voucherEmpty");
 
       applyStaticTranslations();
@@ -1550,6 +2017,11 @@
       try {
         const reserva = JSON.parse(reservaRaw);
         webEl.innerHTML = renderWebVoucher(reserva);
+
+        if (printEl) {
+          printEl.innerHTML = renderPrintVoucher(reserva);
+        }
+
         webEl.style.display = "block";
         emptyEl.style.display = "none";
       } catch (error) {
