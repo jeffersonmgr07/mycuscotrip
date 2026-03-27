@@ -192,6 +192,7 @@
     }
 
     .voucher-divider {
+      display: none; /* solo movil */
       width: 100%;
       max-width: 340px;
       height: 1px;
@@ -281,8 +282,8 @@
     }
 
     .voucher-qr img {
-      width: 124px;
-      height: 124px;
+      width: 130px; /* +5% aprox en desktop */
+      height: 130px;
       object-fit: contain;
       display: block;
       border: 1px solid var(--line);
@@ -383,7 +384,7 @@
     .card-head h2 {
       margin: 0;
       width: 100%;
-      text-align: center;
+      text-align: left; /* titulos izquierda */
       font-family: 'Montserrat', sans-serif;
       font-size: 1.08rem;
       color: var(--brand-primary);
@@ -437,11 +438,11 @@
       color: var(--text-soft);
       font-weight: 700;
       background: #f8fafc;
-      text-align: center;
+      text-align: center; /* nombres de campos centrados */
     }
 
     td {
-      text-align: center;
+      text-align: left; /* datos izquierda */
     }
 
     tbody tr:last-child td {
@@ -489,7 +490,7 @@
       font-size: 1rem;
       color: var(--brand-primary);
       font-family: 'Montserrat', sans-serif;
-      text-align: center;
+      text-align: center; /* nombre hotel centrado */
     }
 
     .hotel-card p {
@@ -497,7 +498,7 @@
       font-size: .9rem;
       line-height: 1.5;
       color: #475467;
-      text-align: center;
+      text-align: left; /* datos hotel izquierda */
     }
 
     .list-clean {
@@ -627,14 +628,18 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      min-height: 48px;
+      width: auto; /* mas corto */
+      min-width: 180px;
+      max-width: 230px;
+      min-height: 44px;
       border-radius: 14px;
       background: var(--brand-primary);
       color: white;
       text-decoration: none;
       font-weight: 700;
       transition: .2s ease;
+      margin: 0 auto;
+      padding: 0 20px;
     }
 
     .pay-link:hover {
@@ -673,246 +678,6 @@
 
     .print-voucher {
       display: none;
-      max-width: 1100px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      color: #222;
-      font-family: Arial, sans-serif;
-    }
-
-    .pv-top {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 24px;
-      margin-bottom: 16px;
-      align-items: start;
-    }
-
-    .pv-logo {
-      text-align: center;
-    }
-
-    .pv-logo img {
-      width: 319px;
-      max-width: 100%;
-      display: block;
-      margin: 0 auto 10px;
-    }
-
-    .pv-logo .subcopy {
-      width: 319px;
-      max-width: 100%;
-      color: #7b7b7b;
-      line-height: 1.32;
-      font-size: 13px;
-      margin: 0 auto 8px;
-      text-align: center;
-    }
-
-    .pv-logo .contact {
-      width: 319px;
-      max-width: 100%;
-      text-align: center;
-      color: #253b2f;
-      font-size: 12.5px;
-      line-height: 1.24;
-      margin: 0 auto;
-    }
-
-    .pv-divider {
-      width: 100%;
-      max-width: 340px;
-      height: 1px;
-      background: var(--brand-gold-dark);
-      opacity: .9;
-      margin: 0 auto 6px;
-    }
-
-    .pv-head-right {
-      text-align: center;
-      align-self: center;
-    }
-
-    .pv-head-right .date {
-      color: #7b7b7b;
-      font-size: 1.26rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      white-space: nowrap;
-    }
-
-    .pv-head-right .title {
-      color: #253b2f;
-      font-size: 2rem;
-      font-weight: 800;
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 12px;
-      white-space: nowrap;
-    }
-
-    .pv-code-row {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-    }
-
-    .pv-code {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #d7dbe0;
-      border-radius: 12px;
-      padding: 10px 16px;
-      min-width: 240px;
-      text-align: center;
-    }
-
-    .pv-code span {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #667085;
-      margin-bottom: 4px;
-    }
-
-    .pv-code strong {
-      font-size: 1.15rem;
-      font-family: 'Montserrat', sans-serif;
-      letter-spacing: .08em;
-    }
-
-    .pv-qr {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pv-qr img {
-      width: 110px;
-      height: 110px;
-      object-fit: contain;
-      border: 1px solid #d8dde3;
-      padding: 6px;
-      background: white;
-    }
-
-    .pv-meta {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px 18px;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .pv-meta-box {
-      border: 1px solid #d8dde3;
-      padding: 8px 10px;
-      min-height: 58px;
-      text-align: center;
-    }
-
-    .pv-meta-box strong {
-      display: block;
-      font-size: 11px;
-      text-transform: uppercase;
-      color: #667085;
-      margin-bottom: 4px;
-    }
-
-    .pv-section-title {
-      margin-top: 14px;
-      background: var(--section-title-bg);
-      padding: 8px 10px;
-      font-size: 13px;
-      font-weight: 800;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      border: 1px solid #d8dde3;
-    }
-
-    .pv-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    .pv-table th,
-    .pv-table td {
-      border: 1px solid #d8dde3;
-      padding: 7px 8px;
-      vertical-align: top;
-      text-align: center;
-    }
-
-    .pv-table th {
-      background: #fafafa;
-    }
-
-    .pv-hotels {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
-      gap: 12px;
-      justify-content: start;
-      margin-top: 8px;
-    }
-
-    .pv-hotel {
-      border: 1px solid #d8dde3;
-      min-height: 180px;
-      padding: 10px;
-      background: #fff;
-      font-size: 13px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    .pv-bottom {
-      display: grid;
-      grid-template-columns: 1fr .92fr;
-      gap: 14px;
-      margin-top: 12px;
-    }
-
-    .pv-box {
-      border: 1px solid #d8dde3;
-      padding: 12px;
-      min-height: 210px;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .pv-assist {
-      display: grid;
-      justify-items: center;
-      align-content: start;
-      gap: 10px;
-      text-align: center;
-    }
-
-    .pv-assist .agent {
-      width: 100%;
-      border: 1px solid #d8dde3;
-      background: #fafafa;
-      padding: 10px;
-      font-weight: 800;
-    }
-
-    .pv-assist .phone {
-      font-size: 1.1rem;
-      font-weight: 800;
-    }
-
-    .pv-assist .qr img {
-      width: 110px;
-      height: 110px;
-      object-fit: contain;
-      border: 1px solid #d8dde3;
-      padding: 6px;
-      background: white;
     }
 
     @media (max-width: 1200px) {
@@ -923,14 +688,6 @@
       .row-secondary,
       .row-bottom {
         grid-template-columns: 1fr;
-      }
-
-      .pv-top {
-        grid-template-columns: 1fr;
-      }
-
-      .pv-meta {
-        grid-template-columns: repeat(2, 1fr);
       }
     }
 
@@ -993,45 +750,45 @@
         justify-content: space-between;
       }
 
-      .voucher-brand img,
-      .pv-logo img {
+      .voucher-brand img {
         width: 271px; /* 15% menos aprox */
         margin-left: auto;
         margin-right: auto;
       }
 
-      .voucher-brand .subcopy,
-      .voucher-brand .contact,
-      .pv-logo .subcopy,
-      .pv-logo .contact {
+      .voucher-brand .subcopy {
         width: 271px;
         text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
-      .voucher-brand .contact,
-      .pv-logo .contact {
+      .voucher-brand .contact {
+        width: 271px;
+        text-align: center;
         font-size: .82rem;
         line-height: 1.18;
       }
 
-      .voucher-brand .contact div,
-      .pv-logo .contact div {
+      .voucher-brand .contact div {
         white-space: nowrap;
       }
 
-      .voucher-divider,
-      .pv-divider {
+      .voucher-divider {
+        display: block;
         max-width: 271px;
+        margin-bottom: 10px; /* mas espacio con la fecha */
       }
 
-      .voucher-head .date,
-      .pv-head-right .date {
+      .voucher-head .date {
         white-space: nowrap;
         font-size: 1.05rem;
+        margin-top: 2px;
       }
 
-      .voucher-head .title,
-      .pv-head-right .title {
+      .voucher-head .title {
         white-space: nowrap;
       }
 
@@ -1046,7 +803,7 @@
       }
 
       .voucher-qr img {
-        width: 142px;
+        width: 142px; /* +10% aprox en movil */
         height: 142px;
       }
 
@@ -1058,14 +815,29 @@
         width: 72px;
         height: 72px;
       }
+
+      th {
+        text-align: center;
+      }
+
+      td {
+        text-align: left;
+      }
+
+      .hotel-card h3 {
+        text-align: center;
+      }
+
+      .hotel-card p {
+        text-align: left;
+      }
     }
 
     @media print {
       body { background: white; }
-      #header-container, #footer-container, .wa-float, .top-actions, .voucher-web { display: none !important; }
+      #header-container, #footer-container, .wa-float, .top-actions { display: none !important; }
       .voucher-page { background: white !important; padding: 0 !important; min-height: auto !important; }
       .voucher-shell { max-width: none; padding: 0; }
-      .print-voucher { display: block !important; }
 
       @page {
         size: A4 portrait;
@@ -1109,8 +881,6 @@
         <p id="emptyText">No hay una reserva cargada para mostrar.</p>
         <a href="./mi-reserva.html" class="back-home" id="emptyBtn">Ir a Mi Reserva</a>
       </section>
-
-      <section id="voucherPrint" class="print-voucher"></section>
     </div>
   </main>
 
@@ -1160,10 +930,11 @@
         service: "Servicio",
         date: "Fecha",
         start: "Inicio",
+        departure: "Salida",
         end: "Fin",
         status: "Estado",
         included: "Incluido",
-        extra: "Extra / No incluido",
+        extra: "No incluido",
         transfers: "Información de vuelos o buses",
         operator: "Operador",
         number: "Número",
@@ -1179,11 +950,6 @@
         payNow: "Pagar ahora",
         goToPayment: "Ir al pago",
         completePayment: "Completar pago total",
-        printPassengers: "Pasajeros",
-        printLodging: "Información de hoteles / alojamiento",
-        printServices: "Servicios e itinerario",
-        printTransfers: "Información de vuelos o buses",
-        printAdditionalInfo: "Información adicional",
         noData: "-"
       },
       en: {
@@ -1223,10 +989,11 @@
         service: "Service",
         date: "Date",
         start: "Start",
+        departure: "Departure",
         end: "End",
         status: "Status",
         included: "Included",
-        extra: "Extra / Not included",
+        extra: "Not included",
         transfers: "Flight or bus information",
         operator: "Operator",
         number: "Number",
@@ -1242,11 +1009,6 @@
         payNow: "Pay now",
         goToPayment: "Go to payment",
         completePayment: "Complete total payment",
-        printPassengers: "Travelers",
-        printLodging: "Hotel / accommodation information",
-        printServices: "Services and itinerary",
-        printTransfers: "Flight or bus information",
-        printAdditionalInfo: "Additional information",
         noData: "-"
       }
     };
@@ -1556,7 +1318,7 @@
                         <th>${esc(t.number)}</th>
                         <th>${esc(t.origin)}</th>
                         <th>${esc(t.destination)}</th>
-                        <th>${esc(t.start)}</th>
+                        <th>${esc(t.departure)}</th>
                         <th>${esc(t.arrival)}</th>
                       </tr>
                     </thead>
@@ -1675,177 +1437,10 @@
       `;
     }
 
-    function renderPrintVoucher(reserva) {
-      const t = i18n[currentLanguage];
-      const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
-      const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
-      const servicios = Array.isArray(reserva.servicios) ? reserva.servicios : [];
-      const vuelos = Array.isArray(reserva.vuelos) ? reserva.vuelos : [];
-      const noIncluye = Array.isArray(reserva.noIncluye) ? reserva.noIncluye : [];
-      const infoAdicional = Array.isArray(reserva.informacionAdicional) ? reserva.informacionAdicional : [];
-      const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
-      const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
-      const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
-
-      return `
-        <div class="pv-top">
-          <div class="pv-logo">
-            <img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip">
-            <div class="subcopy">${esc(t.subtitle)}</div>
-            <div class="contact">
-              <div>${esc(t.contact1)}</div>
-              <div>${esc(t.contact2)}</div>
-              <div>${esc(t.contact3)}</div>
-              <div>${esc(t.contact4)}</div>
-            </div>
-          </div>
-
-          <div class="pv-head-right">
-            <div class="pv-divider"></div>
-            <div class="date">${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaVoucher || reserva.fechaEmision || "", currentLanguage))}</div>
-            <div class="title">${esc(t.travelVoucher)}</div>
-            <div class="pv-code-row">
-              <div class="pv-code">
-                <span>${esc(t.bookingCode)}</span>
-                <strong>${esc(reserva.codigo || t.noData)}</strong>
-              </div>
-              <div class="pv-qr">
-                <img src="${qrUrl}" alt="QR">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pv-meta">
-          <div class="pv-meta-box"><strong>${esc(t.holder)}</strong>${esc(reserva.titularReserva || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.travelDate)}</strong>${esc(formatDateLocalized(reserva.fechaViaje || reserva.fechaEmision || "", currentLanguage))}</div>
-          <div class="pv-meta-box"><strong>${esc(t.destination)}</strong>${esc(reserva.destino || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.pack)}</strong>${esc(reserva.packTour || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.passengersCount)}</strong>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.language)}</strong>${esc(reserva.idioma || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.phone)}</strong>${esc(reserva.telefonoContacto || t.noData)}</div>
-          <div class="pv-meta-box"><strong>${esc(t.coupon)}</strong>${esc(reserva.codigoCupon || t.noData)}</div>
-        </div>
-
-        <div class="pv-section-title">${esc(t.printPassengers)}</div>
-        <table class="pv-table">
-          <thead>
-            <tr>
-              <th>${esc(t.fullName)}</th>
-              <th>${esc(t.documentType)}</th>
-              <th>${esc(t.documentNumber)}</th>
-              <th>${esc(t.nationality)}</th>
-              <th>${esc(t.birthDate)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${turistas.map(turista => `
-              <tr>
-                <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
-                <td>${esc(turista.tipoDocumento || t.noData)}</td>
-                <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
-                <td>${esc(turista.nacionalidad || t.noData)}</td>
-                <td>${esc(turista.fechaNacimiento || t.noData)}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-
-        ${hoteles.length ? `
-          <div class="pv-section-title">${esc(t.printLodging)}</div>
-          <div class="pv-hotels">
-            ${hoteles.map(h => `
-              <div class="pv-hotel">
-                <strong>${esc(h.nombre || t.noData)}</strong><br>
-                Ubicación: ${esc(h.ubicacion || t.noData)}<br>
-                Check-in: ${esc(h.checkIn || t.noData)}<br>
-                Check-out: ${esc(h.checkOut || t.noData)}<br>
-                Noches: ${esc(h.noches || t.noData)}<br>
-                Habitación: ${esc(h.habitacion || t.noData)}<br>
-                Categoría: ${esc(h.categoria || t.noData)}
-              </div>
-            `).join("")}
-          </div>
-        ` : ""}
-
-        <div class="pv-section-title">${esc(t.printServices)}</div>
-        <table class="pv-table">
-          <thead>
-            <tr>
-              <th>${esc(t.code)}</th>
-              <th>${esc(t.service)}</th>
-              <th>${esc(t.date)}</th>
-              <th>${esc(t.start)}</th>
-              <th>${esc(t.end)}</th>
-              <th>${esc(t.status)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${servicios.map(s => `
-              <tr>
-                <td>${esc(s.codigo || t.noData)}</td>
-                <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
-                <td>${esc(s.fecha || t.noData)}</td>
-                <td>${esc(s.horaInicio || t.noData)}</td>
-                <td>${esc(s.horaFin || t.noData)}</td>
-                <td>${s.incluido ? esc(t.included) : esc(t.extra)}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-
-        ${vuelos.length ? `
-          <div class="pv-section-title">${esc(t.printTransfers)}</div>
-          <table class="pv-table">
-            <thead>
-              <tr>
-                <th>${esc(t.operator)}</th>
-                <th>${esc(t.number)}</th>
-                <th>${esc(t.origin)}</th>
-                <th>${esc(t.destination)}</th>
-                <th>${esc(t.start)}</th>
-                <th>${esc(t.arrival)}</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${vuelos.map(v => `
-                <tr>
-                  <td>${esc(v.operador || t.noData)}</td>
-                  <td>${esc(v.numero || t.noData)}</td>
-                  <td>${esc(v.origen || t.noData)}</td>
-                  <td>${esc(v.destino || t.noData)}</td>
-                  <td>${esc(v.salida || t.noData)}</td>
-                  <td>${esc(v.llegada || t.noData)}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        ` : ""}
-
-        <div class="pv-section-title">${esc(t.printAdditionalInfo)}</div>
-        <div class="pv-bottom">
-          <div class="pv-box">
-            ${infoAdicional.length ? infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>") : ""}
-            ${noIncluye.length ? `<br><br><strong>${esc(t.notIncludes)}:</strong><br>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}` : ""}
-            ${(pagoTotal || pagosExtras.length) ? `<br><br><strong>${esc(t.pendingPayments)}:</strong><br>` : ""}
-            ${pagoTotal ? `• ${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)} — ${esc(moneyPen(pagoTotal.montoPen) || "")} ${esc(moneyUsd(pagoTotal.montoUsd) || "")}<br>` : ""}
-            ${pagosExtras.map(p => `• ${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)} — ${esc(moneyPen(p.montoPen) || "")} ${esc(moneyUsd(p.montoUsd) || "")}`).join("<br>")}
-          </div>
-
-          <div class="pv-box pv-assist">
-            <div class="agent">${esc(reserva.agenteAsignado || t.noData)}</div>
-            <div class="phone">${esc(reserva.agenteTelefono || t.noData)}</div>
-            <div class="qr"><img src="${qrUrl}" alt="QR"></div>
-          </div>
-        </div>
-      `;
-    }
-
     function initVoucher() {
       const reservaRaw = localStorage.getItem("reservaSeleccionada");
       const webEl = document.getElementById("voucherWeb");
       const emptyEl = document.getElementById("voucherEmpty");
-      const printEl = document.getElementById("voucherPrint");
 
       applyStaticTranslations();
 
@@ -1857,7 +1452,6 @@
       try {
         const reserva = JSON.parse(reservaRaw);
         webEl.innerHTML = renderWebVoucher(reserva);
-        printEl.innerHTML = renderPrintVoucher(reserva);
         webEl.style.display = "block";
         emptyEl.style.display = "none";
       } catch (error) {
