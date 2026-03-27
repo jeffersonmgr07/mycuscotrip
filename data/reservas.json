@@ -113,268 +113,267 @@
       "Llevar documento original.",
       "Coordinar cambios con su agente."
     ]
-  }
-]
-
-{
-  "codigo": "CUZ14D7A12",
-  "apellido": "MELENDEZ",
-  "fechaVoucher": "jueves, 16 de abril de 2026",
-  "fechaEmision": "2026-04-16",
-  "fechaViaje": "2026-04-16",
-  "duracion": "04 días / 03 noches",
-  "idioma": "Español",
-  "titularReserva": "Angelo Michael Melendez Espinoza",
-  "telefonoContacto": "+51934217603",
-  "codigoCupon": "CUZ14D7A12",
-  "cantidadPaxs": 3,
-  "destino": "Cusco, Valle Sagrado y Machu Picchu",
-  "packTour": "Cusco Valle y Machu Picchu - Itinerario Especial",
-  "agenteAsignado": "Jefferson García",
-  "agenteTelefono": "+51 900 608 980",
-  "agenteFoto": "./assets/img/agentes/jefferson-garcia.jpg",
-  "hotelInfo": [
-    {
-      "nombre": "Hotel Cusco Boutique",
-      "ubicacion": "Cusco",
-      "checkIn": "16-abr-2026 - 11:00 AM",
-      "checkOut": "19-abr-2026 - 10:00 AM",
-      "noches": "03",
-      "categoria": "3 estrellas",
-      "habitacion": "Matrimonial",
-      "direccion": "Calle Teqsecocha 566 Cusco, Perú",
-      "telefono": "+51913493167",
-      "observaciones": "Desayuno incluido / WiFi / Agua caliente / Toallas"
-    }
-  ],
-  "turistas": [
-    {
-      "nombreCompleto": "Angelo Michael Melendez Espinoza",
-      "tipoDocumento": "DNI",
-      "numeroDocumento": "70808554",
-      "nacionalidad": "Peruana",
-      "fechaNacimiento": "27/03/2005",
-      "telefono": "+51934217603"
-    },
-    {
-      "nombreCompleto": "Miguel Angel Melendez Herrera",
-      "tipoDocumento": "DNI",
-      "numeroDocumento": "25861017",
-      "nacionalidad": "Peruana",
-      "fechaNacimiento": "19/03/1976",
-      "telefono": "-"
-    },
-    {
-      "nombreCompleto": "Susana Beatriz Espinoza Yzaguirre",
-      "tipoDocumento": "DNI",
-      "numeroDocumento": "25842771",
-      "nacionalidad": "Peruana",
-      "fechaNacimiento": "01/03/1977",
-      "telefono": "-"
-    }
-  ],
-  "servicios": [
-    {
-      "codigo": "TRA001",
-      "nombre": "Traslado Aeropuerto / Hotel",
-      "fecha": "Jue - 16-Abr-2026",
-      "horaInicio": "07:00 a. m.",
-      "horaFin": "07:20 a. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "BTG004",
-      "nombre": "Boleto Turístico General Adulto Extranjero",
-      "fecha": "Jue - 16-Abr-2026",
-      "horaInicio": "-",
-      "horaFin": "-",
-      "incluido": false
-    },
-    {
-      "codigo": "CUS001",
-      "nombre": "City Tour Cusco + Ruinas",
-      "fecha": "Jue - 16-Abr-2026",
-      "horaInicio": "01:30 p. m.",
-      "horaFin": "06:30 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "CUS000",
-      "nombre": "Día libre",
-      "fecha": "Vie - 17-Abr-2026",
-      "horaInicio": "07:00 a. m.",
-      "horaFin": "07:30 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "TRA008",
-      "nombre": "Traslado Cusco / Est. Ollanta",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "04:00 a. m.",
-      "horaFin": "06:00 a. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "VOY045",
-      "nombre": "Tren The Voyager - Ollantaytambo / Machu Picchu",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "06:40 a. m.",
-      "horaFin": "08:15 a. m.",
-      "incluido": false
-    },
-    {
-      "codigo": "CONS10",
-      "nombre": "Bus Consettur - Subida a Machu Picchu",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "10:00 a. m.",
-      "horaFin": "10:45 a. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "MAPI04",
-      "nombre": "Ingreso Machu Picchu - Adulto PE - C1",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "11:00 a. m.",
-      "horaFin": "12:00 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "CUS028",
-      "nombre": "Tour Machu Picchu 11AM",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "11:00 a. m.",
-      "horaFin": "03:00 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "CONS20",
-      "nombre": "Bus Consettur - Bajada a Machu Picchu Pueblo",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "03:30 p. m.",
-      "horaFin": "04:15 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "VOY066",
-      "nombre": "Tren The Voyager - Machu Picchu / Ollantaytambo",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "08:20 p. m.",
-      "horaFin": "10:00 p. m.",
-      "incluido": false
-    },
-    {
-      "codigo": "TRA009",
-      "nombre": "Traslado Est. Ollanta / Cusco",
-      "fecha": "Sab - 18-Abr-2026",
-      "horaInicio": "10:10 p. m.",
-      "horaFin": "12:10 a. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "CUS004",
-      "nombre": "Tour Valle Sagrado VIP",
-      "fecha": "Dom - 19-Abr-2026",
-      "horaInicio": "07:00 a. m.",
-      "horaFin": "07:30 p. m.",
-      "incluido": true
-    },
-    {
-      "codigo": "TRA002",
-      "nombre": "Traslado Hotel / Aeropuerto",
-      "fecha": "Dom - 19-Abr-2026",
-      "horaInicio": "08:00 p. m.",
-      "horaFin": "08:20 p. m.",
-      "incluido": true
-    }
-  ],
-  "vuelos": [
-    {
-      "operador": "JetSmart",
-      "numero": "-",
-      "origen": "Lima",
-      "destino": "Cusco",
-      "salida": "16-Abr-2026 05:15 AM",
-      "llegada": "16-Abr-2026 06:40 AM"
-    },
-    {
-      "operador": "JetSmart",
-      "numero": "-",
-      "origen": "Cusco",
-      "destino": "Lima",
-      "salida": "19-Abr-2026 10:10 PM",
-      "llegada": "19-Abr-2026 11:50 PM"
-    }
-  ],
-  "incluye": [
-    "03 noches de alojamiento en Hotel Royal Qosqo o similar – Cusco (3 estrellas)",
-    "Desayunos incluidos (semi-buffet)",
-    "Traslados aeropuerto – hotel – aeropuerto",
-    "Entrada a Machu Picchu (Circuito 1)",
-    "Ticket de bus subida y bajada para Machu Picchu",
-    "Traslados a estación de tren (ida y retorno)",
-    "Guías profesionales certificados para todas las excursiones",
-    "Ceremonia andina de bienvenida y pago a la tierra",
-    "Asistencia y orientación al turista 24/7"
-  ],
-  "noIncluye": [
-    "Pasajes aéreos Lima – Cusco – Lima (se pueden cotizar aparte)",
-    "Tickets de tren Inca Rail The Voyager (ida y vuelta) US$ 120.00 por persona",
-    "Boleto turístico general (City Tour + Valle Sagrado) S/. 70.00 por persona",
-    "Almuerzos y cenas (excepto desayuno y almuerzo en Montaña de Colores)",
-    "Ingresos no contemplados en el Boleto Turístico General",
-    "Traslados o servicios fuera del itinerario"
-  ],
-  "informacionAdicional": [
-    "Presentarse con anticipación a cada servicio.",
-    "Llevar documento original.",
-    "Coordinar cambios con su agente.",
-    "Recojo aeropuerto de tercer turista programado para el 17-abr-2026 08:50 PM."
-  ],
-  "pagos": {
-    "totalPendiente": {
-      "label": "Completar pago total",
-      "descripcion": "Detalle de facturación pendiente. Saldo total por pagar de la reserva.",
-      "montoPen": 1049.7,
-      "montoUsd": 306.2,
-      "url": "https://www.paypal.com/",
-      "detalle": [
-        "PAXS #01 - S/ 559.90 - USD 163.70",
-        "PAXS #02 - S/ 559.90 - USD 163.70",
-        "PAXS #03 - S/ 439.90 - USD 128.60",
-        "TOTAL S/ 1,559.70 - USD 456.00",
-        "Monto pagado a cuenta S/ 510.00 - USD 149.80",
-        "Saldo pendiente S/ 1,049.70 - USD 306.20"
-      ],
-      "badge": "Facturación pendiente"
-    },
-    "extras": [
+  },
+  {
+    "codigo": "CUZ14D7A12",
+    "apellido": "MELENDEZ",
+    "fechaVoucher": "jueves, 16 de abril de 2026",
+    "fechaEmision": "2026-04-16",
+    "fechaViaje": "2026-04-16",
+    "duracion": "04 días / 03 noches",
+    "idioma": "Español",
+    "titularReserva": "Angelo Michael Melendez Espinoza",
+    "telefonoContacto": "+51934217603",
+    "codigoCupon": "CUZ14D7A12",
+    "cantidadPaxs": 3,
+    "destino": "Cusco, Valle Sagrado y Machu Picchu",
+    "packTour": "Cusco Valle y Machu Picchu - Itinerario Especial",
+    "agenteAsignado": "Jefferson García",
+    "agenteTelefono": "+51 900 608 980",
+    "agenteFoto": "./assets/img/agentes/jefferson-garcia.jpg",
+    "hotelInfo": [
       {
-        "label": "Pagar Boleto Turístico y entradas",
-        "descripcion": "Pago pendiente de boleto turístico general.",
-        "montoPen": 195,
-        "montoUsd": 57,
-        "url": "https://www.paypal.com/",
-        "detalle": [
-          "PAXS #01 - S/ 75 - USD 22",
-          "PAXS #02 - S/ 75 - USD 22",
-          "PAXS #03 - S/ 45 - USD 13",
-          "TOTAL S/ 195 - USD 57"
-        ]
+        "nombre": "Hotel Cusco Boutique",
+        "ubicacion": "Cusco",
+        "checkIn": "16-abr-2026 - 11:00 AM",
+        "checkOut": "19-abr-2026 - 10:00 AM",
+        "noches": "03",
+        "categoria": "3 estrellas",
+        "habitacion": "Matrimonial",
+        "direccion": "Calle Teqsecocha 566 Cusco, Perú",
+        "telefono": "+51913493167",
+        "observaciones": "Desayuno incluido / WiFi / Agua caliente / Toallas"
+      }
+    ],
+    "turistas": [
+      {
+        "nombreCompleto": "Angelo Michael Melendez Espinoza",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "70808554",
+        "nacionalidad": "Peruana",
+        "fechaNacimiento": "27/03/2005",
+        "telefono": "+51934217603"
       },
       {
-        "label": "Pagar ticket de tren",
-        "descripcion": "Pago pendiente de ticket de tren.",
-        "montoPen": null,
-        "montoUsd": 387,
+        "nombreCompleto": "Miguel Angel Melendez Herrera",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "25861017",
+        "nacionalidad": "Peruana",
+        "fechaNacimiento": "19/03/1976",
+        "telefono": "-"
+      },
+      {
+        "nombreCompleto": "Susana Beatriz Espinoza Yzaguirre",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "25842771",
+        "nacionalidad": "Peruana",
+        "fechaNacimiento": "01/03/1977",
+        "telefono": "-"
+      }
+    ],
+    "servicios": [
+      {
+        "codigo": "TRA001",
+        "nombre": "Traslado Aeropuerto / Hotel",
+        "fecha": "Jue - 16-Abr-2026",
+        "horaInicio": "07:00 a. m.",
+        "horaFin": "07:20 a. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "BTG004",
+        "nombre": "Boleto Turístico General Adulto Extranjero",
+        "fecha": "Jue - 16-Abr-2026",
+        "horaInicio": "-",
+        "horaFin": "-",
+        "incluido": false
+      },
+      {
+        "codigo": "CUS001",
+        "nombre": "City Tour Cusco + Ruinas",
+        "fecha": "Jue - 16-Abr-2026",
+        "horaInicio": "01:30 p. m.",
+        "horaFin": "06:30 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "CUS000",
+        "nombre": "Día libre",
+        "fecha": "Vie - 17-Abr-2026",
+        "horaInicio": "07:00 a. m.",
+        "horaFin": "07:30 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA008",
+        "nombre": "Traslado Cusco / Est. Ollanta",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "04:00 a. m.",
+        "horaFin": "06:00 a. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "VOY045",
+        "nombre": "Tren The Voyager - Ollantaytambo / Machu Picchu",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "06:40 a. m.",
+        "horaFin": "08:15 a. m.",
+        "incluido": false
+      },
+      {
+        "codigo": "CONS10",
+        "nombre": "Bus Consettur - Subida a Machu Picchu",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "10:00 a. m.",
+        "horaFin": "10:45 a. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "MAPI04",
+        "nombre": "Ingreso Machu Picchu - Adulto PE - C1",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "11:00 a. m.",
+        "horaFin": "12:00 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "CUS028",
+        "nombre": "Tour Machu Picchu 11AM",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "11:00 a. m.",
+        "horaFin": "03:00 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "CONS20",
+        "nombre": "Bus Consettur - Bajada a Machu Picchu Pueblo",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "03:30 p. m.",
+        "horaFin": "04:15 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "VOY066",
+        "nombre": "Tren The Voyager - Machu Picchu / Ollantaytambo",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "08:20 p. m.",
+        "horaFin": "10:00 p. m.",
+        "incluido": false
+      },
+      {
+        "codigo": "TRA009",
+        "nombre": "Traslado Est. Ollanta / Cusco",
+        "fecha": "Sab - 18-Abr-2026",
+        "horaInicio": "10:10 p. m.",
+        "horaFin": "12:10 a. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "CUS004",
+        "nombre": "Tour Valle Sagrado VIP",
+        "fecha": "Dom - 19-Abr-2026",
+        "horaInicio": "07:00 a. m.",
+        "horaFin": "07:30 p. m.",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA002",
+        "nombre": "Traslado Hotel / Aeropuerto",
+        "fecha": "Dom - 19-Abr-2026",
+        "horaInicio": "08:00 p. m.",
+        "horaFin": "08:20 p. m.",
+        "incluido": true
+      }
+    ],
+    "vuelos": [
+      {
+        "operador": "JetSmart",
+        "numero": "-",
+        "origen": "Lima",
+        "destino": "Cusco",
+        "salida": "16-Abr-2026 05:15 AM",
+        "llegada": "16-Abr-2026 06:40 AM"
+      },
+      {
+        "operador": "JetSmart",
+        "numero": "-",
+        "origen": "Cusco",
+        "destino": "Lima",
+        "salida": "19-Abr-2026 10:10 PM",
+        "llegada": "19-Abr-2026 11:50 PM"
+      }
+    ],
+    "incluye": [
+      "03 noches de alojamiento en Hotel Royal Qosqo o similar – Cusco (3 estrellas)",
+      "Desayunos incluidos (semi-buffet)",
+      "Traslados aeropuerto – hotel – aeropuerto",
+      "Entrada a Machu Picchu (Circuito 1)",
+      "Ticket de bus subida y bajada para Machu Picchu",
+      "Traslados a estación de tren (ida y retorno)",
+      "Guías profesionales certificados para todas las excursiones",
+      "Ceremonia andina de bienvenida y pago a la tierra",
+      "Asistencia y orientación al turista 24/7"
+    ],
+    "noIncluye": [
+      "Pasajes aéreos Lima – Cusco – Lima (se pueden cotizar aparte)",
+      "Tickets de tren Inca Rail The Voyager (ida y vuelta) US$ 120.00 por persona",
+      "Boleto turístico general (City Tour + Valle Sagrado) S/. 70.00 por persona",
+      "Almuerzos y cenas (excepto desayuno y almuerzo en Montaña de Colores)",
+      "Ingresos no contemplados en el Boleto Turístico General",
+      "Traslados o servicios fuera del itinerario"
+    ],
+    "informacionAdicional": [
+      "Presentarse con anticipación a cada servicio.",
+      "Llevar documento original.",
+      "Coordinar cambios con su agente.",
+      "Recojo aeropuerto de tercer turista programado para el 17-abr-2026 08:50 PM."
+    ],
+    "pagos": {
+      "totalPendiente": {
+        "label": "Completar pago total",
+        "descripcion": "Detalle de facturación pendiente. Saldo total por pagar de la reserva.",
+        "montoPen": 1049.7,
+        "montoUsd": 306.2,
         "url": "https://www.paypal.com/",
         "detalle": [
-          "PAXS #01 - USD 129.00",
-          "PAXS #02 - USD 129.00",
-          "PAXS #03 - USD 129.00",
-          "TOTAL USD 387.00"
+          "PAXS #01 - S/ 559.90 - USD 163.70",
+          "PAXS #02 - S/ 559.90 - USD 163.70",
+          "PAXS #03 - S/ 439.90 - USD 128.60",
+          "TOTAL S/ 1,559.70 - USD 456.00",
+          "Monto pagado a cuenta S/ 510.00 - USD 149.80",
+          "Saldo pendiente S/ 1,049.70 - USD 306.20"
         ],
-        "badge": "20% descuento por tiempo limitado"
-      }
-    ]
+        "badge": "Facturación pendiente"
+      },
+      "extras": [
+        {
+          "label": "Pagar Boleto Turístico y entradas",
+          "descripcion": "Pago pendiente de boleto turístico general.",
+          "montoPen": 195,
+          "montoUsd": 57,
+          "url": "https://www.paypal.com/",
+          "detalle": [
+            "PAXS #01 - S/ 75 - USD 22",
+            "PAXS #02 - S/ 75 - USD 22",
+            "PAXS #03 - S/ 45 - USD 13",
+            "TOTAL S/ 195 - USD 57"
+          ]
+        },
+        {
+          "label": "Pagar ticket de tren",
+          "descripcion": "Pago pendiente de ticket de tren.",
+          "montoPen": null,
+          "montoUsd": 387,
+          "url": "https://www.paypal.com/",
+          "detalle": [
+            "PAXS #01 - USD 129.00",
+            "PAXS #02 - USD 129.00",
+            "PAXS #03 - USD 129.00",
+            "TOTAL USD 387.00"
+          ],
+          "badge": "20% descuento por tiempo limitado"
+        }
+      ]
+    }
   }
-}
+]
