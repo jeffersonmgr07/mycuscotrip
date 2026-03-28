@@ -1,0 +1,259 @@
+.product-page {
+  background: #f7faf8;
+}
+
+.product-hero {
+  padding: 140px 0 50px;
+  background: linear-gradient(135deg, rgba(6,40,3,.95), rgba(5,50,32,.82));
+  color: #fff;
+}
+
+.product-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+.product-badge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #eb09a7;
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+.product-type {
+  color: rgba(255,255,255,.82);
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.product-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  margin-bottom: 16px;
+}
+
+.product-short-description {
+  color: rgba(255,255,255,.9);
+  max-width: 780px;
+  margin-bottom: 20px;
+}
+
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: rgba(255,255,255,.92);
+}
+
+.product-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-booking-card {
+  background: #fff;
+  color: #333;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.12);
+}
+
+.booking-card__label {
+  color: #666;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.product-booking-card h2 {
+  margin-bottom: 10px;
+}
+
+.booking-card__note {
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.product-booking-btn,
+.product-secondary-btn {
+  width: 100%;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.product-secondary-btn {
+  background: #fff;
+  color: #062803;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.product-gallery-section {
+  padding: 36px 0 10px;
+}
+
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.product-gallery img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.08);
+}
+
+.product-content-section {
+  padding: 30px 0 80px;
+}
+
+.product-content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 28px;
+  align-items: start;
+}
+
+.product-main-content {
+  display: grid;
+  gap: 24px;
+}
+
+.product-block {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.05);
+}
+
+.product-block h2 {
+  margin-bottom: 16px;
+}
+
+.product-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.product-list {
+  padding-left: 20px;
+  color: #555;
+}
+
+.product-list li {
+  margin-bottom: 10px;
+}
+
+.product-itinerary {
+  display: grid;
+  gap: 14px;
+}
+
+.product-itinerary-item {
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fbf9;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.product-itinerary-item h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.product-itinerary-item p {
+  color: #666;
+}
+
+.product-faq {
+  display: grid;
+  gap: 12px;
+}
+
+.product-faq-item {
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fbf9;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.product-faq-item h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.product-faq-item p {
+  color: #666;
+}
+
+.product-side-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.05);
+  position: sticky;
+  top: 110px;
+}
+
+.product-side-card h3 {
+  margin-bottom: 14px;
+}
+
+.product-side-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-side-list li {
+  margin-bottom: 12px;
+  color: #555;
+}
+
+@media (max-width: 1100px) {
+  .product-hero__grid,
+  .product-content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .product-side-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-hero {
+    padding: 110px 0 40px;
+  }
+
+  .product-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .product-gallery img {
+    height: 220px;
+  }
+
+  .product-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .product-block,
+  .product-side-card,
+  .product-booking-card {
+    padding: 20px;
+  }
+}
