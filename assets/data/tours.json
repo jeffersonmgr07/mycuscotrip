@@ -6,8 +6,13 @@
     "category": "machu-picchu",
     "type": "full-day-tour",
     "typeLabel": "Full Day",
+    "badge": "Top ventas",
+    "featured": true,
     "location": "Cusco / Machu Picchu",
     "currency": "USD",
+
+    "shortDescription": "Explora Machu Picchu en un solo día con tren turístico, bus ecológico, entrada y guía profesional.",
+    "description": "Vive una experiencia completa a Machu Picchu saliendo desde Cusco. Este tour full day combina traslado, tren turístico, bus ecológico, ingreso oficial y guiado profesional para que disfrutes la maravilla del mundo moderno con una logística organizada y eficiente. Ideal para viajeros con poco tiempo en Cusco que desean una experiencia segura, ordenada y memorable.",
 
     "duration": {
       "label": "18–20 horas",
@@ -23,12 +28,67 @@
     "capacity": 15,
 
     "images": {
-      "cover": "/assets/img/tours/machu-picchu-full-day/cover.jpg",
+      "cover": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
       "gallery": [
-        "/assets/img/tours/machu-picchu-full-day/1.jpg",
-        "/assets/img/tours/machu-picchu-full-day/2.jpg"
+        "./assets/img/tours/machu-picchu-full-day/1.jpg",
+        "./assets/img/tours/machu-picchu-full-day/2.jpg"
       ]
     },
+
+    "includes": [
+      "Recojo en hotel en Cusco",
+      "Transporte turístico Cusco - Ollantaytambo - Cusco",
+      "Tren turístico ida y vuelta",
+      "Bus ecológico ida y vuelta",
+      "Entrada oficial a Machu Picchu",
+      "Guía profesional en español o inglés",
+      "Asistencia durante toda la experiencia"
+    ],
+
+    "excludes": [
+      "Alimentos y bebidas",
+      "Gastos personales",
+      "Buffet lunch opcional",
+      "Servicios no mencionados"
+    ],
+
+    "itinerary": [
+      {
+        "title": "Recojo en Cusco",
+        "description": "Recojo desde hoteles del centro histórico de Cusco y traslado hacia la estación de Ollantaytambo."
+      },
+      {
+        "title": "Viaje en tren a Aguas Calientes",
+        "description": "Abordarás el tren turístico hasta Aguas Calientes con una vista espectacular del valle."
+      },
+      {
+        "title": "Ascenso en bus a Machu Picchu",
+        "description": "Desde Aguas Calientes subirás en bus ecológico hasta la puerta de ingreso de la ciudadela."
+      },
+      {
+        "title": "Visita guiada en Machu Picchu",
+        "description": "Recorrido guiado por los sectores más importantes de la ciudadela, con tiempo para fotografías."
+      },
+      {
+        "title": "Retorno a Cusco",
+        "description": "Descenso a Aguas Calientes, tren de regreso y traslado final a Cusco."
+      }
+    ],
+
+    "faq": [
+      {
+        "q": "¿Puedo hacer Machu Picchu en un solo día?",
+        "a": "Sí. Este tour está diseñado para viajeros que desean visitar Machu Picchu en un solo día con toda la logística organizada."
+      },
+      {
+        "q": "¿El almuerzo está incluido?",
+        "a": "No. El almuerzo no está incluido, pero puedes añadir extras o almorzar por cuenta propia en Aguas Calientes."
+      },
+      {
+        "q": "¿Qué idioma habla el guía?",
+        "a": "El guiado está disponible en español e inglés."
+      }
+    ],
 
     "extras": [
       {
