@@ -3,122 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Cusco Trip | Producto</title>
+  <title>Experiencia | My Cusco Trip</title>
+  <meta name="description" content="Descubre detalles completos de tu experiencia con My Cusco Trip." />
 
-  <link rel="stylesheet" href="/assets/css/base.css" />
-  <link rel="stylesheet" href="/assets/css/header.css" />
-  <link rel="stylesheet" href="/assets/css/footer.css" />
-  <link rel="stylesheet" href="/assets/css/product.css" />
-  <link rel="stylesheet" href="/assets/css/booking.css" />
-  <link rel="stylesheet" href="/assets/css/portal.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/header.css">
+  <link rel="stylesheet" href="./assets/css/footer.css">
+  <link rel="stylesheet" href="./assets/css/responsive.css">
+  <link rel="stylesheet" href="./assets/css/product-page.css">
 </head>
-<body data-page="product">
-  <div id="headerMount"></div>
+<body>
+  <div id="header-container"></div>
 
-  <main class="product-page" data-product-page>
+  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
+  </a>
+
+  <main class="product-page">
     <section class="product-hero">
       <div class="container">
         <div class="product-hero__grid">
           <div class="product-hero__content">
-            <span class="product-badge" data-product-type></span>
-            <h1 data-tour-name></h1>
-            <p data-tour-summary></p>
+            <span id="productBadge" class="product-badge">Destacado</span>
+            <p id="productType" class="product-type">Experiencia</p>
+            <h1 id="productTitle">Cargando experiencia...</h1>
+            <p id="productShortDescription" class="product-short-description"></p>
 
             <div class="product-meta">
-              <span data-tour-duration></span>
-              <span data-tour-rating></span>
-              <span data-tour-location></span>
+              <span id="productLocation"><i class="fas fa-location-dot"></i> Cusco, Perú</span>
+              <span id="productDuration"><i class="fas fa-clock"></i> Duración</span>
+              <span id="productLanguages"><i class="fas fa-language"></i> Idioma</span>
             </div>
           </div>
 
-          <div class="product-booking-card" data-booking-card>
-            <div class="price-box">
-              <small data-i18n="from">Desde</small>
-              <strong data-tour-price></strong>
-            </div>
+          <aside class="product-booking-card">
+            <p class="booking-card__label">Desde</p>
+            <h2 id="productPrice">USD 0</h2>
+            <p class="booking-card__note">Precio referencial por adulto</p>
 
-            <form id="productBookingForm">
-              <div class="field">
-                <label data-i18n="travelDate">Fecha de viaje</label>
-                <input type="text" id="travelDate" readonly />
-              </div>
+            <a id="productWhatsappBtn" class="btn product-booking-btn" href="#" target="_blank" rel="noopener">
+              Reservar por WhatsApp
+            </a>
 
-              <div class="field">
-                <label data-i18n="travelers">Viajeros</label>
-                <button type="button" id="travelerToggle">2 pasajeros</button>
-              </div>
-
-              <div class="field">
-                <label data-i18n="serviceType">Tipo de servicio</label>
-                <select id="serviceType"></select>
-              </div>
-
-              <div class="field">
-                <label data-i18n="discountCode">Código de descuento</label>
-                <div class="discount-row">
-                  <input type="text" id="discountCode" />
-                  <button type="button" id="applyDiscountBtn" data-i18n="apply">Aplicar</button>
-                </div>
-              </div>
-
-              <div class="booking-summary" data-booking-summary></div>
-              <div class="field">
-                <label for="trainCategory" data-i18n="trainCategory">Categoría de tren</label>
-                <select id="trainCategory"></select>
-              </div>
-
-              <button type="submit" class="btn-primary" data-i18n="continueBooking">
-                Continuar
-              </button>
-            </form>
-          </div>
+            <a class="btn product-secondary-btn" href="./all-experiences.html">
+              Ver más experiencias
+            </a>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section class="product-gallery container" data-tour-gallery></section>
-
-    <section class="product-section container">
-      <h2 data-i18n="itinerary">Itinerario</h2>
-      <div data-tour-itinerary></div>
-    </section>
-
-    <section class="product-section container">
-      <div class="columns-2">
-        <div>
-          <h2 data-i18n="includes">Incluye</h2>
-          <ul data-tour-includes></ul>
-        </div>
-        <div>
-          <h2 data-i18n="excludes">No incluye</h2>
-          <ul data-tour-excludes></ul>
-        </div>
+    <section class="product-gallery-section">
+      <div class="container">
+        <div id="productGallery" class="product-gallery"></div>
       </div>
     </section>
 
-    <section class="product-section container">
-      <h2 data-i18n="reviews">Reseñas</h2>
-      <div data-tour-reviews></div>
-    </section>
+    <section class="product-content-section">
+      <div class="container product-content-layout">
+        <div class="product-main-content">
+          <article class="product-block">
+            <h2>Descripción</h2>
+            <p id="productDescription"></p>
+          </article>
 
-    <section class="product-section container">
-      <h2 data-i18n="faq">Preguntas frecuentes</h2>
-      <div data-tour-faq></div>
+          <article class="product-block">
+            <h2>Itinerario</h2>
+            <div id="productItinerary" class="product-itinerary"></div>
+          </article>
+
+          <article class="product-block product-columns">
+            <div>
+              <h2>Incluye</h2>
+              <ul id="productIncludes" class="product-list"></ul>
+            </div>
+            <div>
+              <h2>No incluye</h2>
+              <ul id="productExcludes" class="product-list"></ul>
+            </div>
+          </article>
+
+          <article class="product-block">
+            <h2>Preguntas frecuentes</h2>
+            <div id="productFaq" class="product-faq"></div>
+          </article>
+        </div>
+
+        <aside class="product-side-info">
+          <div class="product-side-card">
+            <h3>Detalles rápidos</h3>
+            <ul class="product-side-list">
+              <li><strong>Categoría:</strong> <span id="sideCategory"></span></li>
+              <li><strong>Ubicación:</strong> <span id="sideLocation"></span></li>
+              <li><strong>Duración:</strong> <span id="sideDuration"></span></li>
+              <li><strong>Grupo máximo:</strong> <span id="sideCapacity"></span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
     </section>
   </main>
 
-  <div id="bookingModalMount"></div>
-  <div id="footerMount"></div>
+  <div id="footer-container"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
-  <script type="module" src="/assets/js/product.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get("slug");
-    document.getElementById("title").textContent = "Tour cargado correctamente";
-    document.getElementById("slug").textContent = "Slug: " + slug;
+    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
+    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+
+    async function loadComponent(componentName, targetId) {
+      try {
+        const componentPath = `${BASE_PATH}components/${componentName}.html`;
+        const response = await fetch(componentPath);
+        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+        const html = await response.text();
+        const target = document.getElementById(targetId);
+
+        if (target) {
+          target.innerHTML = html;
+          fixImagePaths(target);
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        console.error(`Error cargando ${componentName}:`, error);
+        return false;
+      }
+    }
+
+    function fixImagePaths(container) {
+      const images = container.querySelectorAll('img[src*="assets/"]');
+      images.forEach(img => {
+        const currentSrc = img.getAttribute('src');
+        if (currentSrc.startsWith('assets/')) {
+          img.setAttribute('src', `.${currentSrc}`);
+        }
+      });
+    }
+
+    async function initializeApp() {
+      await Promise.all([
+        loadComponent('header', 'header-container'),
+        loadComponent('footer', 'footer-container')
+      ]);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
   </script>
+
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/pages/product.js"></script>
 </body>
 </html>
