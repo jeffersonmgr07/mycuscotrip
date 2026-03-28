@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todas las experiencias | My Cusco Trip</title>
+  <meta name="description" content="Explora tours y experiencias en Cusco, Machu Picchu y Perú con My Cusco Trip." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/header.css">
+  <link rel="stylesheet" href="./assets/css/footer.css">
+  <link rel="stylesheet" href="./assets/css/responsive.css">
+  <link rel="stylesheet" href="./assets/css/all-experiences.css">
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
+  </a>
+
+  <section class="listing-hero">
+    <div class="container">
+      <div class="listing-hero__content">
+        <p class="listing-eyebrow">Catálogo de experiencias</p>
+        <h1>Todas nuestras experiencias</h1>
+        <p id="listing-summary">
+          Explora tours y paquetes disponibles según tu búsqueda.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main class="listing-page">
+    <div class="container listing-layout">
+      <aside class="listing-sidebar">
+        <div class="listing-filter-card">
+          <h2>Filtrar experiencias</h2>
+
+          <div class="listing-filter-group">
+            <label for="filterSearch">Buscar</label>
+            <input type="text" id="filterSearch" placeholder="Ej. Machu Picchu, Valle Sagrado" />
+          </div>
+
+          <div class="listing-filter-group">
+            <label for="filterCategory">Categoría</label>
+            <select id="filterCategory">
+              <option value="">Todas</option>
+              <option value="machu-picchu">Machu Picchu</option>
+              <option value="cusco">Cusco</option>
+              <option value="paquetes">Paquetes</option>
+              <option value="peru">Perú</option>
+            </select>
+          </div>
+
+          <div class="listing-filter-group">
+            <label for="filterSort">Ordenar por</label>
+            <select id="filterSort">
+              <option value="featured">Destacados</option>
+              <option value="price-asc">Precio: menor a mayor</option>
+              <option value="price-desc">Precio: mayor a menor</option>
+              <option value="name-asc">Nombre: A-Z</option>
+            </select>
+          </div>
+
+          <button id="clearFiltersBtn" class="btn listing-clear-btn" type="button">
+            Limpiar filtros
+          </button>
+        </div>
+      </aside>
+
+      <section class="listing-results">
+        <div class="listing-results__top">
+          <div>
+            <h2>Resultados</h2>
+            <p id="resultsCount">Cargando experiencias...</p>
+          </div>
+        </div>
+
+        <div id="allExperiencesContainer" class="listing-grid"></div>
+
+        <div id="listingEmptyState" class="listing-empty" hidden>
+          <i class="fas fa-map-signs"></i>
+          <h3>No encontramos experiencias</h3>
+          <p>Prueba con otra búsqueda o cambia los filtros.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script>
+    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
+    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+
+    async function loadComponent(componentName, targetId) {
+      try {
+        const componentPath = `${BASE_PATH}components/${componentName}.html`;
+        const response = await fetch(componentPath);
+        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+        const html = await response.text();
+        const target = document.getElementById(targetId);
+
+        if (target) {
+          target.innerHTML = html;
+          fixImagePaths(target);
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        console.error(`Error cargando ${componentName}:`, error);
+        return false;
+      }
+    }
+
+    function fixImagePaths(container) {
+      const images = container.querySelectorAll('img[src*="assets/"]');
+      images.forEach(img => {
+        const currentSrc = img.getAttribute('src');
+        if (currentSrc.startsWith('assets/')) {
+          img.setAttribute('src', `.${currentSrc}`);
+        }
+      });
+    }
+
+    async function initializeApp() {
+      await Promise.all([
+        loadComponent('header', 'header-container'),
+        loadComponent('footer', 'footer-container')
+      ]);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
+  </script>
+
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/pages/all-experiences.js"></script>
+</body>
+</html>
