@@ -21,16 +21,18 @@ class MyCuscoTripAllExperiences {
   async init() {
     if (!this.container) return;
 
-    this.syncFiltersFromUrl();
-    this.bindEvents();
-
     try {
+      this.syncFiltersFromUrl();
+      this.bindEvents();
+
       this.allProducts = await this.loadProducts();
       this.applyInitialUrlFilters();
       this.applyFilters();
     } catch (error) {
-      console.error("Error loading experiences:", error);
-      this.renderEmpty("No se pudieron cargar las experiencias.");
+      console.error("Error inicializando all-experiences:", error);
+      this.renderError(
+        "No se pudieron cargar las experiencias. Revisa si existe ./assets/data/tours.json y si el JSON es válido."
+      );
     }
   }
 
@@ -43,12 +45,18 @@ class MyCuscoTripAllExperiences {
         .filter((item) => item.status !== "draft");
     }
 
-    const response = await fetch("./assets/data/tours.json");
+    const response = await fetch("./assets/data/tours.json", { cache: "no-store" });
+
     if (!response.ok) {
-      throw new Error("No se pudo cargar tours.json");
+      throw new Error(`No se pudo cargar tours.json (${response.status})`);
     }
 
     const tours = await response.json();
+
+    if (!Array.isArray(tours)) {
+      throw new Error("tours.json no contiene un array válido");
+    }
+
     return tours
       .map((item) => this.normalizeProduct(item))
       .filter((item) => item.status !== "draft");
@@ -125,7 +133,9 @@ class MyCuscoTripAllExperiences {
       fragments.push(`para la fecha ${fecha}`);
     }
 
-    const totalPax = (parseInt(adultos || "0", 10) || 0) + (parseInt(ninos || "0", 10) || 0);
+    const totalPax =
+      (parseInt(adultos || "0", 10) || 0) + (parseInt(ninos || "0", 10) || 0);
+
     if (totalPax > 0) {
       fragments.push(`para ${totalPax} pasajero${totalPax === 1 ? "" : "s"}`);
     }
@@ -173,18 +183,12 @@ class MyCuscoTripAllExperiences {
     }
 
     if (search) {
-      results = results.filter((item) => {
-        return [
-          item.title,
-          item.description,
-          item.location,
-          item.category,
-          item.typeLabel
-        ]
+      results = results.filter((item) =>
+        [item.title, item.description, item.location, item.category, item.typeLabel]
           .join(" ")
           .toLowerCase()
-          .includes(search);
-      });
+          .includes(search)
+      );
     }
 
     switch (sort) {
@@ -210,13 +214,15 @@ class MyCuscoTripAllExperiences {
   renderResults() {
     if (!this.filteredProducts.length) {
       this.container.innerHTML = "";
-      this.emptyState.hidden = false;
-      this.resultsCount.textContent = "0 experiencias encontradas";
+      if (this.emptyState) this.emptyState.hidden = false;
+      if (this.resultsCount) this.resultsCount.textContent = "0 experiencias encontradas";
       return;
     }
 
-    this.emptyState.hidden = true;
-    this.resultsCount.textContent = `${this.filteredProducts.length} experiencia${this.filteredProducts.length === 1 ? "" : "s"} encontrada${this.filteredProducts.length === 1 ? "" : "s"}`;
+    if (this.emptyState) this.emptyState.hidden = true;
+    if (this.resultsCount) {
+      this.resultsCount.textContent = `${this.filteredProducts.length} experiencia${this.filteredProducts.length === 1 ? "" : "s"} encontrada${this.filteredProducts.length === 1 ? "" : "s"}`;
+    }
 
     this.container.innerHTML = this.filteredProducts
       .map((product) => this.createCard(product))
@@ -251,11 +257,14 @@ class MyCuscoTripAllExperiences {
     `;
   }
 
-  renderEmpty(message) {
-    this.container.innerHTML = "";
-    this.emptyState.hidden = false;
-    this.resultsCount.textContent = "0 experiencias encontradas";
-    this.emptyState.querySelector("p").textContent = message;
+  renderError(message) {
+    if (this.container) this.container.innerHTML = "";
+    if (this.emptyState) {
+      this.emptyState.hidden = false;
+      const p = this.emptyState.querySelector("p");
+      if (p) p.textContent = message;
+    }
+    if (this.resultsCount) this.resultsCount.textContent = "Error al cargar experiencias";
   }
 
   escapeHtml(value) {
