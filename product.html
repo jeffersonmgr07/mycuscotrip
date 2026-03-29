@@ -1,166 +1,282 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Experiencia | My Cusco Trip</title>
-  <meta name="description" content="Descubre detalles completos de tu experiencia con My Cusco Trip." />
+class MyCuscoTripAllExperiences {
+  constructor() {
+    this.container = document.getElementById("allExperiencesContainer");
+    this.emptyState = document.getElementById("listingEmptyState");
+    this.resultsCount = document.getElementById("resultsCount");
+    this.summary = document.getElementById("listing-summary");
 
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    this.searchInput = document.getElementById("filterSearch");
+    this.categorySelect = document.getElementById("filterCategory");
+    this.sortSelect = document.getElementById("filterSort");
+    this.clearBtn = document.getElementById("clearFiltersBtn");
 
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  <link rel="stylesheet" href="./assets/css/header.css">
-  <link rel="stylesheet" href="./assets/css/footer.css">
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-  <link rel="stylesheet" href="./assets/css/product-page.css">
-</head>
-<body>
-  <div id="header-container"></div>
+    this.allProducts = [];
+    this.filteredProducts = [];
 
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
+    this.params = new URLSearchParams(window.location.search);
 
-  <main class="product-page">
-    <section class="product-hero">
-      <div class="container">
-        <div class="product-hero__grid">
-          <div class="product-hero__content">
-            <span id="productBadge" class="product-badge">Destacado</span>
-            <p id="productType" class="product-type">Experiencia</p>
-            <h1 id="productTitle">Cargando experiencia...</h1>
-            <p id="productShortDescription" class="product-short-description"></p>
+    this.init();
+  }
 
-            <div class="product-meta">
-              <span id="productLocation"><i class="fas fa-location-dot"></i> Cusco, Perú</span>
-              <span id="productDuration"><i class="fas fa-clock"></i> Duración</span>
-              <span id="productLanguages"><i class="fas fa-language"></i> Idioma</span>
-            </div>
+  async init() {
+    if (!this.container) return;
+
+    try {
+      this.syncFiltersFromUrl();
+      this.bindEvents();
+
+      this.allProducts = await this.loadProducts();
+      this.applyInitialUrlFilters();
+      this.applyFilters();
+    } catch (error) {
+      console.error("Error inicializando all-experiences:", error);
+      this.renderError(
+        "No se pudieron cargar las experiencias. Revisa si existe ./assets/data/tours.json y si el JSON es válido."
+      );
+    }
+  }
+
+  async loadProducts() {
+    const localProducts = JSON.parse(localStorage.getItem("experiences") || "[]");
+
+    if (localProducts.length > 0) {
+      return localProducts
+        .map((item) => this.normalizeProduct(item))
+        .filter((item) => item.status !== "draft");
+    }
+
+    const response = await fetch("./assets/data/tours.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error(`No se pudo cargar tours.json (${response.status})`);
+    }
+
+    const tours = await response.json();
+
+    if (!Array.isArray(tours)) {
+      throw new Error("tours.json no contiene un array válido");
+    }
+
+    return tours
+      .map((item) => this.normalizeProduct(item))
+      .filter((item) => item.status !== "draft");
+  }
+
+  normalizeProduct(item) {
+    return {
+      id: item.id || item.slug,
+      slug: item.slug,
+      title: item.title || item.name || "Experiencia",
+      category: item.category || "cusco",
+      description:
+        item.shortDescription ||
+        item.description ||
+        "Experiencia disponible para reserva inmediata.",
+      price: item.basePricing?.adult || item.price || 0,
+      currency: item.currency || "USD",
+      image:
+        item.images?.cover ||
+        "./assets/img/tours/machu-picchu-full-day/cover.jpg",
+      featured: item.featured !== false,
+      badge: item.badge || this.getBadgeByCategory(item.category),
+      location: item.location || "Cusco, Perú",
+      duration: item.duration?.label || "Duración por confirmar",
+      typeLabel: item.typeLabel || "Experiencia",
+      status: item.status || "published"
+    };
+  }
+
+  getBadgeByCategory(category) {
+    const map = {
+      "machu-picchu": "Top ventas",
+      "cusco": "Recomendado",
+      "paquetes": "Paquete",
+      "peru": "Nuevo"
+    };
+
+    return map[category] || "Destacado";
+  }
+
+  syncFiltersFromUrl() {
+    const destino = this.params.get("destino") || "";
+    const search = this.params.get("q") || "";
+
+    if (destino && this.categorySelect) {
+      this.categorySelect.value = destino;
+    }
+
+    if (search && this.searchInput) {
+      this.searchInput.value = search;
+    }
+  }
+
+  applyInitialUrlFilters() {
+    const tipo = this.params.get("tipo");
+    const destino = this.params.get("destino");
+    const adultos = this.params.get("adultos");
+    const ninos = this.params.get("ninos");
+    const fecha = this.params.get("fecha");
+
+    const fragments = [];
+
+    if (tipo === "paquetes") {
+      fragments.push("Mostrando paquetes completos");
+    } else if (tipo === "tours") {
+      fragments.push("Mostrando tours");
+    }
+
+    if (destino) {
+      fragments.push(`en ${this.getDestinationLabel(destino)}`);
+    }
+
+    if (fecha) {
+      fragments.push(`para la fecha ${fecha}`);
+    }
+
+    const totalPax =
+      (parseInt(adultos || "0", 10) || 0) + (parseInt(ninos || "0", 10) || 0);
+
+    if (totalPax > 0) {
+      fragments.push(`para ${totalPax} pasajero${totalPax === 1 ? "" : "s"}`);
+    }
+
+    if (this.summary) {
+      this.summary.textContent = fragments.length
+        ? `${fragments.join(" ")}.`
+        : "Explora tours y paquetes disponibles según tu búsqueda.";
+    }
+  }
+
+  getDestinationLabel(destino) {
+    const map = {
+      "machu-picchu": "Machu Picchu",
+      "cusco": "Cusco",
+      "paquetes": "Paquetes completos",
+      "peru": "Perú"
+    };
+
+    return map[destino] || destino;
+  }
+
+  bindEvents() {
+    this.searchInput?.addEventListener("input", () => this.applyFilters());
+    this.categorySelect?.addEventListener("change", () => this.applyFilters());
+    this.sortSelect?.addEventListener("change", () => this.applyFilters());
+
+    this.clearBtn?.addEventListener("click", () => {
+      if (this.searchInput) this.searchInput.value = "";
+      if (this.categorySelect) this.categorySelect.value = "";
+      if (this.sortSelect) this.sortSelect.value = "featured";
+      this.applyFilters();
+    });
+  }
+
+  applyFilters() {
+    const search = (this.searchInput?.value || "").trim().toLowerCase();
+    const category = this.categorySelect?.value || "";
+    const sort = this.sortSelect?.value || "featured";
+
+    let results = [...this.allProducts];
+
+    if (category) {
+      results = results.filter((item) => item.category === category);
+    }
+
+    if (search) {
+      results = results.filter((item) =>
+        [item.title, item.description, item.location, item.category, item.typeLabel]
+          .join(" ")
+          .toLowerCase()
+          .includes(search)
+      );
+    }
+
+    switch (sort) {
+      case "price-asc":
+        results.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        results.sort((a, b) => b.price - a.price);
+        break;
+      case "name-asc":
+        results.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "featured":
+      default:
+        results.sort((a, b) => Number(b.featured) - Number(a.featured));
+        break;
+    }
+
+    this.filteredProducts = results;
+    this.renderResults();
+  }
+
+  renderResults() {
+    if (!this.filteredProducts.length) {
+      this.container.innerHTML = "";
+      if (this.emptyState) this.emptyState.hidden = false;
+      if (this.resultsCount) this.resultsCount.textContent = "0 experiencias encontradas";
+      return;
+    }
+
+    if (this.emptyState) this.emptyState.hidden = true;
+    if (this.resultsCount) {
+      this.resultsCount.textContent = `${this.filteredProducts.length} experiencia${this.filteredProducts.length === 1 ? "" : "s"} encontrada${this.filteredProducts.length === 1 ? "" : "s"}`;
+    }
+
+    this.container.innerHTML = this.filteredProducts
+      .map((product) => this.createCard(product))
+      .join("");
+  }
+
+  createCard(product) {
+    return `
+      <article class="listing-card">
+        <div class="listing-card__image">
+          <img src="${product.image}" alt="${this.escapeHtml(product.title)}" loading="lazy" />
+          <span class="listing-card__badge">${this.escapeHtml(product.badge)}</span>
+        </div>
+
+        <div class="listing-card__content">
+          <p class="listing-card__meta">${this.escapeHtml(product.location)}</p>
+          <h3>${this.escapeHtml(product.title)}</h3>
+          <p class="listing-card__description">${this.escapeHtml(product.description)}</p>
+
+          <div class="listing-card__details">
+            <span><i class="fas fa-clock"></i> ${this.escapeHtml(product.duration)}</span>
+            <span><i class="fas fa-tag"></i> ${this.escapeHtml(product.currency)} ${this.escapeHtml(String(product.price))}</span>
           </div>
 
-          <aside class="product-booking-card">
-            <p class="booking-card__label">Desde</p>
-            <h2 id="productPrice">USD 0</h2>
-            <p class="booking-card__note">Precio referencial por adulto</p>
-
-            <a id="productWhatsappBtn" class="btn product-booking-btn" href="#" target="_blank" rel="noopener">
-              Reservar por WhatsApp
+          <div class="listing-card__actions">
+            <a class="btn" href="./product.html?slug=${encodeURIComponent(product.slug)}">
+              Ver experiencia
             </a>
-
-            <a class="btn product-secondary-btn" href="./all-experiences.html">
-              Ver más experiencias
-            </a>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section class="product-gallery-section">
-      <div class="container">
-        <div id="productGallery" class="product-gallery"></div>
-      </div>
-    </section>
-
-    <section class="product-content-section">
-      <div class="container product-content-layout">
-        <div class="product-main-content">
-          <article class="product-block">
-            <h2>Descripción</h2>
-            <p id="productDescription"></p>
-          </article>
-
-          <article class="product-block">
-            <h2>Itinerario</h2>
-            <div id="productItinerary" class="product-itinerary"></div>
-          </article>
-
-          <article class="product-block product-columns">
-            <div>
-              <h2>Incluye</h2>
-              <ul id="productIncludes" class="product-list"></ul>
-            </div>
-            <div>
-              <h2>No incluye</h2>
-              <ul id="productExcludes" class="product-list"></ul>
-            </div>
-          </article>
-
-          <article class="product-block">
-            <h2>Preguntas frecuentes</h2>
-            <div id="productFaq" class="product-faq"></div>
-          </article>
-        </div>
-
-        <aside class="product-side-info">
-          <div class="product-side-card">
-            <h3>Detalles rápidos</h3>
-            <ul class="product-side-list">
-              <li><strong>Categoría:</strong> <span id="sideCategory"></span></li>
-              <li><strong>Ubicación:</strong> <span id="sideLocation"></span></li>
-              <li><strong>Duración:</strong> <span id="sideDuration"></span></li>
-              <li><strong>Grupo máximo:</strong> <span id="sideCapacity"></span></li>
-            </ul>
           </div>
-        </aside>
-      </div>
-    </section>
-  </main>
+        </div>
+      </article>
+    `;
+  }
 
-  <div id="footer-container"></div>
-
-  <script>
-    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
-    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
-
-    async function loadComponent(componentName, targetId) {
-      try {
-        const componentPath = `${BASE_PATH}components/${componentName}.html`;
-        const response = await fetch(componentPath);
-        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-
-        const html = await response.text();
-        const target = document.getElementById(targetId);
-
-        if (target) {
-          target.innerHTML = html;
-          fixImagePaths(target);
-          return true;
-        }
-
-        return false;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-        return false;
-      }
+  renderError(message) {
+    if (this.container) this.container.innerHTML = "";
+    if (this.emptyState) {
+      this.emptyState.hidden = false;
+      const p = this.emptyState.querySelector("p");
+      if (p) p.textContent = message;
     }
+    if (this.resultsCount) this.resultsCount.textContent = "Error al cargar experiencias";
+  }
 
-    function fixImagePaths(container) {
-      const images = container.querySelectorAll('img[src*="assets/"]');
-      images.forEach(img => {
-        const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
-        }
-      });
-    }
+  escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+}
 
-    async function initializeApp() {
-      await Promise.all([
-        loadComponent('header', 'header-container'),
-        loadComponent('footer', 'footer-container')
-      ]);
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeApp);
-    } else {
-      initializeApp();
-    }
-  </script>
-
-  <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js"></script>
-</body>
-</html>
+document.addEventListener("DOMContentLoaded", () => {
+  window.MyCuscoTripAllExperiences = new MyCuscoTripAllExperiences();
+});
