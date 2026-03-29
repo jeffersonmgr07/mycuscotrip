@@ -48,7 +48,6 @@
     "excludes": [
       "Alimentos y bebidas",
       "Gastos personales",
-      "Buffet lunch opcional",
       "Servicios no mencionados"
     ],
 
@@ -59,7 +58,7 @@
       },
       {
         "title": "Viaje en tren a Aguas Calientes",
-        "description": "Abordarás el tren turístico hasta Aguas Calientes con una vista espectacular del valle."
+        "description": "Abordarás el tren turístico hasta Aguas Calientes con hermosas vistas del valle."
       },
       {
         "title": "Ascenso en bus a Machu Picchu",
@@ -82,7 +81,7 @@
       },
       {
         "q": "¿El almuerzo está incluido?",
-        "a": "No. El almuerzo no está incluido, pero puedes añadir extras o almorzar por cuenta propia en Aguas Calientes."
+        "a": "No. El almuerzo no está incluido, pero puedes añadirlo como extra si está disponible."
       },
       {
         "q": "¿Qué idioma habla el guía?",
@@ -94,9 +93,16 @@
       {
         "code": "tinkuy-lunch",
         "label": "Buffet lunch",
-        "price": 40
+        "price": 40,
+        "perPerson": true
       }
     ],
+
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 49.9,
+      "partialPaymentLabel": "Reserva con USD 49.90 por persona y paga el saldo al llegar a Cusco"
+    },
 
     "booking": {
       "reservationCodePrefix": "CUZ"
