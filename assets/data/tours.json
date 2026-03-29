@@ -10,23 +10,18 @@
     "featured": true,
     "location": "Cusco / Machu Picchu",
     "currency": "USD",
-
     "shortDescription": "Explora Machu Picchu en un solo día con tren turístico, bus ecológico, entrada y guía profesional.",
-    "description": "Vive una experiencia completa a Machu Picchu saliendo desde Cusco. Este tour full day combina traslado, tren turístico, bus ecológico, ingreso oficial y guiado profesional para que disfrutes la maravilla del mundo moderno con una logística organizada y eficiente. Ideal para viajeros con poco tiempo en Cusco que desean una experiencia segura, ordenada y memorable.",
-
+    "description": "Vive una experiencia completa a Machu Picchu saliendo desde Cusco. Este tour full day combina traslado, tren turístico, bus ecológico, ingreso oficial y guiado profesional para que disfrutes la maravilla del mundo moderno con una logística organizada y eficiente.",
     "duration": {
       "label": "18–20 horas",
       "maxGroupSize": 15,
       "guideLanguages": ["es", "en"]
     },
-
     "basePricing": {
       "adult": 389,
       "child": 389
     },
-
     "capacity": 15,
-
     "images": {
       "cover": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
       "gallery": [
@@ -34,7 +29,6 @@
         "./assets/img/tours/machu-picchu-full-day/2.jpg"
       ]
     },
-
     "includes": [
       "Recojo en hotel en Cusco",
       "Transporte turístico Cusco - Ollantaytambo - Cusco",
@@ -44,13 +38,11 @@
       "Guía profesional en español o inglés",
       "Asistencia durante toda la experiencia"
     ],
-
     "excludes": [
       "Alimentos y bebidas",
       "Gastos personales",
       "Servicios no mencionados"
     ],
-
     "itinerary": [
       {
         "title": "Recojo en Cusco",
@@ -73,7 +65,6 @@
         "description": "Descenso a Aguas Calientes, tren de regreso y traslado final a Cusco."
       }
     ],
-
     "faq": [
       {
         "q": "¿Puedo hacer Machu Picchu en un solo día?",
@@ -88,7 +79,6 @@
         "a": "El guiado está disponible en español e inglés."
       }
     ],
-
     "extras": [
       {
         "code": "tinkuy-lunch",
@@ -97,17 +87,452 @@
         "perPerson": true
       }
     ],
-
     "paymentOptions": {
       "fullPaymentDiscountPercent": 5,
       "partialPaymentPerPerson": 49.9,
       "partialPaymentLabel": "Reserva con USD 49.90 por persona y paga el saldo al llegar a Cusco"
     },
-
     "booking": {
       "reservationCodePrefix": "CUZ"
     },
-
+    "status": "published"
+  },
+  {
+    "id": "exp_002",
+    "slug": "machu-picchu-overnight",
+    "title": "Machu Picchu Overnight",
+    "category": "machu-picchu",
+    "type": "overnight-tour",
+    "typeLabel": "2 días / 1 noche",
+    "badge": "Recomendado",
+    "featured": true,
+    "location": "Cusco / Machu Picchu",
+    "currency": "USD",
+    "shortDescription": "Visita Machu Picchu con más calma pasando una noche en Aguas Calientes.",
+    "description": "Ideal para quienes desean conocer Machu Picchu con más tiempo y menos apuro. Incluye tren, noche en Aguas Calientes, guiado en la ciudadela y logística organizada desde Cusco.",
+    "duration": {
+      "label": "2 días / 1 noche",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 320,
+      "child": 300
+    },
+    "capacity": 15,
+    "images": {
+      "cover": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/machu-picchu-overnight/1.jpg",
+        "./assets/img/tours/machu-picchu-overnight/2.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico",
+      "Tren turístico ida y vuelta",
+      "1 noche de alojamiento en Aguas Calientes",
+      "Bus ecológico ida y vuelta",
+      "Entrada a Machu Picchu",
+      "Guía profesional"
+    ],
+    "excludes": [
+      "Almuerzo y cena",
+      "Gastos personales",
+      "Servicios no especificados"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Cusco - Aguas Calientes",
+        "description": "Recojo, traslado a estación, viaje en tren y check-in en Aguas Calientes."
+      },
+      {
+        "title": "Día 2: Machu Picchu",
+        "description": "Ascenso en bus, visita guiada en Machu Picchu y retorno en tren a Cusco."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Es mejor que el full day?",
+        "a": "Sí, si quieres una visita con más calma y pasar la noche cerca de la ciudadela."
+      },
+      {
+        "q": "¿Incluye hotel?",
+        "a": "Sí, incluye una noche en Aguas Calientes."
+      }
+    ],
+    "extras": [
+      {
+        "code": "upgrade-hotel",
+        "label": "Upgrade de hotel",
+        "price": 35,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 59.9,
+      "partialPaymentLabel": "Reserva con USD 59.90 por persona y paga el saldo al llegar a Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "CUZ"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_003",
+    "slug": "valle-sagrado",
+    "title": "Valle Sagrado de los Incas",
+    "category": "cusco",
+    "type": "cultural-tour",
+    "typeLabel": "Full Day",
+    "badge": "Cultural",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado",
+    "currency": "USD",
+    "shortDescription": "Descubre Pisac, Ollantaytambo y el corazón cultural del Valle Sagrado.",
+    "description": "Recorre uno de los circuitos más emblemáticos de Cusco visitando pueblos tradicionales, sitios arqueológicos y paisajes del Valle Sagrado en un tour ideal para viajeros culturales.",
+    "duration": {
+      "label": "Full Day",
+      "maxGroupSize": 18,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 65,
+      "child": 55
+    },
+    "capacity": 18,
+    "images": {
+      "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/valle-sagrado/1.jpg",
+        "./assets/img/tours/valle-sagrado/2.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico",
+      "Guía profesional",
+      "Almuerzo buffet"
+    ],
+    "excludes": [
+      "Boleto turístico",
+      "Gastos personales"
+    ],
+    "itinerary": [
+      {
+        "title": "Pisac",
+        "description": "Visita al complejo arqueológico y mercado artesanal."
+      },
+      {
+        "title": "Urubamba",
+        "description": "Parada para almuerzo buffet."
+      },
+      {
+        "title": "Ollantaytambo",
+        "description": "Recorrido por uno de los complejos arqueológicos más importantes del valle."
+      },
+      {
+        "title": "Chinchero",
+        "description": "Visita cultural antes del retorno a Cusco."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Incluye almuerzo?",
+        "a": "Sí, incluye almuerzo buffet."
+      },
+      {
+        "q": "¿Incluye boleto turístico?",
+        "a": "No, el boleto turístico se paga aparte."
+      }
+    ],
+    "extras": [
+      {
+        "code": "boleto-turistico",
+        "label": "Boleto Turístico",
+        "price": 22,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 19.9,
+      "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "VAL"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_004",
+    "slug": "city-tour-cusco",
+    "title": "City Tour Cusco + Centros Arqueológicos",
+    "category": "cusco",
+    "type": "half-day-tour",
+    "typeLabel": "Medio día",
+    "badge": "Imperdible",
+    "featured": true,
+    "location": "Cusco",
+    "currency": "USD",
+    "shortDescription": "Recorre Cusco, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay.",
+    "description": "Conoce los sitios más emblemáticos de la ciudad imperial y sus alrededores en un recorrido clásico de medio día, ideal para aclimatarte y comenzar a descubrir Cusco.",
+    "duration": {
+      "label": "Medio día",
+      "maxGroupSize": 20,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 35,
+      "child": 30
+    },
+    "capacity": 20,
+    "images": {
+      "cover": "./assets/img/tours/city-tour/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/city-tour/1.jpg",
+        "./assets/img/tours/city-tour/2.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico",
+      "Guía profesional"
+    ],
+    "excludes": [
+      "Boleto turístico",
+      "Ingreso a Catedral o Koricancha",
+      "Gastos personales"
+    ],
+    "itinerary": [
+      {
+        "title": "Centro histórico de Cusco",
+        "description": "Recorrido panorámico por la ciudad."
+      },
+      {
+        "title": "Sacsayhuamán",
+        "description": "Visita al imponente complejo arqueológico."
+      },
+      {
+        "title": "Qenqo, Puka Pukara y Tambomachay",
+        "description": "Circuito arqueológico cercano a la ciudad."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Es un tour largo?",
+        "a": "No, es un tour de medio día ideal para comenzar tu viaje."
+      },
+      {
+        "q": "¿Incluye boleto turístico?",
+        "a": "No, se paga aparte."
+      }
+    ],
+    "extras": [
+      {
+        "code": "boleto-turistico",
+        "label": "Boleto Turístico",
+        "price": 22,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 12.9,
+      "partialPaymentLabel": "Reserva con USD 12.90 por persona y paga el saldo en Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "CTY"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_005",
+    "slug": "montana-de-colores",
+    "title": "Montaña de Colores (Vinicunca)",
+    "category": "cusco",
+    "type": "adventure-tour",
+    "typeLabel": "Full Day",
+    "badge": "Aventura",
+    "featured": true,
+    "location": "Cusco / Vinicunca",
+    "currency": "USD",
+    "shortDescription": "Vive una aventura inolvidable hacia la famosa montaña arcoíris de los Andes.",
+    "description": "Disfruta una de las excursiones más impactantes de Cusco. La caminata hacia la Montaña de Colores te permitirá admirar paisajes de altura, comunidades andinas y uno de los escenarios más fotografiados del Perú.",
+    "duration": {
+      "label": "Full Day",
+      "maxGroupSize": 18,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 45,
+      "child": 40
+    },
+    "capacity": 18,
+    "images": {
+      "cover": "./assets/img/tours/montana-colores/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/montana-colores/1.jpg",
+        "./assets/img/tours/montana-colores/2.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico",
+      "Guía profesional",
+      "Desayuno",
+      "Almuerzo"
+    ],
+    "excludes": [
+      "Ingreso",
+      "Caballo opcional",
+      "Gastos personales"
+    ],
+    "itinerary": [
+      {
+        "title": "Salida de madrugada",
+        "description": "Recojo temprano en Cusco y viaje hacia el punto de inicio."
+      },
+      {
+        "title": "Desayuno y caminata",
+        "description": "Parada para desayuno e inicio de caminata hacia Vinicunca."
+      },
+      {
+        "title": "Llegada a la Montaña de Colores",
+        "description": "Tiempo para fotografías y explicación del guía."
+      },
+      {
+        "title": "Retorno y almuerzo",
+        "description": "Descenso, almuerzo y retorno a Cusco."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿La caminata es exigente?",
+        "a": "Sí, se recomienda buena condición física y aclimatación previa."
+      },
+      {
+        "q": "¿Puedo alquilar caballo?",
+        "a": "Sí, normalmente se puede contratar en ruta y se paga aparte."
+      }
+    ],
+    "extras": [
+      {
+        "code": "entrada-vinicunca",
+        "label": "Entrada a Vinicunca",
+        "price": 8,
+        "perPerson": true
+      },
+      {
+        "code": "caballo",
+        "label": "Caballo opcional",
+        "price": 25,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 14.9,
+      "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "VIN"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_006",
+    "slug": "laguna-humantay",
+    "title": "Laguna Humantay",
+    "category": "cusco",
+    "type": "adventure-tour",
+    "typeLabel": "Full Day",
+    "badge": "Top ventas",
+    "featured": true,
+    "location": "Cusco / Humantay",
+    "currency": "USD",
+    "shortDescription": "Descubre la impresionante laguna turquesa a los pies del nevado Humantay.",
+    "description": "La excursión a Laguna Humantay es una de las experiencias naturales más impactantes cerca de Cusco. Combina transporte, caminata en altura, paisajes de montaña y una vista espectacular de aguas turquesas.",
+    "duration": {
+      "label": "Full Day",
+      "maxGroupSize": 18,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 50,
+      "child": 45
+    },
+    "capacity": 18,
+    "images": {
+      "cover": "./assets/img/tours/laguna-humantay/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/laguna-humantay/1.jpg",
+        "./assets/img/tours/laguna-humantay/2.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico",
+      "Guía profesional",
+      "Desayuno",
+      "Almuerzo"
+    ],
+    "excludes": [
+      "Ingreso",
+      "Caballo opcional",
+      "Gastos personales"
+    ],
+    "itinerary": [
+      {
+        "title": "Salida desde Cusco",
+        "description": "Recojo temprano y viaje hacia Mollepata."
+      },
+      {
+        "title": "Desayuno e inicio de caminata",
+        "description": "Parada para desayuno y luego caminata hacia la laguna."
+      },
+      {
+        "title": "Llegada a Laguna Humantay",
+        "description": "Tiempo libre para fotos y explicación del guía."
+      },
+      {
+        "title": "Retorno y almuerzo",
+        "description": "Descenso, almuerzo y regreso a Cusco."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Se necesita buena condición física?",
+        "a": "Sí, porque la caminata es en altura y con pendiente."
+      },
+      {
+        "q": "¿Hay opción de caballo?",
+        "a": "Sí, en la mayoría de salidas puedes contratar caballo por un pago adicional."
+      }
+    ],
+    "extras": [
+      {
+        "code": "entrada-humantay",
+        "label": "Entrada a Humantay",
+        "price": 8,
+        "perPerson": true
+      },
+      {
+        "code": "caballo",
+        "label": "Caballo opcional",
+        "price": 25,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 14.9,
+      "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "HUM"
+    },
     "status": "published"
   }
 ]
