@@ -10,7 +10,7 @@
 
 .product-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) 380px;
   gap: 28px;
   align-items: start;
 }
@@ -82,11 +82,139 @@
   margin-bottom: 18px;
 }
 
+.product-booking-form {
+  display: grid;
+  gap: 16px;
+}
+
+.booking-field label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #062803;
+}
+
+.booking-field input,
+.booking-field select {
+  width: 100%;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+  background: #fff;
+}
+
+.traveler-group {
+  display: grid;
+  gap: 12px;
+}
+
+.traveler-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 16px;
+  background: #f8fbf9;
+}
+
+.traveler-row small {
+  display: block;
+  color: #666;
+}
+
+.traveler-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.extras-list {
+  display: grid;
+  gap: 10px;
+}
+
+.extra-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 16px;
+  background: #f8fbf9;
+}
+
+.extra-item label {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.extra-item small {
+  display: block;
+  color: #666;
+  margin-top: 4px;
+}
+
+.price-summary {
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.price-line,
+.price-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.price-line {
+  color: #555;
+}
+
+.price-total {
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding-top: 12px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #062803;
+}
+
+.payment-info {
+  background: #f8fbf9;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  padding: 14px;
+  color: #555;
+  font-size: .95rem;
+}
+
+.booking-actions {
+  display: grid;
+  gap: 12px;
+}
+
 .product-booking-btn,
 .product-secondary-btn {
   width: 100%;
   display: block;
-  margin-bottom: 12px;
 }
 
 .product-secondary-btn {
