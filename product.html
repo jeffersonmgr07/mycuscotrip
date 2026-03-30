@@ -6,7 +6,7 @@
   <title>Experiencia | My Cusco Trip</title>
   <meta name="description" content="Descubre los detalles de tu experiencia en My Cusco Trip." />
 
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
 
@@ -25,55 +25,193 @@
   </a>
 
   <main class="product-page">
-    <section class="product-hero">
+    <section class="experience-top">
       <div class="container">
-        <div class="product-hero__grid">
-          <div class="product-hero__content">
-            <span id="productBadge" class="product-badge">Destacado</span>
-            <p id="productType" class="product-type">Experiencia</p>
+        <div class="experience-top__header">
+          <div class="experience-top__main">
+            <span id="productBadge" class="experience-badge">Top ventas</span>
             <h1 id="productTitle">Cargando experiencia...</h1>
-            <p id="productShortDescription" class="product-short-description"></p>
 
-            <div class="product-meta">
-              <span id="productLocation"><i class="fas fa-location-dot"></i> Cusco, Perú</span>
-              <span id="productDuration"><i class="fas fa-clock"></i> Duración</span>
-              <span id="productLanguages"><i class="fas fa-language"></i> Idioma</span>
-              <span id="productCapacity"><i class="fas fa-users"></i> Grupo</span>
+            <div class="experience-meta-row">
+              <div class="experience-rating">
+                <span class="experience-rating__score">4.9</span>
+                <span class="experience-rating__stars">★★★★★</span>
+                <span class="experience-rating__reviews">(24 reseñas)</span>
+              </div>
+
+              <div class="experience-actions">
+                <button type="button" class="experience-action-btn">
+                  <i class="fas fa-share-nodes"></i>
+                  <span>Compartir</span>
+                </button>
+                <button type="button" class="experience-action-btn">
+                  <i class="far fa-heart"></i>
+                  <span>Guardar</span>
+                </button>
+              </div>
             </div>
           </div>
+        </div>
 
-          <aside class="product-booking-card">
-            <p class="booking-card__label">Desde</p>
-            <h2 id="productBasePrice">USD 0</h2>
-            <p class="booking-card__note">Precio base referencial por adulto</p>
+        <div id="productGallery" class="experience-gallery"></div>
+      </div>
+    </section>
 
-            <form id="productBookingForm" class="product-booking-form">
+    <section class="experience-tabs-wrap">
+      <div class="container">
+        <nav class="experience-tabs" aria-label="Secciones de la experiencia">
+          <a href="#overview">Resumen</a>
+          <a href="#details">Detalles</a>
+          <a href="#itinerary">Itinerario</a>
+          <a href="#faq">FAQ</a>
+          <a href="#similar">Similares</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="experience-content">
+      <div class="container experience-layout">
+        <div class="experience-main">
+          <article id="overview" class="experience-card">
+            <div class="experience-card__header">
+              <h2>About</h2>
+            </div>
+
+            <p id="productDescription" class="experience-description"></p>
+
+            <div class="experience-benefits">
+              <div class="benefit-item">
+                <i class="fas fa-circle-check"></i>
+                <div>
+                  <strong>Reserva flexible</strong>
+                  <p>Separa tu cupo y completa el pago según la modalidad del tour.</p>
+                </div>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-bolt"></i>
+                <div>
+                  <strong>Confirmación rápida</strong>
+                  <p>Proceso pensado para continuar con pago online y confirmación posterior.</p>
+                </div>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-shield-heart"></i>
+                <div>
+                  <strong>Atención personalizada</strong>
+                  <p>Operación local y acompañamiento en cada paso de tu reserva.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article id="details" class="experience-card">
+            <div class="experience-card__header">
+              <h2>Detalles de la experiencia</h2>
+            </div>
+
+            <ul class="experience-icon-list">
+              <li><i class="fas fa-users"></i> <span id="detailCapacity"></span></li>
+              <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
+              <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
+              <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
+              <li><i class="fas fa-ticket"></i> <span>Reserva online con cálculo automático</span></li>
+            </ul>
+          </article>
+
+          <article class="experience-card">
+            <div class="experience-card__header">
+              <h2>Highlights</h2>
+            </div>
+
+            <ul id="productHighlights" class="experience-highlights"></ul>
+          </article>
+
+          <article class="experience-card experience-accordion-group">
+            <details class="experience-accordion" open>
+              <summary>Qué incluye</summary>
+              <ul id="productIncludes" class="experience-list"></ul>
+            </details>
+
+            <details class="experience-accordion">
+              <summary>Qué no incluye</summary>
+              <ul id="productExcludes" class="experience-list"></ul>
+            </details>
+
+            <details class="experience-accordion">
+              <summary>Meeting and pickup</summary>
+              <div class="experience-note-box">
+                <p>El recojo y la coordinación final se confirmarán según la experiencia reservada, la fecha seleccionada y la operación vigente.</p>
+              </div>
+            </details>
+
+            <details class="experience-accordion">
+              <summary>Información importante</summary>
+              <div class="experience-note-box">
+                <p>Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
+              </div>
+            </details>
+          </article>
+
+          <article id="itinerary" class="experience-card">
+            <div class="experience-card__header">
+              <h2>Itinerary</h2>
+            </div>
+
+            <div id="productItinerary" class="experience-itinerary"></div>
+          </article>
+
+          <article id="faq" class="experience-card">
+            <div class="experience-card__header">
+              <h2>Preguntas frecuentes</h2>
+            </div>
+
+            <div id="productFaq" class="experience-faq"></div>
+          </article>
+
+          <article id="similar" class="experience-card">
+            <div class="experience-card__header">
+              <h2>Experiencias similares</h2>
+            </div>
+
+            <div id="similarExperiences" class="similar-experiences-grid"></div>
+          </article>
+        </div>
+
+        <aside class="experience-sidebar">
+          <div class="booking-panel">
+            <div class="booking-panel__price">
+              <span>Desde</span>
+              <strong id="productBasePrice">USD 0</strong>
+              <small>por adulto</small>
+            </div>
+
+            <form id="productBookingForm" class="booking-panel__form">
               <div class="booking-field">
                 <label for="travelDate">Fecha de viaje</label>
                 <input type="text" id="travelDate" placeholder="Selecciona fecha" readonly />
               </div>
 
               <div class="booking-field">
-                <label>Pasajeros</label>
-                <div class="traveler-group">
-                  <div class="traveler-row">
+                <label>Viajeros</label>
+                <div class="booking-travelers">
+                  <div class="booking-traveler-row">
                     <div>
                       <strong>Adultos</strong>
                       <small>12+ años</small>
                     </div>
-                    <div class="traveler-control">
+                    <div class="traveler-stepper">
                       <button type="button" class="qty-btn" data-action="minus" data-target="adults">−</button>
                       <span id="adultsCount">2</span>
                       <button type="button" class="qty-btn" data-action="plus" data-target="adults">+</button>
                     </div>
                   </div>
 
-                  <div class="traveler-row">
+                  <div class="booking-traveler-row">
                     <div>
                       <strong>Niños</strong>
                       <small>3 a 11 años</small>
                     </div>
-                    <div class="traveler-control">
+                    <div class="traveler-stepper">
                       <button type="button" class="qty-btn" data-action="minus" data-target="children">−</button>
                       <span id="childrenCount">0</span>
                       <button type="button" class="qty-btn" data-action="plus" data-target="children">+</button>
@@ -83,107 +221,55 @@
               </div>
 
               <div id="extrasSection" class="booking-field" hidden>
-                <label>Extras disponibles</label>
-                <div id="extrasContainer" class="extras-list"></div>
+                <label>Extras</label>
+                <div id="extrasContainer" class="booking-extras"></div>
               </div>
 
               <div class="booking-field">
-                <label for="paymentMode">Modalidad de pago</label>
+                <label for="paymentMode">Forma de pago</label>
                 <select id="paymentMode">
                   <option value="full">Pago completo</option>
                   <option value="partial">Separar cupo</option>
                 </select>
               </div>
 
-              <div class="price-summary">
-                <div class="price-line">
+              <div class="booking-summary">
+                <div class="booking-summary__line">
                   <span>Adultos</span>
                   <strong id="adultsTotal">USD 0</strong>
                 </div>
-                <div class="price-line">
+                <div class="booking-summary__line">
                   <span>Niños</span>
                   <strong id="childrenTotal">USD 0</strong>
                 </div>
-                <div class="price-line">
+                <div class="booking-summary__line">
                   <span>Extras</span>
                   <strong id="extrasTotal">USD 0</strong>
                 </div>
-                <div class="price-line" id="discountRow" hidden>
-                  <span>Descuento pago completo</span>
+                <div class="booking-summary__line" id="discountRow" hidden>
+                  <span>Descuento</span>
                   <strong id="discountTotal">- USD 0</strong>
                 </div>
-                <div class="price-line">
-                  <span>Total del servicio</span>
+                <div class="booking-summary__line">
+                  <span>Total servicio</span>
                   <strong id="serviceTotal">USD 0</strong>
                 </div>
-                <div class="price-total">
+                <div class="booking-summary__total">
                   <span id="payNowLabel">Pagar ahora</span>
                   <strong id="payNowTotal">USD 0</strong>
                 </div>
               </div>
 
-              <div id="paymentInfo" class="payment-info"></div>
+              <div id="paymentInfo" class="booking-payment-info"></div>
 
-              <div class="booking-actions">
-                <button type="button" id="paypalButton" class="btn product-booking-btn">
-                  Pagar con PayPal
-                </button>
-                <button type="button" id="bookingPreviewButton" class="btn product-secondary-btn">
-                  Ver resumen de reserva
-                </button>
-              </div>
+              <button type="button" id="paypalButton" class="btn booking-main-btn">
+                Continuar con pago
+              </button>
+
+              <button type="button" id="bookingPreviewButton" class="btn booking-secondary-btn">
+                Ver resumen
+              </button>
             </form>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section class="product-gallery-section">
-      <div class="container">
-        <div id="productGallery" class="product-gallery"></div>
-      </div>
-    </section>
-
-    <section class="product-content-section">
-      <div class="container product-content-layout">
-        <div class="product-main-content">
-          <article class="product-block">
-            <h2>Descripción</h2>
-            <p id="productDescription"></p>
-          </article>
-
-          <article class="product-block">
-            <h2>Itinerario</h2>
-            <div id="productItinerary" class="product-itinerary"></div>
-          </article>
-
-          <article class="product-block product-columns">
-            <div>
-              <h2>Incluye</h2>
-              <ul id="productIncludes" class="product-list"></ul>
-            </div>
-            <div>
-              <h2>No incluye</h2>
-              <ul id="productExcludes" class="product-list"></ul>
-            </div>
-          </article>
-
-          <article class="product-block">
-            <h2>Preguntas frecuentes</h2>
-            <div id="productFaq" class="product-faq"></div>
-          </article>
-        </div>
-
-        <aside class="product-side-info">
-          <div class="product-side-card">
-            <h3>Detalles rápidos</h3>
-            <ul class="product-side-list">
-              <li><strong>Categoría:</strong> <span id="sideCategory"></span></li>
-              <li><strong>Ubicación:</strong> <span id="sideLocation"></span></li>
-              <li><strong>Duración:</strong> <span id="sideDuration"></span></li>
-              <li><strong>Grupo máximo:</strong> <span id="sideCapacity"></span></li>
-              <li><strong>Idiomas:</strong> <span id="sideLanguages"></span></li>
-            </ul>
           </div>
         </aside>
       </div>
@@ -204,7 +290,6 @@
         const componentPath = `${BASE_PATH}components/${componentName}.html`;
         const response = await fetch(componentPath);
         if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-
         const html = await response.text();
         const target = document.getElementById(targetId);
 
@@ -213,7 +298,6 @@
           fixImagePaths(target);
           return true;
         }
-
         return false;
       } catch (error) {
         console.error(`Error cargando ${componentName}:`, error);
