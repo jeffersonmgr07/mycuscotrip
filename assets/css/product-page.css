@@ -1,345 +1,740 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Experiencia | My Cusco Trip</title>
-  <meta name="description" content="Descubre los detalles de tu experiencia en My Cusco Trip." />
+.product-page {
+  background: #f7faf8;
+}
 
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+.experience-top {
+  padding: 118px 0 14px;
+  background: #f7faf8;
+}
 
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  <link rel="stylesheet" href="./assets/css/header.css">
-  <link rel="stylesheet" href="./assets/css/footer.css">
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-  <link rel="stylesheet" href="./assets/css/product-page.css">
-</head>
-<body>
-  <div id="header-container"></div>
+.experience-top__header {
+  margin-bottom: 12px;
+}
 
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
+.experience-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 13px;
+  border: 1px solid rgba(6, 40, 3, 0.18);
+  border-radius: 999px;
+  background: #fff;
+  color: #062803;
+  font-weight: 800;
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+}
 
-  <main class="product-page">
-    <section class="experience-top">
-      <div class="container">
-        <div class="experience-top__header">
-          <div class="experience-top__main">
-            <span id="productBadge" class="experience-badge">Top ventas</span>
-            <h1 id="productTitle">Cargando experiencia...</h1>
+.experience-top h1 {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  line-height: 1.08;
+  margin-bottom: 12px;
+  color: #062803;
+}
 
-            <div class="experience-meta-row">
-              <div class="experience-rating">
-                <span class="experience-rating__score">4.9</span>
-                <span class="experience-rating__stars">★★★★★</span>
-                <span class="experience-rating__reviews">(24 reseñas)</span>
-              </div>
+.experience-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
-              <div class="experience-actions">
-                <button type="button" class="experience-action-btn">
-                  <i class="fas fa-share-nodes"></i>
-                  <span>Compartir</span>
-                </button>
-                <button type="button" class="experience-action-btn">
-                  <i class="far fa-heart"></i>
-                  <span>Guardar</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+.experience-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #062803;
+  font-weight: 700;
+}
 
-        <div id="productGallery" class="experience-gallery"></div>
-      </div>
-    </section>
+.experience-rating__score {
+  font-size: 1rem;
+}
 
-    <section class="experience-tabs-wrap">
-      <div class="container">
-        <nav class="experience-tabs" aria-label="Secciones de la experiencia">
-          <a href="#overview">Resumen</a>
-          <a href="#details">Detalles</a>
-          <a href="#itinerary">Itinerario</a>
-          <a href="#faq">FAQ</a>
-          <a href="#similar-mobile">Similares</a>
-        </nav>
-      </div>
-    </section>
+.experience-rating__stars {
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+}
 
-    <section class="experience-content">
-      <div class="container experience-layout">
-        <div class="experience-main">
-          <article id="overview" class="experience-card">
-            <div class="experience-card__header">
-              <h2>Resumen</h2>
-            </div>
+.experience-rating__reviews {
+  color: #56645f;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
 
-            <p id="productDescription" class="experience-description"></p>
+.experience-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-            <div class="experience-benefits">
-              <div class="benefit-item">
-                <i class="fas fa-circle-check"></i>
-                <div>
-                  <strong>Reserva flexible</strong>
-                  <p>Separa tu cupo y completa el pago según la modalidad del tour.</p>
-                </div>
-              </div>
-              <div class="benefit-item">
-                <i class="fas fa-bolt"></i>
-                <div>
-                  <strong>Confirmación rápida</strong>
-                  <p>Proceso pensado para continuar con pago online y confirmación posterior.</p>
-                </div>
-              </div>
-              <div class="benefit-item">
-                <i class="fas fa-shield-heart"></i>
-                <div>
-                  <strong>Atención personalizada</strong>
-                  <p>Operación local y acompañamiento en cada paso de tu reserva.</p>
-                </div>
-              </div>
-            </div>
-          </article>
+.experience-action-btn {
+  border: 1px solid rgba(6, 40, 3, 0.16);
+  background: #fff;
+  color: #062803;
+  border-radius: 999px;
+  padding: 9px 14px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-          <article id="details" class="experience-card">
-            <div class="experience-card__header">
-              <h2>Detalles de la experiencia</h2>
-            </div>
+.experience-gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+}
 
-            <ul class="experience-icon-list">
-              <li><i class="fas fa-users"></i> <span id="detailCapacity"></span></li>
-              <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
-              <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
-              <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
-              <li><i class="fas fa-ticket"></i> <span>Reserva online con cálculo automático</span></li>
-            </ul>
-          </article>
+.experience-gallery__main,
+.experience-gallery__side {
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(0,0,0,.07);
+}
 
-          <article class="experience-card">
-            <div class="experience-card__header">
-              <h2>Aspectos destacados</h2>
-            </div>
+.experience-gallery__main img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  display: block;
+}
 
-            <ul id="productHighlights" class="experience-highlights"></ul>
-          </article>
+.experience-gallery__side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  background: transparent;
+  box-shadow: none;
+}
 
-          <article class="experience-card experience-accordion-group">
-            <details class="experience-accordion" open>
-              <summary>Qué incluye</summary>
-              <ul id="productIncludes" class="experience-list"></ul>
-            </details>
+.experience-gallery__side-item {
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0,0,0,.07);
+  background: #fff;
+}
 
-            <details class="experience-accordion">
-              <summary>Qué no incluye</summary>
-              <ul id="productExcludes" class="experience-list"></ul>
-            </details>
+.experience-gallery__side-item img {
+  width: 100%;
+  height: 204px;
+  object-fit: cover;
+  display: block;
+}
 
-            <details class="experience-accordion">
-              <summary>Recojo y punto de encuentro</summary>
-              <div class="experience-note-box">
-                <p>El recojo y la coordinación final se confirmarán según la experiencia reservada, la fecha seleccionada y la operación vigente.</p>
-              </div>
-            </details>
+/* FRANJA DE PESTAÑAS MUY COMPACTA */
+.experience-tabs-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(247, 250, 248, 0.98);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(0,0,0,.03);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
 
-            <details class="experience-accordion">
-              <summary>Información importante</summary>
-              <div class="experience-note-box">
-                <p>Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
-              </div>
-            </details>
-          </article>
+.experience-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 6px 0;
+  scrollbar-width: none;
+}
 
-          <article id="itinerary" class="experience-card">
-            <div class="experience-card__header">
-              <h2>Itinerario</h2>
-            </div>
+.experience-tabs::-webkit-scrollbar {
+  display: none;
+}
 
-            <div id="productItinerary" class="experience-itinerary"></div>
-          </article>
+.experience-tabs a {
+  color: #3f5a52;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(6, 40, 3, 0.10);
+  background: #fff;
+  line-height: 1;
+  font-size: 0.92rem;
+}
 
-          <article id="faq" class="experience-card">
-            <div class="experience-card__header">
-              <h2>Preguntas frecuentes</h2>
-            </div>
+.experience-tabs a:hover {
+  color: #062803;
+  border-color: rgba(6, 40, 3, 0.2);
+  background: #f2f7f4;
+}
 
-            <div id="productFaq" class="experience-faq"></div>
-          </article>
+.experience-content {
+  padding: 14px 0 56px;
+}
 
-          <!-- SOLO DESKTOP -->
-          <article id="similar-desktop" class="experience-card similar-desktop-block">
-            <div class="experience-card__header">
-              <h2>Experiencias similares</h2>
-            </div>
+.experience-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 22px;
+  align-items: start;
+}
 
-            <div id="similarExperiencesDesktop" class="similar-experiences-grid"></div>
-          </article>
-        </div>
+.experience-main {
+  display: grid;
+  gap: 18px;
+}
 
-        <aside class="experience-sidebar">
-          <div class="booking-panel">
-            <div class="booking-panel__price">
-              <span>Desde</span>
-              <strong id="productBasePrice">USD 0</strong>
-              <small>por adulto</small>
-            </div>
+.experience-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid rgba(0,0,0,.05);
+  box-shadow: 0 12px 28px rgba(0,0,0,.05);
+}
 
-            <form id="productBookingForm" class="booking-panel__form">
-              <div class="booking-field">
-                <label for="travelDate">Fecha de viaje</label>
-                <input type="text" id="travelDate" placeholder="Selecciona fecha" readonly />
-              </div>
+.experience-card__header {
+  margin-bottom: 12px;
+}
 
-              <div class="booking-field">
-                <label>Viajeros</label>
-                <div class="booking-travelers">
-                  <div class="booking-traveler-row">
-                    <div>
-                      <strong>Adultos</strong>
-                      <small>12+ años</small>
-                    </div>
-                    <div class="traveler-stepper">
-                      <button type="button" class="qty-btn" data-action="minus" data-target="adults">−</button>
-                      <span id="adultsCount">2</span>
-                      <button type="button" class="qty-btn" data-action="plus" data-target="adults">+</button>
-                    </div>
-                  </div>
+.experience-card__header h2 {
+  font-size: 1.35rem;
+  color: #062803;
+}
 
-                  <div class="booking-traveler-row">
-                    <div>
-                      <strong>Niños</strong>
-                      <small>3 a 11 años</small>
-                    </div>
-                    <div class="traveler-stepper">
-                      <button type="button" class="qty-btn" data-action="minus" data-target="children">−</button>
-                      <span id="childrenCount">0</span>
-                      <button type="button" class="qty-btn" data-action="plus" data-target="children">+</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+.experience-description {
+  color: #56645f;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
 
-              <div id="extrasSection" class="booking-field" hidden>
-                <label>Extras</label>
-                <div id="extrasContainer" class="booking-extras"></div>
-              </div>
+.experience-benefits {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
 
-              <div class="booking-field">
-                <label for="paymentMode">Forma de pago</label>
-                <select id="paymentMode">
-                  <option value="full">Pago completo</option>
-                  <option value="partial">Separar cupo</option>
-                </select>
-              </div>
+.benefit-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+}
 
-              <div class="booking-summary">
-                <div class="booking-summary__line">
-                  <span>Adultos</span>
-                  <strong id="adultsTotal">USD 0</strong>
-                </div>
-                <div class="booking-summary__line">
-                  <span>Niños</span>
-                  <strong id="childrenTotal">USD 0</strong>
-                </div>
-                <div class="booking-summary__line">
-                  <span>Extras</span>
-                  <strong id="extrasTotal">USD 0</strong>
-                </div>
-                <div class="booking-summary__line" id="discountRow" hidden>
-                  <span>Descuento</span>
-                  <strong id="discountTotal">- USD 0</strong>
-                </div>
-                <div class="booking-summary__line">
-                  <span>Total servicio</span>
-                  <strong id="serviceTotal">USD 0</strong>
-                </div>
-                <div class="booking-summary__total">
-                  <span id="payNowLabel">Pagar ahora</span>
-                  <strong id="payNowTotal">USD 0</strong>
-                </div>
-              </div>
+.benefit-item i {
+  color: #0f8a46;
+  margin-top: 2px;
+}
 
-              <div id="paymentInfo" class="booking-payment-info"></div>
+.benefit-item strong {
+  display: block;
+  color: #062803;
+  margin-bottom: 2px;
+  font-size: 0.98rem;
+}
 
-              <button type="button" id="paypalButton" class="btn booking-main-btn">
-                Continuar con pago
-              </button>
+.benefit-item p {
+  color: #56645f;
+  font-size: 0.94rem;
+}
 
-              <button type="button" id="bookingPreviewButton" class="btn booking-secondary-btn">
-                Ver resumen
-              </button>
-            </form>
-          </div>
+.experience-icon-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
 
-          <!-- SOLO MÓVIL / TABLET -->
-          <article id="similar-mobile" class="experience-card similar-mobile-block">
-            <div class="experience-card__header">
-              <h2>Experiencias similares</h2>
-            </div>
+.experience-icon-list li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #17322a;
+  font-size: 0.97rem;
+}
 
-            <div id="similarExperiencesMobile" class="similar-experiences-grid"></div>
-          </article>
-        </aside>
-      </div>
-    </section>
-  </main>
+.experience-icon-list i {
+  width: 16px;
+  color: #062803;
+}
 
-  <div id="footer-container"></div>
+.experience-highlights {
+  margin: 0;
+  padding-left: 18px;
+  color: #17322a;
+  display: grid;
+  gap: 10px;
+}
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+.experience-highlights li {
+  font-size: 0.97rem;
+}
 
-  <script>
-    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
-    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+/* VIÑETAS ALINEADAS MÁS ARRIBA CON EL TÍTULO */
+.experience-accordion-group {
+  padding: 0;
+  overflow: hidden;
+}
 
-    async function loadComponent(componentName, targetId) {
-      try {
-        const componentPath = `${BASE_PATH}components/${componentName}.html`;
-        const response = await fetch(componentPath);
-        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-        const html = await response.text();
-        const target = document.getElementById(targetId);
+.experience-accordion {
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
 
-        if (target) {
-          target.innerHTML = html;
-          fixImagePaths(target);
-          return true;
-        }
-        return false;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-        return false;
-      }
-    }
+.experience-accordion:last-child {
+  border-bottom: 0;
+}
 
-    function fixImagePaths(container) {
-      const images = container.querySelectorAll('img[src*="assets/"]');
-      images.forEach(img => {
-        const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
-        }
-      });
-    }
+.experience-accordion summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.06rem;
+  color: #062803;
+  position: relative;
+}
 
-    async function initializeApp() {
-      await Promise.all([
-        loadComponent('header', 'header-container'),
-        loadComponent('footer', 'footer-container')
-      ]);
-    }
+.experience-accordion summary::-webkit-details-marker {
+  display: none;
+}
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeApp);
-    } else {
-      initializeApp();
-    }
-  </script>
+.experience-accordion summary::after {
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.92rem;
+}
 
-  <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js"></script>
-</body>
-</html>
+.experience-accordion[open] summary::after {
+  content: "\f077";
+}
+
+.experience-accordion .experience-list,
+.experience-accordion .experience-note-box {
+  padding: 0 22px 18px 22px;
+}
+
+.experience-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #56645f;
+  display: grid;
+  gap: 8px;
+}
+
+.experience-list li {
+  padding-left: 0;
+  margin-left: 0;
+  font-size: 0.96rem;
+}
+
+.experience-note-box p {
+  color: #56645f;
+  font-size: 0.95rem;
+}
+
+.experience-itinerary {
+  display: grid;
+  gap: 12px;
+}
+
+.experience-itinerary-item {
+  border-left: 4px solid #062803;
+  padding: 14px 16px;
+  background: #f9fcfb;
+  border-radius: 0 16px 16px 0;
+}
+
+.experience-itinerary-item h3 {
+  margin-bottom: 6px;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.experience-itinerary-item p {
+  color: #56645f;
+  font-size: 0.93rem;
+}
+
+.experience-faq {
+  display: grid;
+  gap: 10px;
+}
+
+.experience-faq-item {
+  border: 1px solid rgba(0,0,0,.07);
+  border-radius: 16px;
+  padding: 16px;
+  background: #f9fcfb;
+}
+
+.experience-faq-item h3 {
+  margin-bottom: 6px;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.experience-faq-item p {
+  color: #56645f;
+  font-size: 0.93rem;
+}
+
+.similar-experiences-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.similar-card {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(0,0,0,.04);
+}
+
+.similar-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.similar-card__content {
+  padding: 14px;
+}
+
+.similar-card__content h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.similar-card__content p {
+  color: #56645f;
+  margin-bottom: 10px;
+  font-size: 0.92rem;
+}
+
+.experience-sidebar {
+  position: relative;
+}
+
+.booking-panel {
+  position: sticky;
+  top: 92px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 14px 30px rgba(0,0,0,.07);
+}
+
+.booking-panel__price {
+  margin-bottom: 16px;
+}
+
+.booking-panel__price span {
+  display: block;
+  color: #56645f;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.booking-panel__price strong {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: #062803;
+  line-height: 1.05;
+}
+
+.booking-panel__price small {
+  color: #56645f;
+}
+
+.booking-panel__form {
+  display: grid;
+  gap: 14px;
+}
+
+.booking-field label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #062803;
+}
+
+.booking-field input,
+.booking-field select {
+  width: 100%;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 13px 15px;
+  font: inherit;
+  background: #fff;
+}
+
+.booking-travelers {
+  display: grid;
+  gap: 10px;
+}
+
+.booking-traveler-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  background: #f9fcfb;
+}
+
+.booking-traveler-row small {
+  display: block;
+  color: #6b7772;
+  font-size: 0.82rem;
+}
+
+.traveler-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* EXTRA SIEMPRE EN LA MISMA LÍNEA */
+.booking-extras {
+  display: grid;
+  gap: 8px;
+}
+
+.booking-extra-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  background: #f9fcfb;
+}
+
+.booking-extra-item > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.booking-extra-item strong,
+.booking-extra-item small {
+  display: inline;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.booking-extra-item small {
+  color: #56645f;
+  font-size: 0.88rem;
+}
+
+.booking-extra-item input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.booking-summary {
+  display: grid;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.booking-summary__line,
+.booking-summary__total {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.booking-summary__line {
+  color: #56645f;
+  font-size: 0.94rem;
+}
+
+.booking-summary__total {
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  font-weight: 800;
+  color: #062803;
+  font-size: 1rem;
+}
+
+.booking-payment-info {
+  background: #f8fbf9;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 14px;
+  padding: 13px;
+  color: #56645f;
+  font-size: .92rem;
+}
+
+.booking-main-btn,
+.booking-secondary-btn {
+  width: 100%;
+}
+
+.booking-secondary-btn {
+  background: #fff;
+  color: #062803;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+/* BLOQUES SIMILARES */
+.similar-mobile-block {
+  display: none;
+}
+
+.similar-desktop-block {
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .experience-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-panel {
+    position: static;
+  }
+
+  .similar-experiences-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .similar-mobile-block {
+    display: block;
+    margin-top: 18px;
+  }
+
+  .similar-desktop-block {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .experience-top {
+    padding-top: 98px;
+    padding-bottom: 10px;
+  }
+
+  .experience-top h1 {
+    font-size: 2rem;
+  }
+
+  .experience-gallery {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .experience-gallery__main img {
+    min-height: 250px;
+  }
+
+  .experience-gallery__side {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+    gap: 10px;
+  }
+
+  .experience-gallery__side-item img {
+    height: 120px;
+  }
+
+  .experience-tabs {
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .experience-tabs a {
+    padding: 7px 10px;
+    font-size: 0.86rem;
+  }
+
+  .experience-content {
+    padding-top: 12px;
+  }
+
+  .experience-card,
+  .booking-panel {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .experience-card__header {
+    margin-bottom: 10px;
+  }
+
+  .experience-card__header h2 {
+    font-size: 1.2rem;
+  }
+
+  .similar-experiences-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-action-btn span {
+    display: none;
+  }
+
+  .experience-meta-row {
+    align-items: flex-start;
+  }
+
+  .experience-icon-list li,
+  .experience-description,
+  .experience-highlights li,
+  .experience-list li {
+    font-size: 0.93rem;
+  }
+
+  .experience-itinerary-item h3,
+  .experience-faq-item h3 {
+    font-size: 0.88rem;
+  }
+
+  .experience-itinerary-item p,
+  .experience-faq-item p {
+    font-size: 0.9rem;
+  }
+
+  .booking-extra-item {
+    padding: 10px 12px;
+  }
+
+  .booking-extra-item > div {
+    gap: 5px;
+  }
+
+  .booking-extra-item strong,
+  .booking-extra-item small {
+    font-size: 0.85rem;
+  }
+}
