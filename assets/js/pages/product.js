@@ -282,29 +282,29 @@ class MyCuscoTripProductPage {
   }
 
   renderSimilarExperiences() {
-    const target = document.getElementById("similarExperiences");
-    if (!target) return;
+    const desktopTarget = document.getElementById("similarExperiencesDesktop");
+    const mobileTarget = document.getElementById("similarExperiencesMobile");
 
     const similar = this.tours
       .filter((item) => item.slug !== this.product.slug)
       .filter((item) => item.category === this.product.category || item.featured)
       .slice(0, 3);
 
-    if (!similar.length) {
-      target.innerHTML = "<p>No hay experiencias similares disponibles por ahora.</p>";
-      return;
-    }
+    const html = !similar.length
+      ? "<p>No hay experiencias similares disponibles por ahora.</p>"
+      : similar.map((item) => `
+        <article class="similar-card">
+          <img src="${item.images?.cover || "./assets/img/tours/machu-picchu-full-day/cover.jpg"}" alt="${this.escapeHtml(item.title)}" loading="lazy" />
+          <div class="similar-card__content">
+            <h3>${this.escapeHtml(item.title)}</h3>
+            <p>${this.escapeHtml(item.shortDescription || "Experiencia disponible.")}</p>
+            <a class="btn" href="./product.html?slug=${encodeURIComponent(item.slug)}">Ver experiencia</a>
+          </div>
+        </article>
+      `).join("");
 
-    target.innerHTML = similar.map((item) => `
-      <article class="similar-card">
-        <img src="${item.images?.cover || "./assets/img/tours/machu-picchu-full-day/cover.jpg"}" alt="${this.escapeHtml(item.title)}" loading="lazy" />
-        <div class="similar-card__content">
-          <h3>${this.escapeHtml(item.title)}</h3>
-          <p>${this.escapeHtml(item.shortDescription || "Experiencia disponible.")}</p>
-          <a class="btn" href="./product.html?slug=${encodeURIComponent(item.slug)}">Ver experiencia</a>
-        </div>
-      </article>
-    `).join("");
+    if (desktopTarget) desktopTarget.innerHTML = html;
+    if (mobileTarget) mobileTarget.innerHTML = html;
   }
 
   updatePassengersUI() {
