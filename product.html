@@ -64,7 +64,7 @@
           <a href="#details">Detalles</a>
           <a href="#itinerary">Itinerario</a>
           <a href="#faq">FAQ</a>
-          <a href="#similar">Similares</a>
+          <a href="#similar-mobile">Similares</a>
         </nav>
       </div>
     </section>
@@ -168,12 +168,13 @@
             <div id="productFaq" class="experience-faq"></div>
           </article>
 
-          <article id="similar" class="experience-card">
+          <!-- SOLO DESKTOP -->
+          <article id="similar-desktop" class="experience-card similar-desktop-block">
             <div class="experience-card__header">
               <h2>Experiencias similares</h2>
             </div>
 
-            <div id="similarExperiences" class="similar-experiences-grid"></div>
+            <div id="similarExperiencesDesktop" class="similar-experiences-grid"></div>
           </article>
         </div>
 
@@ -271,6 +272,15 @@
               </button>
             </form>
           </div>
+
+          <!-- SOLO MÓVIL / TABLET -->
+          <article id="similar-mobile" class="experience-card similar-mobile-block">
+            <div class="experience-card__header">
+              <h2>Experiencias similares</h2>
+            </div>
+
+            <div id="similarExperiencesMobile" class="similar-experiences-grid"></div>
+          </article>
         </aside>
       </div>
     </section>
