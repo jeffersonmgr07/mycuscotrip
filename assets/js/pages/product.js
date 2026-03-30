@@ -4,6 +4,8 @@ class MyCuscoTripProductPage {
     this.slug = this.params.get("slug");
 
     this.product = null;
+    this.tours = [];
+
     this.adults = 2;
     this.children = 0;
     this.selectedExtras = new Set();
@@ -20,8 +22,8 @@ class MyCuscoTripProductPage {
     }
 
     try {
-      const tours = await this.loadTours();
-      const product = tours.find((item) => item.slug === this.slug);
+      this.tours = await this.loadTours();
+      const product = this.tours.find((item) => item.slug === this.slug);
 
       if (!product) {
         this.renderNotFound("No encontramos esta experiencia.");
@@ -43,55 +45,50 @@ class MyCuscoTripProductPage {
 
     const response = await fetch("./assets/data/tours.json", { cache: "no-store" });
     if (!response.ok) throw new Error("No se pudo cargar tours.json");
-    return await response.json();
+
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error("tours.json no contiene un array válido");
+
+    return data.filter((item) => item.status !== "draft");
   }
 
   renderProduct(product) {
     const title = product.title || "Experiencia";
-    const shortDescription =
-      product.shortDescription ||
-      "Experiencia disponible para reserva inmediata.";
     const description =
       product.description ||
-      shortDescription;
+      product.shortDescription ||
+      "Pronto agregaremos más detalles de esta experiencia.";
 
     const badge = product.badge || "Destacado";
-    const typeLabel = product.typeLabel || "Experiencia";
+    const basePrice = product.basePricing?.adult || 0;
+    const currency = product.currency || "USD";
     const location = product.location || "Cusco, Perú";
     const duration = product.duration?.label || "Duración por confirmar";
     const languages = product.duration?.guideLanguages?.length
       ? product.duration.guideLanguages.join(", ")
       : "Por confirmar";
     const capacity = product.capacity || product.duration?.maxGroupSize || "Por confirmar";
-    const category = product.category || "general";
-    const basePrice = product.basePricing?.adult || 0;
-    const currency = product.currency || "USD";
 
     document.title = `${title} | My Cusco Trip`;
 
     this.setText("productBadge", badge);
-    this.setText("productType", typeLabel);
     this.setText("productTitle", title);
-    this.setText("productShortDescription", shortDescription);
-    this.setText("productLocation", location);
-    this.setText("productDuration", duration);
-    this.setText("productLanguages", languages);
-    this.setText("productCapacity", `${capacity} viajeros máx.`);
-    this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
     this.setText("productDescription", description);
+    this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
 
-    this.setText("sideCategory", category);
-    this.setText("sideLocation", location);
-    this.setText("sideDuration", duration);
-    this.setText("sideCapacity", String(capacity));
-    this.setText("sideLanguages", languages);
+    this.setText("detailCapacity", `Máximo ${capacity} viajeros por grupo`);
+    this.setText("detailDuration", duration);
+    this.setText("detailLanguages", `Guía en ${languages}`);
+    this.setText("detailLocation", location);
 
     this.renderGallery(product.images);
-    this.renderList("productIncludes", product.includes || []);
-    this.renderList("productExcludes", product.excludes || []);
+    this.renderIncludes(product.includes || []);
+    this.renderExcludes(product.excludes || []);
+    this.renderHighlights(product);
     this.renderItinerary(product.itinerary || []);
     this.renderFaq(product.faq || []);
     this.renderExtras(product.extras || []);
+    this.renderSimilarExperiences();
   }
 
   initBookingLogic() {
@@ -147,6 +144,105 @@ class MyCuscoTripProductPage {
     this.updatePricing();
   }
 
+  renderGallery(images = {}) {
+    const gallery = document.getElementById("productGallery");
+    if (!gallery) return;
+
+    const cover = images.cover ? [images.cover] : [];
+    const galleryImages = Array.isArray(images.gallery) ? images.gallery : [];
+    const finalImages = [...new Set([...cover, ...galleryImages])];
+
+    if (!finalImages.length) {
+      gallery.innerHTML = `<div class="experience-gallery__main"><img src="./assets/img/tours/machu-picchu-full-day/cover.jpg" alt="Imagen referencial"></div>`;
+      return;
+    }
+
+    const mainImage = finalImages[0];
+    const sideImages = finalImages.slice(1, 3);
+
+    gallery.innerHTML = `
+      <div class="experience-gallery__main">
+        <img src="${mainImage}" alt="${this.escapeHtml(this.product?.title || "Experiencia")}" loading="eager" />
+      </div>
+      <div class="experience-gallery__side">
+        ${sideImages.map((src, index) => `
+          <div class="experience-gallery__side-item">
+            <img src="${src}" alt="Galería ${index + 2}" loading="lazy" />
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  renderIncludes(items) {
+    const target = document.getElementById("productIncludes");
+    if (!target) return;
+    target.innerHTML = items.length
+      ? items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")
+      : "<li>Información por confirmar.</li>";
+  }
+
+  renderExcludes(items) {
+    const target = document.getElementById("productExcludes");
+    if (!target) return;
+    target.innerHTML = items.length
+      ? items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")
+      : "<li>Información por confirmar.</li>";
+  }
+
+  renderHighlights(product) {
+    const target = document.getElementById("productHighlights");
+    if (!target) return;
+
+    const highlights = [
+      product.shortDescription,
+      `Ubicación: ${product.location || "Cusco, Perú"}`,
+      `Duración: ${product.duration?.label || "Por confirmar"}`,
+      product.typeLabel ? `Tipo: ${product.typeLabel}` : null,
+      product.duration?.guideLanguages?.length
+        ? `Idiomas: ${product.duration.guideLanguages.join(", ")}`
+        : null
+    ].filter(Boolean);
+
+    target.innerHTML = highlights
+      .map((item) => `<li>${this.escapeHtml(item)}</li>`)
+      .join("");
+  }
+
+  renderItinerary(items) {
+    const target = document.getElementById("productItinerary");
+    if (!target) return;
+
+    if (!items.length) {
+      target.innerHTML = "<p>Itinerario por confirmar.</p>";
+      return;
+    }
+
+    target.innerHTML = items.map((item) => `
+      <div class="experience-itinerary-item">
+        <h3>${this.escapeHtml(item.title || "Paso del itinerario")}</h3>
+        <p>${this.escapeHtml(item.description || "")}</p>
+      </div>
+    `).join("");
+  }
+
+  renderFaq(items) {
+    const target = document.getElementById("productFaq");
+    if (!target) return;
+
+    if (!items.length) {
+      target.innerHTML = "<p>Pronto agregaremos preguntas frecuentes.</p>";
+      return;
+    }
+
+    target.innerHTML = items.map((item) => `
+      <div class="experience-faq-item">
+        <h3>${this.escapeHtml(item.q || "Pregunta")}</h3>
+        <p>${this.escapeHtml(item.a || "")}</p>
+      </div>
+    `).join("");
+  }
+
   renderExtras(extras) {
     const section = document.getElementById("extrasSection");
     const container = document.getElementById("extrasContainer");
@@ -159,20 +255,18 @@ class MyCuscoTripProductPage {
     }
 
     section.hidden = false;
-    container.innerHTML = extras
-      .map((extra) => {
-        const extraPrice = `${this.product.currency || "USD"} ${this.formatMoney(extra.price || 0)}`;
-        return `
-          <div class="extra-item">
-            <div>
-              <label for="extra-${extra.code}">${this.escapeHtml(extra.label)}</label>
-              <small>${extra.perPerson ? "Precio por persona" : "Precio por reserva"} · ${extraPrice}</small>
-            </div>
-            <input type="checkbox" id="extra-${extra.code}" data-extra-code="${this.escapeHtml(extra.code)}" />
+    container.innerHTML = extras.map((extra) => {
+      const extraPrice = `${this.product.currency || "USD"} ${this.formatMoney(extra.price || 0)}`;
+      return `
+        <label class="booking-extra-item" for="extra-${extra.code}">
+          <div>
+            <strong>${this.escapeHtml(extra.label)}</strong>
+            <small>${extra.perPerson ? "· Precio por persona" : "· Precio por reserva"} · ${extraPrice}</small>
           </div>
-        `;
-      })
-      .join("");
+          <input type="checkbox" id="extra-${extra.code}" data-extra-code="${this.escapeHtml(extra.code)}" />
+        </label>
+      `;
+    }).join("");
 
     container.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
@@ -185,6 +279,32 @@ class MyCuscoTripProductPage {
         this.updatePricing();
       });
     });
+  }
+
+  renderSimilarExperiences() {
+    const target = document.getElementById("similarExperiences");
+    if (!target) return;
+
+    const similar = this.tours
+      .filter((item) => item.slug !== this.product.slug)
+      .filter((item) => item.category === this.product.category || item.featured)
+      .slice(0, 3);
+
+    if (!similar.length) {
+      target.innerHTML = "<p>No hay experiencias similares disponibles por ahora.</p>";
+      return;
+    }
+
+    target.innerHTML = similar.map((item) => `
+      <article class="similar-card">
+        <img src="${item.images?.cover || "./assets/img/tours/machu-picchu-full-day/cover.jpg"}" alt="${this.escapeHtml(item.title)}" loading="lazy" />
+        <div class="similar-card__content">
+          <h3>${this.escapeHtml(item.title)}</h3>
+          <p>${this.escapeHtml(item.shortDescription || "Experiencia disponible.")}</p>
+          <a class="btn" href="./product.html?slug=${encodeURIComponent(item.slug)}">Ver experiencia</a>
+        </div>
+      </article>
+    `).join("");
   }
 
   updatePassengersUI() {
@@ -221,7 +341,9 @@ class MyCuscoTripProductPage {
     } else {
       const totalPassengers = this.adults + this.children;
       payNow = totalPassengers * partialPerPerson;
-      infoText = `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona. El saldo restante lo pagarás al llegar a Cusco.`;
+      infoText =
+        this.product.paymentOptions?.partialPaymentLabel ||
+        `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona.`;
     }
 
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
@@ -238,9 +360,7 @@ class MyCuscoTripProductPage {
     }
 
     const paymentInfo = document.getElementById("paymentInfo");
-    if (paymentInfo) {
-      paymentInfo.textContent = infoText;
-    }
+    if (paymentInfo) paymentInfo.textContent = infoText;
   }
 
   calculateExtrasTotal() {
@@ -323,75 +443,14 @@ class MyCuscoTripProductPage {
     };
   }
 
-  renderGallery(images = {}) {
-    const gallery = document.getElementById("productGallery");
-    if (!gallery) return;
-
-    const cover = images.cover ? [images.cover] : [];
-    const galleryImages = Array.isArray(images.gallery) ? images.gallery : [];
-    const finalImages = [...new Set([...cover, ...galleryImages])];
-
-    gallery.innerHTML = finalImages.length
-      ? finalImages.map((src, index) =>
-          `<img src="${src}" alt="Imagen ${index + 1} de la experiencia" loading="lazy" />`
-        ).join("")
-      : `<p>No hay imágenes disponibles.</p>`;
-  }
-
-  renderList(targetId, items) {
-    const target = document.getElementById(targetId);
-    if (!target) return;
-
-    if (!items.length) {
-      target.innerHTML = "<li>Información por confirmar.</li>";
-      return;
-    }
-
-    target.innerHTML = items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
-  }
-
-  renderItinerary(items) {
-    const target = document.getElementById("productItinerary");
-    if (!target) return;
-
-    if (!items.length) {
-      target.innerHTML = "<p>Itinerario por confirmar.</p>";
-      return;
-    }
-
-    target.innerHTML = items.map((item) => `
-      <div class="product-itinerary-item">
-        <h3>${this.escapeHtml(item.title || "Paso del itinerario")}</h3>
-        <p>${this.escapeHtml(item.description || "")}</p>
-      </div>
-    `).join("");
-  }
-
-  renderFaq(items) {
-    const target = document.getElementById("productFaq");
-    if (!target) return;
-
-    if (!items.length) {
-      target.innerHTML = "<p>Pronto agregaremos preguntas frecuentes.</p>";
-      return;
-    }
-
-    target.innerHTML = items.map((item) => `
-      <div class="product-faq-item">
-        <h3>${this.escapeHtml(item.q || "Pregunta")}</h3>
-        <p>${this.escapeHtml(item.a || "")}</p>
-      </div>
-    `).join("");
-  }
-
   renderNotFound(message) {
     const main = document.querySelector(".product-page");
     if (!main) return;
 
     main.innerHTML = `
-      <section class="product-content-section">
+      <section class="experience-content">
         <div class="container">
-          <div class="product-block">
+          <div class="experience-card">
             <h1>Experiencia no disponible</h1>
             <p>${this.escapeHtml(message)}</p>
             <br />
