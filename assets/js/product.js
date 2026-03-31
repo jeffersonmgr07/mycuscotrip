@@ -259,11 +259,11 @@ class MyCuscoTripProductPage {
       const extraPrice = `${this.product.currency || "USD"} ${this.formatMoney(extra.price || 0)}`;
       return `
         <label class="booking-extra-item" for="extra-${extra.code}">
-          <div>
+          <input type="checkbox" id="extra-${extra.code}" data-extra-code="${this.escapeHtml(extra.code)}" />
+          <div class="booking-extra-text">
             <strong>${this.escapeHtml(extra.label)}</strong>
             <small>${extra.perPerson ? "Precio por persona" : "Precio por reserva"} · ${extraPrice}</small>
           </div>
-          <input type="checkbox" id="extra-${extra.code}" data-extra-code="${this.escapeHtml(extra.code)}" />
         </label>
       `;
     }).join("");
