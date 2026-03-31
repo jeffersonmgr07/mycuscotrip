@@ -126,7 +126,6 @@
   display: block;
 }
 
-/* FRANJA DE PESTAÑAS MUY COMPACTA */
 .experience-tabs-wrap {
   position: sticky;
   top: 0;
@@ -138,6 +137,7 @@
   margin: 0;
   padding: 0;
 }
+
 .experience-tabs-container {
   padding-top: 0;
   padding-bottom: 0;
@@ -168,7 +168,7 @@
   background: transparent;
   line-height: 1;
   font-size: 1rem;
-}  
+}
 
 .experience-tabs a:hover {
   color: #062803;
@@ -287,9 +287,8 @@
   font-size: 0.97rem;
 }
 
-/* VIÑETAS ALINEADAS MÁS ARRIBA CON EL TÍTULO */
 .experience-accordion-group {
-  padding: 3;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -476,6 +475,11 @@
 .booking-panel__form {
   display: grid;
   gap: 14px;
+  min-width: 0;
+}
+
+.booking-field {
+  min-width: 0;
 }
 
 .booking-field label {
@@ -486,10 +490,13 @@
 }
 
 .booking-field input,
-.booking-field select {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+.booking-field select,
+.booking-field .flatpickr-input,
+.booking-field .flatpickr-alt-input,
+.booking-field input[readonly] {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   border: 1px solid rgba(0,0,0,.12);
   border-radius: 14px;
   padding: 13px 15px;
@@ -497,40 +504,13 @@
   background: #fff;
   color: #17322a;
   min-height: 48px;
-  box-sizing: border-box;
-}
-.booking-field {
-  min-width: 0;
-}
-
-.booking-field .flatpickr-input,
-.booking-field input[readonly] {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
   box-sizing: border-box !important;
 }
 
-.booking-field .flatpickr-input[readonly] {
+.booking-field .flatpickr-input[readonly],
+.booking-field .flatpickr-alt-input[readonly] {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media (max-width: 768px) {
-  .booking-panel,
-  .booking-panel__form,
-  .booking-field {
-    min-width: 0;
-  }
-
-  .booking-field input,
-  .booking-field select,
-  .booking-field .flatpickr-input {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
 }
 
 .booking-field select {
@@ -584,18 +564,17 @@
   cursor: pointer;
 }
 
-/* EXTRA SIEMPRE EN LA MISMA LÍNEA */
 .booking-extras {
   display: grid;
   gap: 10px;
 }
 
 .booking-extra-item {
-  display: grid !important;
-  grid-template-columns: 22px minmax(0, 1fr) !important;
-  align-items: center !important;
-  column-gap: 14px !important;
-  padding: 14px 16px !important;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+  padding: 14px 16px;
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 18px;
   background: #f9fcfb;
@@ -633,20 +612,91 @@
   line-height: 1.25;
 }
 
-@media (max-width: 768px) {
-  .booking-extra-item {
-    grid-template-columns: 20px minmax(0, 1fr) !important;
-    column-gap: 12px !important;
-    padding: 12px 14px !important;
-  }
+.booking-benefits-box {
+  background: #f3f5f4;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(0,0,0,.04);
+}
 
-  .booking-extra-text strong {
-    font-size: 0.95rem;
-  }
+.booking-benefit-line {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 10px;
+  align-items: start;
+}
 
-  .booking-extra-text small {
-    font-size: 0.88rem;
-  }
+.booking-benefit-line i {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #b8f0b6;
+  color: #0a3a26;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.booking-benefit-line p {
+  margin: 0;
+  color: #495b54;
+  line-height: 1.45;
+  font-size: 0.94rem;
+}
+
+.booking-benefit-line strong {
+  color: #0a3a26;
+}
+
+.booking-discount-box {
+  display: grid;
+  gap: 8px;
+}
+
+.booking-discount-box label {
+  font-weight: 700;
+  color: #062803;
+}
+
+.booking-discount-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.booking-discount-row input {
+  width: 100%;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 13px 15px;
+  font: inherit;
+  background: #fff;
+}
+
+.booking-apply-btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 0 16px;
+  background: #0a3a26;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.booking-discount-message {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #56645f;
+}
+
+.booking-summary {
+  display: grid;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,.08);
 }
 
 .booking-summary__line,
@@ -690,91 +740,12 @@
   border: 1px solid rgba(0,0,0,.12);
 }
 
-/* BLOQUES SIMILARES */
 .similar-mobile-block {
   display: none;
 }
 
 .similar-desktop-block {
   display: block;
-}
-.booking-benefits-box {
-  background: #f3f5f4;
-  border-radius: 18px;
-  padding: 14px 16px;
-  display: grid;
-  gap: 14px;
-  border: 1px solid rgba(0,0,0,.04);
-}
-
-.booking-benefit-line {
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  gap: 10px;
-  align-items: start;
-}
-
-.booking-benefit-line i {
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  background: #b8f0b6;
-  color: #0a3a26;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-}
-
-.booking-benefit-line p {
-  margin: 0;
-  color: #495b54;
-  line-height: 1.45;
-  font-size: 0.94rem;
-}
-
-.booking-benefit-line strong {
-  color: #0a3a26;
-}
-.booking-discount-box {
-  display: grid;
-  gap: 8px;
-}
-
-.booking-discount-box label {
-  font-weight: 700;
-  color: #062803;
-}
-
-.booking-discount-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-}
-
-.booking-discount-row input {
-  width: 100%;
-  border: 1px solid rgba(0,0,0,.12);
-  border-radius: 14px;
-  padding: 13px 15px;
-  font: inherit;
-  background: #fff;
-}
-
-.booking-apply-btn {
-  border: 0;
-  border-radius: 14px;
-  padding: 0 16px;
-  background: #0a3a26;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.booking-discount-message {
-  margin: 0;
-  font-size: 0.88rem;
-  color: #56645f;
 }
 
 @media (max-width: 1100px) {
@@ -887,16 +858,33 @@
     font-size: 0.9rem;
   }
 
+  .booking-panel,
+  .booking-panel__form,
+  .booking-field {
+    min-width: 0;
+  }
+
+  .booking-field input,
+  .booking-field select,
+  .booking-field .flatpickr-input,
+  .booking-field .flatpickr-alt-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
   .booking-extra-item {
-    padding: 10px 12px;
+    grid-template-columns: 20px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 12px 14px;
   }
 
-  .booking-extra-item > div {
-    gap: 5px;
+  .booking-extra-text strong {
+    font-size: 0.95rem;
   }
 
-  .booking-extra-item strong,
-  .booking-extra-item small {
-    font-size: 0.85rem;
+  .booking-extra-text small {
+    font-size: 0.88rem;
   }
 }
