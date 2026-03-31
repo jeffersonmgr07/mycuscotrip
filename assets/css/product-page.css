@@ -495,7 +495,7 @@
   overflow: hidden;
 }
 
-.booking-field input,
+.booking-field input:not([type="checkbox"]),
 .booking-field select,
 .booking-field .flatpickr-input,
 .booking-field .flatpickr-alt-input,
@@ -617,20 +617,26 @@
 }
 
 .booking-extra-item input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  border: 2px solid #8a8f94;
-  border-radius: 6px;
-  background: #fff;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  max-width: 18px !important;
+  min-height: 18px !important;
+  max-height: 18px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 2px solid #8a8f94 !important;
+  border-radius: 5px !important;
+  background: #fff !important;
   align-self: center;
   justify-self: start;
   position: relative;
   cursor: pointer;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
+  flex: 0 0 18px !important;
 }
 
 .booking-extra-item input[type="checkbox"]:checked {
@@ -942,9 +948,14 @@
   }
   
   .booking-extra-item input[type="checkbox"] {
-    width: 17px;
-    height: 17px;
-  }
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  max-width: 17px !important;
+  min-height: 17px !important;
+  max-height: 17px !important;
+  flex: 0 0 17px !important;
+}
   
   .booking-extra-text strong {
     font-size: 0.95rem;
@@ -953,4 +964,37 @@
   .booking-extra-text small {
     font-size: 0.88rem;
   }
+
+  @media (max-width: 768px) {
+  .experience-sidebar,
+  .booking-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .booking-panel__form,
+  .booking-field,
+  .booking-travelers,
+  .booking-extra-item,
+  .booking-discount-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .booking-traveler-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .traveler-stepper {
+    flex: 0 0 auto;
+  }
+}
 }
