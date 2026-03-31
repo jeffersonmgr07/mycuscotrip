@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cotizador de vuelos</title>
+  <style>
+    :root {
+      --bg: #f4f4f4;
+      --card: #ffffff;
+      --text: #202124;
+      --muted: #6f6f6f;
+      --line: #d7d7d7;
+      --green: #006b4f;
+      --green-hover: #00553f;
+      --accent: #8b004b;
+      --soft-blue: #eef5fb;
+      --border: #dddddd;
+      --shadow: 0 10px 28px rgba(0,0,0,.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 28px auto 60px;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .trip-switches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .trip-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .trip-btn.active {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr .9fr .9fr .8fr .9fr;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 58px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0 16px;
+      font-size: 1rem;
+      background: #fff;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--green);
+    }
+
+    .search-action {
+      display: flex;
+      align-items: end;
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 58px;
+      border: 0;
+      border-radius: 16px;
+      background: var(--green);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-hover);
+    }
+
+    .results {
+      display: grid;
+      gap: 18px;
+    }
+
+    .flight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+    }
+
+    .flight-main {
+      padding: 26px 32px;
+    }
+
+    .flight-side {
+      border-left: 1px solid var(--border);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .segment + .segment {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid #ececec;
+    }
+
+    .segment-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .segment-title {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .segment-meta {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .route-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 220px 70px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .time-block {
+      text-align: center;
+    }
+
+    .time {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .airport {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .middle-block {
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .duration {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .line-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .line {
+      flex: 1;
+      height: 2px;
+      background: #8f8f8f;
+      position: relative;
+    }
+
+    .line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      border-left: 8px solid #8f8f8f;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .direct {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .airline-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .airline-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .bags {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--soft-blue);
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #2c2c2c;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .alert {
+      color: var(--accent);
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .price {
+      font-size: 2.2rem;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .price-label {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-top: -10px;
+      text-align: center;
+    }
+
+    .buy-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 22px;
+      background: var(--green);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 20px 18px;
+      cursor: pointer;
+    }
+
+    .buy-btn:hover {
+      background: var(--green-hover);
+    }
+
+    .empty {
+      background: #fff;
+      border: 1px dashed #cfcfcf;
+      border-radius: 24px;
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1180px) {
+      .search-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-action {
+        grid-column: 1 / -1;
+      }
+
+      .flight-card {
+        grid-template-columns: 1fr;
+      }
+
+      .flight-side {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .route-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .airline-box {
+        order: 4;
+      }
+
+      .time {
+        font-size: 2.4rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(var(--max), calc(100% - 18px));
+      }
+
+      .search-box,
+      .flight-main,
+      .flight-side {
+        padding: 18px;
+      }
+
+      .search-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .time {
+        font-size: 2rem;
+      }
+
+      .title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="title">Cotizador de vuelos</div>
+
+    <section class="search-box">
+      <div class="trip-switches">
+        <button class="trip-btn active" data-trip="oneway">One way</button>
+        <button class="trip-btn" data-trip="roundtrip">Round trip</button>
+      </div>
+
+      <form id="flightForm" class="search-grid">
+        <div class="field">
+          <label for="origin">Origen</label>
+          <input id="origin" type="text" value="Lima" />
+        </div>
+
+        <div class="field">
+          <label for="destination">Destino</label>
+          <input id="destination" type="text" value="Arequipa" />
+        </div>
+
+        <div class="field">
+          <label for="departureDate">Fecha ida</label>
+          <input id="departureDate" type="date" value="2026-04-02" />
+        </div>
+
+        <div class="field" id="returnField" style="display:none;">
+          <label for="returnDate">Fecha vuelta</label>
+          <input id="returnDate" type="date" value="2026-04-05" />
+        </div>
+
+        <div class="field">
+          <label for="airline">Aerolínea</label>
+          <select id="airline">
+            <option value="jetsmart">JetSMART</option>
+            <option value="latam">LATAM</option>
+            <option value="sky">SKY</option>
+            <option value="custom">Otra</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="price">Precio USD</label>
+          <input id="price" type="number" value="160.29" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="passengers">Pasajeros</label>
+          <select id="passengers">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bags">Equipaje de mano</label>
+          <select id="bags">
+            <option value="1">1</option>
+            <option value="0">0</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="carryon">Equipaje cabina</label>
+          <select id="carryon">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="checked">Equipaje bodega</label>
+          <select id="checked">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cabinClass">Cabina</label>
+          <select id="cabinClass">
+            <option value="Economy">Economy</option>
+            <option value="Premium Economy">Premium Economy</option>
+            <option value="Business">Business</option>
+          </select>
+        </div>
+
+        <div class="search-action">
+          <button type="submit" class="btn-primary">Generar cotización</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="results" id="results"></section>
+  </div>
+
+  <script>
+    const airlineData = {
+      jetsmart: {
+        name: "JetSMART",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/JetSMART_logo.svg/512px-JetSMART_logo.svg.png"
+      },
+      latam: {
+        name: "LATAM",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/LATAM_Airlines_logo.svg/512px-LATAM_Airlines_logo.svg.png"
+      },
+      sky: {
+        name: "SKY",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Sky_Airline_logo.svg/512px-Sky_Airline_logo.svg.png"
+      },
+      custom: {
+        name: "Aerolínea",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"
+      }
+    };
+
+    let tripType = "oneway";
+
+    const tripButtons = document.querySelectorAll(".trip-btn");
+    const returnField = document.getElementById("returnField");
+    const form = document.getElementById("flightForm");
+    const results = document.getElementById("results");
+
+    tripButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tripButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        tripType = btn.dataset.trip;
+        returnField.style.display = tripType === "roundtrip" ? "flex" : "none";
+      });
+    });
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "";
+      const date = new Date(dateStr + "T00:00:00");
+      return date.toLocaleDateString("es-PE", {
+        day: "numeric",
+        month: "short"
+      });
+    }
+
+    function formatPrice(value) {
+      return `US$${Number(value).toFixed(2)}`;
+    }
+
+    function getAirportCode(city) {
+      const map = {
+        lima: "LIM",
+        arequipa: "AQP",
+        cusco: "CUZ",
+        juliaca: "JUL",
+        tarapoto: "TPP",
+        piura: "PIU",
+        trujillo: "TRU"
+      };
+
+      return map[city.trim().toLowerCase()] || city.trim().slice(0, 3).toUpperCase();
+    }
+
+    function generateFlightData(values) {
+      const originCode = getAirportCode(values.origin);
+      const destinationCode = getAirportCode(values.destination);
+
+      if (tripType === "oneway") {
+        return {
+          segments: [
+            {
+              label: "Salida",
+              date: values.departureDate,
+              cabinClass: values.cabinClass,
+              depTime: "06:10",
+              arrTime: "07:42",
+              duration: "1h 32min",
+              fromCode: originCode,
+              fromCity: values.origin,
+              toCode: destinationCode,
+              toCity: values.destination
+            }
+          ]
+        };
+      }
+
+      return {
+        segments: [
+          {
+            label: "Salida",
+            date: values.departureDate,
+            cabinClass: values.cabinClass,
+            depTime: "18:35",
+            arrTime: "20:05",
+            duration: "1h 30min",
+            fromCode: originCode,
+            fromCity: values.origin,
+            toCode: destinationCode,
+            toCity: values.destination
+          },
+          {
+            label: "Vuelta",
+            date: values.returnDate,
+            cabinClass: values.cabinClass,
+            depTime: "09:45",
+            arrTime: "11:25",
+            duration: "1h 40min",
+            fromCode: destinationCode,
+            fromCity: values.destination,
+            toCode: originCode,
+            toCity: values.origin
+          }
+        ]
+      };
+    }
+
+    function buildBagsLine(values) {
+      return `
+        <div class="bags">
+          <span title="Objeto personal">ℹ️ ${values.bags}</span>
+          <span title="Equipaje cabina">🧳 ${values.carryon}</span>
+          <span title="Equipaje bodega">💼 ${values.checked}</span>
+        </div>
+      `;
+    }
+
+    function renderCard(values) {
+      const airline = airlineData[values.airline];
+      const data = generateFlightData(values);
+
+      results.innerHTML = `
+        <article class="flight-card">
+          <div class="flight-main">
+            ${data.segments.map(segment => `
+              <div class="segment">
+                <div class="segment-top">
+                  <div class="segment-title">${segment.label}</div>
+                  <div class="segment-meta">${formatDate(segment.date)} • ${segment.cabinClass}</div>
+                </div>
+
+                <div class="route-row">
+                  <div class="time-block">
+                    <div class="time">${segment.depTime}</div>
+                    <div class="airport">${segment.fromCode} ${segment.fromCity}</div>
+                  </div>
+
+                  <div class="middle-block">
+                    <div class="duration">${segment.duration}</div>
+                    <div class="line-wrap">
+                      <div class="line"></div>
+                    </div>
+                    <div class="direct">Vuelo directo</div>
+                  </div>
+
+                  <div class="time-block">
+                    <div class="time">${segment.arrTime}</div>
+                    <div class="airport">${segment.toCode} ${segment.toCity}</div>
+                  </div>
+
+                  <div class="airline-box">
+                    <img class="airline-logo" src="${airline.logo}" alt="${airline.name}" />
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="flight-side">
+            ${buildBagsLine(values)}
+            <div class="alert">¡Apúrate! Solo 1 asiento a este precio.</div>
+            <div class="price">${formatPrice(values.price)}</div>
+            <div class="price-label">Precio por adulto</div>
+            <button class="buy-btn" id="buyNowBtn">Comprar</button>
+          </div>
+        </article>
+      `;
+
+      document.getElementById("buyNowBtn").addEventListener("click", () => {
+        const payload = {
+          tipoViaje: tripType,
+          origen: values.origin,
+          destino: values.destination,
+          fechaIda: values.departureDate,
+          fechaVuelta: values.returnDate || "",
+          pasajeros: values.passengers,
+          aerolinea: airline.name,
+          precio: values.price
+        };
+
+        alert("Datos para comprar:\\n\\n" + JSON.stringify(payload, null, 2));
+      });
+    }
+
+    function getFormValues() {
+      return {
+        origin: document.getElementById("origin").value.trim(),
+        destination: document.getElementById("destination").value.trim(),
+        departureDate: document.getElementById("departureDate").value,
+        returnDate: document.getElementById("returnDate").value,
+        airline: document.getElementById("airline").value,
+        price: document.getElementById("price").value,
+        passengers: document.getElementById("passengers").value,
+        bags: document.getElementById("bags").value,
+        carryon: document.getElementById("carryon").value,
+        checked: document.getElementById("checked").value,
+        cabinClass: document.getElementById("cabinClass").value
+      };
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const values = getFormValues();
+
+      if (!values.origin || !values.destination || !values.departureDate || !values.price) {
+        results.innerHTML = `<div class="empty">Completa origen, destino, fecha y precio.</div>`;
+        return;
+      }
+
+      if (tripType === "roundtrip" && !values.returnDate) {
+        results.innerHTML = `<div class="empty">Debes ingresar la fecha de vuelta.</div>`;
+        return;
+      }
+
+      renderCard(values);
+    });
+
+    renderCard(getFormValues());
+  </script>
+</body>
+</html>
