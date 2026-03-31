@@ -289,7 +289,7 @@
 
 /* VIÑETAS ALINEADAS MÁS ARRIBA CON EL TÍTULO */
 .experience-accordion-group {
-  padding: 0;
+  padding: 3;
   overflow: hidden;
 }
 
@@ -634,6 +634,84 @@
 
 .similar-desktop-block {
   display: block;
+}
+.booking-benefits-box {
+  background: #f3f5f4;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(0,0,0,.04);
+}
+
+.booking-benefit-line {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.booking-benefit-line i {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #b8f0b6;
+  color: #0a3a26;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.booking-benefit-line p {
+  margin: 0;
+  color: #495b54;
+  line-height: 1.45;
+  font-size: 0.94rem;
+}
+
+.booking-benefit-line strong {
+  color: #0a3a26;
+}
+.booking-discount-box {
+  display: grid;
+  gap: 8px;
+}
+
+.booking-discount-box label {
+  font-weight: 700;
+  color: #062803;
+}
+
+.booking-discount-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.booking-discount-row input {
+  width: 100%;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 13px 15px;
+  font: inherit;
+  background: #fff;
+}
+
+.booking-apply-btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 0 16px;
+  background: #0a3a26;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.booking-discount-message {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #56645f;
 }
 
 @media (max-width: 1100px) {
