@@ -100,8 +100,21 @@ class MyCuscoTripProductPage {
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "d M Y",
-        onChange: (selectedDates, dateStr) => {
+        onReady: (_, __, instance) => {
+          if (instance.altInput) {
+            instance.altInput.setAttribute("readonly", "readonly");
+            instance.altInput.style.width = "100%";
+            instance.altInput.style.maxWidth = "100%";
+            instance.altInput.style.boxSizing = "border-box";
+          }
+        },
+        onChange: (selectedDates, dateStr, instance) => {
           this.date = dateStr;
+          if (instance.altInput) {
+            instance.altInput.style.width = "100%";
+            instance.altInput.style.maxWidth = "100%";
+            instance.altInput.style.boxSizing = "border-box";
+          }
         }
       });
     }
