@@ -823,6 +823,14 @@
   color: #062803;
   font-size: 1rem;
 }
+.booking-summary__later {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: #56645f;
+  font-size: 0.94rem;
+}
 
 .booking-payment-info {
   background: #f8fbf9;
