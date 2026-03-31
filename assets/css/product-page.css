@@ -98,7 +98,8 @@
 .experience-gallery__main img {
   width: 100%;
   height: 100%;
-  min-height: 420px;
+  min-height: 300px;
+  max-height: 300px;
   object-fit: cover;
   display: block;
 }
@@ -120,7 +121,7 @@
 
 .experience-gallery__side-item img {
   width: 100%;
-  height: 204px;
+  height: 144px;
   object-fit: cover;
   display: block;
 }
@@ -136,17 +137,19 @@
   border-bottom: 1px solid rgba(0,0,0,.05);
   margin: 0;
   padding: 0;
-  min-height: 0;
+}
+.experience-tabs-container {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .experience-tabs {
   display: flex;
-  gap: 8px;
+  gap: 34px;
   overflow-x: auto;
   white-space: nowrap;
-  padding: 0;
+  padding: 10px 0 8px;
   margin: 0;
-  min-height: 0;
   align-items: center;
   scrollbar-width: none;
 }
@@ -156,20 +159,30 @@
 }
 
 .experience-tabs a {
-  color: #3f5a52;
+  position: relative;
+  color: #0a3a26;
   font-weight: 700;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(6, 40, 3, 0.10);
-  background: #fff;
+  padding: 0 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   line-height: 1;
-  font-size: 0.92rem;
-}
+  font-size: 1rem;
+}  
 
 .experience-tabs a:hover {
   color: #062803;
-  border-color: rgba(6, 40, 3, 0.2);
-  background: #f2f7f4;
+}
+
+.experience-tabs a:first-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 84px;
+  height: 3px;
+  border-radius: 2px;
+  background: #0a3a26;
 }
 
 .experience-content {
@@ -528,10 +541,10 @@
 }
 
 .booking-extra-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  column-gap: 12px;
   padding: 12px 14px;
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 14px;
@@ -542,27 +555,28 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   min-width: 0;
 }
 
-.booking-extra-item strong,
-.booking-extra-item small {
-  display: inline;
+.booking-extra-item strong {
   margin: 0;
-  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .booking-extra-item small {
+  margin: 0;
   color: #56645f;
   font-size: 0.88rem;
+  line-height: 1.2;
 }
 
 .booking-extra-item input[type="checkbox"] {
-  flex: 0 0 auto;
-  margin: 0;
   width: 18px;
   height: 18px;
+  margin: 0;
+  align-self: center;
+  justify-self: start;
 }
 
 .booking-summary {
@@ -661,7 +675,8 @@
   }
 
   .experience-gallery__main img {
-    min-height: 250px;
+    min-height: 190px;
+    max-height: 190px;
   }
 
   .experience-gallery__side {
@@ -671,7 +686,7 @@
   }
 
   .experience-gallery__side-item img {
-    height: 120px;
+    height: 95px;
   }
 
   .experience-tabs {
