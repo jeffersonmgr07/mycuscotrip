@@ -493,6 +493,20 @@
   padding: 13px 15px;
   font: inherit;
   background: #fff;
+  color: #17322a;
+  min-height: 48px;
+}
+
+.booking-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230a3a26' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 42px;
+  cursor: pointer;
 }
 
 .booking-travelers {
@@ -537,7 +551,7 @@
 /* EXTRA SIEMPRE EN LA MISMA LÍNEA */
 .booking-extras {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .booking-extra-item {
@@ -545,30 +559,10 @@
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: center;
   column-gap: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 14px;
+  border-radius: 18px;
   background: #f9fcfb;
-}
-
-.booking-extra-item > div {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-
-.booking-extra-item strong {
-  margin: 0;
-  line-height: 1.2;
-}
-
-.booking-extra-item small {
-  margin: 0;
-  color: #56645f;
-  font-size: 0.88rem;
-  line-height: 1.2;
 }
 
 .booking-extra-item input[type="checkbox"] {
@@ -579,11 +573,40 @@
   justify-self: start;
 }
 
-.booking-summary {
-  display: grid;
-  gap: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(0,0,0,.08);
+.booking-extra-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.booking-extra-text strong {
+  margin: 0 0 2px;
+  line-height: 1.2;
+  color: #062803;
+  font-size: 0.98rem;
+}
+
+.booking-extra-text small {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+  .booking-extra-item {
+    grid-template-columns: 20px minmax(0, 1fr);
+    column-gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .booking-extra-text strong {
+    font-size: 0.94rem;
+  }
+
+  .booking-extra-text small {
+    font-size: 0.88rem;
+  }
 }
 
 .booking-summary__line,
