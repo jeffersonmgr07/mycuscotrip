@@ -511,11 +511,11 @@
   margin: 0 !important;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   font: inherit;
   background: #fff;
   color: #17322a;
-  min-height: 42px;
+  min-height: 38px;
   box-sizing: border-box !important;
 }
 
@@ -635,9 +635,10 @@
 }
 
 .booking-extra-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) !important;
+  column-gap: 14px !important;
+  align-items: center !important;
   padding: 14px 16px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
@@ -651,6 +652,7 @@
   appearance: none !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
+  display: block !important;
   width: 18px !important;
   height: 18px !important;
   min-width: 18px !important;
@@ -665,7 +667,8 @@
   position: relative;
   cursor: pointer;
   box-sizing: border-box !important;
-  flex: 0 0 18px !important;
+  align-self: center !important;
+  justify-self: start !important;
 }
 
 .booking-extra-item input[type="checkbox"]:checked {
@@ -687,7 +690,6 @@
 
 .booking-extra-text {
   min-width: 0;
-  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -896,114 +898,4 @@
   .experience-gallery__side {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: none;
-    gap: 10px;
-  }
-
-  .experience-gallery__side-item img {
-    height: 95px;
-  }
-
-  .experience-tabs {
-    gap: 6px;
-    padding: 4px 0;
-  }
-
-  .experience-tabs a {
-    padding: 7px 10px;
-    font-size: 0.86rem;
-  }
-
-  .experience-content {
-    padding-top: 12px;
-  }
-
-  .experience-card,
-  .booking-panel {
-    padding: 18px;
-    border-radius: 20px;
-  }
-
-  .experience-card__header {
-    margin-bottom: 10px;
-  }
-
-  .experience-card__header h2 {
-    font-size: 1.2rem;
-  }
-
-  .similar-experiences-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .experience-action-btn span {
-    display: none;
-  }
-
-  .experience-meta-row {
-    align-items: flex-start;
-  }
-
-  .experience-icon-list li,
-  .experience-description,
-  .experience-highlights li,
-  .experience-list li {
-    font-size: 0.93rem;
-  }
-
-  .experience-itinerary-item h3,
-  .experience-faq-item h3 {
-    font-size: 0.88rem;
-  }
-
-  .experience-itinerary-item p,
-  .experience-faq-item p {
-    font-size: 0.9rem;
-  }
-
-  .experience-sidebar,
-  .booking-panel,
-  .booking-panel__form,
-  .booking-field,
-  .booking-travelers,
-  .booking-extra-item,
-  .booking-discount-row,
-  .booking-traveler-row {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
-  .booking-field input:not([type="checkbox"]),
-  .booking-field select,
-  .booking-field .flatpickr-input,
-  .booking-field .flatpickr-alt-input {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .booking-extra-item {
-    gap: 14px;
-    padding: 12px 14px;
-  }
-
-  .booking-extra-item input[type="checkbox"] {
-    width: 17px !important;
-    height: 17px !important;
-    min-width: 17px !important;
-    max-width: 17px !important;
-    min-height: 17px !important;
-    max-height: 17px !important;
-    flex: 0 0 17px !important;
-  }
-
-  .booking-extra-text strong {
-    font-size: 0.95rem;
-  }
-
-  .booking-extra-text small {
-    font-size: 0.88rem;
-  }
-}
+    gap: 10px
