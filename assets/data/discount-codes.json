@@ -1,0 +1,23 @@
+[
+  {
+    "code": "BOOK10",
+    "type": "percent",
+    "value": 10,
+    "active": true,
+    "label": "10% de descuento"
+  },
+  {
+    "code": "CUSCO25",
+    "type": "fixed",
+    "value": 25,
+    "active": true,
+    "label": "USD 25 de descuento"
+  },
+  {
+    "code": "MCTVIP50",
+    "type": "fixed",
+    "value": 50,
+    "active": false,
+    "label": "USD 50 de descuento"
+  }
+]
