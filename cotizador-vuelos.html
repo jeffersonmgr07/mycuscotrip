@@ -6,21 +6,21 @@
   <title>Cotizador de vuelos</title>
   <style>
     :root {
-      --bg: #f4f4f4;
+      --bg: #f3f3f3;
       --card: #ffffff;
-      --text: #202124;
-      --muted: #6f6f6f;
-      --line: #d7d7d7;
-      --green: #006b4f;
-      --green-hover: #00553f;
-      --accent: #8b004b;
-      --soft-blue: #eef5fb;
+      --text: #222222;
+      --muted: #6d6d6d;
       --border: #dddddd;
-      --shadow: 0 10px 28px rgba(0,0,0,.08);
+      --line: #b8b8b8;
+      --green: #006847;
+      --green-hover: #05563b;
+      --wine: #8b0048;
+      --soft-blue: #eef5fb;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
       --radius-xl: 28px;
-      --radius-lg: 18px;
+      --radius-lg: 20px;
       --radius-md: 14px;
-      --max: 1280px;
+      --max: 1320px;
     }
 
     * {
@@ -36,22 +36,27 @@
 
     .page {
       width: min(var(--max), calc(100% - 32px));
-      margin: 28px auto 60px;
+      margin: 26px auto 60px;
     }
 
     .title {
       font-size: 2rem;
       font-weight: 800;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .search-box {
+    .search-box,
+    .formal-quote,
+    .quote-summary-box {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      padding: 20px;
       box-shadow: var(--shadow);
-      margin-bottom: 24px;
+    }
+
+    .search-box {
+      padding: 20px;
+      margin-bottom: 22px;
     }
 
     .trip-switches {
@@ -78,7 +83,7 @@
 
     .search-grid {
       display: grid;
-      grid-template-columns: 1.1fr 1.1fr .9fr .9fr .8fr .9fr;
+      grid-template-columns: repeat(6, 1fr);
       gap: 14px;
       align-items: end;
     }
@@ -98,7 +103,7 @@
     .field input,
     .field select {
       width: 100%;
-      height: 58px;
+      height: 56px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 0 16px;
@@ -112,6 +117,30 @@
       border-color: var(--green);
     }
 
+    .field-checkbox {
+      height: 56px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 14px;
+      gap: 10px;
+      background: #fff;
+    }
+
+    .field-checkbox input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .field-checkbox span {
+      font-size: .96rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
     .search-action {
       display: flex;
       align-items: end;
@@ -119,7 +148,7 @@
 
     .btn-primary {
       width: 100%;
-      height: 58px;
+      height: 56px;
       border: 0;
       border-radius: 16px;
       background: var(--green);
@@ -145,35 +174,35 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       display: grid;
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: 1fr 330px;
     }
 
     .flight-main {
-      padding: 26px 32px;
+      padding: 26px 30px;
     }
 
     .flight-side {
       border-left: 1px solid var(--border);
-      padding: 22px 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
     }
 
     .segment + .segment {
-      margin-top: 34px;
-      padding-top: 28px;
+      margin-top: 32px;
+      padding-top: 26px;
       border-top: 1px solid #ececec;
     }
 
     .segment-top {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 18px;
     }
 
     .segment-title {
@@ -199,27 +228,27 @@
 
     .time {
       font-size: 3rem;
-      font-weight: 800;
       line-height: 1;
+      font-weight: 800;
       margin-bottom: 10px;
     }
 
     .airport {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--muted);
       line-height: 1.35;
     }
 
     .middle-block {
       text-align: center;
-      padding: 0 10px;
+      padding: 0 8px;
     }
 
     .duration {
       font-size: 1rem;
       color: var(--muted);
-      margin-bottom: 10px;
       font-weight: 700;
+      margin-bottom: 10px;
     }
 
     .line-wrap {
@@ -258,8 +287,8 @@
     }
 
     .airline-logo {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       object-fit: contain;
       border-radius: 10px;
       background: #fff;
@@ -268,23 +297,26 @@
     .bags {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       background: var(--soft-blue);
       padding: 14px 18px;
       border-radius: 16px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #2c2c2c;
       width: 100%;
       justify-content: center;
+      font-weight: 700;
+      color: #2b2b2b;
+      flex-wrap: wrap;
     }
 
-    .alert {
-      color: var(--accent);
-      font-size: 1.05rem;
-      font-weight: 800;
-      text-align: center;
-      line-height: 1.35;
+    .bags span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bags svg {
+      width: 18px;
+      height: 18px;
     }
 
     .price {
@@ -294,10 +326,8 @@
     }
 
     .price-label {
-      font-size: .95rem;
       color: var(--muted);
-      margin-top: -10px;
-      text-align: center;
+      margin-top: -8px;
     }
 
     .buy-btn {
@@ -308,12 +338,218 @@
       color: #fff;
       font-size: 1rem;
       font-weight: 800;
-      padding: 20px 18px;
+      padding: 18px;
       cursor: pointer;
     }
 
     .buy-btn:hover {
       background: var(--green-hover);
+    }
+
+    .formal-quote {
+      padding: 24px;
+    }
+
+    .formal-quote h2 {
+      margin: 0 0 18px;
+      font-size: 1.45rem;
+    }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .quote-section {
+      border: 1px solid #ececec;
+      border-radius: 20px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .quote-section + .quote-section {
+      margin-top: 16px;
+    }
+
+    .quote-section-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .detail-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .detail-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .detail-value {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option-card {
+      border: 1px solid #ececec;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .option-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .option-title {
+      font-weight: 800;
+    }
+
+    .option-desc {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .option-price {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .bank-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bank-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid #ececec;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+    }
+
+    .bank-name {
+      font-weight: 800;
+    }
+
+    .bank-account {
+      color: var(--muted);
+      font-family: monospace;
+      font-size: .95rem;
+      text-align: right;
+    }
+
+    .quote-summary-box {
+      padding: 22px;
+    }
+
+    .quote-summary-top {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .quote-summary-top .mini-title {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .quote-summary-top .big-price {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #403e57;
+    }
+
+    .price-breakdown {
+      display: grid;
+      gap: 10px;
+    }
+
+    .price-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 1rem;
+      color: #403e57;
+    }
+
+    .price-line strong {
+      font-weight: 700;
+    }
+
+    .price-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 12px;
+      padding-top: 16px;
+      border-top: 1px solid #e8e8e8;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #403e57;
+    }
+
+    .payment-methods {
+      margin-top: 16px;
+      border-top: 1px solid #ededed;
+      padding-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .payment-title {
+      font-weight: 800;
+    }
+
+    .payment-note {
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+
+    .tag-inline {
+      display: inline-block;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #f4f7f8;
+      border: 1px solid #ebebeb;
+      font-size: .85rem;
+      font-weight: 800;
+      margin-right: 8px;
+      margin-bottom: 8px;
     }
 
     .empty {
@@ -327,7 +563,7 @@
 
     @media (max-width: 1180px) {
       .search-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .search-action {
@@ -348,12 +584,12 @@
         gap: 18px;
       }
 
-      .airline-box {
-        order: 4;
+      .quote-grid {
+        grid-template-columns: 1fr;
       }
 
       .time {
-        font-size: 2.4rem;
+        font-size: 2.35rem;
       }
     }
 
@@ -364,7 +600,9 @@
 
       .search-box,
       .flight-main,
-      .flight-side {
+      .flight-side,
+      .formal-quote,
+      .quote-summary-box {
         padding: 18px;
       }
 
@@ -379,6 +617,20 @@
       .title {
         font-size: 1.5rem;
       }
+
+      .detail-row,
+      .bank-item,
+      .option-card,
+      .price-line,
+      .price-total {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .detail-value,
+      .bank-account {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -388,8 +640,8 @@
 
     <section class="search-box">
       <div class="trip-switches">
-        <button class="trip-btn active" data-trip="oneway">One way</button>
-        <button class="trip-btn" data-trip="roundtrip">Round trip</button>
+        <button class="trip-btn active" data-trip="oneway" type="button">One way</button>
+        <button class="trip-btn" data-trip="roundtrip" type="button">Round trip</button>
       </div>
 
       <form id="flightForm" class="search-grid">
@@ -408,9 +660,29 @@
           <input id="departureDate" type="date" value="2026-04-02" />
         </div>
 
-        <div class="field" id="returnField" style="display:none;">
+        <div class="field">
+          <label for="departureTime">Hora salida ida</label>
+          <input id="departureTime" type="time" value="06:10" />
+        </div>
+
+        <div class="field">
+          <label for="arrivalTime">Hora llegada ida</label>
+          <input id="arrivalTime" type="time" value="07:42" />
+        </div>
+
+        <div class="field" id="returnDateField" style="display:none;">
           <label for="returnDate">Fecha vuelta</label>
           <input id="returnDate" type="date" value="2026-04-05" />
+        </div>
+
+        <div class="field" id="returnDepartureTimeField" style="display:none;">
+          <label for="returnDepartureTime">Hora salida vuelta</label>
+          <input id="returnDepartureTime" type="time" value="09:45" />
+        </div>
+
+        <div class="field" id="returnArrivalTimeField" style="display:none;">
+          <label for="returnArrivalTime">Hora llegada vuelta</label>
+          <input id="returnArrivalTime" type="time" value="11:25" />
         </div>
 
         <div class="field">
@@ -424,22 +696,22 @@
         </div>
 
         <div class="field">
-          <label for="price">Precio USD</label>
-          <input id="price" type="number" value="160.29" step="0.01" />
+          <label for="price">Precio final total (USD)</label>
+          <input id="price" type="number" value="280.26" step="0.01" />
         </div>
 
         <div class="field">
           <label for="passengers">Pasajeros</label>
           <select id="passengers">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="1">1 adulto</option>
+            <option value="2">2 adultos</option>
+            <option value="3">3 adultos</option>
+            <option value="4">4 adultos</option>
           </select>
         </div>
 
         <div class="field">
-          <label for="bags">Equipaje de mano</label>
+          <label for="bags">Objeto personal</label>
           <select id="bags">
             <option value="1">1</option>
             <option value="0">0</option>
@@ -459,6 +731,7 @@
           <select id="checked">
             <option value="0">0</option>
             <option value="1">1</option>
+            <option value="2">2</option>
           </select>
         </div>
 
@@ -469,6 +742,37 @@
             <option value="Premium Economy">Premium Economy</option>
             <option value="Business">Business</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label for="insurancePrice">Seguro adicional (USD)</label>
+          <input id="insurancePrice" type="number" value="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="flexiblePrice">Vuelo flexible (USD)</label>
+          <input id="flexiblePrice" type="number" value="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="cardFeePercent">Cargo tarjeta (%)</label>
+          <input id="cardFeePercent" type="number" value="5" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label>Seguro de viaje</label>
+          <label class="field-checkbox">
+            <input id="includeInsurance" type="checkbox" />
+            <span>Agregar seguro</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Vuelo flexible</label>
+          <label class="field-checkbox">
+            <input id="includeFlexible" type="checkbox" />
+            <span>Agregar opción flexible</span>
+          </label>
         </div>
 
         <div class="search-action">
@@ -484,26 +788,41 @@
     const airlineData = {
       jetsmart: {
         name: "JetSMART",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/JetSMART_logo.svg/512px-JetSMART_logo.svg.png"
+        logo: "assets/img/airlines/jetsmart.png"
       },
       latam: {
         name: "LATAM",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/LATAM_Airlines_logo.svg/512px-LATAM_Airlines_logo.svg.png"
+        logo: "assets/img/airlines/latam.png"
       },
       sky: {
         name: "SKY",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Sky_Airline_logo.svg/512px-Sky_Airline_logo.svg.png"
+        logo: "assets/img/airlines/sky.png"
       },
       custom: {
         name: "Aerolínea",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"
+        logo: "assets/img/airlines/default.png"
       }
+    };
+
+    const bankAccounts = {
+      interbank: "898-3000456789",
+      bcp: "194-9874563210-0-56",
+      bbva: "0011-0456-7896541236",
+      scotiabank: "750-4569871230"
+    };
+
+    const breakdownRatios = {
+      fare: 0.7243274102618997,
+      taxes: 0.20159851566402626,
+      fees: 0.07407407407407408
     };
 
     let tripType = "oneway";
 
     const tripButtons = document.querySelectorAll(".trip-btn");
-    const returnField = document.getElementById("returnField");
+    const returnDateField = document.getElementById("returnDateField");
+    const returnDepartureTimeField = document.getElementById("returnDepartureTimeField");
+    const returnArrivalTimeField = document.getElementById("returnArrivalTimeField");
     const form = document.getElementById("flightForm");
     const results = document.getElementById("results");
 
@@ -512,7 +831,11 @@
         tripButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         tripType = btn.dataset.trip;
-        returnField.style.display = tripType === "roundtrip" ? "flex" : "none";
+
+        const isRoundTrip = tripType === "roundtrip";
+        returnDateField.style.display = isRoundTrip ? "flex" : "none";
+        returnDepartureTimeField.style.display = isRoundTrip ? "flex" : "none";
+        returnArrivalTimeField.style.display = isRoundTrip ? "flex" : "none";
       });
     });
 
@@ -525,8 +848,8 @@
       });
     }
 
-    function formatPrice(value) {
-      return `US$${Number(value).toFixed(2)}`;
+    function formatMoney(value) {
+      return `US$ ${Number(value).toFixed(2)}`;
     }
 
     function getAirportCode(city) {
@@ -543,7 +866,45 @@
       return map[city.trim().toLowerCase()] || city.trim().slice(0, 3).toUpperCase();
     }
 
-    function generateFlightData(values) {
+    function calculateDuration(startTime, endTime) {
+      if (!startTime || !endTime) return "Vuelo directo";
+      const [sh, sm] = startTime.split(":").map(Number);
+      const [eh, em] = endTime.split(":").map(Number);
+      let start = sh * 60 + sm;
+      let end = eh * 60 + em;
+      if (end < start) end += 24 * 60;
+      const total = end - start;
+      const h = Math.floor(total / 60);
+      const m = total % 60;
+      return `${h}h ${m}min`;
+    }
+
+    function getFormValues() {
+      return {
+        origin: document.getElementById("origin").value.trim(),
+        destination: document.getElementById("destination").value.trim(),
+        departureDate: document.getElementById("departureDate").value,
+        departureTime: document.getElementById("departureTime").value,
+        arrivalTime: document.getElementById("arrivalTime").value,
+        returnDate: document.getElementById("returnDate").value,
+        returnDepartureTime: document.getElementById("returnDepartureTime").value,
+        returnArrivalTime: document.getElementById("returnArrivalTime").value,
+        airline: document.getElementById("airline").value,
+        price: Number(document.getElementById("price").value || 0),
+        passengers: Number(document.getElementById("passengers").value || 1),
+        bags: Number(document.getElementById("bags").value || 0),
+        carryon: Number(document.getElementById("carryon").value || 0),
+        checked: Number(document.getElementById("checked").value || 0),
+        cabinClass: document.getElementById("cabinClass").value,
+        insurancePrice: Number(document.getElementById("insurancePrice").value || 0),
+        flexiblePrice: Number(document.getElementById("flexiblePrice").value || 0),
+        includeInsurance: document.getElementById("includeInsurance").checked,
+        includeFlexible: document.getElementById("includeFlexible").checked,
+        cardFeePercent: Number(document.getElementById("cardFeePercent").value || 0)
+      };
+    }
+
+    function buildFlightData(values) {
       const originCode = getAirportCode(values.origin);
       const destinationCode = getAirportCode(values.destination);
 
@@ -554,9 +915,9 @@
               label: "Salida",
               date: values.departureDate,
               cabinClass: values.cabinClass,
-              depTime: "06:10",
-              arrTime: "07:42",
-              duration: "1h 32min",
+              depTime: values.departureTime,
+              arrTime: values.arrivalTime,
+              duration: calculateDuration(values.departureTime, values.arrivalTime),
               fromCode: originCode,
               fromCity: values.origin,
               toCode: destinationCode,
@@ -572,9 +933,9 @@
             label: "Salida",
             date: values.departureDate,
             cabinClass: values.cabinClass,
-            depTime: "18:35",
-            arrTime: "20:05",
-            duration: "1h 30min",
+            depTime: values.departureTime,
+            arrTime: values.arrivalTime,
+            duration: calculateDuration(values.departureTime, values.arrivalTime),
             fromCode: originCode,
             fromCity: values.origin,
             toCode: destinationCode,
@@ -584,9 +945,9 @@
             label: "Vuelta",
             date: values.returnDate,
             cabinClass: values.cabinClass,
-            depTime: "09:45",
-            arrTime: "11:25",
-            duration: "1h 40min",
+            depTime: values.returnDepartureTime,
+            arrTime: values.returnArrivalTime,
+            duration: calculateDuration(values.returnDepartureTime, values.returnArrivalTime),
             fromCode: destinationCode,
             fromCity: values.destination,
             toCode: originCode,
@@ -599,21 +960,85 @@
     function buildBagsLine(values) {
       return `
         <div class="bags">
-          <span title="Objeto personal">ℹ️ ${values.bags}</span>
-          <span title="Equipaje cabina">🧳 ${values.carryon}</span>
-          <span title="Equipaje bodega">💼 ${values.checked}</span>
+          <span title="Objeto personal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+            ${values.bags}
+          </span>
+
+          <span title="Equipaje cabina">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="7" y="4" width="10" height="16" rx="2"></rect>
+              <path d="M9 4V2h6v2"></path>
+            </svg>
+            ${values.carryon}
+          </span>
+
+          <span title="Equipaje bodega">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="7" width="18" height="13" rx="2"></rect>
+              <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            ${values.checked}
+          </span>
         </div>
       `;
     }
 
-    function renderCard(values) {
+    function calculateBreakdown(finalPrice) {
+      const fare = finalPrice * breakdownRatios.fare;
+      const taxes = finalPrice * breakdownRatios.taxes;
+      const fees = finalPrice * breakdownRatios.fees;
+
+      return {
+        fare: fare,
+        taxes: taxes,
+        fees: fees
+      };
+    }
+
+    function buildTotals(values) {
+      const baseBreakdown = calculateBreakdown(values.price);
+      const insurance = values.includeInsurance ? values.insurancePrice : 0;
+      const flexible = values.includeFlexible ? values.flexiblePrice : 0;
+      const transferTotal = values.price + insurance + flexible;
+      const cardFee = transferTotal * (values.cardFeePercent / 100);
+      const cardTotal = transferTotal + cardFee;
+
+      return {
+        baseFare: baseBreakdown.fare,
+        taxes: baseBreakdown.taxes,
+        fees: baseBreakdown.fees,
+        insurance,
+        flexible,
+        transferTotal,
+        cardFee,
+        cardTotal
+      };
+    }
+
+    function formalRouteText(values) {
+      const ida = `${values.origin} (${getAirportCode(values.origin)}) → ${values.destination} (${getAirportCode(values.destination)})`;
+      const vuelta = tripType === "roundtrip"
+        ? `${values.destination} (${getAirportCode(values.destination)}) → ${values.origin} (${getAirportCode(values.origin)})`
+        : "No aplica";
+
+      return { ida, vuelta };
+    }
+
+    function renderResults(values) {
       const airline = airlineData[values.airline];
-      const data = generateFlightData(values);
+      const flightData = buildFlightData(values);
+      const totals = buildTotals(values);
+      const routes = formalRouteText(values);
 
       results.innerHTML = `
         <article class="flight-card">
           <div class="flight-main">
-            ${data.segments.map(segment => `
+            ${flightData.segments.map(segment => `
               <div class="segment">
                 <div class="segment-top">
                   <div class="segment-title">${segment.label}</div>
@@ -640,7 +1065,7 @@
                   </div>
 
                   <div class="airline-box">
-                    <img class="airline-logo" src="${airline.logo}" alt="${airline.name}" />
+                    <img class="airline-logo" src="${airline.logo}" alt="${airline.name}" onerror="this.src='assets/img/airlines/default.png'" />
                   </div>
                 </div>
               </div>
@@ -649,64 +1074,215 @@
 
           <div class="flight-side">
             ${buildBagsLine(values)}
-            <div class="alert">¡Apúrate! Solo 1 asiento a este precio.</div>
-            <div class="price">${formatPrice(values.price)}</div>
-            <div class="price-label">Precio por adulto</div>
-            <button class="buy-btn" id="buyNowBtn">Comprar</button>
+            <div class="price">${formatMoney(values.price)}</div>
+            <div class="price-label">Precio final ingresado</div>
+            <button class="buy-btn" id="buyNowBtn" type="button">Comprar</button>
+          </div>
+        </article>
+
+        <article class="formal-quote">
+          <h2>Cotización formal</h2>
+
+          <div class="quote-grid">
+            <div>
+              <section class="quote-section">
+                <div class="quote-section-title">Información del vuelo</div>
+                <div class="detail-list">
+                  <div class="detail-row">
+                    <div class="detail-label">Ruta ida</div>
+                    <div class="detail-value">${routes.ida}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Ruta vuelta</div>
+                    <div class="detail-value">${routes.vuelta}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Aerolínea</div>
+                    <div class="detail-value">${airline.name}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Cabina</div>
+                    <div class="detail-value">${values.cabinClass}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Pasajeros</div>
+                    <div class="detail-value">${values.passengers} adulto(s)</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Equipaje</div>
+                    <div class="detail-value">
+                      <span class="tag-inline">Objeto personal: ${values.bags}</span>
+                      <span class="tag-inline">Cabina: ${values.carryon}</span>
+                      <span class="tag-inline">Bodega: ${values.checked}</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="quote-section">
+                <div class="quote-section-title">Servicios opcionales</div>
+                <div class="options-grid">
+                  <div class="option-card">
+                    <div class="option-left">
+                      <div class="option-title">Seguro de viaje</div>
+                      <div class="option-desc">Cobertura adicional para el pasajero.</div>
+                    </div>
+                    <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}</div>
+                  </div>
+
+                  <div class="option-card">
+                    <div class="option-left">
+                      <div class="option-title">Vuelo flexible</div>
+                      <div class="option-desc">Permite cambios bajo condiciones de tarifa.</div>
+                    </div>
+                    <div class="option-price">${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="quote-section">
+                <div class="quote-section-title">Opciones de pago</div>
+                <div class="detail-list">
+                  <div class="detail-row">
+                    <div class="detail-label">Transferencia / depósito</div>
+                    <div class="detail-value">${formatMoney(totals.transferTotal)}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Pago con tarjeta</div>
+                    <div class="detail-value">${formatMoney(totals.cardTotal)}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Cargo adicional tarjeta</div>
+                    <div class="detail-value">${formatMoney(totals.cardFee)} (${values.cardFeePercent.toFixed(2)}%)</div>
+                  </div>
+                </div>
+
+                <div class="payment-methods">
+                  <div class="payment-title">Cuentas bancarias</div>
+
+                  <div class="bank-list">
+                    <div class="bank-item">
+                      <div class="bank-name">Interbank</div>
+                      <div class="bank-account">${bankAccounts.interbank}</div>
+                    </div>
+                    <div class="bank-item">
+                      <div class="bank-name">BCP</div>
+                      <div class="bank-account">${bankAccounts.bcp}</div>
+                    </div>
+                    <div class="bank-item">
+                      <div class="bank-name">BBVA</div>
+                      <div class="bank-account">${bankAccounts.bbva}</div>
+                    </div>
+                    <div class="bank-item">
+                      <div class="bank-name">Scotiabank</div>
+                      <div class="bank-account">${bankAccounts.scotiabank}</div>
+                    </div>
+                  </div>
+
+                  <div class="payment-note">
+                    El precio ingresado se toma como precio final del boleto. Los opcionales y el cargo por tarjeta se suman aparte si corresponden.
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="quote-summary-box">
+              <div class="quote-summary-top">
+                <div class="mini-title">Precio por Adulto</div>
+                <div class="big-price">${formatMoney(totals.baseFare)}</div>
+              </div>
+
+              <div class="price-breakdown">
+                <div class="price-line">
+                  <span>1 Adulto</span>
+                  <strong>${formatMoney(totals.baseFare)}</strong>
+                </div>
+
+                <div class="price-line">
+                  <span>Imp. y tasas</span>
+                  <strong>${formatMoney(totals.taxes)}</strong>
+                </div>
+
+                <div class="price-line">
+                  <span>Cargos</span>
+                  <strong>${formatMoney(totals.fees)}</strong>
+                </div>
+
+                ${values.includeInsurance ? `
+                  <div class="price-line">
+                    <span>Seguro adicional</span>
+                    <strong>${formatMoney(totals.insurance)}</strong>
+                  </div>
+                ` : ""}
+
+                ${values.includeFlexible ? `
+                  <div class="price-line">
+                    <span>Vuelo flexible</span>
+                    <strong>${formatMoney(totals.flexible)}</strong>
+                  </div>
+                ` : ""}
+
+                <div class="price-total">
+                  <span>Total a pagar</span>
+                  <strong>${formatMoney(totals.transferTotal)}</strong>
+                </div>
+              </div>
+
+              <div class="payment-methods">
+                <div class="payment-title">Si paga con tarjeta</div>
+                <div class="price-line">
+                  <span>Cargo tarjeta</span>
+                  <strong>${formatMoney(totals.cardFee)}</strong>
+                </div>
+                <div class="price-total">
+                  <span>Total con tarjeta</span>
+                  <strong>${formatMoney(totals.cardTotal)}</strong>
+                </div>
+              </div>
+            </aside>
           </div>
         </article>
       `;
 
       document.getElementById("buyNowBtn").addEventListener("click", () => {
-        const payload = {
-          tipoViaje: tripType,
-          origen: values.origin,
-          destino: values.destination,
-          fechaIda: values.departureDate,
-          fechaVuelta: values.returnDate || "",
-          pasajeros: values.passengers,
-          aerolinea: airline.name,
-          precio: values.price
-        };
+        const text = encodeURIComponent(
+`Hola, quiero comprar esta cotización.
 
-        alert("Datos para comprar:\\n\\n" + JSON.stringify(payload, null, 2));
+Tipo de viaje: ${tripType}
+Ruta ida: ${routes.ida}
+Ruta vuelta: ${routes.vuelta}
+Aerolínea: ${airline.name}
+Precio boleto: ${formatMoney(values.price)}
+Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}
+Flexible: ${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}
+Total transferencia: ${formatMoney(totals.transferTotal)}
+Total tarjeta: ${formatMoney(totals.cardTotal)}`
+        );
+
+        window.open(`https://wa.me/51999999999?text=${text}`, "_blank");
       });
-    }
-
-    function getFormValues() {
-      return {
-        origin: document.getElementById("origin").value.trim(),
-        destination: document.getElementById("destination").value.trim(),
-        departureDate: document.getElementById("departureDate").value,
-        returnDate: document.getElementById("returnDate").value,
-        airline: document.getElementById("airline").value,
-        price: document.getElementById("price").value,
-        passengers: document.getElementById("passengers").value,
-        bags: document.getElementById("bags").value,
-        carryon: document.getElementById("carryon").value,
-        checked: document.getElementById("checked").value,
-        cabinClass: document.getElementById("cabinClass").value
-      };
     }
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const values = getFormValues();
 
-      if (!values.origin || !values.destination || !values.departureDate || !values.price) {
-        results.innerHTML = `<div class="empty">Completa origen, destino, fecha y precio.</div>`;
+      if (!values.origin || !values.destination || !values.departureDate || !values.departureTime || !values.arrivalTime || values.price <= 0) {
+        results.innerHTML = `<div class="empty">Completa origen, destino, fecha, horas y precio final.</div>`;
         return;
       }
 
-      if (tripType === "roundtrip" && !values.returnDate) {
-        results.innerHTML = `<div class="empty">Debes ingresar la fecha de vuelta.</div>`;
-        return;
+      if (tripType === "roundtrip") {
+        if (!values.returnDate || !values.returnDepartureTime || !values.returnArrivalTime) {
+          results.innerHTML = `<div class="empty">Completa fecha y horas de la vuelta.</div>`;
+          return;
+        }
       }
 
-      renderCard(values);
+      renderResults(values);
     });
 
-    renderCard(getFormValues());
+    renderResults(getFormValues());
   </script>
 </body>
 </html>
