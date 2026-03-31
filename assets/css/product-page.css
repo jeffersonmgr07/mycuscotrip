@@ -438,6 +438,7 @@
 .experience-sidebar {
   position: relative;
   min-width: 0;
+  width: 100%;
 }
 
 .booking-panel {
@@ -450,7 +451,9 @@
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
   min-width: 0;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .booking-panel__price {
@@ -508,12 +511,19 @@
   margin: 0 !important;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
-  padding: 11px 13px;
+  padding: 10px 12px;
   font: inherit;
   background: #fff;
   color: #17322a;
-  min-height: 44px;
+  min-height: 42px;
   box-sizing: border-box !important;
+}
+
+.booking-field .flatpickr-wrapper {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 
 .booking-field .flatpickr-input,
@@ -534,8 +544,10 @@
 @supports (-webkit-touch-callout: none) {
   .booking-panel,
   .booking-panel__form,
-  .booking-field {
+  .booking-field,
+  .booking-field .flatpickr-wrapper {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
     overflow: hidden;
   }
@@ -565,12 +577,14 @@
 .booking-travelers {
   display: grid;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
 }
 
 .booking-traveler-row {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   padding: 12px 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -578,7 +592,14 @@
   background: #f9fcfb;
   min-width: 0;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.booking-traveler-row > div:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .booking-traveler-row small {
@@ -592,6 +613,7 @@
   align-items: center;
   gap: 10px;
   flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .qty-btn {
@@ -608,18 +630,20 @@
 .booking-extras {
   display: grid;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
 }
 
 .booking-extra-item {
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  column-gap: 16px;
+  gap: 16px;
   padding: 14px 16px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   background: #f9fcfb;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -638,8 +662,6 @@
   border: 2px solid #8a8f94 !important;
   border-radius: 5px !important;
   background: #fff !important;
-  align-self: center;
-  justify-self: start;
   position: relative;
   cursor: pointer;
   box-sizing: border-box !important;
@@ -665,6 +687,7 @@
 
 .booking-extra-text {
   min-width: 0;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -748,7 +771,7 @@
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
-  padding: 11px 13px;
+  padding: 10px 12px;
   font: inherit;
   background: #fff;
   min-width: 0;
@@ -962,8 +985,7 @@
   }
 
   .booking-extra-item {
-    grid-template-columns: 17px minmax(0, 1fr);
-    column-gap: 18px;
+    gap: 14px;
     padding: 12px 14px;
   }
 
