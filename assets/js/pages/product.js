@@ -327,55 +327,75 @@ class MyCuscoTripProductPage {
 
   updatePricing() {
     if (!this.product) return;
-
+  
     const currency = this.product.currency || "USD";
     const adultPrice = this.product.basePricing?.adult || 0;
     const childPrice = this.product.basePricing?.child || adultPrice;
-
+  
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
-
-    const subtotal = adultsTotal + childrenTotal + extrasTotal;
-
+  
+    const serviceTotal = adultsTotal + childrenTotal + extrasTotal;
+  
     const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
     const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
-
+  
     let discount = 0;
-    let payNow = subtotal;
+    let payNow = serviceTotal;
+    let payLater = 0;
     let infoText = "";
-
+  
     if (this.paymentMode === "full") {
-      discount = subtotal * (fullDiscountPercent / 100);
-      payNow = subtotal - discount;
+      discount = serviceTotal * (fullDiscountPercent / 100);
+      payNow = serviceTotal - discount;
+      payLater = 0;
+  
       infoText = fullDiscountPercent > 0
         ? `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`
         : "Pagarás el total completo ahora.";
     } else {
       const totalPassengers = this.adults + this.children;
       payNow = totalPassengers * partialPerPerson;
+      payLater = serviceTotal - payNow;
+  
+      if (payLater < 0) payLater = 0;
+  
       infoText =
         this.product.paymentOptions?.partialPaymentLabel ||
         `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona.`;
     }
-
+  
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
     this.setText("childrenTotal", `${currency} ${this.formatMoney(childrenTotal)}`);
     this.setText("extrasTotal", `${currency} ${this.formatMoney(extrasTotal)}`);
-    this.setText("serviceTotal", `${currency} ${this.formatMoney(subtotal)}`);
+    this.setText("serviceTotal", `${currency} ${this.formatMoney(serviceTotal)}`);
     this.setText("payNowTotal", `${currency} ${this.formatMoney(payNow)}`);
     this.setText("discountTotal", `- ${currency} ${this.formatMoney(discount)}`);
-    this.setText("payNowLabel", this.paymentMode === "full" ? "Pagar ahora" : "Separar ahora");
-
+    this.setText("payLaterTotal", `${currency} ${this.formatMoney(payLater)}`);
+  
+    const payNowLabel = document.getElementById("payNowLabel");
+    if (payNowLabel) {
+      payNowLabel.textContent = this.paymentMode === "full"
+        ? "Pagar ahora"
+        : "Pagarás ahora";
+    }
+  
     const discountRow = document.getElementById("discountRow");
     if (discountRow) {
       discountRow.hidden = !(this.paymentMode === "full" && discount > 0);
     }
-
+  
+    const payLaterRow = document.getElementById("payLaterRow");
+    if (payLaterRow) {
+      payLaterRow.hidden = this.paymentMode !== "partial";
+    }
+  
     const paymentInfo = document.getElementById("paymentInfo");
-    if (paymentInfo) paymentInfo.textContent = infoText;
+    if (paymentInfo) {
+      paymentInfo.textContent = infoText;
+    }
   }
-
   calculateExtrasTotal() {
     if (!this.product?.extras?.length) return 0;
 
