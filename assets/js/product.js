@@ -358,41 +358,48 @@ class MyCuscoTripProductPage {
   }
 
   getBookingSummary() {
-    const currency = this.product.currency || "USD";
-    const adultPrice = this.product.basePricing?.adult || 0;
-    const childPrice = this.product.basePricing?.child || adultPrice;
+  const currency = this.product.currency || "USD";
+  const adultPrice = this.product.basePricing?.adult || 0;
+  const childPrice = this.product.basePricing?.child || adultPrice;
 
-    const adultsTotal = this.adults * adultPrice;
-    const childrenTotal = this.children * childPrice;
-    const extrasTotal = this.calculateExtrasTotal();
-    const subtotal = adultsTotal + childrenTotal + extrasTotal;
+  const adultsTotal = this.adults * adultPrice;
+  const childrenTotal = this.children * childPrice;
+  const extrasTotal = this.calculateExtrasTotal();
+  const serviceTotal = adultsTotal + childrenTotal + extrasTotal;
 
-    const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
-    const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
+  const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
+  const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
 
-    let payNow = subtotal;
-    if (this.paymentMode === "full") {
-      payNow = subtotal - (subtotal * (fullDiscountPercent / 100));
-    } else {
-      const totalPassengers = this.adults + this.children;
-      payNow = totalPassengers * partialPerPerson;
-    }
+  let payNow = serviceTotal;
+  let payLater = 0;
 
-    const selectedExtras = (this.product.extras || [])
-      .filter((extra) => this.selectedExtras.has(extra.code))
-      .map((extra) => extra.label);
+  if (this.paymentMode === "full") {
+    payNow = serviceTotal - (serviceTotal * (fullDiscountPercent / 100));
+    payLater = 0;
+  } else {
+    const totalPassengers = this.adults + this.children;
+    payNow = totalPassengers * partialPerPerson;
+    payLater = serviceTotal - payNow;
 
-    return {
-      title: this.product.title,
-      date: this.date || "No seleccionada",
-      adults: this.adults,
-      children: this.children,
-      extras: selectedExtras,
-      serviceTotal: `${currency} ${this.formatMoney(subtotal)}`,
-      payNow: `${currency} ${this.formatMoney(payNow)}`,
-      paymentMode: this.paymentMode === "full" ? "Pago completo" : "Separar cupo"
-    };
+    if (payLater < 0) payLater = 0;
   }
+
+  const selectedExtras = (this.product.extras || [])
+    .filter((extra) => this.selectedExtras.has(extra.code))
+    .map((extra) => extra.label);
+
+  return {
+    title: this.product.title,
+    date: this.date || "No seleccionada",
+    adults: this.adults,
+    children: this.children,
+    extras: selectedExtras,
+    serviceTotal: `${currency} ${this.formatMoney(serviceTotal)}`,
+    payNow: `${currency} ${this.formatMoney(payNow)}`,
+    payLater: `${currency} ${this.formatMoney(payLater)}`,
+    paymentMode: this.paymentMode === "full" ? "Pago completo" : "Separar cupo"
+  };
+}
 
   renderNotFound(message) {
     const main = document.querySelector(".product-page");
