@@ -336,8 +336,8 @@
 }
 
 .experience-list {
-  margin: 3;
-  padding-left: 18px;
+  margin: 0;
+  padding-left: 30px;
   color: #56645f;
   display: grid;
   gap: 8px;
