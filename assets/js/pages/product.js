@@ -217,9 +217,7 @@ class MyCuscoTripProductPage {
         : null
     ].filter(Boolean);
 
-    target.innerHTML = highlights
-      .map((item) => `<li>${this.escapeHtml(item)}</li>`)
-      .join("");
+    target.innerHTML = highlights.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
   }
 
   renderItinerary(items) {
@@ -327,30 +325,30 @@ class MyCuscoTripProductPage {
 
   updatePricing() {
     if (!this.product) return;
-  
+
     const currency = this.product.currency || "USD";
     const adultPrice = this.product.basePricing?.adult || 0;
     const childPrice = this.product.basePricing?.child || adultPrice;
-  
+
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
-  
+
     const serviceTotal = adultsTotal + childrenTotal + extrasTotal;
-  
+
     const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
     const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
-  
+
     let discount = 0;
     let payNow = serviceTotal;
     let payLater = 0;
     let infoText = "";
-  
+
     if (this.paymentMode === "full") {
       discount = serviceTotal * (fullDiscountPercent / 100);
       payNow = serviceTotal - discount;
       payLater = 0;
-  
+
       infoText = fullDiscountPercent > 0
         ? `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`
         : "Pagarás el total completo ahora.";
@@ -358,14 +356,14 @@ class MyCuscoTripProductPage {
       const totalPassengers = this.adults + this.children;
       payNow = totalPassengers * partialPerPerson;
       payLater = serviceTotal - payNow;
-  
+
       if (payLater < 0) payLater = 0;
-  
+
       infoText =
         this.product.paymentOptions?.partialPaymentLabel ||
         `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona.`;
     }
-  
+
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
     this.setText("childrenTotal", `${currency} ${this.formatMoney(childrenTotal)}`);
     this.setText("extrasTotal", `${currency} ${this.formatMoney(extrasTotal)}`);
@@ -373,29 +371,28 @@ class MyCuscoTripProductPage {
     this.setText("payNowTotal", `${currency} ${this.formatMoney(payNow)}`);
     this.setText("discountTotal", `- ${currency} ${this.formatMoney(discount)}`);
     this.setText("payLaterTotal", `${currency} ${this.formatMoney(payLater)}`);
-  
+
     const payNowLabel = document.getElementById("payNowLabel");
     if (payNowLabel) {
-      payNowLabel.textContent = this.paymentMode === "full"
-        ? "Pagar ahora"
-        : "Pagarás ahora";
+      payNowLabel.textContent = this.paymentMode === "full" ? "Pagar ahora" : "Pagarás ahora";
     }
-  
+
     const discountRow = document.getElementById("discountRow");
     if (discountRow) {
       discountRow.hidden = !(this.paymentMode === "full" && discount > 0);
     }
-  
+
     const payLaterRow = document.getElementById("payLaterRow");
     if (payLaterRow) {
       payLaterRow.hidden = this.paymentMode !== "partial";
     }
-  
+
     const paymentInfo = document.getElementById("paymentInfo");
     if (paymentInfo) {
       paymentInfo.textContent = infoText;
     }
   }
+
   calculateExtrasTotal() {
     if (!this.product?.extras?.length) return 0;
 
@@ -420,7 +417,8 @@ class MyCuscoTripProductPage {
       `Niños: ${summary.children}\n` +
       `Extras: ${summary.extras.join(", ") || "Ninguno"}\n` +
       `Modalidad: ${summary.paymentMode}\n` +
-      `Monto a pagar ahora: ${summary.payNow}`
+      `Monto a pagar ahora: ${summary.payNow}\n` +
+      `Pagarás luego: ${summary.payLater}`
     );
   }
 
@@ -434,7 +432,8 @@ class MyCuscoTripProductPage {
       `Niños: ${summary.children}\n` +
       `Extras: ${summary.extras.join(", ") || "Ninguno"}\n` +
       `Servicio total: ${summary.serviceTotal}\n` +
-      `Pagar ahora: ${summary.payNow}\n` +
+      `Pagarás ahora: ${summary.payNow}\n` +
+      `Pagarás luego: ${summary.payLater}\n` +
       `Modalidad: ${summary.paymentMode}`
     );
   }
@@ -447,17 +446,22 @@ class MyCuscoTripProductPage {
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
-    const subtotal = adultsTotal + childrenTotal + extrasTotal;
+    const serviceTotal = adultsTotal + childrenTotal + extrasTotal;
 
     const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
     const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
 
-    let payNow = subtotal;
+    let payNow = serviceTotal;
+    let payLater = 0;
+
     if (this.paymentMode === "full") {
-      payNow = subtotal - (subtotal * (fullDiscountPercent / 100));
+      payNow = serviceTotal - (serviceTotal * (fullDiscountPercent / 100));
+      payLater = 0;
     } else {
       const totalPassengers = this.adults + this.children;
       payNow = totalPassengers * partialPerPerson;
+      payLater = serviceTotal - payNow;
+      if (payLater < 0) payLater = 0;
     }
 
     const selectedExtras = (this.product.extras || [])
@@ -470,8 +474,9 @@ class MyCuscoTripProductPage {
       adults: this.adults,
       children: this.children,
       extras: selectedExtras,
-      serviceTotal: `${currency} ${this.formatMoney(subtotal)}`,
+      serviceTotal: `${currency} ${this.formatMoney(serviceTotal)}`,
       payNow: `${currency} ${this.formatMoney(payNow)}`,
+      payLater: `${currency} ${this.formatMoney(payLater)}`,
       paymentMode: this.paymentMode === "full" ? "Pago completo" : "Separar cupo"
     };
   }
