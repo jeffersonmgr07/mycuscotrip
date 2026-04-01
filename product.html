@@ -6,16 +6,16 @@
   <title>Experiencia | My Cusco Trip</title>
   <meta name="description" content="Descubre los detalles de tu experiencia en My Cusco Trip." />
 
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  <link rel="stylesheet" href="./assets/css/header.css">
-  <link rel="stylesheet" href="./assets/css/footer.css">
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-  <link rel="stylesheet" href="./assets/css/product-page.css">
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/header.css" />
+  <link rel="stylesheet" href="./assets/css/footer.css" />
+  <link rel="stylesheet" href="./assets/css/responsive.css" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=8" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -274,77 +274,10 @@
                   <span>Total servicio</span>
                   <strong id="serviceTotal">USD 0</strong>
                 </div>
-                updatePricing() {
-                  if (!this.product) return;
-                
-                  const currency = this.product.currency || "USD";
-                  const adultPrice = this.product.basePricing?.adult || 0;
-                  const childPrice = this.product.basePricing?.child || adultPrice;
-                
-                  const adultsTotal = this.adults * adultPrice;
-                  const childrenTotal = this.children * childPrice;
-                  const extrasTotal = this.calculateExtrasTotal();
-                
-                  const serviceTotal = adultsTotal + childrenTotal + extrasTotal;
-                
-                  const fullDiscountPercent = this.product.paymentOptions?.fullPaymentDiscountPercent || 0;
-                  const partialPerPerson = this.product.paymentOptions?.partialPaymentPerPerson || 49.9;
-                
-                  let discount = 0;
-                  let payNow = serviceTotal;
-                  let payLater = 0;
-                  let infoText = "";
-                
-                  if (this.paymentMode === "full") {
-                    discount = serviceTotal * (fullDiscountPercent / 100);
-                    payNow = serviceTotal - discount;
-                    payLater = 0;
-                
-                    infoText = fullDiscountPercent > 0
-                      ? `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`
-                      : "Pagarás el total completo ahora.";
-                  } else {
-                    const totalPassengers = this.adults + this.children;
-                    payNow = totalPassengers * partialPerPerson;
-                    payLater = serviceTotal - payNow;
-                
-                    if (payLater < 0) payLater = 0;
-                
-                    infoText =
-                      this.product.paymentOptions?.partialPaymentLabel ||
-                      `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona.`;
-                  }
-                
-                  this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
-                  this.setText("childrenTotal", `${currency} ${this.formatMoney(childrenTotal)}`);
-                  this.setText("extrasTotal", `${currency} ${this.formatMoney(extrasTotal)}`);
-                  this.setText("serviceTotal", `${currency} ${this.formatMoney(serviceTotal)}`);
-                  this.setText("payNowTotal", `${currency} ${this.formatMoney(payNow)}`);
-                  this.setText("discountTotal", `- ${currency} ${this.formatMoney(discount)}`);
-                  this.setText("payLaterTotal", `${currency} ${this.formatMoney(payLater)}`);
-                
-                  const payNowLabel = document.getElementById("payNowLabel");
-                  if (payNowLabel) {
-                    payNowLabel.textContent = this.paymentMode === "full"
-                      ? "Pagar ahora"
-                      : "Pagarás ahora";
-                  }
-                
-                  const discountRow = document.getElementById("discountRow");
-                  if (discountRow) {
-                    discountRow.hidden = !(this.paymentMode === "full" && discount > 0);
-                  }
-                
-                  const payLaterRow = document.getElementById("payLaterRow");
-                  if (payLaterRow) {
-                    payLaterRow.hidden = this.paymentMode !== "partial";
-                  }
-                
-                  const paymentInfo = document.getElementById("paymentInfo");
-                  if (paymentInfo) {
-                    paymentInfo.textContent = infoText;
-                  }
-                }
+                <div class="booking-summary__total">
+                  <span id="payNowLabel">Pagar ahora</span>
+                  <strong id="payNowTotal">USD 0</strong>
+                </div>
                 <div class="booking-summary__later" id="payLaterRow" hidden>
                   <span>Pagarás luego</span>
                   <strong id="payLaterTotal">USD 0</strong>
@@ -381,8 +314,8 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
   <script>
-    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
-    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
+    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "/";
 
     async function loadComponent(componentName, targetId) {
       try {
@@ -406,29 +339,29 @@
 
     function fixImagePaths(container) {
       const images = container.querySelectorAll('img[src*="assets/"]');
-      images.forEach(img => {
-        const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
+      images.forEach((img) => {
+        const currentSrc = img.getAttribute("src");
+        if (currentSrc.startsWith("assets/")) {
+          img.setAttribute("src", `.${currentSrc}`);
         }
       });
     }
 
     async function initializeApp() {
       await Promise.all([
-        loadComponent('header', 'header-container'),
-        loadComponent('footer', 'footer-container')
+        loadComponent("header", "header-container"),
+        loadComponent("footer", "footer-container")
       ]);
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeApp);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeApp);
     } else {
       initializeApp();
     }
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js"></script>
+  <script src="./assets/js/pages/product.js?v=8"></script>
 </body>
 </html>
