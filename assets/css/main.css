@@ -544,3 +544,32 @@ section {
     display: block;
   }
 }
+.featured-products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.more-experiences-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.more-experiences-btn {
+  min-width: 240px;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .featured-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .featured-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
