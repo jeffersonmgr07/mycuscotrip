@@ -565,7 +565,7 @@ body {
   }
 
   .search-bar .mct-card {
-    width: min(100%, calc(100vw - 10px));
+    width: min(100%, calc(100vw - 2px));
     position: relative;
     overflow: visible;
     background: transparent;
@@ -579,8 +579,8 @@ body {
   .search-bar .mct-tabs {
     position: absolute;
     top: 0;
-    left: 10px;
-    right: 10px;
+    left: 6px;
+    right: 6px;
     width: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
