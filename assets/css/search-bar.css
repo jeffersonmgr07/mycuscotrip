@@ -569,7 +569,7 @@ body {
      left: 8px;
      right: 8px;
      top: 0;
-     transform: translateY(-80%);
+     transform: translateY(-40%);
      grid-template-columns: 1fr 1fr;
      z-index: 2;
    }
