@@ -579,8 +579,8 @@ body {
   .search-bar .mct-tabs {
     position: absolute;
     top: 0;
-    left: 12px;
-    right: 12px;
+    left: 10px;
+    right: 10px;
     width: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -596,8 +596,8 @@ body {
     pointer-events: auto;
     width: 100%;
     min-width: 0;
-    height: 60px;
-    min-height: 60px;
+    height: 65px;
+    min-height: 65px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -627,7 +627,7 @@ body {
 
   .search-bar .mct-bar {
     position: relative;
-    width: min(100%, calc(100vw - 10px));
+    width: min(100%, calc(100vw - 4px));
     z-index: 5;
     display: grid;
     grid-template-columns: 1fr;
