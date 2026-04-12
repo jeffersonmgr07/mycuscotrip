@@ -695,3 +695,16 @@ section {
     justify-content: center;
   }
 }
+.more-experiences-btn {
+  border-radius: 999px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+  padding: 22px 34px;
+}
+
+.more-experiences-btn::before,
+.more-experiences-btn::after {
+  border-radius: 999px !important;
+}
