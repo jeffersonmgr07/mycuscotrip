@@ -680,3 +680,18 @@ section {
     padding: 22px 30px;
   }
 }
+@media (max-width: 768px) {
+  .featured-card__actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .featured-card__actions .btn {
+    width: calc(100% - 56px);
+    max-width: 250px;
+    margin: 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
