@@ -564,13 +564,13 @@ body {
    } 
 
   .search-bar .mct-card {
-     width: min(100%, calc(100vw - 24px));
+     width: min(100%, calc(100vw - 10px));
      border-radius: 20px;
      padding: 20px 12px 24px;
    }
 
   .search-bar .mct-tabs {
-     width: calc(100% - 20px);
+     width: calc(100% - 10px);
      left: 8px;
      right: 8px;
      top: 0;
