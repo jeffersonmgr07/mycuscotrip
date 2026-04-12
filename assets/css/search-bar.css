@@ -557,6 +557,10 @@ body {
   .search-bar {
     overflow: visible;
   }
+  .search-bar .mct-bar {
+     position: relative;
+     z-index: 5;
+   } 
 
   .search-bar .mct-card {
      width: min(100%, calc(100vw - 24px));
