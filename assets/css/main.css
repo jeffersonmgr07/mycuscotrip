@@ -21,6 +21,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: var(--text);
@@ -55,7 +60,7 @@ a {
   padding: 12px 30px;
   background: linear-gradient(to right, var(--accent), #d90895);
   color: #fff;
-  border-radius: 8px;
+  border-radius: 999px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -71,6 +76,9 @@ a {
   box-shadow: 0 12px 22px rgba(235, 9, 167, 0.28);
 }
 
+/* =========================
+   HERO
+========================= */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -90,13 +98,17 @@ a {
   overflow: hidden;
 }
 
+.hero-video,
 .hero-media video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.02);
+}
+
+.hero-video-desktop {
+  display: block;
 }
 
 .hero-video-mobile {
@@ -156,6 +168,9 @@ a {
   overflow: visible;
 }
 
+/* =========================
+   SECCIONES GENERALES
+========================= */
 section {
   padding: 80px 0;
 }
@@ -173,7 +188,7 @@ section {
   color: var(--primary);
 }
 
-.section-header h2:after {
+.section-header h2::after {
   content: "";
   position: absolute;
   width: 70px;
@@ -191,6 +206,9 @@ section {
   margin: 0 auto;
 }
 
+/* =========================
+   PRODUCTOS DESTACADOS
+========================= */
 .featured-products-section {
   background: #fff;
   position: relative;
@@ -231,12 +249,14 @@ section {
   position: absolute;
   top: 16px;
   left: 16px;
-  background: #eb09a7;
+  background: #0b3b2e;
   color: #fff;
   font-weight: 700;
   font-size: 0.82rem;
   padding: 8px 12px;
   border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 20px rgba(11, 59, 46, 0.22);
 }
 
 .featured-card__content {
@@ -273,8 +293,82 @@ section {
 
 .featured-card__actions {
   margin-top: auto;
+  display: flex;
+  justify-content: center;
 }
 
+.featured-card__actions .btn {
+  min-width: 210px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 800;
+}
+
+.empty-products {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+/* =========================
+   BOTÓN VER MÁS EXPERIENCIAS
+========================= */
+.more-experiences-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.more-experiences-btn {
+  position: relative;
+  min-width: 270px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 16px 30px;
+  font-weight: 900;
+  box-shadow: 0 16px 34px rgba(235, 9, 167, 0.24);
+  overflow: visible;
+}
+
+.more-experiences-btn::before,
+.more-experiences-btn::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  border: 2px solid rgba(235, 9, 167, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  animation: moreExpRipple 2.2s infinite;
+}
+
+.more-experiences-btn::after {
+  inset: -16px;
+  animation-delay: 0.7s;
+  border-color: rgba(235, 9, 167, 0.22);
+}
+
+@keyframes moreExpRipple {
+  0% {
+    transform: scale(0.86);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.18;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+}
+
+/* =========================
+   VIDEO SECTION
+========================= */
 .home-video-section {
   background: #f7faf8;
 }
@@ -319,6 +413,9 @@ section {
   color: #444;
 }
 
+/* =========================
+   CONTACTO
+========================= */
 .home-contact-section {
   background: #fff;
 }
@@ -376,12 +473,9 @@ section {
   font-size: 0.95rem;
 }
 
-.empty-products {
-  text-align: center;
-  padding: 40px 20px;
-  color: #666;
-}
-
+/* =========================
+   MODAL GLOBAL
+========================= */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -393,6 +487,7 @@ section {
   display: none;
   justify-content: center;
   align-items: center;
+  padding: 16px;
 }
 
 .modal-overlay.active {
@@ -400,16 +495,21 @@ section {
 }
 
 .modal-content {
-  background: white;
+  background: #fff;
   border-radius: 16px;
   width: min(380px, 94vw);
+  max-width: calc(100vw - 24px);
   max-height: 90vh;
   overflow: auto;
   position: relative;
   z-index: 9999;
   padding: 20px;
+  box-sizing: border-box;
 }
 
+/* =========================
+   WHATSAPP FLOAT
+========================= */
 .wa-float {
   position: fixed;
   right: 16px;
@@ -472,6 +572,9 @@ section {
   }
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 992px) {
   .hero {
     padding-top: 92px;
@@ -479,7 +582,7 @@ section {
   }
 
   .hero-content {
-    padding: 22px 16px 30px;
+    padding: 22px 16px 40px;
   }
 
   .hero-text {
@@ -496,6 +599,10 @@ section {
     grid-template-columns: 1fr;
   }
 
+  .featured-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .wa-float {
     display: flex;
   }
@@ -510,13 +617,28 @@ section {
     font-size: 2rem;
   }
 
+  .hero {
+    min-height: 980px;
+    padding-top: 92px;
+    padding-bottom: 130px;
+    overflow: visible;
+  }
+
   .hero-content {
-    padding: 18px 10px 24px;
+    padding: 18px 10px 70px;
   }
 
   .hero-text h2 {
     font-size: 1.7rem;
     line-height: 1.12;
+  }
+
+  .hero-video-desktop {
+    display: none !important;
+  }
+
+  .hero-video-mobile {
+    display: block !important;
   }
 
   .featured-products-grid {
@@ -534,174 +656,6 @@ section {
 
   .featured-card__image {
     height: 210px;
-  }
-
-  .hero-video-desktop {
-    display: none;
-  }
-
-  .hero-video-mobile {
-    display: block;
-  }
-}
-.featured-products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  align-items: stretch;
-}
-
-.more-experiences-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 32px;
-}
-
-.more-experiences-btn {
-  min-width: 240px;
-  text-align: center;
-}
-
-@media (max-width: 992px) {
-  .featured-products-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .featured-products-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* =========================
-   AJUSTES CARDS + HERO
-========================= */
-
-/* Pastillas: Top ventas, Recomendado, Cultural, etc */
-.featured-card__badge {
-  background: #0b3b2e !important;
-  color: #fff !important;
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow: 0 10px 20px rgba(11, 59, 46, 0.22);
-}
-
-/* Botón Ver experiencia centrado y más redondeado */
-.featured-card__actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: center;
-}
-
-.featured-card__actions .btn {
-  min-width: 210px;
-  text-align: center;
-  border-radius: 999px;
-  padding: 14px 24px;
-  font-weight: 800;
-}
-
-/* Botón Ver más experiencias con más volumen */
-.more-experiences-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 34px;
-}
-
-.more-experiences-btn {
-  position: relative;
-  min-width: 270px;
-  text-align: center;
-  border-radius: 999px;
-  padding: 16px 30px;
-  font-weight: 900;
-  box-shadow: 0 16px 34px rgba(235, 9, 167, 0.24);
-  overflow: visible;
-}
-
-/* Ondas tipo WhatsApp */
-.more-experiences-btn::before,
-.more-experiences-btn::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: 999px;
-  border: 2px solid rgba(235, 9, 167, 0.35);
-  opacity: 0;
-  pointer-events: none;
-  animation: moreExpRipple 2.2s infinite;
-}
-
-.more-experiences-btn::after {
-  inset: -16px;
-  animation-delay: .7s;
-  border-color: rgba(235, 9, 167, 0.22);
-}
-
-@keyframes moreExpRipple {
-  0% {
-    transform: scale(.86);
-    opacity: 0;
-  }
-  25% {
-    opacity: .9;
-  }
-  70% {
-    opacity: .18;
-  }
-  100% {
-    transform: scale(1.16);
-    opacity: 0;
-  }
-}
-
-/* Hero videos */
-.hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  background: #000;
-}
-
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-video-mobile {
-  display: none;
-}
-
-.hero-video-desktop {
-  display: block;
-}
-
-/* Móvil */
-@media (max-width: 768px) {
-  .hero {
-    min-height: 980px;
-    padding-top: 92px;
-    padding-bottom: 130px;
-    overflow: visible;
-  }
-
-  .hero-media {
-    overflow: hidden;
-  }
-
-  .hero-video-desktop {
-    display: none !important;
-  }
-
-  .hero-video-mobile {
-    display: block !important;
-  }
-
-  .hero-content {
-    padding-bottom: 70px;
   }
 
   .featured-card__actions .btn,
