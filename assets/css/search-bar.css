@@ -562,7 +562,6 @@ body {
      width: min(100%, calc(100vw - 24px));
      border-radius: 20px;
      padding: 10px 12px 24px;
-     padding-top: 60px;
    }
 
   .search-bar .mct-tabs {
