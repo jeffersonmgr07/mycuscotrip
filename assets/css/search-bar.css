@@ -1,3 +1,15 @@
+/* ============================================
+   SEARCH-BAR.CSS
+   Versión corregida y unificada
+   ============================================ */
+
+/* Evitar expansión lateral */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Contenedor principal */
 .search-bar {
   width: 100%;
   position: relative;
@@ -5,6 +17,7 @@
   display: flex;
   justify-content: center;
   overflow: visible;
+  box-sizing: border-box;
 }
 
 .search-bar .mct-card {
@@ -16,13 +29,15 @@
   position: relative;
   overflow: visible;
   border: 0;
+  box-sizing: border-box;
 }
 
+/* Tabs */
 .search-bar .mct-tabs {
   display: inline-flex;
   gap: 0;
   margin: -27px 0 0 22px;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 26px 26px 0 0;
   position: relative;
   z-index: 3;
@@ -46,6 +61,8 @@
   letter-spacing: 0;
   border-radius: 0;
   transition: 0.2s ease;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .search-bar .mct-tab.is-active {
@@ -54,6 +71,7 @@
   border-color: transparent;
 }
 
+/* Barra principal */
 .search-bar .mct-bar {
   display: grid;
   grid-template-columns: 1.18fr 1px 1.45fr 1px 1.08fr auto;
@@ -63,6 +81,7 @@
   padding: 10px 16px 16px;
   overflow: visible;
   border: 0;
+  box-sizing: border-box;
 }
 
 .search-bar .mct-divider {
@@ -80,6 +99,7 @@
   position: relative;
   padding: 6px 28px 10px;
   min-height: 102px;
+  box-sizing: border-box;
 }
 
 .search-bar .mct-label {
@@ -92,6 +112,7 @@
   white-space: nowrap;
 }
 
+/* Inputs */
 .search-bar .mct-input,
 .search-bar .mct-select,
 .search-bar .mct-qty-toggle {
@@ -103,7 +124,7 @@
   font-weight: 800;
   color: #0d3d2a;
   background: transparent;
-  font-size: 1rem;
+  font-size: 16px; /* evita zoom en iPhone */
   cursor: pointer;
   outline: none;
   transition: none;
@@ -143,6 +164,7 @@
   -moz-appearance: none;
 }
 
+/* Fecha */
 .search-bar .mct-fecha-field {
   z-index: 30;
   padding-top: 6px;
@@ -172,44 +194,10 @@
   color: #0d3d2a;
 }
 
+/* Cantidad */
 .search-bar .mct-cantidad {
   position: relative;
   z-index: 140;
-}
-
-.search-bar .mct-submit {
-  height: 64px;
-  align-self: center;
-  margin: 0 0 0 14px;
-  min-width: 210px;
-  border: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #eb09a7, #d90895);
-  color: #fff;
-  font-weight: 900;
-  font-family: "Montserrat", sans-serif;
-  cursor: pointer;
-  box-shadow: 0 14px 30px rgba(235, 9, 167, 0.22);
-  font-size: 0.96rem;
-  letter-spacing: 0;
-  padding: 0 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.search-bar .mct-submit:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 36px rgba(235, 9, 167, 0.28);
-}
-
-@keyframes fadeInOnly {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .search-bar .mct-qty-panel {
@@ -227,6 +215,7 @@
   z-index: 99999;
   animation: fadeInOnly 0.14s ease both;
   display: none;
+  box-sizing: border-box;
 }
 
 .search-bar .mct-qty-panel[hidden] {
@@ -316,6 +305,44 @@
   letter-spacing: 0.5px;
 }
 
+/* Submit */
+.search-bar .mct-submit {
+  height: 64px;
+  align-self: center;
+  margin: 0 0 0 14px;
+  min-width: 210px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eb09a7, #d90895);
+  color: #fff;
+  font-weight: 900;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(235, 9, 167, 0.22);
+  font-size: 16px;
+  letter-spacing: 0;
+  padding: 0 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar .mct-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(235, 9, 167, 0.28);
+}
+
+/* Animación */
+@keyframes fadeInOnly {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Flatpickr */
 .flatpickr-calendar {
   z-index: 100000 !important;
   border: 1px solid rgba(23, 43, 39, 0.12) !important;
@@ -326,6 +353,7 @@
   background: #fff !important;
   animation: fadeInOnly 0.14s ease both;
   max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .flatpickr-day {
@@ -375,6 +403,7 @@
   height: 42px !important;
 }
 
+/* Limpieza de elementos no usados */
 .search-bar .mct-popular-searches,
 .search-bar .mct-popular-label,
 .search-bar .mct-chip {
@@ -391,21 +420,43 @@
   margin-right: 10px;
 }
 
+/* Modal móvil */
+.modal-overlay {
+  padding: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  width: min(380px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Tablet y móvil */
 @media (max-width: 1100px) {
   .search-bar .mct-card {
-    width: min(100%, 100%);
-    border-radius: 24px;
-    padding: 12px;
+    width: 100%;
+    border-radius: 22px;
+    padding: 18px 12px 20px;
+    padding-top: 74px;
     background: #fff;
     border: 1px solid rgba(23, 43, 39, 0.08);
   }
 
   .search-bar .mct-tabs {
-    width: 100%;
+    width: calc(100% - 16px);
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin: 0;
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 0;
+    transform: translateY(-58%);
     border-radius: 18px;
-    margin: 0 0 10px 0;
+    overflow: hidden;
   }
 
   .search-bar .mct-tab {
@@ -422,6 +473,7 @@
     border: 1px solid rgba(23, 43, 39, 0.1);
     border-radius: 18px;
     padding: 0;
+    gap: 0;
   }
 
   .search-bar .mct-divider {
@@ -447,7 +499,7 @@
   .search-bar .mct-select,
   .search-bar .mct-qty-toggle {
     height: 42px;
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .search-bar .mct-hint.in-card {
@@ -457,13 +509,18 @@
     white-space: normal;
   }
 
+  .search-bar .mct-fecha-field,
+  .search-bar .mct-cantidad {
+    padding-bottom: 18px;
+  }
+
   .search-bar .mct-submit {
     width: calc(100% - 16px);
-    height: 50px;
+    height: 52px;
     margin: 8px;
     min-width: 0;
     border-radius: 18px;
-    font-size: 0.92rem;
+    font-size: 16px;
   }
 
   .search-bar .mct-qty-panel {
@@ -473,29 +530,41 @@
     left: 0;
   }
 
-  .search-bar .mct-qty-row {
-    grid-template-columns: 1fr auto;
+  .flatpickr-calendar {
+    max-width: calc(100vw - 24px) !important;
   }
 }
 
 @media (max-width: 768px) {
+  .search-bar {
+    overflow: visible;
+  }
+
   .search-bar .mct-card {
+    width: min(100%, calc(100vw - 24px));
     border-radius: 20px;
-    padding: 12px;
+    padding: 14px 12px 24px;
+    padding-top: 82px;
   }
 
   .search-bar .mct-tabs {
-    width: 100%;
-    display: grid;
+    width: calc(100% - 16px);
+    left: 8px;
+    right: 8px;
+    top: 0;
+    transform: translateY(-60%);
     grid-template-columns: 1fr 1fr;
   }
 
   .search-bar .mct-tab {
     width: 100%;
     justify-content: center;
-    min-height: 40px;
+    min-height: 46px;
+    height: 46px;
     padding: 0 10px;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+    line-height: 1.1;
+    text-align: center;
   }
 
   .search-bar .mct-field {
@@ -510,102 +579,18 @@
   .search-bar .mct-select,
   .search-bar .mct-qty-toggle {
     height: 40px;
-    font-size: 15px;
+    font-size: 16px;
     position: relative;
     top: 1px;
-  }
-
-  .search-bar .mct-submit {
-    font-size: 0.88rem;
-    letter-spacing: 0.3px;
-  }
-}
-/* =========================
-   AJUSTES SEARCH BAR MÓVIL
-========================= */
-
-/* Evitar expansión lateral */
-html,
-body {
-  overflow-x: hidden;
-}
-
-.search-bar,
-.search-bar .mct-card,
-.modal-overlay,
-.modal-content,
-.flatpickr-calendar {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Inputs con 16px para evitar zoom en iPhone */
-.search-bar .mct-input,
-.search-bar .mct-select,
-.search-bar .mct-qty-toggle,
-.search-bar .mct-submit {
-  font-size: 16px;
-}
-
-/* Tabs más afuera del contenedor */
-.search-bar .mct-tabs {
-  top: 0;
-  transform: translateY(-58%);
-}
-
-/* Botón cantidad */
-.search-bar .mct-qty-panel {
-  z-index: 9999;
-}
-
-/* Modal y calendario móviles más contenidos */
-.modal-overlay {
-  padding: 16px;
-}
-
-.modal-content {
-  width: min(380px, calc(100vw - 24px));
-  max-width: calc(100vw - 24px);
-  overflow-x: hidden;
-}
-
-.flatpickr-calendar {
-  max-width: calc(100vw - 24px) !important;
-}
-
-/* Móvil */
-@media (max-width: 768px) {
-  .search-bar {
-    overflow: visible;
-  }
-
-  .search-bar .mct-card {
-    width: min(100%, 100vw - 24px);
-    padding: 14px 12px 24px;
-    padding-top: 78px;
-    overflow: visible;
-    border-radius: 18px;
-  }
-
-  .search-bar .mct-tabs {
-    left: 8px;
-    right: 8px;
-    transform: translateY(-60%);
-  }
-
-  .search-bar .mct-tab {
-    height: 46px;
-    font-size: 0.82rem;
-    padding: 0 10px;
   }
 
   .search-bar .mct-bar {
     gap: 12px;
   }
 
-  .search-bar .mct-fecha-field,
-  .search-bar .mct-cantidad {
-    padding-bottom: 18px;
+  .search-bar .mct-submit {
+    font-size: 15px;
+    letter-spacing: 0.2px;
   }
 
   .flatpickr-calendar {
