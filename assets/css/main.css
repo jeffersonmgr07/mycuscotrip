@@ -85,7 +85,7 @@ a {
   align-items: center;
   color: #fff;
   padding-top: 100px;
-  padding-bottom: 90px; /* espacio extra para panel pasajeros en desktop */
+  padding-bottom: 150px;
   position: relative;
   overflow: visible;
   z-index: 1;
@@ -323,11 +323,11 @@ section {
 
 .more-experiences-btn {
   position: relative;
-  min-width: 290px;
-  min-height: 66px;
+  min-width: 300px;
+  min-height: 74px;
   text-align: center;
   border-radius: 999px;
-  padding: 20px 34px;
+  padding: 24px 38px;
   font-weight: 900;
   display: inline-flex;
   align-items: center;
@@ -634,7 +634,7 @@ section {
   }
 
   .hero-text {
-    margin-bottom: 28px; /* más espacio entre texto y search-bar */
+    margin-bottom: 54px; /* más espacio entre texto y search-bar */
   }
 
   .hero-text h2 {
