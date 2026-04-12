@@ -555,57 +555,95 @@ body {
 /* Móvil */
 @media (max-width: 768px) {
   .search-bar {
-      overflow: visible;
-      padding: 20px 12px 24px;
-   
+    overflow: visible;
+    padding: 28px 12px 24px;
+    position: relative;
   }
-  .search-bar .mct-bar {
-     position: relative;
-     width: min(100%, calc(100vw - 10px));
-     z-index: 5;
-   } 
 
   .search-bar .mct-card {
-     width: min(100%, calc(100vw - 10px));
-     border-radius: 20px;
-     padding: 20px 12px 24px;
-   }
+    width: min(100%, calc(100vw - 10px));
+    border-radius: 28px;
+    padding: 0;
+    padding-top: 58px; /* espacio para que asomen las pestañas */
+    position: relative;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+  }
 
   .search-bar .mct-tabs {
-     width: calc(100% - 10px);
-     left: 8px;
-     right: 8px;
-     top: 0;
-     transform: translateY(-10%);
-     grid-template-columns: 1fr 1fr;
-     z-index: 2;
-   }
+    position: absolute;
+    top: 0;
+    left: 22px;
+    right: 22px;
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    z-index: 1; /* detrás del bloque principal */
+    transform: translateY(0);
+    pointer-events: none;
+  }
 
   .search-bar .mct-tab {
+    pointer-events: auto;
     width: 100%;
+    min-height: 54px;
+    height: 54px;
+    display: flex;
+    align-items: flex-start;
     justify-content: center;
-    min-height: 46px;
-    height: 46px;
-    padding: 0 10px 2px;
+    padding: 10px 10px 0;
     font-size: 0.82rem;
     line-height: 1.1;
     text-align: center;
+    border-radius: 0;
+    position: relative;
+    border: 0;
   }
 
   .search-bar .mct-tab:first-child {
-    border-top-left-radius: 18px;
+    border-top-left-radius: 22px;
+    background: var(--mct-primary);
+    color: #fff;
   }
 
   .search-bar .mct-tab:last-child {
-    border-top-right-radius: 18px;
+    border-top-right-radius: 22px;
+  }
+
+  /* Esto crea el efecto de "ocultarse" detrás del search-bar */
+  .search-bar .mct-bar {
+    position: relative;
+    width: min(100%, calc(100vw - 10px));
+    z-index: 5; /* delante de las pestañas */
+    background: #fff;
+    border-radius: 28px;
+    padding: 10px 0 0;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+    border: 0;
+    overflow: visible;
+    gap: 0;
+    margin-top: -6px; /* tapa un pequeño % de la parte baja de las pestañas */
+  }
+
+  .search-bar .mct-divider {
+    display: none;
   }
 
   .search-bar .mct-field {
-    padding: 8px 12px 12px;
+    padding: 8px 14px 12px;
+    border-bottom: 1px solid rgba(23, 43, 39, 0.08);
+    min-height: auto;
   }
 
   .search-bar .mct-field:first-child {
-    padding-top: 2px; /* quita aire superior en destino */
+    padding-top: 4px;
+  }
+
+  .search-bar .mct-field:last-of-type {
+    border-bottom: 0;
   }
 
   .search-bar .mct-label {
@@ -621,17 +659,26 @@ body {
     top: 1px;
   }
 
-  .search-bar .mct-bar {
-    gap: 12px;
-  }
-
   .search-bar .mct-submit {
+    width: calc(100% - 16px);
+    height: 54px;
+    margin: 8px;
+    min-width: 0;
+    border-radius: 999px;
     font-size: 15px;
     letter-spacing: 0.2px;
   }
 
+  .search-bar .mct-qty-panel {
+    width: 100%;
+    max-width: none;
+    right: 0;
+    left: 0;
+  }
+
   .flatpickr-calendar {
     font-size: 14px !important;
+    max-width: calc(100vw - 24px) !important;
   }
 
   .dayContainer {
