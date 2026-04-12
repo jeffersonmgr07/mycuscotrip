@@ -579,8 +579,8 @@ body {
   .search-bar .mct-tabs {
     position: absolute;
     top: 0;
-    left: 22px;
-    right: 22px;
+    left: 14px;
+    right: 14px;
     width: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
