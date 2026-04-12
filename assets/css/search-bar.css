@@ -576,6 +576,7 @@ body {
      top: 0;
      transform: translateY(-40%);
      grid-template-columns: 1fr 1fr;
+     width: min(100%, calc(100vw - 10px));
      z-index: 2;
    }
 
