@@ -1,15 +1,13 @@
 /* ============================================
    SEARCH-BAR.CSS
-   Versión corregida y unificada
+   Versión coordinada con main.css
    ============================================ */
 
-/* Evitar expansión lateral */
 html,
 body {
   overflow-x: hidden;
 }
 
-/* Contenedor principal */
 .search-bar {
   width: 100%;
   position: relative;
@@ -32,13 +30,12 @@ body {
   box-sizing: border-box;
 }
 
-/* Tabs */
+/* Tabs desktop */
 .search-bar .mct-tabs {
   display: inline-flex;
   gap: 0;
   margin: -27px 0 0 22px;
   overflow: visible;
-  border-radius: 26px 26px 0 0;
   position: relative;
   z-index: 3;
 }
@@ -55,7 +52,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 22px;
+  padding: 0 22px 3px; /* pequeño hundimiento */
   font-family: "Montserrat", sans-serif;
   font-size: 0.94rem;
   letter-spacing: 0;
@@ -63,6 +60,22 @@ body {
   transition: 0.2s ease;
   box-sizing: border-box;
   text-align: center;
+  position: relative;
+  top: 0;
+}
+
+/* redondeo solo esquinas superiores externas */
+.search-bar .mct-tab:first-child {
+  border-top-left-radius: 26px;
+}
+
+.search-bar .mct-tab:last-child {
+  border-top-right-radius: 26px;
+}
+
+/* 5% oculto detrás del buscador */
+.search-bar .mct-tabs .mct-tab {
+  margin-bottom: -3px;
 }
 
 .search-bar .mct-tab.is-active {
@@ -71,7 +84,6 @@ body {
   border-color: transparent;
 }
 
-/* Barra principal */
 .search-bar .mct-bar {
   display: grid;
   grid-template-columns: 1.18fr 1px 1.45fr 1px 1.08fr auto;
@@ -82,6 +94,8 @@ body {
   overflow: visible;
   border: 0;
   box-sizing: border-box;
+  position: relative;
+  z-index: 5;
 }
 
 .search-bar .mct-divider {
@@ -112,7 +126,6 @@ body {
   white-space: nowrap;
 }
 
-/* Inputs */
 .search-bar .mct-input,
 .search-bar .mct-select,
 .search-bar .mct-qty-toggle {
@@ -124,7 +137,7 @@ body {
   font-weight: 800;
   color: #0d3d2a;
   background: transparent;
-  font-size: 16px; /* evita zoom en iPhone */
+  font-size: 16px;
   cursor: pointer;
   outline: none;
   transition: none;
@@ -164,7 +177,6 @@ body {
   -moz-appearance: none;
 }
 
-/* Fecha */
 .search-bar .mct-fecha-field {
   z-index: 30;
   padding-top: 6px;
@@ -194,7 +206,6 @@ body {
   color: #0d3d2a;
 }
 
-/* Cantidad */
 .search-bar .mct-cantidad {
   position: relative;
   z-index: 140;
@@ -305,7 +316,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Submit */
 .search-bar .mct-submit {
   height: 64px;
   align-self: center;
@@ -330,7 +340,6 @@ body {
   box-shadow: 0 18px 36px rgba(235, 9, 167, 0.28);
 }
 
-/* Animación */
 @keyframes fadeInOnly {
   from {
     opacity: 0;
@@ -403,7 +412,6 @@ body {
   height: 42px !important;
 }
 
-/* Limpieza de elementos no usados */
 .search-bar .mct-popular-searches,
 .search-bar .mct-popular-label,
 .search-bar .mct-chip {
@@ -420,7 +428,6 @@ body {
   margin-right: 10px;
 }
 
-/* Modal móvil */
 .modal-overlay {
   padding: 16px;
   max-width: 100%;
@@ -434,7 +441,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Tablet y móvil */
+/* Tablet */
 @media (max-width: 1100px) {
   .search-bar .mct-card {
     width: 100%;
@@ -455,16 +462,22 @@ body {
     right: 8px;
     top: 0;
     transform: translateY(-58%);
-    border-radius: 18px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .search-bar .mct-tab {
     min-width: 0;
     height: 48px;
     font-size: 0.84rem;
-    border-radius: 0;
-    padding: 0 14px;
+    padding: 0 14px 2px;
+  }
+
+  .search-bar .mct-tab:first-child {
+    border-top-left-radius: 18px;
+  }
+
+  .search-bar .mct-tab:last-child {
+    border-top-right-radius: 18px;
   }
 
   .search-bar .mct-bar {
@@ -484,6 +497,10 @@ body {
     min-height: auto;
     padding: 12px 14px 14px;
     border-bottom: 1px solid rgba(23, 43, 39, 0.08);
+  }
+
+  .search-bar .mct-field:first-child {
+    padding-top: 6px; /* menos aire encima de destino */
   }
 
   .search-bar .mct-field:last-of-type {
@@ -535,6 +552,7 @@ body {
   }
 }
 
+/* Móvil */
 @media (max-width: 768px) {
   .search-bar {
     overflow: visible;
@@ -543,8 +561,8 @@ body {
   .search-bar .mct-card {
     width: min(100%, calc(100vw - 24px));
     border-radius: 20px;
-    padding: 14px 12px 24px;
-    padding-top: 82px;
+    padding: 10px 12px 24px;
+    padding-top: 66px; /* menos aire arriba de destino */
   }
 
   .search-bar .mct-tabs {
@@ -552,7 +570,7 @@ body {
     left: 8px;
     right: 8px;
     top: 0;
-    transform: translateY(-60%);
+    transform: translateY(-52%);
     grid-template-columns: 1fr 1fr;
   }
 
@@ -561,14 +579,26 @@ body {
     justify-content: center;
     min-height: 46px;
     height: 46px;
-    padding: 0 10px;
+    padding: 0 10px 2px;
     font-size: 0.82rem;
     line-height: 1.1;
     text-align: center;
   }
 
+  .search-bar .mct-tab:first-child {
+    border-top-left-radius: 18px;
+  }
+
+  .search-bar .mct-tab:last-child {
+    border-top-right-radius: 18px;
+  }
+
   .search-bar .mct-field {
-    padding: 10px 12px 12px;
+    padding: 8px 12px 12px;
+  }
+
+  .search-bar .mct-field:first-child {
+    padding-top: 4px; /* quita aire superior en destino */
   }
 
   .search-bar .mct-label {
