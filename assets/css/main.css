@@ -85,6 +85,7 @@ a {
   align-items: center;
   color: #fff;
   padding-top: 100px;
+  padding-bottom: 90px; /* espacio extra para panel pasajeros en desktop */
   position: relative;
   overflow: visible;
   z-index: 1;
@@ -139,7 +140,7 @@ a {
 
 .hero-text {
   text-align: left;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .hero-text h2 {
@@ -157,7 +158,7 @@ a {
 
 #search-bar-container {
   width: 100%;
-  margin-top: 18px;
+  margin-top: 22px;
   position: relative;
   z-index: 50;
   overflow: visible;
@@ -322,11 +323,15 @@ section {
 
 .more-experiences-btn {
   position: relative;
-  min-width: 270px;
+  min-width: 290px;
+  min-height: 66px;
   text-align: center;
   border-radius: 999px;
-  padding: 16px 30px;
+  padding: 20px 34px;
   font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 16px 34px rgba(235, 9, 167, 0.24);
   overflow: visible;
 }
@@ -579,22 +584,22 @@ section {
   .hero {
     padding-top: 92px;
     min-height: auto;
+    padding-bottom: 80px;
   }
 
   .hero-content {
-    padding: 22px 16px 40px;
+    padding: 32px 16px 44px;
   }
 
   .hero-text {
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
   }
 
   .hero-text h2 {
     font-size: 2rem;
   }
 
-  .featured-products-grid,
   .video-showcase {
     grid-template-columns: 1fr;
   }
@@ -618,14 +623,18 @@ section {
   }
 
   .hero {
-    min-height: 980px;
+    min-height: 1080px;
     padding-top: 92px;
-    padding-bottom: 130px;
+    padding-bottom: 150px;
     overflow: visible;
   }
 
   .hero-content {
-    padding: 18px 10px 70px;
+    padding: 34px 10px 90px;
+  }
+
+  .hero-text {
+    margin-bottom: 28px; /* más espacio entre texto y search-bar */
   }
 
   .hero-text h2 {
@@ -661,6 +670,11 @@ section {
   .featured-card__actions .btn,
   .more-experiences-btn {
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
+  }
+
+  .more-experiences-btn {
+    min-height: 70px;
+    padding: 22px 30px;
   }
 }
