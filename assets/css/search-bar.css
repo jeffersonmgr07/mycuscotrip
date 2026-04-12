@@ -601,7 +601,7 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 10px 10px 0;
+    padding: 10px 4px 0;
     font-size: 0.82rem;
     line-height: 1.1;
     text-align: center;
@@ -610,6 +610,8 @@ body {
     border: 0;
     background: #f4f1ec;
     color: #0d3d2a;
+    white-space: nowrap;
+    letter-spacing: -0.2px;
   }
 
   .search-bar .mct-tab:first-child {
