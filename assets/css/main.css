@@ -573,3 +573,140 @@ section {
     grid-template-columns: 1fr;
   }
 }
+/* =========================
+   AJUSTES CARDS + HERO
+========================= */
+
+/* Pastillas: Top ventas, Recomendado, Cultural, etc */
+.featured-card__badge {
+  background: #0b3b2e !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 20px rgba(11, 59, 46, 0.22);
+}
+
+/* Botón Ver experiencia centrado y más redondeado */
+.featured-card__actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.featured-card__actions .btn {
+  min-width: 210px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 800;
+}
+
+/* Botón Ver más experiencias con más volumen */
+.more-experiences-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.more-experiences-btn {
+  position: relative;
+  min-width: 270px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 16px 30px;
+  font-weight: 900;
+  box-shadow: 0 16px 34px rgba(235, 9, 167, 0.24);
+  overflow: visible;
+}
+
+/* Ondas tipo WhatsApp */
+.more-experiences-btn::before,
+.more-experiences-btn::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  border: 2px solid rgba(235, 9, 167, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  animation: moreExpRipple 2.2s infinite;
+}
+
+.more-experiences-btn::after {
+  inset: -16px;
+  animation-delay: .7s;
+  border-color: rgba(235, 9, 167, 0.22);
+}
+
+@keyframes moreExpRipple {
+  0% {
+    transform: scale(.86);
+    opacity: 0;
+  }
+  25% {
+    opacity: .9;
+  }
+  70% {
+    opacity: .18;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+}
+
+/* Hero videos */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-mobile {
+  display: none;
+}
+
+.hero-video-desktop {
+  display: block;
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 980px;
+    padding-top: 92px;
+    padding-bottom: 130px;
+    overflow: visible;
+  }
+
+  .hero-media {
+    overflow: hidden;
+  }
+
+  .hero-video-desktop {
+    display: none !important;
+  }
+
+  .hero-video-mobile {
+    display: block !important;
+  }
+
+  .hero-content {
+    padding-bottom: 70px;
+  }
+
+  .featured-card__actions .btn,
+  .more-experiences-btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
