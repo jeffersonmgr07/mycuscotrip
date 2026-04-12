@@ -561,7 +561,7 @@ body {
   .search-bar .mct-card {
      width: min(100%, calc(100vw - 24px));
      border-radius: 20px;
-     padding: 10px 12px 24px;
+     padding: 20px 12px 24px;
    }
 
   .search-bar .mct-tabs {
@@ -569,7 +569,7 @@ body {
      left: 8px;
      right: 8px;
      top: 0;
-     transform: translateY(-44%);
+     transform: translateY(-80%);
      grid-template-columns: 1fr 1fr;
      z-index: 2;
    }
