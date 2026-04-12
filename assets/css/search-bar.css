@@ -75,7 +75,7 @@ body {
 
 /* 5% oculto detrás del buscador */
 .search-bar .mct-tabs .mct-tab {
-  margin-bottom: -3px;
+  margin-bottom: -2px;
 }
 
 .search-bar .mct-tab.is-active {
@@ -559,20 +559,21 @@ body {
   }
 
   .search-bar .mct-card {
-    width: min(100%, calc(100vw - 24px));
-    border-radius: 20px;
-    padding: 10px 12px 24px;
-    padding-top: 66px; /* menos aire arriba de destino */
-  }
+     width: min(100%, calc(100vw - 24px));
+     border-radius: 20px;
+     padding: 10px 12px 24px;
+     padding-top: 60px;
+   }
 
   .search-bar .mct-tabs {
-    width: calc(100% - 16px);
-    left: 8px;
-    right: 8px;
-    top: 0;
-    transform: translateY(-52%);
-    grid-template-columns: 1fr 1fr;
-  }
+     width: calc(100% - 16px);
+     left: 8px;
+     right: 8px;
+     top: 0;
+     transform: translateY(-44%);
+     grid-template-columns: 1fr 1fr;
+     z-index: 2;
+   }
 
   .search-bar .mct-tab {
     width: 100%;
@@ -598,7 +599,7 @@ body {
   }
 
   .search-bar .mct-field:first-child {
-    padding-top: 4px; /* quita aire superior en destino */
+    padding-top: 2px; /* quita aire superior en destino */
   }
 
   .search-bar .mct-label {
