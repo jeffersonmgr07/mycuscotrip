@@ -555,7 +555,9 @@ body {
 /* Móvil */
 @media (max-width: 768px) {
   .search-bar {
-    overflow: visible;
+      overflow: visible;
+      padding: 20px 12px 24px;
+   
   }
   .search-bar .mct-bar {
      position: relative;
