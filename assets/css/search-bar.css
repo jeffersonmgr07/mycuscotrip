@@ -560,7 +560,7 @@ body {
 @media (max-width: 768px) {
   .search-bar {
     overflow: visible;
-    padding: 30px 12px 24px;
+    padding: 18px 12px 10px;
     position: relative;
   }
 
@@ -573,17 +573,17 @@ body {
     border: 0;
     border-radius: 0;
     padding: 0;
-    padding-top: 44px;
+    padding-top: 40px;
   }
 
   .search-bar .mct-tabs {
     position: absolute;
     top: 0;
-    left: 6px;
-    right: 6px;
+    left: 10px;
+    right: 10px;
     width: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.9fr 1.3fr;
     gap: 0;
     margin: 0;
     z-index: 1;
@@ -596,14 +596,14 @@ body {
     pointer-events: auto;
     width: 100%;
     min-width: 0;
-    height: 65px;
-    min-height: 65px;
+    height: 58px;
+    min-height: 58px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 10px 4px 0;
-    font-size: 0.82rem;
-    line-height: 1.1;
+    padding: 11px 6px 0;
+    font-size: 0.76rem;
+    line-height: 1.05;
     text-align: center;
     border-radius: 0;
     position: relative;
@@ -611,7 +611,7 @@ body {
     background: #f4f1ec;
     color: #0d3d2a;
     white-space: nowrap;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.15px;
   }
 
   .search-bar .mct-tab:first-child {
@@ -629,18 +629,19 @@ body {
 
   .search-bar .mct-bar {
     position: relative;
-    width: min(100%, calc(100vw - 4px));
+    width: min(100%, calc(100vw - 6px));
     z-index: 5;
     display: grid;
     grid-template-columns: 1fr;
     background: #fff;
     border-radius: 28px;
-    padding: 8px 0 0;
+    padding: 10px 0 10px;
     box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
     border: 0;
     overflow: visible;
     gap: 0;
-    margin-top: -10px; /* tapa aprox 5% inferior de tabs */
+    margin-top: -8px;
+    min-height: 470px;
   }
 
   .search-bar .mct-divider {
@@ -649,12 +650,12 @@ body {
 
   .search-bar .mct-field {
     min-height: auto;
-    padding: 8px 14px 12px;
+    padding: 10px 14px 14px;
     border-bottom: 1px solid rgba(23, 43, 39, 0.08);
   }
 
   .search-bar .mct-field:first-child {
-    padding-top: 4px;
+    padding-top: 8px;
   }
 
   .search-bar .mct-field:last-of-type {
@@ -662,27 +663,29 @@ body {
   }
 
   .search-bar .mct-label {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     font-size: 0.78rem;
   }
 
   .search-bar .mct-input,
   .search-bar .mct-select,
   .search-bar .mct-qty-toggle {
-    height: 40px;
+    height: 42px;
     font-size: 16px;
     position: relative;
     top: 1px;
   }
 
   .search-bar .mct-submit {
-    width: calc(100% - 40px);
-    height: 54px;
-    margin: 8px;
+    width: calc(100% - 64px);
+    max-width: 260px;
+    height: 50px;
+    margin: 12px auto 10px;
     min-width: 0;
     border-radius: 999px;
-    font-size: 15px;
-    letter-spacing: 0.2px;
+    font-size: 14px;
+    letter-spacing: 0.1px;
+    display: block;
   }
 
   .search-bar .mct-qty-panel {
