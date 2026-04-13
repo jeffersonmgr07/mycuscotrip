@@ -64,7 +64,6 @@
   gap: 26px 34px;
 }
 
-/* ACORDEONES BASE */
 .footer-accordion {
   border: 0;
   background: transparent;
@@ -146,7 +145,7 @@
   font-size: 0.95rem;
 }
 
-/* DESKTOP: QUE NO SEA DESPLEGABLE */
+/* DESKTOP */
 @media (min-width: 769px) {
   .footer-accordion {
     display: block;
@@ -163,11 +162,12 @@
     display: none;
   }
 
-  .footer-accordion > div {
+  .footer-accordion .footer-link-col {
     display: flex !important;
   }
 
-  .footer-accordion:not([open]) > div {
+  .footer-accordion[open] .footer-link-col,
+  .footer-accordion:not([open]) .footer-link-col {
     display: flex !important;
   }
 }
@@ -183,7 +183,7 @@
   }
 }
 
-/* MÓVIL: DESPLEGABLES PLEGADOS */
+/* MÓVIL */
 @media (max-width: 768px) {
   .footer-incarail {
     padding-top: 48px;
@@ -236,14 +236,5 @@
 
   .footer-bottom {
     flex-direction: column;
-  }
-
-  /* en móvil todos plegados al cargar */
-  .footer-accordion[open] {
-    overflow: hidden;
-  }
-
-  .footer-payments[open] .footer-link-col {
-    padding-top: 14px;
   }
 }
