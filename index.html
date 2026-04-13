@@ -273,15 +273,38 @@
       console.log('🎬 Iniciando aplicación en GitHub Pages...');
       
       // Cargar componentes HTML
-      await Promise.all([
-        loadComponent('header', 'header-container'),
-        loadComponent('search-bar', 'search-bar-container'),
-        loadComponent('footer', 'footer-container')
-      ]);
+      <script>
+        function syncFooterAccordions() {
+          const accordions = document.querySelectorAll('.footer-accordion');
+          if (!accordions.length) return;
       
-      // Inicializar JS después de cargar HTML
-      setTimeout(initializeComponents, 300);
-    }
+          const isDesktop = window.innerWidth >= 769;
+      
+          accordions.forEach((item) => {
+            if (isDesktop) {
+              item.open = true;
+            } else {
+              item.open = false;
+            }
+          });
+        }
+      
+        async function initializeApp() {
+          console.log('🎬 Iniciando aplicación en GitHub Pages...');
+      
+          await Promise.all([
+            loadComponent('header', 'header-container'),
+            loadComponent('search-bar', 'search-bar-container'),
+            loadComponent('footer', 'footer-container')
+          ]);
+      
+          syncFooterAccordions();
+          setTimeout(syncFooterAccordions, 200);
+          setTimeout(initializeComponents, 300);
+        }
+      
+        window.addEventListener('resize', syncFooterAccordions);
+      </script>    }
     
     // Iniciar cuando esté listo
     if (document.readyState === 'loading') {
