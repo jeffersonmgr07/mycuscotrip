@@ -554,8 +554,8 @@
     "guideLanguages": ["es", "en"]
   },
   "basePricing": {
-    "adult": 400,
-    "child": 400
+    "adult": 749,
+    "child": 699
   },
   "capacity": 15,
   "images": {
