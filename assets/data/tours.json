@@ -639,8 +639,8 @@
   "extras": [],
   "paymentOptions": {
     "fullPaymentDiscountPercent": 0,
-    "partialPaymentPerPerson": 100,
-    "partialPaymentLabel": "Reserva con USD 100 por persona y completa el saldo antes del viaje"
+    "partialPaymentPerPerson": 199,
+    "partialPaymentLabel": "Reserva con USD 199 por persona y completa el saldo antes del viaje"
   },
   "booking": {
     "reservationCodePrefix": "PKG"
