@@ -342,5 +342,149 @@
     },
     "extras": []
   }
+},
+  {
+  "codigo": "BR-1367382877",
+  "apellido": "BATISTA RIVERA",
+  "fechaVoucher": "jueves, 14 de mayo de 2026",
+  "fechaEmision": "2026-05-14",
+  "fechaViaje": "2026-05-14",
+  "duracion": "Full Day",
+  "idioma": "Español",
+  "titularReserva": "John Klever Batista Rivera",
+  "telefonoContacto": "+507 6714-5233",
+  "codigoCupon": "VIA-85475879",
+  "cantidadPaxs": 7,
+  "destino": "Cusco - Montaña de Colores Vinicunca",
+  "packTour": "Tour Montaña de Colores - Vinicunca Full Day",
+  "agenteAsignado": "Jefferson García",
+  "agenteTelefono": "+51 900 608 980",
+  "agenteFoto": "./assets/img/agentes/jefferson-garcia.jpg",
+
+  "hotelInfo": [],
+
+  "turistas": [
+    {
+      "nombreCompleto": "John Klever Batista Rivera",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA0861940",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "26/06/1999",
+      "telefono": "+507 6714-5233"
+    },
+    {
+      "nombreCompleto": "Montserrat Johana Batista Rivera",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA0862921",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "26/12/2007",
+      "telefono": "-"
+    },
+    {
+      "nombreCompleto": "Grecia Maybel Morales Quintero",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA0695435",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "07/07/1996",
+      "telefono": "-"
+    },
+    {
+      "nombreCompleto": "Eurania Maribel Rivera Gutierrez",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA0947569",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "29/08/1967",
+      "telefono": "-"
+    },
+    {
+      "nombreCompleto": "Zuleika Graciela Castro de Gracia",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA1092866",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "19/10/1967",
+      "telefono": "-"
+    },
+    {
+      "nombreCompleto": "Laura Librada Patiño Castro",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA0843986",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "15/09/1997",
+      "telefono": "-"
+    },
+    {
+      "nombreCompleto": "Soledad Aurora Castro de Gracia",
+      "tipoDocumento": "Pasaporte",
+      "numeroDocumento": "PA1337728",
+      "nacionalidad": "Panameña",
+      "fechaNacimiento": "14/05/1965",
+      "telefono": "-"
+    }
+  ],
+
+  "servicios": [
+    {
+      "codigo": "TRA001",
+      "nombre": "Recojo desde punto de encuentro",
+      "fecha": "Jue - 14-May-2026",
+      "horaInicio": "04:00 a. m.",
+      "horaFin": "04:30 a. m.",
+      "incluido": true
+    },
+    {
+      "codigo": "VIN001",
+      "nombre": "Tour Montaña de Colores - Vinicunca Full Day",
+      "fecha": "Jue - 14-May-2026",
+      "horaInicio": "04:30 a. m.",
+      "horaFin": "06:00 p. m.",
+      "incluido": true
+    }
+  ],
+
+  "vuelos": [],
+
+  "incluye": [
+    "Desayuno básico con alimentos típicos de la zona",
+    "Almuerzo con platos típicos de la zona",
+    "Vehículo con aire acondicionado",
+    "Botiquín de primeros auxilios y equipo de asistencia",
+    "Acceso preferencial sin filas",
+    "Asistencia personalizada durante la excursión"
+  ],
+
+  "noIncluye": [
+    "Ticket de ingreso a la montaña: US$ 8.00 por persona",
+    "Opción de cuatrimotos: US$ 45.00 por persona"
+  ],
+
+  "informacionAdicional": [
+    "Punto de recogida: Ayenda Casa Escondida San Cristobal Premium, Calle Pumacurco, Cusco, Peru.",
+    "Presentarse con anticipación a cada servicio.",
+    "Llevar documento original.",
+    "Coordinar cambios con su agente.",
+    "Para toda clase de asistencia durante su viaje puede contactarse con su agente asignado: Jefferson García - +51 900 608 980."
+  ],
+
+  "pagos": {
+    "totalPendiente": {
+      "label": "Reserva totalmente pagada",
+      "descripcion": "Todos los servicios han sido cancelados en su totalidad.",
+      "montoPen": 0,
+      "montoUsd": 0,
+      "url": "",
+      "detalle": [
+        "PAXS #01 - USD 39.00",
+        "PAXS #02 - USD 39.00",
+        "PAXS #03 - USD 39.00",
+        "PAXS #04 - USD 39.00",
+        "PAXS #05 - USD 39.00",
+        "PAXS #06 - USD 39.00",
+        "PAXS #07 - USD 39.00",
+        "TOTAL PAGADO USD 273.00"
+      ],
+      "badge": "PAGADO"
+    },
+    "extras": []
+  }
 }
 ]
