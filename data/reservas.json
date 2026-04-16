@@ -152,8 +152,8 @@
       "noches": "01",
       "categoria": "3 estrellas",
       "habitacion": "Triple",
-      "direccion": "Calle Las Orquídeas, Aguas Calientes",
-      "telefono": "",
+      "direccion": "Aymuraypa Tikan 109, Aguas Calientes",
+      "telefono": "+51966384656",
       "observaciones": "Desayuno incluido / WiFi / Agua caliente / Toallas"
     },
     {
@@ -214,7 +214,7 @@
     },
     {
       "codigo": "CUS001",
-      "nombre": "City Tour Cusco + Ruinas",
+      "nombre": "City Tour Cusco + Centros Arqueológicos",
       "fecha": "Jue - 16-Abr-2026",
       "horaInicio": "01:30 p. m.",
       "horaFin": "06:30 p. m.",
@@ -224,8 +224,8 @@
       "codigo": "TRA008",
       "nombre": "Traslado Cusco / Est. Ollanta",
       "fecha": "Vie - 17-Abr-2026",
-      "horaInicio": "07:00 a. m.",
-      "horaFin": "09:00 a. m.",
+      "horaInicio": "03:00 a. m.",
+      "horaFin": "05:00 a. m.",
       "incluido": true
     },
     {
@@ -270,7 +270,7 @@
     },
     {
       "codigo": "CUS004",
-      "nombre": "Tour Valle Sagrado VIP",
+      "nombre": "Tour Valle Sagrado VIP + Almuerzo buffet",
       "fecha": "Dom - 19-Abr-2026",
       "horaInicio": "07:00 a. m.",
       "horaFin": "07:30 p. m.",
@@ -288,7 +288,7 @@
   "vuelos": [
     {
       "operador": "JetSmart",
-      "numero": "-",
+      "numero": "JA7019",
       "origen": "Lima",
       "destino": "Cusco",
       "salida": "16-Abr-2026 05:15 AM",
@@ -296,7 +296,7 @@
     },
     {
       "operador": "JetSmart",
-      "numero": "-",
+      "numero": "JA7040",
       "origen": "Cusco",
       "destino": "Lima",
       "salida": "19-Abr-2026 10:10 PM",
@@ -304,12 +304,13 @@
     }
   ],
   "incluye": [
-    "03 noches de alojamiento en hoteles 3 estrellas",
+    "02 noches de alojamiento en Hotel Cusco Boutique Cat. 3 estrellas",
+    "01 noche de alojamiento en Hotel Rumi Cat. 3 estrellas",
     "Desayunos incluidos (semi-buffet)",
     "Traslados aeropuerto – hotel – aeropuerto",
     "Entrada a Machu Picchu (Circuito 1)",
     "Ticket de bus subida y bajada para Machu Picchu",
-    "Traslados a estación de tren / ruta terrestre según itinerario",
+    "Traslados a estación de tren Ollantaytambo (ida y retorno)",
     "Guías profesionales certificados para todas las excursiones",
     "Ceremonia andina de bienvenida y pago a la tierra",
     "Asistencia y orientación al turista 24/7"
@@ -324,7 +325,7 @@
     "Presentarse con anticipación a cada servicio.",
     "Llevar documento original.",
     "Coordinar cambios con su agente.",
-    "Recojo aeropuerto de tercer turista programado para el 17-abr-2026 08:50 PM."
+    "Recojo aeropuerto de Angel Melendez programado para el 16-abr-2026 10:30 PM - Vuelo JetSmart JA7031"
   ],
   "pagos": {
     "totalPendiente": {
@@ -336,7 +337,8 @@
         "PAXS #01 - S/ 559.90",
         "PAXS #02 - S/ 559.90",
         "PAXS #03 - S/ 529.00",
-        "TOTAL PAGADO S/ 1,648.80"
+        "Adicional: Almuerzo Buffet Vale - S/ 105.00",
+        "TOTAL PAGADO S/ 1,753.80"
       ],
       "badge": "PAGADO"
     },
@@ -345,7 +347,7 @@
 },
   {
   "codigo": "BR-1367382877",
-  "apellido": "BATISTA RIVERA",
+  "apellido": "BATISTA",
   "fechaVoucher": "jueves, 14 de mayo de 2026",
   "fechaEmision": "2026-05-14",
   "fechaViaje": "2026-05-14",
@@ -424,15 +426,15 @@
 
   "servicios": [
     {
-      "codigo": "TRA001",
-      "nombre": "Recojo desde punto de encuentro",
+      "codigo": "TRA011",
+      "nombre": "Recojo desde hotel,
       "fecha": "Jue - 14-May-2026",
       "horaInicio": "04:00 a. m.",
       "horaFin": "04:30 a. m.",
       "incluido": true
     },
     {
-      "codigo": "VIN001",
+      "codigo": "CUS010",
       "nombre": "Tour Montaña de Colores - Vinicunca Full Day",
       "fecha": "Jue - 14-May-2026",
       "horaInicio": "04:30 a. m.",
