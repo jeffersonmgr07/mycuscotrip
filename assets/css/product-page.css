@@ -304,7 +304,7 @@
   list-style: none;
   cursor: pointer;
   padding: 18px 22px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 1.06rem;
   color: #062803;
@@ -469,7 +469,7 @@
 
 .booking-panel__price strong {
   display: block;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 2rem;
   color: #062803;
   line-height: 1.05;
@@ -497,6 +497,29 @@
   font-weight: 700;
   margin-bottom: 8px;
   color: #062803;
+}
+
+.booking-field-help {
+  display: block;
+  margin-top: 8px;
+  color: #56645f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.booking-note-box {
+  background: #f8fbf9;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.booking-note-box p {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.92rem;
 }
 
 .booking-field input:not([type="checkbox"]),
@@ -627,6 +650,108 @@
   cursor: pointer;
 }
 
+.booking-dynamic-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.booking-accommodation-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  background: #f9fcfb;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.booking-accommodation-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.booking-accommodation-card__header strong {
+  color: #062803;
+  font-size: 0.98rem;
+}
+
+.booking-accommodation-card__header small {
+  color: #56645f;
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
+.booking-accommodation-card__body {
+  display: grid;
+  gap: 8px;
+}
+
+.booking-accommodation-card__selected,
+.booking-accommodation-card__price {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.booking-accommodation-card__selected {
+  color: #56645f;
+}
+
+.booking-accommodation-card__price {
+  color: #0a3a26;
+  font-weight: 800;
+}
+
+.booking-hotel-info {
+  display: grid;
+  gap: 10px;
+}
+
+.booking-hotel-preview-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 14px;
+  background: #f9fcfb;
+}
+
+.booking-hotel-preview-card__content {
+  display: grid;
+  gap: 4px;
+}
+
+.booking-hotel-preview-card__content strong {
+  color: #062803;
+  font-size: 0.98rem;
+}
+
+.booking-hotel-preview-card__content p {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.91rem;
+  line-height: 1.45;
+}
+
+.booking-hotel-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.booking-hotel-gallery__item {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+}
+
+.booking-hotel-gallery__item img {
+  width: 100%;
+  height: 118px;
+  object-fit: cover;
+  display: block;
+}
+
 .booking-extras {
   display: grid;
   gap: 10px;
@@ -680,7 +805,7 @@
   content: "";
   position: absolute;
   left: 4px;
-  top: 0px;
+  top: 0;
   width: 5px;
   height: 10px;
   border: solid #fff;
@@ -823,6 +948,7 @@
   color: #062803;
   font-size: 1rem;
 }
+
 .booking-summary__later {
   display: flex;
   justify-content: space-between;
@@ -844,8 +970,8 @@
 .booking-main-btn,
 .booking-secondary-btn {
   width: 100%;
-  border-radius: 999px; /* 🔥 totalmente redondeado */
-  padding: 16px 20px;   /* 🔥 más alto (grosor) */
+  border-radius: 999px;
+  padding: 16px 20px;
   font-size: 1.05rem;
   font-weight: 700;
 }
@@ -854,6 +980,203 @@
   background: #fff;
   color: #062803;
   border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* MODAL HOTELES */
+
+body.hotel-modal-open {
+  overflow: hidden;
+}
+
+.hotel-modal[hidden] {
+  display: none !important;
+}
+
+.hotel-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+.hotel-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 18, 13, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+.hotel-modal__dialog {
+  position: relative;
+  width: min(1100px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  margin: 16px auto;
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.hotel-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  color: #062803;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.hotel-modal__header {
+  padding: 26px 28px 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fcfefd;
+}
+
+.hotel-modal__eyebrow {
+  margin: 0 0 8px;
+  color: #0a3a26;
+  font-weight: 800;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hotel-modal__header h2 {
+  margin: 0 0 8px;
+  color: #062803;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  line-height: 1.15;
+}
+
+.hotel-modal__subtitle {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.hotel-modal__body {
+  overflow: auto;
+  padding: 22px 28px 24px;
+  background: #f7faf8;
+}
+
+.hotel-modal__footer {
+  padding: 16px 28px 22px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hotel-modal__list {
+  display: grid;
+  gap: 18px;
+}
+
+.hotel-option-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+}
+
+.hotel-option-card.is-selected {
+  border-color: rgba(10, 58, 38, 0.28);
+  box-shadow: 0 16px 32px rgba(10, 58, 38, 0.14);
+}
+
+.hotel-option-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 20px 14px;
+}
+
+.hotel-option-card__header h3 {
+  margin: 0 0 4px;
+  color: #062803;
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.hotel-option-card__header p {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.hotel-option-card__badge {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #eff8f1;
+  color: #0a3a26;
+  font-weight: 800;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.hotel-option-card__gallery {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 10px;
+  padding: 0 20px 16px;
+}
+
+.hotel-option-card__gallery-item {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f2f4f3;
+}
+
+.hotel-option-card__gallery-item img {
+  width: 100%;
+  height: 142px;
+  object-fit: cover;
+  display: block;
+}
+
+.hotel-option-card__gallery-item.is-main img {
+  height: 100%;
+  min-height: 142px;
+}
+
+.hotel-option-card__body {
+  padding: 0 20px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.hotel-option-card__body label {
+  display: block;
+  margin-bottom: 0;
+  font-weight: 700;
+  color: #062803;
+}
+
+.hotel-option-card__body select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: #fff;
+  font: inherit;
+  color: #17322a;
 }
 
 .similar-mobile-block {
@@ -885,6 +1208,10 @@
   .similar-desktop-block {
     display: none;
   }
+
+  .hotel-modal__dialog {
+    width: min(980px, calc(100vw - 24px));
+  }
 }
 
 @media (max-width: 768px) {
@@ -910,4 +1237,137 @@
   .experience-gallery__side {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: none;
-    gap: 10px
+    gap: 10px;
+  }
+
+  .experience-gallery__side-item img {
+    height: 120px;
+  }
+
+  .experience-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .experience-tabs {
+    gap: 22px;
+  }
+
+  .similar-experiences-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-panel {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .booking-discount-row {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-apply-btn {
+    min-height: 46px;
+  }
+
+  .booking-hotel-gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hotel-modal__dialog {
+    width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    margin: 8px auto;
+    border-radius: 22px;
+  }
+
+  .hotel-modal__header {
+    padding: 20px 18px 14px;
+  }
+
+  .hotel-modal__body {
+    padding: 16px 18px 18px;
+  }
+
+  .hotel-modal__footer {
+    padding: 12px 18px 18px;
+  }
+
+  .hotel-option-card__header {
+    padding: 18px 16px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hotel-option-card__badge {
+    white-space: normal;
+  }
+
+  .hotel-option-card__gallery {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 16px 14px;
+  }
+
+  .hotel-option-card__gallery-item.is-main {
+    grid-column: 1 / -1;
+  }
+
+  .hotel-option-card__body {
+    padding: 0 16px 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .experience-meta-row {
+    align-items: flex-start;
+  }
+
+  .experience-actions {
+    width: 100%;
+  }
+
+  .experience-action-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .booking-traveler-row {
+    padding: 10px 12px;
+  }
+
+  .traveler-stepper {
+    gap: 8px;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .booking-main-btn,
+  .booking-secondary-btn {
+    padding: 14px 18px;
+    font-size: 1rem;
+  }
+
+  .booking-hotel-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .hotel-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .hotel-option-card__gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .hotel-option-card__gallery-item img,
+  .hotel-option-card__gallery-item.is-main img {
+    height: 168px;
+    min-height: 168px;
+  }
+}
