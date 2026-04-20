@@ -1,0 +1,194 @@
+{
+  "destinations": {
+    "cusco": {
+      "label": "Cusco",
+      "hotels": [
+        {
+          "hotelCode": "cusco-boutique-3s",
+          "hotelName": "Hotel Cusco Boutique",
+          "stars": 3,
+          "location": "Cusco",
+          "address": "Calle Teqsecocha 566",
+          "images": {
+            "cover": "./assets/img/hotels/cusco-boutique/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/cusco-boutique/1.jpg",
+              "./assets/img/hotels/cusco-boutique/2.jpg",
+              "./assets/img/hotels/cusco-boutique/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "Individual",
+              "capacity": 1,
+              "pricePerNight": 40
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble",
+              "bedType": "2 camas",
+              "capacity": 2,
+              "pricePerNight": 67
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "pricePerNight": 63
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas",
+              "capacity": 3,
+              "pricePerNight": 75
+            }
+          ]
+        },
+        {
+          "hotelCode": "royal-qosqo-3s",
+          "hotelName": "Hotel Royal Qosqo",
+          "stars": 3,
+          "location": "Cusco",
+          "address": "Calle Teqsecocha 002",
+          "images": {
+            "cover": "./assets/img/hotels/royal-qosqo/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/royal-qosqo/1.jpg",
+              "./assets/img/hotels/royal-qosqo/2.jpg",
+              "./assets/img/hotels/royal-qosqo/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "Individual",
+              "capacity": 1,
+              "pricePerNight": 62
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble",
+              "bedType": "2 camas",
+              "capacity": 2,
+              "pricePerNight": 90
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "pricePerNight": 90
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas",
+              "capacity": 3,
+              "pricePerNight": 108
+            }
+          ]
+        }
+      ]
+    },
+    "aguas-calientes": {
+      "label": "Aguas Calientes",
+      "hotels": [
+        {
+          "hotelCode": "luz-garde-3s",
+          "hotelName": "Hotel Luz Garde",
+          "stars": 3,
+          "location": "Aguas Calientes",
+          "address": "",
+          "images": {
+            "cover": "./assets/img/hotels/luz-garde/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/luz-garde/1.jpg",
+              "./assets/img/hotels/luz-garde/2.jpg",
+              "./assets/img/hotels/luz-garde/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "Individual",
+              "capacity": 1,
+              "pricePerNight": 42
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble",
+              "bedType": "2 camas",
+              "capacity": 2,
+              "pricePerNight": 63
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "pricePerNight": 63
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas",
+              "capacity": 3,
+              "pricePerNight": 83
+            }
+          ]
+        },
+        {
+          "hotelCode": "vista-machu-picchu-3s",
+          "hotelName": "Hotel Vista Machu Picchu",
+          "stars": 3,
+          "location": "Aguas Calientes",
+          "address": "",
+          "images": {
+            "cover": "./assets/img/hotels/vista-machu-picchu/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/vista-machu-picchu/1.jpg",
+              "./assets/img/hotels/vista-machu-picchu/2.jpg",
+              "./assets/img/hotels/vista-machu-picchu/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "Individual",
+              "capacity": 1,
+              "pricePerNight": 62
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble",
+              "bedType": "2 camas",
+              "capacity": 2,
+              "pricePerNight": 93
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "pricePerNight": 93
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas",
+              "capacity": 3,
+              "pricePerNight": 113
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
