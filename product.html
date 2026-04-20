@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/product-page.css?v=10" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=11" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -220,7 +220,6 @@
                 </div>
               </div>
 
-              <!-- MODO DE SERVICIO PARA TOURS -->
               <div id="serviceModeSection" class="booking-field" hidden>
                 <label for="serviceMode">Modalidad del servicio</label>
                 <select id="serviceMode">
@@ -230,25 +229,25 @@
                 <small id="serviceModeHelp" class="booking-field-help"></small>
               </div>
 
-              <!-- ALOJAMIENTO PARA PAQUETES -->
+              <!-- ALOJAMIENTO PARA PAQUETES: RESUMEN + BOTONES PARA ABRIR MODAL -->
               <div id="packageAccommodationSection" class="booking-field" hidden>
                 <label>Selección de alojamiento</label>
                 <div id="accommodationSummary" class="booking-note-box" hidden></div>
                 <div id="hotelSelectorsContainer" class="booking-dynamic-stack"></div>
               </div>
 
-              <!-- TIPO DE HABITACIÓN -->
+              <!-- RESUMEN DE HABITACIONES ELEGIDAS -->
               <div id="roomTypeSection" class="booking-field" hidden>
-                <label for="roomTypeSelect">Tipo de habitación</label>
-                <select id="roomTypeSelect">
+                <label for="roomTypeSelect">Habitaciones seleccionadas</label>
+                <select id="roomTypeSelect" disabled>
                   <option value="">Selecciona una habitación</option>
                 </select>
                 <small id="roomTypeHelp" class="booking-field-help"></small>
               </div>
 
-              <!-- GALERÍA DEL HOTEL SELECCIONADO -->
+              <!-- RESUMEN VISUAL DEL HOTEL ELEGIDO -->
               <div id="selectedHotelGallerySection" class="booking-field" hidden>
-                <label>Fotos del hotel seleccionado</label>
+                <label>Hotel seleccionado</label>
                 <div id="selectedHotelInfo" class="booking-hotel-info"></div>
                 <div id="selectedHotelGallery" class="booking-hotel-gallery"></div>
               </div>
@@ -291,6 +290,7 @@
                   <span>Adultos</span>
                   <strong id="adultsTotal">USD 0</strong>
                 </div>
+
                 <div class="booking-summary__line">
                   <span>Niños</span>
                   <strong id="childrenTotal">USD 0</strong>
@@ -356,6 +356,45 @@
     </section>
   </main>
 
+  <!-- MODAL DE HOTELES -->
+  <div id="hotelSelectionModal" class="hotel-modal" hidden>
+    <div class="hotel-modal__backdrop" data-close-hotel-modal></div>
+
+    <div
+      class="hotel-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="hotelModalTitle"
+    >
+      <button
+        type="button"
+        class="hotel-modal__close"
+        id="closeHotelModalBtn"
+        aria-label="Cerrar modal"
+      >
+        <i class="fas fa-xmark"></i>
+      </button>
+
+      <div class="hotel-modal__header">
+        <p id="hotelModalEyebrow" class="hotel-modal__eyebrow">Selección de alojamiento</p>
+        <h2 id="hotelModalTitle">Elige tu hotel</h2>
+        <p id="hotelModalSubtitle" class="hotel-modal__subtitle">
+          Compara categorías, fotos, habitaciones y tarifas adicionales.
+        </p>
+      </div>
+
+      <div class="hotel-modal__body">
+        <div id="hotelModalList" class="hotel-modal__list"></div>
+      </div>
+
+      <div class="hotel-modal__footer">
+        <button type="button" class="btn booking-secondary-btn" id="cancelHotelModalBtn">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="footer-container"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -410,6 +449,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js?v=10"></script>
+  <script src="./assets/js/pages/product.js?v=11"></script>
 </body>
 </html>
