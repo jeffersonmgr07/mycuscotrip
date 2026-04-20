@@ -21,6 +21,16 @@
       "adult": 389,
       "child": 389
     },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
+    },
     "capacity": 15,
     "images": {
       "cover": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
@@ -119,6 +129,16 @@
       "adult": 320,
       "child": 300
     },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
+    },
     "capacity": 15,
     "images": {
       "cover": "./assets/img/tours/machu-picchu-overnight/cover.png",
@@ -200,6 +220,16 @@
     "basePricing": {
       "adult": 65,
       "child": 55
+    },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
     },
     "capacity": 18,
     "images": {
@@ -287,6 +317,16 @@
       "adult": 35,
       "child": 30
     },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
+    },
     "capacity": 20,
     "images": {
       "cover": "./assets/img/tours/city-tour/cover.jpg",
@@ -368,6 +408,16 @@
     "basePricing": {
       "adult": 45,
       "child": 40
+    },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
     },
     "capacity": 18,
     "images": {
@@ -463,6 +513,16 @@
       "adult": 50,
       "child": 45
     },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
+    },
     "capacity": 18,
     "images": {
       "cover": "./assets/img/tours/laguna-humantay/cover.jpg",
@@ -536,115 +596,131 @@
     "status": "published"
   },
   {
-  "id": "exp_007",
-  "slug": "paquete-cusco-machu-picchu-inti-raymi-7d-6n",
-  "title": "Paquete Cusco, Machu Picchu e Inti Raymi 7D/6N",
-  "category": "paquetes",
-  "type": "custom-package",
-  "typeLabel": "7 días / 6 noches",
-  "badge": "Personalizado",
-  "featured": true,
-  "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca",
-  "currency": "USD",
-  "shortDescription": "Paquete personalizado de 7 días y 6 noches con fechas exactas, itinerario desarrollado, alojamiento en Cusco, Machu Picchu, Inti Raymi y Montaña de Colores.",
-  "description": "Vive un paquete personalizado de 7 días y 6 noches en Cusco con fechas exactas y un itinerario desarrollado. Esta experiencia combina bienvenida ancestral, City Tour con centros arqueológicos, Valle Sagrado con conexión en tren a Aguas Calientes, visita a Machu Picchu, día libre para disfrutar la festividad del Inti Raymi y excursión a la Montaña de Colores. Incluye alojamiento en el Hotel Royal Cusco de categoría 3 estrellas, ubicado muy cerca de la Plaza de Armas, además de excursiones, entradas y tren Inca Rail The Voyager. Los vuelos internacionales no están incluidos.",
-  "duration": {
-    "label": "7 días / 6 noches",
-    "maxGroupSize": 15,
-    "guideLanguages": ["es", "en"]
-  },
-  "basePricing": {
-    "adult": 749,
-    "child": 699
-  },
-  "capacity": 15,
-  "images": {
-    "cover": "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/cover.jpg",
-    "gallery": [
-      "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/1.jpg",
-      "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/2.jpg",
-      "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/3.jpg",
-      "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/4.jpg"
-    ]
-  },
-  "includes": [
-    "Traslados y asistencia en destino",
-    "Tour de bienvenida ancestral + centros arqueológicos",
-    "Tour Valle Sagrado",
-    "Conexión en tren a Aguas Calientes",
-    "Tour a Machu Picchu",
-    "Retorno en tren hacia Ollantaytambo y traslado a Cusco",
-    "Tour a la Montaña de Colores",
-    "Entrada a Machu Picchu",
-    "Boleto turístico para las excursiones indicadas",
-    "Entradas de las excursiones mencionadas",
-    "Ticket de tren Inca Rail The Voyager",
-    "06 noches de alojamiento en Hotel Royal Cusco 3 estrellas",
-    "Guiado profesional en español o inglés"
-  ],
-  "excludes": [
-    "Vuelos Santiago - Cusco - Santiago",
-    "Alimentación no especificada",
-    "Gastos personales",
-    "Servicios no mencionados"
-  ],
-  "itinerary": [
-    {
-      "title": "20 de junio - Vuelo Santiago a Cusco",
-      "description": "Inicio del paquete con vuelo desde Santiago de Chile hacia Cusco. Llegada, asistencia y coordinación de servicios."
+    "id": "exp_007",
+    "slug": "paquete-cusco-machu-picchu-inti-raymi-7d-6n",
+    "title": "Paquete Cusco, Machu Picchu e Inti Raymi 7D/6N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "7 días / 6 noches",
+    "badge": "Personalizado",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca",
+    "currency": "USD",
+    "shortDescription": "Paquete personalizado de 7 días y 6 noches con fechas exactas, itinerario desarrollado, alojamiento configurable, Machu Picchu, Inti Raymi y Montaña de Colores.",
+    "description": "Vive un paquete personalizado de 7 días y 6 noches en Cusco con fechas exactas y un itinerario desarrollado. Esta experiencia combina bienvenida ancestral, City Tour con centros arqueológicos, Valle Sagrado con conexión en tren a Aguas Calientes, visita a Machu Picchu, día libre para disfrutar la festividad del Inti Raymi y excursión a la Montaña de Colores. Incluye excursiones, entradas y tren Inca Rail The Voyager. Los vuelos internacionales no están incluidos y el alojamiento se calcula según la selección de hotel y habitación.",
+    "duration": {
+      "label": "7 días / 6 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
     },
-    {
-      "title": "21 de junio - Bienvenida ancestral + centros arqueológicos",
-      "description": "Experiencia de bienvenida ancestral y recorrido por centros arqueológicos de Cusco para iniciar el viaje con una inmersión cultural."
+    "basePricing": {
+      "adult": 749,
+      "child": 699
     },
-    {
-      "title": "22 de junio - Valle Sagrado + tren a Aguas Calientes",
-      "description": "Excursión al Valle Sagrado de los Incas y posterior conexión en tren hacia Aguas Calientes para pernocte y preparación de la visita a Machu Picchu."
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 5,
+        "label": "Cusco - 5 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/3.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-inti-raymi-7d-6n/4.jpg"
+      ]
     },
-    {
-      "title": "23 de junio - Machu Picchu + retorno a Cusco",
-      "description": "Tour a Machu Picchu por la mañana. Por la tarde, retorno en tren hacia Ollantaytambo y traslado posterior hacia la ciudad de Cusco."
+    "includes": [
+      "Traslados y asistencia en destino",
+      "Tour de bienvenida ancestral + centros arqueológicos",
+      "Tour Valle Sagrado",
+      "Conexión en tren a Aguas Calientes",
+      "Tour a Machu Picchu",
+      "Retorno en tren hacia Ollantaytambo y traslado a Cusco",
+      "Tour a la Montaña de Colores",
+      "Entrada a Machu Picchu",
+      "Boleto turístico para las excursiones indicadas",
+      "Entradas de las excursiones mencionadas",
+      "Ticket de tren Inca Rail The Voyager",
+      "Guiado profesional en español o inglés"
+    ],
+    "excludes": [
+      "Vuelos Santiago - Cusco - Santiago",
+      "Alojamiento, cuando no esté incluido en la selección final",
+      "Alimentación no especificada",
+      "Gastos personales",
+      "Servicios no mencionados"
+    ],
+    "itinerary": [
+      {
+        "title": "20 de junio - Vuelo Santiago a Cusco",
+        "description": "Inicio del paquete con vuelo desde Santiago de Chile hacia Cusco. Llegada, asistencia y coordinación de servicios."
+      },
+      {
+        "title": "21 de junio - Bienvenida ancestral + centros arqueológicos",
+        "description": "Experiencia de bienvenida ancestral y recorrido por centros arqueológicos de Cusco para iniciar el viaje con una inmersión cultural."
+      },
+      {
+        "title": "22 de junio - Valle Sagrado + tren a Aguas Calientes",
+        "description": "Excursión al Valle Sagrado de los Incas y posterior conexión en tren hacia Aguas Calientes para pernocte y preparación de la visita a Machu Picchu."
+      },
+      {
+        "title": "23 de junio - Machu Picchu + retorno a Cusco",
+        "description": "Tour a Machu Picchu por la mañana. Por la tarde, retorno en tren hacia Ollantaytambo y traslado posterior hacia la ciudad de Cusco."
+      },
+      {
+        "title": "24 de junio - Día libre / Inti Raymi",
+        "description": "Día libre en Cusco para participar y disfrutar de la festividad del Inti Raymi según preferencia del viajero."
+      },
+      {
+        "title": "25 de junio - Montaña de Colores",
+        "description": "Excursión de día completo a la Montaña de Colores para disfrutar uno de los paisajes más emblemáticos de la región."
+      },
+      {
+        "title": "26 de junio - Retorno Cusco a Santiago",
+        "description": "Traslado de salida y vuelo de retorno desde Cusco hacia Santiago de Chile."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Este paquete incluye vuelos internacionales?",
+        "a": "No. El paquete no incluye los vuelos Santiago - Cusco - Santiago."
+      },
+      {
+        "q": "¿Cómo se calcula el alojamiento?",
+        "a": "El precio final del paquete puede variar según el hotel, el destino y el tipo de habitación seleccionados."
+      },
+      {
+        "q": "¿El tren a Machu Picchu está incluido?",
+        "a": "Sí. Está incluido el ticket de tren Inca Rail, servicio The Voyager."
+      },
+      {
+        "q": "¿El Inti Raymi está incluido como tour guiado?",
+        "a": "No como excursión específica en esta versión. El 24 de junio queda como día libre para participar de la festividad en Cusco."
+      }
+    ],
+    "extras": [],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 199,
+      "partialPaymentLabel": "Reserva con USD 199 por persona y completa el saldo antes del viaje"
     },
-    {
-      "title": "24 de junio - Día libre / Inti Raymi",
-      "description": "Día libre en Cusco para participar y disfrutar de la festividad del Inti Raymi según preferencia del viajero."
+    "booking": {
+      "reservationCodePrefix": "PKG"
     },
-    {
-      "title": "25 de junio - Montaña de Colores",
-      "description": "Excursión de día completo a la Montaña de Colores para disfrutar uno de los paisajes más emblemáticos de la región."
-    },
-    {
-      "title": "26 de junio - Retorno Cusco a Santiago",
-      "description": "Traslado de salida y vuelo de retorno desde Cusco hacia Santiago de Chile."
-    }
-  ],
-  "faq": [
-    {
-      "q": "¿Este paquete incluye vuelos internacionales?",
-      "a": "No. El paquete no incluye los vuelos Santiago - Cusco - Santiago."
-    },
-    {
-      "q": "¿Qué alojamiento incluye?",
-      "a": "Incluye alojamiento en el Hotel Royal Cusco, categoría 3 estrellas, ubicado cerca de la Plaza de Armas."
-    },
-    {
-      "q": "¿El tren a Machu Picchu está incluido?",
-      "a": "Sí. Está incluido el ticket de tren Inca Rail, servicio The Voyager."
-    },
-    {
-      "q": "¿El Inti Raymi está incluido como tour guiado?",
-      "a": "No como excursión específica en esta versión. El 24 de junio queda como día libre para participar de la festividad en Cusco."
-    }
-  ],
-  "extras": [],
-  "paymentOptions": {
-    "fullPaymentDiscountPercent": 0,
-    "partialPaymentPerPerson": 199,
-    "partialPaymentLabel": "Reserva con USD 199 por persona y completa el saldo antes del viaje"
-  },
-  "booking": {
-    "reservationCodePrefix": "PKG"
-  },
-  "status": "published"
-}
+    "status": "published"
+  }
 ]
