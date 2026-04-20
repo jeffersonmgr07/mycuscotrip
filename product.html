@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/product-page.css?v=9" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=10" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -35,7 +35,7 @@
             <div class="experience-meta-row">
               <div class="experience-rating">
                 <span class="experience-rating__score">4.9</span>
-                <span class="experience-rating__stars">★★★★★</span>
+                <span class="experience-rating__stars">★ ★ ★ ★ ★</span>
                 <span class="experience-rating__reviews">(24 reseñas)</span>
               </div>
 
@@ -84,7 +84,7 @@
                 <i class="fas fa-circle-check"></i>
                 <div>
                   <strong>Reserva flexible</strong>
-                  <p>Separa tu cupo y completa el pago según la modalidad del tour.</p>
+                  <p>Separa tu cupo y completa el pago según la modalidad de la experiencia.</p>
                 </div>
               </div>
               <div class="benefit-item">
@@ -220,6 +220,39 @@
                 </div>
               </div>
 
+              <!-- MODO DE SERVICIO PARA TOURS -->
+              <div id="serviceModeSection" class="booking-field" hidden>
+                <label for="serviceMode">Modalidad del servicio</label>
+                <select id="serviceMode">
+                  <option value="group">Tour en grupo</option>
+                  <option value="private">Tour privado</option>
+                </select>
+                <small id="serviceModeHelp" class="booking-field-help"></small>
+              </div>
+
+              <!-- ALOJAMIENTO PARA PAQUETES -->
+              <div id="packageAccommodationSection" class="booking-field" hidden>
+                <label>Selección de alojamiento</label>
+                <div id="accommodationSummary" class="booking-note-box" hidden></div>
+                <div id="hotelSelectorsContainer" class="booking-dynamic-stack"></div>
+              </div>
+
+              <!-- TIPO DE HABITACIÓN -->
+              <div id="roomTypeSection" class="booking-field" hidden>
+                <label for="roomTypeSelect">Tipo de habitación</label>
+                <select id="roomTypeSelect">
+                  <option value="">Selecciona una habitación</option>
+                </select>
+                <small id="roomTypeHelp" class="booking-field-help"></small>
+              </div>
+
+              <!-- GALERÍA DEL HOTEL SELECCIONADO -->
+              <div id="selectedHotelGallerySection" class="booking-field" hidden>
+                <label>Fotos del hotel seleccionado</label>
+                <div id="selectedHotelInfo" class="booking-hotel-info"></div>
+                <div id="selectedHotelGallery" class="booking-hotel-gallery"></div>
+              </div>
+
               <div id="extrasSection" class="booking-field" hidden>
                 <label>Extras</label>
                 <div id="extrasContainer" class="booking-extras"></div>
@@ -236,11 +269,11 @@
               <div class="booking-benefits-box">
                 <div class="booking-benefit-line">
                   <i class="fas fa-rotate-left"></i>
-                  <p><strong>Política de cancelación</strong> • Cancela dentro del plazo permitido según la experiencia.</p>
+                  <p><strong>Política de cancelación</strong> · Cancela dentro del plazo permitido según la experiencia.</p>
                 </div>
                 <div class="booking-benefit-line">
                   <i class="fas fa-wallet"></i>
-                  <p><strong>Reserva ahora y paga después</strong> • Puedes separar tu cupo con pago parcial cuando esté disponible.</p>
+                  <p><strong>Reserva ahora y paga después</strong> · Puedes separar tu cupo con pago parcial cuando esté disponible.</p>
                 </div>
               </div>
 
@@ -262,22 +295,37 @@
                   <span>Niños</span>
                   <strong id="childrenTotal">USD 0</strong>
                 </div>
+
+                <div class="booking-summary__line" id="serviceModeSummaryRow" hidden>
+                  <span>Modalidad</span>
+                  <strong id="serviceModeSummary">Tour en grupo</strong>
+                </div>
+
+                <div class="booking-summary__line" id="accommodationTotalRow" hidden>
+                  <span>Alojamiento</span>
+                  <strong id="accommodationTotal">USD 0</strong>
+                </div>
+
                 <div class="booking-summary__line">
                   <span>Extras</span>
                   <strong id="extrasTotal">USD 0</strong>
                 </div>
+
                 <div class="booking-summary__line" id="discountRow" hidden>
                   <span>Descuento</span>
                   <strong id="discountTotal">- USD 0</strong>
                 </div>
+
                 <div class="booking-summary__line">
                   <span>Total servicio</span>
                   <strong id="serviceTotal">USD 0</strong>
                 </div>
+
                 <div class="booking-summary__total">
                   <span id="payNowLabel">Pagar ahora</span>
                   <strong id="payNowTotal">USD 0</strong>
                 </div>
+
                 <div class="booking-summary__later" id="payLaterRow" hidden>
                   <span>Pagarás luego</span>
                   <strong id="payLaterTotal">USD 0</strong>
@@ -362,6 +410,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js?v=9"></script>
+  <script src="./assets/js/pages/product.js?v=10"></script>
 </body>
 </html>
