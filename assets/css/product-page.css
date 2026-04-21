@@ -1641,3 +1641,210 @@ body.hotel-modal-open {
     padding-left: 46px;
   }
 }
+/* PANEL: TITULOS DE HOTELES MAS CLAROS Y BOTON MAS FINO */
+.booking-accommodation-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.booking-accommodation-card__header {
+  background: #edf3ef;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.booking-accommodation-card__header strong {
+  color: #062803;
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+.booking-accommodation-card__header small {
+  color: #4f6159;
+}
+
+.booking-accommodation-card__body {
+  padding: 14px;
+}
+
+.open-hotel-modal-btn {
+  width: auto;
+  justify-self: start;
+  padding: 10px 16px;
+  font-size: 0.92rem;
+  line-height: 1.1;
+  min-height: 40px;
+}
+
+/* FOOTER DEL MODAL SIEMPRE VISIBLE */
+.hotel-modal__dialog {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.hotel-modal__body {
+  min-height: 0;
+}
+
+.hotel-modal__footer {
+  position: relative;
+  z-index: 5;
+}
+
+/* MOVIL: GALERIA COMO UNA SOLA IMAGEN CON SLIDER */
+@media (max-width: 768px) {
+  .hotel-modal__dialog {
+    width: calc(100vw - 12px);
+    max-height: calc(100vh - 12px);
+    margin: 6px auto;
+    border-radius: 18px;
+  }
+
+  .hotel-modal__header {
+    padding: 18px 14px 12px;
+  }
+
+  .hotel-modal__body {
+    padding: 12px 14px 14px;
+  }
+
+  .hotel-modal__footer {
+    padding: 12px 14px max(16px, env(safe-area-inset-bottom));
+    justify-content: center;
+    background: #fff;
+  }
+
+  .hotel-option-card__header {
+    padding: 16px 14px 10px;
+  }
+
+  .hotel-option-card__gallery {
+    grid-template-columns: 1fr;
+    padding: 0 14px 12px;
+  }
+
+  .hotel-option-card__gallery-item {
+    display: none;
+  }
+
+  .hotel-gallery-main {
+    grid-column: auto;
+    min-height: 210px;
+    border-radius: 16px;
+  }
+
+  .hotel-gallery-main-img {
+    min-height: 210px;
+    height: 210px;
+  }
+
+  .hotel-option-card__body {
+    padding: 0 14px 16px;
+  }
+
+  .hotel-combo-btn {
+    padding: 12px 12px 12px 44px;
+    min-height: 72px;
+    align-items: center;
+  }
+
+  .hotel-combo-btn__main {
+    font-size: 0.93rem;
+    line-height: 1.2;
+  }
+
+  .hotel-combo-btn__sub {
+    font-size: 0.84rem;
+    line-height: 1.28;
+  }
+
+  .hotel-combo-radio {
+    left: 14px;
+    width: 17px;
+    height: 17px;
+  }
+
+  #cancelHotelModalBtn {
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
+    font-size: 0.94rem;
+    padding: 12px 18px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+}
+
+/* MOVILES PEQUENOS / IPHONE */
+@media (max-width: 430px) {
+  .hotel-modal__dialog {
+    width: calc(100vw - 8px);
+    max-height: calc(100vh - 8px);
+    margin: 4px auto;
+    border-radius: 16px;
+  }
+
+  .hotel-modal__close {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .hotel-modal__header {
+    padding: 16px 12px 10px;
+  }
+
+  .hotel-modal__header h2 {
+    font-size: 1.15rem;
+    line-height: 1.15;
+    padding-right: 34px;
+  }
+
+  .hotel-modal__subtitle {
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+
+  .hotel-modal__body {
+    padding: 10px 12px 12px;
+  }
+
+  .hotel-modal__footer {
+    padding: 10px 12px calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .hotel-gallery-main {
+    min-height: 190px;
+  }
+
+  .hotel-gallery-main-img {
+    min-height: 190px;
+    height: 190px;
+  }
+
+  .hotel-gallery-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .hotel-combo-btn {
+    padding: 11px 10px 11px 42px;
+    min-height: 68px;
+    border-radius: 16px;
+  }
+
+  .hotel-combo-btn__main {
+    font-size: 0.9rem;
+  }
+
+  .hotel-combo-btn__sub {
+    font-size: 0.8rem;
+  }
+
+  #cancelHotelModalBtn {
+    font-size: 0.9rem;
+    padding: 11px 16px;
+  }
+}
