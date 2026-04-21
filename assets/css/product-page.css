@@ -1848,3 +1848,120 @@ body.hotel-modal-open {
     padding: 11px 16px;
   }
 }
+/* HEADER DEL MODAL */
+.hotel-modal__header {
+  background: rgb(10, 58, 38);
+  color: #fff;
+  border-bottom: 0;
+}
+
+.hotel-modal__eyebrow {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.hotel-modal__header h2,
+.hotel-modal__subtitle {
+  color: #fff;
+}
+
+.hotel-modal__close {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* PC: imagen a la izquierda y acomodaciones a la derecha */
+.hotel-option-card__content {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.05fr) minmax(320px, 1fr);
+  gap: 18px;
+  padding: 0 20px 20px;
+  align-items: start;
+}
+
+.hotel-option-card__content--no-hotel {
+  grid-template-columns: 1fr;
+}
+
+.hotel-option-card__media {
+  display: grid;
+  gap: 10px;
+}
+
+.hotel-option-card__gallery {
+  display: block;
+  padding: 0;
+}
+
+.hotel-option-card__gallery-item {
+  display: none;
+}
+
+.hotel-gallery-main {
+  min-height: 260px;
+  border-radius: 18px;
+}
+
+.hotel-gallery-main-img {
+  min-height: 260px;
+  height: 260px;
+}
+
+.hotel-option-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hotel-option-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #eef5f1;
+  color: #0a3a26;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.hotel-option-card__body {
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  align-self: center;
+}
+
+/* MANTENER MOVIL COMO ESTÁ */
+@media (max-width: 768px) {
+  .hotel-modal__header {
+    background: rgb(10, 58, 38);
+  }
+
+  .hotel-option-card__content,
+  .hotel-option-card__content--no-hotel {
+    display: block;
+    padding: 0;
+  }
+
+  .hotel-option-card__media {
+    display: block;
+  }
+
+  .hotel-option-card__gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0 14px 12px;
+  }
+
+  .hotel-option-card__gallery-item {
+    display: none;
+  }
+
+  .hotel-option-card__meta {
+    display: none;
+  }
+
+  .hotel-option-card__body {
+    padding: 0 14px 16px;
+  }
+}
