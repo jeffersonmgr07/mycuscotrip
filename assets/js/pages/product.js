@@ -17,9 +17,7 @@ class MyCuscoTripProductPage {
 
     this.serviceMode = "group";
 
-    // Destino -> hotelCode
     this.selectedHotelsByDestination = {};
-    // Destino -> combinación elegida
     this.selectedCombinationsByDestination = {};
 
     this.activeHotelModalDestination = null;
@@ -214,10 +212,6 @@ class MyCuscoTripProductPage {
       this.handlePaypalAction();
     });
 
-    document.getElementById("bookingPreviewButton")?.addEventListener("click", () => {
-      this.showBookingPreview();
-    });
-
     this.bindAccommodationEvents();
     this.bindHotelModalEvents();
 
@@ -401,18 +395,12 @@ class MyCuscoTripProductPage {
 
   renderAccommodationOptions(product) {
     const section = document.getElementById("packageAccommodationSection");
-    const summaryBox = document.getElementById("accommodationSummary");
     const container = document.getElementById("hotelSelectorsContainer");
-    const roomTypeSection = document.getElementById("roomTypeSection");
-    const hotelGallerySection = document.getElementById("selectedHotelGallerySection");
 
-    if (!section || !summaryBox || !container || !roomTypeSection || !hotelGallerySection) return;
+    if (!section || !container) return;
 
     section.hidden = true;
-    summaryBox.hidden = true;
     container.innerHTML = "";
-    roomTypeSection.hidden = true;
-    hotelGallerySection.hidden = true;
 
     if (!this.isPackage(product)) return;
 
@@ -420,19 +408,16 @@ class MyCuscoTripProductPage {
     if (!summary.length) return;
 
     section.hidden = false;
-    summaryBox.hidden = false;
-    summaryBox.innerHTML = summary
-      .map((item) => `<p>${this.escapeHtml(item.label || this.getDestinationLabel(item.destination))}</p>`)
-      .join("");
 
     container.innerHTML = summary.map((item) => {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additionalPerPerson = this.calculateAccommodationAdditionalPerPerson(item.destination);
+      const hasSelection = Boolean(selection?.hotel && selection?.combination);
 
       return `
         <div class="booking-accommodation-card">
           <div class="booking-accommodation-card__header">
-            <strong>${this.escapeHtml(item.label || this.getDestinationLabel(item.destination))}</strong>
+            <strong>${this.escapeHtml(this.getDestinationLabel(item.destination))}</strong>
             <small>${item.nights} noche${item.nights > 1 ? "s" : ""}</small>
           </div>
 
@@ -456,16 +441,12 @@ class MyCuscoTripProductPage {
               class="btn booking-secondary-btn open-hotel-modal-btn"
               data-destination="${this.escapeHtml(item.destination)}"
             >
-              Elegir hotel
+              ${hasSelection ? "Cambiar hotel" : "Elegir hotel"}
             </button>
           </div>
         </div>
       `;
     }).join("");
-
-    roomTypeSection.hidden = false;
-    this.renderRoomTypeSummary();
-    this.renderSelectedHotelGallery();
   }
 
   bindAccommodationEvents() {
@@ -513,23 +494,49 @@ class MyCuscoTripProductPage {
     const nights = Number(summaryItem?.nights || 0);
 
     title.textContent = `Elige tu hotel en ${destinationLabel}`;
-    subtitle.textContent = `Compara hoteles, fotos y opciones de acomodación para ${nights} noche${nights !== 1 ? "s" : ""}. Las opciones están ordenadas de la más económica a la más cara.`;
+    subtitle.textContent = `Compara hoteles, fotos y opciones de acomodación para ${nights} noche${nights !== 1 ? "s" : ""}.`;
 
     const hotels = this.getHotelsByDestination(destination);
     const passengers = this.getTotalPassengers();
 
-    if (!hotels.length) {
-      list.innerHTML = `<p>No hay hoteles configurados para este destino.</p>`;
-      modal.hidden = false;
-      document.body.classList.add("hotel-modal-open");
-      return;
-    }
+    const noHotelOption = {
+      hotelCode: "no-hotel",
+      hotelName: "Sin hotel",
+      stars: 0,
+      location: destinationLabel,
+      address: "",
+      images: {
+        cover: "",
+        gallery: []
+      },
+      rooms: [
+        {
+          roomType: "no-hotel",
+          label: "Sin hotel",
+          bedType: "No incluye alojamiento",
+          capacity: Math.max(passengers, 1),
+          pricePerNight: 0
+        }
+      ]
+    };
 
-    list.innerHTML = hotels.map((hotel) => {
-      const combinations = this.generateAccommodationCombinations(hotel.rooms || [], passengers, nights);
+    const allHotels = [noHotelOption, ...hotels];
+
+    list.innerHTML = allHotels.map((hotel) => {
+      const combinations = this.generateAccommodationCombinations(
+        hotel.rooms || [],
+        passengers,
+        nights
+      );
+
       const currentHotelCode = this.selectedHotelsByDestination[destination];
       const currentCombinationKey = this.selectedCombinationsByDestination[destination]?.key;
       const isSelectedHotel = currentHotelCode === hotel.hotelCode;
+
+      const initialCombo =
+        combinations.find((combo) => isSelectedHotel && combo.key === currentCombinationKey) ||
+        combinations[0] ||
+        null;
 
       const images = [...new Set([
         ...(hotel.images?.cover ? [hotel.images.cover] : []),
@@ -537,22 +544,37 @@ class MyCuscoTripProductPage {
       ])];
 
       return `
-        <article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""}" data-hotel-card="${this.escapeHtml(hotel.hotelCode)}">
+        <article
+          class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""}"
+          data-hotel-card="${this.escapeHtml(hotel.hotelCode)}"
+          data-destination="${this.escapeHtml(destination)}"
+          data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
+          data-selected-combo-key="${this.escapeHtml(initialCombo?.key || "")}"
+        >
           <div class="hotel-option-card__header">
             <div>
               <h3>${this.escapeHtml(hotel.hotelName)}</h3>
-              <p>${hotel.stars || 0}★ · ${this.escapeHtml(hotel.location || destinationLabel)}</p>
+              <p>${hotel.hotelCode === "no-hotel"
+                ? "Opción sin alojamiento"
+                : `${hotel.stars || 0}★ · ${this.escapeHtml(hotel.location || destinationLabel)}`}</p>
               ${hotel.address ? `<p>${this.escapeHtml(hotel.address)}</p>` : ""}
             </div>
             <div class="hotel-option-card__badge">
               ${combinations.length
-                ? `Desde + ${this.product.currency || "USD"} ${this.formatMoney(combinations[0].additionalPerPerson)} por persona`
+                ? `+ ${this.product.currency || "USD"} ${this.formatMoney(combinations[0].additionalPerPerson)} por persona`
                 : "Sin opciones válidas"}
             </div>
           </div>
 
           <div class="hotel-option-card__gallery">
-            ${this.renderHotelModalGallery(images, hotel.hotelName)}
+            ${hotel.hotelCode === "no-hotel"
+              ? `<div class="hotel-gallery-main hotel-gallery-main--empty">
+                   <div class="hotel-gallery-empty-state">
+                     <strong>Sin hotel</strong>
+                     <span>El costo de alojamiento será 0.</span>
+                   </div>
+                 </div>`
+              : this.renderHotelModalGallery(images, hotel.hotelName)}
           </div>
 
           <div class="hotel-option-card__body">
@@ -579,6 +601,15 @@ class MyCuscoTripProductPage {
                 : `<p>No hay acomodaciones válidas para ${passengers} pasajero${passengers !== 1 ? "s" : ""}.</p>`
               }
             </div>
+
+            <button
+              type="button"
+              class="btn booking-main-btn confirm-hotel-selection-btn"
+              data-destination="${this.escapeHtml(destination)}"
+              data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
+            >
+              Seleccionar hotel y acomodación
+            </button>
           </div>
         </article>
       `;
@@ -603,11 +634,52 @@ class MyCuscoTripProductPage {
   bindHotelModalSelectionEvents() {
     document.querySelectorAll(".hotel-combo-btn").forEach((button) => {
       button.addEventListener("click", () => {
+        const card = button.closest(".hotel-option-card");
+        if (!card) return;
+
+        const comboKey = button.dataset.comboKey;
+        card.dataset.selectedComboKey = comboKey;
+
+        card.querySelectorAll(".hotel-combo-btn").forEach((btn) => {
+          btn.classList.toggle("is-selected", btn.dataset.comboKey === comboKey);
+        });
+      });
+    });
+
+    document.querySelectorAll(".confirm-hotel-selection-btn").forEach((button) => {
+      button.addEventListener("click", () => {
         const destination = button.dataset.destination;
         const hotelCode = button.dataset.hotelCode;
-        const comboKey = button.dataset.comboKey;
 
-        const hotel = this.getHotelByCode(destination, hotelCode);
+        const card = button.closest(".hotel-option-card");
+        if (!card) return;
+
+        const comboKey = card.dataset.selectedComboKey || "";
+        if (!comboKey) return;
+
+        let hotel;
+        if (hotelCode === "no-hotel") {
+          hotel = {
+            hotelCode: "no-hotel",
+            hotelName: "Sin hotel",
+            stars: 0,
+            location: this.getDestinationLabel(destination),
+            address: "",
+            images: { cover: "", gallery: [] },
+            rooms: [
+              {
+                roomType: "no-hotel",
+                label: "Sin hotel",
+                bedType: "No incluye alojamiento",
+                capacity: Math.max(this.getTotalPassengers(), 1),
+                pricePerNight: 0
+              }
+            ]
+          };
+        } else {
+          hotel = this.getHotelByCode(destination, hotelCode);
+        }
+
         const summaryItem = this.getAccommodationSummary(this.product).find((item) => item.destination === destination);
         const combinations = this.generateAccommodationCombinations(
           hotel?.rooms || [],
@@ -623,8 +695,6 @@ class MyCuscoTripProductPage {
 
         this.renderAccommodationOptions(this.product);
         this.bindAccommodationEvents();
-        this.renderRoomTypeSummary();
-        this.renderSelectedHotelGallery();
         this.updatePricing();
         this.closeHotelModal();
       });
@@ -634,13 +704,13 @@ class MyCuscoTripProductPage {
   bindHotelModalGalleryEvents() {
     document.querySelectorAll(".hotel-gallery-prev, .hotel-gallery-next").forEach((button) => {
       button.addEventListener("click", () => {
-        const card = button.closest("[data-hotel-card]");
-        if (!card) return;
+        const gallery = button.closest(".hotel-gallery-main");
+        if (!gallery) return;
 
-        const mainImg = card.querySelector(".hotel-gallery-main-img");
+        const mainImg = gallery.querySelector(".hotel-gallery-main-img");
         if (!mainImg) return;
 
-        const imagesRaw = card.dataset.images || "[]";
+        const imagesRaw = gallery.dataset.images || "[]";
         let images = [];
         try {
           images = JSON.parse(imagesRaw);
@@ -650,13 +720,13 @@ class MyCuscoTripProductPage {
 
         if (!images.length) return;
 
-        const currentIndex = Number(card.dataset.currentImageIndex || 0);
+        const currentIndex = Number(gallery.dataset.currentImageIndex || 0);
         const isNext = button.classList.contains("hotel-gallery-next");
         const nextIndex = isNext
           ? (currentIndex + 1) % images.length
           : (currentIndex - 1 + images.length) % images.length;
 
-        card.dataset.currentImageIndex = String(nextIndex);
+        gallery.dataset.currentImageIndex = String(nextIndex);
         mainImg.src = this.resolveAssetPath(images[nextIndex]);
       });
     });
@@ -690,166 +760,6 @@ class MyCuscoTripProductPage {
         </div>
       `).join("") : ""}
     `;
-  }
-
-  refreshAccommodationSelections() {
-    if (!this.product || !this.isPackage(this.product)) return;
-
-    const summary = this.getAccommodationSummary(this.product);
-    const passengers = this.getTotalPassengers();
-
-    summary.forEach((item) => {
-      const hotels = this.getHotelsByDestination(item.destination);
-      if (!hotels.length) return;
-
-      let hotelCode = this.selectedHotelsByDestination[item.destination];
-      if (!hotelCode || !this.getHotelByCode(item.destination, hotelCode)) {
-        hotelCode = hotels[0].hotelCode;
-        this.selectedHotelsByDestination[item.destination] = hotelCode;
-      }
-
-      const hotel = this.getHotelByCode(item.destination, hotelCode);
-      const combinations = this.generateAccommodationCombinations(
-        hotel?.rooms || [],
-        passengers,
-        Number(item.nights || 0)
-      );
-
-      const currentComboKey = this.selectedCombinationsByDestination[item.destination]?.key;
-      const validSelected = combinations.find((combo) => combo.key === currentComboKey);
-
-      if (!validSelected) {
-        this.selectedCombinationsByDestination[item.destination] = combinations[0] || null;
-      }
-    });
-
-    this.renderAccommodationOptions(this.product);
-    this.bindAccommodationEvents();
-    this.renderRoomTypeSummary();
-    this.renderSelectedHotelGallery();
-  }
-
-  renderRoomTypeSummary() {
-    const section = document.getElementById("roomTypeSection");
-    const select = document.getElementById("roomTypeSelect");
-    const help = document.getElementById("roomTypeHelp");
-
-    if (!section || !select || !help) return;
-
-    if (!this.product || !this.isPackage(this.product)) {
-      section.hidden = true;
-      return;
-    }
-
-    const summary = this.getAccommodationSummary(this.product);
-    if (!summary.length) {
-      section.hidden = true;
-      return;
-    }
-
-    section.hidden = false;
-
-    const options = summary.map((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-      return {
-        value: `${item.destination}:${selection?.combination?.key || ""}`,
-        label: `${item.label || this.getDestinationLabel(item.destination)} · ${selection?.hotel?.hotelName || "Hotel por confirmar"} · ${selection?.combination?.label || "Acomodación por confirmar"}`
-      };
-    });
-
-    select.innerHTML = options.length
-      ? options.map((item) => `<option value="${this.escapeHtml(item.value)}">${this.escapeHtml(item.label)}</option>`).join("")
-      : `<option value="">Selecciona una habitación</option>`;
-
-    help.textContent = "Resumen de hotel y acomodación seleccionados por destino.";
-  }
-
-  renderSelectedHotelGallery() {
-    const section = document.getElementById("selectedHotelGallerySection");
-    const info = document.getElementById("selectedHotelInfo");
-    const gallery = document.getElementById("selectedHotelGallery");
-
-    if (!section || !info || !gallery) return;
-
-    if (!this.product || !this.isPackage(this.product)) {
-      section.hidden = true;
-      info.innerHTML = "";
-      gallery.innerHTML = "";
-      return;
-    }
-
-    const summary = this.getAccommodationSummary(this.product);
-    if (!summary.length) {
-      section.hidden = true;
-      return;
-    }
-
-    section.hidden = false;
-
-    const infoHtml = [];
-    const galleryHtml = [];
-
-    summary.forEach((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-      if (!selection?.hotel) return;
-
-      infoHtml.push(`
-        <div class="booking-hotel-preview-card">
-          <div class="booking-hotel-preview-card__content">
-            <strong>${this.escapeHtml(item.label || this.getDestinationLabel(item.destination))}</strong>
-            <p>${this.escapeHtml(selection.hotel.hotelName)} (${selection.hotel.stars || 0}★)</p>
-            <p>${this.escapeHtml(selection.hotel.location || "")}${selection.hotel.address ? ` · ${this.escapeHtml(selection.hotel.address)}` : ""}</p>
-            <p>${this.escapeHtml(selection.combination?.label || "Acomodación por confirmar")}</p>
-            <p>+ ${this.product.currency || "USD"} ${this.formatMoney(selection.combination?.additionalPerPerson || 0)} por persona</p>
-          </div>
-        </div>
-      `);
-
-      const cover = selection.hotel.images?.cover ? [selection.hotel.images.cover] : [];
-      const galleryImages = Array.isArray(selection.hotel.images?.gallery) ? selection.hotel.images.gallery : [];
-      const uniqueImages = [...new Set([...cover, ...galleryImages])].slice(0, 3);
-
-      uniqueImages.forEach((src, index) => {
-        galleryHtml.push(`
-          <div class="booking-hotel-gallery__item">
-            <img
-              src="${this.resolveAssetPath(src)}"
-              alt="${this.escapeHtml(selection.hotel.hotelName)} - ${index + 1}"
-              loading="lazy"
-            />
-          </div>
-        `);
-      });
-    });
-
-    info.innerHTML = infoHtml.join("");
-    gallery.innerHTML = galleryHtml.join("");
-  }
-
-  renderSimilarExperiences() {
-    const desktopTarget = document.getElementById("similarExperiencesDesktop");
-    const mobileTarget = document.getElementById("similarExperiencesMobile");
-
-    const similar = this.tours
-      .filter((item) => item.slug !== this.product.slug)
-      .filter((item) => item.category === this.product.category || item.featured)
-      .slice(0, 3);
-
-    const html = !similar.length
-      ? "<p>No hay experiencias similares disponibles por ahora.</p>"
-      : similar.map((item) => `
-        <article class="similar-card">
-          <img src="${this.resolveAssetPath(item.images?.cover || "assets/img/tours/machu-picchu-full-day/cover.jpg")}" alt="${this.escapeHtml(item.title)}" loading="lazy" />
-          <div class="similar-card__content">
-            <h3>${this.escapeHtml(item.title)}</h3>
-            <p>${this.escapeHtml(item.shortDescription || "Experiencia disponible.")}</p>
-            <a class="btn" href="${this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}`)}">Ver experiencia</a>
-          </div>
-        </article>
-      `).join("");
-
-    if (desktopTarget) desktopTarget.innerHTML = html;
-    if (mobileTarget) mobileTarget.innerHTML = html;
   }
 
   updatePassengersUI() {
@@ -1051,24 +961,6 @@ class MyCuscoTripProductPage {
     );
   }
 
-  showBookingPreview() {
-    const summary = this.getBookingSummary();
-    alert(
-      `Resumen de reserva:\n\n` +
-      `Tour: ${summary.title}\n` +
-      `Fecha: ${summary.date}\n` +
-      `Adultos: ${summary.adults}\n` +
-      `Niños: ${summary.children}\n` +
-      `Modalidad servicio: ${summary.serviceMode}\n` +
-      `Alojamiento: ${summary.accommodation.join(" | ") || "No aplica"}\n` +
-      `Extras: ${summary.extras.join(", ") || "Ninguno"}\n` +
-      `Servicio total: ${summary.serviceTotal}\n` +
-      `Pagarás ahora: ${summary.payNow}\n` +
-      `Pagarás luego: ${summary.payLater}\n` +
-      `Modalidad pago: ${summary.paymentMode}`
-    );
-  }
-
   renderNotFound(message) {
     const main = document.querySelector(".product-page");
     if (!main) return;
@@ -1144,7 +1036,21 @@ class MyCuscoTripProductPage {
 
   getSelectedAccommodationForDestination(destination) {
     const hotelCode = this.selectedHotelsByDestination[destination];
-    const hotel = this.getHotelByCode(destination, hotelCode);
+
+    let hotel = null;
+    if (hotelCode === "no-hotel") {
+      hotel = {
+        hotelCode: "no-hotel",
+        hotelName: "Sin hotel",
+        stars: 0,
+        location: this.getDestinationLabel(destination),
+        address: "",
+        images: { cover: "", gallery: [] }
+      };
+    } else {
+      hotel = this.getHotelByCode(destination, hotelCode);
+    }
+
     const combination = this.selectedCombinationsByDestination[destination] || null;
     return { hotel, combination };
   }
@@ -1255,15 +1161,39 @@ class MyCuscoTripProductPage {
 
     summary.forEach((item) => {
       const hotels = this.getHotelsByDestination(item.destination);
-      if (!hotels.length) return;
+      const allHotels = [
+        {
+          hotelCode: "no-hotel",
+          hotelName: "Sin hotel",
+          stars: 0,
+          location: this.getDestinationLabel(item.destination),
+          address: "",
+          images: { cover: "", gallery: [] },
+          rooms: [
+            {
+              roomType: "no-hotel",
+              label: "Sin hotel",
+              bedType: "No incluye alojamiento",
+              capacity: Math.max(passengers, 1),
+              pricePerNight: 0
+            }
+          ]
+        },
+        ...hotels
+      ];
 
       let hotelCode = this.selectedHotelsByDestination[item.destination];
-      if (!hotelCode || !this.getHotelByCode(item.destination, hotelCode)) {
-        hotelCode = hotels[0].hotelCode;
+      let hotel =
+        hotelCode === "no-hotel"
+          ? allHotels.find((h) => h.hotelCode === "no-hotel")
+          : this.getHotelByCode(item.destination, hotelCode);
+
+      if (!hotel) {
+        hotel = allHotels[0];
+        hotelCode = hotel.hotelCode;
         this.selectedHotelsByDestination[item.destination] = hotelCode;
       }
 
-      const hotel = this.getHotelByCode(item.destination, hotelCode);
       const combinations = this.generateAccommodationCombinations(
         hotel?.rooms || [],
         passengers,
@@ -1280,123 +1210,14 @@ class MyCuscoTripProductPage {
 
     this.renderAccommodationOptions(this.product);
     this.bindAccommodationEvents();
-    this.renderRoomTypeSummary();
-    this.renderSelectedHotelGallery();
   }
 
   renderRoomTypeSummary() {
-    const section = document.getElementById("roomTypeSection");
-    const select = document.getElementById("roomTypeSelect");
-    const help = document.getElementById("roomTypeHelp");
-
-    if (!section || !select || !help) return;
-
-    if (!this.product || !this.isPackage(this.product)) {
-      section.hidden = true;
-      return;
-    }
-
-    const summary = this.getAccommodationSummary(this.product);
-    if (!summary.length) {
-      section.hidden = true;
-      return;
-    }
-
-    section.hidden = false;
-
-    const options = summary.map((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-      return {
-        value: `${item.destination}:${selection?.combination?.key || ""}`,
-        label: `${item.label || this.getDestinationLabel(item.destination)} · ${selection?.hotel?.hotelName || "Hotel por confirmar"} · ${selection?.combination?.label || "Acomodación por confirmar"}`
-      };
-    });
-
-    select.innerHTML = options.length
-      ? options.map((item) => `<option value="${this.escapeHtml(item.value)}">${this.escapeHtml(item.label)}</option>`).join("")
-      : `<option value="">Selecciona una habitación</option>`;
-
-    help.textContent = "Resumen de hotel y acomodación seleccionados por destino.";
+    return;
   }
 
   renderSelectedHotelGallery() {
-    const section = document.getElementById("selectedHotelGallerySection");
-    const info = document.getElementById("selectedHotelInfo");
-    const gallery = document.getElementById("selectedHotelGallery");
-
-    if (!section || !info || !gallery) return;
-
-    if (!this.product || !this.isPackage(this.product)) {
-      section.hidden = true;
-      info.innerHTML = "";
-      gallery.innerHTML = "";
-      return;
-    }
-
-    const summary = this.getAccommodationSummary(this.product);
-    if (!summary.length) {
-      section.hidden = true;
-      return;
-    }
-
-    section.hidden = false;
-
-    const infoHtml = [];
-    const galleryHtml = [];
-
-    summary.forEach((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-      if (!selection?.hotel || !selection?.combination) return;
-
-      infoHtml.push(`
-        <div class="booking-hotel-preview-card">
-          <div class="booking-hotel-preview-card__content">
-            <strong>${this.escapeHtml(item.label || this.getDestinationLabel(item.destination))}</strong>
-            <p>${this.escapeHtml(selection.hotel.hotelName)} (${selection.hotel.stars || 0}★)</p>
-            <p>${this.escapeHtml(selection.hotel.location || "")}${selection.hotel.address ? ` · ${this.escapeHtml(selection.hotel.address)}` : ""}</p>
-            <p>${this.escapeHtml(selection.combination.label)}</p>
-            <p>+ ${this.product.currency || "USD"} ${this.formatMoney(selection.combination.additionalPerPerson)} por persona</p>
-          </div>
-        </div>
-      `);
-
-      const cover = selection.hotel.images?.cover ? [selection.hotel.images.cover] : [];
-      const galleryImages = Array.isArray(selection.hotel.images?.gallery) ? selection.hotel.images.gallery : [];
-      const uniqueImages = [...new Set([...cover, ...galleryImages])].slice(0, 3);
-
-      uniqueImages.forEach((src, index) => {
-        galleryHtml.push(`
-          <div class="booking-hotel-gallery__item">
-            <img
-              src="${this.resolveAssetPath(src)}"
-              alt="${this.escapeHtml(selection.hotel.hotelName)} - ${index + 1}"
-              loading="lazy"
-            />
-          </div>
-        `);
-      });
-    });
-
-    info.innerHTML = infoHtml.join("");
-    gallery.innerHTML = galleryHtml.join("");
-  }
-
-  renderNotFound(message) {
-    const main = document.querySelector(".product-page");
-    if (!main) return;
-
-    main.innerHTML = `
-      <section class="experience-content">
-        <div class="container">
-          <div class="experience-card">
-            <h1>Experiencia no disponible</h1>
-            <p>${this.escapeHtml(message)}</p>
-            <br />
-            <a class="btn" href="${this.resolvePath("all-experiences.html")}">Ver todas las experiencias</a>
-          </div>
-        </div>
-      </section>
-    `;
+    return;
   }
 
   getDestinationLabel(destination) {
