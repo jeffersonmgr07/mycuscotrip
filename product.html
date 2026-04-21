@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/product-page.css?v=11" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=12" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -229,40 +229,13 @@
                 <small id="serviceModeHelp" class="booking-field-help"></small>
               </div>
 
-              <!-- ALOJAMIENTO PARA PAQUETES: RESUMEN + BOTONES PARA ABRIR MODAL -->
               <div id="packageAccommodationSection" class="booking-field" hidden>
-                <label>Selección de alojamiento</label>
-                <div id="accommodationSummary" class="booking-note-box" hidden></div>
                 <div id="hotelSelectorsContainer" class="booking-dynamic-stack"></div>
-              </div>
-
-              <!-- RESUMEN DE HABITACIONES ELEGIDAS -->
-              <div id="roomTypeSection" class="booking-field" hidden>
-                <label for="roomTypeSelect">Habitaciones seleccionadas</label>
-                <select id="roomTypeSelect" disabled>
-                  <option value="">Selecciona una habitación</option>
-                </select>
-                <small id="roomTypeHelp" class="booking-field-help"></small>
-              </div>
-
-              <!-- RESUMEN VISUAL DEL HOTEL ELEGIDO -->
-              <div id="selectedHotelGallerySection" class="booking-field" hidden>
-                <label>Hotel seleccionado</label>
-                <div id="selectedHotelInfo" class="booking-hotel-info"></div>
-                <div id="selectedHotelGallery" class="booking-hotel-gallery"></div>
               </div>
 
               <div id="extrasSection" class="booking-field" hidden>
                 <label>Extras</label>
                 <div id="extrasContainer" class="booking-extras"></div>
-              </div>
-
-              <div class="booking-field">
-                <label for="paymentMode">Forma de pago</label>
-                <select id="paymentMode">
-                  <option value="full">Pago completo</option>
-                  <option value="partial">Separar cupo</option>
-                </select>
               </div>
 
               <div class="booking-benefits-box">
@@ -283,6 +256,14 @@
                   <button type="button" id="applyDiscountBtn" class="booking-apply-btn">Aplicar</button>
                 </div>
                 <p id="discountMessage" class="booking-discount-message"></p>
+              </div>
+
+              <div class="booking-field">
+                <label for="paymentMode">Forma de pago</label>
+                <select id="paymentMode">
+                  <option value="full">Pago completo</option>
+                  <option value="partial">Separar cupo</option>
+                </select>
               </div>
 
               <div class="booking-summary">
@@ -336,10 +317,6 @@
 
               <button type="button" id="paypalButton" class="btn booking-main-btn">
                 Continuar con pago
-              </button>
-
-              <button type="button" id="bookingPreviewButton" class="btn booking-secondary-btn">
-                Ver resumen
               </button>
             </form>
           </div>
@@ -449,6 +426,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js?v=11"></script>
+  <script src="./assets/js/pages/product.js?v=12"></script>
 </body>
 </html>
