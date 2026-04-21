@@ -421,30 +421,37 @@ class MyCuscoTripProductPage {
   renderAccommodationOptions(product) {
     const section = document.getElementById("packageAccommodationSection");
     const container = document.getElementById("hotelSelectorsContainer");
-
+  
     if (!section || !container) return;
-
+  
     section.hidden = true;
     container.innerHTML = "";
-
+  
     if (!this.isPackage(product)) return;
-
+  
     const summary = this.getAccommodationSummary(product);
     if (!summary.length) return;
-
+  
     section.hidden = false;
-
+  
     container.innerHTML = summary.map((item) => {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additionalPerPerson = this.calculateAccommodationAdditionalPerPerson(item.destination);
-
+  
+      const destinationLabel = this.getDestinationLabel(item.destination);
+      const cardTitle = destinationLabel.toLowerCase().includes("cusco")
+        ? "Hotel en Cusco"
+        : destinationLabel.toLowerCase().includes("aguas")
+          ? "Hotel en Aguas Calientes"
+          : `Hotel en ${destinationLabel}`;
+  
       return `
         <div class="booking-accommodation-card">
           <div class="booking-accommodation-card__header">
-            <strong>${this.escapeHtml(this.getDestinationLabel(item.destination))}</strong>
+            <strong>${this.escapeHtml(cardTitle)}</strong>
             <small>${item.nights} noche${item.nights > 1 ? "s" : ""}</small>
           </div>
-
+  
           <div class="booking-accommodation-card__body">
             <p class="booking-accommodation-card__selected">
               ${selection?.hotel
@@ -459,7 +466,7 @@ class MyCuscoTripProductPage {
             <p class="booking-accommodation-card__price">
               + ${this.product.currency || "USD"} ${this.formatMoney(additionalPerPerson)} por persona
             </p>
-
+  
             <button
               type="button"
               class="btn booking-secondary-btn open-hotel-modal-btn"
@@ -472,7 +479,6 @@ class MyCuscoTripProductPage {
       `;
     }).join("");
   }
-
   bindAccommodationEvents() {
     document.querySelectorAll(".open-hotel-modal-btn").forEach((button) => {
       button.addEventListener("click", () => {
