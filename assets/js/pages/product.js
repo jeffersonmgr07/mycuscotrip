@@ -429,7 +429,6 @@ class MyCuscoTripProductPage {
     container.innerHTML = summary.map((item) => {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additionalPerPerson = this.calculateAccommodationAdditionalPerPerson(item.destination);
-      const hasSelection = Boolean(selection?.hotel && selection?.combination);
 
       return `
         <div class="booking-accommodation-card">
@@ -441,7 +440,7 @@ class MyCuscoTripProductPage {
           <div class="booking-accommodation-card__body">
             <p class="booking-accommodation-card__selected">
               ${selection?.hotel
-                ? `${this.escapeHtml(selection.hotel.hotelName)} · ${selection.hotel.stars || 0}★`
+                ? `${this.escapeHtml(selection.hotel.hotelName)} ${selection.hotel.stars > 0 ? `· ${this.renderStars(selection.hotel.stars)}` : ""}`
                 : "Sin hotel seleccionado"}
             </p>
             <p class="booking-accommodation-card__selected">
@@ -458,7 +457,7 @@ class MyCuscoTripProductPage {
               class="btn booking-secondary-btn open-hotel-modal-btn"
               data-destination="${this.escapeHtml(item.destination)}"
             >
-              ${hasSelection ? "Cambiar hotel" : "Elegir hotel"}
+              Seleccionar hotel
             </button>
           </div>
         </div>
@@ -571,9 +570,11 @@ class MyCuscoTripProductPage {
           <div class="hotel-option-card__header">
             <div>
               <h3>${this.escapeHtml(hotel.hotelName)}</h3>
-              <p>${hotel.hotelCode === "no-hotel"
-                ? "Opción sin alojamiento"
-                : `${hotel.stars || 0}★ · ${this.escapeHtml(hotel.location || destinationLabel)}`}</p>
+              <p>${
+                hotel.hotelCode === "no-hotel"
+                  ? "Opción sin alojamiento"
+                  : `${this.renderStars(hotel.stars || 0)} · ${this.escapeHtml(hotel.location || destinationLabel)}`
+              }</p>
               ${hotel.address ? `<p>${this.escapeHtml(hotel.address)}</p>` : ""}
             </div>
             <div class="hotel-option-card__badge">
@@ -588,7 +589,7 @@ class MyCuscoTripProductPage {
               ? `<div class="hotel-gallery-main hotel-gallery-main--empty">
                    <div class="hotel-gallery-empty-state">
                      <strong>Sin hotel</strong>
-                     <span>El costo de alojamiento será 0.</span>
+                     <span>Reservarás tu hotel por cuenta propia, fuera del itinerario.</span>
                    </div>
                  </div>`
               : this.renderHotelModalGallery(images, hotel.hotelName)}
@@ -607,6 +608,7 @@ class MyCuscoTripProductPage {
                       data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
                       data-combo-key="${this.escapeHtml(combo.key)}"
                     >
+                      <span class="hotel-combo-radio" aria-hidden="true"></span>
                       <span class="hotel-combo-btn__main">
                         ${this.escapeHtml(combo.label)}
                       </span>
@@ -625,7 +627,7 @@ class MyCuscoTripProductPage {
               data-destination="${this.escapeHtml(destination)}"
               data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
             >
-              Seleccionar hotel y acomodación
+              Seleccionar hotel
             </button>
           </div>
         </article>
@@ -1267,6 +1269,12 @@ class MyCuscoTripProductPage {
 
   renderSelectedHotelGallery() {
     return;
+  }
+
+  renderStars(stars) {
+    const total = Number(stars || 0);
+    if (total <= 0) return "";
+    return "★".repeat(total);
   }
 
   getDestinationLabel(destination) {
