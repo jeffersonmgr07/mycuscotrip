@@ -2007,3 +2007,8 @@ body.hotel-modal-open {
   padding-top: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
+.booking-payment-info {
+  background: #fff8db;
+  border: 1px solid #f1e2a4;
+  color: #6b5a18;
+}
