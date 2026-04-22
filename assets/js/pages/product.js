@@ -967,30 +967,33 @@ class MyCuscoTripProductPage {
         childrenRow.hidden = true;
       }
     }
-
+    
     const serviceModeSummaryRow = document.getElementById("serviceModeSummaryRow");
     if (serviceModeSummaryRow) {
       serviceModeSummaryRow.hidden = true;
     }
-
+    
     const accommodationRow = document.getElementById("accommodationTotalRow");
     if (accommodationRow) {
-      accommodationRow.hidden = !this.isPackage(this.product);
+      const showAccommodation = this.isPackage(this.product) && accommodationTotal > 0;
+      accommodationRow.hidden = !showAccommodation;
+    
       const accommodationLabel = accommodationRow.querySelector("span");
       if (accommodationLabel) {
         accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
       }
     }
-
+    
     const extrasRow = document.getElementById("extrasTotal")?.closest(".booking-summary__line");
     if (extrasRow) {
       const extrasLabel = extrasRow.querySelector("span");
       if (extrasLabel) {
         extrasLabel.textContent = "Extras";
       }
-      extrasRow.hidden = false;
+    
+      extrasRow.hidden = extrasTotal <= 0;
     }
-
+    
     const serviceTotalRow = document.getElementById("serviceTotal")?.closest(".booking-summary__line");
     if (serviceTotalRow) {
       const serviceLabel = serviceTotalRow.querySelector("span");
@@ -999,7 +1002,7 @@ class MyCuscoTripProductPage {
       }
       serviceTotalRow.hidden = false;
     }
-
+    
     const discountRow = document.getElementById("discountRow");
     if (discountRow) {
       const discountLabel = discountRow.querySelector("span");
