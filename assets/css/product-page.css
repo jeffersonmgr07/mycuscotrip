@@ -1965,3 +1965,45 @@ body.hotel-modal-open {
     padding: 0 14px 16px;
   }
 }
+/* BLOQUE TITULO DETALLES DEL PAGO */
+.booking-summary-wrap {
+  display: grid;
+  gap: 0;
+}
+
+.booking-summary-title {
+  background: rgb(10, 58, 38);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 16px 16px 0 0;
+  padding: 12px 14px;
+}
+
+.booking-summary-wrap .booking-summary {
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+  background: #fff;
+  padding: 12px 0 0;
+}
+
+/* LINEAS DIVISORAS PARA DESCUENTO Y PAGOS */
+#discountRow {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.booking-summary__total {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.booking-summary__later {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
