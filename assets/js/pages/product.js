@@ -983,7 +983,7 @@ class MyCuscoTripProductPage {
 
     const accommodationRow = document.getElementById("accommodationTotalRow");
     if (accommodationRow) {
-      const showAccommodation = selectedAccommodationItems.length > 0 && totalAccommodationNights > 0;
+      const showAccommodation = accommodationTotal > 0 && totalAccommodationNights > 0;
       accommodationRow.hidden = !showAccommodation;
 
       if (showAccommodation) {
@@ -1018,11 +1018,15 @@ class MyCuscoTripProductPage {
 
     const discountRow = document.getElementById("discountRow");
     if (discountRow) {
-      const discountLabel = discountRow.querySelector("span");
-      if (discountLabel) {
-        discountLabel.textContent = "Descuento";
+      const showDiscount = this.paymentMode === "full" && discount > 0;
+      discountRow.hidden = !showDiscount;
+
+      if (showDiscount) {
+        const discountLabel = discountRow.querySelector("span");
+        if (discountLabel) {
+          discountLabel.textContent = "Descuento";
+        }
       }
-      discountRow.hidden = false;
     }
 
     const payLaterRow = document.getElementById("payLaterRow");
@@ -1031,7 +1035,7 @@ class MyCuscoTripProductPage {
       if (payLaterLabel) {
         payLaterLabel.textContent = "Pagarás luego";
       }
-      payLaterRow.hidden = this.paymentMode === "full";
+      payLaterRow.hidden = this.paymentMode === "full" || payLater <= 0;
     }
 
     const paymentInfo = document.getElementById("paymentInfo");
