@@ -653,7 +653,7 @@ class MyCuscoTripProductPage {
                           ${
                             hotel.hotelCode === "no-hotel"
                               ? "Brindaré los datos de mi alojamiento luego."
-                              : `${combo.totalRooms} hab. · ${this.product.currency || "USD"} ${this.formatMoney(combo.totalPerNight)} / noche · + ${this.product.currency || "USD"} ${this.formatMoney(combo.additionalPerPerson)} por persona`
+                              : `${combo.totalRooms} hab. | Total + ${this.product.currency || "USD"} ${this.formatMoney(combo.additionalPerPerson)} por persona`
                           }
                         </span>
                       </button>
@@ -1277,7 +1277,13 @@ class MyCuscoTripProductPage {
 
   buildCombinationLabel(usedRooms) {
     return usedRooms
-      .map((entry) => `${entry.count} ${entry.room.label}${entry.count > 1 ? "s" : ""}`)
+      .map((entry) => {
+        if (entry.room.roomType === "no-hotel") {
+          return entry.room.label;
+        }
+  
+        return `${entry.count} ${entry.room.label}${entry.count > 1 ? "s" : ""}`;
+      })
       .join(" + ");
   }
 
