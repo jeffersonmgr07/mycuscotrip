@@ -886,28 +886,28 @@ class MyCuscoTripProductPage {
 
   updatePricing() {
     if (!this.product) return;
-
+  
     const currency = this.product.currency || "USD";
     const adultPrice = Number(this.product.basePricing?.adult || 0);
     const childPrice = Number(this.product.basePricing?.child || adultPrice);
-
+  
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
     const accommodationTotal = this.calculateAccommodationTotal();
     const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal;
-
+  
     const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
-
+  
     const totalAccommodationNights = this.getAccommodationSummary(this.product)
       .reduce((sum, item) => sum + Number(item.nights || 0), 0);
-
+  
     let discount = 0;
     let payNow = serviceTotal;
     let payLater = 0;
     let infoText = "";
-
+  
     if (this.paymentMode === "full") {
       discount = serviceTotal * (fullDiscountPercent / 100);
       payNow = serviceTotal - discount;
@@ -918,12 +918,12 @@ class MyCuscoTripProductPage {
       payNow = totalPassengers * partialPerPerson;
       payLater = serviceTotal - payNow;
       if (payLater < 0) payLater = 0;
-
+  
       infoText =
         this.product.paymentOptions?.partialPaymentLabel ||
         `Separas tu cupo pagando ${currency} ${this.formatMoney(partialPerPerson)} por persona.`;
     }
-
+  
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
     this.setText("childrenTotal", `${currency} ${this.formatMoney(childrenTotal)}`);
     this.setText("extrasTotal", `${currency} ${this.formatMoney(extrasTotal)}`);
@@ -932,12 +932,7 @@ class MyCuscoTripProductPage {
     this.setText("discountTotal", `- ${currency} ${this.formatMoney(discount)}`);
     this.setText("payLaterTotal", `${currency} ${this.formatMoney(payLater)}`);
     this.setText("accommodationTotal", `${currency} ${this.formatMoney(accommodationTotal)}`);
-
-    const payNowLabel = document.getElementById("payNowLabel");
-    if (payNowLabel) {
-      payNowLabel.textContent = "Pagar ahora";
-    }
-
+  
     const paymentModeSelect = document.getElementById("paymentMode");
     if (paymentModeSelect) {
       const partialOption = paymentModeSelect.querySelector('option[value="partial"]');
@@ -945,7 +940,12 @@ class MyCuscoTripProductPage {
         partialOption.textContent = "Pagar solo un adelanto";
       }
     }
-
+  
+    const payNowLabel = document.getElementById("payNowLabel");
+    if (payNowLabel) {
+      payNowLabel.textContent = "Pagar ahora";
+    }
+  
     const adultsRow = document.getElementById("adultsTotal")?.closest(".booking-summary__line");
     if (adultsRow) {
       const adultsLabel = adultsRow.querySelector("span");
@@ -954,46 +954,51 @@ class MyCuscoTripProductPage {
       }
       adultsRow.hidden = false;
     }
-
+  
     const childrenRow = document.getElementById("childrenTotal")?.closest(".booking-summary__line");
     if (childrenRow) {
-      if (this.children > 0) {
-        childrenRow.hidden = false;
+      const hasChildren = this.children > 0;
+      childrenRow.hidden = !hasChildren;
+  
+      if (hasChildren) {
         const childrenLabel = childrenRow.querySelector("span");
         if (childrenLabel) {
           childrenLabel.textContent = `Niños x${String(this.children).padStart(2, "0")}`;
         }
-      } else {
-        childrenRow.hidden = true;
       }
     }
-    
+  
     const serviceModeSummaryRow = document.getElementById("serviceModeSummaryRow");
     if (serviceModeSummaryRow) {
       serviceModeSummaryRow.hidden = true;
     }
-    
+  
     const accommodationRow = document.getElementById("accommodationTotalRow");
     if (accommodationRow) {
-      const showAccommodation = this.isPackage(this.product) && accommodationTotal > 0;
+      const showAccommodation = accommodationTotal > 0;
       accommodationRow.hidden = !showAccommodation;
-    
-      const accommodationLabel = accommodationRow.querySelector("span");
-      if (accommodationLabel) {
-        accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
+  
+      if (showAccommodation) {
+        const accommodationLabel = accommodationRow.querySelector("span");
+        if (accommodationLabel) {
+          accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
+        }
       }
     }
-    
+  
     const extrasRow = document.getElementById("extrasTotal")?.closest(".booking-summary__line");
     if (extrasRow) {
-      const extrasLabel = extrasRow.querySelector("span");
-      if (extrasLabel) {
-        extrasLabel.textContent = "Extras";
+      const showExtras = extrasTotal > 0;
+      extrasRow.hidden = !showExtras;
+  
+      if (showExtras) {
+        const extrasLabel = extrasRow.querySelector("span");
+        if (extrasLabel) {
+          extrasLabel.textContent = "Extras";
+        }
       }
-    
-      extrasRow.hidden = extrasTotal <= 0;
     }
-    
+  
     const serviceTotalRow = document.getElementById("serviceTotal")?.closest(".booking-summary__line");
     if (serviceTotalRow) {
       const serviceLabel = serviceTotalRow.querySelector("span");
@@ -1002,7 +1007,7 @@ class MyCuscoTripProductPage {
       }
       serviceTotalRow.hidden = false;
     }
-    
+  
     const discountRow = document.getElementById("discountRow");
     if (discountRow) {
       const discountLabel = discountRow.querySelector("span");
@@ -1011,7 +1016,7 @@ class MyCuscoTripProductPage {
       }
       discountRow.hidden = false;
     }
-
+  
     const payLaterRow = document.getElementById("payLaterRow");
     if (payLaterRow) {
       const payLaterLabel = payLaterRow.querySelector("span");
@@ -1020,7 +1025,7 @@ class MyCuscoTripProductPage {
       }
       payLaterRow.hidden = this.paymentMode === "full";
     }
-
+  
     const paymentInfo = document.getElementById("paymentInfo");
     if (paymentInfo) {
       paymentInfo.textContent = infoText;
