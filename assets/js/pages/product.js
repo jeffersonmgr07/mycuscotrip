@@ -895,11 +895,13 @@ class MyCuscoTripProductPage {
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
     const accommodationTotal = this.calculateAccommodationTotal();
-
     const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal;
 
     const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
+
+    const totalAccommodationNights = this.getAccommodationSummary(this.product)
+      .reduce((sum, item) => sum + Number(item.nights || 0), 0);
 
     let discount = 0;
     let payNow = serviceTotal;
@@ -910,13 +912,11 @@ class MyCuscoTripProductPage {
       discount = serviceTotal * (fullDiscountPercent / 100);
       payNow = serviceTotal - discount;
       payLater = 0;
-
       infoText = `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`;
     } else {
       const totalPassengers = this.getTotalPassengers();
       payNow = totalPassengers * partialPerPerson;
       payLater = serviceTotal - payNow;
-
       if (payLater < 0) payLater = 0;
 
       infoText =
@@ -935,37 +935,88 @@ class MyCuscoTripProductPage {
 
     const payNowLabel = document.getElementById("payNowLabel");
     if (payNowLabel) {
-      payNowLabel.textContent = this.paymentMode === "full" ? "Pagar ahora" : "Pagarás ahora";
+      payNowLabel.textContent = "Pagar ahora";
     }
 
-    const discountRow = document.getElementById("discountRow");
-    if (discountRow) {
-      discountRow.hidden = !(this.paymentMode === "full" && discount > 0);
+    const paymentModeSelect = document.getElementById("paymentMode");
+    if (paymentModeSelect) {
+      const partialOption = paymentModeSelect.querySelector('option[value="partial"]');
+      if (partialOption) {
+        partialOption.textContent = "Pagar solo un adelanto";
+      }
     }
 
-    const payLaterRow = document.getElementById("payLaterRow");
-    if (payLaterRow) {
-      payLaterRow.hidden = this.paymentMode !== "partial";
+    const adultsRow = document.getElementById("adultsTotal")?.closest(".booking-summary__line");
+    if (adultsRow) {
+      const adultsLabel = adultsRow.querySelector("span");
+      if (adultsLabel) {
+        adultsLabel.textContent = `Adultos x${String(this.adults).padStart(2, "0")}`;
+      }
+      adultsRow.hidden = false;
     }
 
-    const accommodationRow = document.getElementById("accommodationTotalRow");
-    if (accommodationRow) {
-      accommodationRow.hidden = !this.isPackage(this.product) || accommodationTotal <= 0;
+    const childrenRow = document.getElementById("childrenTotal")?.closest(".booking-summary__line");
+    if (childrenRow) {
+      if (this.children > 0) {
+        childrenRow.hidden = false;
+        const childrenLabel = childrenRow.querySelector("span");
+        if (childrenLabel) {
+          childrenLabel.textContent = `Niños x${String(this.children).padStart(2, "0")}`;
+        }
+      } else {
+        childrenRow.hidden = true;
+      }
     }
 
     const serviceModeSummaryRow = document.getElementById("serviceModeSummaryRow");
     if (serviceModeSummaryRow) {
-      const hasVisibleMode = Boolean(
-        this.product?.serviceModes?.group?.enabled ||
-        this.product?.serviceModes?.private?.enabled
-      );
-      serviceModeSummaryRow.hidden = !hasVisibleMode;
+      serviceModeSummaryRow.hidden = true;
     }
 
-    this.setText(
-      "serviceModeSummary",
-      this.serviceMode === "private" ? "Tour privado" : "Tour en grupo"
-    );
+    const accommodationRow = document.getElementById("accommodationTotalRow");
+    if (accommodationRow) {
+      accommodationRow.hidden = !this.isPackage(this.product);
+      const accommodationLabel = accommodationRow.querySelector("span");
+      if (accommodationLabel) {
+        accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
+      }
+    }
+
+    const extrasRow = document.getElementById("extrasTotal")?.closest(".booking-summary__line");
+    if (extrasRow) {
+      const extrasLabel = extrasRow.querySelector("span");
+      if (extrasLabel) {
+        extrasLabel.textContent = "Extras";
+      }
+      extrasRow.hidden = false;
+    }
+
+    const serviceTotalRow = document.getElementById("serviceTotal")?.closest(".booking-summary__line");
+    if (serviceTotalRow) {
+      const serviceLabel = serviceTotalRow.querySelector("span");
+      if (serviceLabel) {
+        serviceLabel.textContent = "Total servicio";
+      }
+      serviceTotalRow.hidden = false;
+    }
+
+    const discountRow = document.getElementById("discountRow");
+    if (discountRow) {
+      const discountLabel = discountRow.querySelector("span");
+      if (discountLabel) {
+        discountLabel.textContent = "Descuento";
+      }
+      discountRow.hidden = false;
+    }
+
+    const payLaterRow = document.getElementById("payLaterRow");
+    if (payLaterRow) {
+      const payLaterLabel = payLaterRow.querySelector("span");
+      if (payLaterLabel) {
+        payLaterLabel.textContent = "Pagarás luego";
+      }
+      payLaterRow.hidden = this.paymentMode === "full";
+    }
 
     const paymentInfo = document.getElementById("paymentInfo");
     if (paymentInfo) {
@@ -1055,7 +1106,7 @@ class MyCuscoTripProductPage {
       serviceTotal: `${currency} ${this.formatMoney(serviceTotal)}`,
       payNow: `${currency} ${this.formatMoney(payNow)}`,
       payLater: `${currency} ${this.formatMoney(payLater)}`,
-      paymentMode: this.paymentMode === "full" ? "Pago completo" : "Separar cupo"
+      paymentMode: this.paymentMode === "full" ? "Pago completo" : "Pagar solo un adelanto"
     };
   }
 
@@ -1281,7 +1332,7 @@ class MyCuscoTripProductPage {
         if (entry.room.roomType === "no-hotel") {
           return entry.room.label;
         }
-  
+
         return `${entry.count} ${entry.room.label}${entry.count > 1 ? "s" : ""}`;
       })
       .join(" + ");
