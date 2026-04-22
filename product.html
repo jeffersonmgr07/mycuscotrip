@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/product-page.css?v=14" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=15" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -262,54 +262,58 @@
                 <label for="paymentMode">Forma de pago</label>
                 <select id="paymentMode">
                   <option value="full">Pago completo</option>
-                  <option value="partial">Separar cupo</option>
+                  <option value="partial">Pagar solo un adelanto</option>
                 </select>
               </div>
 
-              <div class="booking-summary">
-                <div class="booking-summary__line">
-                  <span>Adultos</span>
-                  <strong id="adultsTotal">USD 0</strong>
-                </div>
+              <div class="booking-summary-wrap">
+                <div class="booking-summary-title">DETALLES DEL PAGO</div>
 
-                <div class="booking-summary__line">
-                  <span>Niños</span>
-                  <strong id="childrenTotal">USD 0</strong>
-                </div>
+                <div class="booking-summary">
+                  <div class="booking-summary__line">
+                    <span>Adultos</span>
+                    <strong id="adultsTotal">USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__line" id="serviceModeSummaryRow" hidden>
-                  <span>Modalidad</span>
-                  <strong id="serviceModeSummary">Tour en grupo</strong>
-                </div>
+                  <div class="booking-summary__line">
+                    <span>Niños</span>
+                    <strong id="childrenTotal">USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__line" id="accommodationTotalRow" hidden>
-                  <span>Alojamiento</span>
-                  <strong id="accommodationTotal">USD 0</strong>
-                </div>
+                  <div class="booking-summary__line" id="serviceModeSummaryRow" hidden>
+                    <span>Modalidad</span>
+                    <strong id="serviceModeSummary">Tour en grupo</strong>
+                  </div>
 
-                <div class="booking-summary__line">
-                  <span>Extras</span>
-                  <strong id="extrasTotal">USD 0</strong>
-                </div>
+                  <div class="booking-summary__line" id="accommodationTotalRow" hidden>
+                    <span>Alojamiento</span>
+                    <strong id="accommodationTotal">USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__line" id="discountRow" hidden>
-                  <span>Descuento</span>
-                  <strong id="discountTotal">- USD 0</strong>
-                </div>
+                  <div class="booking-summary__line">
+                    <span>Extras</span>
+                    <strong id="extrasTotal">USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__line">
-                  <span>Total servicio</span>
-                  <strong id="serviceTotal">USD 0</strong>
-                </div>
+                  <div class="booking-summary__line" id="discountRow" hidden>
+                    <span>Descuento</span>
+                    <strong id="discountTotal">- USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__total">
-                  <span id="payNowLabel">Pagar ahora</span>
-                  <strong id="payNowTotal">USD 0</strong>
-                </div>
+                  <div class="booking-summary__line">
+                    <span>Total servicio</span>
+                    <strong id="serviceTotal">USD 0</strong>
+                  </div>
 
-                <div class="booking-summary__later" id="payLaterRow" hidden>
-                  <span>Pagarás luego</span>
-                  <strong id="payLaterTotal">USD 0</strong>
+                  <div class="booking-summary__total">
+                    <span id="payNowLabel">Pagar ahora</span>
+                    <strong id="payNowTotal">USD 0</strong>
+                  </div>
+
+                  <div class="booking-summary__later" id="payLaterRow" hidden>
+                    <span>Pagarás luego</span>
+                    <strong id="payLaterTotal">USD 0</strong>
+                  </div>
                 </div>
               </div>
 
@@ -426,6 +430,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/product.js?v=14"></script>
+  <script src="./assets/js/pages/product.js?v=15"></script>
 </body>
 </html>
