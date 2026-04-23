@@ -944,14 +944,13 @@
   border-top: 0;
 }
 
-.booking-summary__line,
-.booking-summary__total,
-.booking-summary__later {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  padding: 4px 0;
+.booking-summary__line[hidden],
+.booking-summary__total[hidden],
+.booking-summary__later[hidden],
+#accommodationTotalRow[hidden],
+#discountRow[hidden],
+#payLaterRow[hidden] {
+  display: none !important;
 }
 
 .booking-summary__line {
