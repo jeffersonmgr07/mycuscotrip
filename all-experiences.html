@@ -102,7 +102,10 @@
       try {
         const componentPath = `${BASE_PATH}components/${componentName}.html`;
         const response = await fetch(componentPath);
-        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
 
         const html = await response.text();
         const target = document.getElementById(targetId);
@@ -122,11 +125,33 @@
 
     function fixImagePaths(container) {
       const images = container.querySelectorAll('img[src*="assets/"]');
-      images.forEach(img => {
+
+      images.forEach((img) => {
         const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
+        if (currentSrc && currentSrc.startsWith('assets/')) {
+          img.setAttribute('src', `./${currentSrc}`);
         }
+      });
+    }
+
+    function initializeComponents() {
+      if (typeof MyCuscoTripHeader === 'function') {
+        try {
+          new MyCuscoTripHeader();
+        } catch (e) {
+          console.error('Error en Header JS:', e);
+        }
+      }
+    }
+
+    function syncFooterAccordions() {
+      const accordions = document.querySelectorAll('.footer-accordion');
+      if (!accordions.length) return;
+
+      const isDesktop = window.innerWidth >= 769;
+
+      accordions.forEach((item) => {
+        item.open = isDesktop;
       });
     }
 
@@ -135,7 +160,13 @@
         loadComponent('header', 'header-container'),
         loadComponent('footer', 'footer-container')
       ]);
+
+      syncFooterAccordions();
+      setTimeout(syncFooterAccordions, 200);
+      setTimeout(initializeComponents, 300);
     }
+
+    window.addEventListener('resize', syncFooterAccordions);
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initializeApp);
