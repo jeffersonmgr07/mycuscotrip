@@ -926,12 +926,14 @@
 }
 
 .booking-summary-title {
-  color: #062803;
+  background: #0a3a26;
+  color: #fff;
   font-weight: 800;
   font-size: 1rem;
   line-height: 1.2;
-  margin: 0;
-  padding: 0;
+  margin: -18px -16px 0;
+  padding: 14px 16px;
+  border-radius: 18px 18px 0 0;
 }
 
 .booking-summary {
