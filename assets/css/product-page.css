@@ -1002,6 +1002,12 @@
 #discountRow {
   margin-top: 2px;
   padding-top: 12px;
+  border
+    -top: 1px solid rgba(0, 0, 0, 0.08);
+}
+#serviceTotalRow {
+  margin-top: 2px;
+  padding-top: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
