@@ -1268,5 +1268,790 @@
       "reservationCodePrefix": "PKG"
     },
     "status": "published"
+  },
+  {
+    "id": "exp_021",
+    "internalCode": "PCKT02",
+    "slug": "paquete-cusco-machu-picchu-3d-2n",
+    "title": "Paquete Cusco y Machu Picchu 3D/2N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "3 días / 2 noches",
+    "badge": "Recomendado",
+    "featured": true,
+    "location": "Cusco / Machu Picchu",
+    "currency": "USD",
+    "shortDescription": "Paquete de 3 días y 2 noches con bienvenida ancestral, City Tour Cusco y Machu Picchu Full Day.",
+    "description": "Programa de 3 días y 2 noches ideal para viajeros que desean conocer lo esencial de Cusco y Machu Picchu en un itinerario compacto. Incluye recepción, ceremonia ancestral de bienvenida, City Tour por Cusco y excursión Full Day a Machu Picchu con tickets y traslados incluidos.",
+    "duration": {
+      "label": "3 días / 2 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 489.9,
+      "child": 459.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 2,
+        "label": "Cusco - 2 noches"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-3d-2n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-3d-2n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-3d-2n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-3d-2n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Machu Picchu Full Day",
+      "Ticket de tren Voyager by Inca Rail",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel, tiempo libre para aclimatación y ceremonia ancestral de bienvenida. Por la tarde, City Tour visitando Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Machu Picchu Full Day",
+        "description": "Salida muy temprano hacia la estación para abordar el tren turístico a Machu Picchu Pueblo. Bus de subida, ingreso oficial y visita guiada a Machu Picchu según circuito confirmado. Tiempo libre en Aguas Calientes y retorno a Cusco por la noche."
+      },
+      {
+        "title": "Día 3: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según el horario de salida."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿El paquete incluye Machu Picchu completo?",
+        "a": "Sí. Incluye tren, bus de subida y bajada, ingreso oficial y visita guiada."
+      },
+      {
+        "q": "¿Incluye alojamiento?",
+        "a": "El paquete contempla 2 noches en Cusco, configurables según la selección de hotel."
+      }
+    ],
+    "extras": [
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren panorámico THE PRIME",
+        "price": 59,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 149,
+      "partialPaymentLabel": "Reserva con USD 149 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_022",
+    "internalCode": "PCKT03",
+    "slug": "paquete-cusco-machu-picchu-4d-3n",
+    "title": "Paquete Cusco y Machu Picchu 4D/3N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "4 días / 3 noches",
+    "badge": "Top ventas",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu",
+    "currency": "USD",
+    "shortDescription": "Paquete de 4 días y 3 noches con bienvenida ancestral, City Tour, Valle Sagrado y Machu Picchu.",
+    "description": "Programa de 4 días y 3 noches que combina la experiencia urbana y cultural de Cusco con el Valle Sagrado y Machu Picchu. Incluye bienvenida ancestral, City Tour, Valle Sagrado con conexión a Aguas Calientes y visita guiada a Machu Picchu.",
+    "duration": {
+      "label": "4 días / 3 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 539.9,
+      "child": 509.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 2,
+        "label": "Cusco - 2 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Valle Sagrado de los Incas",
+      "Almuerzo buffet en Valle Sagrado",
+      "Tren Voyager 45 hacia Aguas Calientes",
+      "Machu Picchu + retorno a Cusco",
+      "Ticket de tren de retorno",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel, tiempo de aclimatación y ceremonia de bienvenida ancestral. Por la tarde, City Tour visitando Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
+        "description": "Recojo por la mañana y recorrido por Pisac, mercado artesanal, complejo arqueológico, Urubamba y Ollantaytambo. Almuerzo buffet incluido. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes."
+      },
+      {
+        "title": "Día 3: Machu Picchu + retorno a Cusco",
+        "description": "Bus de subida, ingreso oficial y visita guiada a Machu Picchu. Descenso a Aguas Calientes, tiempo libre para almuerzo y retorno en tren. Traslado a Cusco y noche en la ciudad."
+      },
+      {
+        "title": "Día 4: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según el horario de salida."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Incluye noche en Aguas Calientes?",
+        "a": "Sí. Este paquete incluye 1 noche en Aguas Calientes y 2 noches en Cusco."
+      },
+      {
+        "q": "¿Se puede mejorar el tren?",
+        "a": "Sí. Puedes agregar upgrade al tren THE PRIME por US$ 59 por persona, según disponibilidad."
+      }
+    ],
+    "extras": [
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren THE PRIME",
+        "price": 59,
+        "perPerson": true
+      },
+      {
+        "code": "tinkuy-lunch",
+        "label": "Almuerzo buffet Tinkuy by Belmond",
+        "price": 45,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 179,
+      "partialPaymentLabel": "Reserva con USD 179 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_023",
+    "internalCode": "PCKT04",
+    "slug": "paquete-cusco-machu-picchu-vinicunca-5d-4n",
+    "title": "Paquete Cusco, Machu Picchu y Vinicunca 5D/4N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "5 días / 4 noches",
+    "badge": "Aventura",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca",
+    "currency": "USD",
+    "shortDescription": "Paquete de 5 días y 4 noches con Cusco, Valle Sagrado, Machu Picchu y Montaña de Colores.",
+    "description": "Programa de 5 días y 4 noches que combina cultura, historia y aventura. Incluye bienvenida ancestral, City Tour Cusco, Valle Sagrado con conexión a Machu Picchu y excursión full day a la Montaña de Colores Vinicunca.",
+    "duration": {
+      "label": "5 días / 4 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 575.9,
+      "child": 545.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 3,
+        "label": "Cusco - 3 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-5d-4n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-5d-4n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-5d-4n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-5d-4n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Valle Sagrado de los Incas",
+      "Almuerzo buffet en Valle Sagrado",
+      "Conexión en tren a Aguas Calientes",
+      "Machu Picchu + retorno a Cusco",
+      "Tour Montaña de Colores Vinicunca",
+      "Desayuno y almuerzo en Vinicunca",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción, traslado, tiempo libre para aclimatación, ceremonia ancestral de bienvenida y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
+        "description": "Visita a Pisac, mercado artesanal, complejo arqueológico, Urubamba y Ollantaytambo. Almuerzo buffet incluido. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes."
+      },
+      {
+        "title": "Día 3: Machu Picchu + retorno a Cusco",
+        "description": "Excursión guiada a Machu Picchu con bus de subida y bajada incluidos. Tiempo libre en Aguas Calientes y retorno en tren a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 4: Tour Montaña de Colores Vinicunca",
+        "description": "Salida muy temprano desde el hotel, desayuno en ruta, caminata hacia Vinicunca, tiempo para fotografías, almuerzo incluido y retorno a Cusco por la tarde. Noche en Cusco."
+      },
+      {
+        "title": "Día 5: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según horario programado."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Incluye alimentación en Vinicunca?",
+        "a": "Sí. Incluye desayuno y almuerzo durante la excursión full day."
+      },
+      {
+        "q": "¿Se puede agregar cuatrimoto en Montaña de Colores?",
+        "a": "Sí. Puedes añadir el servicio de cuatrimoto ATV por US$ 65 por persona."
+      }
+    ],
+    "extras": [
+      {
+        "code": "vinicunca-atv",
+        "label": "Cuatrimoto ATV en Vinicunca",
+        "price": 65,
+        "perPerson": true
+      },
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren THE PRIME",
+        "price": 59,
+        "perPerson": true
+      },
+      {
+        "code": "tinkuy-lunch",
+        "label": "Almuerzo buffet Tinkuy by Belmond",
+        "price": 45,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 199,
+      "partialPaymentLabel": "Reserva con USD 199 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_024",
+    "internalCode": "PCKT05",
+    "slug": "paquete-cusco-machu-picchu-vinicunca-humantay-6d-5n",
+    "title": "Paquete Cusco, Machu Picchu, Vinicunca y Humantay 6D/5N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "6 días / 5 noches",
+    "badge": "Aventura",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca / Humantay",
+    "currency": "USD",
+    "shortDescription": "Paquete de 6 días y 5 noches con Cusco, Valle Sagrado, Machu Picchu, Montaña de Colores y Laguna Humantay.",
+    "description": "Programa de 6 días y 5 noches diseñado para viajeros que buscan un recorrido completo por Cusco, con combinación de patrimonio cultural, Machu Picchu y dos de las excursiones naturales más emblemáticas de la región: Vinicunca y Laguna Humantay.",
+    "duration": {
+      "label": "6 días / 5 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 609.9,
+      "child": 579.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 4,
+        "label": "Cusco - 4 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-humantay-6d-5n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-humantay-6d-5n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-humantay-6d-5n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-humantay-6d-5n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Valle Sagrado de los Incas",
+      "Almuerzo buffet en Valle Sagrado",
+      "Conexión en tren a Aguas Calientes",
+      "Machu Picchu + retorno a Cusco",
+      "Tour Montaña de Colores Vinicunca",
+      "Desayuno y almuerzo en Vinicunca",
+      "Tour Laguna Humantay",
+      "Desayuno y almuerzo en Humantay",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción en Cusco, traslado, ceremonia ancestral de bienvenida, tiempo para aclimatación y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
+        "description": "Excursión al Valle Sagrado con visitas a Pisac, mercado artesanal, complejo arqueológico, Urubamba y Ollantaytambo. Almuerzo buffet incluido. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes."
+      },
+      {
+        "title": "Día 3: Machu Picchu + retorno a Cusco",
+        "description": "Visita guiada a Machu Picchu con ingreso, tren y bus incluidos. Tiempo libre en Aguas Calientes y retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 4: Tour Montaña de Colores Vinicunca",
+        "description": "Salida en la madrugada para realizar la excursión full day a Vinicunca. Desayuno y almuerzo incluidos. Caminata de ascenso y descenso con asistencia del guía. Retorno a Cusco y noche en la ciudad."
+      },
+      {
+        "title": "Día 5: Tour Laguna Humantay",
+        "description": "Salida muy temprano hacia Mollepata y Soraypampa. Desayuno en ruta, caminata hacia la Laguna Humantay, tiempo para disfrutar del paisaje y almuerzo antes del retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 6: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según horario de salida."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Este paquete incluye Humantay y Vinicunca?",
+        "a": "Sí. Ambos tours están incluidos con desayuno y almuerzo."
+      },
+      {
+        "q": "¿Se puede agregar ATV en Vinicunca?",
+        "a": "Sí. Está disponible como extra por US$ 65 por persona."
+      }
+    ],
+    "extras": [
+      {
+        "code": "vinicunca-atv",
+        "label": "Cuatrimoto ATV en Vinicunca",
+        "price": 65,
+        "perPerson": true
+      },
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren THE PRIME",
+        "price": 59,
+        "perPerson": true
+      },
+      {
+        "code": "tinkuy-lunch",
+        "label": "Almuerzo buffet Tinkuy by Belmond",
+        "price": 45,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 219,
+      "partialPaymentLabel": "Reserva con USD 219 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_025",
+    "internalCode": "PCKT06",
+    "slug": "paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-7d-6n",
+    "title": "Paquete Cusco, Machu Picchu, Vinicunca, Valle Sur y Humantay 7D/6N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "7 días / 6 noches",
+    "badge": "Completo",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca / Valle Sur / Humantay",
+    "currency": "USD",
+    "shortDescription": "Paquete de 7 días y 6 noches con Cusco, Valle Sagrado, Machu Picchu, Vinicunca, Valle Sur y Laguna Humantay.",
+    "description": "Programa de 7 días y 6 noches que combina lo mejor de Cusco: patrimonio arqueológico, Machu Picchu, aventura en Vinicunca y Humantay, y un recorrido cultural adicional por el Valle Sur.",
+    "duration": {
+      "label": "7 días / 6 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 645.9,
+      "child": 615.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 5,
+        "label": "Cusco - 5 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-7d-6n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-7d-6n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-7d-6n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-7d-6n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Valle Sagrado de los Incas",
+      "Almuerzo buffet en Valle Sagrado",
+      "Conexión en tren a Aguas Calientes",
+      "Machu Picchu + retorno a Cusco",
+      "Tour Montaña de Colores Vinicunca",
+      "Desayuno y almuerzo en Vinicunca",
+      "Tour Valle Sur",
+      "Tour Laguna Humantay",
+      "Desayuno y almuerzo en Humantay",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción, traslado, tiempo libre para aclimatación, ceremonia ancestral de bienvenida y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
+        "description": "Recorrido por Pisac, mercado artesanal, complejo arqueológico, Urubamba y Ollantaytambo. Almuerzo buffet incluido. Tren hacia Aguas Calientes. Noche en Aguas Calientes."
+      },
+      {
+        "title": "Día 3: Machu Picchu + retorno a Cusco",
+        "description": "Subida en bus, ingreso a Machu Picchu, visita guiada y retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 4: Tour Montaña de Colores Vinicunca",
+        "description": "Excursión full day a la Montaña de Colores con desayuno y almuerzo incluidos. Caminata de ascenso y descenso. Retorno a Cusco y noche en la ciudad."
+      },
+      {
+        "title": "Día 5: Tour Valle Sur",
+        "description": "Recorrido por Tipón, Pikillacta y Andahuaylillas, tres de los principales referentes culturales y arqueológicos del Valle Sur. Retorno a Cusco por la tarde. Noche en Cusco."
+      },
+      {
+        "title": "Día 6: Tour Laguna Humantay",
+        "description": "Excursión de día completo a la Laguna Humantay con desayuno y almuerzo incluidos. Caminata hacia la laguna y retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 7: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según el horario programado."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Incluye Valle Sur además de los tours clásicos?",
+        "a": "Sí. Este paquete añade el Valle Sur del Cusco además de Machu Picchu, Vinicunca y Humantay."
+      },
+      {
+        "q": "¿Incluye noches en Aguas Calientes?",
+        "a": "Sí. Incluye 1 noche en Aguas Calientes y 5 noches en Cusco."
+      }
+    ],
+    "extras": [
+      {
+        "code": "vinicunca-atv",
+        "label": "Cuatrimoto ATV en Vinicunca",
+        "price": 65,
+        "perPerson": true
+      },
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren THE PRIME",
+        "price": 59,
+        "perPerson": true
+      },
+      {
+        "code": "tinkuy-lunch",
+        "label": "Almuerzo buffet Tinkuy by Belmond",
+        "price": 45,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 239,
+      "partialPaymentLabel": "Reserva con USD 239 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_026",
+    "internalCode": "PCKT07",
+    "slug": "paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-ausangate-8d-7n",
+    "title": "Paquete Cusco, Machu Picchu, Vinicunca, Valle Sur, Humantay y Ausangate 8D/7N",
+    "category": "paquetes",
+    "type": "custom-package",
+    "typeLabel": "8 días / 7 noches",
+    "badge": "Premium",
+    "featured": true,
+    "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca / Valle Sur / Humantay / Ausangate",
+    "currency": "USD",
+    "shortDescription": "Paquete de 8 días y 7 noches con Cusco, Machu Picchu y las experiencias más completas de montaña y cultura en la región.",
+    "description": "Programa de 8 días y 7 noches que reúne lo mejor de Cusco y Machu Picchu con un enfoque completo: patrimonio inca, Valle Sagrado, Machu Picchu, Montaña de Colores, Valle Sur, Laguna Humantay y Siete Lagunas de Ausangate.",
+    "duration": {
+      "label": "8 días / 7 noches",
+      "maxGroupSize": 15,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 689.9,
+      "child": 659.9
+    },
+    "capacity": 15,
+    "accommodationSummary": [
+      {
+        "destination": "cusco",
+        "nights": 6,
+        "label": "Cusco - 6 noches"
+      },
+      {
+        "destination": "aguas-calientes",
+        "nights": 1,
+        "label": "Aguas Calientes - 1 noche"
+      }
+    ],
+    "allowedHotelDestinations": [
+      "cusco",
+      "aguas-calientes"
+    ],
+    "images": {
+      "cover": "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-ausangate-8d-7n/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-ausangate-8d-7n/1.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-ausangate-8d-7n/2.jpg",
+        "./assets/img/tours/paquete-cusco-machu-picchu-vinicunca-valle-sur-humantay-ausangate-8d-7n/3.jpg"
+      ]
+    },
+    "includes": [
+      "Traslados aeropuerto / hotel / estación",
+      "Ceremonia ancestral de bienvenida",
+      "City Tour Cusco + Centros Arqueológicos",
+      "Valle Sagrado de los Incas",
+      "Almuerzo buffet en Valle Sagrado",
+      "Conexión en tren a Aguas Calientes",
+      "Machu Picchu + retorno a Cusco",
+      "Tour Montaña de Colores Vinicunca",
+      "Desayuno y almuerzo en Vinicunca",
+      "Tour Valle Sur",
+      "Tour Laguna Humantay",
+      "Desayuno y almuerzo en Humantay",
+      "Tour Siete Lagunas de Ausangate",
+      "Desayuno y almuerzo en Ausangate",
+      "Bus de subida y bajada en Machu Picchu",
+      "Ingreso oficial a Machu Picchu",
+      "Guiado profesional",
+      "Tickets de ingreso a todos los atractivos mencionados"
+    ],
+    "excludes": [
+      "Vuelos hacia o desde Cusco",
+      "Alimentación no mencionada",
+      "Gastos personales",
+      "Seguro de viaje",
+      "Propinas"
+    ],
+    "itinerary": [
+      {
+        "title": "Día 1: Llegada + Bienvenida + City Tour Cusco",
+        "description": "Recepción en el aeropuerto o terminal terrestre, traslado al hotel, tiempo libre para aclimatación, ceremonia ancestral de bienvenida y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+      },
+      {
+        "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
+        "description": "Salida por la mañana para visitar Pisac, mercado artesanal, complejo arqueológico, Urubamba y Ollantaytambo. Almuerzo buffet incluido. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes."
+      },
+      {
+        "title": "Día 3: Machu Picchu + retorno a Cusco",
+        "description": "Excursión guiada a Machu Picchu con todos los ingresos y tickets incluidos. Tiempo libre en Aguas Calientes y retorno a Cusco según horario confirmado. Noche en Cusco."
+      },
+      {
+        "title": "Día 4: Tour Montaña de Colores Vinicunca",
+        "description": "Excursión full day con desayuno y almuerzo incluidos. Caminata hacia Vinicunca y retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 5: Tour Valle Sur",
+        "description": "Recorrido por Tipón, Pikillacta y Andahuaylillas. Retorno a Cusco por la tarde. Noche en Cusco."
+      },
+      {
+        "title": "Día 6: Tour Laguna Humantay",
+        "description": "Excursión full day hacia la Laguna Humantay, con desayuno y almuerzo incluidos. Caminata hacia la laguna, tiempo libre para disfrutar del paisaje y retorno a Cusco. Noche en Cusco."
+      },
+      {
+        "title": "Día 7: Tour Siete Lagunas de Ausangate",
+        "description": "Salida muy temprano desde Cusco rumbo a Pacchanta, desayuno incluido, caminata guiada por el circuito de las Siete Lagunas, almuerzo incluido y retorno a Cusco por la tarde. Noche en Cusco."
+      },
+      {
+        "title": "Día 8: Traslado de salida",
+        "description": "Desayuno en el hotel y traslado al aeropuerto o terminal terrestre según el horario programado."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Es el paquete más completo de la serie?",
+        "a": "Sí. Incluye Machu Picchu y las principales excursiones de naturaleza y cultura de la región."
+      },
+      {
+        "q": "¿Incluye Siete Lagunas de Ausangate?",
+        "a": "Sí. Incluye desayuno, almuerzo y caminata guiada en el circuito de Ausangate."
+      }
+    ],
+    "extras": [
+      {
+        "code": "vinicunca-atv",
+        "label": "Cuatrimoto ATV en Vinicunca",
+        "price": 65,
+        "perPerson": true
+      },
+      {
+        "code": "train-prime-upgrade",
+        "label": "Upgrade tren THE PRIME",
+        "price": 59,
+        "perPerson": true
+      },
+      {
+        "code": "tinkuy-lunch",
+        "label": "Almuerzo buffet Tinkuy by Belmond",
+        "price": 45,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 0,
+      "partialPaymentPerPerson": 259,
+      "partialPaymentLabel": "Reserva con USD 259 por persona y completa el saldo antes del viaje"
+    },
+    "booking": {
+      "reservationCodePrefix": "PKG"
+    },
+    "status": "published"
   }
 ]
