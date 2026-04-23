@@ -808,6 +808,138 @@
   },
   {
     "id": "exp_009",
+    "internalCode": "CUZ009",
+    "slug": "siete-lagunas-ausangate",
+    "title": "Siete Lagunas del Ausangate",
+    "category": "cusco",
+    "type": "adventure-tour",
+    "typeLabel": "Full Day",
+    "badge": "Aventura",
+    "featured": true,
+    "location": "Cusco / Pacchanta / Ausangate",
+    "currency": "USD",
+    "shortDescription": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares y paisajes altoandinos inolvidables.",
+    "description": "Descubre uno de los paisajes más impresionantes de la cordillera del Vilcanota en un tour full day desde Cusco. La experiencia a las Siete Lagunas del Ausangate combina traslado temprano, desayuno en ruta, caminata de altura por senderos andinos, vistas del nevado Ausangate y recorrido por lagunas de colores turquesa, verde y azul profundo. Durante el trayecto podrás apreciar fauna local, comunidades altoandinas y, según la operación del día, disfrutar de las aguas termales de Pacchanta al finalizar la caminata. Es una excelente alternativa para viajeros que buscan aventura, naturaleza y una inmersión auténtica en los Andes del Cusco.",
+    "duration": {
+      "label": "Full Day",
+      "maxGroupSize": 18,
+      "guideLanguages": ["es", "en"]
+    },
+    "basePricing": {
+      "adult": 39.9,
+      "child": 35.9
+    },
+    "serviceModes": {
+      "group": {
+        "enabled": true,
+        "label": "Tour en grupo"
+      },
+      "private": {
+        "enabled": false,
+        "label": "Tour privado"
+      }
+    },
+    "capacity": 18,
+    "images": {
+      "cover": "./assets/img/tours/siete-lagunas-ausangate/cover.jpg",
+      "gallery": [
+        "./assets/img/tours/siete-lagunas-ausangate/1.jpg",
+        "./assets/img/tours/siete-lagunas-ausangate/2.jpg",
+        "./assets/img/tours/siete-lagunas-ausangate/3.jpg"
+      ]
+    },
+    "includes": [
+      "Recojo en Cusco",
+      "Transporte turístico ida y vuelta",
+      "Guía profesional",
+      "Desayuno",
+      "Almuerzo",
+      "Botiquín de primeros auxilios",
+      "Balón de oxígeno"
+    ],
+    "excludes": [
+      "Ingreso a las lagunas si aplica pago local",
+      "Baños termales de Pacchanta si aplican pago adicional",
+      "Caballo opcional",
+      "Gastos personales",
+      "Servicios no mencionados"
+    ],
+    "itinerary": [
+      {
+        "title": "Recojo y salida desde Cusco",
+        "description": "Recojo entre 4:00 y 4:30 a. m. desde tu hotel en Cusco y viaje hacia la comunidad de Pacchanta, en la zona del Ausangate."
+      },
+      {
+        "title": "Desayuno en Pacchanta",
+        "description": "Llegada a Pacchanta, desayuno y breve explicación del guía sobre la ruta, la altitud y las recomendaciones para la caminata."
+      },
+      {
+        "title": "Inicio de la caminata",
+        "description": "Comienzo del trekking por senderos altoandinos con vistas del nevado Ausangate y de la cordillera del Vilcanota."
+      },
+      {
+        "title": "Recorrido por las 7 lagunas",
+        "description": "Visita a las diferentes lagunas del circuito, reconocidas por sus tonos turquesa, verde esmeralda, azul profundo y paisajes de montaña espectaculares."
+      },
+      {
+        "title": "Retorno a Pacchanta",
+        "description": "Descenso hacia Pacchanta. Según la operación y el tiempo disponible, opción de disfrutar las aguas termales de la zona."
+      },
+      {
+        "title": "Almuerzo y regreso a Cusco",
+        "description": "Almuerzo en la zona y posterior retorno en transporte turístico a la ciudad de Cusco, llegando al atardecer."
+      }
+    ],
+    "faq": [
+      {
+        "q": "¿Qué tan difícil es la caminata?",
+        "a": "Es una caminata de dificultad moderada por la altura. Se recomienda haber pasado al menos 1 o 2 días de aclimatación en Cusco."
+      },
+      {
+        "q": "¿Cuál es la altitud máxima?",
+        "a": "El circuito alcanza aproximadamente entre 4,800 y 4,850 m s. n. m., dependiendo de la ruta operada."
+      },
+      {
+        "q": "¿Incluye aguas termales?",
+        "a": "Muchos operadores incluyen tiempo para visitar las termas de Pacchanta, pero a veces el ingreso se paga aparte según la operación."
+      },
+      {
+        "q": "¿Qué debo llevar?",
+        "a": "Se recomienda llevar ropa abrigadora, impermeable, bloqueador, lentes de sol, agua, snacks y calzado adecuado para trekking."
+      }
+    ],
+    "extras": [
+      {
+        "code": "ticket-ingreso",
+        "label": "Ticket de ingreso",
+        "price": 10.5,
+        "perPerson": true
+      },
+      {
+        "code": "termas-pacchanta",
+        "label": "Ingreso a termas de Pacchanta",
+        "price": 8.5,
+        "perPerson": true
+      },
+      {
+        "code": "caballo-ausangate",
+        "label": "Caballo opcional",
+        "price": 25,
+        "perPerson": true
+      }
+    ],
+    "paymentOptions": {
+      "fullPaymentDiscountPercent": 5,
+      "partialPaymentPerPerson": 14.9,
+      "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+    },
+    "booking": {
+      "reservationCodePrefix": "CUZ"
+    },
+    "status": "published"
+  },
+  {
+    "id": "exp_011",
     "internalCode": "MAPI01",
     "slug": "machu-picchu-full-day",
     "title": "Full Day Machu Picchu",
@@ -916,7 +1048,7 @@
     "status": "published"
   },
   {
-    "id": "exp_010",
+    "id": "exp_012",
     "internalCode": "MAPI02",
     "slug": "machu-picchu-overnight",
     "title": "Machu Picchu Overnight",
