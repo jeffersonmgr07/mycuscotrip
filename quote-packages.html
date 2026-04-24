@@ -231,6 +231,15 @@
               </select>
             </div>
 
+            <div class="quote-discount-box">
+              <label for="discountCodeInput">Código de descuento</label>
+              <div class="quote-discount-box__row">
+                <input type="text" id="discountCodeInput" placeholder="Ej: MCT-8KQ4-P7X2" />
+                <button type="button" id="applyDiscountCodeBtn">Aplicar</button>
+              </div>
+              <p id="discountCodeMessage">Ingresa tu código promocional si tienes uno.</p>
+            </div>
+
             <div class="quote-summary">
               <div class="quote-summary__line">
                 <span>Paquete base</span>
@@ -402,6 +411,10 @@
               <tr>
                 <td>Descuento</td>
                 <td id="printDiscount">- S/ 0.00</td>
+              </tr>
+              <tr>
+                <td>Código aplicado</td>
+                <td id="printAppliedDiscount">Ninguno</td>
               </tr>
               <tr class="print-price-table__total">
                 <td>Total cotizado</td>
