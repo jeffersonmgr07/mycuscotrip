@@ -66,7 +66,7 @@
 
     .top-actions {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       gap: 12px;
       margin-bottom: 8px;
@@ -77,40 +77,6 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-    }
-
-    .lang-switcher {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      border-radius: 14px;
-      padding: 8px 10px;
-      box-shadow: none;
-      backdrop-filter: blur(2px);
-    }
-
-    .lang-switcher label {
-      font-size: .8rem;
-      color: var(--text-soft);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .lang-switcher select {
-      border: none;
-      background: transparent;
-      font-size: .92rem;
-      font-weight: 700;
-      color: var(--brand-primary);
-      outline: none;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      padding-right: 4px;
     }
 
     .action-btn {
@@ -799,10 +765,6 @@
         width: 100%;
       }
 
-      .lang-switcher {
-        justify-content: space-between;
-      }
-
       .voucher-brand img {
         width: 271px;
         margin-left: auto;
@@ -1199,14 +1161,6 @@
   <main class="voucher-page">
     <div class="voucher-shell">
       <div class="top-actions">
-        <div class="lang-switcher">
-          <label for="languageSelect" id="langLabel">Idioma</label>
-          <select id="languageSelect">
-            <option value="es">ES</option>
-            <option value="en">EN</option>
-          </select>
-        </div>
-
         <div class="top-actions-right">
           <button class="action-btn secondary" onclick="window.location.href='./mi-reserva.html'" id="backBtn">
             <i class="fa-solid fa-arrow-left"></i> Volver
@@ -1377,8 +1331,8 @@
       const images = container.querySelectorAll('img[src*="assets/"]');
       images.forEach(img => {
         const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
+        if (currentSrc && currentSrc.startsWith('assets/')) {
+          img.setAttribute('src', `./${currentSrc}`);
         }
       });
     }
@@ -1388,7 +1342,34 @@
         loadComponent('header', 'header-container'),
         loadComponent('footer', 'footer-container')
       ]);
+
+      syncFooterAccordions();
+      setTimeout(syncFooterAccordions, 200);
+      setTimeout(initializeComponents, 300);
     }
+
+    function initializeComponents() {
+      if (typeof MyCuscoTripHeader === 'function') {
+        try {
+          new MyCuscoTripHeader();
+        } catch (e) {
+          console.error('Error en Header JS:', e);
+        }
+      }
+    }
+
+    function syncFooterAccordions() {
+      const accordions = document.querySelectorAll('.footer-accordion');
+      if (!accordions.length) return;
+
+      const isDesktop = window.innerWidth >= 769;
+
+      accordions.forEach((item) => {
+        item.open = isDesktop;
+      });
+    }
+
+    window.addEventListener('resize', syncFooterAccordions);
 
     function esc(value) {
       return String(value ?? "")
@@ -1435,7 +1416,6 @@
       if (!input) return i18n[lang].noData;
 
       const normalized = String(input).trim();
-
       const isoMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
       const slashMatch = normalized.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
 
@@ -1479,13 +1459,18 @@
     function applyStaticTranslations() {
       const t = i18n[currentLanguage];
       document.documentElement.lang = currentLanguage;
-      document.getElementById("langLabel").textContent = t.langLabel;
+
+      const langLabel = document.getElementById("langLabel");
+      if (langLabel) langLabel.textContent = t.langLabel;
+
       document.getElementById("backBtn").innerHTML = `<i class="fa-solid fa-arrow-left"></i> ${t.back}`;
       document.getElementById("printBtn").innerHTML = `<i class="fa-solid fa-print"></i> ${t.print}`;
       document.getElementById("emptyTitle").textContent = t.emptyTitle;
       document.getElementById("emptyText").textContent = t.emptyText;
       document.getElementById("emptyBtn").textContent = t.emptyBtn;
-      document.getElementById("languageSelect").value = currentLanguage;
+
+      const languageSelect = document.getElementById("languageSelect");
+      if (languageSelect) languageSelect.value = currentLanguage;
     }
 
     function renderWebVoucher(reserva) {
@@ -2032,6 +2017,8 @@
 
     function setupLanguageSwitcher() {
       const select = document.getElementById("languageSelect");
+      if (!select) return;
+
       select.value = currentLanguage;
 
       select.addEventListener("change", (e) => {
