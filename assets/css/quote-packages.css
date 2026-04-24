@@ -425,7 +425,62 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+.quote-discount-box {
+  margin-bottom: 14px;
+  padding: 13px;
+  border: 1px solid rgba(6, 40, 3, 0.12);
+  border-radius: 16px;
+  background: #f9fcfb;
+}
 
+.quote-discount-box label {
+  display: block;
+  font-weight: 800;
+  color: #062803;
+  margin-bottom: 8px;
+}
+
+.quote-discount-box__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.quote-discount-box input {
+  min-width: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.quote-discount-box button {
+  border: 0;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-weight: 800;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+#discountCodeMessage {
+  margin: 8px 0 0;
+  color: #6b7772;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+#discountCodeMessage.is-success {
+  color: #0a3a26;
+  font-weight: 800;
+}
+
+#discountCodeMessage.is-error {
+  color: #9b1c1c;
+  font-weight: 800;
+}
 /* SIDEBAR */
 .quote-sidebar {
   position: relative;
