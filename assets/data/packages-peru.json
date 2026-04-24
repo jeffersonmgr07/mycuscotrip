@@ -1,10 +1,24 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updatedAt": "2026-04-24",
   "market": "peru",
   "defaultCurrency": "PEN",
   "pricingModel": "base_without_train_without_accommodation",
-  "description": "Paquetes para cotización de turistas peruanos. El precio base no incluye tren ni alojamiento. Los hoteles se calculan desde hotels.json y los trenes desde trains.json.",
+  "description": "Paquetes para cotización con precios base por nacionalidad. El precio base no incluye tren ni alojamiento. Los hoteles se calculan desde hotels.json y los trenes desde trains.json.",
+  "currencyRules": {
+    "national": {
+      "allowedCurrencies": ["PEN", "USD"],
+      "defaultCurrency": "PEN"
+    },
+    "andean_community": {
+      "allowedCurrencies": ["USD"],
+      "defaultCurrency": "USD"
+    },
+    "foreign": {
+      "allowedCurrencies": ["USD"],
+      "defaultCurrency": "USD"
+    }
+  },
   "paymentOptions": {
     "fullPaymentDiscountPercent": 5,
     "partialPaymentPercent": 30,
@@ -44,7 +58,7 @@
       "nights": 2,
       "location": "Cusco / Machu Picchu",
       "shortDescription": "Paquete corto para conocer Cusco y Machu Picchu con City Tour, bienvenida ancestral y Full Day Machu Picchu.",
-      "description": "Programa ideal para viajeros peruanos que disponen de pocos días en Cusco. Incluye llegada, bienvenida ancestral, City Tour y visita Full Day a Machu Picchu. El precio base no incluye tren ni alojamiento, ya que ambos se seleccionan durante la cotización.",
+      "description": "Programa ideal para viajeros que disponen de pocos días en Cusco. Incluye llegada, bienvenida ancestral, City Tour y visita Full Day a Machu Picchu. El precio base no incluye tren ni alojamiento, ya que ambos se seleccionan durante la cotización.",
       "duration": {
         "label": "3 días / 2 noches",
         "maxGroupSize": 15,
@@ -53,6 +67,23 @@
       "basePricing": {
         "adult": 590,
         "child": 550
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 590,
+          "child": 550,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 210,
+          "child": 190,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 240,
+          "child": 220,
+          "currency": "USD"
+        }
       },
       "priceIncludesTrain": false,
       "priceIncludesAccommodation": false,
@@ -152,7 +183,7 @@
       "nights": 3,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
       "shortDescription": "Paquete recomendado con bienvenida ancestral, City Tour, Valle Sagrado con conexión y Machu Picchu.",
-      "description": "Programa de 4 días y 3 noches para viajeros peruanos que desean una experiencia completa y ordenada: Cusco, Valle Sagrado, noche en Aguas Calientes y Machu Picchu. El precio base no incluye tren ni alojamiento.",
+      "description": "Programa de 4 días y 3 noches para viajeros que desean una experiencia completa y ordenada: Cusco, Valle Sagrado, noche en Aguas Calientes y Machu Picchu. El precio base no incluye tren ni alojamiento.",
       "duration": {
         "label": "4 días / 3 noches",
         "maxGroupSize": 15,
@@ -161,6 +192,23 @@
       "basePricing": {
         "adult": 690,
         "child": 650
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 690,
+          "child": 650,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 245,
+          "child": 225,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 285,
+          "child": 265,
+          "currency": "USD"
+        }
       },
       "priceIncludesTrain": false,
       "priceIncludesAccommodation": false,
@@ -272,7 +320,7 @@
       "nights": 4,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
       "shortDescription": "Paquete flexible de 5 días con opción de Montaña de Colores, Laguna Humantay o Siete Lagunas.",
-      "description": "Programa de 5 días y 4 noches para viajeros peruanos que desean agregar una excursión adicional después de Machu Picchu. El cliente puede elegir entre Montaña de Colores, Laguna Humantay o Siete Lagunas del Ausangate.",
+      "description": "Programa de 5 días y 4 noches para viajeros que desean agregar una excursión adicional después de Machu Picchu. El cliente puede elegir entre Montaña de Colores, Laguna Humantay o Siete Lagunas del Ausangate.",
       "duration": {
         "label": "5 días / 4 noches",
         "maxGroupSize": 15,
@@ -281,6 +329,23 @@
       "basePricing": {
         "adult": 790,
         "child": 750
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 790,
+          "child": 750,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 285,
+          "child": 265,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 325,
+          "child": 305,
+          "currency": "USD"
+        }
       },
       "priceIncludesTrain": false,
       "priceIncludesAccommodation": false,
@@ -480,6 +545,23 @@
         "adult": 890,
         "child": 850
       },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 890,
+          "child": 850,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 325,
+          "child": 305,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 365,
+          "child": 345,
+          "currency": "USD"
+        }
+      },
       "priceIncludesTrain": false,
       "priceIncludesAccommodation": false,
       "trainSelection": {
@@ -653,7 +735,7 @@
       "nights": 6,
       "location": "Cusco / Valle Sagrado / Machu Picchu / Vinicunca / Humantay / Valle Sur",
       "shortDescription": "Paquete completo de 7 días con Machu Picchu y varias excursiones clásicas de Cusco.",
-      "description": "Programa completo para viajeros peruanos que desean aprovechar mejor su estadía en Cusco. Incluye City Tour, Valle Sagrado, Machu Picchu y excursiones adicionales a elegir.",
+      "description": "Programa completo para viajeros que desean aprovechar mejor su estadía en Cusco. Incluye City Tour, Valle Sagrado, Machu Picchu y excursiones adicionales a elegir.",
       "duration": {
         "label": "7 días / 6 noches",
         "maxGroupSize": 15,
@@ -662,6 +744,23 @@
       "basePricing": {
         "adult": 990,
         "child": 950
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 990,
+          "child": 950,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 365,
+          "child": 345,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 410,
+          "child": 390,
+          "currency": "USD"
+        }
       },
       "priceIncludesTrain": false,
       "priceIncludesAccommodation": false,
