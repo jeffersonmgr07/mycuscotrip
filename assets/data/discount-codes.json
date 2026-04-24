@@ -1,22 +1,30 @@
 [
   {
-    "code": "BOOK10",
+    "code": "MCT-8KQ4-P7X2",
     "type": "percent",
     "value": 10,
     "active": true,
     "label": "10% de descuento"
   },
   {
-    "code": "CUSCO25",
-    "type": "fixed",
-    "value": 25,
+    "code": "CUS-5RZ9-M2LA",
+    "type": "percent",
+    "value": 5,
     "active": true,
-    "label": "USD 25 de descuento"
+    "label": "5% de descuento"
   },
   {
-    "code": "MCTVIP50",
+    "code": "MACHU-3WQ8-N7TY",
+    "type": "percent",
+    "value": 15,
+    "active": true,
+    "label": "15% de descuento"
+  },
+  {
+    "code": "VIP-9LKC-50USD",
     "type": "fixed",
     "value": 50,
+    "currency": "USD",
     "active": false,
     "label": "USD 50 de descuento"
   }
