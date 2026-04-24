@@ -337,27 +337,31 @@
         return false;
       } catch (error) {
         console.error(`Error cargando ${componentName}:`, error);
+
         const target = document.getElementById(targetId);
         if (target) {
           target.innerHTML = getFallbackContent(componentName);
         }
+
         return false;
       }
     }
 
     function fixImagePaths(container) {
       const images = container.querySelectorAll('img[src*="assets/"]');
-      images.forEach(img => {
+
+      images.forEach((img) => {
         const currentSrc = img.getAttribute('src');
-        if (currentSrc.startsWith('assets/')) {
-          img.setAttribute('src', `.${currentSrc}`);
+
+        if (currentSrc && currentSrc.startsWith('assets/')) {
+          img.setAttribute('src', `./${currentSrc}`);
         }
       });
     }
 
     function getFallbackContent(componentName) {
       const fallbacks = {
-        'header': `
+        header: `
           <header style="background:#053220;padding:15px 0;">
             <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
               <div style="color:white;font-weight:bold;font-size:1.2rem;">MyCuscoTrip</div>
@@ -368,7 +372,7 @@
             </div>
           </header>
         `,
-        'footer': `
+        footer: `
           <footer style="background:#062803;color:white;padding:40px 0;margin-top:0;">
             <div class="container">
               <div style="text-align:center;">
@@ -383,12 +387,39 @@
       return fallbacks[componentName] || `<div>Componente ${componentName} no disponible</div>`;
     }
 
+    function initializeComponents() {
+      if (typeof MyCuscoTripHeader === 'function') {
+        try {
+          new MyCuscoTripHeader();
+        } catch (e) {
+          console.error('Error en Header JS:', e);
+        }
+      }
+    }
+
+    function syncFooterAccordions() {
+      const accordions = document.querySelectorAll('.footer-accordion');
+      if (!accordions.length) return;
+
+      const isDesktop = window.innerWidth >= 769;
+
+      accordions.forEach((item) => {
+        item.open = isDesktop;
+      });
+    }
+
     async function initializeApp() {
       await Promise.all([
         loadComponent('header', 'header-container'),
         loadComponent('footer', 'footer-container')
       ]);
+
+      syncFooterAccordions();
+      setTimeout(syncFooterAccordions, 200);
+      setTimeout(initializeComponents, 300);
     }
+
+    window.addEventListener('resize', syncFooterAccordions);
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initializeApp);
