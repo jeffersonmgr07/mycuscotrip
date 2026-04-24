@@ -1082,10 +1082,10 @@
     },
     "capacity": 15,
     "images": {
-      "cover": "./assets/img/tours/machu-picchu-overnight/cover.png",
+      "cover": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
       "gallery": [
-        "./assets/img/tours/machu-picchu-overnight/1.png",
-        "./assets/img/tours/machu-picchu-overnight/2.png"
+        "./assets/img/tours/machu-picchu-overnight/1.jpg",
+        "./assets/img/tours/machu-picchu-overnight/2.jpg"
       ]
     },
     "includes": [
