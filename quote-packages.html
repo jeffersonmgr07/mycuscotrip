@@ -7,7 +7,7 @@
   <title>Cotizador de paquetes | My Cusco Trip</title>
   <meta
     name="description"
-    content="Cotiza paquetes turísticos para peruanos en Cusco y Machu Picchu con hoteles, trenes, moneda y modalidad de pago."
+    content="Cotiza paquetes turísticos para Cusco y Machu Picchu con hoteles, trenes, moneda y modalidad de pago."
   />
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=1" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=2" />
 </head>
 
 <body>
@@ -32,10 +32,10 @@
   <main class="quote-page">
     <section class="quote-hero">
       <div class="container quote-hero__container">
-        <span class="quote-eyebrow">Cotizador para turistas peruanos</span>
+        <span class="quote-eyebrow">Cotizador de paquetes turísticos</span>
         <h1>Cotiza tu paquete a Cusco y Machu Picchu</h1>
         <p>
-          Elige fechas, paquete, hotel, tren y modalidad de pago. Al final podrás imprimir una cotización formal o enviarnos tu solicitud.
+          Elige fechas, nacionalidad, paquete, hotel, tren y modalidad de pago. Al final podrás imprimir una cotización formal o enviarnos tu solicitud.
         </p>
       </div>
     </section>
@@ -63,6 +63,7 @@
                   <option value="foreign">Extranjeros</option>
                   <option value="andean_community">Comunidad Andina</option>
                 </select>
+                <small id="nationalityHelp">El tren local solo aplica para turistas nacionales peruanos.</small>
               </div>
 
               <div class="quote-field">
@@ -141,18 +142,32 @@
           <article id="trainSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>5. Trenes</h2>
-              <p>Selecciona tren de ida y retorno. El tren local solo se mostrará para turistas nacionales.</p>
+              <p>Elige tren de ida y retorno. El tren local solo se mostrará para turistas nacionales peruanos.</p>
             </div>
 
-            <div class="quote-train-grid">
-              <div>
-                <h3>Tren de ida</h3>
-                <div id="outboundTrainOptions" class="quote-train-options"></div>
+            <div class="quote-train-selector-grid">
+              <div class="quote-train-selector-card">
+                <div>
+                  <span>Tren de ida</span>
+                  <strong id="outboundTrainSelectedTitle">Por seleccionar</strong>
+                  <p id="outboundTrainSelectedMeta">Elige el tren de ida para completar la cotización.</p>
+                </div>
+                <button type="button" id="openOutboundTrainModalBtn" class="btn quote-secondary-btn">
+                  <i class="fas fa-train"></i>
+                  Elegir tren de ida
+                </button>
               </div>
 
-              <div>
-                <h3>Tren de retorno</h3>
-                <div id="returnTrainOptions" class="quote-train-options"></div>
+              <div class="quote-train-selector-card">
+                <div>
+                  <span>Tren de retorno</span>
+                  <strong id="returnTrainSelectedTitle">Por seleccionar</strong>
+                  <p id="returnTrainSelectedMeta">Elige el tren de retorno para completar la cotización.</p>
+                </div>
+                <button type="button" id="openReturnTrainModalBtn" class="btn quote-secondary-btn">
+                  <i class="fas fa-train"></i>
+                  Elegir tren de retorno
+                </button>
               </div>
             </div>
           </article>
@@ -444,33 +459,59 @@
       </div>
 
       <div class="quote-modal__footer">
-        <button type="button" class="btn quote-secondary-btn" id="cancelHotelModalBtn">
-          Cerrar
+        <button type="button" class="btn quote-main-btn" id="confirmHotelModalBtn">
+          Seleccionar hotel y acomodación
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="trainSelectionModal" class="quote-modal" hidden>
+    <div class="quote-modal__backdrop" data-close-train-modal></div>
+
+    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainModalTitle">
+      <button type="button" class="quote-modal__close" id="closeTrainModalBtn" aria-label="Cerrar modal">
+        <i class="fas fa-xmark"></i>
+      </button>
+
+      <div class="quote-modal__header">
+        <p class="quote-modal__eyebrow">Selección de tren</p>
+        <h2 id="trainModalTitle">Elige tu tren</h2>
+        <p id="trainModalSubtitle">Compara horarios, categorías y precios disponibles.</p>
+      </div>
+
+      <div class="quote-modal__body">
+        <div id="trainModalList" class="quote-modal__list quote-train-modal-list"></div>
+      </div>
+
+      <div class="quote-modal__footer">
+        <button type="button" class="btn quote-main-btn" id="confirmTrainModalBtn">
+          Seleccionar tren
         </button>
       </div>
     </div>
   </div>
 
   <div id="trainDetailsModal" class="quote-modal" hidden>
-    <div class="quote-modal__backdrop" data-close-train-modal></div>
+    <div class="quote-modal__backdrop" data-close-train-details-modal></div>
 
-    <div class="quote-modal__dialog quote-modal__dialog--small" role="dialog" aria-modal="true" aria-labelledby="trainModalTitle">
-      <button type="button" class="quote-modal__close" id="closeTrainModalBtn" aria-label="Cerrar modal">
+    <div class="quote-modal__dialog quote-modal__dialog--small" role="dialog" aria-modal="true" aria-labelledby="trainDetailsModalTitle">
+      <button type="button" class="quote-modal__close" id="closeTrainDetailsModalBtn" aria-label="Cerrar modal">
         <i class="fas fa-xmark"></i>
       </button>
 
       <div class="quote-modal__header">
         <p class="quote-modal__eyebrow">Detalle de tren</p>
-        <h2 id="trainModalTitle">Categoría de tren</h2>
-        <p id="trainModalSubtitle">Información del servicio seleccionado.</p>
+        <h2 id="trainDetailsModalTitle">Categoría de tren</h2>
+        <p id="trainDetailsModalSubtitle">Información del servicio seleccionado.</p>
       </div>
 
       <div class="quote-modal__body">
-        <div id="trainModalContent" class="quote-train-modal-content"></div>
+        <div id="trainDetailsModalContent" class="quote-train-modal-content"></div>
       </div>
 
       <div class="quote-modal__footer">
-        <button type="button" class="btn quote-secondary-btn" id="cancelTrainModalBtn">
+        <button type="button" class="btn quote-secondary-btn" id="cancelTrainDetailsModalBtn">
           Cerrar
         </button>
       </div>
@@ -538,6 +579,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=1"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=2"></script>
 </body>
 </html>
