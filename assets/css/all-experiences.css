@@ -1,7 +1,26 @@
 .listing-hero {
+  position: relative;
+  overflow: hidden;
   padding: 140px 0 48px;
-  background: linear-gradient(135deg, rgba(6,40,3,.92), rgba(5,50,32,.82));
+  background:
+    linear-gradient(135deg, rgba(6, 40, 3, .88), rgba(5, 50, 32, .84)),
+    url("../img/all-experiences/hero-catalogo.jpg") center/cover no-repeat;
   color: #fff;
+}
+
+.listing-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(244, 211, 94, .16), transparent 32%),
+    linear-gradient(180deg, rgba(6, 40, 3, .08), rgba(6, 40, 3, .28));
+  pointer-events: none;
+}
+
+.listing-hero .container {
+  position: relative;
+  z-index: 2;
 }
 
 .listing-hero__content {
@@ -13,24 +32,27 @@
   margin-bottom: 14px;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(244, 211, 94, .18);
+  border: 1px solid rgba(244, 211, 94, .34);
   font-size: .9rem;
   font-weight: 700;
   letter-spacing: .05em;
   text-transform: uppercase;
   color: #fff;
+  backdrop-filter: blur(4px);
 }
 
 .listing-hero h1 {
   color: #fff;
   font-size: clamp(2.1rem, 5vw, 3.4rem);
   margin-bottom: 14px;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, .22);
 }
 
 .listing-hero p {
-  color: rgba(255,255,255,.88);
+  color: rgba(255,255,255,.9);
   max-width: 720px;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, .2);
 }
 
 .listing-page {
@@ -135,12 +157,15 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background: #eb09a7;
+  background: linear-gradient(135deg, #0a3a26, #0f6b43);
   color: #fff;
-  font-weight: 700;
-  font-size: .82rem;
-  padding: 8px 12px;
+  font-weight: 800;
+  font-size: .78rem;
+  padding: 8px 13px;
   border-radius: 999px;
+  letter-spacing: .02em;
+  box-shadow: 0 10px 22px rgba(5, 50, 32, .28);
+  border: 1px solid rgba(255, 255, 255, .22);
 }
 
 .listing-card__content {
@@ -221,6 +246,9 @@
 @media (max-width: 768px) {
   .listing-hero {
     padding: 110px 0 38px;
+    background:
+      linear-gradient(135deg, rgba(6, 40, 3, .9), rgba(5, 50, 32, .86)),
+      url("../img/all-experiences/hero-catalogo.jpg") center/cover no-repeat;
   }
 
   .listing-grid {
