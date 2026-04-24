@@ -99,17 +99,17 @@
       "label": "Aguas Calientes",
       "hotels": [
         {
-          "hotelCode": "luz-garde-3s",
-          "hotelName": "Hotel Luz Garde",
+          "hotelCode": "luz-garden-3s",
+          "hotelName": "Hotel Luz Garden",
           "stars": 3,
           "location": "Aguas Calientes",
           "address": "",
           "images": {
-            "cover": "./assets/img/hotels/luz-garde/cover.jpg",
+            "cover": "./assets/img/hotels/luz-n/cover.jpg",
             "gallery": [
-              "./assets/img/hotels/luz-garde/1.jpg",
-              "./assets/img/hotels/luz-garde/2.jpg",
-              "./assets/img/hotels/luz-garde/3.jpg"
+              "./assets/img/hotels/luz-garden/1.jpg",
+              "./assets/img/hotels/luz-garden/2.jpg",
+              "./assets/img/hotels/luz-garden/3.jpg"
             ]
           },
           "rooms": [
