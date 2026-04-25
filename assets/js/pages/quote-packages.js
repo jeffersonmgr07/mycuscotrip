@@ -282,32 +282,43 @@ class MyCuscoTripQuotePackages {
   applyCurrencyRulesByNationality() {
     const currencySelect = document.getElementById("quoteCurrency");
     if (!currencySelect) return;
-
+  
     const rules = this.packagesData.currencyRules?.[this.nationality];
     const allowedCurrencies = rules?.allowedCurrencies || (this.nationality === "national" ? ["PEN", "USD"] : ["USD"]);
     const defaultCurrency = rules?.defaultCurrency || allowedCurrencies[0] || "USD";
-
+  
     Array.from(currencySelect.options).forEach((option) => {
       option.disabled = !allowedCurrencies.includes(option.value);
       option.hidden = !allowedCurrencies.includes(option.value);
     });
-
+  
     if (!allowedCurrencies.includes(this.quoteCurrency)) {
       this.quoteCurrency = defaultCurrency;
       currencySelect.value = defaultCurrency;
     } else {
       currencySelect.value = this.quoteCurrency;
     }
-
+  
     const help = document.getElementById("nationalityHelp");
     if (help) {
       if (this.nationality === "national") {
-        help.textContent = "Turistas nacionales pueden cotizar en soles o dólares. Tren local disponible solo para peruanos.";
+        help.textContent = "Como turista peruano puedes cotizar en soles o dólares. También podrás ver la opción de tren local, sujeta a disponibilidad presencial.";
+      } else if (this.nationality === "andean_community") {
+        help.textContent = "Para turistas de Comunidad Andina, la cotización se mostrará en dólares americanos.";
       } else {
-        help.textContent = "Para extranjeros y Comunidad Andina, la cotización se muestra únicamente en dólares americanos.";
+        help.textContent = "Para turistas extranjeros, la cotización se mostrará únicamente en dólares americanos.";
       }
     }
-
+  
+    const trainSectionText = document.querySelector("#trainSection .quote-card__header p");
+    if (trainSectionText) {
+      if (this.nationality === "national") {
+        trainSectionText.textContent = "Selecciona tu tren de ida y retorno a Machu Picchu. Como turista nacional peruano, también podrás ver la opción de tren local sujeta a disponibilidad.";
+      } else {
+        trainSectionText.textContent = "Selecciona tu tren turístico de ida y retorno a Machu Picchu según horario, categoría y disponibilidad.";
+      }
+    }
+  
     this.updateExchangeRateHelp();
   }
 
@@ -387,6 +398,7 @@ class MyCuscoTripQuotePackages {
 
     this.renderPackageOptions();
     this.renderItineraryOptions();
+    this.renderPackageIncludes();
     this.refreshAccommodationSelections();
     this.autoSelectRecommendedTrains();
     this.renderTrainSelectors();
@@ -458,6 +470,41 @@ class MyCuscoTripQuotePackages {
         <p>${this.escapeHtml(item.description || "")}</p>
       </div>
     `).join("");
+  }
+
+  renderPackageIncludes() {
+    const existing = document.getElementById("packageIncludesBox");
+    if (existing) existing.remove();
+  
+    if (!this.selectedPackage) return;
+  
+    const itinerarySection = document.getElementById("itinerarySection");
+    if (!itinerarySection) return;
+  
+    const includes = Array.isArray(this.selectedPackage.includes)
+      ? this.selectedPackage.includes
+      : [];
+  
+    if (!includes.length) return;
+  
+    const box = document.createElement("div");
+    box.id = "packageIncludesBox";
+    box.className = "quote-package-includes";
+  
+    box.innerHTML = `
+      <h3>Este paquete incluye</h3>
+      <p>Tu paquete base ya considera los servicios esenciales para operar el itinerario seleccionado. El tren y el alojamiento se cotizan aparte según tus preferencias.</p>
+      <ul>
+        ${includes.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}
+      </ul>
+    `;
+  
+    const preview = document.querySelector(".quote-itinerary-preview");
+    if (preview) {
+      preview.insertAdjacentElement("afterend", box);
+    } else {
+      itinerarySection.appendChild(box);
+    }
   }
 
   renderAccommodationOptions() {
