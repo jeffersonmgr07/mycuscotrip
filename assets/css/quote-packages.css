@@ -425,6 +425,8 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+/* DESCUENTO */
 .quote-discount-box {
   margin-bottom: 14px;
   padding: 13px;
@@ -481,6 +483,7 @@
   color: #9b1c1c;
   font-weight: 800;
 }
+
 /* SIDEBAR */
 .quote-sidebar {
   position: relative;
@@ -612,7 +615,8 @@
 }
 
 .quote-main-btn,
-.quote-secondary-btn {
+.quote-secondary-btn,
+.quote-payment-btn {
   width: 100%;
   border-radius: 999px;
   padding: 15px 20px;
@@ -640,6 +644,21 @@
 
 .quote-secondary-btn:hover {
   box-shadow: 0 14px 28px rgba(10, 58, 38, 0.16);
+}
+
+.quote-payment-btn {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #d99a00 0%, #b86d00 48%, #0a3a26 100%);
+  box-shadow: 0 14px 28px rgba(184, 109, 0, 0.26);
+  transform: translateY(0);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.quote-payment-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(184, 109, 0, 0.34);
+  filter: brightness(1.03);
 }
 
 /* MODALES */
@@ -1203,6 +1222,13 @@ body.quote-modal-open {
   margin-bottom: 18px;
 }
 
+.print-logo {
+  display: block;
+  max-width: 190px;
+  height: auto;
+  margin: 0 0 8px;
+}
+
 .print-header h1,
 .print-header h2 {
   color: #062803;
@@ -1217,6 +1243,56 @@ body.quote-modal-open {
 
 .print-header__right {
   text-align: right;
+  min-width: 260px;
+}
+
+.print-coupon-box {
+  margin-top: 10px;
+  width: 260px;
+  min-height: 104px;
+  margin-left: auto;
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(6, 40, 3, 0.16), rgba(6, 40, 3, 0.16)),
+    url("../img/quote/coupon-bg.png") center/cover no-repeat;
+  border: 1px dashed rgba(10, 58, 38, 0.5);
+  color: #062803;
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
+
+.print-coupon-box__content {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(1px);
+}
+
+.print-coupon-box__content span {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #0a3a26;
+}
+
+.print-coupon-box__content strong {
+  display: block;
+  margin: 4px 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.28rem;
+  line-height: 1.1;
+  color: #062803;
+}
+
+.print-coupon-box__content small {
+  display: block;
+  font-size: 0.76rem;
+  color: #333;
+  line-height: 1.28;
 }
 
 .print-client-grid {
@@ -1236,8 +1312,11 @@ body.quote-modal-open {
 
 .print-client-grid h3,
 .print-section h3 {
-  color: #062803;
-  margin: 0 0 10px;
+  color: #fff;
+  background: #0a3a26;
+  margin: -4px -4px 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   font-size: 1rem;
 }
 
@@ -1248,6 +1327,27 @@ body.quote-modal-open {
   color: #333;
   font-size: 0.92rem;
   line-height: 1.5;
+}
+
+.print-banner {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 0 0 14px;
+  border: 1px solid #d8dedb;
+}
+
+.print-banner-top {
+  max-height: 170px;
+}
+
+.print-banner-bottom {
+  margin-top: 12px;
+  margin-bottom: 0;
+  max-height: 150px;
 }
 
 .print-itinerary-list {
@@ -1339,6 +1439,10 @@ body.quote-modal-open {
     border-radius: 20px;
   }
 
+  .quote-discount-box__row {
+    grid-template-columns: 1fr;
+  }
+
   .quote-modal__dialog {
     width: calc(100vw - 12px);
     max-height: calc(100vh - 12px);
@@ -1415,6 +1519,11 @@ body.quote-modal-open {
     margin: 12mm;
   }
 
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body {
     background: #fff !important;
   }
@@ -1444,15 +1553,39 @@ body.quote-modal-open {
     box-shadow: none;
   }
 
-  .print-client-grid > div,
-  .print-section {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .print-logo {
+    max-width: 180px;
   }
 
   .print-header {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .print-header__right {
+    min-width: 250px;
+  }
+
+  .print-coupon-box {
+    display: grid !important;
+  }
+
+  .print-client-grid > div,
+  .print-section,
+  .print-banner,
+  .print-coupon-box {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-client-grid h3,
+  .print-section h3 {
+    background: #0a3a26 !important;
+    color: #fff !important;
+  }
+
+  .print-banner {
+    display: block !important;
   }
 
   .print-footer {
