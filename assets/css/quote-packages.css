@@ -70,9 +70,15 @@
 }
 
 .quote-card__header h2 {
+  display: inline-flex;
+  align-items: center;
   color: #062803;
   font-size: 1.35rem;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff3c4 0%, #ffe39a 100%);
+  box-shadow: 0 8px 18px rgba(217, 154, 0, 0.16);
 }
 
 .quote-card__header p {
@@ -649,16 +655,16 @@
 .quote-payment-btn {
   border: 0;
   color: #fff;
-  background: linear-gradient(135deg, #d99a00 0%, #b86d00 48%, #0a3a26 100%);
-  box-shadow: 0 14px 28px rgba(184, 109, 0, 0.26);
+  background: linear-gradient(135deg, #ff2f92 0%, #d91572 52%, #9b0f55 100%);
+  box-shadow: 0 14px 28px rgba(217, 21, 114, 0.28);
   transform: translateY(0);
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .quote-payment-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 36px rgba(184, 109, 0, 0.34);
-  filter: brightness(1.03);
+  box-shadow: 0 18px 36px rgba(217, 21, 114, 0.38);
+  filter: brightness(1.04);
 }
 
 /* MODALES */
@@ -1591,4 +1597,34 @@ body.quote-modal-open {
   .print-footer {
     margin-top: 10px;
   }
+}
+.quote-package-includes {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fff8db;
+  border: 1px solid #f1e2a4;
+}
+
+.quote-package-includes h3 {
+  color: #062803;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.quote-package-includes p {
+  color: #6b5a18;
+  margin: 0 0 10px;
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.quote-package-includes ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: #17322a;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
