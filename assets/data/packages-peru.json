@@ -65,23 +65,23 @@
         "guideLanguages": ["es"]
       },
       "basePricing": {
-        "adult": 590,
-        "child": 550
+        "adult": 565,
+        "child": 525
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 590,
-          "child": 550,
+          "adult": 565,
+          "child": 525,
           "currency": "PEN"
         },
         "andean_community": {
-          "adult": 210,
-          "child": 190,
+          "adult": 245,
+          "child": 225,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 240,
-          "child": 220,
+          "adult": 265,
+          "child": 225,
           "currency": "USD"
         }
       },
@@ -190,23 +190,23 @@
         "guideLanguages": ["es"]
       },
       "basePricing": {
-        "adult": 690,
-        "child": 650
+        "adult": 660,
+        "child": 620
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 690,
-          "child": 650,
+          "adult": 660,
+          "child": 620,
           "currency": "PEN"
         },
         "andean_community": {
-          "adult": 245,
-          "child": 225,
+          "adult": 290,
+          "child": 270,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 285,
-          "child": 265,
+          "adult": 310,
+          "child": 270,
           "currency": "USD"
         }
       },
@@ -327,23 +327,23 @@
         "guideLanguages": ["es"]
       },
       "basePricing": {
-        "adult": 790,
-        "child": 750
+        "adult": 755,
+        "child": 715
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 790,
-          "child": 750,
+          "adult": 755,
+          "child": 715,
           "currency": "PEN"
         },
         "andean_community": {
-          "adult": 285,
-          "child": 265,
+          "adult": 335,
+          "child": 315,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 325,
-          "child": 305,
+          "adult": 355,
+          "child": 315,
           "currency": "USD"
         }
       },
@@ -542,23 +542,23 @@
         "guideLanguages": ["es"]
       },
       "basePricing": {
-        "adult": 890,
-        "child": 850
+        "adult": 850,
+        "child": 810
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 890,
-          "child": 850,
+          "adult": 850,
+          "child": 810,
           "currency": "PEN"
         },
         "andean_community": {
-          "adult": 325,
-          "child": 305,
+          "adult": 380,
+          "child": 360,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 365,
-          "child": 345,
+          "adult": 400,
+          "child": 360,
           "currency": "USD"
         }
       },
@@ -742,23 +742,23 @@
         "guideLanguages": ["es"]
       },
       "basePricing": {
-        "adult": 990,
-        "child": 950
+        "adult": 945,
+        "child": 905
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 990,
-          "child": 950,
+          "adult": 945,
+          "child": 905,
           "currency": "PEN"
         },
         "andean_community": {
-          "adult": 365,
-          "child": 345,
+          "adult": 425,
+          "child": 405,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 410,
-          "child": 390,
+          "adult": 445,
+          "child": 405,
           "currency": "USD"
         }
       },
