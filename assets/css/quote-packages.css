@@ -70,19 +70,21 @@
 }
 
 .quote-card__header h2 {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  width: 100%;
   color: #062803;
   font-size: 1.35rem;
-  margin-bottom: 8px;
-  padding: 8px 14px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #fff3c4 0%, #ffe39a 100%);
-  box-shadow: 0 8px 18px rgba(217, 154, 0, 0.16);
+  margin: -6px 0 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #dfe9d6 0%, #cddcbe 100%);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.10);
 }
 
 .quote-card__header p {
   color: #56645f;
+  padding: 0 2px;
   font-size: 0.94rem;
   line-height: 1.55;
 }
