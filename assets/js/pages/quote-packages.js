@@ -38,6 +38,7 @@ class MyCuscoTripQuotePackages {
     this.appliedDiscountCode = null;
 
     this.quoteReference = this.getStableQuoteReference();
+    this.printCoupon = this.getStablePrintCoupon();
 
     this.init();
   }
@@ -124,43 +125,6 @@ class MyCuscoTripQuotePackages {
         />
       `;
     }
-
-    if (!document.getElementById("quotePrintEnhancements")) {
-      const style = document.createElement("style");
-      style.id = "quotePrintEnhancements";
-      style.textContent = `
-        .print-logo {
-          display: block;
-          max-width: 190px;
-          height: auto;
-          margin: 0 0 8px;
-        }
-
-        .print-section h3,
-        .print-client-grid h3 {
-          background: #0a3a26;
-          color: #fff !important;
-          padding: 8px 10px;
-          border-radius: 8px;
-          margin: -4px -4px 10px !important;
-        }
-
-        @media print {
-          .print-logo {
-            max-width: 180px;
-          }
-
-          .print-section h3,
-          .print-client-grid h3 {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-            background: #0a3a26 !important;
-            color: #fff !important;
-          }
-        }
-      `;
-      document.head.appendChild(style);
-    }
   }
 
   bindBaseEvents() {
@@ -236,8 +200,8 @@ class MyCuscoTripQuotePackages {
       window.print();
     });
 
-    document.getElementById("emailQuoteBtn")?.addEventListener("click", () => {
-      this.sendQuoteEmail();
+    document.getElementById("continuePaymentBtn")?.addEventListener("click", () => {
+      this.continueToPayment();
     });
 
     document.getElementById("openOutboundTrainModalBtn")?.addEventListener("click", () => {
@@ -785,7 +749,6 @@ class MyCuscoTripQuotePackages {
     if (!this.pendingHotelSelection) return;
 
     const { destination, hotelCode, comboKey } = this.pendingHotelSelection;
-
     if (!destination || !hotelCode || !comboKey) return;
 
     const hotel =
@@ -876,7 +839,6 @@ class MyCuscoTripQuotePackages {
     }
 
     section.hidden = false;
-
     this.updateTrainSelectorCard("outbound");
     this.updateTrainSelectorCard("return");
   }
@@ -1054,13 +1016,8 @@ class MyCuscoTripQuotePackages {
   confirmTrainSelection() {
     if (!this.pendingTrainCode || !this.activeTrainDirection) return;
 
-    if (this.activeTrainDirection === "outbound") {
-      this.selectedOutboundTrainCode = this.pendingTrainCode;
-    }
-
-    if (this.activeTrainDirection === "return") {
-      this.selectedReturnTrainCode = this.pendingTrainCode;
-    }
+    if (this.activeTrainDirection === "outbound") this.selectedOutboundTrainCode = this.pendingTrainCode;
+    if (this.activeTrainDirection === "return") this.selectedReturnTrainCode = this.pendingTrainCode;
 
     this.renderTrainSelectors();
     this.updatePricing();
@@ -1284,9 +1241,7 @@ class MyCuscoTripQuotePackages {
 
     const discountLabel = document.querySelector("#discountSummaryRow span");
     if (discountLabel) {
-      discountLabel.textContent = summary.manualDiscount > 0
-        ? "Descuentos aplicados"
-        : "Descuento pago total";
+      discountLabel.textContent = summary.manualDiscount > 0 ? "Descuentos aplicados" : "Descuento pago total";
     }
 
     this.toggleRow("childrenSummaryRow", this.children > 0);
@@ -1500,7 +1455,11 @@ class MyCuscoTripQuotePackages {
 
     this.setText("printReference", this.quoteReference);
     this.setText("printIssueDate", this.formatDateDisplay(new Date()));
-    this.setText("printValidUntil", this.formatDateDisplay(this.addDays(new Date(), Number(this.packagesData.paymentOptions?.quoteValidityDays || 2))));
+    this.setText("printValidUntil", this.formatDateDisplay(this.addBusinessDaysSkippingSunday(new Date(), 3)));
+
+    this.setText("printCouponCode", this.printCoupon.code);
+    this.setText("printCouponDiscount", `${this.printCoupon.discountPercent}%`);
+    this.setText("printCouponValidUntil", this.formatDateDisplay(this.printCoupon.validUntil));
 
     this.setText("printClientName", this.valueOrDefault("clientName"));
     this.setText("printClientPhone", this.valueOrDefault("clientPhone"));
@@ -1551,48 +1510,45 @@ class MyCuscoTripQuotePackages {
     this.setText("printAppliedDiscount", appliedText);
   }
 
-  sendQuoteEmail() {
-    this.updatePrintQuotation();
-
+  continueToPayment() {
     const summary = this.calculateQuote();
-    const clientName = document.getElementById("clientName")?.value.trim() || "Cliente no indicado";
-    const email = "reservas@mycuscotrip.com";
-    const subject = `Solicitud de cotización ${this.quoteReference} - ${clientName}`;
 
-    const bodyLines = [
-      `Nueva solicitud de cotización`,
-      ``,
-      `Código: ${this.quoteReference}`,
-      `Cliente: ${clientName}`,
-      `Teléfono: ${document.getElementById("clientPhone")?.value.trim() || "No indicado"}`,
-      `Email: ${document.getElementById("clientEmail")?.value.trim() || "No indicado"}`,
-      `Documento: ${document.getElementById("clientDocument")?.value.trim() || "No indicado"}`,
-      ``,
-      `Fechas: ${this.travelStartDate || "No indicada"} al ${this.travelEndDate || "No indicada"}`,
-      `Duración: ${this.travelDays || "--"} días / ${this.travelNights || "--"} noches`,
-      `Nacionalidad: ${this.getNationalityLabel(this.nationality)}`,
-      `Moneda: ${this.quoteCurrency}`,
-      `Viajeros: ${this.adults} adultos, ${this.children} niños`,
-      ``,
-      `Paquete: ${this.selectedPackage?.title || "No seleccionado"}`,
-      `Itinerario: ${this.selectedItineraryOption?.label || "No seleccionado"}`,
-      `Hoteles: ${this.getHotelsPrintText()}`,
-      `Tren ida: ${this.getTrainPrintText(this.selectedOutboundTrainCode)}`,
-      `Tren retorno: ${this.getTrainPrintText(this.selectedReturnTrainCode)}`,
-      `Extras: ${this.getExtrasPrintText()}`,
-      ``,
-      `Modalidad de pago: ${this.paymentMode === "full" ? "Pago 100% con descuento" : "Anticipo sin descuento"}`,
-      `Código de descuento: ${this.appliedDiscountCode ? `${this.appliedDiscountCode.code} - ${this.appliedDiscountCode.label}` : "Ninguno"}`,
-      `Subtotal: ${summary.subtotalFormatted}`,
-      `Descuento total: ${summary.discountFormatted}`,
-      `Total cotizado: ${summary.totalFormatted}`,
-      `Anticipo: ${summary.advanceFormatted}`,
-      `Saldo: ${summary.balanceFormatted}`,
-      ``,
-      `Comentarios: ${document.getElementById("clientNotes")?.value.trim() || "Sin comentarios"}`
-    ];
+    if (!this.selectedPackage) {
+      alert("Selecciona un paquete antes de continuar al pago.");
+      return;
+    }
 
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    if (!this.selectedOutboundTrainCode || !this.selectedReturnTrainCode) {
+      alert("Selecciona el tren de ida y retorno antes de continuar al pago.");
+      return;
+    }
+
+    const paymentData = {
+      quoteReference: this.quoteReference,
+      gateway: this.quoteCurrency === "USD" ? "paypal" : "mercado_pago",
+      currency: this.quoteCurrency,
+      amount: summary.total,
+      amountFormatted: summary.totalFormatted,
+      paymentMode: this.paymentMode,
+      packageId: this.selectedPackage.id,
+      packageTitle: this.selectedPackage.title,
+      itineraryCode: this.selectedItineraryOption?.code || "",
+      client: {
+        name: document.getElementById("clientName")?.value.trim() || "",
+        phone: document.getElementById("clientPhone")?.value.trim() || "",
+        email: document.getElementById("clientEmail")?.value.trim() || "",
+        document: document.getElementById("clientDocument")?.value.trim() || ""
+      }
+    };
+
+    sessionStorage.setItem("myCuscoTripPendingPayment", JSON.stringify(paymentData));
+
+    if (this.quoteCurrency === "USD") {
+      alert("Siguiente paso: conectar PayPal para pagos en dólares. La cotización ya quedó preparada.");
+      return;
+    }
+
+    alert("Siguiente paso: conectar Mercado Pago para pagos en soles. La cotización ya quedó preparada.");
   }
 
   getHotelsPrintText() {
@@ -1839,6 +1795,65 @@ class MyCuscoTripQuotePackages {
     const generated = this.generateReference();
     sessionStorage.setItem(key, generated);
     return generated;
+  }
+
+  getStablePrintCoupon() {
+    const key = "myCuscoTripPrintCoupon";
+    const saved = sessionStorage.getItem(key);
+
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return {
+          code: parsed.code,
+          discountPercent: Number(parsed.discountPercent || 10),
+          validUntil: new Date(parsed.validUntil)
+        };
+      } catch {
+        sessionStorage.removeItem(key);
+      }
+    }
+
+    const discounts = [5, 10, 15, 20];
+    const discountPercent = discounts[Math.floor(Math.random() * discounts.length)];
+    const validDays = Math.floor(Math.random() * 3) + 3;
+    const validUntil = this.addBusinessDaysSkippingSunday(new Date(), validDays);
+    const code = `MCT-${discountPercent}-${this.randomCodeSegment(4)}-${this.randomCodeSegment(4)}`;
+
+    const coupon = { code, discountPercent, validUntil };
+    sessionStorage.setItem(key, JSON.stringify({
+      code,
+      discountPercent,
+      validUntil: validUntil.toISOString()
+    }));
+
+    return coupon;
+  }
+
+  randomCodeSegment(length) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let output = "";
+
+    for (let i = 0; i < length; i += 1) {
+      output += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return output;
+  }
+
+  addBusinessDaysSkippingSunday(date, days) {
+    const copy = new Date(date);
+    let added = 0;
+
+    while (added < Number(days || 0)) {
+      copy.setDate(copy.getDate() + 1);
+
+      if (copy.getDay() !== 0) {
+        added += 1;
+      }
+    }
+
+    return copy;
   }
 
   generateReference() {
