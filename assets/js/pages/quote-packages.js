@@ -5,6 +5,7 @@ class MyCuscoTripQuotePackages {
     this.packagesData = { packages: [], paymentOptions: {}, currencyRules: {} };
     this.trainsData = { routes: {}, trainCategories: {}, exchangeRate: {} };
     this.hotelsData = { destinations: {} };
+    this.discountCodes = [];
 
     this.packages = [];
     this.selectedPackage = null;
@@ -34,7 +35,9 @@ class MyCuscoTripQuotePackages {
     this.pendingTrainCode = "";
 
     this.selectedExtras = new Set();
-    this.quoteReference = this.generateReference();
+    this.appliedDiscountCode = null;
+
+    this.quoteReference = this.getStableQuoteReference();
 
     this.init();
   }
@@ -54,20 +57,22 @@ class MyCuscoTripQuotePackages {
       this.updatePrintQuotation();
     } catch (error) {
       console.error("Error inicializando cotizador:", error);
-      alert("No se pudo cargar el cotizador. Revisa que existan packages-peru.json, trains.json y hotels.json.");
+      alert("No se pudo cargar el cotizador. Revisa que existan packages-peru.json, trains.json, hotels.json y discount-codes.json.");
     }
   }
 
   async loadAllData() {
-    const [packagesData, trainsData, hotelsData] = await Promise.all([
+    const [packagesData, trainsData, hotelsData, discountCodes] = await Promise.all([
       this.fetchJson("assets/data/packages-peru.json"),
       this.fetchJson("assets/data/trains.json"),
-      this.fetchJson("assets/data/hotels.json")
+      this.fetchJson("assets/data/hotels.json"),
+      this.fetchOptionalJson("assets/data/discount-codes.json")
     ]);
 
     this.packagesData = packagesData || { packages: [], paymentOptions: {}, currencyRules: {} };
     this.trainsData = trainsData || { routes: {}, trainCategories: {}, exchangeRate: {} };
     this.hotelsData = hotelsData || { destinations: {} };
+    this.discountCodes = Array.isArray(discountCodes) ? discountCodes : [];
 
     this.packages = Array.isArray(this.packagesData.packages)
       ? this.packagesData.packages.filter((item) => item.status !== "draft")
@@ -82,6 +87,17 @@ class MyCuscoTripQuotePackages {
     const response = await fetch(this.resolvePath(path), { cache: "no-store" });
     if (!response.ok) throw new Error(`No se pudo cargar ${path}`);
     return response.json();
+  }
+
+  async fetchOptionalJson(path) {
+    try {
+      const response = await fetch(this.resolvePath(path), { cache: "no-store" });
+      if (!response.ok) return [];
+      return response.json();
+    } catch (error) {
+      console.warn(`No se pudo cargar ${path}. Se continuará sin códigos de descuento.`);
+      return [];
+    }
   }
 
   async loadExchangeRate() {
@@ -200,6 +216,21 @@ class MyCuscoTripQuotePackages {
       this.updatePrintQuotation();
     });
 
+    document.getElementById("applyDiscountCodeBtn")?.addEventListener("click", () => {
+      this.applyManualDiscountCode();
+    });
+
+    document.getElementById("discountCodeInput")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.applyManualDiscountCode();
+      }
+    });
+
+    document.getElementById("discountCodeInput")?.addEventListener("input", (event) => {
+      event.target.value = event.target.value.toUpperCase();
+    });
+
     document.getElementById("printQuoteBtn")?.addEventListener("click", () => {
       this.updatePrintQuotation();
       window.print();
@@ -261,6 +292,7 @@ class MyCuscoTripQuotePackages {
           this.selectedOutboundTrainCode = "";
           this.selectedReturnTrainCode = "";
           this.selectedExtras.clear();
+          this.clearAppliedDiscountCode(false);
 
           this.renderPackageOptions();
           this.hideSection("itinerarySection");
@@ -387,6 +419,7 @@ class MyCuscoTripQuotePackages {
     this.selectedOutboundTrainCode = "";
     this.selectedReturnTrainCode = "";
     this.selectedExtras.clear();
+    this.clearAppliedDiscountCode(false);
 
     this.renderPackageOptions();
     this.renderItineraryOptions();
@@ -1147,6 +1180,94 @@ class MyCuscoTripQuotePackages {
     });
   }
 
+  applyManualDiscountCode() {
+    const input = document.getElementById("discountCodeInput");
+    const rawCode = input?.value?.trim().toUpperCase() || "";
+
+    if (!rawCode) {
+      this.clearAppliedDiscountCode(false);
+      this.setDiscountCodeMessage("Ingresa un código de descuento.", "error");
+      this.updatePricing();
+      this.updatePrintQuotation();
+      return;
+    }
+
+    const found = this.discountCodes.find((item) => {
+      return String(item.code || "").toUpperCase() === rawCode;
+    });
+
+    if (!found || found.active !== true) {
+      this.appliedDiscountCode = null;
+      this.setDiscountCodeMessage("Código inválido, vencido o no disponible.", "error");
+      this.updatePricing();
+      this.updatePrintQuotation();
+      return;
+    }
+
+    const type = String(found.type || "").toLowerCase();
+    const value = Number(found.value || 0);
+
+    if (!["percent", "fixed"].includes(type) || value <= 0) {
+      this.appliedDiscountCode = null;
+      this.setDiscountCodeMessage("Este código no tiene una configuración válida.", "error");
+      this.updatePricing();
+      this.updatePrintQuotation();
+      return;
+    }
+
+    this.appliedDiscountCode = {
+      code: String(found.code || "").toUpperCase(),
+      type,
+      value,
+      currency: found.currency || "USD",
+      label: found.label || "Descuento aplicado"
+    };
+
+    this.setDiscountCodeMessage(`${this.appliedDiscountCode.label} aplicado correctamente.`, "success");
+    this.updatePricing();
+    this.updatePrintQuotation();
+  }
+
+  clearAppliedDiscountCode(clearInput = true) {
+    this.appliedDiscountCode = null;
+
+    if (clearInput) {
+      const input = document.getElementById("discountCodeInput");
+      if (input) input.value = "";
+    }
+
+    this.setDiscountCodeMessage("Ingresa tu código promocional si tienes uno.", "");
+  }
+
+  setDiscountCodeMessage(message, type) {
+    const el = document.getElementById("discountCodeMessage");
+    if (!el) return;
+
+    el.textContent = message;
+    el.classList.remove("is-success", "is-error");
+
+    if (type === "success") el.classList.add("is-success");
+    if (type === "error") el.classList.add("is-error");
+  }
+
+  calculateAppliedManualDiscount(subtotalAfterPaymentDiscount) {
+    if (!this.appliedDiscountCode || subtotalAfterPaymentDiscount <= 0) return 0;
+
+    if (this.appliedDiscountCode.type === "percent") {
+      return subtotalAfterPaymentDiscount * (Number(this.appliedDiscountCode.value || 0) / 100);
+    }
+
+    if (this.appliedDiscountCode.type === "fixed") {
+      return this.convertMoney(
+        Number(this.appliedDiscountCode.value || 0),
+        this.appliedDiscountCode.currency || "USD",
+        this.quoteCurrency
+      );
+    }
+
+    return 0;
+  }
+
   updatePricing() {
     const summary = this.calculateQuote();
 
@@ -1161,6 +1282,13 @@ class MyCuscoTripQuotePackages {
     this.setText("advanceTotal", summary.advanceFormatted);
     this.setText("balanceTotal", summary.balanceFormatted);
 
+    const discountLabel = document.querySelector("#discountSummaryRow span");
+    if (discountLabel) {
+      discountLabel.textContent = summary.manualDiscount > 0
+        ? "Descuentos aplicados"
+        : "Descuento pago total";
+    }
+
     this.toggleRow("childrenSummaryRow", this.children > 0);
     this.toggleRow("hotelSummaryRow", summary.hotelsTotal > 0);
     this.toggleRow("trainSummaryRow", summary.trainsTotal > 0);
@@ -1173,10 +1301,20 @@ class MyCuscoTripQuotePackages {
     if (paymentInfo) {
       if (!this.selectedPackage) {
         paymentInfo.textContent = "Selecciona paquete, hotel y tren para generar la cotización.";
-      } else if (this.paymentMode === "full") {
-        paymentInfo.textContent = `Pago 100%: se aplica ${summary.fullDiscountPercent}% de descuento sobre el subtotal.`;
       } else {
-        paymentInfo.textContent = `Anticipo: se paga el ${summary.partialPaymentPercent}% del total. No aplica descuento.`;
+        const parts = [];
+
+        if (this.paymentMode === "full") {
+          parts.push(`Pago 100%: se aplica ${summary.fullDiscountPercent}% de descuento sobre el subtotal.`);
+        } else {
+          parts.push(`Anticipo: se paga el ${summary.partialPaymentPercent}% del total. No aplica descuento por pago total.`);
+        }
+
+        if (summary.manualDiscount > 0 && this.appliedDiscountCode) {
+          parts.push(`Código ${this.appliedDiscountCode.code}: ${summary.manualDiscountFormatted} de descuento adicional.`);
+        }
+
+        paymentInfo.textContent = parts.join(" ");
       }
     }
   }
@@ -1203,8 +1341,12 @@ class MyCuscoTripQuotePackages {
     const extrasTotal = this.calculateExtrasTotal();
 
     const subtotal = basePackageTotal + hotelsTotal + trainsTotal + extrasTotal;
-    const discount = this.paymentMode === "full" ? subtotal * (fullDiscountPercent / 100) : 0;
-    const total = subtotal - discount;
+    const paymentDiscount = this.paymentMode === "full" ? subtotal * (fullDiscountPercent / 100) : 0;
+    const subtotalAfterPaymentDiscount = Math.max(0, subtotal - paymentDiscount);
+    const manualDiscountRaw = this.calculateAppliedManualDiscount(subtotalAfterPaymentDiscount);
+    const manualDiscount = Math.min(manualDiscountRaw, subtotalAfterPaymentDiscount);
+    const discount = paymentDiscount + manualDiscount;
+    const total = Math.max(0, subtotal - discount);
     const advance = this.paymentMode === "partial" ? total * (partialPaymentPercent / 100) : total;
     const balance = this.paymentMode === "partial" ? total - advance : 0;
 
@@ -1219,6 +1361,8 @@ class MyCuscoTripQuotePackages {
       trainsTotal,
       extrasTotal,
       subtotal,
+      paymentDiscount,
+      manualDiscount,
       discount,
       total,
       advance,
@@ -1231,6 +1375,8 @@ class MyCuscoTripQuotePackages {
       trainsFormatted: this.formatCurrency(trainsTotal, currency),
       extrasFormatted: this.formatCurrency(extrasTotal, currency),
       subtotalFormatted: this.formatCurrency(subtotal, currency),
+      paymentDiscountFormatted: this.formatCurrency(paymentDiscount, currency),
+      manualDiscountFormatted: this.formatCurrency(manualDiscount, currency),
       discountFormatted: this.formatCurrency(discount, currency),
       totalFormatted: this.formatCurrency(total, currency),
       advanceFormatted: this.formatCurrency(advance, currency),
@@ -1250,6 +1396,8 @@ class MyCuscoTripQuotePackages {
       trainsTotal: 0,
       extrasTotal: 0,
       subtotal: 0,
+      paymentDiscount: 0,
+      manualDiscount: 0,
       discount: 0,
       total: 0,
       advance: 0,
@@ -1262,6 +1410,8 @@ class MyCuscoTripQuotePackages {
       trainsFormatted: this.formatCurrency(0, currency),
       extrasFormatted: this.formatCurrency(0, currency),
       subtotalFormatted: this.formatCurrency(0, currency),
+      paymentDiscountFormatted: this.formatCurrency(0, currency),
+      manualDiscountFormatted: this.formatCurrency(0, currency),
       discountFormatted: this.formatCurrency(0, currency),
       totalFormatted: this.formatCurrency(0, currency),
       advanceFormatted: this.formatCurrency(0, currency),
@@ -1393,6 +1543,12 @@ class MyCuscoTripQuotePackages {
     this.setText("printPaymentMode", this.paymentMode === "full" ? "Pago 100% con descuento" : "Anticipo sin descuento");
     this.setText("printAdvance", summary.advanceFormatted);
     this.setText("printBalance", summary.balanceFormatted);
+
+    const appliedText = this.appliedDiscountCode
+      ? `${this.appliedDiscountCode.code} - ${this.appliedDiscountCode.label}`
+      : "Ninguno";
+
+    this.setText("printAppliedDiscount", appliedText);
   }
 
   sendQuoteEmail() {
@@ -1426,8 +1582,9 @@ class MyCuscoTripQuotePackages {
       `Extras: ${this.getExtrasPrintText()}`,
       ``,
       `Modalidad de pago: ${this.paymentMode === "full" ? "Pago 100% con descuento" : "Anticipo sin descuento"}`,
+      `Código de descuento: ${this.appliedDiscountCode ? `${this.appliedDiscountCode.code} - ${this.appliedDiscountCode.label}` : "Ninguno"}`,
       `Subtotal: ${summary.subtotalFormatted}`,
-      `Descuento: ${summary.discountFormatted}`,
+      `Descuento total: ${summary.discountFormatted}`,
       `Total cotizado: ${summary.totalFormatted}`,
       `Anticipo: ${summary.advanceFormatted}`,
       `Saldo: ${summary.balanceFormatted}`,
@@ -1671,6 +1828,17 @@ class MyCuscoTripQuotePackages {
     };
 
     return options[code] || code || "Por completar";
+  }
+
+  getStableQuoteReference() {
+    const key = "myCuscoTripQuoteReference";
+    const saved = sessionStorage.getItem(key);
+
+    if (saved) return saved;
+
+    const generated = this.generateReference();
+    sessionStorage.setItem(key, generated);
+    return generated;
   }
 
   generateReference() {
