@@ -2053,5 +2053,112 @@
       "reservationCodePrefix": "PKG"
     },
     "status": "published"
-  }
+  },
+  {
+  "id": "exp_010",
+  "internalCode": "PAR-IB-01",
+  "slug": "tour-islas-ballestas",
+  "title": "Tour Islas Ballestas",
+  "category": "paracas",
+  "type": "nature-tour",
+  "typeLabel": "Medio día",
+  "badge": "Naturaleza",
+  "featured": true,
+  "location": "Paracas / Islas Ballestas",
+  "currency": "PEN",
+  "shortDescription": "Explora las Islas Ballestas y observa fauna marina como lobos marinos, pingüinos de Humboldt y aves guaneras.",
+  "description": "Este tour te llevará en una lancha rápida hacia las impresionantes Islas Ballestas, consideradas uno de los santuarios marinos más importantes de la costa peruana. Durante el recorrido podrás observar lobos marinos, pingüinos de Humboldt, pelícanos y diversas aves marinas en su hábitat natural. Es una experiencia ideal para los amantes de la naturaleza, la vida silvestre y los paisajes marinos de Paracas.",
+  "duration": {
+    "label": "2 horas aprox.",
+    "maxGroupSize": 0,
+    "guideLanguages": ["es", "en"]
+  },
+  "basePricing": {
+    "adult": 120,
+    "child": 110
+  },
+  "serviceModes": {
+    "group": {
+      "enabled": true,
+      "label": "Tour en grupo"
+    },
+    "private": {
+      "enabled": false,
+      "label": "Tour privado"
+    }
+  },
+  "capacity": 0,
+  "images": {
+    "cover": "./assets/img/tours/tour-islas-ballestas/cover.jpg",
+    "gallery": [
+      "./assets/img/tours/tour-islas-ballestas/1.jpg",
+      "./assets/img/tours/tour-islas-ballestas/2.jpg",
+      "./assets/img/tours/tour-islas-ballestas/3.jpg"
+    ]
+  },
+  "includes": [
+    "Tour Islas Ballestas",
+    "Ingresos o tasas",
+    "Guía en español e inglés",
+    "Atención personalizada"
+  ],
+  "excludes": [
+    "Alimentación",
+    "Transporte externo",
+    "Servicios no mencionados"
+  ],
+  "itinerary": [
+    {
+      "title": "Recepción en Paracas",
+      "description": "Recepción en oficina o terminal de bus en Paracas, según coordinación previa."
+    },
+    {
+      "title": "Traslado al embarcadero",
+      "description": "Asistencia para dirigirse al embarcadero e iniciar el recorrido marítimo."
+    },
+    {
+      "title": "Navegación hacia Islas Ballestas",
+      "description": "Salida en lancha rápida hacia las Islas Ballestas, disfrutando del paisaje marino de Paracas."
+    },
+    {
+      "title": "Observación de fauna marina",
+      "description": "Durante el recorrido se podrán observar lobos marinos, pingüinos de Humboldt, pelícanos y aves guaneras."
+    },
+    {
+      "title": "Retorno al muelle",
+      "description": "Regreso al embarcadero en Paracas y fin del servicio."
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Se moja durante el tour?",
+      "a": "Puede haber brisa marina durante la navegación, por lo que se recomienda llevar una casaca ligera."
+    },
+    {
+      "q": "¿Cuánto dura el tour?",
+      "a": "La duración aproximada es de 2 horas."
+    },
+    {
+      "q": "¿Qué horarios tiene?",
+      "a": "Los horarios disponibles son 8:00 a. m., 9:00 a. m. y 10:00 a. m., sujetos a coordinación y operación del día."
+    }
+  ],
+  "extras": [
+    {
+      "code": "transporte-desde-lima",
+      "label": "Transporte desde Lima",
+      "price": 0,
+      "perPerson": true
+    }
+  ],
+  "paymentOptions": {
+    "fullPaymentDiscountPercent": 5,
+    "partialPaymentPerPerson": 30,
+    "partialPaymentLabel": "Reserva con S/ 30.00 por persona y paga el saldo antes del tour"
+  },
+  "booking": {
+    "reservationCodePrefix": "PAR"
+  },
+  "status": "published"
+}
 ]
