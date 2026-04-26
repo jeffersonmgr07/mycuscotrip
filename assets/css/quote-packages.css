@@ -1630,3 +1630,170 @@ body.quote-modal-open {
   font-size: 0.92rem;
   line-height: 1.45;
 }
+/* AJUSTES COTIZADOR - MY CUSCO TRIP */
+
+.quote-card__header h2 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  margin: -6px 0 10px;
+  padding: 13px 18px;
+  border-radius: 16px;
+  color: #123826;
+  background: linear-gradient(135deg, #dfe9d6 0%, #ccdcbc 100%);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.10);
+}
+
+.quote-summary-panel {
+  position: sticky;
+  top: 96px;
+  z-index: 15;
+}
+
+.quote-sidebar {
+  align-self: start;
+}
+
+.quote-summary__total {
+  background: #f4fbf5;
+  border: 1px solid rgba(10, 58, 38, 0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.quote-summary__total strong {
+  color: #0a3a26;
+  font-size: 1.28rem;
+}
+
+.quote-package-includes {
+  background: #f3f7ee;
+  border-color: #cfdcbc;
+}
+
+.quote-package-includes p {
+  color: #4f6159;
+}
+
+@media (min-width: 1101px) {
+  .quote-summary-panel {
+    position: sticky;
+    top: 96px;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 769px) {
+  .quote-summary-panel {
+    position: sticky;
+    top: 86px;
+  }
+}
+
+@media (max-width: 768px) {
+  body:has(.quote-page) {
+    padding-bottom: 112px;
+  }
+
+  .quote-content {
+    padding-bottom: 126px;
+  }
+
+  .quote-summary-panel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    top: auto;
+    z-index: 1200;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+  }
+
+  .quote-summary-panel__top,
+  .quote-payment-mode,
+  .quote-discount-box,
+  .quote-summary .quote-summary__line,
+  .quote-payment-info,
+  .quote-actions #printQuoteBtn {
+    display: none !important;
+  }
+
+  .quote-summary {
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .quote-summary__total {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .quote-summary__total span {
+    display: block;
+    color: #56645f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .quote-summary__total strong {
+    display: block;
+    color: #062803;
+    font-size: 1.18rem;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .quote-actions {
+    margin: 0;
+    display: block;
+  }
+
+  .quote-payment-btn {
+    width: auto;
+    min-height: 48px;
+    padding: 13px 16px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    box-shadow: 0 10px 22px rgba(217, 21, 114, 0.30);
+  }
+
+  .quote-payment-btn i {
+    display: none;
+  }
+
+  .wa-float {
+    bottom: 126px;
+  }
+}
+
+@media (max-width: 420px) {
+  .quote-summary-panel {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .quote-summary__total strong {
+    font-size: 1.02rem;
+  }
+
+  .quote-payment-btn {
+    padding: 12px 13px;
+    font-size: 0.84rem;
+  }
+}
