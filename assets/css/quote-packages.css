@@ -1797,3 +1797,76 @@ body.quote-modal-open {
     font-size: 0.84rem;
   }
 }
+/* =========================================================
+   AJUSTES UX COTIZADOR - MY CUSCO TRIP
+   ========================================================= */
+
+/* Sección 2: paquete detectado como tarjeta informativa */
+.quote-package-card--detected {
+  cursor: default !important;
+  padding: 14px 16px !important;
+  border-width: 1px !important;
+  background: #f7fbf5 !important;
+  box-shadow: none !important;
+}
+
+.quote-package-card--detected:hover {
+  border-color: rgba(6, 40, 3, 0.12) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.quote-package-card--detected .quote-package-card__top {
+  margin-bottom: 6px;
+}
+
+.quote-package-card--detected h3 {
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+
+.quote-package-card--detected p {
+  font-size: 0.88rem;
+  line-height: 1.42;
+  margin-bottom: 5px;
+}
+
+.quote-package-card--detected .quote-badge {
+  min-height: 24px;
+  padding: 5px 9px;
+  font-size: 0.72rem;
+}
+
+/* Panel de cotización visible al hacer scroll en PC */
+@media (min-width: 1101px) {
+  .quote-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    height: fit-content;
+    z-index: 20;
+  }
+
+  .quote-summary-panel {
+    position: relative;
+    top: auto;
+  }
+}
+
+/* Botón futuro para guardar PDF */
+.quote-pdf-btn {
+  background: #f4fbf5;
+  color: #0a3a26;
+  border: 1px solid rgba(10, 58, 38, 0.18);
+}
+
+.quote-pdf-btn:hover {
+  background: #edf7ef;
+  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.14);
+}
+
+/* Mejor separación visual de botones del panel */
+.quote-actions {
+  gap: 9px;
+}
