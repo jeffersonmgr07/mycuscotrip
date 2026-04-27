@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=3" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=4" />
 </head>
 
 <body>
@@ -35,7 +35,7 @@
         <span class="quote-eyebrow">Cotiza aquí tu paquete turístico</span>
         <h1>Arma tu paquete a Cusco y Machu Picchu a tu medida</h1>
         <p>
-          Elige tus fechas, tu nacionalidad, el paquete que prefieras, tus hoteles, tu categoría de tren y tu modalidad de pago. Accede a descuentos y al final podrás pagar el tour armado a tu medida. También puedes guardar o imprimir esta cotización como plantilla para organizar tus planes de viaje.
+          Elige tus fechas, indica opcionalmente tus horarios aproximados de llegada y salida, selecciona tus hoteles, trenes y modalidad de pago. Detectaremos automáticamente el paquete compatible y podrás imprimir o guardar tu cotización.
         </p>
       </div>
     </section>
@@ -46,7 +46,7 @@
           <article class="quote-card">
             <div class="quote-card__header">
               <h2>1. Datos del viaje</h2>
-              <p>Selecciona el rango de fechas para calcular automáticamente la duración del paquete.</p>
+              <p>Selecciona tus fechas y, si ya las conoces, agrega tus horarios aproximados para optimizar el itinerario.</p>
             </div>
 
             <div class="quote-form-grid">
@@ -54,6 +54,18 @@
                 <label for="travelRange">Fechas de viaje</label>
                 <input type="text" id="travelRange" placeholder="Selecciona fecha de llegada y salida" readonly />
                 <small id="travelRangeHelp">Ejemplo: 4 días / 3 noches.</small>
+              </div>
+
+              <div class="quote-field">
+                <label for="arrivalTime">Hora aproximada de llegada a Cusco</label>
+                <input type="time" id="arrivalTime" />
+                <small>Opcional. Indica tu hora aproximada de llegada en avión o transporte terrestre para optimizar el primer día.</small>
+              </div>
+
+              <div class="quote-field">
+                <label for="departureTime">Hora aproximada de salida de Cusco</label>
+                <input type="time" id="departureTime" />
+                <small>Opcional. Indica tu hora aproximada de salida para saber si el último día puedes realizar un tour corto.</small>
               </div>
 
               <div class="quote-field">
@@ -105,21 +117,21 @@
 
           <article class="quote-card">
             <div class="quote-card__header">
-              <h2>2. Paquete disponible</h2>
-              <p>De acuerdo a tus fechas seleccionadas, estos son los paquetes que mejor se acomodan a tu viaje.</p>
+              <h2>Paquete detectado</h2>
+              <p>Detectamos automáticamente el paquete compatible según tus fechas.</p>
             </div>
 
             <div id="packageOptions" class="quote-package-options">
               <div class="quote-empty-state">
-                Selecciona tus fechas de viaje para ver paquetes disponibles.
+                Selecciona tus fechas de viaje para detectar automáticamente el paquete compatible.
               </div>
             </div>
           </article>
 
           <article id="itinerarySection" class="quote-card" hidden>
             <div class="quote-card__header">
-              <h2>3. Opción de itinerario</h2>
-              <p>Elige la combinación de tours que más se adapte a tu estilo de viaje.</p>
+              <h2>Opciones de itinerario</h2>
+              <p>Selecciona la combinación de tours que mejor se adapte a tus horarios y estilo de viaje.</p>
             </div>
 
             <div id="itineraryOptions" class="quote-itinerary-options"></div>
@@ -132,7 +144,7 @@
 
           <article id="hotelSection" class="quote-card" hidden>
             <div class="quote-card__header">
-              <h2>4. Elige tus hoteles</h2>
+              <h2>Elige tus hoteles</h2>
               <p>Selecciona tu alojamiento en Cusco y/o Aguas Calientes, o continúa sin hotel si prefieres gestionarlo por tu cuenta.</p>
             </div>
 
@@ -141,7 +153,7 @@
 
           <article id="trainSection" class="quote-card" hidden>
             <div class="quote-card__header">
-              <h2>5. Elige tus trenes</h2>
+              <h2>Elige tus trenes</h2>
               <p>Selecciona tu tren de ida y retorno a Machu Picchu. Si eres turista nacional peruano, también podrás ver la opción de tren local sujeta a disponibilidad.</p>
             </div>
 
@@ -174,7 +186,7 @@
 
           <article id="extrasSection" class="quote-card" hidden>
             <div class="quote-card__header">
-              <h2>6. Personaliza con extras</h2>
+              <h2>Personaliza con extras</h2>
               <p>Agrega servicios opcionales para complementar algunos tours de tu itinerario.</p>
             </div>
 
@@ -183,7 +195,7 @@
 
           <article class="quote-card">
             <div class="quote-card__header">
-              <h2>7. Datos del cliente</h2>
+              <h2>Datos del cliente</h2>
               <p>Completa tus datos para generar una cotización formal y continuar con el pago cuando estés listo.</p>
             </div>
 
@@ -306,6 +318,11 @@
                 <i class="fas fa-print"></i>
                 Imprimir cotización
               </button>
+
+              <button type="button" id="savePdfBtn" class="btn quote-secondary-btn quote-pdf-btn">
+                <i class="fas fa-file-pdf"></i>
+                Guardar como PDF
+              </button>
             </div>
           </div>
         </aside>
@@ -358,6 +375,8 @@
             <h3>Datos del viaje</h3>
             <p><strong>Fechas:</strong> <span id="printTravelDates">Por completar</span></p>
             <p><strong>Duración:</strong> <span id="printDuration">Por completar</span></p>
+            <p><strong>Llegada a Cusco:</strong> <span id="printArrivalTime">Por completar</span></p>
+            <p><strong>Salida de Cusco:</strong> <span id="printDepartureTime">Por completar</span></p>
             <p><strong>Viajeros:</strong> <span id="printTravelers">Por completar</span></p>
             <p><strong>Nacionalidad:</strong> <span id="printNationality">Por completar</span></p>
           </div>
@@ -620,6 +639,6 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=4"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=5"></script>
 </body>
 </html>
