@@ -21,6 +21,8 @@ class MyCuscoTripQuotePackages {
     this.travelEndDate = "";
     this.travelDays = 0;
     this.travelNights = 0;
+    this.arrivalTime = "";
+    this.departureTime = "";
 
     this.exchangeRate = 3.75;
 
@@ -49,6 +51,7 @@ class MyCuscoTripQuotePackages {
       this.enhancePrintableTemplate();
       this.bindBaseEvents();
       this.initDatePicker();
+      this.initTimePickers();
       this.applyCurrencyRulesByNationality();
       this.updateReferenceUI();
       this.updatePassengersUI();
@@ -180,6 +183,18 @@ class MyCuscoTripQuotePackages {
       this.updatePrintQuotation();
     });
 
+    document.getElementById("arrivalTime")?.addEventListener("change", (event) => {
+      this.arrivalTime = event.target.value || "";
+      this.refreshItineraryByTimeRules();
+      this.updatePrintQuotation();
+    });
+
+    document.getElementById("departureTime")?.addEventListener("change", (event) => {
+      this.departureTime = event.target.value || "";
+      this.refreshItineraryByTimeRules();
+      this.updatePrintQuotation();
+    });
+
     document.getElementById("applyDiscountCodeBtn")?.addEventListener("click", () => {
       this.applyManualDiscountCode();
     });
@@ -198,6 +213,10 @@ class MyCuscoTripQuotePackages {
     document.getElementById("printQuoteBtn")?.addEventListener("click", () => {
       this.updatePrintQuotation();
       window.print();
+    });
+
+    document.getElementById("savePdfBtn")?.addEventListener("click", () => {
+      this.saveQuotationAsPdf();
     });
 
     document.getElementById("continuePaymentBtn")?.addEventListener("click", () => {
@@ -266,6 +285,47 @@ class MyCuscoTripQuotePackages {
     });
   }
 
+  initTimePickers() {
+    if (typeof flatpickr === "undefined") return;
+
+    const timeConfig = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      altInput: true,
+      altFormat: "h:i K",
+      time_24hr: false,
+      minuteIncrement: 15,
+      allowInput: false,
+      locale: flatpickr.l10ns.es
+    };
+
+    const arrivalInput = document.getElementById("arrivalTime");
+    const departureInput = document.getElementById("departureTime");
+
+    if (arrivalInput) {
+      flatpickr(arrivalInput, {
+        ...timeConfig,
+        onChange: (_, value) => {
+          this.arrivalTime = value || "";
+          this.refreshItineraryByTimeRules();
+          this.updatePrintQuotation();
+        }
+      });
+    }
+
+    if (departureInput) {
+      flatpickr(departureInput, {
+        ...timeConfig,
+        onChange: (_, value) => {
+          this.departureTime = value || "";
+          this.refreshItineraryByTimeRules();
+          this.updatePrintQuotation();
+        }
+      });
+    }
+  }
+
   renderInitialState() {
     this.renderPackageOptions();
     this.renderTrainSelectors();
@@ -290,7 +350,7 @@ class MyCuscoTripQuotePackages {
     }
 
     const pkg = compatible[0];
-    this.selectPackage(pkg, { fromAutoDetect: true });
+    this.selectPackage(pkg);
   }
 
   getCompatiblePackages() {
@@ -372,18 +432,15 @@ class MyCuscoTripQuotePackages {
     const optionsCount = Array.isArray(pkg.itineraryOptions) ? pkg.itineraryOptions.length : 0;
 
     target.innerHTML = `
-      <article class="quote-package-card is-selected quote-package-card--detected">
+      <article class="quote-package-card is-selected quote-package-card--detected" aria-label="Paquete detectado automáticamente">
         <div class="quote-package-card__top">
           <div>
             <span class="quote-badge quote-badge--muted">Paquete detectado según tus fechas</span>
             <h3>${this.escapeHtml(pkg.title)}</h3>
             <p>Tu viaje será de <strong>${this.travelDays} días / ${this.travelNights} noches</strong>.</p>
-            <p>Estas son las opciones de itinerario disponibles para esas fechas.</p>
           </div>
           <span class="quote-badge">${this.escapeHtml(pkg.typeLabel || `${this.travelDays}D/${this.travelNights}N`)}</span>
         </div>
-
-        <p>${this.escapeHtml(pkg.shortDescription || pkg.description || "")}</p>
 
         <p>
           <strong>Desde ${this.formatCurrency(adultPrice, this.quoteCurrency)} por adulto</strong>
@@ -400,10 +457,14 @@ class MyCuscoTripQuotePackages {
 
   selectPackage(pkg) {
     this.selectedPackage = pkg;
+
+    const availableOptions = this.getAvailableItineraryOptions();
     this.selectedItineraryOption =
-      Array.isArray(pkg.itineraryOptions) && pkg.itineraryOptions.length
-        ? pkg.itineraryOptions.find((item) => item.recommended) || pkg.itineraryOptions[0]
-        : null;
+      availableOptions.length
+        ? availableOptions.find((item) => item.recommended) || availableOptions[0]
+        : Array.isArray(pkg.itineraryOptions) && pkg.itineraryOptions.length
+          ? pkg.itineraryOptions.find((item) => item.recommended) || pkg.itineraryOptions[0]
+          : null;
 
     this.selectedHotelsByDestination = {};
     this.selectedCombinationsByDestination = {};
@@ -416,7 +477,13 @@ class MyCuscoTripQuotePackages {
     this.renderItineraryOptions();
     this.renderPackageIncludes();
     this.refreshAccommodationSelections();
-    this.autoSelectRecommendedTrains();
+
+    /* Importante:
+       Los trenes quedan sin seleccionar al iniciar el cotizador.
+       Así el total empieza más bajo y el cliente ve cómo sube al agregar servicios. */
+    this.selectedOutboundTrainCode = "";
+    this.selectedReturnTrainCode = "";
+
     this.renderTrainSelectors();
     this.renderExtras();
     this.updatePricing();
@@ -430,6 +497,92 @@ class MyCuscoTripQuotePackages {
     else this.hideSection("extrasSection");
   }
 
+  refreshItineraryByTimeRules() {
+    if (!this.selectedPackage) return;
+
+    const availableOptions = this.getAvailableItineraryOptions();
+    if (!availableOptions.length) {
+      this.renderItineraryOptions();
+      this.updatePrintQuotation();
+      return;
+    }
+
+    const currentStillAvailable = availableOptions.some((option) => option.code === this.selectedItineraryOption?.code);
+
+    if (!currentStillAvailable) {
+      this.selectedItineraryOption =
+        availableOptions.find((option) => option.recommended) ||
+        availableOptions[0];
+    }
+
+    this.renderItineraryOptions();
+    this.updatePrintQuotation();
+  }
+
+  getAvailableItineraryOptions() {
+    const options = Array.isArray(this.selectedPackage?.itineraryOptions)
+      ? this.selectedPackage.itineraryOptions
+      : [];
+
+    if (!options.length) return [];
+
+    return options.filter((option) => this.isItineraryAllowedByTime(option));
+  }
+
+  isItineraryAllowedByTime(option) {
+    const text = `${option.code || ""} ${option.label || ""} ${option.summary || ""} ${(option.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""}`).join(" ")}`.toLowerCase();
+
+    const arrivalMinutes = this.timeToMinutes(this.arrivalTime);
+    const departureMinutes = this.timeToMinutes(this.departureTime);
+
+    const hasCityTourFirstDay =
+      text.includes("city tour") ||
+      text.includes("qoricancha") ||
+      text.includes("sacsayhuamán") ||
+      text.includes("sacsayhuaman");
+
+    const hasWelcome =
+      text.includes("bienvenida") ||
+      text.includes("ancestral");
+
+    const hasFullDayLastDay =
+      text.includes("montaña de colores") ||
+      text.includes("vinicunca") ||
+      text.includes("humantay") ||
+      text.includes("siete lagunas") ||
+      text.includes("valle sagrado full") ||
+      text.includes("full day valle sagrado");
+
+    const hasShortLastDay =
+      text.includes("maras") ||
+      text.includes("moray") ||
+      text.includes("valle sur") ||
+      text.includes("walking tour") ||
+      text.includes("caminata");
+
+    if (arrivalMinutes !== null) {
+      if (arrivalMinutes > this.timeToMinutes("12:00") && hasCityTourFirstDay) {
+        return false;
+      }
+
+      if (arrivalMinutes > this.timeToMinutes("17:00") && hasWelcome) {
+        return false;
+      }
+    }
+
+    if (departureMinutes !== null) {
+      if (departureMinutes < this.timeToMinutes("14:00") && (hasFullDayLastDay || hasShortLastDay)) {
+        return false;
+      }
+
+      if (departureMinutes < this.timeToMinutes("19:00") && hasFullDayLastDay) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   renderItineraryOptions() {
     const section = document.getElementById("itinerarySection");
     const target = document.getElementById("itineraryOptions");
@@ -437,22 +590,37 @@ class MyCuscoTripQuotePackages {
 
     if (!section || !target || !preview || !this.selectedPackage) return;
 
-    const options = this.selectedPackage.itineraryOptions || [];
-    if (!options.length) {
+    const allOptions = this.selectedPackage.itineraryOptions || [];
+    const options = this.getAvailableItineraryOptions();
+
+    if (!allOptions.length) {
       section.hidden = true;
       return;
     }
 
     section.hidden = false;
 
+    if (!options.length) {
+      target.innerHTML = `
+        <div class="quote-empty-state">
+          No encontramos una opción compatible con los horarios ingresados.
+          Puedes dejar los horarios en blanco o escribirnos para armar una versión personalizada.
+        </div>
+      `;
+      preview.innerHTML = `<div class="quote-empty-state">Itinerario por confirmar.</div>`;
+      return;
+    }
+
     target.innerHTML = options.map((option) => {
       const isSelected = this.selectedItineraryOption?.code === option.code;
+      const trainHint = this.getRecommendedTrainHintForItinerary(option);
 
       return `
         <article class="quote-itinerary-option ${isSelected ? "is-selected" : ""}" data-itinerary-code="${this.escapeHtml(option.code)}">
           <h3>${this.escapeHtml(option.label)}</h3>
           <p>${this.escapeHtml(option.summary || "")}</p>
           ${option.recommended ? `<span class="quote-badge quote-badge--gold">Recomendado</span>` : ""}
+          ${trainHint ? `<p class="quote-itinerary-train-hint">${this.escapeHtml(trainHint)}</p>` : ""}
         </article>
       `;
     }).join("");
@@ -461,7 +629,14 @@ class MyCuscoTripQuotePackages {
       card.addEventListener("click", () => {
         const code = card.dataset.itineraryCode;
         this.selectedItineraryOption = options.find((item) => item.code === code) || options[0];
+
+        /* Si cambia la opción de itinerario, limpiamos trenes para que no quede una selección previa incompatible. */
+        this.selectedOutboundTrainCode = "";
+        this.selectedReturnTrainCode = "";
+
         this.renderItineraryOptions();
+        this.renderTrainSelectors();
+        this.updatePricing();
         this.updatePrintQuotation();
       });
     });
@@ -938,23 +1113,6 @@ class MyCuscoTripQuotePackages {
     );
   }
 
-  autoSelectRecommendedTrains() {
-    if (!this.selectedPackage?.trainSelection) return;
-
-    const outboundOptions = this.getTrainOptionsForRoute(this.selectedPackage.trainSelection.outboundRoute);
-    const returnOptions = this.getTrainOptionsForRoute(this.selectedPackage.trainSelection.returnRoute);
-
-    if (!this.selectedOutboundTrainCode && outboundOptions.length) {
-      const recommended = outboundOptions.find((item) => item.isRecommended && !item.isLocalTrain) || outboundOptions[0];
-      this.selectedOutboundTrainCode = recommended.code;
-    }
-
-    if (!this.selectedReturnTrainCode && returnOptions.length) {
-      const recommended = returnOptions.find((item) => item.isRecommended && !item.isLocalTrain) || returnOptions[0];
-      this.selectedReturnTrainCode = recommended.code;
-    }
-  }
-
   openTrainSelectionModal(direction) {
     if (!this.selectedPackage?.trainSelection) return;
 
@@ -974,12 +1132,24 @@ class MyCuscoTripQuotePackages {
 
     const route = this.trainsData.routes?.[routeCode];
     const options = this.getTrainOptionsForRoute(routeCode);
+    const recommendedCode = this.getRecommendedTrainCode(direction, options);
+    const recommendedTrain = recommendedCode ? options.find((train) => train.code === recommendedCode) : null;
 
     title.textContent = direction === "outbound" ? "Elige tren de ida" : "Elige tren de retorno";
     subtitle.textContent = route?.description || "Compara horarios, categorías y precios disponibles.";
 
+    const recommendationBox = recommendedTrain
+      ? `
+        <div class="quote-train-recommendation">
+          <strong>Tren recomendado para este itinerario:</strong>
+          <span>${this.escapeHtml(recommendedTrain.company || "")} - ${this.escapeHtml(recommendedTrain.serviceName || "")} · ${this.escapeHtml(recommendedTrain.departureTime || "--:--")}</span>
+          <small>Recomendación referencial según la opción de itinerario elegida. Puedes seleccionar otro tren si prefieres.</small>
+        </div>
+      `
+      : "";
+
     list.innerHTML = options.length
-      ? options.map((train) => this.renderTrainCard(train, direction)).join("")
+      ? `${recommendationBox}${options.map((train) => this.renderTrainCard(train, direction, recommendedCode)).join("")}`
       : `<div class="quote-empty-state">No hay trenes disponibles para esta nacionalidad.</div>`;
 
     this.bindTrainSelectionEvents();
@@ -1000,7 +1170,121 @@ class MyCuscoTripQuotePackages {
     });
   }
 
-  renderTrainCard(train, direction) {
+  getRecommendedTrainCode(direction, options = []) {
+    if (!Array.isArray(options) || !options.length) return "";
+
+    if (direction === "return") {
+      return this.findRecommendedTrainByTime(options, "20:20")?.code || "";
+    }
+
+    const itineraryType = this.getSelectedItineraryTrainType();
+
+    if (itineraryType === "valle-conexion") {
+      return this.findRecommendedTrainByTime(options, "16:36")?.code || "";
+    }
+
+    if (itineraryType === "machu-picchu-full-day") {
+      return (
+        this.findRecommendedTrainByTime(options, "04:00")?.code ||
+        this.findRecommendedTrainByTime(options, "04:30")?.code ||
+        this.findEarlyCuscoTrain(options)?.code ||
+        ""
+      );
+    }
+
+    return options.find((train) => train.isRecommended && !train.isLocalTrain)?.code || "";
+  }
+
+  findRecommendedTrainByTime(options, targetTime) {
+    const target = this.timeToMinutes(targetTime);
+    if (target === null) return null;
+
+    let best = null;
+    let bestDiff = Infinity;
+
+    options.forEach((train) => {
+      const departure = this.timeToMinutes(train.departureTime);
+      if (departure === null) return;
+
+      const isIncaRail = String(train.company || "").toLowerCase().includes("inca");
+      const diff = Math.abs(departure - target);
+
+      if (isIncaRail && diff < bestDiff) {
+        best = train;
+        bestDiff = diff;
+      }
+    });
+
+    return best || null;
+  }
+
+  findEarlyCuscoTrain(options) {
+    return options
+      .filter((train) => {
+        const company = String(train.company || "").toLowerCase();
+        const origin = String(train.origin || "").toLowerCase();
+        const departure = this.timeToMinutes(train.departureTime);
+
+        return company.includes("inca") && origin.includes("cusco") && departure !== null && departure <= this.timeToMinutes("05:00");
+      })
+      .sort((a, b) => this.timeToMinutes(a.departureTime) - this.timeToMinutes(b.departureTime))[0] || null;
+  }
+
+  getSelectedItineraryTrainType() {
+    const option = this.selectedItineraryOption;
+    if (!option) return "";
+
+    const text = `${option.code || ""} ${option.label || ""} ${option.summary || ""} ${(option.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""}`).join(" ")}`.toLowerCase();
+
+    if (
+      text.includes("valle conexión") ||
+      text.includes("valle conexion") ||
+      text.includes("valle sagrado conexión") ||
+      text.includes("valle sagrado conexion") ||
+      text.includes("ollantaytambo") ||
+      text.includes("conexión")
+    ) {
+      return "valle-conexion";
+    }
+
+    if (
+      text.includes("full day machu picchu") ||
+      text.includes("machu picchu full day") ||
+      text.includes("machu picchu en un día") ||
+      text.includes("machu picchu en un dia")
+    ) {
+      return "machu-picchu-full-day";
+    }
+
+    return "";
+  }
+
+  getRecommendedTrainHintForItinerary(option) {
+    const text = `${option.code || ""} ${option.label || ""} ${option.summary || ""} ${(option.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""}`).join(" ")}`.toLowerCase();
+
+    if (
+      text.includes("valle conexión") ||
+      text.includes("valle conexion") ||
+      text.includes("valle sagrado conexión") ||
+      text.includes("valle sagrado conexion") ||
+      text.includes("ollantaytambo")
+    ) {
+      return "Tren sugerido: ida aproximada 16:36 desde Ollantaytambo y retorno 20:20.";
+    }
+
+    if (
+      text.includes("full day machu picchu") ||
+      text.includes("machu picchu full day") ||
+      text.includes("machu picchu en un día") ||
+      text.includes("machu picchu en un dia")
+    ) {
+      return "Tren sugerido: ida muy temprano desde Cusco y retorno aproximado 20:20.";
+    }
+
+    return "";
+  }
+
+  renderTrainCard(train, direction, recommendedCode = "") {
     const category = this.trainsData.trainCategories?.[train.categoryCode] || {};
     const price = this.convertMoney(Number(train.pricePerPerson || 0), train.currency || "USD", this.quoteCurrency);
     const regular = Number(train.regularPricePerPerson || 0) > 0
@@ -1008,9 +1292,12 @@ class MyCuscoTripQuotePackages {
       : 0;
 
     const isSelected = this.pendingTrainCode === train.code;
+    const isRecommended = recommendedCode && train.code === recommendedCode;
 
     return `
-      <article class="quote-train-card ${isSelected ? "is-selected" : ""}" data-train-code="${this.escapeHtml(train.code)}" data-direction="${direction}">
+      <article class="quote-train-card ${isSelected ? "is-selected" : ""} ${isRecommended ? "is-recommended" : ""}" data-train-code="${this.escapeHtml(train.code)}" data-direction="${direction}">
+        ${isRecommended ? `<div class="quote-train-recommended-badge">Recomendado para tu itinerario</div>` : ""}
+
         <div class="quote-train-card__body">
           <div class="quote-train-service">
             ${this.escapeHtml(train.company || "")}
@@ -1541,6 +1828,8 @@ class MyCuscoTripQuotePackages {
 
     this.setText("printTravelDates", this.travelStartDate && this.travelEndDate ? `${this.travelStartDate} al ${this.travelEndDate}` : "Por completar");
     this.setText("printDuration", this.travelDays ? `${this.travelDays} días / ${this.travelNights} noches` : "Por completar");
+    this.setText("printArrivalTime", this.arrivalTime ? this.formatTimeForDisplay(this.arrivalTime) : "No indicado");
+    this.setText("printDepartureTime", this.departureTime ? this.formatTimeForDisplay(this.departureTime) : "No indicado");
     this.setText("printTravelers", `${this.adults} adulto${this.adults !== 1 ? "s" : ""}${this.children > 0 ? `, ${this.children} niño${this.children !== 1 ? "s" : ""}` : ""}`);
     this.setText("printNationality", this.getNationalityLabel(this.nationality));
 
@@ -1581,6 +1870,47 @@ class MyCuscoTripQuotePackages {
       : "Ninguno";
 
     this.setText("printAppliedDiscount", appliedText);
+  }
+
+  saveQuotationAsPdf() {
+    this.updatePrintQuotation();
+
+    const element = document.getElementById("printQuotation");
+    const sheet = document.querySelector("#printQuotation .print-sheet");
+
+    if (!element || !sheet || typeof html2pdf === "undefined") {
+      window.print();
+      return;
+    }
+
+    const previousDisplay = element.style.display;
+    element.style.display = "block";
+
+    const fileName = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
+
+    const options = {
+      margin: 8,
+      filename: fileName,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true
+      },
+      jsPDF: {
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait"
+      }
+    };
+
+    html2pdf()
+      .set(options)
+      .from(sheet)
+      .save()
+      .finally(() => {
+        element.style.display = previousDisplay;
+      });
   }
 
   continueToPayment() {
@@ -1808,6 +2138,33 @@ class MyCuscoTripQuotePackages {
 
   getTotalPassengers() {
     return this.adults + this.children;
+  }
+
+  timeToMinutes(time) {
+    if (!time || typeof time !== "string") return null;
+
+    const match = time.match(/^(\d{1,2}):(\d{2})/);
+    if (!match) return null;
+
+    const hours = Number(match[1]);
+    const minutes = Number(match[2]);
+
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+
+    return hours * 60 + minutes;
+  }
+
+  formatTimeForDisplay(time) {
+    const minutes = this.timeToMinutes(time);
+    if (minutes === null) return time || "No indicado";
+
+    const hours24 = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    const suffix = hours24 >= 12 ? "p.m." : "a.m.";
+    const hours12 = hours24 % 12 || 12;
+
+    return `${hours12}:${String(mins).padStart(2, "0")} ${suffix}`;
   }
 
   convertMoney(amount, fromCurrency, toCurrency) {
