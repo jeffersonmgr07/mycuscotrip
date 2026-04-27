@@ -1,3 +1,5 @@
+/* PARTE 1/3 */
+
 .quote-page {
   background: #f7faf8;
   color: #17322a;
@@ -569,6 +571,7 @@
   color: #56645f;
   font-size: 0.94rem;
 }
+/* PARTE 2/3 */
 
 .quote-summary__line strong {
   color: #17322a;
@@ -1186,6 +1189,7 @@ body.quote-modal-open {
   line-height: 1.45;
   font-size: 0.86rem;
 }
+/* PARTE 3/3 */
 
 .quote-train-modal-content {
   display: grid;
@@ -1416,10 +1420,125 @@ body.quote-modal-open {
   font-size: 0.9rem;
 }
 
-/* RESPONSIVE */
+/* PAQUETE INCLUYE */
+.quote-package-includes {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f3f7ee;
+  border: 1px solid #cfdcbc;
+}
+
+.quote-package-includes h3 {
+  color: #062803;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.quote-package-includes p {
+  color: #4f6159;
+  margin: 0 0 10px;
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.quote-package-includes ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: #17322a;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   AJUSTES FINALES LIMPIOS - MY CUSCO TRIP
+   ========================================================= */
+
+/* Evita desbordes horizontales */
+html,
+body {
+  overflow-x: hidden;
+}
+
+.quote-page,
+.quote-content,
+.quote-layout,
+.quote-main,
+.quote-card,
+.quote-modal,
+.quote-modal__dialog,
+.quote-modal__body,
+.hotel-option-card,
+.quote-train-card {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.quote-field input,
+.quote-field select,
+.quote-field textarea,
+.quote-payment-mode select,
+.quote-discount-box input,
+.hotel-combo-btn,
+.quote-main-btn,
+.quote-secondary-btn,
+.quote-payment-btn,
+.quote-pdf-btn {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Hero alineado al contenido principal */
+.quote-hero__container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Títulos de tarjetas */
+.quote-card__header h2 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  margin: -6px 0 10px;
+  padding: 13px 18px;
+  border-radius: 16px;
+  color: #123826;
+  background: linear-gradient(135deg, #dfe9d6 0%, #ccdcbc 100%);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.10);
+}
+
+/* Desktop: panel fijo visible */
+@media (min-width: 1101px) {
+  .quote-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    height: fit-content;
+    min-width: 0;
+    z-index: 20;
+  }
+
+  .quote-summary-panel {
+    position: relative;
+    top: auto;
+    z-index: auto;
+  }
+}
+
+/* Tablet */
 @media (max-width: 1100px) {
   .quote-layout {
     grid-template-columns: 1fr;
+  }
+
+  .quote-sidebar {
+    position: static;
   }
 
   .quote-summary-panel {
@@ -1431,7 +1550,140 @@ body.quote-modal-open {
   }
 }
 
+/* Sección paquete detectado como tarjeta informativa */
+.quote-package-card--detected {
+  cursor: default !important;
+  padding: 14px 16px !important;
+  border-width: 1px !important;
+  background: #f7fbf5 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.quote-package-card--detected:hover {
+  border-color: rgba(6, 40, 3, 0.12) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.quote-package-card--detected .quote-package-card__top {
+  margin-bottom: 6px;
+}
+
+.quote-package-card--detected h3 {
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+
+.quote-package-card--detected p {
+  font-size: 0.88rem;
+  line-height: 1.42;
+  margin-bottom: 5px;
+}
+
+.quote-package-card--detected .quote-badge {
+  min-height: 24px;
+  padding: 5px 9px;
+  font-size: 0.72rem;
+}
+
+/* Trenes recomendados */
+.quote-train-recommendation {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(10, 58, 38, 0.16);
+  background: #f1f8f2;
+  color: #17322a;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.quote-train-recommendation strong {
+  color: #0a3a26;
+}
+
+.quote-train-recommended-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 24px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #dfeedd;
+  color: #0a3a26;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.quote-train-card.is-recommended {
+  border-color: rgba(10, 58, 38, 0.55);
+  background: #f4fbf5;
+}
+
+.quote-train-card.is-recommended::before {
+  content: "Recomendado";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 2;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+/* Botón PDF */
+.quote-pdf-btn {
+  background: #f4fbf5;
+  color: #0a3a26;
+  border: 1px solid rgba(10, 58, 38, 0.18);
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.08);
+}
+
+.quote-pdf-btn:hover {
+  background: #edf7ef;
+  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.14);
+}
+
+/* Total más claro */
+.quote-summary__total {
+  background: #f4fbf5;
+  border: 1px solid rgba(10, 58, 38, 0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.quote-summary__total strong {
+  color: #0a3a26;
+  font-size: 1.28rem;
+}
+
+/* Flatpickr móvil */
+.flatpickr-calendar {
+  max-width: calc(100vw - 16px) !important;
+}
+
+.flatpickr-days,
+.dayContainer {
+  max-width: 100% !important;
+}
+
+/* Responsive mobile */
 @media (max-width: 768px) {
+  body:has(.quote-page) {
+    padding-bottom: 154px;
+  }
+
+  .quote-content {
+    padding-bottom: 170px;
+  }
+
   .quote-hero {
     padding-top: 98px;
   }
@@ -1445,6 +1697,12 @@ body.quote-modal-open {
   .quote-card {
     padding: 18px;
     border-radius: 20px;
+  }
+
+  .quote-card__header h2 {
+    font-size: 1.08rem;
+    padding: 11px 13px;
+    min-height: auto;
   }
 
   .quote-discount-box__row {
@@ -1504,6 +1762,7 @@ body.quote-modal-open {
   .quote-train-card__body {
     grid-template-columns: 1fr;
     text-align: left;
+    padding-top: 42px;
   }
 
   .quote-train-time,
@@ -1519,8 +1778,112 @@ body.quote-modal-open {
   .quote-local-warning {
     margin: 0 14px 14px;
   }
+
+  /* Barra inferior móvil */
+  .quote-summary-panel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    top: auto;
+    z-index: 1200;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    padding: 12px;
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+  }
+
+  .quote-summary-panel__top,
+  .quote-payment-mode,
+  .quote-discount-box,
+  .quote-summary .quote-summary__line,
+  .quote-payment-info,
+  .quote-actions #printQuoteBtn {
+    display: none !important;
+  }
+
+  .quote-summary {
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .quote-summary__total {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .quote-summary__total span {
+    display: block;
+    color: #56645f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .quote-summary__total strong {
+    display: block;
+    color: #062803;
+    font-size: 1.22rem;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .quote-actions {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .quote-payment-btn,
+  .quote-pdf-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 10px;
+    font-size: 0.82rem;
+    white-space: normal;
+    line-height: 1.15;
+  }
+
+  .quote-payment-btn i,
+  .quote-pdf-btn i {
+    display: none;
+  }
+
+  .wa-float {
+    bottom: 170px;
+  }
 }
 
+@media (max-width: 420px) {
+  .quote-summary-panel {
+    left: 8px;
+    right: 8px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .quote-summary__total strong {
+    font-size: 1.06rem;
+  }
+
+  .quote-payment-btn,
+  .quote-pdf-btn {
+    padding: 11px 8px;
+    font-size: 0.78rem;
+  }
+}
+
+/* PRINT */
 @media print {
   @page {
     size: A4;
@@ -1599,274 +1962,4 @@ body.quote-modal-open {
   .print-footer {
     margin-top: 10px;
   }
-}
-.quote-package-includes {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 18px;
-  background: #fff8db;
-  border: 1px solid #f1e2a4;
-}
-
-.quote-package-includes h3 {
-  color: #062803;
-  margin: 0 0 8px;
-  font-size: 1.05rem;
-}
-
-.quote-package-includes p {
-  color: #6b5a18;
-  margin: 0 0 10px;
-  line-height: 1.5;
-  font-size: 0.92rem;
-}
-
-.quote-package-includes ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-  color: #17322a;
-  font-size: 0.92rem;
-  line-height: 1.45;
-}
-/* AJUSTES COTIZADOR - MY CUSCO TRIP */
-
-.quote-card__header h2 {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 52px;
-  margin: -6px 0 10px;
-  padding: 13px 18px;
-  border-radius: 16px;
-  color: #123826;
-  background: linear-gradient(135deg, #dfe9d6 0%, #ccdcbc 100%);
-  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.10);
-}
-
-.quote-summary-panel {
-  position: sticky;
-  top: 96px;
-  z-index: 15;
-}
-
-.quote-sidebar {
-  align-self: start;
-}
-
-.quote-summary__total {
-  background: #f4fbf5;
-  border: 1px solid rgba(10, 58, 38, 0.12);
-  border-radius: 14px;
-  padding: 12px 14px;
-}
-
-.quote-summary__total strong {
-  color: #0a3a26;
-  font-size: 1.28rem;
-}
-
-.quote-package-includes {
-  background: #f3f7ee;
-  border-color: #cfdcbc;
-}
-
-.quote-package-includes p {
-  color: #4f6159;
-}
-
-@media (min-width: 1101px) {
-  .quote-summary-panel {
-    position: sticky;
-    top: 96px;
-  }
-}
-
-@media (max-width: 1100px) and (min-width: 769px) {
-  .quote-summary-panel {
-    position: sticky;
-    top: 86px;
-  }
-}
-
-@media (max-width: 768px) {
-  body:has(.quote-page) {
-    padding-bottom: 112px;
-  }
-
-  .quote-content {
-    padding-bottom: 126px;
-  }
-
-  .quote-summary-panel {
-    position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    top: auto;
-    z-index: 1200;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px 12px;
-    align-items: center;
-    padding: 12px;
-    border-radius: 22px;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
-  }
-
-  .quote-summary-panel__top,
-  .quote-payment-mode,
-  .quote-discount-box,
-  .quote-summary .quote-summary__line,
-  .quote-payment-info,
-  .quote-actions #printQuoteBtn {
-    display: none !important;
-  }
-
-  .quote-summary {
-    display: block;
-    border: 0;
-    padding: 0;
-    background: transparent;
-  }
-
-  .quote-summary__total {
-    display: grid;
-    gap: 2px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-  }
-
-  .quote-summary__total span {
-    display: block;
-    color: #56645f;
-    font-size: 0.78rem;
-    font-weight: 800;
-    line-height: 1.1;
-  }
-
-  .quote-summary__total strong {
-    display: block;
-    color: #062803;
-    font-size: 1.18rem;
-    line-height: 1.1;
-    white-space: nowrap;
-  }
-
-  .quote-actions {
-    margin: 0;
-    display: block;
-  }
-
-  .quote-payment-btn {
-    width: auto;
-    min-height: 48px;
-    padding: 13px 16px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    box-shadow: 0 10px 22px rgba(217, 21, 114, 0.30);
-  }
-
-  .quote-payment-btn i {
-    display: none;
-  }
-
-  .wa-float {
-    bottom: 126px;
-  }
-}
-
-@media (max-width: 420px) {
-  .quote-summary-panel {
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    padding: 10px;
-    border-radius: 18px;
-  }
-
-  .quote-summary__total strong {
-    font-size: 1.02rem;
-  }
-
-  .quote-payment-btn {
-    padding: 12px 13px;
-    font-size: 0.84rem;
-  }
-}
-/* =========================================================
-   AJUSTES UX COTIZADOR - MY CUSCO TRIP
-   ========================================================= */
-
-/* Sección 2: paquete detectado como tarjeta informativa */
-.quote-package-card--detected {
-  cursor: default !important;
-  padding: 14px 16px !important;
-  border-width: 1px !important;
-  background: #f7fbf5 !important;
-  box-shadow: none !important;
-}
-
-.quote-package-card--detected:hover {
-  border-color: rgba(6, 40, 3, 0.12) !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.quote-package-card--detected .quote-package-card__top {
-  margin-bottom: 6px;
-}
-
-.quote-package-card--detected h3 {
-  font-size: 1rem;
-  margin-top: 8px;
-  margin-bottom: 5px;
-}
-
-.quote-package-card--detected p {
-  font-size: 0.88rem;
-  line-height: 1.42;
-  margin-bottom: 5px;
-}
-
-.quote-package-card--detected .quote-badge {
-  min-height: 24px;
-  padding: 5px 9px;
-  font-size: 0.72rem;
-}
-
-/* Panel de cotización visible al hacer scroll en PC */
-@media (min-width: 1101px) {
-  .quote-sidebar {
-    position: sticky;
-    top: 96px;
-    align-self: start;
-    height: fit-content;
-    z-index: 20;
-  }
-
-  .quote-summary-panel {
-    position: relative;
-    top: auto;
-  }
-}
-
-/* Botón futuro para guardar PDF */
-.quote-pdf-btn {
-  background: #f4fbf5;
-  color: #0a3a26;
-  border: 1px solid rgba(10, 58, 38, 0.18);
-}
-
-.quote-pdf-btn:hover {
-  background: #edf7ef;
-  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.14);
-}
-
-/* Mejor separación visual de botones del panel */
-.quote-actions {
-  gap: 9px;
 }
