@@ -1,20 +1,38 @@
-/* PARTE 1/3 */
+/* =========================================================
+   QUOTE PACKAGES CSS - MY CUSCO TRIP
+   Versión corregida con alineación de márgenes y sticky panel
+   ========================================================= */
 
+/* ----------------------------------------------
+   BASE Y CONTENEDORES GLOBALES
+   ---------------------------------------------- */
 .quote-page {
   background: #f7faf8;
   color: #17322a;
 }
 
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* ----------------------------------------------
+   HERO (alineado con el contenido)
+   ---------------------------------------------- */
 .quote-hero {
   padding: 118px 0 34px;
-  background:
-    linear-gradient(rgba(6, 40, 3, 0.78), rgba(6, 40, 3, 0.78)),
-    url("../img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg") center/cover no-repeat;
+  background: linear-gradient(rgba(6, 40, 3, 0.78), rgba(6, 40, 3, 0.78)),
+              url("../img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg") center/cover no-repeat;
   color: #fff;
 }
 
-.quote-hero__container {
-  max-width: 980px;
+.quote-hero .container {
+  max-width: 1200px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .quote-eyebrow {
@@ -43,6 +61,9 @@
   line-height: 1.65;
 }
 
+/* ----------------------------------------------
+   CONTENIDO PRINCIPAL
+   ---------------------------------------------- */
 .quote-content {
   padding: 28px 0 64px;
 }
@@ -59,6 +80,9 @@
   gap: 18px;
 }
 
+/* ----------------------------------------------
+   TARJETAS
+   ---------------------------------------------- */
 .quote-card {
   background: #fff;
   border-radius: 24px;
@@ -91,6 +115,9 @@
   line-height: 1.55;
 }
 
+/* ----------------------------------------------
+   FORMULARIOS
+   ---------------------------------------------- */
 .quote-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -146,6 +173,9 @@
   line-height: 1.45;
 }
 
+/* ----------------------------------------------
+   SELECTORES DE CANTIDAD (adultos/niños)
+   ---------------------------------------------- */
 .quote-travelers {
   display: grid;
   gap: 10px;
@@ -192,6 +222,9 @@
   cursor: pointer;
 }
 
+/* ----------------------------------------------
+   ESTADOS VACÍOS Y OPCIONES
+   ---------------------------------------------- */
 .quote-empty-state {
   padding: 18px;
   border-radius: 18px;
@@ -287,6 +320,9 @@
   color: #0a3a26;
 }
 
+/* ----------------------------------------------
+   ITINERARIO
+   ---------------------------------------------- */
 .quote-itinerary-preview {
   margin-top: 16px;
   padding-top: 16px;
@@ -324,6 +360,9 @@
   font-size: 0.92rem;
 }
 
+/* ----------------------------------------------
+   ALOJAMIENTO (hoteles)
+   ---------------------------------------------- */
 .quote-accommodation-card {
   cursor: default;
   padding: 0;
@@ -354,7 +393,9 @@
   font-weight: 800;
 }
 
-/* TRENES EN TARJETAS PRINCIPALES */
+/* ----------------------------------------------
+   TRENES (selector principal)
+   ---------------------------------------------- */
 .quote-train-selector-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -400,7 +441,9 @@
   width: 100%;
 }
 
-/* EXTRAS */
+/* ----------------------------------------------
+   EXTRAS
+   ---------------------------------------------- */
 .quote-extra-item {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
@@ -436,7 +479,9 @@
   transform: rotate(45deg);
 }
 
-/* DESCUENTO */
+/* ----------------------------------------------
+   CÓDIGO DE DESCUENTO
+   ---------------------------------------------- */
 .quote-discount-box {
   margin-bottom: 14px;
   padding: 13px;
@@ -494,15 +539,30 @@
   font-weight: 800;
 }
 
-/* SIDEBAR */
+/* ----------------------------------------------
+   SIDEBAR (sticky en PC)
+   ---------------------------------------------- */
 .quote-sidebar {
   position: relative;
   min-width: 0;
 }
 
+/* Sticky sólo en pantallas grandes */
+@media (min-width: 1101px) {
+  .quote-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    height: fit-content;
+    z-index: 20;
+  }
+  .quote-summary-panel {
+    position: relative;
+    top: auto;
+  }
+}
+
 .quote-summary-panel {
-  position: sticky;
-  top: 92px;
   background: #fff;
   border-radius: 24px;
   padding: 22px;
@@ -550,6 +610,7 @@
   color: #17322a;
 }
 
+/* Resumen (lista de precios) */
 .quote-summary {
   display: grid;
   gap: 9px;
@@ -571,7 +632,6 @@
   color: #56645f;
   font-size: 0.94rem;
 }
-/* PARTE 2/3 */
 
 .quote-summary__line strong {
   color: #17322a;
@@ -596,6 +656,7 @@
   white-space: nowrap;
 }
 
+/* Filas ocultas por defecto (se mostrarán desde JS) */
 .quote-summary__line[hidden],
 #childrenSummaryRow[hidden],
 #hotelSummaryRow[hidden],
@@ -607,6 +668,7 @@
   display: none !important;
 }
 
+/* Mensaje informativo */
 .quote-payment-info {
   margin-top: 14px;
   background: #fff8db;
@@ -619,6 +681,7 @@
   text-align: center;
 }
 
+/* Botones de acción */
 .quote-actions {
   display: grid;
   gap: 10px;
@@ -672,7 +735,9 @@
   filter: brightness(1.04);
 }
 
-/* MODALES */
+/* ----------------------------------------------
+   MODALES (hoteles, trenes)
+   ---------------------------------------------- */
 body.quote-modal-open {
   overflow: hidden;
 }
@@ -781,7 +846,7 @@ body.quote-modal-open {
   gap: 18px;
 }
 
-/* MODAL HOTELES */
+/* Hotel dentro del modal */
 .hotel-option-card {
   background: #fff;
   border: 2px solid transparent;
@@ -1040,7 +1105,7 @@ body.quote-modal-open {
   line-height: 1.38;
 }
 
-/* MODAL TRENES */
+/* Trenes dentro del modal */
 .quote-train-modal-list {
   gap: 12px;
 }
@@ -1189,238 +1254,10 @@ body.quote-modal-open {
   line-height: 1.45;
   font-size: 0.86rem;
 }
-/* PARTE 3/3 */
 
-.quote-train-modal-content {
-  display: grid;
-  gap: 12px;
-  color: #17322a;
-}
-
-.quote-train-modal-content p {
-  margin: 0;
-  color: #56645f;
-  line-height: 1.55;
-}
-
-.quote-train-modal-content ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #56645f;
-  display: grid;
-  gap: 7px;
-}
-
-/* PRINT */
-.print-quotation {
-  display: none;
-}
-
-.print-sheet {
-  background: #fff;
-  color: #1d1d1f;
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 34px;
-  font-family: "Open Sans", Arial, sans-serif;
-}
-
-.print-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  padding-bottom: 18px;
-  border-bottom: 3px solid #0a3a26;
-  margin-bottom: 18px;
-}
-
-.print-logo {
-  display: block;
-  max-width: 190px;
-  height: auto;
-  margin: 0 0 8px;
-}
-
-.print-header h1,
-.print-header h2 {
-  color: #062803;
-  margin: 0 0 6px;
-}
-
-.print-header p {
-  margin: 2px 0;
-  color: #4d4d4d;
-  font-size: 0.9rem;
-}
-
-.print-header__right {
-  text-align: right;
-  min-width: 260px;
-}
-
-.print-coupon-box {
-  margin-top: 10px;
-  width: 260px;
-  min-height: 104px;
-  margin-left: auto;
-  border-radius: 14px;
-  overflow: hidden;
-  background:
-    linear-gradient(rgba(6, 40, 3, 0.16), rgba(6, 40, 3, 0.16)),
-    url("../img/quote/coupon-bg.png") center/cover no-repeat;
-  border: 1px dashed rgba(10, 58, 38, 0.5);
-  color: #062803;
-  text-align: center;
-  display: grid;
-  place-items: center;
-}
-
-.print-coupon-box__content {
-  width: 100%;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(1px);
-}
-
-.print-coupon-box__content span {
-  display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.7rem;
-  font-weight: 900;
-  color: #0a3a26;
-}
-
-.print-coupon-box__content strong {
-  display: block;
-  margin: 4px 0;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.28rem;
-  line-height: 1.1;
-  color: #062803;
-}
-
-.print-coupon-box__content small {
-  display: block;
-  font-size: 0.76rem;
-  color: #333;
-  line-height: 1.28;
-}
-
-.print-client-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-
-.print-client-grid > div,
-.print-section {
-  border: 1px solid #d8dedb;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 14px;
-}
-
-.print-client-grid h3,
-.print-section h3 {
-  color: #fff;
-  background: #0a3a26;
-  margin: -4px -4px 10px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.print-client-grid p,
-.print-section p,
-.print-notes li {
-  margin: 4px 0;
-  color: #333;
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-.print-banner {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 14px;
-  margin: 0 0 14px;
-  border: 1px solid #d8dedb;
-}
-
-.print-banner-top {
-  max-height: 170px;
-}
-
-.print-banner-bottom {
-  margin-top: 12px;
-  margin-bottom: 0;
-  max-height: 150px;
-}
-
-.print-itinerary-list {
-  display: grid;
-  gap: 8px;
-}
-
-.print-itinerary-item {
-  padding: 10px 12px;
-  border-left: 4px solid #0a3a26;
-  background: #f8fbf9;
-  border-radius: 0 10px 10px 0;
-}
-
-.print-itinerary-item strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #062803;
-}
-
-.print-table,
-.print-price-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.print-table th,
-.print-table td,
-.print-price-table td {
-  border-bottom: 1px solid #e4e7e5;
-  padding: 8px 6px;
-  vertical-align: top;
-  font-size: 0.92rem;
-}
-
-.print-table th {
-  width: 170px;
-  text-align: left;
-  color: #062803;
-}
-
-.print-price-table td:last-child {
-  text-align: right;
-  font-weight: 700;
-}
-
-.print-price-table__total td {
-  color: #062803;
-  font-size: 1.04rem;
-  font-weight: 900 !important;
-  border-top: 2px solid #0a3a26;
-}
-
-.print-footer {
-  text-align: center;
-  padding-top: 12px;
-  color: #56645f;
-  font-size: 0.9rem;
-}
-
-/* PAQUETE INCLUYE */
+/* ----------------------------------------------
+   SECCIÓN "PAQUETE INCLUYE"
+   ---------------------------------------------- */
 .quote-package-includes {
   margin-top: 16px;
   padding: 16px;
@@ -1452,105 +1289,9 @@ body.quote-modal-open {
   line-height: 1.45;
 }
 
-/* =========================================================
-   AJUSTES FINALES LIMPIOS - MY CUSCO TRIP
-   ========================================================= */
-
-/* Evita desbordes horizontales */
-html,
-body {
-  overflow-x: hidden;
-}
-
-.quote-page,
-.quote-content,
-.quote-layout,
-.quote-main,
-.quote-card,
-.quote-modal,
-.quote-modal__dialog,
-.quote-modal__body,
-.hotel-option-card,
-.quote-train-card {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-.quote-field input,
-.quote-field select,
-.quote-field textarea,
-.quote-payment-mode select,
-.quote-discount-box input,
-.hotel-combo-btn,
-.quote-main-btn,
-.quote-secondary-btn,
-.quote-payment-btn,
-.quote-pdf-btn {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Hero alineado al contenido principal */
-.quote-hero__container {
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-/* Títulos de tarjetas */
-.quote-card__header h2 {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 52px;
-  margin: -6px 0 10px;
-  padding: 13px 18px;
-  border-radius: 16px;
-  color: #123826;
-  background: linear-gradient(135deg, #dfe9d6 0%, #ccdcbc 100%);
-  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.10);
-}
-
-/* Desktop: panel fijo visible */
-@media (min-width: 1101px) {
-  .quote-sidebar {
-    position: sticky;
-    top: 96px;
-    align-self: start;
-    height: fit-content;
-    min-width: 0;
-    z-index: 20;
-  }
-
-  .quote-summary-panel {
-    position: relative;
-    top: auto;
-    z-index: auto;
-  }
-}
-
-/* Tablet */
-@media (max-width: 1100px) {
-  .quote-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-sidebar {
-    position: static;
-  }
-
-  .quote-summary-panel {
-    position: static;
-  }
-
-  .quote-train-card__body {
-    grid-template-columns: 150px 100px 1fr 100px 140px;
-  }
-}
-
-/* Sección paquete detectado como tarjeta informativa */
+/* ----------------------------------------------
+   PAQUETE DETECTADO (estilo informativo)
+   ---------------------------------------------- */
 .quote-package-card--detected {
   cursor: default !important;
   padding: 14px 16px !important;
@@ -1588,7 +1329,9 @@ body {
   font-size: 0.72rem;
 }
 
-/* Trenes recomendados */
+/* ----------------------------------------------
+   TRENES RECOMENDADOS
+   ---------------------------------------------- */
 .quote-train-recommendation {
   margin: 0 0 12px;
   padding: 12px 14px;
@@ -1638,7 +1381,9 @@ body {
   font-weight: 900;
 }
 
-/* Botón PDF */
+/* ----------------------------------------------
+   BOTÓN PDF ESPECÍFICO
+   ---------------------------------------------- */
 .quote-pdf-btn {
   background: #f4fbf5;
   color: #0a3a26;
@@ -1651,7 +1396,9 @@ body {
   box-shadow: 0 14px 28px rgba(10, 58, 38, 0.14);
 }
 
-/* Total más claro */
+/* ----------------------------------------------
+   TOTAL DESTACADO
+   ---------------------------------------------- */
 .quote-summary__total {
   background: #f4fbf5;
   border: 1px solid rgba(10, 58, 38, 0.12);
@@ -1664,7 +1411,9 @@ body {
   font-size: 1.28rem;
 }
 
-/* Flatpickr móvil */
+/* ----------------------------------------------
+   FLATPICKR (calendario)
+   ---------------------------------------------- */
 .flatpickr-calendar {
   max-width: calc(100vw - 16px) !important;
 }
@@ -1674,112 +1423,112 @@ body {
   max-width: 100% !important;
 }
 
-/* Responsive mobile */
+/* ----------------------------------------------
+   RESPONSIVE: TABLET (max-width: 1100px)
+   ---------------------------------------------- */
+@media (max-width: 1100px) {
+  .quote-layout {
+    grid-template-columns: 1fr;
+  }
+  .quote-sidebar {
+    position: static;
+  }
+  .quote-summary-panel {
+    position: static;
+  }
+  .quote-train-card__body {
+    grid-template-columns: 150px 100px 1fr 100px 140px;
+  }
+}
+
+/* ----------------------------------------------
+   RESPONSIVE: MÓVIL (max-width: 768px)
+   ---------------------------------------------- */
 @media (max-width: 768px) {
   body:has(.quote-page) {
     padding-bottom: 154px;
   }
-
   .quote-content {
     padding-bottom: 170px;
   }
-
   .quote-hero {
     padding-top: 98px;
   }
-
   .quote-form-grid,
   .print-client-grid,
   .quote-train-selector-grid {
     grid-template-columns: 1fr;
   }
-
   .quote-card {
     padding: 18px;
     border-radius: 20px;
   }
-
   .quote-card__header h2 {
     font-size: 1.08rem;
     padding: 11px 13px;
     min-height: auto;
   }
-
   .quote-discount-box__row {
     grid-template-columns: 1fr;
   }
-
   .quote-modal__dialog {
     width: calc(100vw - 12px);
     max-height: calc(100vh - 12px);
     margin: 6px auto;
     border-radius: 18px;
   }
-
   .quote-modal__header {
     padding: 18px 14px 12px;
   }
-
   .quote-modal__body {
     padding: 12px 14px 14px;
   }
-
   .quote-modal__footer {
     padding: 12px 14px max(16px, env(safe-area-inset-bottom));
   }
-
   .quote-modal__footer .quote-main-btn,
   .quote-modal__footer .quote-secondary-btn {
     width: 100%;
     min-width: 0;
   }
-
   .hotel-option-card__header {
     padding: 16px 14px 10px;
     flex-direction: column;
   }
-
   .hotel-option-card__content,
   .hotel-option-card__content--no-hotel {
     grid-template-columns: 1fr;
     padding: 0 14px 16px;
   }
-
   .hotel-gallery-main,
   .hotel-gallery-main-img {
     min-height: 210px;
     height: 210px;
   }
-
   .hotel-combo-btn {
     padding: 12px 12px 12px 44px;
   }
-
   .hotel-combo-radio {
     left: 14px;
   }
-
   .quote-train-card__body {
     grid-template-columns: 1fr;
     text-align: left;
     padding-top: 42px;
   }
-
   .quote-train-time,
   .quote-train-middle,
   .quote-train-price {
     text-align: left;
   }
-
   .quote-train-actions {
     justify-content: flex-start;
   }
-
   .quote-local-warning {
     margin: 0 14px 14px;
   }
 
-  /* Barra inferior móvil */
+  /* Barra fija inferior en móvil */
   .quote-summary-panel {
     position: fixed;
     left: 10px;
@@ -1794,7 +1543,6 @@ body {
     border-radius: 22px;
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
   }
-
   .quote-summary-panel__top,
   .quote-payment-mode,
   .quote-discount-box,
@@ -1803,14 +1551,12 @@ body {
   .quote-actions #printQuoteBtn {
     display: none !important;
   }
-
   .quote-summary {
     display: block;
     border: 0;
     padding: 0;
     background: transparent;
   }
-
   .quote-summary__total {
     display: grid;
     gap: 2px;
@@ -1819,7 +1565,6 @@ body {
     border: 0;
     background: transparent;
   }
-
   .quote-summary__total span {
     display: block;
     color: #56645f;
@@ -1827,7 +1572,6 @@ body {
     font-weight: 800;
     line-height: 1.1;
   }
-
   .quote-summary__total strong {
     display: block;
     color: #062803;
@@ -1835,14 +1579,12 @@ body {
     line-height: 1.1;
     white-space: nowrap;
   }
-
   .quote-actions {
     margin: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-
   .quote-payment-btn,
   .quote-pdf-btn {
     width: 100%;
@@ -1852,17 +1594,16 @@ body {
     white-space: normal;
     line-height: 1.15;
   }
-
   .quote-payment-btn i,
   .quote-pdf-btn i {
     display: none;
   }
-
   .wa-float {
     bottom: 170px;
   }
 }
 
+/* Móviles muy pequeños */
 @media (max-width: 420px) {
   .quote-summary-panel {
     left: 8px;
@@ -1871,11 +1612,9 @@ body {
     padding: 10px;
     border-radius: 18px;
   }
-
   .quote-summary__total strong {
     font-size: 1.06rem;
   }
-
   .quote-payment-btn,
   .quote-pdf-btn {
     padding: 11px 8px;
@@ -1883,22 +1622,21 @@ body {
   }
 }
 
-/* PRINT */
+/* ----------------------------------------------
+   ESTILOS PARA IMPRESIÓN (PDF)
+   ---------------------------------------------- */
 @media print {
   @page {
     size: A4;
     margin: 12mm;
   }
-
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-
   body {
     background: #fff !important;
   }
-
   #header-container,
   #footer-container,
   .wa-float,
@@ -1908,39 +1646,31 @@ body {
   .quote-actions {
     display: none !important;
   }
-
   .quote-page {
     background: #fff !important;
   }
-
   .print-quotation {
     display: block !important;
   }
-
   .print-sheet {
     max-width: none;
     width: 100%;
     padding: 0;
     box-shadow: none;
   }
-
   .print-logo {
     max-width: 180px;
   }
-
   .print-header {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-
   .print-header__right {
     min-width: 250px;
   }
-
   .print-coupon-box {
     display: grid !important;
   }
-
   .print-client-grid > div,
   .print-section,
   .print-banner,
@@ -1948,17 +1678,14 @@ body {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-
   .print-client-grid h3,
   .print-section h3 {
     background: #0a3a26 !important;
     color: #fff !important;
   }
-
   .print-banner {
     display: block !important;
   }
-
   .print-footer {
     margin-top: 10px;
   }
