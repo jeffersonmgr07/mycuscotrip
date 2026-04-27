@@ -108,7 +108,6 @@ class MyCuscoTripQuotePackages {
     try {
       const response = await fetch("https://open.er-api.com/v6/latest/USD", { cache: "no-store" });
       const data = await response.json();
-
       if (data && data.rates && Number(data.rates.PEN) > 0) {
         this.exchangeRate = Number(data.rates.PEN);
       }
@@ -478,9 +477,7 @@ class MyCuscoTripQuotePackages {
     this.renderPackageIncludes();
     this.refreshAccommodationSelections();
 
-    /* Importante:
-       Los trenes quedan sin seleccionar al iniciar el cotizador.
-       Así el total empieza más bajo y el cliente ve cómo sube al agregar servicios. */
+    /* IMPORTANTE: Los trenes se inician sin selección para que el precio base sea más bajo */
     this.selectedOutboundTrainCode = "";
     this.selectedReturnTrainCode = "";
 
@@ -630,7 +627,7 @@ class MyCuscoTripQuotePackages {
         const code = card.dataset.itineraryCode;
         this.selectedItineraryOption = options.find((item) => item.code === code) || options[0];
 
-        /* Si cambia la opción de itinerario, limpiamos trenes para que no quede una selección previa incompatible. */
+        /* Al cambiar itinerario, limpiamos trenes para evitar combinaciones incompatibles */
         this.selectedOutboundTrainCode = "";
         this.selectedReturnTrainCode = "";
 
@@ -1585,6 +1582,9 @@ class MyCuscoTripQuotePackages {
     return 0;
   }
 
+  /**
+   * Actualiza todos los precios en el sidebar y las filas de pasajeros (adultos/niños)
+   */
   updatePricing() {
     const summary = this.calculateQuote();
 
@@ -1604,6 +1604,7 @@ class MyCuscoTripQuotePackages {
       discountLabel.textContent = summary.manualDiscount > 0 ? "Descuentos aplicados" : "Descuento pago total";
     }
 
+    // Mostrar/ocultar líneas monetarias según corresponda
     this.toggleRow("childrenSummaryRow", this.children > 0);
     this.toggleRow("hotelSummaryRow", summary.hotelsTotal > 0);
     this.toggleRow("trainSummaryRow", summary.trainsTotal > 0);
@@ -1611,6 +1612,9 @@ class MyCuscoTripQuotePackages {
     this.toggleRow("discountSummaryRow", summary.discount > 0);
     this.toggleRow("advanceSummaryRow", this.paymentMode === "partial");
     this.toggleRow("balanceSummaryRow", this.paymentMode === "partial");
+
+    // ---------- NUEVO: Mostrar cantidad de adultos y niños ----------
+    this.updatePassengerDetailsRow();
 
     const paymentInfo = document.getElementById("paymentInfo");
     if (paymentInfo) {
@@ -1631,6 +1635,55 @@ class MyCuscoTripQuotePackages {
 
         paymentInfo.textContent = parts.join(" ");
       }
+    }
+  }
+
+  /**
+   * Crea o actualiza las filas dinámicas que muestran la cantidad de adultos y niños
+   * dentro del contenedor .quote-summary, justo después de la línea de paquete base.
+   */
+  updatePassengerDetailsRow() {
+    const summaryContainer = document.querySelector(".quote-summary");
+    if (!summaryContainer) return;
+
+    // Eliminar filas existentes para no duplicar (si ya existen)
+    const existingAdultsRow = document.getElementById("adultsDetailRow");
+    const existingChildrenRow = document.getElementById("childrenDetailRow");
+    if (existingAdultsRow) existingAdultsRow.remove();
+    if (existingChildrenRow) existingChildrenRow.remove();
+
+    // Buscar la fila de "Paquete base" para insertar después
+    const basePackageLine = document.getElementById("basePackageTotal")?.closest(".quote-summary__line");
+    if (!basePackageLine) return;
+
+    // Crear fila de adultos
+    const adultsRow = document.createElement("div");
+    adultsRow.id = "adultsDetailRow";
+    adultsRow.className = "quote-summary__line";
+    adultsRow.style.fontSize = "0.9rem";
+    adultsRow.style.paddingTop = "4px";
+    adultsRow.innerHTML = `
+      <span>Adultos (${this.adults})</span>
+      <strong>${this.formatCurrency(0, this.quoteCurrency)}</strong>
+    `;
+    // El precio ya está incluido en el total, aquí solo mostramos la cantidad
+    // pero mantenemos un formato consistente
+
+    // Insertar después de la línea de paquete base
+    basePackageLine.insertAdjacentElement("afterend", adultsRow);
+
+    // Si hay niños, crear fila para niños
+    if (this.children > 0) {
+      const childrenRow = document.createElement("div");
+      childrenRow.id = "childrenDetailRow";
+      childrenRow.className = "quote-summary__line";
+      childrenRow.style.fontSize = "0.9rem";
+      childrenRow.style.paddingTop = "4px";
+      childrenRow.innerHTML = `
+        <span>Niños (${this.children})</span>
+        <strong>${this.formatCurrency(0, this.quoteCurrency)}</strong>
+      `;
+      adultsRow.insertAdjacentElement("afterend", childrenRow);
     }
   }
 
@@ -2188,6 +2241,8 @@ class MyCuscoTripQuotePackages {
   updatePassengersUI() {
     this.setText("adultsCount", String(this.adults));
     this.setText("childrenCount", String(this.children));
+    // Al actualizar la UI de pasajeros también refrescamos las filas de detalle
+    this.updatePricing();
   }
 
   updateReferenceUI() {
