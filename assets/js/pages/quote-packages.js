@@ -466,6 +466,7 @@ class MyCuscoTripQuotePackages {
 
     this.updateExchangeRateHelp();
   }
+
   renderPackageOptions() {
     const target = document.getElementById("packageOptions");
     if (!target) return;
@@ -929,6 +930,7 @@ class MyCuscoTripQuotePackages {
 
     this.renderAccommodationOptions();
   }
+
   openHotelModal(destination) {
     const modal = document.getElementById("hotelSelectionModal");
     const title = document.getElementById("hotelModalTitle");
@@ -1398,6 +1400,7 @@ class MyCuscoTripQuotePackages {
     const selection = this.getSelectedAccommodationForDestination(destination);
     return this.convertMoney(Number(selection?.combination?.totalForStay || 0), "USD", this.quoteCurrency);
   }
+
   renderTrainSelectors() {
     const outboundTitle = document.getElementById("outboundTrainSelectedTitle");
     const outboundMeta = document.getElementById("outboundTrainSelectedMeta");
@@ -1635,29 +1638,30 @@ class MyCuscoTripQuotePackages {
       ""
     );
   }
+
   getTrainDisplayCategory(train) {
-  if (train.displayCategory) {
-    return train.displayCategory;
+    if (train.displayCategory) {
+      return train.displayCategory;
+    }
+
+    const category = this.trainsData?.trainCategories?.[train.categoryCode];
+
+    if (category?.displayCategory) {
+      return category.displayCategory;
+    }
+
+    const tier = String(category?.tier || "").replace(/_/g, "-");
+
+    const labelsByTier = {
+      local: "Local",
+      economy: "Economy",
+      "premium-economy": "Premium Economy",
+      premium: "Premium",
+      luxury: "Luxury"
+    };
+
+    return labelsByTier[tier] || train.company || "Tren";
   }
-
-  const category = this.trainsData?.trainCategories?.[train.categoryCode];
-
-  if (category?.displayCategory) {
-    return category.displayCategory;
-  }
-
-  const tier = String(category?.tier || "").replace(/_/g, "-");
-
-  const labelsByTier = {
-    local: "Local",
-    economy: "Economy",
-    "premium-economy": "Premium Economy",
-    premium: "Premium",
-    luxury: "Luxury"
-  };
-
-  return labelsByTier[tier] || train.company || "Tren";
-}
 
   getTrainMetaText(train) {
     const parts = [];
@@ -1692,13 +1696,13 @@ class MyCuscoTripQuotePackages {
       optionText.includes("valle sagrado conexion") ||
       optionText.includes("valle conexión") ||
       optionText.includes("valle conexion") ||
-      optionText.includes("aguas calientes") && optionText.includes("valle sagrado");
+      (optionText.includes("aguas calientes") && optionText.includes("valle sagrado"));
 
     if (isFullDayMachuPicchu) {
       return options
         .filter((train) => {
           const minutes = this.timeToMinutes(train.departureTime || "");
-          return minutes !== null && minutes >= this.timeToMinutes("04:00") && minutes <= this.timeToMinutes("04:45");
+          return minutes !== null && minutes >= this.timeToMinutes("04:00") && minutes <= this.timeToMinutes("06:00");
         })
         .map((train) => train.code);
     }
@@ -1708,7 +1712,7 @@ class MyCuscoTripQuotePackages {
         .filter((train) => {
           const minutes = this.timeToMinutes(train.departureTime || "");
           const company = String(train.company || "").toLowerCase();
-          return company.includes("inca") && minutes === this.timeToMinutes("16:36");
+          return company.includes("inca") && minutes !== null && minutes >= this.timeToMinutes("14:00") && minutes <= this.timeToMinutes("18:00");
         })
         .map((train) => train.code);
     }
@@ -2065,6 +2069,7 @@ class MyCuscoTripQuotePackages {
       currency: pkg.currency || this.quoteCurrency
     };
   }
+
   updatePrintQuotation() {
     const totals = this.calculatePricing();
     const client = this.getClientData();
@@ -2310,9 +2315,18 @@ class MyCuscoTripQuotePackages {
     const wrapper = document.createElement("div");
     wrapper.className = "pdf-export-wrapper";
     
+    // Asegurar estilos A4 y copiar estilos del documento
     clonedPrintArea.style.display = "block";
     clonedPrintArea.hidden = false;
+    clonedPrintArea.style.width = "210mm";
+    clonedPrintArea.style.maxWidth = "210mm";
     
+    // Copiar estilos relevantes al wrapper
+    const styles = document.querySelectorAll("style, link[rel='stylesheet']");
+    styles.forEach((style) => {
+      wrapper.appendChild(style.cloneNode(true));
+    });
+
     wrapper.appendChild(clonedPrintArea);
     document.body.appendChild(wrapper);
 
@@ -2329,7 +2343,7 @@ class MyCuscoTripQuotePackages {
         backgroundColor: "#ffffff",
         scrollX: 0,
         scrollY: 0,
-        windowWidth: 900
+        windowWidth: 794
       },
       jsPDF: {
         unit: "mm",
