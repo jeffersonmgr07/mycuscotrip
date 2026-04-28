@@ -23,6 +23,8 @@ body {
 body.quote-datepicker-open {
   padding-right: 0 !important;
   overflow-x: clip !important;
+  position: fixed;
+  width: 100%;
 }
 
 .quote-page {
@@ -212,7 +214,7 @@ body.quote-datepicker-open {
   height: 44px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 10px 16px;
   font: inherit;
   background: #fff;
   color: #17322a;
@@ -223,6 +225,7 @@ body.quote-datepicker-open {
   resize: vertical;
   min-height: 110px;
   height: auto;
+  padding: 12px 16px;
 }
 
 .quote-field select,
@@ -231,6 +234,7 @@ body.quote-datepicker-open {
   -webkit-appearance: none;
   -moz-appearance: none;
   padding-right: 42px;
+  padding-left: 16px;
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230a3a26' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -476,6 +480,7 @@ body.quote-datepicker-open {
   padding: 5px 9px;
   font-size: 0.72rem;
 }
+
 /* ----------------------------------------------
    ALOJAMIENTO
    ---------------------------------------------- */
@@ -651,8 +656,22 @@ body.quote-datepicker-open {
   min-width: 0;
 }
 
-.quote-summary-panel__top {
-  margin-bottom: 14px;
+/* OCULTAR CÓDIGO DE COTIZACIÓN Y MONTO SUPERIOR EN PANEL PC */
+@media (min-width: 769px) {
+  .quote-summary-panel__top {
+    display: none !important;
+  }
+}
+
+/* En impresión y PDF se mostrará */
+@media print {
+  .quote-summary-panel__top {
+    display: block !important;
+  }
+}
+
+.print-quotation .print-header--two-columns {
+  /* Asegura visibilidad en PDF/impresión */
 }
 
 .quote-summary-panel__top span {
@@ -933,6 +952,7 @@ body.quote-datepicker-open {
   justify-content: center;
   gap: 7px;
 }
+
 /* ----------------------------------------------
    MODALES
    ---------------------------------------------- */
@@ -1424,6 +1444,7 @@ body.quote-modal-open {
 .flatpickr-calendar.open {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
+
 /* ----------------------------------------------
    IMPRESIÓN / PDF EN PANTALLA
    ---------------------------------------------- */
@@ -1778,29 +1799,29 @@ body.quote-modal-open {
   }
 
   .flatpickr-calendar {
-     position: fixed !important;
-     left: 50% !important;
-     right: auto !important;
-     top: 90px !important;
-     transform: translateX(-50%) !important;
-     width: min(330px, calc(100dvw - 24px)) !important;
-     max-width: calc(100dvw - 24px) !important;
-     box-sizing: border-box !important;
-   }
-   
-   .flatpickr-calendar.open {
-     overflow: hidden !important;
-   }
-   
-   .flatpickr-months,
-   .flatpickr-innerContainer,
-   .flatpickr-rContainer,
-   .flatpickr-days,
-   .dayContainer {
-     width: 100% !important;
-     max-width: 100% !important;
-     box-sizing: border-box !important;
-   }
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(330px, calc(100dvw - 24px)) !important;
+    max-width: calc(100dvw - 24px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .flatpickr-calendar.open {
+    overflow: hidden !important;
+  }
+
+  .flatpickr-months,
+  .flatpickr-innerContainer,
+  .flatpickr-rContainer,
+  .flatpickr-days,
+  .dayContainer {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
   .quote-modal__dialog {
     width: calc(100vw - 12px);
@@ -1944,18 +1965,12 @@ body.quote-modal-open {
     order: 3;
     margin: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
   }
 
   .quote-actions__secondary {
-    grid-template-columns: 1fr 1fr;
     display: contents;
-    gap: 6px;
-  }
-
-  .quote-actions {
-    grid-template-columns: 1fr;
   }
 
   .quote-payment-btn,
@@ -1963,11 +1978,12 @@ body.quote-modal-open {
   .quote-pdf-btn {
     width: 100%;
     min-height: 36px;
-    padding: 8px 6px;
-    font-size: 0.74rem;
+    padding: 8px 4px;
+    font-size: 0.72rem;
     white-space: normal;
     line-height: 1.08;
     gap: 4px;
+    border-radius: 14px;
   }
 
   .quote-payment-btn__desktop {
@@ -1980,14 +1996,15 @@ body.quote-modal-open {
 
   .quote-secondary-btn span,
   .quote-pdf-btn span {
-    display: none;
+    display: inline;
+    font-size: 0.68rem;
   }
 
   .quote-payment-btn i,
   .quote-pdf-btn i,
   .quote-secondary-btn i {
     display: inline-flex;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
   }
 
   .quote-summary-panel.is-expanded {
@@ -2062,9 +2079,14 @@ body.quote-modal-open {
   .quote-payment-btn,
   .quote-secondary-btn,
   .quote-pdf-btn {
-    min-height: 34px;
-    padding: 7px 5px;
-    font-size: 0.7rem;
+    min-height: 32px;
+    padding: 6px 4px;
+    font-size: 0.66rem;
+  }
+
+  .quote-secondary-btn span,
+  .quote-pdf-btn span {
+    font-size: 0.62rem;
   }
 }
 
@@ -2120,7 +2142,9 @@ body.quote-modal-open {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-}
-.quote-summary-panel__top {
-  display: none !important;
+
+  /* Mostrar código en impresión */
+  .quote-summary-panel__top {
+    display: block !important;
+  }
 }
