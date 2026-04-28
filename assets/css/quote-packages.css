@@ -11,21 +11,25 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
 }
 
 body.quote-datepicker-open {
   padding-right: 0 !important;
+  overflow-x: clip !important;
 }
 
 .quote-page {
   background: #f7faf8;
   color: #17322a;
-  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
 }
 
 .container {
@@ -91,6 +95,7 @@ body.quote-datepicker-open {
   grid-template-columns: minmax(0, 1fr) 390px;
   gap: 24px;
   align-items: start;
+  position: relative;
 }
 
 .quote-main {
@@ -171,6 +176,7 @@ body.quote-datepicker-open {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  align-items: start;
 }
 
 .quote-form-grid--travel {
@@ -179,6 +185,8 @@ body.quote-datepicker-open {
 
 .quote-field {
   min-width: 0;
+  display: grid;
+  align-content: start;
 }
 
 .quote-field--wide {
@@ -190,6 +198,7 @@ body.quote-datepicker-open {
   font-weight: 800;
   color: #062803;
   margin-bottom: 8px;
+  min-height: 21px;
 }
 
 .quote-field input,
@@ -200,6 +209,7 @@ body.quote-datepicker-open {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
+  height: 44px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
   padding: 10px 12px;
@@ -212,6 +222,7 @@ body.quote-datepicker-open {
 .quote-field textarea {
   resize: vertical;
   min-height: 110px;
+  height: auto;
 }
 
 .quote-field select,
@@ -465,7 +476,6 @@ body.quote-datepicker-open {
   padding: 5px 9px;
   font-size: 0.72rem;
 }
-
 /* ----------------------------------------------
    ALOJAMIENTO
    ---------------------------------------------- */
@@ -490,14 +500,35 @@ body.quote-datepicker-open {
 
 .quote-accommodation-card__body {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   padding: 15px;
+}
+
+.quote-accommodation-card.has-hotel-image .quote-accommodation-card__body {
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: center;
+}
+
+.quote-accommodation-card__image {
+  width: 92px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(6, 40, 3, 0.12);
+  background: #edf3ef;
+}
+
+.quote-accommodation-card__content {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
 }
 
 .quote-accommodation-card__price {
   color: #0a3a26 !important;
   font-weight: 800;
 }
+
 /* ----------------------------------------------
    TRENES
    ---------------------------------------------- */
@@ -512,9 +543,10 @@ body.quote-datepicker-open {
   gap: 14px;
   align-content: space-between;
   padding: 16px;
-  border: 2px solid rgba(6, 40, 3, 0.12);
+  border: 2px solid rgba(6, 40, 3, 0.18);
   border-radius: 18px;
-  background: #f9fcfb;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.05);
 }
 
 .quote-train-selector-card span {
@@ -595,23 +627,32 @@ body.quote-datepicker-open {
 @media (min-width: 1101px) {
   .quote-sidebar {
     position: sticky;
-    top: 24px;
+    top: 18px;
     align-self: start;
     height: fit-content;
+    max-height: calc(100vh - 36px);
+    overflow: visible;
     z-index: 20;
+  }
+
+  .quote-summary-panel {
+    max-height: calc(100vh - 36px);
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
 }
 
 .quote-summary-panel {
   background: #fff;
   border-radius: 24px;
-  padding: 22px;
+  padding: 18px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
+  min-width: 0;
 }
 
 .quote-summary-panel__top {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .quote-summary-panel__top span {
@@ -625,12 +666,13 @@ body.quote-datepicker-open {
   display: block;
   color: #062803;
   font-family: "Montserrat", sans-serif;
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .quote-payment-mode {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .quote-payment-mode label {
@@ -642,17 +684,19 @@ body.quote-datepicker-open {
 
 .quote-payment-mode select {
   width: 100%;
+  max-width: 100%;
+  height: 42px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 9px 40px 9px 12px;
   font: inherit;
   background-color: #fff;
   color: #17322a;
 }
 
 .quote-discount-box {
-  margin-bottom: 14px;
-  padding: 13px;
+  margin-bottom: 12px;
+  padding: 12px;
   border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 16px;
   background: #f9fcfb;
@@ -667,12 +711,13 @@ body.quote-datepicker-open {
 
 .quote-discount-box__row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
 }
 
 .quote-discount-box input {
   min-width: 0;
+  width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 999px;
   padding: 10px 12px;
@@ -712,7 +757,7 @@ body.quote-datepicker-open {
   gap: 9px;
   border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 18px;
-  padding: 15px;
+  padding: 13px;
   background: #fff;
 }
 
@@ -722,15 +767,21 @@ body.quote-datepicker-open {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .quote-summary__line {
   color: #56645f;
-  font-size: 0.94rem;
+  font-size: 0.93rem;
 }
 
 .quote-summary__line--base strong:empty {
   display: none;
+}
+
+.quote-summary__line span,
+.quote-summary__total span {
+  min-width: 0;
 }
 
 .quote-summary__line strong {
@@ -741,7 +792,7 @@ body.quote-datepicker-open {
 
 .quote-summary__total {
   margin-top: 6px;
-  padding: 12px 14px;
+  padding: 11px 12px;
   border: 1px solid rgba(10, 58, 38, 0.12);
   border-radius: 14px;
   background: #f4fbf5;
@@ -755,7 +806,7 @@ body.quote-datepicker-open {
 
 .quote-summary__total strong {
   color: #0a3a26;
-  font-size: 1.28rem;
+  font-size: 1.18rem;
   white-space: nowrap;
 }
 
@@ -771,42 +822,50 @@ body.quote-datepicker-open {
 }
 
 .quote-payment-info {
-  margin-top: 14px;
+  margin-top: 12px;
   background: #fff8db;
   border: 1px solid #f1e2a4;
   border-radius: 14px;
-  padding: 13px 15px;
+  padding: 12px 13px;
   color: #6b5a18;
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  line-height: 1.45;
   text-align: center;
 }
 
 .quote-actions {
   display: grid;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 12px;
+  width: 100%;
+  min-width: 0;
 }
 
 .quote-actions__secondary {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
+  width: 100%;
 }
 
 .quote-main-btn,
 .quote-secondary-btn,
 .quote-payment-btn {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border-radius: 999px;
-  padding: 15px 20px;
-  font-size: 1rem;
+  padding: 13px 14px;
+  font-size: 0.95rem;
   font-weight: 800;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   cursor: pointer;
+  text-align: center;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
 }
 
 .quote-main-btn {
@@ -841,6 +900,10 @@ body.quote-datepicker-open {
   filter: brightness(1.04);
 }
 
+.quote-payment-btn__mobile {
+  display: none;
+}
+
 .quote-pdf-btn {
   background: #f4fbf5;
   color: #0a3a26;
@@ -861,16 +924,15 @@ body.quote-datepicker-open {
   width: 100%;
   border: 0;
   border-radius: 999px;
-  padding: 9px 12px;
+  padding: 7px 10px;
   background: #edf7ef;
   color: #0a3a26;
   font-weight: 900;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
 }
-
 /* ----------------------------------------------
    MODALES
    ---------------------------------------------- */
@@ -987,12 +1049,12 @@ body.quote-modal-open {
    ---------------------------------------------- */
 .hotel-option-card {
   background: #fff;
-  border: 2px solid transparent;
+  border: 2px solid rgba(6, 40, 3, 0.1);
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  transition: all 0.18s ease;
+  cursor: default;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .hotel-option-card:hover {
@@ -1002,6 +1064,17 @@ body.quote-modal-open {
 .hotel-option-card.is-selected {
   border-color: #0a3a26;
   box-shadow: 0 16px 32px rgba(10, 58, 38, 0.14);
+}
+
+.hotel-option-card--no-hotel {
+  padding: 12px;
+  border-radius: 18px;
+  box-shadow: none;
+  background: #fff;
+}
+
+.hotel-option-card--no-hotel.is-selected {
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.12);
 }
 
 .hotel-option-card__header {
@@ -1044,10 +1117,6 @@ body.quote-modal-open {
   align-items: start;
 }
 
-.hotel-option-card__content--no-hotel {
-  grid-template-columns: 1fr;
-}
-
 .hotel-option-card__media {
   display: grid;
   gap: 10px;
@@ -1069,8 +1138,7 @@ body.quote-modal-open {
   display: block;
 }
 
-.hotel-gallery-main--empty,
-.hotel-no-hotel-card {
+.hotel-gallery-main--empty {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1080,21 +1148,6 @@ body.quote-modal-open {
   text-align: center;
   color: #0a3a26;
   padding: 20px;
-}
-
-.hotel-no-hotel-card {
-  display: grid;
-  gap: 6px;
-}
-
-.hotel-no-hotel-card strong {
-  font-size: 1.15rem;
-  font-weight: 900;
-}
-
-.hotel-no-hotel-card span {
-  color: #56645f;
-  font-size: 0.92rem;
 }
 
 .hotel-gallery-empty-state {
@@ -1121,6 +1174,7 @@ body.quote-modal-open {
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 2px;
+  scrollbar-width: thin;
 }
 
 .hotel-gallery-thumb {
@@ -1169,16 +1223,16 @@ body.quote-modal-open {
 .hotel-combo-btn {
   width: 100%;
   position: relative;
-  border: 2px solid rgba(6, 40, 3, 0.2);
+  border: 2px solid rgba(6, 40, 3, 0.18);
   background: #fff;
   border-radius: 18px;
-  padding: 14px 16px;
+  padding: 13px 15px 13px 46px;
   text-align: left;
   display: grid;
-  gap: 7px;
+  gap: 5px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  min-height: 78px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  min-height: 72px;
   align-items: center;
 }
 
@@ -1193,6 +1247,36 @@ body.quote-modal-open {
   box-shadow: 0 10px 20px rgba(10, 58, 38, 0.12);
 }
 
+.hotel-combo-btn__radio {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(6, 40, 3, 0.35);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+}
+
+.hotel-combo-btn.is-selected .hotel-combo-btn__radio {
+  border-color: #0a3a26;
+}
+
+.hotel-combo-btn.is-selected .hotel-combo-btn__radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #0a3a26;
+}
+
+.hotel-combo-btn--compact {
+  min-height: 58px;
+  border-radius: 16px;
+  box-shadow: none;
+}
+
 .hotel-combo-btn__main {
   color: #17322a;
   font-weight: 800;
@@ -1202,9 +1286,10 @@ body.quote-modal-open {
 
 .hotel-combo-btn__sub {
   color: #56645f;
-  font-size: 0.88rem;
-  line-height: 1.38;
+  font-size: 0.86rem;
+  line-height: 1.35;
 }
+
 /* ----------------------------------------------
    MODAL DE TRENES
    ---------------------------------------------- */
@@ -1215,7 +1300,7 @@ body.quote-modal-open {
 .train-option-card,
 .quote-train-card {
   position: relative;
-  border: 2px solid transparent;
+  border: 2px solid rgba(6, 40, 3, 0.16);
   border-radius: 18px;
   background: #fff;
   overflow: hidden;
@@ -1231,7 +1316,7 @@ body.quote-modal-open {
 
 .train-option-card:hover,
 .quote-train-card:hover {
-  border-color: rgba(10, 58, 38, 0.22);
+  border-color: rgba(10, 58, 38, 0.36);
 }
 
 .train-option-card.is-selected,
@@ -1239,6 +1324,17 @@ body.quote-modal-open {
   border-color: #0a3a26;
   background: #f4fbf5;
   box-shadow: 0 14px 26px rgba(10, 58, 38, 0.13);
+}
+
+.train-option-card.is-recommended {
+  border-color: rgba(217, 154, 0, 0.62);
+}
+
+.train-option-card__top {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .train-option-card h3,
@@ -1250,17 +1346,27 @@ body.quote-modal-open {
 
 .train-option-card p,
 .quote-train-card p {
-  margin: 0;
+  margin: 0 0 5px;
   color: #56645f;
   line-height: 1.45;
   font-size: 0.92rem;
 }
 
-.train-option-card > strong,
-.quote-train-card > strong {
+.train-option-card__price {
+  text-align: right;
   white-space: nowrap;
+}
+
+.train-option-card__price strong {
+  display: block;
   color: #062803;
   font-size: 1.04rem;
+}
+
+.train-option-card__price span {
+  display: block;
+  color: #66746f;
+  font-size: 0.82rem;
 }
 
 /* ----------------------------------------------
@@ -1301,8 +1407,13 @@ body.quote-modal-open {
    FLATPICKR
    ---------------------------------------------- */
 .flatpickr-calendar {
-  max-width: calc(100vw - 16px) !important;
+  max-width: calc(100vw - 20px) !important;
   z-index: 3000 !important;
+}
+
+.flatpickr-calendar.open {
+  left: auto !important;
+  right: auto !important;
 }
 
 .flatpickr-days,
@@ -1313,7 +1424,6 @@ body.quote-modal-open {
 .flatpickr-calendar.open {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
-
 /* ----------------------------------------------
    IMPRESIÓN / PDF EN PANTALLA
    ---------------------------------------------- */
@@ -1511,18 +1621,19 @@ body.quote-modal-open {
   background: #f4fbf5;
 }
 
+/* Nuevo diseño de hoteles en impresión/PDF */
 .print-hotel-images {
   margin-top: 8px;
 }
 
-.print-hotel-grid {
+.print-hotel-list {
   display: grid;
   gap: 7px;
 }
 
-.print-hotel-card {
+.print-hotel-row {
   display: grid;
-  grid-template-columns: 82px 1fr;
+  grid-template-columns: 135px 1fr;
   gap: 8px;
   align-items: center;
   border: 1px solid #e2e7e3;
@@ -1533,10 +1644,31 @@ body.quote-modal-open {
   page-break-inside: avoid;
 }
 
-.print-hotel-card img,
+.print-hotel-row__info strong {
+  display: block;
+  color: #062803;
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+
+.print-hotel-row__info span {
+  display: block;
+  color: #56645f;
+  font-size: 9.2px;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.print-hotel-row__images {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.print-hotel-row__images img,
 .print-hotel-card__empty {
-  width: 82px;
-  height: 54px;
+  width: 100%;
+  height: 48px;
   object-fit: cover;
   border-radius: 7px;
   background: #edf3ef;
@@ -1545,18 +1677,6 @@ body.quote-modal-open {
   justify-content: center;
   color: #56645f;
   font-size: 9px;
-}
-
-.print-hotel-card strong {
-  display: block;
-  color: #062803;
-  font-size: 10.5px;
-}
-
-.print-hotel-card span {
-  display: block;
-  color: #56645f;
-  font-size: 9.5px;
 }
 
 .print-notes ul {
@@ -1603,15 +1723,20 @@ body.quote-modal-open {
    ---------------------------------------------- */
 @media (max-width: 768px) {
   body:has(.quote-page) {
-    padding-bottom: 158px;
+    padding-bottom: 108px;
   }
 
   .quote-content {
-    padding-bottom: 176px;
+    padding-bottom: 124px;
   }
 
   .quote-hero {
     padding-top: 98px;
+  }
+
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .quote-layout,
@@ -1644,9 +1769,26 @@ body.quote-modal-open {
     grid-template-columns: 1fr;
   }
 
+  .flatpickr-calendar {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: min(330px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  .flatpickr-months,
+  .flatpickr-innerContainer,
+  .flatpickr-rContainer,
+  .flatpickr-days,
+  .dayContainer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   .quote-modal__dialog {
     width: calc(100vw - 12px);
-    max-height: calc(100vh - 12px);
+    max-height: calc(100dvh - 12px);
     margin: 6px auto;
     border-radius: 18px;
   }
@@ -1674,16 +1816,28 @@ body.quote-modal-open {
     flex-direction: column;
   }
 
-  .hotel-option-card__content,
-  .hotel-option-card__content--no-hotel {
+  .hotel-option-card__content {
     grid-template-columns: 1fr;
     padding: 0 14px 16px;
   }
 
+  .hotel-option-card--no-hotel {
+    padding: 10px;
+  }
+
   .hotel-gallery-main,
   .hotel-gallery-main-img {
-    min-height: 210px;
-    height: 210px;
+    min-height: 205px;
+    height: 205px;
+  }
+
+  .hotel-combo-btn {
+    min-height: 64px;
+    padding: 12px 12px 12px 43px;
+  }
+
+  .hotel-combo-btn--compact {
+    min-height: 54px;
   }
 
   .train-option-card,
@@ -1691,37 +1845,39 @@ body.quote-modal-open {
     grid-template-columns: 1fr;
   }
 
-  .train-option-card > strong,
-  .quote-train-card > strong {
+  .train-option-card__price {
+    text-align: left;
     white-space: normal;
   }
 
-  /* Panel inferior móvil */
+  /* Panel inferior móvil compacto */
   .quote-summary-panel {
     position: fixed;
-    left: 10px;
-    right: 10px;
-    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 8px;
+    right: 8px;
+    bottom: max(8px, env(safe-area-inset-bottom));
     top: auto;
     z-index: 1200;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 9px;
-    padding: 12px;
-    border-radius: 22px;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
-    max-height: calc(100vh - 24px);
+    gap: 6px;
+    padding: 8px;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    max-height: calc(100dvh - 16px);
     overflow: hidden;
   }
 
   .quote-mobile-summary-toggle {
     display: inline-flex;
-    order: 2;
+    order: 1;
+    min-height: 28px;
+    font-size: 0.8rem;
+    padding: 5px 8px;
   }
 
   .quote-summary-panel__top {
-    order: 1;
-    margin-bottom: 0;
+    display: none !important;
   }
 
   .quote-payment-mode,
@@ -1732,7 +1888,7 @@ body.quote-modal-open {
   }
 
   .quote-summary {
-    order: 3;
+    order: 2;
     display: block;
     border: 0;
     padding: 0;
@@ -1741,68 +1897,93 @@ body.quote-modal-open {
 
   .quote-summary__total {
     display: grid;
-    gap: 2px;
+    gap: 1px;
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
+    text-align: center;
+    justify-items: center;
   }
 
   .quote-summary__total span {
     display: block;
     color: #56645f;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.05;
   }
 
   .quote-summary__total strong {
     display: block;
     color: #062803;
-    font-size: 1.22rem;
-    line-height: 1.1;
+    font-size: 1.04rem;
+    line-height: 1.05;
     white-space: nowrap;
   }
 
   .quote-actions {
-    order: 4;
+    order: 3;
     margin: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
   }
 
   .quote-actions__secondary {
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .quote-actions {
+    grid-template-columns: 1fr;
   }
 
   .quote-payment-btn,
   .quote-secondary-btn,
   .quote-pdf-btn {
     width: 100%;
-    min-height: 46px;
-    padding: 12px 10px;
-    font-size: 0.82rem;
+    min-height: 36px;
+    padding: 8px 6px;
+    font-size: 0.74rem;
     white-space: normal;
-    line-height: 1.15;
+    line-height: 1.08;
+    gap: 4px;
+  }
+
+  .quote-payment-btn__desktop {
+    display: none;
+  }
+
+  .quote-payment-btn__mobile {
+    display: inline;
+  }
+
+  .quote-secondary-btn span,
+  .quote-pdf-btn span {
+    display: none;
   }
 
   .quote-payment-btn i,
   .quote-pdf-btn i,
   .quote-secondary-btn i {
-    display: none;
+    display: inline-flex;
+    font-size: 0.88rem;
   }
 
   .quote-summary-panel.is-expanded {
     overflow-y: auto;
+    padding: 10px;
+    gap: 8px;
   }
 
-  .quote-summary-panel.is-expanded .quote-payment-mode,
-  .quote-summary-panel.is-expanded .quote-discount-box,
-  .quote-summary-panel.is-expanded .quote-summary .quote-summary__line,
-  .quote-summary-panel.is-expanded .quote-payment-info {
-    display: flex !important;
+  .quote-summary-panel.is-expanded .quote-summary-panel__top {
+    display: block !important;
+    order: 1;
+  }
+
+  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
+    order: 2;
   }
 
   .quote-summary-panel.is-expanded .quote-payment-mode,
@@ -1812,6 +1993,7 @@ body.quote-modal-open {
   }
 
   .quote-summary-panel.is-expanded .quote-summary {
+    order: 5;
     display: grid;
     gap: 8px;
     border: 1px solid rgba(6, 40, 3, 0.12);
@@ -1820,15 +2002,25 @@ body.quote-modal-open {
     background: #fff;
   }
 
+  .quote-summary-panel.is-expanded .quote-summary .quote-summary__line {
+    display: flex !important;
+  }
+
   .quote-summary-panel.is-expanded .quote-summary__total {
     display: flex;
     padding: 10px 12px;
     border: 1px solid rgba(10, 58, 38, 0.12);
     background: #f4fbf5;
+    text-align: left;
+    justify-items: initial;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions {
+    order: 6;
   }
 
   .wa-float {
-    bottom: 178px;
+    bottom: 132px;
   }
 }
 
@@ -1837,22 +2029,23 @@ body.quote-modal-open {
    ---------------------------------------------- */
 @media (max-width: 420px) {
   .quote-summary-panel {
-    left: 8px;
-    right: 8px;
-    bottom: max(8px, env(safe-area-inset-bottom));
-    padding: 10px;
-    border-radius: 18px;
+    left: 7px;
+    right: 7px;
+    bottom: max(7px, env(safe-area-inset-bottom));
+    padding: 7px;
+    border-radius: 16px;
   }
 
   .quote-summary__total strong {
-    font-size: 1.06rem;
+    font-size: 0.98rem;
   }
 
   .quote-payment-btn,
   .quote-secondary-btn,
   .quote-pdf-btn {
-    padding: 11px 8px;
-    font-size: 0.78rem;
+    min-height: 34px;
+    padding: 7px 5px;
+    font-size: 0.7rem;
   }
 }
 
@@ -1903,7 +2096,7 @@ body.quote-modal-open {
   .print-header,
   .print-client-grid > div,
   .print-section,
-  .print-hotel-card,
+  .print-hotel-row,
   .print-coupon-box {
     break-inside: avoid;
     page-break-inside: avoid;
