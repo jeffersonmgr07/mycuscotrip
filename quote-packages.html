@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=7" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=8" />
 </head>
 
 <body>
@@ -71,15 +71,15 @@
                 </div>
 
                 <div class="quote-field">
-                  <label for="arrivalTime">Hora aproximada de llegada a Cusco</label>
+                  <label for="arrivalTime">Hora de llegada</label>
                   <input type="text" id="arrivalTime" placeholder="Selecciona hora" readonly />
-                  <small>Opcional. Ayuda a organizar el primer día del itinerario.</small>
+                  <small>Ingresa la hora aproximada de llegada a Cusco para calcular mejor el itinerario.</small>
                 </div>
-
+                
                 <div class="quote-field">
-                  <label for="departureTime">Hora aproximada de salida de Cusco</label>
+                  <label for="departureTime">Hora de salida</label>
                   <input type="text" id="departureTime" placeholder="Selecciona hora" readonly />
-                  <small>Opcional. Ayuda a saber si el último día permite un tour corto.</small>
+                  <small>Ingresa la hora aproximada de salida de Cusco para saber si el último día permite actividades.</small>
                 </div>
               </div>
             </div>
@@ -344,16 +344,20 @@
 
             <div class="quote-actions">
               <button type="button" id="continuePaymentBtn" class="btn quote-payment-btn">
-                <i class="fas fa-credit-card"></i> Continuar al pago
+                <i class="fas fa-credit-card"></i>
+                <span class="quote-payment-btn__desktop">Continuar al pago</span>
+                <span class="quote-payment-btn__mobile">Pagar</span>
               </button>
-
+            
               <div class="quote-actions__secondary">
                 <button type="button" id="printQuoteBtn" class="btn quote-secondary-btn">
-                  <i class="fas fa-print"></i> Imprimir
+                  <i class="fas fa-print"></i>
+                  <span>Imprimir</span>
                 </button>
-
+            
                 <button type="button" id="savePdfBtn" class="btn quote-secondary-btn quote-pdf-btn">
-                  <i class="fas fa-file-pdf"></i> Descargar PDF
+                  <i class="fas fa-download"></i>
+                  <span>Descargar PDF</span>
                 </button>
               </div>
             </div>
@@ -384,7 +388,6 @@
                 <span>Cupón especial</span>
                 <strong id="printCouponCode">MCT-XXXX</strong>
                 <small>Descuento máximo: <b id="printCouponDiscount">--%</b></small>
-                <small>Válido hasta: <b id="printCouponValidUntil">--/--/----</b></small>
               </div>
             </div>
           </div>
@@ -591,6 +594,6 @@
 
   <!-- Componentes y lógica principal -->
   <script src="./assets/js/components/header.js" defer></script>
-  <script src="./assets/js/pages/quote-packages.js?v=7" defer></script>
+  <script src="./assets/js/pages/quote-packages.js?v=8" defer></script>
 </body>
 </html>
