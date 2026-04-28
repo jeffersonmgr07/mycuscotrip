@@ -1465,6 +1465,7 @@ class MyCuscoTripQuotePackages {
         const displayName = this.getTrainDisplayName(train);
         const meta = this.getTrainMetaText(train);
         const serviceLabel = this.getTrainServiceLabel(train);
+        const displayCategory = this.getTrainDisplayCategory(train);
 
         return `
           <article
@@ -1473,7 +1474,7 @@ class MyCuscoTripQuotePackages {
           >
             <div class="train-option-card__content">
               <div class="train-option-card__top">
-                <span class="quote-badge quote-badge--muted">${this.escapeHtml(train.company || "Tren")}</span>
+                <span class="quote-badge quote-badge--muted">${this.escapeHtml(displayCategory)}</span>
                 ${isRecommended ? `<span class="quote-badge quote-badge--gold">Recomendado</span>` : ""}
               </div>
 
@@ -1605,6 +1606,29 @@ class MyCuscoTripQuotePackages {
       ""
     );
   }
+  getTrainDisplayCategory(train) {
+  if (train.displayCategory) {
+    return train.displayCategory;
+  }
+
+  const category = this.trainsData?.trainCategories?.[train.categoryCode];
+
+  if (category?.displayCategory) {
+    return category.displayCategory;
+  }
+
+  const tier = String(category?.tier || "").replace(/_/g, "-");
+
+  const labelsByTier = {
+    local: "Local",
+    economy: "Economy",
+    "premium-economy": "Premium Economy",
+    premium: "Premium",
+    luxury: "Luxury"
+  };
+
+  return labelsByTier[tier] || train.company || "Tren";
+}
 
   getTrainMetaText(train) {
     const parts = [];
