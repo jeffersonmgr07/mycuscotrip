@@ -1557,8 +1557,37 @@ class MyCuscoTripQuotePackages {
   }
 
   getTrainRouteKey(direction) {
-    const selection = this.selectedPackage?.trainSelection || {};
-    return direction === "outbound" ? selection.outboundRoute : selection.returnRoute;
+    if (direction === "return") {
+      return "machu_picchu_return";
+    }
+  
+    const optionText = this.getSelectedItineraryText();
+  
+    const isSacredValleyConnection =
+      optionText.includes("valle sagrado conexión") ||
+      optionText.includes("valle sagrado conexion") ||
+      optionText.includes("valle conexión") ||
+      optionText.includes("valle conexion") ||
+      (optionText.includes("valle sagrado") && optionText.includes("aguas calientes"));
+  
+    const isFullDayMachuPicchu =
+      optionText.includes("full day machu picchu") ||
+      optionText.includes("full day a machu picchu") ||
+      optionText.includes("machu picchu full day") ||
+      optionText.includes("machu picchu en full day") ||
+      optionText.includes("recojo desde el hotel de 3:40") ||
+      optionText.includes("3:40 am") ||
+      optionText.includes("4:00 am");
+  
+    if (isSacredValleyConnection) {
+      return "sacred_valley_connection_outbound";
+    }
+  
+    if (isFullDayMachuPicchu) {
+      return "machu_picchu_full_day_outbound";
+    }
+  
+    return this.selectedPackage?.trainSelection?.outboundRoute || "machu_picchu_full_day_outbound";
   }
 
   getTrainOptionsForDirection(direction) {
@@ -2006,13 +2035,13 @@ class MyCuscoTripQuotePackages {
     this.updateMobileSummaryState();
   }
 
-  updatePaymentButtonText(totals) {
+  updatePaymentButtonText() {
     const continuePaymentBtn = document.getElementById("continuePaymentBtn");
     if (!continuePaymentBtn) return;
-
+  
     continuePaymentBtn.innerHTML = `
       <i class="fas fa-credit-card"></i>
-      <span class="quote-payment-btn__desktop">Pagar ${this.formatCurrency(totals.advance, this.quoteCurrency)}</span>
+      <span class="quote-payment-btn__desktop">Pagar ahora</span>
       <span class="quote-payment-btn__mobile">Pagar</span>
     `;
   }
@@ -2280,6 +2309,10 @@ class MyCuscoTripQuotePackages {
 
     const wrapper = document.createElement("div");
     wrapper.className = "pdf-export-wrapper";
+    
+    clonedPrintArea.style.display = "block";
+    clonedPrintArea.hidden = false;
+    
     wrapper.appendChild(clonedPrintArea);
     document.body.appendChild(wrapper);
 
@@ -2380,12 +2413,10 @@ class MyCuscoTripQuotePackages {
 
   updateMobileSummaryState() {
     const panel = document.querySelector(".quote-summary-panel");
-    const total = document.getElementById("quoteGrandTotal")?.textContent || "";
-
-    const top = panel?.querySelector(".quote-summary-panel__top span");
-
-    if (top && total) {
-      top.textContent = total;
+    const toggle = panel?.querySelector(".quote-mobile-summary-toggle");
+  
+    if (toggle && !panel.classList.contains("is-expanded")) {
+      toggle.innerHTML = `<i class="fas fa-chevron-up"></i><span>Ver detalles</span>`;
     }
   }
 
