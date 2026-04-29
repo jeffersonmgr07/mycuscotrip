@@ -1,11 +1,9 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
-   Versión con impresión y PDF idénticos, corregido
+   Versión con impresión/PDF idénticos, panel móvil mejorado,
+   fechas coloreadas y correcciones responsive.
    ========================================================= */
 
-/* ----------------------------------------------
-   BASE Y CONTENEDORES GLOBALES
-   ---------------------------------------------- */
 * {
   box-sizing: border-box;
 }
@@ -20,8 +18,11 @@ body {
   width: 100%;
 }
 
+/* Evita scroll lateral cuando el datepicker está abierto */
 body.quote-datepicker-open {
   overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
   height: 100% !important;
   padding-right: 0 !important;
 }
@@ -403,6 +404,12 @@ body.quote-datepicker-open {
   color: #0a3a26;
 }
 
+/* Fecha en itinerario resaltada */
+.itinerary-date {
+  color: #b45f06;
+  font-weight: 600;
+}
+
 /* ----------------------------------------------
    ITINERARIO
    ---------------------------------------------- */
@@ -662,6 +669,20 @@ body.quote-datepicker-open {
   min-width: 0;
 }
 
+/* Título "Detalle de cotización" (oculto por defecto, visible en móvil expandido) */
+.quote-detail-title {
+  display: none;
+  width: 100%;
+  color: #062803;
+  font-size: 1.35rem;
+  margin: -6px 0 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #dfe9d6 0%, #cddcbe 100%);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.1);
+}
+
+/* Ocultar código de cotización en PC */
 @media (min-width: 769px) {
   .quote-summary-panel__top {
     display: none !important;
@@ -1430,13 +1451,12 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   ESTILOS DE IMPRESIÓN Y PDF (VÁLIDOS PARA AMBOS)
+   ESTILOS DE IMPRESIÓN Y PDF
    ============================================= */
 .print-quotation {
   display: none;
 }
 
-/* Estos estilos aplican tanto al imprimir como al clon del PDF */
 .print-sheet {
   width: 210mm;
   max-width: 210mm;
@@ -1861,6 +1881,7 @@ body.quote-modal-open {
     white-space: normal;
   }
 
+  /* Panel inferior móvil compacto */
   .quote-summary-panel {
     position: fixed;
     left: 8px;
@@ -1980,29 +2001,40 @@ body.quote-modal-open {
     font-size: 0.82rem;
   }
 
+  /* Panel expandido: reorganización con CSS order */
   .quote-summary-panel.is-expanded {
     overflow-y: auto;
     padding: 10px;
     gap: 8px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
   }
 
-  .quote-summary-panel.is-expanded .quote-summary-panel__top {
-    display: block !important;
+  /* Mostrar título dentro del panel expandido */
+  .quote-summary-panel.is-expanded .quote-detail-title {
+    display: block;
     order: 1;
   }
 
+  /* Botón "Ocultar detalle" arriba */
   .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
     order: 2;
   }
 
-  .quote-summary-panel.is-expanded .quote-payment-mode,
-  .quote-summary-panel.is-expanded .quote-discount-box,
-  .quote-summary-panel.is-expanded .quote-payment-info {
-    display: block !important;
-  }
-
+  /* Orden deseado:
+     1. Summary (ya está como .quote-summary)
+     2. Itinerario base (ya está dentro de summary)
+     3. Adultos (idem)
+     4. Descuento (idem)
+     5. Total cotizado (idem)
+     6. Pagar ahora (dentro de summary)
+     7. Modalidad de pago (.quote-payment-mode)
+     8. Texto descuento (.quote-payment-info)
+     9. Código descuento (.quote-discount-box)
+     10. Botones (.quote-actions) */
   .quote-summary-panel.is-expanded .quote-summary {
-    order: 5;
+    order: 3;
     display: grid;
     gap: 8px;
     border: 1px solid rgba(6, 40, 3, 0.12);
@@ -2024,8 +2056,24 @@ body.quote-modal-open {
     justify-items: initial;
   }
 
-  .quote-summary-panel.is-expanded .quote-actions {
+  .quote-summary-panel.is-expanded .quote-payment-mode {
+    display: block !important;
+    order: 4;
+  }
+
+  .quote-summary-panel.is-expanded .quote-payment-info {
+    display: block !important;
+    order: 5;
+  }
+
+  .quote-summary-panel.is-expanded .quote-discount-box {
+    display: block !important;
     order: 6;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions {
+    order: 7;
+    margin-top: 8px;
   }
 
   .wa-float {
@@ -2064,7 +2112,7 @@ body.quote-modal-open {
 }
 
 /* ----------------------------------------------
-   IMPRESIÓN REAL (oculta el resto de la página)
+   IMPRESIÓN REAL
    ---------------------------------------------- */
 @media print {
   @page {
