@@ -1,6 +1,6 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
-   Versión corregida para quote-packages.html + quote-packages.js
+   Versión corregida - Ajustes Flatpickr, padding y PDF
    ========================================================= */
 
 /* ----------------------------------------------
@@ -20,11 +20,11 @@ body {
   width: 100%;
 }
 
+/* Evita scroll lateral cuando el datepicker está abierto */
 body.quote-datepicker-open {
+  overflow: hidden !important;
+  height: 100% !important; /* Previene el salto de layout */
   padding-right: 0 !important;
-  overflow-x: clip !important;
-  position: fixed;
-  width: 100%;
 }
 
 .quote-page {
@@ -203,11 +203,10 @@ body.quote-datepicker-open {
   min-height: 21px;
 }
 
+/* Inputs generales */
 .quote-field input,
 .quote-field select,
-.quote-field textarea,
-.quote-field .flatpickr-input,
-.quote-field .flatpickr-alt-input {
+.quote-field textarea {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
@@ -221,11 +220,21 @@ body.quote-datepicker-open {
   box-sizing: border-box;
 }
 
+/* Asegura que los inputs generados por Flatpickr tengan el mismo padding y ancho */
+.quote-field .flatpickr-input,
+.quote-field .flatpickr-alt-input {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
 .quote-field textarea {
   resize: vertical;
   min-height: 110px;
   height: auto;
-  padding: 12px 16px;
 }
 
 .quote-field select,
@@ -661,17 +670,6 @@ body.quote-datepicker-open {
   .quote-summary-panel__top {
     display: none !important;
   }
-}
-
-/* En impresión y PDF se mostrará */
-@media print {
-  .quote-summary-panel__top {
-    display: block !important;
-  }
-}
-
-.print-quotation .print-header--two-columns {
-  /* Asegura visibilidad en PDF/impresión */
 }
 
 .quote-summary-panel__top span {
@@ -1432,16 +1430,6 @@ body.quote-modal-open {
 }
 
 .flatpickr-calendar.open {
-  left: auto !important;
-  right: auto !important;
-}
-
-.flatpickr-days,
-.dayContainer {
-  max-width: 100% !important;
-}
-
-.flatpickr-calendar.open {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
 
@@ -1452,9 +1440,10 @@ body.quote-modal-open {
   display: none;
 }
 
+/* Wrapper para generación de PDF (fuera de pantalla) */
 .pdf-export-wrapper {
-  position: fixed;
-  left: 0;
+  position: absolute;
+  left: -9999px;
   top: 0;
   width: 210mm;
   min-height: 297mm;
@@ -1469,7 +1458,47 @@ body.quote-modal-open {
   background: #fff;
 }
 
-.print-sheet {
+/* =============================================
+   ESTILOS PARA PDF (IDÉNTICOS A IMPRESIÓN)
+   ============================================= */
+.print-quotation--pdf-export .print-sheet {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.print-quotation--pdf-export,
+.print-quotation--pdf-export * {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+.print-quotation--pdf-export #header-container,
+.print-quotation--pdf-export #footer-container,
+.print-quotation--pdf-export .wa-float,
+.print-quotation--pdf-export .quote-hero,
+.print-quotation--pdf-export .quote-content,
+.print-quotation--pdf-export .quote-modal {
+  display: none !important;
+}
+
+.print-quotation--pdf-export .quote-page {
+  background: #fff !important;
+}
+
+.print-quotation--pdf-export .print-header,
+.print-quotation--pdf-export .print-client-grid > div,
+.print-quotation--pdf-export .print-section,
+.print-quotation--pdf-export .print-hotel-row,
+.print-quotation--pdf-export .print-coupon-box {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Resto de estilos de impresión aplicados a la exportación */
+.print-quotation--pdf-export .print-sheet {
   width: 210mm;
   max-width: 210mm;
   margin: 0 auto;
@@ -1480,7 +1509,7 @@ body.quote-modal-open {
   line-height: 1.32;
 }
 
-.print-header {
+.print-quotation--pdf-export .print-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
@@ -1490,41 +1519,37 @@ body.quote-modal-open {
   margin-bottom: 10px;
 }
 
-.print-company p,
-.print-header__right p,
-.print-client-grid p {
+.print-quotation--pdf-export .print-company p,
+.print-quotation--pdf-export .print-header__right p,
+.print-quotation--pdf-export .print-client-grid p {
   margin: 2px 0;
 }
 
-.print-logo {
+.print-quotation--pdf-export .print-logo {
   max-width: 155px;
   height: auto;
   display: block;
   margin-bottom: 6px;
 }
 
-.print-company h2 {
+.print-quotation--pdf-export .print-company h2 {
   color: #062803;
   margin: 0 0 6px;
   font-size: 18px;
 }
 
-.print-company p {
-  color: #4f6159;
-}
-
-.print-header__right {
+.print-quotation--pdf-export .print-header__right {
   text-align: right;
 }
 
-.print-header__right h1 {
+.print-quotation--pdf-export .print-header__right h1 {
   color: #062803;
   margin: 0 0 6px;
   font-size: 24px;
   text-transform: uppercase;
 }
 
-.print-coupon-box {
+.print-quotation--pdf-export .print-coupon-box {
   display: inline-grid;
   margin-top: 8px;
   border: 1px dashed #0a3a26;
@@ -1535,38 +1560,38 @@ body.quote-modal-open {
   max-width: 210px;
 }
 
-.print-coupon-box__content {
+.print-quotation--pdf-export .print-coupon-box__content {
   display: grid;
   gap: 2px;
 }
 
-.print-coupon-box span {
+.print-quotation--pdf-export .print-coupon-box span {
   color: #56645f;
   font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
 }
 
-.print-coupon-box strong {
+.print-quotation--pdf-export .print-coupon-box strong {
   color: #062803;
   font-size: 15px;
   letter-spacing: 0.03em;
 }
 
-.print-coupon-box small {
+.print-quotation--pdf-export .print-coupon-box small {
   color: #4f6159;
   font-size: 9px;
 }
 
-.print-client-grid {
+.print-quotation--pdf-export .print-client-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 10px;
 }
 
-.print-client-grid > div,
-.print-section {
+.print-quotation--pdf-export .print-client-grid > div,
+.print-quotation--pdf-export .print-section {
   border: 1px solid #d9e1db;
   border-radius: 9px;
   padding: 9px;
@@ -1575,8 +1600,8 @@ body.quote-modal-open {
   page-break-inside: avoid;
 }
 
-.print-client-grid h3,
-.print-section h3 {
+.print-quotation--pdf-export .print-client-grid h3,
+.print-quotation--pdf-export .print-section h3 {
   background: #0a3a26;
   color: #fff;
   padding: 6px 8px;
@@ -1585,82 +1610,75 @@ body.quote-modal-open {
   font-size: 12px;
 }
 
-.print-section {
+.print-quotation--pdf-export .print-section {
   margin-bottom: 9px;
 }
 
-.print-banner {
+.print-quotation--pdf-export .print-banner {
   display: none;
 }
 
-.print-itinerary-list {
+.print-quotation--pdf-export .print-itinerary-list {
   display: grid;
   gap: 6px;
 }
 
-.print-itinerary-item {
+.print-quotation--pdf-export .print-itinerary-item {
   border-left: 3px solid #0a3a26;
   padding: 6px 8px;
   background: #fafafa;
   border-radius: 0 7px 7px 0;
 }
 
-.print-itinerary-item strong {
+.print-quotation--pdf-export .print-itinerary-item strong {
   color: #062803;
   display: block;
   margin-bottom: 2px;
 }
 
-.print-itinerary-item p {
+.print-quotation--pdf-export .print-itinerary-item p {
   margin: 0;
   color: #4f6159;
 }
 
-.print-table,
-.print-payment-table {
+.print-quotation--pdf-export .print-table,
+.print-quotation--pdf-export .print-payment-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.print-table th,
-.print-table td,
-.print-payment-table th,
-.print-payment-table td {
+.print-quotation--pdf-export .print-table th,
+.print-quotation--pdf-export .print-table td,
+.print-quotation--pdf-export .print-payment-table th,
+.print-quotation--pdf-export .print-payment-table td {
   padding: 5px 4px;
   border-bottom: 1px solid #e2e7e3;
   vertical-align: top;
   text-align: left;
 }
 
-.print-table th,
-.print-payment-table th {
-  width: 38%;
-  color: #062803;
-}
-
-.print-payment-table td {
+.print-quotation--pdf-export .print-payment-table td {
   text-align: right;
 }
 
-.print-payment-table tr.is-total th,
-.print-payment-table tr.is-total td {
+.print-quotation--pdf-export .print-payment-table tr.is-total th,
+.print-quotation--pdf-export .print-payment-table tr.is-total td {
   font-weight: 900;
   color: #062803;
   border-top: 2px solid #0a3a26;
   background: #f4fbf5;
 }
 
-/* Nuevo diseño de hoteles en impresión/PDF */
-.print-hotel-images {
+.print-quotation--pdf-export .print-hotel-images {
   margin-top: 8px;
 }
 
-.print-hotel-list {
+.print-quotation--pdf-export .print-hotel-list {
   display: grid;
   gap: 7px;
 }
 
-.print-hotel-row {
+.print-quotation--pdf-export .print-hotel-row {
   display: grid;
   grid-template-columns: 135px 1fr;
   gap: 8px;
@@ -1673,14 +1691,14 @@ body.quote-modal-open {
   page-break-inside: avoid;
 }
 
-.print-hotel-row__info strong {
+.print-quotation--pdf-export .print-hotel-row__info strong {
   display: block;
   color: #062803;
   font-size: 10.5px;
   line-height: 1.25;
 }
 
-.print-hotel-row__info span {
+.print-quotation--pdf-export .print-hotel-row__info span {
   display: block;
   color: #56645f;
   font-size: 9.2px;
@@ -1688,14 +1706,14 @@ body.quote-modal-open {
   margin-top: 2px;
 }
 
-.print-hotel-row__images {
+.print-quotation--pdf-export .print-hotel-row__images {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
 }
 
-.print-hotel-row__images img,
-.print-hotel-card__empty {
+.print-quotation--pdf-export .print-hotel-row__images img,
+.print-quotation--pdf-export .print-hotel-card__empty {
   width: 100%;
   height: 48px;
   object-fit: cover;
@@ -1708,16 +1726,16 @@ body.quote-modal-open {
   font-size: 9px;
 }
 
-.print-notes ul {
+.print-quotation--pdf-export .print-notes ul {
   margin: 0;
   padding-left: 17px;
 }
 
-.print-notes li {
+.print-quotation--pdf-export .print-notes li {
   margin-bottom: 3px;
 }
 
-.print-footer {
+.print-quotation--pdf-export .print-footer {
   text-align: center;
   color: #666;
   font-size: 9px;
@@ -1798,10 +1816,10 @@ body.quote-modal-open {
     grid-template-columns: 1fr;
   }
 
+  /* Calendario centrado en móvil sin descuadrar */
   .flatpickr-calendar {
     position: fixed !important;
     left: 50% !important;
-    right: auto !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
     width: min(330px, calc(100dvw - 24px)) !important;
@@ -2143,7 +2161,6 @@ body.quote-modal-open {
     page-break-inside: avoid;
   }
 
-  /* Mostrar código en impresión */
   .quote-summary-panel__top {
     display: block !important;
   }
