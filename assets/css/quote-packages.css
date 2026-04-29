@@ -1,11 +1,11 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
-   Versión corregida: PDF, panel, scroll, título, calendario
+   Correcciones finales: expansión, PDF, cupón, título
    ========================================================= */
 
-/* Evita desplazamiento lateral global en la página de cotización */
+/* Barra de scroll siempre visible para evitar desplazamiento lateral */
 html {
-  overflow-y: scroll !important;  /* mantiene la barra de scroll siempre visible */
+  overflow-y: scroll !important;
   overflow-x: clip !important;
   width: 100%;
 }
@@ -15,19 +15,10 @@ body {
   width: 100%;
 }
 
-/* Estado al abrir calendario (compartido) */
+/* Al abrir el calendario: solo bloquear scroll, sin fijar posición */
 body.quote-datepicker-open {
   overflow: hidden !important;
   padding-right: 0 !important;
-}
-
-/* Solo en móviles fijamos el body para evitar deslizamientos */
-@media (max-width: 768px) {
-  body.quote-datepicker-open {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-  }
 }
 
 * {
@@ -411,7 +402,6 @@ body.quote-datepicker-open {
   color: #0a3a26;
 }
 
-/* Fecha en itinerario resaltada */
 .itinerary-date {
   color: #b45f06;
   font-weight: 600;
@@ -676,9 +666,9 @@ body.quote-datepicker-open {
   min-width: 0;
 }
 
-/* Título "Detalle de cotización" siempre visible en el panel */
+/* Título "Detalle de cotización" oculto por defecto */
 .quote-detail-title {
-  display: block;
+  display: none;
   width: 100%;
   color: #062803;
   font-size: 1.35rem;
@@ -689,7 +679,20 @@ body.quote-datepicker-open {
   box-shadow: 0 8px 18px rgba(10, 58, 38, 0.1);
 }
 
-/* Mantenemos oculta la cabecera original (Cotización estimada + código) */
+/* En escritorio se muestra siempre */
+@media (min-width: 769px) {
+  .quote-detail-title {
+    display: block;
+  }
+}
+
+/* En móvil se muestra solo cuando el panel está expandido */
+@media (max-width: 768px) {
+  .quote-summary-panel.is-expanded .quote-detail-title {
+    display: block;
+  }
+}
+
 .quote-summary-panel__top {
   display: none !important;
 }
@@ -1440,13 +1443,13 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   ESTILOS DE IMPRESIÓN Y PDF
+   ESTILOS DE IMPRESIÓN Y PDF COMPARTIDOS
    ============================================= */
 .print-quotation {
   display: none;
 }
 
-/* Wrapper para generación de PDF (fuera de pantalla) */
+/* Wrapper para generación de PDF */
 .pdf-export-wrapper {
   position: absolute;
   left: -9999px;
@@ -1464,8 +1467,7 @@ body.quote-modal-open {
   background: #fff;
 }
 
-/* Duplicamos los estilos de impresión para que el PDF los vea */
-.print-quotation--pdf-export .print-sheet,
+/* Estilos base de impresión, aplicados también al clon PDF */
 .print-sheet {
   width: 210mm;
   max-width: 210mm;
@@ -1477,7 +1479,6 @@ body.quote-modal-open {
   line-height: 1.32;
 }
 
-.print-quotation--pdf-export .print-header,
 .print-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1488,16 +1489,12 @@ body.quote-modal-open {
   margin-bottom: 10px;
 }
 
-.print-quotation--pdf-export .print-company p,
-.print-quotation--pdf-export .print-header__right p,
-.print-quotation--pdf-export .print-client-grid p,
 .print-company p,
 .print-header__right p,
 .print-client-grid p {
   margin: 2px 0;
 }
 
-.print-quotation--pdf-export .print-logo,
 .print-logo {
   max-width: 155px;
   height: auto;
@@ -1505,19 +1502,16 @@ body.quote-modal-open {
   margin-bottom: 6px;
 }
 
-.print-quotation--pdf-export .print-company h2,
 .print-company h2 {
   color: #062803;
   margin: 0 0 6px;
   font-size: 18px;
 }
 
-.print-quotation--pdf-export .print-header__right,
 .print-header__right {
   text-align: right;
 }
 
-.print-quotation--pdf-export .print-header__right h1,
 .print-header__right h1 {
   color: #062803;
   margin: 0 0 6px;
@@ -1525,46 +1519,19 @@ body.quote-modal-open {
   text-transform: uppercase;
 }
 
-.print-quotation--pdf-export .print-coupon-box,
+/* OCULTAR RECUADRO DEL CUPÓN */
 .print-coupon-box {
-  display: inline-grid;
-  margin-top: 8px;
-  border: 1px dashed #0a3a26;
-  border-radius: 10px;
-  padding: 8px 10px;
-  background: #f3f7ee;
-  text-align: left;
-  max-width: 210px;
+  display: none !important;
 }
 
-.print-quotation--pdf-export .print-coupon-box__content,
 .print-coupon-box__content {
-  display: grid;
-  gap: 2px;
+  display: none !important;
 }
 
-.print-quotation--pdf-export .print-coupon-box span,
-.print-coupon-box span {
-  color: #56645f;
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
+.print-coupon-box * {
+  display: none !important;
 }
 
-.print-quotation--pdf-export .print-coupon-box strong,
-.print-coupon-box strong {
-  color: #062803;
-  font-size: 15px;
-  letter-spacing: 0.03em;
-}
-
-.print-quotation--pdf-export .print-coupon-box small,
-.print-coupon-box small {
-  color: #4f6159;
-  font-size: 9px;
-}
-
-.print-quotation--pdf-export .print-client-grid,
 .print-client-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1572,8 +1539,6 @@ body.quote-modal-open {
   margin-bottom: 10px;
 }
 
-.print-quotation--pdf-export .print-client-grid > div,
-.print-quotation--pdf-export .print-section,
 .print-client-grid > div,
 .print-section {
   border: 1px solid #d9e1db;
@@ -1584,8 +1549,6 @@ body.quote-modal-open {
   page-break-inside: avoid;
 }
 
-.print-quotation--pdf-export .print-client-grid h3,
-.print-quotation--pdf-export .print-section h3,
 .print-client-grid h3,
 .print-section h3 {
   background: #0a3a26;
@@ -1596,23 +1559,19 @@ body.quote-modal-open {
   font-size: 12px;
 }
 
-.print-quotation--pdf-export .print-section,
 .print-section {
   margin-bottom: 9px;
 }
 
-.print-quotation--pdf-export .print-banner,
 .print-banner {
   display: none;
 }
 
-.print-quotation--pdf-export .print-itinerary-list,
 .print-itinerary-list {
   display: grid;
   gap: 6px;
 }
 
-.print-quotation--pdf-export .print-itinerary-item,
 .print-itinerary-item {
   border-left: 3px solid #0a3a26;
   padding: 6px 8px;
@@ -1620,31 +1579,23 @@ body.quote-modal-open {
   border-radius: 0 7px 7px 0;
 }
 
-.print-quotation--pdf-export .print-itinerary-item strong,
 .print-itinerary-item strong {
   color: #062803;
   display: block;
   margin-bottom: 2px;
 }
 
-.print-quotation--pdf-export .print-itinerary-item p,
 .print-itinerary-item p {
   margin: 0;
   color: #4f6159;
 }
 
-.print-quotation--pdf-export .print-table,
-.print-quotation--pdf-export .print-payment-table,
 .print-table,
 .print-payment-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.print-quotation--pdf-export .print-table th,
-.print-quotation--pdf-export .print-table td,
-.print-quotation--pdf-export .print-payment-table th,
-.print-quotation--pdf-export .print-payment-table td,
 .print-table th,
 .print-table td,
 .print-payment-table th,
@@ -1655,13 +1606,10 @@ body.quote-modal-open {
   text-align: left;
 }
 
-.print-quotation--pdf-export .print-payment-table td,
 .print-payment-table td {
   text-align: right;
 }
 
-.print-quotation--pdf-export .print-payment-table tr.is-total th,
-.print-quotation--pdf-export .print-payment-table tr.is-total td,
 .print-payment-table tr.is-total th,
 .print-payment-table tr.is-total td {
   font-weight: 900;
@@ -1670,18 +1618,15 @@ body.quote-modal-open {
   background: #f4fbf5;
 }
 
-.print-quotation--pdf-export .print-hotel-images,
 .print-hotel-images {
   margin-top: 8px;
 }
 
-.print-quotation--pdf-export .print-hotel-list,
 .print-hotel-list {
   display: grid;
   gap: 7px;
 }
 
-.print-quotation--pdf-export .print-hotel-row,
 .print-hotel-row {
   display: grid;
   grid-template-columns: 135px 1fr;
@@ -1695,7 +1640,6 @@ body.quote-modal-open {
   page-break-inside: avoid;
 }
 
-.print-quotation--pdf-export .print-hotel-row__info strong,
 .print-hotel-row__info strong {
   display: block;
   color: #062803;
@@ -1703,7 +1647,6 @@ body.quote-modal-open {
   line-height: 1.25;
 }
 
-.print-quotation--pdf-export .print-hotel-row__info span,
 .print-hotel-row__info span {
   display: block;
   color: #56645f;
@@ -1712,15 +1655,12 @@ body.quote-modal-open {
   margin-top: 2px;
 }
 
-.print-quotation--pdf-export .print-hotel-row__images,
 .print-hotel-row__images {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
 }
 
-.print-quotation--pdf-export .print-hotel-row__images img,
-.print-quotation--pdf-export .print-hotel-card__empty,
 .print-hotel-row__images img,
 .print-hotel-card__empty {
   width: 100%;
@@ -1735,18 +1675,15 @@ body.quote-modal-open {
   font-size: 9px;
 }
 
-.print-quotation--pdf-export .print-notes ul,
 .print-notes ul {
   margin: 0;
   padding-left: 17px;
 }
 
-.print-quotation--pdf-export .print-notes li,
 .print-notes li {
   margin-bottom: 3px;
 }
 
-.print-quotation--pdf-export .print-footer,
 .print-footer {
   text-align: center;
   color: #666;
@@ -1756,77 +1693,63 @@ body.quote-modal-open {
   margin-top: 8px;
 }
 
+/* Aplicar los mismos estilos al clon del PDF */
+.print-quotation--pdf-export .print-sheet { width: 210mm; max-width: 210mm; margin: 0 auto; background: #fff; color: #17322a; font-family: "Open Sans", Arial, sans-serif; font-size: 10.5px; line-height: 1.32; }
+.print-quotation--pdf-export .print-header { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; border-bottom: 2px solid #0a3a26; padding-bottom: 10px; margin-bottom: 10px; }
+.print-quotation--pdf-export .print-company p, .print-quotation--pdf-export .print-header__right p, .print-quotation--pdf-export .print-client-grid p { margin: 2px 0; }
+.print-quotation--pdf-export .print-logo { max-width: 155px; height: auto; display: block; margin-bottom: 6px; }
+.print-quotation--pdf-export .print-company h2 { color: #062803; margin: 0 0 6px; font-size: 18px; }
+.print-quotation--pdf-export .print-header__right { text-align: right; }
+.print-quotation--pdf-export .print-header__right h1 { color: #062803; margin: 0 0 6px; font-size: 24px; text-transform: uppercase; }
+.print-quotation--pdf-export .print-coupon-box, .print-quotation--pdf-export .print-coupon-box * { display: none !important; }
+.print-quotation--pdf-export .print-client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.print-quotation--pdf-export .print-client-grid > div, .print-quotation--pdf-export .print-section { border: 1px solid #d9e1db; border-radius: 9px; padding: 9px; background: #fff; break-inside: avoid; page-break-inside: avoid; }
+.print-quotation--pdf-export .print-client-grid h3, .print-quotation--pdf-export .print-section h3 { background: #0a3a26; color: #fff; padding: 6px 8px; margin: -9px -9px 8px; border-radius: 8px 8px 0 0; font-size: 12px; }
+.print-quotation--pdf-export .print-section { margin-bottom: 9px; }
+.print-quotation--pdf-export .print-banner { display: none; }
+.print-quotation--pdf-export .print-itinerary-list { display: grid; gap: 6px; }
+.print-quotation--pdf-export .print-itinerary-item { border-left: 3px solid #0a3a26; padding: 6px 8px; background: #fafafa; border-radius: 0 7px 7px 0; }
+.print-quotation--pdf-export .print-itinerary-item strong { color: #062803; display: block; margin-bottom: 2px; }
+.print-quotation--pdf-export .print-itinerary-item p { margin: 0; color: #4f6159; }
+.print-quotation--pdf-export .print-table, .print-quotation--pdf-export .print-payment-table { width: 100%; border-collapse: collapse; }
+.print-quotation--pdf-export .print-table th, .print-quotation--pdf-export .print-table td, .print-quotation--pdf-export .print-payment-table th, .print-quotation--pdf-export .print-payment-table td { padding: 5px 4px; border-bottom: 1px solid #e2e7e3; vertical-align: top; text-align: left; }
+.print-quotation--pdf-export .print-payment-table td { text-align: right; }
+.print-quotation--pdf-export .print-payment-table tr.is-total th, .print-quotation--pdf-export .print-payment-table tr.is-total td { font-weight: 900; color: #062803; border-top: 2px solid #0a3a26; background: #f4fbf5; }
+.print-quotation--pdf-export .print-hotel-images { margin-top: 8px; }
+.print-quotation--pdf-export .print-hotel-list { display: grid; gap: 7px; }
+.print-quotation--pdf-export .print-hotel-row { display: grid; grid-template-columns: 135px 1fr; gap: 8px; align-items: center; border: 1px solid #e2e7e3; border-radius: 9px; padding: 6px; background: #fbfdfb; break-inside: avoid; page-break-inside: avoid; }
+.print-quotation--pdf-export .print-hotel-row__info strong { display: block; color: #062803; font-size: 10.5px; line-height: 1.25; }
+.print-quotation--pdf-export .print-hotel-row__info span { display: block; color: #56645f; font-size: 9.2px; line-height: 1.25; margin-top: 2px; }
+.print-quotation--pdf-export .print-hotel-row__images { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.print-quotation--pdf-export .print-hotel-row__images img, .print-quotation--pdf-export .print-hotel-card__empty { width: 100%; height: 48px; object-fit: cover; border-radius: 7px; background: #edf3ef; display: flex; align-items: center; justify-content: center; color: #56645f; font-size: 9px; }
+.print-quotation--pdf-export .print-notes ul { margin: 0; padding-left: 17px; }
+.print-quotation--pdf-export .print-notes li { margin-bottom: 3px; }
+.print-quotation--pdf-export .print-footer { text-align: center; color: #666; font-size: 9px; border-top: 1px solid #d9e1db; padding-top: 7px; margin-top: 8px; }
+
 /* ----------------------------------------------
    RESPONSIVE TABLET
    ---------------------------------------------- */
 @media (max-width: 1100px) {
-  .quote-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-sidebar {
-    position: static;
-  }
-
-  .quote-form-grid--travel {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .quote-field--wide {
-    grid-column: 1 / -1;
-  }
+  .quote-layout { grid-template-columns: 1fr; }
+  .quote-sidebar { position: static; }
+  .quote-form-grid--travel { grid-template-columns: 1fr 1fr; }
+  .quote-field--wide { grid-column: 1 / -1; }
 }
 
 /* ----------------------------------------------
    RESPONSIVE MÓVIL
    ---------------------------------------------- */
 @media (max-width: 768px) {
-  body:has(.quote-page) {
-    padding-bottom: 108px;
-  }
-
-  .quote-content {
-    padding-bottom: 124px;
-  }
-
-  .quote-hero {
-    padding-top: 98px;
-  }
-
-  .container {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  .quote-layout,
-  .quote-form-grid,
-  .quote-form-grid--travel,
-  .print-client-grid,
-  .quote-train-selector-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-field--wide {
-    grid-column: auto;
-  }
-
-  .quote-card {
-    padding: 18px;
-    border-radius: 20px;
-  }
-
-  .quote-card__header h2 {
-    font-size: 1.08rem;
-    padding: 11px 13px;
-  }
-
-  .quote-field-group {
-    padding: 14px;
-  }
-
-  .quote-discount-box__row {
-    grid-template-columns: 1fr;
-  }
+  body:has(.quote-page) { padding-bottom: 108px; }
+  .quote-content { padding-bottom: 124px; }
+  .quote-hero { padding-top: 98px; }
+  .container { padding-left: 14px; padding-right: 14px; }
+  .quote-layout, .quote-form-grid, .quote-form-grid--travel, .print-client-grid, .quote-train-selector-grid { grid-template-columns: 1fr; }
+  .quote-field--wide { grid-column: auto; }
+  .quote-card { padding: 18px; border-radius: 20px; }
+  .quote-card__header h2 { font-size: 1.08rem; padding: 11px 13px; }
+  .quote-field-group { padding: 14px; }
+  .quote-discount-box__row { grid-template-columns: 1fr; }
 
   .flatpickr-calendar {
     position: fixed !important;
@@ -1837,347 +1760,91 @@ body.quote-modal-open {
     max-width: calc(100dvw - 24px) !important;
     box-sizing: border-box !important;
   }
-
-  .flatpickr-calendar.open {
-    overflow: hidden !important;
+  .flatpickr-calendar.open { overflow: hidden !important; }
+  .flatpickr-months, .flatpickr-innerContainer, .flatpickr-rContainer, .flatpickr-days, .dayContainer {
+    width: 100% !important; max-width: 100% !important; box-sizing: border-box !important;
   }
 
-  .flatpickr-months,
-  .flatpickr-innerContainer,
-  .flatpickr-rContainer,
-  .flatpickr-days,
-  .dayContainer {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
+  .quote-modal__dialog { width: calc(100vw - 12px); max-height: calc(100dvh - 12px); margin: 6px auto; border-radius: 18px; }
+  .quote-modal__header { padding: 18px 14px 12px; }
+  .quote-modal__body { padding: 12px 14px 14px; }
+  .quote-modal__footer { padding: 12px 14px max(16px, env(safe-area-inset-bottom)); }
+  .quote-modal__footer .quote-main-btn, .quote-modal__footer .quote-secondary-btn { width: 100%; min-width: 0; }
 
-  .quote-modal__dialog {
-    width: calc(100vw - 12px);
-    max-height: calc(100dvh - 12px);
-    margin: 6px auto;
-    border-radius: 18px;
-  }
+  .hotel-option-card__header { padding: 16px 14px 10px; flex-direction: column; }
+  .hotel-option-card__content { grid-template-columns: 1fr; padding: 0 14px 16px; }
+  .hotel-option-card--no-hotel { padding: 10px; }
+  .hotel-gallery-main, .hotel-gallery-main-img { min-height: 205px; height: 205px; }
+  .hotel-combo-btn { min-height: 64px; padding: 12px 12px 12px 43px; }
+  .hotel-combo-btn--compact { min-height: 54px; }
+  .train-option-card, .quote-train-card { grid-template-columns: 1fr; }
+  .train-option-card__price { text-align: left; white-space: normal; }
 
-  .quote-modal__header {
-    padding: 18px 14px 12px;
-  }
-
-  .quote-modal__body {
-    padding: 12px 14px 14px;
-  }
-
-  .quote-modal__footer {
-    padding: 12px 14px max(16px, env(safe-area-inset-bottom));
-  }
-
-  .quote-modal__footer .quote-main-btn,
-  .quote-modal__footer .quote-secondary-btn {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .hotel-option-card__header {
-    padding: 16px 14px 10px;
-    flex-direction: column;
-  }
-
-  .hotel-option-card__content {
-    grid-template-columns: 1fr;
-    padding: 0 14px 16px;
-  }
-
-  .hotel-option-card--no-hotel {
-    padding: 10px;
-  }
-
-  .hotel-gallery-main,
-  .hotel-gallery-main-img {
-    min-height: 205px;
-    height: 205px;
-  }
-
-  .hotel-combo-btn {
-    min-height: 64px;
-    padding: 12px 12px 12px 43px;
-  }
-
-  .hotel-combo-btn--compact {
-    min-height: 54px;
-  }
-
-  .train-option-card,
-  .quote-train-card {
-    grid-template-columns: 1fr;
-  }
-
-  .train-option-card__price {
-    text-align: left;
-    white-space: normal;
-  }
-
-  /* Panel inferior móvil compacto */
   .quote-summary-panel {
-    position: fixed;
-    left: 8px;
-    right: 8px;
-    bottom: max(8px, env(safe-area-inset-bottom));
-    top: auto;
-    z-index: 1200;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 8px;
-    border-radius: 18px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-    max-height: calc(100dvh - 16px);
-    overflow: hidden;
-    border: 1px solid rgba(6, 40, 3, 0.18);
-    outline: 1px solid rgba(255, 255, 255, 0.9);
+    position: fixed; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); top: auto;
+    z-index: 1200; display: grid; grid-template-columns: 1fr; gap: 6px; padding: 8px;
+    border-radius: 18px; box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    max-height: calc(100dvh - 16px); overflow: hidden;
+    border: 1px solid rgba(6,40,3,0.18); outline: 1px solid rgba(255,255,255,0.9);
   }
-
-  .quote-mobile-summary-toggle {
-    display: inline-flex;
-    order: 1;
-    min-height: 28px;
-    font-size: 0.8rem;
-    padding: 5px 8px;
+  .quote-mobile-summary-toggle { display: inline-flex; order: 1; min-height: 28px; font-size: 0.8rem; padding: 5px 8px; }
+  .quote-summary-panel__top { display: none !important; }
+  .quote-payment-mode, .quote-discount-box, .quote-summary .quote-summary__line, .quote-payment-info { display: none !important; }
+  .quote-summary { order: 2; display: block; border: 0; padding: 0; background: transparent; }
+  .quote-summary__total { display: grid; gap: 1px; margin: 0; padding: 0; border: 0; background: transparent; text-align: center; justify-items: center; }
+  .quote-summary__total span { display: block; color: #56645f; font-size: 0.72rem; font-weight: 800; line-height: 1.05; }
+  .quote-summary__total strong { display: block; color: #062803; font-size: 1.04rem; line-height: 1.05; white-space: nowrap; }
+  .quote-actions { order: 3; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .quote-actions__secondary { display: contents; }
+  .quote-payment-btn, .quote-secondary-btn, .quote-pdf-btn {
+    width: 100%; min-height: 36px; padding: 8px 4px; font-size: 0.72rem;
+    white-space: normal; line-height: 1.08; gap: 4px; border-radius: 14px;
   }
+  .quote-payment-btn__desktop { display: none; }
+  .quote-payment-btn__mobile { display: inline; }
+  .quote-secondary-btn span, .quote-pdf-btn span { display: inline; font-size: 0.68rem; }
+  .quote-payment-btn i, .quote-pdf-btn i, .quote-secondary-btn i { display: inline-flex; font-size: 0.82rem; }
 
-  .quote-summary-panel__top {
-    display: none !important;
-  }
-
-  .quote-payment-mode,
-  .quote-discount-box,
-  .quote-summary .quote-summary__line,
-  .quote-payment-info {
-    display: none !important;
-  }
-
-  .quote-summary {
-    order: 2;
-    display: block;
-    border: 0;
-    padding: 0;
-    background: transparent;
-  }
-
-  .quote-summary__total {
-    display: grid;
-    gap: 1px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-align: center;
-    justify-items: center;
-  }
-
-  .quote-summary__total span {
-    display: block;
-    color: #56645f;
-    font-size: 0.72rem;
-    font-weight: 800;
-    line-height: 1.05;
-  }
-
-  .quote-summary__total strong {
-    display: block;
-    color: #062803;
-    font-size: 1.04rem;
-    line-height: 1.05;
-    white-space: nowrap;
-  }
-
-  .quote-actions {
-    order: 3;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-
-  .quote-actions__secondary {
-    display: contents;
-  }
-
-  .quote-payment-btn,
-  .quote-secondary-btn,
-  .quote-pdf-btn {
-    width: 100%;
-    min-height: 36px;
-    padding: 8px 4px;
-    font-size: 0.72rem;
-    white-space: normal;
-    line-height: 1.08;
-    gap: 4px;
-    border-radius: 14px;
-  }
-
-  .quote-payment-btn__desktop {
-    display: none;
-  }
-
-  .quote-payment-btn__mobile {
-    display: inline;
-  }
-
-  .quote-secondary-btn span,
-  .quote-pdf-btn span {
-    display: inline;
-    font-size: 0.68rem;
-  }
-
-  .quote-payment-btn i,
-  .quote-pdf-btn i,
-  .quote-secondary-btn i {
-    display: inline-flex;
-    font-size: 0.82rem;
-  }
-
-  /* Panel expandido: reorganización con CSS order */
   .quote-summary-panel.is-expanded {
-    overflow-y: auto;
-    padding: 10px;
-    gap: 8px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 18px;
+    overflow-y: auto; padding: 10px; gap: 8px; display: flex; flex-direction: column; border-radius: 18px;
   }
-
-  .quote-summary-panel.is-expanded .quote-detail-title {
-    display: block;
-    order: 1;
-  }
-
-  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
-    order: 2;
-  }
-
+  .quote-summary-panel.is-expanded .quote-detail-title { display: block; order: 1; }
+  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle { order: 2; }
   .quote-summary-panel.is-expanded .quote-summary {
-    order: 3;
-    display: grid;
-    gap: 8px;
-    border: 1px solid rgba(6, 40, 3, 0.12);
-    border-radius: 16px;
-    padding: 12px;
-    background: #fff;
+    order: 3; display: grid; gap: 8px; border: 1px solid rgba(6,40,3,0.12); border-radius: 16px; padding: 12px; background: #fff;
   }
-
-  .quote-summary-panel.is-expanded .quote-summary .quote-summary__line {
-    display: flex !important;
-  }
-
+  .quote-summary-panel.is-expanded .quote-summary .quote-summary__line { display: flex !important; }
   .quote-summary-panel.is-expanded .quote-summary__total {
-    display: flex;
-    padding: 10px 12px;
-    border: 1px solid rgba(10, 58, 38, 0.12);
-    background: #f4fbf5;
-    text-align: left;
-    justify-items: initial;
+    display: flex; padding: 10px 12px; border: 1px solid rgba(10,58,38,0.12); background: #f4fbf5; text-align: left; justify-items: initial;
   }
+  .quote-summary-panel.is-expanded .quote-payment-mode { display: block !important; order: 4; }
+  .quote-summary-panel.is-expanded .quote-payment-info { display: block !important; order: 5; }
+  .quote-summary-panel.is-expanded .quote-discount-box { display: block !important; order: 6; }
+  .quote-summary-panel.is-expanded .quote-actions { order: 7; margin-top: 8px; }
 
-  .quote-summary-panel.is-expanded .quote-payment-mode {
-    display: block !important;
-    order: 4;
-  }
-
-  .quote-summary-panel.is-expanded .quote-payment-info {
-    display: block !important;
-    order: 5;
-  }
-
-  .quote-summary-panel.is-expanded .quote-discount-box {
-    display: block !important;
-    order: 6;
-  }
-
-  .quote-summary-panel.is-expanded .quote-actions {
-    order: 7;
-    margin-top: 8px;
-  }
-
-  .wa-float {
-    bottom: 132px;
-  }
+  .wa-float { bottom: 132px; }
 }
 
 /* ----------------------------------------------
    MÓVILES PEQUEÑOS
    ---------------------------------------------- */
 @media (max-width: 420px) {
-  .quote-summary-panel {
-    left: 7px;
-    right: 7px;
-    bottom: max(7px, env(safe-area-inset-bottom));
-    padding: 7px;
-    border-radius: 16px;
-  }
-
-  .quote-summary__total strong {
-    font-size: 0.98rem;
-  }
-
-  .quote-payment-btn,
-  .quote-secondary-btn,
-  .quote-pdf-btn {
-    min-height: 32px;
-    padding: 6px 4px;
-    font-size: 0.66rem;
-  }
-
-  .quote-secondary-btn span,
-  .quote-pdf-btn span {
-    font-size: 0.62rem;
-  }
+  .quote-summary-panel { left: 7px; right: 7px; bottom: max(7px, env(safe-area-inset-bottom)); padding: 7px; border-radius: 16px; }
+  .quote-summary__total strong { font-size: 0.98rem; }
+  .quote-payment-btn, .quote-secondary-btn, .quote-pdf-btn { min-height: 32px; padding: 6px 4px; font-size: 0.66rem; }
+  .quote-secondary-btn span, .quote-pdf-btn span { font-size: 0.62rem; }
 }
 
 /* ----------------------------------------------
    IMPRESIÓN REAL
    ---------------------------------------------- */
 @media print {
-  @page {
-    size: A4;
-    margin: 10mm;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  body {
-    background: #fff !important;
-    margin: 0 !important;
-  }
-
-  #header-container,
-  #footer-container,
-  .wa-float,
-  .quote-hero,
-  .quote-content,
-  .quote-modal {
-    display: none !important;
-  }
-
-  .quote-page {
-    background: #fff !important;
-  }
-
-  .print-quotation {
-    display: block !important;
-  }
-
-  .print-sheet {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
-  }
-
-  .quote-summary-panel__top {
-    display: none !important;
-  }
+  @page { size: A4; margin: 10mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff !important; margin: 0 !important; }
+  #header-container, #footer-container, .wa-float, .quote-hero, .quote-content, .quote-modal { display: none !important; }
+  .quote-page { background: #fff !important; }
+  .print-quotation { display: block !important; }
+  .print-sheet { width: 100%; max-width: none; margin: 0; padding: 0; box-shadow: none; }
+  .quote-summary-panel__top { display: none !important; }
 }
