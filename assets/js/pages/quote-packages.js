@@ -2289,74 +2289,71 @@ class MyCuscoTripQuotePackages {
     `;
   }
 
-    saveQuotationAsPdf() {
-      const printArea = document.getElementById("printQuotation");
-  
-      if (!printArea) {
-        window.print();
-        return;
-      }
-  
-      this.updatePrintQuotation();
-  
-      if (typeof html2pdf === "undefined") {
-        window.print();
-        return;
-      }
-  
-      const clonedPrintArea = printArea.cloneNode(true);
-      clonedPrintArea.classList.add("print-quotation--pdf-export");
-  
-      const wrapper = document.createElement("div");
-      wrapper.className = "pdf-export-wrapper";
-  
-      // Clonar TODOS los estilos del documento dentro del wrapper para que html2pdf los vea
-      const styles = document.querySelectorAll("style, link[rel='stylesheet']");
-      styles.forEach((style) => {
-        wrapper.appendChild(style.cloneNode(true));
-      });
-  
-      clonedPrintArea.style.display = "block";
-      clonedPrintArea.hidden = false;
-      clonedPrintArea.style.width = "210mm";
-      clonedPrintArea.style.maxWidth = "210mm";
-  
-      wrapper.appendChild(clonedPrintArea);
-      document.body.appendChild(wrapper);
-  
-      const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
-  
-      const options = {
-        margin: [8, 8, 8, 8],
-        filename,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#ffffff",
-          scrollX: 0,
-          scrollY: 0,
-          windowWidth: 900
-        },
-        jsPDF: {
-          unit: "mm",
-          format: "a4",
-          orientation: "portrait"
-        },
-        pagebreak: {
-          mode: ["avoid-all", "css", "legacy"]
+      saveQuotationAsPdf() {
+        const printArea = document.getElementById("printQuotation");
+    
+        if (!printArea) {
+          window.print();
+          return;
         }
-      };
-  
-      html2pdf()
-        .set(options)
-        .from(clonedPrintArea)
-        .save()
-        .finally(() => {
-          wrapper.remove();
-        });
-    }
+    
+        this.updatePrintQuotation();
+    
+        if (typeof html2pdf === "undefined") {
+          window.print();
+          return;
+        }
+    
+        // Clonamos el área de impresión y la preparamos como antes
+        const clonedPrintArea = printArea.cloneNode(true);
+        clonedPrintArea.classList.add("print-quotation--pdf-export");
+    
+        // Forzamos los estilos de impresión (ancho A4) en el clon
+        clonedPrintArea.style.display = "block";
+        clonedPrintArea.style.width = "210mm";
+        clonedPrintArea.style.maxWidth = "210mm";
+        clonedPrintArea.style.margin = "0 auto";
+        clonedPrintArea.style.backgroundColor = "#ffffff";
+        clonedPrintArea.style.fontFamily = "'Open Sans', Arial, sans-serif";
+        clonedPrintArea.style.fontSize = "10.5px";
+        clonedPrintArea.style.lineHeight = "1.32";
+    
+        const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
+    
+        const options = {
+          margin: [8, 8, 8, 8],
+          filename,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: "#ffffff",
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 794         // ← ancho estándar A4 a 96 dpi
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait"
+          },
+          pagebreak: {
+            mode: ["avoid-all", "css", "legacy"]
+          }
+        };
+    
+        // Insertamos el clon en el DOM, generamos el PDF y lo removemos
+        document.body.appendChild(clonedPrintArea);
+    
+        html2pdf()
+          .set(options)
+          .from(clonedPrintArea)
+          .save()
+          .finally(() => {
+            clonedPrintArea.remove();
+          });
+      }
 
   continueToPayment() {
     const totals = this.calculatePricing();
