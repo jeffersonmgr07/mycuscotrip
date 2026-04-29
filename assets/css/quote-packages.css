@@ -1,6 +1,6 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
-   Versión con PDF idéntico a impresión + correcciones
+   Versión con impresión y PDF idénticos, corregido
    ========================================================= */
 
 /* ----------------------------------------------
@@ -20,7 +20,6 @@ body {
   width: 100%;
 }
 
-/* Evita scroll lateral cuando el datepicker está abierto */
 body.quote-datepicker-open {
   overflow: hidden !important;
   height: 100% !important;
@@ -219,7 +218,6 @@ body.quote-datepicker-open {
   box-sizing: border-box;
 }
 
-/* Asegura que los inputs generados por Flatpickr tengan el mismo padding y ancho */
 .quote-field .flatpickr-input,
 .quote-field .flatpickr-alt-input {
   width: 100% !important;
@@ -664,7 +662,6 @@ body.quote-datepicker-open {
   min-width: 0;
 }
 
-/* OCULTAR CÓDIGO DE COTIZACIÓN Y MONTO SUPERIOR EN PANEL PC */
 @media (min-width: 769px) {
   .quote-summary-panel__top {
     display: none !important;
@@ -1432,14 +1429,261 @@ body.quote-modal-open {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
 
-/* ----------------------------------------------
-   IMPRESIÓN / PDF EN PANTALLA
-   ---------------------------------------------- */
+/* =============================================
+   ESTILOS DE IMPRESIÓN Y PDF (VÁLIDOS PARA AMBOS)
+   ============================================= */
 .print-quotation {
   display: none;
 }
 
-/* Wrapper para generación de PDF (fuera de pantalla) */
+/* Estos estilos aplican tanto al imprimir como al clon del PDF */
+.print-sheet {
+  width: 210mm;
+  max-width: 210mm;
+  margin: 0 auto;
+  background: #fff;
+  color: #17322a;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 10.5px;
+  line-height: 1.32;
+}
+
+.print-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+  border-bottom: 2px solid #0a3a26;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.print-company p,
+.print-header__right p,
+.print-client-grid p {
+  margin: 2px 0;
+}
+
+.print-logo {
+  max-width: 155px;
+  height: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.print-company h2 {
+  color: #062803;
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.print-header__right {
+  text-align: right;
+}
+
+.print-header__right h1 {
+  color: #062803;
+  margin: 0 0 6px;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.print-coupon-box {
+  display: inline-grid;
+  margin-top: 8px;
+  border: 1px dashed #0a3a26;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #f3f7ee;
+  text-align: left;
+  max-width: 210px;
+}
+
+.print-coupon-box__content {
+  display: grid;
+  gap: 2px;
+}
+
+.print-coupon-box span {
+  color: #56645f;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.print-coupon-box strong {
+  color: #062803;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+}
+
+.print-coupon-box small {
+  color: #4f6159;
+  font-size: 9px;
+}
+
+.print-client-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.print-client-grid > div,
+.print-section {
+  border: 1px solid #d9e1db;
+  border-radius: 9px;
+  padding: 9px;
+  background: #fff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-client-grid h3,
+.print-section h3 {
+  background: #0a3a26;
+  color: #fff;
+  padding: 6px 8px;
+  margin: -9px -9px 8px;
+  border-radius: 8px 8px 0 0;
+  font-size: 12px;
+}
+
+.print-section {
+  margin-bottom: 9px;
+}
+
+.print-banner {
+  display: none;
+}
+
+.print-itinerary-list {
+  display: grid;
+  gap: 6px;
+}
+
+.print-itinerary-item {
+  border-left: 3px solid #0a3a26;
+  padding: 6px 8px;
+  background: #fafafa;
+  border-radius: 0 7px 7px 0;
+}
+
+.print-itinerary-item strong {
+  color: #062803;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.print-itinerary-item p {
+  margin: 0;
+  color: #4f6159;
+}
+
+.print-table,
+.print-payment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-table th,
+.print-table td,
+.print-payment-table th,
+.print-payment-table td {
+  padding: 5px 4px;
+  border-bottom: 1px solid #e2e7e3;
+  vertical-align: top;
+  text-align: left;
+}
+
+.print-payment-table td {
+  text-align: right;
+}
+
+.print-payment-table tr.is-total th,
+.print-payment-table tr.is-total td {
+  font-weight: 900;
+  color: #062803;
+  border-top: 2px solid #0a3a26;
+  background: #f4fbf5;
+}
+
+.print-hotel-images {
+  margin-top: 8px;
+}
+
+.print-hotel-list {
+  display: grid;
+  gap: 7px;
+}
+
+.print-hotel-row {
+  display: grid;
+  grid-template-columns: 135px 1fr;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #e2e7e3;
+  border-radius: 9px;
+  padding: 6px;
+  background: #fbfdfb;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-hotel-row__info strong {
+  display: block;
+  color: #062803;
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+
+.print-hotel-row__info span {
+  display: block;
+  color: #56645f;
+  font-size: 9.2px;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.print-hotel-row__images {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.print-hotel-row__images img,
+.print-hotel-card__empty {
+  width: 100%;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 7px;
+  background: #edf3ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #56645f;
+  font-size: 9px;
+}
+
+.print-notes ul {
+  margin: 0;
+  padding-left: 17px;
+}
+
+.print-notes li {
+  margin-bottom: 3px;
+}
+
+.print-footer {
+  text-align: center;
+  color: #666;
+  font-size: 9px;
+  border-top: 1px solid #d9e1db;
+  padding-top: 7px;
+  margin-top: 8px;
+}
+
+/* Wrapper para PDF */
 .pdf-export-wrapper {
   position: absolute;
   left: -9999px;
@@ -1455,291 +1699,6 @@ body.quote-modal-open {
 .print-quotation--pdf-export {
   display: block !important;
   background: #fff;
-}
-
-/* =============================================
-   ESTILOS PARA PDF (IDÉNTICOS A IMPRESIÓN)
-   ============================================= */
-.print-quotation--pdf-export .print-sheet {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  box-shadow: none;
-}
-
-.print-quotation--pdf-export,
-.print-quotation--pdf-export * {
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-
-.print-quotation--pdf-export #header-container,
-.print-quotation--pdf-export #footer-container,
-.print-quotation--pdf-export .wa-float,
-.print-quotation--pdf-export .quote-hero,
-.print-quotation--pdf-export .quote-content,
-.print-quotation--pdf-export .quote-modal {
-  display: none !important;
-}
-
-.print-quotation--pdf-export .quote-page {
-  background: #fff !important;
-}
-
-.print-quotation--pdf-export .print-header,
-.print-quotation--pdf-export .print-client-grid > div,
-.print-quotation--pdf-export .print-section,
-.print-quotation--pdf-export .print-hotel-row,
-.print-quotation--pdf-export .print-coupon-box {
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-quotation--pdf-export .print-sheet {
-  width: 210mm;
-  max-width: 210mm;
-  margin: 0 auto;
-  background: #fff;
-  color: #17322a;
-  font-family: "Open Sans", Arial, sans-serif;
-  font-size: 10.5px;
-  line-height: 1.32;
-}
-
-.print-quotation--pdf-export .print-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-  border-bottom: 2px solid #0a3a26;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-}
-
-.print-quotation--pdf-export .print-company p,
-.print-quotation--pdf-export .print-header__right p,
-.print-quotation--pdf-export .print-client-grid p {
-  margin: 2px 0;
-}
-
-.print-quotation--pdf-export .print-logo {
-  max-width: 155px;
-  height: auto;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.print-quotation--pdf-export .print-company h2 {
-  color: #062803;
-  margin: 0 0 6px;
-  font-size: 18px;
-}
-
-.print-quotation--pdf-export .print-header__right {
-  text-align: right;
-}
-
-.print-quotation--pdf-export .print-header__right h1 {
-  color: #062803;
-  margin: 0 0 6px;
-  font-size: 24px;
-  text-transform: uppercase;
-}
-
-.print-quotation--pdf-export .print-coupon-box {
-  display: inline-grid;
-  margin-top: 8px;
-  border: 1px dashed #0a3a26;
-  border-radius: 10px;
-  padding: 8px 10px;
-  background: #f3f7ee;
-  text-align: left;
-  max-width: 210px;
-}
-
-.print-quotation--pdf-export .print-coupon-box__content {
-  display: grid;
-  gap: 2px;
-}
-
-.print-quotation--pdf-export .print-coupon-box span {
-  color: #56645f;
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.print-quotation--pdf-export .print-coupon-box strong {
-  color: #062803;
-  font-size: 15px;
-  letter-spacing: 0.03em;
-}
-
-.print-quotation--pdf-export .print-coupon-box small {
-  color: #4f6159;
-  font-size: 9px;
-}
-
-.print-quotation--pdf-export .print-client-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.print-quotation--pdf-export .print-client-grid > div,
-.print-quotation--pdf-export .print-section {
-  border: 1px solid #d9e1db;
-  border-radius: 9px;
-  padding: 9px;
-  background: #fff;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-quotation--pdf-export .print-client-grid h3,
-.print-quotation--pdf-export .print-section h3 {
-  background: #0a3a26;
-  color: #fff;
-  padding: 6px 8px;
-  margin: -9px -9px 8px;
-  border-radius: 8px 8px 0 0;
-  font-size: 12px;
-}
-
-.print-quotation--pdf-export .print-section {
-  margin-bottom: 9px;
-}
-
-.print-quotation--pdf-export .print-banner {
-  display: none;
-}
-
-.print-quotation--pdf-export .print-itinerary-list {
-  display: grid;
-  gap: 6px;
-}
-
-.print-quotation--pdf-export .print-itinerary-item {
-  border-left: 3px solid #0a3a26;
-  padding: 6px 8px;
-  background: #fafafa;
-  border-radius: 0 7px 7px 0;
-}
-
-.print-quotation--pdf-export .print-itinerary-item strong {
-  color: #062803;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.print-quotation--pdf-export .print-itinerary-item p {
-  margin: 0;
-  color: #4f6159;
-}
-
-.print-quotation--pdf-export .print-table,
-.print-quotation--pdf-export .print-payment-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.print-quotation--pdf-export .print-table th,
-.print-quotation--pdf-export .print-table td,
-.print-quotation--pdf-export .print-payment-table th,
-.print-quotation--pdf-export .print-payment-table td {
-  padding: 5px 4px;
-  border-bottom: 1px solid #e2e7e3;
-  vertical-align: top;
-  text-align: left;
-}
-
-.print-quotation--pdf-export .print-payment-table td {
-  text-align: right;
-}
-
-.print-quotation--pdf-export .print-payment-table tr.is-total th,
-.print-quotation--pdf-export .print-payment-table tr.is-total td {
-  font-weight: 900;
-  color: #062803;
-  border-top: 2px solid #0a3a26;
-  background: #f4fbf5;
-}
-
-.print-quotation--pdf-export .print-hotel-images {
-  margin-top: 8px;
-}
-
-.print-quotation--pdf-export .print-hotel-list {
-  display: grid;
-  gap: 7px;
-}
-
-.print-quotation--pdf-export .print-hotel-row {
-  display: grid;
-  grid-template-columns: 135px 1fr;
-  gap: 8px;
-  align-items: center;
-  border: 1px solid #e2e7e3;
-  border-radius: 9px;
-  padding: 6px;
-  background: #fbfdfb;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-quotation--pdf-export .print-hotel-row__info strong {
-  display: block;
-  color: #062803;
-  font-size: 10.5px;
-  line-height: 1.25;
-}
-
-.print-quotation--pdf-export .print-hotel-row__info span {
-  display: block;
-  color: #56645f;
-  font-size: 9.2px;
-  line-height: 1.25;
-  margin-top: 2px;
-}
-
-.print-quotation--pdf-export .print-hotel-row__images {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-}
-
-.print-quotation--pdf-export .print-hotel-row__images img,
-.print-quotation--pdf-export .print-hotel-card__empty {
-  width: 100%;
-  height: 48px;
-  object-fit: cover;
-  border-radius: 7px;
-  background: #edf3ef;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #56645f;
-  font-size: 9px;
-}
-
-.print-quotation--pdf-export .print-notes ul {
-  margin: 0;
-  padding-left: 17px;
-}
-
-.print-quotation--pdf-export .print-notes li {
-  margin-bottom: 3px;
-}
-
-.print-quotation--pdf-export .print-footer {
-  text-align: center;
-  color: #666;
-  font-size: 9px;
-  border-top: 1px solid #d9e1db;
-  padding-top: 7px;
-  margin-top: 8px;
 }
 
 /* ----------------------------------------------
@@ -1814,7 +1773,6 @@ body.quote-modal-open {
     grid-template-columns: 1fr;
   }
 
-  /* Calendario centrado en móvil sin descuadrar */
   .flatpickr-calendar {
     position: fixed !important;
     left: 50% !important;
@@ -1903,7 +1861,6 @@ body.quote-modal-open {
     white-space: normal;
   }
 
-  /* Panel inferior móvil compacto */
   .quote-summary-panel {
     position: fixed;
     left: 8px;
@@ -2107,7 +2064,7 @@ body.quote-modal-open {
 }
 
 /* ----------------------------------------------
-   IMPRESIÓN REAL
+   IMPRESIÓN REAL (oculta el resto de la página)
    ---------------------------------------------- */
 @media print {
   @page {
@@ -2148,15 +2105,6 @@ body.quote-modal-open {
     margin: 0;
     padding: 0;
     box-shadow: none;
-  }
-
-  .print-header,
-  .print-client-grid > div,
-  .print-section,
-  .print-hotel-row,
-  .print-coupon-box {
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 
   .quote-summary-panel__top {
