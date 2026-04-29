@@ -635,11 +635,6 @@ class MyCuscoTripQuotePackages {
       }
     }
 
-    /*
-      Importante:
-      La hora de salida SOLO debe afectar actividades del último día.
-      No debe eliminar itinerarios que tengan caminatas o tours fuertes en el penúltimo día.
-    */
     if (departureMinutes !== null) {
       if (departureMinutes < this.timeToMinutes("14:00") && lastDayHasShortActivity) {
         return false;
@@ -2035,7 +2030,7 @@ class MyCuscoTripQuotePackages {
       }
     }
 
-    this.updatePaymentButtonText(totals);
+    this.updatePaymentButtonText();
     this.updateMobileSummaryState();
   }
 
@@ -2315,17 +2310,10 @@ class MyCuscoTripQuotePackages {
     const wrapper = document.createElement("div");
     wrapper.className = "pdf-export-wrapper";
     
-    // Asegurar estilos A4 y copiar estilos del documento
     clonedPrintArea.style.display = "block";
     clonedPrintArea.hidden = false;
     clonedPrintArea.style.width = "210mm";
     clonedPrintArea.style.maxWidth = "210mm";
-    
-    // Copiar estilos relevantes al wrapper
-    const styles = document.querySelectorAll("style, link[rel='stylesheet']");
-    styles.forEach((style) => {
-      wrapper.appendChild(style.cloneNode(true));
-    });
 
     wrapper.appendChild(clonedPrintArea);
     document.body.appendChild(wrapper);
