@@ -121,6 +121,8 @@ class MyCuscoTripQuotePackages {
     this.fixTravelFieldLabels();
     this.enhancePrintableTemplate();
     this.ensureMobileSummaryToggle();
+    this.addQuoteDetailTitle();
+    this.changePdfButtonText();
   }
 
   fixTravelFieldLabels() {
@@ -179,6 +181,24 @@ class MyCuscoTripQuotePackages {
     const couponValidUntil = document.getElementById("printCouponValidUntil")?.closest("small");
     if (couponValidUntil) {
       couponValidUntil.remove();
+    }
+  }
+
+  addQuoteDetailTitle() {
+    const panel = document.querySelector(".quote-summary-panel");
+    if (!panel || panel.querySelector(".quote-detail-title")) return;
+
+    const title = document.createElement("h2");
+    title.className = "quote-detail-title";
+    title.textContent = "Detalle de cotización";
+    panel.insertBefore(title, panel.firstChild);
+  }
+
+  changePdfButtonText() {
+    const pdfBtn = document.getElementById("savePdfBtn");
+    if (pdfBtn) {
+      const span = pdfBtn.querySelector("span");
+      if (span) span.textContent = "Descargar";
     }
   }
 
@@ -290,6 +310,7 @@ class MyCuscoTripQuotePackages {
     this.bindHotelModalEvents();
     this.bindTrainSelectionModalEvents();
     this.bindTrainDetailsModalEvents();
+    this.bindMobileSummaryScrollClose();
   }
 
   initDatePicker() {
@@ -349,6 +370,7 @@ class MyCuscoTripQuotePackages {
   initTimePickers() {
     if (typeof flatpickr === "undefined") return;
 
+    const isMobile = window.innerWidth < 768;
     const timeConfig = {
       enableTime: true,
       noCalendar: true,
@@ -358,7 +380,7 @@ class MyCuscoTripQuotePackages {
       time_24hr: false,
       minuteIncrement: 15,
       allowInput: false,
-      disableMobile: true,
+      disableMobile: !isMobile,   // en móvil se usará el selector nativo tipo reloj
       appendTo: document.body,
       locale: flatpickr.l10ns.es
     };
@@ -387,6 +409,22 @@ class MyCuscoTripQuotePackages {
         }
       });
     }
+  }
+
+  bindMobileSummaryScrollClose() {
+    const panel = document.querySelector(".quote-summary-panel");
+    if (!panel) return;
+
+    window.addEventListener("scroll", () => {
+      if (panel.classList.contains("is-expanded")) {
+        panel.classList.remove("is-expanded");
+        const toggle = panel.querySelector(".quote-mobile-summary-toggle");
+        if (toggle) {
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.innerHTML = `<i class="fas fa-chevron-up"></i><span>Ver detalles</span>`;
+        }
+      }
+    }, { passive: true });
   }
 
   renderInitialState() {
@@ -712,6 +750,19 @@ class MyCuscoTripQuotePackages {
     this.renderItineraryPreview();
   }
 
+  buildDatedDayTitleHtml(item) {
+    const dayNumber = Number(item.day || 1);
+    const cleanTitle = String(item.title || `Día ${dayNumber}`)
+      .replace(/^Día\s*\d+\s*:\s*/i, "")
+      .replace(/^Dia\s*\d+\s*:\s*/i, "")
+      .trim();
+
+    const dateText = this.getDateForDay(dayNumber);
+    const dateHtml = dateText ? ` <span class="itinerary-date">(${this.escapeHtml(dateText)})</span>` : "";
+
+    return `Día ${dayNumber}:${dateHtml} ${this.escapeHtml(cleanTitle)}`;
+  }
+
   renderItineraryPreview() {
     const preview = document.getElementById("itineraryPreview");
     if (!preview) return;
@@ -725,7 +776,7 @@ class MyCuscoTripQuotePackages {
 
     preview.innerHTML = itinerary.map((item) => `
       <div class="quote-itinerary-item">
-        <h4>${this.escapeHtml(this.buildDatedDayTitle(item))}</h4>
+        <h4>${this.buildDatedDayTitleHtml(item)}</h4>
         <p>${this.escapeHtml(item.description || "")}</p>
       </div>
     `).join("");
@@ -2031,7 +2082,6 @@ class MyCuscoTripQuotePackages {
     }
 
     this.updatePaymentButtonText();
-    this.updateMobileSummaryState();
   }
 
   updatePaymentButtonText() {
@@ -2111,7 +2161,7 @@ class MyCuscoTripQuotePackages {
 
     target.innerHTML = itinerary.map((item) => `
       <div class="print-itinerary-item">
-        <strong>${this.escapeHtml(this.buildDatedDayTitle(item))}</strong>
+        <strong>${this.buildDatedDayTitleHtml(item)}</strong>
         <p>${this.escapeHtml(item.description || "")}</p>
       </div>
     `).join("");
@@ -2289,71 +2339,68 @@ class MyCuscoTripQuotePackages {
     `;
   }
 
-      saveQuotationAsPdf() {
-        const printArea = document.getElementById("printQuotation");
-    
-        if (!printArea) {
-          window.print();
-          return;
-        }
-    
-        this.updatePrintQuotation();
-    
-        if (typeof html2pdf === "undefined") {
-          window.print();
-          return;
-        }
-    
-        // Clonamos el área de impresión y la preparamos como antes
-        const clonedPrintArea = printArea.cloneNode(true);
-        clonedPrintArea.classList.add("print-quotation--pdf-export");
-    
-        // Forzamos los estilos de impresión (ancho A4) en el clon
-        clonedPrintArea.style.display = "block";
-        clonedPrintArea.style.width = "210mm";
-        clonedPrintArea.style.maxWidth = "210mm";
-        clonedPrintArea.style.margin = "0 auto";
-        clonedPrintArea.style.backgroundColor = "#ffffff";
-        clonedPrintArea.style.fontFamily = "'Open Sans', Arial, sans-serif";
-        clonedPrintArea.style.fontSize = "10.5px";
-        clonedPrintArea.style.lineHeight = "1.32";
-    
-        const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
-    
-        const options = {
-          margin: [8, 8, 8, 8],
-          filename,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: "#ffffff",
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 794         // ← ancho estándar A4 a 96 dpi
-          },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait"
-          },
-          pagebreak: {
-            mode: ["avoid-all", "css", "legacy"]
-          }
-        };
-    
-        // Insertamos el clon en el DOM, generamos el PDF y lo removemos
-        document.body.appendChild(clonedPrintArea);
-    
-        html2pdf()
-          .set(options)
-          .from(clonedPrintArea)
-          .save()
-          .finally(() => {
-            clonedPrintArea.remove();
-          });
+  saveQuotationAsPdf() {
+    const printArea = document.getElementById("printQuotation");
+
+    if (!printArea) {
+      window.print();
+      return;
+    }
+
+    this.updatePrintQuotation();
+
+    if (typeof html2pdf === "undefined") {
+      window.print();
+      return;
+    }
+
+    const clonedPrintArea = printArea.cloneNode(true);
+    clonedPrintArea.classList.add("print-quotation--pdf-export");
+
+    clonedPrintArea.style.display = "block";
+    clonedPrintArea.style.width = "210mm";
+    clonedPrintArea.style.maxWidth = "210mm";
+    clonedPrintArea.style.margin = "0 auto";
+    clonedPrintArea.style.backgroundColor = "#ffffff";
+    clonedPrintArea.style.fontFamily = "'Open Sans', Arial, sans-serif";
+    clonedPrintArea.style.fontSize = "10.5px";
+    clonedPrintArea.style.lineHeight = "1.32";
+
+    const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
+
+    const options = {
+      margin: [8, 8, 8, 8],
+      filename,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 794
+      },
+      jsPDF: {
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait"
+      },
+      pagebreak: {
+        mode: ["avoid-all", "css", "legacy"]
       }
+    };
+
+    document.body.appendChild(clonedPrintArea);
+
+    html2pdf()
+      .set(options)
+      .from(clonedPrintArea)
+      .save()
+      .finally(() => {
+        clonedPrintArea.remove();
+      });
+  }
 
   continueToPayment() {
     const totals = this.calculatePricing();
@@ -2414,15 +2461,6 @@ class MyCuscoTripQuotePackages {
     const top = panel.querySelector(".quote-summary-panel__top");
     if (top) top.insertAdjacentElement("afterend", toggle);
     else panel.prepend(toggle);
-  }
-
-  updateMobileSummaryState() {
-    const panel = document.querySelector(".quote-summary-panel");
-    const toggle = panel?.querySelector(".quote-mobile-summary-toggle");
-  
-    if (toggle && !panel.classList.contains("is-expanded")) {
-      toggle.innerHTML = `<i class="fas fa-chevron-up"></i><span>Ver detalles</span>`;
-    }
   }
 
   buildDatedDayTitle(item) {
