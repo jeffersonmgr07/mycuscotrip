@@ -13,7 +13,24 @@ body {
   overflow-x: clip !important;
   width: 100%;
 }
+/* Evitar desbordamiento horizontal ALWAYS */
+html {
+  overflow-y: scroll !important;   /* barra de scroll siempre visible */
+  overflow-x: hidden !important;
+  width: 100%;
+}
 
+body {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Cuando el datepicker está abierto */
+body.quote-datepicker-open {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+}
 body.quote-datepicker-open {
   overflow: hidden !important;
   padding-right: 0 !important;
@@ -861,6 +878,7 @@ body.quote-datepicker-open {
   margin-top: 12px;
   width: 100%;
   min-width: 0;
+  grid-template-columns: 1fr 1fr;
 }
 
 .quote-actions__secondary {
@@ -1453,16 +1471,12 @@ body.quote-modal-open {
     width: min(330px, calc(100dvw - 24px)) !important;
     max-width: calc(100dvw - 24px) !important;
     box-sizing: border-box !important;
-    max-height: 320px !important;       /* suficiente para 5 filas + cabecera */
+    max-height: 320px !important;
     overflow: hidden !important;
   }
-  .flatpickr-calendar.open {
-    overflow: hidden !important;
-  }
-  .flatpickr-days {
-    max-height: 240px;                  /* 5 filas de 48px aprox. */
-    overflow: hidden;
-  }
+  .flatpickr-calendar.open { overflow: hidden !important; }
+  .flatpickr-days { max-height: 240px; overflow: hidden; }
+}
   .flatpickr-months,
   .flatpickr-innerContainer,
   .flatpickr-rContainer,
@@ -1792,13 +1806,24 @@ body.quote-modal-open {
   .train-option-card, .quote-train-card { grid-template-columns: 1fr; }
   .train-option-card__price { text-align: left; white-space: normal; }
 
-  .quote-summary-panel {
-    position: fixed; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); top: auto;
-    z-index: 1200; display: grid; grid-template-columns: 1fr; gap: 6px; padding: 8px;
-    border-radius: 18px; box-shadow: 0 16px 40px rgba(0,0,0,0.18);
-    max-height: calc(100dvh - 16px); overflow: hidden;
-    border: 1px solid rgba(6,40,3,0.18); outline: 1px solid rgba(255,255,255,0.9);
-  }
+    .quote-summary-panel {
+       position: fixed;
+       left: 4px;
+       right: 4px;
+       bottom: max(2px, env(safe-area-inset-bottom));
+       top: auto;
+       z-index: 1200;
+       display: grid;
+       grid-template-columns: 1fr;
+       gap: 4px;
+       padding: 5px;
+       border-radius: 14px;
+       box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+       max-height: calc(100dvh - 16px);
+       overflow: hidden;
+       border: 1px solid rgba(6,40,3,0.18);
+       outline: 1px solid rgba(255,255,255,0.9);
+     }
   .quote-mobile-summary-toggle { display: inline-flex; order: 1; min-height: 28px; font-size: 0.8rem; padding: 5px 8px; }
   .quote-summary-panel__top { display: none !important; }
   .quote-payment-mode, .quote-discount-box, .quote-summary .quote-summary__line, .quote-payment-info { display: none !important; }
@@ -1806,7 +1831,7 @@ body.quote-modal-open {
   .quote-summary__total { display: grid; gap: 1px; margin: 0; padding: 0; border: 0; background: transparent; text-align: center; justify-items: center; }
   .quote-summary__total span { display: block; color: #56645f; font-size: 0.72rem; font-weight: 800; line-height: 1.05; }
   .quote-summary__total strong { display: block; color: #062803; font-size: 1.04rem; line-height: 1.05; white-space: nowrap; }
-  .quote-actions { order: 3; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .quote-actions { order: 3; margin: 0; display: grid; grid-template-columns: 7fr 3fr; gap: 6px; }
   .quote-actions__secondary { display: contents; }
   .quote-payment-btn, .quote-secondary-btn, .quote-pdf-btn {
     width: 100%; min-height: 36px; padding: 8px 4px; font-size: 0.72rem;
