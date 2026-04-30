@@ -1,43 +1,60 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
-   Versión corregida final – sin desbordes, panel abajo,
-   botones 60/40, sticky PC, impresión correcta
+   Versión corregida
+   - Sticky real en PC
+   - Panel inferior fijo en móvil
+   - Sin desborde horizontal por Flatpickr
+   - Sin reglas duplicadas conflictivas al final
    ========================================================= */
 
 /* =============================================
-   1. PREVENIR DESBORDAMIENTOS Y RESET
+   1. RESET GENERAL Y CONTROL DE DESBORDE
    ============================================= */
 
-html {
-  overflow-y: scroll !important;
-  overflow-x: hidden !important;
-  width: 100%;
-}
-
-body {
-  overflow-x: hidden !important;
-  width: 100%;
-  max-width: 100%;
-}
-
-body.quote-datepicker-open {
-  overflow-y: hidden !important;
-  overflow-x: hidden !important;
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #f7faf8;
+}
+
+body.quote-datepicker-open,
+body.quote-modal-open {
+  overflow: hidden;
+}
+
 /* =============================================
-   2. LAYOUTS BASE
+   2. LAYOUT BASE
    ============================================= */
 
 .quote-page {
   background: #f7faf8;
   color: #17322a;
-  overflow-x: hidden;
   width: 100%;
+  max-width: 100%;
+}
+
+/* Importante:
+   No usar overflow hidden aquí porque rompe position: sticky en PC */
+@media (min-width: 1101px) {
+  .quote-page,
+  .quote-content,
+  .quote-layout {
+    overflow: visible !important;
+  }
 }
 
 .container {
@@ -48,52 +65,6 @@ body.quote-datepicker-open {
   padding-left: 20px;
   padding-right: 20px;
 }
-
-/* =============================================
-   3. HERO
-   ============================================= */
-
-.quote-hero {
-  padding: 118px 0 34px;
-  background: linear-gradient(rgba(6, 40, 3, 0.78), rgba(6, 40, 3, 0.78)),
-              url("../img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg") center/cover no-repeat;
-  color: #fff;
-}
-
-.quote-hero__container {
-  max-width: 1200px;
-}
-
-.quote-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.14);
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.88rem;
-  margin-bottom: 14px;
-}
-
-.quote-hero h1 {
-  color: #fff;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.08;
-  margin: 0 0 14px;
-}
-
-.quote-hero p {
-  color: rgba(255,255,255,0.88);
-  max-width: 760px;
-  font-size: 1.04rem;
-  line-height: 1.65;
-  margin: 0;
-}
-
-/* =============================================
-   4. CONTENIDO PRINCIPAL Y GRID
-   ============================================= */
 
 .quote-content {
   padding: 28px 0 64px;
@@ -114,15 +85,60 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   5. TARJETAS GENERALES
+   3. HERO
+   ============================================= */
+
+.quote-hero {
+  padding: 118px 0 34px;
+  background:
+    linear-gradient(rgba(6, 40, 3, 0.78), rgba(6, 40, 3, 0.78)),
+    url("../img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg") center/cover no-repeat;
+  color: #fff;
+}
+
+.quote-hero__container {
+  max-width: 1200px;
+}
+
+.quote-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.quote-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+  margin: 0 0 14px;
+}
+
+.quote-hero p {
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 760px;
+  font-size: 1.04rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* =============================================
+   4. TARJETAS GENERALES
    ============================================= */
 
 .quote-card {
   background: #fff;
   border-radius: 24px;
   padding: 22px;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .quote-card__header {
@@ -139,7 +155,7 @@ body.quote-datepicker-open {
   padding: 12px 16px;
   border-radius: 16px;
   background: linear-gradient(135deg, #dfe9d6 0%, #cddcbe 100%);
-  box-shadow: 0 8px 18px rgba(10,58,38,0.1);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.1);
 }
 
 .quote-card__header p {
@@ -151,15 +167,17 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   6. SUBSECCIONES DEL FORMULARIO
+   5. SUBSECCIONES DEL FORMULARIO
    ============================================= */
 
 .quote-field-group {
   padding: 16px;
-  border: 1px solid rgba(6,40,3,0.1);
+  border: 1px solid rgba(6, 40, 3, 0.1);
   border-radius: 20px;
   background: #fbfdfb;
   margin-bottom: 14px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .quote-field-group__header {
@@ -181,7 +199,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   7. FORMULARIOS (CAMPOS, INPUTS, SELECTS)
+   6. FORMULARIOS
    ============================================= */
 
 .quote-form-grid {
@@ -189,6 +207,8 @@ body.quote-datepicker-open {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   align-items: start;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .quote-form-grid--travel {
@@ -197,6 +217,7 @@ body.quote-datepicker-open {
 
 .quote-field {
   min-width: 0;
+  max-width: 100%;
   display: grid;
   align-content: start;
 }
@@ -215,18 +236,32 @@ body.quote-datepicker-open {
 
 .quote-field input,
 .quote-field select,
-.quote-field textarea {
+.quote-field textarea,
+.quote-payment-mode select,
+.quote-discount-box input {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
-  height: 44px;
-  border: 1px solid rgba(0,0,0,0.12);
-  border-radius: 14px;
-  padding: 10px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   font: inherit;
   background: #fff;
   color: #17322a;
   box-sizing: border-box;
+}
+
+.quote-field input,
+.quote-field select {
+  height: 44px;
+  border-radius: 14px;
+  padding: 10px 16px;
+}
+
+.quote-field textarea {
+  resize: vertical;
+  min-height: 110px;
+  height: auto;
+  border-radius: 14px;
+  padding: 10px 16px;
 }
 
 .quote-field .flatpickr-input,
@@ -234,15 +269,14 @@ body.quote-datepicker-open {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
 }
 
-.quote-field textarea {
-  resize: vertical;
-  min-height: 110px;
-  height: auto;
+.flatpickr-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .quote-field select,
@@ -268,7 +302,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   8. SELECTORES DE CANTIDAD (TRAVELERS)
+   7. SELECTORES DE CANTIDAD
    ============================================= */
 
 .quote-travelers {
@@ -283,7 +317,7 @@ body.quote-datepicker-open {
   gap: 12px;
   align-items: center;
   padding: 13px 15px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   background: #f9fcfb;
 }
@@ -308,7 +342,7 @@ body.quote-datepicker-open {
 .quote-qty-btn {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   background: #fff;
   color: #062803;
@@ -318,7 +352,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   9. ESTADOS VACÍOS Y OPCIONES (PAQUETES, ITINERARIOS, EXTRAS)
+   8. ESTADOS VACÍOS Y OPCIONES
    ============================================= */
 
 .quote-empty-state {
@@ -326,7 +360,7 @@ body.quote-datepicker-open {
   border-radius: 18px;
   background: #f9fcfb;
   color: #56645f;
-  border: 1px dashed rgba(6,40,3,0.22);
+  border: 1px dashed rgba(6, 40, 3, 0.22);
   text-align: center;
   line-height: 1.55;
 }
@@ -343,20 +377,22 @@ body.quote-datepicker-open {
 .quote-itinerary-option,
 .quote-extra-item,
 .quote-accommodation-card {
-  border: 2px solid rgba(6,40,3,0.12);
+  border: 2px solid rgba(6, 40, 3, 0.12);
   border-radius: 18px;
   background: #f9fcfb;
   padding: 16px;
   cursor: pointer;
   transition: all 0.18s ease;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .quote-package-card:hover,
 .quote-itinerary-option:hover,
 .quote-extra-item:hover,
 .quote-accommodation-card:hover {
-  border-color: rgba(10,58,38,0.38);
-  box-shadow: 0 10px 20px rgba(10,58,38,0.08);
+  border-color: rgba(10, 58, 38, 0.38);
+  box-shadow: 0 10px 20px rgba(10, 58, 38, 0.08);
 }
 
 .quote-package-card.is-selected,
@@ -364,7 +400,7 @@ body.quote-datepicker-open {
 .quote-extra-item.is-selected {
   border-color: #0a3a26;
   background: #f4fbf5;
-  box-shadow: 0 12px 22px rgba(10,58,38,0.12);
+  box-shadow: 0 12px 22px rgba(10, 58, 38, 0.12);
 }
 
 .quote-package-card__top,
@@ -420,9 +456,8 @@ body.quote-datepicker-open {
   color: #b45f06;
   font-weight: 600;
 }
-
 /* =============================================
-   10. ITINERARIO
+   9. ITINERARIO
    ============================================= */
 
 .quote-itinerary-options {
@@ -432,7 +467,7 @@ body.quote-datepicker-open {
 .quote-itinerary-preview {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid rgba(0,0,0,0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .quote-itinerary-preview h3 {
@@ -467,7 +502,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   11. PAQUETE DETECTADO
+   10. PAQUETE DETECTADO
    ============================================= */
 
 .quote-package-card--detected {
@@ -480,7 +515,7 @@ body.quote-datepicker-open {
 }
 
 .quote-package-card--detected:hover {
-  border-color: rgba(6,40,3,0.12) !important;
+  border-color: rgba(6, 40, 3, 0.12) !important;
   box-shadow: none !important;
   transform: none !important;
 }
@@ -508,7 +543,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   12. ALOJAMIENTO
+   11. ALOJAMIENTO
    ============================================= */
 
 .quote-accommodation-card {
@@ -521,7 +556,7 @@ body.quote-datepicker-open {
   background: #edf3ef;
   padding: 13px 15px;
   margin-bottom: 0;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .quote-accommodation-card__header small {
@@ -546,7 +581,7 @@ body.quote-datepicker-open {
   height: 72px;
   object-fit: cover;
   border-radius: 14px;
-  border: 1px solid rgba(6,40,3,0.12);
+  border: 1px solid rgba(6, 40, 3, 0.12);
   background: #edf3ef;
 }
 
@@ -562,7 +597,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   13. TRENES
+   12. TRENES
    ============================================= */
 
 .quote-train-selector-grid {
@@ -576,10 +611,10 @@ body.quote-datepicker-open {
   gap: 14px;
   align-content: space-between;
   padding: 16px;
-  border: 2px solid rgba(6,40,3,0.18);
+  border: 2px solid rgba(6, 40, 3, 0.18);
   border-radius: 18px;
   background: #fff;
-  box-shadow: 0 8px 18px rgba(10,58,38,0.05);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.05);
 }
 
 .quote-train-selector-card span {
@@ -612,7 +647,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   14. EXTRAS
+   13. EXTRAS
    ============================================= */
 
 .quote-extra-item {
@@ -651,28 +686,35 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   15. SIDEBAR Y RESUMEN
+   14. SIDEBAR Y PANEL DE COTIZACIÓN
    ============================================= */
 
 .quote-sidebar {
-  position: relative;
   min-width: 0;
+  position: relative;
 }
 
-/* Sticky en PC */
+/* PC: panel siempre visible al hacer scroll */
 @media (min-width: 1101px) {
-  .quote-sidebar {
-    position: sticky;
-    top: 18px;
-    align-self: start;
-    height: fit-content;
-    max-height: calc(100vh - 36px);
-    overflow: visible;
-    z-index: 20;
+  .quote-layout {
+    grid-template-columns: minmax(0, 1fr) 390px;
+    align-items: start !important;
+    overflow: visible !important;
   }
+
+  .quote-sidebar {
+    position: sticky !important;
+    top: 92px !important;
+    align-self: start !important;
+    height: fit-content !important;
+    max-height: calc(100vh - 110px) !important;
+    overflow: visible !important;
+    z-index: 50 !important;
+  }
+
   .quote-summary-panel {
-    max-height: calc(100vh - 36px);
-    overflow-y: auto;
+    max-height: calc(100vh - 110px) !important;
+    overflow-y: auto !important;
     scrollbar-width: thin;
   }
 }
@@ -681,12 +723,11 @@ body.quote-datepicker-open {
   background: #fff;
   border-radius: 24px;
   padding: 18px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 14px 30px rgba(0,0,0,0.07);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
   min-width: 0;
 }
 
-/* Título "Detalle de cotización" */
 .quote-detail-title {
   display: none;
   width: 100%;
@@ -696,17 +737,11 @@ body.quote-datepicker-open {
   padding: 12px 16px;
   border-radius: 16px;
   background: linear-gradient(135deg, #dfe9d6 0%, #cddcbe 100%);
-  box-shadow: 0 8px 18px rgba(10,58,38,0.1);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.1);
 }
 
 @media (min-width: 769px) {
   .quote-detail-title {
-    display: block;
-  }
-}
-
-@media (max-width: 768px) {
-  .quote-summary-panel.is-expanded .quote-detail-title {
     display: block;
   }
 }
@@ -727,21 +762,16 @@ body.quote-datepicker-open {
 }
 
 .quote-payment-mode select {
-  width: 100%;
-  max-width: 100%;
   height: 42px;
-  border: 1px solid rgba(0,0,0,0.12);
   border-radius: 14px;
   padding: 9px 40px 9px 12px;
-  font: inherit;
   background-color: #fff;
-  color: #17322a;
 }
 
 .quote-discount-box {
   margin-bottom: 12px;
   padding: 12px;
-  border: 1px solid rgba(6,40,3,0.12);
+  border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 16px;
   background: #f9fcfb;
 }
@@ -760,12 +790,8 @@ body.quote-datepicker-open {
 }
 
 .quote-discount-box input {
-  min-width: 0;
-  width: 100%;
-  border: 1px solid rgba(0,0,0,0.12);
   border-radius: 999px;
   padding: 10px 12px;
-  font: inherit;
   text-transform: uppercase;
 }
 
@@ -799,7 +825,7 @@ body.quote-datepicker-open {
 .quote-summary {
   display: grid;
   gap: 9px;
-  border: 1px solid rgba(6,40,3,0.12);
+  border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 18px;
   padding: 13px;
   background: #fff;
@@ -837,7 +863,7 @@ body.quote-datepicker-open {
 .quote-summary__total {
   margin-top: 6px;
   padding: 11px 12px;
-  border: 1px solid rgba(10,58,38,0.12);
+  border: 1px solid rgba(10, 58, 38, 0.12);
   border-radius: 14px;
   background: #f4fbf5;
   color: #062803;
@@ -878,7 +904,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   16. ACCIONES (BOTONES)
+   15. BOTONES
    ============================================= */
 
 .quote-actions {
@@ -889,7 +915,6 @@ body.quote-datepicker-open {
   min-width: 0;
 }
 
-/* PC: dos columnas iguales */
 @media (min-width: 769px) {
   .quote-actions {
     grid-template-columns: 1fr 1fr;
@@ -929,26 +954,26 @@ body.quote-datepicker-open {
 .quote-secondary-btn {
   background: #fff;
   color: #062803;
-  border: 1px solid rgba(6,40,3,0.18);
-  box-shadow: 0 10px 22px rgba(10,58,38,0.1);
+  border: 1px solid rgba(6, 40, 3, 0.18);
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.1);
 }
 
 .quote-secondary-btn:hover {
-  box-shadow: 0 14px 28px rgba(10,58,38,0.16);
+  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.16);
 }
 
 .quote-payment-btn {
   border: 0;
   color: #fff;
   background: linear-gradient(135deg, #ff2f92 0%, #d91572 52%, #9b0f55 100%);
-  box-shadow: 0 14px 28px rgba(217,21,114,0.28);
+  box-shadow: 0 14px 28px rgba(217, 21, 114, 0.28);
   transform: translateY(0);
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .quote-payment-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 36px rgba(217,21,114,0.38);
+  box-shadow: 0 18px 36px rgba(217, 21, 114, 0.38);
   filter: brightness(1.04);
 }
 
@@ -959,22 +984,18 @@ body.quote-datepicker-open {
 .quote-pdf-btn {
   background: #f4fbf5;
   color: #0a3a26;
-  border: 1px solid rgba(10,58,38,0.18);
-  box-shadow: 0 10px 22px rgba(10,58,38,0.08);
+  border: 1px solid rgba(10, 58, 38, 0.18);
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.08);
 }
 
 .quote-pdf-btn:hover {
   background: #edf7ef;
-  box-shadow: 0 14px 28px rgba(10,58,38,0.14);
+  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.14);
 }
 
 #savePdfBtn {
   display: none !important;
 }
-
-/* =============================================
-   17. BOTÓN MÓVIL PARA DESPLEGAR
-   ============================================= */
 
 .quote-mobile-summary-toggle {
   display: none;
@@ -990,14 +1011,9 @@ body.quote-datepicker-open {
   justify-content: center;
   gap: 7px;
 }
-
 /* =============================================
-   18. MODALES
+   16. MODALES
    ============================================= */
-
-body.quote-modal-open {
-  overflow: hidden;
-}
 
 .quote-modal[hidden] {
   display: none !important;
@@ -1012,7 +1028,7 @@ body.quote-modal-open {
 .quote-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(7,18,13,0.62);
+  background: rgba(7, 18, 13, 0.62);
   backdrop-filter: blur(4px);
 }
 
@@ -1023,7 +1039,7 @@ body.quote-modal-open {
   margin: 16px auto;
   background: #fff;
   border-radius: 28px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
@@ -1041,7 +1057,7 @@ body.quote-modal-open {
   height: 42px;
   border: 0;
   border-radius: 50%;
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
   color: #fff;
   display: inline-flex;
   align-items: center;
@@ -1058,7 +1074,7 @@ body.quote-modal-open {
 
 .quote-modal__eyebrow {
   margin: 0 0 8px;
-  color: rgba(255,255,255,0.82);
+  color: rgba(255, 255, 255, 0.82);
   font-weight: 800;
   font-size: 0.84rem;
   text-transform: uppercase;
@@ -1072,7 +1088,7 @@ body.quote-modal-open {
 }
 
 .quote-modal__header p {
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
   line-height: 1.5;
 }
@@ -1086,7 +1102,7 @@ body.quote-modal-open {
 
 .quote-modal__footer {
   padding: 16px 28px 22px;
-  border-top: 1px solid rgba(0,0,0,0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   background: #fff;
   display: flex;
   justify-content: center;
@@ -1103,24 +1119,29 @@ body.quote-modal-open {
   gap: 18px;
 }
 
-/* Hotel modal */
+/* =============================================
+   17. MODAL DE HOTELES
+   ============================================= */
+
 .hotel-option-card {
   background: #fff;
-  border: 2px solid rgba(6,40,3,0.1);
+  border: 2px solid rgba(6, 40, 3, 0.1);
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
   cursor: default;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .hotel-option-card:hover {
-  border-color: rgba(10,58,38,0.22);
+  border-color: rgba(10, 58, 38, 0.22);
 }
 
 .hotel-option-card.is-selected {
   border-color: #0a3a26;
-  box-shadow: 0 16px 32px rgba(10,58,38,0.14);
+  box-shadow: 0 16px 32px rgba(10, 58, 38, 0.14);
 }
 
 .hotel-option-card--no-hotel {
@@ -1131,7 +1152,7 @@ body.quote-modal-open {
 }
 
 .hotel-option-card--no-hotel.is-selected {
-  box-shadow: 0 10px 22px rgba(10,58,38,0.12);
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.12);
 }
 
 .hotel-option-card__header {
@@ -1177,6 +1198,7 @@ body.quote-modal-open {
 .hotel-option-card__media {
   display: grid;
   gap: 10px;
+  min-width: 0;
 }
 
 .hotel-gallery-main {
@@ -1261,6 +1283,7 @@ body.quote-modal-open {
   gap: 12px;
   align-self: start;
   padding-top: 0;
+  min-width: 0;
 }
 
 .hotel-option-card__body label {
@@ -1280,7 +1303,7 @@ body.quote-modal-open {
 .hotel-combo-btn {
   width: 100%;
   position: relative;
-  border: 2px solid rgba(6,40,3,0.18);
+  border: 2px solid rgba(6, 40, 3, 0.18);
   background: #fff;
   border-radius: 18px;
   padding: 13px 15px 13px 46px;
@@ -1294,14 +1317,14 @@ body.quote-modal-open {
 }
 
 .hotel-combo-btn:hover {
-  border-color: rgba(10,58,38,0.45);
-  box-shadow: 0 8px 18px rgba(10,58,38,0.08);
+  border-color: rgba(10, 58, 38, 0.45);
+  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.08);
 }
 
 .hotel-combo-btn.is-selected {
   border-color: #0a3a26;
   background: #f4fbf5;
-  box-shadow: 0 10px 20px rgba(10,58,38,0.12);
+  box-shadow: 0 10px 20px rgba(10, 58, 38, 0.12);
 }
 
 .hotel-combo-btn__radio {
@@ -1310,7 +1333,7 @@ body.quote-modal-open {
   top: 50%;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(6,40,3,0.35);
+  border: 2px solid rgba(6, 40, 3, 0.35);
   border-radius: 50%;
   transform: translateY(-50%);
   background: #fff;
@@ -1347,7 +1370,10 @@ body.quote-modal-open {
   line-height: 1.35;
 }
 
-/* Trenes modal */
+/* =============================================
+   18. MODAL DE TRENES
+   ============================================= */
+
 .quote-train-modal-list {
   gap: 12px;
 }
@@ -1355,34 +1381,36 @@ body.quote-modal-open {
 .train-option-card,
 .quote-train-card {
   position: relative;
-  border: 2px solid rgba(6,40,3,0.16);
+  border: 2px solid rgba(6, 40, 3, 0.16);
   border-radius: 18px;
   background: #fff;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.18s ease;
-  box-shadow: 0 10px 22px rgba(0,0,0,0.045);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.045);
   padding: 16px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 16px;
   align-items: center;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .train-option-card:hover,
 .quote-train-card:hover {
-  border-color: rgba(10,58,38,0.36);
+  border-color: rgba(10, 58, 38, 0.36);
 }
 
 .train-option-card.is-selected,
 .quote-train-card.is-selected {
   border-color: #0a3a26;
   background: #f4fbf5;
-  box-shadow: 0 14px 26px rgba(10,58,38,0.13);
+  box-shadow: 0 14px 26px rgba(10, 58, 38, 0.13);
 }
 
 .train-option-card.is-recommended {
-  border-color: rgba(217,154,0,0.62);
+  border-color: rgba(217, 154, 0, 0.62);
 }
 
 .train-option-card__top {
@@ -1424,7 +1452,10 @@ body.quote-modal-open {
   font-size: 0.82rem;
 }
 
-/* "ITINERARIO INCLUYE" */
+/* =============================================
+   19. ITINERARIO INCLUYE
+   ============================================= */
+
 .quote-package-includes {
   margin-top: 16px;
   padding: 16px;
@@ -1457,37 +1488,36 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   19. FLATPICKR CALENDAR
+   20. FLATPICKR - CORRECCIÓN DEFINITIVA
    ============================================= */
 
 .flatpickr-calendar {
-  max-width: calc(100vw - 20px) !important;
   z-index: 3000 !important;
+  box-sizing: border-box !important;
+  max-width: calc(100vw - 20px) !important;
 }
 
 .flatpickr-calendar.open {
-  box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 768px) {
-  .flatpickr-calendar {
+  .flatpickr-calendar,
+  .flatpickr-calendar.open {
     position: fixed !important;
     left: 50% !important;
+    right: auto !important;
     top: 50% !important;
+    bottom: auto !important;
     transform: translate(-50%, -50%) !important;
-    width: min(330px, calc(100dvw - 24px)) !important;
-    max-width: calc(100dvw - 24px) !important;
+    width: min(330px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    min-width: 0 !important;
+    max-height: 340px !important;
+    overflow: hidden !important;
     box-sizing: border-box !important;
-    max-height: 320px !important;
-    overflow: hidden !important;
   }
-  .flatpickr-calendar.open {
-    overflow: hidden !important;
-  }
-  .flatpickr-days {
-    max-height: 240px;
-    overflow: hidden;
-  }
+
   .flatpickr-months,
   .flatpickr-innerContainer,
   .flatpickr-rContainer,
@@ -1495,12 +1525,17 @@ body.quote-modal-open {
   .dayContainer {
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
     box-sizing: border-box !important;
   }
-}
 
+  .flatpickr-days {
+    max-height: 245px !important;
+    overflow: hidden !important;
+  }
+}
 /* =============================================
-   20. ESTILOS DE IMPRESIÓN Y PDF
+   21. IMPRESIÓN Y PDF
    ============================================= */
 
 .print-quotation {
@@ -1524,7 +1559,6 @@ body.quote-modal-open {
   background: #fff;
 }
 
-/* Estilos base de impresión */
 .print-sheet {
   width: 210mm;
   max-width: 210mm;
@@ -1742,67 +1776,67 @@ body.quote-modal-open {
   margin-top: 8px;
 }
 
-/* Duplicados para el clon PDF (necesarios para html2pdf) */
-.print-quotation--pdf-export .print-sheet {
-  width: 210mm;
-  max-width: 210mm;
-  margin: 0 auto;
-  background: #fff;
-  color: #17322a;
-  font-family: "Open Sans", Arial, sans-serif;
-  font-size: 10.5px;
-  line-height: 1.32;
-}
-
-.print-quotation--pdf-export .print-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-  border-bottom: 2px solid #0a3a26;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-}
-
-/* ... el resto de duplicados de impresión se mantienen ... */
-
 /* =============================================
-   21. RESPONSIVE TABLET
+   22. RESPONSIVE TABLET
    ============================================= */
 
 @media (max-width: 1100px) {
   .quote-layout {
     grid-template-columns: 1fr;
   }
+
   .quote-sidebar {
     position: static;
   }
+
   .quote-form-grid--travel {
     grid-template-columns: 1fr 1fr;
   }
+
   .quote-field--wide {
     grid-column: 1 / -1;
   }
 }
 
 /* =============================================
-   22. RESPONSIVE MÓVIL
+   23. RESPONSIVE MÓVIL
    ============================================= */
 
 @media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
   body:has(.quote-page) {
-    padding-bottom: 108px;
+    padding-bottom: 112px;
   }
+
+  .quote-page,
+  .quote-content,
+  .quote-layout,
+  .quote-main,
+  .quote-card {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip !important;
+  }
+
   .quote-content {
-    padding-bottom: 124px;
+    padding-bottom: 132px;
   }
+
   .quote-hero {
     padding-top: 98px;
   }
+
   .container {
     padding-left: 14px;
     padding-right: 14px;
   }
+
   .quote-layout,
   .quote-form-grid,
   .quote-form-grid--travel,
@@ -1810,99 +1844,116 @@ body.quote-modal-open {
   .quote-train-selector-grid {
     grid-template-columns: 1fr;
   }
+
   .quote-field--wide {
     grid-column: auto;
   }
+
   .quote-card {
     padding: 18px;
     border-radius: 20px;
   }
+
   .quote-card__header h2 {
     font-size: 1.08rem;
     padding: 11px 13px;
   }
+
   .quote-field-group {
     padding: 14px;
   }
+
   .quote-discount-box__row {
     grid-template-columns: 1fr;
   }
 
-  /* Modales responsive */
+  /* Modales móvil */
+
   .quote-modal__dialog {
     width: calc(100vw - 12px);
     max-height: calc(100dvh - 12px);
     margin: 6px auto;
     border-radius: 18px;
   }
+
   .quote-modal__header {
     padding: 18px 14px 12px;
   }
+
   .quote-modal__body {
     padding: 12px 14px 14px;
   }
+
   .quote-modal__footer {
     padding: 12px 14px max(16px, env(safe-area-inset-bottom));
   }
+
   .quote-modal__footer .quote-main-btn,
   .quote-modal__footer .quote-secondary-btn {
     width: 100%;
     min-width: 0;
   }
 
-  /* Hotel modal responsive */
   .hotel-option-card__header {
     padding: 16px 14px 10px;
     flex-direction: column;
   }
+
   .hotel-option-card__content {
     grid-template-columns: 1fr;
     padding: 0 14px 16px;
   }
+
   .hotel-option-card--no-hotel {
     padding: 10px;
   }
+
   .hotel-gallery-main,
   .hotel-gallery-main-img {
     min-height: 205px;
     height: 205px;
   }
+
   .hotel-combo-btn {
     min-height: 64px;
     padding: 12px 12px 12px 43px;
   }
+
   .hotel-combo-btn--compact {
     min-height: 54px;
   }
 
-  /* Trenes modal responsive */
   .train-option-card,
   .quote-train-card {
     grid-template-columns: 1fr;
   }
+
   .train-option-card__price {
     text-align: left;
     white-space: normal;
   }
 
-  /* Panel de cotización pegado al fondo */
+  /* Panel inferior móvil */
+
   .quote-summary-panel {
-    position: fixed;
-    left: 4px;
-    right: 4px;
-    bottom: max(0, env(safe-area-inset-bottom));
-    top: auto;
-    z-index: 1200;
+    position: fixed !important;
+    left: 6px !important;
+    right: 6px !important;
+    bottom: max(0px, env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    width: auto !important;
+    max-width: calc(100vw - 12px) !important;
+    z-index: 1200 !important;
     display: grid;
     grid-template-columns: 1fr;
     gap: 4px;
     padding: 5px;
     border-radius: 14px;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
     max-height: calc(100dvh - 16px);
     overflow: hidden;
-    border: 1px solid rgba(6,40,3,0.18);
-    outline: 1px solid rgba(255,255,255,0.9);
+    border: 1px solid rgba(6, 40, 3, 0.18);
+    outline: 1px solid rgba(255, 255, 255, 0.9);
   }
 
   .quote-mobile-summary-toggle {
@@ -1912,9 +1963,11 @@ body.quote-modal-open {
     font-size: 0.78rem;
     padding: 4px 8px;
   }
+
   .quote-summary-panel__top {
     display: none !important;
   }
+
   .quote-payment-mode,
   .quote-discount-box,
   .quote-summary .quote-summary__line,
@@ -1929,6 +1982,7 @@ body.quote-modal-open {
     padding: 0;
     background: transparent;
   }
+
   .quote-summary__total {
     display: grid;
     gap: 1px;
@@ -1939,22 +1993,23 @@ body.quote-modal-open {
     text-align: center;
     justify-items: center;
   }
+
   .quote-summary__total span {
     display: block;
     color: #56645f;
-    font-size: 0.70rem;
+    font-size: 0.7rem;
     font-weight: 800;
     line-height: 1.05;
   }
+
   .quote-summary__total strong {
     display: block;
     color: #062803;
-    font-size: 1.00rem;
+    font-size: 1rem;
     line-height: 1.05;
     white-space: nowrap;
   }
 
-  /* Botones 60% - 40% */
   .quote-actions {
     order: 3;
     margin: 0;
@@ -1968,18 +2023,21 @@ body.quote-modal-open {
     width: 100%;
     min-height: 34px;
     padding: 6px 4px;
-    font-size: 0.70rem;
+    font-size: 0.7rem;
     white-space: normal;
     line-height: 1.08;
     gap: 4px;
     border-radius: 14px;
   }
+
   .quote-payment-btn__desktop {
     display: none;
   }
+
   .quote-payment-btn__mobile {
     display: inline;
   }
+
   .quote-secondary-btn span {
     display: inline;
     font-size: 0.66rem;
@@ -1989,7 +2047,8 @@ body.quote-modal-open {
     display: none !important;
   }
 
-  /* Panel expandido */
+  /* Panel expandido móvil */
+
   .quote-summary-panel.is-expanded {
     overflow-y: auto;
     padding: 8px;
@@ -1998,45 +2057,54 @@ body.quote-modal-open {
     flex-direction: column;
     border-radius: 16px;
   }
+
   .quote-summary-panel.is-expanded .quote-detail-title {
     display: block;
     order: 1;
   }
+
   .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
     order: 2;
   }
+
   .quote-summary-panel.is-expanded .quote-summary {
     order: 3;
     display: grid;
     gap: 6px;
-    border: 1px solid rgba(6,40,3,0.12);
+    border: 1px solid rgba(6, 40, 3, 0.12);
     border-radius: 14px;
     padding: 10px;
     background: #fff;
   }
+
   .quote-summary-panel.is-expanded .quote-summary .quote-summary__line {
     display: flex !important;
   }
+
   .quote-summary-panel.is-expanded .quote-summary__total {
     display: flex;
     padding: 8px 10px;
-    border: 1px solid rgba(10,58,38,0.12);
+    border: 1px solid rgba(10, 58, 38, 0.12);
     background: #f4fbf5;
     text-align: left;
     justify-items: initial;
   }
+
   .quote-summary-panel.is-expanded .quote-payment-mode {
     display: block !important;
     order: 4;
   }
+
   .quote-summary-panel.is-expanded .quote-payment-info {
     display: block !important;
     order: 5;
   }
+
   .quote-summary-panel.is-expanded .quote-discount-box {
     display: block !important;
     order: 6;
   }
+
   .quote-summary-panel.is-expanded .quote-actions {
     order: 7;
     margin-top: 6px;
@@ -2048,33 +2116,37 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   23. MÓVILES PEQUEÑOS
+   24. MÓVILES PEQUEÑOS
    ============================================= */
 
 @media (max-width: 420px) {
   .quote-summary-panel {
-    left: 5px;
-    right: 5px;
-    bottom: max(0, env(safe-area-inset-bottom));
+    left: 5px !important;
+    right: 5px !important;
+    bottom: max(0px, env(safe-area-inset-bottom)) !important;
     padding: 5px;
     border-radius: 14px;
+    max-width: calc(100vw - 10px) !important;
   }
+
   .quote-summary__total strong {
     font-size: 0.94rem;
   }
+
   .quote-payment-btn,
   .quote-secondary-btn {
     min-height: 30px;
     padding: 5px 3px;
     font-size: 0.64rem;
   }
+
   .quote-secondary-btn span {
-    font-size: 0.60rem;
+    font-size: 0.6rem;
   }
 }
 
 /* =============================================
-   24. IMPRESIÓN REAL
+   25. IMPRESIÓN REAL
    ============================================= */
 
 @media print {
@@ -2082,14 +2154,17 @@ body.quote-modal-open {
     size: A4;
     margin: 10mm;
   }
+
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+
   body {
     background: #fff !important;
     margin: 0 !important;
   }
+
   #header-container,
   #footer-container,
   .wa-float,
@@ -2098,12 +2173,15 @@ body.quote-modal-open {
   .quote-modal {
     display: none !important;
   }
+
   .quote-page {
     background: #fff !important;
   }
+
   .print-quotation {
     display: block !important;
   }
+
   .print-sheet {
     width: 100%;
     max-width: none;
@@ -2111,69 +2189,8 @@ body.quote-modal-open {
     padding: 0;
     box-shadow: none;
   }
+
   .quote-summary-panel__top {
     display: none !important;
-  }
-}
-/* =============================================
-   FIX: Desbordamiento horizontal por Flatpickr
-   ============================================= */
-.flatpickr-calendar {
-  z-index: 3000 !important;
-  box-sizing: border-box !important;
-}
-
-@media (max-width: 768px) {
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: clip !important;
-  }
-
-  .quote-page,
-  .quote-content,
-  .quote-layout,
-  .quote-main,
-  .quote-card {
-    max-width: 100%;
-    overflow-x: clip !important;
-  }
-
-  .flatpickr-calendar.open {
-    position: fixed !important;
-    left: 50% !important;
-    right: auto !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(330px, calc(100vw - 24px)) !important;
-    max-width: calc(100vw - 24px) !important;
-    min-width: 0 !important;
-  }
-}
-@media (min-width: 1101px) {
-  .quote-page,
-  .quote-content {
-    overflow: visible !important;
-  }
-
-  .quote-layout {
-    align-items: start !important;
-    overflow: visible !important;
-  }
-
-  .quote-sidebar {
-    position: sticky !important;
-    top: 90px !important;
-    align-self: start !important;
-    height: fit-content !important;
-    max-height: calc(100vh - 110px) !important;
-    overflow: visible !important;
-    z-index: 50 !important;
-  }
-
-  .quote-summary-panel {
-    max-height: calc(100vh - 110px) !important;
-    overflow-y: auto !important;
   }
 }
