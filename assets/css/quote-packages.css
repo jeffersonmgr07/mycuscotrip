@@ -1,10 +1,10 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
    Versión corregida
-   - Panel de cotización fijo en PC controlado por JS
-   - Panel inferior fijo en móvil sin tocar su comportamiento actual
+   - Panel de cotización flotante en PC con position sticky
+   - Panel inferior fijo en móvil sin romper comportamiento actual
+   - Modales de hoteles y trenes compatibles con quote-packages.js
    - Sin desborde horizontal por Flatpickr
-   - Logos y horarios mejorados en modal de trenes
    ========================================================= */
 
 /* =============================================
@@ -45,14 +45,6 @@ body.quote-modal-open {
   color: #17322a;
   width: 100%;
   max-width: 100%;
-}
-
-@media (min-width: 1101px) {
-  .quote-page,
-  .quote-content,
-  .quote-layout {
-    overflow: visible !important;
-  }
 }
 
 .container {
@@ -298,6 +290,7 @@ body.quote-modal-open {
   font-size: 0.86rem;
   line-height: 1.45;
 }
+
 /* =============================================
    7. SELECTORES DE CANTIDAD
    ============================================= */
@@ -560,7 +553,6 @@ body.quote-modal-open {
 .quote-package-card--detected .quote-duration-badge {
   justify-self: start;
 }
-
 /* =============================================
    11. ALOJAMIENTO
    ============================================= */
@@ -614,6 +606,7 @@ body.quote-modal-open {
   color: #0a3a26 !important;
   font-weight: 800;
 }
+
 /* =============================================
    12. TRENES
    ============================================= */
@@ -664,6 +657,180 @@ body.quote-modal-open {
   width: 100%;
 }
 
+.train-option-card {
+  background: #fff;
+  border: 2px solid rgba(6, 40, 3, 0.12);
+  border-radius: 22px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.train-option-card:hover {
+  border-color: rgba(10, 58, 38, 0.32);
+  box-shadow: 0 14px 26px rgba(10, 58, 38, 0.08);
+}
+
+.train-option-card.is-selected {
+  border-color: #0a3a26;
+  background: #f4fbf5;
+  box-shadow: 0 16px 32px rgba(10, 58, 38, 0.14);
+}
+
+.train-option-card--local {
+  border-color: rgba(217, 154, 0, 0.45);
+  background: #fffaf0;
+}
+
+.train-option-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.train-option-card__company {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.train-option-card__logo {
+  width: 82px;
+  max-width: 82px;
+  height: auto;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.train-option-card__company h3 {
+  color: #062803;
+  margin: 0 0 5px;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.train-option-card__company p {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.train-option-card__price {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #edf7ef;
+  color: #0a3a26;
+  font-weight: 900;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.train-option-card__body {
+  display: grid;
+  gap: 14px;
+}
+
+.train-option-card__schedule {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.train-option-card__schedule > div {
+  padding: 12px;
+  border-radius: 16px;
+  background: #f7faf8;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+  min-width: 0;
+}
+
+.train-option-card__schedule span {
+  display: block;
+  color: #66746f;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.train-option-card__schedule strong {
+  display: block;
+  color: #062803;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.train-option-card__schedule small {
+  display: block;
+  color: #56645f;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.train-option-card__description {
+  color: #56645f;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.train-option-card__warning {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #fff8db;
+  border: 1px solid #f1e2a4;
+  color: #6b5a18;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.train-option-card__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.train-option-card__actions .quote-secondary-btn {
+  width: auto;
+  min-width: 160px;
+}
+
+.train-detail-box {
+  display: grid;
+  gap: 14px;
+}
+
+.train-detail-logo {
+  max-width: 140px;
+  height: auto;
+  object-fit: contain;
+}
+
+.train-detail-box p,
+.train-detail-box li {
+  color: #56645f;
+  line-height: 1.55;
+  font-size: 0.94rem;
+}
+
+.train-detail-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.train-detail-box h4 {
+  color: #062803;
+  margin: 6px 0 0;
+  font-size: 1rem;
+}
+
 /* =============================================
    13. EXTRAS
    ============================================= */
@@ -703,6 +870,39 @@ body.quote-modal-open {
   transform: rotate(45deg);
 }
 
+.quote-package-includes {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #f7fbf5;
+  border: 1px solid rgba(6, 40, 3, 0.1);
+}
+
+.quote-package-includes h3 {
+  margin: 0 0 8px;
+  color: #062803;
+  font-size: 1.05rem;
+}
+
+.quote-package-includes p {
+  margin: 0 0 12px;
+  color: #56645f;
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.quote-package-includes ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.quote-package-includes li {
+  color: #56645f;
+  line-height: 1.45;
+  font-size: 0.9rem;
+}
 /* =============================================
    14. SIDEBAR Y PANEL DE COTIZACIÓN
    ============================================= */
@@ -710,6 +910,7 @@ body.quote-modal-open {
 .quote-sidebar {
   min-width: 0;
   position: relative;
+  align-self: start;
 }
 
 .quote-summary-panel {
@@ -721,8 +922,7 @@ body.quote-modal-open {
   min-width: 0;
 }
 
-/* PC: el panel nace alineado con Datos de viaje.
-   JS agrega .is-desktop-fixed cuando debe quedar fijo. */
+/* PC: el panel nace alineado con Datos de viaje y se mantiene flotante al hacer scroll */
 @media (min-width: 1101px) {
   .quote-page,
   .quote-content,
@@ -737,24 +937,19 @@ body.quote-modal-open {
 
   .quote-sidebar {
     position: relative !important;
-    min-height: 1px;
+    align-self: start !important;
     overflow: visible !important;
     z-index: 50;
   }
 
   .quote-summary-panel {
-    position: relative !important;
+    position: sticky !important;
+    top: 92px !important;
     width: 100% !important;
     max-width: 390px !important;
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    overflow-y: visible !important;
-  }
-
-  .quote-summary-panel.is-desktop-fixed {
-    position: fixed !important;
-    top: 92px !important;
+    max-height: calc(100vh - 110px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     z-index: 80 !important;
   }
 }
@@ -933,6 +1128,7 @@ body.quote-modal-open {
   line-height: 1.45;
   text-align: center;
 }
+
 /* =============================================
    15. BOTONES
    ============================================= */
@@ -1041,9 +1237,8 @@ body.quote-modal-open {
   justify-content: center;
   gap: 7px;
 }
-
 /* =============================================
-   16. MODALES
+   16. MODALES GENERALES
    ============================================= */
 
 .quote-modal[hidden] {
@@ -1283,20 +1478,19 @@ body.quote-modal-open {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: thin;
+  padding-bottom: 4px;
 }
 
 .hotel-gallery-thumb {
-  width: 62px;
-  height: 48px;
+  width: 72px;
+  height: 54px;
+  min-width: 72px;
   border: 2px solid transparent;
-  padding: 0;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  padding: 0;
+  background: #f2f4f3;
   cursor: pointer;
-  flex: 0 0 auto;
 }
 
 .hotel-gallery-thumb.is-active {
@@ -1307,680 +1501,251 @@ body.quote-modal-open {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
-/* =============================================
-   18. MODAL DE TRENES (MEJORADO)
-   ============================================= */
-
-.quote-train-modal-list {
+.hotel-option-card__body {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+  min-width: 0;
 }
 
-.train-option-card,
-.quote-train-card {
-  position: relative;
-  border: 2px solid rgba(6, 40, 3, 0.16);
-  border-radius: 18px;
+.hotel-option-card__body label {
+  color: #062803;
+  font-weight: 900;
+  font-size: 0.92rem;
+}
+
+.hotel-option-card__options {
+  display: grid;
+  gap: 10px;
+}
+
+.hotel-combo-btn {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  text-align: left;
+  border: 1px solid rgba(6, 40, 3, 0.14);
+  border-radius: 16px;
   background: #fff;
-  overflow: hidden;
+  color: #17322a;
+  padding: 12px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.045);
-  padding: 16px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  align-items: center;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.train-option-card:hover,
-.quote-train-card:hover {
+.hotel-combo-btn:hover {
   border-color: rgba(10, 58, 38, 0.36);
+  background: #fbfdfb;
 }
 
-.train-option-card.is-selected,
-.quote-train-card.is-selected {
+.hotel-combo-btn.is-selected {
   border-color: #0a3a26;
   background: #f4fbf5;
-  box-shadow: 0 14px 26px rgba(10, 58, 38, 0.13);
+  box-shadow: 0 10px 20px rgba(10, 58, 38, 0.12);
 }
 
-/* LOGO DE EMPRESA */
-.train-option-card__company {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.train-option-card__logo {
-  width: 80px;
-  height: 28px;
-  object-fit: contain;
-}
-
-/* CONTENIDO */
-.train-option-card__content {
-  display: grid;
-  gap: 6px;
-}
-
-.train-option-card h3 {
-  margin: 0;
-  color: #062803;
-  font-size: 1.05rem;
-}
-
-/* HORARIOS MÁS VISIBLES */
-.train-option-card__schedule {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 6px;
-}
-
-.train-time-box {
-  display: flex;
-  flex-direction: column;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: #edf3ef;
-  min-width: 95px;
-}
-
-.train-time-box span {
-  font-size: 0.7rem;
-  color: #56645f;
-  font-weight: 700;
-}
-
-.train-time-box strong {
-  font-size: 0.9rem;
-  color: #062803;
-}
-
-/* PRECIO */
-.train-option-card__price {
-  text-align: right;
-}
-
-.train-option-card__price strong {
-  font-size: 1.05rem;
-  color: #062803;
-}
-
-.train-option-card__price span {
-  font-size: 0.8rem;
-  color: #66746f;
-}
-
-/* BADGE RECOMENDADO */
-.train-badge-recommended {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #d99a00;
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 5px 8px;
-  border-radius: 999px;
-}
-
-/* =============================================
-   19. ITINERARIO INCLUYE
-   ============================================= */
-
-.quote-package-includes {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 18px;
-  background: #f3f7ee;
-  border: 1px solid #cfdcbc;
-}
-
-.quote-package-includes h3 {
-  color: #062803;
-  margin: 0 0 8px;
-  font-size: 1.05rem;
-}
-
-.quote-package-includes p {
-  color: #4f6159;
-  margin: 0 0 10px;
-  line-height: 1.5;
-  font-size: 0.92rem;
-}
-
-.quote-package-includes ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-  color: #17322a;
-  font-size: 0.92rem;
-}
-
-/* =============================================
-   20. FLATPICKR - FIX DEFINITIVO
-   ============================================= */
-
-.flatpickr-calendar {
-  z-index: 3000 !important;
-  box-sizing: border-box !important;
-  max-width: calc(100vw - 20px) !important;
-}
-
-.flatpickr-calendar.open {
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
-}
-
-@media (max-width: 768px) {
-  .flatpickr-calendar,
-  .flatpickr-calendar.open {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    top: 50% !important;
-    width: min(330px, calc(100vw - 24px)) !important;
-    max-width: calc(100vw - 24px) !important;
-  }
-}
-/* =============================================
-   21. IMPRESIÓN Y PDF
-   ============================================= */
-
-.print-quotation {
-  display: none;
-}
-
-.pdf-export-wrapper {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  width: 210mm;
-  min-height: 297mm;
-  z-index: 99999;
-  background: #fff;
-  opacity: 1;
-  pointer-events: none;
-}
-
-.print-quotation--pdf-export {
-  display: block !important;
-  background: #fff;
-}
-
-.print-sheet {
-  width: 210mm;
-  max-width: 210mm;
-  margin: 0 auto;
-  background: #fff;
-  color: #17322a;
-  font-family: "Open Sans", Arial, sans-serif;
-  font-size: 10.5px;
-  line-height: 1.32;
-}
-
-.print-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-  border-bottom: 2px solid #0a3a26;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-}
-
-.print-company p,
-.print-header__right p,
-.print-client-grid p {
-  margin: 2px 0;
-}
-
-.print-logo {
-  max-width: 155px;
-  height: auto;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.print-company h2 {
-  color: #062803;
-  margin: 0 0 6px;
-  font-size: 18px;
-}
-
-.print-header__right {
-  text-align: right;
-}
-
-.print-header__right h1 {
-  color: #062803;
-  margin: 0 0 6px;
-  font-size: 24px;
-  text-transform: uppercase;
-}
-
-.print-coupon-box,
-.print-coupon-box * {
-  display: none !important;
-}
-
-.print-client-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.print-client-grid > div,
-.print-section {
-  border: 1px solid #d9e1db;
-  border-radius: 9px;
-  padding: 9px;
-  background: #fff;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-client-grid h3,
-.print-section h3 {
-  background: #0a3a26;
-  color: #fff;
-  padding: 6px 8px;
-  margin: -9px -9px 8px;
-  border-radius: 8px 8px 0 0;
-  font-size: 12px;
-}
-
-.print-section {
-  margin-bottom: 9px;
-}
-
-.print-banner {
-  display: none;
-}
-
-.print-itinerary-list {
-  display: grid;
-  gap: 6px;
-}
-
-.print-itinerary-item {
-  border-left: 3px solid #0a3a26;
-  padding: 6px 8px;
-  background: #fafafa;
-  border-radius: 0 7px 7px 0;
-}
-
-.print-itinerary-item strong {
-  color: #062803;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.print-itinerary-item p {
-  margin: 0;
-  color: #4f6159;
-}
-
-.print-table,
-.print-payment-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.print-table th,
-.print-table td,
-.print-payment-table th,
-.print-payment-table td {
-  padding: 5px 4px;
-  border-bottom: 1px solid #e2e7e3;
-  vertical-align: top;
-  text-align: left;
-}
-
-.print-payment-table td {
-  text-align: right;
-}
-
-.print-payment-table tr.is-total th,
-.print-payment-table tr.is-total td {
-  font-weight: 900;
-  color: #062803;
-  border-top: 2px solid #0a3a26;
-  background: #f4fbf5;
-}
-
-.print-hotel-images {
-  margin-top: 8px;
-}
-
-.print-hotel-list {
-  display: grid;
-  gap: 7px;
-}
-
-.print-hotel-row {
-  display: grid;
-  grid-template-columns: 135px 1fr;
-  gap: 8px;
-  align-items: center;
-  border: 1px solid #e2e7e3;
-  border-radius: 9px;
-  padding: 6px;
-  background: #fbfdfb;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-hotel-row__info strong {
-  display: block;
-  color: #062803;
-  font-size: 10.5px;
-  line-height: 1.25;
-}
-
-.print-hotel-row__info span {
-  display: block;
-  color: #56645f;
-  font-size: 9.2px;
-  line-height: 1.25;
+.hotel-combo-btn__radio {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(6, 40, 3, 0.28);
+  border-radius: 50%;
   margin-top: 2px;
+  position: relative;
+  background: #fff;
 }
 
-.print-hotel-row__images {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
+.hotel-combo-btn.is-selected .hotel-combo-btn__radio {
+  border-color: #0a3a26;
 }
 
-.print-hotel-row__images img,
-.print-hotel-card__empty {
-  width: 100%;
-  height: 48px;
-  object-fit: cover;
-  border-radius: 7px;
-  background: #edf3ef;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hotel-combo-btn.is-selected .hotel-combo-btn__radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #0a3a26;
+}
+
+.hotel-combo-btn__main {
+  display: block;
+  color: #062803;
+  font-weight: 900;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.hotel-combo-btn__sub {
+  grid-column: 2;
+  display: block;
   color: #56645f;
-  font-size: 9px;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  margin-top: -4px;
 }
 
-.print-notes ul {
-  margin: 0;
-  padding-left: 17px;
+#confirmHotelSelectionBtn,
+#confirmTrainSelectionBtn {
+  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.2);
 }
 
-.print-notes li {
-  margin-bottom: 3px;
-}
-
-.print-footer {
-  text-align: center;
-  color: #666;
-  font-size: 9px;
-  border-top: 1px solid #d9e1db;
-  padding-top: 7px;
-  margin-top: 8px;
+#confirmHotelSelectionBtn:hover,
+#confirmTrainSelectionBtn:hover {
+  filter: brightness(1.04);
 }
 
 /* =============================================
-   22. RESPONSIVE TABLET
+   18. RESPONSIVE TABLET
    ============================================= */
 
 @media (max-width: 1100px) {
   .quote-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .quote-sidebar {
-    position: static;
+    order: -1;
+  }
+
+  .quote-summary-panel {
+    position: relative;
+    max-width: 100%;
   }
 
   .quote-form-grid--travel {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
-  .quote-field--wide {
-    grid-column: 1 / -1;
+  .quote-train-selector-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hotel-option-card__content {
+    grid-template-columns: 1fr;
+  }
+
+  .hotel-gallery-main,
+  .hotel-gallery-main-img {
+    min-height: 220px;
+    height: 220px;
+  }
+
+  .train-option-card__header {
+    display: grid;
+    gap: 12px;
+  }
+
+  .train-option-card__price {
+    width: fit-content;
   }
 }
 
 /* =============================================
-   23. RESPONSIVE MÓVIL
+   19. RESPONSIVE MÓVIL
    ============================================= */
 
 @media (max-width: 768px) {
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden !important;
-  }
-
-  body:has(.quote-page) {
-    padding-bottom: 112px;
-  }
-
-  .quote-page,
-  .quote-content,
-  .quote-layout,
-  .quote-main,
-  .quote-card {
-    max-width: 100%;
-    min-width: 0;
-    overflow-x: clip !important;
-  }
-
-  .quote-content {
-    padding-bottom: 132px;
-  }
-
-  .quote-hero {
-    padding-top: 98px;
-  }
-
   .container {
     padding-left: 14px;
     padding-right: 14px;
   }
 
-  .quote-layout,
-  .quote-form-grid,
-  .quote-form-grid--travel,
-  .print-client-grid,
-  .quote-train-selector-grid {
-    grid-template-columns: 1fr;
+  .quote-hero {
+    padding: 92px 0 28px;
   }
 
-  .quote-field--wide {
-    grid-column: auto;
+  .quote-hero h1 {
+    font-size: 2rem;
+  }
+
+  .quote-content {
+    padding: 18px 0 120px;
   }
 
   .quote-card {
-    padding: 18px;
     border-radius: 20px;
+    padding: 16px;
   }
 
-  .quote-card__header h2 {
-    font-size: 1.08rem;
-    padding: 11px 13px;
-  }
-
-  .quote-field-group {
-    padding: 14px;
-  }
-
-  .quote-discount-box__row {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-modal__dialog {
-    width: calc(100vw - 12px);
-    max-height: calc(100dvh - 12px);
-    margin: 6px auto;
-    border-radius: 18px;
-  }
-
-  .quote-modal__header {
-    padding: 18px 14px 12px;
-  }
-
-  .quote-modal__body {
-    padding: 12px 14px 14px;
-  }
-
-  .quote-modal__footer {
-    padding: 12px 14px max(16px, env(safe-area-inset-bottom));
-  }
-
-  .quote-modal__footer .quote-main-btn,
-  .quote-modal__footer .quote-secondary-btn {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .hotel-option-card__header {
-    padding: 16px 14px 10px;
-    flex-direction: column;
-  }
-
-  .hotel-option-card__content {
-    grid-template-columns: 1fr;
-    padding: 0 14px 16px;
-  }
-
-  .hotel-option-card--no-hotel {
-    padding: 10px;
-  }
-
-  .hotel-gallery-main,
-  .hotel-gallery-main-img {
-    min-height: 205px;
-    height: 205px;
-  }
-
-  .train-option-card,
-  .quote-train-card {
-    grid-template-columns: 1fr;
-  }
-
-  .train-option-card__price {
-    text-align: left;
-    white-space: normal;
-  }
-
-  .train-option-card__logo {
-    width: 72px;
-    height: 24px;
-  }
-
-  .train-option-card__schedule {
-    gap: 8px;
-  }
-
-  .train-time-box {
-    min-width: 88px;
-  }
-
-  /* Panel inferior móvil: no modificar */
-  .quote-summary-panel {
-    position: fixed !important;
-    left: 6px !important;
-    right: 6px !important;
-    bottom: max(0px, env(safe-area-inset-bottom)) !important;
-    top: auto !important;
-    width: auto !important;
-    max-width: calc(100vw - 12px) !important;
-    z-index: 1200 !important;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 5px;
+  .quote-card__header h2,
+  .quote-detail-title {
+    font-size: 1.12rem;
+    padding: 10px 12px;
     border-radius: 14px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-    max-height: calc(100dvh - 16px);
-    overflow: hidden;
-    border: 1px solid rgba(6, 40, 3, 0.18);
-    outline: 1px solid rgba(255, 255, 255, 0.9);
+  }
+
+  .quote-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-traveler-row {
+    padding: 12px;
+  }
+
+  .quote-accommodation-card.has-hotel-image .quote-accommodation-card__body {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .quote-accommodation-card__image {
+    width: 74px;
+    height: 64px;
+    border-radius: 12px;
+  }
+
+  .quote-accommodation-card__body {
+    padding: 13px;
+  }
+
+  .quote-summary-panel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: 900;
+    border-radius: 20px;
+    padding: 12px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+  }
+
+  .quote-summary-panel .quote-detail-title,
+  .quote-summary-panel .quote-payment-mode,
+  .quote-summary-panel .quote-discount-box,
+  .quote-summary-panel .quote-summary,
+  .quote-summary-panel .quote-payment-info,
+  .quote-summary-panel .quote-actions__secondary {
+    display: none;
+  }
+
+  .quote-summary-panel.is-expanded .quote-detail-title,
+  .quote-summary-panel.is-expanded .quote-payment-mode,
+  .quote-summary-panel.is-expanded .quote-discount-box,
+  .quote-summary-panel.is-expanded .quote-summary,
+  .quote-summary-panel.is-expanded .quote-payment-info,
+  .quote-summary-panel.is-expanded .quote-actions__secondary {
+    display: grid;
   }
 
   .quote-mobile-summary-toggle {
     display: inline-flex;
-    order: 1;
-    min-height: 26px;
-    font-size: 0.78rem;
-    padding: 4px 8px;
-  }
-
-  .quote-summary-panel__top {
-    display: none !important;
-  }
-
-  .quote-payment-mode,
-  .quote-discount-box,
-  .quote-summary .quote-summary__line,
-  .quote-payment-info {
-    display: none !important;
-  }
-
-  .quote-summary {
-    order: 2;
-    display: block;
-    border: 0;
-    padding: 0;
-    background: transparent;
-  }
-
-  .quote-summary__total {
-    display: grid;
-    gap: 1px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-align: center;
-    justify-items: center;
-  }
-
-  .quote-summary__total span {
-    display: block;
-    color: #56645f;
-    font-size: 0.7rem;
-    font-weight: 800;
-    line-height: 1.05;
-  }
-
-  .quote-summary__total strong {
-    display: block;
-    color: #062803;
-    font-size: 1rem;
-    line-height: 1.05;
-    white-space: nowrap;
+    margin-bottom: 8px;
   }
 
   .quote-actions {
-    order: 3;
-    margin: 0;
-    display: grid;
-    grid-template-columns: 6fr 4fr;
-    gap: 6px;
+    margin-top: 8px;
+    gap: 8px;
   }
 
-  .quote-payment-btn,
-  .quote-secondary-btn {
-    width: 100%;
-    min-height: 34px;
-    padding: 6px 4px;
-    font-size: 0.7rem;
-    white-space: normal;
-    line-height: 1.08;
-    gap: 4px;
-    border-radius: 14px;
+  .quote-actions,
+  .quote-actions__secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-payment-btn {
+    min-height: 48px;
   }
 
   .quote-payment-btn__desktop {
@@ -1991,148 +1756,428 @@ body.quote-modal-open {
     display: inline;
   }
 
-  .quote-summary-panel.is-expanded {
-    overflow-y: auto;
-    padding: 8px;
-    gap: 6px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 16px;
+  .quote-modal__dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px auto;
+    border-radius: 22px;
   }
 
-  .quote-summary-panel.is-expanded .quote-detail-title {
-    display: block;
-    order: 1;
+  .quote-modal__header {
+    padding: 22px 20px 16px;
   }
 
-  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
-    order: 2;
+  .quote-modal__body {
+    padding: 16px;
   }
 
-  .quote-summary-panel.is-expanded .quote-summary {
-    order: 3;
+  .quote-modal__footer {
+    padding: 14px 16px 18px;
+  }
+
+  .quote-modal__footer .quote-main-btn,
+  .quote-modal__footer .quote-secondary-btn {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hotel-option-card__header {
     display: grid;
-    gap: 6px;
-    border: 1px solid rgba(6, 40, 3, 0.12);
-    border-radius: 14px;
-    padding: 10px;
+    padding: 16px 16px 12px;
+  }
+
+  .hotel-option-card__badge {
+    width: fit-content;
+  }
+
+  .hotel-option-card__content {
+    padding: 0 16px 16px;
+  }
+
+  .hotel-gallery-main,
+  .hotel-gallery-main-img {
+    min-height: 190px;
+    height: 190px;
+  }
+
+  .hotel-gallery-thumb {
+    width: 64px;
+    min-width: 64px;
+    height: 48px;
+  }
+
+  .train-option-card {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .train-option-card__company {
+    align-items: flex-start;
+  }
+
+  .train-option-card__logo {
+    width: 68px;
+    max-width: 68px;
+  }
+
+  .train-option-card__schedule {
+    grid-template-columns: 1fr;
+  }
+
+  .train-option-card__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .train-option-card__actions .quote-secondary-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hotel-combo-btn {
+    padding: 11px;
+  }
+
+  body.quote-modal-open {
+    overflow: hidden;
+  }
+}
+/* =============================================
+   20. FLATPICKR / CONTROL DE DESBORDE
+   ============================================= */
+
+.flatpickr-calendar {
+  max-width: calc(100vw - 24px) !important;
+  box-sizing: border-box !important;
+  z-index: 3000 !important;
+}
+
+.flatpickr-calendar.open {
+  left: auto !important;
+}
+
+@media (max-width: 768px) {
+  .flatpickr-calendar {
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+  }
+
+  .flatpickr-days,
+  .dayContainer {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* =============================================
+   21. IMPRESIÓN Y PDF
+   ============================================= */
+
+.print-quotation {
+  display: none;
+}
+
+.print-sheet {
+  background: #fff;
+  color: #17322a;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 14mm;
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+.print-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 2px solid #0a3a26;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+
+.print-header--two-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  align-items: start;
+}
+
+.print-company h2,
+.print-header h1 {
+  margin: 0 0 6px;
+  color: #062803;
+}
+
+.print-company p,
+.print-header p,
+.print-section p,
+.print-section li {
+  margin: 0 0 5px;
+  color: #3f4d48;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.print-logo {
+  max-width: 170px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.print-header__right {
+  text-align: right;
+}
+
+.print-coupon-box {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #f4fbf5;
+  border: 1px solid rgba(10, 58, 38, 0.16);
+}
+
+.print-coupon-box span,
+.print-coupon-box small {
+  display: block;
+  color: #56645f;
+  font-size: 10px;
+}
+
+.print-coupon-box strong {
+  display: block;
+  color: #0a3a26;
+  font-size: 15px;
+  margin: 4px 0;
+}
+
+.print-client-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.print-client-grid h3,
+.print-section h3 {
+  color: #062803;
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.print-banner {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.print-banner-top {
+  height: 54mm;
+  margin: 10px 0 14px;
+}
+
+.print-banner-bottom {
+  height: 32mm;
+  margin-top: 8px;
+}
+
+.print-section {
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px solid rgba(6, 40, 3, 0.1);
+  border-radius: 12px;
+  background: #fbfdfb;
+}
+
+.print-itinerary-list,
+#printSelectedServices,
+#printPaymentDetails {
+  display: grid;
+  gap: 7px;
+}
+
+.print-itinerary-item {
+  border-left: 3px solid #0a3a26;
+  padding-left: 8px;
+}
+
+.print-itinerary-item h4 {
+  margin: 0 0 4px;
+  color: #062803;
+  font-size: 12px;
+}
+
+.print-hotel-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.print-hotel-images img {
+  width: 100%;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.print-notes ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.print-footer {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.print-footer p {
+  color: #062803;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.pdf-export-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.print-quotation--pdf-export {
+  display: block !important;
+}
+
+.print-quotation--pdf-export .print-sheet {
+  margin: 0 auto;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff !important;
+    overflow: visible !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #printQuotation,
+  #printQuotation * {
+    visibility: visible !important;
+  }
+
+  #printQuotation {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 210mm;
     background: #fff;
   }
 
-  .quote-summary-panel.is-expanded .quote-summary .quote-summary__line {
-    display: flex !important;
+  .print-sheet {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 12mm;
+    margin: 0;
+    box-shadow: none;
   }
 
-  .quote-summary-panel.is-expanded .quote-summary__total {
-    display: flex;
-    padding: 8px 10px;
-    border: 1px solid rgba(10, 58, 38, 0.12);
-    background: #f4fbf5;
-    text-align: left;
-    justify-items: initial;
-  }
-
-  .quote-summary-panel.is-expanded .quote-payment-mode {
-    display: block !important;
-    order: 4;
-  }
-
-  .quote-summary-panel.is-expanded .quote-payment-info {
-    display: block !important;
-    order: 5;
-  }
-
-  .quote-summary-panel.is-expanded .quote-discount-box {
-    display: block !important;
-    order: 6;
-  }
-
-  .quote-summary-panel.is-expanded .quote-actions {
-    order: 7;
-    margin-top: 6px;
-  }
-
-  .wa-float {
-    bottom: 120px;
-  }
-}
-
-/* =============================================
-   24. MÓVILES PEQUEÑOS
-   ============================================= */
-
-@media (max-width: 420px) {
-  .quote-summary-panel {
-    left: 5px !important;
-    right: 5px !important;
-    bottom: max(0px, env(safe-area-inset-bottom)) !important;
-    padding: 5px;
-    border-radius: 14px;
-    max-width: calc(100vw - 10px) !important;
-  }
-
-  .quote-summary__total strong {
-    font-size: 0.94rem;
-  }
-
-  .quote-payment-btn,
-  .quote-secondary-btn {
-    min-height: 30px;
-    padding: 5px 3px;
-    font-size: 0.64rem;
-  }
-
-  .quote-secondary-btn span {
-    font-size: 0.6rem;
-  }
-}
-
-/* =============================================
-   25. IMPRESIÓN REAL
-   ============================================= */
-
-@media print {
-  @page {
-    size: A4;
-    margin: 10mm;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  body {
-    background: #fff !important;
-    margin: 0 !important;
-  }
-
+  .wa-float,
   #header-container,
   #footer-container,
-  .wa-float,
   .quote-hero,
   .quote-content,
   .quote-modal {
     display: none !important;
   }
 
-  .quote-page {
-    background: #fff !important;
-  }
-
-  .print-quotation {
-    display: block !important;
-  }
-
-  .print-sheet {
-    width: 100%;
-    max-width: none;
+  @page {
+    size: A4;
     margin: 0;
-    padding: 0;
-    box-shadow: none;
+  }
+}
+
+/* =============================================
+   22. AJUSTES FINALES DE SEGURIDAD VISUAL
+   ============================================= */
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.quote-card,
+.quote-summary-panel,
+.quote-modal__dialog,
+.hotel-option-card,
+.train-option-card {
+  overflow-wrap: anywhere;
+}
+
+.quote-main,
+.quote-sidebar,
+.quote-summary-panel,
+.quote-modal__body,
+.hotel-option-card__content,
+.train-option-card__body {
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .quote-hero h1 {
+    font-size: 1.72rem;
   }
 
-  .quote-summary-panel__top {
-    display: none !important;
+  .quote-hero p {
+    font-size: 0.96rem;
+  }
+
+  .quote-card {
+    padding: 14px;
+  }
+
+  .quote-field-group {
+    padding: 13px;
+  }
+
+  .quote-summary__line,
+  .quote-summary__total {
+    gap: 8px;
+  }
+
+  .quote-summary__total strong {
+    font-size: 1.06rem;
+  }
+
+  .quote-discount-box__row {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-discount-box button {
+    width: 100%;
+  }
+
+  .quote-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
   }
 }
