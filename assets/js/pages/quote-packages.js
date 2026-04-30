@@ -59,7 +59,7 @@ class MyCuscoTripQuotePackages {
       this.renderInitialState();
       this.updatePricing();
       this.updatePrintQuotation();
-      this.initDesktopQuotePanelFixed();
+      // this.initDesktopQuotePanelFixed();
     } catch (error) {
       console.error("Error inicializando cotizador:", error);
       alert("No se pudo cargar el cotizador. Revisa que existan packages-peru.json, trains.json, hotels.json y discount-codes.json.");
@@ -203,75 +203,6 @@ class MyCuscoTripQuotePackages {
     }
   }
 
-  initDesktopQuotePanelFixed() {
-    const panel = document.querySelector(".quote-summary-panel");
-    const sidebar = document.querySelector(".quote-sidebar");
-
-    if (!panel || !sidebar) return;
-
-    const desktopTop = 92;
-    let initialTop = 0;
-    let initialLeft = 0;
-    let panelWidth = 0;
-
-    const resetPanel = () => {
-      panel.classList.remove("is-desktop-fixed");
-      panel.style.left = "";
-      panel.style.width = "";
-      sidebar.style.minHeight = "";
-    };
-
-    const calculate = () => {
-      resetPanel();
-
-      if (window.innerWidth <= 1100) return;
-
-      const rect = panel.getBoundingClientRect();
-      initialTop = rect.top + window.scrollY;
-      initialLeft = rect.left;
-      panelWidth = rect.width;
-      sidebar.style.minHeight = `${panel.offsetHeight}px`;
-    };
-
-    const update = () => {
-      if (window.innerWidth <= 1100) {
-        resetPanel();
-        return;
-      }
-
-      if (window.scrollY + desktopTop >= initialTop) {
-        panel.classList.add("is-desktop-fixed");
-        panel.style.left = `${initialLeft}px`;
-        panel.style.width = `${panelWidth}px`;
-      } else {
-        resetPanel();
-      }
-    };
-
-    calculate();
-    update();
-
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", () => {
-      calculate();
-      update();
-    });
-
-    const observer = new MutationObserver(() => {
-      if (window.innerWidth <= 1100) return;
-      const wasFixed = panel.classList.contains("is-desktop-fixed");
-      if (!wasFixed) calculate();
-      sidebar.style.minHeight = `${panel.offsetHeight}px`;
-      update();
-    });
-
-    observer.observe(panel, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-      attributes: true
-    });
-  }
     bindBaseEvents() {
     document.querySelectorAll(".quote-qty-btn").forEach((button) => {
       button.addEventListener("click", () => {
