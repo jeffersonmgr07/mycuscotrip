@@ -1406,22 +1406,25 @@ class MyCuscoTripQuotePackages {
     return [];
   }
     bindHotelModalEvents() {
-    const modal = document.getElementById("hotelModal");
-    if (!modal) return;
-
-    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
-      button.addEventListener("click", () => this.closeHotelModal());
+    document.addEventListener("click", (event) => {
+      const closeBtn = event.target.closest("[data-close-modal], .quote-modal__close");
+      if (closeBtn && closeBtn.closest("#hotelModal")) {
+        this.closeHotelModal();
+      }
     });
-
+  
     document.getElementById("confirmHotelSelectionBtn")?.addEventListener("click", () => {
       if (!this.activeHotelModalDestination || !this.pendingHotelSelection) {
         this.closeHotelModal();
         return;
       }
-
-      this.selectedHotelsByDestination[this.activeHotelModalDestination] = this.pendingHotelSelection.hotelCode;
-      this.selectedCombinationsByDestination[this.activeHotelModalDestination] = this.pendingHotelSelection.combinationKey;
-
+  
+      this.selectedHotelsByDestination[this.activeHotelModalDestination] =
+        this.pendingHotelSelection.hotelCode;
+  
+      this.selectedCombinationsByDestination[this.activeHotelModalDestination] =
+        this.pendingHotelSelection.combinationKey;
+  
       this.renderAccommodationOptions();
       this.updatePricing();
       this.updatePrintQuotation();
@@ -1559,22 +1562,22 @@ class MyCuscoTripQuotePackages {
   }
 
   bindTrainSelectionModalEvents() {
-    const modal = document.getElementById("trainSelectionModal");
-    if (!modal) return;
-
-    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
-      button.addEventListener("click", () => this.closeTrainSelectionModal());
+    document.addEventListener("click", (event) => {
+      const closeBtn = event.target.closest("[data-close-modal], .quote-modal__close");
+  
+      if (closeBtn && closeBtn.closest("#trainSelectionModal")) {
+        this.closeTrainSelectionModal();
+        return;
+      }
+  
+      const dynamicButton = event.target.closest("[data-train-direction]");
+      if (dynamicButton) {
+        this.openTrainSelectionModal(dynamicButton.dataset.trainDirection);
+      }
     });
-
+  
     document.getElementById("confirmTrainSelectionBtn")?.addEventListener("click", () => {
       this.confirmTrainSelection();
-    });
-
-    document.addEventListener("click", (event) => {
-      const dynamicButton = event.target.closest("[data-train-direction]");
-      if (!dynamicButton) return;
-
-      this.openTrainSelectionModal(dynamicButton.dataset.trainDirection);
     });
   }
 
@@ -1739,28 +1742,47 @@ class MyCuscoTripQuotePackages {
     });
   }
     getAvailableTrainsForRoute(routeCode, direction) {
-    const route = this.trainsData?.routes?.[routeCode];
-    const rawTrains = Array.isArray(route?.trains)
-      ? route.trains
-      : Array.isArray(route)
-        ? route
-        : [];
-
-    let trains = rawTrains.filter((train) => this.isTrainAvailableForNationality(train));
-
-    if (direction === "return") {
-      const outboundCompany = this.getSelectedOutboundTrainCompany();
-
-      if (outboundCompany) {
-        trains = trains.filter((train) => {
-          const company = this.normalizeTrainCompany(train.company || train.operator || train.provider);
-          return company === outboundCompany;
+      const routes = this.trainsData?.routes || {};
+      const route = routes[routeCode];
+    
+      let rawTrains = [];
+    
+      if (Array.isArray(route?.trains)) {
+        rawTrains = route.trains;
+      } else if (Array.isArray(route?.options)) {
+        rawTrains = route.options;
+      } else if (Array.isArray(route?.items)) {
+        rawTrains = route.items;
+      } else if (Array.isArray(route)) {
+        rawTrains = route;
+      } else if (Array.isArray(this.trainsData?.trains)) {
+        rawTrains = this.trainsData.trains.filter((train) => {
+          return (
+            train.route === routeCode ||
+            train.routeCode === routeCode ||
+            train.routeId === routeCode ||
+            train.direction === direction
+          );
         });
       }
+    
+      let trains = rawTrains.filter((train) => this.isTrainAvailableForNationality(train));
+    
+      if (direction === "return") {
+        const outboundCompany = this.getSelectedOutboundTrainCompany();
+    
+        if (outboundCompany) {
+          trains = trains.filter((train) => {
+            const company = this.normalizeTrainCompany(
+              train.company || train.operator || train.provider || train.companyName
+            );
+            return company === outboundCompany;
+          });
+        }
+      }
+    
+      return trains;
     }
-
-    return trains;
-  }
 
   isTrainAvailableForNationality(train) {
     if (!train) return false;
@@ -1845,14 +1867,9 @@ class MyCuscoTripQuotePackages {
 
   getTrainByCode(routeCode, trainCode) {
     if (!routeCode || !trainCode) return null;
-
-    const route = this.trainsData?.routes?.[routeCode];
-    const trains = Array.isArray(route?.trains)
-      ? route.trains
-      : Array.isArray(route)
-        ? route
-        : [];
-
+  
+    const trains = this.getAvailableTrainsForRoute(routeCode, "lookup");
+  
     return trains.find((train) => this.getTrainCode(train) === trainCode) || null;
   }
 
