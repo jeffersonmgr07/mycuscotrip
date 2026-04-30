@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=9" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=10" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -114,9 +114,9 @@
                 </div>
 
                 <div class="quote-stepper">
-                  <button type="button" class="quote-qty-btn" data-action="minus" data-target="adults">−</button>
+                  <button type="button" class="quote-qty-btn" data-action="minus" data-target="adults" aria-label="Reducir adultos">−</button>
                   <span id="adultsCount">2</span>
-                  <button type="button" class="quote-qty-btn" data-action="plus" data-target="adults">+</button>
+                  <button type="button" class="quote-qty-btn" data-action="plus" data-target="adults" aria-label="Aumentar adultos">+</button>
                 </div>
               </div>
 
@@ -127,9 +127,9 @@
                 </div>
 
                 <div class="quote-stepper">
-                  <button type="button" class="quote-qty-btn" data-action="minus" data-target="children">−</button>
+                  <button type="button" class="quote-qty-btn" data-action="minus" data-target="children" aria-label="Reducir niños">−</button>
                   <span id="childrenCount">0</span>
-                  <button type="button" class="quote-qty-btn" data-action="plus" data-target="children">+</button>
+                  <button type="button" class="quote-qty-btn" data-action="plus" data-target="children" aria-label="Aumentar niños">+</button>
                 </div>
               </div>
             </div>
@@ -138,19 +138,14 @@
           <article id="itinerarySection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Opciones de itinerario</h2>
-              <p>
-                Selecciona tus fechas para detectar automáticamente la duración de tu viaje
-                y mostrar las opciones de itinerario disponibles.
+              <p id="itinerarySectionIntro">
+                Estos son los itinerarios disponibles según tus fechas y horas de estadía.
               </p>
             </div>
 
-            <div id="packageOptions" class="quote-package-options">
-              <div class="quote-empty-state">
-                Selecciona tus fechas de viaje para detectar automáticamente el itinerario compatible.
-              </div>
-            </div>
+            <div id="packageOptions" class="quote-package-options quote-package-options--compact" aria-live="polite"></div>
 
-            <div id="itineraryOptions" class="quote-itinerary-options"></div>
+            <div id="itineraryOptions" class="quote-itinerary-options" aria-live="polite"></div>
 
             <div class="quote-itinerary-preview">
               <h3>Itinerario seleccionado</h3>
@@ -203,6 +198,7 @@
               </div>
             </div>
           </article>
+
           <article id="extrasSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Personaliza con extras</h2>
@@ -248,27 +244,12 @@
         </div>
 
         <aside class="quote-sidebar">
-          <div class="quote-summary-panel">
+          <div class="quote-summary-panel" id="quoteSummaryPanel">
+            <h2 class="quote-detail-title">Detalles de cotización</h2>
+
             <div class="quote-summary-panel__top">
               <span>Cotización estimada</span>
               <strong id="quoteReference">COT-PE---</strong>
-            </div>
-
-            <div class="quote-discount-box">
-              <label for="discountCodeInput">Código de descuento</label>
-              <div class="quote-discount-box__row">
-                <input type="text" id="discountCodeInput" placeholder="Ej: MCT-8KQ4-P7X2" />
-                <button type="button" id="applyDiscountCodeBtn">Aplicar</button>
-              </div>
-              <p id="discountCodeMessage">Ingresa tu código promocional si tienes uno.</p>
-            </div>
-
-            <div class="quote-payment-mode">
-              <label for="paymentMode">Modalidad de pago</label>
-              <select id="paymentMode">
-                <option value="full">Pago 100% con descuento</option>
-                <option value="partial">Anticipo sin descuento</option>
-              </select>
             </div>
 
             <div class="quote-summary">
@@ -323,6 +304,23 @@
               </div>
             </div>
 
+            <div class="quote-discount-box">
+              <label for="discountCodeInput">Código de descuento</label>
+              <div class="quote-discount-box__row">
+                <input type="text" id="discountCodeInput" placeholder="Ej: MCT-8KQ4-P7X2" />
+                <button type="button" id="applyDiscountCodeBtn">Aplicar</button>
+              </div>
+              <p id="discountCodeMessage">Ingresa tu código promocional si tienes uno.</p>
+            </div>
+
+            <div class="quote-payment-mode">
+              <label for="paymentMode">Modalidad de pago</label>
+              <select id="paymentMode">
+                <option value="full">Pago 100% con descuento</option>
+                <option value="partial">Anticipo sin descuento</option>
+              </select>
+            </div>
+
             <div id="paymentInfo" class="quote-payment-info">
               <span id="paymentInfoText">Selecciona fechas, itinerario, hotel y tren para generar la cotización.</span>
             </div>
@@ -330,7 +328,7 @@
             <div class="quote-actions">
               <button type="button" id="continuePaymentBtn" class="btn quote-payment-btn">
                 <i class="fas fa-credit-card"></i>
-                <span class="quote-payment-btn__desktop">Continuar al pago</span>
+                <span class="quote-payment-btn__desktop">Pagar</span>
                 <span class="quote-payment-btn__mobile">Pagar</span>
               </button>
 
@@ -355,16 +353,17 @@
       <div class="print-sheet">
         <header class="print-header print-header--two-columns">
           <div class="print-company">
-            <h2>My Cusco Trip</h2>
+            <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
             <p>Agencia de viajes y experiencias en Cusco</p>
-            <p>WhatsApp: +51 900 608 980</p>
-            <p>Email: reservas@mycuscotrip.com</p>
+            <p><strong>WhatsApp:</strong> +51 900 608 980</p>
+            <p><strong>Email:</strong> reservas@mycuscotrip.com</p>
+            <p><strong>Web:</strong> www.mycuscotrip.com</p>
           </div>
 
           <div class="print-header__right">
-            <h1>Cotización</h1>
-            <p><strong>Código:</strong> <span id="printQuoteReference">COT-PE---</span></p>
-            <p><strong>Emisión:</strong> <span id="printIssueDate">--/--/----</span></p>
+            <h1><span class="print-quote-badge">COTIZACIÓN</span></h1>
+            <p><strong>Código de cotización:</strong> <span id="printQuoteReference">COT-PE---</span></p>
+            <p><strong>Fecha de emisión:</strong> <span id="printIssueDate">--/--/----</span></p>
             <p><strong>Válido hasta:</strong> <span id="printValidUntil">--/--/----</span></p>
 
             <div id="printCouponBox" class="print-coupon-box">
@@ -378,27 +377,26 @@
         </header>
 
         <div class="print-client-grid">
-          <div>
+          <div class="print-info-box">
             <h3>Datos del cliente</h3>
             <p><strong>Nombre:</strong> <span id="printClientName">Por completar</span></p>
-            <p><strong>Teléfono:</strong> <span id="printClientPhone">Por completar</span></p>
+            <p><strong>WhatsApp / teléfono:</strong> <span id="printClientPhone">Por completar</span></p>
             <p><strong>Email:</strong> <span id="printClientEmail">Por completar</span></p>
             <p><strong>Documento:</strong> <span id="printClientDocument">Por completar</span></p>
             <p><strong>Comentarios:</strong> <span id="printClientNotes">Sin comentarios adicionales</span></p>
           </div>
 
-          <div>
+          <div class="print-info-box">
             <h3>Datos del viaje</h3>
-            <p><strong>Fechas:</strong> <span id="printTravelDates">Por completar</span></p>
+            <p><strong>Fechas de viaje:</strong> <span id="printTravelDates">Por completar</span></p>
             <p><strong>Duración:</strong> <span id="printTravelDuration">Por completar</span></p>
-            <p><strong>Llegada a Cusco:</strong> <span id="printArrivalTime">Por completar</span></p>
-            <p><strong>Salida de Cusco:</strong> <span id="printDepartureTime">Por completar</span></p>
+            <p><strong>Pasajeros:</strong> <span id="printPassengerSummary">Por completar</span></p>
             <p><strong>Nacionalidad:</strong> <span id="printNationality">Por completar</span></p>
+            <p><strong>Hora de llegada:</strong> <span id="printArrivalTime">Por completar</span></p>
+            <p><strong>Hora de salida:</strong> <span id="printDepartureTime">Por completar</span></p>
             <p><strong>Moneda:</strong> <span id="printCurrency">PEN</span></p>
           </div>
         </div>
-
-        <img class="print-banner print-banner-top" src="./assets/img/quote/print-banner-top.jpg" alt="Experiencia My Cusco Trip" />
 
         <section class="print-section">
           <h3>Itinerario</h3>
@@ -429,10 +427,10 @@
 
         <footer class="print-footer">
           <p>Gracias por cotizar con My Cusco Trip.</p>
-          <img class="print-banner print-banner-bottom" src="./assets/img/quote/print-banner-bottom.jpg" alt="Gracias por cotizar con My Cusco Trip" />
         </footer>
       </div>
     </section>
+
     <div id="hotelModal" class="quote-modal" hidden>
       <div class="quote-modal__backdrop" data-close-modal></div>
 
@@ -519,6 +517,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script src="./assets/js/components.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=9"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=10"></script>
 </body>
 </html>
