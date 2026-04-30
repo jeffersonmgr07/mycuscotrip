@@ -327,6 +327,7 @@ class MyCuscoTripQuotePackages {
       altInput: true,
       altFormat: "d M Y",
       appendTo: document.body,
+      positionElement: input,
       static: false,
       disableMobile: true,
       onReady: (_, __, instance) => {
@@ -383,7 +384,6 @@ class MyCuscoTripQuotePackages {
       minuteIncrement: 15,
       allowInput: false,
       disableMobile: !isMobile,
-      appendTo: document.body,
       locale: flatpickr.l10ns.es
     };
 
@@ -393,6 +393,7 @@ class MyCuscoTripQuotePackages {
     if (arrivalInput) {
       flatpickr(arrivalInput, {
         ...timeConfig,
+        positionElement: arrivalInput,
         onChange: (_, value) => {
           this.arrivalTime = value || "";
           this.refreshItineraryByTimeRules();
@@ -404,6 +405,7 @@ class MyCuscoTripQuotePackages {
     if (departureInput) {
       flatpickr(departureInput, {
         ...timeConfig,
+        positionElement: departureInput,
         onChange: (_, value) => {
           this.departureTime = value || "";
           this.refreshItineraryByTimeRules();
