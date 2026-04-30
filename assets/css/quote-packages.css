@@ -710,12 +710,18 @@ body.quote-modal-open {
     max-height: calc(100vh - 110px) !important;
     overflow: visible !important;
     z-index: 50 !important;
+    min-height: 1px !important;
   }
 
   .quote-summary-panel {
-    max-height: calc(100vh - 110px) !important;
+    position: fixed !important;
+    top: 96px !important;
+    right: max(20px, calc((100vw - 1200px) / 2 + 20px)) !important;
+    width: 390px !important;
+    max-width: 390px !important;
+    max-height: calc(100vh - 116px) !important;
     overflow-y: auto !important;
-    scrollbar-width: thin;
+    z-index: 80 !important;
   }
 }
 
@@ -2192,5 +2198,34 @@ body.quote-modal-open {
 
   .quote-summary-panel__top {
     display: none !important;
+  }
+}
+/* FIX móvil: tarjeta de itinerario detectado */
+@media (max-width: 768px) {
+  .quote-package-card--detected .quote-package-card__top {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .quote-package-card--detected .quote-package-card__top > div {
+    display: grid;
+    gap: 8px;
+  }
+
+  .quote-package-card--detected h3,
+  .quote-package-card--detected p {
+    display: none !important;
+  }
+
+  .quote-package-card--detected .quote-badge {
+    width: fit-content;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .quote-package-card--detected .quote-package-card__top > .quote-badge {
+    grid-row: 2;
+    justify-self: start;
   }
 }
