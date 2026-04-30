@@ -1,10 +1,10 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
    Versión corregida
-   - Sticky real en PC
-   - Panel inferior fijo en móvil
+   - Panel de cotización fijo en PC controlado por JS
+   - Panel inferior fijo en móvil sin tocar su comportamiento actual
    - Sin desborde horizontal por Flatpickr
-   - Sin reglas duplicadas conflictivas al final
+   - Logos y horarios mejorados en modal de trenes
    ========================================================= */
 
 /* =============================================
@@ -47,8 +47,6 @@ body.quote-modal-open {
   max-width: 100%;
 }
 
-/* Importante:
-   No usar overflow hidden aquí porque rompe position: sticky en PC */
 @media (min-width: 1101px) {
   .quote-page,
   .quote-content,
@@ -300,7 +298,6 @@ body.quote-modal-open {
   font-size: 0.86rem;
   line-height: 1.45;
 }
-
 /* =============================================
    7. SELECTORES DE CANTIDAD
    ============================================= */
@@ -433,6 +430,7 @@ body.quote-modal-open {
 .quote-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 28px;
   padding: 6px 11px;
   border-radius: 999px;
@@ -456,6 +454,7 @@ body.quote-modal-open {
   color: #b45f06;
   font-weight: 600;
 }
+
 /* =============================================
    9. ITINERARIO
    ============================================= */
@@ -501,8 +500,22 @@ body.quote-modal-open {
   font-size: 0.92rem;
 }
 
+.quote-itinerary-time {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #edf3ef;
+  color: #0a3a26;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 /* =============================================
-   10. PAQUETE DETECTADO
+   10. PAQUETE / ITINERARIO DETECTADO
    ============================================= */
 
 .quote-package-card--detected {
@@ -521,25 +534,31 @@ body.quote-modal-open {
 }
 
 .quote-package-card--detected .quote-package-card__top {
-  margin-bottom: 6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  margin-bottom: 0;
 }
 
-.quote-package-card--detected h3 {
-  font-size: 1rem;
-  margin-top: 8px;
-  margin-bottom: 5px;
-}
-
+.quote-package-card--detected h3,
 .quote-package-card--detected p {
-  font-size: 0.88rem;
-  line-height: 1.42;
-  margin-bottom: 5px;
+  display: none !important;
 }
 
 .quote-package-card--detected .quote-badge {
-  min-height: 24px;
-  padding: 5px 9px;
-  font-size: 0.72rem;
+  width: fit-content;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.quote-package-card--detected .quote-package-card__top > div {
+  display: grid;
+  gap: 8px;
+}
+
+.quote-package-card--detected .quote-package-card__top > .quote-badge,
+.quote-package-card--detected .quote-duration-badge {
+  justify-self: start;
 }
 
 /* =============================================
@@ -595,7 +614,6 @@ body.quote-modal-open {
   color: #0a3a26 !important;
   font-weight: 800;
 }
-
 /* =============================================
    12. TRENES
    ============================================= */
@@ -694,7 +712,17 @@ body.quote-modal-open {
   position: relative;
 }
 
-/* PC: panel nace alineado con Datos de viaje y luego se mantiene visible */
+.quote-summary-panel {
+  background: #fff;
+  border-radius: 24px;
+  padding: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
+  min-width: 0;
+}
+
+/* PC: el panel nace alineado con Datos de viaje.
+   JS agrega .is-desktop-fixed cuando debe quedar fijo. */
 @media (min-width: 1101px) {
   .quote-page,
   .quote-content,
@@ -704,22 +732,18 @@ body.quote-modal-open {
 
   .quote-layout {
     grid-template-columns: minmax(0, 1fr) 390px;
-    align-items: stretch !important;
+    align-items: start !important;
   }
 
   .quote-sidebar {
     position: relative !important;
-    align-self: stretch !important;
-    height: auto !important;
-    min-height: 100% !important;
+    min-height: 1px;
     overflow: visible !important;
-    z-index: 50 !important;
+    z-index: 50;
   }
 
   .quote-summary-panel {
-    position: sticky !important;
-    top: 92px !important;
-    right: auto !important;
+    position: relative !important;
     width: 100% !important;
     max-width: 390px !important;
     height: auto !important;
@@ -727,15 +751,12 @@ body.quote-modal-open {
     overflow: visible !important;
     overflow-y: visible !important;
   }
-}
 
-.quote-summary-panel {
-  background: #fff;
-  border-radius: 24px;
-  padding: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
-  min-width: 0;
+  .quote-summary-panel.is-desktop-fixed {
+    position: fixed !important;
+    top: 92px !important;
+    z-index: 80 !important;
+  }
 }
 
 .quote-detail-title {
@@ -912,7 +933,6 @@ body.quote-modal-open {
   line-height: 1.45;
   text-align: center;
 }
-
 /* =============================================
    15. BOTONES
    ============================================= */
@@ -1021,6 +1041,7 @@ body.quote-modal-open {
   justify-content: center;
   gap: 7px;
 }
+
 /* =============================================
    16. MODALES
    ============================================= */
@@ -1287,105 +1308,13 @@ body.quote-modal-open {
   height: 100%;
   object-fit: cover;
 }
-
-.hotel-option-card__body {
-  display: grid;
-  gap: 12px;
-  align-self: start;
-  padding-top: 0;
-  min-width: 0;
-}
-
-.hotel-option-card__body label {
-  display: block;
-  margin-bottom: 0;
-  font-weight: 800;
-  color: #1d5c23;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-}
-
-.hotel-option-card__options {
-  display: grid;
-  gap: 10px;
-}
-
-.hotel-combo-btn {
-  width: 100%;
-  position: relative;
-  border: 2px solid rgba(6, 40, 3, 0.18);
-  background: #fff;
-  border-radius: 18px;
-  padding: 13px 15px 13px 46px;
-  text-align: left;
-  display: grid;
-  gap: 5px;
-  cursor: pointer;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-  min-height: 72px;
-  align-items: center;
-}
-
-.hotel-combo-btn:hover {
-  border-color: rgba(10, 58, 38, 0.45);
-  box-shadow: 0 8px 18px rgba(10, 58, 38, 0.08);
-}
-
-.hotel-combo-btn.is-selected {
-  border-color: #0a3a26;
-  background: #f4fbf5;
-  box-shadow: 0 10px 20px rgba(10, 58, 38, 0.12);
-}
-
-.hotel-combo-btn__radio {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(6, 40, 3, 0.35);
-  border-radius: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-}
-
-.hotel-combo-btn.is-selected .hotel-combo-btn__radio {
-  border-color: #0a3a26;
-}
-
-.hotel-combo-btn.is-selected .hotel-combo-btn__radio::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border-radius: 50%;
-  background: #0a3a26;
-}
-
-.hotel-combo-btn--compact {
-  min-height: 58px;
-  border-radius: 16px;
-  box-shadow: none;
-}
-
-.hotel-combo-btn__main {
-  color: #17322a;
-  font-weight: 800;
-  font-size: 0.96rem;
-  line-height: 1.25;
-}
-
-.hotel-combo-btn__sub {
-  color: #56645f;
-  font-size: 0.86rem;
-  line-height: 1.35;
-}
-
 /* =============================================
-   18. MODAL DE TRENES
+   18. MODAL DE TRENES (MEJORADO)
    ============================================= */
 
 .quote-train-modal-list {
-  gap: 12px;
+  display: grid;
+  gap: 14px;
 }
 
 .train-option-card,
@@ -1400,11 +1329,9 @@ body.quote-modal-open {
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.045);
   padding: 16px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 1fr auto;
   gap: 16px;
   align-items: center;
-  max-width: 100%;
-  min-width: 0;
 }
 
 .train-option-card:hover,
@@ -1419,47 +1346,85 @@ body.quote-modal-open {
   box-shadow: 0 14px 26px rgba(10, 58, 38, 0.13);
 }
 
-.train-option-card.is-recommended {
-  border-color: rgba(217, 154, 0, 0.62);
-}
-
-.train-option-card__top {
+/* LOGO DE EMPRESA */
+.train-option-card__company {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
   align-items: center;
+  gap: 10px;
 }
 
-.train-option-card h3,
-.quote-train-card h3 {
-  margin: 8px 0 6px;
+.train-option-card__logo {
+  width: 80px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* CONTENIDO */
+.train-option-card__content {
+  display: grid;
+  gap: 6px;
+}
+
+.train-option-card h3 {
+  margin: 0;
   color: #062803;
   font-size: 1.05rem;
 }
 
-.train-option-card p,
-.quote-train-card p {
-  margin: 0 0 5px;
-  color: #56645f;
-  line-height: 1.45;
-  font-size: 0.92rem;
+/* HORARIOS MÁS VISIBLES */
+.train-option-card__schedule {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
 }
 
+.train-time-box {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #edf3ef;
+  min-width: 95px;
+}
+
+.train-time-box span {
+  font-size: 0.7rem;
+  color: #56645f;
+  font-weight: 700;
+}
+
+.train-time-box strong {
+  font-size: 0.9rem;
+  color: #062803;
+}
+
+/* PRECIO */
 .train-option-card__price {
   text-align: right;
-  white-space: nowrap;
 }
 
 .train-option-card__price strong {
-  display: block;
+  font-size: 1.05rem;
   color: #062803;
-  font-size: 1.04rem;
 }
 
 .train-option-card__price span {
-  display: block;
+  font-size: 0.8rem;
   color: #66746f;
-  font-size: 0.82rem;
+}
+
+/* BADGE RECOMENDADO */
+.train-badge-recommended {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #d99a00;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 5px 8px;
+  border-radius: 999px;
 }
 
 /* =============================================
@@ -1494,11 +1459,10 @@ body.quote-modal-open {
   gap: 6px;
   color: #17322a;
   font-size: 0.92rem;
-  line-height: 1.45;
 }
 
 /* =============================================
-   20. FLATPICKR - CORRECCIÓN DEFINITIVA
+   20. FLATPICKR - FIX DEFINITIVO
    ============================================= */
 
 .flatpickr-calendar {
@@ -1516,32 +1480,10 @@ body.quote-modal-open {
   .flatpickr-calendar.open {
     position: fixed !important;
     left: 50% !important;
-    right: auto !important;
-    top: 50% !important;
-    bottom: auto !important;
     transform: translate(-50%, -50%) !important;
+    top: 50% !important;
     width: min(330px, calc(100vw - 24px)) !important;
     max-width: calc(100vw - 24px) !important;
-    min-width: 0 !important;
-    max-height: 340px !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-
-  .flatpickr-months,
-  .flatpickr-innerContainer,
-  .flatpickr-rContainer,
-  .flatpickr-days,
-  .dayContainer {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .flatpickr-days {
-    max-height: 245px !important;
-    overflow: hidden !important;
   }
 }
 /* =============================================
@@ -1877,8 +1819,6 @@ body.quote-modal-open {
     grid-template-columns: 1fr;
   }
 
-  /* Modales móvil */
-
   .quote-modal__dialog {
     width: calc(100vw - 12px);
     max-height: calc(100dvh - 12px);
@@ -1924,15 +1864,6 @@ body.quote-modal-open {
     height: 205px;
   }
 
-  .hotel-combo-btn {
-    min-height: 64px;
-    padding: 12px 12px 12px 43px;
-  }
-
-  .hotel-combo-btn--compact {
-    min-height: 54px;
-  }
-
   .train-option-card,
   .quote-train-card {
     grid-template-columns: 1fr;
@@ -1943,8 +1874,20 @@ body.quote-modal-open {
     white-space: normal;
   }
 
-  /* Panel inferior móvil */
+  .train-option-card__logo {
+    width: 72px;
+    height: 24px;
+  }
 
+  .train-option-card__schedule {
+    gap: 8px;
+  }
+
+  .train-time-box {
+    min-width: 88px;
+  }
+
+  /* Panel inferior móvil: no modificar */
   .quote-summary-panel {
     position: fixed !important;
     left: 6px !important;
@@ -2047,17 +1990,6 @@ body.quote-modal-open {
   .quote-payment-btn__mobile {
     display: inline;
   }
-
-  .quote-secondary-btn span {
-    display: inline;
-    font-size: 0.66rem;
-  }
-
-  #savePdfBtn {
-    display: none !important;
-  }
-
-  /* Panel expandido móvil */
 
   .quote-summary-panel.is-expanded {
     overflow-y: auto;
@@ -2202,34 +2134,5 @@ body.quote-modal-open {
 
   .quote-summary-panel__top {
     display: none !important;
-  }
-}
-/* FIX móvil: tarjeta de itinerario detectado */
-@media (max-width: 768px) {
-  .quote-package-card--detected .quote-package-card__top {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 8px !important;
-  }
-
-  .quote-package-card--detected .quote-package-card__top > div {
-    display: grid;
-    gap: 8px;
-  }
-
-  .quote-package-card--detected h3,
-  .quote-package-card--detected p {
-    display: none !important;
-  }
-
-  .quote-package-card--detected .quote-badge {
-    width: fit-content;
-    max-width: 100%;
-    white-space: normal;
-  }
-
-  .quote-package-card--detected .quote-package-card__top > .quote-badge {
-    grid-row: 2;
-    justify-self: start;
   }
 }
