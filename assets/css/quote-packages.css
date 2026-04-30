@@ -2151,3 +2151,29 @@ body.quote-modal-open {
     min-width: 0 !important;
   }
 }
+@media (min-width: 1101px) {
+  .quote-page,
+  .quote-content {
+    overflow: visible !important;
+  }
+
+  .quote-layout {
+    align-items: start !important;
+    overflow: visible !important;
+  }
+
+  .quote-sidebar {
+    position: sticky !important;
+    top: 90px !important;
+    align-self: start !important;
+    height: fit-content !important;
+    max-height: calc(100vh - 110px) !important;
+    overflow: visible !important;
+    z-index: 50 !important;
+  }
+
+  .quote-summary-panel {
+    max-height: calc(100vh - 110px) !important;
+    overflow-y: auto !important;
+  }
+}
