@@ -715,7 +715,7 @@ body.quote-modal-open {
 
   .quote-summary-panel {
     position: fixed !important;
-    top: 96px !important;
+    top: 210px !important;
     right: max(20px, calc((100vw - 1200px) / 2 + 20px)) !important;
     width: 390px !important;
     max-width: 390px !important;
