@@ -1,6 +1,6 @@
 {
-  "version": "1.2.0",
-  "updatedAt": "2026-04-25",
+  "version": "2.0.0",
+  "updatedAt": "2026-04-30",
   "market": "peru",
   "defaultCurrency": "PEN",
   "pricingModel": "base_without_train_without_accommodation",
@@ -41,6 +41,77 @@
       "label": "Comunidad Andina"
     }
   ],
+  "tourCatalog": {
+    "welcome": "Bienvenida Ancestral",
+    "city": "City Tour Cusco + Centros Arqueológicos",
+    "sacred_classic": "Valle Sagrado Clásico",
+    "sacred_classic_connection": "Valle Sagrado Clásico + Conexión a Aguas Calientes",
+    "sacred_vip": "Valle Sagrado VIP Ruta Completa",
+    "sacred_vip_connection": "Valle Sagrado VIP + Conexión a Aguas Calientes",
+    "maras_moray": "Maras y Moray",
+    "south_valley": "Valle Sur",
+    "vinicunca": "Montaña de Colores Vinicunca",
+    "humantay": "Laguna Humantay",
+    "palcoyo": "Palcoyo / Valle Rojo",
+    "seven_lagoons": "Siete Lagunas Ausangate",
+    "machu_full_day": "Machu Picchu Full Day",
+    "machu_express": "Machu Picchu Full Day Express",
+    "machu_connection": "Machu Picchu desde Aguas Calientes",
+    "free_day": "Día libre",
+    "arrival_transfer": "Traslado de llegada",
+    "departure_transfer": "Traslado de salida"
+  },
+  "smartSelection": {
+    "description": "Reglas referenciales para evitar combinaciones duplicadas o poco recomendables.",
+    "duplicateRules": [
+      {
+        "family": "sacred_valley",
+        "exclusiveCodes": [
+          "sacred_classic",
+          "sacred_classic_connection",
+          "sacred_vip",
+          "sacred_vip_connection"
+        ]
+      },
+      {
+        "family": "machu_picchu",
+        "exclusiveCodes": [
+          "machu_full_day",
+          "machu_express",
+          "machu_connection"
+        ]
+      },
+      {
+        "family": "maras_moray",
+        "avoidIfTourCodesInclude": [
+          "sacred_vip",
+          "sacred_vip_connection"
+        ]
+      }
+    ],
+    "fatigueRules": [
+      {
+        "rule": "Después de Machu Picchu Full Day tradicional no se recomienda trekking fuerte al día siguiente.",
+        "whenPreviousTour": "machu_full_day",
+        "avoidNextDay": [
+          "vinicunca",
+          "humantay",
+          "palcoyo",
+          "seven_lagoons"
+        ]
+      },
+      {
+        "rule": "Después de Machu Picchu Express sí se permite trekking al día siguiente.",
+        "whenPreviousTour": "machu_express",
+        "allowNextDay": [
+          "vinicunca",
+          "humantay",
+          "palcoyo",
+          "seven_lagoons"
+        ]
+      }
+    ]
+  },
   "commonIncludes": [
     "Recojo del aeropuerto o terminal terrestre a la llegada",
     "Traslado de salida al aeropuerto o terminal terrestre",
@@ -78,7 +149,7 @@
       "days": 3,
       "nights": 2,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Paquete corto para conocer Cusco y Machu Picchu con una ruta esencial.",
+      "shortDescription": "Paquete corto para conocer Cusco y Machu Picchu con rutas esenciales, culturales o de aventura.",
       "description": "Programa ideal para viajeros que disponen de pocos días en Cusco. El precio base no incluye tren ni alojamiento, ya que ambos se seleccionan durante la cotización.",
       "duration": {
         "label": "3 días / 2 noches",
@@ -132,268 +203,175 @@
       },
       "itineraryOptions": [
         {
-          "code": "3d-classic-essential",
-          "label": "Opción A: City Tour + Machu Picchu Full Day",
+          "code": "3d-a-welcome-city-mapi-maras",
+          "label": "Opción A: Bienvenida + City Tour + Machu Picchu + Maras y Moray",
           "recommended": true,
-          "summary": "Ruta esencial para conocer Cusco y Machu Picchu en pocos días.",
-          "itinerary": [
-            {
-              "day": 1,
-              "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y tiempo libre para aclimatarse. Por la tarde, City Tour visitando Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
-            },
-            {
-              "day": 2,
-              "title": "Día 2: Machu Picchu Full Day",
-              "description": "Salida muy temprano hacia la estación correspondiente según tren elegido. Viaje a Machu Picchu Pueblo, bus de subida, ingreso oficial y visita guiada a Machu Picchu. Retorno a Cusco por la noche."
-            },
-            {
-              "day": 3,
-              "title": "Día 3: Traslado de salida",
-              "description": "Desayuno en el hotel si fue seleccionado y traslado al aeropuerto o terminal terrestre según horario de salida."
-            }
-          ]
-        },
-        {
-          "code": "3d-soft-welcome",
-          "label": "Opción B: Bienvenida Ancestral + Machu Picchu Full Day",
-          "recommended": false,
-          "summary": "Una llegada más suave con bienvenida ancestral y Machu Picchu al día siguiente.",
-          "itinerary": [
-            {
-              "day": 1,
-              "title": "Día 1: Llegada + Bienvenida Ancestral Cusco",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y experiencia de bienvenida ancestral. Tarde libre para aclimatarse y caminar por el centro histórico. Noche en Cusco."
-            },
-            {
-              "day": 2,
-              "title": "Día 2: Machu Picchu Full Day",
-              "description": "Salida de madrugada hacia la estación de tren. Viaje a Machu Picchu Pueblo, bus de subida, visita guiada a Machu Picchu y retorno a Cusco por la noche."
-            },
-            {
-              "day": 3,
-              "title": "Día 3: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
-            }
-          ]
-        }
-      ],
-      "includes": [
-        "Recojo del aeropuerto o terminal terrestre a la llegada",
-        "Traslado de salida al aeropuerto o terminal terrestre",
-        "City Tour Cusco o bienvenida ancestral según opción elegida",
-        "Machu Picchu Full Day",
-        "Traslado a estación de tren de ida y retorno",
-        "Bus de subida y bajada en Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español",
-        "Asistencia de viaje durante la operación"
-      ],
-      "excludes": [
-        "Tren turístico o tren local",
-        "Alojamiento si el cliente elige opción sin hotel",
-        "Vuelos nacionales o internacionales",
-        "Alimentación no mencionada",
-        "Gastos personales",
-        "Seguro de viaje",
-        "Propinas"
-      ],
-      "extras": [
-        {
-          "code": "tinkuy-lunch",
-          "label": "Almuerzo buffet Tinkuy by Belmond",
-          "currency": "USD",
-          "price": 45,
-          "perPerson": true
-        }
-      ],
-      "booking": {
-        "quotationCodePrefix": "COT-PE-3D"
-      },
-      "status": "published"
-    },
-    {
-      "id": "pkg_pe_004",
-      "internalCode": "PKGPE004",
-      "slug": "paquete-peruanos-cusco-machu-picchu-4d-3n",
-      "title": "Paquete Cusco y Machu Picchu 4D/3N",
-      "category": "paquetes-peruanos",
-      "type": "quote-package",
-      "typeLabel": "4 días / 3 noches",
-      "badge": "Recomendado",
-      "featured": true,
-      "market": "peru",
-      "currency": "PEN",
-      "days": 4,
-      "nights": 3,
-      "location": "Cusco / Valle Sagrado / Machu Picchu",
-      "shortDescription": "Paquete de 4 días con varias formas de combinar Cusco, Machu Picchu y una excursión adicional.",
-      "description": "Programa de 4 días y 3 noches para viajeros que desean armar una experiencia corta pero completa. El precio base no incluye tren ni alojamiento.",
-      "duration": {
-        "label": "4 días / 3 noches",
-        "maxGroupSize": 15,
-        "guideLanguages": ["es"]
-      },
-      "basePricing": {
-        "adult": 660,
-        "child": 620
-      },
-      "basePricingByNationality": {
-        "national": {
-          "adult": 660,
-          "child": 620,
-          "currency": "PEN"
-        },
-        "andean_community": {
-          "adult": 290,
-          "child": 270,
-          "currency": "USD"
-        },
-        "foreign": {
-          "adult": 310,
-          "child": 270,
-          "currency": "USD"
-        }
-      },
-      "priceIncludesTrain": false,
-      "priceIncludesAccommodation": false,
-      "trainSelection": {
-        "required": true,
-        "mode": "sacred_valley_connection",
-        "outboundRoute": "sacred_valley_connection_outbound",
-        "returnRoute": "machu_picchu_return"
-      },
-      "accommodationSummary": [
-        {
-          "destination": "cusco",
-          "nights": 2,
-          "label": "Cusco - 2 noches"
-        },
-        {
-          "destination": "aguas-calientes",
-          "nights": 1,
-          "label": "Aguas Calientes - 1 noche"
-        }
-      ],
-      "allowedHotelDestinations": ["cusco", "aguas-calientes"],
-      "images": {
-        "cover": "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg",
-        "gallery": [
-          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/1.jpg",
-          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/2.jpg",
-          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/3.jpg"
-        ]
-      },
-      "itineraryOptions": [
-        {
-          "code": "4d-classic-connection",
-          "label": "Opción A: Valle Sagrado conexión + Machu Picchu",
-          "recommended": true,
-          "summary": "La versión más recomendada: Cusco, Valle Sagrado, noche en Aguas Calientes y Machu Picchu.",
+          "summary": "Ruta corta y completa con llegada cultural, Cusco, Machu Picchu y Maras/Moray.",
+          "trainMode": "full_day",
+          "packageStartTime": "09:00",
+          "packageEndTime": "15:00",
           "itinerary": [
             {
               "day": 1,
               "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado, experiencia de bienvenida ancestral y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Recojo para visitar Pisac, mercado artesanal, Urubamba y Ollantaytambo. Por la tarde, tren elegido hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Machu Picchu Full Day",
+              "description": "Salida de madrugada hacia la estación correspondiente según tren elegido. Viaje a Machu Picchu Pueblo, bus de subida, ingreso oficial, visita guiada a Machu Picchu y retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
             },
             {
               "day": 3,
-              "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Bus de subida, ingreso oficial y visita guiada a Machu Picchu. Retorno en tren elegido y traslado a Cusco. Noche en Cusco."
-            },
-            {
-              "day": 4,
-              "title": "Día 4: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "title": "Día 3: Maras y Moray + traslado de salida",
+              "description": "Excursión a Moray y Salineras de Maras. Al finalizar, traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["maras_moray", "departure_transfer"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             }
           ]
         },
         {
-          "code": "4d-mapi-vinicunca",
-          "label": "Opción B: Machu Picchu Full Day + Montaña de Colores",
+          "code": "3d-b-welcome-city-mapi-south",
+          "label": "Opción B: Bienvenida + City Tour + Machu Picchu + Valle Sur",
           "recommended": false,
-          "summary": "Ideal para viajeros que quieren Machu Picchu y una aventura clásica en Vinicunca.",
+          "summary": "Ruta cultural con Cusco, Machu Picchu y Valle Sur.",
+          "trainMode": "full_day",
+          "packageStartTime": "09:00",
+          "packageEndTime": "15:00",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day",
+              "description": "Viaje full day a Machu Picchu con tren, bus, ingreso oficial y visita guiada. Retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Valle Sur + traslado de salida",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Al finalizar, traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["south_valley", "departure_transfer"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            }
+          ]
+        },
+        {
+          "code": "3d-c-city-mapi-free",
+          "label": "Opción C: City Tour + Machu Picchu + salida libre",
+          "recommended": false,
+          "summary": "Opción esencial para llegadas por la tarde y salida flexible el último día.",
+          "trainMode": "full_day",
+          "packageStartTime": "14:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
               "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco."
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "14:00",
+              "endTime": "19:00"
             },
             {
               "day": 2,
               "title": "Día 2: Machu Picchu Full Day",
-              "description": "Salida de madrugada a la estación de tren, viaje a Machu Picchu Pueblo, bus de subida, visita guiada a Machu Picchu y retorno a Cusco por la noche."
+              "description": "Visita full day a Machu Picchu y retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
             },
             {
               "day": 3,
-              "title": "Día 3: Montaña de Colores Vinicunca",
-              "description": "Salida temprano hacia la ruta de Vinicunca, desayuno, caminata, tiempo para fotografías, almuerzo y retorno a Cusco. Noche en Cusco."
-            },
-            {
-              "day": 4,
-              "title": "Día 4: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "title": "Día 3: Traslado de salida",
+              "description": "Día libre hasta el horario de traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         },
         {
-          "code": "4d-mapi-humantay",
-          "label": "Opción C: Machu Picchu Full Day + Laguna Humantay",
+          "code": "3d-d-city-mapi-express-vinicunca",
+          "label": "Opción D: City Tour + Machu Picchu Express + Montaña de Colores",
           "recommended": false,
-          "summary": "Una opción equilibrada con Machu Picchu y una experiencia natural de laguna y montaña.",
+          "summary": "Opción de aventura usando Machu Picchu Express para permitir mejor descanso antes de Vinicunca.",
+          "trainMode": "express",
+          "packageStartTime": "13:00",
+          "packageEndTime": "17:00",
           "itinerary": [
             {
               "day": 1,
               "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "13:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Machu Picchu Full Day",
-              "description": "Viaje en tren hacia Machu Picchu Pueblo, ingreso oficial, visita guiada y retorno a Cusco por la noche."
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con salida de madrugada y retorno temprano a Cusco, ideal para continuar con una excursión al día siguiente.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
             },
             {
               "day": 3,
-              "title": "Día 3: Laguna Humantay",
-              "description": "Salida temprano hacia Mollepata y Soraypampa. Caminata hacia Laguna Humantay, tiempo para fotos, almuerzo y retorno a Cusco. Noche en Cusco."
-            },
-            {
-              "day": 4,
-              "title": "Día 4: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "title": "Día 3: Montaña de Colores + traslado de salida",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno. Al finalizar, traslado de salida según horario disponible.",
+              "tourCodes": ["vinicunca", "departure_transfer"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             }
           ]
         },
         {
-          "code": "4d-mapi-siete-lagunas",
-          "label": "Opción D: Machu Picchu Full Day + Siete Lagunas",
+          "code": "3d-e-city-mapi-express-humantay",
+          "label": "Opción E: City Tour + Machu Picchu Express + Laguna Humantay",
           "recommended": false,
-          "summary": "Para viajeros que buscan una experiencia altoandina más aventurera.",
+          "summary": "Opción natural con Machu Picchu Express y Laguna Humantay.",
+          "trainMode": "express",
+          "packageStartTime": "13:00",
+          "packageEndTime": "17:00",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + Bienvenida Ancestral",
-              "description": "Recepción, traslado al hotel seleccionado y bienvenida ancestral. Tarde libre para aclimatación. Noche en Cusco."
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "13:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Machu Picchu Full Day",
-              "description": "Salida muy temprano hacia la estación, tren a Machu Picchu Pueblo, visita guiada a Machu Picchu y retorno a Cusco."
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
             },
             {
               "day": 3,
-              "title": "Día 3: Siete Lagunas del Ausangate",
-              "description": "Salida temprano hacia Pacchanta, caminata por el circuito de lagunas altoandinas, almuerzo y retorno a Cusco. Noche en Cusco."
-            },
-            {
-              "day": 4,
-              "title": "Día 4: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "title": "Día 3: Laguna Humantay + traslado de salida",
+              "description": "Excursión a Laguna Humantay con desayuno, caminata, almuerzo y retorno. Al finalizar, traslado de salida según horario disponible.",
+              "tourCodes": ["humantay", "departure_transfer"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             }
           ]
         }
@@ -436,10 +414,382 @@
         }
       ],
       "booking": {
+        "quotationCodePrefix": "COT-PE-3D"
+      },
+      "status": "published"
+    },
+        {
+      "id": "pkg_pe_004",
+      "internalCode": "PKGPE004",
+      "slug": "paquete-peruanos-cusco-machu-picchu-4d-3n",
+      "title": "Paquete Cusco y Machu Picchu 4D/3N",
+      "category": "paquetes-peruanos",
+      "type": "quote-package",
+      "typeLabel": "4 días / 3 noches",
+      "badge": "Recomendado",
+      "featured": true,
+      "market": "peru",
+      "currency": "PEN",
+      "days": 4,
+      "nights": 3,
+      "location": "Cusco / Valle Sagrado / Machu Picchu",
+      "shortDescription": "Paquete de 4 días con opciones de conexión, Machu Picchu Full Day, aventura o salida flexible.",
+      "description": "Programa de 4 días y 3 noches para viajeros que desean combinar Cusco, Machu Picchu y una experiencia adicional. El precio base no incluye tren ni alojamiento.",
+      "duration": {
+        "label": "4 días / 3 noches",
+        "maxGroupSize": 15,
+        "guideLanguages": ["es"]
+      },
+      "basePricing": {
+        "adult": 660,
+        "child": 620
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 660,
+          "child": 620,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 290,
+          "child": 270,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 310,
+          "child": 270,
+          "currency": "USD"
+        }
+      },
+      "priceIncludesTrain": false,
+      "priceIncludesAccommodation": false,
+      "trainSelection": {
+        "required": true,
+        "mode": "mixed",
+        "outboundRoute": "dynamic_by_itinerary_option",
+        "returnRoute": "machu_picchu_return"
+      },
+      "accommodationSummary": [
+        {
+          "destination": "cusco",
+          "nights": 2,
+          "label": "Cusco - 2 noches"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 noche"
+        }
+      ],
+      "allowedHotelDestinations": ["cusco", "aguas-calientes"],
+      "images": {
+        "cover": "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/1.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/2.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-4d-3n/3.jpg"
+        ]
+      },
+      "itineraryOptions": [
+        {
+          "code": "4d-a-welcome-city-sacred-connection-mapi-free",
+          "label": "Opción A: Bienvenida + City Tour + Valle Sagrado conexión + Machu Picchu",
+          "recommended": true,
+          "summary": "La opción más recomendada: Cusco, Valle Sagrado con conexión, noche en Aguas Calientes y Machu Picchu.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Excursión por Pisac, mercado artesanal, Urubamba y Ollantaytambo. Por la tarde, conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Desde Aguas Calientes, encuentro con el guía, bus de subida, ingreso oficial y visita guiada a Machu Picchu. Por la tarde o noche, tren de retorno y traslado a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Traslado de salida",
+              "description": "Día libre hasta el horario de traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "4d-b-welcome-city-vip-connection-mapi-free",
+          "label": "Opción B: Bienvenida + City Tour + Valle VIP conexión + Machu Picchu",
+          "recommended": false,
+          "summary": "Versión más completa del Valle Sagrado con Chinchero, Maras, Moray, Ollantaytambo y conexión a Machu Picchu.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta completa por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo. Al finalizar la visita en Ollantaytambo, conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en bus al pueblo, tren hacia Ollantaytambo y traslado final a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Traslado de salida",
+              "description": "Día libre hasta el horario de traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "4d-c-city-mapi-full-day-sacred-free",
+          "label": "Opción C: City Tour + Machu Picchu Full Day + Valle Sagrado",
+          "recommended": false,
+          "summary": "Opción clásica con City Tour, Machu Picchu en un día y Valle Sagrado completo.",
+          "trainMode": "full_day",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day",
+              "description": "Salida de madrugada hacia la estación correspondiente según tren elegido. Viaje a Machu Picchu Pueblo, bus de subida, ingreso oficial, visita guiada y retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Valle Sagrado Clásico",
+              "description": "Recorrido por Pisac, mercado artesanal, Urubamba, Ollantaytambo y Chinchero. Retorno a Cusco por la noche.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "4d-d-city-mapi-express-vinicunca-free",
+          "label": "Opción D: City Tour + Machu Picchu Express + Montaña de Colores",
+          "recommended": false,
+          "summary": "Opción de aventura con Machu Picchu Express y Vinicunca.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco, ideal para continuar con actividades al día siguiente.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, tiempo para fotografías, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "4d-e-city-mapi-express-humantay-free",
+          "label": "Opción E: City Tour + Machu Picchu Express + Laguna Humantay",
+          "recommended": false,
+          "summary": "Opción natural con Machu Picchu Express y Laguna Humantay.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Laguna Humantay",
+              "description": "Excursión a Laguna Humantay con desayuno, caminata, tiempo libre para fotografías, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "4d-f-city-mapi-express-maras-south",
+          "label": "Opción F: City Tour + Machu Picchu Express + Maras y Moray + Valle Sur",
+          "recommended": false,
+          "summary": "Opción cultural intensa con Machu Picchu Express, Maras/Moray y Valle Sur.",
+          "trainMode": "express",
+          "packageStartTime": "14:00",
+          "packageEndTime": "15:00",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour en horario de tarde. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "14:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sur + traslado de salida",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Al finalizar, traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["south_valley", "departure_transfer"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            }
+          ]
+        }
+      ],
+      "includes": [
+        "Recojo del aeropuerto o terminal terrestre a la llegada",
+        "Traslado de salida al aeropuerto o terminal terrestre",
+        "Traslados internos necesarios según el itinerario seleccionado",
+        "Traslado a estación de tren de ida y retorno cuando el itinerario incluya Machu Picchu",
+        "Buses turísticos para las excursiones mencionadas en el itinerario seleccionado",
+        "Guías profesionales en español para las excursiones incluidas",
+        "Entradas a los atractivos mencionados en el itinerario seleccionado",
+        "Ingreso oficial a Machu Picchu según disponibilidad",
+        "Bus de subida y bajada en Machu Picchu",
+        "Asistencia de viaje durante la operación"
+      ],
+      "excludes": [
+        "Tren turístico o tren local",
+        "Alojamiento si el cliente elige opción sin hotel",
+        "Vuelos nacionales o internacionales",
+        "Alimentación no mencionada",
+        "Gastos personales",
+        "Seguro de viaje",
+        "Propinas"
+      ],
+      "extras": [
+        {
+          "code": "vinicunca-atv",
+          "label": "Cuatrimoto ATV en Vinicunca",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "maras-moray-atv",
+          "label": "Cuatrimoto ATV en Maras y Moray",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "tinkuy-lunch",
+          "label": "Almuerzo buffet Tinkuy by Belmond",
+          "currency": "USD",
+          "price": 45,
+          "perPerson": true
+        }
+      ],
+      "booking": {
         "quotationCodePrefix": "COT-PE-4D"
       },
       "status": "published"
     },
+
     {
       "id": "pkg_pe_005",
       "internalCode": "PKGPE005",
@@ -455,8 +805,8 @@
       "days": 5,
       "nights": 4,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
-      "shortDescription": "Paquete de 5 días con Machu Picchu y una excursión adicional a elegir.",
-      "description": "Programa recomendado para conocer Cusco, Valle Sagrado, Machu Picchu y una excursión natural o de aventura. El precio base no incluye tren ni alojamiento.",
+      "shortDescription": "Paquete de 5 días con opciones equilibradas de cultura, Machu Picchu, Valle Sagrado y aventura.",
+      "description": "Programa recomendado para conocer Cusco, Valle Sagrado, Machu Picchu y una o más excursiones adicionales. El precio base no incluye tren ni alojamiento.",
       "duration": {
         "label": "5 días / 4 noches",
         "maxGroupSize": 15,
@@ -487,8 +837,8 @@
       "priceIncludesAccommodation": false,
       "trainSelection": {
         "required": true,
-        "mode": "sacred_valley_connection",
-        "outboundRoute": "sacred_valley_connection_outbound",
+        "mode": "mixed",
+        "outboundRoute": "dynamic_by_itinerary_option",
         "returnRoute": "machu_picchu_return"
       },
       "accommodationSummary": [
@@ -514,101 +864,300 @@
       },
       "itineraryOptions": [
         {
-          "code": "5d-vinicunca",
-          "label": "Opción A: Machu Picchu + Montaña de Colores",
+          "code": "5d-a-welcome-city-sacred-connection-mapi-maras-south",
+          "label": "Opción A: Bienvenida + City Tour + Valle Sagrado conexión + Machu Picchu + Maras + Valle Sur",
           "recommended": true,
-          "summary": "Ruta clásica con Cusco, Valle Sagrado, Machu Picchu y Vinicunca.",
+          "summary": "Ruta equilibrada y muy completa con Cusco, Valle Sagrado, Machu Picchu, Maras/Moray y Valle Sur.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "15:00",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y City Tour por Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado, bienvenida ancestral y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Excursión por el Valle Sagrado visitando Pisac, Urubamba y Ollantaytambo. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Excursión por Pisac, mercado artesanal, Urubamba y Ollantaytambo. Por la tarde, tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
               "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Bus de subida, ingreso oficial y visita guiada a Machu Picchu. Retorno en tren y traslado a Cusco. Noche en Cusco."
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en tren y traslado a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Montaña de Colores Vinicunca",
-              "description": "Salida temprano hacia Vinicunca, desayuno, caminata, tiempo para fotografías, almuerzo y retorno a Cusco. Noche en Cusco."
+              "title": "Día 4: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
-              "title": "Día 5: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "title": "Día 5: Valle Sur + traslado de salida",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Al finalizar, traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["south_valley", "departure_transfer"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             }
           ]
         },
         {
-          "code": "5d-humantay",
-          "label": "Opción B: Machu Picchu + Laguna Humantay",
+          "code": "5d-b-welcome-city-vip-connection-mapi-south-free",
+          "label": "Opción B: Bienvenida + City Tour + Valle VIP conexión + Machu Picchu + Valle Sur",
           "recommended": false,
-          "summary": "Ruta con Machu Picchu y caminata hacia la Laguna Humantay.",
+          "summary": "Ruta premium con Valle VIP conexión, Machu Picchu y Valle Sur, evitando duplicar Maras y Moray.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por los principales atractivos de Cusco. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Tour por el Valle Sagrado con conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo. Conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
               "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Visita guiada a Machu Picchu y retorno a Cusco por la tarde o noche. Noche en Cusco."
+              "description": "Visita guiada a Machu Picchu y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Laguna Humantay",
-              "description": "Salida temprano hacia Mollepata y Soraypampa. Caminata hacia Laguna Humantay, almuerzo y retorno a Cusco. Noche en Cusco."
+              "title": "Día 4: Valle Sur",
+              "description": "Recorrido cultural por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
               "title": "Día 5: Traslado de salida",
-              "description": "Traslado final al aeropuerto o terminal terrestre."
+              "description": "Día libre hasta el horario de traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         },
         {
-          "code": "5d-siete-lagunas",
-          "label": "Opción C: Machu Picchu + Siete Lagunas",
+          "code": "5d-c-city-mapi-full-day-sacred-maras-free",
+          "label": "Opción C: City Tour + Machu Picchu Full Day + Valle Sagrado + Maras y Moray",
           "recommended": false,
-          "summary": "Ruta altoandina con Machu Picchu y Siete Lagunas del Ausangate.",
+          "summary": "Ruta clásica sin conexión, con Machu Picchu Full Day, Valle Sagrado y Maras/Moray.",
+          "trainMode": "full_day",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
               "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco."
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Excursión por el Valle Sagrado y tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Machu Picchu Full Day",
+              "description": "Viaje full day a Machu Picchu con retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
             },
             {
               "day": 3,
-              "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Visita guiada a Machu Picchu, retorno en tren y traslado a Cusco. Noche en Cusco."
+              "title": "Día 3: Valle Sagrado Clásico",
+              "description": "Recorrido por Pisac, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Siete Lagunas del Ausangate",
-              "description": "Salida temprano hacia Pacchanta, caminata por el circuito de lagunas altoandinas, almuerzo y retorno a Cusco. Noche en Cusco."
+              "title": "Día 4: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
               "title": "Día 5: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "5d-d-city-mapi-express-vinicunca-sacred-free",
+          "label": "Opción D: City Tour + Machu Picchu Express + Montaña de Colores + Valle Sagrado",
+          "recommended": false,
+          "summary": "Ruta combinada de cultura y aventura con Machu Picchu Express, Vinicunca y Valle Sagrado.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sagrado Clásico",
+              "description": "Tour por Pisac, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "5d-e-city-mapi-express-humantay-sacred-free",
+          "label": "Opción E: City Tour + Machu Picchu Express + Laguna Humantay + Valle Sagrado",
+          "recommended": false,
+          "summary": "Ruta natural y cultural con Machu Picchu Express, Humantay y Valle Sagrado.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Laguna Humantay",
+              "description": "Excursión a Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sagrado Clásico",
+              "description": "Tour por el Valle Sagrado Clásico. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Traslado de salida",
+              "description": "Traslado de salida según horario de vuelo o bus.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "5d-f-welcome-mapi-express-palcoyo-south-maras",
+          "label": "Opción F: Bienvenida + Machu Picchu Express + Palcoyo + Valle Sur + Maras y Moray",
+          "recommended": false,
+          "summary": "Ruta alternativa con bienvenida, Machu Picchu Express, Palcoyo, Valle Sur y Maras/Moray.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "15:00",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral",
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y experiencia de bienvenida ancestral. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome"],
+              "startTime": "09:00",
+              "endTime": "16:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Palcoyo / Valle Rojo",
+              "description": "Excursión a Palcoyo y Valle Rojo, una alternativa paisajística de menor exigencia que Vinicunca. Noche en Cusco.",
+              "tourCodes": ["palcoyo"],
+              "startTime": "04:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Maras y Moray + traslado de salida",
+              "description": "Excursión a Moray y Salineras de Maras. Al finalizar, traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["maras_moray", "departure_transfer"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             }
           ]
         }
@@ -636,6 +1185,27 @@
       ],
       "extras": [
         {
+          "code": "vinicunca-atv",
+          "label": "Cuatrimoto ATV en Vinicunca",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "palcoyo-atv",
+          "label": "Cuatrimoto ATV en Palcoyo",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "maras-moray-atv",
+          "label": "Cuatrimoto ATV en Maras y Moray",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
           "code": "tinkuy-lunch",
           "label": "Almuerzo buffet Tinkuy by Belmond",
           "currency": "USD",
@@ -648,7 +1218,7 @@
       },
       "status": "published"
     },
-    {
+        {
       "id": "pkg_pe_006",
       "internalCode": "PKGPE006",
       "slug": "paquete-peruanos-cusco-machu-picchu-6d-5n",
@@ -663,8 +1233,8 @@
       "days": 6,
       "nights": 5,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
-      "shortDescription": "Paquete de 6 días con Machu Picchu y dos excursiones adicionales.",
-      "description": "Programa completo para combinar Cusco, Valle Sagrado, Machu Picchu y dos excursiones naturales o de aventura. El precio base no incluye tren ni alojamiento.",
+      "shortDescription": "Paquete de 6 días con opciones completas de Cusco, Machu Picchu, Valle Sagrado y excursiones adicionales.",
+      "description": "Programa completo para combinar Cusco, Valle Sagrado, Machu Picchu y excursiones culturales o naturales. El precio base no incluye tren ni alojamiento.",
       "duration": {
         "label": "6 días / 5 noches",
         "maxGroupSize": 15,
@@ -695,8 +1265,8 @@
       "priceIncludesAccommodation": false,
       "trainSelection": {
         "required": true,
-        "mode": "sacred_valley_connection",
-        "outboundRoute": "sacred_valley_connection_outbound",
+        "mode": "mixed",
+        "outboundRoute": "dynamic_by_itinerary_option",
         "returnRoute": "machu_picchu_return"
       },
       "accommodationSummary": [
@@ -722,78 +1292,285 @@
       },
       "itineraryOptions": [
         {
-          "code": "6d-vinicunca-humantay",
-          "label": "Opción A: Machu Picchu + Vinicunca + Humantay",
+          "code": "6d-a-welcome-city-sacred-connection-mapi-maras-south-free",
+          "label": "Opción A: Bienvenida + City Tour + Valle Sagrado conexión + Machu Picchu + Maras + Valle Sur",
           "recommended": true,
-          "summary": "Ruta completa con Machu Picchu, Montaña de Colores y Laguna Humantay.",
+          "summary": "Ruta completa y equilibrada con Cusco, Valle Sagrado conexión, Machu Picchu, Maras/Moray, Valle Sur y salida flexible.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado, bienvenida ancestral y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Tour por el Valle Sagrado y tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Excursión por Pisac, mercado artesanal, Urubamba y Ollantaytambo. Por la tarde, conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
               "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Visita guiada a Machu Picchu, retorno en tren y traslado a Cusco. Noche en Cusco."
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en tren y traslado a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Montaña de Colores Vinicunca",
-              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco."
+              "title": "Día 4: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
-              "title": "Día 5: Laguna Humantay",
-              "description": "Excursión full day hacia Laguna Humantay con caminata, almuerzo y retorno a Cusco."
+              "title": "Día 5: Valle Sur",
+              "description": "Recorrido cultural por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             },
             {
               "day": 6,
               "title": "Día 6: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "description": "Día libre hasta el horario de traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         },
         {
-          "code": "6d-vinicunca-siete-lagunas",
-          "label": "Opción B: Machu Picchu + Vinicunca + Siete Lagunas",
+          "code": "6d-b-welcome-city-vip-connection-mapi-south-vinicunca-free",
+          "label": "Opción B: Bienvenida + City Tour + Valle VIP conexión + Machu Picchu + Valle Sur + Montaña de Colores",
           "recommended": false,
-          "summary": "Ruta aventurera con Machu Picchu, Vinicunca y Siete Lagunas.",
+          "summary": "Ruta premium con Valle VIP conexión, Machu Picchu, Valle Sur y Vinicunca, sin duplicar Maras/Moray.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + City Tour Cusco",
-              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Tour por el Valle Sagrado y tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta completa por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo. Conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
               "title": "Día 3: Machu Picchu + retorno a Cusco",
-              "description": "Visita guiada a Machu Picchu y retorno a Cusco. Noche en Cusco."
+              "description": "Visita guiada a Machu Picchu y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Montaña de Colores Vinicunca",
-              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco."
+              "title": "Día 4: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
-              "title": "Día 5: Siete Lagunas del Ausangate",
-              "description": "Salida temprano hacia Pacchanta, caminata por el circuito de Siete Lagunas, almuerzo y retorno a Cusco."
+              "title": "Día 5: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, tiempo para fotografías, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             },
             {
               "day": 6,
               "title": "Día 6: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "description": "Día libre hasta el traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "6d-c-city-mapi-full-day-sacred-maras-south-free",
+          "label": "Opción C: City Tour + Machu Picchu Full Day + Valle Sagrado + Maras + Valle Sur",
+          "recommended": false,
+          "summary": "Ruta clásica sin conexión, con Machu Picchu Full Day, Valle Sagrado, Maras/Moray y Valle Sur.",
+          "trainMode": "full_day",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por los principales atractivos arqueológicos de Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day",
+              "description": "Viaje full day a Machu Picchu con retorno a Cusco por la noche.",
+              "tourCodes": ["machu_full_day"],
+              "startTime": "04:00",
+              "endTime": "23:30"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Valle Sagrado Clásico",
+              "description": "Recorrido por Pisac, mercado artesanal, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Traslado de salida",
+              "description": "Día libre hasta el traslado final.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "6d-d-city-mapi-express-vinicunca-south-humantay-free",
+          "label": "Opción D: City Tour + Machu Picchu Express + Vinicunca + Valle Sur + Humantay",
+          "recommended": false,
+          "summary": "Ruta de aventura equilibrada con Machu Picchu Express, Vinicunca, Valle Sur y Humantay.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sur",
+              "description": "Recorrido cultural por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Laguna Humantay",
+              "description": "Excursión full day a Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Traslado de salida",
+              "description": "Día libre hasta el horario de traslado de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "6d-e-city-mapi-express-seven-rest-sacred-free",
+          "label": "Opción E: City Tour + Machu Picchu Express + Siete Lagunas + descanso + Valle Sagrado",
+          "recommended": false,
+          "summary": "Ruta aventurera altoandina con Siete Lagunas, día de descanso y Valle Sagrado.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Siete Lagunas Ausangate",
+              "description": "Excursión altoandina al circuito de Siete Lagunas con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["seven_lagoons"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para descansar después de la caminata de alta montaña.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Valle Sagrado Clásico",
+              "description": "Tour por Pisac, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Traslado de salida",
+              "description": "Traslado de salida al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         }
@@ -840,6 +1617,7 @@
       },
       "status": "published"
     },
+
     {
       "id": "pkg_pe_007",
       "internalCode": "PKGPE007",
@@ -855,7 +1633,7 @@
       "days": 7,
       "nights": 6,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
-      "shortDescription": "Paquete de 7 días para conocer Cusco, Machu Picchu y varias excursiones clásicas.",
+      "shortDescription": "Paquete de 7 días para conocer Cusco, Machu Picchu y varias excursiones clásicas sin duplicar rutas.",
       "description": "Programa amplio para viajeros que desean una experiencia más completa en Cusco. El precio base no incluye tren ni alojamiento.",
       "duration": {
         "label": "7 días / 6 noches",
@@ -887,8 +1665,8 @@
       "priceIncludesAccommodation": false,
       "trainSelection": {
         "required": true,
-        "mode": "sacred_valley_connection",
-        "outboundRoute": "sacred_valley_connection_outbound",
+        "mode": "mixed",
+        "outboundRoute": "dynamic_by_itinerary_option",
         "returnRoute": "machu_picchu_return"
       },
       "accommodationSummary": [
@@ -914,45 +1692,256 @@
       },
       "itineraryOptions": [
         {
-          "code": "7d-full",
-          "label": "Opción A: Cusco completo + Machu Picchu",
+          "code": "7d-a-welcome-city-sacred-connection-mapi-south-maras-humantay-free",
+          "label": "Opción A: Bienvenida + City Tour + Valle Sagrado conexión + Machu Picchu + Valle Sur + Maras + Humantay",
           "recommended": true,
-          "summary": "Ruta completa con City Tour, Valle Sagrado, Machu Picchu, Vinicunca y Humantay.",
+          "summary": "Ruta completa con conexión a Machu Picchu, Valle Sur, Maras/Moray y Laguna Humantay.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + Bienvenida Ancestral",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y bienvenida ancestral. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: City Tour Cusco",
-              "description": "Visita guiada a Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Excursión por Pisac, Urubamba y Ollantaytambo con conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
-              "title": "Día 3: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Excursión por el Valle Sagrado y tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes y retorno a Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Machu Picchu + retorno a Cusco",
-              "description": "Visita guiada a Machu Picchu, retorno en tren y traslado a Cusco. Noche en Cusco."
+              "title": "Día 4: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             },
             {
               "day": 5,
-              "title": "Día 5: Montaña de Colores Vinicunca",
-              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco."
+              "title": "Día 5: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
             },
             {
               "day": 6,
               "title": "Día 6: Laguna Humantay",
-              "description": "Excursión full day hacia Laguna Humantay con caminata, almuerzo y retorno a Cusco."
+              "description": "Excursión full day a Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             },
             {
               "day": 7,
               "title": "Día 7: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "description": "Día libre hasta el traslado de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "7d-b-welcome-city-vip-connection-mapi-south-vinicunca-rest-free",
+          "label": "Opción B: Bienvenida + City Tour + Valle VIP conexión + Machu Picchu + Valle Sur + Vinicunca + descanso",
+          "recommended": false,
+          "summary": "Ruta premium con Valle VIP conexión, Machu Picchu, Valle Sur, Montaña de Colores y descanso final.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado, bienvenida ancestral y City Tour. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta completa por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo. Conexión a Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu y retorno a Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Día libre de descanso",
+              "description": "Día libre recomendado para descanso, compras o actividades personales en Cusco.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "7d-c-city-mapi-express-vinicunca-rest-humantay-sacred-free",
+          "label": "Opción C: City Tour + Machu Picchu Express + Vinicunca + descanso + Humantay + Valle Sagrado",
+          "recommended": false,
+          "summary": "Ruta de aventura equilibrada con Machu Picchu Express, dos caminatas y Valle Sagrado.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para recuperación antes de continuar con la siguiente caminata.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Laguna Humantay",
+              "description": "Excursión full day a Laguna Humantay. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Valle Sagrado Clásico",
+              "description": "Tour por Pisac, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Traslado de salida",
+              "description": "Traslado final al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "7d-d-city-mapi-express-seven-rest-vinicunca-sacred-free",
+          "label": "Opción D: City Tour + Machu Picchu Express + Siete Lagunas + descanso + Vinicunca + Valle Sagrado",
+          "recommended": false,
+          "summary": "Ruta aventurera fuerte con Siete Lagunas, descanso, Vinicunca y Valle Sagrado.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Siete Lagunas Ausangate",
+              "description": "Excursión de alta montaña al circuito de Siete Lagunas. Noche en Cusco.",
+              "tourCodes": ["seven_lagoons"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para recuperación después de Siete Lagunas.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Valle Sagrado Clásico",
+              "description": "Tour por Pisac, Urubamba, Ollantaytambo y Chinchero. Noche en Cusco.",
+              "tourCodes": ["sacred_classic"],
+              "startTime": "08:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Traslado de salida",
+              "description": "Traslado de salida según horario de vuelo o bus.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         }
@@ -999,7 +1988,7 @@
       },
       "status": "published"
     },
-    {
+        {
       "id": "pkg_pe_008",
       "internalCode": "PKGPE008",
       "slug": "paquete-peruanos-cusco-machu-picchu-8d-7n",
@@ -1014,8 +2003,8 @@
       "days": 8,
       "nights": 7,
       "location": "Cusco / Valle Sagrado / Machu Picchu",
-      "shortDescription": "Experiencia completa en Cusco con Machu Picchu y excursiones principales.",
-      "description": "Programa amplio para conocer Cusco, Valle Sagrado, Machu Picchu y experiencias adicionales. El precio base no incluye tren ni alojamiento.",
+      "shortDescription": "Experiencia premium en Cusco con Machu Picchu, Valle Sagrado y excursiones principales.",
+      "description": "Programa amplio para conocer Cusco, Valle Sagrado, Machu Picchu y experiencias adicionales con una ruta equilibrada. El precio base no incluye tren ni alojamiento.",
       "duration": {
         "label": "8 días / 7 noches",
         "maxGroupSize": 15,
@@ -1046,8 +2035,8 @@
       "priceIncludesAccommodation": false,
       "trainSelection": {
         "required": true,
-        "mode": "sacred_valley_connection",
-        "outboundRoute": "sacred_valley_connection_outbound",
+        "mode": "mixed",
+        "outboundRoute": "dynamic_by_itinerary_option",
         "returnRoute": "machu_picchu_return"
       },
       "accommodationSummary": [
@@ -1073,50 +2062,217 @@
       },
       "itineraryOptions": [
         {
-          "code": "8d-premium",
-          "label": "Opción A: Experiencia completa Cusco",
+          "code": "8d-a-welcome-city-sacred-connection-mapi-rest-vinicunca-humantay-south-maras",
+          "label": "Opción A: Bienvenida + City Tour + Valle Sagrado conexión + Machu Picchu + descanso + Vinicunca + Humantay + Valle Sur + Maras",
           "recommended": true,
-          "summary": "Ruta premium con Cusco, Valle Sagrado, Machu Picchu, Vinicunca, Humantay y Valle Sur.",
+          "summary": "Ruta premium completa con conexión a Machu Picchu, descanso estratégico, dos excursiones naturales y tours culturales.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "15:00",
           "itinerary": [
             {
               "day": 1,
-              "title": "Día 1: Llegada + Bienvenida Ancestral",
-              "description": "Recepción en aeropuerto o terminal terrestre, traslado al hotel seleccionado y bienvenida ancestral. Noche en Cusco."
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
             },
             {
               "day": 2,
-              "title": "Día 2: City Tour Cusco",
-              "description": "Visita guiada a Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. Noche en Cusco."
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Excursión por Pisac, Urubamba y Ollantaytambo con conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
             },
             {
               "day": 3,
-              "title": "Día 3: Valle Sagrado + conexión a Aguas Calientes",
-              "description": "Excursión por Pisac, Urubamba y Ollantaytambo. Tren hacia Aguas Calientes. Noche en Aguas Calientes."
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en tren y traslado a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
             },
             {
               "day": 4,
-              "title": "Día 4: Machu Picchu + retorno a Cusco",
-              "description": "Bus de subida, ingreso oficial, visita guiada a Machu Picchu, retorno en tren y traslado a Cusco."
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para descanso, caminata suave por el centro histórico, compras o actividades personales.",
+              "tourCodes": ["free_day"]
             },
             {
               "day": 5,
               "title": "Día 5: Montaña de Colores Vinicunca",
-              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco."
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, tiempo para fotografías, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             },
             {
               "day": 6,
               "title": "Día 6: Laguna Humantay",
-              "description": "Excursión full day hacia Laguna Humantay con caminata, almuerzo y retorno a Cusco."
+              "description": "Excursión full day hacia Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
             },
             {
               "day": 7,
               "title": "Día 7: Valle Sur",
-              "description": "Tour cultural por el Valle Sur visitando atractivos arqueológicos y coloniales según operación disponible."
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 8,
+              "title": "Día 8: Maras y Moray + traslado de salida",
+              "description": "Excursión a Moray y Salineras de Maras. Al finalizar, traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["maras_moray", "departure_transfer"],
+              "startTime": "08:00",
+              "endTime": "15:00"
+            }
+          ]
+        },
+        {
+          "code": "8d-b-welcome-city-vip-connection-mapi-rest-humantay-vinicunca-south-free",
+          "label": "Opción B: Bienvenida + City Tour + Valle VIP conexión + Machu Picchu + descanso + Humantay + Vinicunca + Valle Sur",
+          "recommended": false,
+          "summary": "Ruta premium con Valle VIP conexión, Machu Picchu, descanso, Humantay, Vinicunca y Valle Sur, sin duplicar Maras/Moray.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado, bienvenida ancestral y City Tour. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo con conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para recuperación después de Machu Picchu.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Laguna Humantay",
+              "description": "Excursión full day a Laguna Humantay. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco. Noche en Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
             },
             {
               "day": 8,
               "title": "Día 8: Traslado de salida",
-              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida."
+              "description": "Día libre hasta el traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        },
+        {
+          "code": "8d-c-city-mapi-express-seven-rest-vinicunca-humantay-south-free",
+          "label": "Opción C: City Tour + Machu Picchu Express + Siete Lagunas + descanso + Vinicunca + Humantay + Valle Sur",
+          "recommended": false,
+          "summary": "Ruta de aventura completa con Machu Picchu Express, Siete Lagunas, descanso, Vinicunca, Humantay y Valle Sur.",
+          "trainMode": "express",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "city"],
+              "startTime": "09:00",
+              "endTime": "14:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Machu Picchu Full Day Express",
+              "description": "Visita a Machu Picchu con retorno temprano a Cusco.",
+              "tourCodes": ["machu_express"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Siete Lagunas Ausangate",
+              "description": "Excursión altoandina al circuito de Siete Lagunas. Noche en Cusco.",
+              "tourCodes": ["seven_lagoons"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para recuperación después de una caminata de alta montaña.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Laguna Humantay",
+              "description": "Excursión full day hacia Laguna Humantay. Noche en Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Valle Sur",
+              "description": "Tour cultural por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 8,
+              "title": "Día 8: Traslado de salida",
+              "description": "Traslado final al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
             }
           ]
         }
@@ -1160,6 +2316,411 @@
       ],
       "booking": {
         "quotationCodePrefix": "COT-PE-8D"
+      },
+      "status": "published"
+    },
+
+    {
+      "id": "pkg_pe_009",
+      "internalCode": "PKGPE009",
+      "slug": "paquete-peruanos-cusco-machu-picchu-9d-8n",
+      "title": "Paquete Cusco y Machu Picchu 9D/8N",
+      "category": "paquetes-peruanos",
+      "type": "quote-package",
+      "typeLabel": "9 días / 8 noches",
+      "badge": "Experiencia total",
+      "featured": false,
+      "market": "peru",
+      "currency": "PEN",
+      "days": 9,
+      "nights": 8,
+      "location": "Cusco / Valle Sagrado / Machu Picchu",
+      "shortDescription": "Programa completo con cultura, Machu Picchu, Valle Sagrado, naturaleza y aventura.",
+      "description": "Paquete de experiencia total para viajeros que desean conocer los principales atractivos de Cusco sin repetir rutas. El precio base no incluye tren ni alojamiento.",
+      "duration": {
+        "label": "9 días / 8 noches",
+        "maxGroupSize": 15,
+        "guideLanguages": ["es"]
+      },
+      "basePricing": {
+        "adult": 1135,
+        "child": 1095
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 1135,
+          "child": 1095,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 515,
+          "child": 495,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 535,
+          "child": 495,
+          "currency": "USD"
+        }
+      },
+      "priceIncludesTrain": false,
+      "priceIncludesAccommodation": false,
+      "trainSelection": {
+        "required": true,
+        "mode": "sacred_valley_connection",
+        "outboundRoute": "sacred_valley_connection_outbound",
+        "returnRoute": "machu_picchu_return"
+      },
+      "accommodationSummary": [
+        {
+          "destination": "cusco",
+          "nights": 7,
+          "label": "Cusco - 7 noches"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 noche"
+        }
+      ],
+      "allowedHotelDestinations": ["cusco", "aguas-calientes"],
+      "images": {
+        "cover": "./assets/img/tours/paquete-cusco-machu-picchu-9d-8n/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/paquete-cusco-machu-picchu-9d-8n/1.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-9d-8n/2.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-9d-8n/3.jpg"
+        ]
+      },
+      "itineraryOptions": [
+        {
+          "code": "9d-a-welcome-city-sacred-connection-mapi-rest-south-maras-vinicunca-humantay-free",
+          "label": "Opción A: Experiencia total Cusco + Machu Picchu",
+          "recommended": true,
+          "summary": "Incluye bienvenida, City Tour, Valle Sagrado conexión, Machu Picchu, descanso, Valle Sur, Maras/Moray, Vinicunca y Humantay.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado Clásico + conexión a Aguas Calientes",
+              "description": "Tour por Pisac, Urubamba y Ollantaytambo con conexión en tren a Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_classic_connection"],
+              "startTime": "08:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en tren y traslado a Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para descanso después de Machu Picchu.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Maras y Moray",
+              "description": "Excursión a Moray y Salineras de Maras. Noche en Cusco.",
+              "tourCodes": ["maras_moray"],
+              "startTime": "08:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 8,
+              "title": "Día 8: Laguna Humantay",
+              "description": "Excursión full day hacia Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 9,
+              "title": "Día 9: Traslado de salida",
+              "description": "Día libre hasta el traslado al aeropuerto o terminal terrestre.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        }
+      ],
+      "includes": [
+        "Recojo del aeropuerto o terminal terrestre a la llegada",
+        "Traslado de salida al aeropuerto o terminal terrestre",
+        "Traslados internos necesarios según el itinerario seleccionado",
+        "Traslado a estación de tren de ida y retorno cuando el itinerario incluya Machu Picchu",
+        "Buses turísticos para las excursiones mencionadas en el itinerario seleccionado",
+        "Guías profesionales en español para las excursiones incluidas",
+        "Entradas a los atractivos mencionados en el itinerario seleccionado",
+        "Ingreso oficial a Machu Picchu según disponibilidad",
+        "Bus de subida y bajada en Machu Picchu",
+        "Asistencia de viaje durante la operación"
+      ],
+      "excludes": [
+        "Tren turístico o tren local",
+        "Alojamiento si el cliente elige opción sin hotel",
+        "Vuelos nacionales o internacionales",
+        "Alimentación no mencionada",
+        "Gastos personales",
+        "Seguro de viaje",
+        "Propinas"
+      ],
+      "extras": [
+        {
+          "code": "vinicunca-atv",
+          "label": "Cuatrimoto ATV en Vinicunca",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "maras-moray-atv",
+          "label": "Cuatrimoto ATV en Maras y Moray",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "tinkuy-lunch",
+          "label": "Almuerzo buffet Tinkuy by Belmond",
+          "currency": "USD",
+          "price": 45,
+          "perPerson": true
+        }
+      ],
+      "booking": {
+        "quotationCodePrefix": "COT-PE-9D"
+      },
+      "status": "published"
+    },
+
+    {
+      "id": "pkg_pe_010",
+      "internalCode": "PKGPE010",
+      "slug": "paquete-peruanos-cusco-machu-picchu-10d-9n",
+      "title": "Paquete Cusco y Machu Picchu 10D/9N",
+      "category": "paquetes-peruanos",
+      "type": "quote-package",
+      "typeLabel": "10 días / 9 noches",
+      "badge": "Ultimate Experience",
+      "featured": true,
+      "market": "peru",
+      "currency": "PEN",
+      "days": 10,
+      "nights": 9,
+      "location": "Cusco / Valle Sagrado / Machu Picchu",
+      "shortDescription": "La experiencia más completa en Cusco, incluyendo los principales tours sin repetir rutas.",
+      "description": "Programa definitivo para viajeros que desean conocer Cusco, Machu Picchu, Valle Sagrado, cultura, naturaleza y aventura en una sola ruta. El precio base no incluye tren ni alojamiento.",
+      "duration": {
+        "label": "10 días / 9 noches",
+        "maxGroupSize": 15,
+        "guideLanguages": ["es"]
+      },
+      "basePricing": {
+        "adult": 1230,
+        "child": 1190
+      },
+      "basePricingByNationality": {
+        "national": {
+          "adult": 1230,
+          "child": 1190,
+          "currency": "PEN"
+        },
+        "andean_community": {
+          "adult": 560,
+          "child": 540,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 580,
+          "child": 540,
+          "currency": "USD"
+        }
+      },
+      "priceIncludesTrain": false,
+      "priceIncludesAccommodation": false,
+      "trainSelection": {
+        "required": true,
+        "mode": "sacred_valley_connection",
+        "outboundRoute": "sacred_valley_connection_outbound",
+        "returnRoute": "machu_picchu_return"
+      },
+      "accommodationSummary": [
+        {
+          "destination": "cusco",
+          "nights": 8,
+          "label": "Cusco - 8 noches"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 noche"
+        }
+      ],
+      "allowedHotelDestinations": ["cusco", "aguas-calientes"],
+      "images": {
+        "cover": "./assets/img/tours/paquete-cusco-machu-picchu-10d-9n/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/paquete-cusco-machu-picchu-10d-9n/1.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-10d-9n/2.jpg",
+          "./assets/img/tours/paquete-cusco-machu-picchu-10d-9n/3.jpg"
+        ]
+      },
+      "itineraryOptions": [
+        {
+          "code": "10d-a-welcome-city-vip-connection-mapi-rest-south-vinicunca-humantay-seven-free-transfer",
+          "label": "Opción A: Cusco completo sin límites",
+          "recommended": true,
+          "summary": "Ruta total con bienvenida, City Tour, Valle VIP conexión, Machu Picchu, descanso, Valle Sur, Vinicunca, Humantay, Siete Lagunas y salida flexible.",
+          "trainMode": "sacred_valley_connection",
+          "packageStartTime": "09:00",
+          "packageEndTime": "Flexible",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Día 1: Llegada + Bienvenida Ancestral + City Tour Cusco",
+              "description": "Recepción, traslado al hotel seleccionado, bienvenida ancestral y City Tour por Cusco. Noche en Cusco.",
+              "tourCodes": ["arrival_transfer", "welcome", "city"],
+              "startTime": "09:00",
+              "endTime": "18:00"
+            },
+            {
+              "day": 2,
+              "title": "Día 2: Valle Sagrado VIP + conexión a Aguas Calientes",
+              "description": "Ruta completa por Chinchero, Moray, Salineras de Maras, Urubamba y Ollantaytambo. Conexión en tren hacia Aguas Calientes. Noche en Aguas Calientes.",
+              "tourCodes": ["sacred_vip_connection"],
+              "startTime": "07:00",
+              "endTime": "Variable según tren"
+            },
+            {
+              "day": 3,
+              "title": "Día 3: Machu Picchu + retorno a Cusco",
+              "description": "Visita guiada a Machu Picchu desde Aguas Calientes, retorno en tren y traslado a Cusco.",
+              "tourCodes": ["machu_connection"],
+              "startTime": "09:00",
+              "endTime": "22:00"
+            },
+            {
+              "day": 4,
+              "title": "Día 4: Día libre de descanso",
+              "description": "Día libre recomendado para descansar después de Machu Picchu y continuar con las excursiones de altura.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 5,
+              "title": "Día 5: Valle Sur",
+              "description": "Tour por Tipón, Piquillacta y Andahuaylillas. Noche en Cusco.",
+              "tourCodes": ["south_valley"],
+              "startTime": "09:00",
+              "endTime": "15:00"
+            },
+            {
+              "day": 6,
+              "title": "Día 6: Montaña de Colores Vinicunca",
+              "description": "Excursión full day a Vinicunca con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["vinicunca"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 7,
+              "title": "Día 7: Laguna Humantay",
+              "description": "Excursión full day a Laguna Humantay con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["humantay"],
+              "startTime": "04:00",
+              "endTime": "17:00"
+            },
+            {
+              "day": 8,
+              "title": "Día 8: Siete Lagunas Ausangate",
+              "description": "Excursión altoandina al circuito de Siete Lagunas con desayuno, caminata, almuerzo y retorno a Cusco.",
+              "tourCodes": ["seven_lagoons"],
+              "startTime": "04:00",
+              "endTime": "19:00"
+            },
+            {
+              "day": 9,
+              "title": "Día 9: Día libre",
+              "description": "Día libre para descanso, compras, actividades personales o caminata suave por el centro histórico de Cusco.",
+              "tourCodes": ["free_day"]
+            },
+            {
+              "day": 10,
+              "title": "Día 10: Traslado de salida",
+              "description": "Traslado al aeropuerto o terminal terrestre según horario de salida.",
+              "tourCodes": ["departure_transfer"]
+            }
+          ]
+        }
+      ],
+      "includes": [
+        "Recojo del aeropuerto o terminal terrestre a la llegada",
+        "Traslado de salida al aeropuerto o terminal terrestre",
+        "Traslados internos necesarios según el itinerario seleccionado",
+        "Traslado a estación de tren de ida y retorno cuando el itinerario incluya Machu Picchu",
+        "Buses turísticos para las excursiones mencionadas en el itinerario seleccionado",
+        "Guías profesionales en español para las excursiones incluidas",
+        "Entradas a los atractivos mencionados en el itinerario seleccionado",
+        "Ingreso oficial a Machu Picchu según disponibilidad",
+        "Bus de subida y bajada en Machu Picchu",
+        "Asistencia de viaje durante la operación"
+      ],
+      "excludes": [
+        "Tren turístico o tren local",
+        "Alojamiento si el cliente elige opción sin hotel",
+        "Vuelos nacionales o internacionales",
+        "Alimentación no mencionada",
+        "Gastos personales",
+        "Seguro de viaje",
+        "Propinas"
+      ],
+      "extras": [
+        {
+          "code": "vinicunca-atv",
+          "label": "Cuatrimoto ATV en Vinicunca",
+          "currency": "USD",
+          "price": 65,
+          "perPerson": true
+        },
+        {
+          "code": "tinkuy-lunch",
+          "label": "Almuerzo buffet Tinkuy by Belmond",
+          "currency": "USD",
+          "price": 45,
+          "perPerson": true
+        }
+      ],
+      "booking": {
+        "quotationCodePrefix": "COT-PE-10D"
       },
       "status": "published"
     }
