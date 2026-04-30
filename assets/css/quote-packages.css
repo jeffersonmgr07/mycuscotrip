@@ -1852,21 +1852,27 @@ body.quote-modal-open {
   z-index: 3000 !important;
 }
 
-.flatpickr-calendar.open {
-  left: auto !important;
-}
+
 
 @media (max-width: 768px) {
   .flatpickr-calendar {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
     left: 12px !important;
-    right: 12px !important;
-    width: auto !important;
+    right: auto !important;
   }
 
+  .flatpickr-innerContainer,
+  .flatpickr-rContainer,
   .flatpickr-days,
   .dayContainer {
-    max-width: 100% !important;
     width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .flatpickr-day {
+    max-width: none !important;
   }
 }
 
@@ -2179,5 +2185,25 @@ button:disabled {
     right: 14px;
     width: 38px;
     height: 38px;
+  }
+}
+@media (min-width: 1101px) {
+  .quote-content,
+  .quote-layout,
+  .quote-sidebar {
+    overflow: visible !important;
+  }
+
+  .quote-sidebar {
+    align-self: start !important;
+    position: relative !important;
+  }
+
+  .quote-summary-panel {
+    position: sticky !important;
+    top: 96px !important;
+    align-self: start !important;
+    max-height: calc(100vh - 112px) !important;
+    overflow-y: auto !important;
   }
 }
