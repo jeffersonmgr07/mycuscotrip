@@ -272,7 +272,7 @@ class MyCuscoTripQuotePackages {
       attributes: true
     });
   }
-  bindBaseEvents() {
+    bindBaseEvents() {
     document.querySelectorAll(".quote-qty-btn").forEach((button) => {
       button.addEventListener("click", () => {
         const target = button.dataset.target;
@@ -560,7 +560,7 @@ class MyCuscoTripQuotePackages {
 
     this.updateExchangeRateHelp();
   }
-  renderPackageOptions() {
+    renderPackageOptions() {
     const target = document.getElementById("packageOptions");
     if (!target) return;
 
@@ -917,7 +917,7 @@ class MyCuscoTripQuotePackages {
 
     return `Primer día desde ${startText} · Último día hasta ${endText}`;
   }
-  buildDatedDayTitleHtml(item) {
+    buildDatedDayTitleHtml(item) {
     const dayNumber = Number(item.day || 1);
     const cleanTitle = String(item.title || `Día ${dayNumber}`)
       .replace(/^Día\s*\d+\s*:\s*/i, "")
@@ -1164,7 +1164,7 @@ class MyCuscoTripQuotePackages {
 
     this.renderAccommodationOptions();
   }
-  getAccommodationSummary() {
+    getAccommodationSummary() {
     if (!this.selectedPackage) return [];
 
     const fromItinerary = this.selectedItineraryOption?.accommodationSummary;
@@ -1474,7 +1474,7 @@ class MyCuscoTripQuotePackages {
     if (hotel.cover) return [hotel.cover];
     return [];
   }
-  bindHotelModalEvents() {
+    bindHotelModalEvents() {
     const modal = document.getElementById("hotelModal");
     if (!modal) return;
 
@@ -1807,7 +1807,7 @@ class MyCuscoTripQuotePackages {
       });
     });
   }
-  getAvailableTrainsForRoute(routeCode, direction) {
+    getAvailableTrainsForRoute(routeCode, direction) {
     const route = this.trainsData?.routes?.[routeCode];
     const rawTrains = Array.isArray(route?.trains)
       ? route.trains
@@ -2153,7 +2153,7 @@ class MyCuscoTripQuotePackages {
 
     return "full_day";
   }
-  calculateTrainAdditional() {
+    calculateTrainAdditional() {
     const trainConfig = this.getTrainSelectionConfig();
     if (!trainConfig.required) return 0;
 
@@ -2420,7 +2420,7 @@ class MyCuscoTripQuotePackages {
 
     this.updatePricing();
   }
-  updatePassengersUI() {
+    updatePassengersUI() {
     this.setText("adultCount", String(this.adults));
     this.setText("childCount", String(this.children));
   }
@@ -2734,7 +2734,7 @@ class MyCuscoTripQuotePackages {
       year: "numeric"
     });
   }
-  convertCurrency(amount, fromCurrency, toCurrency) {
+    convertCurrency(amount, fromCurrency, toCurrency) {
     const value = Number(amount || 0);
     const from = String(fromCurrency || this.quoteCurrency || "USD").toUpperCase();
     const to = String(toCurrency || this.quoteCurrency || "USD").toUpperCase();
