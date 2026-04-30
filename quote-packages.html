@@ -7,18 +7,16 @@
   <title>Cotizador de paquetes | My Cusco Trip</title>
   <meta name="description" content="Cotiza paquetes turísticos para Cusco y Machu Picchu con hoteles, trenes, moneda y modalidad de pago." />
 
-  <!-- Google Fonts & Librerías externas -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
-  <!-- Estilos locales -->
   <link rel="stylesheet" href="./assets/css/main.css" />
   <link rel="stylesheet" href="./assets/css/components.css" />
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=8" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=9" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -28,7 +26,6 @@
   </a>
 
   <main class="quote-page">
-    <!-- Hero -->
     <section class="quote-hero">
       <div class="container quote-hero__container">
         <span class="quote-eyebrow">Cotiza aquí tu paquete turístico</span>
@@ -41,12 +38,10 @@
       </div>
     </section>
 
-    <!-- Contenido principal -->
     <section class="quote-content">
       <div class="container quote-layout">
         <div class="quote-main">
 
-          <!-- Datos del viaje -->
           <article class="quote-card">
             <div class="quote-card__header">
               <h2>Datos del viaje</h2>
@@ -140,7 +135,6 @@
             </div>
           </article>
 
-          <!-- Opciones de itinerario -->
           <article id="itinerarySection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Opciones de itinerario</h2>
@@ -164,7 +158,6 @@
             </div>
           </article>
 
-          <!-- Hoteles -->
           <article id="hotelSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Elige tus hoteles</h2>
@@ -177,7 +170,6 @@
             <div id="hotelSelectorsContainer" class="quote-dynamic-stack"></div>
           </article>
 
-          <!-- Trenes -->
           <article id="trainSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Elige tus trenes</h2>
@@ -188,94 +180,81 @@
             </div>
 
             <div class="quote-train-selector-grid">
-              <div class="quote-train-selector-card">
+              <div id="outboundTrainSelected" class="quote-train-selector-card">
                 <div>
                   <span>Tren de ida</span>
-                  <strong id="outboundTrainSelectedTitle">Por seleccionar</strong>
-                  <p id="outboundTrainSelectedMeta">Elige el tren de ida para completar la cotización.</p>
+                  <strong>Sin selección</strong>
+                  <p>Elige una opción de tren para completar la cotización.</p>
                 </div>
-
-                <button type="button" id="openOutboundTrainModalBtn" class="btn quote-secondary-btn">
-                  <i class="fas fa-train"></i> Elegir tren de ida
+                <button type="button" class="btn quote-secondary-btn" data-train-direction="outbound">
+                  <i class="fas fa-train"></i> Elegir tren
                 </button>
               </div>
 
-              <div class="quote-train-selector-card">
+              <div id="returnTrainSelected" class="quote-train-selector-card">
                 <div>
                   <span>Tren de retorno</span>
-                  <strong id="returnTrainSelectedTitle">Por seleccionar</strong>
-                  <p id="returnTrainSelectedMeta">Elige el tren de retorno para completar la cotización.</p>
+                  <strong>Sin selección</strong>
+                  <p>Elige una opción de tren para completar la cotización.</p>
                 </div>
-
-                <button type="button" id="openReturnTrainModalBtn" class="btn quote-secondary-btn">
-                  <i class="fas fa-train"></i> Elegir tren de retorno
+                <button type="button" class="btn quote-secondary-btn" data-train-direction="return">
+                  <i class="fas fa-train"></i> Elegir tren
                 </button>
               </div>
             </div>
           </article>
-
-          <!-- Extras -->
+          
           <article id="extrasSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Personaliza con extras</h2>
               <p>Agrega servicios opcionales para complementar algunos tours de tu itinerario.</p>
             </div>
-
+          
             <div id="extrasContainer" class="quote-extras"></div>
           </article>
-
-          <!-- Datos del cliente -->
+          
           <article class="quote-card">
             <div class="quote-card__header">
               <h2>Datos del cliente</h2>
               <p>Completa tus datos para generar una cotización formal y continuar con el pago cuando estés listo.</p>
             </div>
-
+          
             <div class="quote-form-grid">
               <div class="quote-field">
                 <label for="clientName">Nombre completo</label>
                 <input type="text" id="clientName" placeholder="Nombre del cliente" />
               </div>
-
+          
               <div class="quote-field">
                 <label for="clientPhone">Teléfono / WhatsApp</label>
                 <input type="text" id="clientPhone" placeholder="+51 999 999 999" />
               </div>
-
+          
               <div class="quote-field">
                 <label for="clientEmail">Correo electrónico</label>
                 <input type="email" id="clientEmail" placeholder="cliente@email.com" />
               </div>
-
+          
               <div class="quote-field">
                 <label for="clientDocument">DNI / Documento</label>
                 <input type="text" id="clientDocument" placeholder="Opcional" />
               </div>
             </div>
-
+          
             <div class="quote-field">
               <label for="clientNotes">Comentarios adicionales</label>
               <textarea id="clientNotes" rows="4" placeholder="Ejemplo: horarios de vuelo, preferencias de hotel, restricciones alimentarias, etc."></textarea>
             </div>
           </article>
-        </div>
-
-        <!-- Sidebar - Resumen -->
-        <aside class="quote-sidebar">
+          </div>
+          
+          <aside class="quote-sidebar">
           <div class="quote-summary-panel">
             <div class="quote-summary-panel__top">
               <span>Cotización estimada</span>
               <strong id="quoteReference">COT-PE---</strong>
             </div>
-
-            <div class="quote-payment-mode">
-              <label for="paymentMode">Modalidad de pago</label>
-              <select id="paymentMode">
-                <option value="full">Pago 100% con descuento</option>
-                <option value="partial">Anticipo sin descuento</option>
-              </select>
-            </div>
-
+          
             <div class="quote-discount-box">
               <label for="discountCodeInput">Código de descuento</label>
               <div class="quote-discount-box__row">
@@ -284,76 +263,84 @@
               </div>
               <p id="discountCodeMessage">Ingresa tu código promocional si tienes uno.</p>
             </div>
-
+          
+            <div class="quote-payment-mode">
+              <label for="paymentMode">Modalidad de pago</label>
+              <select id="paymentMode">
+                <option value="full">Pago 100% con descuento</option>
+                <option value="partial">Anticipo sin descuento</option>
+              </select>
+            </div>
+          
             <div class="quote-summary">
               <div class="quote-summary__line quote-summary__line--base">
                 <span>Itinerario base</span>
                 <strong id="basePackageTotal"></strong>
               </div>
-
+          
               <div class="quote-summary__line">
                 <span id="adultSummaryLabel">Adultos x2</span>
                 <strong id="adultSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="childrenSummaryRow" hidden>
                 <span id="childrenSummaryLabel">Niños x0</span>
                 <strong id="childrenSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="hotelSummaryRow" hidden>
                 <span>Alojamiento</span>
                 <strong id="hotelSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="trainSummaryRow" hidden>
                 <span>Trenes</span>
                 <strong id="trainSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="extrasSummaryRow" hidden>
                 <span>Extras</span>
                 <strong id="extrasSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="discountSummaryRow" hidden>
                 <span>Descuento</span>
                 <strong id="discountSummaryTotal">- S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__total">
                 <span>Total cotizado</span>
                 <strong id="quoteGrandTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="advanceSummaryRow">
                 <span id="advanceSummaryLabel">Pagar ahora</span>
                 <strong id="advanceSummaryTotal">S/ 0.00</strong>
               </div>
-
+          
               <div class="quote-summary__line" id="balanceSummaryRow" hidden>
                 <span>Saldo pendiente</span>
                 <strong id="balanceSummaryTotal">S/ 0.00</strong>
               </div>
             </div>
-
+          
             <div id="paymentInfo" class="quote-payment-info">
               <span id="paymentInfoText">Selecciona fechas, itinerario, hotel y tren para generar la cotización.</span>
             </div>
-
+          
             <div class="quote-actions">
               <button type="button" id="continuePaymentBtn" class="btn quote-payment-btn">
                 <i class="fas fa-credit-card"></i>
                 <span class="quote-payment-btn__desktop">Continuar al pago</span>
                 <span class="quote-payment-btn__mobile">Pagar</span>
               </button>
-
+          
               <div class="quote-actions__secondary">
                 <button type="button" id="printQuoteBtn" class="btn quote-secondary-btn">
                   <i class="fas fa-print"></i>
                   <span>Imprimir</span>
                 </button>
-
+          
                 <button type="button" id="savePdfBtn" class="btn quote-secondary-btn quote-pdf-btn">
                   <i class="fas fa-download"></i>
                   <span>Descargar PDF</span>
@@ -361,27 +348,26 @@
               </div>
             </div>
           </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- Sección para impresión y PDF -->
-    <section id="printQuotation" class="print-quotation" aria-label="Cotización formal">
-      <div class="print-sheet">
-        <header class="print-header print-header--two-columns">
+          </aside>
+          </div>
+          </section>
+          
+          <section id="printQuotation" class="print-quotation" aria-label="Cotización formal">
+          <div class="print-sheet">
+          <header class="print-header print-header--two-columns">
           <div class="print-company">
             <h2>My Cusco Trip</h2>
             <p>Agencia de viajes y experiencias en Cusco</p>
             <p>WhatsApp: +51 900 608 980</p>
             <p>Email: reservas@mycuscotrip.com</p>
           </div>
-
+          
           <div class="print-header__right">
             <h1>Cotización</h1>
             <p><strong>Código:</strong> <span id="printQuoteReference">COT-PE---</span></p>
             <p><strong>Emisión:</strong> <span id="printIssueDate">--/--/----</span></p>
             <p><strong>Válido hasta:</strong> <span id="printValidUntil">--/--/----</span></p>
-
+          
             <div id="printCouponBox" class="print-coupon-box">
               <div class="print-coupon-box__content">
                 <span>Cupón especial</span>
@@ -390,9 +376,9 @@
               </div>
             </div>
           </div>
-        </header>
-
-        <div class="print-client-grid">
+          </header>
+          
+          <div class="print-client-grid">
           <div>
             <h3>Datos del cliente</h3>
             <p><strong>Nombre:</strong> <span id="printClientName">Por completar</span></p>
@@ -401,7 +387,7 @@
             <p><strong>Documento:</strong> <span id="printClientDocument">Por completar</span></p>
             <p><strong>Comentarios:</strong> <span id="printClientNotes">Sin comentarios adicionales</span></p>
           </div>
-
+          
           <div>
             <h3>Datos del viaje</h3>
             <p><strong>Fechas:</strong> <span id="printTravelDates">Por completar</span></p>
@@ -411,27 +397,27 @@
             <p><strong>Nacionalidad:</strong> <span id="printNationality">Por completar</span></p>
             <p><strong>Moneda:</strong> <span id="printCurrency">PEN</span></p>
           </div>
-        </div>
-
-        <img class="print-banner print-banner-top" src="./assets/img/quote/print-banner-top.jpg" alt="Experiencia My Cusco Trip" />
-
-        <section class="print-section">
+          </div>
+          
+          <img class="print-banner print-banner-top" src="./assets/img/quote/print-banner-top.jpg" alt="Experiencia My Cusco Trip" />
+          
+          <section class="print-section">
           <h3>Itinerario</h3>
           <div id="printItinerary" class="print-itinerary-list"></div>
-        </section>
-
-        <section class="print-section">
+          </section>
+          
+          <section class="print-section">
           <h3>Servicios seleccionados</h3>
           <div id="printSelectedServices"></div>
           <div id="printHotelImages" class="print-hotel-images"></div>
-        </section>
-
-        <section class="print-section">
+          </section>
+          
+          <section class="print-section">
           <h3>Detalles de pago</h3>
           <div id="printPaymentDetails"></div>
-        </section>
-
-        <section class="print-section print-notes">
+          </section>
+          
+          <section class="print-section print-notes">
           <h3>Condiciones importantes</h3>
           <ul>
             <li>La cotización está sujeta a disponibilidad de ingresos, trenes, hoteles y servicios al momento de confirmar la reserva.</li>
@@ -440,160 +426,101 @@
             <li>La reserva se confirma únicamente después de validar disponibilidad y recibir el pago correspondiente.</li>
             <li>Los cupones promocionales están sujetos a validación, disponibilidad y condiciones vigentes al momento del pago.</li>
           </ul>
-        </section>
-
-        <footer class="print-footer">
+          </section>
+          
+          <footer class="print-footer">
           <p>Gracias por cotizar con My Cusco Trip.</p>
           <img class="print-banner print-banner-bottom" src="./assets/img/quote/print-banner-bottom.jpg" alt="Gracias por cotizar con My Cusco Trip" />
-        </footer>
-      </div>
-    </section>
-  </main>
-
-  <!-- Modales -->
-  <div id="hotelSelectionModal" class="quote-modal" hidden>
-    <div class="quote-modal__backdrop" data-close-hotel-modal></div>
-
-    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="hotelModalTitle">
-      <button type="button" class="quote-modal__close" id="closeHotelModalBtn" data-close-hotel-modal aria-label="Cerrar modal">
-        <i class="fas fa-xmark"></i>
-      </button>
-
-      <div class="quote-modal__header">
-        <p class="quote-modal__eyebrow">Selección de alojamiento</p>
-        <h2 id="hotelModalTitle">Elige tu hotel</h2>
-        <p id="hotelModalSubtitle">Compara hoteles, fotos, habitaciones y tarifas adicionales.</p>
-      </div>
-
-      <div class="quote-modal__body">
-        <div id="hotelModalList" class="quote-modal__list"></div>
-      </div>
-
-      <div class="quote-modal__footer">
-        <button type="button" class="btn quote-main-btn" id="confirmHotelSelectionBtn">
-          Seleccionar hotel y acomodación
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="trainSelectionModal" class="quote-modal" hidden>
-    <div class="quote-modal__backdrop" data-close-train-modal></div>
-
-    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainModalTitle">
-      <button type="button" class="quote-modal__close" id="closeTrainModalBtn" data-close-train-modal aria-label="Cerrar modal">
-        <i class="fas fa-xmark"></i>
-      </button>
-
-      <div class="quote-modal__header">
-        <p class="quote-modal__eyebrow">Selección de tren</p>
-        <h2 id="trainModalTitle">Elige tu tren</h2>
-        <p id="trainModalSubtitle">Compara horarios, categorías y precios disponibles.</p>
-      </div>
-
-      <div class="quote-modal__body">
-        <div id="trainModalList" class="quote-modal__list quote-train-modal-list"></div>
-      </div>
-
-      <div class="quote-modal__footer">
-        <button type="button" class="btn quote-main-btn" id="confirmTrainSelectionBtn">
-          Seleccionar tren
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="trainDetailsModal" class="quote-modal" hidden>
-    <div class="quote-modal__backdrop" data-close-train-details-modal></div>
-
-    <div class="quote-modal__dialog quote-modal__dialog--small" role="dialog" aria-modal="true" aria-labelledby="trainDetailsModalTitle">
-      <button type="button" class="quote-modal__close" id="closeTrainDetailsModalBtn" data-close-train-details-modal aria-label="Cerrar modal">
-        <i class="fas fa-xmark"></i>
-      </button>
-
-      <div class="quote-modal__header">
-        <p class="quote-modal__eyebrow">Detalle de tren</p>
-        <h2 id="trainDetailsModalTitle">Categoría de tren</h2>
-        <p id="trainDetailsModalSubtitle">Información del servicio seleccionado.</p>
-      </div>
-
-      <div class="quote-modal__body">
-        <div id="trainDetailsModalContent" class="quote-train-modal-content"></div>
-      </div>
-
-      <div class="quote-modal__footer">
-        <button type="button" class="btn quote-secondary-btn" id="cancelTrainDetailsModalBtn" data-close-train-details-modal>
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="footer-container"></div>
-
-  <!-- Scripts externos -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-  <!-- Scripts internos -->
-  <script type="module">
-    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
-    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "/";
-
-    async function loadComponent(componentName, targetId) {
-      try {
-        const componentPath = `${BASE_PATH}components/${componentName}.html`;
-        const response = await fetch(componentPath);
-
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-
-        const html = await response.text();
-        const target = document.getElementById(targetId);
-
-        if (target) {
-          target.innerHTML = html;
-          fixImagePaths(target);
-          return true;
-        }
-
-        return false;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-        return false;
-      }
-    }
-
-    function fixImagePaths(container) {
-      const images = container.querySelectorAll('img[src*="assets/"]');
-
-      images.forEach((img) => {
-        const currentSrc = img.getAttribute("src");
-
-        if (currentSrc && currentSrc.startsWith("assets/")) {
-          img.setAttribute("src", `./${currentSrc}`);
-        }
-      });
-    }
-
-    async function initializeApp() {
-      await Promise.all([
-        loadComponent("header", "header-container"),
-        loadComponent("footer", "footer-container")
-      ]);
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializeApp);
-    } else {
-      initializeApp();
-    }
-  </script>
-
-  <!-- Componentes y lógica principal -->
-  <script src="./assets/js/components/header.js" defer></script>
-  <script src="./assets/js/pages/quote-packages.js?v=8" defer></script>
-</body>
-</html>
+          </footer>
+          </div>
+          </section>
+    
+          <div id="hotelModal" class="quote-modal" hidden>
+          <div class="quote-modal__backdrop" data-close-modal></div>
+    
+          <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="hotelModalTitle">
+            <button type="button" class="quote-modal__close" data-close-modal aria-label="Cerrar modal de hoteles">
+              <i class="fas fa-times"></i>
+            </button>
+    
+            <div class="quote-modal__header">
+              <p class="quote-modal__eyebrow">Selección de alojamiento</p>
+              <h2 id="hotelModalTitle">Elige alojamiento</h2>
+              <p id="hotelModalIntro">Selecciona una opción de alojamiento para completar tu cotización.</p>
+            </div>
+    
+            <div class="quote-modal__body">
+              <div id="hotelModalList" class="quote-modal__list"></div>
+            </div>
+    
+            <div class="quote-modal__footer">
+              <button type="button" id="confirmHotelSelectionBtn" class="btn quote-main-btn">
+                Confirmar alojamiento
+              </button>
+            </div>
+          </div>
+        </div>
+    
+        <div id="trainSelectionModal" class="quote-modal" hidden>
+          <div class="quote-modal__backdrop" data-close-modal></div>
+    
+          <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainSelectionModalTitle">
+            <button type="button" class="quote-modal__close" data-close-modal aria-label="Cerrar modal de trenes">
+              <i class="fas fa-times"></i>
+            </button>
+    
+            <div class="quote-modal__header">
+              <p class="quote-modal__eyebrow">Selección de tren</p>
+              <h2 id="trainSelectionModalTitle">Elige tu tren</h2>
+              <p id="trainSelectionModalIntro">Selecciona una opción disponible para completar la cotización.</p>
+            </div>
+    
+            <div class="quote-modal__body">
+              <div id="trainSelectionModalList" class="quote-modal__list"></div>
+            </div>
+    
+            <div class="quote-modal__footer">
+              <button type="button" id="confirmTrainSelectionBtn" class="btn quote-main-btn">
+                Confirmar tren seleccionado
+              </button>
+            </div>
+          </div>
+        </div>
+    
+        <div id="trainDetailsModal" class="quote-modal" hidden>
+          <div class="quote-modal__backdrop" data-close-modal></div>
+    
+          <div class="quote-modal__dialog quote-modal__dialog--small" role="dialog" aria-modal="true" aria-labelledby="trainDetailsModalTitle">
+            <button type="button" class="quote-modal__close" data-close-modal aria-label="Cerrar detalles del tren">
+              <i class="fas fa-times"></i>
+            </button>
+    
+            <div class="quote-modal__header">
+              <p class="quote-modal__eyebrow">Detalle del tren</p>
+              <h2 id="trainDetailsModalTitle">Información del tren</h2>
+              <p id="trainDetailsModalIntro">Revisa los detalles importantes de esta opción.</p>
+            </div>
+    
+            <div class="quote-modal__body">
+              <div id="trainDetailsModalContent"></div>
+            </div>
+    
+            <div class="quote-modal__footer">
+              <button type="button" class="btn quote-secondary-btn" data-close-modal>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    
+      <div id="footer-container"></div>
+    
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+      <script src="./assets/js/components.js"></script>
+      <script src="./assets/js/pages/quote-packages.js?v=9"></script>
+    </body>
+    </html>
