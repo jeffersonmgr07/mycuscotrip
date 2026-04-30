@@ -693,6 +693,7 @@ body.quote-modal-open {
   min-width: 0;
   position: relative;
 }
+
 /* PC: panel nace alineado con Datos de viaje y luego se mantiene visible */
 @media (min-width: 1101px) {
   .quote-page,
@@ -703,27 +704,29 @@ body.quote-modal-open {
 
   .quote-layout {
     grid-template-columns: minmax(0, 1fr) 390px;
-    align-items: start !important;
+    align-items: stretch !important;
   }
 
   .quote-sidebar {
-     position: relative !important;
-     align-self: stretch !important;
-     height: auto !important;
-     min-height: 100% !important;
-     overflow: visible !important;
-     z-index: 50 !important;
-   }
-   
-   .quote-summary-panel {
-     position: sticky !important;
-     top: 92px !important;
-     right: auto !important;
-     width: 100% !important;
-     max-width: 390px !important;
-     max-height: calc(100vh - 116px) !important;
-     overflow-y: auto !important;
-   }
+    position: relative !important;
+    align-self: stretch !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    z-index: 50 !important;
+  }
+
+  .quote-summary-panel {
+    position: sticky !important;
+    top: 92px !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 390px !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+  }
 }
 
 .quote-summary-panel {
