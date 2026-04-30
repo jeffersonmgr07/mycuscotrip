@@ -830,7 +830,20 @@ body.quote-modal-open {
   margin: 6px 0 0;
   font-size: 1rem;
 }
+.train-recommended-badge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #d99a00;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
 
+.train-option-card--local .train-recommended-badge {
+  display: none !important;
+}
 /* =============================================
    13. EXTRAS
    ============================================= */
