@@ -2220,3 +2220,36 @@ button:disabled {
     overflow-y: auto !important;
   }
 }
+/* FIX definitivo: calendario y selector de hora centrados */
+@media (max-width: 768px) {
+  .flatpickr-calendar.open {
+    position: fixed !important;
+    left: 50vw !important;
+    right: auto !important;
+    top: 50dvh !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(330px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    margin: 0 !important;
+    z-index: 99999 !important;
+  }
+
+  .flatpickr-calendar.arrowTop::before,
+  .flatpickr-calendar.arrowTop::after,
+  .flatpickr-calendar.arrowBottom::before,
+  .flatpickr-calendar.arrowBottom::after {
+    display: none !important;
+  }
+
+  .quote-summary-panel {
+    position: fixed !important;
+    left: 6px !important;
+    right: 6px !important;
+    bottom: 0 !important;
+    top: auto !important;
+    width: auto !important;
+    max-width: calc(100vw - 12px) !important;
+    z-index: 1200 !important;
+  }
+}
