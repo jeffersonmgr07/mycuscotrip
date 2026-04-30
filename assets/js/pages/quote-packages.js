@@ -59,6 +59,7 @@ class MyCuscoTripQuotePackages {
       this.renderInitialState();
       this.updatePricing();
       this.updatePrintQuotation();
+      this.initDesktopQuotePanelFixed();
     } catch (error) {
       console.error("Error inicializando cotizador:", error);
       alert("No se pudo cargar el cotizador. Revisa que existan packages-peru.json, trains.json, hotels.json y discount-codes.json.");
@@ -202,6 +203,75 @@ class MyCuscoTripQuotePackages {
     }
   }
 
+  initDesktopQuotePanelFixed() {
+    const panel = document.querySelector(".quote-summary-panel");
+    const sidebar = document.querySelector(".quote-sidebar");
+
+    if (!panel || !sidebar) return;
+
+    const desktopTop = 92;
+    let initialTop = 0;
+    let initialLeft = 0;
+    let panelWidth = 0;
+
+    const resetPanel = () => {
+      panel.classList.remove("is-desktop-fixed");
+      panel.style.left = "";
+      panel.style.width = "";
+      sidebar.style.minHeight = "";
+    };
+
+    const calculate = () => {
+      resetPanel();
+
+      if (window.innerWidth <= 1100) return;
+
+      const rect = panel.getBoundingClientRect();
+      initialTop = rect.top + window.scrollY;
+      initialLeft = rect.left;
+      panelWidth = rect.width;
+      sidebar.style.minHeight = `${panel.offsetHeight}px`;
+    };
+
+    const update = () => {
+      if (window.innerWidth <= 1100) {
+        resetPanel();
+        return;
+      }
+
+      if (window.scrollY + desktopTop >= initialTop) {
+        panel.classList.add("is-desktop-fixed");
+        panel.style.left = `${initialLeft}px`;
+        panel.style.width = `${panelWidth}px`;
+      } else {
+        resetPanel();
+      }
+    };
+
+    calculate();
+    update();
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", () => {
+      calculate();
+      update();
+    });
+
+    const observer = new MutationObserver(() => {
+      if (window.innerWidth <= 1100) return;
+      const wasFixed = panel.classList.contains("is-desktop-fixed");
+      if (!wasFixed) calculate();
+      sidebar.style.minHeight = `${panel.offsetHeight}px`;
+      update();
+    });
+
+    observer.observe(panel, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true
+    });
+  }
   bindBaseEvents() {
     document.querySelectorAll(".quote-qty-btn").forEach((button) => {
       button.addEventListener("click", () => {
@@ -230,8 +300,10 @@ class MyCuscoTripQuotePackages {
     document.getElementById("nationality")?.addEventListener("change", (event) => {
       this.nationality = event.target.value;
       this.applyCurrencyRulesByNationality();
+
       this.selectedOutboundTrainCode = "";
       this.selectedReturnTrainCode = "";
+
       this.renderPackageOptions();
       this.renderTrainSelectors();
       this.updatePricing();
@@ -240,6 +312,7 @@ class MyCuscoTripQuotePackages {
 
     document.getElementById("quoteCurrency")?.addEventListener("change", (event) => {
       this.quoteCurrency = event.target.value;
+
       this.renderPackageOptions();
       this.renderAccommodationOptions();
       this.renderTrainSelectors();
@@ -379,7 +452,7 @@ class MyCuscoTripQuotePackages {
       time_24hr: false,
       minuteIncrement: 15,
       allowInput: false,
-      disableMobile: !isMobile,   // en móvil se usará el selector nativo tipo reloj
+      disableMobile: !isMobile,
       appendTo: document.body,
       locale: flatpickr.l10ns.es
     };
@@ -487,7 +560,6 @@ class MyCuscoTripQuotePackages {
 
     this.updateExchangeRateHelp();
   }
-
   renderPackageOptions() {
     const target = document.getElementById("packageOptions");
     if (!target) return;
@@ -514,18 +586,14 @@ class MyCuscoTripQuotePackages {
     }
 
     const pkg = this.selectedPackage || compatible[0];
-    const optionsCount = Array.isArray(pkg.itineraryOptions) ? pkg.itineraryOptions.length : 0;
 
     target.innerHTML = `
       <article class="quote-package-card is-selected quote-package-card--detected" aria-label="Itinerario detectado automáticamente">
         <div class="quote-package-card__top">
           <div>
             <span class="quote-badge quote-badge--muted">Itinerario detectado según tus fechas</span>
-            <h3>${this.escapeHtml(pkg.title)}</h3>
-            <p>Tu viaje será de <strong>${this.travelDays} días / ${this.travelNights} noches</strong>.</p>
-            <p>${optionsCount} opción${optionsCount !== 1 ? "es" : ""} de itinerario disponible${optionsCount !== 1 ? "s" : ""}. El precio base no incluye tren ni alojamiento.</p>
           </div>
-          <span class="quote-badge">${this.travelDays} días / ${this.travelNights} noches</span>
+          <span class="quote-badge quote-duration-badge">${this.travelDays} días / ${this.travelNights} noches</span>
         </div>
       </article>
     `;
@@ -577,21 +645,32 @@ class MyCuscoTripQuotePackages {
     const availableOptions = this.getAvailableItineraryOptions();
 
     if (!availableOptions.length) {
+      this.selectedItineraryOption = null;
+      this.selectedOutboundTrainCode = "";
+      this.selectedReturnTrainCode = "";
       this.renderItineraryOptions();
+      this.renderTrainSelectors();
+      this.updatePricing();
       this.updatePrintQuotation();
       return;
     }
 
-    const currentStillAvailable = availableOptions.some((option) => option.code === this.selectedItineraryOption?.code);
+    const currentStillAvailable = availableOptions.some((option) => {
+      return option.code === this.selectedItineraryOption?.code;
+    });
 
     if (!currentStillAvailable) {
       this.selectedItineraryOption =
         availableOptions.find((option) => option.recommended) ||
         availableOptions[0];
+
+      this.selectedOutboundTrainCode = "";
+      this.selectedReturnTrainCode = "";
     }
 
     this.renderItineraryOptions();
     this.renderTrainSelectors();
+    this.updatePricing();
     this.updatePrintQuotation();
   }
 
@@ -606,73 +685,153 @@ class MyCuscoTripQuotePackages {
   }
 
   isItineraryAllowedByTime(option) {
-    const itinerary = Array.isArray(option.itinerary) ? option.itinerary : [];
+    const itinerary = Array.isArray(option?.itinerary) ? option.itinerary : [];
+    if (!itinerary.length) return true;
 
-    const rawArrivalMinutes = this.timeToMinutes(this.arrivalTime);
-    const rawDepartureMinutes = this.timeToMinutes(this.departureTime);
-    
-    const arrivalMinutes =
-      rawArrivalMinutes === null ? null : Math.min(rawArrivalMinutes + 120, 1439);
-    
-    const departureMinutes =
-      rawDepartureMinutes === null ? null : Math.max(rawDepartureMinutes - 120, 0);
+    const arrivalMinutes = this.getEffectiveArrivalMinutes();
+    const departureMinutes = this.getEffectiveDepartureMinutes();
 
-    const firstDay = itinerary.find((item) => Number(item.day || 0) === 1) || itinerary[0] || null;
-    const lastDayNumber = itinerary.reduce((max, item) => Math.max(max, Number(item.day || 0)), 0);
-    const lastDay = itinerary.find((item) => Number(item.day || 0) === lastDayNumber) || itinerary[itinerary.length - 1] || null;
+    const firstDay = this.getFirstItineraryDay(itinerary);
+    const lastDay = this.getLastItineraryDay(itinerary);
 
-    const firstDayText = `${firstDay?.title || ""} ${firstDay?.description || ""}`.toLowerCase();
-    const lastDayText = `${lastDay?.title || ""} ${lastDay?.description || ""}`.toLowerCase();
+    const firstDayStart = this.getItineraryDayStartMinutes(firstDay);
+    const lastDayEnd = this.getItineraryDayEndMinutes(lastDay);
 
-    const firstDayHasCityTour =
-      firstDayText.includes("city tour") ||
-      firstDayText.includes("qoricancha") ||
-      firstDayText.includes("sacsayhuamán") ||
-      firstDayText.includes("sacsayhuaman");
-
-    const firstDayHasWelcome =
-      firstDayText.includes("bienvenida") ||
-      firstDayText.includes("ancestral");
-
-    const lastDayHasFullDay =
-      lastDayText.includes("montaña de colores") ||
-      lastDayText.includes("vinicunca") ||
-      lastDayText.includes("humantay") ||
-      lastDayText.includes("siete lagunas") ||
-      lastDayText.includes("ausangate") ||
-      lastDayText.includes("valle sagrado full") ||
-      lastDayText.includes("full day valle sagrado") ||
-      lastDayText.includes("machu picchu full day");
-
-    const lastDayHasShortActivity =
-      lastDayText.includes("maras") ||
-      lastDayText.includes("moray") ||
-      lastDayText.includes("valle sur") ||
-      lastDayText.includes("walking tour") ||
-      lastDayText.includes("caminata") ||
-      lastDayText.includes("city tour");
-
-    if (arrivalMinutes !== null) {
-      if (arrivalMinutes > this.timeToMinutes("12:00") && firstDayHasCityTour) {
-        return false;
-      }
-
-      if (arrivalMinutes > this.timeToMinutes("17:00") && firstDayHasWelcome) {
-        return false;
-      }
+    if (arrivalMinutes !== null && firstDayStart !== null && firstDayStart < arrivalMinutes) {
+      return false;
     }
 
-    if (departureMinutes !== null) {
-      if (departureMinutes < this.timeToMinutes("14:00") && lastDayHasShortActivity) {
-        return false;
-      }
-
-      if (departureMinutes < this.timeToMinutes("19:00") && lastDayHasFullDay) {
-        return false;
-      }
+    if (departureMinutes !== null && lastDayEnd !== null && lastDayEnd > departureMinutes) {
+      return false;
     }
 
     return true;
+  }
+
+  getFirstItineraryDay(itinerary) {
+    if (!Array.isArray(itinerary) || !itinerary.length) return null;
+
+    return itinerary.reduce((first, item) => {
+      const firstDay = Number(first?.day || 9999);
+      const currentDay = Number(item?.day || 9999);
+      return currentDay < firstDay ? item : first;
+    }, itinerary[0]);
+  }
+
+  getLastItineraryDay(itinerary) {
+    if (!Array.isArray(itinerary) || !itinerary.length) return null;
+
+    return itinerary.reduce((last, item) => {
+      const lastDay = Number(last?.day || 0);
+      const currentDay = Number(item?.day || 0);
+      return currentDay > lastDay ? item : last;
+    }, itinerary[0]);
+  }
+
+  getItineraryDayStartMinutes(dayItem) {
+    if (!dayItem) return null;
+
+    const directTime =
+      dayItem.startTime ||
+      dayItem.start ||
+      dayItem.startHour ||
+      dayItem.horaInicio ||
+      dayItem.hora_inicio ||
+      dayItem.timeStart;
+
+    const directMinutes = this.timeToMinutes(directTime);
+    if (directMinutes !== null) return directMinutes;
+
+    const text = `${dayItem.title || ""} ${dayItem.description || ""}`.toLowerCase();
+
+    if (text.includes("machu picchu full day") || text.includes("machu picchu express")) {
+      return this.timeToMinutes("04:00");
+    }
+
+    if (text.includes("vinicunca") || text.includes("montaña de colores")) {
+      return this.timeToMinutes("04:00");
+    }
+
+    if (text.includes("humantay")) {
+      return this.timeToMinutes("04:00");
+    }
+
+    if (text.includes("siete lagunas") || text.includes("ausangate")) {
+      return this.timeToMinutes("04:00");
+    }
+
+    if (text.includes("city tour")) {
+      return this.timeToMinutes("13:00");
+    }
+
+    if (text.includes("bienvenida") || text.includes("ancestral")) {
+      return this.timeToMinutes("09:00");
+    }
+
+    return null;
+  }
+
+  getItineraryDayEndMinutes(dayItem) {
+    if (!dayItem) return null;
+
+    const directTime =
+      dayItem.endTime ||
+      dayItem.end ||
+      dayItem.endHour ||
+      dayItem.horaFin ||
+      dayItem.hora_fin ||
+      dayItem.timeEnd;
+
+    const directMinutes = this.timeToMinutes(directTime);
+    if (directMinutes !== null) return directMinutes;
+
+    const text = `${dayItem.title || ""} ${dayItem.description || ""}`.toLowerCase();
+
+    if (text.includes("machu picchu full day")) {
+      return this.timeToMinutes("23:30");
+    }
+
+    if (text.includes("machu picchu express")) {
+      return this.timeToMinutes("19:00");
+    }
+
+    if (
+      text.includes("vinicunca") ||
+      text.includes("montaña de colores") ||
+      text.includes("humantay") ||
+      text.includes("siete lagunas") ||
+      text.includes("ausangate")
+    ) {
+      return this.timeToMinutes("17:00");
+    }
+
+    if (
+      text.includes("maras") ||
+      text.includes("moray") ||
+      text.includes("valle sur")
+    ) {
+      return this.timeToMinutes("15:00");
+    }
+
+    if (text.includes("city tour")) {
+      return this.timeToMinutes("18:00");
+    }
+
+    if (text.includes("bienvenida") || text.includes("ancestral")) {
+      return this.timeToMinutes("18:00");
+    }
+
+    return null;
+  }
+
+  getEffectiveArrivalMinutes() {
+    const rawArrivalMinutes = this.timeToMinutes(this.arrivalTime);
+    return rawArrivalMinutes === null ? null : Math.min(rawArrivalMinutes + 120, 1439);
+  }
+
+  getEffectiveDepartureMinutes() {
+    const rawDepartureMinutes = this.timeToMinutes(this.departureTime);
+    return rawDepartureMinutes === null ? null : Math.max(rawDepartureMinutes - 120, 0);
   }
 
   renderItineraryOptions() {
@@ -711,11 +870,13 @@ class MyCuscoTripQuotePackages {
     target.innerHTML = options.map((option) => {
       const isSelected = this.selectedItineraryOption?.code === option.code;
       const description = this.getItineraryMarketingDescription(option);
+      const timeLabel = this.getItineraryOptionTimeLabel(option);
 
       return `
         <article class="quote-itinerary-option ${isSelected ? "is-selected" : ""}" data-itinerary-code="${this.escapeHtml(option.code)}">
           <h3>${this.escapeHtml(option.label)}</h3>
           <p>${this.escapeHtml(description)}</p>
+          ${timeLabel ? `<span class="quote-itinerary-time">${this.escapeHtml(timeLabel)}</span>` : ""}
           ${option.recommended ? `<span class="quote-badge quote-badge--gold">Recomendado</span>` : ""}
         </article>
       `;
@@ -739,6 +900,23 @@ class MyCuscoTripQuotePackages {
     this.renderItineraryPreview();
   }
 
+  getItineraryOptionTimeLabel(option) {
+    const itinerary = Array.isArray(option?.itinerary) ? option.itinerary : [];
+    if (!itinerary.length) return "";
+
+    const firstDay = this.getFirstItineraryDay(itinerary);
+    const lastDay = this.getLastItineraryDay(itinerary);
+
+    const start = this.getItineraryDayStartMinutes(firstDay);
+    const end = this.getItineraryDayEndMinutes(lastDay);
+
+    if (start === null && end === null) return "";
+
+    const startText = start !== null ? this.minutesToTimeLabel(start) : "Por confirmar";
+    const endText = end !== null ? this.minutesToTimeLabel(end) : "Por confirmar";
+
+    return `Primer día desde ${startText} · Último día hasta ${endText}`;
+  }
   buildDatedDayTitleHtml(item) {
     const dayNumber = Number(item.day || 1);
     const cleanTitle = String(item.title || `Día ${dayNumber}`)
@@ -763,12 +941,29 @@ class MyCuscoTripQuotePackages {
       return;
     }
 
-    preview.innerHTML = itinerary.map((item) => `
-      <div class="quote-itinerary-item">
-        <h4>${this.buildDatedDayTitleHtml(item)}</h4>
-        <p>${this.escapeHtml(item.description || "")}</p>
-      </div>
-    `).join("");
+    preview.innerHTML = itinerary.map((item) => {
+      const start = this.getItineraryDayStartMinutes(item);
+      const end = this.getItineraryDayEndMinutes(item);
+
+      const timeInfo =
+        start !== null || end !== null
+          ? `
+            <span class="quote-itinerary-time">
+              ${start !== null ? `Inicio ${this.minutesToTimeLabel(start)}` : "Inicio por confirmar"}
+              ·
+              ${end !== null ? `Fin ${this.minutesToTimeLabel(end)}` : "Fin por confirmar"}
+            </span>
+          `
+          : "";
+
+      return `
+        <div class="quote-itinerary-item">
+          <h4>${this.buildDatedDayTitleHtml(item)}</h4>
+          <p>${this.escapeHtml(item.description || "")}</p>
+          ${timeInfo}
+        </div>
+      `;
+    }).join("");
   }
 
   renderPackageIncludes() {
@@ -811,7 +1006,6 @@ class MyCuscoTripQuotePackages {
     if (!headerText || !this.selectedPackage) return;
 
     headerText.innerHTML = `
-      Tu viaje será de <strong>${this.travelDays} días / ${this.travelNights} noches</strong>.
       Estas son las opciones de itinerario disponibles para tus fechas.
       ${optionsCount ? `Actualmente tienes ${optionsCount} opción${optionsCount !== 1 ? "es" : ""} compatible${optionsCount !== 1 ? "s" : ""}.` : ""}
     `;
@@ -826,6 +1020,10 @@ class MyCuscoTripQuotePackages {
 
     if (text.includes("valle sagrado") && text.includes("aguas calientes")) {
       return "Itinerario progresivo con Valle Sagrado conexión, noche en Aguas Calientes y visita a Machu Picchu al día siguiente.";
+    }
+
+    if (text.includes("machu picchu express")) {
+      return "Itinerario express con retorno más temprano desde Machu Picchu, ideal para combinarlo con actividades al día siguiente.";
     }
 
     if (text.includes("montaña de colores") || text.includes("vinicunca")) {
@@ -955,141 +1153,301 @@ class MyCuscoTripQuotePackages {
         Number(item.nights || 0)
       );
 
-      const selectedKey = this.selectedCombinationsByDestination[item.destination]?.key;
-      const stillValid = combinations.find((combo) => combo.key === selectedKey);
+      const currentCombinationKey = this.selectedCombinationsByDestination[item.destination];
+
+      const stillValid = combinations.some((combo) => combo.key === currentCombinationKey);
 
       if (!stillValid) {
-        this.selectedCombinationsByDestination[item.destination] = combinations[0] || null;
+        this.selectedCombinationsByDestination[item.destination] = combinations[0]?.key || "";
       }
     });
 
     this.renderAccommodationOptions();
   }
+  getAccommodationSummary() {
+    if (!this.selectedPackage) return [];
 
-  openHotelModal(destination) {
-    const modal = document.getElementById("hotelSelectionModal");
-    const title = document.getElementById("hotelModalTitle");
-    const subtitle = document.getElementById("hotelModalSubtitle");
-    const list = document.getElementById("hotelModalList");
+    const fromItinerary = this.selectedItineraryOption?.accommodationSummary;
+    if (Array.isArray(fromItinerary) && fromItinerary.length) return fromItinerary;
 
-    if (!modal || !title || !subtitle || !list || !this.selectedPackage) return;
+    const fromPackage = this.selectedPackage.accommodationSummary;
+    if (Array.isArray(fromPackage) && fromPackage.length) return fromPackage;
 
-    this.activeHotelModalDestination = destination;
+    return [];
+  }
 
-    const currentHotelCode = this.selectedHotelsByDestination[destination] || "no-hotel";
-    const currentComboKey = this.selectedCombinationsByDestination[destination]?.key || "";
-
-    this.pendingHotelSelection = {
+  getNoHotelOption(destination) {
+    return {
+      hotelCode: "no-hotel",
+      hotelName: "Sin alojamiento",
       destination,
-      hotelCode: currentHotelCode,
-      comboKey: currentComboKey
+      stars: 0,
+      rooms: [
+        {
+          roomCode: "no-room",
+          roomName: "Sin habitación",
+          capacity: 99,
+          currency: this.quoteCurrency,
+          pricePerNight: 0
+        }
+      ],
+      images: []
+    };
+  }
+
+  getHotelsByDestination(destination) {
+    const destinationData = this.hotelsData?.destinations?.[destination];
+
+    if (Array.isArray(destinationData)) return destinationData;
+    if (Array.isArray(destinationData?.hotels)) return destinationData.hotels;
+
+    return [];
+  }
+
+  getHotelByCode(destination, hotelCode) {
+    if (!hotelCode || hotelCode === "no-hotel") return null;
+
+    return this.getHotelsByDestination(destination).find((hotel) => {
+      return hotel.hotelCode === hotelCode || hotel.code === hotelCode || hotel.id === hotelCode;
+    }) || null;
+  }
+
+  getSelectedAccommodationForDestination(destination) {
+    const hotelCode = this.selectedHotelsByDestination[destination];
+    const isNoHotel = hotelCode === "no-hotel";
+
+    const hotel = isNoHotel
+      ? this.getNoHotelOption(destination)
+      : this.getHotelByCode(destination, hotelCode);
+
+    if (!hotel) return null;
+
+    const summary = this.getAccommodationSummary().find((item) => item.destination === destination);
+    const nights = Number(summary?.nights || 0);
+    const combinations = this.generateAccommodationCombinations(
+      hotel.rooms || [],
+      this.getTotalPassengers(),
+      nights
+    );
+
+    const selectedCombinationKey = this.selectedCombinationsByDestination[destination];
+    const combination = combinations.find((item) => item.key === selectedCombinationKey) || combinations[0] || null;
+
+    return { hotel, combination };
+  }
+
+  calculateAccommodationAdditional(destination) {
+    const selection = this.getSelectedAccommodationForDestination(destination);
+    if (!selection?.hotel || !selection?.combination) return 0;
+
+    return this.convertCurrency(
+      Number(selection.combination.total || 0),
+      selection.combination.currency || this.quoteCurrency,
+      this.quoteCurrency
+    );
+  }
+
+  getDestinationLabel(destination) {
+    const labels = {
+      cusco: "Cusco",
+      aguas_calientes: "Aguas Calientes",
+      machu_picchu: "Machu Picchu Pueblo",
+      sacred_valley: "Valle Sagrado"
     };
 
+    return labels[destination] || String(destination || "").replace(/_/g, " ");
+  }
+
+  getHotelCoverImage(hotel) {
+    if (!hotel) return "";
+
+    if (hotel.image) return hotel.image;
+    if (hotel.cover) return hotel.cover;
+    if (Array.isArray(hotel.images) && hotel.images.length) return hotel.images[0];
+    if (Array.isArray(hotel.gallery) && hotel.gallery.length) return hotel.gallery[0];
+
+    return "";
+  }
+
+  generateAccommodationCombinations(rooms = [], passengers = 1, nights = 1) {
+    const safePassengers = Math.max(1, Number(passengers || 1));
+    const safeNights = Math.max(0, Number(nights || 0));
+
+    if (!Array.isArray(rooms) || !rooms.length) {
+      return [
+        {
+          key: "no-room",
+          label: "Sin habitación",
+          description: "No se agregará costo de alojamiento.",
+          total: 0,
+          currency: this.quoteCurrency,
+          rooms: []
+        }
+      ];
+    }
+
+    const normalizedRooms = rooms.map((room) => ({
+      ...room,
+      roomCode: room.roomCode || room.code || room.id || room.roomName || "room",
+      roomName: room.roomName || room.name || room.label || "Habitación",
+      capacity: Number(room.capacity || room.maxOccupancy || room.guests || 1),
+      pricePerNight: Number(room.pricePerNight || room.price || room.rate || 0),
+      currency: room.currency || this.quoteCurrency
+    }));
+
+    const exact = normalizedRooms
+      .filter((room) => room.capacity >= safePassengers)
+      .map((room) => ({
+        key: `${room.roomCode}-x1`,
+        label: `${room.roomName} x 1`,
+        description: `${safeNights} noche${safeNights !== 1 ? "s" : ""}`,
+        total: room.pricePerNight * safeNights,
+        currency: room.currency,
+        rooms: [{ room, quantity: 1 }]
+      }));
+
+    const combinations = [...exact];
+
+    normalizedRooms.forEach((room) => {
+      const quantity = Math.ceil(safePassengers / Math.max(1, room.capacity));
+      if (quantity > 1) {
+        combinations.push({
+          key: `${room.roomCode}-x${quantity}`,
+          label: `${room.roomName} x ${quantity}`,
+          description: `${safeNights} noche${safeNights !== 1 ? "s" : ""}`,
+          total: room.pricePerNight * safeNights * quantity,
+          currency: room.currency,
+          rooms: [{ room, quantity }]
+        });
+      }
+    });
+
+    combinations.sort((a, b) => {
+      const aValue = this.convertCurrency(a.total, a.currency, this.quoteCurrency);
+      const bValue = this.convertCurrency(b.total, b.currency, this.quoteCurrency);
+      return aValue - bValue;
+    });
+
+    return combinations.length ? combinations : [
+      {
+        key: "no-room",
+        label: "Sin habitación",
+        description: "No se agregará costo de alojamiento.",
+        total: 0,
+        currency: this.quoteCurrency,
+        rooms: []
+      }
+    ];
+  }
+
+  openHotelModal(destination) {
+    this.activeHotelModalDestination = destination;
+
+    const modal = document.getElementById("hotelModal");
+    const list = document.getElementById("hotelModalList");
+    const title = document.getElementById("hotelModalTitle");
+    const intro = document.getElementById("hotelModalIntro");
+
+    if (!modal || !list) return;
+
     const destinationLabel = this.getDestinationLabel(destination);
-    const summaryItem = this.getAccommodationSummary().find((item) => item.destination === destination);
-    const nights = Number(summaryItem?.nights || 0);
+    const summary = this.getAccommodationSummary().find((item) => item.destination === destination);
+    const nights = Number(summary?.nights || 0);
+
+    if (title) title.textContent = `Elige alojamiento en ${destinationLabel}`;
+    if (intro) intro.textContent = `Selecciona una opción para ${nights} noche${nights !== 1 ? "s" : ""}.`;
+
+    this.pendingHotelSelection = {
+      hotelCode: this.selectedHotelsByDestination[destination] || "no-hotel",
+      combinationKey: this.selectedCombinationsByDestination[destination] || ""
+    };
+
+    this.renderHotelModalOptions(destination);
+
+    modal.hidden = false;
+    document.body.classList.add("quote-modal-open");
+  }
+
+  renderHotelModalOptions(destination) {
+    const list = document.getElementById("hotelModalList");
+    if (!list) return;
+
+    const summary = this.getAccommodationSummary().find((item) => item.destination === destination);
+    const nights = Number(summary?.nights || 0);
+    const hotels = [this.getNoHotelOption(destination), ...this.getHotelsByDestination(destination)];
     const passengers = this.getTotalPassengers();
 
-    title.textContent = `Elige tu hotel en ${destinationLabel}`;
-    subtitle.textContent = `Compara opciones para ${nights} noche${nights !== 1 ? "s" : ""} y ${passengers} pasajero${passengers !== 1 ? "s" : ""}.`;
-
-    const hotels = [this.getNoHotelOption(destination), ...this.getHotelsByDestination(destination)];
-
     list.innerHTML = hotels.map((hotel) => {
-      const combinations = this.generateAccommodationCombinations(hotel.rooms || [], passengers, nights);
-      const isSelectedHotel = this.pendingHotelSelection.hotelCode === hotel.hotelCode;
+      const isSelectedHotel = this.pendingHotelSelection?.hotelCode === hotel.hotelCode;
       const isNoHotel = hotel.hotelCode === "no-hotel";
+      const images = isNoHotel ? [] : this.getHotelImages(hotel);
+      const combinations = this.generateAccommodationCombinations(hotel.rooms || [], passengers, nights);
 
-      const initialCombo =
-        combinations.find((combo) => isSelectedHotel && combo.key === this.pendingHotelSelection.comboKey) ||
-        combinations[0] ||
-        null;
+      const comboHtml = combinations.map((combo) => {
+        const isSelectedCombo =
+          isSelectedHotel &&
+          (this.pendingHotelSelection?.combinationKey === combo.key || !this.pendingHotelSelection?.combinationKey);
 
-      if (isSelectedHotel && initialCombo) {
-        this.pendingHotelSelection.comboKey = initialCombo.key;
-      }
-
-      const images = this.getHotelImages(hotel);
-
-      const firstPrice = combinations[0]
-        ? this.convertMoney(Number(combinations[0].totalForStay || 0), "USD", this.quoteCurrency)
-        : 0;
-
-      if (isNoHotel) {
         return `
-          <article
-            class="hotel-option-card hotel-option-card--no-hotel ${isSelectedHotel ? "is-selected" : ""}"
-            data-destination="${this.escapeHtml(destination)}"
-            data-hotel-code="no-hotel"
-            data-selected-combo-key="${this.escapeHtml(initialCombo?.key || "no-hotel")}"
+          <button
+            type="button"
+            class="hotel-combo-btn ${isSelectedCombo ? "is-selected" : ""}"
+            data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
+            data-combo-key="${this.escapeHtml(combo.key)}"
           >
-            <button
-              type="button"
-              class="hotel-combo-btn hotel-combo-btn--compact ${isSelectedHotel ? "is-selected" : ""}"
-              data-destination="${this.escapeHtml(destination)}"
-              data-hotel-code="no-hotel"
-              data-combo-key="${this.escapeHtml(initialCombo?.key || "no-hotel")}"
-            >
-              <span class="hotel-combo-btn__radio" aria-hidden="true"></span>
-              <span class="hotel-combo-btn__main">Opción sin alojamiento</span>
-              <span class="hotel-combo-btn__sub">${this.formatCurrency(0, this.quoteCurrency)} por estadía</span>
-            </button>
-          </article>
+            <span class="hotel-combo-btn__radio"></span>
+            <span class="hotel-combo-btn__main">${this.escapeHtml(combo.label)}</span>
+            <span class="hotel-combo-btn__sub">
+              ${this.escapeHtml(combo.description)} · ${this.formatCurrency(
+                this.convertCurrency(combo.total, combo.currency, this.quoteCurrency),
+                this.quoteCurrency
+              )}
+            </span>
+          </button>
         `;
-      }
+      }).join("");
 
       return `
-        <article
-          class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""}"
-          data-destination="${this.escapeHtml(destination)}"
-          data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
-          data-selected-combo-key="${this.escapeHtml(initialCombo?.key || "")}"
-        >
+        <article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""} ${isNoHotel ? "hotel-option-card--no-hotel" : ""}">
           <div class="hotel-option-card__header">
             <div>
-              <h3>${this.escapeHtml(hotel.hotelName)}</h3>
-              <p>${hotel.stars || 0}★ · ${this.escapeHtml(hotel.location || destinationLabel)}</p>
-              ${hotel.address ? `<p>${this.escapeHtml(hotel.address)}</p>` : ""}
+              <h3>${this.escapeHtml(hotel.hotelName || hotel.name || "Hotel")}</h3>
+              <p>${isNoHotel ? "No se agregará alojamiento a la cotización." : `${Number(hotel.stars || 0)} estrellas · ${this.escapeHtml(this.getDestinationLabel(destination))}`}</p>
             </div>
-
-            <div class="hotel-option-card__badge">
-              Desde ${this.formatCurrency(firstPrice, this.quoteCurrency)}
-            </div>
+            <span class="hotel-option-card__badge">${isNoHotel ? "Sin costo" : "Hotel"}</span>
           </div>
 
           <div class="hotel-option-card__content">
             <div class="hotel-option-card__media">
-              ${this.renderHotelModalGallery(images, hotel.hotelName)}
+              ${
+                images.length
+                  ? `
+                    <div class="hotel-gallery-main">
+                      <img class="hotel-gallery-main-img" src="${this.escapeHtml(this.resolveAssetPath(images[0]))}" alt="${this.escapeHtml(hotel.hotelName || "Hotel")}" loading="lazy" />
+                    </div>
+                    <div class="hotel-gallery-thumbs">
+                      ${images.map((image, index) => `
+                        <button type="button" class="hotel-gallery-thumb ${index === 0 ? "is-active" : ""}">
+                          <img src="${this.escapeHtml(this.resolveAssetPath(image))}" alt="${this.escapeHtml(hotel.hotelName || "Hotel")}" loading="lazy" />
+                        </button>
+                      `).join("")}
+                    </div>
+                  `
+                  : `
+                    <div class="hotel-gallery-main--empty">
+                      <div class="hotel-gallery-empty-state">
+                        <strong>${isNoHotel ? "Sin alojamiento" : "Imagen no disponible"}</strong>
+                        <span>${isNoHotel ? "El cliente gestionará su hotel por cuenta propia." : "Puedes agregar fotos del hotel en hotels.json."}</span>
+                      </div>
+                    </div>
+                  `
+              }
             </div>
 
             <div class="hotel-option-card__body">
-              <label>Selecciona tipo de habitación</label>
-
+              <label>Opciones disponibles</label>
               <div class="hotel-option-card__options">
-                ${combinations.length
-                  ? combinations.map((combo) => {
-                      const convertedTotal = this.convertMoney(Number(combo.totalForStay || 0), "USD", this.quoteCurrency);
-                      const convertedNight = this.convertMoney(Number(combo.totalPerNight || 0), "USD", this.quoteCurrency);
-                      const selectedCombo = isSelectedHotel && initialCombo?.key === combo.key;
-
-                      return `
-                        <button
-                          type="button"
-                          class="hotel-combo-btn ${selectedCombo ? "is-selected" : ""}"
-                          data-destination="${this.escapeHtml(destination)}"
-                          data-hotel-code="${this.escapeHtml(hotel.hotelCode)}"
-                          data-combo-key="${this.escapeHtml(combo.key)}"
-                        >
-                          <span class="hotel-combo-btn__radio" aria-hidden="true"></span>
-                          <span class="hotel-combo-btn__main">${this.escapeHtml(combo.label)}</span>
-                          <span class="hotel-combo-btn__sub">
-                            ${combo.totalRooms} hab. · ${this.formatCurrency(convertedNight, this.quoteCurrency)} / noche · ${this.formatCurrency(convertedTotal, this.quoteCurrency)} total
-                          </span>
-                        </button>
-                      `;
-                    }).join("")
-                  : `<p>No hay acomodaciones válidas para ${passengers} pasajero${passengers !== 1 ? "s" : ""}.</p>`
-                }
+                ${comboHtml}
               </div>
             </div>
           </div>
@@ -1097,482 +1455,238 @@ class MyCuscoTripQuotePackages {
       `;
     }).join("");
 
-    this.bindHotelModalSelectionEvents();
-    this.bindHotelModalGalleryEvents();
-
-    modal.hidden = false;
-    document.body.classList.add("quote-modal-open");
-  }
-
-  bindHotelModalSelectionEvents() {
-    const list = document.getElementById("hotelModalList");
-    if (!list) return;
-
     list.querySelectorAll(".hotel-combo-btn").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const hotelCode = button.dataset.hotelCode;
-        const comboKey = button.dataset.comboKey;
-
-        this.pendingHotelSelection.hotelCode = hotelCode;
-        this.pendingHotelSelection.comboKey = comboKey;
-
-        list.querySelectorAll(".hotel-option-card").forEach((item) => {
-          item.classList.toggle("is-selected", item.dataset.hotelCode === hotelCode);
-        });
-
-        list.querySelectorAll(".hotel-combo-btn").forEach((comboButton) => {
-          comboButton.classList.toggle(
-            "is-selected",
-            comboButton.dataset.hotelCode === hotelCode && comboButton.dataset.comboKey === comboKey
-          );
-        });
-      });
-    });
-  }
-
-  bindHotelModalEvents() {
-    const modal = document.getElementById("hotelSelectionModal");
-    const confirmBtn = document.getElementById("confirmHotelSelectionBtn");
-
-    document.querySelectorAll("[data-close-hotel-modal]").forEach((button) => {
-      button.addEventListener("click", () => this.closeHotelModal());
-    });
-
-    modal?.querySelector(".quote-modal__backdrop")?.addEventListener("click", () => this.closeHotelModal());
-
-    confirmBtn?.addEventListener("click", () => {
-      this.confirmHotelSelection();
-    });
-  }
-
-  confirmHotelSelection() {
-    if (!this.pendingHotelSelection) return;
-
-    const { destination, hotelCode, comboKey } = this.pendingHotelSelection;
-
-    const hotel =
-      hotelCode === "no-hotel"
-        ? this.getNoHotelOption(destination)
-        : this.getHotelByCode(destination, hotelCode);
-
-    if (!hotel) return;
-
-    const summaryItem = this.getAccommodationSummary().find((item) => item.destination === destination);
-
-    const combinations = this.generateAccommodationCombinations(
-      hotel.rooms || [],
-      this.getTotalPassengers(),
-      Number(summaryItem?.nights || 0)
-    );
-
-    const combination = combinations.find((item) => item.key === comboKey) || combinations[0] || null;
-
-    if (!combination) return;
-
-    this.selectedHotelsByDestination[destination] = hotelCode;
-    this.selectedCombinationsByDestination[destination] = combination;
-
-    this.renderAccommodationOptions();
-    this.updatePricing();
-    this.updatePrintQuotation();
-    this.closeHotelModal();
-  }
-
-  closeHotelModal() {
-    const modal = document.getElementById("hotelSelectionModal");
-    if (modal) modal.hidden = true;
-
-    this.activeHotelModalDestination = null;
-    this.pendingHotelSelection = null;
-    document.body.classList.remove("quote-modal-open");
-  }
-
-  getNoHotelOption(destination) {
-    const destinationLabel = this.getDestinationLabel(destination);
-    const passengers = Math.max(this.getTotalPassengers(), 1);
-
-    return {
-      hotelCode: "no-hotel",
-      hotelName: "Sin alojamiento",
-      stars: 0,
-      location: destinationLabel,
-      address: "",
-      images: {
-        cover: "",
-        gallery: []
-      },
-      rooms: [
-        {
-          roomType: "no-hotel",
-          label: "Opción sin alojamiento",
-          bedType: "No incluye alojamiento",
-          capacity: passengers,
-          pricePerNight: 0
-        }
-      ]
-    };
-  }
-
-  renderHotelModalGallery(images, hotelName) {
-    if (!images.length) {
-      return `
-        <div class="hotel-gallery-main hotel-gallery-main--empty">
-          <div class="hotel-gallery-empty-state">
-            <strong>${this.escapeHtml(hotelName || "Hotel")}</strong>
-            <span>Imagen referencial no disponible.</span>
-          </div>
-        </div>
-      `;
-    }
-
-    const resolvedImages = images.map((image) => this.resolveAssetPath(image));
-
-    return `
-      <div class="hotel-gallery">
-        <div class="hotel-gallery-main">
-          <img
-            class="hotel-gallery-main-img"
-            src="${this.escapeHtml(resolvedImages[0])}"
-            alt="${this.escapeHtml(hotelName)}"
-            loading="lazy"
-          />
-        </div>
-
-        ${resolvedImages.length > 1
-          ? `
-            <div class="hotel-gallery-thumbs">
-              ${resolvedImages.slice(0, 6).map((image, index) => `
-                <button
-                  type="button"
-                  class="hotel-gallery-thumb ${index === 0 ? "is-active" : ""}"
-                  data-image="${this.escapeHtml(image)}"
-                  aria-label="Ver imagen ${index + 1} de ${this.escapeHtml(hotelName)}"
-                >
-                  <img src="${this.escapeHtml(image)}" alt="${this.escapeHtml(hotelName)} ${index + 1}" loading="lazy" />
-                </button>
-              `).join("")}
-            </div>
-          `
-          : ""
-        }
-      </div>
-    `;
-  }
-
-  bindHotelModalGalleryEvents() {
-    const list = document.getElementById("hotelModalList");
-    if (!list) return;
-
-    list.querySelectorAll(".hotel-gallery-thumb").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const gallery = button.closest(".hotel-gallery");
-        const mainImage = gallery?.querySelector(".hotel-gallery-main-img");
-
-        if (mainImage && button.dataset.image) {
-          mainImage.src = button.dataset.image;
-        }
-
-        gallery?.querySelectorAll(".hotel-gallery-thumb").forEach((thumb) => {
-          thumb.classList.toggle("is-active", thumb === button);
-        });
+      button.addEventListener("click", () => {
+        this.pendingHotelSelection = {
+          hotelCode: button.dataset.hotelCode,
+          combinationKey: button.dataset.comboKey
+        };
+        this.renderHotelModalOptions(destination);
       });
     });
   }
 
   getHotelImages(hotel) {
-    if (!hotel || hotel.hotelCode === "no-hotel") return [];
-
-    return [...new Set([
-      ...(hotel.images?.cover ? [hotel.images.cover] : []),
-      ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])
-    ])].filter(Boolean);
+    if (!hotel) return [];
+    if (Array.isArray(hotel.images)) return hotel.images;
+    if (Array.isArray(hotel.gallery)) return hotel.gallery;
+    if (hotel.image) return [hotel.image];
+    if (hotel.cover) return [hotel.cover];
+    return [];
   }
+  bindHotelModalEvents() {
+    const modal = document.getElementById("hotelModal");
+    if (!modal) return;
 
-  getHotelCoverImage(hotel) {
-    return this.getHotelImages(hotel)[0] || "";
-  }
-
-  generateAccommodationCombinations(rooms, passengers, nights) {
-    const totalPassengers = Math.max(Number(passengers || 0), 1);
-    const totalNights = Math.max(Number(nights || 0), 0);
-
-    const normalizedRooms = Array.isArray(rooms)
-      ? rooms
-          .map((room) => ({
-            ...room,
-            capacity: Math.max(Number(room.capacity || room.maxGuests || 1), 1),
-            pricePerNight: Number(room.pricePerNight || room.price || 0)
-          }))
-          .filter((room) => room.capacity > 0)
-      : [];
-
-    if (!normalizedRooms.length) return [];
-
-    if (normalizedRooms.some((room) => room.roomType === "no-hotel")) {
-      return [
-        {
-          key: "no-hotel",
-          label: "Opción sin alojamiento",
-          rooms: [],
-          totalRooms: 0,
-          totalPerNight: 0,
-          totalForStay: 0
-        }
-      ];
-    }
-
-    const sortedRooms = [...normalizedRooms].sort((a, b) => {
-      if (a.capacity !== b.capacity) return b.capacity - a.capacity;
-      return a.pricePerNight - b.pricePerNight;
+    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => this.closeHotelModal());
     });
 
-    const combinations = [];
-    const maxRooms = Math.min(totalPassengers, 6);
-
-    const build = (startIndex, currentRooms, currentCapacity) => {
-      if (currentCapacity >= totalPassengers) {
-        const totalPerNight = currentRooms.reduce((sum, room) => sum + room.pricePerNight, 0);
-        const totalForStay = totalPerNight * totalNights;
-        const label = this.buildRoomCombinationLabel(currentRooms);
-
-        combinations.push({
-          key: currentRooms.map((room) => room.roomType || room.label).sort().join("|") + `-${currentRooms.length}-${totalForStay}`,
-          label,
-          rooms: currentRooms,
-          totalRooms: currentRooms.length,
-          totalPerNight,
-          totalForStay
-        });
+    document.getElementById("confirmHotelSelectionBtn")?.addEventListener("click", () => {
+      if (!this.activeHotelModalDestination || !this.pendingHotelSelection) {
+        this.closeHotelModal();
         return;
       }
 
-      if (currentRooms.length >= maxRooms) return;
+      this.selectedHotelsByDestination[this.activeHotelModalDestination] = this.pendingHotelSelection.hotelCode;
+      this.selectedCombinationsByDestination[this.activeHotelModalDestination] = this.pendingHotelSelection.combinationKey;
 
-      for (let index = startIndex; index < sortedRooms.length; index += 1) {
-        build(index, [...currentRooms, sortedRooms[index]], currentCapacity + sortedRooms[index].capacity);
-      }
-    };
-
-    build(0, [], 0);
-
-    const unique = [];
-    const seen = new Set();
-
-    combinations
-      .sort((a, b) => {
-        if (a.totalForStay !== b.totalForStay) return a.totalForStay - b.totalForStay;
-        return a.totalRooms - b.totalRooms;
-      })
-      .forEach((combo) => {
-        const signature = `${combo.label}-${combo.totalForStay}`;
-        if (!seen.has(signature)) {
-          seen.add(signature);
-          unique.push(combo);
-        }
-      });
-
-    return unique.slice(0, 8);
-  }
-
-  buildRoomCombinationLabel(rooms) {
-    const countMap = new Map();
-
-    rooms.forEach((room) => {
-      const label = room.label || room.roomType || "Habitación";
-      countMap.set(label, (countMap.get(label) || 0) + 1);
+      this.renderAccommodationOptions();
+      this.updatePricing();
+      this.updatePrintQuotation();
+      this.closeHotelModal();
     });
-
-    return Array.from(countMap.entries())
-      .map(([label, count]) => `${count} ${label}`)
-      .join(" + ");
   }
 
-  getSelectedAccommodationForDestination(destination) {
-    const hotelCode = this.selectedHotelsByDestination[destination];
+  closeHotelModal() {
+    const modal = document.getElementById("hotelModal");
+    if (modal) modal.hidden = true;
 
-    let hotel = null;
+    this.activeHotelModalDestination = null;
+    this.pendingHotelSelection = null;
 
-    if (hotelCode === "no-hotel") {
-      hotel = this.getNoHotelOption(destination);
-    } else {
-      hotel = this.getHotelByCode(destination, hotelCode);
-    }
-
-    const combination = this.selectedCombinationsByDestination[destination] || null;
-
-    return { hotel, combination };
-  }
-
-  getAccommodationSummary() {
-    return Array.isArray(this.selectedPackage?.accommodationSummary)
-      ? this.selectedPackage.accommodationSummary
-      : [];
-  }
-
-  getHotelsByDestination(destination) {
-    const hotels = this.hotelsData?.destinations?.[destination]?.hotels;
-    return Array.isArray(hotels) ? hotels : [];
-  }
-
-  getHotelByCode(destination, hotelCode) {
-    return this.getHotelsByDestination(destination).find((hotel) => hotel.hotelCode === hotelCode) || null;
-  }
-
-  getDestinationLabel(destination) {
-    return this.hotelsData?.destinations?.[destination]?.label ||
-      destination
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (letter) => letter.toUpperCase());
-  }
-
-  calculateAccommodationAdditional(destination) {
-    const selection = this.getSelectedAccommodationForDestination(destination);
-    return this.convertMoney(Number(selection?.combination?.totalForStay || 0), "USD", this.quoteCurrency);
+    document.body.classList.remove("quote-modal-open");
   }
 
   renderTrainSelectors() {
-    const outboundTitle = document.getElementById("outboundTrainSelectedTitle");
-    const outboundMeta = document.getElementById("outboundTrainSelectedMeta");
-    const returnTitle = document.getElementById("returnTrainSelectedTitle");
-    const returnMeta = document.getElementById("returnTrainSelectedMeta");
+    const section = document.getElementById("trainSection");
+    const outboundCard = document.getElementById("outboundTrainSelected");
+    const returnCard = document.getElementById("returnTrainSelected");
 
-    const outboundTrain = this.getSelectedTrain("outbound");
-    const returnTrain = this.getSelectedTrain("return");
+    if (!section || !outboundCard || !returnCard) return;
 
-    if (outboundTitle) {
-      outboundTitle.textContent = outboundTrain
-        ? this.getTrainDisplayName(outboundTrain)
-        : "Por seleccionar";
+    if (!this.selectedPackage || !this.selectedItineraryOption) {
+      section.hidden = true;
+      outboundCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de ida");
+      returnCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de retorno");
+      return;
     }
 
-    if (outboundMeta) {
-      outboundMeta.textContent = outboundTrain
-        ? this.getTrainMetaText(outboundTrain)
-        : "Elige el tren de ida para completar la cotización.";
+    const trainConfig = this.getTrainSelectionConfig();
+
+    if (!trainConfig.required) {
+      section.hidden = true;
+      return;
     }
 
-    if (returnTitle) {
-      returnTitle.textContent = returnTrain
-        ? this.getTrainDisplayName(returnTrain)
-        : "Por seleccionar";
-    }
+    section.hidden = false;
 
-    if (returnMeta) {
-      returnMeta.textContent = returnTrain
-        ? this.getTrainMetaText(returnTrain)
-        : "Elige el tren de retorno para completar la cotización.";
-    }
-  }
+    const outboundTrain = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
+    const returnTrain = this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode);
 
-  openTrainSelectionModal(direction) {
-    const modal = document.getElementById("trainSelectionModal");
-    const title = document.getElementById("trainModalTitle");
-    const subtitle = document.getElementById("trainModalSubtitle");
-    const list = document.getElementById("trainModalList");
-
-    if (!modal || !title || !subtitle || !list || !this.selectedPackage) return;
-
-    this.activeTrainDirection = direction;
-    this.pendingTrainCode = direction === "outbound" ? this.selectedOutboundTrainCode : this.selectedReturnTrainCode;
-
-    const routeKey = this.getTrainRouteKey(direction);
-    const route = this.trainsData?.routes?.[routeKey];
-    const options = this.getTrainOptionsForDirection(direction);
-    const recommendedCodes = this.getRecommendedTrainCodes(direction);
-
-    title.textContent = direction === "outbound" ? "Elige tu tren de ida" : "Elige tu tren de retorno";
-    subtitle.textContent = route?.label || "Selecciona el tren disponible según ruta, horario y categoría.";
-
-    if (!options.length) {
-      list.innerHTML = `
-        <div class="quote-empty-state">
-          No hay trenes configurados para esta ruta.
-        </div>
-      `;
-    } else {
-      list.innerHTML = options.map((train) => {
-        const selected = this.pendingTrainCode === train.code;
-        const isRecommended = recommendedCodes.includes(train.code);
-        const price = this.convertMoney(Number(train.pricePerPerson || train.price || 0), train.currency || "USD", this.quoteCurrency);
-        const displayName = this.getTrainDisplayName(train);
-        const meta = this.getTrainMetaText(train);
-        const serviceLabel = this.getTrainServiceLabel(train);
-        const displayCategory = this.getTrainDisplayCategory(train);
-
-        return `
-          <article
-            class="train-option-card ${selected ? "is-selected" : ""} ${isRecommended ? "is-recommended" : ""}"
-            data-train-code="${this.escapeHtml(train.code)}"
-          >
-            <div class="train-option-card__content">
-              <div class="train-option-card__top">
-                <span class="quote-badge quote-badge--muted">${this.escapeHtml(displayCategory)}</span>
-                ${isRecommended ? `<span class="quote-badge quote-badge--gold">Recomendado</span>` : ""}
-              </div>
-
-              <h3>${this.escapeHtml(displayName)}</h3>
-
-              ${serviceLabel ? `<p><strong>Categoría:</strong> ${this.escapeHtml(serviceLabel)}</p>` : ""}
-              <p>${this.escapeHtml(train.description || meta)}</p>
-
-              ${train.departureTime || train.arrivalTime
-                ? `<p><strong>Horario:</strong> ${this.escapeHtml(train.departureTime || "")}${train.arrivalTime ? ` - ${this.escapeHtml(train.arrivalTime)}` : ""}</p>`
-                : ""}
-            </div>
-
-            <div class="train-option-card__price">
-              <strong>${this.formatCurrency(price, this.quoteCurrency)}</strong>
-              <span>por persona</span>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    list.querySelectorAll(".train-option-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        this.pendingTrainCode = card.dataset.trainCode || "";
-
-        list.querySelectorAll(".train-option-card").forEach((item) => {
-          item.classList.toggle("is-selected", item === card);
-        });
-      });
+    outboundCard.innerHTML = this.getTrainSelectorCardHtml({
+      direction: "outbound",
+      label: "Tren de ida",
+      train: outboundTrain,
+      routeCode: trainConfig.outboundRoute
     });
 
-    modal.hidden = false;
-    document.body.classList.add("quote-modal-open");
+    returnCard.innerHTML = this.getTrainSelectorCardHtml({
+      direction: "return",
+      label: "Tren de retorno",
+      train: returnTrain,
+      routeCode: trainConfig.returnRoute
+    });
+  }
+
+  getTrainSelectionConfig() {
+    const packageConfig = this.selectedPackage?.trainSelection || {};
+    const optionTrainMode = this.selectedItineraryOption?.trainMode || packageConfig.mode || "full_day";
+
+    const modeRoutes = {
+      full_day: {
+        outboundRoute: "machu_picchu_full_day_outbound",
+        returnRoute: "machu_picchu_return"
+      },
+      express: {
+        outboundRoute: "machu_picchu_full_day_outbound",
+        returnRoute: "machu_picchu_return"
+      },
+      overnight: {
+        outboundRoute: "machu_picchu_overnight_outbound",
+        returnRoute: "machu_picchu_return"
+      },
+      connection: {
+        outboundRoute: "machu_picchu_overnight_outbound",
+        returnRoute: "machu_picchu_return"
+      }
+    };
+
+    const fallbackRoutes = modeRoutes[optionTrainMode] || modeRoutes.full_day;
+
+    return {
+      required: packageConfig.required !== false,
+      mode: optionTrainMode,
+      outboundRoute: this.selectedItineraryOption?.outboundRoute || packageConfig.outboundRoute || fallbackRoutes.outboundRoute,
+      returnRoute: this.selectedItineraryOption?.returnRoute || packageConfig.returnRoute || fallbackRoutes.returnRoute
+    };
+  }
+
+  getTrainSelectorEmptyHtml(label) {
+    return `
+      <div>
+        <span>${this.escapeHtml(label)}</span>
+        <strong>Sin selección</strong>
+        <p>Elige una opción de tren para completar la cotización.</p>
+      </div>
+      <button type="button" class="btn quote-secondary-btn">Elegir tren</button>
+    `;
+  }
+
+  getTrainSelectorCardHtml({ direction, label, train, routeCode }) {
+    const companyLogo = train ? this.getTrainCompanyLogo(train) : "";
+    const companyLabel = train ? this.getTrainCompanyLabel(train) : "";
+    const buttonText = train ? "Cambiar tren" : "Elegir tren";
+    const trainName = train ? this.getTrainDisplayName(train) : "Sin selección";
+    const timeText = train ? this.getTrainShortScheduleText(train, direction) : "Selecciona horario y categoría.";
+
+    return `
+      <div>
+        <span>${this.escapeHtml(label)}</span>
+        ${
+          companyLogo
+            ? `
+              <div class="train-option-card__company">
+                <img class="train-option-card__logo" src="${this.escapeHtml(companyLogo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />
+                <strong>${this.escapeHtml(trainName)}</strong>
+              </div>
+            `
+            : `<strong>${this.escapeHtml(trainName)}</strong>`
+        }
+        <p>${this.escapeHtml(timeText)}</p>
+      </div>
+      <button
+        type="button"
+        class="btn quote-secondary-btn"
+        id="${direction === "outbound" ? "openOutboundTrainModalBtnDynamic" : "openReturnTrainModalBtnDynamic"}"
+        data-train-direction="${this.escapeHtml(direction)}"
+        data-route-code="${this.escapeHtml(routeCode)}"
+      >
+        ${this.escapeHtml(buttonText)}
+      </button>
+    `;
   }
 
   bindTrainSelectionModalEvents() {
     const modal = document.getElementById("trainSelectionModal");
-    const confirmBtn = document.getElementById("confirmTrainSelectionBtn");
+    if (!modal) return;
 
-    document.querySelectorAll("[data-close-train-modal]").forEach((button) => {
+    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
       button.addEventListener("click", () => this.closeTrainSelectionModal());
     });
 
-    modal?.querySelector(".quote-modal__backdrop")?.addEventListener("click", () => this.closeTrainSelectionModal());
-
-    confirmBtn?.addEventListener("click", () => {
-      if (!this.activeTrainDirection) return;
-
-      if (this.activeTrainDirection === "outbound") {
-        this.selectedOutboundTrainCode = this.pendingTrainCode || "";
-      } else {
-        this.selectedReturnTrainCode = this.pendingTrainCode || "";
-      }
-
-      this.renderTrainSelectors();
-      this.updatePricing();
-      this.updatePrintQuotation();
-      this.closeTrainSelectionModal();
+    document.getElementById("confirmTrainSelectionBtn")?.addEventListener("click", () => {
+      this.confirmTrainSelection();
     });
+
+    document.addEventListener("click", (event) => {
+      const dynamicButton = event.target.closest("[data-train-direction]");
+      if (!dynamicButton) return;
+
+      this.openTrainSelectionModal(dynamicButton.dataset.trainDirection);
+    });
+  }
+
+  bindTrainDetailsModalEvents() {
+    const modal = document.getElementById("trainDetailsModal");
+    if (!modal) return;
+
+    modal.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        modal.hidden = true;
+        document.body.classList.remove("quote-modal-open");
+      });
+    });
+  }
+
+  openTrainSelectionModal(direction) {
+    const trainConfig = this.getTrainSelectionConfig();
+    const routeCode = direction === "outbound" ? trainConfig.outboundRoute : trainConfig.returnRoute;
+
+    this.activeTrainDirection = direction;
+    this.pendingTrainCode = direction === "outbound" ? this.selectedOutboundTrainCode : this.selectedReturnTrainCode;
+
+    const modal = document.getElementById("trainSelectionModal");
+    const title = document.getElementById("trainSelectionModalTitle");
+    const intro = document.getElementById("trainSelectionModalIntro");
+
+    if (!modal) return;
+
+    if (title) {
+      title.textContent = direction === "outbound" ? "Elige tren de ida" : "Elige tren de retorno";
+    }
+
+    if (intro) {
+      intro.textContent =
+        direction === "outbound"
+          ? "Selecciona el tren de ida hacia Machu Picchu según empresa, horario y categoría."
+          : "Selecciona el tren de retorno. Si ya elegiste una empresa en la ida, aquí solo verás trenes de esa misma empresa.";
+    }
+
+    this.renderTrainModalOptions(routeCode, direction);
+
+    modal.hidden = false;
+    document.body.classList.add("quote-modal-open");
   }
 
   closeTrainSelectionModal() {
@@ -1581,215 +1695,491 @@ class MyCuscoTripQuotePackages {
 
     this.activeTrainDirection = null;
     this.pendingTrainCode = "";
+
     document.body.classList.remove("quote-modal-open");
   }
 
-  bindTrainDetailsModalEvents() {
-    document.querySelectorAll("[data-close-train-details-modal]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const modal = document.getElementById("trainDetailsModal");
-        if (modal) modal.hidden = true;
-        document.body.classList.remove("quote-modal-open");
+  confirmTrainSelection() {
+    if (!this.activeTrainDirection) {
+      this.closeTrainSelectionModal();
+      return;
+    }
+
+    if (this.activeTrainDirection === "outbound") {
+      this.selectedOutboundTrainCode = this.pendingTrainCode || "";
+
+      const outboundCompany = this.getSelectedOutboundTrainCompany();
+      const returnTrainConfig = this.getTrainSelectionConfig();
+      const currentReturnTrain = this.getTrainByCode(returnTrainConfig.returnRoute, this.selectedReturnTrainCode);
+
+      if (
+        outboundCompany &&
+        currentReturnTrain &&
+        this.normalizeTrainCompany(currentReturnTrain.company || currentReturnTrain.operator || currentReturnTrain.provider) !== outboundCompany
+      ) {
+        this.selectedReturnTrainCode = "";
+      }
+    }
+
+    if (this.activeTrainDirection === "return") {
+      this.selectedReturnTrainCode = this.pendingTrainCode || "";
+    }
+
+    this.renderTrainSelectors();
+    this.updatePricing();
+    this.updatePrintQuotation();
+    this.closeTrainSelectionModal();
+  }
+
+  renderTrainModalOptions(routeCode, direction) {
+    const list = document.getElementById("trainSelectionModalList");
+    if (!list) return;
+
+    const trains = this.getAvailableTrainsForRoute(routeCode, direction);
+
+    if (!trains.length) {
+      list.innerHTML = `
+        <div class="quote-empty-state">
+          No hay trenes disponibles para esta ruta o empresa. Cambia el tren de ida o revisa trains.json.
+        </div>
+      `;
+      return;
+    }
+
+    const recommendedCode = this.getRecommendedTrainCode(trains, direction);
+
+    list.innerHTML = trains.map((train) => {
+      const trainCode = this.getTrainCode(train);
+      const isSelected = this.pendingTrainCode === trainCode;
+      const isRecommended = recommendedCode && trainCode === recommendedCode;
+      const companyLogo = this.getTrainCompanyLogo(train);
+      const companyLabel = this.getTrainCompanyLabel(train);
+      const schedule = this.getTrainSchedule(train);
+      const routeText = this.getTrainRouteText(train, direction);
+      const price = this.getTrainPrice(train);
+
+      return `
+        <article
+          class="train-option-card ${isSelected ? "is-selected" : ""} ${isRecommended ? "is-recommended" : ""}"
+          data-train-code="${this.escapeHtml(trainCode)}"
+        >
+          ${isRecommended ? `<span class="train-badge-recommended">Recomendado</span>` : ""}
+
+          <div class="train-option-card__content">
+            <div class="train-option-card__company">
+              ${
+                companyLogo
+                  ? `<img class="train-option-card__logo" src="${this.escapeHtml(companyLogo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />`
+                  : ""
+              }
+              <div>
+                <h3>${this.escapeHtml(this.getTrainDisplayName(train))}</h3>
+                <p>${this.escapeHtml(companyLabel)}</p>
+              </div>
+            </div>
+
+            <p>${this.escapeHtml(routeText)}</p>
+
+            <div class="train-option-card__schedule">
+              <div class="train-time-box">
+                <span>Hora de partida</span>
+                <strong>${this.escapeHtml(schedule.departureLabel)}</strong>
+              </div>
+              <div class="train-time-box">
+                <span>Hora de llegada</span>
+                <strong>${this.escapeHtml(schedule.arrivalLabel)}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="train-option-card__price">
+            <strong>${this.formatCurrency(price.amount, price.currency)}</strong>
+            <span>por persona</span>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    list.querySelectorAll(".train-option-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        this.pendingTrainCode = card.dataset.trainCode || "";
+        this.renderTrainModalOptions(routeCode, direction);
       });
     });
   }
+  getAvailableTrainsForRoute(routeCode, direction) {
+    const route = this.trainsData?.routes?.[routeCode];
+    const rawTrains = Array.isArray(route?.trains)
+      ? route.trains
+      : Array.isArray(route)
+        ? route
+        : [];
 
-  getTrainRouteKey(direction) {
+    let trains = rawTrains.filter((train) => this.isTrainAvailableForNationality(train));
+
     if (direction === "return") {
-      return "machu_picchu_return";
-    }
-  
-    const optionText = this.getSelectedItineraryText();
-  
-    const isSacredValleyConnection =
-      optionText.includes("valle sagrado conexión") ||
-      optionText.includes("valle sagrado conexion") ||
-      optionText.includes("valle conexión") ||
-      optionText.includes("valle conexion") ||
-      (optionText.includes("valle sagrado") && optionText.includes("aguas calientes"));
-  
-    const isFullDayMachuPicchu =
-      optionText.includes("full day machu picchu") ||
-      optionText.includes("full day a machu picchu") ||
-      optionText.includes("machu picchu full day") ||
-      optionText.includes("machu picchu en full day") ||
-      optionText.includes("recojo desde el hotel de 3:40") ||
-      optionText.includes("3:40 am") ||
-      optionText.includes("4:00 am");
-  
-    if (isSacredValleyConnection) {
-      return "sacred_valley_connection_outbound";
-    }
-  
-    if (isFullDayMachuPicchu) {
-      return "machu_picchu_full_day_outbound";
-    }
-  
-    return this.selectedPackage?.trainSelection?.outboundRoute || "machu_picchu_full_day_outbound";
-  }
+      const outboundCompany = this.getSelectedOutboundTrainCompany();
 
-  getTrainOptionsForDirection(direction) {
-    const routeKey = this.getTrainRouteKey(direction);
-    const route = this.trainsData?.routes?.[routeKey];
-    const options = Array.isArray(route?.options) ? route.options : [];
-
-    return options.filter((train) => {
-      const market = String(train.market || train.availableFor || "general").toLowerCase();
-
-      if (market.includes("peru") || market.includes("national") || market.includes("local")) {
-        return this.nationality === "national";
+      if (outboundCompany) {
+        trains = trains.filter((train) => {
+          const company = this.normalizeTrainCompany(train.company || train.operator || train.provider);
+          return company === outboundCompany;
+        });
       }
+    }
 
-      return true;
-    });
+    return trains;
   }
 
-  getSelectedTrain(direction) {
-    const code = direction === "outbound" ? this.selectedOutboundTrainCode : this.selectedReturnTrainCode;
-    if (!code) return null;
+  isTrainAvailableForNationality(train) {
+    if (!train) return false;
 
-    return this.getTrainOptionsForDirection(direction).find((train) => train.code === code) || null;
+    if (train.status && train.status !== "published") return false;
+
+    const allowedNationalities = train.allowedNationalities || train.nationalities || [];
+
+    if (Array.isArray(allowedNationalities) && allowedNationalities.length) {
+      return allowedNationalities.includes(this.nationality);
+    }
+
+    if (train.onlyForNational === true) {
+      return this.nationality === "national";
+    }
+
+    if (train.localOnly === true) {
+      return this.nationality === "national";
+    }
+
+    return true;
   }
 
-  getTrainDisplayName(train) {
-    const company = train.company || "";
-    const service = this.getTrainServiceLabel(train);
+  getSelectedOutboundTrainCompany() {
+    if (!this.selectedOutboundTrainCode) return "";
 
-    return [company, service]
-      .filter(Boolean)
-      .join(" · ");
+    const trainConfig = this.getTrainSelectionConfig();
+    const train = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
+
+    if (!train) return "";
+
+    return this.normalizeTrainCompany(train.company || train.operator || train.provider);
   }
 
-  getTrainServiceLabel(train) {
-    return (
-      train.name ||
-      train.serviceName ||
-      train.service ||
-      train.categoryName ||
-      train.category ||
-      train.trainCategory ||
-      train.className ||
-      train.type ||
+  normalizeTrainCompany(company) {
+    const value = String(company || "").trim().toLowerCase();
+
+    if (!value) return "";
+
+    if (
+      value.includes("inca") ||
+      value.includes("incarail") ||
+      value.includes("inca rail")
+    ) {
+      return "inca_rail";
+    }
+
+    if (
+      value.includes("peru") ||
+      value.includes("perurail") ||
+      value.includes("peru rail") ||
+      value.includes("perú rail")
+    ) {
+      return "peru_rail";
+    }
+
+    return value.replace(/\s+/g, "_");
+  }
+
+  getTrainCompanyLabel(train) {
+    const company = this.normalizeTrainCompany(train?.company || train?.operator || train?.provider);
+
+    if (company === "inca_rail") return "Inca Rail";
+    if (company === "peru_rail") return "Peru Rail";
+
+    return train?.company || train?.operator || train?.provider || "Empresa ferroviaria";
+  }
+
+  getTrainCompanyLogo(train) {
+    const company = this.normalizeTrainCompany(train?.company || train?.operator || train?.provider);
+
+    if (company === "inca_rail") {
+      return this.resolveAssetPath("assets/img/trenes/Inca Rail.png");
+    }
+
+    if (company === "peru_rail") {
+      return this.resolveAssetPath("assets/img/trenes/Peru Rail.png");
+    }
+
+    return "";
+  }
+
+  getTrainByCode(routeCode, trainCode) {
+    if (!routeCode || !trainCode) return null;
+
+    const route = this.trainsData?.routes?.[routeCode];
+    const trains = Array.isArray(route?.trains)
+      ? route.trains
+      : Array.isArray(route)
+        ? route
+        : [];
+
+    return trains.find((train) => this.getTrainCode(train) === trainCode) || null;
+  }
+
+  getTrainCode(train) {
+    return String(
+      train?.code ||
+      train?.trainCode ||
+      train?.id ||
+      train?.serviceCode ||
       ""
     );
   }
 
-  getTrainDisplayCategory(train) {
-    if (train.displayCategory) {
-      return train.displayCategory;
+  getTrainDisplayName(train) {
+    if (!train) return "Tren por seleccionar";
+
+    const categoryName =
+      train.categoryName ||
+      train.trainName ||
+      train.name ||
+      train.service ||
+      train.category ||
+      "Tren turístico";
+
+    const company = this.getTrainCompanyLabel(train);
+
+    if (String(categoryName).toLowerCase().includes(company.toLowerCase())) {
+      return categoryName;
     }
 
-    const category = this.trainsData?.trainCategories?.[train.categoryCode];
+    return `${company} · ${categoryName}`;
+  }
 
-    if (category?.displayCategory) {
-      return category.displayCategory;
+  getTrainSchedule(train) {
+    const departure =
+      train?.departureTime ||
+      train?.departure ||
+      train?.departTime ||
+      train?.startTime ||
+      train?.horaSalida ||
+      train?.hora_salida ||
+      train?.time;
+
+    const arrival =
+      train?.arrivalTime ||
+      train?.arrival ||
+      train?.arriveTime ||
+      train?.endTime ||
+      train?.horaLlegada ||
+      train?.hora_llegada;
+
+    return {
+      departureMinutes: this.timeToMinutes(departure),
+      arrivalMinutes: this.timeToMinutes(arrival),
+      departureLabel: this.formatTrainTime(departure),
+      arrivalLabel: this.formatTrainTime(arrival)
+    };
+  }
+
+  getTrainShortScheduleText(train, direction) {
+    const schedule = this.getTrainSchedule(train);
+    const departure = schedule.departureLabel || "Por confirmar";
+    const arrival = schedule.arrivalLabel || "Por confirmar";
+    const routeText = this.getTrainRouteText(train, direction);
+
+    return `${routeText}. Parte ${departure} · llega ${arrival}`;
+  }
+
+  getTrainRouteText(train, direction) {
+    const origin =
+      train?.origin ||
+      train?.from ||
+      train?.departureStation ||
+      train?.stationFrom ||
+      "";
+
+    const destination =
+      train?.destination ||
+      train?.to ||
+      train?.arrivalStation ||
+      train?.stationTo ||
+      "";
+
+    if (origin && destination) {
+      return `${origin} → ${destination}`;
     }
 
-    const tier = String(category?.tier || "").replace(/_/g, "-");
+    if (direction === "outbound") {
+      return "Ruta hacia Machu Picchu Pueblo";
+    }
 
-    const labelsByTier = {
-      local: "Local",
-      economy: "Economy",
-      "premium-economy": "Premium Economy",
-      premium: "Premium",
-      luxury: "Luxury"
+    return "Ruta de retorno desde Machu Picchu Pueblo";
+  }
+
+  formatTrainTime(value) {
+    const minutes = this.timeToMinutes(value);
+    if (minutes === null) return "Por confirmar";
+    return this.minutesToTimeLabel(minutes);
+  }
+
+  getTrainPrice(train) {
+    const pricing = train?.pricing || train?.prices || train?.priceByNationality;
+    const nationalityPricing = pricing?.[this.nationality];
+
+    if (nationalityPricing) {
+      return {
+        amount: Number(nationalityPricing.amount || nationalityPricing.price || nationalityPricing.adult || 0),
+        currency: nationalityPricing.currency || train.currency || this.quoteCurrency
+      };
+    }
+
+    return {
+      amount: Number(train?.price || train?.adultPrice || train?.amount || 0),
+      currency: train?.currency || this.quoteCurrency
+    };
+  }
+
+  getRecommendedTrainCode(trains, direction) {
+    if (!Array.isArray(trains) || !trains.length || !this.selectedItineraryOption) return "";
+
+    const mode = this.getCurrentTrainMode();
+    const normalizedCompany =
+      direction === "return"
+        ? this.getSelectedOutboundTrainCompany()
+        : "";
+
+    let candidates = trains;
+
+    if (direction === "return" && normalizedCompany) {
+      candidates = candidates.filter((train) => {
+        const company = this.normalizeTrainCompany(train.company || train.operator || train.provider);
+        return company === normalizedCompany;
+      });
+    }
+
+    const byRange = (start, end) => {
+      const startMinutes = this.timeToMinutes(start);
+      const endMinutes = this.timeToMinutes(end);
+
+      return candidates.filter((train) => {
+        const schedule = this.getTrainSchedule(train);
+        const departure = schedule.departureMinutes;
+        return departure !== null && departure >= startMinutes && departure <= endMinutes;
+      });
     };
 
-    return labelsByTier[tier] || train.company || "Tren";
-  }
+    const byExactOrNear = (target, toleranceMinutes = 45, company = "") => {
+      const targetMinutes = this.timeToMinutes(target);
 
-  getTrainMetaText(train) {
-    const parts = [];
+      return candidates.filter((train) => {
+        const schedule = this.getTrainSchedule(train);
+        const departure = schedule.departureMinutes;
+        const trainCompany = this.normalizeTrainCompany(train.company || train.operator || train.provider);
 
-    if (train.routeLabel) parts.push(train.routeLabel);
-    if (train.scheduleLabel) parts.push(train.scheduleLabel);
-    if (train.duration) parts.push(train.duration);
+        if (departure === null) return false;
+        if (company && trainCompany !== company) return false;
 
-    const service = this.getTrainServiceLabel(train);
-    if (service) parts.push(service);
+        return Math.abs(departure - targetMinutes) <= toleranceMinutes;
+      });
+    };
 
-    return parts.length ? parts.join(" · ") : "Tren seleccionado según disponibilidad.";
-  }
+    let recommended = [];
 
-  getRecommendedTrainCodes(direction) {
-    const options = this.getTrainOptionsForDirection(direction);
-    const optionText = this.getSelectedItineraryText();
+    if (mode === "express") {
+      recommended = direction === "outbound"
+        ? byRange("04:00", "06:00")
+        : byRange("14:00", "16:00");
+    } else if (mode === "overnight" || mode === "connection") {
+      if (direction === "outbound") {
+        recommended = byExactOrNear("16:36", 60, "inca_rail");
 
-    if (direction !== "outbound") return [];
+        if (!recommended.length) {
+          recommended = byRange("15:30", "17:30");
+        }
+      } else {
+        const company = normalizedCompany || "";
 
-    const isFullDayMachuPicchu =
-      optionText.includes("full day machu picchu") ||
-      optionText.includes("full day a machu picchu") ||
-      optionText.includes("machu picchu full day") ||
-      optionText.includes("machu picchu en full day") ||
-      optionText.includes("recojo desde el hotel de 3:40") ||
-      optionText.includes("3:40 am") ||
-      optionText.includes("4:00 am");
+        if (company === "inca_rail") {
+          recommended = byExactOrNear("20:20", 60, "inca_rail");
+        } else if (company === "peru_rail") {
+          recommended = byExactOrNear("19:00", 75, "peru_rail");
+        } else {
+          recommended = [
+            ...byExactOrNear("20:20", 60, "inca_rail"),
+            ...byExactOrNear("19:00", 75, "peru_rail")
+          ];
+        }
 
-    const isSacredValleyConnection =
-      optionText.includes("valle sagrado conexión") ||
-      optionText.includes("valle sagrado conexion") ||
-      optionText.includes("valle conexión") ||
-      optionText.includes("valle conexion") ||
-      (optionText.includes("aguas calientes") && optionText.includes("valle sagrado"));
-
-    if (isFullDayMachuPicchu) {
-      return options
-        .filter((train) => {
-          const minutes = this.timeToMinutes(train.departureTime || "");
-          return minutes !== null && minutes >= this.timeToMinutes("04:00") && minutes <= this.timeToMinutes("06:00");
-        })
-        .map((train) => train.code);
+        if (!recommended.length) {
+          recommended = byRange("19:00", "21:00");
+        }
+      }
+    } else {
+      recommended = direction === "outbound"
+        ? byRange("04:00", "06:00")
+        : byRange("19:00", "21:00");
     }
 
-    if (isSacredValleyConnection) {
-      return options
-        .filter((train) => {
-          const minutes = this.timeToMinutes(train.departureTime || "");
-          const company = String(train.company || "").toLowerCase();
-          return company.includes("inca") && minutes !== null && minutes >= this.timeToMinutes("14:00") && minutes <= this.timeToMinutes("18:00");
-        })
-        .map((train) => train.code);
-    }
+    if (!recommended.length) return "";
 
-    return [];
-  }
-
-  getSelectedItineraryText() {
-    const option = this.selectedItineraryOption || {};
-    const itineraryText = Array.isArray(option.itinerary)
-      ? option.itinerary.map((item) => `${item.title || ""} ${item.description || ""}`).join(" ")
-      : "";
-
-    return `${option.code || ""} ${option.label || ""} ${option.summary || ""} ${itineraryText}`.toLowerCase();
-  }
-
-  calculateTrainTotal() {
-    const outboundTrain = this.getSelectedTrain("outbound");
-    const returnTrain = this.getSelectedTrain("return");
-    const passengers = this.getTotalPassengers();
-
-    let total = 0;
-
-    [outboundTrain, returnTrain].forEach((train) => {
-      if (!train) return;
-
-      const amount = Number(train.pricePerPerson || train.price || 0);
-      total += this.convertMoney(amount, train.currency || "USD", this.quoteCurrency) * passengers;
+    recommended.sort((a, b) => {
+      const priceA = this.convertCurrency(this.getTrainPrice(a).amount, this.getTrainPrice(a).currency, this.quoteCurrency);
+      const priceB = this.convertCurrency(this.getTrainPrice(b).amount, this.getTrainPrice(b).currency, this.quoteCurrency);
+      return priceA - priceB;
     });
 
-    return total;
+    return this.getTrainCode(recommended[0]);
+  }
+
+  getCurrentTrainMode() {
+    const text = `
+      ${this.selectedItineraryOption?.trainMode || ""}
+      ${this.selectedItineraryOption?.label || ""}
+      ${this.selectedItineraryOption?.summary || ""}
+      ${(this.selectedItineraryOption?.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""} ${(item.tourCodes || []).join(" ")}`).join(" ")}
+    `.toLowerCase();
+
+    if (text.includes("express") || text.includes("machu_express")) return "express";
+
+    if (
+      text.includes("overnight") ||
+      text.includes("connection") ||
+      text.includes("conexión") ||
+      text.includes("aguas calientes") ||
+      text.includes("machu_connection")
+    ) {
+      return "overnight";
+    }
+
+    return "full_day";
+  }
+  calculateTrainAdditional() {
+    const trainConfig = this.getTrainSelectionConfig();
+    if (!trainConfig.required) return 0;
+
+    const outboundTrain = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
+    const returnTrain = this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode);
+
+    const passengers = this.getTotalPassengers();
+
+    const outboundPrice = outboundTrain ? this.getTrainPrice(outboundTrain) : { amount: 0, currency: this.quoteCurrency };
+    const returnPrice = returnTrain ? this.getTrainPrice(returnTrain) : { amount: 0, currency: this.quoteCurrency };
+
+    const outboundTotal = this.convertCurrency(outboundPrice.amount, outboundPrice.currency, this.quoteCurrency) * passengers;
+    const returnTotal = this.convertCurrency(returnPrice.amount, returnPrice.currency, this.quoteCurrency) * passengers;
+
+    return outboundTotal + returnTotal;
   }
 
   renderExtras() {
     const section = document.getElementById("extrasSection");
-    const container = document.getElementById("extrasContainer");
+    const container = document.getElementById("extrasOptions");
 
     if (!section || !container) return;
 
     const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
 
-    if (!extras.length) {
+    if (!this.selectedPackage || !extras.length) {
       section.hidden = true;
       container.innerHTML = "";
       return;
@@ -1798,22 +2188,22 @@ class MyCuscoTripQuotePackages {
     section.hidden = false;
 
     container.innerHTML = extras.map((extra) => {
-      const checked = this.selectedExtras.has(extra.code);
-      const amount = this.convertMoney(Number(extra.price || 0), extra.currency || "USD", this.quoteCurrency);
-      const suffix = extra.perPerson ? "por persona" : "por servicio";
+      const isSelected = this.selectedExtras.has(extra.code);
+      const price = this.convertCurrency(Number(extra.price || 0), extra.currency || this.quoteCurrency, this.quoteCurrency);
+      const suffix = extra.perPerson ? "por persona" : "por reserva";
 
       return `
-        <label class="quote-extra-item ${checked ? "is-selected" : ""}">
-          <input type="checkbox" value="${this.escapeHtml(extra.code)}" ${checked ? "checked" : ""} />
+        <label class="quote-extra-item ${isSelected ? "is-selected" : ""}">
+          <input type="checkbox" value="${this.escapeHtml(extra.code)}" ${isSelected ? "checked" : ""} />
           <span>
-            <strong>${this.escapeHtml(extra.label)}</strong>
-            <small>${this.formatCurrency(amount, this.quoteCurrency)} ${suffix}</small>
+            <strong>${this.escapeHtml(extra.label || extra.name || "Extra")}</strong>
+            <small>${this.formatCurrency(price, this.quoteCurrency)} ${suffix}</small>
           </span>
         </label>
       `;
     }).join("");
 
-    container.querySelectorAll("input[type='checkbox']").forEach((input) => {
+    container.querySelectorAll('input[type="checkbox"]').forEach((input) => {
       input.addEventListener("change", () => {
         if (input.checked) this.selectedExtras.add(input.value);
         else this.selectedExtras.delete(input.value);
@@ -1825,703 +2215,214 @@ class MyCuscoTripQuotePackages {
     });
   }
 
-  calculateExtrasTotal() {
+  calculateExtrasAdditional() {
     const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
     const passengers = this.getTotalPassengers();
 
-    return extras.reduce((sum, extra) => {
-      if (!this.selectedExtras.has(extra.code)) return sum;
+    return extras.reduce((total, extra) => {
+      if (!this.selectedExtras.has(extra.code)) return total;
 
-      const amount = this.convertMoney(Number(extra.price || 0), extra.currency || "USD", this.quoteCurrency);
-      return sum + amount * (extra.perPerson ? passengers : 1);
+      const base = this.convertCurrency(Number(extra.price || 0), extra.currency || this.quoteCurrency, this.quoteCurrency);
+      return total + (extra.perPerson ? base * passengers : base);
     }, 0);
   }
 
-  applyManualDiscountCode() {
-    const input = document.getElementById("discountCodeInput");
-
-    const code = String(input?.value || "").trim().toUpperCase();
-
-    if (!code) {
-      this.appliedDiscountCode = null;
-      this.setDiscountMessage("Ingresa un código para aplicar descuento.", "error");
-      this.updatePricing();
-      this.updatePrintQuotation();
-      return;
+  getBasePackagePricing() {
+    if (!this.selectedPackage) {
+      return { adult: 0, child: 0, currency: this.quoteCurrency };
     }
 
-    const result = this.validateDiscountCode(code);
+    const pricingByNationality = this.selectedPackage.basePricingByNationality?.[this.nationality];
 
-    if (!result.valid) {
-      this.appliedDiscountCode = null;
-      this.setDiscountMessage(result.message, "error");
-      this.updatePricing();
-      this.updatePrintQuotation();
-      return;
+    if (pricingByNationality) {
+      return {
+        adult: Number(pricingByNationality.adult || 0),
+        child: Number(pricingByNationality.child || pricingByNationality.adult || 0),
+        currency: pricingByNationality.currency || this.selectedPackage.currency || this.quoteCurrency
+      };
     }
 
-    this.appliedDiscountCode = result.discount;
-    this.setDiscountMessage(`Código aplicado: ${result.discount.label || result.discount.code}.`, "success");
-    this.updatePricing();
-    this.updatePrintQuotation();
-  }
-
-  validateDiscountCode(code) {
-    const discount = this.discountCodes.find((item) => String(item.code || "").toUpperCase() === code);
-
-    if (!discount) {
-      return { valid: false, message: "Código no encontrado o inválido." };
-    }
-
-    if (discount.active === false) {
-      return { valid: false, message: "Este código ya no está activo." };
-    }
-
-    const today = this.startOfDay(new Date());
-
-    if (discount.validFrom) {
-      const validFrom = this.startOfDay(new Date(`${discount.validFrom}T00:00:00`));
-      if (today < validFrom) {
-        return { valid: false, message: `Este código estará disponible desde ${this.formatDateHuman(discount.validFrom)}.` };
-      }
-    }
-
-    if (discount.validUntil || discount.expiresAt || discount.expirationDate) {
-      const dateText = discount.validUntil || discount.expiresAt || discount.expirationDate;
-      const validUntil = this.endOfDay(new Date(`${dateText}T00:00:00`));
-
-      if (today > validUntil) {
-        return { valid: false, message: `Este código venció el ${this.formatDateHuman(dateText)}.` };
-      }
-    }
-
-    if (Array.isArray(discount.allowedNationalities) && discount.allowedNationalities.length) {
-      if (!discount.allowedNationalities.includes(this.nationality)) {
-        return { valid: false, message: "Este código no aplica para la nacionalidad seleccionada." };
-      }
-    }
-
-    if (Array.isArray(discount.allowedCurrencies) && discount.allowedCurrencies.length) {
-      if (!discount.allowedCurrencies.includes(this.quoteCurrency)) {
-        return { valid: false, message: "Este código no aplica para la moneda seleccionada." };
-      }
-    }
-
-    if (Number(discount.minTotal || 0) > 0) {
-      const totals = this.calculatePricing();
-
-      if (totals.subtotalBeforeDiscount < Number(discount.minTotal)) {
-        return {
-          valid: false,
-          message: `Este código aplica desde ${this.formatCurrency(Number(discount.minTotal), this.quoteCurrency)}.`
-        };
-      }
-    }
-
-    return { valid: true, discount };
-  }
-
-  clearAppliedDiscountCode(clearInput = true) {
-    this.appliedDiscountCode = null;
-
-    if (clearInput) {
-      const input = document.getElementById("discountCodeInput");
-      if (input) input.value = "";
-    }
-
-    this.setDiscountMessage("", "");
-  }
-
-  setDiscountMessage(text, type = "") {
-    const message = document.getElementById("discountCodeMessage");
-    if (!message) return;
-
-    message.textContent = text || "";
-    message.classList.remove("is-success", "is-error");
-
-    if (type === "success") message.classList.add("is-success");
-    if (type === "error") message.classList.add("is-error");
-  }
-
-  calculatePricing() {
-    const pricing = this.getBasePricingForPackage(this.selectedPackage);
-    const adultUnit = this.convertMoney(Number(pricing.adult || 0), pricing.currency, this.quoteCurrency);
-    const childUnit = this.convertMoney(Number(pricing.child || pricing.adult || 0), pricing.currency, this.quoteCurrency);
-
-    const adultTotal = adultUnit * this.adults;
-    const childTotal = childUnit * this.children;
-    const baseTotal = adultTotal + childTotal;
-
-    const hotelTotal = this.getAccommodationSummary().reduce((sum, item) => {
-      return sum + this.calculateAccommodationAdditional(item.destination);
-    }, 0);
-
-    const trainTotal = this.calculateTrainTotal();
-    const extrasTotal = this.calculateExtrasTotal();
-
-    const subtotalBeforeDiscount = baseTotal + hotelTotal + trainTotal + extrasTotal;
-
-    let manualDiscount = 0;
-    if (this.appliedDiscountCode) {
-      manualDiscount = this.calculateDiscountAmount(this.appliedDiscountCode, subtotalBeforeDiscount);
-    }
-
-    const paymentOptions = this.packagesData.paymentOptions || {};
-    const fullPaymentDiscountPercent = Number(paymentOptions.fullPaymentDiscountPercent || 0);
-    const fullPaymentDiscount = this.paymentMode === "full"
-      ? subtotalBeforeDiscount * (fullPaymentDiscountPercent / 100)
-      : 0;
-
-    const totalDiscount = Math.min(subtotalBeforeDiscount, manualDiscount + fullPaymentDiscount);
-    const total = Math.max(0, subtotalBeforeDiscount - totalDiscount);
-
-    const partialPercent = Number(paymentOptions.partialPaymentPercent || 30);
-    const advance = this.paymentMode === "partial" ? total * (partialPercent / 100) : total;
-    const balance = this.paymentMode === "partial" ? Math.max(0, total - advance) : 0;
+    const basePricing = this.selectedPackage.basePricing || {};
 
     return {
-      pricing,
-      adultUnit,
-      childUnit,
-      adultTotal,
-      childTotal,
+      adult: Number(basePricing.adult || 0),
+      child: Number(basePricing.child || basePricing.adult || 0),
+      currency: this.selectedPackage.currency || this.quoteCurrency
+    };
+  }
+
+  calculateBasePackageTotal() {
+    const pricing = this.getBasePackagePricing();
+
+    const adultTotal = this.convertCurrency(pricing.adult, pricing.currency, this.quoteCurrency) * this.adults;
+    const childTotal = this.convertCurrency(pricing.child, pricing.currency, this.quoteCurrency) * this.children;
+
+    return adultTotal + childTotal;
+  }
+
+  calculateHotelAdditionalTotal() {
+    return this.getAccommodationSummary().reduce((total, item) => {
+      return total + this.calculateAccommodationAdditional(item.destination);
+    }, 0);
+  }
+
+  getPricingBreakdown() {
+    const baseTotal = this.calculateBasePackageTotal();
+    const hotelTotal = this.calculateHotelAdditionalTotal();
+    const trainTotal = this.calculateTrainAdditional();
+    const extrasTotal = this.calculateExtrasAdditional();
+
+    const subtotalBeforeDiscount = baseTotal + hotelTotal + trainTotal + extrasTotal;
+    const discountTotal = this.calculateDiscount(subtotalBeforeDiscount);
+    const subtotalAfterDiscount = Math.max(0, subtotalBeforeDiscount - discountTotal);
+
+    const paymentRules = this.packagesData.paymentOptions || {};
+    const fullDiscountPercent = Number(paymentRules.fullPaymentDiscountPercent || 0);
+    const partialPercent = Number(paymentRules.partialPaymentPercent || 30);
+
+    let fullPaymentDiscount = 0;
+    let total = subtotalAfterDiscount;
+
+    if (this.paymentMode === "full" && fullDiscountPercent > 0) {
+      fullPaymentDiscount = subtotalAfterDiscount * (fullDiscountPercent / 100);
+      total = Math.max(0, subtotalAfterDiscount - fullPaymentDiscount);
+    }
+
+    const advancePayment = this.paymentMode === "partial"
+      ? total * (partialPercent / 100)
+      : total;
+
+    const balance = Math.max(0, total - advancePayment);
+
+    return {
       baseTotal,
       hotelTotal,
       trainTotal,
       extrasTotal,
       subtotalBeforeDiscount,
-      manualDiscount,
+      discountTotal,
       fullPaymentDiscount,
-      totalDiscount,
       total,
-      advance,
-      balance,
-      partialPercent,
-      fullPaymentDiscountPercent
+      advancePayment,
+      balance
     };
   }
 
-  calculateDiscountAmount(discount, subtotal) {
-    if (!discount || subtotal <= 0) return 0;
+  updatePricing() {
+    const breakdown = this.getPricingBreakdown();
 
-    if (discount.type === "percent") {
-      return subtotal * (Number(discount.value || 0) / 100);
+    this.setText("basePackageTotal", this.selectedPackage ? this.formatCurrency(breakdown.baseTotal, this.quoteCurrency) : "");
+    this.setText("hotelTotal", this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency));
+    this.setText("trainTotal", this.formatCurrency(breakdown.trainTotal, this.quoteCurrency));
+    this.setText("extrasTotal", this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency));
+    this.setText("discountTotal", `- ${this.formatCurrency(breakdown.discountTotal + breakdown.fullPaymentDiscount, this.quoteCurrency)}`);
+    this.setText("quoteTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
+    this.setText("advancePaymentTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
+    this.setText("balancePaymentTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
+
+    const childrenRow = document.getElementById("childrenSummaryRow");
+    if (childrenRow) childrenRow.hidden = this.children <= 0;
+
+    const hotelRow = document.getElementById("hotelSummaryRow");
+    if (hotelRow) hotelRow.hidden = breakdown.hotelTotal <= 0;
+
+    const trainRow = document.getElementById("trainSummaryRow");
+    if (trainRow) trainRow.hidden = breakdown.trainTotal <= 0;
+
+    const extrasRow = document.getElementById("extrasSummaryRow");
+    if (extrasRow) extrasRow.hidden = breakdown.extrasTotal <= 0;
+
+    const discountRow = document.getElementById("discountSummaryRow");
+    if (discountRow) discountRow.hidden = (breakdown.discountTotal + breakdown.fullPaymentDiscount) <= 0;
+
+    const advanceRow = document.getElementById("advanceSummaryRow");
+    if (advanceRow) advanceRow.hidden = false;
+
+    const balanceRow = document.getElementById("balanceSummaryRow");
+    if (balanceRow) balanceRow.hidden = this.paymentMode !== "partial";
+
+    const paymentInfo = document.getElementById("paymentInfo");
+    if (paymentInfo) {
+      if (this.paymentMode === "full") {
+        paymentInfo.textContent = "Pagando el total ahora accedes al descuento vigente de pago total.";
+      } else {
+        paymentInfo.textContent = `Reserva con ${this.formatCurrency(breakdown.advancePayment, this.quoteCurrency)} y completa el saldo antes del viaje.`;
+      }
+    }
+  }
+
+  calculateDiscount(subtotal) {
+    if (!this.appliedDiscountCode) return 0;
+
+    const type = this.appliedDiscountCode.type || this.appliedDiscountCode.discountType;
+    const value = Number(this.appliedDiscountCode.value || this.appliedDiscountCode.amount || 0);
+
+    if (type === "percent" || type === "percentage") {
+      return subtotal * (value / 100);
     }
 
-    if (discount.type === "fixed") {
-      const currency = discount.currency || this.quoteCurrency;
-      return this.convertMoney(Number(discount.value || 0), currency, this.quoteCurrency);
+    if (type === "fixed") {
+      return this.convertCurrency(value, this.appliedDiscountCode.currency || this.quoteCurrency, this.quoteCurrency);
     }
 
     return 0;
   }
 
-  updatePricing() {
-    const totals = this.calculatePricing();
+  applyManualDiscountCode() {
+    const input = document.getElementById("discountCodeInput");
+    const message = document.getElementById("discountCodeMessage");
 
-    this.setText("basePackageTotal", "");
-    this.setText("adultSummaryLabel", `Adultos x${this.adults}`);
-    this.setText("adultSummaryTotal", this.formatCurrency(totals.adultTotal, this.quoteCurrency));
+    const code = String(input?.value || "").trim().toUpperCase();
 
-    const childrenRow = document.getElementById("childrenSummaryRow");
-    if (childrenRow) childrenRow.hidden = this.children <= 0;
-    this.setText("childrenSummaryLabel", `Niños x${this.children}`);
-    this.setText("childrenSummaryTotal", this.formatCurrency(totals.childTotal, this.quoteCurrency));
-
-    const hotelRow = document.getElementById("hotelSummaryRow");
-    if (hotelRow) hotelRow.hidden = totals.hotelTotal <= 0;
-    this.setText("hotelSummaryTotal", this.formatCurrency(totals.hotelTotal, this.quoteCurrency));
-
-    const trainRow = document.getElementById("trainSummaryRow");
-    if (trainRow) trainRow.hidden = totals.trainTotal <= 0;
-    this.setText("trainSummaryTotal", this.formatCurrency(totals.trainTotal, this.quoteCurrency));
-
-    const extrasRow = document.getElementById("extrasSummaryRow");
-    if (extrasRow) extrasRow.hidden = totals.extrasTotal <= 0;
-    this.setText("extrasSummaryTotal", this.formatCurrency(totals.extrasTotal, this.quoteCurrency));
-
-    const discountRow = document.getElementById("discountSummaryRow");
-    if (discountRow) discountRow.hidden = totals.totalDiscount <= 0;
-    this.setText("discountSummaryTotal", `- ${this.formatCurrency(totals.totalDiscount, this.quoteCurrency)}`);
-
-    this.setText("quoteGrandTotal", this.formatCurrency(totals.total, this.quoteCurrency));
-
-    const advanceRow = document.getElementById("advanceSummaryRow");
-    const balanceRow = document.getElementById("balanceSummaryRow");
-
-    if (advanceRow) advanceRow.hidden = false;
-    if (balanceRow) balanceRow.hidden = this.paymentMode !== "partial";
-
-    this.setText(
-      "advanceSummaryLabel",
-      this.paymentMode === "partial" ? `Anticipo ${totals.partialPercent}%` : "Pagar ahora"
-    );
-    this.setText("advanceSummaryTotal", this.formatCurrency(totals.advance, this.quoteCurrency));
-    this.setText("balanceSummaryTotal", this.formatCurrency(totals.balance, this.quoteCurrency));
-
-    const paymentInfo = document.getElementById("paymentInfoText");
-    if (paymentInfo) {
-      if (this.paymentMode === "full") {
-        paymentInfo.textContent = totals.fullPaymentDiscountPercent > 0
-          ? `Pagando el total ahora accedes a un descuento del ${totals.fullPaymentDiscountPercent}%.`
-          : "Pagando el total ahora dejas tu cotización cancelada.";
-      } else {
-        paymentInfo.textContent = `Reserva con ${this.formatCurrency(totals.advance, this.quoteCurrency)} y completa el saldo antes del viaje.`;
-      }
-    }
-
-    this.updatePaymentButtonText();
-  }
-
-  updatePaymentButtonText() {
-    const continuePaymentBtn = document.getElementById("continuePaymentBtn");
-    if (!continuePaymentBtn) return;
-  
-    continuePaymentBtn.innerHTML = `
-      <i class="fas fa-credit-card"></i>
-      <span class="quote-payment-btn__desktop">Pagar ahora</span>
-      <span class="quote-payment-btn__mobile">Pagar</span>
-    `;
-  }
-
-  getBasePricingForPackage(pkg) {
-    if (!pkg) return { adult: 0, child: 0, currency: this.quoteCurrency };
-
-    const byNationality = pkg.basePricingByNationality?.[this.nationality];
-
-    if (byNationality) {
-      return {
-        adult: Number(byNationality.adult || 0),
-        child: Number(byNationality.child || byNationality.adult || 0),
-        currency: byNationality.currency || pkg.currency || this.quoteCurrency
-      };
-    }
-
-    return {
-      adult: Number(pkg.basePricing?.adult || 0),
-      child: Number(pkg.basePricing?.child || pkg.basePricing?.adult || 0),
-      currency: pkg.currency || this.quoteCurrency
-    };
-  }
-
-  updatePrintQuotation() {
-    const totals = this.calculatePricing();
-    const client = this.getClientData();
-
-    this.setText("printQuoteReference", this.quoteReference);
-    this.setText("printCouponCode", this.printCoupon);
-    this.setText("printCouponDiscount", this.appliedDiscountCode?.label || "Especial");
-
-    this.setText("printClientName", client.name || "Por completar");
-    this.setText("printClientPhone", client.phone || "Por completar");
-    this.setText("printClientEmail", client.email || "Por completar");
-    this.setText("printClientDocument", client.document || "Por completar");
-    this.setText("printClientNotes", client.notes || "Sin comentarios adicionales");
-
-    this.setText("printTravelDates", this.getTravelDateRangeText());
-    this.setText("printTravelDuration", this.travelDays && this.travelNights ? `${this.travelDays} días / ${this.travelNights} noches` : "Por definir");
-    this.setText("printArrivalTime", this.arrivalTime || "Por definir");
-    this.setText("printDepartureTime", this.departureTime || "Por definir");
-    this.setText("printNationality", this.getNationalityLabel());
-    this.setText("printCurrency", this.quoteCurrency);
-
-    this.setText("printIssueDate", this.formatDateHuman(this.formatDateInput(new Date())));
-    this.setText("printValidUntil", this.formatDateHuman(this.addDaysToDate(new Date(), 7)));
-
-    this.setText("printPackageTitle", "");
-    this.setText("printPackageDescription", "");
-
-    this.renderPrintItinerary();
-    this.renderPrintSelectedServices();
-    this.renderPrintHotelImages();
-    this.renderPrintPaymentDetails(totals);
-  }
-
-  renderPrintItinerary() {
-    const target = document.getElementById("printItinerary");
-    if (!target) return;
-
-    const itinerary = this.selectedItineraryOption?.itinerary || [];
-
-    if (!itinerary.length) {
-      target.innerHTML = `<p>Itinerario por confirmar.</p>`;
+    if (!code) {
+      this.clearAppliedDiscountCode(true);
       return;
     }
 
-    target.innerHTML = itinerary.map((item) => `
-      <div class="print-itinerary-item">
-        <strong>${this.buildDatedDayTitleHtml(item)}</strong>
-        <p>${this.escapeHtml(item.description || "")}</p>
-      </div>
-    `).join("");
-  }
+    const found = this.discountCodes.find((item) => {
+      return String(item.code || "").trim().toUpperCase() === code;
+    });
 
-  renderPrintSelectedServices() {
-    const target = document.getElementById("printSelectedServices");
-    if (!target) return;
-
-    const rows = [];
-
-    if (this.selectedPackage) {
-      rows.push(["Itinerario base", this.selectedPackage.title || "Itinerario seleccionado"]);
-    }
-
-    if (this.selectedItineraryOption) {
-      rows.push(["Opción de itinerario", this.selectedItineraryOption.label || "Opción seleccionada"]);
-    }
-
-    const outboundTrain = this.getSelectedTrain("outbound");
-    const returnTrain = this.getSelectedTrain("return");
-
-    if (outboundTrain) rows.push(["Tren de ida", this.getTrainDisplayName(outboundTrain)]);
-    if (returnTrain) rows.push(["Tren de retorno", this.getTrainDisplayName(returnTrain)]);
-
-    this.getAccommodationSummary().forEach((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-      const destinationLabel = this.getDestinationLabel(item.destination);
-
-      if (!selection?.hotel || selection.hotel.hotelCode === "no-hotel") {
-        rows.push([`Alojamiento ${destinationLabel}`, "Sin alojamiento"]);
-        return;
+    if (!found) {
+      this.appliedDiscountCode = null;
+      if (message) {
+        message.textContent = "Código no válido.";
+        message.className = "is-error";
       }
-
-      rows.push([
-        `Alojamiento ${destinationLabel}`,
-        `${selection.hotel.hotelName}${selection.combination?.label ? ` · ${selection.combination.label}` : ""}`
-      ]);
-    });
-
-    const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
-    const selectedExtras = extras.filter((extra) => this.selectedExtras.has(extra.code));
-
-    selectedExtras.forEach((extra) => {
-      rows.push(["Extra", extra.label]);
-    });
-
-    if (!rows.length) {
-      target.innerHTML = `<p>Servicios por confirmar.</p>`;
+      this.updatePricing();
+      this.updatePrintQuotation();
       return;
     }
 
-    target.innerHTML = `
-      <table class="print-table">
-        <tbody>
-          ${rows.map(([label, value]) => `
-            <tr>
-              <th>${this.escapeHtml(label)}</th>
-              <td>${this.escapeHtml(value)}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    `;
-  }
+    this.appliedDiscountCode = found;
 
-  renderPrintHotelImages() {
-    let target = document.getElementById("printHotelImages");
-
-    if (!target) {
-      const services = document.getElementById("printSelectedServices");
-      if (!services) return;
-
-      target = document.createElement("div");
-      target.id = "printHotelImages";
-      target.className = "print-hotel-images";
-      services.insertAdjacentElement("afterend", target);
+    if (message) {
+      message.textContent = "Código aplicado correctamente.";
+      message.className = "is-success";
     }
 
-    const hotels = [];
-
-    this.getAccommodationSummary().forEach((item) => {
-      const selection = this.getSelectedAccommodationForDestination(item.destination);
-
-      if (!selection?.hotel || selection.hotel.hotelCode === "no-hotel") return;
-
-      hotels.push({
-        destination: this.getDestinationLabel(item.destination),
-        name: selection.hotel.hotelName,
-        nights: Number(item.nights || 0),
-        images: this.getHotelImages(selection.hotel).slice(0, 4)
-      });
-    });
-
-    if (!hotels.length) {
-      target.innerHTML = "";
-      return;
-    }
-
-    target.innerHTML = `
-      <div class="print-hotel-list">
-        ${hotels.map((hotel) => `
-          <div class="print-hotel-row">
-            <div class="print-hotel-row__info">
-              <strong>${this.escapeHtml(hotel.name)}</strong>
-              <span>${this.escapeHtml(hotel.destination)} · ${hotel.nights} noche${hotel.nights !== 1 ? "s" : ""}</span>
-            </div>
-
-            <div class="print-hotel-row__images">
-              ${hotel.images.length
-                ? hotel.images.map((image) => `
-                  <img src="${this.escapeHtml(this.resolveAssetPath(image))}" alt="${this.escapeHtml(hotel.name)}" />
-                `).join("")
-                : `<div class="print-hotel-card__empty">Sin imagen</div>`
-              }
-            </div>
-          </div>
-        `).join("")}
-      </div>
-    `;
+    this.updatePricing();
+    this.updatePrintQuotation();
   }
 
-  renderPrintPaymentDetails(totals) {
-    const target = document.getElementById("printPaymentDetails") || document.getElementById("printEconomicSummary");
-    if (!target) return;
+  clearAppliedDiscountCode(showMessage = false) {
+    this.appliedDiscountCode = null;
 
-    const rows = [];
+    const input = document.getElementById("discountCodeInput");
+    const message = document.getElementById("discountCodeMessage");
 
-    rows.push([`Adultos x${this.adults}`, this.formatCurrency(totals.adultTotal, this.quoteCurrency)]);
+    if (input) input.value = "";
 
-    if (this.children > 0) {
-      rows.push([`Niños x${this.children}`, this.formatCurrency(totals.childTotal, this.quoteCurrency)]);
+    if (message) {
+      message.textContent = showMessage ? "Código eliminado." : "";
+      message.className = "";
     }
 
-    if (totals.hotelTotal > 0) {
-      rows.push(["Alojamiento", this.formatCurrency(totals.hotelTotal, this.quoteCurrency)]);
-    }
-
-    if (totals.trainTotal > 0) {
-      rows.push(["Trenes", this.formatCurrency(totals.trainTotal, this.quoteCurrency)]);
-    }
-
-    if (totals.extrasTotal > 0) {
-      rows.push(["Extras", this.formatCurrency(totals.extrasTotal, this.quoteCurrency)]);
-    }
-
-    if (totals.manualDiscount > 0) {
-      rows.push([`Cupón ${this.appliedDiscountCode?.code || ""}`, `- ${this.formatCurrency(totals.manualDiscount, this.quoteCurrency)}`]);
-    }
-
-    if (totals.fullPaymentDiscount > 0) {
-      rows.push([`Descuento pago total ${totals.fullPaymentDiscountPercent}%`, `- ${this.formatCurrency(totals.fullPaymentDiscount, this.quoteCurrency)}`]);
-    }
-
-    rows.push(["Total", this.formatCurrency(totals.total, this.quoteCurrency)]);
-
-    if (this.paymentMode === "partial") {
-      rows.push([`Anticipo ${totals.partialPercent}%`, this.formatCurrency(totals.advance, this.quoteCurrency)]);
-      rows.push(["Saldo por pagar", this.formatCurrency(totals.balance, this.quoteCurrency)]);
-    } else {
-      rows.push(["Pago 100%", this.formatCurrency(totals.total, this.quoteCurrency)]);
-    }
-
-    target.innerHTML = `
-      <table class="print-table print-payment-table">
-        <tbody>
-          ${rows.map(([label, value], index) => `
-            <tr class="${index === rows.length - 1 ? "is-total" : ""}">
-              <th>${this.escapeHtml(label)}</th>
-              <td>${this.escapeHtml(value)}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    `;
+    this.updatePricing();
   }
-
-      saveQuotationAsPdf() {
-        const printArea = document.getElementById("printQuotation");
-    
-        if (!printArea) {
-          window.print();
-          return;
-        }
-    
-        this.updatePrintQuotation();
-    
-        if (typeof html2pdf === "undefined") {
-          window.print();
-          return;
-        }
-    
-        const clonedPrintArea = printArea.cloneNode(true);
-        clonedPrintArea.classList.add("print-quotation--pdf-export");
-    
-        // Estilos inline para forzar A4
-        clonedPrintArea.style.display = "block";
-        clonedPrintArea.style.width = "794px";          // A4 a 96dpi
-        clonedPrintArea.style.maxWidth = "794px";
-        clonedPrintArea.style.margin = "0 auto";
-        clonedPrintArea.style.backgroundColor = "#ffffff";
-        clonedPrintArea.style.fontFamily = "'Open Sans', Arial, sans-serif";
-        clonedPrintArea.style.fontSize = "10.5px";
-        clonedPrintArea.style.lineHeight = "1.32";
-    
-        const wrapper = document.createElement("div");
-        wrapper.className = "pdf-export-wrapper";
-    
-        // Copiar todas las hojas de estilo para que el PDF tenga las mismas fuentes/colores
-        const styles = document.querySelectorAll("style, link[rel='stylesheet']");
-        styles.forEach((style) => wrapper.appendChild(style.cloneNode(true)));
-    
-        wrapper.appendChild(clonedPrintArea);
-        document.body.appendChild(wrapper);
-    
-        const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
-    
-        const options = {
-          margin: [8, 8, 8, 8],
-          filename,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: "#ffffff",
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 794
-          },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait"
-          },
-          pagebreak: {
-            mode: ["avoid-all", "css", "legacy"]
-          }
-        };
-    
-        html2pdf()
-          .set(options)
-          .from(clonedPrintArea)
-          .save()
-          .finally(() => {
-            wrapper.remove();
-          });
-      }
-
-  continueToPayment() {
-    const totals = this.calculatePricing();
-    const client = this.getClientData();
-
-    const paymentData = {
-      quoteReference: this.quoteReference,
-      quoteCoupon: this.printCoupon,
-      client,
-      travel: {
-        startDate: this.travelStartDate,
-        endDate: this.travelEndDate,
-        days: this.travelDays,
-        nights: this.travelNights,
-        arrivalTime: this.arrivalTime,
-        departureTime: this.departureTime,
-        nationality: this.nationality,
-        currency: this.quoteCurrency
-      },
-      package: {
-        id: this.selectedPackage?.id || "",
-        title: this.selectedPackage?.title || "",
-        itineraryOption: this.selectedItineraryOption?.code || ""
-      },
-      totals,
-      paymentMode: this.paymentMode
-    };
-
-    try {
-      sessionStorage.setItem("myCuscoTripQuotePayment", JSON.stringify(paymentData));
-    } catch (error) {
-      console.warn("No se pudo guardar la cotización en sessionStorage:", error);
-    }
-
-    alert(`Se continuará con el pago de ${this.formatCurrency(totals.advance, this.quoteCurrency)}.`);
-  }
-
-  ensureMobileSummaryToggle() {
-    const panel = document.querySelector(".quote-summary-panel");
-    if (!panel || panel.querySelector(".quote-mobile-summary-toggle")) return;
-
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "quote-mobile-summary-toggle";
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.innerHTML = `<i class="fas fa-chevron-up"></i><span>Ver detalles</span>`;
-
-    toggle.addEventListener("click", () => {
-      panel.classList.toggle("is-expanded");
-
-      const expanded = panel.classList.contains("is-expanded");
-      toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
-      toggle.innerHTML = expanded
-        ? `<i class="fas fa-chevron-down"></i><span>Ocultar detalles</span>`
-        : `<i class="fas fa-chevron-up"></i><span>Ver detalles</span>`;
-    });
-
-    const top = panel.querySelector(".quote-summary-panel__top");
-    if (top) top.insertAdjacentElement("afterend", toggle);
-    else panel.prepend(toggle);
-  }
-
-  buildDatedDayTitle(item) {
-    const dayNumber = Number(item.day || 1);
-    const cleanTitle = String(item.title || `Día ${dayNumber}`)
-      .replace(/^Día\s*\d+\s*:\s*/i, "")
-      .replace(/^Dia\s*\d+\s*:\s*/i, "")
-      .trim();
-
-    const dateText = this.getDateForDay(dayNumber);
-
-    if (dateText) {
-      return `Día ${dayNumber} (${dateText}): ${cleanTitle}`;
-    }
-
-    return `Día ${dayNumber}: ${cleanTitle}`;
-  }
-
-  getDateForDay(dayNumber) {
-    if (!this.travelStartDate || !dayNumber) return "";
-
-    const start = new Date(`${this.travelStartDate}T00:00:00`);
-    if (Number.isNaN(start.getTime())) return "";
-
-    start.setDate(start.getDate() + Number(dayNumber || 1) - 1);
-
-    return start.toLocaleDateString("es-PE", {
-      day: "numeric",
-      month: "long"
-    });
-  }
-
-  getTravelDateRangeText() {
-    if (!this.travelStartDate || !this.travelEndDate) return "Por definir";
-    return `${this.formatDateHuman(this.travelStartDate)} al ${this.formatDateHuman(this.travelEndDate)}`;
-  }
-
-  getClientData() {
-    return {
-      name: document.getElementById("clientName")?.value.trim() || "",
-      phone: document.getElementById("clientPhone")?.value.trim() || "",
-      email: document.getElementById("clientEmail")?.value.trim() || "",
-      document: document.getElementById("clientDocument")?.value.trim() || "",
-      notes: document.getElementById("clientNotes")?.value.trim() || ""
-    };
-  }
-
-  getNationalityLabel() {
-    const select = document.getElementById("nationality");
-    return select?.selectedOptions?.[0]?.textContent || this.nationality;
-  }
-
-  getTotalPassengers() {
-    return this.adults + this.children;
-  }
-
   updatePassengersUI() {
-    this.setText("adultsCount", this.adults);
-    this.setText("childrenCount", this.children);
-  }
-
-  updateReferenceUI() {
-    this.setText("quoteReference", this.quoteReference);
+    this.setText("adultCount", String(this.adults));
+    this.setText("childCount", String(this.children));
   }
 
   updateExchangeRateHelp() {
@@ -2531,31 +2432,287 @@ class MyCuscoTripQuotePackages {
     help.textContent = `Tipo de cambio referencial: 1 USD = ${this.exchangeRate.toFixed(2)} PEN.`;
   }
 
-  convertMoney(amount, fromCurrency, toCurrency) {
-    const value = Number(amount || 0);
-    const from = fromCurrency || toCurrency || this.quoteCurrency;
-    const to = toCurrency || this.quoteCurrency;
-
-    if (from === to) return value;
-
-    if (from === "USD" && to === "PEN") return value * this.exchangeRate;
-    if (from === "PEN" && to === "USD") return value / this.exchangeRate;
-
-    return value;
+  updateReferenceUI() {
+    this.setText("quoteReference", this.quoteReference);
+    this.setText("printQuoteReference", this.quoteReference);
+    this.setText("printCouponCode", this.printCoupon);
   }
 
-  formatCurrency(amount, currency = this.quoteCurrency) {
-    const value = Number(amount || 0);
+  updatePrintQuotation() {
+    const breakdown = this.getPricingBreakdown();
 
-    return new Intl.NumberFormat("es-PE", {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(value);
+    this.setText("printQuoteReference", this.quoteReference);
+    this.setText("printCouponCode", this.printCoupon);
+
+    this.setText("printClientName", this.getInputValue("clientName") || "Por completar");
+    this.setText("printClientPhone", this.getInputValue("clientPhone") || "Por completar");
+    this.setText("printClientEmail", this.getInputValue("clientEmail") || "Por completar");
+    this.setText("printClientDocument", this.getInputValue("clientDocument") || "Por completar");
+
+    this.setText("printTravelDates", this.travelStartDate && this.travelEndDate ? `${this.travelStartDate} al ${this.travelEndDate}` : "Por definir");
+    this.setText("printTravelDuration", this.travelDays ? `${this.travelDays} días / ${this.travelNights} noches` : "Por definir");
+    this.setText("printPassengers", `${this.adults} adulto${this.adults !== 1 ? "s" : ""}${this.children ? ` + ${this.children} niño${this.children !== 1 ? "s" : ""}` : ""}`);
+    this.setText("printNationality", this.getNationalityLabel());
+
+    const adjustedArrival = this.getEffectiveArrivalMinutes();
+    const adjustedDeparture = this.getEffectiveDepartureMinutes();
+
+    this.setText(
+      "printArrivalTime",
+      this.arrivalTime
+        ? `${this.formatTrainTime(this.arrivalTime)} (disponible desde ${this.minutesToTimeLabel(adjustedArrival)})`
+        : "Por definir"
+    );
+
+    this.setText(
+      "printDepartureTime",
+      this.departureTime
+        ? `${this.formatTrainTime(this.departureTime)} (disponible hasta ${this.minutesToTimeLabel(adjustedDeparture)})`
+        : "Por definir"
+    );
+
+    this.setText("printPackageTitle", this.selectedPackage?.title || "Por definir");
+    this.setText("printItineraryOption", this.selectedItineraryOption?.label || "Por definir");
+
+    const printItinerary = document.getElementById("printItineraryList");
+    if (printItinerary) {
+      const itinerary = this.selectedItineraryOption?.itinerary || [];
+
+      printItinerary.innerHTML = itinerary.length
+        ? itinerary.map((item) => {
+          const start = this.getItineraryDayStartMinutes(item);
+          const end = this.getItineraryDayEndMinutes(item);
+          const time = start !== null || end !== null
+            ? ` (${start !== null ? this.minutesToTimeLabel(start) : "Inicio por confirmar"} - ${end !== null ? this.minutesToTimeLabel(end) : "Fin por confirmar"})`
+            : "";
+
+          return `
+            <div class="print-itinerary-item">
+              <strong>${this.buildDatedDayTitleHtml(item)}${this.escapeHtml(time)}</strong>
+              <p>${this.escapeHtml(item.description || "")}</p>
+            </div>
+          `;
+        }).join("")
+        : `<p>Itinerario por confirmar.</p>`;
+    }
+
+    const printHotel = document.getElementById("printHotelSummary");
+    if (printHotel) {
+      const summary = this.getAccommodationSummary();
+
+      printHotel.innerHTML = summary.length
+        ? summary.map((item) => {
+          const selection = this.getSelectedAccommodationForDestination(item.destination);
+          const isNoHotel = selection?.hotel?.hotelCode === "no-hotel";
+          const title = isNoHotel
+            ? "Sin alojamiento"
+            : selection?.hotel?.hotelName || "Hotel por confirmar";
+          const combo = isNoHotel
+            ? "El cliente gestionará su alojamiento."
+            : selection?.combination?.label || "Acomodación por confirmar";
+
+          return `
+            <tr>
+              <th>${this.escapeHtml(this.getDestinationLabel(item.destination))}</th>
+              <td>${this.escapeHtml(title)} · ${this.escapeHtml(combo)}</td>
+            </tr>
+          `;
+        }).join("")
+        : `<tr><td colspan="2">Sin alojamiento agregado.</td></tr>`;
+    }
+
+    const trainConfig = this.getTrainSelectionConfig();
+    const outboundTrain = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
+    const returnTrain = this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode);
+
+    const printTrain = document.getElementById("printTrainSummary");
+    if (printTrain) {
+      printTrain.innerHTML = `
+        <tr>
+          <th>Tren de ida</th>
+          <td>${outboundTrain ? this.escapeHtml(this.getTrainShortScheduleText(outboundTrain, "outbound")) : "Por seleccionar"}</td>
+        </tr>
+        <tr>
+          <th>Tren de retorno</th>
+          <td>${returnTrain ? this.escapeHtml(this.getTrainShortScheduleText(returnTrain, "return")) : "Por seleccionar"}</td>
+        </tr>
+      `;
+    }
+
+    const printExtras = document.getElementById("printExtrasSummary");
+    if (printExtras) {
+      const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
+      const selected = extras.filter((item) => this.selectedExtras.has(item.code));
+
+      printExtras.innerHTML = selected.length
+        ? selected.map((item) => `<li>${this.escapeHtml(item.label || item.name || item.code)}</li>`).join("")
+        : `<li>Sin extras agregados.</li>`;
+    }
+
+    this.setText("printBaseTotal", this.formatCurrency(breakdown.baseTotal, this.quoteCurrency));
+    this.setText("printHotelTotal", this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency));
+    this.setText("printTrainTotal", this.formatCurrency(breakdown.trainTotal, this.quoteCurrency));
+    this.setText("printExtrasTotal", this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency));
+    this.setText("printDiscountTotal", `- ${this.formatCurrency(breakdown.discountTotal + breakdown.fullPaymentDiscount, this.quoteCurrency)}`);
+    this.setText("printQuoteTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
+    this.setText("printAdvanceTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
+    this.setText("printBalanceTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
+
+    const notes = this.getInputValue("clientNotes");
+    this.setText("printClientNotes", notes || "Sin observaciones adicionales.");
+  }
+
+  continueToPayment() {
+    const breakdown = this.getPricingBreakdown();
+
+    if (!this.selectedPackage) {
+      alert("Primero selecciona tus fechas para detectar un itinerario.");
+      return;
+    }
+
+    const paymentData = {
+      quoteReference: this.quoteReference,
+      packageId: this.selectedPackage?.id || "",
+      packageTitle: this.selectedPackage?.title || "",
+      itineraryCode: this.selectedItineraryOption?.code || "",
+      itineraryLabel: this.selectedItineraryOption?.label || "",
+      travelStartDate: this.travelStartDate,
+      travelEndDate: this.travelEndDate,
+      travelDays: this.travelDays,
+      travelNights: this.travelNights,
+      arrivalTime: this.arrivalTime,
+      effectiveArrivalTime: this.getEffectiveArrivalMinutes() !== null ? this.minutesToTimeLabel(this.getEffectiveArrivalMinutes()) : "",
+      departureTime: this.departureTime,
+      effectiveDepartureTime: this.getEffectiveDepartureMinutes() !== null ? this.minutesToTimeLabel(this.getEffectiveDepartureMinutes()) : "",
+      adults: this.adults,
+      children: this.children,
+      nationality: this.nationality,
+      currency: this.quoteCurrency,
+      paymentMode: this.paymentMode,
+      selectedHotelsByDestination: this.selectedHotelsByDestination,
+      selectedCombinationsByDestination: this.selectedCombinationsByDestination,
+      selectedOutboundTrainCode: this.selectedOutboundTrainCode,
+      selectedReturnTrainCode: this.selectedReturnTrainCode,
+      selectedExtras: Array.from(this.selectedExtras),
+      totals: breakdown
+    };
+
+    sessionStorage.setItem("myCuscoTripQuotePayment", JSON.stringify(paymentData));
+
+    alert("Cotización lista para continuar al pago.");
+  }
+
+  async saveQuotationAsPdf() {
+    this.updatePrintQuotation();
+
+    const source = document.getElementById("printQuotation");
+    if (!source) {
+      alert("No se encontró la plantilla de impresión.");
+      return;
+    }
+
+    if (typeof html2pdf === "undefined") {
+      window.print();
+      return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "pdf-export-wrapper";
+
+    const clone = source.cloneNode(true);
+    clone.classList.add("print-quotation--pdf-export");
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    const filename = `${this.quoteReference || "cotizacion-my-cusco-trip"}.pdf`;
+
+    try {
+      await html2pdf()
+        .set({
+          margin: 0,
+          filename,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: "#ffffff"
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait"
+          }
+        })
+        .from(clone)
+        .save();
+    } catch (error) {
+      console.error("Error generando PDF:", error);
+      window.print();
+    } finally {
+      wrapper.remove();
+    }
+  }
+
+  getTotalPassengers() {
+    return Math.max(1, Number(this.adults || 0) + Number(this.children || 0));
+  }
+
+  getNationalityLabel() {
+    const labels = {
+      national: "Nacional peruano",
+      foreign: "Extranjero",
+      andean_community: "Comunidad Andina"
+    };
+
+    return labels[this.nationality] || this.nationality;
+  }
+
+  timeToMinutes(value) {
+    if (!value) return null;
+
+    const text = String(value).trim();
+
+    const amPmMatch = text.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (amPmMatch) {
+      let hours = Number(amPmMatch[1]);
+      const minutes = Number(amPmMatch[2]);
+      const period = amPmMatch[3].toUpperCase();
+
+      if (period === "PM" && hours < 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+
+      if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+      return hours * 60 + minutes;
+    }
+
+    const match = text.match(/^(\d{1,2}):(\d{2})/);
+    if (!match) return null;
+
+    const hours = Number(match[1]);
+    const minutes = Number(match[2]);
+
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+
+    return hours * 60 + minutes;
+  }
+
+  minutesToTimeLabel(minutes) {
+    if (minutes === null || typeof minutes === "undefined" || Number.isNaN(Number(minutes))) {
+      return "Por confirmar";
+    }
+
+    const safeMinutes = Math.max(0, Math.min(1439, Number(minutes)));
+    const hours = Math.floor(safeMinutes / 60);
+    const mins = safeMinutes % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
   }
 
   formatDateInput(date) {
+    if (!(date instanceof Date)) return "";
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
@@ -2563,42 +2720,52 @@ class MyCuscoTripQuotePackages {
     return `${year}-${month}-${day}`;
   }
 
-  addDaysToDate(date, days) {
-    const result = new Date(date);
-    result.setDate(result.getDate() + Number(days || 0));
-    return this.formatDateInput(result);
-  }
+  getDateForDay(dayNumber) {
+    if (!this.travelStartDate || !dayNumber) return "";
 
-  formatDateHuman(dateText) {
-    if (!dateText) return "";
+    const base = new Date(`${this.travelStartDate}T00:00:00`);
+    if (Number.isNaN(base.getTime())) return "";
 
-    const date = new Date(`${dateText}T00:00:00`);
-    if (Number.isNaN(date.getTime())) return dateText;
+    base.setDate(base.getDate() + Number(dayNumber || 1) - 1);
 
-    return date.toLocaleDateString("es-PE", {
-      day: "numeric",
-      month: "long",
+    return base.toLocaleDateString("es-PE", {
+      day: "2-digit",
+      month: "short",
       year: "numeric"
     });
   }
+  convertCurrency(amount, fromCurrency, toCurrency) {
+    const value = Number(amount || 0);
+    const from = String(fromCurrency || this.quoteCurrency || "USD").toUpperCase();
+    const to = String(toCurrency || this.quoteCurrency || "USD").toUpperCase();
 
-  timeToMinutes(timeText) {
-    if (!timeText || !/^\d{2}:\d{2}$/.test(timeText)) return null;
+    if (from === to) return value;
 
-    const [hours, minutes] = timeText.split(":").map(Number);
-    return hours * 60 + minutes;
+    if (from === "USD" && to === "PEN") {
+      return value * this.exchangeRate;
+    }
+
+    if (from === "PEN" && to === "USD") {
+      return value / this.exchangeRate;
+    }
+
+    return value;
   }
 
-  startOfDay(date) {
-    const clean = new Date(date);
-    clean.setHours(0, 0, 0, 0);
-    return clean;
+  formatCurrency(amount, currency = this.quoteCurrency) {
+    const safeAmount = Number(amount || 0);
+    const safeCurrency = String(currency || this.quoteCurrency || "USD").toUpperCase();
+
+    return new Intl.NumberFormat("es-PE", {
+      style: "currency",
+      currency: safeCurrency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(safeAmount);
   }
 
-  endOfDay(date) {
-    const clean = new Date(date);
-    clean.setHours(23, 59, 59, 999);
-    return clean;
+  getInputValue(id) {
+    return document.getElementById(id)?.value?.trim() || "";
   }
 
   setText(id, value) {
@@ -2616,16 +2783,27 @@ class MyCuscoTripQuotePackages {
     if (section) section.hidden = true;
   }
 
+  escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
   resolvePath(path) {
-    if (!path) return path;
+    if (!path) return "";
 
-    const cleanPath = path.replace(/^\.\//, "").replace(/^\//, "");
+    if (/^https?:\/\//i.test(path)) return path;
 
-    if (this.basePath === "/") {
-      return `/${cleanPath}`;
+    const cleanPath = String(path).replace(/^\.?\//, "");
+
+    if (this.basePath.endsWith("/")) {
+      return `${this.basePath}${cleanPath}`;
     }
 
-    return `${this.basePath}${cleanPath}`;
+    return `${this.basePath}/${cleanPath}`;
   }
 
   resolveAssetPath(path) {
@@ -2633,52 +2811,65 @@ class MyCuscoTripQuotePackages {
 
     if (/^https?:\/\//i.test(path)) return path;
 
-    const cleanPath = path.replace(/^\.\//, "").replace(/^\//, "");
+    const cleanPath = String(path).replace(/^\.?\//, "");
 
-    if (this.basePath === "/") {
-      return `/${cleanPath}`;
+    if (cleanPath.startsWith("assets/")) {
+      return this.resolvePath(cleanPath);
     }
 
-    return `${this.basePath}${cleanPath}`;
+    return this.resolvePath(`assets/${cleanPath}`);
   }
 
   getStableQuoteReference() {
     const key = "myCuscoTripQuoteReference";
+    const existing = sessionStorage.getItem(key);
 
-    try {
-      const existing = sessionStorage.getItem(key);
-      if (existing) return existing;
+    if (existing) return existing;
 
-      const reference = `COT-PE-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-      sessionStorage.setItem(key, reference);
-      return reference;
-    } catch (error) {
-      return `COT-PE-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-    }
+    const now = new Date();
+    const datePart = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0")
+    ].join("");
+
+    const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
+    const reference = `COT-${datePart}-${randomPart}`;
+
+    sessionStorage.setItem(key, reference);
+
+    return reference;
   }
 
   getStablePrintCoupon() {
     const key = "myCuscoTripPrintCoupon";
+    const existing = sessionStorage.getItem(key);
 
-    try {
-      const existing = sessionStorage.getItem(key);
-      if (existing) return existing;
+    if (existing) return existing;
 
-      const coupon = `MCT-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-      sessionStorage.setItem(key, coupon);
-      return coupon;
-    } catch (error) {
-      return `MCT-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-    }
+    const randomPart = Math.random().toString(36).slice(2, 8).toUpperCase();
+    const coupon = `MCT-${randomPart}`;
+
+    sessionStorage.setItem(key, coupon);
+
+    return coupon;
   }
 
-  escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  ensureMobileSummaryToggle() {
+    const panel = document.querySelector(".quote-summary-panel");
+    if (!panel || panel.querySelector(".quote-mobile-summary-toggle")) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "quote-mobile-summary-toggle";
+    button.innerHTML = `<span>Ver detalles</span>`;
+
+    button.addEventListener("click", () => {
+      const expanded = panel.classList.toggle("is-expanded");
+      button.querySelector("span").textContent = expanded ? "Ocultar detalles" : "Ver detalles";
+    });
+
+    panel.insertBefore(button, panel.firstChild);
   }
 }
 
