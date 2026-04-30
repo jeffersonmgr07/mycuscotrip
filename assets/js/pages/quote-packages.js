@@ -620,25 +620,55 @@ class MyCuscoTripQuotePackages {
   isItineraryAllowedByTime(option) {
     const itinerary = Array.isArray(option?.itinerary) ? option.itinerary : [];
     if (!itinerary.length) return true;
-
+  
     const arrivalMinutes = this.getEffectiveArrivalMinutes();
     const departureMinutes = this.getEffectiveDepartureMinutes();
-
+  
     const firstDay = this.getFirstItineraryDay(itinerary);
     const lastDay = this.getLastItineraryDay(itinerary);
-
-    const firstDayStart = this.getFlexibleFirstDayStartMinutes(firstDay);
+  
+    const firstDayStart = this.getItineraryDayStartMinutes(firstDay);
     const lastDayEnd = this.getItineraryDayEndMinutes(lastDay);
-
-    if (arrivalMinutes !== null && firstDayStart !== null && firstDayStart < arrivalMinutes) {
+  
+    const firstDayIsOnlyTransfer = this.isOnlyTransferDay(firstDay);
+    const lastDayIsOnlyTransfer = this.isOnlyTransferDay(lastDay);
+  
+    if (
+      arrivalMinutes !== null &&
+      firstDayStart !== null &&
+      firstDayStart < arrivalMinutes &&
+      !firstDayIsOnlyTransfer
+    ) {
       return false;
     }
-
-    if (departureMinutes !== null && lastDayEnd !== null && lastDayEnd > departureMinutes) {
+  
+    if (
+      departureMinutes !== null &&
+      lastDayEnd !== null &&
+      lastDayEnd > departureMinutes &&
+      !lastDayIsOnlyTransfer
+    ) {
       return false;
     }
-
+  
     return true;
+  }
+  isOnlyTransferDay(dayItem) {
+    if (!dayItem) return false;
+  
+    const tourCodes = Array.isArray(dayItem.tourCodes) ? dayItem.tourCodes : [];
+    const text = `${dayItem.title || ""} ${dayItem.description || ""} ${tourCodes.join(" ")}`.toLowerCase();
+  
+    return (
+      tourCodes.includes("arrival_transfer") ||
+      tourCodes.includes("departure_transfer") ||
+      text.includes("traslado de llegada") ||
+      text.includes("traslado de salida") ||
+      text.includes("día libre") ||
+      text.includes("dia libre") ||
+      text.includes("recepción") ||
+      text.includes("recojo del aeropuerto")
+    );
   }
 
   getFirstItineraryDay(itinerary) {
