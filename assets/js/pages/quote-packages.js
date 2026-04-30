@@ -608,8 +608,14 @@ class MyCuscoTripQuotePackages {
   isItineraryAllowedByTime(option) {
     const itinerary = Array.isArray(option.itinerary) ? option.itinerary : [];
 
-    const arrivalMinutes = this.timeToMinutes(this.arrivalTime);
-    const departureMinutes = this.timeToMinutes(this.departureTime);
+    const rawArrivalMinutes = this.timeToMinutes(this.arrivalTime);
+    const rawDepartureMinutes = this.timeToMinutes(this.departureTime);
+    
+    const arrivalMinutes =
+      rawArrivalMinutes === null ? null : Math.min(rawArrivalMinutes + 120, 1439);
+    
+    const departureMinutes =
+      rawDepartureMinutes === null ? null : Math.max(rawDepartureMinutes - 120, 0);
 
     const firstDay = itinerary.find((item) => Number(item.day || 0) === 1) || itinerary[0] || null;
     const lastDayNumber = itinerary.reduce((max, item) => Math.max(max, Number(item.day || 0)), 0);
