@@ -627,7 +627,7 @@ class MyCuscoTripQuotePackages {
     const firstDay = this.getFirstItineraryDay(itinerary);
     const lastDay = this.getLastItineraryDay(itinerary);
 
-    const firstDayStart = this.getItineraryDayStartMinutes(firstDay);
+    const firstDayStart = this.getFlexibleFirstDayStartMinutes(firstDay);
     const lastDayEnd = this.getItineraryDayEndMinutes(lastDay);
 
     if (arrivalMinutes !== null && firstDayStart !== null && firstDayStart < arrivalMinutes) {
@@ -702,6 +702,24 @@ class MyCuscoTripQuotePackages {
     }
 
     return null;
+  }
+
+  getFlexibleFirstDayStartMinutes(dayItem) {
+    if (!dayItem) return null;
+  
+    const text = `${dayItem.title || ""} ${dayItem.description || ""} ${(dayItem.tourCodes || []).join(" ")}`.toLowerCase();
+  
+    if (text.includes("arrival_transfer")) {
+      if (text.includes("city") || text.includes("city tour")) {
+        return this.timeToMinutes("13:00");
+      }
+  
+      if (text.includes("bienvenida") || text.includes("ancestral") || text.includes("panorámico") || text.includes("panoramico")) {
+        return this.timeToMinutes("13:00");
+      }
+    }
+  
+    return this.getItineraryDayStartMinutes(dayItem);
   }
 
   getItineraryDayEndMinutes(dayItem) {
@@ -1222,6 +1240,34 @@ class MyCuscoTripQuotePackages {
     list.innerHTML = hotels.map((hotel) => {
       const isSelectedHotel = this.pendingHotelSelection?.hotelCode === hotel.hotelCode;
       const isNoHotel = hotel.hotelCode === "no-hotel";
+      if (isNoHotel) {
+        const priceZero = this.formatCurrency(0, this.quoteCurrency);
+      
+        return `
+          <article class="hotel-option-card hotel-option-card--no-hotel ${isSelectedHotel ? "is-selected" : ""}">
+            <div class="hotel-option-card__header">
+              <div>
+                <h3>Opción sin alojamiento</h3>
+                <p>El cliente gestionará su alojamiento por cuenta propia.</p>
+              </div>
+              <span class="hotel-option-card__badge">${priceZero}</span>
+            </div>
+      
+            <div class="hotel-option-card__body">
+              <button
+                type="button"
+                class="hotel-combo-btn ${isSelectedHotel ? "is-selected" : ""}"
+                data-hotel-code="no-hotel"
+                data-combo-key="no-room"
+              >
+                <span class="hotel-combo-btn__radio"></span>
+                <span class="hotel-combo-btn__main">Seleccionar sin alojamiento</span>
+                <span class="hotel-combo-btn__sub">${priceZero}</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }
       const images = isNoHotel ? [] : this.getHotelImages(hotel);
       const combinations = this.generateAccommodationCombinations(hotel.rooms || [], passengers, nights);
 
@@ -1622,7 +1668,7 @@ class MyCuscoTripQuotePackages {
 
       return `
         <article
-          class="train-option-card ${isSelected ? "is-selected" : ""} ${train.isLocalTrain ? "train-option-card--local" : ""}"
+          class="train-option-card ${isSelected ? "is-selected" : ""} ${train.isLocalTrain ? "train-option-card--local" : ""} ${train.isRecommended && !train.isLocalTrain ? "is-recommended" : ""}"
           data-train-code="${this.escapeHtml(train.code)}"
         >
           <div class="train-option-card__header">
@@ -1640,6 +1686,7 @@ class MyCuscoTripQuotePackages {
 
             <span class="train-option-card__price">
               ${train.isLocalTrain ? "Sujeto a disponibilidad" : this.formatCurrency(price, this.quoteCurrency)}
+              ${train.isRecommended && !train.isLocalTrain ? `<span class="train-recommended-badge">Recomendado</span>` : ""}
             </span>
           </div>
 
