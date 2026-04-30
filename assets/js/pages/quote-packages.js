@@ -59,7 +59,7 @@ class MyCuscoTripQuotePackages {
       this.renderInitialState();
       this.updatePricing();
       this.updatePrintQuotation();
-      // this.initDesktopQuotePanelFixed();
+      this.initDesktopQuotePanelFixed();
     } catch (error) {
       console.error("Error inicializando cotizador:", error);
       alert("No se pudo cargar el cotizador. Revisa que existan packages-peru.json, trains.json, hotels.json y discount-codes.json.");
@@ -203,7 +203,7 @@ class MyCuscoTripQuotePackages {
     }
   }
 
-    bindBaseEvents() {
+  bindBaseEvents() {
     document.querySelectorAll(".quote-qty-btn").forEach((button) => {
       button.addEventListener("click", () => {
         const target = button.dataset.target;
@@ -315,7 +315,6 @@ class MyCuscoTripQuotePackages {
     this.bindTrainSelectionModalEvents();
     this.bindTrainDetailsModalEvents();
   }
-
   initDatePicker() {
     const input = document.getElementById("travelRange");
     if (!input || typeof flatpickr === "undefined") return;
@@ -491,7 +490,8 @@ class MyCuscoTripQuotePackages {
 
     this.updateExchangeRateHelp();
   }
-    renderPackageOptions() {
+
+  renderPackageOptions() {
     const target = document.getElementById("packageOptions");
     if (!target) return;
 
@@ -764,7 +764,6 @@ class MyCuscoTripQuotePackages {
     const rawDepartureMinutes = this.timeToMinutes(this.departureTime);
     return rawDepartureMinutes === null ? null : Math.max(rawDepartureMinutes - 120, 0);
   }
-
   renderItineraryOptions() {
     const section = document.getElementById("itinerarySection");
     const target = document.getElementById("itineraryOptions");
@@ -831,36 +830,6 @@ class MyCuscoTripQuotePackages {
     this.renderItineraryPreview();
   }
 
-  getItineraryOptionTimeLabel(option) {
-    const itinerary = Array.isArray(option?.itinerary) ? option.itinerary : [];
-    if (!itinerary.length) return "";
-
-    const firstDay = this.getFirstItineraryDay(itinerary);
-    const lastDay = this.getLastItineraryDay(itinerary);
-
-    const start = this.getItineraryDayStartMinutes(firstDay);
-    const end = this.getItineraryDayEndMinutes(lastDay);
-
-    if (start === null && end === null) return "";
-
-    const startText = start !== null ? this.minutesToTimeLabel(start) : "Por confirmar";
-    const endText = end !== null ? this.minutesToTimeLabel(end) : "Por confirmar";
-
-    return `Primer día desde ${startText} · Último día hasta ${endText}`;
-  }
-    buildDatedDayTitleHtml(item) {
-    const dayNumber = Number(item.day || 1);
-    const cleanTitle = String(item.title || `Día ${dayNumber}`)
-      .replace(/^Día\s*\d+\s*:\s*/i, "")
-      .replace(/^Dia\s*\d+\s*:\s*/i, "")
-      .trim();
-
-    const dateText = this.getDateForDay(dayNumber);
-    const dateHtml = dateText ? ` <span class="itinerary-date">(${this.escapeHtml(dateText)})</span>` : "";
-
-    return `Día ${dayNumber}:${dateHtml} ${this.escapeHtml(cleanTitle)}`;
-  }
-
   renderItineraryPreview() {
     const preview = document.getElementById("itineraryPreview");
     if (!preview) return;
@@ -889,95 +858,12 @@ class MyCuscoTripQuotePackages {
 
       return `
         <div class="quote-itinerary-item">
-          <h4>${this.buildDatedDayTitleHtml(item)}</h4>
+          <h4>Día ${item.day}: ${this.escapeHtml(item.title || "")}</h4>
           <p>${this.escapeHtml(item.description || "")}</p>
           ${timeInfo}
         </div>
       `;
     }).join("");
-  }
-
-  renderPackageIncludes() {
-    const existing = document.getElementById("packageIncludesBox");
-    if (existing) existing.remove();
-
-    if (!this.selectedPackage) return;
-
-    const itinerarySection = document.getElementById("itinerarySection");
-    if (!itinerarySection) return;
-
-    const includes = Array.isArray(this.selectedPackage.includes)
-      ? this.selectedPackage.includes
-      : [];
-
-    if (!includes.length) return;
-
-    const box = document.createElement("div");
-    box.id = "packageIncludesBox";
-    box.className = "quote-package-includes";
-
-    box.innerHTML = `
-      <h3>Este itinerario incluye</h3>
-      <p>El itinerario base considera los servicios esenciales para operar la ruta seleccionada. El tren y el alojamiento se cotizan aparte según tus preferencias.</p>
-      <ul>
-        ${includes.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}
-      </ul>
-    `;
-
-    const preview = document.querySelector(".quote-itinerary-preview");
-    if (preview) {
-      preview.insertAdjacentElement("afterend", box);
-    } else {
-      itinerarySection.appendChild(box);
-    }
-  }
-
-  updateItinerarySectionIntro(optionsCount = 0) {
-    const headerText = document.querySelector("#itinerarySection .quote-card__header p");
-    if (!headerText || !this.selectedPackage) return;
-
-    headerText.innerHTML = `
-      Estas son las opciones de itinerario disponibles para tus fechas.
-      ${optionsCount ? `Actualmente tienes ${optionsCount} opción${optionsCount !== 1 ? "es" : ""} compatible${optionsCount !== 1 ? "s" : ""}.` : ""}
-    `;
-  }
-
-  getItineraryMarketingDescription(option) {
-    const text = `${option.label || ""} ${option.summary || ""} ${(option.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""}`).join(" ")}`.toLowerCase();
-
-    if (option.summary && !/tren sugerido|sugerido|tren/i.test(option.summary)) {
-      return option.summary;
-    }
-
-    if (text.includes("valle sagrado") && text.includes("aguas calientes")) {
-      return "Itinerario progresivo con Valle Sagrado conexión, noche en Aguas Calientes y visita a Machu Picchu al día siguiente.";
-    }
-
-    if (text.includes("machu picchu express")) {
-      return "Itinerario express con retorno más temprano desde Machu Picchu, ideal para combinarlo con actividades al día siguiente.";
-    }
-
-    if (text.includes("montaña de colores") || text.includes("vinicunca")) {
-      return "Itinerario activo y aventurero, ideal para combinar Machu Picchu con una caminata de alta montaña.";
-    }
-
-    if (text.includes("humantay")) {
-      return "Itinerario natural y fotográfico, pensado para combinar Machu Picchu con una caminata hacia una laguna altoandina.";
-    }
-
-    if (text.includes("siete lagunas") || text.includes("ausangate")) {
-      return "Itinerario altoandino de mayor exigencia, recomendado para viajeros que buscan paisajes de montaña y una experiencia más aventurera.";
-    }
-
-    if (text.includes("bienvenida") || text.includes("ancestral")) {
-      return "Itinerario suave para el primer día, ideal para aclimatarte con calma antes de visitar Machu Picchu.";
-    }
-
-    if (text.includes("city tour")) {
-      return "Itinerario clásico para iniciar con los principales atractivos de Cusco y continuar con Machu Picchu.";
-    }
-
-    return "Itinerario disponible para tus fechas, con servicios organizados según la duración seleccionada.";
   }
 
   renderAccommodationOptions() {
@@ -1000,21 +886,7 @@ class MyCuscoTripQuotePackages {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additional = this.calculateAccommodationAdditional(item.destination);
       const destinationLabel = this.getDestinationLabel(item.destination);
-      const hasSelection = Boolean(selection?.hotel && selection?.combination);
-      const isNoHotel = selection?.hotel?.hotelCode === "no-hotel";
-      const hotelImage = !isNoHotel ? this.getHotelCoverImage(selection?.hotel) : "";
-
-      const hotelText = selection?.hotel
-        ? isNoHotel
-          ? "Sin alojamiento"
-          : `${this.escapeHtml(selection.hotel.hotelName)}${selection.hotel.stars > 0 ? ` · ${selection.hotel.stars}★` : ""}`
-        : "Sin hotel seleccionado";
-
-      const comboText = selection?.combination
-        ? isNoHotel
-          ? "No se agregará costo de alojamiento."
-          : this.escapeHtml(selection.combination.label)
-        : "Acomodación por confirmar";
+      const hotelImage = this.getHotelCoverImage(selection?.hotel);
 
       return `
         <div class="quote-accommodation-card ${hotelImage ? "has-hotel-image" : ""}">
@@ -1024,26 +896,21 @@ class MyCuscoTripQuotePackages {
           </div>
 
           <div class="quote-accommodation-card__body">
-            ${hotelImage
-              ? `
-                <img
-                  class="quote-accommodation-card__image"
-                  src="${this.escapeHtml(this.resolveAssetPath(hotelImage))}"
-                  alt="${this.escapeHtml(selection.hotel.hotelName)}"
-                  loading="lazy"
-                />
-              `
-              : ""
+
+            ${
+              hotelImage
+                ? `<img class="quote-accommodation-card__image" src="${this.resolveAssetPath(hotelImage)}" />`
+                : ""
             }
 
             <div class="quote-accommodation-card__content">
-              <p><strong>${hotelText}</strong></p>
-              <p>${comboText}</p>
+              <p><strong>${selection?.hotel?.hotelName || "Sin hotel seleccionado"}</strong></p>
               <p class="quote-accommodation-card__price">
-                + ${this.formatCurrency(additional, this.quoteCurrency)} por estadía
+                + ${this.formatCurrency(additional, this.quoteCurrency)}
               </p>
-              <button type="button" class="btn quote-secondary-btn open-hotel-modal-btn" data-destination="${this.escapeHtml(item.destination)}">
-                ${hasSelection ? "Cambiar hotel" : "Elegir hotel"}
+
+              <button type="button" class="btn quote-secondary-btn open-hotel-modal-btn" data-destination="${item.destination}">
+                Elegir hotel
               </button>
             </div>
           </div>
@@ -1056,6 +923,16 @@ class MyCuscoTripQuotePackages {
     });
   }
 
+  getHotelCoverImage(hotel) {
+    if (!hotel) return "";
+
+    // FIX PARA TU JSON
+    if (hotel.images?.cover) return hotel.images.cover;
+    if (Array.isArray(hotel.images)) return hotel.images[0];
+    if (hotel.image) return hotel.image;
+
+    return "";
+  }
   refreshAccommodationSelections() {
     if (!this.selectedPackage) return;
 
@@ -1085,7 +962,6 @@ class MyCuscoTripQuotePackages {
       );
 
       const currentCombinationKey = this.selectedCombinationsByDestination[item.destination];
-
       const stillValid = combinations.some((combo) => combo.key === currentCombinationKey);
 
       if (!stillValid) {
@@ -1095,7 +971,8 @@ class MyCuscoTripQuotePackages {
 
     this.renderAccommodationOptions();
   }
-    getAccommodationSummary() {
+
+  getAccommodationSummary() {
     if (!this.selectedPackage) return [];
 
     const fromItinerary = this.selectedItineraryOption?.accommodationSummary;
@@ -1113,16 +990,27 @@ class MyCuscoTripQuotePackages {
       hotelName: "Sin alojamiento",
       destination,
       stars: 0,
+      location: this.getDestinationLabel(destination),
+      address: "",
+      summary: "El cliente gestionará su alojamiento por cuenta propia.",
+      features: [],
+      amenities: {},
+      images: {
+        cover: "",
+        gallery: []
+      },
       rooms: [
         {
+          roomType: "no-room",
           roomCode: "no-room",
           roomName: "Sin habitación",
+          label: "Sin habitación",
+          bedType: "No incluye alojamiento",
           capacity: 99,
           currency: this.quoteCurrency,
           pricePerNight: 0
         }
-      ],
-      images: []
+      ]
     };
   }
 
@@ -1155,6 +1043,7 @@ class MyCuscoTripQuotePackages {
 
     const summary = this.getAccommodationSummary().find((item) => item.destination === destination);
     const nights = Number(summary?.nights || 0);
+
     const combinations = this.generateAccommodationCombinations(
       hotel.rooms || [],
       this.getTotalPassengers(),
@@ -1179,25 +1068,44 @@ class MyCuscoTripQuotePackages {
   }
 
   getDestinationLabel(destination) {
+    const destinationData = this.hotelsData?.destinations?.[destination];
+
+    if (destinationData?.label) return destinationData.label;
+
     const labels = {
       cusco: "Cusco",
+      "aguas-calientes": "Aguas Calientes",
       aguas_calientes: "Aguas Calientes",
       machu_picchu: "Machu Picchu Pueblo",
       sacred_valley: "Valle Sagrado"
     };
 
-    return labels[destination] || String(destination || "").replace(/_/g, " ");
+    return labels[destination] || String(destination || "").replace(/_/g, " ").replace(/-/g, " ");
   }
 
-  getHotelCoverImage(hotel) {
-    if (!hotel) return "";
+  getHotelImages(hotel) {
+    if (!hotel) return [];
 
-    if (hotel.image) return hotel.image;
-    if (hotel.cover) return hotel.cover;
-    if (Array.isArray(hotel.images) && hotel.images.length) return hotel.images[0];
-    if (Array.isArray(hotel.gallery) && hotel.gallery.length) return hotel.gallery[0];
+    const images = [];
 
-    return "";
+    if (hotel.images?.cover) images.push(hotel.images.cover);
+
+    if (Array.isArray(hotel.images?.gallery)) {
+      hotel.images.gallery.forEach((image) => images.push(image));
+    }
+
+    if (Array.isArray(hotel.images)) {
+      hotel.images.forEach((image) => images.push(image));
+    }
+
+    if (Array.isArray(hotel.gallery)) {
+      hotel.gallery.forEach((image) => images.push(image));
+    }
+
+    if (hotel.image) images.push(hotel.image);
+    if (hotel.cover) images.push(hotel.cover);
+
+    return [...new Set(images.filter(Boolean))];
   }
 
   generateAccommodationCombinations(rooms = [], passengers = 1, nights = 1) {
@@ -1219,11 +1127,11 @@ class MyCuscoTripQuotePackages {
 
     const normalizedRooms = rooms.map((room) => ({
       ...room,
-      roomCode: room.roomCode || room.code || room.id || room.roomName || "room",
-      roomName: room.roomName || room.name || room.label || "Habitación",
+      roomCode: room.roomCode || room.code || room.id || room.roomType || room.roomName || room.label || "room",
+      roomName: room.roomName || room.name || room.label || room.roomType || "Habitación",
       capacity: Number(room.capacity || room.maxOccupancy || room.guests || 1),
       pricePerNight: Number(room.pricePerNight || room.price || room.rate || 0),
-      currency: room.currency || this.quoteCurrency
+      currency: room.currency || "USD"
     }));
 
     const exact = normalizedRooms
@@ -1241,6 +1149,7 @@ class MyCuscoTripQuotePackages {
 
     normalizedRooms.forEach((room) => {
       const quantity = Math.ceil(safePassengers / Math.max(1, room.capacity));
+
       if (quantity > 1) {
         combinations.push({
           key: `${room.roomCode}-x${quantity}`,
@@ -1343,7 +1252,14 @@ class MyCuscoTripQuotePackages {
           <div class="hotel-option-card__header">
             <div>
               <h3>${this.escapeHtml(hotel.hotelName || hotel.name || "Hotel")}</h3>
-              <p>${isNoHotel ? "No se agregará alojamiento a la cotización." : `${Number(hotel.stars || 0)} estrellas · ${this.escapeHtml(this.getDestinationLabel(destination))}`}</p>
+              <p>
+                ${
+                  isNoHotel
+                    ? "No se agregará alojamiento a la cotización."
+                    : `${Number(hotel.stars || 0)} estrellas · ${this.escapeHtml(hotel.location || this.getDestinationLabel(destination))}`
+                }
+              </p>
+              ${hotel.address ? `<p>${this.escapeHtml(hotel.address)}</p>` : ""}
             </div>
             <span class="hotel-option-card__badge">${isNoHotel ? "Sin costo" : "Hotel"}</span>
           </div>
@@ -1392,39 +1308,49 @@ class MyCuscoTripQuotePackages {
           hotelCode: button.dataset.hotelCode,
           combinationKey: button.dataset.comboKey
         };
+
         this.renderHotelModalOptions(destination);
+      });
+    });
+
+    list.querySelectorAll(".hotel-gallery-thumb").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest(".hotel-option-card");
+        const mainImage = card?.querySelector(".hotel-gallery-main-img");
+        const thumbImage = button.querySelector("img");
+
+        if (!mainImage || !thumbImage) return;
+
+        mainImage.src = thumbImage.src;
+
+        card.querySelectorAll(".hotel-gallery-thumb").forEach((thumb) => {
+          thumb.classList.toggle("is-active", thumb === button);
+        });
       });
     });
   }
 
-  getHotelImages(hotel) {
-    if (!hotel) return [];
-    if (Array.isArray(hotel.images)) return hotel.images;
-    if (Array.isArray(hotel.gallery)) return hotel.gallery;
-    if (hotel.image) return [hotel.image];
-    if (hotel.cover) return [hotel.cover];
-    return [];
-  }
-    bindHotelModalEvents() {
+  bindHotelModalEvents() {
     document.addEventListener("click", (event) => {
       const closeBtn = event.target.closest("[data-close-modal], .quote-modal__close");
+
       if (closeBtn && closeBtn.closest("#hotelModal")) {
         this.closeHotelModal();
       }
     });
-  
+
     document.getElementById("confirmHotelSelectionBtn")?.addEventListener("click", () => {
       if (!this.activeHotelModalDestination || !this.pendingHotelSelection) {
         this.closeHotelModal();
         return;
       }
-  
+
       this.selectedHotelsByDestination[this.activeHotelModalDestination] =
         this.pendingHotelSelection.hotelCode;
-  
+
       this.selectedCombinationsByDestination[this.activeHotelModalDestination] =
         this.pendingHotelSelection.combinationKey;
-  
+
       this.renderAccommodationOptions();
       this.updatePricing();
       this.updatePrintQuotation();
@@ -1441,7 +1367,6 @@ class MyCuscoTripQuotePackages {
 
     document.body.classList.remove("quote-modal-open");
   }
-
   renderTrainSelectors() {
     const section = document.getElementById("trainSection");
     const outboundCard = document.getElementById("outboundTrainSelected");
@@ -1451,8 +1376,8 @@ class MyCuscoTripQuotePackages {
 
     if (!this.selectedPackage || !this.selectedItineraryOption) {
       section.hidden = true;
-      outboundCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de ida");
-      returnCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de retorno");
+      outboundCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de ida", "outbound");
+      returnCard.innerHTML = this.getTrainSelectorEmptyHtml("Tren de retorno", "return");
       return;
     }
 
@@ -1496,34 +1421,74 @@ class MyCuscoTripQuotePackages {
         outboundRoute: "machu_picchu_full_day_outbound",
         returnRoute: "machu_picchu_return"
       },
-      overnight: {
-        outboundRoute: "machu_picchu_overnight_outbound",
+      sacred_valley_connection: {
+        outboundRoute: "sacred_valley_connection_outbound",
         returnRoute: "machu_picchu_return"
       },
       connection: {
-        outboundRoute: "machu_picchu_overnight_outbound",
+        outboundRoute: "sacred_valley_connection_outbound",
+        returnRoute: "machu_picchu_return"
+      },
+      overnight: {
+        outboundRoute: "sacred_valley_connection_outbound",
+        returnRoute: "machu_picchu_return"
+      },
+      mixed: {
+        outboundRoute: "machu_picchu_full_day_outbound",
         returnRoute: "machu_picchu_return"
       }
     };
 
     const fallbackRoutes = modeRoutes[optionTrainMode] || modeRoutes.full_day;
 
+    let outboundRoute =
+      this.selectedItineraryOption?.outboundRoute ||
+      packageConfig.outboundRoute ||
+      fallbackRoutes.outboundRoute;
+
+    let returnRoute =
+      this.selectedItineraryOption?.returnRoute ||
+      packageConfig.returnRoute ||
+      fallbackRoutes.returnRoute;
+
+    if (!outboundRoute || outboundRoute === "dynamic_by_itinerary_option") {
+      outboundRoute = fallbackRoutes.outboundRoute;
+    }
+
+    if (!returnRoute || returnRoute === "dynamic_by_itinerary_option") {
+      returnRoute = fallbackRoutes.returnRoute;
+    }
+
+    if (!this.trainsData?.routes?.[outboundRoute]) {
+      outboundRoute = fallbackRoutes.outboundRoute;
+    }
+
+    if (!this.trainsData?.routes?.[returnRoute]) {
+      returnRoute = fallbackRoutes.returnRoute;
+    }
+
     return {
       required: packageConfig.required !== false,
       mode: optionTrainMode,
-      outboundRoute: this.selectedItineraryOption?.outboundRoute || packageConfig.outboundRoute || fallbackRoutes.outboundRoute,
-      returnRoute: this.selectedItineraryOption?.returnRoute || packageConfig.returnRoute || fallbackRoutes.returnRoute
+      outboundRoute,
+      returnRoute
     };
   }
 
-  getTrainSelectorEmptyHtml(label) {
+  getTrainSelectorEmptyHtml(label, direction = "") {
     return `
       <div>
         <span>${this.escapeHtml(label)}</span>
         <strong>Sin selección</strong>
         <p>Elige una opción de tren para completar la cotización.</p>
       </div>
-      <button type="button" class="btn quote-secondary-btn">Elegir tren</button>
+      <button
+        type="button"
+        class="btn quote-secondary-btn"
+        data-train-direction="${this.escapeHtml(direction)}"
+      >
+        Elegir tren
+      </button>
     `;
   }
 
@@ -1552,7 +1517,6 @@ class MyCuscoTripQuotePackages {
       <button
         type="button"
         class="btn quote-secondary-btn"
-        id="${direction === "outbound" ? "openOutboundTrainModalBtnDynamic" : "openReturnTrainModalBtnDynamic"}"
         data-train-direction="${this.escapeHtml(direction)}"
         data-route-code="${this.escapeHtml(routeCode)}"
       >
@@ -1564,18 +1528,21 @@ class MyCuscoTripQuotePackages {
   bindTrainSelectionModalEvents() {
     document.addEventListener("click", (event) => {
       const closeBtn = event.target.closest("[data-close-modal], .quote-modal__close");
-  
+
       if (closeBtn && closeBtn.closest("#trainSelectionModal")) {
         this.closeTrainSelectionModal();
         return;
       }
-  
+
       const dynamicButton = event.target.closest("[data-train-direction]");
       if (dynamicButton) {
-        this.openTrainSelectionModal(dynamicButton.dataset.trainDirection);
+        const direction = dynamicButton.dataset.trainDirection;
+        if (direction === "outbound" || direction === "return") {
+          this.openTrainSelectionModal(direction);
+        }
       }
     });
-  
+
     document.getElementById("confirmTrainSelectionBtn")?.addEventListener("click", () => {
       this.confirmTrainSelection();
     });
@@ -1606,21 +1573,153 @@ class MyCuscoTripQuotePackages {
 
     if (!modal) return;
 
+    const route = this.trainsData?.routes?.[routeCode];
+    const directionLabel = direction === "outbound" ? "ida" : "retorno";
+
     if (title) {
-      title.textContent = direction === "outbound" ? "Elige tren de ida" : "Elige tren de retorno";
+      title.textContent = `Elige tu tren de ${directionLabel}`;
     }
 
     if (intro) {
-      intro.textContent =
-        direction === "outbound"
-          ? "Selecciona el tren de ida hacia Machu Picchu según empresa, horario y categoría."
-          : "Selecciona el tren de retorno. Si ya elegiste una empresa en la ida, aquí solo verás trenes de esa misma empresa.";
+      intro.textContent = route?.description || "Selecciona una opción disponible para completar la cotización.";
     }
 
-    this.renderTrainModalOptions(routeCode, direction);
+    this.renderTrainModalOptions(routeCode);
 
     modal.hidden = false;
     document.body.classList.add("quote-modal-open");
+  }
+
+  renderTrainModalOptions(routeCode) {
+    const list = document.getElementById("trainSelectionModalList");
+    if (!list) return;
+
+    const route = this.trainsData?.routes?.[routeCode];
+    const allOptions = Array.isArray(route?.options) ? route.options : [];
+    const options = allOptions.filter((train) => this.isTrainAllowedForNationality(train));
+
+    if (!options.length) {
+      list.innerHTML = `
+        <div class="quote-empty-state">
+          No hay trenes disponibles para esta ruta y nacionalidad seleccionada.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = options.map((train) => {
+      const isSelected = this.pendingTrainCode === train.code;
+      const category = this.trainsData?.trainCategories?.[train.categoryCode] || {};
+      const logo = this.getTrainCompanyLogo(train);
+      const companyLabel = this.getTrainCompanyLabel(train);
+      const price = this.convertCurrency(
+        Number(train.pricePerPerson || 0),
+        train.currency || "USD",
+        this.quoteCurrency
+      );
+
+      return `
+        <article
+          class="train-option-card ${isSelected ? "is-selected" : ""} ${train.isLocalTrain ? "train-option-card--local" : ""}"
+          data-train-code="${this.escapeHtml(train.code)}"
+        >
+          <div class="train-option-card__header">
+            <div class="train-option-card__company">
+              ${
+                logo
+                  ? `<img class="train-option-card__logo" src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />`
+                  : ""
+              }
+              <div>
+                <h3>${this.escapeHtml(this.getTrainDisplayName(train))}</h3>
+                <p>${this.escapeHtml(companyLabel)} · ${this.escapeHtml(train.displayCategory || category.displayCategory || "Tren")}</p>
+              </div>
+            </div>
+
+            <span class="train-option-card__price">
+              ${train.isLocalTrain ? "Sujeto a disponibilidad" : this.formatCurrency(price, this.quoteCurrency)}
+            </span>
+          </div>
+
+          <div class="train-option-card__body">
+            <div class="train-option-card__schedule">
+              <div>
+                <span>Salida</span>
+                <strong>${this.escapeHtml(train.departureTime || "Por confirmar")}</strong>
+                <small>${this.escapeHtml(train.origin || "")}</small>
+              </div>
+
+              <div>
+                <span>Llegada</span>
+                <strong>${this.escapeHtml(train.arrivalTime || "Por confirmar")}</strong>
+                <small>${this.escapeHtml(train.destination || "")}</small>
+              </div>
+
+              <div>
+                <span>Duración</span>
+                <strong>${this.escapeHtml(train.duration || "Por confirmar")}</strong>
+                <small>${this.escapeHtml(train.transferInfo || train.routeType || "")}</small>
+              </div>
+            </div>
+
+            ${
+              category.shortDescription
+                ? `<p class="train-option-card__description">${this.escapeHtml(category.shortDescription)}</p>`
+                : ""
+            }
+
+            ${
+              train.warning
+                ? `<p class="train-option-card__warning">${this.escapeHtml(train.warning)}</p>`
+                : ""
+            }
+
+            <div class="train-option-card__actions">
+              <button type="button" class="btn quote-secondary-btn train-select-btn" data-train-code="${this.escapeHtml(train.code)}">
+                ${isSelected ? "Seleccionado" : "Seleccionar"}
+              </button>
+
+              <button type="button" class="btn quote-secondary-btn train-details-btn" data-train-code="${this.escapeHtml(train.code)}" data-route-code="${this.escapeHtml(routeCode)}">
+                Ver detalles
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    list.querySelectorAll(".train-select-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        this.pendingTrainCode = button.dataset.trainCode;
+        this.renderTrainModalOptions(routeCode);
+      });
+    });
+
+    list.querySelectorAll(".train-details-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        this.openTrainDetailsModal(button.dataset.routeCode, button.dataset.trainCode);
+      });
+    });
+  }
+
+  confirmTrainSelection() {
+    if (!this.activeTrainDirection || !this.pendingTrainCode) {
+      this.closeTrainSelectionModal();
+      return;
+    }
+
+    if (this.activeTrainDirection === "outbound") {
+      this.selectedOutboundTrainCode = this.pendingTrainCode;
+    }
+
+    if (this.activeTrainDirection === "return") {
+      this.selectedReturnTrainCode = this.pendingTrainCode;
+    }
+
+    this.renderTrainSelectors();
+    this.updatePricing();
+    this.updatePrintQuotation();
+    this.closeTrainSelectionModal();
   }
 
   closeTrainSelectionModal() {
@@ -1633,495 +1732,129 @@ class MyCuscoTripQuotePackages {
     document.body.classList.remove("quote-modal-open");
   }
 
-  confirmTrainSelection() {
-    if (!this.activeTrainDirection) {
-      this.closeTrainSelectionModal();
-      return;
-    }
+  openTrainDetailsModal(routeCode, trainCode) {
+    const modal = document.getElementById("trainDetailsModal");
+    const title = document.getElementById("trainDetailsModalTitle");
+    const intro = document.getElementById("trainDetailsModalIntro");
+    const content = document.getElementById("trainDetailsModalContent");
 
-    if (this.activeTrainDirection === "outbound") {
-      this.selectedOutboundTrainCode = this.pendingTrainCode || "";
+    if (!modal || !content) return;
 
-      const outboundCompany = this.getSelectedOutboundTrainCompany();
-      const returnTrainConfig = this.getTrainSelectionConfig();
-      const currentReturnTrain = this.getTrainByCode(returnTrainConfig.returnRoute, this.selectedReturnTrainCode);
+    const train = this.getTrainByCode(routeCode, trainCode);
+    if (!train) return;
 
-      if (
-        outboundCompany &&
-        currentReturnTrain &&
-        this.normalizeTrainCompany(currentReturnTrain.company || currentReturnTrain.operator || currentReturnTrain.provider) !== outboundCompany
-      ) {
-        this.selectedReturnTrainCode = "";
-      }
-    }
+    const category = this.trainsData?.trainCategories?.[train.categoryCode] || {};
+    const logo = this.getTrainCompanyLogo(train);
+    const companyLabel = this.getTrainCompanyLabel(train);
 
-    if (this.activeTrainDirection === "return") {
-      this.selectedReturnTrainCode = this.pendingTrainCode || "";
-    }
+    if (title) title.textContent = this.getTrainDisplayName(train);
+    if (intro) intro.textContent = `${companyLabel} · ${train.displayCategory || category.displayCategory || "Tren"}`;
 
-    this.renderTrainSelectors();
-    this.updatePricing();
-    this.updatePrintQuotation();
-    this.closeTrainSelectionModal();
-  }
-
-  renderTrainModalOptions(routeCode, direction) {
-    const list = document.getElementById("trainSelectionModalList");
-    if (!list) return;
-
-    const trains = this.getAvailableTrainsForRoute(routeCode, direction);
-
-    if (!trains.length) {
-      list.innerHTML = `
-        <div class="quote-empty-state">
-          No hay trenes disponibles para esta ruta o empresa. Cambia el tren de ida o revisa trains.json.
-        </div>
-      `;
-      return;
-    }
-
-    const recommendedCode = this.getRecommendedTrainCode(trains, direction);
-
-    list.innerHTML = trains.map((train) => {
-      const trainCode = this.getTrainCode(train);
-      const isSelected = this.pendingTrainCode === trainCode;
-      const isRecommended = recommendedCode && trainCode === recommendedCode;
-      const companyLogo = this.getTrainCompanyLogo(train);
-      const companyLabel = this.getTrainCompanyLabel(train);
-      const schedule = this.getTrainSchedule(train);
-      const routeText = this.getTrainRouteText(train, direction);
-      const price = this.getTrainPrice(train);
-
-      return `
-        <article
-          class="train-option-card ${isSelected ? "is-selected" : ""} ${isRecommended ? "is-recommended" : ""}"
-          data-train-code="${this.escapeHtml(trainCode)}"
-        >
-          ${isRecommended ? `<span class="train-badge-recommended">Recomendado</span>` : ""}
-
-          <div class="train-option-card__content">
-            <div class="train-option-card__company">
-              ${
-                companyLogo
-                  ? `<img class="train-option-card__logo" src="${this.escapeHtml(companyLogo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />`
-                  : ""
-              }
-              <div>
-                <h3>${this.escapeHtml(this.getTrainDisplayName(train))}</h3>
-                <p>${this.escapeHtml(companyLabel)}</p>
-              </div>
-            </div>
-
-            <p>${this.escapeHtml(routeText)}</p>
-
-            <div class="train-option-card__schedule">
-              <div class="train-time-box">
-                <span>Hora de partida</span>
-                <strong>${this.escapeHtml(schedule.departureLabel)}</strong>
-              </div>
-              <div class="train-time-box">
-                <span>Hora de llegada</span>
-                <strong>${this.escapeHtml(schedule.arrivalLabel)}</strong>
-              </div>
-            </div>
-          </div>
-
-          <div class="train-option-card__price">
-            <strong>${this.formatCurrency(price.amount, price.currency)}</strong>
-            <span>por persona</span>
-          </div>
-        </article>
-      `;
-    }).join("");
-
-    list.querySelectorAll(".train-option-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        this.pendingTrainCode = card.dataset.trainCode || "";
-        this.renderTrainModalOptions(routeCode, direction);
-      });
-    });
-  }
-    getAvailableTrainsForRoute(routeCode, direction) {
-      const routes = this.trainsData?.routes || {};
-      const route = routes[routeCode];
-    
-      let rawTrains = [];
-    
-      if (Array.isArray(route?.trains)) {
-        rawTrains = route.trains;
-      } else if (Array.isArray(route?.options)) {
-        rawTrains = route.options;
-      } else if (Array.isArray(route?.items)) {
-        rawTrains = route.items;
-      } else if (Array.isArray(route)) {
-        rawTrains = route;
-      } else if (Array.isArray(this.trainsData?.trains)) {
-        rawTrains = this.trainsData.trains.filter((train) => {
-          return (
-            train.route === routeCode ||
-            train.routeCode === routeCode ||
-            train.routeId === routeCode ||
-            train.direction === direction
-          );
-        });
-      }
-    
-      let trains = rawTrains.filter((train) => this.isTrainAvailableForNationality(train));
-    
-      if (direction === "return") {
-        const outboundCompany = this.getSelectedOutboundTrainCompany();
-    
-        if (outboundCompany) {
-          trains = trains.filter((train) => {
-            const company = this.normalizeTrainCompany(
-              train.company || train.operator || train.provider || train.companyName
-            );
-            return company === outboundCompany;
-          });
+    content.innerHTML = `
+      <div class="train-detail-box">
+        ${
+          logo
+            ? `<img class="train-detail-logo" src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />`
+            : ""
         }
-      }
-    
-      return trains;
-    }
 
-  isTrainAvailableForNationality(train) {
-    if (!train) return false;
+        <p>${this.escapeHtml(category.shortDescription || train.description || "Opción de tren disponible para Machu Picchu.")}</p>
 
-    if (train.status && train.status !== "published") return false;
+        <ul>
+          <li><strong>Salida:</strong> ${this.escapeHtml(train.departureTime || "Por confirmar")} - ${this.escapeHtml(train.origin || "")}</li>
+          <li><strong>Llegada:</strong> ${this.escapeHtml(train.arrivalTime || "Por confirmar")} - ${this.escapeHtml(train.destination || "")}</li>
+          <li><strong>Duración:</strong> ${this.escapeHtml(train.duration || "Por confirmar")}</li>
+          <li><strong>Tipo de ruta:</strong> ${this.escapeHtml(train.transferInfo || train.routeType || "Tren")}</li>
+        </ul>
 
-    const allowedNationalities = train.allowedNationalities || train.nationalities || [];
+        ${
+          category.importantMessage
+            ? `<p class="train-option-card__warning">${this.escapeHtml(category.importantMessage)}</p>`
+            : ""
+        }
 
-    if (Array.isArray(allowedNationalities) && allowedNationalities.length) {
-      return allowedNationalities.includes(this.nationality);
-    }
+        ${
+          Array.isArray(category.purchaseRequirements) && category.purchaseRequirements.length
+            ? `
+              <h4>Condiciones importantes</h4>
+              <ul>
+                ${category.purchaseRequirements.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}
+              </ul>
+            `
+            : ""
+        }
+      </div>
+    `;
 
-    if (train.onlyForNational === true) {
-      return this.nationality === "national";
-    }
-
-    if (train.localOnly === true) {
-      return this.nationality === "national";
-    }
-
-    return true;
-  }
-
-  getSelectedOutboundTrainCompany() {
-    if (!this.selectedOutboundTrainCode) return "";
-
-    const trainConfig = this.getTrainSelectionConfig();
-    const train = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
-
-    if (!train) return "";
-
-    return this.normalizeTrainCompany(train.company || train.operator || train.provider);
-  }
-
-  normalizeTrainCompany(company) {
-    const value = String(company || "").trim().toLowerCase();
-
-    if (!value) return "";
-
-    if (
-      value.includes("inca") ||
-      value.includes("incarail") ||
-      value.includes("inca rail")
-    ) {
-      return "inca_rail";
-    }
-
-    if (
-      value.includes("peru") ||
-      value.includes("perurail") ||
-      value.includes("peru rail") ||
-      value.includes("perú rail")
-    ) {
-      return "peru_rail";
-    }
-
-    return value.replace(/\s+/g, "_");
-  }
-
-  getTrainCompanyLabel(train) {
-    const company = this.normalizeTrainCompany(train?.company || train?.operator || train?.provider);
-
-    if (company === "inca_rail") return "Inca Rail";
-    if (company === "peru_rail") return "Peru Rail";
-
-    return train?.company || train?.operator || train?.provider || "Empresa ferroviaria";
-  }
-
-  getTrainCompanyLogo(train) {
-    const company = this.normalizeTrainCompany(train?.company || train?.operator || train?.provider);
-
-    if (company === "inca_rail") {
-      return this.resolveAssetPath("assets/img/trenes/Inca Rail.png");
-    }
-
-    if (company === "peru_rail") {
-      return this.resolveAssetPath("assets/img/trenes/Peru Rail.png");
-    }
-
-    return "";
+    modal.hidden = false;
+    document.body.classList.add("quote-modal-open");
   }
 
   getTrainByCode(routeCode, trainCode) {
     if (!routeCode || !trainCode) return null;
-  
-    const trains = this.getAvailableTrainsForRoute(routeCode, "lookup");
-  
-    return trains.find((train) => this.getTrainCode(train) === trainCode) || null;
+
+    const route = this.trainsData?.routes?.[routeCode];
+    const options = Array.isArray(route?.options) ? route.options : [];
+
+    return options.find((train) => train.code === trainCode) || null;
   }
 
-  getTrainCode(train) {
-    return String(
-      train?.code ||
-      train?.trainCode ||
-      train?.id ||
-      train?.serviceCode ||
-      ""
-    );
+  isTrainAllowedForNationality(train) {
+    if (!train) return false;
+
+    const allowed = Array.isArray(train.allowedNationalities)
+      ? train.allowedNationalities
+      : [];
+
+    if (!allowed.length) return true;
+
+    return allowed.includes(this.nationality);
   }
 
   getTrainDisplayName(train) {
-    if (!train) return "Tren por seleccionar";
+    if (!train) return "Tren";
 
-    const categoryName =
-      train.categoryName ||
-      train.trainName ||
-      train.name ||
-      train.service ||
-      train.category ||
-      "Tren turístico";
+    return [
+      train.serviceName || train.name || train.label || "Tren",
+      train.company ? `- ${train.company}` : ""
+    ].filter(Boolean).join(" ");
+  }
 
-    const company = this.getTrainCompanyLabel(train);
+  getTrainShortScheduleText(train, direction = "") {
+    if (!train) return "Selecciona horario y categoría.";
 
-    if (String(categoryName).toLowerCase().includes(company.toLowerCase())) {
-      return categoryName;
+    const departure = train.departureTime || "Por confirmar";
+    const arrival = train.arrivalTime || "Por confirmar";
+    const route = direction === "return" ? "retorno" : "ida";
+
+    return `${route}: ${departure} → ${arrival}`;
+  }
+
+  getTrainCompanyLabel(train) {
+    if (!train) return "";
+
+    if (train.company) return train.company;
+
+    const category = this.trainsData?.trainCategories?.[train.categoryCode];
+    return category?.company || "";
+  }
+
+  getTrainCompanyLogo(train) {
+    const company = this.getTrainCompanyLabel(train).toLowerCase();
+
+    if (company.includes("perurail") || company.includes("peru rail")) {
+      return this.resolveAssetPath("assets/img/trains/perurail-logo.png");
     }
 
-    return `${company} · ${categoryName}`;
-  }
-
-  getTrainSchedule(train) {
-    const departure =
-      train?.departureTime ||
-      train?.departure ||
-      train?.departTime ||
-      train?.startTime ||
-      train?.horaSalida ||
-      train?.hora_salida ||
-      train?.time;
-
-    const arrival =
-      train?.arrivalTime ||
-      train?.arrival ||
-      train?.arriveTime ||
-      train?.endTime ||
-      train?.horaLlegada ||
-      train?.hora_llegada;
-
-    return {
-      departureMinutes: this.timeToMinutes(departure),
-      arrivalMinutes: this.timeToMinutes(arrival),
-      departureLabel: this.formatTrainTime(departure),
-      arrivalLabel: this.formatTrainTime(arrival)
-    };
-  }
-
-  getTrainShortScheduleText(train, direction) {
-    const schedule = this.getTrainSchedule(train);
-    const departure = schedule.departureLabel || "Por confirmar";
-    const arrival = schedule.arrivalLabel || "Por confirmar";
-    const routeText = this.getTrainRouteText(train, direction);
-
-    return `${routeText}. Parte ${departure} · llega ${arrival}`;
-  }
-
-  getTrainRouteText(train, direction) {
-    const origin =
-      train?.origin ||
-      train?.from ||
-      train?.departureStation ||
-      train?.stationFrom ||
-      "";
-
-    const destination =
-      train?.destination ||
-      train?.to ||
-      train?.arrivalStation ||
-      train?.stationTo ||
-      "";
-
-    if (origin && destination) {
-      return `${origin} → ${destination}`;
+    if (company.includes("inca rail") || company.includes("incarail")) {
+      return this.resolveAssetPath("assets/img/trains/inca-rail-logo.png");
     }
 
-    if (direction === "outbound") {
-      return "Ruta hacia Machu Picchu Pueblo";
-    }
-
-    return "Ruta de retorno desde Machu Picchu Pueblo";
+    return "";
   }
-
-  formatTrainTime(value) {
-    const minutes = this.timeToMinutes(value);
-    if (minutes === null) return "Por confirmar";
-    return this.minutesToTimeLabel(minutes);
-  }
-
-  getTrainPrice(train) {
-    const pricing = train?.pricing || train?.prices || train?.priceByNationality;
-    const nationalityPricing = pricing?.[this.nationality];
-
-    if (nationalityPricing) {
-      return {
-        amount: Number(nationalityPricing.amount || nationalityPricing.price || nationalityPricing.adult || 0),
-        currency: nationalityPricing.currency || train.currency || this.quoteCurrency
-      };
-    }
-
-    return {
-      amount: Number(train?.price || train?.adultPrice || train?.amount || 0),
-      currency: train?.currency || this.quoteCurrency
-    };
-  }
-
-  getRecommendedTrainCode(trains, direction) {
-    if (!Array.isArray(trains) || !trains.length || !this.selectedItineraryOption) return "";
-
-    const mode = this.getCurrentTrainMode();
-    const normalizedCompany =
-      direction === "return"
-        ? this.getSelectedOutboundTrainCompany()
-        : "";
-
-    let candidates = trains;
-
-    if (direction === "return" && normalizedCompany) {
-      candidates = candidates.filter((train) => {
-        const company = this.normalizeTrainCompany(train.company || train.operator || train.provider);
-        return company === normalizedCompany;
-      });
-    }
-
-    const byRange = (start, end) => {
-      const startMinutes = this.timeToMinutes(start);
-      const endMinutes = this.timeToMinutes(end);
-
-      return candidates.filter((train) => {
-        const schedule = this.getTrainSchedule(train);
-        const departure = schedule.departureMinutes;
-        return departure !== null && departure >= startMinutes && departure <= endMinutes;
-      });
-    };
-
-    const byExactOrNear = (target, toleranceMinutes = 45, company = "") => {
-      const targetMinutes = this.timeToMinutes(target);
-
-      return candidates.filter((train) => {
-        const schedule = this.getTrainSchedule(train);
-        const departure = schedule.departureMinutes;
-        const trainCompany = this.normalizeTrainCompany(train.company || train.operator || train.provider);
-
-        if (departure === null) return false;
-        if (company && trainCompany !== company) return false;
-
-        return Math.abs(departure - targetMinutes) <= toleranceMinutes;
-      });
-    };
-
-    let recommended = [];
-
-    if (mode === "express") {
-      recommended = direction === "outbound"
-        ? byRange("04:00", "06:00")
-        : byRange("14:00", "16:00");
-    } else if (mode === "overnight" || mode === "connection") {
-      if (direction === "outbound") {
-        recommended = byExactOrNear("16:36", 60, "inca_rail");
-
-        if (!recommended.length) {
-          recommended = byRange("15:30", "17:30");
-        }
-      } else {
-        const company = normalizedCompany || "";
-
-        if (company === "inca_rail") {
-          recommended = byExactOrNear("20:20", 60, "inca_rail");
-        } else if (company === "peru_rail") {
-          recommended = byExactOrNear("19:00", 75, "peru_rail");
-        } else {
-          recommended = [
-            ...byExactOrNear("20:20", 60, "inca_rail"),
-            ...byExactOrNear("19:00", 75, "peru_rail")
-          ];
-        }
-
-        if (!recommended.length) {
-          recommended = byRange("19:00", "21:00");
-        }
-      }
-    } else {
-      recommended = direction === "outbound"
-        ? byRange("04:00", "06:00")
-        : byRange("19:00", "21:00");
-    }
-
-    if (!recommended.length) return "";
-
-    recommended.sort((a, b) => {
-      const priceA = this.convertCurrency(this.getTrainPrice(a).amount, this.getTrainPrice(a).currency, this.quoteCurrency);
-      const priceB = this.convertCurrency(this.getTrainPrice(b).amount, this.getTrainPrice(b).currency, this.quoteCurrency);
-      return priceA - priceB;
-    });
-
-    return this.getTrainCode(recommended[0]);
-  }
-
-  getCurrentTrainMode() {
-    const text = `
-      ${this.selectedItineraryOption?.trainMode || ""}
-      ${this.selectedItineraryOption?.label || ""}
-      ${this.selectedItineraryOption?.summary || ""}
-      ${(this.selectedItineraryOption?.itinerary || []).map((item) => `${item.title || ""} ${item.description || ""} ${(item.tourCodes || []).join(" ")}`).join(" ")}
-    `.toLowerCase();
-
-    if (text.includes("express") || text.includes("machu_express")) return "express";
-
-    if (
-      text.includes("overnight") ||
-      text.includes("connection") ||
-      text.includes("conexión") ||
-      text.includes("aguas calientes") ||
-      text.includes("machu_connection")
-    ) {
-      return "overnight";
-    }
-
-    return "full_day";
-  }
-    calculateTrainAdditional() {
-    const trainConfig = this.getTrainSelectionConfig();
-    if (!trainConfig.required) return 0;
-
-    const outboundTrain = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
-    const returnTrain = this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode);
-
-    const passengers = this.getTotalPassengers();
-
-    const outboundPrice = outboundTrain ? this.getTrainPrice(outboundTrain) : { amount: 0, currency: this.quoteCurrency };
-    const returnPrice = returnTrain ? this.getTrainPrice(returnTrain) : { amount: 0, currency: this.quoteCurrency };
-
-    const outboundTotal = this.convertCurrency(outboundPrice.amount, outboundPrice.currency, this.quoteCurrency) * passengers;
-    const returnTotal = this.convertCurrency(returnPrice.amount, returnPrice.currency, this.quoteCurrency) * passengers;
-
-    return outboundTotal + returnTotal;
-  }
-
   renderExtras() {
     const section = document.getElementById("extrasSection");
-    const container = document.getElementById("extrasOptions");
+    const container = document.getElementById("extrasContainer");
 
     if (!section || !container) return;
 
@@ -2136,17 +1869,16 @@ class MyCuscoTripQuotePackages {
     section.hidden = false;
 
     container.innerHTML = extras.map((extra) => {
-      const isSelected = this.selectedExtras.has(extra.code);
-      const price = this.convertCurrency(Number(extra.price || 0), extra.currency || this.quoteCurrency, this.quoteCurrency);
-      const suffix = extra.perPerson ? "por persona" : "por reserva";
+      const checked = this.selectedExtras.has(extra.code);
+      const price = this.convertCurrency(Number(extra.price || 0), extra.currency || "USD", this.quoteCurrency);
 
       return `
-        <label class="quote-extra-item ${isSelected ? "is-selected" : ""}">
-          <input type="checkbox" value="${this.escapeHtml(extra.code)}" ${isSelected ? "checked" : ""} />
-          <span>
-            <strong>${this.escapeHtml(extra.label || extra.name || "Extra")}</strong>
-            <small>${this.formatCurrency(price, this.quoteCurrency)} ${suffix}</small>
-          </span>
+        <label class="quote-extra-item ${checked ? "is-selected" : ""}">
+          <input type="checkbox" value="${this.escapeHtml(extra.code)}" ${checked ? "checked" : ""} />
+          <div>
+            <strong>${this.escapeHtml(extra.label || "Extra")}</strong>
+            <p>${this.formatCurrency(price, this.quoteCurrency)} ${extra.perPerson ? "por persona" : "por reserva"}</p>
+          </div>
         </label>
       `;
     }).join("");
@@ -2163,78 +1895,29 @@ class MyCuscoTripQuotePackages {
     });
   }
 
-  calculateExtrasAdditional() {
-    const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
-    const passengers = this.getTotalPassengers();
-
-    return extras.reduce((total, extra) => {
-      if (!this.selectedExtras.has(extra.code)) return total;
-
-      const base = this.convertCurrency(Number(extra.price || 0), extra.currency || this.quoteCurrency, this.quoteCurrency);
-      return total + (extra.perPerson ? base * passengers : base);
-    }, 0);
-  }
-
-  getBasePackagePricing() {
-    if (!this.selectedPackage) {
-      return { adult: 0, child: 0, currency: this.quoteCurrency };
-    }
-
-    const pricingByNationality = this.selectedPackage.basePricingByNationality?.[this.nationality];
-
-    if (pricingByNationality) {
-      return {
-        adult: Number(pricingByNationality.adult || 0),
-        child: Number(pricingByNationality.child || pricingByNationality.adult || 0),
-        currency: pricingByNationality.currency || this.selectedPackage.currency || this.quoteCurrency
-      };
-    }
-
-    const basePricing = this.selectedPackage.basePricing || {};
-
-    return {
-      adult: Number(basePricing.adult || 0),
-      child: Number(basePricing.child || basePricing.adult || 0),
-      currency: this.selectedPackage.currency || this.quoteCurrency
-    };
-  }
-
-  calculateBasePackageTotal() {
-    const pricing = this.getBasePackagePricing();
-
-    const adultTotal = this.convertCurrency(pricing.adult, pricing.currency, this.quoteCurrency) * this.adults;
-    const childTotal = this.convertCurrency(pricing.child, pricing.currency, this.quoteCurrency) * this.children;
-
-    return adultTotal + childTotal;
-  }
-
-  calculateHotelAdditionalTotal() {
-    return this.getAccommodationSummary().reduce((total, item) => {
-      return total + this.calculateAccommodationAdditional(item.destination);
-    }, 0);
-  }
-
   getPricingBreakdown() {
-    const baseTotal = this.calculateBasePackageTotal();
-    const hotelTotal = this.calculateHotelAdditionalTotal();
-    const trainTotal = this.calculateTrainAdditional();
-    const extrasTotal = this.calculateExtrasAdditional();
+    const basePricing = this.getBasePricing();
+    const adultBase = this.convertCurrency(basePricing.adult, basePricing.currency, this.quoteCurrency);
+    const childBase = this.convertCurrency(basePricing.child, basePricing.currency, this.quoteCurrency);
 
-    const subtotalBeforeDiscount = baseTotal + hotelTotal + trainTotal + extrasTotal;
-    const discountTotal = this.calculateDiscount(subtotalBeforeDiscount);
-    const subtotalAfterDiscount = Math.max(0, subtotalBeforeDiscount - discountTotal);
+    const adultTotal = adultBase * this.adults;
+    const childTotal = childBase * this.children;
 
-    const paymentRules = this.packagesData.paymentOptions || {};
-    const fullDiscountPercent = Number(paymentRules.fullPaymentDiscountPercent || 0);
-    const partialPercent = Number(paymentRules.partialPaymentPercent || 30);
+    const hotelTotal = this.getAccommodationTotal();
+    const trainTotal = this.getTrainTotal();
+    const extrasTotal = this.getExtrasTotal();
 
-    let fullPaymentDiscount = 0;
-    let total = subtotalAfterDiscount;
+    const subtotal = adultTotal + childTotal + hotelTotal + trainTotal + extrasTotal;
 
-    if (this.paymentMode === "full" && fullDiscountPercent > 0) {
-      fullPaymentDiscount = subtotalAfterDiscount * (fullDiscountPercent / 100);
-      total = Math.max(0, subtotalAfterDiscount - fullPaymentDiscount);
-    }
+    const discountTotal = this.calculateManualDiscount(subtotal);
+    const fullPaymentDiscount = this.paymentMode === "full"
+      ? this.calculateFullPaymentDiscount(subtotal - discountTotal)
+      : 0;
+
+    const total = Math.max(0, subtotal - discountTotal - fullPaymentDiscount);
+
+    const paymentOptions = this.packagesData.paymentOptions || {};
+    const partialPercent = Number(paymentOptions.partialPaymentPercent || 30);
 
     const advancePayment = this.paymentMode === "partial"
       ? total * (partialPercent / 100)
@@ -2243,11 +1926,14 @@ class MyCuscoTripQuotePackages {
     const balance = Math.max(0, total - advancePayment);
 
     return {
-      baseTotal,
+      adultBase,
+      childBase,
+      adultTotal,
+      childTotal,
       hotelTotal,
       trainTotal,
       extrasTotal,
-      subtotalBeforeDiscount,
+      subtotal,
       discountTotal,
       fullPaymentDiscount,
       total,
@@ -2256,86 +1942,156 @@ class MyCuscoTripQuotePackages {
     };
   }
 
-  updatePricing() {
-    const breakdown = this.getPricingBreakdown();
+  getBasePricing() {
+    const byNationality = this.selectedPackage?.basePricingByNationality?.[this.nationality];
 
-    this.setText("basePackageTotal", this.selectedPackage ? this.formatCurrency(breakdown.baseTotal, this.quoteCurrency) : "");
-    this.setText("hotelTotal", this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency));
-    this.setText("trainTotal", this.formatCurrency(breakdown.trainTotal, this.quoteCurrency));
-    this.setText("extrasTotal", this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency));
-    this.setText("discountTotal", `- ${this.formatCurrency(breakdown.discountTotal + breakdown.fullPaymentDiscount, this.quoteCurrency)}`);
-    this.setText("quoteTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
-    this.setText("advancePaymentTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
-    this.setText("balancePaymentTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
-
-    const childrenRow = document.getElementById("childrenSummaryRow");
-    if (childrenRow) childrenRow.hidden = this.children <= 0;
-
-    const hotelRow = document.getElementById("hotelSummaryRow");
-    if (hotelRow) hotelRow.hidden = breakdown.hotelTotal <= 0;
-
-    const trainRow = document.getElementById("trainSummaryRow");
-    if (trainRow) trainRow.hidden = breakdown.trainTotal <= 0;
-
-    const extrasRow = document.getElementById("extrasSummaryRow");
-    if (extrasRow) extrasRow.hidden = breakdown.extrasTotal <= 0;
-
-    const discountRow = document.getElementById("discountSummaryRow");
-    if (discountRow) discountRow.hidden = (breakdown.discountTotal + breakdown.fullPaymentDiscount) <= 0;
-
-    const advanceRow = document.getElementById("advanceSummaryRow");
-    if (advanceRow) advanceRow.hidden = false;
-
-    const balanceRow = document.getElementById("balanceSummaryRow");
-    if (balanceRow) balanceRow.hidden = this.paymentMode !== "partial";
-
-    const paymentInfo = document.getElementById("paymentInfo");
-    if (paymentInfo) {
-      if (this.paymentMode === "full") {
-        paymentInfo.textContent = "Pagando el total ahora accedes al descuento vigente de pago total.";
-      } else {
-        paymentInfo.textContent = `Reserva con ${this.formatCurrency(breakdown.advancePayment, this.quoteCurrency)} y completa el saldo antes del viaje.`;
-      }
+    if (byNationality) {
+      return {
+        adult: Number(byNationality.adult || 0),
+        child: Number(byNationality.child || byNationality.adult || 0),
+        currency: byNationality.currency || this.selectedPackage?.currency || "PEN"
+      };
     }
+
+    return {
+      adult: Number(this.selectedPackage?.basePricing?.adult || 0),
+      child: Number(this.selectedPackage?.basePricing?.child || this.selectedPackage?.basePricing?.adult || 0),
+      currency: this.selectedPackage?.currency || "PEN"
+    };
   }
 
-  calculateDiscount(subtotal) {
+  getAccommodationTotal() {
+    return this.getAccommodationSummary().reduce((total, item) => {
+      return total + this.calculateAccommodationAdditional(item.destination);
+    }, 0);
+  }
+
+  getTrainTotal() {
+    if (!this.selectedPackage || !this.selectedItineraryOption) return 0;
+
+    const config = this.getTrainSelectionConfig();
+    const outbound = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+    const returning = this.getTrainByCode(config.returnRoute, this.selectedReturnTrainCode);
+    const passengers = this.getTotalPassengers();
+
+    const outboundTotal = outbound
+      ? this.convertCurrency(Number(outbound.pricePerPerson || 0), outbound.currency || "USD", this.quoteCurrency) * passengers
+      : 0;
+
+    const returnTotal = returning
+      ? this.convertCurrency(Number(returning.pricePerPerson || 0), returning.currency || "USD", this.quoteCurrency) * passengers
+      : 0;
+
+    return outboundTotal + returnTotal;
+  }
+
+  getExtrasTotal() {
+    const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
+    const passengers = this.getTotalPassengers();
+
+    return extras.reduce((total, extra) => {
+      if (!this.selectedExtras.has(extra.code)) return total;
+
+      const price = this.convertCurrency(Number(extra.price || 0), extra.currency || "USD", this.quoteCurrency);
+      return total + (extra.perPerson ? price * passengers : price);
+    }, 0);
+  }
+
+  calculateManualDiscount(subtotal) {
     if (!this.appliedDiscountCode) return 0;
 
-    const type = this.appliedDiscountCode.type || this.appliedDiscountCode.discountType;
-    const value = Number(this.appliedDiscountCode.value || this.appliedDiscountCode.amount || 0);
-
-    if (type === "percent" || type === "percentage") {
-      return subtotal * (value / 100);
+    if (this.appliedDiscountCode.type === "percent") {
+      return subtotal * (Number(this.appliedDiscountCode.value || 0) / 100);
     }
 
-    if (type === "fixed") {
-      return this.convertCurrency(value, this.appliedDiscountCode.currency || this.quoteCurrency, this.quoteCurrency);
+    if (this.appliedDiscountCode.type === "fixed") {
+      return this.convertCurrency(
+        Number(this.appliedDiscountCode.value || 0),
+        this.appliedDiscountCode.currency || this.quoteCurrency,
+        this.quoteCurrency
+      );
     }
 
     return 0;
   }
 
+  calculateFullPaymentDiscount(amount) {
+    const percent = Number(this.packagesData?.paymentOptions?.fullPaymentDiscountPercent || 0);
+    return Math.max(0, amount) * (percent / 100);
+  }
+
+  updatePricing() {
+    const breakdown = this.getPricingBreakdown();
+
+    this.setText("adultSummaryLabel", `Adultos x${this.adults}`);
+    this.setText("adultSummaryTotal", this.formatCurrency(breakdown.adultTotal, this.quoteCurrency));
+
+    const childrenRow = document.getElementById("childrenSummaryRow");
+    if (childrenRow) childrenRow.hidden = this.children <= 0;
+    this.setText("childrenSummaryLabel", `Niños x${this.children}`);
+    this.setText("childrenSummaryTotal", this.formatCurrency(breakdown.childTotal, this.quoteCurrency));
+
+    const hotelRow = document.getElementById("hotelSummaryRow");
+    if (hotelRow) hotelRow.hidden = breakdown.hotelTotal <= 0;
+    this.setText("hotelSummaryTotal", this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency));
+
+    const trainRow = document.getElementById("trainSummaryRow");
+    if (trainRow) trainRow.hidden = breakdown.trainTotal <= 0;
+    this.setText("trainSummaryTotal", this.formatCurrency(breakdown.trainTotal, this.quoteCurrency));
+
+    const extrasRow = document.getElementById("extrasSummaryRow");
+    if (extrasRow) extrasRow.hidden = breakdown.extrasTotal <= 0;
+    this.setText("extrasSummaryTotal", this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency));
+
+    const discountRow = document.getElementById("discountSummaryRow");
+    const totalDiscount = breakdown.discountTotal + breakdown.fullPaymentDiscount;
+    if (discountRow) discountRow.hidden = totalDiscount <= 0;
+    this.setText("discountSummaryTotal", `- ${this.formatCurrency(totalDiscount, this.quoteCurrency)}`);
+
+    this.setText("quoteGrandTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
+    this.setText("advanceSummaryTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
+    this.setText("balanceSummaryTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
+
+    const balanceRow = document.getElementById("balanceSummaryRow");
+    if (balanceRow) balanceRow.hidden = this.paymentMode !== "partial";
+
+    this.setText("advanceSummaryLabel", this.paymentMode === "partial" ? "Pagar ahora" : "Pagar ahora");
+
+    const paymentInfoText = document.getElementById("paymentInfoText");
+    if (paymentInfoText) {
+      paymentInfoText.textContent = this.paymentMode === "full"
+        ? `Pagando el total ahora accedes al descuento por pago completo.`
+        : `Reserva con un anticipo y completa el saldo antes del viaje.`;
+    }
+  }
+
   applyManualDiscountCode() {
     const input = document.getElementById("discountCodeInput");
     const message = document.getElementById("discountCodeMessage");
+    const rawCode = String(input?.value || "").trim().toUpperCase();
 
-    const code = String(input?.value || "").trim().toUpperCase();
+    this.clearDiscountMessage();
 
-    if (!code) {
-      this.clearAppliedDiscountCode(true);
+    if (!rawCode) {
+      this.appliedDiscountCode = null;
+      if (message) {
+        message.textContent = "Ingresa un código de descuento.";
+        message.classList.add("is-error");
+      }
+      this.updatePricing();
+      this.updatePrintQuotation();
       return;
     }
 
     const found = this.discountCodes.find((item) => {
-      return String(item.code || "").trim().toUpperCase() === code;
+      return String(item.code || "").toUpperCase() === rawCode && item.active !== false;
     });
 
     if (!found) {
       this.appliedDiscountCode = null;
       if (message) {
-        message.textContent = "Código no válido.";
-        message.className = "is-error";
+        message.textContent = "Código no válido o inactivo.";
+        message.classList.add("is-error");
       }
       this.updatePricing();
       this.updatePrintQuotation();
@@ -2345,178 +2101,111 @@ class MyCuscoTripQuotePackages {
     this.appliedDiscountCode = found;
 
     if (message) {
-      message.textContent = "Código aplicado correctamente.";
-      message.className = "is-success";
+      message.textContent = found.label || "Código aplicado correctamente.";
+      message.classList.add("is-success");
     }
 
     this.updatePricing();
     this.updatePrintQuotation();
   }
 
-  clearAppliedDiscountCode(showMessage = false) {
+  clearAppliedDiscountCode(update = true) {
     this.appliedDiscountCode = null;
 
     const input = document.getElementById("discountCodeInput");
-    const message = document.getElementById("discountCodeMessage");
-
     if (input) input.value = "";
 
-    if (message) {
-      message.textContent = showMessage ? "Código eliminado." : "";
-      message.className = "";
+    this.clearDiscountMessage();
+
+    if (update) {
+      this.updatePricing();
+      this.updatePrintQuotation();
     }
-
-    this.updatePricing();
-  }
-    updatePassengersUI() {
-    this.setText("adultCount", String(this.adults));
-    this.setText("childCount", String(this.children));
   }
 
-  updateExchangeRateHelp() {
-    const help = document.getElementById("exchangeRateHelp");
-    if (!help) return;
+  clearDiscountMessage() {
+    const message = document.getElementById("discountCodeMessage");
+    if (!message) return;
 
-    help.textContent = `Tipo de cambio referencial: 1 USD = ${this.exchangeRate.toFixed(2)} PEN.`;
-  }
-
-  updateReferenceUI() {
-    this.setText("quoteReference", this.quoteReference);
-    this.setText("printQuoteReference", this.quoteReference);
-    this.setText("printCouponCode", this.printCoupon);
+    message.classList.remove("is-success", "is-error");
+    message.textContent = "Ingresa tu código promocional si tienes uno.";
   }
 
   updatePrintQuotation() {
     const breakdown = this.getPricingBreakdown();
 
     this.setText("printQuoteReference", this.quoteReference);
+    this.setText("quoteReference", this.quoteReference);
+    this.setText("printIssueDate", this.formatDisplayDate(new Date()));
+
+    const validUntil = new Date();
+    validUntil.setDate(validUntil.getDate() + Number(this.packagesData?.paymentOptions?.quoteValidityDays || 2));
+    this.setText("printValidUntil", this.formatDisplayDate(validUntil));
+
     this.setText("printCouponCode", this.printCoupon);
+    this.setText("printCouponDiscount", `${Number(this.packagesData?.paymentOptions?.fullPaymentDiscountPercent || 5)}%`);
 
     this.setText("printClientName", this.getInputValue("clientName") || "Por completar");
     this.setText("printClientPhone", this.getInputValue("clientPhone") || "Por completar");
     this.setText("printClientEmail", this.getInputValue("clientEmail") || "Por completar");
     this.setText("printClientDocument", this.getInputValue("clientDocument") || "Por completar");
+    this.setText("printClientNotes", this.getInputValue("clientNotes") || "Sin comentarios adicionales");
 
-    this.setText("printTravelDates", this.travelStartDate && this.travelEndDate ? `${this.travelStartDate} al ${this.travelEndDate}` : "Por definir");
-    this.setText("printTravelDuration", this.travelDays ? `${this.travelDays} días / ${this.travelNights} noches` : "Por definir");
-    this.setText("printPassengers", `${this.adults} adulto${this.adults !== 1 ? "s" : ""}${this.children ? ` + ${this.children} niño${this.children !== 1 ? "s" : ""}` : ""}`);
+    this.setText("printTravelDates", this.travelStartDate && this.travelEndDate ? `${this.travelStartDate} al ${this.travelEndDate}` : "Por completar");
+    this.setText("printTravelDuration", this.travelDays ? `${this.travelDays} días / ${this.travelNights} noches` : "Por completar");
+    this.setText("printArrivalTime", this.arrivalTime || "Por completar");
+    this.setText("printDepartureTime", this.departureTime || "Por completar");
     this.setText("printNationality", this.getNationalityLabel());
+    this.setText("printCurrency", this.quoteCurrency);
 
-    const adjustedArrival = this.getEffectiveArrivalMinutes();
-    const adjustedDeparture = this.getEffectiveDepartureMinutes();
-
-    this.setText(
-      "printArrivalTime",
-      this.arrivalTime
-        ? `${this.formatTrainTime(this.arrivalTime)} (disponible desde ${this.minutesToTimeLabel(adjustedArrival)})`
-        : "Por definir"
-    );
-
-    this.setText(
-      "printDepartureTime",
-      this.departureTime
-        ? `${this.formatTrainTime(this.departureTime)} (disponible hasta ${this.minutesToTimeLabel(adjustedDeparture)})`
-        : "Por definir"
-    );
-
-    this.setText("printPackageTitle", this.selectedPackage?.title || "Por definir");
-    this.setText("printItineraryOption", this.selectedItineraryOption?.label || "Por definir");
-
-    const printItinerary = document.getElementById("printItineraryList");
-    if (printItinerary) {
+    const itineraryTarget = document.getElementById("printItinerary");
+    if (itineraryTarget) {
       const itinerary = this.selectedItineraryOption?.itinerary || [];
 
-      printItinerary.innerHTML = itinerary.length
-        ? itinerary.map((item) => {
-          const start = this.getItineraryDayStartMinutes(item);
-          const end = this.getItineraryDayEndMinutes(item);
-          const time = start !== null || end !== null
-            ? ` (${start !== null ? this.minutesToTimeLabel(start) : "Inicio por confirmar"} - ${end !== null ? this.minutesToTimeLabel(end) : "Fin por confirmar"})`
-            : "";
-
-          return `
-            <div class="print-itinerary-item">
-              <strong>${this.buildDatedDayTitleHtml(item)}${this.escapeHtml(time)}</strong>
-              <p>${this.escapeHtml(item.description || "")}</p>
-            </div>
-          `;
-        }).join("")
-        : `<p>Itinerario por confirmar.</p>`;
+      itineraryTarget.innerHTML = itinerary.length
+        ? itinerary.map((item) => `
+          <div class="print-itinerary-item">
+            <h4>Día ${this.escapeHtml(item.day)}: ${this.escapeHtml(item.title || "")}</h4>
+            <p>${this.escapeHtml(item.description || "")}</p>
+          </div>
+        `).join("")
+        : "<p>Itinerario por confirmar.</p>";
     }
 
-    const printHotel = document.getElementById("printHotelSummary");
-    if (printHotel) {
-      const summary = this.getAccommodationSummary();
-
-      printHotel.innerHTML = summary.length
-        ? summary.map((item) => {
-          const selection = this.getSelectedAccommodationForDestination(item.destination);
-          const isNoHotel = selection?.hotel?.hotelCode === "no-hotel";
-          const title = isNoHotel
-            ? "Sin alojamiento"
-            : selection?.hotel?.hotelName || "Hotel por confirmar";
-          const combo = isNoHotel
-            ? "El cliente gestionará su alojamiento."
-            : selection?.combination?.label || "Acomodación por confirmar";
-
-          return `
-            <tr>
-              <th>${this.escapeHtml(this.getDestinationLabel(item.destination))}</th>
-              <td>${this.escapeHtml(title)} · ${this.escapeHtml(combo)}</td>
-            </tr>
-          `;
-        }).join("")
-        : `<tr><td colspan="2">Sin alojamiento agregado.</td></tr>`;
-    }
-
-    const trainConfig = this.getTrainSelectionConfig();
-    const outboundTrain = this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode);
-    const returnTrain = this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode);
-
-    const printTrain = document.getElementById("printTrainSummary");
-    if (printTrain) {
-      printTrain.innerHTML = `
-        <tr>
-          <th>Tren de ida</th>
-          <td>${outboundTrain ? this.escapeHtml(this.getTrainShortScheduleText(outboundTrain, "outbound")) : "Por seleccionar"}</td>
-        </tr>
-        <tr>
-          <th>Tren de retorno</th>
-          <td>${returnTrain ? this.escapeHtml(this.getTrainShortScheduleText(returnTrain, "return")) : "Por seleccionar"}</td>
-        </tr>
+    const servicesTarget = document.getElementById("printSelectedServices");
+    if (servicesTarget) {
+      servicesTarget.innerHTML = `
+        <p><strong>Paquete:</strong> ${this.escapeHtml(this.selectedPackage?.title || "Por confirmar")}</p>
+        <p><strong>Itinerario:</strong> ${this.escapeHtml(this.selectedItineraryOption?.label || "Por confirmar")}</p>
+        <p><strong>Alojamiento:</strong> ${this.escapeHtml(this.getSelectedHotelsText())}</p>
+        <p><strong>Trenes:</strong> ${this.escapeHtml(this.getSelectedTrainsText())}</p>
+        <p><strong>Extras:</strong> ${this.escapeHtml(this.getSelectedExtrasText())}</p>
       `;
     }
 
-    const printExtras = document.getElementById("printExtrasSummary");
-    if (printExtras) {
-      const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
-      const selected = extras.filter((item) => this.selectedExtras.has(item.code));
-
-      printExtras.innerHTML = selected.length
-        ? selected.map((item) => `<li>${this.escapeHtml(item.label || item.name || item.code)}</li>`).join("")
-        : `<li>Sin extras agregados.</li>`;
+    const paymentTarget = document.getElementById("printPaymentDetails");
+    if (paymentTarget) {
+      paymentTarget.innerHTML = `
+        <p><strong>Adultos:</strong> ${this.formatCurrency(breakdown.adultTotal, this.quoteCurrency)}</p>
+        ${this.children > 0 ? `<p><strong>Niños:</strong> ${this.formatCurrency(breakdown.childTotal, this.quoteCurrency)}</p>` : ""}
+        ${breakdown.hotelTotal > 0 ? `<p><strong>Alojamiento:</strong> ${this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency)}</p>` : ""}
+        ${breakdown.trainTotal > 0 ? `<p><strong>Trenes:</strong> ${this.formatCurrency(breakdown.trainTotal, this.quoteCurrency)}</p>` : ""}
+        ${breakdown.extrasTotal > 0 ? `<p><strong>Extras:</strong> ${this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency)}</p>` : ""}
+        ${breakdown.discountTotal + breakdown.fullPaymentDiscount > 0 ? `<p><strong>Descuentos:</strong> - ${this.formatCurrency(breakdown.discountTotal + breakdown.fullPaymentDiscount, this.quoteCurrency)}</p>` : ""}
+        <p><strong>Total cotizado:</strong> ${this.formatCurrency(breakdown.total, this.quoteCurrency)}</p>
+        <p><strong>Pagar ahora:</strong> ${this.formatCurrency(breakdown.advancePayment, this.quoteCurrency)}</p>
+        ${this.paymentMode === "partial" ? `<p><strong>Saldo pendiente:</strong> ${this.formatCurrency(breakdown.balance, this.quoteCurrency)}</p>` : ""}
+      `;
     }
-
-    this.setText("printBaseTotal", this.formatCurrency(breakdown.baseTotal, this.quoteCurrency));
-    this.setText("printHotelTotal", this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency));
-    this.setText("printTrainTotal", this.formatCurrency(breakdown.trainTotal, this.quoteCurrency));
-    this.setText("printExtrasTotal", this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency));
-    this.setText("printDiscountTotal", `- ${this.formatCurrency(breakdown.discountTotal + breakdown.fullPaymentDiscount, this.quoteCurrency)}`);
-    this.setText("printQuoteTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
-    this.setText("printAdvanceTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
-    this.setText("printBalanceTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
-
-    const notes = this.getInputValue("clientNotes");
-    this.setText("printClientNotes", notes || "Sin observaciones adicionales.");
   }
 
   continueToPayment() {
-    const breakdown = this.getPricingBreakdown();
-
     if (!this.selectedPackage) {
       alert("Primero selecciona tus fechas para detectar un itinerario.");
       return;
     }
+
+    const breakdown = this.getPricingBreakdown();
 
     const paymentData = {
       quoteReference: this.quoteReference,
@@ -2529,9 +2218,7 @@ class MyCuscoTripQuotePackages {
       travelDays: this.travelDays,
       travelNights: this.travelNights,
       arrivalTime: this.arrivalTime,
-      effectiveArrivalTime: this.getEffectiveArrivalMinutes() !== null ? this.minutesToTimeLabel(this.getEffectiveArrivalMinutes()) : "",
       departureTime: this.departureTime,
-      effectiveDepartureTime: this.getEffectiveDepartureMinutes() !== null ? this.minutesToTimeLabel(this.getEffectiveDepartureMinutes()) : "",
       adults: this.adults,
       children: this.children,
       nationality: this.nationality,
@@ -2594,122 +2281,195 @@ class MyCuscoTripQuotePackages {
         })
         .from(clone)
         .save();
-    } catch (error) {
-      console.error("Error generando PDF:", error);
-      window.print();
     } finally {
       wrapper.remove();
     }
+  }
+
+  renderPackageIncludes() {
+    const existing = document.getElementById("packageIncludesBox");
+    if (existing) existing.remove();
+
+    if (!this.selectedPackage) return;
+
+    const itinerarySection = document.getElementById("itinerarySection");
+    if (!itinerarySection) return;
+
+    const includes = Array.isArray(this.selectedPackage.includes) ? this.selectedPackage.includes : [];
+    if (!includes.length) return;
+
+    const box = document.createElement("div");
+    box.id = "packageIncludesBox";
+    box.className = "quote-package-includes";
+
+    box.innerHTML = `
+      <h3>Este itinerario incluye</h3>
+      <p>El itinerario base considera los servicios esenciales para operar la ruta seleccionada. El tren y el alojamiento se cotizan aparte según tus preferencias.</p>
+      <ul>
+        ${includes.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}
+      </ul>
+    `;
+
+    const preview = document.querySelector(".quote-itinerary-preview");
+    if (preview) preview.insertAdjacentElement("afterend", box);
+    else itinerarySection.appendChild(box);
+  }
+
+  updateItinerarySectionIntro(optionsCount = 0) {
+    const headerText = document.querySelector("#itinerarySection .quote-card__header p");
+    if (!headerText || !this.selectedPackage) return;
+
+    headerText.innerHTML = `
+      Estas son las opciones de itinerario disponibles para tus fechas.
+      ${optionsCount ? `Actualmente tienes ${optionsCount} opción${optionsCount !== 1 ? "es" : ""} compatible${optionsCount !== 1 ? "s" : ""}.` : ""}
+    `;
+  }
+
+  getItineraryOptionTimeLabel(option) {
+    const itinerary = Array.isArray(option?.itinerary) ? option.itinerary : [];
+    if (!itinerary.length) return "";
+
+    const firstDay = this.getFirstItineraryDay(itinerary);
+    const lastDay = this.getLastItineraryDay(itinerary);
+
+    const start = this.getItineraryDayStartMinutes(firstDay);
+    const end = this.getItineraryDayEndMinutes(lastDay);
+
+    if (start === null && end === null) return "";
+
+    const startText = start !== null ? this.minutesToTimeLabel(start) : "Por confirmar";
+    const endText = end !== null ? this.minutesToTimeLabel(end) : "Por confirmar";
+
+    return `Primer día desde ${startText} · Último día hasta ${endText}`;
+  }
+
+  getItineraryMarketingDescription(option) {
+    if (option.summary) return option.summary;
+
+    return "Itinerario disponible para tus fechas, con servicios organizados según la duración seleccionada.";
+  }
+
+  getSelectedHotelsText() {
+    const summary = this.getAccommodationSummary();
+
+    if (!summary.length) return "Sin alojamiento seleccionado";
+
+    return summary.map((item) => {
+      const selection = this.getSelectedAccommodationForDestination(item.destination);
+      return `${this.getDestinationLabel(item.destination)}: ${selection?.hotel?.hotelName || "Sin alojamiento"}`;
+    }).join(" | ");
+  }
+
+  getSelectedTrainsText() {
+    if (!this.selectedPackage || !this.selectedItineraryOption) return "Sin tren seleccionado";
+
+    const config = this.getTrainSelectionConfig();
+    const outbound = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+    const returning = this.getTrainByCode(config.returnRoute, this.selectedReturnTrainCode);
+
+    return [
+      outbound ? `Ida: ${this.getTrainDisplayName(outbound)}` : "Ida: sin selección",
+      returning ? `Retorno: ${this.getTrainDisplayName(returning)}` : "Retorno: sin selección"
+    ].join(" | ");
+  }
+
+  getSelectedExtrasText() {
+    const extras = Array.isArray(this.selectedPackage?.extras) ? this.selectedPackage.extras : [];
+    const selected = extras.filter((extra) => this.selectedExtras.has(extra.code));
+
+    if (!selected.length) return "Sin extras";
+
+    return selected.map((extra) => extra.label).join(", ");
   }
 
   getTotalPassengers() {
     return Math.max(1, Number(this.adults || 0) + Number(this.children || 0));
   }
 
-  getNationalityLabel() {
-    const labels = {
-      national: "Nacional peruano",
-      foreign: "Extranjero",
-      andean_community: "Comunidad Andina"
-    };
+  updatePassengersUI() {
+    this.setText("adultsCount", this.adults);
+    this.setText("childrenCount", this.children);
+  }
 
-    return labels[this.nationality] || this.nationality;
+  updateReferenceUI() {
+    this.setText("quoteReference", this.quoteReference);
+    this.setText("printQuoteReference", this.quoteReference);
+  }
+
+  updateExchangeRateHelp() {
+    const help = document.getElementById("exchangeRateHelp");
+    if (!help) return;
+
+    help.textContent = `Tipo de cambio referencial: 1 USD = S/ ${this.exchangeRate.toFixed(2)}.`;
+  }
+
+  convertCurrency(amount, fromCurrency, toCurrency) {
+    const value = Number(amount || 0);
+    const from = fromCurrency || "USD";
+    const to = toCurrency || "USD";
+
+    if (from === to) return value;
+
+    if (from === "USD" && to === "PEN") return value * this.exchangeRate;
+    if (from === "PEN" && to === "USD") return value / this.exchangeRate;
+
+    return value;
+  }
+
+  formatCurrency(amount, currency = this.quoteCurrency) {
+    const value = Number(amount || 0);
+
+    if (currency === "PEN") {
+      return `S/ ${value.toFixed(2)}`;
+    }
+
+    return `USD ${value.toFixed(2)}`;
+  }
+
+  formatDateInput(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  formatDisplayDate(date) {
+    if (!(date instanceof Date)) return "";
+
+    return date.toLocaleDateString("es-PE", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
   }
 
   timeToMinutes(value) {
-    if (!value) return null;
+    if (!value || typeof value !== "string") return null;
 
-    const text = String(value).trim();
-
-    const amPmMatch = text.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    if (amPmMatch) {
-      let hours = Number(amPmMatch[1]);
-      const minutes = Number(amPmMatch[2]);
-      const period = amPmMatch[3].toUpperCase();
-
-      if (period === "PM" && hours < 12) hours += 12;
-      if (period === "AM" && hours === 12) hours = 0;
-
-      if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
-      return hours * 60 + minutes;
-    }
-
-    const match = text.match(/^(\d{1,2}):(\d{2})/);
+    const match = value.match(/^(\d{1,2}):(\d{2})/);
     if (!match) return null;
 
     const hours = Number(match[1]);
     const minutes = Number(match[2]);
 
     if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
-    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
 
     return hours * 60 + minutes;
   }
 
   minutesToTimeLabel(minutes) {
-    if (minutes === null || typeof minutes === "undefined" || Number.isNaN(Number(minutes))) {
-      return "Por confirmar";
-    }
+    const value = Number(minutes);
+    if (Number.isNaN(value)) return "";
 
-    const safeMinutes = Math.max(0, Math.min(1439, Number(minutes)));
-    const hours = Math.floor(safeMinutes / 60);
-    const mins = safeMinutes % 60;
+    const hours = Math.floor(value / 60);
+    const mins = value % 60;
 
     return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
   }
 
-  formatDateInput(date) {
-    if (!(date instanceof Date)) return "";
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  }
-
-  getDateForDay(dayNumber) {
-    if (!this.travelStartDate || !dayNumber) return "";
-
-    const base = new Date(`${this.travelStartDate}T00:00:00`);
-    if (Number.isNaN(base.getTime())) return "";
-
-    base.setDate(base.getDate() + Number(dayNumber || 1) - 1);
-
-    return base.toLocaleDateString("es-PE", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    });
-  }
-    convertCurrency(amount, fromCurrency, toCurrency) {
-    const value = Number(amount || 0);
-    const from = String(fromCurrency || this.quoteCurrency || "USD").toUpperCase();
-    const to = String(toCurrency || this.quoteCurrency || "USD").toUpperCase();
-
-    if (from === to) return value;
-
-    if (from === "USD" && to === "PEN") {
-      return value * this.exchangeRate;
-    }
-
-    if (from === "PEN" && to === "USD") {
-      return value / this.exchangeRate;
-    }
-
-    return value;
-  }
-
-  formatCurrency(amount, currency = this.quoteCurrency) {
-    const safeAmount = Number(amount || 0);
-    const safeCurrency = String(currency || this.quoteCurrency || "USD").toUpperCase();
-
-    return new Intl.NumberFormat("es-PE", {
-      style: "currency",
-      currency: safeCurrency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(safeAmount);
+  getNationalityLabel() {
+    const option = this.packagesData?.nationalityOptions?.find((item) => item.code === this.nationality);
+    return option?.label || this.nationality;
   }
 
   getInputValue(id) {
@@ -2742,7 +2502,6 @@ class MyCuscoTripQuotePackages {
 
   resolvePath(path) {
     if (!path) return "";
-
     if (/^https?:\/\//i.test(path)) return path;
 
     const cleanPath = String(path).replace(/^\.?\//, "");
@@ -2756,7 +2515,6 @@ class MyCuscoTripQuotePackages {
 
   resolveAssetPath(path) {
     if (!path) return "";
-
     if (/^https?:\/\//i.test(path)) return path;
 
     const cleanPath = String(path).replace(/^\.?\//, "");
@@ -2785,7 +2543,6 @@ class MyCuscoTripQuotePackages {
     const reference = `COT-${datePart}-${randomPart}`;
 
     sessionStorage.setItem(key, reference);
-
     return reference;
   }
 
@@ -2799,7 +2556,6 @@ class MyCuscoTripQuotePackages {
     const coupon = `MCT-${randomPart}`;
 
     sessionStorage.setItem(key, coupon);
-
     return coupon;
   }
 
@@ -2818,6 +2574,29 @@ class MyCuscoTripQuotePackages {
     });
 
     panel.insertBefore(button, panel.firstChild);
+  }
+
+  initDesktopQuotePanelFixed() {
+    const panel = document.querySelector(".quote-summary-panel");
+    const sidebar = document.querySelector(".quote-sidebar");
+
+    if (!panel || !sidebar) return;
+
+    const apply = () => {
+      if (window.innerWidth < 1101) {
+        panel.classList.remove("is-desktop-fixed");
+        panel.style.left = "";
+        panel.style.width = "";
+        return;
+      }
+
+      const sidebarRect = sidebar.getBoundingClientRect();
+      panel.style.width = `${sidebarRect.width}px`;
+    };
+
+    apply();
+    window.addEventListener("resize", apply);
+    window.addEventListener("scroll", apply, { passive: true });
   }
 }
 
