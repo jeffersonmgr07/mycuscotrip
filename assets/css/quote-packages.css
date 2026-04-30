@@ -2119,17 +2119,35 @@ body.quote-modal-open {
    FIX: Desbordamiento horizontal por Flatpickr
    ============================================= */
 .flatpickr-calendar {
-  max-width: calc(100vw - 40px) !important;
-  width: auto !important;
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) !important;
+  z-index: 3000 !important;
+  box-sizing: border-box !important;
 }
 
-/* Ajuste fino para móviles (ya lo tenías, pero lo reforzamos) */
 @media (max-width: 768px) {
-  .flatpickr-calendar {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip !important;
+  }
+
+  .quote-page,
+  .quote-content,
+  .quote-layout,
+  .quote-main,
+  .quote-card {
+    max-width: 100%;
+    overflow-x: clip !important;
+  }
+
+  .flatpickr-calendar.open {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 50% !important;
     transform: translate(-50%, -50%) !important;
+    width: min(330px, calc(100vw - 24px)) !important;
     max-width: calc(100vw - 24px) !important;
+    min-width: 0 !important;
   }
 }
