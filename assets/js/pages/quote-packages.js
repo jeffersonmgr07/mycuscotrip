@@ -525,7 +525,7 @@ class MyCuscoTripQuotePackages {
             <p>Tu viaje será de <strong>${this.travelDays} días / ${this.travelNights} noches</strong>.</p>
             <p>${optionsCount} opción${optionsCount !== 1 ? "es" : ""} de itinerario disponible${optionsCount !== 1 ? "s" : ""}. El precio base no incluye tren ni alojamiento.</p>
           </div>
-          <span class="quote-badge">${this.escapeHtml(pkg.typeLabel || `${this.travelDays}D/${this.travelNights}N`)}</span>
+          <span class="quote-badge">${this.travelDays} días / ${this.travelNights} noches</span>
         </div>
       </article>
     `;
