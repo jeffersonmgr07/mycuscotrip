@@ -693,13 +693,17 @@ body.quote-modal-open {
   min-width: 0;
   position: relative;
 }
-
-/* PC: panel siempre visible al hacer scroll */
+/* PC: panel nace alineado con Datos de viaje y luego se mantiene visible */
 @media (min-width: 1101px) {
+  .quote-page,
+  .quote-content,
+  .quote-layout {
+    overflow: visible !important;
+  }
+
   .quote-layout {
     grid-template-columns: minmax(0, 1fr) 390px;
     align-items: start !important;
-    overflow: visible !important;
   }
 
   .quote-sidebar {
@@ -707,21 +711,20 @@ body.quote-modal-open {
     top: 92px !important;
     align-self: start !important;
     height: fit-content !important;
-    max-height: calc(100vh - 110px) !important;
+    max-height: none !important;
     overflow: visible !important;
     z-index: 50 !important;
     min-height: 1px !important;
   }
 
   .quote-summary-panel {
-    position: fixed !important;
-    top: 210px !important;
-    right: max(20px, calc((100vw - 1200px) / 2 + 20px)) !important;
-    width: 390px !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: 100% !important;
     max-width: 390px !important;
     max-height: calc(100vh - 116px) !important;
     overflow-y: auto !important;
-    z-index: 80 !important;
   }
 }
 
