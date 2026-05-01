@@ -2294,6 +2294,62 @@ body.quote-datepicker-open {
     padding: 9mm 11mm !important;
     box-shadow: none !important;
   }
+   /* Ajustes adicionales para forzar compacidad */
+.print-section {
+  margin-top: 0 !important;
+  margin-bottom: 2mm !important;   /* antes era 4.5mm o 3mm */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.print-client-grid {
+  margin-bottom: 2mm !important;
+}
+
+.print-info-box {
+  margin-bottom: 2mm !important;
+}
+
+/* Asegurar que los contenedores dinámicos no tengan espacios extras */
+#printItinerary,
+#printSelectedServices,
+#printPaymentDetails,
+#printHotelImages {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Quitar margen superior del primer elemento de cada sección */
+.print-section > *:first-child {
+  margin-top: 0 !important;
+}
+
+/* Quitar margen inferior del último elemento de cada sección */
+.print-section > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Si el JS inserta tarjetas de itinerario con márgenes grandes, reducirlos */
+.print-itinerary-item {
+  margin: 0 !important;
+  padding: 2mm 3mm !important;
+}
+
+/* Espacio entre items de itinerario mínimo */
+.print-itinerary-list {
+  gap: 1.5mm !important;
+}
+
+/* Ajustar lista de servicios y pagos */
+.print-services-list,
+.print-payment-list {
+  gap: 1mm !important;
+}
+
+.print-service-row,
+.print-payment-row {
+  padding: 1mm 0 !important;
+}
 
   .wa-float,
   #header-container,
