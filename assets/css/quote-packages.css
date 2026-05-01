@@ -1898,7 +1898,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   20. IMPRESIÓN / PDF (VERSIÓN COMPACTA OPTIMIZADA)
+   20. IMPRESIÓN / PDF (EMULA EL FORMATO DEL PDF ANTIGUO)
    ============================================= */
 
 .print-quotation {
@@ -1911,72 +1911,80 @@ body.quote-datepicker-open {
   background: #fff;
   color: #17322a;
   font-family: "Open Sans", Arial, sans-serif;
-  padding: 10mm 12mm;          /* Márgenes compactos e iguales en todas las hojas */
+  padding: 9mm 11mm;           /* Márgenes superiores reducidos y uniformes */
   box-sizing: border-box;
-  line-height: 1.35;           /* Interlineado general reducido */
+  line-height: 1.3;            /* Interlineado general compacto */
 }
 
 /* ========== CABECERA ========== */
 .print-header {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 8mm;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
   align-items: start;
-  margin-bottom: 6mm;
-  padding-bottom: 4mm;
-  border-bottom: 1px solid rgba(6, 40, 3, 0.22);
+  margin-bottom: 5mm;
+  padding-bottom: 3.5mm;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.25);
 }
 
 .print-company {
   display: grid;
-  gap: 2mm;
+  gap: 1.8mm;
 }
 
 .print-logo {
-  width: 38mm;                 /* Ligeramente más pequeño para ahorrar espacio */
+  width: 35mm;
   max-width: 100%;
   height: auto;
   object-fit: contain;
-  margin-bottom: 1mm;
+  margin-bottom: 1.5mm;
 }
 
-.print-company p,
-.print-header__right p {
+.print-company p {
   margin: 0;
-  color: #3b4e47;
-  font-size: 8pt;
-  line-height: 1.3;
+  color: #35443e;
+  font-size: 7.8pt;
+  line-height: 1.25;
 }
 
 .print-header__right {
   text-align: right;
   display: grid;
-  gap: 1.5mm;
+  gap: 1.8mm;
   justify-items: end;
 }
 
 .print-header__right h1 {
-  margin: 0 0 1mm;
-  font-size: 16pt;            /* Título principal "Cotización" más visible */
+  margin: 0;
+  font-size: 15pt;
   line-height: 1.1;
   color: #062803;
   text-transform: uppercase;
+  font-weight: 900;
 }
 
+/* Código con badge, las fechas sin badge */
 .print-quote-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2mm 4mm;
+  padding: 1.5mm 3.5mm;
   border-radius: 999px;
   background: #0a3a26;
   color: #fff;
-  font-size: 7.5pt;
+  font-size: 7.2pt;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
-/* Eliminar cupón especial completamente */
+.print-header__right p {
+  margin: 0;
+  font-size: 7.5pt;
+  color: #3b4e47;
+  line-height: 1.3;
+}
+
+/* ========== ELIMINAR CUPÓN ESPECIAL ========== */
 .print-coupon-box {
   display: none !important;
 }
@@ -1993,7 +2001,7 @@ body.quote-datepicker-open {
   border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 3mm;
   background: #fbfdfb;
-  padding: 3mm 4mm;
+  padding: 2.5mm 3.5mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -2001,53 +2009,53 @@ body.quote-datepicker-open {
 .print-info-box h3 {
   margin: 0 0 2mm;
   color: #062803;
-  font-size: 9.5pt;
+  font-size: 9pt;
   font-weight: 900;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .print-info-box p {
-  margin: 0 0 1.2mm;
-  color: #3b4e47;
-  font-size: 8pt;
-  line-height: 1.3;
+  margin: 0 0 1mm;
+  color: #35443e;
+  font-size: 7.8pt;
+  line-height: 1.25;
 }
 
 /* ========== SECCIONES CON TÍTULO DESTACADO ========== */
 .print-section {
-  margin-bottom: 5mm;
+  margin-bottom: 4.5mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 .print-section h3 {
-  background: #0a3a26;        /* Fondo verde oscuro */
-  color: #fff;                /* Texto blanco */
-  padding: 2.2mm 4mm;
-  border-radius: 3mm;
-  margin: 0 0 3mm;
-  font-size: 9.5pt;
+  background: #0a3a26;
+  color: #fff;
+  padding: 2mm 3.5mm;
+  border-radius: 2.5mm;
+  margin: 0 0 2.5mm;
+  font-size: 9pt;
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .print-section p,
 .print-section li,
 .print-section span,
 .print-section strong {
-  font-size: 8pt;
+  font-size: 7.8pt;
   line-height: 1.3;
 }
 
 /* ========== ITINERARIO ========== */
 .print-itinerary-list {
   display: grid;
-  gap: 2mm;
+  gap: 1.8mm;
 }
 
 .print-itinerary-item {
-  padding: 2.5mm 3mm;
-  border-radius: 3mm;
+  padding: 2mm 3mm;
+  border-radius: 2.5mm;
   background: #f9fcfb;
   border-left: 3px solid #0a3a26;
   break-inside: avoid;
@@ -2055,43 +2063,77 @@ body.quote-datepicker-open {
 }
 
 .print-itinerary-item h4 {
-  margin: 0 0 1mm;
+  margin: 0 0 0.8mm;
   color: #062803;
-  font-size: 8.5pt;
-  line-height: 1.3;
+  font-size: 8.2pt;
+  line-height: 1.25;
+  font-weight: 900;
 }
 
 .print-itinerary-item p {
   margin: 0;
   color: #3b4e47;
+  font-size: 7.5pt;
 }
 
 .print-itinerary-time {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 1.5mm;
-  padding: 1mm 2.5mm;
+  gap: 3px;
+  margin-top: 1.2mm;
+  padding: 0.8mm 2mm;
   border-radius: 999px;
   background: #edf3ef;
   color: #0a3a26;
-  font-size: 7pt;
+  font-size: 6.8pt;
   font-weight: 800;
-  line-height: 1.2;
+}
+
+/* ========== SERVICIOS SELECCIONADOS (TABLA) ========== */
+.print-services-list {
+  display: grid;
+  gap: 1.5mm;
+}
+
+.print-service-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  padding: 1.5mm 0;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
+  color: #3b4e47;
+  font-size: 7.8pt;
+  line-height: 1.25;
+}
+
+.print-service-row:last-child {
+  border-bottom: 0;
+}
+
+.print-service-row strong:first-child {
+  font-weight: 600;
+  color: #062803;
+}
+
+.print-service-row strong:last-child {
+  text-align: right;
+  color: #062803;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 /* ========== HOTELES ========== */
 .print-hotel-images {
   display: grid;
   gap: 2.5mm;
-  margin-top: 2mm;
+  margin-top: 2.5mm;
 }
 
 .print-hotel-row {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
-  gap: 2.5mm;
-  padding: 2.5mm;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 2mm;
+  padding: 2mm;
   border-radius: 3mm;
   background: #fff;
   border: 1px solid rgba(6, 40, 3, 0.08);
@@ -2101,78 +2143,75 @@ body.quote-datepicker-open {
 
 .print-hotel-info {
   display: grid;
-  gap: 0.8mm;
+  gap: 0.6mm;
   align-content: start;
 }
 
 .print-hotel-info strong {
   color: #062803;
-  font-size: 8.2pt;
+  font-size: 8pt;
 }
 
 .print-hotel-info span {
   color: #3b4e47;
-  font-size: 7.5pt;
-  line-height: 1.3;
+  font-size: 7.2pt;
+  line-height: 1.25;
 }
 
 .print-hotel-gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5mm;
+  gap: 1.2mm;
 }
 
 .print-hotel-gallery img {
   width: 100%;
-  height: 17mm;
+  height: 15mm;
   object-fit: cover;
-  border-radius: 2.5mm;
+  border-radius: 2mm;
   border: 1px solid rgba(6, 40, 3, 0.08);
 }
 
 /* ========== DETALLES DE PAGO ========== */
-.print-services-list,
 .print-payment-list {
   display: grid;
-  gap: 1.8mm;
+  gap: 1.5mm;
 }
 
-.print-service-row,
 .print-payment-row {
   display: flex;
   justify-content: space-between;
-  gap: 5mm;
+  gap: 4mm;
   padding: 1.5mm 0;
-  border-bottom: 1px solid rgba(6, 40, 3, 0.06);
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
   color: #3b4e47;
-  font-size: 8pt;
-  line-height: 1.3;
+  font-size: 7.8pt;
+  line-height: 1.25;
 }
 
-.print-service-row:last-child,
 .print-payment-row:last-child {
   border-bottom: 0;
 }
 
-.print-payment-row strong:last-child,
-.print-service-row strong:last-child {
-  color: #062803;
+.print-payment-row strong:last-child {
   text-align: right;
+  color: #062803;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .print-payment-row--total {
-  margin-top: 1.5mm;
-  padding: 2.5mm 3mm;
-  border-radius: 3mm;
+  margin-top: 1.2mm;
+  padding: 2mm 3mm;
+  border-radius: 2.5mm;
   background: #edf7ef;
-  border: 1px solid rgba(10, 58, 38, 0.14);
+  border: 1px solid rgba(10, 58, 38, 0.15);
   color: #062803;
   font-weight: 900;
 }
 
 .print-payment-row--total strong {
-  font-size: 9.5pt;
+  font-size: 9pt;
   color: #0a3a26;
 }
 
@@ -2181,13 +2220,13 @@ body.quote-datepicker-open {
   margin: 0;
   padding-left: 4mm;
   display: grid;
-  gap: 1.2mm;
+  gap: 1mm;
 }
 
 .print-notes li {
   color: #3b4e47;
-  font-size: 7.8pt;
-  line-height: 1.3;
+  font-size: 7.2pt;
+  line-height: 1.25;
 }
 
 /* ========== PIE DE PÁGINA ========== */
@@ -2201,7 +2240,7 @@ body.quote-datepicker-open {
 
 .print-footer p {
   margin: 0;
-  font-size: 7.5pt;
+  font-size: 7.2pt;
   font-weight: 700;
 }
 
@@ -2249,7 +2288,7 @@ body.quote-datepicker-open {
     width: 210mm !important;
     min-height: 297mm !important;
     margin: 0 !important;
-    padding: 10mm 12mm !important;   /* Márgenes uniformes */
+    padding: 9mm 11mm !important;
     box-shadow: none !important;
   }
 
@@ -2272,7 +2311,7 @@ body.quote-datepicker-open {
 }
 
 /* =============================================
-   22. PDF MODE (cuando se genera PDF vía JS)
+   22. PDF MODE
    ============================================= */
 
 body.is-generating-pdf {
@@ -2291,7 +2330,7 @@ body.is-generating-pdf #printQuotation {
 body.is-generating-pdf .print-sheet {
   width: 210mm !important;
   min-height: 297mm !important;
-  padding: 10mm 12mm !important;
+  padding: 9mm 11mm !important;
   box-shadow: none !important;
 }
 
@@ -2303,7 +2342,6 @@ body.is-generating-pdf .wa-float,
 body.is-generating-pdf .quote-modal {
   display: none !important;
 }
-
 /* =============================================
    23. AJUSTES RESPONSIVE ADICIONALES
    ============================================= */
