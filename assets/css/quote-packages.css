@@ -1,10 +1,14 @@
 /* =========================================================
    QUOTE PACKAGES CSS - MY CUSCO TRIP
    Versión corregida
-   - Panel de cotización flotante en PC con position sticky
-   - Panel inferior fijo en móvil sin romper comportamiento actual
-   - Modales de hoteles y trenes compatibles con quote-packages.js
-   - Sin desborde horizontal por Flatpickr
+   - Hero móvil con menos espacio superior y mejor aire lateral
+   - Opciones de itinerario sin tarjeta detectada pesada
+   - Límite visual de opciones con botón Ver más itinerarios
+   - Panel de cotización PC ordenado y sin scroll interno
+   - Panel inferior móvil fijo y expandible full screen
+   - Flatpickr alineado al input en PC y centrado/controlado en móvil
+   - Modal de hoteles con opción sin alojamiento compacta
+   - Vista impresión/PDF compacta profesional A4
    ========================================================= */
 
 /* =============================================
@@ -31,9 +35,12 @@ body {
   background: #f7faf8;
 }
 
-body.quote-datepicker-open,
 body.quote-modal-open {
   overflow: hidden;
+}
+
+body.quote-datepicker-open {
+  overflow-x: hidden;
 }
 
 /* =============================================
@@ -210,6 +217,7 @@ body.quote-modal-open {
   max-width: 100%;
   display: grid;
   align-content: start;
+  position: relative;
 }
 
 .quote-field--wide {
@@ -292,7 +300,39 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   7. SELECTORES DE CANTIDAD
+   7. FLATPICKR
+   ============================================= */
+
+.quote-field .flatpickr-calendar {
+  z-index: 1500 !important;
+}
+
+@media (min-width: 769px) {
+  .quote-field .flatpickr-calendar {
+    left: 0 !important;
+    right: auto !important;
+    top: calc(100% + 8px) !important;
+  }
+
+  .flatpickr-calendar.open {
+    max-width: min(340px, calc(100vw - 40px));
+  }
+}
+
+@media (max-width: 768px) {
+  .flatpickr-calendar.open {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-width: calc(100vw - 28px);
+    z-index: 2200 !important;
+  }
+}
+
+/* =============================================
+   8. SELECTORES DE CANTIDAD
    ============================================= */
 
 .quote-travelers {
@@ -342,7 +382,7 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   8. ESTADOS VACÍOS Y OPCIONES
+   9. ESTADOS VACÍOS Y OPCIONES
    ============================================= */
 
 .quote-empty-state {
@@ -361,6 +401,10 @@ body.quote-modal-open {
 .quote-extras {
   display: grid;
   gap: 12px;
+}
+
+.quote-package-options--compact:empty {
+  display: none;
 }
 
 .quote-package-card,
@@ -443,17 +487,46 @@ body.quote-modal-open {
   color: #0a3a26;
 }
 
+.quote-duration-inline {
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0 3px;
+}
+
 .itinerary-date {
-  color: #b45f06;
-  font-weight: 600;
+  color: #a86a16;
+  font-weight: 800;
 }
 
 /* =============================================
-   9. ITINERARIO
+   10. ITINERARIO
    ============================================= */
 
 .quote-itinerary-options {
   margin-top: 14px;
+}
+
+.quote-itinerary-option {
+  display: grid;
+  gap: 8px;
+}
+
+.quote-itinerary-option__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.quote-itinerary-option__top h3 {
+  margin: 0;
+}
+
+.quote-load-more-itineraries {
+  width: fit-content;
+  justify-self: center;
+  padding-left: 22px;
+  padding-right: 22px;
 }
 
 .quote-itinerary-preview {
@@ -484,6 +557,7 @@ body.quote-modal-open {
   margin: 0 0 5px;
   color: #062803;
   font-size: 0.96rem;
+  line-height: 1.45;
 }
 
 .quote-itinerary-item p {
@@ -508,29 +582,11 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   10. PAQUETE / ITINERARIO DETECTADO
+   11. PAQUETE DETECTADO COMPACTO
    ============================================= */
 
 .quote-package-card--detected {
-  cursor: default !important;
-  padding: 14px 16px !important;
-  border-width: 1px !important;
-  background: #f7fbf5 !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.quote-package-card--detected:hover {
-  border-color: rgba(6, 40, 3, 0.12) !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.quote-package-card--detected .quote-package-card__top {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 8px;
-  margin-bottom: 0;
+  display: none !important;
 }
 
 .quote-package-card--detected h3,
@@ -538,23 +594,8 @@ body.quote-modal-open {
   display: none !important;
 }
 
-.quote-package-card--detected .quote-badge {
-  width: fit-content;
-  max-width: 100%;
-  white-space: normal;
-}
-
-.quote-package-card--detected .quote-package-card__top > div {
-  display: grid;
-  gap: 8px;
-}
-
-.quote-package-card--detected .quote-package-card__top > .quote-badge,
-.quote-package-card--detected .quote-duration-badge {
-  justify-self: start;
-}
 /* =============================================
-   11. ALOJAMIENTO
+   12. ALOJAMIENTO
    ============================================= */
 
 .quote-accommodation-card {
@@ -606,9 +647,8 @@ body.quote-modal-open {
   color: #0a3a26 !important;
   font-weight: 800;
 }
-
 /* =============================================
-   12. TRENES
+   13. TRENES
    ============================================= */
 
 .quote-train-selector-grid {
@@ -830,6 +870,7 @@ body.quote-modal-open {
   margin: 6px 0 0;
   font-size: 1rem;
 }
+
 .train-recommended-badge {
   display: inline-flex;
   width: fit-content;
@@ -844,8 +885,9 @@ body.quote-modal-open {
 .train-option-card--local .train-recommended-badge {
   display: none !important;
 }
+
 /* =============================================
-   13. EXTRAS
+   14. EXTRAS E INCLUYE
    ============================================= */
 
 .quote-extra-item {
@@ -916,8 +958,9 @@ body.quote-modal-open {
   line-height: 1.45;
   font-size: 0.9rem;
 }
+
 /* =============================================
-   14. SIDEBAR Y PANEL DE COTIZACIÓN
+   15. SIDEBAR Y PANEL DE COTIZACIÓN
    ============================================= */
 
 .quote-sidebar {
@@ -935,7 +978,6 @@ body.quote-modal-open {
   min-width: 0;
 }
 
-/* PC: el panel nace alineado con Datos de viaje y se mantiene flotante al hacer scroll */
 @media (min-width: 1101px) {
   .quote-page,
   .quote-content,
@@ -960,9 +1002,8 @@ body.quote-modal-open {
     top: 92px !important;
     width: 100% !important;
     max-width: 390px !important;
-    max-height: calc(100vh - 110px) !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+    max-height: none !important;
+    overflow: visible !important;
     z-index: 80 !important;
   }
 }
@@ -1008,6 +1049,7 @@ body.quote-modal-open {
 }
 
 .quote-discount-box {
+  margin-top: 12px;
   margin-bottom: 12px;
   padding: 12px;
   border: 1px solid rgba(6, 40, 3, 0.12);
@@ -1143,7 +1185,7 @@ body.quote-modal-open {
 }
 
 /* =============================================
-   15. BOTONES
+   16. BOTONES
    ============================================= */
 
 .quote-actions {
@@ -1233,7 +1275,7 @@ body.quote-modal-open {
 }
 
 #savePdfBtn {
-  display: none !important;
+  display: inline-flex !important;
 }
 
 .quote-mobile-summary-toggle {
@@ -1241,7 +1283,7 @@ body.quote-modal-open {
   width: 100%;
   border: 0;
   border-radius: 999px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   background: #edf7ef;
   color: #0a3a26;
   font-weight: 900;
@@ -1251,7 +1293,7 @@ body.quote-modal-open {
   gap: 7px;
 }
 /* =============================================
-   16. MODALES GENERALES
+   17. MODALES GENERALES
    ============================================= */
 
 .quote-modal[hidden] {
@@ -1290,219 +1332,192 @@ body.quote-modal-open {
 
 .quote-modal__close {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 42px;
-  height: 42px;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
   border: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  background: #edf3ef;
+  color: #062803;
   cursor: pointer;
-  z-index: 3;
+  z-index: 5;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .quote-modal__header {
-  padding: 26px 28px 18px;
-  background: #0a3a26;
-  color: #fff;
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
 }
 
 .quote-modal__eyebrow {
-  margin: 0 0 8px;
-  color: rgba(255, 255, 255, 0.82);
-  font-weight: 800;
-  font-size: 0.84rem;
+  margin: 0 0 6px;
+  color: #d99a00;
+  font-weight: 900;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .quote-modal__header h2 {
-  color: #fff;
-  margin: 0 0 8px;
-  font-size: clamp(1.35rem, 2vw, 2rem);
+  margin: 0 44px 7px 0;
+  color: #062803;
+  font-size: 1.45rem;
+  line-height: 1.25;
 }
 
 .quote-modal__header p {
-  color: rgba(255, 255, 255, 0.9);
   margin: 0;
+  color: #56645f;
   line-height: 1.5;
+  font-size: 0.94rem;
 }
 
 .quote-modal__body {
   overflow: auto;
-  min-height: 0;
-  padding: 22px 28px 24px;
+  padding: 22px 28px;
   background: #f7faf8;
-}
-
-.quote-modal__footer {
-  padding: 16px 28px 22px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: #fff;
-  display: flex;
-  justify-content: center;
-}
-
-.quote-modal__footer .quote-main-btn,
-.quote-modal__footer .quote-secondary-btn {
-  width: auto;
-  min-width: 260px;
 }
 
 .quote-modal__list {
   display: grid;
-  gap: 18px;
+  gap: 16px;
+}
+
+.quote-modal__footer {
+  padding: 16px 28px 20px;
+  border-top: 1px solid rgba(6, 40, 3, 0.08);
+  background: #fff;
 }
 
 /* =============================================
-   17. MODAL DE HOTELES
+   18. MODAL DE HOTELES
    ============================================= */
 
 .hotel-option-card {
   background: #fff;
-  border: 2px solid rgba(6, 40, 3, 0.1);
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
-  cursor: default;
+  border: 2px solid rgba(6, 40, 3, 0.12);
+  border-radius: 24px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-  max-width: 100%;
-  min-width: 0;
 }
 
 .hotel-option-card:hover {
-  border-color: rgba(10, 58, 38, 0.22);
+  border-color: rgba(10, 58, 38, 0.34);
+  box-shadow: 0 14px 26px rgba(10, 58, 38, 0.08);
 }
 
 .hotel-option-card.is-selected {
   border-color: #0a3a26;
+  background: #f4fbf5;
   box-shadow: 0 16px 32px rgba(10, 58, 38, 0.14);
-}
-
-.hotel-option-card--no-hotel {
-  padding: 12px;
-  border-radius: 18px;
-  box-shadow: none;
-  background: #fff;
-}
-
-.hotel-option-card--no-hotel.is-selected {
-  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.12);
 }
 
 .hotel-option-card__header {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
   align-items: flex-start;
-  padding: 20px 20px 14px;
+  gap: 14px;
 }
 
 .hotel-option-card__header h3 {
-  margin: 0 0 6px;
+  margin: 0 0 5px;
   color: #062803;
   font-size: 1.08rem;
+  line-height: 1.25;
 }
 
 .hotel-option-card__header p {
-  margin: 6px 0 0;
+  margin: 0 0 4px;
   color: #56645f;
-  font-size: 0.92rem;
-  line-height: 1.45;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .hotel-option-card__badge {
   flex: 0 0 auto;
-  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 11px;
   border-radius: 999px;
-  background: #eff8f1;
+  background: #edf7ef;
   color: #0a3a26;
-  font-weight: 800;
-  font-size: 0.9rem;
+  font-weight: 900;
+  font-size: 0.84rem;
   white-space: nowrap;
 }
 
 .hotel-option-card__content {
   display: grid;
-  grid-template-columns: minmax(300px, 1.05fr) minmax(300px, 1fr);
-  gap: 18px;
-  padding: 0 20px 20px;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
   align-items: start;
 }
 
 .hotel-option-card__media {
   display: grid;
-  gap: 10px;
+  gap: 9px;
   min-width: 0;
 }
 
-.hotel-gallery-main {
-  position: relative;
-  border-radius: 18px;
+.hotel-gallery-main,
+.hotel-gallery-main--empty {
+  width: 100%;
+  height: 190px;
+  border-radius: 20px;
   overflow: hidden;
-  background: #f2f4f3;
-  min-height: 250px;
+  background: #edf3ef;
+  border: 1px solid rgba(6, 40, 3, 0.1);
 }
 
 .hotel-gallery-main-img {
   width: 100%;
-  height: 250px;
-  min-height: 250px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
+
 .hotel-gallery-main--empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f3faf4 0%, #eef7f1 100%);
-  min-height: 190px;
-  border-radius: 18px;
-  text-align: center;
-  color: #0a3a26;
-  padding: 20px;
+  display: grid;
+  place-items: center;
 }
 
 .hotel-gallery-empty-state {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   text-align: center;
-  color: #0a3a26;
-  padding: 20px;
+  color: #56645f;
+  padding: 18px;
 }
 
 .hotel-gallery-empty-state strong {
-  font-size: 1.15rem;
-  font-weight: 800;
+  color: #062803;
 }
 
-.hotel-gallery-empty-state span,
-.hotel-gallery-empty-state small {
-  color: #56645f;
-  font-size: 0.92rem;
+.hotel-gallery-empty-state span {
+  font-size: 0.86rem;
+  line-height: 1.4;
 }
 
 .hotel-gallery-thumbs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
 }
 
 .hotel-gallery-thumb {
-  width: 72px;
-  height: 54px;
-  min-width: 72px;
   border: 2px solid transparent;
-  border-radius: 12px;
-  overflow: hidden;
+  border-radius: 13px;
   padding: 0;
-  background: #f2f4f3;
+  height: 62px;
+  overflow: hidden;
+  background: #edf3ef;
   cursor: pointer;
 }
 
@@ -1514,12 +1529,11 @@ body.quote-modal-open {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
+
 .hotel-option-card__body {
   display: grid;
-  gap: 12px;
-  min-width: 0;
+  gap: 10px;
 }
 
 .hotel-option-card__body label {
@@ -1530,44 +1544,40 @@ body.quote-modal-open {
 
 .hotel-option-card__options {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .hotel-combo-btn {
   width: 100%;
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-  text-align: left;
-  border: 1px solid rgba(6, 40, 3, 0.14);
+  border: 1px solid rgba(6, 40, 3, 0.13);
   border-radius: 16px;
+  padding: 11px 12px;
   background: #fff;
   color: #17322a;
-  padding: 12px;
+  text-align: left;
   cursor: pointer;
-  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
 }
 
 .hotel-combo-btn:hover {
   border-color: rgba(10, 58, 38, 0.36);
-  background: #fbfdfb;
 }
 
 .hotel-combo-btn.is-selected {
   border-color: #0a3a26;
-  background: #f4fbf5;
-  box-shadow: 0 10px 20px rgba(10, 58, 38, 0.12);
+  background: #edf7ef;
 }
 
 .hotel-combo-btn__radio {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(6, 40, 3, 0.28);
+  border: 2px solid #9aa39e;
   border-radius: 50%;
-  margin-top: 2px;
-  position: relative;
   background: #fff;
+  position: relative;
 }
 
 .hotel-combo-btn.is-selected .hotel-combo-btn__radio {
@@ -1583,34 +1593,74 @@ body.quote-modal-open {
 }
 
 .hotel-combo-btn__main {
-  display: block;
   color: #062803;
-  font-weight: 900;
-  font-size: 0.92rem;
-  line-height: 1.35;
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 1.3;
 }
 
 .hotel-combo-btn__sub {
-  grid-column: 2;
-  display: block;
   color: #56645f;
   font-size: 0.84rem;
-  line-height: 1.4;
-  margin-top: -4px;
+  line-height: 1.35;
 }
 
-#confirmHotelSelectionBtn,
-#confirmTrainSelectionBtn {
-  box-shadow: 0 14px 28px rgba(10, 58, 38, 0.2);
+/* Opción sin alojamiento compacta */
+.hotel-option-card--no-hotel {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #fffdf7;
+  border-color: rgba(217, 154, 0, 0.28);
 }
 
-#confirmHotelSelectionBtn:hover,
-#confirmTrainSelectionBtn:hover {
-  filter: brightness(1.04);
+.hotel-option-card--no-hotel .hotel-option-card__header {
+  align-items: center;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__header h3 {
+  font-size: 0.98rem;
+  margin-bottom: 2px;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__header p {
+  font-size: 0.84rem;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__content {
+  display: block;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__media,
+.hotel-option-card--no-hotel .hotel-gallery-main,
+.hotel-option-card--no-hotel .hotel-gallery-main--empty,
+.hotel-option-card--no-hotel .hotel-gallery-thumbs {
+  display: none !important;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__body {
+  margin-top: 8px;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__body label {
+  display: none;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn {
+  border-radius: 999px;
+  padding: 9px 11px;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn__main {
+  font-size: 0.88rem;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn__sub {
+  font-size: 0.82rem;
 }
 
 /* =============================================
-   18. RESPONSIVE TABLET
+   19. PANEL MÓVIL
    ============================================= */
 
 @media (max-width: 1100px) {
@@ -1619,146 +1669,176 @@ body.quote-modal-open {
   }
 
   .quote-sidebar {
-    order: -1;
-  }
-
-  .quote-summary-panel {
-    position: relative;
-    max-width: 100%;
-  }
-
-  .quote-form-grid--travel {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-train-selector-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hotel-option-card__content {
-    grid-template-columns: 1fr;
-  }
-
-  .hotel-gallery-main,
-  .hotel-gallery-main-img {
-    min-height: 220px;
-    height: 220px;
-  }
-
-  .train-option-card__header {
-    display: grid;
-    gap: 12px;
-  }
-
-  .train-option-card__price {
-    width: fit-content;
+    position: static;
   }
 }
 
-/* =============================================
-   19. RESPONSIVE MÓVIL
-   ============================================= */
-
 @media (max-width: 768px) {
+  body {
+    padding-bottom: 92px;
+  }
+
+  body.quote-summary-expanded {
+    overflow: hidden;
+  }
+
   .container {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   .quote-hero {
-    padding: 92px 0 28px;
+    padding: 86px 0 30px;
+  }
+
+  .quote-hero__container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .quote-eyebrow {
+    font-size: 0.8rem;
+    padding: 7px 12px;
+    margin-bottom: 12px;
   }
 
   .quote-hero h1 {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 8vw, 2.35rem);
+  }
+
+  .quote-hero p {
+    font-size: 0.96rem;
+    line-height: 1.58;
   }
 
   .quote-content {
-    padding: 18px 0 120px;
+    padding: 20px 0 120px;
   }
 
   .quote-card {
     border-radius: 20px;
-    padding: 16px;
+    padding: 17px;
   }
 
-  .quote-card__header h2,
-  .quote-detail-title {
+  .quote-card__header h2 {
     font-size: 1.12rem;
-    padding: 10px 12px;
+    padding: 11px 13px;
+  }
+
+  .quote-form-grid,
+  .quote-form-grid--travel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quote-train-selector-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quote-itinerary-option__top {
+    display: grid;
+    gap: 8px;
+  }
+
+  .quote-itinerary-option__top .quote-badge {
+    justify-self: start;
+  }
+
+  .quote-itinerary-time {
+    white-space: normal;
     border-radius: 14px;
   }
 
-  .quote-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .quote-traveler-row {
-    padding: 12px;
-  }
-
-  .quote-accommodation-card.has-hotel-image .quote-accommodation-card__body {
-    grid-template-columns: 74px minmax(0, 1fr);
-  }
-
-  .quote-accommodation-card__image {
-    width: 74px;
-    height: 64px;
-    border-radius: 12px;
-  }
-
-  .quote-accommodation-card__body {
-    padding: 13px;
-  }
-
   .quote-summary-panel {
-    position: fixed;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    z-index: 900;
-    border-radius: 20px;
-    padding: 12px;
-    max-height: calc(100vh - 110px);
-    overflow-y: auto;
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    z-index: 1800;
+    border-radius: 22px 22px 0 0;
+    padding: 10px 12px 12px;
+    box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.18);
+    display: grid;
+    gap: 8px;
+    background: #fff;
   }
 
   .quote-summary-panel .quote-detail-title,
-  .quote-summary-panel .quote-payment-mode,
-  .quote-summary-panel .quote-discount-box,
   .quote-summary-panel .quote-summary,
+  .quote-summary-panel .quote-discount-box,
+  .quote-summary-panel .quote-payment-mode,
   .quote-summary-panel .quote-payment-info,
   .quote-summary-panel .quote-actions__secondary {
     display: none;
   }
 
-  .quote-summary-panel.is-expanded .quote-detail-title,
-  .quote-summary-panel.is-expanded .quote-payment-mode,
-  .quote-summary-panel.is-expanded .quote-discount-box,
+  .quote-summary-panel.is-expanded {
+    inset: 0;
+    border-radius: 0;
+    padding: 18px;
+    overflow-y: auto;
+    align-content: start;
+  }
+
+  .quote-summary-panel.is-expanded .quote-detail-title {
+    display: block;
+    margin: 0 0 4px;
+  }
+
   .quote-summary-panel.is-expanded .quote-summary,
-  .quote-summary-panel.is-expanded .quote-payment-info,
-  .quote-summary-panel.is-expanded .quote-actions__secondary {
+  .quote-summary-panel.is-expanded .quote-discount-box,
+  .quote-summary-panel.is-expanded .quote-payment-mode,
+  .quote-summary-panel.is-expanded .quote-payment-info {
     display: grid;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions__secondary {
+    display: contents;
+  }
+
+  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
+    order: -1;
+    margin-bottom: 2px;
   }
 
   .quote-mobile-summary-toggle {
     display: inline-flex;
-    margin-bottom: 8px;
   }
 
-  .quote-actions {
-    margin-top: 8px;
+  .quote-summary-panel:not(.is-expanded) .quote-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    margin-top: 0;
     gap: 8px;
   }
 
-  .quote-actions,
-  .quote-actions__secondary {
-    grid-template-columns: 1fr;
+  .quote-summary-panel:not(.is-expanded) .quote-actions::before {
+    content: attr(data-mobile-total);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #f4fbf5;
+    color: #0a3a26;
+    font-weight: 900;
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
 
-  .quote-payment-btn {
-    min-height: 48px;
+  .quote-summary-panel:not(.is-expanded) .quote-payment-btn {
+    min-width: 104px;
+    height: 42px;
+    padding: 10px 14px;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions {
+    grid-template-columns: 1fr;
   }
 
   .quote-payment-btn__desktop {
@@ -1770,127 +1850,365 @@ body.quote-modal-open {
   }
 
   .quote-modal__dialog {
-    width: calc(100vw - 20px);
-    max-height: calc(100vh - 20px);
-    margin: 10px auto;
-    border-radius: 22px;
-  }
-
-  .quote-modal__header {
-    padding: 22px 20px 16px;
-  }
-
-  .quote-modal__body {
-    padding: 16px;
-  }
-
-  .quote-modal__footer {
-    padding: 14px 16px 18px;
-  }
-
-  .quote-modal__footer .quote-main-btn,
-  .quote-modal__footer .quote-secondary-btn {
-    min-width: 0;
     width: 100%;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
   }
 
-  .hotel-option-card__header {
-    display: grid;
-    padding: 16px 16px 12px;
-  }
-
-  .hotel-option-card__badge {
-    width: fit-content;
+  .quote-modal__header,
+  .quote-modal__body,
+  .quote-modal__footer {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   .hotel-option-card__content {
-    padding: 0 16px 16px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hotel-gallery-main,
-  .hotel-gallery-main-img {
-    min-height: 190px;
-    height: 190px;
+  .hotel-gallery-main--empty {
+    height: 180px;
   }
 
-  .hotel-gallery-thumb {
-    width: 64px;
-    min-width: 64px;
-    height: 48px;
+  .hotel-option-card__header,
+  .train-option-card__header {
+    display: grid;
+    gap: 10px;
   }
 
-  .train-option-card {
-    padding: 14px;
-    border-radius: 18px;
-  }
-
-  .train-option-card__company {
-    align-items: flex-start;
-  }
-
-  .train-option-card__logo {
-    width: 68px;
-    max-width: 68px;
+  .hotel-option-card__badge,
+  .train-option-card__price {
+    justify-self: start;
   }
 
   .train-option-card__schedule {
-    grid-template-columns: 1fr;
-  }
-
-  .train-option-card__actions {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .train-option-card__actions .quote-secondary-btn {
-    width: 100%;
-    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hotel-combo-btn {
-    padding: 11px;
+    grid-template-columns: 18px minmax(0, 1fr);
   }
 
-  body.quote-modal-open {
-    overflow: hidden;
+  .hotel-combo-btn__sub {
+    grid-column: 2;
+    border-radius: 50%;
+    background: #0a3a26;
+     
   }
 }
+  
+}
+
+.hotel-combo-btn__main {
+  color: #062803;
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.hotel-combo-btn__sub {
+  color: #56645f;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+/* Opción sin alojamiento compacta */
+.hotel-option-card--no-hotel {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #fffdf7;
+  border-color: rgba(217, 154, 0, 0.28);
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__header {
+  align-items: center;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__header h3 {
+  font-size: 0.98rem;
+  margin-bottom: 2px;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__header p {
+  font-size: 0.84rem;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__content {
+  display: block;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__media,
+.hotel-option-card--no-hotel .hotel-gallery-main,
+.hotel-option-card--no-hotel .hotel-gallery-main--empty,
+.hotel-option-card--no-hotel .hotel-gallery-thumbs {
+  display: none !important;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__body {
+  margin-top: 8px;
+}
+
+.hotel-option-card--no-hotel .hotel-option-card__body label {
+  display: none;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn {
+  border-radius: 999px;
+  padding: 9px 11px;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn__main {
+  font-size: 0.88rem;
+}
+
+.hotel-option-card--no-hotel .hotel-combo-btn__sub {
+  font-size: 0.82rem;
+}
+
 /* =============================================
-   20. FLATPICKR / CONTROL DE DESBORDE
+   19. PANEL MÓVIL
    ============================================= */
 
-.flatpickr-calendar {
-  max-width: calc(100vw - 24px) !important;
-  box-sizing: border-box !important;
-  z-index: 3000 !important;
+@media (max-width: 1100px) {
+  .quote-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quote-sidebar {
+    position: static;
+  }
 }
 
-
-
 @media (max-width: 768px) {
-  .flatpickr-calendar {
-    width: calc(100vw - 24px) !important;
-    max-width: calc(100vw - 24px) !important;
-    left: 12px !important;
-    right: auto !important;
+  body {
+    padding-bottom: 92px;
   }
 
-  .flatpickr-innerContainer,
-  .flatpickr-rContainer,
-  .flatpickr-days,
-  .dayContainer {
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
+  body.quote-summary-expanded {
+    overflow: hidden;
   }
 
-  .flatpickr-day {
-    max-width: none !important;
+  .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .quote-hero {
+    padding: 86px 0 30px;
+  }
+
+  .quote-hero__container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .quote-eyebrow {
+    font-size: 0.8rem;
+    padding: 7px 12px;
+    margin-bottom: 12px;
+  }
+
+  .quote-hero h1 {
+    font-size: clamp(1.75rem, 8vw, 2.35rem);
+  }
+
+  .quote-hero p {
+    font-size: 0.96rem;
+    line-height: 1.58;
+  }
+
+  .quote-content {
+    padding: 20px 0 120px;
+  }
+
+  .quote-card {
+    border-radius: 20px;
+    padding: 17px;
+  }
+
+  .quote-card__header h2 {
+    font-size: 1.12rem;
+    padding: 11px 13px;
+  }
+
+  .quote-form-grid,
+  .quote-form-grid--travel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quote-train-selector-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quote-itinerary-option__top {
+    display: grid;
+    gap: 8px;
+  }
+
+  .quote-itinerary-option__top .quote-badge {
+    justify-self: start;
+  }
+
+  .quote-itinerary-time {
+    white-space: normal;
+    border-radius: 14px;
+  }
+
+  .quote-summary-panel {
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    z-index: 1800;
+    border-radius: 22px 22px 0 0;
+    padding: 10px 12px 12px;
+    box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.18);
+    display: grid;
+    gap: 8px;
+    background: #fff;
+  }
+
+  .quote-summary-panel .quote-detail-title,
+  .quote-summary-panel .quote-summary,
+  .quote-summary-panel .quote-discount-box,
+  .quote-summary-panel .quote-payment-mode,
+  .quote-summary-panel .quote-payment-info,
+  .quote-summary-panel .quote-actions__secondary {
+    display: none;
+  }
+
+  .quote-summary-panel.is-expanded {
+    inset: 0;
+    border-radius: 0;
+    padding: 18px;
+    overflow-y: auto;
+    align-content: start;
+  }
+
+  .quote-summary-panel.is-expanded .quote-detail-title {
+    display: block;
+    margin: 0 0 4px;
+  }
+
+  .quote-summary-panel.is-expanded .quote-summary,
+  .quote-summary-panel.is-expanded .quote-discount-box,
+  .quote-summary-panel.is-expanded .quote-payment-mode,
+  .quote-summary-panel.is-expanded .quote-payment-info {
+    display: grid;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions__secondary {
+    display: contents;
+  }
+
+  .quote-summary-panel.is-expanded .quote-mobile-summary-toggle {
+    order: -1;
+    margin-bottom: 2px;
+  }
+
+  .quote-mobile-summary-toggle {
+    display: inline-flex;
+  }
+
+  .quote-summary-panel:not(.is-expanded) .quote-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    margin-top: 0;
+    gap: 8px;
+  }
+
+  .quote-summary-panel:not(.is-expanded) .quote-actions::before {
+    content: attr(data-mobile-total);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #f4fbf5;
+    color: #0a3a26;
+    font-weight: 900;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .quote-summary-panel:not(.is-expanded) .quote-payment-btn {
+    min-width: 104px;
+    height: 42px;
+    padding: 10px 14px;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-payment-btn__desktop {
+    display: none;
+  }
+
+  .quote-payment-btn__mobile {
+    display: inline;
+  }
+
+  .quote-modal__dialog {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .quote-modal__header,
+  .quote-modal__body,
+  .quote-modal__footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .hotel-option-card__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hotel-gallery-main,
+  .hotel-gallery-main--empty {
+    height: 180px;
+  }
+
+  .hotel-option-card__header,
+  .train-option-card__header {
+    display: grid;
+    gap: 10px;
+  }
+
+  .hotel-option-card__badge,
+  .train-option-card__price {
+    justify-self: start;
+  }
+
+  .train-option-card__schedule {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hotel-combo-btn {
+    grid-template-columns: 18px minmax(0, 1fr);
+  }
+
+  .hotel-combo-btn__sub {
+    grid-column: 2;
   }
 }
 
 /* =============================================
-   21. IMPRESIÓN Y PDF
+   20. IMPRESIÓN / PDF
    ============================================= */
 
 .print-quotation {
@@ -1898,186 +2216,321 @@ body.quote-modal-open {
 }
 
 .print-sheet {
-  background: #fff;
-  color: #17322a;
   width: 210mm;
   min-height: 297mm;
-  padding: 14mm;
+  background: #fff;
+  color: #17322a;
   font-family: "Open Sans", Arial, sans-serif;
+  padding: 10mm 11mm;
+  box-sizing: border-box;
 }
 
 .print-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  border-bottom: 2px solid #0a3a26;
-  padding-bottom: 14px;
-  margin-bottom: 14px;
-}
-
-.print-header--two-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 210px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 12mm;
   align-items: start;
+  margin: 0 0 8mm;
+  padding: 0 0 6mm;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.16);
 }
 
-.print-company h2,
-.print-header h1 {
-  margin: 0 0 6px;
-  color: #062803;
-}
-
-.print-company p,
-.print-header p,
-.print-section p,
-.print-section li {
-  margin: 0 0 5px;
-  color: #3f4d48;
-  font-size: 11px;
-  line-height: 1.45;
+.print-company {
+  display: grid;
+  gap: 2mm;
 }
 
 .print-logo {
-  max-width: 170px;
+  width: 42mm;
+  max-width: 100%;
   height: auto;
-  margin-bottom: 8px;
+  object-fit: contain;
+  margin: 0 0 2mm;
+}
+
+.print-company p,
+.print-header__right p {
+  margin: 0;
+  color: #43524d;
+  font-size: 8.5pt;
+  line-height: 1.35;
 }
 
 .print-header__right {
   text-align: right;
+  display: grid;
+  gap: 1.8mm;
+  justify-items: end;
+}
+
+.print-header__right h1 {
+  margin: 0 0 1mm;
+  font-size: 15pt;
+  line-height: 1.1;
+  color: #062803;
+  text-transform: uppercase;
+}
+
+.print-quote-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.2mm 5mm;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  letter-spacing: 0.04em;
+  font-weight: 900;
 }
 
 .print-coupon-box {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 12px;
-  background: #f4fbf5;
-  border: 1px solid rgba(10, 58, 38, 0.16);
+  margin-top: 2mm;
+  padding: 2.5mm 3.5mm;
+  border-radius: 4mm;
+  background: #fff8db;
+  border: 1px solid #f1e2a4;
+  color: #6b5a18;
+  text-align: left;
 }
 
-.print-coupon-box span,
-.print-coupon-box small {
-  display: block;
-  color: #56645f;
-  font-size: 10px;
+.print-coupon-box[hidden] {
+  display: none !important;
+}
+
+.print-coupon-box__content {
+  display: grid;
+  gap: 1mm;
+}
+
+.print-coupon-box span {
+  font-size: 7.8pt;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .print-coupon-box strong {
-  display: block;
-  color: #0a3a26;
-  font-size: 15px;
-  margin: 4px 0;
+  font-size: 11pt;
+  color: #062803;
+}
+
+.print-coupon-box small {
+  font-size: 7.8pt;
 }
 
 .print-client-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 12px;
+  gap: 5mm;
+  margin: 0 0 6mm;
 }
 
-.print-client-grid h3,
+.print-info-box,
+.print-section {
+  border: 1px solid rgba(6, 40, 3, 0.12);
+  border-radius: 4mm;
+  background: #fbfdfb;
+  padding: 4mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-info-box h3,
 .print-section h3 {
+  margin: 0 0 3mm;
   color: #062803;
-  margin: 0 0 8px;
-  font-size: 14px;
+  font-size: 10.2pt;
+  line-height: 1.25;
+  font-weight: 900;
 }
 
-.print-banner {
-  width: 100%;
-  display: block;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-.print-banner-top {
-  height: 54mm;
-  margin: 10px 0 14px;
-}
-
-.print-banner-bottom {
-  height: 32mm;
-  margin-top: 8px;
+.print-info-box p {
+  margin: 0 0 1.6mm;
+  color: #43524d;
+  font-size: 8.4pt;
+  line-height: 1.35;
 }
 
 .print-section {
-  margin: 12px 0;
-  padding: 10px;
-  border: 1px solid rgba(6, 40, 3, 0.1);
-  border-radius: 12px;
-  background: #fbfdfb;
+  margin: 0 0 5mm;
 }
 
-.print-itinerary-list,
-#printSelectedServices,
-#printPaymentDetails {
+.print-section p,
+.print-section li,
+.print-section span,
+.print-section strong {
+  font-size: 8.4pt;
+  line-height: 1.38;
+}
+
+.print-itinerary-list {
   display: grid;
-  gap: 7px;
+  gap: 2.5mm;
 }
 
 .print-itinerary-item {
+  padding: 3mm;
+  border-radius: 3.5mm;
+  background: #fff;
   border-left: 3px solid #0a3a26;
-  padding-left: 8px;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 .print-itinerary-item h4 {
-  margin: 0 0 4px;
+  margin: 0 0 1.3mm;
   color: #062803;
-  font-size: 12px;
+  font-size: 9pt;
+  line-height: 1.35;
+}
+
+.print-itinerary-item p {
+  margin: 0;
+  color: #43524d;
+}
+
+.print-itinerary-time {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 1.8mm;
+  padding: 1.3mm 2.4mm;
+  border-radius: 999px;
+  background: #edf3ef;
+  color: #0a3a26;
+  font-size: 7.6pt;
+  font-weight: 800;
+}
+
+.print-services-list,
+.print-payment-list {
+  display: grid;
+  gap: 2mm;
+}
+
+.print-service-row,
+.print-payment-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 6mm;
+  padding: 1.8mm 0;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
+  color: #43524d;
+}
+
+.print-service-row:last-child,
+.print-payment-row:last-child {
+  border-bottom: 0;
+}
+
+.print-payment-row strong:last-child,
+.print-service-row strong:last-child {
+  color: #062803;
+  text-align: right;
+}
+
+.print-payment-row--total {
+  margin-top: 1mm;
+  padding: 2.5mm 3mm;
+  border-radius: 3mm;
+  background: #edf7ef;
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  color: #062803;
+  font-weight: 900;
+}
+
+.print-payment-row--total strong {
+  font-size: 10pt;
+  color: #0a3a26;
 }
 
 .print-hotel-images {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 10px;
+  gap: 3mm;
+  margin-top: 3mm;
 }
 
-.print-hotel-images img {
+.print-hotel-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+  gap: 3mm;
+  padding: 3mm;
+  border-radius: 3.5mm;
+  background: #fff;
+  border: 1px solid rgba(6, 40, 3, 0.1);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-hotel-info {
+  display: grid;
+  gap: 1mm;
+  align-content: start;
+}
+
+.print-hotel-info strong {
+  color: #062803;
+  font-size: 8.8pt;
+}
+
+.print-hotel-info span {
+  color: #43524d;
+  font-size: 8pt;
+}
+
+.print-hotel-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5mm;
+}
+
+.print-hotel-gallery img {
   width: 100%;
-  height: 62px;
+  height: 19mm;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 2.5mm;
+  border: 1px solid rgba(6, 40, 3, 0.08);
 }
 
 .print-notes ul {
   margin: 0;
-  padding-left: 16px;
+  padding-left: 4mm;
+  display: grid;
+  gap: 1.5mm;
+}
+
+.print-notes li {
+  color: #43524d;
 }
 
 .print-footer {
-  margin-top: 12px;
   text-align: center;
+  margin-top: 5mm;
+  padding-top: 4mm;
+  border-top: 1px solid rgba(6, 40, 3, 0.12);
+  color: #56645f;
 }
 
 .print-footer p {
-  color: #062803;
+  margin: 0;
+  font-size: 8.4pt;
   font-weight: 800;
-  margin: 0 0 8px;
 }
 
-.pdf-export-wrapper {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: #fff;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.print-quotation--pdf-export {
-  display: block !important;
-}
-
-.print-quotation--pdf-export .print-sheet {
-  margin: 0 auto;
-}
+/* =============================================
+   21. PRINT MEDIA
+   ============================================= */
 
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
   html,
   body {
     width: 210mm;
     min-height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #fff !important;
     overflow: visible !important;
   }
@@ -2093,163 +2546,109 @@ body.quote-modal-open {
 
   #printQuotation {
     display: block !important;
-    position: absolute;
-    inset: 0;
-    width: 210mm;
-    background: #fff;
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .print-sheet {
-    width: 210mm;
-    min-height: 297mm;
-    padding: 12mm;
-    margin: 0;
-    box-shadow: none;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 10mm 11mm !important;
+    box-shadow: none !important;
   }
 
   .wa-float,
   #header-container,
   #footer-container,
-  .quote-hero,
+  .quote-page > .quote-hero,
   .quote-content,
   .quote-modal {
     display: none !important;
   }
 
-  @page {
-    size: A4;
-    margin: 0;
+  .print-section,
+  .print-info-box,
+  .print-itinerary-item,
+  .print-hotel-row {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
 
 /* =============================================
-   22. AJUSTES FINALES DE SEGURIDAD VISUAL
+   22. PDF MODE
    ============================================= */
 
-img {
-  max-width: 100%;
+body.is-generating-pdf {
+  background: #fff !important;
 }
 
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
+body.is-generating-pdf #printQuotation {
+  display: block !important;
+  position: static !important;
+  width: 210mm !important;
+  min-height: 297mm !important;
+  background: #fff !important;
+  margin: 0 auto !important;
 }
 
-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+body.is-generating-pdf .print-sheet {
+  width: 210mm !important;
+  min-height: 297mm !important;
+  box-shadow: none !important;
 }
 
-.quote-card,
-.quote-summary-panel,
-.quote-modal__dialog,
-.hotel-option-card,
-.train-option-card {
-  overflow-wrap: anywhere;
+body.is-generating-pdf .quote-hero,
+body.is-generating-pdf .quote-content,
+body.is-generating-pdf #header-container,
+body.is-generating-pdf #footer-container,
+body.is-generating-pdf .wa-float,
+body.is-generating-pdf .quote-modal {
+  display: none !important;
 }
 
-.quote-main,
-.quote-sidebar,
-.quote-summary-panel,
-.quote-modal__body,
-.hotel-option-card__content,
-.train-option-card__body {
-  min-width: 0;
-}
+/* =============================================
+   23. AJUSTES RESPONSIVE ADICIONALES
+   ============================================= */
 
-@media (max-width: 480px) {
-  .quote-hero h1 {
-    font-size: 1.72rem;
+@media (max-width: 560px) {
+  .quote-summary-panel:not(.is-expanded) {
+    grid-template-columns: 1fr;
   }
 
-  .quote-hero p {
-    font-size: 0.96rem;
+  .quote-summary-panel:not(.is-expanded) .quote-mobile-summary-toggle {
+    height: 38px;
   }
 
-  .quote-card {
-    padding: 14px;
+  .quote-summary-panel:not(.is-expanded) .quote-actions::before {
+    font-size: 0.88rem;
+    min-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  .quote-field-group {
-    padding: 13px;
-  }
-
-  .quote-summary__line,
-  .quote-summary__total {
-    gap: 8px;
-  }
-
-  .quote-summary__total strong {
-    font-size: 1.06rem;
+  .quote-summary-panel:not(.is-expanded) .quote-payment-btn {
+    min-width: 88px;
+    height: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .quote-discount-box__row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .quote-discount-box button {
     width: 100%;
   }
 
-  .quote-modal__close {
-    top: 14px;
-    right: 14px;
-    width: 38px;
-    height: 38px;
-  }
-}
-@media (min-width: 1101px) {
-  .quote-content,
-  .quote-layout,
-  .quote-sidebar {
-    overflow: visible !important;
-  }
-
-  .quote-sidebar {
-    align-self: start !important;
-    position: relative !important;
-  }
-
-  .quote-summary-panel {
-    position: sticky !important;
-    top: 96px !important;
-    align-self: start !important;
-    max-height: calc(100vh - 112px) !important;
-    overflow-y: auto !important;
-  }
-}
-/* FIX definitivo: calendario y selector de hora centrados */
-@media (max-width: 768px) {
-  .flatpickr-calendar.open {
-    position: fixed !important;
-    left: 50vw !important;
-    right: auto !important;
-    top: 50dvh !important;
-    bottom: auto !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(330px, calc(100vw - 24px)) !important;
-    max-width: calc(100vw - 24px) !important;
-    margin: 0 !important;
-    z-index: 99999 !important;
-  }
-
-  .flatpickr-calendar.arrowTop::before,
-  .flatpickr-calendar.arrowTop::after,
-  .flatpickr-calendar.arrowBottom::before,
-  .flatpickr-calendar.arrowBottom::after {
-    display: none !important;
-  }
-
-  .quote-summary-panel {
-    position: fixed !important;
-    left: 6px !important;
-    right: 6px !important;
-    bottom: 0 !important;
-    top: auto !important;
-    width: auto !important;
-    max-width: calc(100vw - 12px) !important;
-    z-index: 1200 !important;
+  .print-sheet {
+    width: 210mm;
   }
 }
