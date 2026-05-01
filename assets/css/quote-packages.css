@@ -1994,7 +1994,7 @@ body.quote-datepicker-open {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4mm;
-  margin-bottom: 5mm;
+  margin-bottom: 1mm;
 }
 
 .print-info-box {
@@ -2007,8 +2007,11 @@ body.quote-datepicker-open {
 }
 
 .print-info-box h3 {
-  margin: 0 0 2mm;
-  color: #062803;
+  background: #0a3a26;
+  color: #fff;
+  padding: 2mm 3.5mm;
+  border-radius: 2.5mm;
+  margin: -2.5mm -3.5mm 2mm;   /* para que el fondo ocupe todo el ancho de la caja */
   font-size: 9pt;
   font-weight: 900;
   line-height: 1.2;
@@ -2023,7 +2026,7 @@ body.quote-datepicker-open {
 
 /* ========== SECCIONES CON TÍTULO DESTACADO ========== */
 .print-section {
-  margin-bottom: 4.5mm;
+  margin-bottom: 1mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
