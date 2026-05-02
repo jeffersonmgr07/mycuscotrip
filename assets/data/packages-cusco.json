@@ -97,6 +97,28 @@
       "luxury": ["MAPI009", "MAPI010"]
     }
   },
+  
+  "defaultLogisticsServices": {
+    "arrival": {
+      "code": "TRANSFER_IN",
+      "title": "Recojo desde aeropuerto o terminal terrestre",
+      "description": "Servicio incluido al inicio del paquete, coordinado según la hora real de llegada del pasajero.",
+      "dayPosition": "first_day",
+      "required": true,
+      "includedByDefault": true,
+      "renderAs": "logistics-service"
+    },
+    "departure": {
+      "code": "TRANSFER_OUT",
+      "title": "Traslado al aeropuerto o terminal terrestre",
+      "description": "Servicio incluido al finalizar el paquete, coordinado según la hora real de salida del pasajero.",
+      "dayPosition": "last_day",
+      "required": true,
+      "includedByDefault": true,
+      "renderAs": "logistics-service"
+    }
+  },
+  
   "globalRules": {
     "doNotHardcodeItineraries": true,
     "generateCombinationsDynamically": true,
