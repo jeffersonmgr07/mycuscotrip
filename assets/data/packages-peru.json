@@ -1,0 +1,1831 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-05-02",
+  "sourceFile": "assets/data/packages-peru.json",
+  "scope": "peru-dynamic-packages",
+  "description": "Archivo de configuración para generar paquetes dinámicos combinados de Perú. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
+  "status": "draft_ready_for_review",
+  "dataSources": {
+    "cuscoPackageConfig": "assets/data/packages-cusco.json",
+    "cuscoTours": "assets/data/tours-cusco.json",
+    "machuPicchuTours": "assets/data/tours-machu-picchu.json",
+    "peruTours": "assets/data/tours-peru.json",
+    "trains": "assets/data/trains.json",
+    "hotels": "assets/data/hotels.json",
+    "currencyConfig": "assets/data/currency-config.json",
+    "paymentConfig": "assets/data/payment-config.json",
+    "destinations": "assets/data/destinations.json"
+  },
+  "productKind": "package-config",
+  "productFamily": "peru-package",
+  "defaultDestination": "peru",
+  "defaultCurrency": "USD",
+  "baseCurrency": "USD",
+  "allowedCurrencies": [
+    "PEN",
+    "USD",
+    "EUR",
+    "CLP",
+    "MXN"
+  ],
+  "allowedNationalities": [
+    "national",
+    "foreign",
+    "andean_community",
+    "latin_america",
+    "student"
+  ],
+  "durationRange": {
+    "minDays": 5,
+    "maxDays": 15,
+    "minNights": 4,
+    "maxNights": 14
+  },
+  "arrivalDepartureProfiles": [
+    {
+      "key": "early-arrival__late-departure",
+      "arrivalProfile": "early-arrival",
+      "departureProfile": "late-departure",
+      "label": "Llegada temprano / salida tarde",
+      "arrivalAvailableFrom": "11:00",
+      "departureAvailableUntil": "20:00",
+      "rules": [
+        "Permite city tour, visita panorámica o experiencia medio día el primer día.",
+        "Permite tour corto o actividad urbana el último día si no hay traslado interurbano."
+      ]
+    },
+    {
+      "key": "early-arrival__early-departure",
+      "arrivalProfile": "early-arrival",
+      "departureProfile": "early-departure",
+      "label": "Llegada temprano / salida temprano",
+      "arrivalAvailableFrom": "11:00",
+      "departureAvailableUntil": "10:00",
+      "rules": [
+        "Permite actividad ligera el primer día.",
+        "El último día debe reservarse para traslado, aeropuerto o salida."
+      ]
+    },
+    {
+      "key": "late-arrival__late-departure",
+      "arrivalProfile": "late-arrival",
+      "departureProfile": "late-departure",
+      "label": "Llegada tarde / salida tarde",
+      "arrivalAvailableFrom": "15:00",
+      "departureAvailableUntil": "20:00",
+      "rules": [
+        "No programar full day el primer día.",
+        "Permite actividad corta el último día si el destino y traslado lo permiten."
+      ]
+    },
+    {
+      "key": "late-arrival__early-departure",
+      "arrivalProfile": "late-arrival",
+      "departureProfile": "early-departure",
+      "label": "Llegada tarde / salida temprano",
+      "arrivalAvailableFrom": "15:00",
+      "departureAvailableUntil": "10:00",
+      "rules": [
+        "Primer y último día deben tratarse como días logísticos salvo disponibilidad real.",
+        "Reducir cantidad de tours y priorizar experiencias esenciales."
+      ]
+    }
+  ],
+  "references": {
+    "peruTours": {
+      "lima": [
+        "PER001"
+      ],
+      "paracasIcaNazca": [
+        "PER002",
+        "PER003",
+        "PER004"
+      ],
+      "arequipaColca": [
+        "PER005",
+        "PER006"
+      ],
+      "punoTiticaca": [
+        "PER007",
+        "PER008"
+      ],
+      "tarapoto": [
+        "PER009",
+        "PER010"
+      ],
+      "iquitos": [
+        "PER011"
+      ],
+      "tambopata": [
+        "PER012"
+      ]
+    },
+    "cuscoTours": [
+      "CUZ001",
+      "CUZ002",
+      "CUZ003",
+      "CUZ004",
+      "CUZ005",
+      "CUZ006",
+      "CUZ007",
+      "CUZ008",
+      "CUZ009"
+    ],
+    "machuPicchuTours": [
+      "MAPI001",
+      "MAPI002",
+      "MAPI003",
+      "MAPI004",
+      "MAPI005",
+      "MAPI006",
+      "MAPI007",
+      "MAPI008",
+      "MAPI009",
+      "MAPI010"
+    ]
+  },
+  "destinationBlocks": {
+    "lima": {
+      "label": "Lima",
+      "defaultNights": 1,
+      "minNights": 1,
+      "maxNights": 2,
+      "allowedTours": [
+        "PER001"
+      ],
+      "recommendedTours": [
+        "PER001"
+      ],
+      "arrivalDayOptions": [
+        "PER001"
+      ],
+      "departureDayOptions": [],
+      "logistics": {
+        "preferredArrival": "international_flight",
+        "preferredExit": "domestic_flight_or_bus"
+      },
+      "hotelDestinationKey": "lima"
+    },
+    "paracas_ica": {
+      "label": "Paracas / Ica / Huacachina",
+      "defaultNights": 1,
+      "minNights": 0,
+      "maxNights": 2,
+      "allowedTours": [
+        "PER002",
+        "PER003",
+        "PER004"
+      ],
+      "recommendedTours": [
+        "PER003"
+      ],
+      "conflictRules": [
+        {
+          "ifIncluded": "PER003",
+          "avoidAlsoIncluding": [
+            "PER002"
+          ],
+          "reason": "PER003 ya incluye la experiencia de Islas Ballestas dentro del full day desde Lima."
+        }
+      ],
+      "logistics": {
+        "preferredConnection": "road_from_lima",
+        "longTransfer": true
+      },
+      "hotelDestinationKey": "paracas"
+    },
+    "arequipa_colca": {
+      "label": "Arequipa / Colca",
+      "defaultNights": 2,
+      "minNights": 1,
+      "maxNights": 3,
+      "allowedTours": [
+        "PER005",
+        "PER006"
+      ],
+      "recommendedTours": [
+        "PER005",
+        "PER006"
+      ],
+      "logistics": {
+        "preferredConnection": "flight_or_bus",
+        "avoidFullDayAfterLateArrival": true
+      },
+      "hotelDestinationKey": "arequipa"
+    },
+    "puno_titicaca": {
+      "label": "Puno / Lago Titicaca",
+      "defaultNights": 1,
+      "minNights": 1,
+      "maxNights": 2,
+      "allowedTours": [
+        "PER007",
+        "PER008"
+      ],
+      "recommendedTours": [
+        "PER007"
+      ],
+      "logistics": {
+        "preferredConnection": "tourist_bus_or_train_from_cusco_or_arequipa",
+        "altitudeSensitive": true
+      },
+      "hotelDestinationKey": "puno"
+    },
+    "cusco_machu_picchu": {
+      "label": "Cusco / Valle Sagrado / Machu Picchu",
+      "defaultNights": 3,
+      "minNights": 2,
+      "maxNights": 6,
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "recommendedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "trekkingTours": [
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009"
+      ],
+      "machuPicchuTours": [
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "inheritsRulesFrom": "assets/data/packages-cusco.json",
+      "hotelDestinationKeys": [
+        "cusco",
+        "aguas-calientes"
+      ],
+      "logistics": {
+        "preferredConnection": "domestic_flight_to_cusco",
+        "altitudeSensitive": true
+      }
+    },
+    "tarapoto": {
+      "label": "Tarapoto",
+      "defaultNights": 2,
+      "minNights": 2,
+      "maxNights": 3,
+      "allowedTours": [
+        "PER009",
+        "PER010"
+      ],
+      "recommendedTours": [
+        "PER009",
+        "PER010"
+      ],
+      "logistics": {
+        "preferredConnection": "domestic_flight",
+        "natureExtension": true
+      },
+      "hotelDestinationKey": "tarapoto"
+    },
+    "iquitos": {
+      "label": "Iquitos / Amazonas",
+      "defaultNights": 2,
+      "minNights": 2,
+      "maxNights": 4,
+      "allowedTours": [
+        "PER011"
+      ],
+      "recommendedTours": [
+        "PER011"
+      ],
+      "logistics": {
+        "preferredConnection": "domestic_flight",
+        "natureExtension": true
+      },
+      "hotelDestinationKey": "iquitos"
+    },
+    "tambopata": {
+      "label": "Puerto Maldonado / Tambopata",
+      "defaultNights": 2,
+      "minNights": 2,
+      "maxNights": 4,
+      "allowedTours": [
+        "PER012"
+      ],
+      "recommendedTours": [
+        "PER012"
+      ],
+      "logistics": {
+        "preferredConnection": "domestic_flight_from_cusco_or_lima",
+        "natureExtension": true
+      },
+      "hotelDestinationKey": "puerto-maldonado"
+    }
+  },
+  "routeTemplates": [
+    {
+      "key": "lima-cusco",
+      "label": "Lima + Cusco + Machu Picchu",
+      "minDays": 5,
+      "maxDays": 7,
+      "destinationBlocks": [
+        "lima",
+        "cusco_machu_picchu"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "cusco_machu_picchu"
+      ],
+      "requiredTours": [
+        "MAPI001"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "CUZ002",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "domesticTransport": [
+        "LIM-CUZ"
+      ],
+      "salesPosition": "Primer viaje corto a Perú."
+    },
+    {
+      "key": "lima-paracas-cusco",
+      "label": "Lima + Paracas/Ica + Cusco + Machu Picchu",
+      "minDays": 7,
+      "maxDays": 10,
+      "destinationBlocks": [
+        "lima",
+        "paracas_ica",
+        "cusco_machu_picchu"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "paracas_ica",
+        "cusco_machu_picchu"
+      ],
+      "requiredTours": [
+        "PER003",
+        "MAPI003"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "PER003",
+        "CUZ002",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "domesticTransport": [
+        "LIM-CUZ"
+      ],
+      "salesPosition": "Ruta comercial fuerte para combinar costa, desierto y Andes."
+    },
+    {
+      "key": "lima-arequipa-cusco",
+      "label": "Lima + Arequipa/Colca + Cusco + Machu Picchu",
+      "minDays": 8,
+      "maxDays": 11,
+      "destinationBlocks": [
+        "lima",
+        "arequipa_colca",
+        "cusco_machu_picchu"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "arequipa_colca",
+        "cusco_machu_picchu"
+      ],
+      "requiredTours": [
+        "PER006",
+        "MAPI003"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "PER005",
+        "PER006",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "domesticTransport": [
+        "LIM-AQP",
+        "AQP-CUZ"
+      ],
+      "salesPosition": "Ruta cultural y paisajística para viajeros que quieren Arequipa y Colca."
+    },
+    {
+      "key": "lima-puno-cusco",
+      "label": "Lima + Puno/Titicaca + Cusco + Machu Picchu",
+      "minDays": 7,
+      "maxDays": 10,
+      "destinationBlocks": [
+        "lima",
+        "puno_titicaca",
+        "cusco_machu_picchu"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "puno_titicaca",
+        "cusco_machu_picchu"
+      ],
+      "requiredTours": [
+        "PER007",
+        "MAPI003"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "PER007",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "domesticTransport": [
+        "LIM-JUL",
+        "JUL-CUZ_or_tourist_bus"
+      ],
+      "salesPosition": "Ruta andina con cultura viva y Machu Picchu."
+    },
+    {
+      "key": "lima-paracas-arequipa-puno-cusco",
+      "label": "Lima + Paracas/Ica + Arequipa/Colca + Puno + Cusco",
+      "minDays": 10,
+      "maxDays": 13,
+      "destinationBlocks": [
+        "lima",
+        "paracas_ica",
+        "arequipa_colca",
+        "puno_titicaca",
+        "cusco_machu_picchu"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "paracas_ica",
+        "arequipa_colca",
+        "puno_titicaca",
+        "cusco_machu_picchu"
+      ],
+      "requiredTours": [
+        "PER003",
+        "PER006",
+        "PER007",
+        "MAPI003"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007",
+        "CUZ003",
+        "MAPI003"
+      ],
+      "domesticTransport": [
+        "LIM-AQP_or_road",
+        "AQP-PNO",
+        "PNO-CUZ"
+      ],
+      "salesPosition": "Ruta esencial del sur del Perú."
+    },
+    {
+      "key": "peru-sur-amazonia",
+      "label": "Perú Sur + Amazonía",
+      "minDays": 12,
+      "maxDays": 15,
+      "destinationBlocks": [
+        "lima",
+        "paracas_ica",
+        "arequipa_colca",
+        "puno_titicaca",
+        "cusco_machu_picchu",
+        "tambopata"
+      ],
+      "requiredBlocks": [
+        "lima",
+        "cusco_machu_picchu",
+        "tambopata"
+      ],
+      "requiredTours": [
+        "MAPI003",
+        "PER012"
+      ],
+      "recommendedTours": [
+        "PER001",
+        "PER003",
+        "PER006",
+        "PER007",
+        "CUZ003",
+        "MAPI003",
+        "PER012"
+      ],
+      "domesticTransport": [
+        "LIM-CUZ",
+        "CUZ-PEM",
+        "PEM-LIM"
+      ],
+      "salesPosition": "Ruta extensa para combinar Andes y Amazonía."
+    }
+  ],
+  "globalRules": {
+    "noHardcodedItineraries": true,
+    "generateFromRouteTemplates": true,
+    "dedupeByContentNotOrder": true,
+    "sortAfterGeneration": true,
+    "searchOnlyUsesSearchField": true,
+    "doNotSearchIn": [
+      "includes",
+      "excludes",
+      "description",
+      "faq",
+      "importantInfo"
+    ],
+    "cuscoRulesInheritedFromPackagesCusco": true,
+    "machuPicchuRules": {
+      "threeOrFiveDayShortRoutesPreferFullDay": true,
+      "overnightRecommendedWhenCuscoBlockHasAtLeastThreeNights": true,
+      "sameTrainCompanyRoundTrip": true,
+      "doNotMixPeruRailAndIncaRail": true,
+      "useTrainsJsonAsSourceOfTruth": true
+    },
+    "commercialRules": [
+      "Priorizar rutas vendibles y comprensibles para cliente final.",
+      "No saturar paquetes cortos con demasiados traslados.",
+      "No programar full day al día siguiente de una llegada nocturna o bus nocturno sin descanso.",
+      "No programar trekkings de alta exigencia antes de aclimatación mínima en Cusco.",
+      "Evitar dos tours de madrugada consecutivos salvo paquetes largos y con nota comercial."
+    ],
+    "pricingRules": {
+      "pricingMode": "sum_selected_products_plus_hotels_transport_extras",
+      "peruToursPricingStatus": "reference_pending_confirmation_until_supplier_validation",
+      "cuscoTourPricing": "use_tours_cusco_pricing_engine",
+      "machuPicchuPricing": "use_machu_picchu_margin_model_and_trains_json",
+      "hotels": "calculate_by_destination_nights_and_selected_room_combination",
+      "domesticFlights": "not_included_by_default_use_optional_external_quote",
+      "intercityBusOrTrain": "optional_or_manual_quote_until_catalog_ready"
+    }
+  },
+  "generationEngine": {
+    "inputParams": [
+      "days",
+      "nights",
+      "arrivalTime",
+      "departureTime",
+      "arrivalCity",
+      "departureCity",
+      "preferredDestinations",
+      "nationality",
+      "adults",
+      "children",
+      "budgetLevel",
+      "hotelPreference"
+    ],
+    "steps": [
+      "Load packageCards for listing in All Experience.",
+      "On product detail, resolve durationConfig by days and nights.",
+      "Pick routeTemplates compatible with duration and preferred destinations.",
+      "Expand destinationBlocks into candidate tour sets.",
+      "Apply arrival/departure profile rules.",
+      "Apply Cusco and Machu Picchu inherited rules when route contains cusco_machu_picchu.",
+      "Remove conflicts such as duplicate Islas Ballestas when PER003 already covers Paracas/Ica.",
+      "Generate combinations using requiredTours plus optional/recommended tours.",
+      "Create content signature with normalized included tour codes and destination blocks.",
+      "Remove duplicate signatures regardless of generation order.",
+      "Sort final itinerary by geography, transport logic, acclimatization, operation times and departure constraints.",
+      "Calculate dynamic pricing from selected products, hotels, trains, extras and optional transport."
+    ],
+    "dedupeSignature": {
+      "fields": [
+        "normalizedDestinationBlocks",
+        "normalizedTourCodes",
+        "machuPicchuMode",
+        "vipFlag",
+        "amazonExtensionFlag"
+      ],
+      "normalize": "sort_arrays_lowercase_unique",
+      "ignoreFields": [
+        "generatedOrder",
+        "displayDayNumber",
+        "temporaryScore"
+      ]
+    },
+    "sortingRules": [
+      {
+        "priority": 10,
+        "rule": "International arrival city first, usually Lima."
+      },
+      {
+        "priority": 20,
+        "rule": "Group nearby coastal products: Lima before Paracas/Ica/Nazca."
+      },
+      {
+        "priority": 30,
+        "rule": "Avoid long full day immediately after late arrival or overnight transport."
+      },
+      {
+        "priority": 40,
+        "rule": "Place Arequipa/Colca and Puno before or after Cusco according to selected route template."
+      },
+      {
+        "priority": 50,
+        "rule": "In Cusco block, apply packages-cusco operational ordering."
+      },
+      {
+        "priority": 60,
+        "rule": "Place Amazon extensions at the end unless flight route requires otherwise."
+      },
+      {
+        "priority": 70,
+        "rule": "Keep last day light for transfers and international/domestic departure."
+      }
+    ]
+  },
+  "packageCards": [
+    {
+      "id": "pkg_peru_5d4n",
+      "slug": "paquetes-peru-lima-cusco-5-dias-4-noches",
+      "title": "Paquetes Perú: Lima + Cusco 5 días / 4 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 5,
+      "nights": 4,
+      "typeLabel": "5 días / 4 noches",
+      "badge": "Primer viaje",
+      "featured": true,
+      "location": "Lima / Cusco / Machu Picchu / Perú",
+      "shortDescription": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos días.",
+      "image": "./assets/img/packages/peru/5d4n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "5d4n",
+          "5-dias",
+          "4-noches",
+          "5-days",
+          "4-nights"
+        ],
+        "includedTourCodes": [
+          "PER001",
+          "CUZ002",
+          "MAPI001"
+        ],
+        "includedTags": [
+          "lima",
+          "cusco",
+          "machu-picchu",
+          "paquete-peru"
+        ],
+        "themes": [
+          "cultural",
+          "historico",
+          "classic"
+        ],
+        "keywords": [
+          "paquetes perú: lima + cusco 5 días / 4 noches",
+          "paquete peru 5 dias",
+          "peru 5 dias 4 noches",
+          "lima",
+          "cusco",
+          "machu-picchu",
+          "paquete-peru"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_6d5n",
+      "slug": "paquetes-peru-lima-cusco-6-dias-5-noches",
+      "title": "Paquetes Perú: Lima + Cusco 6 días / 5 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 6,
+      "nights": 5,
+      "typeLabel": "6 días / 5 noches",
+      "badge": "Clásico",
+      "featured": true,
+      "location": "Lima / Cusco / Machu Picchu / Valle Sagrado / Perú",
+      "shortDescription": "Ruta clásica con Lima, Valle Sagrado, Cusco y Machu Picchu.",
+      "image": "./assets/img/packages/peru/6d5n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado"
+        ],
+        "durationKeys": [
+          "6d5n",
+          "6-dias",
+          "5-noches",
+          "6-days",
+          "5-nights"
+        ],
+        "includedTourCodes": [
+          "PER001",
+          "CUZ003",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "lima",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "historico",
+          "classic"
+        ],
+        "keywords": [
+          "paquetes perú: lima + cusco 6 días / 5 noches",
+          "paquete peru 6 dias",
+          "peru 6 dias 5 noches",
+          "lima",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_7d6n",
+      "slug": "paquetes-peru-lima-paracas-cusco-7-dias-6-noches",
+      "title": "Paquetes Perú: Lima + Paracas/Ica + Cusco 7 días / 6 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 7,
+      "nights": 6,
+      "typeLabel": "7 días / 6 noches",
+      "badge": "Top ventas",
+      "featured": true,
+      "location": "Lima / Paracas / Ica / Cusco / Perú",
+      "shortDescription": "Combina costa sur, desierto, Cusco y Machu Picchu.",
+      "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "7d6n",
+          "7-dias",
+          "6-noches",
+          "7-days",
+          "6-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "CUZ002",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura"
+        ],
+        "keywords": [
+          "paquetes perú: lima + paracas/ica + cusco 7 días / 6 noches",
+          "paquete peru 7 dias",
+          "peru 7 dias 6 noches",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "machu-picchu"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_8d7n",
+      "slug": "paquetes-peru-lima-paracas-cusco-puno-8-dias-7-noches",
+      "title": "Paquetes Perú: Lima + Paracas/Ica + Cusco/Puno 8 días / 7 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 8,
+      "nights": 7,
+      "typeLabel": "8 días / 7 noches",
+      "badge": "Completo",
+      "featured": true,
+      "location": "Lima / Paracas / Ica / Cusco / Perú",
+      "shortDescription": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca.",
+      "image": "./assets/img/packages/peru/8d7n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "cusco",
+          "machu-picchu",
+          "puno"
+        ],
+        "durationKeys": [
+          "8d7n",
+          "8-dias",
+          "7-noches",
+          "8-days",
+          "7-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "MAPI003",
+          "PER007"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "ica",
+          "cusco",
+          "machu-picchu",
+          "puno",
+          "titicaca"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura"
+        ],
+        "keywords": [
+          "paquetes perú: lima + paracas/ica + cusco/puno 8 días / 7 noches",
+          "paquete peru 8 dias",
+          "peru 8 dias 7 noches",
+          "lima",
+          "paracas",
+          "ica",
+          "cusco",
+          "machu-picchu",
+          "puno",
+          "titicaca"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_9d8n",
+      "slug": "paquetes-peru-lima-arequipa-cusco-9-dias-8-noches",
+      "title": "Paquetes Perú: Lima + Arequipa + Cusco 9 días / 8 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 9,
+      "nights": 8,
+      "typeLabel": "9 días / 8 noches",
+      "badge": "Andes del Sur",
+      "featured": false,
+      "location": "Lima / Arequipa / Colca / Cusco / Perú",
+      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu.",
+      "image": "./assets/img/packages/peru/9d8n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "9d8n",
+          "9-dias",
+          "8-noches",
+          "9-days",
+          "8-nights"
+        ],
+        "includedTourCodes": [
+          "PER001",
+          "PER005",
+          "PER006",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "lima",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "paisaje"
+        ],
+        "keywords": [
+          "paquetes perú: lima + arequipa + cusco 9 días / 8 noches",
+          "paquete peru 9 dias",
+          "peru 9 dias 8 noches",
+          "lima",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_10d9n",
+      "slug": "paquetes-peru-lima-paracas-arequipa-cusco-10-dias-9-noches",
+      "title": "Paquetes Perú: Lima + Paracas + Arequipa + Cusco 10 días / 9 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 10,
+      "nights": 9,
+      "typeLabel": "10 días / 9 noches",
+      "badge": "Gran clásico",
+      "featured": true,
+      "location": "Lima / Paracas / Ica / Arequipa / Perú",
+      "shortDescription": "Gran ruta del sur peruano con costa, desierto, Arequipa, Colca, Cusco y Machu Picchu.",
+      "image": "./assets/img/packages/peru/10d9n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "10d9n",
+          "10-dias",
+          "9-noches",
+          "10-days",
+          "9-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "PER005",
+          "PER006",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "paisaje"
+        ],
+        "keywords": [
+          "paquetes perú: lima + paracas + arequipa + cusco 10 días / 9 noches",
+          "paquete peru 10 dias",
+          "peru 10 dias 9 noches",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "arequipa",
+          "colca",
+          "cusco",
+          "machu-picchu"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_12d11n",
+      "slug": "paquetes-peru-lima-paracas-arequipa-puno-cusco-12-dias-11-noches",
+      "title": "Paquetes Perú: Lima + Paracas + Arequipa + Puno + Cusco 12 días / 11 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 12,
+      "nights": 11,
+      "typeLabel": "12 días / 11 noches",
+      "badge": "Perú esencial",
+      "featured": true,
+      "location": "Lima / Paracas / Ica / Arequipa / Perú",
+      "shortDescription": "Ruta esencial del Perú sur con costa, Colca, Titicaca, Cusco y Machu Picchu.",
+      "image": "./assets/img/packages/peru/12d11n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "arequipa",
+          "colca",
+          "puno",
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "12d11n",
+          "12-dias",
+          "11-noches",
+          "12-days",
+          "11-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "PER006",
+          "PER007",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "ica",
+          "arequipa",
+          "colca",
+          "puno",
+          "titicaca",
+          "cusco",
+          "machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "paisaje"
+        ],
+        "keywords": [
+          "paquetes perú: lima + paracas + arequipa + puno + cusco 12 días / 11 noches",
+          "paquete peru 12 dias",
+          "peru 12 dias 11 noches",
+          "lima",
+          "paracas",
+          "ica",
+          "arequipa",
+          "colca",
+          "puno",
+          "titicaca",
+          "cusco",
+          "machu-picchu"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_14d13n",
+      "slug": "paquetes-peru-sur-amazonia-14-dias-13-noches",
+      "title": "Paquetes Perú Sur + Amazonía 14 días / 13 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 14,
+      "nights": 13,
+      "typeLabel": "14 días / 13 noches",
+      "badge": "Naturaleza",
+      "featured": false,
+      "location": "Lima / Paracas / Arequipa / Puno / Perú",
+      "shortDescription": "Ruta amplia para combinar el sur clásico del Perú con una extensión de Amazonía.",
+      "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "arequipa",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "tambopata",
+          "iquitos"
+        ],
+        "durationKeys": [
+          "14d13n",
+          "14-dias",
+          "13-noches",
+          "14-days",
+          "13-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "PER006",
+          "PER007",
+          "MAPI003",
+          "PER012"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "arequipa",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "amazonas",
+          "tambopata"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "selva",
+          "aventura"
+        ],
+        "keywords": [
+          "paquetes perú sur + amazonía 14 días / 13 noches",
+          "paquete peru 14 dias",
+          "peru 14 dias 13 noches",
+          "lima",
+          "paracas",
+          "arequipa",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "amazonas",
+          "tambopata"
+        ]
+      }
+    },
+    {
+      "id": "pkg_peru_15d14n",
+      "slug": "paquetes-peru-completo-15-dias-14-noches",
+      "title": "Paquetes Perú completo 15 días / 14 noches",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 15,
+      "nights": 14,
+      "typeLabel": "15 días / 14 noches",
+      "badge": "Mega viaje",
+      "featured": false,
+      "location": "Lima / Paracas / Ica / Nazca / Perú",
+      "shortDescription": "Versión extensa para viajeros que quieren una experiencia completa del Perú.",
+      "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "nazca",
+          "arequipa",
+          "colca",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "amazonas"
+        ],
+        "durationKeys": [
+          "15d14n",
+          "15-dias",
+          "14-noches",
+          "15-days",
+          "14-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "PER004",
+          "PER006",
+          "PER007",
+          "MAPI003",
+          "PER012"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "ica",
+          "nazca",
+          "arequipa",
+          "colca",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "amazonas"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "arqueologia",
+          "selva"
+        ],
+        "keywords": [
+          "paquetes perú completo 15 días / 14 noches",
+          "paquete peru 15 dias",
+          "peru 15 dias 14 noches",
+          "lima",
+          "paracas",
+          "ica",
+          "nazca",
+          "arequipa",
+          "colca",
+          "puno",
+          "cusco",
+          "machu-picchu",
+          "amazonas"
+        ]
+      }
+    }
+  ],
+  "durationConfigs": [
+    {
+      "key": "5d4n",
+      "days": 5,
+      "nights": 4,
+      "minDays": 5,
+      "maxDays": 5,
+      "allowedRouteTemplates": [
+        "lima-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "cusco_machu_picchu",
+        "lima"
+      ],
+      "requiredTours": [
+        "MAPI001"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001"
+      ],
+      "maxDestinationBlocks": 2,
+      "maxLongFullDays": 3,
+      "maxTrekkingsInCuscoBlock": 1,
+      "allowCuscoVip": false,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": false,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": false,
+      "allowFullDayMachuPicchu": true,
+      "allowOvernightMachuPicchu": false,
+      "defaultMachuPicchuMode": "full-day",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "6d5n",
+      "days": 6,
+      "nights": 5,
+      "minDays": 6,
+      "maxDays": 6,
+      "allowedRouteTemplates": [
+        "lima-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "cusco_machu_picchu",
+        "lima"
+      ],
+      "requiredTours": [
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001"
+      ],
+      "maxDestinationBlocks": 2,
+      "maxLongFullDays": 3,
+      "maxTrekkingsInCuscoBlock": 1,
+      "allowCuscoVip": false,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": false,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": false,
+      "allowFullDayMachuPicchu": true,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "7d6n",
+      "days": 7,
+      "nights": 6,
+      "minDays": 7,
+      "maxDays": 7,
+      "allowedRouteTemplates": [
+        "lima-paracas-cusco",
+        "lima-puno-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca"
+      ],
+      "requiredTours": [
+        "PER003",
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER007"
+      ],
+      "maxDestinationBlocks": 3,
+      "maxLongFullDays": 4,
+      "maxTrekkingsInCuscoBlock": 1,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": false,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": false,
+      "allowFullDayMachuPicchu": true,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "8d7n",
+      "days": 8,
+      "nights": 7,
+      "minDays": 8,
+      "maxDays": 8,
+      "allowedRouteTemplates": [
+        "lima-paracas-cusco",
+        "lima-puno-cusco",
+        "lima-arequipa-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca"
+      ],
+      "requiredTours": [
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007"
+      ],
+      "maxDestinationBlocks": 4,
+      "maxLongFullDays": 5,
+      "maxTrekkingsInCuscoBlock": 1,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": false,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": false,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "9d8n",
+      "days": 9,
+      "nights": 8,
+      "minDays": 9,
+      "maxDays": 9,
+      "allowedRouteTemplates": [
+        "lima-arequipa-cusco",
+        "lima-paracas-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica"
+      ],
+      "requiredTours": [
+        "PER006",
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006"
+      ],
+      "maxDestinationBlocks": 4,
+      "maxLongFullDays": 5,
+      "maxTrekkingsInCuscoBlock": 1,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": false,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": true,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "10d9n",
+      "days": 10,
+      "nights": 9,
+      "minDays": 10,
+      "maxDays": 10,
+      "allowedRouteTemplates": [
+        "lima-paracas-arequipa-puno-cusco",
+        "lima-arequipa-cusco",
+        "lima-paracas-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca"
+      ],
+      "requiredTours": [
+        "PER003",
+        "PER006",
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ002",
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007"
+      ],
+      "maxDestinationBlocks": 5,
+      "maxLongFullDays": 6,
+      "maxTrekkingsInCuscoBlock": 2,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": false,
+      "allowNazcaExtension": true,
+      "allowTarapotoExtension": false,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": true,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "12d11n",
+      "days": 12,
+      "nights": 11,
+      "minDays": 12,
+      "maxDays": 12,
+      "allowedRouteTemplates": [
+        "lima-paracas-arequipa-puno-cusco",
+        "peru-sur-amazonia"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca",
+        "tambopata"
+      ],
+      "requiredTours": [
+        "PER003",
+        "PER006",
+        "PER007",
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007",
+        "PER012"
+      ],
+      "maxDestinationBlocks": 6,
+      "maxLongFullDays": 7,
+      "maxTrekkingsInCuscoBlock": 2,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": true,
+      "allowNazcaExtension": true,
+      "allowTarapotoExtension": true,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": true,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "14d13n",
+      "days": 14,
+      "nights": 13,
+      "minDays": 14,
+      "maxDays": 14,
+      "allowedRouteTemplates": [
+        "peru-sur-amazonia",
+        "lima-paracas-arequipa-puno-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca",
+        "tambopata"
+      ],
+      "requiredTours": [
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007",
+        "PER012"
+      ],
+      "maxDestinationBlocks": 7,
+      "maxLongFullDays": 8,
+      "maxTrekkingsInCuscoBlock": 2,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": true,
+      "allowNazcaExtension": true,
+      "allowTarapotoExtension": true,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": true,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    },
+    {
+      "key": "15d14n",
+      "days": 15,
+      "nights": 14,
+      "minDays": 15,
+      "maxDays": 15,
+      "allowedRouteTemplates": [
+        "peru-sur-amazonia",
+        "lima-paracas-arequipa-puno-cusco"
+      ],
+      "allowedDestinationBlocks": [
+        "arequipa_colca",
+        "cusco_machu_picchu",
+        "lima",
+        "paracas_ica",
+        "puno_titicaca",
+        "tambopata"
+      ],
+      "requiredTours": [
+        "MAPI003"
+      ],
+      "allowedTours": [
+        "CUZ003",
+        "MAPI003",
+        "PER001",
+        "PER003",
+        "PER005",
+        "PER006",
+        "PER007",
+        "PER012"
+      ],
+      "maxDestinationBlocks": 7,
+      "maxLongFullDays": 8,
+      "maxTrekkingsInCuscoBlock": 2,
+      "allowCuscoVip": true,
+      "allowAmazonExtension": true,
+      "allowNazcaExtension": true,
+      "allowTarapotoExtension": true,
+      "allowConnectionByFlight": true,
+      "allowConnectionByBus": true,
+      "allowOvernightBus": true,
+      "allowFullDayMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
+      "defaultMachuPicchuMode": "overnight",
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
+        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
+        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+      ]
+    }
+  ],
+  "specialVariants": {
+    "withNazca": {
+      "label": "Agregar Sobrevuelo Líneas de Nazca",
+      "enabledFromDays": 10,
+      "requiresTours": [
+        "PER004"
+      ],
+      "requiresDestinationBlock": "paracas_ica",
+      "salesNote": "Agregar solo cuando el cliente acepte traslado más largo o noche estratégica en Ica/Nazca."
+    },
+    "withAmazonTambopata": {
+      "label": "Agregar extensión Amazonía Tambopata",
+      "enabledFromDays": 12,
+      "requiresTours": [
+        "PER012"
+      ],
+      "preferredPosition": "end_of_trip_after_cusco",
+      "salesNote": "Ideal después de Cusco por conectividad con Puerto Maldonado."
+    },
+    "withTarapoto": {
+      "label": "Agregar extensión Tarapoto",
+      "enabledFromDays": 12,
+      "requiresTours": [
+        "PER009",
+        "PER010"
+      ],
+      "preferredPosition": "start_or_end_by_flight_logic",
+      "salesNote": "Extensión de naturaleza suave con vuelos domésticos."
+    },
+    "withIquitos": {
+      "label": "Agregar extensión Iquitos",
+      "enabledFromDays": 12,
+      "requiresTours": [
+        "PER011"
+      ],
+      "preferredPosition": "start_or_end_by_flight_logic",
+      "salesNote": "Extensión amazónica que requiere validar vuelos y logística."
+    }
+  },
+  "detailPageBehavior": {
+    "allExperiencesUses": "packageCards",
+    "productDetailUses": "durationConfigs + routeTemplates + destinationBlocks + globalRules",
+    "productUrlPattern": "product.html?slug=SLUG",
+    "showGeneratedOptions": true,
+    "showRouteTemplateSelector": true,
+    "showArrivalDepartureCompatibility": true,
+    "showHotelSelector": true,
+    "showTrainSelectorWhenIncludesMachuPicchu": true,
+    "showDomesticTransportNotice": true,
+    "showPriceAsDynamic": true
+  },
+  "compatibility": {
+    "allExperiencesJs": true,
+    "productHtml": true,
+    "productJs": true,
+    "quotePackagesHtmlTouched": false,
+    "githubPagesCompatible": true,
+    "fetchCacheModeRecommendation": "no-store"
+  },
+  "implementationNotes": [
+    "Este archivo no reemplaza tours-peru.json ni packages-cusco.json; los orquesta por referencia.",
+    "Los paquetes Perú deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
+    "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
+    "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+  ]
+}
