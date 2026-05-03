@@ -678,6 +678,58 @@
 
     return option;
   }
+  function ensureMinimumShowcaseActivities(codes, pools, params, packagesCusco, tourIndex) {
+    let result = uniqueCodes(codes);
+  
+    const minimumTourCount = Math.max(Number(params.days || 0), result.length);
+  
+    const candidates = uniqueCodes([
+      ...pools.fullDay,
+      ...pools.cultural,
+      ...pools.halfDay,
+      ...pools.trekkings
+    ]).filter((code) => !result.includes(code));
+  
+    for (const candidate of candidates) {
+      if (result.length >= minimumTourCount) break;
+  
+      const testCodes = uniqueCodes([...result, candidate]);
+  
+      const tempOption = {
+        includedTourCodes: testCodes
+      };
+  
+      applyOperationalRules(
+        tempOption,
+        params,
+        {
+          days: params.days,
+          nights: params.nights,
+          maxTrekkings: 1
+        },
+        packagesCusco,
+        tourIndex
+      );
+  
+      if (
+        isValidPackageOption(
+          tempOption,
+          params,
+          {
+            days: params.days,
+            nights: params.nights,
+            maxTrekkings: 1
+          },
+          packagesCusco,
+          tourIndex
+        )
+      ) {
+        result = uniqueCodes(tempOption.includedTourCodes);
+      }
+    }
+  
+    return result;
+  }
 
   function generateCuscoPackages(params = {}, context = {}) {
     const data = getDataPayload(context.allData || context.data || {});
@@ -724,6 +776,14 @@
     ]);
 
     baseCodes = ensureShowcaseBaseTours(baseCodes, pools, packagesCusco, tourIndex);
+
+    baseCodes = ensureMinimumShowcaseActivities(
+      baseCodes,
+      pools,
+      params,
+      packagesCusco,
+      tourIndex
+    );
 
     const selectedMachu = chooseMachuPicchuCode(params, effectiveConfig, packagesCusco, {
       tourIndex
