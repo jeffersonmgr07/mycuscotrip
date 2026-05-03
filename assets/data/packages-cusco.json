@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-03",
   "sourceFile": "assets/data/packages-cusco.json",
   "scope": "cusco-dynamic-packages",
   "description": "Archivo de configuración para generar paquetes dinámicos de Cusco y Machu Picchu. No contiene itinerarios hardcodeados; define reglas, referencias, duraciones, perfiles de llegada/salida, restricciones operativas y metadatos para búsqueda, cards y página de detalle.",
@@ -18,8 +18,20 @@
   "defaultDestination": "cusco",
   "defaultCurrency": "USD",
   "baseCurrency": "USD",
-  "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
-  "allowedNationalities": ["national", "foreign", "andean_community", "latin_america", "student"],
+  "allowedCurrencies": [
+    "PEN",
+    "USD",
+    "EUR",
+    "CLP",
+    "MXN"
+  ],
+  "allowedNationalities": [
+    "national",
+    "foreign",
+    "andean_community",
+    "latin_america",
+    "student"
+  ],
   "durationRange": {
     "minDays": 3,
     "maxDays": 10,
@@ -34,8 +46,17 @@
       "departureProfile": "late-departure",
       "arrivalAvailableFrom": "12:00",
       "departureAvailableUntil": "18:00",
-      "firstDayModes": ["welcome", "half-day", "city-tour"],
-      "lastDayModes": ["free-time", "walking-tour", "short-experience", "transfer-out"],
+      "firstDayModes": [
+        "welcome",
+        "half-day",
+        "city-tour"
+      ],
+      "lastDayModes": [
+        "free-time",
+        "walking-tour",
+        "short-experience",
+        "transfer-out"
+      ],
       "priority": 1
     },
     "early-arrival__early-departure": {
@@ -45,8 +66,14 @@
       "departureProfile": "early-departure",
       "arrivalAvailableFrom": "12:00",
       "departureAvailableUntil": "10:00",
-      "firstDayModes": ["welcome", "half-day", "city-tour"],
-      "lastDayModes": ["transfer-out"],
+      "firstDayModes": [
+        "welcome",
+        "half-day",
+        "city-tour"
+      ],
+      "lastDayModes": [
+        "transfer-out"
+      ],
       "priority": 2
     },
     "late-arrival__late-departure": {
@@ -56,8 +83,17 @@
       "departureProfile": "late-departure",
       "arrivalAvailableFrom": "16:00",
       "departureAvailableUntil": "18:00",
-      "firstDayModes": ["welcome", "briefing", "free-time"],
-      "lastDayModes": ["free-time", "walking-tour", "short-experience", "transfer-out"],
+      "firstDayModes": [
+        "welcome",
+        "briefing",
+        "free-time"
+      ],
+      "lastDayModes": [
+        "free-time",
+        "walking-tour",
+        "short-experience",
+        "transfer-out"
+      ],
       "priority": 3
     },
     "late-arrival__early-departure": {
@@ -67,41 +103,130 @@
       "departureProfile": "early-departure",
       "arrivalAvailableFrom": "16:00",
       "departureAvailableUntil": "10:00",
-      "firstDayModes": ["welcome", "briefing", "free-time"],
-      "lastDayModes": ["transfer-out"],
+      "firstDayModes": [
+        "welcome",
+        "briefing",
+        "free-time"
+      ],
+      "lastDayModes": [
+        "transfer-out"
+      ],
       "priority": 4
     }
   },
   "tourReferences": {
     "cusco": {
-      "welcome": ["CUZ001"],
-      "cityTour": ["CUZ002"],
-      "sacredValley": ["CUZ003FD", "CUZ003VIP"],
-      "sacredValleyFullDay": ["CUZ003FD", "CUZ003VIP"],
-      "sacredValleyConnection": ["CUZ003CON", "CUZ003VIPCON"],
-      "sacredValleyClassic": ["CUZ003FD", "CUZ003CON"],
-      "sacredValleyVip": ["CUZ003VIP", "CUZ003VIPCON"],
-      "marasMoray": ["CUZ004"],
-      "southValley": ["CUZ005"],
-      "trekkings": ["CUZ006", "CUZ007", "CUZ008", "CUZ009"],
-      "natureSoft": ["CUZ006"],
-      "natureHighAltitude": ["CUZ007", "CUZ008", "CUZ009"],
-      "cultural": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005"],
-      "halfDay": ["CUZ001", "CUZ002", "CUZ004", "CUZ005"],
-      "fullDay": ["CUZ003", "CUZ006", "CUZ007", "CUZ008", "CUZ009"]
+      "welcome": [
+        "CUZ001"
+      ],
+      "cityTour": [
+        "CUZ002"
+      ],
+      "sacredValley": [
+        "CUZ003FD",
+        "CUZ003VIP"
+      ],
+      "sacredValleyFullDay": [
+        "CUZ003FD",
+        "CUZ003VIP"
+      ],
+      "sacredValleyConnection": [
+        "CUZ003CON",
+        "CUZ003VIPCON"
+      ],
+      "sacredValleyClassic": [
+        "CUZ003FD",
+        "CUZ003CON"
+      ],
+      "sacredValleyVip": [
+        "CUZ003VIP",
+        "CUZ003VIPCON"
+      ],
+      "marasMoray": [
+        "CUZ004"
+      ],
+      "southValley": [
+        "CUZ005"
+      ],
+      "trekkings": [
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009"
+      ],
+      "natureSoft": [
+        "CUZ006"
+      ],
+      "natureHighAltitude": [
+        "CUZ007",
+        "CUZ008",
+        "CUZ009"
+      ],
+      "cultural": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005"
+      ],
+      "halfDay": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ004",
+        "CUZ005"
+      ],
+      "fullDay": [
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009"
+      ]
     },
     "machuPicchu": {
-      "fullDay": ["MAPI001", "MAPI002", "MAPI005", "MAPI006", "MAPI007", "MAPI009"],
-      "fullDayClassic": ["MAPI001"],
-      "fullDayExpress": ["MAPI002"],
-      "overnight": ["MAPI003", "MAPI004", "MAPI008", "MAPI010"],
-      "overnightClassic": ["MAPI003"],
-      "overnightExpress": ["MAPI004"],
-      "premium": ["MAPI005", "MAPI006", "MAPI007"],
-      "luxury": ["MAPI009", "MAPI010"]
+      "fullDay": [
+        "MAPI001",
+        "MAPI002",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI009"
+      ],
+      "fullDayClassic": [
+        "MAPI001"
+      ],
+      "fullDayExpress": [
+        "MAPI002"
+      ],
+      "overnight": [
+        "MAPI003",
+        "MAPI004",
+        "MAPI008",
+        "MAPI010"
+      ],
+      "overnightClassic": [
+        "MAPI003"
+      ],
+      "overnightExpress": [
+        "MAPI004"
+      ],
+      "premium": [
+        "MAPI005",
+        "MAPI006",
+        "MAPI007"
+      ],
+      "luxury": [
+        "MAPI009",
+        "MAPI010"
+      ]
     }
   },
-  
   "defaultLogisticsServices": {
     "arrival": {
       "code": "TRANSFER_IN",
@@ -122,7 +247,6 @@
       "renderAs": "logistics-service"
     }
   },
-  
   "globalRules": {
     "doNotHardcodeItineraries": true,
     "generateCombinationsDynamically": true,
@@ -152,7 +276,13 @@
   "generationEngine": {
     "combinationStrategy": "choose_required_then_optional_until_service_days_are_filled",
     "availableServiceDaysFormula": "days - arrivalBufferDayImpact - departureBufferDayImpact",
-    "contentSignatureFields": ["includedTourCodes", "machuPicchuMode", "connectionMode", "trekkingCodes", "vipMode"],
+    "contentSignatureFields": [
+      "includedTourCodes",
+      "machuPicchuMode",
+      "connectionMode",
+      "trekkingCodes",
+      "vipMode"
+    ],
     "dedupeSignatureStrategy": "sort_codes_and_flags_before_hash",
     "orderingStrategy": [
       "arrival_or_welcome_first",
@@ -193,12 +323,38 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu"],
-        "durationKeys": ["3d2n", "3-dias", "2-noches", "tres-dias", "dos-noches"],
-        "includedTourCodes": ["CUZ002", "MAPI001", "MAPI002"],
-        "includedTags": ["cusco", "machu-picchu", "city-tour", "paquete-cusco"],
-        "themes": ["cultural", "historico", "classic"],
-        "keywords": ["paquete cusco 3 dias", "cusco machu picchu 3 dias", "3 dias 2 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu"
+        ],
+        "durationKeys": [
+          "3d2n",
+          "3-dias",
+          "2-noches",
+          "tres-dias",
+          "dos-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ002",
+          "MAPI001",
+          "MAPI002"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "city-tour",
+          "paquete-cusco"
+        ],
+        "themes": [
+          "cultural",
+          "historico",
+          "classic"
+        ],
+        "keywords": [
+          "paquete cusco 3 dias",
+          "cusco machu picchu 3 dias",
+          "3 dias 2 noches"
+        ]
       }
     },
     {
@@ -219,12 +375,49 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado"],
-        "durationKeys": ["4d3n", "4-dias", "3-noches", "cuatro-dias", "tres-noches"],
-        "includedTourCodes": ["CUZ002", "CUZ003", "CUZ006", "CUZ007", "CUZ009", "MAPI001", "MAPI003"],
-        "includedTags": ["cusco", "machu-picchu", "city-tour", "valle-sagrado", "humantay", "vinicunca", "siete-lagunas"],
-        "themes": ["cultural", "naturaleza", "aventura"],
-        "keywords": ["paquete cusco 4 dias", "machu picchu humantay", "machu picchu montaña de colores"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado"
+        ],
+        "durationKeys": [
+          "4d3n",
+          "4-dias",
+          "3-noches",
+          "cuatro-dias",
+          "tres-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ006",
+          "CUZ007",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "city-tour",
+          "valle-sagrado",
+          "humantay",
+          "vinicunca",
+          "siete-lagunas"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura"
+        ],
+        "keywords": [
+          "paquete cusco 4 dias",
+          "machu picchu humantay",
+          "machu picchu montaña de colores"
+        ]
       }
     },
     {
@@ -245,12 +438,53 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado"],
-        "durationKeys": ["5d4n", "5-dias", "4-noches", "cinco-dias", "cuatro-noches"],
-        "includedTourCodes": ["CUZ002", "CUZ003", "CUZ004", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "valle-sagrado", "maras-moray", "humantay", "vinicunca", "palcoyo", "siete-lagunas"],
-        "themes": ["cultural", "naturaleza", "aventura"],
-        "keywords": ["paquete cusco 5 dias", "paquete cusco machu picchu", "5 dias 4 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado"
+        ],
+        "durationKeys": [
+          "5d4n",
+          "5-dias",
+          "4-noches",
+          "cinco-dias",
+          "cuatro-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "maras-moray",
+          "humantay",
+          "vinicunca",
+          "palcoyo",
+          "siete-lagunas"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura"
+        ],
+        "keywords": [
+          "paquete cusco 5 dias",
+          "paquete cusco machu picchu",
+          "5 dias 4 noches"
+        ]
       }
     },
     {
@@ -271,12 +505,52 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado"],
-        "durationKeys": ["6d5n", "6-dias", "5-noches", "seis-dias", "cinco-noches"],
-        "includedTourCodes": ["CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "valle-sagrado", "valle-sur", "maras-moray", "trekking"],
-        "themes": ["cultural", "naturaleza", "aventura"],
-        "keywords": ["paquete cusco 6 dias", "cusco completo", "6 dias 5 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado"
+        ],
+        "durationKeys": [
+          "6d5n",
+          "6-dias",
+          "5-noches",
+          "seis-dias",
+          "cinco-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ005",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "valle-sur",
+          "maras-moray",
+          "trekking"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura"
+        ],
+        "keywords": [
+          "paquete cusco 6 dias",
+          "cusco completo",
+          "6 dias 5 noches"
+        ]
       }
     },
     {
@@ -297,12 +571,55 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado", "ausangate"],
-        "durationKeys": ["7d6n", "7-dias", "6-noches", "siete-dias", "seis-noches"],
-        "includedTourCodes": ["CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "humantay", "vinicunca", "palcoyo", "siete-lagunas", "ausangate"],
-        "themes": ["cultural", "naturaleza", "aventura", "fotografia"],
-        "keywords": ["paquete cusco 7 dias", "cusco machu picchu ausangate", "7 dias 6 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "ausangate"
+        ],
+        "durationKeys": [
+          "7d6n",
+          "7-dias",
+          "6-noches",
+          "siete-dias",
+          "seis-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ005",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "humantay",
+          "vinicunca",
+          "palcoyo",
+          "siete-lagunas",
+          "ausangate"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "fotografia"
+        ],
+        "keywords": [
+          "paquete cusco 7 dias",
+          "cusco machu picchu ausangate",
+          "7 dias 6 noches"
+        ]
       }
     },
     {
@@ -323,12 +640,56 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado", "ausangate"],
-        "durationKeys": ["8d7n", "8-dias", "7-noches", "ocho-dias", "siete-noches"],
-        "includedTourCodes": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "valle-sagrado", "valle-sur", "maras-moray", "trekking", "ausangate"],
-        "themes": ["cultural", "naturaleza", "aventura", "fotografia"],
-        "keywords": ["paquete cusco 8 dias", "cusco profundo", "8 dias 7 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "ausangate"
+        ],
+        "durationKeys": [
+          "8d7n",
+          "8-dias",
+          "7-noches",
+          "ocho-dias",
+          "siete-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ001",
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ005",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "valle-sur",
+          "maras-moray",
+          "trekking",
+          "ausangate"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "fotografia"
+        ],
+        "keywords": [
+          "paquete cusco 8 dias",
+          "cusco profundo",
+          "8 dias 7 noches"
+        ]
       }
     },
     {
@@ -349,12 +710,54 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado", "ausangate"],
-        "durationKeys": ["9d8n", "9-dias", "8-noches", "nueve-dias", "ocho-noches"],
-        "includedTourCodes": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "trekking", "cultural", "naturaleza"],
-        "themes": ["cultural", "naturaleza", "aventura", "slow-travel"],
-        "keywords": ["paquete cusco 9 dias", "cusco lento", "9 dias 8 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "ausangate"
+        ],
+        "durationKeys": [
+          "9d8n",
+          "9-dias",
+          "8-noches",
+          "nueve-dias",
+          "ocho-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ001",
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ005",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "trekking",
+          "cultural",
+          "naturaleza"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "slow-travel"
+        ],
+        "keywords": [
+          "paquete cusco 9 dias",
+          "cusco lento",
+          "9 dias 8 noches"
+        ]
       }
     },
     {
@@ -375,12 +778,58 @@
       "status": "published",
       "search": {
         "kind": "package",
-        "destinations": ["cusco", "machu-picchu", "valle-sagrado", "ausangate"],
-        "durationKeys": ["10d9n", "10-dias", "9-noches", "diez-dias", "nueve-noches"],
-        "includedTourCodes": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI003", "MAPI004"],
-        "includedTags": ["cusco", "machu-picchu", "valle-sagrado", "valle-sur", "maras-moray", "humantay", "vinicunca", "palcoyo", "siete-lagunas"],
-        "themes": ["cultural", "naturaleza", "aventura", "slow-travel"],
-        "keywords": ["paquete cusco 10 dias", "gran viaje cusco", "10 dias 9 noches"]
+        "destinations": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "ausangate"
+        ],
+        "durationKeys": [
+          "10d9n",
+          "10-dias",
+          "9-noches",
+          "diez-dias",
+          "nueve-noches"
+        ],
+        "includedTourCodes": [
+          "CUZ001",
+          "CUZ002",
+          "CUZ003FD",
+          "CUZ003CON",
+          "CUZ003VIP",
+          "CUZ003VIPCON",
+          "CUZ004",
+          "CUZ005",
+          "CUZ006",
+          "CUZ007",
+          "CUZ008",
+          "CUZ009",
+          "MAPI001",
+          "MAPI003",
+          "MAPI004"
+        ],
+        "includedTags": [
+          "cusco",
+          "machu-picchu",
+          "valle-sagrado",
+          "valle-sur",
+          "maras-moray",
+          "humantay",
+          "vinicunca",
+          "palcoyo",
+          "siete-lagunas"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "slow-travel"
+        ],
+        "keywords": [
+          "paquete cusco 10 dias",
+          "gran viaje cusco",
+          "10 dias 9 noches"
+        ]
       }
     }
   ],
@@ -391,18 +840,38 @@
       "nights": 2,
       "minDays": 3,
       "maxDays": 3,
-      "allowedTours": ["CUZ001", "CUZ002", "MAPI001", "MAPI002"],
-      "requiredTours": ["MAPI001"],
-      "optionalTourGroups": ["welcome", "cityTour"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "MAPI001",
+        "MAPI002"
+      ],
+      "requiredTours": [
+        "MAPI001"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "cityTour"
+      ],
       "maxTrekkings": 0,
       "allowVip": false,
       "allowConnection": false,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": false,
       "defaultMachuPicchuMode": "full-day",
-      "recommendedMachuPicchuCodes": ["MAPI001"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Ideal para viajes cortos.", "Debe priorizar Machu Picchu Full Day y solo agregar medio día si los horarios lo permiten."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Ideal para viajes cortos.",
+        "Debe priorizar Machu Picchu Full Day y solo agregar medio día si los horarios lo permiten."
+      ]
     },
     {
       "key": "4d3n",
@@ -410,18 +879,50 @@
       "nights": 3,
       "minDays": 4,
       "maxDays": 4,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004"],
-      "requiredTours": ["MAPI001"],
-      "optionalTourGroups": ["welcome", "cityTour", "sacredValley", "trekkings"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004"
+      ],
+      "requiredTours": [],
+      "optionalTourGroups": [
+        "welcome",
+        "cityTour",
+        "sacredValley",
+        "trekkings"
+      ],
       "maxTrekkings": 1,
       "allowVip": false,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Permite una excursión adicional como Humantay, Vinicunca o Siete Lagunas.", "Si se usa Valle Sagrado conexión, cambiar Machu Picchu a overnight."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Permite una excursión adicional como Humantay, Vinicunca o Siete Lagunas.",
+        "Si se usa Valle Sagrado conexión, cambiar Machu Picchu a overnight."
+      ]
     },
     {
       "key": "5d4n",
@@ -429,18 +930,58 @@
       "nights": 4,
       "minDays": 5,
       "maxDays": 5,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006"],
-      "requiredTours": ["CUZ002", "MAPI001"],
-      "optionalTourGroups": ["welcome", "sacredValley", "marasMoray", "southValley", "trekkings"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "sacredValley",
+        "marasMoray",
+        "southValley",
+        "trekkings"
+      ],
       "maxTrekkings": 1,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Duración ideal para City Tour, Valle Sagrado, Machu Picchu y un trekking.", "Valle VIP puede reemplazar Valle Sagrado + Maras para evitar duplicidad."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Duración ideal para City Tour, Valle Sagrado, Machu Picchu y un trekking.",
+        "Valle VIP puede reemplazar Valle Sagrado + Maras para evitar duplicidad."
+      ]
     },
     {
       "key": "6d5n",
@@ -448,18 +989,59 @@
       "nights": 5,
       "minDays": 6,
       "maxDays": 6,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI007"],
-      "requiredTours": ["CUZ002", "CUZ003", "MAPI001"],
-      "optionalTourGroups": ["welcome", "marasMoray", "southValley", "trekkings"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "marasMoray",
+        "southValley",
+        "trekkings"
+      ],
       "maxTrekkings": 2,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Permite dos rutas de naturaleza si los horarios y descanso son compatibles.", "Si hay trekking después de Machu Picchu, usar Overnight Express."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Permite dos rutas de naturaleza si los horarios y descanso son compatibles.",
+        "Si hay trekking después de Machu Picchu, usar Overnight Express."
+      ]
     },
     {
       "key": "7d6n",
@@ -467,18 +1049,62 @@
       "nights": 6,
       "minDays": 7,
       "maxDays": 7,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI007", "MAPI008"],
-      "requiredTours": ["CUZ002", "CUZ003", "MAPI001"],
-      "optionalTourGroups": ["welcome", "marasMoray", "southValley", "trekkings", "premiumMachuPicchu"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "marasMoray",
+        "southValley",
+        "trekkings",
+        "premiumMachuPicchu"
+      ],
       "maxTrekkings": 2,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Duración suficiente para combinar clásicos y rutas alternativas.", "Mantener máximo dos trekkings para evitar fatiga."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI008"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Duración suficiente para combinar clásicos y rutas alternativas.",
+        "Mantener máximo dos trekkings para evitar fatiga."
+      ]
     },
     {
       "key": "8d7n",
@@ -486,18 +1112,66 @@
       "nights": 7,
       "minDays": 8,
       "maxDays": 8,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI007", "MAPI008", "MAPI009", "MAPI010"],
-      "requiredTours": ["CUZ002", "CUZ003", "MAPI001"],
-      "optionalTourGroups": ["welcome", "marasMoray", "southValley", "trekkings", "premiumMachuPicchu", "luxuryMachuPicchu"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "marasMoray",
+        "southValley",
+        "trekkings",
+        "premiumMachuPicchu",
+        "luxuryMachuPicchu"
+      ],
       "maxTrekkings": 3,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI010"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Permite paquetes más completos con descanso intercalado.", "No renderizar todas las combinaciones; priorizar las mejores opciones por ranking."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI008",
+        "MAPI010"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Permite paquetes más completos con descanso intercalado.",
+        "No renderizar todas las combinaciones; priorizar las mejores opciones por ranking."
+      ]
     },
     {
       "key": "9d8n",
@@ -505,18 +1179,67 @@
       "nights": 8,
       "minDays": 9,
       "maxDays": 9,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI007", "MAPI008", "MAPI009", "MAPI010"],
-      "requiredTours": ["CUZ002", "CUZ003", "MAPI001"],
-      "optionalTourGroups": ["welcome", "marasMoray", "southValley", "trekkings", "premiumMachuPicchu", "luxuryMachuPicchu", "restDays"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "marasMoray",
+        "southValley",
+        "trekkings",
+        "premiumMachuPicchu",
+        "luxuryMachuPicchu",
+        "restDays"
+      ],
       "maxTrekkings": 3,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI010"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Usar días libres o experiencias cortas para mejorar UX y no saturar el viaje.", "Ideal para upsells de tren, hotel y experiencias privadas."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI008",
+        "MAPI010"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Usar días libres o experiencias cortas para mejorar UX y no saturar el viaje.",
+        "Ideal para upsells de tren, hotel y experiencias privadas."
+      ]
     },
     {
       "key": "10d9n",
@@ -524,40 +1247,112 @@
       "nights": 9,
       "minDays": 10,
       "maxDays": 10,
-      "allowedTours": ["CUZ001", "CUZ002", "CUZ003", "CUZ004", "CUZ005", "CUZ006", "CUZ007", "CUZ008", "CUZ009", "MAPI001", "MAPI002", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI007", "MAPI008", "MAPI009", "MAPI010"],
-      "requiredTours": ["CUZ002", "CUZ003", "MAPI001"],
-      "optionalTourGroups": ["welcome", "marasMoray", "southValley", "trekkings", "premiumMachuPicchu", "luxuryMachuPicchu", "restDays"],
+      "allowedTours": [
+        "CUZ001",
+        "CUZ002",
+        "CUZ003FD",
+        "CUZ003CON",
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009",
+        "MAPI001",
+        "MAPI002",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI007",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "requiredTours": [
+        "CUZ002"
+      ],
+      "optionalTourGroups": [
+        "welcome",
+        "marasMoray",
+        "southValley",
+        "trekkings",
+        "premiumMachuPicchu",
+        "luxuryMachuPicchu",
+        "restDays"
+      ],
       "maxTrekkings": 3,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
-      "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI009", "MAPI010"],
-      "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
-      "salesNotes": ["Máxima duración Cusco antes de pasar a packages-peru.json.", "Mantener escalabilidad para futuras experiencias como rutas privadas o paquetes temáticos."]
+      "recommendedMachuPicchuCodes": [
+        "MAPI001",
+        "MAPI003",
+        "MAPI004",
+        "MAPI005",
+        "MAPI006",
+        "MAPI008",
+        "MAPI009",
+        "MAPI010"
+      ],
+      "arrivalDepartureProfiles": [
+        "early-arrival__late-departure",
+        "early-arrival__early-departure",
+        "late-arrival__late-departure",
+        "late-arrival__early-departure"
+      ],
+      "salesNotes": [
+        "Máxima duración Cusco antes de pasar a packages-peru.json.",
+        "Mantener escalabilidad para futuras experiencias como rutas privadas o paquetes temáticos."
+      ]
     }
   ],
   "specialVariants": {
     "sacredValleyConnection": {
       "enabled": true,
-      "triggerTourCode": "CUZ003",
       "requiresMachuPicchuMode": "overnight",
-      "allowedMachuPicchuCodes": ["MAPI003", "MAPI004", "MAPI008", "MAPI010"],
-      "description": "Cuando Valle Sagrado se usa como conexión hacia Ollantaytambo o Aguas Calientes, el paquete debe convertir Machu Picchu a modalidad overnight."
+      "allowedMachuPicchuCodes": [
+        "MAPI003",
+        "MAPI004",
+        "MAPI008",
+        "MAPI010"
+      ],
+      "description": "Cuando Valle Sagrado se usa como conexión hacia Ollantaytambo o Aguas Calientes, el paquete debe convertir Machu Picchu a modalidad overnight.",
+      "triggerTourCodes": [
+        "CUZ003VIPCON",
+        "CUZ003CON"
+      ]
     },
     "trekkingAfterMachuPicchu": {
       "enabled": true,
-      "trekkingCodes": ["CUZ006", "CUZ007", "CUZ008", "CUZ009"],
+      "trekkingCodes": [
+        "CUZ006",
+        "CUZ007",
+        "CUZ008",
+        "CUZ009"
+      ],
       "requiresMachuPicchuCode": "MAPI004",
       "description": "Si después de Machu Picchu hay trekking, usar Machu Picchu Overnight Express para volver antes y permitir descanso operativo."
     },
     "valleVip": {
       "enabled": true,
-      "baseTourCode": "CUZ003",
-      "includedTourCodes": ["CUZ003", "CUZ004"],
-      "dedupeAgainst": ["CUZ004"],
-      "description": "Valle VIP incluye Maras/Moray; si se selecciona esta variante, no agregar Maras y Moray como día independiente."
+      "includedTourCodes": [
+        "CUZ003VIP",
+        "CUZ003VIPCON",
+        "CUZ004"
+      ],
+      "dedupeAgainst": [
+        "CUZ004"
+      ],
+      "description": "Valle VIP incluye Maras/Moray; si se selecciona esta variante, no agregar Maras y Moray como día independiente.",
+      "baseTourCodes": [
+        "CUZ003VIP",
+        "CUZ003VIPCON"
+      ]
     }
   },
   "detailPageBehavior": {
