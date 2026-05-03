@@ -4,7 +4,7 @@
  * My Cusco Trip - Product Page
  * Detecta si el producto es tour o package.
  * Busca por slug en todos los JSON cargados.
- * Base preparada para conectar package-generator.js después.
+ * Integra motor dinámico inicial para paquetes Cusco.
  */
 
 (function () {
@@ -12,7 +12,12 @@
     allData: null,
     catalog: [],
     product: null,
-    productType: null
+    productType: null,
+    packageOptions: [],
+    selectedPackageOption: null,
+    selectedItinerary: [],
+    accommodationPlan: [],
+    quote: null
   };
 
   function qs(selector) {
@@ -56,6 +61,22 @@
     if (element) element.hidden = !show;
   }
 
+  function ensureContainer(id, afterSelector) {
+    let element = document.getElementById(id);
+
+    if (element) return element;
+
+    const reference = qs(afterSelector) || qs("#packageContent") || qs("#productPageRoot");
+
+    if (!reference || !reference.parentNode) return null;
+
+    element = document.createElement("div");
+    element.id = id;
+    reference.parentNode.insertBefore(element, reference.nextSibling);
+
+    return element;
+  }
+
   function getProductPriceLabel(product) {
     if (!product) return "";
 
@@ -75,6 +96,16 @@
 
   function getProductImage(product) {
     return product?.image || "./assets/img/placeholder/experience.jpg";
+  }
+
+  function formatMoney(amount, currency = "USD") {
+    if (window.MyCuscoTripCurrencyService && state.allData) {
+      return window.MyCuscoTripCurrencyService.formatMoney(amount, currency, state.allData);
+    }
+
+    const value = Number(amount || 0);
+
+    return `${currency} ${Number.isFinite(value) ? value.toFixed(2) : "0.00"}`;
   }
 
   function renderHero(product) {
@@ -124,7 +155,7 @@
     setHtml("#packageDynamicNotice", `
       <div class="product-note-box">
         <strong>Paquete dinámico</strong>
-        <p>No es un itinerario hardcodeado. Las opciones se construirán desde los JSON y reglas del sistema.</p>
+        <p>No es un itinerario hardcodeado. Las opciones se construyen desde los JSON y reglas del sistema.</p>
       </div>
     `);
 
@@ -155,10 +186,338 @@
 
     setHtml("#productItinerary", `
       <div class="product-note-box">
-        <strong>Itinerarios disponibles</strong>
-        <p>Se conectará con package-generator.js e itinerary-builder.js en el siguiente paso.</p>
+        <strong>Generando itinerarios disponibles</strong>
+        <p>El sistema está preparando opciones dinámicas según las reglas del paquete.</p>
       </div>
     `);
+
+    preparePackageContainers();
+    renderDynamicPackageEngine(product);
+  }
+
+  function preparePackageContainers() {
+    ensureContainer("packageOptions", "#packageBasicInfo");
+    ensureContainer("productHotels", "#productItinerary");
+    ensureContainer("packageQuote", "#productHotels");
+    ensureContainer("packagePayment", "#packageQuote");
+  }
+
+  function renderDynamicPackageEngine(product) {
+    if (!window.MyCuscoTripPackageGenerator) {
+      setHtml("#productItinerary", `
+        <div class="product-note-box">
+          <strong>Motor de paquetes no disponible</strong>
+          <p>Verifica que package-generator.js esté cargado antes de product.js.</p>
+        </div>
+      `);
+      return;
+    }
+
+    try {
+      const options = window.MyCuscoTripPackageGenerator.generatePackageOptions(
+        {
+          productFamily: product.productFamily,
+          days: product.days,
+          nights: product.nights,
+          arrivalTime: "09:00",
+          departureTime: "20:00",
+          adults: 2,
+          children: 0,
+          nationality: "foreign"
+        },
+        state.allData
+      );
+
+      state.packageOptions = options;
+
+      if (!options.length) {
+        setHtml("#productItinerary", `
+          <div class="product-note-box">
+            <strong>No se encontraron opciones dinámicas</strong>
+            <p>Revisa la configuración de duración, tours permitidos y reglas operativas en packages-cusco.json.</p>
+          </div>
+        `);
+        return;
+      }
+
+      renderPackageOptions(options);
+      renderSelectedPackageOption(options[0], 0);
+    } catch (error) {
+      console.error("[MyCuscoTrip Product] Error en motor dinámico:", error);
+
+      setHtml("#productItinerary", `
+        <div class="product-note-box">
+          <strong>Error al generar paquete dinámico</strong>
+          <p>Revisa consola para ver el detalle técnico.</p>
+        </div>
+      `);
+    }
+  }
+
+  function renderPackageOptions(options) {
+    const html = `
+      <section class="package-options-section">
+        <div class="package-options-section__header">
+          <h2>Opciones de itinerario disponibles</h2>
+          <p>Elige una opción generada dinámicamente según la duración del paquete.</p>
+        </div>
+
+        <div class="package-options-list">
+          ${options.map((option, index) => renderPackageOptionButton(option, index)).join("")}
+        </div>
+      </section>
+    `;
+
+    setHtml("#packageOptions", html);
+
+    document.querySelectorAll(".package-option-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.index);
+        renderSelectedPackageOption(state.packageOptions[index], index);
+      });
+    });
+  }
+
+  function renderPackageOptionButton(option, index) {
+    const codes = Array.isArray(option.includedTourCodes) ? option.includedTourCodes : [];
+    const tourCount = codes.length;
+    const label = option.generationReason || "dynamic";
+
+    return `
+      <button
+        type="button"
+        class="package-option-btn ${index === 0 ? "is-selected" : ""}"
+        data-index="${index}"
+      >
+        <strong>Opción ${index + 1}</strong>
+        <span>${tourCount} experiencia${tourCount === 1 ? "" : "s"}</span>
+        <small>${escapeHtml(label)}</small>
+      </button>
+    `;
+  }
+
+  function renderSelectedPackageOption(option, index = 0) {
+    if (!option) return;
+
+    state.selectedPackageOption = option;
+
+    document.querySelectorAll(".package-option-btn").forEach((button) => {
+      button.classList.toggle("is-selected", Number(button.dataset.index) === index);
+    });
+
+    renderDynamicItinerary(option);
+    renderDynamicHotels(option);
+    renderDynamicPrice(option);
+    renderDynamicPayment();
+  }
+
+  function renderDynamicItinerary(option) {
+    if (!window.MyCuscoTripItineraryBuilder) {
+      setHtml("#productItinerary", `
+        <div class="product-note-box">
+          <strong>Constructor de itinerario no disponible</strong>
+          <p>Verifica que itinerary-builder.js esté cargado antes de product.js.</p>
+        </div>
+      `);
+      return;
+    }
+
+    const itinerary = window.MyCuscoTripItineraryBuilder.buildItinerary(
+      option,
+      {
+        packagesCusco: state.allData?.data?.packagesCusco
+      }
+    );
+
+    state.selectedItinerary = itinerary;
+
+    const html = `
+      <section class="package-itinerary-section">
+        <h2>Itinerario sugerido</h2>
+        ${itinerary.map((day) => `
+          <article class="product-itinerary-step itinerary-day">
+            <span>${escapeHtml(day.day)}</span>
+            <div>
+              <h3>Día ${escapeHtml(day.day)}</h3>
+              ${day.items.map((item) => `
+                <div class="itinerary-day-item">
+                  <strong>${escapeHtml(item.title || "Actividad")}</strong>
+                  ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
+                  ${item.duration ? `<small>${escapeHtml(item.duration)}</small>` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </article>
+        `).join("")}
+      </section>
+    `;
+
+    setHtml("#productItinerary", html);
+  }
+
+  function renderDynamicHotels(option) {
+    if (!window.MyCuscoTripHotelService) {
+      setHtml("#productHotels", "");
+      return;
+    }
+
+    const itinerary = state.selectedItinerary.length
+      ? state.selectedItinerary
+      : window.MyCuscoTripItineraryBuilder.buildItinerary(
+          option,
+          {
+            packagesCusco: state.allData?.data?.packagesCusco
+          }
+        );
+
+    const accommodationPlan = window.MyCuscoTripHotelService.resolveAccommodationPlan(
+      option,
+      itinerary,
+      { adults: 2, children: 0 },
+      state.allData
+    );
+
+    state.accommodationPlan = accommodationPlan;
+
+    const html = `
+      <section class="package-hotels-section">
+        <h2>Alojamiento detectado</h2>
+        <p>Hoteles resueltos automáticamente según el destino real de pernocte.</p>
+
+        <div class="package-hotels-grid">
+          ${accommodationPlan.map((item) => `
+            <article class="hotel-block">
+              <h3>${escapeHtml(item.label)}</h3>
+              <p>${escapeHtml(item.nights)} noche${item.nights === 1 ? "" : "s"}</p>
+              <p>${escapeHtml(item.hotels.length)} hotel${item.hotels.length === 1 ? "" : "es"} disponible${item.hotels.length === 1 ? "" : "s"}</p>
+              ${renderHotelPreview(item.hotels)}
+            </article>
+          `).join("")}
+        </div>
+      </section>
+    `;
+
+    setHtml("#productHotels", html);
+  }
+
+  function renderHotelPreview(hotels) {
+    if (!Array.isArray(hotels) || !hotels.length) {
+      return `<small>No hay hoteles publicados para este destino.</small>`;
+    }
+
+    const firstHotel = hotels[0];
+
+    return `
+      <div class="hotel-preview">
+        <strong>${escapeHtml(firstHotel.hotelName || "")}</strong>
+        <small>${escapeHtml(firstHotel.stars || 0)}★ · ${escapeHtml(firstHotel.location || "")}</small>
+      </div>
+    `;
+  }
+
+  function renderDynamicPrice(option) {
+    if (!window.MyCuscoTripPricingEngine) {
+      setHtml("#packageQuote", "");
+      return;
+    }
+
+    const quote = window.MyCuscoTripPricingEngine.calculatePackagePrice(
+      option,
+      {
+        adults: 2,
+        children: 0,
+        nationality: "foreign",
+        hotels: [],
+        trains: [],
+        extras: []
+      },
+      {
+        allData: state.allData
+      }
+    );
+
+    state.quote = quote;
+
+    setText("#productPrice", formatMoney(quote.total, quote.currency));
+
+    const html = `
+      <section class="package-quote-section">
+        <h2>Cotización inicial</h2>
+        <div class="package-quote-box">
+          ${quote.sections.map((section) => `
+            <div class="package-quote-row">
+              <span>${escapeHtml(getQuoteSectionLabel(section.type))}</span>
+              <strong>${escapeHtml(formatMoney(section.total, section.currency || quote.currency))}</strong>
+            </div>
+          `).join("")}
+
+          <div class="package-quote-row package-quote-row--total">
+            <span>Total estimado</span>
+            <strong>${escapeHtml(formatMoney(quote.total, quote.currency))}</strong>
+          </div>
+
+          <div class="package-quote-row">
+            <span>Anticipo referencial</span>
+            <strong>${escapeHtml(formatMoney(quote.partialPayment, quote.currency))}</strong>
+          </div>
+
+          <div class="package-quote-row">
+            <span>Saldo</span>
+            <strong>${escapeHtml(formatMoney(quote.balance, quote.currency))}</strong>
+          </div>
+        </div>
+      </section>
+    `;
+
+    setHtml("#packageQuote", html);
+  }
+
+  function renderDynamicPayment() {
+    if (!window.MyCuscoTripPaymentService || !state.quote) {
+      setHtml("#packagePayment", "");
+      return;
+    }
+
+    const payment = window.MyCuscoTripPaymentService.buildPaymentIntentPayload(
+      state.quote,
+      {
+        paymentMode: "partial",
+        currency: state.quote.currency,
+        market: state.quote.currency === "PEN" ? "peru" : "default"
+      },
+      state.allData
+    );
+
+    const readiness = window.MyCuscoTripPaymentService.getCheckoutReadiness(
+      payment.providerCode,
+      state.allData
+    );
+
+    const html = `
+      <section class="package-payment-section">
+        <h2>Pago preparado</h2>
+        <div class="product-note-box">
+          <strong>${escapeHtml(payment.providerLabel)}</strong>
+          <p>Modalidad: ${escapeHtml(payment.paymentMode === "partial" ? "Separar cupo" : "Pago completo")}</p>
+          <p>Monto a pagar: ${escapeHtml(formatMoney(payment.amount, payment.currency))}</p>
+          <p>Estado: ${escapeHtml(readiness.reason)}</p>
+        </div>
+      </section>
+    `;
+
+    setHtml("#packagePayment", html);
+  }
+
+  function getQuoteSectionLabel(type) {
+    const labels = {
+      tours: "Tours",
+      machu_picchu: "Machu Picchu",
+      hotels: "Hoteles",
+      train_adjustments: "Trenes / upgrades",
+      extras: "Extras"
+    };
+
+    return labels[type] || type || "Concepto";
   }
 
   function renderPackageSearchSummary(product) {
