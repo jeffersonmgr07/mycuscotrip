@@ -76,8 +76,11 @@
     "cusco": {
       "welcome": ["CUZ001"],
       "cityTour": ["CUZ002"],
-      "sacredValley": ["CUZ003"],
-      "sacredValleyConnection": ["CUZ003"],
+      "sacredValley": ["CUZ003FD", "CUZ003VIP"],
+      "sacredValleyFullDay": ["CUZ003FD", "CUZ003VIP"],
+      "sacredValleyConnection": ["CUZ003CON", "CUZ003VIPCON"],
+      "sacredValleyClassic": ["CUZ003FD", "CUZ003CON"],
+      "sacredValleyVip": ["CUZ003VIP", "CUZ003VIPCON"],
       "marasMoray": ["CUZ004"],
       "southValley": ["CUZ005"],
       "trekkings": ["CUZ006", "CUZ007", "CUZ008", "CUZ009"],
