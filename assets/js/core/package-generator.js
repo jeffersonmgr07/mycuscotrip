@@ -435,6 +435,16 @@
 
   function applyValleyMachuPicchuRules(option, params, durationConfig, packagesCusco, tourIndex) {
     let codes = uniqueCodes(option.includedTourCodes);
+    if (option.forceSacredValleyConnection === true) {
+      codes = replaceMachuPicchuByMode(codes, "overnight", packagesCusco, tourIndex);
+    
+      option.connectionMode = "sacred-valley-connection";
+      option.sacredValleyMode = "connection";
+      option.requiresOvernight = true;
+      option.includedTourCodes = uniqueCodes(codes);
+    
+      return option;
+    }
 
     const sacredValleyMode = detectSacredValleyMode(codes, packagesCusco, tourIndex);
 
@@ -687,20 +697,36 @@
       return a.includedTourCodes.length - b.includedTourCodes.length;
     });
   }
-
   function calculateOptionScore(option) {
     let score = 0;
-
-    if (option.includedTourCodes.some((code) => code === "CUZ001")) score += 24;
-    if (option.includedTourCodes.some((code) => code === "CUZ002")) score += 22;
-    if (option.includedTourCodes.some((code) => code === "CUZ003")) score += 18;
-    if (option.includedTourCodes.some(isMachuPicchuCode)) score += 30;
-    if (option.machuPicchuMode === "overnight") score += 8;
-    if (option.machuPicchuMode === "overnight-express") score += 6;
-    if (option.machuPicchuMode === "full-day-express") score += 5;
-    if (option.connectionMode === "sacred-valley-connection") score += 6;
-    if (option.includedTourCodes.some((code) => /^CUZ00[6-9]/.test(code))) score += 10;
-
+  
+    const codes = option.includedTourCodes || [];
+  
+    // Base comercial
+    if (codes.some((code) => code === "CUZ001")) score += 24; // Bienvenida ancestral
+    if (codes.some((code) => code === "CUZ002")) score += 22; // City Tour
+    if (codes.some((code) => code === "CUZ003")) score += 18; // Valle Sagrado
+    if (codes.some(isMachuPicchuCode)) score += 30; // Machu Picchu obligatorio
+  
+    // Prioridad principal: opción recomendada comercial
+    if (option.connectionMode === "sacred-valley-connection") score += 40;
+    if (option.sacredValleyMode === "connection") score += 25;
+    if (option.machuPicchuMode === "overnight") score += 35;
+  
+    // Opciones express útiles, pero no por encima del default comercial
+    if (option.machuPicchuMode === "overnight-express") score += 20;
+    if (option.machuPicchuMode === "full-day-express") score += 12;
+  
+    // Penalizar opciones menos recomendadas para vitrina
+    if (option.sacredValleyMode === "full-day") score -= 12;
+    if (option.machuPicchuMode === "full-day") score -= 10;
+  
+    // Tours adicionales de alto valor
+    if (codes.some((code) => /^CUZ00[6-9]/.test(code))) score += 10; // Trekkings/naturaleza
+  
+    // Bonus para la opción base recomendada
+    if (option.generationReason === "recommended-base") score += 30;
+  
     return score;
   }
 
@@ -723,6 +749,7 @@
       includedTourCodes: uniqueCodes(codes),
       includedTours: [],
       generationReason: generationReason || "dynamic",
+      forceSacredValleyConnection: generationReason === "recommended-base",
       sourceConfig: durationConfig,
       rawCard: card || null,
       score: 0
