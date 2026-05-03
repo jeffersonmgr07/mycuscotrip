@@ -77,6 +77,7 @@
       "welcome": ["CUZ001"],
       "cityTour": ["CUZ002"],
       "sacredValley": ["CUZ003"],
+      "sacredValleyConnection": ["CUZ003"],
       "marasMoray": ["CUZ004"],
       "southValley": ["CUZ005"],
       "trekkings": ["CUZ006", "CUZ007", "CUZ008", "CUZ009"],
@@ -414,7 +415,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Permite una excursión adicional como Humantay, Vinicunca o Siete Lagunas.", "Si se usa Valle Sagrado conexión, cambiar Machu Picchu a overnight."]
@@ -433,7 +434,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Duración ideal para City Tour, Valle Sagrado, Machu Picchu y un trekking.", "Valle VIP puede reemplazar Valle Sagrado + Maras para evitar duplicidad."]
@@ -452,7 +453,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Permite dos rutas de naturaleza si los horarios y descanso son compatibles.", "Si hay trekking después de Machu Picchu, usar Overnight Express."]
@@ -471,7 +472,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Duración suficiente para combinar clásicos y rutas alternativas.", "Mantener máximo dos trekkings para evitar fatiga."]
@@ -490,7 +491,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI010"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Permite paquetes más completos con descanso intercalado.", "No renderizar todas las combinaciones; priorizar las mejores opciones por ranking."]
@@ -509,7 +510,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI010"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Usar días libres o experiencias cortas para mejorar UX y no saturar el viaje.", "Ideal para upsells de tren, hotel y experiencias privadas."]
@@ -528,7 +529,7 @@
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
-      "defaultMachuPicchuMode": "full-day-or-overnight-by-rule",
+      "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": ["MAPI001", "MAPI003", "MAPI004", "MAPI005", "MAPI006", "MAPI008", "MAPI009", "MAPI010"],
       "arrivalDepartureProfiles": ["early-arrival__late-departure", "early-arrival__early-departure", "late-arrival__late-departure", "late-arrival__early-departure"],
       "salesNotes": ["Máxima duración Cusco antes de pasar a packages-peru.json.", "Mantener escalabilidad para futuras experiencias como rutas privadas o paquetes temáticos."]
