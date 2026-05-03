@@ -129,6 +129,16 @@
     const removeSet = new Set(toArray(codesToRemove));
     return toArray(codes).filter((code) => !removeSet.has(code));
   }
+  function removeRedundantTours(codes) {
+    const result = uniqueCodes(codes);
+    const hasVipValley = result.includes("CUZ003VIP") || result.includes("CUZ003VIPCON");
+  
+    if (hasVipValley) {
+      return result.filter((code) => code !== "CUZ004");
+    }
+  
+    return result;
+  }
 
   function isMachuPicchuCode(code) {
     return /^MAPI/i.test(String(code || ""));
@@ -580,7 +590,8 @@
       if (selectedMachu) option.includedTourCodes.push(selectedMachu);
     }
 
-    option.includedTourCodes = uniqueCodes(option.includedTourCodes);
+    option.includedTourCodes = removeRedundantTours(option.includedTourCodes);
+
     option.machuPicchuMode = detectCurrentMachuMode(option.includedTourCodes, packagesCusco, tourIndex);
     option.sacredValleyMode = detectSacredValleyMode(option.includedTourCodes, packagesCusco, tourIndex);
 
