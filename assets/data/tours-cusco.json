@@ -568,26 +568,24 @@
       ]
     },
     {
-      "id": "exp_003",
-      "internalCode": "CUZ003",
-      "slug": "valle-sagrado",
-      "title": "Valle Sagrado de los Incas",
+      "id": "exp_003_fd",
+      "internalCode": "CUZ003FD",
+      "slug": "valle-sagrado-full-day",
+      "title": "Valle Sagrado de los Incas - Full Day",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day",
+      "variantType": "full-day",
       "badge": "Cultural",
       "featured": true,
       "location": "Cusco / Valle Sagrado",
       "currency": "USD",
-      "shortDescription": "Descubre Pisac, Ollantaytambo y el corazón cultural del Valle Sagrado.",
-      "description": "Recorre uno de los circuitos más emblemáticos de Cusco visitando pueblos tradicionales, sitios arqueológicos y paisajes del Valle Sagrado en un tour ideal para viajeros culturales.",
+      "shortDescription": "Recorre Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Valle Sagrado.",
+      "description": "Tour full day por el Valle Sagrado de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita el centro arqueológico de Pisac, el mercado artesanal de Pisac, Urubamba como punto de almuerzo, el centro arqueológico de Ollantaytambo y Chinchero con demostración textil y visita cultural. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
-        "guideLanguages": [
-          "es",
-          "en"
-        ]
+        "guideLanguages": ["es", "en"]
       },
       "basePricing": {
         "adult": 29.9,
@@ -614,38 +612,44 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional",
+        "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
         "Boleto turístico",
+        "Almuerzo buffet",
         "Gastos personales"
       ],
       "itinerary": [
         {
-          "title": "Pisac",
-          "description": "Visita al complejo arqueológico y mercado artesanal."
+          "title": "Pisac arqueológico",
+          "description": "Visita al centro arqueológico de Pisac, uno de los puntos más representativos del Valle Sagrado."
+        },
+        {
+          "title": "Mercado artesanal de Pisac",
+          "description": "Tiempo para recorrer el mercado artesanal y conocer productos locales."
         },
         {
           "title": "Urubamba",
-          "description": "Tiempo libre para almuerzo buffet opcional."
+          "description": "Espacio libre para almuerzo buffet opcional."
         },
         {
           "title": "Ollantaytambo",
-          "description": "Recorrido por uno de los complejos arqueológicos más importantes del valle."
+          "description": "Visita al centro arqueológico de Ollantaytambo."
         },
         {
           "title": "Chinchero",
-          "description": "Visita cultural antes del retorno a Cusco."
+          "description": "Demostración textil y visita cultural antes del retorno a Cusco."
         }
       ],
       "faq": [
         {
           "q": "¿Incluye almuerzo?",
-          "a": "No necesariamente. Puedes añadir el almuerzo buffet como extra cuando esté disponible."
+          "a": "No. Puedes añadir el almuerzo buffet como extra cuando esté disponible."
         },
         {
           "q": "¿Incluye boleto turístico?",
-          "a": "No, el boleto turístico se paga aparte."
+          "a": "No. El boleto turístico se paga aparte."
         }
       ],
       "extras": [
@@ -659,21 +663,9 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": {
-              "costPEN": 40,
-              "publishedUSD": 11.9,
-              "publishedPENApprox": 45
-            },
-            "foreign": {
-              "costPEN": 70,
-              "publishedUSD": 20.9,
-              "publishedPENApprox": 80
-            },
-            "andean_community": {
-              "costPEN": 70,
-              "publishedUSD": 20.9,
-              "publishedPENApprox": 80
-            }
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
           },
           "availabilityNote": null
         },
@@ -685,43 +677,8 @@
           "optional": true,
           "perPerson": true,
           "pricingModel": "net_cost_only_plus_payment_fees",
-          "internalCost": {
-            "currency": "PEN",
-            "amount": 50
-          },
-          "publishedPricing": {
-            "currency": "USD",
-            "amount": 14.9,
-            "penApprox": 60
-          }
-        },
-        {
-          "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras solo para ruta VIP",
-          "type": "ticket",
-          "required": false,
-          "optional": true,
-          "perPerson": true,
-          "pricingModel": "net_cost_only_plus_payment_fees",
-          "circuit": null,
-          "costByNationality": {
-            "national": {
-              "costPEN": 15,
-              "publishedUSD": 4.9,
-              "publishedPENApprox": 20
-            },
-            "foreign": {
-              "costPEN": 20,
-              "publishedUSD": 6.9,
-              "publishedPENApprox": 30
-            },
-            "andean_community": {
-              "costPEN": 20,
-              "publishedUSD": 6.9,
-              "publishedPENApprox": 30
-            }
-          },
-          "availabilityNote": "Aplicar solo cuando la variante elegida sea Valle Sagrado VIP o incluya Maras."
+          "internalCost": { "currency": "PEN", "amount": 50 },
+          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
         }
       ],
       "paymentOptions": {
@@ -738,19 +695,9 @@
       "days": 1,
       "nights": 0,
       "baseCurrency": "PEN",
-      "allowedCurrencies": [
-        "PEN",
-        "USD",
-        "EUR",
-        "CLP",
-        "MXN"
-      ],
+      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
       "defaultCurrency": "USD",
-      "allowedNationalities": [
-        "national",
-        "foreign",
-        "andean_community"
-      ],
+      "allowedNationalities": ["national", "foreign", "andean_community"],
       "internalPricing": {
         "currency": "PEN",
         "costPEN": 50,
@@ -770,27 +717,13 @@
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
-        "national": {
-          "adult": 29.9,
-          "child": 29.9,
-          "currency": "USD"
-        },
-        "foreign": {
-          "adult": 29.9,
-          "child": 29.9,
-          "currency": "USD"
-        },
-        "andean_community": {
-          "adult": 29.9,
-          "child": 29.9,
-          "currency": "USD"
-        }
+        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "08:00"
-        ],
-        "endTime": "19:00",
+        "startTimes": ["07:00"],
+        "endTime": "20:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
       },
@@ -805,80 +738,24 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": {
-              "costPEN": 40,
-              "publishedUSD": 11.9,
-              "publishedPENApprox": 45
-            },
-            "foreign": {
-              "costPEN": 70,
-              "publishedUSD": 20.9,
-              "publishedPENApprox": 80
-            },
-            "andean_community": {
-              "costPEN": 70,
-              "publishedUSD": 20.9,
-              "publishedPENApprox": 80
-            }
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
           },
           "availabilityNote": null
-        },
-        {
-          "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras solo para ruta VIP",
-          "type": "ticket",
-          "required": false,
-          "optional": true,
-          "perPerson": true,
-          "pricingModel": "net_cost_only_plus_payment_fees",
-          "circuit": null,
-          "costByNationality": {
-            "national": {
-              "costPEN": 15,
-              "publishedUSD": 4.9,
-              "publishedPENApprox": 20
-            },
-            "foreign": {
-              "costPEN": 20,
-              "publishedUSD": 6.9,
-              "publishedPENApprox": 30
-            },
-            "andean_community": {
-              "costPEN": 20,
-              "publishedUSD": 6.9,
-              "publishedPENApprox": 30
-            }
-          },
-          "availabilityNote": "Aplicar solo cuando la variante elegida sea Valle Sagrado VIP o incluya Maras."
         }
       ],
       "search": {
         "kind": "tour",
         "productFamily": "cusco-tour",
-        "destinations": [
-          "cusco"
-        ],
-        "durationKeys": [
-          "full-day",
-          "1-dia"
-        ],
-        "includedTourCodes": [
-          "CUZ003"
-        ],
-        "includedTags": [
-          "valle-sagrado",
-          "pisac",
-          "ollantaytambo",
-          "chinchero",
-          "urubamba"
-        ],
-        "themes": [
-          "cultural"
-        ],
+        "destinations": ["cusco", "valle-sagrado"],
+        "durationKeys": ["full-day", "1-dia"],
+        "includedTourCodes": ["CUZ003FD"],
+        "includedTags": ["valle-sagrado", "pisac", "ollantaytambo", "chinchero", "urubamba", "full-day"],
+        "themes": ["cultural"],
         "keywords": [
           "valle sagrado de los incas",
-          "valle-sagrado",
-          "cusco / valle sagrado",
+          "valle sagrado full day",
           "pisac",
           "ollantaytambo",
           "chinchero",
@@ -889,6 +766,678 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+      ]
+    },
+    {
+      "id": "exp_003_con",
+      "internalCode": "CUZ003CON",
+      "slug": "valle-sagrado-conexion-machu-picchu",
+      "title": "Valle Sagrado de los Incas con conexión a Machu Picchu",
+      "category": "cusco",
+      "type": "cultural-tour",
+      "typeLabel": "Full Day con conexión",
+      "variantType": "connection",
+      "badge": "Conexión Machu Picchu",
+      "featured": true,
+      "location": "Cusco / Valle Sagrado / Ollantaytambo",
+      "currency": "USD",
+      "shortDescription": "Ruta clásica por el Valle Sagrado finalizando en Ollantaytambo para conectar con el tren hacia Aguas Calientes.",
+      "description": "Versión con conexión del Valle Sagrado de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita Pisac arqueológico, el mercado artesanal de Pisac, Urubamba como punto de almuerzo y el centro arqueológico de Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu.",
+      "duration": {
+        "label": "Full Day con conexión",
+        "maxGroupSize": 18,
+        "guideLanguages": ["es", "en"]
+      },
+      "basePricing": {
+        "adult": 29.9,
+        "child": 29.9
+      },
+      "serviceModes": {
+        "group": {
+          "enabled": true,
+          "label": "Tour en grupo"
+        },
+        "private": {
+          "enabled": false,
+          "label": "Tour privado"
+        }
+      },
+      "capacity": 18,
+      "images": {
+        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/valle-sagrado/1.jpg",
+          "./assets/img/tours/valle-sagrado/2.jpg"
+        ]
+      },
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico por el Valle Sagrado",
+        "Guía profesional",
+        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+      ],
+      "excludes": [
+        "Boleto turístico",
+        "Almuerzo buffet",
+        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Gastos personales"
+      ],
+      "itinerary": [
+        {
+          "title": "Pisac arqueológico",
+          "description": "Visita al centro arqueológico de Pisac."
+        },
+        {
+          "title": "Mercado artesanal de Pisac",
+          "description": "Tiempo para recorrer el mercado artesanal."
+        },
+        {
+          "title": "Urubamba",
+          "description": "Espacio libre para almuerzo buffet opcional."
+        },
+        {
+          "title": "Ollantaytambo",
+          "description": "Visita al centro arqueológico de Ollantaytambo. El tour finaliza en este punto para conexión hacia Machu Picchu."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Esta versión retorna a Cusco?",
+          "a": "No. Esta versión finaliza en Ollantaytambo para continuar hacia Aguas Calientes o conectar con el programa de Machu Picchu."
+        },
+        {
+          "q": "¿Incluye tren a Aguas Calientes?",
+          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+        }
+      ],
+      "extras": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        },
+        {
+          "code": "sacred-valley-buffet-basic",
+          "label": "Almuerzo buffet Valle Sagrado",
+          "type": "meal",
+          "required": false,
+          "optional": true,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "internalCost": { "currency": "PEN", "amount": 50 },
+          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+        }
+      ],
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 5,
+        "partialPaymentPerPerson": 19.9,
+        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+      },
+      "booking": {
+        "reservationCodePrefix": "VALCON"
+      },
+      "status": "published",
+      "productKind": "tour",
+      "productFamily": "cusco-tour",
+      "days": 1,
+      "nights": 0,
+      "baseCurrency": "PEN",
+      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "defaultCurrency": "USD",
+      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "internalPricing": {
+        "currency": "PEN",
+        "costPEN": 50,
+        "targetNetMultiplier": 2,
+        "targetNetPEN": 100,
+        "pricingRule": "published price must produce targetNetPEN after PayPal and bank withdrawal fees"
+      },
+      "pricing": {
+        "displayCurrency": "USD",
+        "publishedAdultUSD": 29.9,
+        "publishedChildUSD": 29.9,
+        "publishedAdultPENApprox": 115,
+        "publishedChildPENApprox": 115,
+        "grossBeforeRoundingUSD": 29.0139,
+        "targetNetPEN": 100,
+        "targetNetUSD": 26.67,
+        "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
+      },
+      "basePricingByNationality": {
+        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+      },
+      "operationalSchedule": {
+        "startTimes": ["07:00"],
+        "endTime": "15:30",
+        "durationLabel": "Full Day con conexión",
+        "frequency": "Diario"
+      },
+      "ticketPricingByNationality": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        }
+      ],
+      "search": {
+        "kind": "tour",
+        "productFamily": "cusco-tour",
+        "destinations": ["cusco", "valle-sagrado", "ollantaytambo"],
+        "durationKeys": ["full-day", "1-dia", "conexion"],
+        "includedTourCodes": ["CUZ003CON"],
+        "includedTags": ["valle-sagrado", "pisac", "ollantaytambo", "urubamba", "conexion-machu-picchu"],
+        "themes": ["cultural", "conexion"],
+        "keywords": [
+          "valle sagrado conexion",
+          "valle sagrado con conexion a machu picchu",
+          "ollantaytambo conexion",
+          "aguas calientes",
+          "machu picchu overnight"
+        ]
+      },
+      "pricingNotes": [
+        "Esta variante finaliza en Ollantaytambo y está pensada para paquetes con Machu Picchu Overnight.",
+        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
+      ]
+    },
+    {
+      "id": "exp_003_vip",
+      "internalCode": "CUZ003VIP",
+      "slug": "valle-sagrado-vip-full-day",
+      "title": "Valle Sagrado de los Incas VIP - Full Day",
+      "category": "cusco",
+      "type": "cultural-tour",
+      "typeLabel": "Full Day VIP",
+      "variantType": "vip-full-day",
+      "badge": "Ruta VIP",
+      "featured": true,
+      "location": "Cusco / Valle Sagrado / Maras / Moray",
+      "currency": "USD",
+      "shortDescription": "Ruta completa por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac.",
+      "description": "Versión VIP del Valle Sagrado de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, las Salineras de Maras, el centro arqueológico de Moray, Urubamba como punto de almuerzo, Ollantaytambo, Pisac arqueológico y el mercado artesanal de Pisac. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "duration": {
+        "label": "Full Day VIP",
+        "maxGroupSize": 18,
+        "guideLanguages": ["es", "en"]
+      },
+      "basePricing": {
+        "adult": 29.9,
+        "child": 29.9
+      },
+      "serviceModes": {
+        "group": {
+          "enabled": true,
+          "label": "Tour en grupo"
+        },
+        "private": {
+          "enabled": false,
+          "label": "Tour privado"
+        }
+      },
+      "capacity": 18,
+      "images": {
+        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/valle-sagrado/1.jpg",
+          "./assets/img/tours/valle-sagrado/2.jpg"
+        ]
+      },
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
+        "Retorno a Cusco al finalizar el tour"
+      ],
+      "excludes": [
+        "Boleto turístico",
+        "Ingreso a Salineras de Maras",
+        "Almuerzo buffet",
+        "Gastos personales"
+      ],
+      "itinerary": [
+        {
+          "title": "Chinchero",
+          "description": "Demostración textil y visita cultural."
+        },
+        {
+          "title": "Salineras de Maras",
+          "description": "Visita panorámica a las salineras tradicionales. El ingreso se considera extra."
+        },
+        {
+          "title": "Moray",
+          "description": "Visita al centro arqueológico de Moray."
+        },
+        {
+          "title": "Urubamba",
+          "description": "Espacio libre para almuerzo buffet opcional."
+        },
+        {
+          "title": "Ollantaytambo",
+          "description": "Visita al centro arqueológico de Ollantaytambo."
+        },
+        {
+          "title": "Pisac arqueológico",
+          "description": "Visita al centro arqueológico de Pisac."
+        },
+        {
+          "title": "Mercado artesanal de Pisac",
+          "description": "Tiempo para recorrer el mercado artesanal antes del retorno a Cusco."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué diferencia tiene la ruta VIP?",
+          "a": "La ruta VIP agrega Chinchero, Maras y Moray antes de continuar hacia Urubamba, Ollantaytambo y Pisac."
+        },
+        {
+          "q": "¿Incluye ingreso a Maras?",
+          "a": "No. El ingreso a las Salineras de Maras se maneja como extra."
+        }
+      ],
+      "extras": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        },
+        {
+          "code": "maras-salt-mines-ticket-vip-only",
+          "label": "Ingreso Salineras de Maras",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": null,
+          "costByNationality": {
+            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
+            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
+            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+          },
+          "availabilityNote": "Aplicar para ruta Valle Sagrado VIP."
+        },
+        {
+          "code": "sacred-valley-buffet-basic",
+          "label": "Almuerzo buffet Valle Sagrado",
+          "type": "meal",
+          "required": false,
+          "optional": true,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "internalCost": { "currency": "PEN", "amount": 50 },
+          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+        }
+      ],
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 5,
+        "partialPaymentPerPerson": 19.9,
+        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+      },
+      "booking": {
+        "reservationCodePrefix": "VALVIP"
+      },
+      "status": "published",
+      "productKind": "tour",
+      "productFamily": "cusco-tour",
+      "days": 1,
+      "nights": 0,
+      "baseCurrency": "PEN",
+      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "defaultCurrency": "USD",
+      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "internalPricing": {
+        "currency": "PEN",
+        "costPEN": 50,
+        "targetNetMultiplier": 2,
+        "targetNetPEN": 100,
+        "pricingRule": "published price must produce targetNetPEN after PayPal and bank withdrawal fees"
+      },
+      "pricing": {
+        "displayCurrency": "USD",
+        "publishedAdultUSD": 29.9,
+        "publishedChildUSD": 29.9,
+        "publishedAdultPENApprox": 115,
+        "publishedChildPENApprox": 115,
+        "grossBeforeRoundingUSD": 29.0139,
+        "targetNetPEN": 100,
+        "targetNetUSD": 26.67,
+        "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
+      },
+      "basePricingByNationality": {
+        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+      },
+      "operationalSchedule": {
+        "startTimes": ["07:00"],
+        "endTime": "20:00",
+        "durationLabel": "Full Day VIP",
+        "frequency": "Diario"
+      },
+      "ticketPricingByNationality": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        },
+        {
+          "code": "maras-salt-mines-ticket-vip-only",
+          "label": "Ingreso Salineras de Maras",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": null,
+          "costByNationality": {
+            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
+            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
+            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+          },
+          "availabilityNote": "Aplicar para ruta Valle Sagrado VIP."
+        }
+      ],
+      "search": {
+        "kind": "tour",
+        "productFamily": "cusco-tour",
+        "destinations": ["cusco", "valle-sagrado", "maras", "moray", "chinchero"],
+        "durationKeys": ["full-day", "1-dia", "vip"],
+        "includedTourCodes": ["CUZ003VIP"],
+        "includedTags": ["valle-sagrado", "vip", "chinchero", "maras", "moray", "ollantaytambo", "pisac"],
+        "themes": ["cultural"],
+        "keywords": [
+          "valle sagrado vip",
+          "valle sagrado vip full day",
+          "chinchero",
+          "maras",
+          "moray",
+          "ollantaytambo",
+          "pisac"
+        ]
+      },
+      "pricingNotes": [
+        "Ruta VIP con Maras y Moray.",
+        "El ingreso a Salineras de Maras se maneja como extra obligatorio de esta variante."
+      ]
+    },
+    {
+      "id": "exp_003_vip_con",
+      "internalCode": "CUZ003VIPCON",
+      "slug": "valle-sagrado-vip-conexion-machu-picchu",
+      "title": "Valle Sagrado de los Incas VIP con conexión a Machu Picchu",
+      "category": "cusco",
+      "type": "cultural-tour",
+      "typeLabel": "Full Day VIP con conexión",
+      "variantType": "vip-connection",
+      "badge": "VIP + Conexión",
+      "featured": true,
+      "location": "Cusco / Valle Sagrado / Ollantaytambo",
+      "currency": "USD",
+      "shortDescription": "Ruta VIP por Chinchero, Maras, Moray, Urubamba y Ollantaytambo, finalizando en Ollantaytambo para conexión hacia Machu Picchu.",
+      "description": "Versión VIP con conexión del Valle Sagrado de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, Salineras de Maras, Moray, Urubamba como punto de almuerzo y Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu. Esta variante no continúa hacia Pisac ni retorna a Cusco.",
+      "duration": {
+        "label": "Full Day VIP con conexión",
+        "maxGroupSize": 18,
+        "guideLanguages": ["es", "en"]
+      },
+      "basePricing": {
+        "adult": 29.9,
+        "child": 29.9
+      },
+      "serviceModes": {
+        "group": {
+          "enabled": true,
+          "label": "Tour en grupo"
+        },
+        "private": {
+          "enabled": false,
+          "label": "Tour privado"
+        }
+      },
+      "capacity": 18,
+      "images": {
+        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "gallery": [
+          "./assets/img/tours/valle-sagrado/1.jpg",
+          "./assets/img/tours/valle-sagrado/2.jpg"
+        ]
+      },
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico por ruta VIP del Valle Sagrado",
+        "Guía profesional",
+        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+      ],
+      "excludes": [
+        "Boleto turístico",
+        "Ingreso a Salineras de Maras",
+        "Almuerzo buffet",
+        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Gastos personales"
+      ],
+      "itinerary": [
+        {
+          "title": "Chinchero",
+          "description": "Demostración textil y visita cultural."
+        },
+        {
+          "title": "Salineras de Maras",
+          "description": "Visita a las salineras tradicionales. El ingreso se considera extra."
+        },
+        {
+          "title": "Moray",
+          "description": "Visita al centro arqueológico de Moray."
+        },
+        {
+          "title": "Urubamba",
+          "description": "Espacio libre para almuerzo buffet opcional."
+        },
+        {
+          "title": "Ollantaytambo",
+          "description": "Visita al centro arqueológico de Ollantaytambo. El tour finaliza en este punto para conexión hacia Machu Picchu."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Esta versión visita Pisac?",
+          "a": "No. Para permitir la conexión hacia Machu Picchu, esta versión finaliza en Ollantaytambo y no continúa hacia Pisac."
+        },
+        {
+          "q": "¿Incluye tren a Aguas Calientes?",
+          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+        }
+      ],
+      "extras": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        },
+        {
+          "code": "maras-salt-mines-ticket-vip-only",
+          "label": "Ingreso Salineras de Maras",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": null,
+          "costByNationality": {
+            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
+            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
+            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+          },
+          "availabilityNote": "Aplicar para ruta Valle Sagrado VIP con conexión."
+        },
+        {
+          "code": "sacred-valley-buffet-basic",
+          "label": "Almuerzo buffet Valle Sagrado",
+          "type": "meal",
+          "required": false,
+          "optional": true,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "internalCost": { "currency": "PEN", "amount": 50 },
+          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+        }
+      ],
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 5,
+        "partialPaymentPerPerson": 19.9,
+        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+      },
+      "booking": {
+        "reservationCodePrefix": "VALVIPCON"
+      },
+      "status": "published",
+      "productKind": "tour",
+      "productFamily": "cusco-tour",
+      "days": 1,
+      "nights": 0,
+      "baseCurrency": "PEN",
+      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "defaultCurrency": "USD",
+      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "internalPricing": {
+        "currency": "PEN",
+        "costPEN": 50,
+        "targetNetMultiplier": 2,
+        "targetNetPEN": 100,
+        "pricingRule": "published price must produce targetNetPEN after PayPal and bank withdrawal fees"
+      },
+      "pricing": {
+        "displayCurrency": "USD",
+        "publishedAdultUSD": 29.9,
+        "publishedChildUSD": 29.9,
+        "publishedAdultPENApprox": 115,
+        "publishedChildPENApprox": 115,
+        "grossBeforeRoundingUSD": 29.0139,
+        "targetNetPEN": 100,
+        "targetNetUSD": 26.67,
+        "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
+      },
+      "basePricingByNationality": {
+        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
+        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+      },
+      "operationalSchedule": {
+        "startTimes": ["07:00"],
+        "endTime": "15:30",
+        "durationLabel": "Full Day VIP con conexión",
+        "frequency": "Diario"
+      },
+      "ticketPricingByNationality": [
+        {
+          "code": "btc-circuit-2-nationality",
+          "label": "Boleto Turístico Parcial Circuito 2",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": "circuito-2",
+          "costByNationality": {
+            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
+            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
+            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+          },
+          "availabilityNote": null
+        },
+        {
+          "code": "maras-salt-mines-ticket-vip-only",
+          "label": "Ingreso Salineras de Maras",
+          "type": "ticket",
+          "required": true,
+          "optional": false,
+          "perPerson": true,
+          "pricingModel": "net_cost_only_plus_payment_fees",
+          "circuit": null,
+          "costByNationality": {
+            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
+            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
+            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+          },
+          "availabilityNote": "Aplicar para ruta Valle Sagrado VIP con conexión."
+        }
+      ],
+      "search": {
+        "kind": "tour",
+        "productFamily": "cusco-tour",
+        "destinations": ["cusco", "valle-sagrado", "ollantaytambo", "maras", "moray"],
+        "durationKeys": ["full-day", "1-dia", "vip", "conexion"],
+        "includedTourCodes": ["CUZ003VIPCON"],
+        "includedTags": ["valle-sagrado", "vip", "conexion-machu-picchu", "chinchero", "maras", "moray", "ollantaytambo"],
+        "themes": ["cultural", "conexion"],
+        "keywords": [
+          "valle sagrado vip conexion",
+          "valle sagrado vip con conexion a machu picchu",
+          "ollantaytambo conexion",
+          "aguas calientes",
+          "machu picchu overnight"
+        ]
+      },
+      "pricingNotes": [
+        "Esta variante está pensada como ruta preferida para paquetes con Machu Picchu Overnight.",
+        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
       ]
     },
     {
