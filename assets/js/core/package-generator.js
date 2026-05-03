@@ -139,6 +139,27 @@
   
     return result;
   }
+  function getMinimumPostMachuPicchuTours(params) {
+    const days = Number(params.days || 0);
+  
+    // Día 1 = Transfer IN + Bienvenida / City Tour
+    // Día 2 = Valle Sagrado conexión
+    // Día 3 = Machu Picchu
+    // Último día = Transfer OUT
+    // Los días entre Machu Picchu y Transfer OUT deben ocuparse.
+    return Math.max(days - 4, 0);
+  }
+  
+  function countPostMachuPicchuCandidateTours(codes, packagesCusco, tourIndex) {
+    return uniqueCodes(codes).filter((code) => {
+      if (isWelcomeCode(code, packagesCusco, tourIndex)) return false;
+      if (isCityTourCode(code, packagesCusco, tourIndex)) return false;
+      if (isSacredValleyCode(code, packagesCusco)) return false;
+      if (isMachuPicchuCode(code)) return false;
+  
+      return true;
+    }).length;
+  }
 
   function isMachuPicchuCode(code) {
     return /^MAPI/i.test(String(code || ""));
@@ -814,7 +835,7 @@
       return a.includedTourCodes.length - b.includedTourCodes.length;
     });
   }
-  function calculateOptionScore(option) {
+  function calculateOptionScore(option, packagesCusco, tourIndex) {
     let score = 0;
   
     const codes = option.includedTourCodes || [];
@@ -845,6 +866,18 @@
   
     // Bonus para la opción base recomendada
     if (option.generationReason === "recommended-base") score += 30;
+    const minimumPostMachuTours = getMinimumPostMachuPicchuTours(option);
+    const postMachuTours = countPostMachuPicchuCandidateTours(
+      option.includedTourCodes,
+      packagesCusco,
+      tourIndex
+    );
+    
+    if (postMachuTours >= minimumPostMachuTours) {
+      score += 80;
+    } else {
+      score -= (minimumPostMachuTours - postMachuTours) * 60;
+    }
   
     return score;
   }
@@ -879,7 +912,7 @@
     applyRequiredTours(option, packagesCusco?.globalRules || {});
 
     option.includedTours = resolveCodes(option.includedTourCodes, tourIndex);
-    option.score = calculateOptionScore(option);
+    option.score = calculateOptionScore(option, packagesCusco, tourIndex);
     option.signature = createSignature(option);
 
     return option;
