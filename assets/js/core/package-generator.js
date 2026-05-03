@@ -572,6 +572,66 @@
 
     return uniqueCodes(result);
   }
+  function ensureMachuPicchuRequired(codes, params, durationConfig, packagesCusco, tourIndex) {
+    let result = uniqueCodes(codes);
+  
+    if (result.some(isMachuPicchuCode)) {
+      return result;
+    }
+  
+    const days = Number(params.days || 0);
+    const nights = Number(params.nights || 0);
+  
+    let preferredMode = "overnight";
+  
+    if (days === 3 && nights === 2) {
+      preferredMode = "full-day";
+    }
+  
+    const selectedMachu = chooseMachuPicchuCode(params, durationConfig, packagesCusco, {
+      tourIndex,
+      forceMode: preferredMode
+    });
+  
+    if (selectedMachu) {
+      result.push(selectedMachu);
+    }
+  
+    return uniqueCodes(result);
+  }
+  
+  function ensureDefaultValleyConnectionMachuPicchu(codes, params, durationConfig, packagesCusco, tourIndex, pools) {
+    let result = uniqueCodes(codes);
+  
+    const days = Number(params.days || 0);
+    const nights = Number(params.nights || 0);
+  
+    if (days === 3 && nights === 2) {
+      return ensureMachuPicchuRequired(result, params, durationConfig, packagesCusco, tourIndex);
+    }
+  
+    const connectionCode =
+      pools.sacredValleyConnection.find((code) => !result.includes(code)) ||
+      pools.sacredValley.find((code) => isSacredValleyConnectionCode(code, packagesCusco, tourIndex));
+  
+    if (connectionCode) {
+      result = result.filter((code) => !isSacredValleyCode(code, packagesCusco));
+      result.push(connectionCode);
+    }
+  
+    result = removeCodes(result, result.filter(isMachuPicchuCode));
+  
+    const overnightCode = chooseMachuPicchuCode(params, durationConfig, packagesCusco, {
+      tourIndex,
+      forceMode: "overnight"
+    });
+  
+    if (overnightCode) {
+      result.push(overnightCode);
+    }
+  
+    return uniqueCodes(result);
+  }
 
   function expandOptionalTours(baseOption, pools, durationConfig, packagesCusco, tourIndex) {
     const maxOptions = Number(packagesCusco?.generationEngine?.maxGeneratedOptionsPerDuration || 36);
@@ -777,6 +837,23 @@
 
     baseCodes = ensureShowcaseBaseTours(baseCodes, pools, packagesCusco, tourIndex);
 
+    baseCodes = ensureDefaultValleyConnectionMachuPicchu(
+      baseCodes,
+      params,
+      effectiveConfig,
+      packagesCusco,
+      tourIndex,
+      pools
+    );
+    
+    baseCodes = ensureMachuPicchuRequired(
+      baseCodes,
+      params,
+      effectiveConfig,
+      packagesCusco,
+      tourIndex
+    );
+    
     baseCodes = ensureMinimumShowcaseActivities(
       baseCodes,
       pools,
@@ -810,11 +887,18 @@
         card,
         durationConfig: effectiveConfig,
         profile,
-        codes: option.includedTourCodes,
+        codes: ensureMachuPicchuRequired(
+          option.includedTourCodes,
+          params,
+          effectiveConfig,
+          packagesCusco,
+          tourIndex
+        ),
         tourIndex,
         packagesCusco,
         generationReason: option.generationReason
       }))
+      .filter((option) => option.includedTourCodes.some(isMachuPicchuCode))
       .filter((option) => isValidPackageOption(option, params, effectiveConfig, packagesCusco, tourIndex));
 
     const deduped = dedupePackageOptions(expanded);
