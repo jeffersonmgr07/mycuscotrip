@@ -105,6 +105,12 @@
   }
 
   function isSacredValley(tour) {
+    const code = getTourCode(tour);
+
+    if (["CUZ003FD", "CUZ003CON", "CUZ003VIP", "CUZ003VIPCON"].includes(code)) {
+      return true;
+    }
+
     return hasText(tour, [
       "valle sagrado",
       "pisac",
@@ -117,12 +123,20 @@
   }
 
   function isSacredValleyConnection(tour) {
+    const code = getTourCode(tour);
+
+    if (["CUZ003CON", "CUZ003VIPCON"].includes(code)) {
+      return true;
+    }
+
+    if (["CUZ003FD", "CUZ003VIP"].includes(code)) {
+      return false;
+    }
+
     return isSacredValley(tour) && hasText(tour, [
       "conexion",
       "conexión",
-      "aguas calientes",
-      "ollantaytambo",
-      "vip"
+      "aguas calientes"
     ]);
   }
 
