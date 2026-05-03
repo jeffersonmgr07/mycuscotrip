@@ -441,6 +441,48 @@
     return toArray(codes).some((code) => isHeavyTrekkingCode(code, packagesCusco, tourIndex));
   }
 
+
+  function isShortFlexibleCode(code, packagesCusco, tourIndex) {
+    return (
+      isWelcomeCode(code, packagesCusco, tourIndex) ||
+      isCityTourCode(code, packagesCusco, tourIndex) ||
+      code === "CUZ004" ||
+      code === "CUZ005"
+    );
+  }
+
+  function getAvailableItineraryServiceDays(params) {
+    const days = Number(params?.days || 0);
+
+    if (!Number.isFinite(days) || days <= 0) return 0;
+
+    // El último día queda reservado para Transfer OUT.
+    // Las actividades solo se colocan entre el día 1 y el penúltimo día.
+    return Math.max(days - 1, 1);
+  }
+
+  function estimateRequiredServiceDays(codes, params, packagesCusco, tourIndex) {
+    const unique = uniqueCodes(codes);
+
+    const shortFlexibleCodes = unique.filter((code) => isShortFlexibleCode(code, packagesCusco, tourIndex));
+    const exclusiveCodes = unique.filter((code) => !isShortFlexibleCode(code, packagesCusco, tourIndex));
+
+    // Bienvenida, City Tour, Maras y Moray y Valle Sur son medios días combinables,
+    // pero no deben superar dos experiencias por día.
+    const shortFlexibleDays = Math.ceil(shortFlexibleCodes.length / 2);
+
+    // Valle Sagrado, Machu Picchu, Humantay, Vinicunca, Palcoyo y Siete Lagunas
+    // consumen un día completo exclusivo cada uno.
+    return shortFlexibleDays + exclusiveCodes.length;
+  }
+
+  function fitsAvailableServiceDays(codes, params, packagesCusco, tourIndex) {
+    const requiredDays = estimateRequiredServiceDays(codes, params, packagesCusco, tourIndex);
+    const availableDays = getAvailableItineraryServiceDays(params);
+
+    return requiredDays <= availableDays;
+  }
+
   function applyValleyMachuPicchuRules(option, params, durationConfig, packagesCusco, tourIndex) {
     let codes = uniqueCodes(option.includedTourCodes);
     if (option.forceSacredValleyConnection === true) {
@@ -571,6 +613,10 @@
     const machuCodes = codes.filter(isMachuPicchuCode);
     if (machuCodes.length > 1) return false;
 
+    if (!fitsAvailableServiceDays(codes, params, packagesCusco, tourIndex)) {
+      return false;
+    }
+
     return true;
   }
 
@@ -657,49 +703,90 @@
     return uniqueCodes(result);
   }
 
-  function expandOptionalTours(baseOption, pools, durationConfig, packagesCusco, tourIndex) {
+  function isProtectedShowcaseCode(code, packagesCusco, tourIndex) {
+    return (
+      isWelcomeCode(code, packagesCusco, tourIndex) ||
+      isCityTourCode(code, packagesCusco, tourIndex) ||
+      isSacredValleyCode(code, packagesCusco) ||
+      isMachuPicchuCode(code)
+    );
+  }
+
+  function expandOptionalTours(baseOption, pools, durationConfig, packagesCusco, tourIndex, params = {}) {
     const maxOptions = Number(packagesCusco?.generationEngine?.maxGeneratedOptionsPerDuration || 36);
     const maxTrekkings = Number(durationConfig?.maxTrekkings || 1);
     const options = [];
+    const seen = new Set();
 
     const baseCodes = uniqueCodes(baseOption.includedTourCodes);
     const baseHasSacredValley = baseCodes.some((code) => isSacredValleyCode(code, packagesCusco));
+
     const optionalFullDays = pools.fullDay.filter((code) => {
-      if (baseCodes.includes(code)) return false;
       if (baseHasSacredValley && isSacredValleyCode(code, packagesCusco)) return false;
       return true;
     });
-    const optionalHalfDays = pools.halfDay.filter((code) => !baseCodes.includes(code));
 
-    options.push({
-      ...baseOption,
-      includedTourCodes: [...baseCodes],
-      generationReason: "recommended-base"
+    const optionalHalfDays = pools.halfDay.filter((code) => {
+      if (isWelcomeCode(code, packagesCusco, tourIndex)) return false;
+      if (isCityTourCode(code, packagesCusco, tourIndex)) return false;
+      return true;
     });
 
-    optionalFullDays.forEach((fullDayCode) => {
-      const trekkingCount = isTrekkingCode(fullDayCode, packagesCusco) ? 1 : 0;
+    const candidates = uniqueCodes([
+      ...optionalFullDays,
+      ...optionalHalfDays
+    ]).filter((code) => {
+      if (isSacredValleyCode(code, packagesCusco)) return false;
+      if (isMachuPicchuCode(code)) return false;
+      return true;
+    });
 
-      if (trekkingCount <= maxTrekkings) {
-        options.push({
-          ...baseOption,
-          includedTourCodes: uniqueCodes([...baseCodes, fullDayCode]),
-          generationReason: `optional-full-day-${fullDayCode}`
-        });
+    function pushOption(codes, reason) {
+      const normalizedCodes = uniqueCodes(codes);
+      const signature = normalizedCodes.slice().sort().join("|");
+
+      if (seen.has(signature)) return;
+      if (!fitsAvailableServiceDays(normalizedCodes, params, packagesCusco, tourIndex)) return;
+
+      const trekkingCount = normalizedCodes.filter((code) => isTrekkingCode(code, packagesCusco)).length;
+      if (trekkingCount > maxTrekkings) return;
+
+      seen.add(signature);
+      options.push({
+        ...baseOption,
+        includedTourCodes: normalizedCodes,
+        generationReason: reason
+      });
+    }
+
+    pushOption(baseCodes, "recommended-base");
+
+    candidates.forEach((candidateCode) => {
+      if (!baseCodes.includes(candidateCode)) {
+        pushOption(
+          [...baseCodes, candidateCode],
+          `optional-add-${candidateCode}`
+        );
       }
     });
 
-    optionalFullDays.forEach((fullDayCode) => {
-      optionalHalfDays.forEach((halfDayCode) => {
-        const trekkingCount = [fullDayCode, halfDayCode].filter((code) => isTrekkingCode(code, packagesCusco)).length;
+    const replaceableCodes = baseCodes.filter((code) => {
+      return !isProtectedShowcaseCode(code, packagesCusco, tourIndex);
+    });
 
-        if (trekkingCount <= maxTrekkings) {
-          options.push({
-            ...baseOption,
-            includedTourCodes: uniqueCodes([...baseCodes, fullDayCode, halfDayCode]),
-            generationReason: `optional-mixed-${fullDayCode}-${halfDayCode}`
-          });
-        }
+    replaceableCodes.forEach((replaceCode) => {
+      candidates.forEach((candidateCode) => {
+        if (candidateCode === replaceCode) return;
+        if (baseCodes.includes(candidateCode)) return;
+
+        const replacedCodes = baseCodes.map((code) => {
+          return code === replaceCode ? candidateCode : code;
+        });
+
+        pushOption(
+          replacedCodes,
+          `optional-replace-${replaceCode}-with-${candidateCode}`
+        );
       });
     });
 
@@ -789,7 +876,11 @@
   function ensureMinimumShowcaseActivities(codes, pools, params, packagesCusco, tourIndex) {
     let result = uniqueCodes(codes);
   
-    const minimumTourCount = Math.max(Number(params.days || 0), result.length);
+    const availableServiceDays = getAvailableItineraryServiceDays(params);
+    const currentRequiredDays = estimateRequiredServiceDays(result, params, packagesCusco, tourIndex);
+    const minimumTourCount = currentRequiredDays >= availableServiceDays
+      ? result.length
+      : Math.max(Number(params.days || 0), result.length);
   
     const candidates = uniqueCodes([
       ...pools.fullDay,
@@ -834,7 +925,8 @@
           },
           packagesCusco,
           tourIndex
-        )
+        ) &&
+        fitsAvailableServiceDays(tempOption.includedTourCodes, params, packagesCusco, tourIndex)
       ) {
         result = uniqueCodes(tempOption.includedTourCodes);
       }
@@ -933,7 +1025,7 @@
       generationReason: "recommended-base"
     });
 
-    const expanded = expandOptionalTours(baseOption, pools, effectiveConfig, packagesCusco, tourIndex)
+    const expanded = expandOptionalTours(baseOption, pools, effectiveConfig, packagesCusco, tourIndex, params)
       .map((option) => buildPackageOption({
         params,
         card,
