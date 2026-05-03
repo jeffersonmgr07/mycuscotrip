@@ -3,11 +3,17 @@
 /**
  * My Cusco Trip - Itinerary Builder
  * Convierte combinaciones de tours en itinerarios por día.
- * No genera paquetes, solo organiza.
+ * No genera paquetes, solo organiza visualmente.
  *
- * Modos:
- * - showcase: vitrina comercial. Día 1 con Transfer IN + hasta 2 actividades suaves.
- * - dynamic: preparado para cotizador futuro con horarios reales.
+ * Reglas showcase:
+ * - Día 1: Transfer IN + Bienvenida Ancestral + City Tour si existen.
+ * - Día 2: Valle Sagrado, priorizando conexión/VIP si existe.
+ * - Día 3: Machu Picchu, salvo paquetes muy cortos.
+ * - Días posteriores: tours adicionales.
+ * - Último día: solo Transfer OUT / salida.
+ *
+ * Reglas dynamic:
+ * - Preparado para cotizador futuro con arrivalTime/departureTime.
  */
 
 (function () {
@@ -46,35 +52,100 @@
     return tour?.internalCode || tour?.code || tour?.id || "";
   }
 
-  function getTourTitle(tour) {
-    return String(tour?.title || "").toLowerCase();
+  function normalizeText(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
   }
 
-  function isCityTour(tour) {
-    const code = getTourCode(tour);
-    const title = getTourTitle(tour);
+  function getTourText(tour) {
+    return normalizeText([
+      tour?.internalCode,
+      tour?.code,
+      tour?.id,
+      tour?.slug,
+      tour?.title,
+      tour?.shortDescription,
+      tour?.description,
+      tour?.category,
+      tour?.productFamily
+    ].filter(Boolean).join(" "));
+  }
 
-    return code === "CUZ002" || title.includes("city tour");
+  function hasText(tour, words = []) {
+    const text = getTourText(tour);
+    return words.some((word) => text.includes(normalizeText(word)));
   }
 
   function isWelcomeTour(tour) {
     const code = getTourCode(tour);
-    const title = getTourTitle(tour);
 
     return (
       code === "CUZ001" ||
-      title.includes("bienvenida") ||
-      title.includes("ancestral") ||
-      title.includes("panorámico") ||
-      title.includes("panoramico")
+      hasText(tour, [
+        "bienvenida",
+        "ancestral",
+        "panoramico",
+        "panorámico",
+        "tour panoramico",
+        "tour panorámico"
+      ])
     );
+  }
+
+  function isCityTour(tour) {
+    const code = getTourCode(tour);
+
+    return (
+      code === "CUZ002" ||
+      hasText(tour, ["city tour", "centros arqueologicos", "centros arqueológicos"])
+    );
+  }
+
+  function isSacredValley(tour) {
+    return hasText(tour, [
+      "valle sagrado",
+      "pisac",
+      "pisaq",
+      "ollantaytambo",
+      "chinchero",
+      "maras",
+      "moray"
+    ]);
+  }
+
+  function isSacredValleyConnection(tour) {
+    return isSacredValley(tour) && hasText(tour, [
+      "conexion",
+      "conexión",
+      "aguas calientes",
+      "ollantaytambo",
+      "vip"
+    ]);
   }
 
   function isMachuPicchu(tour) {
     const code = getTourCode(tour);
-    const title = getTourTitle(tour);
+    return /^MAPI/i.test(code) || hasText(tour, ["machu picchu"]);
+  }
 
-    return /^MAPI/i.test(code) || title.includes("machu picchu");
+  function isMachuPicchuExpress(tour) {
+    return isMachuPicchu(tour) && hasText(tour, ["express"]);
+  }
+
+  function isHeavyTrekking(tour) {
+    return hasText(tour, [
+      "montana de colores",
+      "montaña de colores",
+      "vinicunca",
+      "humantay",
+      "palcoyo",
+      "7 lagunas",
+      "siete lagunas",
+      "ausangate"
+    ]);
   }
 
   function isLightFirstDayTour(tour) {
@@ -91,72 +162,152 @@
     };
   }
 
-  function sortToursByPriority(tours = []) {
-    return [...tours].sort((a, b) => {
-      const aScore = getTourPriority(a);
-      const bScore = getTourPriority(b);
-
-      if (aScore !== bScore) return aScore - bScore;
-
-      return String(a.title || "").localeCompare(String(b.title || ""), "es");
-    });
-  }
-
-  function getTourPriority(tour) {
-    if (isWelcomeTour(tour)) return 10;
-    if (isCityTour(tour)) return 20;
-    if (isMachuPicchu(tour)) return 80;
-
-    return 50;
+  function sameTour(a, b) {
+    return getTourCode(a) && getTourCode(a) === getTourCode(b);
   }
 
   function removeTours(sourceTours, toursToRemove) {
-    const removeKeys = new Set(toursToRemove.map((tour) => getTourCode(tour)));
+    const removeCodes = new Set(toursToRemove.map(getTourCode).filter(Boolean));
 
-    return sourceTours.filter((tour) => !removeKeys.has(getTourCode(tour)));
+    return sourceTours.filter((tour) => {
+      const code = getTourCode(tour);
+      return !removeCodes.has(code);
+    });
   }
 
-  function pickShowcaseDay1Tours(tours = []) {
-    const welcome = tours.find(isWelcomeTour);
-    const cityTour = tours.find(isCityTour);
+  function addToursToDay(days, dayIndex, tours = []) {
+    if (!days[dayIndex]) return;
 
+    tours.forEach((tour) => {
+      if (!tour) return;
+      days[dayIndex].items.push(toItineraryItem(tour));
+    });
+  }
+
+  function pickDay1ShowcaseTours(tours = []) {
+    const welcome = tours.find(isWelcomeTour);
+    const city = tours.find(isCityTour);
     const selected = [];
 
     if (welcome) selected.push(welcome);
-    if (cityTour && getTourCode(cityTour) !== getTourCode(welcome)) selected.push(cityTour);
+
+    if (city && !selected.some((tour) => sameTour(tour, city))) {
+      selected.push(city);
+    }
 
     if (!selected.length) {
-      const lightTours = tours.filter(isLightFirstDayTour).slice(0, 2);
-      selected.push(...lightTours);
+      selected.push(...tours.filter(isLightFirstDayTour).slice(0, 2));
     }
 
     return selected.slice(0, 2);
   }
 
+  function pickSacredValleyTour(tours = []) {
+    return (
+      tours.find(isSacredValleyConnection) ||
+      tours.find(isSacredValley) ||
+      null
+    );
+  }
+
+  function pickMachuPicchuTour(tours = []) {
+    return tours.find(isMachuPicchu) || null;
+  }
+
+  function sortAdditionalTours(tours = []) {
+    return [...tours].sort((a, b) => {
+      const scoreA = getAdditionalTourPriority(a);
+      const scoreB = getAdditionalTourPriority(b);
+
+      if (scoreA !== scoreB) return scoreA - scoreB;
+
+      return String(a.title || "").localeCompare(String(b.title || ""), "es");
+    });
+  }
+
+  function getAdditionalTourPriority(tour) {
+    if (isHeavyTrekking(tour)) return 20;
+    if (hasText(tour, ["valle sur", "tipon", "pikillacta", "andahuaylillas"])) return 30;
+    if (hasText(tour, ["maras", "moray", "salineras"])) return 35;
+    if (isLightFirstDayTour(tour)) return 80;
+    if (isSacredValley(tour)) return 90;
+    if (isMachuPicchu(tour)) return 100;
+
+    return 50;
+  }
+
+  function getTourDayIndexes(totalDays) {
+    if (totalDays <= 1) {
+      return {
+        firstDayIndex: 0,
+        valleyDayIndex: 0,
+        machuDayIndex: 0,
+        firstAdditionalDayIndex: 0,
+        lastTourDayIndex: 0,
+        lastDayIndex: 0
+      };
+    }
+
+    const lastDayIndex = totalDays - 1;
+    const lastTourDayIndex = Math.max(totalDays - 2, 0);
+
+    return {
+      firstDayIndex: 0,
+      valleyDayIndex: totalDays >= 3 ? 1 : 0,
+      machuDayIndex: totalDays >= 4 ? 2 : Math.min(1, lastTourDayIndex),
+      firstAdditionalDayIndex: totalDays >= 4 ? 3 : 2,
+      lastTourDayIndex,
+      lastDayIndex
+    };
+  }
+
+  function placeRemainingTours(days, tours = [], startIndex, lastTourDayIndex) {
+    if (!tours.length) return;
+
+    let currentDayIndex = Math.max(startIndex, 0);
+
+    sortAdditionalTours(tours).forEach((tour) => {
+      if (currentDayIndex > lastTourDayIndex) {
+        const fallbackDayIndex = Math.max(lastTourDayIndex, 0);
+        addToursToDay(days, fallbackDayIndex, [tour]);
+        return;
+      }
+
+      addToursToDay(days, currentDayIndex, [tour]);
+      currentDayIndex += 1;
+    });
+  }
+
   function placeShowcaseTours(days, tours = []) {
     if (!days.length) return;
 
-    let remainingTours = sortToursByPriority(tours);
+    let remainingTours = [...tours];
 
-    const day1Tours = pickShowcaseDay1Tours(remainingTours);
+    const totalDays = days.length;
+    const indexes = getTourDayIndexes(totalDays);
 
-    day1Tours.forEach((tour) => {
-      days[0].items.push(toItineraryItem(tour));
-    });
-
+    const day1Tours = pickDay1ShowcaseTours(remainingTours);
+    addToursToDay(days, indexes.firstDayIndex, day1Tours);
     remainingTours = removeTours(remainingTours, day1Tours);
 
-    const middleStartIndex = 1;
-    const lastAvailableTourDayIndex = Math.max(days.length - 2, 0);
+    const valleyTour = pickSacredValleyTour(remainingTours);
+    if (valleyTour) {
+      addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
+      remainingTours = removeTours(remainingTours, [valleyTour]);
+    }
 
-    let currentDayIndex = middleStartIndex;
+    const machuTour = pickMachuPicchuTour(remainingTours);
+    if (machuTour) {
+      addToursToDay(days, indexes.machuDayIndex, [machuTour]);
+      remainingTours = removeTours(remainingTours, [machuTour]);
+    }
 
-    remainingTours.forEach((tour) => {
-      if (currentDayIndex > lastAvailableTourDayIndex) return;
-
-      days[currentDayIndex].items.push(toItineraryItem(tour));
-      currentDayIndex += 1;
-    });
+    placeRemainingTours(
+      days,
+      remainingTours,
+      indexes.firstAdditionalDayIndex,
+      indexes.lastTourDayIndex
+    );
   }
 
   function parseTimeToMinutes(time) {
@@ -171,57 +322,80 @@
     return (hours * 60) + minutes;
   }
 
-  function canUseDay1Dynamic(arrivalTime, cutoffHour = 15) {
+  function getAvailableArrivalMinutes(arrivalTime) {
     const arrivalMinutes = parseTimeToMinutes(arrivalTime);
+    if (arrivalMinutes === null) return null;
+    return arrivalMinutes + 120;
+  }
 
-    if (arrivalMinutes === null) return false;
+  function pickDay1DynamicTours(tours = [], arrivalTime = "15:00") {
+    const availableMinutes = getAvailableArrivalMinutes(arrivalTime);
 
-    const availableMinutes = arrivalMinutes + 120;
-    const cutoffMinutes = cutoffHour * 60;
+    if (availableMinutes === null) return [];
 
-    return availableMinutes <= cutoffMinutes;
+    const hour09 = 9 * 60;
+    const hour13 = 13 * 60;
+    const hour16 = 16 * 60;
+
+    const welcome = tours.find(isWelcomeTour);
+    const city = tours.find(isCityTour);
+
+    if (availableMinutes <= hour09) {
+      return [welcome, city].filter(Boolean).slice(0, 2);
+    }
+
+    if (availableMinutes <= hour13) {
+      return [city || welcome].filter(Boolean).slice(0, 1);
+    }
+
+    if (availableMinutes <= hour16) {
+      return [welcome || city].filter(Boolean).slice(0, 1);
+    }
+
+    return [];
   }
 
   function placeDynamicTours(days, tours = [], context = {}) {
     if (!days.length) return;
 
-    let remainingTours = sortToursByPriority(tours);
+    let remainingTours = [...tours];
 
-    const arrivalTime = context.arrivalTime || "15:00";
-    const canDoDay1 = canUseDay1Dynamic(arrivalTime, 16);
+    const totalDays = days.length;
+    const indexes = getTourDayIndexes(totalDays);
 
-    if (canDoDay1) {
-      const day1Tours = pickShowcaseDay1Tours(remainingTours).slice(0, 1);
+    const day1Tours = pickDay1DynamicTours(remainingTours, context.arrivalTime || "15:00");
+    addToursToDay(days, indexes.firstDayIndex, day1Tours);
+    remainingTours = removeTours(remainingTours, day1Tours);
 
-      day1Tours.forEach((tour) => {
-        days[0].items.push(toItineraryItem(tour));
-      });
-
-      remainingTours = removeTours(remainingTours, day1Tours);
+    const valleyTour = pickSacredValleyTour(remainingTours);
+    if (valleyTour) {
+      addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
+      remainingTours = removeTours(remainingTours, [valleyTour]);
     }
 
-    const middleStartIndex = 1;
-    const lastAvailableTourDayIndex = Math.max(days.length - 2, 0);
+    const machuTour = pickMachuPicchuTour(remainingTours);
+    if (machuTour) {
+      addToursToDay(days, indexes.machuDayIndex, [machuTour]);
+      remainingTours = removeTours(remainingTours, [machuTour]);
+    }
 
-    let currentDayIndex = middleStartIndex;
-
-    remainingTours.forEach((tour) => {
-      if (currentDayIndex > lastAvailableTourDayIndex) return;
-
-      days[currentDayIndex].items.push(toItineraryItem(tour));
-      currentDayIndex += 1;
-    });
+    placeRemainingTours(
+      days,
+      remainingTours,
+      indexes.firstAdditionalDayIndex,
+      indexes.lastTourDayIndex
+    );
   }
 
   function cleanEmptyDays(days) {
-    return days.map((day) => {
+    return days.map((day, index) => {
       if (!day.items.length) {
         return {
           ...day,
           items: [
             {
               type: "free",
-              title: "Tiempo libre"
+              title: index === days.length - 1 ? "Tiempo libre hasta el traslado de salida" : "Tiempo libre"
             }
           ]
         };
