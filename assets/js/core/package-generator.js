@@ -192,7 +192,15 @@
   }
 
   function isSacredValleyCode(code, packagesCusco) {
-    return toArray(packagesCusco?.tourReferences?.cusco?.sacredValley).includes(code);
+    const refs = packagesCusco?.tourReferences?.cusco || {};
+
+    return uniqueCodes([
+      ...toArray(refs.sacredValley),
+      ...toArray(refs.sacredValleyFullDay),
+      ...toArray(refs.sacredValleyConnection),
+      ...toArray(refs.sacredValleyClassic),
+      ...toArray(refs.sacredValleyVip)
+    ]).includes(code);
   }
 
   function isSacredValleyConnectionCode(code, packagesCusco, tourIndex) {
@@ -612,34 +620,40 @@
   
   function ensureDefaultValleyConnectionMachuPicchu(codes, params, durationConfig, packagesCusco, tourIndex, pools) {
     let result = uniqueCodes(codes);
-  
+
     const days = Number(params.days || 0);
     const nights = Number(params.nights || 0);
-  
+
     if (days === 3 && nights === 2) {
       return ensureMachuPicchuRequired(result, params, durationConfig, packagesCusco, tourIndex);
     }
-  
+
+    if (days < 4 || durationConfig?.allowConnection === false) {
+      return result;
+    }
+
+    const hasValley = result.some((code) => isSacredValleyCode(code, packagesCusco));
+    const hasConnection = result.some((code) => isSacredValleyConnectionCode(code, packagesCusco, tourIndex));
+
+    if (hasConnection) {
+      return replaceMachuPicchuByMode(result, "overnight", packagesCusco, tourIndex);
+    }
+
     const connectionCode =
+      pools.sacredValleyConnection.find((code) => code === "CUZ003VIPCON" && !result.includes(code)) ||
+      pools.sacredValleyConnection.find((code) => code === "CUZ003CON" && !result.includes(code)) ||
       pools.sacredValleyConnection.find((code) => !result.includes(code)) ||
       pools.sacredValley.find((code) => isSacredValleyConnectionCode(code, packagesCusco, tourIndex));
-  
-    if (connectionCode) {
+
+    if (!connectionCode) return result;
+
+    if (hasValley) {
       result = result.filter((code) => !isSacredValleyCode(code, packagesCusco));
-      result.push(connectionCode);
     }
-  
-    result = removeCodes(result, result.filter(isMachuPicchuCode));
-  
-    const overnightCode = chooseMachuPicchuCode(params, durationConfig, packagesCusco, {
-      tourIndex,
-      forceMode: "overnight"
-    });
-  
-    if (overnightCode) {
-      result.push(overnightCode);
-    }
-  
+
+    result.push(connectionCode);
+    result = replaceMachuPicchuByMode(result, "overnight", packagesCusco, tourIndex);
+
     return uniqueCodes(result);
   }
 
@@ -649,7 +663,12 @@
     const options = [];
 
     const baseCodes = uniqueCodes(baseOption.includedTourCodes);
-    const optionalFullDays = pools.fullDay.filter((code) => !baseCodes.includes(code));
+    const baseHasSacredValley = baseCodes.some((code) => isSacredValleyCode(code, packagesCusco));
+    const optionalFullDays = pools.fullDay.filter((code) => {
+      if (baseCodes.includes(code)) return false;
+      if (baseHasSacredValley && isSacredValleyCode(code, packagesCusco)) return false;
+      return true;
+    });
     const optionalHalfDays = pools.halfDay.filter((code) => !baseCodes.includes(code));
 
     options.push({
@@ -705,7 +724,9 @@
     // Base comercial
     if (codes.some((code) => code === "CUZ001")) score += 24; // Bienvenida ancestral
     if (codes.some((code) => code === "CUZ002")) score += 22; // City Tour
-    if (codes.some((code) => code === "CUZ003")) score += 18; // Valle Sagrado
+    if (codes.some((code) => ["CUZ003FD", "CUZ003CON", "CUZ003VIP", "CUZ003VIPCON"].includes(code))) score += 18; // Valle Sagrado
+    if (codes.includes("CUZ003VIPCON")) score += 18;
+    if (codes.includes("CUZ003CON")) score += 12;
     if (codes.some(isMachuPicchuCode)) score += 30; // Machu Picchu obligatorio
   
     // Prioridad principal: opción recomendada comercial
@@ -775,7 +796,11 @@
       ...pools.cultural,
       ...pools.halfDay,
       ...pools.trekkings
-    ]).filter((code) => !result.includes(code));
+    ]).filter((code) => {
+      if (result.includes(code)) return false;
+      if (result.some((currentCode) => isSacredValleyCode(currentCode, packagesCusco)) && isSacredValleyCode(code, packagesCusco)) return false;
+      return true;
+    });
   
     for (const candidate of candidates) {
       if (result.length >= minimumTourCount) break;
