@@ -166,6 +166,82 @@
     return isWelcomeTour(tour) || isCityTour(tour);
   }
 
+
+  function isMarasMorayTour(tour) {
+    const code = getTourCode(tour);
+
+    return (
+      code === "CUZ004" ||
+      hasText(tour, ["maras", "moray", "salineras"])
+    );
+  }
+
+  function isSouthValleyTour(tour) {
+    const code = getTourCode(tour);
+
+    return (
+      code === "CUZ005" ||
+      hasText(tour, ["valle sur", "tipon", "pikillacta", "andahuaylillas"])
+    );
+  }
+
+  function isShortFlexibleTour(tour) {
+    return isWelcomeTour(tour) || isCityTour(tour) || isMarasMorayTour(tour) || isSouthValleyTour(tour);
+  }
+
+  function isExclusiveFullDayTour(tour) {
+    return (
+      isSacredValley(tour) ||
+      isMachuPicchu(tour) ||
+      isHeavyTrekking(tour) ||
+      hasText(tour, ["full day", "dia completo", "día completo"])
+    );
+  }
+
+  function getTourItemsFromDay(day) {
+    return (day?.items || []).filter((item) => item.type === "tour");
+  }
+
+  function canPlaceTourOnDay(day, tour) {
+    if (!day || !tour) return false;
+
+    const tourItems = getTourItemsFromDay(day);
+
+    if (!tourItems.length) return true;
+
+    const candidateIsShort = isShortFlexibleTour(tour);
+    const candidateIsExclusive = isExclusiveFullDayTour(tour);
+
+    if (candidateIsExclusive) return false;
+
+    const existingCodes = new Set(tourItems.map((item) => item.code).filter(Boolean));
+    if (existingCodes.has(getTourCode(tour))) return false;
+
+    const existingAllShort = tourItems.every((item) => {
+      const pseudoTour = {
+        internalCode: item.code,
+        title: item.title,
+        shortDescription: item.description,
+        duration: { label: item.duration }
+      };
+
+      return isShortFlexibleTour(pseudoTour) && !isExclusiveFullDayTour(pseudoTour);
+    });
+
+    return candidateIsShort && existingAllShort && tourItems.length < 2;
+  }
+
+  function findAvailableDayIndex(days, tour, startIndex, lastTourDayIndex) {
+    const firstIndex = Math.max(startIndex, 0);
+    const finalIndex = Math.min(lastTourDayIndex, days.length - 1);
+
+    for (let index = firstIndex; index <= finalIndex; index += 1) {
+      if (canPlaceTourOnDay(days[index], tour)) return index;
+    }
+
+    return -1;
+  }
+
   function toItineraryItem(tour) {
     return {
       type: "tour",
@@ -281,14 +357,29 @@
     let currentDayIndex = Math.max(startIndex, 0);
 
     sortAdditionalTours(tours).forEach((tour) => {
-      if (currentDayIndex > lastTourDayIndex) {
-        const fallbackDayIndex = Math.max(lastTourDayIndex, 0);
-        addToursToDay(days, fallbackDayIndex, [tour]);
+      const targetDayIndex = findAvailableDayIndex(
+        days,
+        tour,
+        currentDayIndex,
+        lastTourDayIndex
+      );
+
+      if (targetDayIndex < 0) {
+        console.warn(
+          "[MyCuscoTrip ItineraryBuilder] Tour omitido por falta de día compatible:",
+          getTourCode(tour),
+          tour?.title || ""
+        );
         return;
       }
 
-      addToursToDay(days, currentDayIndex, [tour]);
-      currentDayIndex += 1;
+      addToursToDay(days, targetDayIndex, [tour]);
+
+      if (isExclusiveFullDayTour(tour)) {
+        currentDayIndex = targetDayIndex + 1;
+      } else {
+        currentDayIndex = targetDayIndex;
+      }
     });
   }
 
