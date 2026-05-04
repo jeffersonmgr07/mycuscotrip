@@ -24,6 +24,47 @@
     "con-tren": { q: "tren" }
   };
 
+  const PUBLIC_DESTINATION_ORDER = [
+    "cusco",
+    "machu-picchu",
+    "valle-sagrado",
+    "puno",
+    "arequipa",
+    "ica",
+    "lima",
+    "paracas",
+    "maras-moray",
+    "tarapoto",
+    "otros-destinos"
+  ];
+
+  const PUBLIC_DESTINATION_LABELS = {
+    "cusco": "Cusco",
+    "machu-picchu": "Machu Picchu",
+    "valle-sagrado": "Valle Sagrado",
+    "puno": "Puno",
+    "arequipa": "Arequipa",
+    "ica": "Ica",
+    "lima": "Lima",
+    "paracas": "Paracas",
+    "maras-moray": "Maras y Moray",
+    "tarapoto": "Tarapoto",
+    "otros-destinos": "Otros destinos"
+  };
+
+  const HIDDEN_DESTINATIONS = new Set([
+    "peru",
+    "aguas-calientes",
+    "machu-picchu-pueblo"
+  ]);
+
+  const DESTINATION_ALIASES = {
+    "aguas-calientes": "machu-picchu",
+    "machu-picchu-pueblo": "machu-picchu",
+    "marasy-moray": "maras-moray",
+    "maras-y-moray": "maras-moray"
+  };
+
   const state = {
     allData: null,
     catalog: [],
@@ -35,7 +76,7 @@
       days: "",
       nights: "",
       durationKey: "",
-      sort: "commercial-showcase"
+      sort: "featured"
     }
   };
 
@@ -98,6 +139,64 @@
       .replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
+
+  function getPublicDestinationValue(destination) {
+    const clean = normalizeText(destination).replace(/\s+/g, "-");
+    if (!clean) return "";
+    return DESTINATION_ALIASES[clean] || clean;
+  }
+
+  function getPublicDestinationLabel(destination) {
+    const publicValue = getPublicDestinationValue(destination);
+    return PUBLIC_DESTINATION_LABELS[publicValue] || formatLabel(publicValue);
+  }
+
+  function isVisiblePublicDestination(destination) {
+    const publicValue = getPublicDestinationValue(destination);
+    return Boolean(publicValue) && !HIDDEN_DESTINATIONS.has(publicValue);
+  }
+
+  function getEffectiveFiltersForSearch() {
+    const filters = { ...state.filters };
+
+    if (filters.destination === "maras-moray") {
+      filters.destination = "";
+      filters.q = [filters.q, "maras moray"].filter(Boolean).join(" ").trim();
+    }
+
+    if (filters.destination === "otros-destinos") {
+      filters.destination = "";
+    }
+
+    return filters;
+  }
+
+  function normalizeDurationOption(option) {
+    const key = normalizeText(option?.key || option?.value || "");
+    const label = String(option?.label || "").trim();
+
+    if (!key) return null;
+
+    const fullDayAliases = new Set(["full-day", "fullday", "1-dia", "1d", "1d0n", "dia-completo", "día-completo"]);
+    const halfDayAliases = new Set(["medio-dia", "half-day", "halfday", "medio-dia-tour"]);
+
+    if (fullDayAliases.has(key)) return { key: "full-day", label: "Full day", rank: 20 };
+    if (halfDayAliases.has(key)) return { key: "medio-dia", label: "Medio día", rank: 10 };
+
+    const match = key.match(/^(\d+)d(?:(\d+)n)?$/);
+    if (match) {
+      const days = Number(match[1]);
+      const nights = Number(match[2] || Math.max(days - 1, 0));
+      return {
+        key: `${days}d${nights}n`,
+        label: `${days} días / ${nights} noche${nights === 1 ? "" : "s"}`,
+        rank: 100 + days
+      };
+    }
+
+    return { key, label: label || formatLabel(key), rank: 900 };
+  }
+
   function getDataPayload(allData) {
     return allData?.data && typeof allData.data === "object" ? allData.data : allData;
   }
@@ -136,7 +235,7 @@
       days: params.get("days") || parsedDuration.days || "",
       nights: params.get("nights") || parsedDuration.nights || "",
       durationKey: parsedDuration.durationKey || "",
-      sort: params.get("sort") || params.get("order") || "commercial-showcase"
+      sort: params.get("sort") || params.get("order") || "featured"
     };
   }
 
@@ -149,7 +248,7 @@
     if (state.filters.days) params.set("days", state.filters.days);
     if (state.filters.nights) params.set("nights", state.filters.nights);
     if (state.filters.durationKey && !state.filters.days) params.set("duration", state.filters.durationKey);
-    if (state.filters.sort && state.filters.sort !== "commercial-showcase") params.set("sort", state.filters.sort);
+    if (state.filters.sort && !["featured", "recommended", "recomendados", "commercial-showcase"].includes(normalizeText(state.filters.sort))) params.set("sort", state.filters.sort);
 
     const newUrl = params.toString()
       ? `${window.location.pathname}?${params.toString()}`
@@ -220,7 +319,9 @@
   function getOptionHighlights(option, tourIndex) {
     const codes = unique(option?.includedTourCodes);
     const titles = getTourLabels(codes, tourIndex);
-    return titles.slice(0, 4);
+    return titles
+      .filter((title) => !/^(CUZ|MAPI|PER)\d+/i.test(String(title || "")))
+      .slice(0, 4);
   }
 
   function getCommercialPackageOrder(days, optionIndex, family = "cusco-package") {
@@ -259,13 +360,13 @@
           : card?.badge || "Paquete";
 
     const optionLabel = `Opción ${optionIndex + 1}`;
-    const subtitle = highlights.length ? highlights.join(" + ") : card?.shortDescription || "Combinación dinámica";
+    const subtitle = highlights.length ? highlights.join(" + ") : card?.shortDescription || "Combinación flexible";
 
     return {
       id: `${card?.id || card?.slug || "pkg"}__option_${optionIndex}`,
       internalCode: "",
       slug: card?.slug || option?.slug || "",
-      title: `${card?.title || option?.title || "Paquete dinámico"} · ${optionLabel}`,
+      title: `${card?.title || option?.title || "Paquete variado"} · ${optionLabel}`,
       category: card?.category || "cusco",
       productKind: "package",
       productFamily: option?.productFamily || card?.productFamily || "cusco-package",
@@ -282,7 +383,7 @@
       price: { amount: 0, currency: option?.currency || "USD", mode: "dynamic_from_selected_itinerary" },
       currency: option?.currency || "USD",
       shortDescription: subtitle,
-      description: card?.shortDescription || option?.generationReason || "Opción generada dinámicamente desde la configuración del paquete.",
+      description: card?.shortDescription || option?.generationReason || "Opción creada desde la configuración del paquete.",
       search: {
         kind: "package",
         destinations: toArray(search.destinations),
@@ -379,7 +480,7 @@
   function sortFilteredProducts(products) {
     const mode = normalizeText(state.filters.sort || "commercial-showcase");
 
-    if (mode === "commercial-showcase" || mode === "commercial" || mode === "ota") {
+    if (["featured", "recommended", "recomendados", "commercial-showcase", "commercial", "ota"].includes(mode)) {
       return commercialSort(products);
     }
 
@@ -398,16 +499,22 @@
     const select = getFirstElement(selectors.destinationSelect);
     if (!select) return;
 
-    const currentValue = state.filters.destination || select.value;
-    const preferred = ["cusco", "machu-picchu", "valle-sagrado", "peru", "lima", "paracas", "ica", "arequipa", "puno", "tarapoto"];
-    const available = window.MyCuscoTripSearchService.getAvailableDestinations(state.catalog);
-    const destinations = unique([...preferred, ...available]);
+    const currentValue = getPublicDestinationValue(state.filters.destination || select.value);
+    const available = window.MyCuscoTripSearchService
+      .getAvailableDestinations(state.catalog)
+      .map(getPublicDestinationValue)
+      .filter(isVisiblePublicDestination);
+
+    const destinations = unique([...PUBLIC_DESTINATION_ORDER, ...available])
+      .filter(isVisiblePublicDestination);
 
     select.innerHTML = `
       <option value="">Todos los destinos</option>
-      ${destinations.map((destination) => `<option value="${escapeHtml(destination)}">${escapeHtml(formatLabel(destination))}</option>`).join("")}
+      ${destinations.map((destination) => `<option value="${escapeHtml(destination)}">${escapeHtml(getPublicDestinationLabel(destination))}</option>`).join("")}
     `;
-    select.value = currentValue;
+
+    select.value = destinations.includes(currentValue) ? currentValue : "";
+    state.filters.destination = select.value;
   }
 
   function populateDurationFilter() {
@@ -416,27 +523,34 @@
 
     const currentValue = state.filters.durationKey || buildDurationKey(state.filters.days, state.filters.nights) || select.value;
     const preferred = [
-      { key: "full-day", label: "Full day" },
-      { key: "medio-dia", label: "Medio día" },
-      { key: "2d1n", label: "2 días / 1 noche" },
-      { key: "3d2n", label: "3 días / 2 noches" },
-      { key: "4d3n", label: "4 días / 3 noches" },
-      { key: "5d4n", label: "5 días / 4 noches" },
-      { key: "6d5n", label: "6 días / 5 noches" },
-      { key: "7d6n", label: "7 días / 6 noches" },
-      { key: "8d7n", label: "8 días / 7 noches" },
-      { key: "9d8n", label: "9 días / 8 noches" },
-      { key: "10d9n", label: "10 días / 9 noches" }
+      { key: "medio-dia", label: "Medio día", rank: 10 },
+      { key: "full-day", label: "Full day", rank: 20 },
+      { key: "2d1n", label: "2 días / 1 noche", rank: 102 },
+      { key: "3d2n", label: "3 días / 2 noches", rank: 103 },
+      { key: "4d3n", label: "4 días / 3 noches", rank: 104 },
+      { key: "5d4n", label: "5 días / 4 noches", rank: 105 },
+      { key: "6d5n", label: "6 días / 5 noches", rank: 106 },
+      { key: "7d6n", label: "7 días / 6 noches", rank: 107 },
+      { key: "8d7n", label: "8 días / 7 noches", rank: 108 },
+      { key: "9d8n", label: "9 días / 8 noches", rank: 109 },
+      { key: "10d9n", label: "10 días / 9 noches", rank: 110 }
     ];
 
     const existing = new Map(preferred.map((item) => [item.key, item]));
+
     window.MyCuscoTripSearchService.getAvailableDurations(state.catalog).forEach((duration) => {
-      if (!existing.has(duration.key)) existing.set(duration.key, duration);
+      const normalized = normalizeDurationOption(duration);
+      if (normalized && !existing.has(normalized.key)) existing.set(normalized.key, normalized);
+    });
+
+    const durations = Array.from(existing.values()).sort((a, b) => {
+      if (Number(a.rank || 900) !== Number(b.rank || 900)) return Number(a.rank || 900) - Number(b.rank || 900);
+      return normalizeText(a.label).localeCompare(normalizeText(b.label));
     });
 
     select.innerHTML = `
       <option value="">Todas las duraciones</option>
-      ${Array.from(existing.values()).map((duration) => `<option value="${escapeHtml(duration.key)}">${escapeHtml(duration.label)}</option>`).join("")}
+      ${durations.map((duration) => `<option value="${escapeHtml(duration.key)}">${escapeHtml(duration.label)}</option>`).join("")}
     `;
     select.value = currentValue;
   }
@@ -451,7 +565,7 @@
 
   function getPriceLabel(product) {
     if (product.productKind === "package" || product.priceMode === "dynamic_from_selected_itinerary") {
-      return "Precio dinámico";
+      return product.productFamily === "peru-package" ? "Cotización flexible" : "Precio según selección";
     }
 
     const amount = Number(product.price?.amount || 0);
@@ -461,14 +575,31 @@
   }
 
   function getDetails(product) {
-    const details = [];
-    if (product.typeLabel) details.push(product.typeLabel);
+    const chips = [];
+    const themes = toArray(product?.search?.themes).map(formatLabel);
+    const tags = toArray(product?.search?.includedTags).map(normalizeText);
+    const family = normalizeText(product?.productFamily);
+
+    if (product.typeLabel) chips.push(product.typeLabel);
+
     if (product.productKind === "package") {
-      details.push("Con hotel opcional");
-      details.push("Tren configurable");
+      chips.push(product.productFamily === "peru-package" ? "Multidestino" : "Machu Picchu");
+      chips.push("Hotel configurable");
+      chips.push("Tren configurable");
+    } else if (family === "machu-picchu-tour") {
+      chips.push("Con tren");
+      chips.push("Entrada incluida");
+      chips.push("Guía profesional");
+    } else {
+      if (themes.length) chips.push(themes[0]);
+      if (tags.includes("full-day")) chips.push("Full day");
+      if (tags.includes("medio-dia") || tags.includes("half-day")) chips.push("Medio día");
+      chips.push("Tour diario");
     }
-    if (product.location) details.push(product.location);
-    return unique(details).slice(0, 3);
+
+    return unique(chips)
+      .filter((chip) => !/^(CUZ|MAPI|PER)\d+/i.test(String(chip || "")))
+      .slice(0, 4);
   }
 
   function renderProductCard(product) {
@@ -493,11 +624,8 @@
             <div class="listing-card__details">
               ${details.map((detail) => `<span>${escapeHtml(detail)}</span>`).join("")}
             </div>
-            ${product.includedTourCodes?.length ? `
-              <p class="listing-card__codes">${escapeHtml(product.includedTourCodes.slice(0, 5).join(" · "))}</p>
-            ` : ""}
             <div class="listing-card__actions">
-              <strong>${escapeHtml(getPriceLabel(product))}</strong>
+              <strong class="listing-card__price">${escapeHtml(getPriceLabel(product))}</strong>
               <span class="btn listing-card__button">Ver experiencia</span>
             </div>
           </div>
@@ -519,7 +647,7 @@
 
     const total = state.filteredCatalog.length;
     if (count) count.textContent = `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
-    if (summary) summary.textContent = total ? "Explora tours, Machu Picchu, experiencias en Perú y paquetes dinámicos." : "Prueba limpiando filtros o usando otro destino.";
+    if (summary) summary.textContent = total ? "Explora tours en Cusco, experiencias a Machu Picchu, rutas por Perú y paquetes variados." : "Prueba limpiando filtros o usando otro destino.";
 
     if (!total) {
       grid.innerHTML = "";
@@ -538,7 +666,7 @@
     }
 
     const filtered = window.MyCuscoTripSearchService.filterProducts(state.catalog, {
-      ...state.filters,
+      ...getEffectiveFiltersForSearch(),
       sort: "featured"
     });
 
@@ -568,7 +696,7 @@
       days: "",
       nights: "",
       durationKey: "",
-      sort: "commercial-showcase"
+      sort: "featured"
     };
     syncControlsFromState();
     applyFilters();
@@ -615,7 +743,7 @@
 
     if (sortSelect) {
       sortSelect.addEventListener("change", () => {
-        state.filters.sort = sortSelect.value || "commercial-showcase";
+        state.filters.sort = sortSelect.value || "featured";
         applyFilters();
       });
     }
