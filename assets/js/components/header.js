@@ -4,6 +4,7 @@ class MyCuscoTripHeader {
     this.mobileMenuBtn = document.querySelector(".mobile-menu-btn");
     this.navMenu = document.querySelector(".nav-menu");
     this.navLinks = document.querySelectorAll(".nav-menu a");
+    this.dropdownItems = document.querySelectorAll(".nav-item--dropdown");
 
     this.langToggle = document.querySelector(".lang-switcher__toggle");
     this.langMenu = document.querySelector(".lang-switcher__menu");
@@ -29,6 +30,14 @@ class MyCuscoTripHeader {
 
     this.navLinks.forEach((link) => {
       link.addEventListener("click", (event) => this.handleNavClick(event));
+    });
+
+    this.dropdownItems.forEach((item) => {
+      const toggle = item.querySelector(".nav-dropdown-toggle");
+      item.addEventListener("mouseenter", () => toggle?.setAttribute("aria-expanded", "true"));
+      item.addEventListener("mouseleave", () => toggle?.setAttribute("aria-expanded", "false"));
+      item.addEventListener("focusin", () => toggle?.setAttribute("aria-expanded", "true"));
+      item.addEventListener("focusout", () => toggle?.setAttribute("aria-expanded", "false"));
     });
 
     if (this.langToggle) {
@@ -127,6 +136,7 @@ class MyCuscoTripHeader {
     const currentPath = window.location.pathname;
     const currentFile = currentPath.split("/").pop() || "index.html";
     const currentHash = window.location.hash;
+    const currentSearch = window.location.search;
 
     const aliases = {
       "machu-picchu-tours.html": ["machu-picchu-tours.html"],
@@ -138,6 +148,15 @@ class MyCuscoTripHeader {
     };
 
     let activeLink = null;
+
+    if (currentFile === "trekkings.html" && currentSearch) {
+      const currentUrlPart = `trekkings.html${currentSearch}`;
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && href.includes(currentUrlPart)) activeLink = link;
+      });
+    }
 
     this.navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
