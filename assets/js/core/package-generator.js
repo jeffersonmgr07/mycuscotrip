@@ -1003,55 +1003,50 @@
     if (option.machuPicchuMode === "full-day") score -= 10;
   
     // Tours adicionales de alto valor
-    if (codes.some((code) => /^CUZ00[6-9]/.test(code))) score += 10; // Trekkings/naturaleza
+    if (codes.some((code) => /^CUZ00[6-9]/.test(code))) score += 10;
   
     // Bonus para la opción base recomendada
     if (option.generationReason === "recommended-base") score += 30;
+  
+    // Priorizar días ocupados después de Machu Picchu
     const minimumPostMachuTours = getMinimumPostMachuPicchuTours(option);
     const postMachuTours = countPostMachuPicchuCandidateTours(
       option.includedTourCodes,
       packagesCusco,
       tourIndex
     );
-    
+  
     if (postMachuTours >= minimumPostMachuTours) {
       score += 80;
     } else {
       score -= (minimumPostMachuTours - postMachuTours) * 60;
     }
-    const usefulDays = Math.max(Number(option.days || 0) - 1, 0);
-    const estimatedOccupiedDays = estimateOccupiedUsefulDays(option, packagesCusco, tourIndex);
-    
-    if (estimatedOccupiedDays >= usefulDays) {
-      score += 150;
-    } else {
-      score -= (usefulDays - estimatedOccupiedDays) * 90;
-    }
+  
+    // Penalizar días libres útiles
     const usefulDays = Math.max(Number(option.days || 0) - 1, 0);
     const occupiedDays = estimateOccupiedUsefulDays(option, packagesCusco, tourIndex);
     const freeUsefulDays = Math.max(usefulDays - occupiedDays, 0);
-    
+  
     if (freeUsefulDays === 0) {
       score += 300;
     } else {
       score -= freeUsefulDays * 180;
     }
-    
+  
     if (Number(option.days || 0) >= 8 && freeUsefulDays === 0) {
       score += 250;
     }
-    
+  
     if (Number(option.days || 0) >= 9 && freeUsefulDays > 0) {
       score -= freeUsefulDays * 250;
     }
-    
+  
     if (Number(option.days || 0) >= 10 && freeUsefulDays > 1) {
       score -= freeUsefulDays * 300;
     }
   
     return score;
   }
-
   function buildPackageOption({ params, card, durationConfig, profile, codes, tourIndex, packagesCusco, generationReason }) {
     const option = {
       id: `dynamic_${card?.slug || "cusco"}_${Math.random().toString(36).slice(2, 8)}`,
