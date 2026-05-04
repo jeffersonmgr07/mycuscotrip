@@ -3056,6 +3056,580 @@ class MyCuscoTripQuotePackages {
   }
 }
 
+/* =========================================================
+   PATCH 2026-05 - Adaptación cotizador a arquitectura modular
+   - Soporta estructura antigua packages[] y nueva packageCards[].
+   - Usa package-generator.js si está disponible para paquetes Cusco.
+   - Mantiene compatibilidad con hoteles, trenes, extras, impresión y pago.
+   ========================================================= */
+
+MyCuscoTripQuotePackages.prototype.loadAllData = async function () {
+  const [
+    packagesPeruData,
+    packagesCuscoData,
+    toursCuscoData,
+    toursMachuPicchuData,
+    toursPeruData,
+    trainsData,
+    hotelsData,
+    discountCodes
+  ] = await Promise.all([
+    this.fetchOptionalJson("assets/data/packages-peru.json"),
+    this.fetchOptionalJson("assets/data/packages-cusco.json"),
+    this.fetchOptionalJson("assets/data/tours-cusco.json"),
+    this.fetchOptionalJson("assets/data/tours-machu-picchu.json"),
+    this.fetchOptionalJson("assets/data/tours-peru.json"),
+    this.fetchOptionalJson("assets/data/trains.json"),
+    this.fetchOptionalJson("assets/data/hotels.json"),
+    this.fetchOptionalJson("assets/data/discount-codes.json")
+  ]);
+
+  this.packagesPeruData = packagesPeruData || {};
+  this.packagesCuscoData = packagesCuscoData || {};
+  this.toursCuscoData = toursCuscoData || {};
+  this.toursMachuPicchuData = toursMachuPicchuData || {};
+  this.toursPeruData = toursPeruData || {};
+
+  this.packagesData = this.buildQuotePackagesDataAdapter(this.packagesPeruData, this.packagesCuscoData);
+  this.trainsData = trainsData || { routes: {}, trainCategories: {}, exchangeRate: { fallbackRate: 3.75 } };
+  this.hotelsData = hotelsData || { destinations: {} };
+  this.discountCodes = Array.isArray(discountCodes) ? discountCodes : [];
+
+  this.exchangeRate = Number(this.trainsData?.exchangeRate?.fallbackRate || 3.75);
+
+  this.tourIndex = this.buildQuoteTourIndex();
+  this.staticPackages = this.extractLegacyQuotePackages();
+  this.dynamicPackageCards = this.extractDynamicPackageCards();
+  this.packages = [...this.staticPackages, ...this.dynamicPackageCards];
+
+  await this.loadExchangeRate();
+};
+
+MyCuscoTripQuotePackages.prototype.buildQuotePackagesDataAdapter = function (packagesPeruData = {}, packagesCuscoData = {}) {
+  const paymentOptions =
+    packagesPeruData.paymentOptions ||
+    packagesCuscoData.paymentOptions ||
+    {
+      quoteValidityDays: 2,
+      partialPaymentPercent: 30,
+      fullPaymentDiscountPercent: 0
+    };
+
+  const currencyRules =
+    packagesPeruData.currencyRules ||
+    packagesCuscoData.currencyRules ||
+    {
+      national: { allowedCurrencies: ["PEN", "USD"], defaultCurrency: "PEN" },
+      foreign: { allowedCurrencies: ["USD"], defaultCurrency: "USD" },
+      andean_community: { allowedCurrencies: ["USD"], defaultCurrency: "USD" }
+    };
+
+  return {
+    version: "quote-adapter-2026-05",
+    paymentOptions,
+    currencyRules,
+    packages: []
+  };
+};
+
+MyCuscoTripQuotePackages.prototype.getProductsFromQuoteSource = function (source) {
+  if (!source) return [];
+  if (Array.isArray(source)) return source;
+  if (Array.isArray(source.products)) return source.products;
+  if (Array.isArray(source.tours)) return source.tours;
+  return [];
+};
+
+MyCuscoTripQuotePackages.prototype.buildQuoteTourIndex = function () {
+  const index = new Map();
+
+  [
+    ...this.getProductsFromQuoteSource(this.toursCuscoData),
+    ...this.getProductsFromQuoteSource(this.toursMachuPicchuData),
+    ...this.getProductsFromQuoteSource(this.toursPeruData)
+  ].forEach((tour) => {
+    if (!tour) return;
+    [tour.internalCode, tour.code, tour.id, tour.slug].filter(Boolean).forEach((key) => {
+      index.set(String(key), tour);
+    });
+  });
+
+  return index;
+};
+
+MyCuscoTripQuotePackages.prototype.extractLegacyQuotePackages = function () {
+  const legacy = [];
+
+  [this.packagesPeruData, this.packagesCuscoData].forEach((source) => {
+    if (Array.isArray(source?.packages)) {
+      source.packages
+        .filter((item) => item && item.status !== "draft" && item.status !== "archived" && item.status !== "hidden")
+        .forEach((item) => legacy.push({ ...item, __quoteSource: "legacy" }));
+    }
+  });
+
+  return legacy;
+};
+
+MyCuscoTripQuotePackages.prototype.extractDynamicPackageCards = function () {
+  const cards = [];
+
+  const addCards = (source, family) => {
+    if (!Array.isArray(source?.packageCards)) return;
+
+    source.packageCards
+      .filter((card) => card && card.status !== "draft" && card.status !== "archived" && card.status !== "hidden")
+      .forEach((card) => {
+        cards.push({
+          ...card,
+          productKind: "package",
+          productFamily: card.productFamily || family,
+          __quoteSource: "packageCard",
+          __sourceFamily: card.productFamily || family
+        });
+      });
+  };
+
+  addCards(this.packagesCuscoData, "cusco-package");
+  addCards(this.packagesPeruData, "peru-package");
+
+  return cards;
+};
+
+MyCuscoTripQuotePackages.prototype.getCompatiblePackages = function () {
+  if (!this.travelDays || !this.travelNights) return [];
+
+  return this.packages
+    .filter((pkg) => Number(pkg.days) === this.travelDays && Number(pkg.nights) === this.travelNights)
+    .map((pkg) => {
+      if (pkg.__quoteSource === "packageCard") return this.buildQuotePackageFromCard(pkg);
+      return pkg;
+    })
+    .filter(Boolean);
+};
+
+MyCuscoTripQuotePackages.prototype.buildQuotePackageFromCard = function (card) {
+  const family = card.productFamily || card.__sourceFamily || "cusco-package";
+  const isCuscoPackage = family === "cusco-package";
+  const isPeruPackage = family === "peru-package";
+
+  const options = isCuscoPackage
+    ? this.buildCuscoDynamicItineraryOptions(card)
+    : this.buildPeruQuoteItineraryOptions(card);
+
+  const recommendedOption = options.find((option) => option.recommended) || options[0] || null;
+  const accommodationSummary = this.getAccommodationSummaryForQuotePackage(card, recommendedOption);
+  const basePricing = this.estimateQuoteBasePricing(card, recommendedOption);
+
+  return {
+    ...card,
+    id: card.id || card.slug || `quote-${card.days}d${card.nights}n`,
+    code: card.code || card.id || card.slug,
+    title: card.title || `Paquete ${card.days} días / ${card.nights} noches`,
+    currency: card.currency || card.defaultCurrency || "USD",
+    basePricing,
+    basePricingByNationality: card.basePricingByNationality || null,
+    itineraryOptions: options,
+    accommodationSummary,
+    trainSelection: this.getTrainSelectionForQuotePackage(card, recommendedOption),
+    extras: Array.isArray(card.extras) ? card.extras : [],
+    includes: this.getQuotePackageIncludes(card, isPeruPackage),
+    __quoteSource: "packageCard"
+  };
+};
+
+MyCuscoTripQuotePackages.prototype.buildCuscoDynamicItineraryOptions = function (card) {
+  const generator = window.MyCuscoTripPackageGenerator;
+  let generated = [];
+
+  if (generator && typeof generator.generatePackageOptions === "function") {
+    generated = generator.generatePackageOptions(
+      {
+        days: Number(card.days || this.travelDays),
+        nights: Number(card.nights || this.travelNights),
+        arrivalTime: this.arrivalTime || "09:00",
+        departureTime: this.departureTime || "20:00",
+        productFamily: "cusco-package"
+      },
+      {
+        data: {
+          packagesCusco: this.packagesCuscoData,
+          toursCusco: this.toursCuscoData,
+          toursMachuPicchu: this.toursMachuPicchuData,
+          toursPeru: this.toursPeruData
+        }
+      }
+    );
+  }
+
+  if (!Array.isArray(generated) || !generated.length) {
+    generated = [
+      {
+        ...card,
+        includedTourCodes: Array.isArray(card.search?.includedTourCodes) ? card.search.includedTourCodes : [],
+        generationReason: "quote-fallback"
+      }
+    ];
+  }
+
+  return generated.map((option, index) => this.adaptGeneratedOptionForQuote(card, option, index));
+};
+
+MyCuscoTripQuotePackages.prototype.buildPeruQuoteItineraryOptions = function (card) {
+  const codes = Array.isArray(card.search?.includedTourCodes) ? card.search.includedTourCodes : [];
+
+  return [
+    {
+      code: `${card.slug || card.id || "peru-package"}-ruta-sugerida`,
+      label: "Ruta sugerida",
+      recommended: true,
+      summary: card.shortDescription || "Ruta multidestino de cotización flexible.",
+      itinerary: this.buildSimpleItineraryFromCodes(codes, Number(card.days || this.travelDays), {
+        peruMode: true,
+        card
+      }),
+      includedTourCodes: codes,
+      tourTitles: this.getTourTitlesFromCodes(codes),
+      accommodationSummary: this.getAccommodationSummaryForPeruCard(card),
+      trainMode: codes.some((code) => String(code).startsWith("MAPI")) ? "full_day" : "none",
+      outboundRoute: "machu_picchu_full_day_outbound",
+      returnRoute: "machu_picchu_return"
+    }
+  ];
+};
+
+MyCuscoTripQuotePackages.prototype.adaptGeneratedOptionForQuote = function (card, option, index) {
+  const codes = Array.isArray(option.includedTourCodes)
+    ? option.includedTourCodes
+    : Array.isArray(card.search?.includedTourCodes)
+      ? card.search.includedTourCodes
+      : [];
+
+  const itinerary = this.buildSimpleItineraryFromCodes(codes, Number(card.days || this.travelDays), {
+    option,
+    card
+  });
+
+  const letter = String.fromCharCode(65 + index);
+  const title = index === 0 ? "Itinerario A · Recomendado" : `Itinerario ${letter}`;
+  const trainMode = this.inferTrainModeFromCodes(codes);
+
+  return {
+    code: option.signature || option.id || `${card.slug || card.id}-option-${index}`,
+    label: title,
+    recommended: index === 0 || Boolean(option.recommended),
+    summary: this.getOptionSummaryFromCodes(codes),
+    itinerary,
+    includedTourCodes: codes,
+    tourTitles: this.getTourTitlesFromCodes(codes),
+    accommodationSummary: this.getAccommodationSummaryForCuscoCodes(card, codes),
+    trainMode,
+    outboundRoute: this.getOutboundRouteForTrainMode(trainMode),
+    returnRoute: trainMode === "none" ? "" : "machu_picchu_return"
+  };
+};
+
+MyCuscoTripQuotePackages.prototype.getTourTitlesFromCodes = function (codes = []) {
+  return codes.map((code) => {
+    const tour = this.tourIndex?.get(String(code));
+    return tour?.title || this.getFriendlyCodeLabel(code);
+  });
+};
+
+MyCuscoTripQuotePackages.prototype.getFriendlyCodeLabel = function (code) {
+  const labels = {
+    arrival_transfer: "Traslado de llegada",
+    departure_transfer: "Traslado de salida",
+    CUZ001: "Bienvenida Ancestral",
+    CUZ002: "City Tour Cusco",
+    CUZ003FD: "Valle Sagrado",
+    CUZ003CON: "Valle Sagrado conexión",
+    CUZ003VIP: "Valle Sagrado VIP",
+    CUZ003VIPCON: "Valle Sagrado VIP conexión",
+    CUZ004: "Maras y Moray",
+    CUZ005: "Valle Sur",
+    CUZ006: "Laguna Humantay",
+    CUZ007: "Montaña de Colores",
+    CUZ008: "Palcoyo",
+    CUZ009: "Siete Lagunas",
+    MAPI001: "Machu Picchu Full Day",
+    MAPI002: "Machu Picchu Express",
+    MAPI003: "Machu Picchu Overnight",
+    MAPI004: "Machu Picchu Overnight Express",
+    PER001: "Lima",
+    PER002: "Paracas e Ica",
+    PER003: "Arequipa",
+    PER004: "Puno"
+  };
+
+  return labels[code] || String(code || "Actividad");
+};
+
+MyCuscoTripQuotePackages.prototype.getOptionSummaryFromCodes = function (codes = []) {
+  const titles = this.getTourTitlesFromCodes(codes).slice(0, 6);
+  if (!titles.length) return "Ruta sugerida para la duración seleccionada.";
+  return titles.join(" · ");
+};
+
+MyCuscoTripQuotePackages.prototype.buildSimpleItineraryFromCodes = function (codes = [], days = 1, options = {}) {
+  const safeDays = Math.max(1, Number(days || 1));
+  const remainingCodes = [...new Set(codes.filter(Boolean))];
+  const itinerary = [];
+  const used = new Set();
+
+  const take = (matchFn) => {
+    const code = remainingCodes.find((item) => !used.has(item) && matchFn(String(item)));
+    if (code) used.add(code);
+    return code;
+  };
+
+  const takeMany = (matchFn, max = 2) => {
+    const result = [];
+    remainingCodes.forEach((code) => {
+      if (result.length >= max || used.has(code)) return;
+      if (matchFn(String(code))) {
+        used.add(code);
+        result.push(code);
+      }
+    });
+    return result;
+  };
+
+  const dayOneCodes = takeMany((code) => ["CUZ001", "CUZ002"].includes(code), 2);
+  const valleyConnection = take((code) => ["CUZ003CON", "CUZ003VIPCON"].includes(code));
+  const valleyFull = take((code) => ["CUZ003FD", "CUZ003VIP"].includes(code));
+  const machuOvernight = take((code) => ["MAPI003", "MAPI004"].includes(code));
+  const machuFull = take((code) => ["MAPI001", "MAPI002"].includes(code));
+
+  const freeCodes = remainingCodes.filter((code) => !used.has(code));
+
+  const pushDay = (day, title, dayCodes = [], description = "") => {
+    const cleanCodes = dayCodes.filter(Boolean);
+    itinerary.push({
+      day,
+      title: `Día ${day}: ${title}`,
+      description: description || this.getDayDescriptionFromCodes(cleanCodes, title),
+      tourCodes: cleanCodes
+    });
+  };
+
+  if (dayOneCodes.length) {
+    pushDay(1, "Bienvenida a Cusco", ["arrival_transfer", ...dayOneCodes], "Llegada a Cusco, traslado de bienvenida y primeras experiencias de aclimatación según tu itinerario.");
+  } else if (valleyConnection) {
+    pushDay(1, "Valle Sagrado conexión", ["arrival_transfer", valleyConnection], "Llegada a Cusco y salida hacia el Valle Sagrado con conexión hacia Machu Picchu Pueblo según la ruta seleccionada.");
+  } else {
+    pushDay(1, "Llegada a Cusco", ["arrival_transfer"], "Recepción en Cusco y tiempo de aclimatación antes de iniciar las experiencias principales.");
+  }
+
+  let day = 2;
+
+  if (valleyConnection && !itinerary.some((item) => item.tourCodes?.includes(valleyConnection)) && day < safeDays) {
+    pushDay(day++, "Valle Sagrado conexión", [valleyConnection], "Recorrido por el Valle Sagrado y conexión hacia Machu Picchu Pueblo.");
+  }
+
+  if (valleyFull && day < safeDays) {
+    pushDay(day++, "Valle Sagrado de los Incas", [valleyFull], "Día dedicado a recorrer el Valle Sagrado y sus principales atractivos culturales.");
+  }
+
+  if (machuOvernight && day < safeDays) {
+    pushDay(day++, "Machu Picchu", [machuOvernight], "Visita a Machu Picchu según el programa overnight seleccionado, con retorno coordinado a Cusco.");
+  } else if (machuFull && day < safeDays) {
+    pushDay(day++, "Machu Picchu Full Day", [machuFull], "Experiencia full day a Machu Picchu con tren, bus, ingreso y guía según disponibilidad.");
+  }
+
+  freeCodes.forEach((code) => {
+    if (day >= safeDays) return;
+    pushDay(day++, this.getFriendlyCodeLabel(code), [code]);
+  });
+
+  while (day < safeDays) {
+    pushDay(day++, "Experiencia en Cusco", [], "Día disponible para actividades complementarias según la ruta seleccionada.");
+  }
+
+  if (safeDays > 1) {
+    pushDay(safeDays, "Traslado de salida", ["departure_transfer"], "Traslado al aeropuerto o terminal terrestre de Cusco según tu horario de salida.");
+  }
+
+  return itinerary.slice(0, safeDays);
+};
+
+MyCuscoTripQuotePackages.prototype.getDayDescriptionFromCodes = function (codes = [], fallbackTitle = "") {
+  const titles = this.getTourTitlesFromCodes(codes).filter((title) => !String(title).toLowerCase().includes("traslado"));
+  if (!titles.length) return fallbackTitle || "Actividad programada según itinerario.";
+  return `Incluye ${titles.join(", ")} dentro de la ruta seleccionada.`;
+};
+
+MyCuscoTripQuotePackages.prototype.inferTrainModeFromCodes = function (codes = []) {
+  if (codes.some((code) => ["MAPI003", "MAPI004"].includes(code))) return "overnight";
+  if (codes.some((code) => ["CUZ003CON", "CUZ003VIPCON"].includes(code))) return "sacred_valley_connection";
+  if (codes.some((code) => ["MAPI001", "MAPI002"].includes(code))) return "full_day";
+  return "none";
+};
+
+MyCuscoTripQuotePackages.prototype.getOutboundRouteForTrainMode = function (mode) {
+  if (mode === "overnight" || mode === "sacred_valley_connection" || mode === "connection") {
+    return "sacred_valley_connection_outbound";
+  }
+
+  if (mode === "none") return "";
+  return "machu_picchu_full_day_outbound";
+};
+
+MyCuscoTripQuotePackages.prototype.getAccommodationSummaryForQuotePackage = function (card, option) {
+  if (Array.isArray(option?.accommodationSummary) && option.accommodationSummary.length) return option.accommodationSummary;
+  if (card.productFamily === "peru-package" || card.__sourceFamily === "peru-package") return this.getAccommodationSummaryForPeruCard(card);
+  return this.getAccommodationSummaryForCuscoCodes(card, option?.includedTourCodes || card.search?.includedTourCodes || []);
+};
+
+MyCuscoTripQuotePackages.prototype.getAccommodationSummaryForCuscoCodes = function (card, codes = []) {
+  const nights = Number(card.nights || this.travelNights || 0);
+  const hasOvernightMachu = codes.some((code) => ["MAPI003", "MAPI004"].includes(code));
+  const aguasNights = hasOvernightMachu ? 1 : 0;
+  const cuscoNights = Math.max(0, nights - aguasNights);
+  const summary = [];
+
+  if (cuscoNights > 0) summary.push({ destination: "cusco", nights: cuscoNights });
+  if (aguasNights > 0) summary.push({ destination: "aguas-calientes", nights: aguasNights });
+
+  return summary;
+};
+
+MyCuscoTripQuotePackages.prototype.getAccommodationSummaryForPeruCard = function (card) {
+  const nights = Number(card.nights || this.travelNights || 0);
+  const destinations = Array.isArray(card.search?.destinations) ? card.search.destinations : [];
+  const summary = [];
+
+  if (destinations.includes("lima")) summary.push({ destination: "lima", nights: 1 });
+  if (destinations.includes("arequipa")) summary.push({ destination: "arequipa", nights: 1 });
+  if (destinations.includes("puno")) summary.push({ destination: "puno", nights: 1 });
+  if (destinations.includes("paracas") || destinations.includes("ica")) summary.push({ destination: "ica", nights: 1 });
+
+  const assigned = summary.reduce((total, item) => total + Number(item.nights || 0), 0);
+  const remaining = Math.max(0, nights - assigned);
+  if (remaining > 0) summary.push({ destination: "cusco", nights: remaining });
+
+  return summary;
+};
+
+MyCuscoTripQuotePackages.prototype.getTrainSelectionForQuotePackage = function (card, option) {
+  const codes = option?.includedTourCodes || card.search?.includedTourCodes || [];
+  const mode = this.inferTrainModeFromCodes(codes);
+
+  if (mode === "none") return { required: false, mode: "none" };
+
+  return {
+    required: true,
+    mode,
+    outboundRoute: this.getOutboundRouteForTrainMode(mode),
+    returnRoute: "machu_picchu_return"
+  };
+};
+
+MyCuscoTripQuotePackages.prototype.getQuotePackageIncludes = function (card, isPeruPackage = false) {
+  if (Array.isArray(card.includes) && card.includes.length) return card.includes;
+
+  if (isPeruPackage) {
+    return [
+      "Ruta sugerida multidestino",
+      "Experiencias principales según itinerario",
+      "Alojamiento configurable",
+      "Trenes y servicios sujetos a disponibilidad",
+      "Asesoría personalizada para ajustar la cotización"
+    ];
+  }
+
+  return [
+    "Traslados de llegada y salida",
+    "Experiencias principales del itinerario seleccionado",
+    "Machu Picchu según disponibilidad oficial",
+    "Alojamiento configurable por destino",
+    "Trenes turísticos seleccionables cuando aplica"
+  ];
+};
+
+MyCuscoTripQuotePackages.prototype.estimateQuoteBasePricing = function (card, option) {
+  if (card.basePricing?.adult) return card.basePricing;
+
+  const codes = option?.includedTourCodes || card.search?.includedTourCodes || [];
+  const totals = codes.reduce((acc, code) => {
+    const tour = this.tourIndex?.get(String(code));
+    const pricing = tour?.basePricing || tour?.pricing || {};
+    const adult = Number(pricing.adult || pricing.publishedAdultUSD || pricing.price || 0);
+    const child = Number(pricing.child || pricing.publishedChildUSD || pricing.adult || pricing.publishedAdultUSD || 0);
+
+    acc.adult += Number.isFinite(adult) ? adult : 0;
+    acc.child += Number.isFinite(child) ? child : adult;
+    return acc;
+  }, { adult: 0, child: 0 });
+
+  if (totals.adult <= 0) {
+    const fallbackAdult = Math.max(120, Number(card.days || this.travelDays || 1) * 70);
+    return { adult: fallbackAdult, child: Math.round(fallbackAdult * 0.85), currency: "USD" };
+  }
+
+  return {
+    adult: Number(totals.adult.toFixed(2)),
+    child: Number((totals.child || totals.adult).toFixed(2)),
+    currency: "USD"
+  };
+};
+
+MyCuscoTripQuotePackages.prototype.renderPackageOptions = function () {
+  const target = document.getElementById("packageOptions");
+  if (!target) return;
+
+  target.innerHTML = "";
+
+  if (!this.travelDays || !this.travelNights) {
+    target.innerHTML = `
+      <div class="quote-empty-state">
+        Selecciona tus fechas de viaje para detectar automáticamente el paquete compatible.
+      </div>
+    `;
+    return;
+  }
+
+  const compatible = this.getCompatiblePackages();
+
+  if (!compatible.length) {
+    target.innerHTML = `
+      <div class="quote-empty-state">
+        No tenemos un paquete configurado para ${this.travelDays} días / ${this.travelNights} noches.
+        Puedes ajustar las fechas o solicitar una versión personalizada.
+      </div>
+    `;
+    return;
+  }
+
+  if (compatible.length <= 1 && this.selectedPackage) {
+    target.innerHTML = "";
+    return;
+  }
+
+  target.innerHTML = compatible.map((pkg) => {
+    const selected = this.selectedPackage?.slug === pkg.slug;
+    return `
+      <article class="quote-package-card ${selected ? "is-selected" : ""}" data-package-slug="${this.escapeHtml(pkg.slug || pkg.id)}">
+        <div class="quote-package-card__top">
+          <div>
+            <h3>${this.escapeHtml(pkg.title || "Paquete")}</h3>
+            <p>${this.escapeHtml(pkg.shortDescription || `${pkg.days} días / ${pkg.nights} noches`)}</p>
+          </div>
+          <span class="quote-badge quote-badge--muted">${this.escapeHtml(pkg.days)}D / ${this.escapeHtml(pkg.nights)}N</span>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  target.querySelectorAll(".quote-package-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const slug = card.dataset.packageSlug;
+      const pkg = compatible.find((item) => (item.slug || item.id) === slug) || compatible[0];
+      this.selectPackage(pkg);
+    });
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
