@@ -845,8 +845,12 @@
         "CUZ002",
         "CUZ003CON",
         "CUZ003VIPCON",
+        "CUZ006",
+        "CUZ007",
         "MAPI001",
-        "MAPI003"
+        "MAPI002",
+        "MAPI003",
+        "MAPI004"
       ],
       "requiredTours": [
         "MAPI001"
