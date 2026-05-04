@@ -32,6 +32,12 @@ class MyCuscoTripProductPage {
     this.date = "";
     this.selectedDepartureTime = "";
 
+    this.selectedOutboundTrainId = "";
+    this.selectedReturnTrainId = "";
+    this.selectedTrainAdjustmentTotal = 0;
+    this.availableOutboundTrains = [];
+    this.availableReturnTrains = [];
+
     this.serviceMode = "group";
 
     this.selectedHotelsByDestination = {};
@@ -313,6 +319,7 @@ class MyCuscoTripProductPage {
     this.renderExtras(product?.extras || []);
     this.renderServiceModes(product || {});
     this.renderDepartureTimeOptions(product || {});
+    this.renderTrainSelectionOptions(product || {});
     this.renderAccommodationOptions(product || {});
     this.renderSimilarExperiences();
   }
@@ -493,12 +500,19 @@ class MyCuscoTripProductPage {
       return;
     }
 
-    target.innerHTML = items.map((item) => `
-      <div class="experience-itinerary-item">
-        <h3>${this.escapeHtml(item.title || "Paso del itinerario")}</h3>
-        <p>${this.escapeHtml(item.description || "")}</p>
-      </div>
-    `).join("");
+    target.innerHTML = items.map((item, index) => {
+      const images = this.collectItineraryItemImages(item).slice(0, 2);
+
+      return `
+        <div class="experience-itinerary-item experience-itinerary-item--visual">
+          <div class="experience-itinerary-item__content">
+            <h3 class="experience-itinerary-day-title">${this.escapeHtml(item.title || `Paso ${index + 1}`)}</h3>
+            <p>${this.escapeHtml(item.description || "")}</p>
+          </div>
+          ${this.renderItineraryMedia(images, item.title || `Paso ${index + 1}`)}
+        </div>
+      `;
+    }).join("");
   }
 
   renderFaq(items) {
@@ -720,6 +734,324 @@ class MyCuscoTripProductPage {
         ${themes.length ? `<p><small>Estilo de viaje: ${this.escapeHtml(themes.join(" · "))}</small></p>` : ""}
       </div>
     `;
+  }
+
+  renderTrainSelectionOptions(product) {
+    this.resetTrainSelectionState();
+
+    const section = this.ensureTrainSelectionSection();
+    const container = document.getElementById("trainSelectionContainer");
+
+    if (!section || !container) return;
+
+    section.hidden = true;
+    container.innerHTML = "";
+
+    if (!this.isTrainSelectionEnabled(product)) return;
+
+    const trainCatalog = this.getTrainCatalog();
+    const defaultSelection = this.getDefaultTrainSelection(product);
+    const trainConfig = this.getTrainConfig(product);
+    const sameCompanyOnly = String(trainConfig.mode || "").toLowerCase().includes("same_company");
+
+    this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId);
+    this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId);
+
+    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, "Tren de ida incluido");
+    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, "Tren de retorno incluido");
+
+    if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
+    if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
+    if (!this.availableOutboundTrains.length && !this.availableReturnTrains.length) return;
+
+    this.selectedOutboundTrainId = defaultSelection.outboundTrainId || this.availableOutboundTrains[0]?.id || "";
+    this.selectedReturnTrainId = defaultSelection.returnTrainId || this.availableReturnTrains[0]?.id || "";
+
+    section.hidden = false;
+    container.innerHTML = `
+      <div class="booking-train-selection" data-train-selection>
+        <div class="booking-train-selection__intro">
+          <strong>Tren turístico</strong>
+          <small>Elige los servicios de tren para tu experiencia a Machu Picchu. El cálculo compara contra el tren incluido por defecto.</small>
+        </div>
+        ${this.availableOutboundTrains.length ? `
+          <label class="booking-train-select-field" for="outboundTrainSelect">
+            <span>Tren de ida</span>
+            <select id="outboundTrainSelect" data-train-direction="outbound">
+              ${this.availableOutboundTrains.map((train) => this.renderTrainOption(train, this.selectedOutboundTrainId)).join("")}
+            </select>
+          </label>
+        ` : ""}
+        ${this.availableReturnTrains.length ? `
+          <label class="booking-train-select-field" for="returnTrainSelect">
+            <span>Tren de retorno</span>
+            <select id="returnTrainSelect" data-train-direction="return">
+              ${this.getCompatibleReturnTrains(sameCompanyOnly).map((train) => this.renderTrainOption(train, this.selectedReturnTrainId)).join("")}
+            </select>
+          </label>
+        ` : ""}
+        <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
+      </div>
+    `;
+
+    this.bindTrainSelectionEvents(sameCompanyOnly);
+    this.updateTrainSelectionState(sameCompanyOnly);
+  }
+
+  ensureTrainSelectionSection() {
+    let section = document.getElementById("trainSelectionSection");
+    if (section) return section;
+
+    const reference = document.getElementById("departureTimeSection") || document.getElementById("serviceModeSection") || document.getElementById("packageAccommodationSection");
+    if (!reference || !reference.parentNode) return null;
+
+    section = document.createElement("div");
+    section.id = "trainSelectionSection";
+    section.className = "booking-field";
+    section.hidden = true;
+    section.innerHTML = `<label>Tren turístico</label><div id="trainSelectionContainer" class="booking-train-selection-wrap"></div>`;
+    reference.parentNode.insertBefore(section, reference.nextSibling);
+    return section;
+  }
+
+  resetTrainSelectionState() {
+    this.selectedOutboundTrainId = "";
+    this.selectedReturnTrainId = "";
+    this.selectedTrainAdjustmentTotal = 0;
+    this.availableOutboundTrains = [];
+    this.availableReturnTrains = [];
+  }
+
+  isTrainSelectionEnabled(product) {
+    if (!product || this.isPackage(product)) return false;
+    const code = String(product.internalCode || product.code || product.id || "").toUpperCase();
+    const config = this.getTrainConfig(product);
+    return Boolean(config.customerCanChangeTrain === true || String(config.mode || "").toLowerCase().includes("flexible") || ["MAPI001", "MAPI003"].includes(code));
+  }
+
+  getTrainConfig(product) {
+    return product?.trainSelection || product?.raw?.trainSelection || {};
+  }
+
+  getDefaultTrainSelection(product) {
+    const source = product?.defaultTrainSelection || product?.raw?.defaultTrainSelection || this.getTrainConfig(product)?.defaultTrainSelection || this.getTrainConfig(product)?.defaultSelection || {};
+    const outboundTrainId = String(source.outboundTrainId || source.outbound || source.outboundCode || source.departureTrainId || source.departureTrainCode || source.goingTrainId || source.goingTrainCode || source.trainOut || "").trim();
+    const returnTrainId = String(source.returnTrainId || source.return || source.returnCode || source.inboundTrainId || source.inboundTrainCode || source.backTrainId || source.backTrainCode || source.trainReturn || "").trim();
+    return { outboundTrainId, returnTrainId };
+  }
+
+  getTrainCatalog() {
+    const raw = this.allData?.data?.trains || this.allData?.trains || window.MyCuscoTripTrains || [];
+    const flattened = [];
+
+    const visit = (value, parent = {}) => {
+      if (!value) return;
+      if (Array.isArray(value)) { value.forEach((item) => visit(item, parent)); return; }
+      if (typeof value !== "object") return;
+
+      const looksLikeTrain = Boolean(value.id || value.code || value.trainCode || value.serviceCode || value.name || value.label) && Boolean(value.departureTime || value.arrivalTime || value.direction || value.route || value.price || value.priceUSD || value.publishedPricing);
+      if (looksLikeTrain) flattened.push(this.normalizeTrainOption({ ...parent, ...value }));
+
+      Object.entries(value).forEach(([key, child]) => {
+        if (["trains", "services", "items", "options", "outbound", "return", "inbound", "companies"].includes(key)) {
+          visit(child, {
+            company: value.company || value.companyCode || value.operator || parent.company || value.name || parent.name,
+            direction: key === "outbound" ? "outbound" : key === "return" || key === "inbound" ? "return" : parent.direction
+          });
+        }
+      });
+    };
+
+    visit(raw);
+
+    const deduped = [];
+    const seen = new Set();
+    flattened.forEach((train) => { if (train.id && !seen.has(train.id)) { seen.add(train.id); deduped.push(train); } });
+    return deduped;
+  }
+
+  normalizeTrainOption(raw) {
+    const id = String(raw.id || raw.code || raw.trainCode || raw.serviceCode || raw.slug || raw.name || "").trim();
+    const company = String(raw.company || raw.companyCode || raw.operator || raw.railCompany || "").trim();
+    const label = String(raw.label || raw.name || raw.serviceName || raw.trainName || id || "Tren turístico").trim();
+    const direction = String(raw.direction || raw.routeDirection || raw.type || "").toLowerCase();
+    const route = raw.route || raw.segment || raw.path || "";
+    const departureTime = String(raw.departureTime || raw.departure || raw.startTime || raw.time || "").trim();
+    const arrivalTime = String(raw.arrivalTime || raw.arrival || raw.endTime || "").trim();
+    const price = Number(raw.priceUSD ?? raw.publishedPriceUSD ?? raw.price?.amount ?? raw.pricing?.amount ?? raw.publishedPricing?.amount ?? raw.additionalPriceUSD ?? 0);
+    return { id, company, label, direction, route, departureTime, arrivalTime, price, raw };
+  }
+
+  getDirectionalTrains(catalog, direction, defaultId = "") {
+    const normalizedDirection = String(direction || "").toLowerCase();
+    const filtered = catalog.filter((train) => {
+      const trainDirection = String(train.direction || "").toLowerCase();
+      const route = String(train.route || "").toLowerCase();
+      const id = String(train.id || "").toLowerCase();
+      if (!trainDirection && !route) return true;
+      if (normalizedDirection === "outbound") return trainDirection.includes("out") || trainDirection.includes("ida") || trainDirection.includes("going") || id.includes("out") || id.includes("ida");
+      return trainDirection.includes("return") || trainDirection.includes("inbound") || trainDirection.includes("retorno") || trainDirection.includes("vuelta") || id.includes("return") || id.includes("ret");
+    });
+    const defaultTrain = defaultId ? catalog.find((train) => train.id === defaultId) : null;
+    return defaultTrain ? [defaultTrain, ...filtered.filter((train) => train.id !== defaultId)] : filtered;
+  }
+
+  createFallbackTrainOption(id, label) {
+    if (!id) return null;
+    return { id, company: "", label, direction: "", route: "", departureTime: "", arrivalTime: "", price: 0, raw: {} };
+  }
+
+  renderTrainOption(train, selectedId) {
+    const selected = train.id === selectedId ? " selected" : "";
+    const meta = [train.company, train.departureTime, train.arrivalTime ? `llega ${train.arrivalTime}` : ""].filter(Boolean).join(" · ");
+    const price = train.price > 0 ? ` · USD ${this.formatMoney(train.price)}` : "";
+    return `<option value="${this.escapeHtml(train.id)}"${selected}>${this.escapeHtml(train.label)}${meta ? ` · ${this.escapeHtml(meta)}` : ""}${price}</option>`;
+  }
+
+  bindTrainSelectionEvents(sameCompanyOnly) {
+    const outbound = document.getElementById("outboundTrainSelect");
+    const returning = document.getElementById("returnTrainSelect");
+    outbound?.addEventListener("change", () => { this.selectedOutboundTrainId = outbound.value || ""; this.refreshReturnTrainOptions(sameCompanyOnly); this.updateTrainSelectionState(sameCompanyOnly); this.updatePricing(); });
+    returning?.addEventListener("change", () => { this.selectedReturnTrainId = returning.value || ""; this.updateTrainSelectionState(sameCompanyOnly); this.updatePricing(); });
+  }
+
+  refreshReturnTrainOptions(sameCompanyOnly) {
+    const returning = document.getElementById("returnTrainSelect");
+    if (!returning) return;
+    const compatible = this.getCompatibleReturnTrains(sameCompanyOnly);
+    if (!compatible.find((train) => train.id === this.selectedReturnTrainId)) this.selectedReturnTrainId = compatible[0]?.id || "";
+    returning.innerHTML = compatible.map((train) => this.renderTrainOption(train, this.selectedReturnTrainId)).join("");
+    returning.value = this.selectedReturnTrainId;
+  }
+
+  getCompatibleReturnTrains(sameCompanyOnly) {
+    if (!sameCompanyOnly) return this.availableReturnTrains;
+    const outbound = this.getSelectedOutboundTrain();
+    if (!outbound?.company) return this.availableReturnTrains;
+    const compatible = this.availableReturnTrains.filter((train) => train.company === outbound.company);
+    return compatible.length ? compatible : this.availableReturnTrains;
+  }
+
+  updateTrainSelectionState(sameCompanyOnly) {
+    const outbound = this.getSelectedOutboundTrain();
+    const returning = this.getSelectedReturnTrain();
+    const defaultSelection = this.getDefaultTrainSelection(this.product);
+    const defaultOutbound = this.findTrainById(defaultSelection.outboundTrainId, this.availableOutboundTrains);
+    const defaultReturn = this.findTrainById(defaultSelection.returnTrainId, this.availableReturnTrains);
+    const outboundDiff = outbound && defaultOutbound ? Number(outbound.price || 0) - Number(defaultOutbound.price || 0) : 0;
+    const returnDiff = returning && defaultReturn ? Number(returning.price || 0) - Number(defaultReturn.price || 0) : 0;
+    this.selectedTrainAdjustmentTotal = Math.max(0, outboundDiff + returnDiff) * this.getTotalPassengers();
+
+    const summary = document.getElementById("trainSelectionSummary");
+    if (!summary) return;
+    const companyNote = sameCompanyOnly ? "Los trenes de ida y retorno se mantienen con la misma compañía cuando hay disponibilidad." : "";
+    const adjustmentText = this.selectedTrainAdjustmentTotal > 0 ? `Diferencia total: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}` : "Sin diferencia adicional frente al tren incluido.";
+    summary.innerHTML = `<small>${this.escapeHtml(this.getSelectedTrainSummaryLabel())}</small><strong>${this.escapeHtml(adjustmentText)}</strong>${companyNote ? `<small>${this.escapeHtml(companyNote)}</small>` : ""}`;
+  }
+
+  findTrainById(id, list) {
+    if (!id) return null;
+    return (list || []).find((train) => train.id === id) || null;
+  }
+
+  getSelectedOutboundTrain() { return this.findTrainById(this.selectedOutboundTrainId, this.availableOutboundTrains); }
+  getSelectedReturnTrain() { return this.findTrainById(this.selectedReturnTrainId, this.availableReturnTrains); }
+  calculateSelectedTrainAdjustmentTotal() {
+    const outbound = this.getSelectedOutboundTrain();
+    const returning = this.getSelectedReturnTrain();
+    const defaultSelection = this.getDefaultTrainSelection(this.product);
+    const defaultOutbound = this.findTrainById(defaultSelection.outboundTrainId, this.availableOutboundTrains);
+    const defaultReturn = this.findTrainById(defaultSelection.returnTrainId, this.availableReturnTrains);
+    const outboundDiff = outbound && defaultOutbound ? Number(outbound.price || 0) - Number(defaultOutbound.price || 0) : 0;
+    const returnDiff = returning && defaultReturn ? Number(returning.price || 0) - Number(defaultReturn.price || 0) : 0;
+    const total = Math.max(0, outboundDiff + returnDiff) * this.getTotalPassengers();
+    this.selectedTrainAdjustmentTotal = total;
+    return total;
+  }
+
+  updateTrainAdjustmentSummaryRow(amount, currency) {
+    let row = document.getElementById("trainAdjustmentTotalRow");
+    const serviceTotalRow = document.getElementById("serviceTotalRow");
+    const summary = serviceTotalRow?.parentNode;
+    if (!summary) return;
+    if (!row) {
+      row = document.createElement("div");
+      row.id = "trainAdjustmentTotalRow";
+      row.className = "booking-summary__line";
+      row.innerHTML = `<span>Tren seleccionado</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
+      summary.insertBefore(row, serviceTotalRow);
+    }
+    row.hidden = !(amount > 0);
+    const value = document.getElementById("trainAdjustmentTotal");
+    if (value) value.textContent = `${currency} ${this.formatMoney(amount)}`;
+  }
+
+  getSelectedTrainSummaryLabel() {
+    const outbound = this.getSelectedOutboundTrain();
+    const returning = this.getSelectedReturnTrain();
+    if (!outbound && !returning) return "No aplica";
+    const parts = [];
+    if (outbound) parts.push(`Ida: ${outbound.label}`);
+    if (returning) parts.push(`Retorno: ${returning.label}`);
+    return parts.join(" | ");
+  }
+
+  collectItineraryItemImages(item) {
+    const images = [];
+    if (item?.image) images.push(item.image);
+    if (Array.isArray(item?.images)) images.push(...item.images);
+    if (item?.media?.image) images.push(item.media.image);
+    if (Array.isArray(item?.media?.images)) images.push(...item.media.images);
+    return this.uniqueImageList(images);
+  }
+
+  collectDynamicDayImages(day) {
+    const images = [];
+    (day?.items || []).forEach((item) => {
+      images.push(...this.collectItineraryItemImages(item));
+      const tour = this.findTourForItineraryItem(item);
+      if (tour?.images?.cover) images.push(tour.images.cover);
+      if (tour?.image) images.push(tour.image);
+    });
+    return this.uniqueImageList(images);
+  }
+
+  findTourForItineraryItem(item) {
+    const candidates = [item?.internalCode, item?.code, item?.tourCode, item?.sourceTourCode, item?.slug].map((value) => String(value || "").trim()).filter(Boolean);
+    if (Array.isArray(item?.includedTourCodes)) candidates.push(...item.includedTourCodes.map((value) => String(value || "").trim()).filter(Boolean));
+    const title = this.normalizeForMatching(item?.title || "");
+    return (this.tours || []).find((tour) => {
+      if (!tour) return false;
+      if (candidates.some((value) => value && (tour.internalCode === value || tour.id === value || tour.slug === value))) return true;
+      const tourTitle = this.normalizeForMatching(tour.title || "");
+      return Boolean(title && tourTitle && (title.includes(tourTitle) || tourTitle.includes(title)));
+    }) || null;
+  }
+
+  renderItineraryMedia(images, altPrefix = "Itinerario") {
+    const finalImages = this.uniqueImageList(images).slice(0, 2);
+    if (!finalImages.length) return "";
+    return `<div class="experience-itinerary-media experience-itinerary-media--${finalImages.length}">${finalImages.map((src, index) => `<img src="${this.resolveAssetPath(src)}" alt="${this.escapeHtml(`${altPrefix} imagen ${index + 1}`)}" loading="lazy" />`).join("")}</div>`;
+  }
+
+  uniqueImageList(images) {
+    return Array.from(new Set((images || []).map((src) => String(src || "").trim()).filter(Boolean)));
+  }
+
+  getSearchArray(product, key) {
+    const direct = product?.search?.[key];
+    const raw = product?.raw?.search?.[key];
+    const value = Array.isArray(direct) ? direct : Array.isArray(raw) ? raw : [];
+    return value.map((item) => this.normalizeForMatching(item)).filter(Boolean);
+  }
+
+  countIntersection(a, b) {
+    const set = new Set(a || []);
+    return (b || []).filter((item) => set.has(item)).length;
+  }
+
+  normalizeForMatching(value) {
+    return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   }
 
   renderServiceModes(product) {
@@ -1210,13 +1542,21 @@ class MyCuscoTripProductPage {
       return;
     }
 
+    const current = this.product;
+    const currentFamily = String(current.productFamily || "").toLowerCase();
+    const currentKind = String(current.productKind || "").toLowerCase();
+    const currentDays = Number(current.days || 0);
+
     const similar = this.tours
-      .filter((item) => item && item.slug && item.slug !== this.product.slug)
-      .filter((item) => item.category === this.product.category || item.featured)
-      .slice(0, 3);
+      .filter((item) => item && item.slug && item.slug !== current.slug && item.status !== "draft")
+      .map((item) => ({ item, score: this.calculateSimilarityScore(current, item, currentFamily, currentKind, currentDays) }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score || String(a.item.title || "").localeCompare(String(b.item.title || ""), "es"))
+      .slice(0, 3)
+      .map((entry) => entry.item);
 
     const html = !similar.length
-      ? "<p>No hay experiencias similares disponibles disponibles por ahora.</p>"
+      ? "<p>No hay experiencias similares disponibles por ahora.</p>"
       : similar.map((item) => `
         <article class="similar-card">
           <img src="${this.resolveAssetPath(item?.images?.cover || item?.image || "assets/img/tours/machu-picchu-full-day/cover.jpg")}" alt="${this.escapeHtml(item?.title || "Experiencia")}" loading="lazy" />
@@ -1230,6 +1570,37 @@ class MyCuscoTripProductPage {
 
     if (desktopTarget) desktopTarget.innerHTML = html;
     if (mobileTarget) mobileTarget.innerHTML = html;
+  }
+
+  calculateSimilarityScore(current, candidate, currentFamily, currentKind, currentDays) {
+    let score = 0;
+    const candidateFamily = String(candidate.productFamily || "").toLowerCase();
+    const candidateKind = String(candidate.productKind || "").toLowerCase();
+
+    if (candidateFamily && candidateFamily === currentFamily) score += 50;
+    if (candidateKind && candidateKind === currentKind) score += 25;
+
+    score += this.countIntersection(this.getSearchArray(current, "destinations"), this.getSearchArray(candidate, "destinations")) * 12;
+    score += this.countIntersection(this.getSearchArray(current, "themes"), this.getSearchArray(candidate, "themes")) * 10;
+    score += this.countIntersection(this.getSearchArray(current, "durationKeys"), this.getSearchArray(candidate, "durationKeys")) * 8;
+    score += this.countIntersection(this.getSearchArray(current, "includedTags"), this.getSearchArray(candidate, "includedTags")) * 6;
+
+    const candidateDays = Number(candidate.days || 0);
+    if (currentDays > 0 && candidateDays > 0) {
+      const distance = Math.abs(currentDays - candidateDays);
+      if (distance === 0) score += 18;
+      else if (distance === 1) score += 10;
+      else if (distance === 2) score += 5;
+    }
+
+    if (candidate.featured) score += 3;
+
+    if (currentFamily === "machu-picchu-tour" && candidateFamily !== "machu-picchu-tour") score -= 40;
+    if (currentFamily === "cusco-tour" && candidateFamily !== "cusco-tour") score -= 20;
+    if (currentFamily === "cusco-package" && candidateFamily !== "cusco-package") score -= 35;
+    if (currentFamily === "peru-package" && candidateFamily !== "peru-package") score -= 35;
+
+    return score;
   }
 
   updatePassengersUI() {
@@ -1253,6 +1624,7 @@ class MyCuscoTripProductPage {
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
+    const trainAdjustmentTotal = this.calculateSelectedTrainAdjustmentTotal();
 
     const accommodationSummary = this.getAccommodationSummary(this.product);
 
@@ -1276,7 +1648,7 @@ class MyCuscoTripProductPage {
       0
     );
 
-    const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal;
+    const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal + trainAdjustmentTotal;
 
     const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
@@ -1378,6 +1750,8 @@ class MyCuscoTripProductPage {
         extrasLabel.textContent = "Extras";
       }
     }
+
+    this.updateTrainAdjustmentSummaryRow(trainAdjustmentTotal, currency);
 
     const serviceTotalRow = document.getElementById("serviceTotal")?.closest(".booking-summary__line");
 
@@ -1699,6 +2073,7 @@ class MyCuscoTripProductPage {
         adults: this.adults,
         children: this.children,
         departureTime: this.getSelectedDepartureTimeLabel(),
+        trainSelection: this.getSelectedTrainSummaryLabel(),
         serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
         accommodation,
         extras: selectedExtras,
@@ -1716,8 +2091,9 @@ class MyCuscoTripProductPage {
     const adultsTotal = this.adults * adultPrice;
     const childrenTotal = this.children * childPrice;
     const extrasTotal = this.calculateExtrasTotal();
+    const trainAdjustmentTotal = this.calculateSelectedTrainAdjustmentTotal();
     const accommodationTotal = this.calculateAccommodationTotal();
-    const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal;
+    const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal + trainAdjustmentTotal;
 
     const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
@@ -1760,6 +2136,7 @@ class MyCuscoTripProductPage {
       adults: this.adults,
       children: this.children,
       departureTime: this.getSelectedDepartureTimeLabel(),
+      trainSelection: this.getSelectedTrainSummaryLabel(),
       serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
       accommodation,
       extras: selectedExtras,
@@ -1912,18 +2289,27 @@ class MyCuscoTripProductPage {
 
     if (!target) return;
 
-    target.innerHTML = this.selectedItinerary.map((day) => `
-      <div class="experience-itinerary-item">
-        <h3>Día ${this.escapeHtml(day.day)}</h3>
-        ${(day.items || []).map((item) => `
-          <p>
-            <strong>${this.escapeHtml(item.title || "Actividad")}</strong>
-            ${item.description ? `<br>${this.escapeHtml(item.description)}` : ""}
-            ${item.duration ? `<br><small>${this.escapeHtml(item.duration)}</small>` : ""}
-          </p>
-        `).join("")}
-      </div>
-    `).join("");
+    target.innerHTML = this.selectedItinerary.map((day) => {
+      const dayImages = this.collectDynamicDayImages(day).slice(0, 2);
+
+      return `
+        <div class="experience-itinerary-item experience-itinerary-item--visual experience-itinerary-item--day">
+          <div class="experience-itinerary-item__content">
+            <h3 class="experience-itinerary-day-title">
+              <span class="experience-itinerary-day-pill">Día ${this.escapeHtml(day.day)}</span>
+            </h3>
+            ${(day.items || []).map((item) => `
+              <p>
+                <strong>${this.escapeHtml(item.title || "Actividad")}</strong>
+                ${item.description ? `<br>${this.escapeHtml(item.description)}` : ""}
+                ${item.duration ? `<br><small>${this.escapeHtml(item.duration)}</small>` : ""}
+              </p>
+            `).join("")}
+          </div>
+          ${this.renderItineraryMedia(dayImages, `Día ${day.day}`)}
+        </div>
+      `;
+    }).join("");
   }
 
   resolveDynamicAccommodationPlan() {
