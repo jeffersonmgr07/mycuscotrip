@@ -382,31 +382,46 @@
       }
     });
   }
-
-  function placeShowcaseTours(days, tours = []) {
+  
+  function placeShowcaseTours(days, tours = [], context = {}) {
     if (!days.length) return;
-
+  
     let remainingTours = [...tours];
-
+  
     const totalDays = days.length;
     const indexes = getTourDayIndexes(totalDays);
-
+    const hints = context.itineraryHints || {};
+  
     const day1Tours = pickDay1ShowcaseTours(remainingTours);
     addToursToDay(days, indexes.firstDayIndex, day1Tours);
     remainingTours = removeTours(remainingTours, day1Tours);
-
+  
     const valleyTour = pickSacredValleyTour(remainingTours);
     if (valleyTour) {
       addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
       remainingTours = removeTours(remainingTours, [valleyTour]);
     }
-
+  
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
       addToursToDay(days, indexes.machuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
-
+  
+    const forcedLastDayCodes = new Set(hints.forceLastDayTourCodes || []);
+  
+    if (hints.allowLastDayTourBeforeTransferOut && forcedLastDayCodes.size) {
+      const forcedLastDayTours = remainingTours.filter((tour) => {
+        return forcedLastDayCodes.has(getTourCode(tour));
+      });
+  
+      if (forcedLastDayTours.length) {
+        const lastDayIndex = days.length - 1;
+        addToursToDay(days, lastDayIndex, forcedLastDayTours.slice(0, 1));
+        remainingTours = removeTours(remainingTours, forcedLastDayTours);
+      }
+    }
+  
     placeRemainingTours(
       days,
       remainingTours,
@@ -459,31 +474,45 @@
 
     return [];
   }
-
   function placeDynamicTours(days, tours = [], context = {}) {
     if (!days.length) return;
-
+  
     let remainingTours = [...tours];
-
+  
     const totalDays = days.length;
     const indexes = getTourDayIndexes(totalDays);
-
+    const hints = context.itineraryHints || {};
+  
     const day1Tours = pickDay1DynamicTours(remainingTours, context.arrivalTime || "15:00");
     addToursToDay(days, indexes.firstDayIndex, day1Tours);
     remainingTours = removeTours(remainingTours, day1Tours);
-
+  
     const valleyTour = pickSacredValleyTour(remainingTours);
     if (valleyTour) {
       addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
       remainingTours = removeTours(remainingTours, [valleyTour]);
     }
-
+  
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
       addToursToDay(days, indexes.machuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
-
+  
+    const forcedLastDayCodes = new Set(hints.forceLastDayTourCodes || []);
+  
+    if (hints.allowLastDayTourBeforeTransferOut && forcedLastDayCodes.size) {
+      const forcedLastDayTours = remainingTours.filter((tour) => {
+        return forcedLastDayCodes.has(getTourCode(tour));
+      });
+  
+      if (forcedLastDayTours.length) {
+        const lastDayIndex = days.length - 1;
+        addToursToDay(days, lastDayIndex, forcedLastDayTours.slice(0, 1));
+        remainingTours = removeTours(remainingTours, forcedLastDayTours);
+      }
+    }
+  
     placeRemainingTours(
       days,
       remainingTours,
@@ -523,10 +552,15 @@
 
     insertTransferIn(days, logistics);
 
+    const itineraryContext = {
+      ...context,
+      itineraryHints: option.itineraryHints || context.itineraryHints || {}
+    };
+    
     if (mode === "dynamic") {
-      placeDynamicTours(days, option.includedTours || [], context);
+      placeDynamicTours(days, option.includedTours || [], itineraryContext);
     } else {
-      placeShowcaseTours(days, option.includedTours || []);
+      placeShowcaseTours(days, option.includedTours || [], itineraryContext);
     }
 
     insertTransferOut(days, logistics);
