@@ -418,7 +418,8 @@
   
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
-      addToursToDay(days, indexes.machuDayIndex, [machuTour]);
+      const safeMachuDayIndex = Math.max(indexes.machuDayIndex, 1);
+      addToursToDay(days, safeMachuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
   
