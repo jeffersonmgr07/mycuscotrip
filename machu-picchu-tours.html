@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tours a Machu Picchu | My Cusco Trip</title>
+  <meta name="description" content="Explora tours full day y overnight a Machu Picchu con tren, bus, ingreso oficial y guía profesional." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/header.css" />
+  <link rel="stylesheet" href="./assets/css/footer.css" />
+  <link rel="stylesheet" href="./assets/css/responsive.css" />
+  <link rel="stylesheet" href="./assets/css/catalog-landing.css" />
+</head>
+<body class="catalog-landing-page" data-catalog-kind="tour" data-catalog-family="machu-picchu-tour">
+  <div id="header-container"></div>
+
+  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
+  </a>
+
+  <main>
+    <section class="catalog-hero" style="background-image: linear-gradient(135deg, rgba(6, 40, 3, 0.92), rgba(10, 58, 38, 0.86)), url('./assets/img/tours/machu-picchu-full-day-clasico/cover.jpg');">
+      <div class="container catalog-hero__inner">
+        <p class="catalog-eyebrow">Tours a Machu Picchu</p>
+        <h1>Tours a Machu Picchu</h1>
+        <p>Elige experiencias full day, overnights y versiones especiales para visitar Machu Picchu con una operación clara, segura y personalizable.</p>
+        <div class="catalog-hero__actions">
+          <a id="catalogLandingAllExperiencesLink" class="btn" href="./all-experiences.html">Ver también en All Experience</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog-landing">
+      <div class="container">
+        <div class="catalog-landing__top">
+          <div>
+            <h2>Experiencias disponibles a Machu Picchu</h2>
+            <p id="catalogLandingCount">Cargando experiencias...</p>
+          </div>
+          <div class="catalog-landing__note">Esta vitrina muestra solo tours a Machu Picchu. Para combinar Machu Picchu con otros destinos, revisa paquetes completos.</div>
+        </div>
+
+        <div id="catalogLandingGrid" class="catalog-grid"></div>
+
+        <div id="catalogLandingEmpty" class="catalog-empty" hidden>
+          <i class="fas fa-map-signs"></i>
+          <h3>No encontramos experiencias disponibles</h3>
+          <p>Revisa el catálogo general o vuelve más adelante para nuevas opciones.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script>
+    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
+    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "./";
+
+    async function loadComponent(componentName, targetId) {
+      try {
+        const response = await fetch(`${BASE_PATH}components/${componentName}.html`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+        const html = await response.text();
+        const target = document.getElementById(targetId);
+        if (!target) return false;
+        target.innerHTML = html;
+        fixImagePaths(target);
+        return true;
+      } catch (error) {
+        console.error(`Error cargando ${componentName}:`, error);
+        return false;
+      }
+    }
+
+    function fixImagePaths(container) {
+      container.querySelectorAll('img[src*="assets/"]').forEach((img) => {
+        const currentSrc = img.getAttribute("src");
+        if (currentSrc && currentSrc.startsWith("assets/")) {
+          img.setAttribute("src", `./${currentSrc}`);
+        }
+      });
+    }
+
+    function initializeHeader() {
+      if (window.MyCuscoTripHeader instanceof MyCuscoTripHeader) return;
+      if (typeof MyCuscoTripHeader === "function") {
+        window.MyCuscoTripHeader = new MyCuscoTripHeader();
+      }
+    }
+
+    function syncFooterAccordions() {
+      const accordions = document.querySelectorAll(".footer-accordion");
+      if (!accordions.length) return;
+      const isDesktop = window.innerWidth >= 769;
+      accordions.forEach((item) => {
+        item.open = isDesktop;
+      });
+    }
+
+    async function initializeApp() {
+      await Promise.all([
+        loadComponent("header", "header-container"),
+        loadComponent("footer", "footer-container")
+      ]);
+
+      syncFooterAccordions();
+      setTimeout(syncFooterAccordions, 200);
+      setTimeout(initializeHeader, 250);
+    }
+
+    window.addEventListener("resize", syncFooterAccordions);
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeApp);
+    } else {
+      initializeApp();
+    }
+  </script>
+
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/pages/catalog-landing.js"></script>
+</body>
+</html>
