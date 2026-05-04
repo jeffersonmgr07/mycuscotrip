@@ -601,27 +601,39 @@ class MyCuscoTripProductPage {
 
     section.hidden = true;
     select.hidden = true;
+    select.disabled = false;
+    select.style.display = "none";
     fixed.hidden = true;
+    fixed.style.display = "none";
     select.innerHTML = "";
     fixed.textContent = "";
     if (help) help.textContent = "";
     this.selectedDepartureTime = "";
+
+    // Los paquetes no muestran horario de salida general; el horario se resuelve por itinerario.
+    if (this.isPackage(product)) {
+      return;
+    }
 
     if (!times.length) {
       return;
     }
 
     section.hidden = false;
+    select.hidden = false;
+    select.style.display = "";
 
     if (times.length === 1) {
       this.selectedDepartureTime = times[0];
-      fixed.hidden = false;
-      fixed.textContent = `Salida: ${times[0]}`;
+      select.disabled = true;
+      select.innerHTML = `<option value="${this.escapeHtml(times[0])}" selected>Salida ${this.escapeHtml(times[0])}</option>`;
+      fixed.hidden = true;
+      fixed.style.display = "none";
       if (help) help.textContent = "Este tour tiene un horario fijo de salida.";
       return;
     }
 
-    select.hidden = false;
+    select.disabled = false;
     select.innerHTML = `
       <option value="">Selecciona un horario</option>
       ${times.map((time) => `<option value="${this.escapeHtml(time)}">${this.escapeHtml(time)}</option>`).join("")}
