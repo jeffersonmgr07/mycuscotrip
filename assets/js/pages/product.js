@@ -1721,7 +1721,8 @@ class MyCuscoTripProductPage {
         mode: "showcase",
         arrivalTime: "09:00",
         departureTime: "20:00",
-        packagesCusco: this.allData?.data?.packagesCusco
+        packagesCusco: this.allData?.data?.packagesCusco,
+        itineraryHints: this.selectedPackageOption.itineraryHints || {}
       }
     );
 
