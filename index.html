@@ -299,6 +299,15 @@
         return "";
       }
 
+      function getTextValue(root, selectors) {
+        for (const selector of selectors) {
+          const element = root.querySelector(selector);
+          const text = element?.textContent?.trim();
+          if (text) return text;
+        }
+        return "";
+      }
+
       function mapType(value) {
         const clean = normalizeText(value);
         if (["tour", "tours", "experiencias", "experiencia"].includes(clean)) return "tours";
@@ -314,9 +323,11 @@
           "valle-sagrado": "valle-sagrado",
           "sacred-valley": "valle-sagrado",
           "montana-de-colores": "cusco",
-          "montaña-de-colores": "cusco"
+          "montaña-de-colores": "cusco",
+          "aguas-calientes": "machu-picchu",
+          "peru": ""
         };
-        return aliases[clean] || clean;
+        return aliases[clean] !== undefined ? aliases[clean] : clean;
       }
 
       function parseDuration(value) {
@@ -335,8 +346,42 @@
         return { duration: "", days: match[1] || "", nights: match[2] || "" };
       }
 
-      function buildAllExperiencesUrl(root) {
+      function getSearchRoot() {
+        return document.getElementById("search-bar-container");
+      }
+
+      function isInsideSearchBar(target) {
+        const root = getSearchRoot();
+        return Boolean(root && target && root.contains(target));
+      }
+
+      function isSearchSubmitControl(element) {
+        if (!element) return false;
+
+        const control = element.closest([
+          'button[type="submit"]',
+          'input[type="submit"]',
+          '.search-submit',
+          '.search-button',
+          '.search-btn',
+          '[data-search-submit]',
+          '[data-action="search"]',
+          '[aria-label="Buscar"]'
+        ].join(','));
+
+        if (!control) return false;
+
+        const text = normalizeText(control.textContent || control.value || control.getAttribute("aria-label") || "");
+        const isExplicitSubmit =
+          control.matches('button[type="submit"], input[type="submit"], .search-submit, .search-button, .search-btn, [data-search-submit], [data-action="search"], [aria-label="Buscar"]');
+
+        return isExplicitSubmit || text === "buscar" || text.includes("buscar");
+      }
+
+      function buildAllExperiencesUrl(root = getSearchRoot()) {
         const params = new URLSearchParams();
+        if (!root) return "./all-experiences.html";
+
         const q = getFieldValue(root, [
           'input[type="search"]',
           'input[name="q"]',
@@ -346,28 +391,50 @@
           '.search-input',
           'input[type="text"]'
         ]);
-        const destination = mapDestination(getFieldValue(root, [
-          'select[name="destination"]',
-          'select[name="destino"]',
-          '#destinationSelect',
-          '#searchDestination',
-          '.destination-select'
-        ]));
-        const type = mapType(getFieldValue(root, [
-          'select[name="type"]',
-          'select[name="tipo"]',
-          'select[name="kind"]',
-          '#typeSelect',
-          '#searchType',
-          '.type-select'
-        ]));
+
+        const destination = mapDestination(
+          getFieldValue(root, [
+            'select[name="destination"]',
+            'select[name="destino"]',
+            '#destinationSelect',
+            '#searchDestination',
+            '.destination-select'
+          ]) ||
+          getTextValue(root, [
+            '[data-selected-destination]',
+            '.selected-destination',
+            '.destination-value'
+          ])
+        );
+
+        const type = mapType(
+          getFieldValue(root, [
+            'select[name="type"]',
+            'select[name="tipo"]',
+            'select[name="kind"]',
+            '#typeSelect',
+            '#searchType',
+            '.type-select'
+          ]) ||
+          getTextValue(root, [
+            '[data-selected-type]',
+            '.selected-type',
+            '.type-value'
+          ])
+        );
+
         const durationValue = getFieldValue(root, [
           'select[name="duration"]',
           'select[name="duracion"]',
           '#durationSelect',
           '#searchDuration',
           '.duration-select'
+        ]) || getTextValue(root, [
+          '[data-selected-duration]',
+          '.selected-duration',
+          '.duration-value'
         ]);
+
         const parsedDuration = parseDuration(durationValue);
 
         if (q) params.set("q", q);
@@ -381,21 +448,48 @@
         return `./all-experiences.html${queryString ? `?${queryString}` : ""}`;
       }
 
-      function redirectSearchBar(event) {
-        const root = document.getElementById("search-bar-container");
-        if (!root || !root.contains(event.target)) return;
-
-        const form = event.target.closest("form");
-        const submitButton = event.target.closest('button[type="submit"], .search-submit, [data-search-submit]');
-        if (!form && event.type === "submit") return;
-        if (!form && !submitButton) return;
+      function redirectToAllExperiences(event, explicitControl) {
+        const root = getSearchRoot();
+        if (!root) return;
 
         event.preventDefault();
+        event.stopPropagation();
         window.location.href = buildAllExperiencesUrl(root);
       }
 
-      document.addEventListener("submit", redirectSearchBar, true);
-      document.addEventListener("click", redirectSearchBar, true);
+      function handleSearchBarClick(event) {
+        if (!isInsideSearchBar(event.target)) return;
+
+        const clickedButton = event.target.closest("button");
+        const clickedSubmit = isSearchSubmitControl(event.target);
+
+        if (clickedSubmit) {
+          redirectToAllExperiences(event, clickedSubmit);
+          return;
+        }
+
+        // Muchos botones de dropdown dentro de formularios heredan type="submit" por defecto.
+        // Evitamos que esos clicks envíen el formulario, pero dejamos que sus handlers abran/selecten opciones.
+        if (clickedButton && !clickedButton.hasAttribute("type")) {
+          clickedButton.setAttribute("type", "button");
+        }
+      }
+
+      function handleSearchBarSubmit(event) {
+        if (!isInsideSearchBar(event.target)) return;
+
+        const submitter = event.submitter || document.activeElement;
+        if (isSearchSubmitControl(submitter)) {
+          redirectToAllExperiences(event, submitter);
+          return;
+        }
+
+        // Si el submit viene de un botón de filtro, calendario o dropdown, no redirige.
+        event.preventDefault();
+      }
+
+      document.addEventListener("click", handleSearchBarClick, true);
+      document.addEventListener("submit", handleSearchBarSubmit, true);
 
       window.MyCuscoTripIndexSearchRedirect = {
         buildAllExperiencesUrl
