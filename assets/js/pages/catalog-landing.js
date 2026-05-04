@@ -65,6 +65,31 @@
       .trim();
   }
 
+  function getTrekkingCategoryConfig() {
+    const params = new URLSearchParams(window.location.search);
+    const category = normalizeText(params.get("categoria") || "");
+
+    const categories = {
+      "camino-inca": {
+        label: "Camino Inca",
+        keywords: ["camino inca", "inca trail"],
+        note: "Rutas inspiradas en el Camino Inca y experiencias de trekking hacia Machu Picchu."
+      },
+      "rutas-machu-picchu": {
+        label: "Rutas a Machu Picchu",
+        keywords: ["machu picchu", "salkantay", "lares", "trekking", "trek"],
+        note: "Rutas de aventura y naturaleza que conectan con Machu Picchu o su entorno andino."
+      },
+      "inca-jungle": {
+        label: "Inca Jungle",
+        keywords: ["inca jungle", "jungle", "aventura"],
+        note: "Rutas de aventura tipo Inca Jungle y experiencias activas en la ruta hacia Machu Picchu."
+      }
+    };
+
+    return categories[category] ? { key: category, ...categories[category] } : null;
+  }
+
   function formatMoney(value, currency = "USD") {
     const number = Number(value);
     if (!Number.isFinite(number) || number <= 0) return "Consultar";
@@ -196,6 +221,7 @@
         .split(",")
         .map((item) => normalizeText(item))
         .filter(Boolean),
+      trekkingCategory: getTrekkingCategoryConfig(),
       limit: Number(body.dataset.catalogLimit || 0)
     };
   }
@@ -281,6 +307,10 @@
       if (!productMatchesThemes(item, config.themes)) return false;
       if (!productMatchesKeywords(item, config.keywords)) return false;
       if (config.mode === "trekkings" && !isTrekkingCandidate(item)) return false;
+      if (config.mode === "trekkings" && config.trekkingCategory) {
+        const categoryTerms = config.trekkingCategory.keywords || [];
+        if (!productMatchesKeywords(item, categoryTerms)) return false;
+      }
       return true;
     });
 
@@ -301,7 +331,9 @@
     if (!count) return;
 
     const total = state.filtered.length;
-    count.textContent = `${total} ${total === 1 ? "experiencia encontrada" : "experiencias encontradas"}`;
+    const category = getTrekkingCategoryConfig();
+    const suffix = category ? ` en ${category.label}` : "";
+    count.textContent = `${total} ${total === 1 ? "experiencia encontrada" : "experiencias encontradas"}${suffix}`;
   }
 
   function renderCards() {
@@ -386,9 +418,28 @@
     if (config.family === "cusco-tour") params.set("destino", "cusco");
     if (config.family === "cusco-package") params.set("destino", "cusco");
     if (config.family === "peru-package") params.set("destino", "peru");
-    if (config.mode === "trekkings") params.set("q", "trekking");
+    if (config.mode === "trekkings") params.set("q", config.trekkingCategory?.label || "trekking");
 
     allExperiencesLink.href = `./all-experiences.html${params.toString() ? `?${params.toString()}` : ""}`;
+  }
+
+  function applyTrekkingCategoryCopy() {
+    const config = getPageConfig();
+    if (config.mode !== "trekkings" || !config.trekkingCategory) return;
+
+    const category = config.trekkingCategory;
+    const heroTitle = document.querySelector(".catalog-hero h1");
+    const heroText = document.querySelector(".catalog-hero p");
+    const topTitle = document.querySelector(".catalog-landing__top h2");
+    const note = document.querySelector(".catalog-landing__note");
+    const eyebrow = document.querySelector(".catalog-eyebrow");
+
+    document.title = `${category.label} | My Cusco Trip`;
+    if (eyebrow) eyebrow.textContent = "Trekkings";
+    if (heroTitle) heroTitle.textContent = category.label;
+    if (heroText) heroText.textContent = category.note;
+    if (topTitle) topTitle.textContent = `Experiencias de ${category.label}`;
+    if (note) note.textContent = "Esta vista muestra una selección filtrada. Si no encuentras una salida publicada, podemos ayudarte a armar una ruta personalizada.";
   }
 
   async function init() {
@@ -401,6 +452,8 @@
         <span>Cargando experiencias...</span>
       </div>
     `;
+
+    applyTrekkingCategoryCopy();
 
     await buildCatalog();
     applyCatalogFilter();
