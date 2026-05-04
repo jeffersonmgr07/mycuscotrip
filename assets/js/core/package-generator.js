@@ -175,8 +175,13 @@
     }
   
     if (days === 3 && nights === 2) {
-      const preferredValleyConnection = firstAvailableCode(["CUZ003VIPCON", "CUZ003CON"]);
-
+      const preferredValleyConnection =
+        allowed.has("CUZ003VIPCON") && tourIndex.has("CUZ003VIPCON")
+          ? "CUZ003VIPCON"
+          : allowed.has("CUZ003CON") && tourIndex.has("CUZ003CON")
+            ? "CUZ003CON"
+            : null;
+    
       return [
         seed(
           ["CUZ001", "CUZ002", "MAPI001"],
@@ -209,7 +214,29 @@
               },
               2980
             )
-          : null
+          : null,
+        seed(
+          ["CUZ001", "CUZ002", "MAPI002", "CUZ007"],
+          "3d2n-opcion-4-city-tour-machu-express-vinicunca-ultimo-dia",
+          {
+            day1Mode: "showcase",
+            machuDayIndex: 1,
+            forceLastDayTourCodes: ["CUZ007"],
+            allowLastDayTourBeforeTransferOut: true
+          },
+          2970
+        ),
+        seed(
+          ["CUZ001", "CUZ002", "MAPI002", "CUZ006"],
+          "3d2n-opcion-5-city-tour-machu-express-humantay-ultimo-dia",
+          {
+            day1Mode: "showcase",
+            machuDayIndex: 1,
+            forceLastDayTourCodes: ["CUZ006"],
+            allowLastDayTourBeforeTransferOut: true
+          },
+          2960
+        )
       ].filter(Boolean);
     }
   
