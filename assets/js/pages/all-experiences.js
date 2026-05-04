@@ -2,14 +2,28 @@
 
 /**
  * My Cusco Trip - All Experiences Page
- * Vitrina general de tours y paquetes.
- * Requiere:
- * - assets/js/core/data-loader.js
- * - assets/js/core/catalog-normalizer.js
- * - assets/js/core/search-service.js
+ * Fase 3: vitrina general, búsqueda inteligente, filtros OTA y showcase comercial.
+ *
+ * Carga datos con data-loader.js, normaliza con catalog-normalizer.js,
+ * filtra con search-service.js y genera cards dinámicas de paquetes Cusco
+ * con package-generator.js cuando está disponible.
  */
 
 (function () {
+  const DEFAULT_IMAGE = "./assets/img/placeholder/experience.jpg";
+  const QUICK_CHIPS = {
+    "machu-picchu": { destination: "machu-picchu" },
+    cusco: { destination: "cusco" },
+    "valle-sagrado": { destination: "valle-sagrado" },
+    naturaleza: { q: "naturaleza" },
+    aventura: { q: "aventura" },
+    cultural: { q: "cultural" },
+    "full-day": { durationKey: "full-day", days: "", nights: "" },
+    paquetes: { kind: "paquetes" },
+    "con-hotel": { q: "hotel" },
+    "con-tren": { q: "tren" }
+  };
+
   const state = {
     allData: null,
     catalog: [],
@@ -21,19 +35,22 @@
       days: "",
       nights: "",
       durationKey: "",
-      sort: "featured"
+      sort: "commercial-showcase"
     }
   };
 
   const selectors = {
-    grid: "#experiencesGrid, #allExperiencesGrid, #productsGrid",
-    empty: "#emptyState, #experiencesEmptyState",
+    grid: "#allExperiencesContainer, #experiencesGrid, #allExperiencesGrid, #productsGrid",
+    empty: "#listingEmptyState, #emptyState, #experiencesEmptyState",
     count: "#resultsCount, #experiencesCount",
-    searchInput: "#searchInput, #experienceSearch, #allExperienceSearch",
-    destinationSelect: "#destinationFilter, #filterDestination",
-    kindSelect: "#kindFilter, #typeFilter, #productKindFilter",
-    durationSelect: "#durationFilter, #filterDuration",
-    sortSelect: "#sortFilter, #orderFilter",
+    summary: "#listing-summary",
+    searchInput: "#filterSearch, #searchInput, #experienceSearch, #allExperienceSearch",
+    destinationSelect: "#filterDestination, #destinationFilter",
+    kindSelect: "#filterKind, #kindFilter, #typeFilter, #productKindFilter, #filterCategory",
+    durationSelect: "#filterDuration, #durationFilter",
+    sortSelect: "#filterSort, #sortFilter, #orderFilter",
+    clearButton: "#clearFiltersBtn, #clearExperienceFilters",
+    chips: "[data-filter-chip]",
     loader: "#pageLoader, #experiencesLoader"
   };
 
@@ -41,8 +58,24 @@
     return document.querySelector(selector);
   }
 
+  function qsa(selector) {
+    return Array.from(document.querySelectorAll(selector));
+  }
+
   function getFirstElement(selectorList) {
     return qs(selectorList);
+  }
+
+  function toArray(value) {
+    return Array.isArray(value) ? value : [];
+  }
+
+  function normalizeText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
   }
 
   function escapeHtml(value) {
@@ -50,21 +83,60 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
+      .replace(/\"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+  function unique(values) {
+    return Array.from(new Set(toArray(values).filter(Boolean)));
+  }
+
+  function formatLabel(value) {
+    return String(value || "")
+      .replace(/-/g, " ")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
+  function getDataPayload(allData) {
+    return allData?.data && typeof allData.data === "object" ? allData.data : allData;
+  }
+
+  function getProductsFromSource(source) {
+    if (!source) return [];
+    if (Array.isArray(source)) return source;
+    if (Array.isArray(source.products)) return source.products;
+    if (Array.isArray(source.tours)) return source.tours;
+    if (Array.isArray(source.items)) return source.items;
+    return [];
+  }
+
+  function buildTourIndex(data) {
+    const index = new Map();
+    [
+      ...getProductsFromSource(data.toursCusco),
+      ...getProductsFromSource(data.toursMachuPicchu),
+      ...getProductsFromSource(data.toursPeru)
+    ].forEach((tour) => {
+      if (tour?.internalCode) index.set(tour.internalCode, tour);
+      if (tour?.id) index.set(tour.id, tour);
+      if (tour?.slug) index.set(tour.slug, tour);
+    });
+    return index;
   }
 
   function getParamsFromUrl() {
     const params = new URLSearchParams(window.location.search);
+    const parsedDuration = parseDurationValue(params.get("duration") || params.get("durationKey") || "");
 
     return {
       q: params.get("q") || params.get("search") || "",
       destination: params.get("destino") || params.get("destination") || "",
       kind: params.get("tipo") || params.get("kind") || params.get("productKind") || "",
-      days: params.get("days") || "",
-      nights: params.get("nights") || "",
-      durationKey: params.get("duration") || params.get("durationKey") || "",
-      sort: params.get("sort") || params.get("order") || "featured"
+      days: params.get("days") || parsedDuration.days || "",
+      nights: params.get("nights") || parsedDuration.nights || "",
+      durationKey: parsedDuration.durationKey || "",
+      sort: params.get("sort") || params.get("order") || "commercial-showcase"
     };
   }
 
@@ -76,16 +148,42 @@
     if (state.filters.kind) params.set("tipo", state.filters.kind);
     if (state.filters.days) params.set("days", state.filters.days);
     if (state.filters.nights) params.set("nights", state.filters.nights);
-    if (state.filters.durationKey) params.set("duration", state.filters.durationKey);
-    if (state.filters.sort && state.filters.sort !== "featured") {
-      params.set("sort", state.filters.sort);
-    }
+    if (state.filters.durationKey && !state.filters.days) params.set("duration", state.filters.durationKey);
+    if (state.filters.sort && state.filters.sort !== "commercial-showcase") params.set("sort", state.filters.sort);
 
     const newUrl = params.toString()
       ? `${window.location.pathname}?${params.toString()}`
       : window.location.pathname;
 
     window.history.replaceState({}, "", newUrl);
+  }
+
+  function buildDurationKey(days, nights) {
+    const d = Number(days);
+    const n = Number(nights);
+    if (!Number.isFinite(d) || d <= 0) return "";
+    if (!Number.isFinite(n) || n < 0) return `${d}d`;
+    return `${d}d${n}n`;
+  }
+
+  function parseDurationValue(value) {
+    const clean = normalizeText(value);
+    if (!clean) return { days: "", nights: "", durationKey: "" };
+
+    const compact = clean
+      .replace(/\s+/g, "")
+      .replace(/dias?/g, "d")
+      .replace(/noches?/g, "n")
+      .replace(/\//g, "");
+
+    const match = compact.match(/^(\d+)d(?:(\d+)n)?$/);
+    if (!match) return { days: "", nights: "", durationKey: clean };
+
+    return {
+      days: match[1] || "",
+      nights: match[2] || "",
+      durationKey: `${match[1]}d${match[2] ? `${match[2]}n` : ""}`
+    };
   }
 
   function setLoader(isVisible) {
@@ -99,152 +197,308 @@
   }
 
   function hydrateFiltersFromUrl() {
-    state.filters = {
-      ...state.filters,
-      ...getParamsFromUrl()
-    };
+    state.filters = { ...state.filters, ...getParamsFromUrl() };
+    syncControlsFromState();
+  }
 
+  function syncControlsFromState() {
     setElementValue(selectors.searchInput, state.filters.q);
     setElementValue(selectors.destinationSelect, state.filters.destination);
     setElementValue(selectors.kindSelect, state.filters.kind);
     setElementValue(selectors.durationSelect, state.filters.durationKey || buildDurationKey(state.filters.days, state.filters.nights));
     setElementValue(selectors.sortSelect, state.filters.sort);
+    syncActiveChips();
   }
 
-  function buildDurationKey(days, nights) {
-    const d = Number(days);
-    const n = Number(nights);
-
-    if (!Number.isFinite(d) || d <= 0) return "";
-    if (!Number.isFinite(n) || n < 0) return `${d}d`;
-
-    return `${d}d${n}n`;
+  function getTourLabels(codes, tourIndex) {
+    return unique(codes).map((code) => {
+      const tour = tourIndex.get(code);
+      return tour?.title || code;
+    });
   }
 
-  function parseDurationValue(value) {
-    const clean = String(value || "").trim().toLowerCase();
+  function getOptionHighlights(option, tourIndex) {
+    const codes = unique(option?.includedTourCodes);
+    const titles = getTourLabels(codes, tourIndex);
+    return titles.slice(0, 4);
+  }
 
-    if (!clean) {
-      return {
-        days: "",
-        nights: "",
-        durationKey: ""
-      };
-    }
+  function getCommercialPackageOrder(days, optionIndex, family = "cusco-package") {
+    const d = Number(days || 0);
+    const index = Number(optionIndex || 0);
 
-    const match = clean.match(/^(\d+)d(?:(\d+)n)?$/);
+    if (family === "peru-package") return 60000 + d;
 
-    if (!match) {
-      return {
-        days: "",
-        nights: "",
-        durationKey: clean
-      };
-    }
+    if (index === 0 && d >= 3 && d <= 10) return 20000 + d;
+    if (index === 1 && d >= 3 && d <= 8) return 30000 + d;
+    if (index === 2 && d >= 3 && d <= 8) return 40000 + d;
+    return 50000 + (index * 100) + d;
+  }
+
+  function getCommercialTourOrder(product) {
+    const familyRank = {
+      "cusco-tour": 1000,
+      "machu-picchu-tour": 2000,
+      "peru-tour": 3000
+    };
+    const base = familyRank[product.productFamily] || 3500;
+    const featuredPenalty = product.featured ? 0 : 200;
+    const price = Number(product.price?.amount || 0);
+    return base + featuredPenalty + Math.min(price, 999) / 1000;
+  }
+
+  function createDynamicPackageCard({ option, optionIndex, card, tourIndex, source = "packagesCusco" }) {
+    const highlights = getOptionHighlights(option, tourIndex);
+    const search = card?.search || {};
+    const optionBadge = optionIndex === 0
+      ? "Opción recomendada"
+      : optionIndex === 1
+        ? "Alternativa flexible"
+        : optionIndex === 2
+          ? "Ruta especial"
+          : card?.badge || "Paquete";
+
+    const optionLabel = `Opción ${optionIndex + 1}`;
+    const subtitle = highlights.length ? highlights.join(" + ") : card?.shortDescription || "Combinación dinámica";
 
     return {
-      days: match[1] || "",
-      nights: match[2] || "",
-      durationKey: clean
+      id: `${card?.id || card?.slug || "pkg"}__option_${optionIndex}`,
+      internalCode: "",
+      slug: card?.slug || option?.slug || "",
+      title: `${card?.title || option?.title || "Paquete dinámico"} · ${optionLabel}`,
+      category: card?.category || "cusco",
+      productKind: "package",
+      productFamily: option?.productFamily || card?.productFamily || "cusco-package",
+      days: Number(card?.days || option?.days || 0),
+      nights: Number(card?.nights || option?.nights || 0),
+      typeLabel: card?.typeLabel || option?.typeLabel || "Paquete",
+      duration: { label: card?.typeLabel || option?.typeLabel || "Paquete" },
+      location: card?.location || option?.location || "Cusco / Machu Picchu",
+      image: card?.image || option?.image || "",
+      badge: optionBadge,
+      featured: optionIndex === 0 || Boolean(card?.featured),
+      status: card?.status || "published",
+      priceMode: "dynamic_from_selected_itinerary",
+      price: { amount: 0, currency: option?.currency || "USD", mode: "dynamic_from_selected_itinerary" },
+      currency: option?.currency || "USD",
+      shortDescription: subtitle,
+      description: card?.shortDescription || option?.generationReason || "Opción generada dinámicamente desde la configuración del paquete.",
+      search: {
+        kind: "package",
+        destinations: toArray(search.destinations),
+        durationKeys: unique([...(toArray(search.durationKeys)), `${card?.days || option?.days}d${card?.nights || option?.nights}n`]),
+        includedTourCodes: unique([...(toArray(search.includedTourCodes)), ...toArray(option?.includedTourCodes)]),
+        includedTags: unique([...(toArray(search.includedTags)), "hotel", "tren", "con-hotel", "con-tren", ...toArray(option?.includedTourCodes).map(normalizeText)]),
+        themes: toArray(search.themes),
+        keywords: unique([...(toArray(search.keywords)), "hotel", "tren", "con hotel", "con tren", optionLabel, ...highlights])
+      },
+      source,
+      raw: option,
+      rawCard: card,
+      optionIndex,
+      optionParam: optionIndex,
+      itineraryHints: option?.itineraryHints || {},
+      includedTourCodes: unique(option?.includedTourCodes),
+      commercialOrder: getCommercialPackageOrder(card?.days || option?.days, optionIndex, option?.productFamily || card?.productFamily)
     };
+  }
+
+  function createStaticPackageCard(product, orderOffset = 0) {
+    return {
+      ...product,
+      commercialOrder: getCommercialPackageOrder(product.days, 99 + orderOffset, product.productFamily)
+    };
+  }
+
+  function buildDynamicCuscoPackageCards(loaded) {
+    const data = getDataPayload(loaded);
+    const packagesCusco = data.packagesCusco;
+    const cards = toArray(packagesCusco?.packageCards).filter((card) => card.status !== "draft");
+    const tourIndex = buildTourIndex(data);
+
+    if (!cards.length) return [];
+
+    return cards.flatMap((card) => {
+      let options = [];
+
+      if (window.MyCuscoTripPackageGenerator?.generatePackageOptions) {
+        try {
+          options = window.MyCuscoTripPackageGenerator.generatePackageOptions({
+            days: card.days,
+            nights: card.nights,
+            productFamily: "cusco-package",
+            family: "cusco-package"
+          }, loaded);
+        } catch (error) {
+          console.warn("[MyCuscoTrip AllExperiences] No se pudieron generar opciones para", card.slug, error);
+        }
+      }
+
+      if (!options.length) {
+        return [createStaticPackageCard(window.MyCuscoTripCatalogNormalizer.normalizePackageCard(card, packagesCusco, "packagesCusco"))];
+      }
+
+      return options.map((option, index) => createDynamicPackageCard({
+        option,
+        optionIndex: index,
+        card,
+        tourIndex,
+        source: "packagesCusco"
+      }));
+    });
+  }
+
+  function buildShowcaseCatalog(loaded) {
+    const normalized = window.MyCuscoTripCatalogNormalizer.normalizeCatalog(loaded);
+    const tours = normalized
+      .filter((product) => product.productKind === "tour")
+      .map((product) => ({ ...product, commercialOrder: getCommercialTourOrder(product) }));
+
+    const dynamicCuscoPackages = buildDynamicCuscoPackageCards(loaded);
+    const peruPackages = normalized
+      .filter((product) => product.productKind === "package" && product.productFamily === "peru-package")
+      .map((product, index) => createStaticPackageCard(product, index));
+
+    return [...tours, ...dynamicCuscoPackages, ...peruPackages]
+      .filter((product) => product.slug && product.status !== "draft")
+      .map((product, index) => ({
+        ...product,
+        showcaseIndex: index,
+        commercialOrder: Number.isFinite(Number(product.commercialOrder)) ? Number(product.commercialOrder) : 90000 + index
+      }));
+  }
+
+  function commercialSort(products) {
+    return [...products].sort((a, b) => {
+      if (a.productKind !== b.productKind) return a.productKind === "tour" ? -1 : 1;
+      if (Number(a.commercialOrder) !== Number(b.commercialOrder)) return Number(a.commercialOrder) - Number(b.commercialOrder);
+      return normalizeText(a.title).localeCompare(normalizeText(b.title));
+    });
+  }
+
+  function sortFilteredProducts(products) {
+    const mode = normalizeText(state.filters.sort || "commercial-showcase");
+
+    if (mode === "commercial-showcase" || mode === "commercial" || mode === "ota") {
+      return commercialSort(products);
+    }
+
+    if (mode === "duration" || mode === "duracion") {
+      return [...products].sort((a, b) => {
+        if (Number(a.days || 0) !== Number(b.days || 0)) return Number(a.days || 0) - Number(b.days || 0);
+        if (Number(a.nights || 0) !== Number(b.nights || 0)) return Number(a.nights || 0) - Number(b.nights || 0);
+        return normalizeText(a.title).localeCompare(normalizeText(b.title));
+      });
+    }
+
+    return window.MyCuscoTripSearchService.sortProducts(products, mode);
   }
 
   function populateDestinationFilter() {
     const select = getFirstElement(selectors.destinationSelect);
-    if (!select || !window.MyCuscoTripSearchService) return;
+    if (!select) return;
 
-    const currentValue = select.value || state.filters.destination;
-    const destinations = window.MyCuscoTripSearchService.getAvailableDestinations(state.catalog);
+    const currentValue = state.filters.destination || select.value;
+    const preferred = ["cusco", "machu-picchu", "valle-sagrado", "peru", "lima", "paracas", "ica", "arequipa", "puno", "tarapoto"];
+    const available = window.MyCuscoTripSearchService.getAvailableDestinations(state.catalog);
+    const destinations = unique([...preferred, ...available]);
 
     select.innerHTML = `
       <option value="">Todos los destinos</option>
-      ${destinations.map((destination) => `
-        <option value="${escapeHtml(destination)}">${formatLabel(destination)}</option>
-      `).join("")}
+      ${destinations.map((destination) => `<option value="${escapeHtml(destination)}">${escapeHtml(formatLabel(destination))}</option>`).join("")}
     `;
-
     select.value = currentValue;
   }
 
   function populateDurationFilter() {
     const select = getFirstElement(selectors.durationSelect);
-    if (!select || !window.MyCuscoTripSearchService) return;
+    if (!select) return;
 
-    const currentValue = select.value || state.filters.durationKey || buildDurationKey(state.filters.days, state.filters.nights);
-    const durations = window.MyCuscoTripSearchService.getAvailableDurations(state.catalog);
+    const currentValue = state.filters.durationKey || buildDurationKey(state.filters.days, state.filters.nights) || select.value;
+    const preferred = [
+      { key: "full-day", label: "Full day" },
+      { key: "medio-dia", label: "Medio día" },
+      { key: "2d1n", label: "2 días / 1 noche" },
+      { key: "3d2n", label: "3 días / 2 noches" },
+      { key: "4d3n", label: "4 días / 3 noches" },
+      { key: "5d4n", label: "5 días / 4 noches" },
+      { key: "6d5n", label: "6 días / 5 noches" },
+      { key: "7d6n", label: "7 días / 6 noches" },
+      { key: "8d7n", label: "8 días / 7 noches" },
+      { key: "9d8n", label: "9 días / 8 noches" },
+      { key: "10d9n", label: "10 días / 9 noches" }
+    ];
+
+    const existing = new Map(preferred.map((item) => [item.key, item]));
+    window.MyCuscoTripSearchService.getAvailableDurations(state.catalog).forEach((duration) => {
+      if (!existing.has(duration.key)) existing.set(duration.key, duration);
+    });
 
     select.innerHTML = `
       <option value="">Todas las duraciones</option>
-      <option value="medio-dia">Medio día</option>
-      <option value="full-day">Full day</option>
-      ${durations.map((duration) => `
-        <option value="${escapeHtml(duration.key)}">${escapeHtml(duration.label)}</option>
-      `).join("")}
+      ${Array.from(existing.values()).map((duration) => `<option value="${escapeHtml(duration.key)}">${escapeHtml(duration.label)}</option>`).join("")}
     `;
-
     select.value = currentValue;
   }
 
-  function formatLabel(value) {
-    return String(value || "")
-      .replace(/-/g, " ")
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (letter) => letter.toUpperCase());
-  }
-
   function getProductUrl(product) {
-    return `product.html?slug=${encodeURIComponent(product.slug)}`;
+    const base = `product.html?slug=${encodeURIComponent(product.slug)}`;
+    if (product.productKind === "package" && Number.isInteger(product.optionParam)) {
+      return `${base}&option=${encodeURIComponent(product.optionParam)}`;
+    }
+    return base;
   }
 
   function getPriceLabel(product) {
-    if (!product) return "";
-
     if (product.productKind === "package" || product.priceMode === "dynamic_from_selected_itinerary") {
       return "Precio dinámico";
     }
 
     const amount = Number(product.price?.amount || 0);
     const currency = product.price?.currency || product.currency || "USD";
+    if (!Number.isFinite(amount) || amount <= 0) return "Consultar";
+    return `Desde ${currency} ${amount.toFixed(2)}`;
+  }
 
-    if (!Number.isFinite(amount) || amount <= 0) {
-      return "Consultar";
+  function getDetails(product) {
+    const details = [];
+    if (product.typeLabel) details.push(product.typeLabel);
+    if (product.productKind === "package") {
+      details.push("Con hotel opcional");
+      details.push("Tren configurable");
     }
-
-    return `${currency} ${amount.toFixed(2)}`;
+    if (product.location) details.push(product.location);
+    return unique(details).slice(0, 3);
   }
 
   function renderProductCard(product) {
-    const image = product.image || "./assets/img/placeholder/experience.jpg";
-    const badge = product.badge || (product.productKind === "package" ? "Paquete" : "Tour");
+    const image = product.image || DEFAULT_IMAGE;
     const kindLabel = product.productKind === "package" ? "Paquete" : "Tour";
+    const details = getDetails(product);
 
     return `
-      <article class="experience-card" data-product-kind="${escapeHtml(product.productKind)}" data-product-family="${escapeHtml(product.productFamily)}">
-        <a class="experience-card__link" href="${escapeHtml(getProductUrl(product))}" aria-label="Ver ${escapeHtml(product.title)}">
-          <div class="experience-card__media">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(product.title)}" loading="lazy">
-            ${badge ? `<span class="experience-card__badge">${escapeHtml(badge)}</span>` : ""}
+      <article class="listing-card" data-product-kind="${escapeHtml(product.productKind)}" data-product-family="${escapeHtml(product.productFamily)}">
+        <a class="listing-card__link" href="${escapeHtml(getProductUrl(product))}" aria-label="Ver ${escapeHtml(product.title)}">
+          <div class="listing-card__image">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(product.title)}" loading="lazy" onerror="this.src='${DEFAULT_IMAGE}'">
+            <span class="listing-card__badge">${escapeHtml(product.badge || kindLabel)}</span>
           </div>
-
-          <div class="experience-card__body">
-            <div class="experience-card__meta">
+          <div class="listing-card__content">
+            <div class="listing-card__meta">
               <span>${escapeHtml(kindLabel)}</span>
-              ${product.typeLabel ? `<span>${escapeHtml(product.typeLabel)}</span>` : ""}
+              ${product.optionIndex !== undefined ? `<span>Opción ${Number(product.optionIndex) + 1}</span>` : ""}
             </div>
-
-            <h3 class="experience-card__title">${escapeHtml(product.title)}</h3>
-
-            ${product.location ? `
-              <p class="experience-card__location">${escapeHtml(product.location)}</p>
+            <h3>${escapeHtml(product.title)}</h3>
+            ${product.shortDescription ? `<p class="listing-card__description">${escapeHtml(product.shortDescription)}</p>` : ""}
+            <div class="listing-card__details">
+              ${details.map((detail) => `<span>${escapeHtml(detail)}</span>`).join("")}
+            </div>
+            ${product.includedTourCodes?.length ? `
+              <p class="listing-card__codes">${escapeHtml(product.includedTourCodes.slice(0, 5).join(" · "))}</p>
             ` : ""}
-
-            ${product.shortDescription ? `
-              <p class="experience-card__description">${escapeHtml(product.shortDescription)}</p>
-            ` : ""}
-
-            <div class="experience-card__footer">
+            <div class="listing-card__actions">
               <strong>${escapeHtml(getPriceLabel(product))}</strong>
-              <span>Ver detalle</span>
+              <span class="btn listing-card__button">Ver experiencia</span>
             </div>
           </div>
         </a>
@@ -256,24 +510,24 @@
     const grid = getFirstElement(selectors.grid);
     const empty = getFirstElement(selectors.empty);
     const count = getFirstElement(selectors.count);
+    const summary = getFirstElement(selectors.summary);
 
     if (!grid) {
       console.warn("[MyCuscoTrip AllExperiences] No se encontró contenedor de cards.");
       return;
     }
 
-    if (count) {
-      count.textContent = `${state.filteredCatalog.length} experiencia${state.filteredCatalog.length === 1 ? "" : "s"}`;
-    }
+    const total = state.filteredCatalog.length;
+    if (count) count.textContent = `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
+    if (summary) summary.textContent = total ? "Explora tours, Machu Picchu, experiencias en Perú y paquetes dinámicos." : "Prueba limpiando filtros o usando otro destino.";
 
-    if (!state.filteredCatalog.length) {
+    if (!total) {
       grid.innerHTML = "";
       if (empty) empty.hidden = false;
       return;
     }
 
     if (empty) empty.hidden = true;
-
     grid.innerHTML = state.filteredCatalog.map(renderProductCard).join("");
   }
 
@@ -283,14 +537,41 @@
       return;
     }
 
-    state.filteredCatalog = window.MyCuscoTripSearchService.filterProducts(
-      state.catalog,
-      state.filters
-    );
+    const filtered = window.MyCuscoTripSearchService.filterProducts(state.catalog, {
+      ...state.filters,
+      sort: "featured"
+    });
 
+    state.filteredCatalog = sortFilteredProducts(filtered);
     if (updateUrl) updateUrlFromFilters();
-
+    syncActiveChips();
     renderProducts();
+  }
+
+  function syncActiveChips() {
+    qsa(selectors.chips).forEach((chip) => {
+      const key = chip.getAttribute("data-filter-chip");
+      const chipFilters = QUICK_CHIPS[key] || {};
+      const isActive = Object.entries(chipFilters).every(([filterKey, value]) => {
+        if (filterKey === "q") return normalizeText(state.filters.q).includes(normalizeText(value));
+        return String(state.filters[filterKey] || "") === String(value || "");
+      });
+      chip.classList.toggle("is-active", isActive);
+    });
+  }
+
+  function clearFilters() {
+    state.filters = {
+      q: "",
+      destination: "",
+      kind: "",
+      days: "",
+      nights: "",
+      durationKey: "",
+      sort: "commercial-showcase"
+    };
+    syncControlsFromState();
+    applyFilters();
   }
 
   function bindFilters() {
@@ -299,6 +580,7 @@
     const kindSelect = getFirstElement(selectors.kindSelect);
     const durationSelect = getFirstElement(selectors.durationSelect);
     const sortSelect = getFirstElement(selectors.sortSelect);
+    const clearButton = getFirstElement(selectors.clearButton);
 
     if (searchInput) {
       searchInput.addEventListener("input", () => {
@@ -333,32 +615,35 @@
 
     if (sortSelect) {
       sortSelect.addEventListener("change", () => {
-        state.filters.sort = sortSelect.value || "featured";
+        state.filters.sort = sortSelect.value || "commercial-showcase";
         applyFilters();
       });
     }
+
+    if (clearButton) clearButton.addEventListener("click", clearFilters);
+
+    qsa(selectors.chips).forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const key = chip.getAttribute("data-filter-chip");
+        const chipFilters = QUICK_CHIPS[key] || {};
+        state.filters = { ...state.filters, ...chipFilters };
+        syncControlsFromState();
+        applyFilters();
+      });
+    });
   }
 
   async function initAllExperiencesPage() {
     setLoader(true);
 
     try {
-      if (!window.MyCuscoTripDataLoader) {
-        throw new Error("Falta data-loader.js");
-      }
-
-      if (!window.MyCuscoTripCatalogNormalizer) {
-        throw new Error("Falta catalog-normalizer.js");
-      }
-
-      if (!window.MyCuscoTripSearchService) {
-        throw new Error("Falta search-service.js");
-      }
+      if (!window.MyCuscoTripDataLoader) throw new Error("Falta data-loader.js");
+      if (!window.MyCuscoTripCatalogNormalizer) throw new Error("Falta catalog-normalizer.js");
+      if (!window.MyCuscoTripSearchService) throw new Error("Falta search-service.js");
 
       const loaded = await window.MyCuscoTripDataLoader.loadAllData();
-
       state.allData = loaded;
-      state.catalog = window.MyCuscoTripCatalogNormalizer.normalizeCatalog(loaded);
+      state.catalog = buildShowcaseCatalog(loaded);
       state.filteredCatalog = [...state.catalog];
 
       if (loaded.hasErrors) {
@@ -368,17 +653,17 @@
       hydrateFiltersFromUrl();
       populateDestinationFilter();
       populateDurationFilter();
+      syncControlsFromState();
       bindFilters();
       applyFilters({ updateUrl: false });
     } catch (error) {
       console.error("[MyCuscoTrip AllExperiences] Error inicializando página:", error);
-
       const grid = getFirstElement(selectors.grid);
       if (grid) {
         grid.innerHTML = `
-          <div class="experiences-error">
+          <div class="listing-error">
             <h3>No se pudieron cargar las experiencias</h3>
-            <p>Revisa que los archivos JSON existan y que las rutas relativas sean correctas.</p>
+            <p>Revisa que existan los JSON y que estén cargados los scripts core antes de all-experiences.js.</p>
           </div>
         `;
       }
@@ -393,6 +678,7 @@
     state,
     applyFilters,
     renderProducts,
-    initAllExperiencesPage
+    initAllExperiencesPage,
+    buildShowcaseCatalog
   };
 })();
