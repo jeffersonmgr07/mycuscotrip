@@ -844,12 +844,9 @@
         "CUZ001",
         "CUZ002",
         "CUZ003CON",
-        "CUZ006",
-        "CUZ007",
+        "CUZ003VIPCON",
         "MAPI001",
-        "MAPI002",
-        "MAPI003",
-        "MAPI004"
+        "MAPI003"
       ],
       "requiredTours": [
         "MAPI001"
@@ -859,13 +856,14 @@
         "cityTour"
       ],
       "maxTrekkings": 1,
-      "allowVip": false,
+      "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "full-day",
       "recommendedMachuPicchuCodes": [
-        "MAPI001", "MAPI003", "MAPI004"
+        "MAPI001",
+        "MAPI003"
       ],
       "arrivalDepartureProfiles": [
         "early-arrival__late-departure",
@@ -889,8 +887,9 @@
         "CUZ002",
         "CUZ003FD",
         "CUZ003CON",
-        "CUZ003VIP",
         "CUZ003VIPCON",
+        "CUZ004",
+        "CUZ005",
         "CUZ006",
         "CUZ007",
         "CUZ008",
@@ -908,13 +907,14 @@
         "trekkings"
       ],
       "maxTrekkings": 1,
-      "allowVip": false,
+      "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
       "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "overnight",
       "recommendedMachuPicchuCodes": [
         "MAPI001",
+        "MAPI002",
         "MAPI003",
         "MAPI004"
       ],
