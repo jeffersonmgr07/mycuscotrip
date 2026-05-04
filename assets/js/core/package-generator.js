@@ -1027,6 +1027,27 @@
     } else {
       score -= (usefulDays - estimatedOccupiedDays) * 90;
     }
+    const usefulDays = Math.max(Number(option.days || 0) - 1, 0);
+    const occupiedDays = estimateOccupiedUsefulDays(option, packagesCusco, tourIndex);
+    const freeUsefulDays = Math.max(usefulDays - occupiedDays, 0);
+    
+    if (freeUsefulDays === 0) {
+      score += 300;
+    } else {
+      score -= freeUsefulDays * 180;
+    }
+    
+    if (Number(option.days || 0) >= 8 && freeUsefulDays === 0) {
+      score += 250;
+    }
+    
+    if (Number(option.days || 0) >= 9 && freeUsefulDays > 0) {
+      score -= freeUsefulDays * 250;
+    }
+    
+    if (Number(option.days || 0) >= 10 && freeUsefulDays > 1) {
+      score -= freeUsefulDays * 300;
+    }
   
     return score;
   }
