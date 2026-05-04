@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Todas las experiencias | My Cusco Trip</title>
-  <meta name="description" content="Explora tours y experiencias en Cusco, Machu Picchu y Perú con My Cusco Trip." />
+  <title>Todas las experiencias en Cusco, Machu Picchu y Perú | My Cusco Trip</title>
+  <meta name="description" content="Explora tours, experiencias Machu Picchu y paquetes dinámicos en Cusco y Perú. Filtra por destino, duración, tipo de viaje y precio con My Cusco Trip." />
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
@@ -27,9 +27,9 @@
     <div class="container">
       <div class="listing-hero__content">
         <p class="listing-eyebrow">Catálogo de experiencias</p>
-        <h1>Todas nuestras experiencias</h1>
+        <h1>All Experience</h1>
         <p id="listing-summary">
-          Explora tours y paquetes disponibles según tu búsqueda.
+          Explora tours, Machu Picchu, experiencias en Perú y paquetes dinámicos de My Cusco Trip.
         </p>
       </div>
     </div>
@@ -37,33 +37,87 @@
 
   <main class="listing-page">
     <div class="container listing-layout">
-      <aside class="listing-sidebar">
+      <aside class="listing-sidebar" aria-label="Filtros de experiencias">
         <div class="listing-filter-card">
-          <h2>Filtrar experiencias</h2>
+          <div class="listing-filter-card__header">
+            <h2>Filtrar experiencias</h2>
+            <p>Busca como en una agencia online: destino, estilo, duración o tipo de producto.</p>
+          </div>
 
-          <div class="listing-filter-group">
+          <div class="listing-filter-group listing-filter-group--search">
             <label for="filterSearch">Buscar</label>
-            <input type="text" id="filterSearch" placeholder="Ej. Machu Picchu, Valle Sagrado" />
+            <div class="listing-search-control">
+              <i class="fas fa-search" aria-hidden="true"></i>
+              <input type="text" id="filterSearch" placeholder="Ej. Machu Picchu, Valle Sagrado, Humantay" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="listing-quick-chips" aria-label="Filtros rápidos">
+            <button type="button" data-filter-chip="machu-picchu">Machu Picchu</button>
+            <button type="button" data-filter-chip="cusco">Cusco</button>
+            <button type="button" data-filter-chip="valle-sagrado">Valle Sagrado</button>
+            <button type="button" data-filter-chip="naturaleza">Naturaleza</button>
+            <button type="button" data-filter-chip="aventura">Aventura</button>
+            <button type="button" data-filter-chip="cultural">Cultural</button>
+            <button type="button" data-filter-chip="full-day">Full day</button>
+            <button type="button" data-filter-chip="paquetes">Paquetes</button>
+            <button type="button" data-filter-chip="con-hotel">Con hotel</button>
+            <button type="button" data-filter-chip="con-tren">Con tren</button>
           </div>
 
           <div class="listing-filter-group">
-            <label for="filterCategory">Categoría</label>
-            <select id="filterCategory">
-              <option value="">Todas</option>
-              <option value="machu-picchu">Machu Picchu</option>
-              <option value="cusco">Cusco</option>
+            <label for="filterKind">Tipo de producto</label>
+            <select id="filterKind">
+              <option value="">Todos</option>
+              <option value="tours">Tours</option>
               <option value="paquetes">Paquetes</option>
+            </select>
+          </div>
+
+          <div class="listing-filter-group">
+            <label for="filterDestination">Destino</label>
+            <select id="filterDestination">
+              <option value="">Todos los destinos</option>
+              <option value="cusco">Cusco</option>
+              <option value="machu-picchu">Machu Picchu</option>
+              <option value="valle-sagrado">Valle Sagrado</option>
               <option value="peru">Perú</option>
+              <option value="lima">Lima</option>
+              <option value="paracas">Paracas</option>
+              <option value="ica">Ica</option>
+              <option value="arequipa">Arequipa</option>
+              <option value="puno">Puno</option>
+              <option value="tarapoto">Tarapoto</option>
+            </select>
+          </div>
+
+          <div class="listing-filter-group">
+            <label for="filterDuration">Duración</label>
+            <select id="filterDuration">
+              <option value="">Todas las duraciones</option>
+              <option value="full-day">Full day</option>
+              <option value="medio-dia">Medio día</option>
+              <option value="2d1n">2 días / 1 noche</option>
+              <option value="3d2n">3 días / 2 noches</option>
+              <option value="4d3n">4 días / 3 noches</option>
+              <option value="5d4n">5 días / 4 noches</option>
+              <option value="6d5n">6 días / 5 noches</option>
+              <option value="7d6n">7 días / 6 noches</option>
+              <option value="8d7n">8 días / 7 noches</option>
+              <option value="9d8n">9 días / 8 noches</option>
+              <option value="10d9n">10 días / 9 noches</option>
             </select>
           </div>
 
           <div class="listing-filter-group">
             <label for="filterSort">Ordenar por</label>
             <select id="filterSort">
-              <option value="featured">Destacados</option>
-              <option value="price-asc">Precio: menor a mayor</option>
-              <option value="price-desc">Precio: mayor a menor</option>
-              <option value="name-asc">Nombre: A-Z</option>
+              <option value="commercial-showcase">Comercial / vitrina OTA</option>
+              <option value="featured">Recomendados</option>
+              <option value="price-asc">Menor precio</option>
+              <option value="price-desc">Mayor precio</option>
+              <option value="duration">Duración</option>
+              <option value="name-asc">Nombre A-Z</option>
             </select>
           </div>
 
@@ -73,20 +127,27 @@
         </div>
       </aside>
 
-      <section class="listing-results">
+      <section class="listing-results" aria-live="polite">
         <div class="listing-results__top">
           <div>
+            <p class="listing-results__eyebrow">Vitrina general</p>
             <h2>Resultados</h2>
             <p id="resultsCount">Cargando experiencias...</p>
           </div>
         </div>
 
+        <div id="pageLoader" class="listing-loader" role="status">
+          <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>
+          <span>Cargando catálogo...</span>
+        </div>
+
         <div id="allExperiencesContainer" class="listing-grid"></div>
 
         <div id="listingEmptyState" class="listing-empty" hidden>
-          <i class="fas fa-map-signs"></i>
+          <i class="fas fa-map-signs" aria-hidden="true"></i>
           <h3>No encontramos experiencias</h3>
-          <p>Prueba con otra búsqueda o cambia los filtros.</p>
+          <p>Prueba con otra búsqueda, cambia los filtros o limpia la selección actual.</p>
+          <button id="clearExperienceFilters" class="btn" type="button">Limpiar filtros</button>
         </div>
       </section>
     </div>
@@ -149,7 +210,6 @@
       if (!accordions.length) return;
 
       const isDesktop = window.innerWidth >= 769;
-
       accordions.forEach((item) => {
         item.open = isDesktop;
       });
@@ -176,6 +236,10 @@
   </script>
 
   <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/core/data-loader.js"></script>
+  <script src="./assets/js/core/catalog-normalizer.js"></script>
+  <script src="./assets/js/core/search-service.js"></script>
+  <script src="./assets/js/core/package-generator.js"></script>
   <script src="./assets/js/pages/all-experiences.js"></script>
 </body>
 </html>
