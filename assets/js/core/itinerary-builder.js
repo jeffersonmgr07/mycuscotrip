@@ -107,6 +107,10 @@
   function isSacredValley(tour) {
     const code = getTourCode(tour);
 
+    if (code === "CUZ004") {
+      return false;
+    }
+
     if (["CUZ003FD", "CUZ003CON", "CUZ003VIP", "CUZ003VIPCON"].includes(code)) {
       return true;
     }
@@ -356,6 +360,25 @@
     };
   }
 
+  function getHintedDayIndex(hints, key, fallback, minIndex, maxIndex) {
+    const value = Number(hints?.[key]);
+
+    if (!Number.isFinite(value)) {
+      return Math.min(Math.max(fallback, minIndex), maxIndex);
+    }
+
+    return Math.min(Math.max(value, minIndex), maxIndex);
+  }
+
+  function pickValleyConnectionTour(tours = []) {
+    return (
+      tours.find((tour) => getTourCode(tour) === "CUZ003VIPCON") ||
+      tours.find((tour) => getTourCode(tour) === "CUZ003CON") ||
+      tours.find(isSacredValleyConnection) ||
+      null
+    );
+  }
+
   function placeRemainingTours(days, tours = [], startIndex, lastTourDayIndex) {
     if (!tours.length) return;
 
@@ -396,13 +419,15 @@
     const totalDays = days.length;
     const indexes = getTourDayIndexes(totalDays);
     const hints = context.itineraryHints || {};
+    const lastStandardTourDayIndex = indexes.lastTourDayIndex;
   
     let day1Tours = [];
     
     if (hints.day1Mode === "free") {
       day1Tours = [];
     } else if (hints.day1Mode === "valley-connection") {
-      day1Tours = [];
+      const day1ValleyConnectionTour = pickValleyConnectionTour(remainingTours);
+      day1Tours = day1ValleyConnectionTour ? [day1ValleyConnectionTour] : [];
     } else {
       day1Tours = pickDay1ShowcaseTours(remainingTours);
     }
@@ -412,13 +437,27 @@
   
     const valleyTour = pickSacredValleyTour(remainingTours);
     if (valleyTour) {
-      addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
+      const hintedValleyDayIndex = getHintedDayIndex(
+        hints,
+        "valleyDayIndex",
+        indexes.valleyDayIndex,
+        0,
+        lastStandardTourDayIndex
+      );
+      addToursToDay(days, hintedValleyDayIndex, [valleyTour]);
       remainingTours = removeTours(remainingTours, [valleyTour]);
     }
   
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
-      const safeMachuDayIndex = Math.max(indexes.machuDayIndex, 1);
+      const hintedMachuDayIndex = getHintedDayIndex(
+        hints,
+        "machuDayIndex",
+        indexes.machuDayIndex,
+        1,
+        lastStandardTourDayIndex
+      );
+      const safeMachuDayIndex = Math.max(hintedMachuDayIndex, 1);
       addToursToDay(days, safeMachuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
@@ -426,22 +465,30 @@
     const forcedLastDayCodes = new Set(hints.forceLastDayTourCodes || []);
   
     if (hints.allowLastDayTourBeforeTransferOut && forcedLastDayCodes.size) {
-      const forcedLastDayTours = remainingTours.filter((tour) => {
+      const forcedLastDayTour = remainingTours.find((tour) => {
         return forcedLastDayCodes.has(getTourCode(tour));
       });
   
-      if (forcedLastDayTours.length) {
+      if (forcedLastDayTour) {
         const lastDayIndex = days.length - 1;
-        addToursToDay(days, lastDayIndex, forcedLastDayTours.slice(0, 1));
-        remainingTours = removeTours(remainingTours, forcedLastDayTours);
+        addToursToDay(days, lastDayIndex, [forcedLastDayTour]);
+        remainingTours = removeTours(remainingTours, [forcedLastDayTour]);
       }
     }
+
+    const firstAdditionalDayIndex = getHintedDayIndex(
+      hints,
+      "firstAdditionalDayIndex",
+      indexes.firstAdditionalDayIndex,
+      0,
+      lastStandardTourDayIndex
+    );
   
     placeRemainingTours(
       days,
       remainingTours,
-      indexes.firstAdditionalDayIndex,
-      indexes.lastTourDayIndex
+      firstAdditionalDayIndex,
+      lastStandardTourDayIndex
     );
   }
 
@@ -497,20 +544,45 @@
     const totalDays = days.length;
     const indexes = getTourDayIndexes(totalDays);
     const hints = context.itineraryHints || {};
+    const lastStandardTourDayIndex = indexes.lastTourDayIndex;
   
-    const day1Tours = pickDay1DynamicTours(remainingTours, context.arrivalTime || "15:00");
+    let day1Tours = [];
+
+    if (hints.day1Mode === "free") {
+      day1Tours = [];
+    } else if (hints.day1Mode === "valley-connection") {
+      const day1ValleyConnectionTour = pickValleyConnectionTour(remainingTours);
+      day1Tours = day1ValleyConnectionTour ? [day1ValleyConnectionTour] : [];
+    } else {
+      day1Tours = pickDay1DynamicTours(remainingTours, context.arrivalTime || "15:00");
+    }
+
     addToursToDay(days, indexes.firstDayIndex, day1Tours);
     remainingTours = removeTours(remainingTours, day1Tours);
   
     const valleyTour = pickSacredValleyTour(remainingTours);
     if (valleyTour) {
-      addToursToDay(days, indexes.valleyDayIndex, [valleyTour]);
+      const hintedValleyDayIndex = getHintedDayIndex(
+        hints,
+        "valleyDayIndex",
+        indexes.valleyDayIndex,
+        0,
+        lastStandardTourDayIndex
+      );
+      addToursToDay(days, hintedValleyDayIndex, [valleyTour]);
       remainingTours = removeTours(remainingTours, [valleyTour]);
     }
   
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
-      const safeMachuDayIndex = Math.max(indexes.machuDayIndex, 1);
+      const hintedMachuDayIndex = getHintedDayIndex(
+        hints,
+        "machuDayIndex",
+        indexes.machuDayIndex,
+        1,
+        lastStandardTourDayIndex
+      );
+      const safeMachuDayIndex = Math.max(hintedMachuDayIndex, 1);
       addToursToDay(days, safeMachuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
@@ -518,22 +590,30 @@
     const forcedLastDayCodes = new Set(hints.forceLastDayTourCodes || []);
   
     if (hints.allowLastDayTourBeforeTransferOut && forcedLastDayCodes.size) {
-      const forcedLastDayTours = remainingTours.filter((tour) => {
+      const forcedLastDayTour = remainingTours.find((tour) => {
         return forcedLastDayCodes.has(getTourCode(tour));
       });
   
-      if (forcedLastDayTours.length) {
+      if (forcedLastDayTour) {
         const lastDayIndex = days.length - 1;
-        addToursToDay(days, lastDayIndex, forcedLastDayTours.slice(0, 1));
-        remainingTours = removeTours(remainingTours, forcedLastDayTours);
+        addToursToDay(days, lastDayIndex, [forcedLastDayTour]);
+        remainingTours = removeTours(remainingTours, [forcedLastDayTour]);
       }
     }
+
+    const firstAdditionalDayIndex = getHintedDayIndex(
+      hints,
+      "firstAdditionalDayIndex",
+      indexes.firstAdditionalDayIndex,
+      0,
+      lastStandardTourDayIndex
+    );
   
     placeRemainingTours(
       days,
       remainingTours,
-      indexes.firstAdditionalDayIndex,
-      indexes.lastTourDayIndex
+      firstAdditionalDayIndex,
+      lastStandardTourDayIndex
     );
   }
 
