@@ -843,8 +843,13 @@
       "allowedTours": [
         "CUZ001",
         "CUZ002",
+        "CUZ003CON",
+        "CUZ006",
+        "CUZ007",
         "MAPI001",
-        "MAPI002"
+        "MAPI002",
+        "MAPI003",
+        "MAPI004"
       ],
       "requiredTours": [
         "MAPI001"
@@ -853,14 +858,14 @@
         "welcome",
         "cityTour"
       ],
-      "maxTrekkings": 0,
+      "maxTrekkings": 1,
       "allowVip": false,
-      "allowConnection": false,
+      "allowConnection": true,
       "allowFullDayMachuPicchu": true,
-      "allowOvernightMachuPicchu": false,
+      "allowOvernightMachuPicchu": true,
       "defaultMachuPicchuMode": "full-day",
       "recommendedMachuPicchuCodes": [
-        "MAPI001"
+        "MAPI001", "MAPI003", "MAPI004"
       ],
       "arrivalDepartureProfiles": [
         "early-arrival__late-departure",
