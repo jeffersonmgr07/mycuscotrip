@@ -4,6 +4,7 @@ class MyCuscoTripProductPage {
   constructor() {
     this.params = new URLSearchParams(window.location.search);
     this.slug = this.params.get("slug");
+    this.requestedPackageOptionIndex = this.getRequestedPackageOptionIndex();
 
     this.basePath = window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/";
 
@@ -29,6 +30,7 @@ class MyCuscoTripProductPage {
     this.selectedExtras = new Set();
     this.paymentMode = "full";
     this.date = "";
+    this.selectedDepartureTime = "";
 
     this.serviceMode = "group";
 
@@ -78,9 +80,13 @@ class MyCuscoTripProductPage {
 
       if (this.productType === "package") {
         try {
-          this.initDynamicPackageEngine();
+          if (this.isPeruPackage(product)) {
+            this.renderPeruPackageFallback(product);
+          } else {
+            this.initDynamicPackageEngine();
+          }
         } catch (packageError) {
-          console.error("Error initializing dynamic package engine:", packageError);
+          console.error("Error initializing package content:", packageError);
           console.error(packageError?.stack || "Sin stack");
         }
       }
@@ -287,7 +293,11 @@ class MyCuscoTripProductPage {
     this.setText("productBadge", badge);
     this.setText("productTitle", title);
     this.setText("productDescription", description);
-    this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
+    if (this.isPeruPackage(product)) {
+      this.setText("productBasePrice", "Cotización flexible");
+    } else {
+      this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
+    }
 
     this.setText("detailCapacity", `Máximo ${capacity} viajeros por grupo`);
     this.setText("detailDuration", duration);
@@ -302,6 +312,7 @@ class MyCuscoTripProductPage {
     this.renderFaq(product?.faq || []);
     this.renderExtras(product?.extras || []);
     this.renderServiceModes(product || {});
+    this.renderDepartureTimeOptions(product || {});
     this.renderAccommodationOptions(product || {});
     this.renderSimilarExperiences();
   }
@@ -335,6 +346,12 @@ class MyCuscoTripProductPage {
         }
       });
     }
+
+    const departureTimeSelect = document.getElementById("departureTimeSelect");
+
+    departureTimeSelect?.addEventListener("change", () => {
+      this.selectedDepartureTime = departureTimeSelect.value || "";
+    });
 
     document.querySelectorAll(".qty-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -543,6 +560,154 @@ class MyCuscoTripProductPage {
         this.updatePricing();
       });
     });
+  }
+
+  getRequestedPackageOptionIndex() {
+    const value = this.params.get("option") || this.params.get("opcion") || "";
+    const index = Number(value);
+
+    if (!Number.isInteger(index) || index < 0) return 0;
+    return index;
+  }
+
+  getValidPackageOptionIndex(index) {
+    const requested = Number(index || 0);
+
+    if (!Array.isArray(this.packageOptions) || !this.packageOptions.length) return 0;
+    if (!Number.isInteger(requested) || requested < 0) return 0;
+    if (requested >= this.packageOptions.length) return 0;
+
+    return requested;
+  }
+
+  getProductStartTimes(product) {
+    const rawTimes = [
+      ...(Array.isArray(product?.operationalSchedule?.startTimes) ? product.operationalSchedule.startTimes : []),
+      ...(Array.isArray(product?.operation?.startTimes) ? product.operation.startTimes : [])
+    ];
+
+    return Array.from(new Set(rawTimes.map((time) => String(time || "").trim()).filter(Boolean)));
+  }
+
+  renderDepartureTimeOptions(product) {
+    const section = document.getElementById("departureTimeSection");
+    const select = document.getElementById("departureTimeSelect");
+    const fixed = document.getElementById("departureTimeFixed");
+    const help = document.getElementById("departureTimeHelp");
+
+    if (!section || !select || !fixed) return;
+
+    const times = this.getProductStartTimes(product);
+
+    section.hidden = true;
+    select.hidden = true;
+    fixed.hidden = true;
+    select.innerHTML = "";
+    fixed.textContent = "";
+    if (help) help.textContent = "";
+    this.selectedDepartureTime = "";
+
+    if (!times.length) {
+      return;
+    }
+
+    section.hidden = false;
+
+    if (times.length === 1) {
+      this.selectedDepartureTime = times[0];
+      fixed.hidden = false;
+      fixed.textContent = `Salida: ${times[0]}`;
+      if (help) help.textContent = "Este tour tiene un horario fijo de salida.";
+      return;
+    }
+
+    select.hidden = false;
+    select.innerHTML = `
+      <option value="">Selecciona un horario</option>
+      ${times.map((time) => `<option value="${this.escapeHtml(time)}">${this.escapeHtml(time)}</option>`).join("")}
+    `;
+
+    if (help) {
+      help.textContent = "Elige el horario que prefieres. La disponibilidad final será confirmada por el equipo de reservas.";
+    }
+  }
+
+  getSelectedDepartureTimeLabel() {
+    if (this.selectedDepartureTime) return this.selectedDepartureTime;
+
+    const times = this.getProductStartTimes(this.product);
+    if (times.length === 1) return times[0];
+    if (times.length > 1) return "Pendiente de selección";
+
+    return "No aplica";
+  }
+
+  isPeruPackage(product) {
+    if (!product) return false;
+    return String(product.productFamily || "").toLowerCase() === "peru-package";
+  }
+
+  getTourTitleByCode(code) {
+    const clean = String(code || "").trim();
+    if (!clean) return "";
+
+    const match = (this.tours || []).find((item) => {
+      return item?.internalCode === clean || item?.id === clean || item?.slug === clean;
+    });
+
+    return match?.title || clean;
+  }
+
+  renderPeruPackageFallback(product) {
+    const packageOptionsTarget = document.getElementById("packageOptions");
+    const itineraryTarget = document.getElementById("productItinerary");
+    const paypalButton = document.getElementById("paypalButton");
+
+    if (packageOptionsTarget) packageOptionsTarget.innerHTML = "";
+    if (paypalButton) paypalButton.textContent = "Solicitar cotización";
+
+    if (!itineraryTarget) return;
+
+    const search = product?.search || {};
+    const destinations = Array.isArray(search.destinations) ? search.destinations : [];
+    const tourCodes = Array.isArray(search.includedTourCodes) ? search.includedTourCodes : [];
+    const themes = Array.isArray(search.themes) ? search.themes : [];
+
+    const destinationLabels = destinations
+      .filter((destination) => destination && destination !== "peru")
+      .map((destination) => this.getDestinationLabel(destination));
+
+    const tourTitles = tourCodes.map((code) => this.getTourTitleByCode(code));
+
+    itineraryTarget.innerHTML = `
+      <div class="experience-itinerary-item">
+        <h3>Ruta sugerida</h3>
+        <p>${this.escapeHtml(product.shortDescription || product.description || "Paquete multidestino preparado para cotización personalizada.")}</p>
+      </div>
+
+      <div class="experience-itinerary-item">
+        <h3>Destinos incluidos</h3>
+        <p>${this.escapeHtml(destinationLabels.length ? destinationLabels.join(" / ") : product.location || "Perú")}</p>
+      </div>
+
+      <div class="experience-itinerary-item">
+        <h3>Experiencias principales</h3>
+        ${tourTitles.length
+          ? `<ul>${tourTitles.map((title) => `<li>${this.escapeHtml(title)}</li>`).join("")}</ul>`
+          : `<p>Experiencias principales por confirmar según la ruta elegida.</p>`}
+      </div>
+
+      <div class="experience-itinerary-item">
+        <h3>Hoteles configurables</h3>
+        <p>El alojamiento se puede ajustar por destino, categoría y disponibilidad. La propuesta final se confirmará mediante cotización personalizada.</p>
+      </div>
+
+      <div class="experience-itinerary-item">
+        <h3>Solicitar cotización</h3>
+        <p>Este paquete todavía no usa itinerario dinámico día por día. Nuestro equipo puede preparar la ruta final según fechas, hoteles, vuelos internos y preferencias de viaje.</p>
+        ${themes.length ? `<p><small>Estilo de viaje: ${this.escapeHtml(themes.join(" · "))}</small></p>` : ""}
+      </div>
+    `;
   }
 
   renderServiceModes(product) {
@@ -1521,6 +1686,7 @@ class MyCuscoTripProductPage {
         date: this.date || "No seleccionada",
         adults: this.adults,
         children: this.children,
+        departureTime: this.getSelectedDepartureTimeLabel(),
         serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
         accommodation,
         extras: selectedExtras,
@@ -1581,6 +1747,7 @@ class MyCuscoTripProductPage {
       date: this.date || "No seleccionada",
       adults: this.adults,
       children: this.children,
+      departureTime: this.getSelectedDepartureTimeLabel(),
       serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
       accommodation,
       extras: selectedExtras,
@@ -1593,11 +1760,13 @@ class MyCuscoTripProductPage {
 
   handlePaypalAction() {
     const summary = this.getBookingSummary();
+    const actionTitle = this.isPeruPackage(this.product) ? "Aquí conectarás la solicitud de cotización." : "Aquí conectarás PayPal.";
 
     alert(
-      `Aquí conectarás PayPal.\n\n` +
+      `${actionTitle}\n\n` +
       `Tour: ${summary.title}\n` +
       `Fecha: ${summary.date}\n` +
+      `Horario: ${summary.departureTime || "No aplica"}\n` +
       `Adultos: ${summary.adults}\n` +
       `Niños: ${summary.children}\n` +
       `Modalidad servicio: ${summary.serviceMode}\n` +
@@ -1638,7 +1807,8 @@ class MyCuscoTripProductPage {
     }
 
     this.renderDynamicPackageOptions();
-    this.selectDynamicPackageOption(0);
+    const initialOptionIndex = this.getValidPackageOptionIndex(this.requestedPackageOptionIndex);
+    this.selectDynamicPackageOption(initialOptionIndex);
   }
 
   renderDynamicPackageOptions() {
