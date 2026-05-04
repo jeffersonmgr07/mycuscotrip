@@ -325,7 +325,7 @@
 
     return 50;
   }
-
+  
   function getTourDayIndexes(totalDays) {
     if (totalDays <= 1) {
       return {
@@ -337,15 +337,20 @@
         lastDayIndex: 0
       };
     }
-
+  
     const lastDayIndex = totalDays - 1;
     const lastTourDayIndex = Math.max(totalDays - 2, 0);
-
+  
+    const machuDayIndex = Math.min(
+      Math.max(1, totalDays >= 4 ? 2 : 1),
+      lastTourDayIndex
+    );
+  
     return {
       firstDayIndex: 0,
-      valleyDayIndex: totalDays >= 3 ? 1 : 0,
-      machuDayIndex: totalDays >= 4 ? 2 : Math.min(1, lastTourDayIndex),
-      firstAdditionalDayIndex: totalDays >= 4 ? 3 : 2,
+      valleyDayIndex: totalDays >= 4 ? 1 : 0,
+      machuDayIndex,
+      firstAdditionalDayIndex: Math.min(machuDayIndex + 1, lastTourDayIndex),
       lastTourDayIndex,
       lastDayIndex
     };
@@ -392,7 +397,16 @@
     const indexes = getTourDayIndexes(totalDays);
     const hints = context.itineraryHints || {};
   
-    const day1Tours = pickDay1ShowcaseTours(remainingTours);
+    let day1Tours = [];
+    
+    if (hints.day1Mode === "free") {
+      day1Tours = [];
+    } else if (hints.day1Mode === "valley-connection") {
+      day1Tours = [];
+    } else {
+      day1Tours = pickDay1ShowcaseTours(remainingTours);
+    }
+    
     addToursToDay(days, indexes.firstDayIndex, day1Tours);
     remainingTours = removeTours(remainingTours, day1Tours);
   
@@ -495,7 +509,8 @@
   
     const machuTour = pickMachuPicchuTour(remainingTours);
     if (machuTour) {
-      addToursToDay(days, indexes.machuDayIndex, [machuTour]);
+      const safeMachuDayIndex = Math.max(indexes.machuDayIndex, 1);
+      addToursToDay(days, safeMachuDayIndex, [machuTour]);
       remainingTours = removeTours(remainingTours, [machuTour]);
     }
   
