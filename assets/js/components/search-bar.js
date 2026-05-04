@@ -21,6 +21,12 @@ class MyCuscoTripSearchBar {
     this.flatpickrInstance = null;
     this.DAY = 24 * 60 * 60 * 1000;
 
+    this.selectedDate = "";
+    this.selectedStartDate = "";
+    this.selectedEndDate = "";
+    this.selectedDays = "";
+    this.selectedNights = "";
+
     this.init();
   }
 
@@ -134,13 +140,39 @@ class MyCuscoTripSearchBar {
     this.dateField?.addEventListener("click", openCalendar);
   }
 
+  formatDate(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
+  resetSelectedDates() {
+    this.selectedDate = "";
+    this.selectedStartDate = "";
+    this.selectedEndDate = "";
+    this.selectedDays = "";
+    this.selectedNights = "";
+  }
+
   handleDateChange(selectedDates) {
+    this.resetSelectedDates();
+
     if (!this.durationEl) return;
 
     if (this.currentTab === "paquetes") {
       if (selectedDates.length === 2) {
-        const nights = Math.round((selectedDates[1] - selectedDates[0]) / this.DAY);
+        const nights = Math.max(0, Math.round((selectedDates[1] - selectedDates[0]) / this.DAY));
         const days = nights + 1;
+
+        this.selectedStartDate = this.formatDate(selectedDates[0]);
+        this.selectedEndDate = this.formatDate(selectedDates[1]);
+        this.selectedDays = String(days);
+        this.selectedNights = String(nights);
+
         this.durationEl.innerHTML = `<i class="fa-regular fa-moon"></i> ${days} días / ${nights} noches`;
         this.durationEl.style.display = "block";
       } else {
@@ -149,6 +181,10 @@ class MyCuscoTripSearchBar {
       }
     } else {
       if (selectedDates.length >= 1) {
+        this.selectedDate = this.formatDate(selectedDates[0]);
+        this.selectedDays = "";
+        this.selectedNights = "";
+
         this.durationEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha seleccionada`;
         this.durationEl.style.display = "block";
       } else {
@@ -159,6 +195,8 @@ class MyCuscoTripSearchBar {
   }
 
   clearDates() {
+    this.resetSelectedDates();
+
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
     }
@@ -261,24 +299,31 @@ class MyCuscoTripSearchBar {
     });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-    const tipo = this.currentTab;
+  buildAllExperiencesUrl() {
+    const tipo = this.currentTab === "paquetes" ? "paquetes" : "tours";
     const destino = this.destinoSelect?.value || "machu-picchu";
-    const fecha = this.dateInput?.value || "";
 
     const params = new URLSearchParams();
     params.set("tipo", tipo);
     params.set("destino", destino);
-    params.set("adultos", this.adults);
-    params.set("ninos", this.children);
+    params.set("adultos", String(this.adults));
+    params.set("ninos", String(this.children));
 
-    if (fecha) {
-      params.set("fecha", fecha);
+    if (tipo === "paquetes") {
+      if (this.selectedDays) params.set("days", this.selectedDays);
+      if (this.selectedNights) params.set("nights", this.selectedNights);
+      if (this.selectedStartDate) params.set("fechaInicio", this.selectedStartDate);
+      if (this.selectedEndDate) params.set("fechaFin", this.selectedEndDate);
+    } else if (this.selectedDate) {
+      params.set("fecha", this.selectedDate);
     }
 
-    window.location.href = `./all-experiences.html?${params.toString()}`;
+    return `./all-experiences.html?${params.toString()}`;
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    window.location.href = this.buildAllExperiencesUrl();
   }
 }
 
