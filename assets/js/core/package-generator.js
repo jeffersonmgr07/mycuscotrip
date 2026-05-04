@@ -139,6 +139,7 @@
   
     return result;
   }
+  
   function getMinimumPostMachuPicchuTours(params) {
     const days = Number(params.days || 0);
   
@@ -149,7 +150,119 @@
     // Los días entre Machu Picchu y Transfer OUT deben ocuparse.
     return Math.max(days - 4, 0);
   }
+  function getShortPackageCommercialSeeds(params, effectiveConfig, packagesCusco, tourIndex) {
+    const days = Number(params.days || 0);
+    const nights = Number(params.nights || 0);
+    const allowed = new Set(toArray(effectiveConfig?.allowedTours));
   
+    function canUse(codes) {
+      return codes.every((code) => allowed.has(code) && tourIndex.has(code));
+    }
+  
+    function seed(codes, reason, hints = {}) {
+      if (!canUse(codes)) return null;
+  
+      return {
+        codes: uniqueCodes(codes),
+        reason,
+        hints
+      };
+    }
+  
+    if (days === 3 && nights === 2) {
+      return [
+        seed(
+          ["CUZ001", "CUZ002", "MAPI001"],
+          "clasico-3d2n-city-tour-machu-picchu",
+          {
+            day1Mode: "showcase",
+            allowLastDayTourBeforeTransferOut: false
+          }
+        ),
+        seed(
+          ["MAPI001", "CUZ007"],
+          "3d2n-machu-picchu-vinicunca-salida-tarde",
+          {
+            day1Mode: "free",
+            forceLastDayTourCodes: ["CUZ007"],
+            allowLastDayTourBeforeTransferOut: true
+          }
+        ),
+        seed(
+          ["MAPI001", "CUZ006"],
+          "3d2n-machu-picchu-humantay-salida-tarde",
+          {
+            day1Mode: "free",
+            forceLastDayTourCodes: ["CUZ006"],
+            allowLastDayTourBeforeTransferOut: true
+          }
+        ),
+        seed(
+          ["CUZ003CON", "MAPI003"],
+          "3d2n-valle-conexion-machu-overnight",
+          {
+            day1Mode: "valley-connection",
+            allowLastDayTourBeforeTransferOut: false
+          }
+        ),
+        seed(
+          ["CUZ003CON", "MAPI004", "CUZ007"],
+          "3d2n-valle-conexion-machu-express-vinicunca",
+          {
+            day1Mode: "valley-connection",
+            forceLastDayTourCodes: ["CUZ007"],
+            allowLastDayTourBeforeTransferOut: true
+          }
+        ),
+        seed(
+          ["CUZ003CON", "MAPI004", "CUZ006"],
+          "3d2n-valle-conexion-machu-express-humantay",
+          {
+            day1Mode: "valley-connection",
+            forceLastDayTourCodes: ["CUZ006"],
+            allowLastDayTourBeforeTransferOut: true
+          }
+        )
+      ].filter(Boolean);
+    }
+  
+    if (days === 4 && nights === 3) {
+      return [
+        seed(
+          ["CUZ001", "CUZ002", "MAPI001", "CUZ006"],
+          "4d3n-city-machu-humantay",
+          {}
+        ),
+        seed(
+          ["CUZ001", "CUZ002", "MAPI001", "CUZ007"],
+          "4d3n-city-machu-vinicunca",
+          {}
+        ),
+        seed(
+          ["CUZ003CON", "MAPI003", "CUZ006"],
+          "4d3n-valle-conexion-machu-overnight-humantay",
+          {}
+        ),
+        seed(
+          ["CUZ003CON", "MAPI003", "CUZ007"],
+          "4d3n-valle-conexion-machu-overnight-vinicunca",
+          {}
+        ),
+        seed(
+          ["CUZ003CON", "MAPI004", "CUZ006"],
+          "4d3n-valle-conexion-machu-express-humantay",
+          {}
+        ),
+        seed(
+          ["CUZ003CON", "MAPI004", "CUZ007"],
+          "4d3n-valle-conexion-machu-express-vinicunca",
+          {}
+        )
+      ].filter(Boolean);
+    }
+  
+    return [];
+  }
   function countPostMachuPicchuCandidateTours(codes, packagesCusco, tourIndex) {
     return uniqueCodes(codes).filter((code) => {
       if (isWelcomeCode(code, packagesCusco, tourIndex)) return false;
@@ -825,15 +938,43 @@
     return options.slice(0, maxOptions);
   }
 
-  function rankPackageOptions(options = []) {
-    return [...options].sort((a, b) => {
-      const scoreA = Number(a.score || calculateOptionScore(a));
-      const scoreB = Number(b.score || calculateOptionScore(b));
-
-      if (scoreA !== scoreB) return scoreB - scoreA;
-
-      return a.includedTourCodes.length - b.includedTourCodes.length;
+  function rankPackageOptions(options = [], packagesCusco = {}, tourIndex = new Map()) {
+    return [...options]
+      .map((option) => ({
+        ...option,
+        score: calculateOptionScore(option, packagesCusco, tourIndex)
+      }))
+      .sort((a, b) => {
+        if (Number(b.commercialPriority || 0) !== Number(a.commercialPriority || 0)) {
+          return Number(b.commercialPriority || 0) - Number(a.commercialPriority || 0);
+        }
+  
+        return Number(b.score || 0) - Number(a.score || 0);
+      });
+  }
+  function estimateOccupiedUsefulDays(option, packagesCusco, tourIndex) {
+    const codes = uniqueCodes(option.includedTourCodes);
+    let occupied = 0;
+  
+    const hasWelcome = codes.some((code) => isWelcomeCode(code, packagesCusco, tourIndex));
+    const hasCity = codes.some((code) => isCityTourCode(code, packagesCusco, tourIndex));
+    const hasValley = codes.some((code) => isSacredValleyCode(code, packagesCusco));
+    const hasMachu = codes.some(isMachuPicchuCode);
+  
+    if (hasWelcome || hasCity) occupied += 1;
+    if (hasValley) occupied += 1;
+    if (hasMachu) occupied += 1;
+  
+    codes.forEach((code) => {
+      if (isWelcomeCode(code, packagesCusco, tourIndex)) return;
+      if (isCityTourCode(code, packagesCusco, tourIndex)) return;
+      if (isSacredValleyCode(code, packagesCusco)) return;
+      if (isMachuPicchuCode(code)) return;
+  
+      occupied += 1;
     });
+  
+    return occupied;
   }
   function calculateOptionScore(option, packagesCusco, tourIndex) {
     let score = 0;
@@ -877,6 +1018,14 @@
       score += 80;
     } else {
       score -= (minimumPostMachuTours - postMachuTours) * 60;
+    }
+    const usefulDays = Math.max(Number(option.days || 0) - 1, 0);
+    const estimatedOccupiedDays = estimateOccupiedUsefulDays(option, packagesCusco, tourIndex);
+    
+    if (estimatedOccupiedDays >= usefulDays) {
+      score += 150;
+    } else {
+      score -= (usefulDays - estimatedOccupiedDays) * 90;
     }
   
     return score;
@@ -1068,6 +1217,30 @@
       packagesCusco,
       generationReason: "recommended-base"
     });
+    const shortCommercialSeeds = getShortPackageCommercialSeeds(
+      params,
+      effectiveConfig,
+      packagesCusco,
+      tourIndex
+    );
+    
+    const shortCommercialOptions = shortCommercialSeeds.map((item) => {
+      const option = buildPackageOption({
+        params,
+        card,
+        durationConfig: effectiveConfig,
+        profile,
+        codes: item.codes,
+        tourIndex,
+        packagesCusco,
+        generationReason: item.reason
+      });
+    
+      option.itineraryHints = item.hints || {};
+      option.commercialPriority = 1000;
+    
+      return option;
+    });
 
     const expanded = expandOptionalTours(baseOption, pools, effectiveConfig, packagesCusco, tourIndex, params)
       .map((option) => buildPackageOption({
@@ -1089,8 +1262,8 @@
       .filter((option) => option.includedTourCodes.some(isMachuPicchuCode))
       .filter((option) => isValidPackageOption(option, params, effectiveConfig, packagesCusco, tourIndex));
 
-    const deduped = dedupePackageOptions(expanded);
-    const ranked = rankPackageOptions(deduped);
+    const deduped = dedupePackageOptions(allOptions);
+    const ranked = rankPackageOptions(deduped, packagesCusco, tourIndex);
 
     const maxRendered = Number(packagesCusco?.generationEngine?.maxRenderedOptionsPerPage || 12);
 
