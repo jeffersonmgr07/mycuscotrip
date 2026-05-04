@@ -128,22 +128,38 @@ class MyCuscoTripHeader {
     const currentFile = currentPath.split("/").pop() || "index.html";
     const currentHash = window.location.hash;
 
+    const aliases = {
+      "machu-picchu-tours.html": ["machu-picchu-tours.html"],
+      "cusco-tours.html": ["cusco-tours.html"],
+      "paquetes-cusco.html": ["paquetes-cusco.html"],
+      "explora-peru.html": ["explora-peru.html"],
+      "trekkings.html": ["trekkings.html"],
+      "mi-reserva.html": ["mi-reserva.html", "booking-status.html"]
+    };
+
     let activeLink = null;
 
     this.navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
       link.classList.remove("active");
 
-      if (currentFile === "booking-status.html" && href.includes("booking-status.html")) {
+      Object.entries(aliases).forEach(([file, hrefMatches]) => {
+        if (activeLink) return;
+        if (currentFile === file && hrefMatches.some((item) => href.includes(item))) {
+          activeLink = link;
+        }
+      });
+
+      if (!activeLink && currentFile === "booking-status.html" && href.includes("mi-reserva.html")) {
         activeLink = link;
-      } else if ((currentFile === "index.html" || currentFile === "") && currentHash) {
+      }
+
+      if (!activeLink && (currentFile === "index.html" || currentFile === "") && currentHash) {
         if (href.endsWith(currentHash)) activeLink = link;
-      } else if ((currentFile === "index.html" || currentFile === "") && href.includes("#machu-picchu")) {
-        activeLink = this.navLinks[0];
       }
     });
 
-    if (!activeLink && this.navLinks.length > 0) {
+    if (!activeLink && (currentFile === "index.html" || currentFile === "") && this.navLinks.length > 0) {
       activeLink = this.navLinks[0];
     }
 
