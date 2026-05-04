@@ -1152,7 +1152,7 @@
         "premiumMachuPicchu",
         "luxuryMachuPicchu"
       ],
-      "maxTrekkings": 3,
+      "maxTrekkings": 4,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
@@ -1220,7 +1220,7 @@
         "luxuryMachuPicchu",
         "restDays"
       ],
-      "maxTrekkings": 3,
+      "maxTrekkings": 4,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
@@ -1288,7 +1288,7 @@
         "luxuryMachuPicchu",
         "restDays"
       ],
-      "maxTrekkings": 3,
+      "maxTrekkings": 4,
       "allowVip": true,
       "allowConnection": true,
       "allowFullDayMachuPicchu": true,
