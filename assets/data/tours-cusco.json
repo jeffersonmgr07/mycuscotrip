@@ -142,7 +142,7 @@
         },
         {
           "q": "¿Qué horarios tiene?",
-          "a": "Los horarios disponibles son 10:00, 11:00, 13:00, 14:30 y 16:00, de lunes a domingo."
+          "a": "Los horarios disponibles son 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 y 16:00, de lunes a domingo."
         }
       ],
       "extras": [],
@@ -210,10 +210,13 @@
       },
       "operationalSchedule": {
         "startTimes": [
+          "09:00",
           "10:00",
           "11:00",
+          "12:00",
           "13:00",
-          "14:30",
+          "14:00",
+          "15:00",
           "16:00"
         ],
         "durationLabel": "2 h 30 min",
@@ -461,9 +464,11 @@
       },
       "operationalSchedule": {
         "startTimes": [
-          "13:00"
+          "09:00",
+          "10:00",
+          "13:00",
+          "14:00"
         ],
-        "endTime": "18:00",
         "durationLabel": "Medio día",
         "frequency": "Diario"
       },
@@ -585,7 +590,10 @@
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
-        "guideLanguages": ["es", "en"]
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "basePricing": {
         "adult": 29.9,
@@ -663,9 +671,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -677,8 +697,15 @@
           "optional": true,
           "perPerson": true,
           "pricingModel": "net_cost_only_plus_payment_fees",
-          "internalCost": { "currency": "PEN", "amount": 50 },
-          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+          "internalCost": {
+            "currency": "PEN",
+            "amount": 50
+          },
+          "publishedPricing": {
+            "currency": "USD",
+            "amount": 14.9,
+            "penApprox": 60
+          }
         }
       ],
       "paymentOptions": {
@@ -695,9 +722,19 @@
       "days": 1,
       "nights": 0,
       "baseCurrency": "PEN",
-      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "allowedCurrencies": [
+        "PEN",
+        "USD",
+        "EUR",
+        "CLP",
+        "MXN"
+      ],
       "defaultCurrency": "USD",
-      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "allowedNationalities": [
+        "national",
+        "foreign",
+        "andean_community"
+      ],
       "internalPricing": {
         "currency": "PEN",
         "costPEN": 50,
@@ -717,12 +754,24 @@
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
-        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+        "national": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "andean_community": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        }
       },
       "operationalSchedule": {
-        "startTimes": ["07:00"],
+        "startTimes": [],
         "endTime": "20:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
@@ -738,9 +787,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         }
@@ -748,11 +809,28 @@
       "search": {
         "kind": "tour",
         "productFamily": "cusco-tour",
-        "destinations": ["cusco", "valle-sagrado"],
-        "durationKeys": ["full-day", "1-dia"],
-        "includedTourCodes": ["CUZ003FD"],
-        "includedTags": ["valle-sagrado", "pisac", "ollantaytambo", "chinchero", "urubamba", "full-day"],
-        "themes": ["cultural"],
+        "destinations": [
+          "cusco",
+          "valle-sagrado"
+        ],
+        "durationKeys": [
+          "full-day",
+          "1-dia"
+        ],
+        "includedTourCodes": [
+          "CUZ003FD"
+        ],
+        "includedTags": [
+          "valle-sagrado",
+          "pisac",
+          "ollantaytambo",
+          "chinchero",
+          "urubamba",
+          "full-day"
+        ],
+        "themes": [
+          "cultural"
+        ],
         "keywords": [
           "valle sagrado de los incas",
           "valle sagrado full day",
@@ -786,7 +864,10 @@
       "duration": {
         "label": "Full Day con conexión",
         "maxGroupSize": 18,
-        "guideLanguages": ["es", "en"]
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "basePricing": {
         "adult": 29.9,
@@ -861,9 +942,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -875,8 +968,15 @@
           "optional": true,
           "perPerson": true,
           "pricingModel": "net_cost_only_plus_payment_fees",
-          "internalCost": { "currency": "PEN", "amount": 50 },
-          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+          "internalCost": {
+            "currency": "PEN",
+            "amount": 50
+          },
+          "publishedPricing": {
+            "currency": "USD",
+            "amount": 14.9,
+            "penApprox": 60
+          }
         }
       ],
       "paymentOptions": {
@@ -893,9 +993,19 @@
       "days": 1,
       "nights": 0,
       "baseCurrency": "PEN",
-      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "allowedCurrencies": [
+        "PEN",
+        "USD",
+        "EUR",
+        "CLP",
+        "MXN"
+      ],
       "defaultCurrency": "USD",
-      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "allowedNationalities": [
+        "national",
+        "foreign",
+        "andean_community"
+      ],
       "internalPricing": {
         "currency": "PEN",
         "costPEN": 50,
@@ -915,12 +1025,24 @@
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
-        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+        "national": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "andean_community": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        }
       },
       "operationalSchedule": {
-        "startTimes": ["07:00"],
+        "startTimes": [],
         "endTime": "15:30",
         "durationLabel": "Full Day con conexión",
         "frequency": "Diario"
@@ -936,9 +1058,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         }
@@ -946,11 +1080,30 @@
       "search": {
         "kind": "tour",
         "productFamily": "cusco-tour",
-        "destinations": ["cusco", "valle-sagrado", "ollantaytambo"],
-        "durationKeys": ["full-day", "1-dia", "conexion"],
-        "includedTourCodes": ["CUZ003CON"],
-        "includedTags": ["valle-sagrado", "pisac", "ollantaytambo", "urubamba", "conexion-machu-picchu"],
-        "themes": ["cultural", "conexion"],
+        "destinations": [
+          "cusco",
+          "valle-sagrado",
+          "ollantaytambo"
+        ],
+        "durationKeys": [
+          "full-day",
+          "1-dia",
+          "conexion"
+        ],
+        "includedTourCodes": [
+          "CUZ003CON"
+        ],
+        "includedTags": [
+          "valle-sagrado",
+          "pisac",
+          "ollantaytambo",
+          "urubamba",
+          "conexion-machu-picchu"
+        ],
+        "themes": [
+          "cultural",
+          "conexion"
+        ],
         "keywords": [
           "valle sagrado conexion",
           "valle sagrado con conexion a machu picchu",
@@ -982,7 +1135,10 @@
       "duration": {
         "label": "Full Day VIP",
         "maxGroupSize": 18,
-        "guideLanguages": ["es", "en"]
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "basePricing": {
         "adult": 29.9,
@@ -1070,9 +1226,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -1086,9 +1254,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": null,
           "costByNationality": {
-            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
-            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
-            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+            "national": {
+              "costPEN": 15,
+              "publishedUSD": 4.9,
+              "publishedPENApprox": 20
+            },
+            "foreign": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            },
+            "andean_community": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            }
           },
           "availabilityNote": "Aplicar para ruta Valle Sagrado VIP."
         },
@@ -1100,8 +1280,15 @@
           "optional": true,
           "perPerson": true,
           "pricingModel": "net_cost_only_plus_payment_fees",
-          "internalCost": { "currency": "PEN", "amount": 50 },
-          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+          "internalCost": {
+            "currency": "PEN",
+            "amount": 50
+          },
+          "publishedPricing": {
+            "currency": "USD",
+            "amount": 14.9,
+            "penApprox": 60
+          }
         }
       ],
       "paymentOptions": {
@@ -1118,9 +1305,19 @@
       "days": 1,
       "nights": 0,
       "baseCurrency": "PEN",
-      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "allowedCurrencies": [
+        "PEN",
+        "USD",
+        "EUR",
+        "CLP",
+        "MXN"
+      ],
       "defaultCurrency": "USD",
-      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "allowedNationalities": [
+        "national",
+        "foreign",
+        "andean_community"
+      ],
       "internalPricing": {
         "currency": "PEN",
         "costPEN": 50,
@@ -1140,12 +1337,24 @@
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
-        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+        "national": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "andean_community": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        }
       },
       "operationalSchedule": {
-        "startTimes": ["07:00"],
+        "startTimes": [],
         "endTime": "20:00",
         "durationLabel": "Full Day VIP",
         "frequency": "Diario"
@@ -1161,9 +1370,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -1177,9 +1398,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": null,
           "costByNationality": {
-            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
-            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
-            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+            "national": {
+              "costPEN": 15,
+              "publishedUSD": 4.9,
+              "publishedPENApprox": 20
+            },
+            "foreign": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            },
+            "andean_community": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            }
           },
           "availabilityNote": "Aplicar para ruta Valle Sagrado VIP."
         }
@@ -1187,11 +1420,33 @@
       "search": {
         "kind": "tour",
         "productFamily": "cusco-tour",
-        "destinations": ["cusco", "valle-sagrado", "maras", "moray", "chinchero"],
-        "durationKeys": ["full-day", "1-dia", "vip"],
-        "includedTourCodes": ["CUZ003VIP"],
-        "includedTags": ["valle-sagrado", "vip", "chinchero", "maras", "moray", "ollantaytambo", "pisac"],
-        "themes": ["cultural"],
+        "destinations": [
+          "cusco",
+          "valle-sagrado",
+          "maras",
+          "moray",
+          "chinchero"
+        ],
+        "durationKeys": [
+          "full-day",
+          "1-dia",
+          "vip"
+        ],
+        "includedTourCodes": [
+          "CUZ003VIP"
+        ],
+        "includedTags": [
+          "valle-sagrado",
+          "vip",
+          "chinchero",
+          "maras",
+          "moray",
+          "ollantaytambo",
+          "pisac"
+        ],
+        "themes": [
+          "cultural"
+        ],
         "keywords": [
           "valle sagrado vip",
           "valle sagrado vip full day",
@@ -1225,7 +1480,10 @@
       "duration": {
         "label": "Full Day VIP con conexión",
         "maxGroupSize": 18,
-        "guideLanguages": ["es", "en"]
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "basePricing": {
         "adult": 29.9,
@@ -1305,9 +1563,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -1321,9 +1591,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": null,
           "costByNationality": {
-            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
-            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
-            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+            "national": {
+              "costPEN": 15,
+              "publishedUSD": 4.9,
+              "publishedPENApprox": 20
+            },
+            "foreign": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            },
+            "andean_community": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            }
           },
           "availabilityNote": "Aplicar para ruta Valle Sagrado VIP con conexión."
         },
@@ -1335,8 +1617,15 @@
           "optional": true,
           "perPerson": true,
           "pricingModel": "net_cost_only_plus_payment_fees",
-          "internalCost": { "currency": "PEN", "amount": 50 },
-          "publishedPricing": { "currency": "USD", "amount": 14.9, "penApprox": 60 }
+          "internalCost": {
+            "currency": "PEN",
+            "amount": 50
+          },
+          "publishedPricing": {
+            "currency": "USD",
+            "amount": 14.9,
+            "penApprox": 60
+          }
         }
       ],
       "paymentOptions": {
@@ -1353,9 +1642,19 @@
       "days": 1,
       "nights": 0,
       "baseCurrency": "PEN",
-      "allowedCurrencies": ["PEN", "USD", "EUR", "CLP", "MXN"],
+      "allowedCurrencies": [
+        "PEN",
+        "USD",
+        "EUR",
+        "CLP",
+        "MXN"
+      ],
       "defaultCurrency": "USD",
-      "allowedNationalities": ["national", "foreign", "andean_community"],
+      "allowedNationalities": [
+        "national",
+        "foreign",
+        "andean_community"
+      ],
       "internalPricing": {
         "currency": "PEN",
         "costPEN": 50,
@@ -1375,12 +1674,24 @@
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
-        "national": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "foreign": { "adult": 29.9, "child": 29.9, "currency": "USD" },
-        "andean_community": { "adult": 29.9, "child": 29.9, "currency": "USD" }
+        "national": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "foreign": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        },
+        "andean_community": {
+          "adult": 29.9,
+          "child": 29.9,
+          "currency": "USD"
+        }
       },
       "operationalSchedule": {
-        "startTimes": ["07:00"],
+        "startTimes": [],
         "endTime": "15:30",
         "durationLabel": "Full Day VIP con conexión",
         "frequency": "Diario"
@@ -1396,9 +1707,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": "circuito-2",
           "costByNationality": {
-            "national": { "costPEN": 40, "publishedUSD": 11.9, "publishedPENApprox": 45 },
-            "foreign": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 },
-            "andean_community": { "costPEN": 70, "publishedUSD": 20.9, "publishedPENApprox": 80 }
+            "national": {
+              "costPEN": 40,
+              "publishedUSD": 11.9,
+              "publishedPENApprox": 45
+            },
+            "foreign": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            },
+            "andean_community": {
+              "costPEN": 70,
+              "publishedUSD": 20.9,
+              "publishedPENApprox": 80
+            }
           },
           "availabilityNote": null
         },
@@ -1412,9 +1735,21 @@
           "pricingModel": "net_cost_only_plus_payment_fees",
           "circuit": null,
           "costByNationality": {
-            "national": { "costPEN": 15, "publishedUSD": 4.9, "publishedPENApprox": 20 },
-            "foreign": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 },
-            "andean_community": { "costPEN": 20, "publishedUSD": 6.9, "publishedPENApprox": 30 }
+            "national": {
+              "costPEN": 15,
+              "publishedUSD": 4.9,
+              "publishedPENApprox": 20
+            },
+            "foreign": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            },
+            "andean_community": {
+              "costPEN": 20,
+              "publishedUSD": 6.9,
+              "publishedPENApprox": 30
+            }
           },
           "availabilityNote": "Aplicar para ruta Valle Sagrado VIP con conexión."
         }
@@ -1422,11 +1757,35 @@
       "search": {
         "kind": "tour",
         "productFamily": "cusco-tour",
-        "destinations": ["cusco", "valle-sagrado", "ollantaytambo", "maras", "moray"],
-        "durationKeys": ["full-day", "1-dia", "vip", "conexion"],
-        "includedTourCodes": ["CUZ003VIPCON"],
-        "includedTags": ["valle-sagrado", "vip", "conexion-machu-picchu", "chinchero", "maras", "moray", "ollantaytambo"],
-        "themes": ["cultural", "conexion"],
+        "destinations": [
+          "cusco",
+          "valle-sagrado",
+          "ollantaytambo",
+          "maras",
+          "moray"
+        ],
+        "durationKeys": [
+          "full-day",
+          "1-dia",
+          "vip",
+          "conexion"
+        ],
+        "includedTourCodes": [
+          "CUZ003VIPCON"
+        ],
+        "includedTags": [
+          "valle-sagrado",
+          "vip",
+          "conexion-machu-picchu",
+          "chinchero",
+          "maras",
+          "moray",
+          "ollantaytambo"
+        ],
+        "themes": [
+          "cultural",
+          "conexion"
+        ],
         "keywords": [
           "valle sagrado vip conexion",
           "valle sagrado vip con conexion a machu picchu",
@@ -1661,9 +2020,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "08:00"
-        ],
+        "startTimes": [],
         "endTime": "15:00",
         "durationLabel": "Medio día",
         "frequency": "Diario"
@@ -1968,10 +2325,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "08:00",
-          "08:30"
-        ],
+        "startTimes": [],
         "endTime": "14:30",
         "durationLabel": "Medio día",
         "frequency": "Diario"
@@ -2266,9 +2620,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "04:00"
-        ],
+        "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
@@ -2570,9 +2922,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "04:00"
-        ],
+        "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
@@ -2869,9 +3219,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "04:30"
-        ],
+        "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
@@ -3182,10 +3530,7 @@
         }
       },
       "operationalSchedule": {
-        "startTimes": [
-          "04:00",
-          "04:30"
-        ],
+        "startTimes": [],
         "endTime": "18:00",
         "durationLabel": "Full Day",
         "frequency": "Diario"
