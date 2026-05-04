@@ -1262,8 +1262,13 @@
       .filter((option) => option.includedTourCodes.some(isMachuPicchuCode))
       .filter((option) => isValidPackageOption(option, params, effectiveConfig, packagesCusco, tourIndex));
 
-    const deduped = dedupePackageOptions(allOptions);
-    const ranked = rankPackageOptions(deduped, packagesCusco, tourIndex);
+      const allOptions = [
+        ...shortCommercialOptions,
+        ...expanded
+      ];
+      
+      const deduped = dedupePackageOptions(allOptions);
+      const ranked = rankPackageOptions(deduped, packagesCusco, tourIndex);
 
     const maxRendered = Number(packagesCusco?.generationEngine?.maxRenderedOptionsPerPage || 12);
 
