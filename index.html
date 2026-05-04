@@ -382,14 +382,16 @@
         const params = new URLSearchParams();
         if (!root) return "./all-experiences.html";
 
+        // Solo tomar texto libre desde campos explícitos de búsqueda.
+        // No usamos input[type="text"] genérico porque el buscador puede tener campos
+        // de fecha, destino o dropdowns técnicos; si se envían como q producen cero resultados.
         const q = getFieldValue(root, [
-          'input[type="search"]',
-          'input[name="q"]',
-          'input[name="search"]',
-          '#searchInput',
-          '#destinationSearch',
-          '.search-input',
-          'input[type="text"]'
+          'input[type="search"]:not([readonly]):not([disabled])',
+          'input[name="q"]:not([readonly]):not([disabled])',
+          'input[name="search"]:not([readonly]):not([disabled])',
+          '#searchInput:not([readonly]):not([disabled])',
+          '.search-input:not([readonly]):not([disabled])',
+          '[data-search-query]:not([readonly]):not([disabled])'
         ]);
 
         const destination = mapDestination(
