@@ -3382,13 +3382,15 @@ body.is-generating-pdf .print-header {
   }
 
   .print-booking-offer__content {
-    border-radius: 5mm;
-    padding: 5mm 7mm;
-    text-align: center;
-    color: #fff;
-    background: linear-gradient(135deg, #0a3a26 0%, #d99a00 100%);
-    box-shadow: 0 6px 16px rgba(10, 58, 38, 0.2);
-  }
+     border-radius: 5mm;
+     padding: 5mm 7mm;
+     text-align: center;
+     color: #fff;
+     background:
+       radial-gradient(circle at 62% 38%, rgba(255, 0, 140, 0.20) 0%, rgba(255, 0, 140, 0) 34%),
+       linear-gradient(135deg, #040306 0%, #14000d 28%, #3b001f 64%, #6b003a 100%);
+     box-shadow: 0 6px 18px rgba(35, 0, 20, 0.28);
+   }
 
   .print-booking-offer__eyebrow {
     display: inline-flex;
@@ -3397,8 +3399,8 @@ body.is-generating-pdf .print-header {
     margin: 0 0 1.4mm;
     padding: 1.2mm 3.4mm;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
     font-size: 8.2pt;
     font-weight: 800;
     letter-spacing: 0.03em;
@@ -3415,17 +3417,17 @@ body.is-generating-pdf .print-header {
   }
 
   .print-booking-offer strong span {
-    color: #fff5cd;
+    color: #ff4fc3;
     white-space: nowrap;
   }
 
   .print-booking-offer p {
-    margin: 1.4mm 0 0;
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 9.4pt;
-    line-height: 1.25;
-    font-weight: 600;
-  }
+     margin: 1.4mm 0 0;
+     color: #ead7ff;
+     font-size: 9.4pt;
+     line-height: 1.25;
+     font-weight: 600;
+   }
 }
 
 body.is-generating-pdf .print-booking-offer {
