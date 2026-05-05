@@ -2603,7 +2603,6 @@ class MyCuscoTripQuotePackages {
     this.setText("printArrivalTime", this.arrivalTime ? this.minutesToTimeLabel(this.timeToMinutes(this.arrivalTime)) : "Por completar");
     this.setText("printDepartureTime", this.departureTime ? this.minutesToTimeLabel(this.timeToMinutes(this.departureTime)) : "Por completar");
     this.setText("printNationality", this.getNationalityLabel());
-    this.setText("printCurrency", this.quoteCurrency);
 
     const printCouponBox = document.getElementById("printCouponBox");
     if (printCouponBox) {
@@ -7264,6 +7263,35 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
   MyCuscoTripQuotePackages.prototype.updatePrintQuotation = function (...args) {
     const result = previousUpdatePrintQuotationV8.apply(this, args);
     this.renderPrintItinerary();
+    return result;
+  };
+})();
+
+
+/* =========================================================
+   V9 PRINT FINAL COMPACT ORDER
+   - etiquetas comerciales de nacionalidad en impresión
+   - datos de viaje sin moneda
+   - cabecera más compacta para PDF/impresión
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  MyCuscoTripQuotePackages.prototype.getNationalityLabel = function () {
+    const labels = {
+      national: "Peruano",
+      foreign: "Extranjero",
+      andean_community: "Comunidad Andina"
+    };
+    return labels[this.nationality] || this.nationality || "Por completar";
+  };
+
+  const previousUpdatePrintQuotationV9 = MyCuscoTripQuotePackages.prototype.updatePrintQuotation;
+  MyCuscoTripQuotePackages.prototype.updatePrintQuotation = function (...args) {
+    const result = previousUpdatePrintQuotationV9.apply(this, args);
+    const currencyRow = document.getElementById("printCurrency")?.closest("p");
+    if (currencyRow) currencyRow.remove();
+    this.setText("printNationality", this.getNationalityLabel());
     return result;
   };
 })();
