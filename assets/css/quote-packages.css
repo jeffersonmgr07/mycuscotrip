@@ -3266,3 +3266,96 @@ body.is-generating-pdf .print-itinerary-item {
     min-height: 21mm !important;
   }
 }
+
+
+/* =========================================================
+   V9 PRINT COMPACT HEADER + ORDER POLISH
+   ========================================================= */
+.print-company {
+  text-align: center;
+}
+
+.print-company .print-logo,
+.print-logo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.print-company p {
+  margin-top: 0 !important;
+  margin-bottom: 0.18mm !important;
+  line-height: 1.02 !important;
+}
+
+.print-company p:first-of-type {
+  margin-top: 0.45mm !important;
+  margin-bottom: 0.35mm !important;
+  line-height: 1.08 !important;
+}
+
+.print-header {
+  gap: 4mm !important;
+  margin-bottom: 3mm !important;
+}
+
+.print-client-grid {
+  margin-bottom: 2mm !important;
+}
+
+.print-info-box {
+  padding-top: 2.3mm !important;
+  padding-bottom: 2.3mm !important;
+}
+
+.print-info-box p {
+  margin: 0.45mm 0 !important;
+  line-height: 1.14 !important;
+}
+
+.print-section--services,
+.print-section--payment {
+  margin-top: 2.5mm !important;
+  padding-top: 2.4mm !important;
+}
+
+.print-section--itinerary {
+  margin-top: 3mm !important;
+  padding-top: 2.8mm !important;
+}
+
+body.is-generating-pdf .print-company p {
+  margin-top: 0 !important;
+  margin-bottom: 0.15mm !important;
+  line-height: 1.01 !important;
+}
+
+body.is-generating-pdf .print-company p:first-of-type {
+  margin-top: 0.35mm !important;
+  margin-bottom: 0.25mm !important;
+}
+
+body.is-generating-pdf .print-header {
+  margin-bottom: 2.6mm !important;
+}
+
+@media print {
+  .print-company p {
+    margin-top: 0 !important;
+    margin-bottom: 0.15mm !important;
+    line-height: 1.01 !important;
+  }
+
+  .print-company p:first-of-type {
+    margin-top: 0.35mm !important;
+    margin-bottom: 0.25mm !important;
+    line-height: 1.06 !important;
+  }
+
+  .print-header {
+    margin-bottom: 2.6mm !important;
+  }
+
+  .print-info-box p {
+    margin: 0.35mm 0 !important;
+  }
+}
