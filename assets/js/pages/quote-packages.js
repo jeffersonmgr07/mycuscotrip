@@ -2025,11 +2025,11 @@ class MyCuscoTripQuotePackages {
     const company = String(train?.company || "").toLowerCase();
 
     if (company.includes("inca")) {
-      return this.resolveAssetPath("assets/img/trains/inca-rail.png");
+      return this.resolveAssetPath("assets/img/trains/incarail-logo.png");
     }
 
     if (company.includes("peru") || company.includes("perú")) {
-      return this.resolveAssetPath("assets/img/trains/perurail.png");
+      return this.resolveAssetPath("assets/img/trains/perurail-logo.png");
     }
 
     return "";
