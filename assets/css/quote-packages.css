@@ -2792,3 +2792,119 @@ body.is-generating-pdf .quote-modal {
     padding: 6px 10px;
   }
 }
+
+
+/* =========================================================
+   AJUSTES VISUALES V6 - trenes, impresión y móvil
+   ========================================================= */
+.train-option-card__logo,
+.train-detail-logo,
+.quote-train-selector-card img {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  padding: 3px;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+}
+
+.train-combination-note {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #edf7ef;
+  color: #0a3a26;
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.print-quote-badge {
+  padding: 2.2mm 5mm !important;
+  font-size: 9pt !important;
+  letter-spacing: 0.06em;
+}
+
+.print-company p:first-of-type {
+  max-width: 75mm;
+  color: #17322a;
+  font-weight: 700;
+}
+
+.print-company i {
+  color: #0a3a26;
+  min-width: 3.6mm;
+  text-align: center;
+}
+
+.print-payment-table {
+  display: grid;
+  gap: 1.2mm;
+  width: 100%;
+}
+
+.print-payment-table > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6mm;
+  padding: 1.5mm 0 1.5mm 3mm;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
+  color: #3b4e47;
+  font-size: 7.8pt;
+  line-height: 1.25;
+}
+
+.print-payment-table > div span {
+  text-align: left;
+}
+
+.print-payment-table > div strong {
+  text-align: right;
+  color: #062803;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.print-payment-table__total {
+  margin-top: 1.2mm;
+  padding: 2mm 3mm !important;
+  border-radius: 2.5mm;
+  background: #edf7ef;
+  border: 1px solid rgba(10, 58, 38, 0.15) !important;
+  color: #062803;
+  font-weight: 900;
+}
+
+.print-payment-table__total strong {
+  font-size: 9pt;
+  color: #0a3a26 !important;
+}
+
+.print-hotel-row {
+  align-items: center;
+}
+
+.print-hotel-gallery img {
+  border-radius: 3mm;
+}
+
+@media (max-width: 900px) {
+  .quote-form-grid--travel {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .quote-form-grid--travel .quote-field,
+  .quote-form-grid--travel .quote-field input,
+  .quote-native-time-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-summary-panel:not(.is-expanded) .quote-actions::before {
+    content: attr(data-mobile-total);
+    min-width: 116px;
+  }
+}
