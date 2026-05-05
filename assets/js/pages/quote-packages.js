@@ -5959,6 +5959,333 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
   };
 })();
 
+
+/* =========================================================
+   AJUSTES FINALES SUMMARY / TRENES / EXTRAS / HOTELES / HORA
+   - No toca package-generator.js.
+   - Mantiene precio base como suma de tours reales del itinerario.
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  function toArray(value) {
+    return Array.isArray(value) ? value : [];
+  }
+
+  function uniqueByCode(items) {
+    const seen = new Set();
+    return toArray(items).filter((item) => {
+      const code = item?.code || item?.id || item?.label || JSON.stringify(item);
+      if (!code || seen.has(code)) return false;
+      seen.add(code);
+      return true;
+    });
+  }
+
+  MyCuscoTripQuotePackages.prototype.initTimePickers = function () {
+    const bindNativeTime = (input, assignValue) => {
+      if (!input) return;
+
+      const wrapper = input.closest(".flatpickr-wrapper");
+      if (wrapper && wrapper.parentNode) {
+        const original = wrapper.querySelector("input:not(.flatpickr-alt-input)") || input;
+        wrapper.parentNode.insertBefore(original, wrapper);
+        wrapper.remove();
+        input = original;
+      }
+
+      if (input._flatpickr && typeof input._flatpickr.destroy === "function") {
+        input._flatpickr.destroy();
+      }
+
+      input.type = "time";
+      input.removeAttribute("readonly");
+      input.setAttribute("step", "900");
+      input.classList.add("quote-native-time-input");
+
+      const handler = (event) => {
+        assignValue(event.target.value || "");
+        this.visibleItineraryOptionsCount = 4;
+        this.refreshItineraryByTimeRules();
+        this.updatePrintQuotation();
+      };
+
+      input.addEventListener("input", handler);
+      input.addEventListener("change", handler);
+    };
+
+    bindNativeTime(document.getElementById("arrivalTime"), (value) => { this.arrivalTime = value; });
+    bindNativeTime(document.getElementById("departureTime"), (value) => { this.departureTime = value; });
+  };
+
+  MyCuscoTripQuotePackages.prototype.getAvailableQuoteExtras = function () {
+    const extras = [];
+
+    toArray(this.selectedPackage?.extras).forEach((extra) => {
+      extras.push({ ...extra, sourceLabel: this.selectedPackage?.title || "Paquete" });
+    });
+
+    const codes = this.getQuoteRealTourCodes(this.selectedItineraryOption?.includedTourCodes || []);
+    codes.forEach((code) => {
+      const tour = this.getTourByQuoteCode(code);
+      toArray(tour?.extras).forEach((extra) => {
+        const normalizedCode = extra.code || `${code}-${extra.label || extra.title || "extra"}`;
+        extras.push({
+          ...extra,
+          code: normalizedCode,
+          label: extra.label || extra.title || "Extra",
+          sourceTourCode: code,
+          sourceLabel: tour?.title || this.getFriendlyCodeLabel(code)
+        });
+      });
+    });
+
+    return uniqueByCode(extras);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getExtraPriceInQuoteCurrency = function (extra = {}) {
+    const nationalityData = extra.costByNationality?.[this.nationality] || null;
+    const candidates = [
+      { value: extra.price, currency: extra.currency },
+      { value: extra.publishedPriceUSD, currency: "USD" },
+      { value: extra.costUSD, currency: "USD" },
+      { value: nationalityData?.publishedUSD, currency: "USD" },
+      { value: nationalityData?.publishedPENApprox, currency: "PEN" },
+      { value: nationalityData?.costPEN, currency: "PEN" },
+      { value: extra.amount, currency: extra.currency },
+      { value: extra.priceUSD, currency: "USD" },
+      { value: extra.pricePEN, currency: "PEN" }
+    ];
+    const found = candidates.find((item) => Number(item.value) > 0);
+    if (!found) return 0;
+    return this.convertCurrency(Number(found.value), found.currency || extra.currency || "USD", this.quoteCurrency);
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderExtras = function () {
+    const section = document.getElementById("extrasSection");
+    const container = document.getElementById("extrasContainer");
+    if (!section || !container) return;
+
+    const extras = this.getAvailableQuoteExtras();
+    if (!this.selectedPackage || !extras.length) {
+      section.hidden = true;
+      container.innerHTML = "";
+      return;
+    }
+
+    section.hidden = false;
+    container.innerHTML = extras.map((extra) => {
+      const checked = this.selectedExtras.has(extra.code);
+      const price = this.getExtraPriceInQuoteCurrency(extra);
+      const perPerson = extra.perPerson !== false;
+      const source = extra.sourceLabel ? `<small>${this.escapeHtml(extra.sourceLabel)}</small>` : "";
+      const requiredNote = extra.required ? `<em>Ticket o servicio operativo opcional en esta cotización.</em>` : "";
+
+      return `
+        <label class="quote-extra-item ${checked ? "is-selected" : ""}">
+          <input type="checkbox" value="${this.escapeHtml(extra.code)}" ${checked ? "checked" : ""} />
+          <div>
+            <strong>${this.escapeHtml(extra.label || "Extra")}</strong>
+            ${source}
+            <p>${this.formatCurrency(price, this.quoteCurrency)} ${perPerson ? "por persona" : "por reserva"}</p>
+            ${requiredNote}
+          </div>
+        </label>
+      `;
+    }).join("");
+
+    container.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.checked) this.selectedExtras.add(input.value);
+        else this.selectedExtras.delete(input.value);
+        this.renderExtras();
+        this.updatePricing();
+        this.updatePrintQuotation();
+      });
+    });
+  };
+
+  MyCuscoTripQuotePackages.prototype.getExtrasTotal = function () {
+    const extras = this.getAvailableQuoteExtras();
+    const passengers = this.getTotalPassengers();
+    return extras.reduce((total, extra) => {
+      if (!this.selectedExtras.has(extra.code)) return total;
+      const price = this.getExtraPriceInQuoteCurrency(extra);
+      return total + (extra.perPerson === false ? price : price * passengers);
+    }, 0);
+  };
+
+  MyCuscoTripQuotePackages.prototype.hasSelectedTrain = function (direction) {
+    if (direction === "outbound") return Boolean(this.selectedOutboundTrainCode);
+    if (direction === "return") return Boolean(this.selectedReturnTrainCode);
+    return Boolean(this.selectedOutboundTrainCode || this.selectedReturnTrainCode);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTrainSummaryText = function (trainTotal) {
+    const config = this.getTrainSelectionConfig();
+    if (!config.required) return "No aplica";
+    const hasOutbound = this.hasSelectedTrain("outbound");
+    const hasReturn = this.hasSelectedTrain("return");
+    if (!hasOutbound && !hasReturn) return "Por elegir";
+    if (hasOutbound && !hasReturn) return "Falta retorno";
+    if (!hasOutbound && hasReturn) return "Falta ida";
+    if (Number(trainTotal || 0) > 0) return this.formatCurrency(trainTotal, this.quoteCurrency);
+    return "Seleccionado · sin adicional";
+  };
+
+  MyCuscoTripQuotePackages.prototype.getRoomQuantityLabel = function (quantity, singular, plural) {
+    const safeQuantity = Math.max(1, Number(quantity || 1));
+    const prefix = String(safeQuantity).padStart(2, "0");
+    return `${prefix} ${safeQuantity === 1 ? singular : plural}`;
+  };
+
+  MyCuscoTripQuotePackages.prototype.cleanRoomLabelForQuote = function (room = {}) {
+    const raw = String(room.roomName || room.label || room.roomType || "habitación")
+      .replace(/habitaci[oó]n/ig, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+    return raw || "habitación";
+  };
+
+  MyCuscoTripQuotePackages.prototype.formatAccommodationCombinationLabel = function (rooms = []) {
+    const parts = toArray(rooms).map((item) => {
+      const room = item.room || item;
+      const quantity = Number(item.quantity || 1);
+      const label = this.cleanRoomLabelForQuote(room);
+      return this.getRoomQuantityLabel(quantity, `habitación ${label}`, `habitaciones ${label}`);
+    });
+    return parts.length ? parts.join(" + ") : "Sin alojamiento";
+  };
+
+  MyCuscoTripQuotePackages.prototype.generateAccommodationCombinations = function (rooms = [], passengers = 1, nights = 1) {
+    const safePassengers = Math.max(1, Number(passengers || 1));
+    const safeNights = Math.max(0, Number(nights || 0));
+    if (!Array.isArray(rooms) || !rooms.length) {
+      return [{ key: "no-room", label: "Sin alojamiento", description: "No se agregará costo de alojamiento.", total: 0, currency: this.quoteCurrency, rooms: [] }];
+    }
+
+    const normalizedRooms = rooms.map((room) => this.normalizeRoomForQuote(room));
+    const noRoom = normalizedRooms.find((room) => room.roomCode === "no-room" || room.roomType === "no-room" || room.roomType === "no-hotel");
+    if (noRoom) return [{ key: "no-room", label: "Sin alojamiento", description: "No se agregará costo de alojamiento.", total: 0, currency: this.quoteCurrency, rooms: [] }];
+
+    const validRooms = normalizedRooms.filter((room) => Number(room.capacity || 0) > 0);
+    const combinations = [];
+
+    const pushCombination = (items) => {
+      const key = items.map((item) => `${item.room.roomCode}-x${item.quantity}`).join("+");
+      if (combinations.some((combo) => combo.key === key)) return;
+      const total = items.reduce((sum, item) => sum + Number(item.room.pricePerNight || 0) * safeNights * Number(item.quantity || 1), 0);
+      combinations.push({
+        key,
+        label: this.formatAccommodationCombinationLabel(items),
+        description: `${safeNights} noche${safeNights !== 1 ? "s" : ""}`,
+        total,
+        currency: items[0]?.room?.currency || this.quoteCurrency,
+        rooms: items
+      });
+    };
+
+    validRooms
+      .filter((room) => Number(room.capacity || 0) === safePassengers)
+      .forEach((room) => pushCombination([{ room, quantity: 1 }]));
+
+    validRooms
+      .filter((room) => Number(room.capacity || 0) > safePassengers)
+      .sort((a, b) => Number(a.capacity || 0) - Number(b.capacity || 0))
+      .slice(0, 3)
+      .forEach((room) => pushCombination([{ room, quantity: 1 }]));
+
+    for (let i = 0; i < validRooms.length; i += 1) {
+      for (let j = i; j < validRooms.length; j += 1) {
+        const a = validRooms[i];
+        const b = validRooms[j];
+        const capacity = Number(a.capacity || 0) + Number(b.capacity || 0);
+        if (capacity < safePassengers) continue;
+        if (i === j) pushCombination([{ room: a, quantity: 2 }]);
+        else pushCombination([{ room: a, quantity: 1 }, { room: b, quantity: 1 }]);
+      }
+    }
+
+    if (!combinations.length && validRooms.length) {
+      const room = validRooms.sort((a, b) => Number(a.capacity || 0) - Number(b.capacity || 0))[0];
+      const quantity = Math.ceil(safePassengers / Math.max(1, Number(room.capacity || 1)));
+      pushCombination([{ room, quantity }]);
+    }
+
+    combinations.sort((a, b) => {
+      const exactA = a.rooms.reduce((sum, item) => sum + Number(item.room.capacity || 0) * Number(item.quantity || 1), 0) === safePassengers ? 0 : 1;
+      const exactB = b.rooms.reduce((sum, item) => sum + Number(item.room.capacity || 0) * Number(item.quantity || 1), 0) === safePassengers ? 0 : 1;
+      if (exactA !== exactB) return exactA - exactB;
+      return this.convertCurrency(a.total, a.currency, this.quoteCurrency) - this.convertCurrency(b.total, b.currency, this.quoteCurrency);
+    });
+
+    return combinations.slice(0, 8);
+  };
+
+  MyCuscoTripQuotePackages.prototype.updatePricing = function () {
+    const breakdown = this.getPricingBreakdown();
+
+    const baseRow = document.getElementById("basePackageTotal")?.closest(".quote-summary__line");
+    if (baseRow) baseRow.remove();
+
+    this.setText("adultSummaryLabel", `Adultos x${this.adults}`);
+    this.setText("adultSummaryTotal", this.formatCurrency(breakdown.adultTotal, this.quoteCurrency));
+
+    const childrenRow = document.getElementById("childrenSummaryRow");
+    if (childrenRow) childrenRow.hidden = this.children <= 0;
+    this.setText("childrenSummaryLabel", `Niños x${this.children}`);
+    this.setText("childrenSummaryTotal", this.formatCurrency(breakdown.childTotal, this.quoteCurrency));
+
+    const hotelRow = document.getElementById("hotelSummaryRow");
+    if (hotelRow) hotelRow.hidden = false;
+    this.setText("hotelSummaryTotal", breakdown.hotelTotal > 0 ? this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency) : "Por elegir");
+
+    const trainRow = document.getElementById("trainSummaryRow");
+    if (trainRow) trainRow.hidden = false;
+    this.setText("trainSummaryTotal", this.getTrainSummaryText(breakdown.trainTotal));
+
+    const extrasRow = document.getElementById("extrasSummaryRow");
+    if (extrasRow) extrasRow.hidden = false;
+    this.setText("extrasSummaryTotal", breakdown.extrasTotal > 0 ? this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency) : "Opcional");
+
+    const totalDiscount = breakdown.discountTotal + breakdown.fullPaymentDiscount;
+    const discountRow = document.getElementById("discountSummaryRow");
+    if (discountRow) discountRow.hidden = totalDiscount <= 0;
+    this.setText("discountSummaryTotal", `- ${this.formatCurrency(totalDiscount, this.quoteCurrency)}`);
+
+    this.setText("quoteGrandTotal", this.formatCurrency(breakdown.total, this.quoteCurrency));
+    this.setText("advanceSummaryLabel", "Pagarás ahora");
+    this.setText("advanceSummaryTotal", this.formatCurrency(breakdown.advancePayment, this.quoteCurrency));
+
+    const balanceRow = document.getElementById("balanceSummaryRow");
+    if (balanceRow) balanceRow.hidden = this.paymentMode !== "partial";
+    this.setText("balanceSummaryLabel", "Pagarás luego el saldo pendiente");
+    this.setText("balanceSummaryTotal", this.formatCurrency(breakdown.balance, this.quoteCurrency));
+
+    this.updatePaymentInfo(breakdown);
+    this.updateMobileSummaryTotal(breakdown);
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderPrintPaymentDetails = function (breakdown = this.getPricingBreakdown()) {
+    const target = document.getElementById("printPaymentDetails");
+    if (!target) return;
+    const totalDiscount = breakdown.discountTotal + breakdown.fullPaymentDiscount;
+    target.innerHTML = `
+      <div class="print-payment-table">
+        <div><span>Adultos x${this.adults}</span><strong>${this.formatCurrency(breakdown.adultTotal, this.quoteCurrency)}</strong></div>
+        ${this.children > 0 ? `<div><span>Niños x${this.children}</span><strong>${this.formatCurrency(breakdown.childTotal, this.quoteCurrency)}</strong></div>` : ""}
+        <div><span>Alojamiento</span><strong>${breakdown.hotelTotal > 0 ? this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency) : "Por elegir"}</strong></div>
+        <div><span>Trenes seleccionados</span><strong>${this.getTrainSummaryText(breakdown.trainTotal)}</strong></div>
+        <div><span>Extras</span><strong>${breakdown.extrasTotal > 0 ? this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency) : "Opcional"}</strong></div>
+        ${totalDiscount > 0 ? `<div><span>Descuento</span><strong>- ${this.formatCurrency(totalDiscount, this.quoteCurrency)}</strong></div>` : ""}
+        <div class="print-payment-table__total"><span>Total cotizado</span><strong>${this.formatCurrency(breakdown.total, this.quoteCurrency)}</strong></div>
+        <div><span>Pagarás ahora</span><strong>${this.formatCurrency(breakdown.advancePayment, this.quoteCurrency)}</strong></div>
+        ${this.paymentMode === "partial" ? `<div><span>Pagarás luego el saldo pendiente</span><strong>${this.formatCurrency(breakdown.balance, this.quoteCurrency)}</strong></div>` : ""}
+      </div>`;
+  };
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
