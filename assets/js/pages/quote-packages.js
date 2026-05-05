@@ -2025,11 +2025,11 @@ class MyCuscoTripQuotePackages {
     const company = String(train?.company || "").toLowerCase();
 
     if (company.includes("inca")) {
-      return this.resolveAssetPath("assets/img/trains/incarail-logo.png");
+      return this.resolveAssetPath("assets/img/trains/inca-rail.png");
     }
 
     if (company.includes("peru") || company.includes("perú")) {
-      return this.resolveAssetPath("assets/img/trains/perurail-logo.png");
+      return this.resolveAssetPath("assets/img/trains/perurail.png");
     }
 
     return "";
@@ -6633,6 +6633,271 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
     });
   };
 
+})();
+
+
+/* =========================================================
+   AJUSTES FINALES V6 - trenes, impresión, móvil y etiquetas
+   Alcance: solo cotizador quote-packages.
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  function toArrayV6(value) {
+    return Array.isArray(value) ? value : [];
+  }
+
+  MyCuscoTripQuotePackages.prototype.extractLegacyQuotePackages = function () {
+    const legacy = [];
+    const source = this.packagesCuscoData || {};
+    if (Array.isArray(source?.packages)) {
+      source.packages
+        .filter((item) => item && item.status !== "draft" && item.status !== "archived" && item.status !== "hidden")
+        .forEach((item) => legacy.push({ ...item, __quoteSource: "legacy", __sourceFamily: "cusco-package" }));
+    }
+    return legacy;
+  };
+
+  MyCuscoTripQuotePackages.prototype.extractDynamicPackageCards = function () {
+    const cards = [];
+    const source = this.packagesCuscoData || {};
+    if (Array.isArray(source?.packageCards)) {
+      source.packageCards
+        .filter((card) => card && card.status !== "draft" && card.status !== "archived" && card.status !== "hidden")
+        .forEach((card) => {
+          cards.push({
+            ...card,
+            productKind: "package",
+            productFamily: "cusco-package",
+            __quoteSource: "packageCard",
+            __sourceFamily: "cusco-package"
+          });
+        });
+    }
+    return cards;
+  };
+
+  MyCuscoTripQuotePackages.prototype.isLocalTrainForQuote = function (train) {
+    const text = `${train?.code || ""} ${train?.trainCode || ""} ${train?.id || ""} ${train?.serviceName || ""} ${train?.name || ""} ${train?.category || ""} ${train?.categoryCode || ""} ${train?.market || ""}`.toLowerCase();
+    return Boolean(train?.isLocalTrain || text.includes("local_train") || text.includes("local-train") || text.includes("tren local") || text.includes("peruvian_local"));
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTrainCompanyKeyForQuote = function (train) {
+    const raw = String(train?.company || train?.companyName || train?.operator || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (raw.includes("inca")) return "incarail";
+    if (raw.includes("peru") || raw.includes("rail")) return "perurail";
+    return raw.replace(/[^a-z0-9]+/g, "").trim();
+  };
+
+  MyCuscoTripQuotePackages.prototype.areTrainsCompatibleForQuote = function (outboundTrain, returnTrain) {
+    if (!outboundTrain || !returnTrain) return true;
+    if (this.isLocalTrainForQuote(outboundTrain) || this.isLocalTrainForQuote(returnTrain)) return true;
+    const outboundCompany = this.getTrainCompanyKeyForQuote(outboundTrain);
+    const returnCompany = this.getTrainCompanyKeyForQuote(returnTrain);
+    return Boolean(outboundCompany && returnCompany && outboundCompany === returnCompany);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTrainOptionsForModal = function (routeCode) {
+    const route = this.getTrainRouteForQuote(routeCode);
+    const allOptions = Array.isArray(route?.options) ? route.options : [];
+    let options = allOptions.filter((train) => this.isTrainAllowedForNationality(train));
+
+    if (this.activeTrainDirection === "return") {
+      const config = this.getTrainSelectionConfig();
+      const outboundTrain = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+      if (outboundTrain && !this.isLocalTrainForQuote(outboundTrain)) {
+        const outboundCompany = this.getTrainCompanyKeyForQuote(outboundTrain);
+        options = options.filter((train) => {
+          return this.isLocalTrainForQuote(train) || this.getTrainCompanyKeyForQuote(train) === outboundCompany;
+        });
+      }
+    }
+
+    return options;
+  };
+
+  MyCuscoTripQuotePackages.prototype.getReturnTrainRestrictionMessage = function () {
+    if (this.activeTrainDirection !== "return") return "";
+    const config = this.getTrainSelectionConfig();
+    const outboundTrain = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+    if (!outboundTrain || this.isLocalTrainForQuote(outboundTrain)) {
+      return "Como elegiste tren local o aún no elegiste ida, puedes combinar con tren local o turístico según disponibilidad.";
+    }
+    return `Para mantener una operación ordenada, el retorno turístico se muestra con la misma empresa elegida en ida (${this.getTrainCompanyLabel(outboundTrain)}). También puedes elegir tren local si eres turista nacional.`;
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderTrainModalOptions = function (routeCode) {
+    const list = document.getElementById("trainSelectionModalList");
+    if (!list) return;
+
+    const options = this.getTrainOptionsForModal(routeCode);
+    const restrictionMessage = this.getReturnTrainRestrictionMessage();
+
+    if (!options.length) {
+      list.innerHTML = `<div class="quote-empty-state">No hay trenes disponibles para esta ruta, nacionalidad y combinación elegida.</div>`;
+      return;
+    }
+
+    list.innerHTML = `
+      ${restrictionMessage ? `<div class="train-combination-note">${this.escapeHtml(restrictionMessage)}</div>` : ""}
+      ${options.map((train) => {
+        const trainCode = train.code || train.trainCode || train.id || "";
+        const isSelected = this.pendingTrainCode === trainCode;
+        const category = this.trainsData?.trainCategories?.[train.categoryCode] || {};
+        const logo = this.getTrainCompanyLogo(train);
+        const companyLabel = this.getTrainCompanyLabel(train);
+        const displayName = this.getTrainDisplayName(train);
+        const price = this.getTrainPriceInQuoteCurrency(train);
+        const isLocal = this.isLocalTrainForQuote(train);
+        const recommended = Boolean(train.isRecommended || train.recommendedDefault);
+        const warningText = isLocal ? this.getLocalTrainWarningText() : (train.warning || category.importantMessage || "");
+
+        return `
+          <article class="train-option-card ${isSelected ? "is-selected" : ""} ${isLocal ? "train-option-card--local" : ""}" data-train-code="${this.escapeHtml(trainCode)}" data-route-code="${this.escapeHtml(routeCode)}">
+            <div class="train-option-card__header">
+              <div class="train-option-card__company">
+                <span class="train-option-card__radio" aria-hidden="true"></span>
+                ${logo ? `<img class="train-option-card__logo" src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(companyLabel)}" loading="lazy" />` : ""}
+                <div>
+                  <h3>${this.escapeHtml(displayName)}</h3>
+                  <p>${this.escapeHtml(companyLabel)} · ${this.escapeHtml(train.displayCategory || category.displayCategory || train.categoryCode || "Tren")}</p>
+                  ${recommended ? `<span class="train-recommended-badge">Recomendado</span>` : ""}
+                </div>
+              </div>
+              <div class="train-option-card__top-actions">
+                <button type="button" class="train-details-link view-train-details-btn" data-route-code="${this.escapeHtml(routeCode)}" data-train-code="${this.escapeHtml(trainCode)}">Ver detalles</button>
+                <div class="train-option-card__price">${this.formatCurrency(price, this.quoteCurrency)}</div>
+              </div>
+            </div>
+            <div class="train-option-card__body">
+              <div class="train-option-card__schedule">
+                <div><span>Salida</span><strong>${this.escapeHtml(this.formatTrainTime(train.departureTime))}</strong><small>${this.escapeHtml(train.origin || train.departureStation || "Por confirmar")}</small></div>
+                <div><span>Llegada</span><strong>${this.escapeHtml(this.formatTrainTime(train.arrivalTime))}</strong><small>${this.escapeHtml(train.destination || train.arrivalStation || "Por confirmar")}</small></div>
+                <div><span>Duración</span><strong>${this.escapeHtml(train.duration || "Por confirmar")}</strong><small>${this.escapeHtml(train.transferInfo || train.routeType || train.route || "Tren")}</small></div>
+              </div>
+              <p class="train-option-card__description">${this.escapeHtml(category.shortDescription || train.description || "Opción de tren disponible para Machu Picchu.")}</p>
+              ${warningText ? `<p class="train-option-card__warning"><i class="fas fa-triangle-exclamation" aria-hidden="true"></i><span>${this.escapeHtml(warningText)}</span></p>` : ""}
+            </div>
+          </article>`;
+      }).join("")}
+    `;
+
+    list.querySelectorAll(".view-train-details-btn").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        this.openTrainDetailsModal(button.dataset.routeCode, button.dataset.trainCode);
+      });
+    });
+
+    list.querySelectorAll(".train-option-card").forEach((card) => {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".view-train-details-btn")) return;
+        this.pendingTrainCode = card.dataset.trainCode || "";
+        this.renderTrainModalOptions(routeCode);
+      });
+    });
+  };
+
+  MyCuscoTripQuotePackages.prototype.confirmTrainSelection = function () {
+    if (!this.activeTrainDirection || !this.pendingTrainCode) {
+      this.closeTrainSelectionModal();
+      return;
+    }
+
+    const config = this.getTrainSelectionConfig();
+
+    if (this.activeTrainDirection === "outbound") {
+      this.selectedOutboundTrainCode = this.pendingTrainCode;
+      const outboundTrain = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+      const returnTrain = this.getTrainByCode(config.returnRoute, this.selectedReturnTrainCode);
+      if (returnTrain && !this.areTrainsCompatibleForQuote(outboundTrain, returnTrain)) {
+        this.selectedReturnTrainCode = "";
+      }
+    }
+
+    if (this.activeTrainDirection === "return") {
+      const pendingReturn = this.getTrainByCode(config.returnRoute, this.pendingTrainCode);
+      const outboundTrain = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+      if (this.areTrainsCompatibleForQuote(outboundTrain, pendingReturn)) {
+        this.selectedReturnTrainCode = this.pendingTrainCode;
+      }
+    }
+
+    this.renderTrainSelectors();
+    this.updatePricing();
+    this.updatePrintQuotation();
+    this.closeTrainSelectionModal();
+  };
+
+  MyCuscoTripQuotePackages.prototype.getSelectedExtras = function () {
+    return toArrayV6(this.getAvailableQuoteExtras ? this.getAvailableQuoteExtras() : [])
+      .filter((extra) => this.selectedExtras?.has(extra.code));
+  };
+
+  const previousBuildActivityV6 = MyCuscoTripQuotePackages.prototype.buildActivity;
+  MyCuscoTripQuotePackages.prototype.buildActivity = function (code, options = {}) {
+    const activity = previousBuildActivityV6.call(this, code, options);
+    if (String(code) === "CUZ001" && Number(options.day || 0) > 1) {
+      activity.title = "Tour panorámico por la ciudad";
+      activity.description = "Recorrido panorámico por Cusco con enfoque cultural, vistas de la ciudad, ceremonia andina simbólica y paradas fotográficas. Es la misma experiencia operativa de bienvenida, presentada como tour panorámico cuando se programa después del primer día.";
+      activity.places = "Bus panorámico · Centro textil · Cristo Blanco · vistas de Cusco";
+    }
+    return activity;
+  };
+
+  MyCuscoTripQuotePackages.prototype.makeDay = function (day, title, codes, options = {}) {
+    const activities = (Array.isArray(codes) ? codes : []).map((code) => {
+      const startTime = options.startTimes?.[code] || "";
+      return this.buildActivity(code, { startTime, day });
+    });
+    const realCodes = Array.from(new Set(codes)).filter((code) => !["arrival_transfer", "departure_transfer", "free_day"].includes(code));
+    const titleText = Number(day || 0) > 1 ? String(title || "").replace(/Bienvenida\s+Ancestral\s+Cusco/gi, "Tour panorámico por Cusco") : title;
+    return {
+      day,
+      title: titleText,
+      description: activities.map((activity) => activity.title).join(" · "),
+      tourCodes: Array.from(new Set(codes)),
+      realTourCodes: realCodes,
+      activities,
+      startTime: activities.find((item) => item.startTime)?.startTime || "",
+      endTime: realCodes.length ? this.minutesToTimeLabel(Math.max(...realCodes.map((code) => this.getDefaultTourEndMinutes(code) || 0))) : ""
+    };
+  };
+
+  const previousCleanDayTitleV6 = MyCuscoTripQuotePackages.prototype.cleanDayTitle;
+  MyCuscoTripQuotePackages.prototype.cleanDayTitle = function (title, dayNumber) {
+    const clean = previousCleanDayTitleV6.call(this, title, dayNumber);
+    if (Number(dayNumber || 0) > 1) {
+      return clean.replace(/Bienvenida\s+Ancestral\s+Cusco/gi, "Tour panorámico por Cusco");
+    }
+    return clean;
+  };
+
+  MyCuscoTripQuotePackages.prototype.updateMobileSummaryTotal = function (breakdown = this.getPricingBreakdown()) {
+    const total = this.formatCurrency(breakdown.total, this.quoteCurrency);
+    const panel = document.querySelector(".quote-summary-panel");
+    const actions = document.querySelector(".quote-summary-panel .quote-actions");
+    if (panel) panel.dataset.mobileTotal = total;
+    if (actions) actions.dataset.mobileTotal = total;
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderPrintPaymentDetails = function (breakdown = this.getPricingBreakdown()) {
+    const target = document.getElementById("printPaymentDetails");
+    if (!target) return;
+    const totalDiscount = breakdown.discountTotal + breakdown.fullPaymentDiscount;
+    target.innerHTML = `
+      <div class="print-payment-table">
+        <div><span>Adultos x${this.adults}</span><strong>${this.formatCurrency(breakdown.adultTotal, this.quoteCurrency)}</strong></div>
+        ${this.children > 0 ? `<div><span>Niños x${this.children}</span><strong>${this.formatCurrency(breakdown.childTotal, this.quoteCurrency)}</strong></div>` : ""}
+        <div><span>Alojamiento</span><strong>${breakdown.hotelTotal > 0 ? this.formatCurrency(breakdown.hotelTotal, this.quoteCurrency) : "Por elegir"}</strong></div>
+        <div><span>Trenes seleccionados</span><strong>${this.getTrainSummaryText(breakdown.trainTotal)}</strong></div>
+        <div><span>Extras seleccionados</span><strong>${breakdown.extrasTotal > 0 ? this.formatCurrency(breakdown.extrasTotal, this.quoteCurrency) : "Opcional"}</strong></div>
+        ${totalDiscount > 0 ? `<div><span>Descuento</span><strong>- ${this.formatCurrency(totalDiscount, this.quoteCurrency)}</strong></div>` : ""}
+        <div class="print-payment-table__total"><span>Total cotizado</span><strong>${this.formatCurrency(breakdown.total, this.quoteCurrency)}</strong></div>
+        <div><span>Pagarás ahora</span><strong>${this.formatCurrency(breakdown.advancePayment, this.quoteCurrency)}</strong></div>
+        ${this.paymentMode === "partial" ? `<div><span>Pagarás luego el saldo pendiente</span><strong>${this.formatCurrency(breakdown.balance, this.quoteCurrency)}</strong></div>` : ""}
+      </div>`;
+  };
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
