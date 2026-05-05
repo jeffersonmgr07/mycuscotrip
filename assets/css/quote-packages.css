@@ -3048,3 +3048,221 @@ body.is-generating-pdf .quote-modal {
     min-height: 18mm !important;
   }
 }
+
+
+/* =========================================================
+   V8 retoques finales PDF / impresión
+   ========================================================= */
+.print-logo {
+  width: 46mm;
+}
+
+.print-company {
+  width: 50mm;
+  justify-items: center;
+  text-align: center;
+}
+
+.print-company p {
+  width: 50mm;
+  max-width: 50mm;
+  margin: 0.7mm auto 0;
+  line-height: 1.12;
+  text-align: center;
+}
+
+.print-company p:first-of-type {
+  margin-top: 1.4mm;
+  margin-bottom: 1.1mm;
+  color: #5f6b66 !important;
+  font-weight: 400 !important;
+  line-height: 1.16;
+}
+
+.print-company p:not(:first-of-type) {
+  margin-top: 0.35mm;
+  line-height: 1.08;
+}
+
+.print-quote-badge {
+  padding: 2.8mm 6.2mm !important;
+  font-size: 10.2pt !important;
+}
+
+.print-client-grid {
+  margin-bottom: 3mm !important;
+}
+
+.print-section {
+  margin-top: 3.6mm !important;
+  padding-top: 3.4mm !important;
+}
+
+.print-section h3 {
+  margin-bottom: 2.2mm !important;
+}
+
+.print-itinerary-list,
+.print-services-list,
+.print-payment-table,
+.print-hotel-images {
+  gap: 2mm !important;
+}
+
+.print-itinerary-day-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2mm;
+  align-items: center;
+  margin-bottom: 1.6mm;
+}
+
+.print-itinerary-day-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 1.1mm 2.6mm;
+  background: #0a3a26;
+  color: #fff;
+  font-size: 7.2pt;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.print-itinerary-day-date {
+  color: #a86a16;
+  font-size: 7.3pt;
+  font-weight: 800;
+}
+
+.print-itinerary-day-title {
+  color: #062803;
+  font-size: 8.2pt;
+  font-weight: 800;
+}
+
+.print-itinerary-activities {
+  display: grid;
+  gap: 1.8mm;
+}
+
+.print-itinerary-activity {
+  position: relative;
+  padding-left: 3.6mm;
+  min-width: 0;
+}
+
+.print-itinerary-activity::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.45mm;
+  width: 1.7mm;
+  height: 1.7mm;
+  border-radius: 50%;
+  background: #0a3a26;
+}
+
+.print-itinerary-activity__title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3mm;
+  align-items: baseline;
+  color: #062803;
+  font-size: 7.9pt;
+  font-weight: 800;
+  line-height: 1.22;
+}
+
+.print-itinerary-activity__time {
+  color: #a86a16;
+  font-weight: 900;
+}
+
+.print-itinerary-activity p {
+  margin: 0.55mm 0 0;
+  color: #56645f;
+  font-size: 7.15pt;
+  line-height: 1.26;
+}
+
+.print-itinerary-activity__places strong {
+  color: #17322a;
+}
+
+.print-itinerary-activity__note {
+  color: #6b4b19 !important;
+}
+
+.print-itinerary-item {
+  padding: 2.4mm !important;
+  border-radius: 2.6mm !important;
+}
+
+.print-itinerary-item--with-image {
+  grid-template-columns: 28mm minmax(0, 1fr);
+  gap: 2.4mm;
+}
+
+.print-itinerary-thumb {
+  width: 28mm;
+  min-height: 22mm;
+  max-height: 32mm;
+}
+
+.print-itinerary-thumb img {
+  min-height: 22mm;
+}
+
+body.is-generating-pdf .print-section {
+  margin-top: 3.2mm !important;
+  padding-top: 3mm !important;
+}
+
+body.is-generating-pdf .print-itinerary-item {
+  margin-bottom: 0 !important;
+}
+
+@media print {
+  .print-logo {
+    width: 46mm !important;
+  }
+
+  .print-company {
+    width: 50mm !important;
+  }
+
+  .print-company p {
+    width: 50mm !important;
+    max-width: 50mm !important;
+    margin-top: 0.35mm !important;
+    line-height: 1.08 !important;
+  }
+
+  .print-company p:first-of-type {
+    margin-top: 1.3mm !important;
+    margin-bottom: 1mm !important;
+    line-height: 1.16 !important;
+  }
+
+  .print-section {
+    margin-top: 3.4mm !important;
+    padding-top: 3.2mm !important;
+  }
+
+  .print-itinerary-item--with-image {
+    grid-template-columns: 27mm minmax(0, 1fr) !important;
+    gap: 2.2mm !important;
+  }
+
+  .print-itinerary-thumb {
+    width: 27mm !important;
+    min-height: 21mm !important;
+    max-height: 30mm !important;
+  }
+
+  .print-itinerary-thumb img {
+    min-height: 21mm !important;
+  }
+}
