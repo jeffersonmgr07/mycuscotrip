@@ -3359,3 +3359,129 @@ body.is-generating-pdf .print-header {
     margin: 0.35mm 0 !important;
   }
 }
+
+
+/* =========================================================
+   V10 PRINT BOOKING OFFER STRIP
+   ========================================================= */
+.print-booking-offer {
+  display: none;
+}
+
+@media print {
+  .print-booking-offer {
+    display: block !important;
+    margin: 4mm 0 0 !important;
+    padding: 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-booking-offer[hidden] {
+    display: none !important;
+  }
+
+  .print-booking-offer__content {
+    border-radius: 5mm;
+    padding: 5mm 7mm;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, #0a3a26 0%, #d99a00 100%);
+    box-shadow: 0 6px 16px rgba(10, 58, 38, 0.2);
+  }
+
+  .print-booking-offer__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 1.4mm;
+    padding: 1.2mm 3.4mm;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 8.2pt;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .print-booking-offer strong {
+    display: block;
+    margin: 0;
+    color: #fff;
+    font-size: 15.5pt;
+    line-height: 1.15;
+    font-weight: 900;
+  }
+
+  .print-booking-offer strong span {
+    color: #fff5cd;
+    white-space: nowrap;
+  }
+
+  .print-booking-offer p {
+    margin: 1.4mm 0 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 9.4pt;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+}
+
+body.is-generating-pdf .print-booking-offer {
+  display: block !important;
+  margin: 4mm 0 0 !important;
+  padding: 0 !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+body.is-generating-pdf .print-booking-offer[hidden] {
+  display: none !important;
+}
+
+body.is-generating-pdf .print-booking-offer__content {
+  border-radius: 5mm;
+  padding: 5mm 7mm;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #0a3a26 0%, #d99a00 100%);
+  box-shadow: 0 6px 16px rgba(10, 58, 38, 0.2);
+}
+
+body.is-generating-pdf .print-booking-offer__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 1.4mm;
+  padding: 1.2mm 3.4mm;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 8.2pt;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+body.is-generating-pdf .print-booking-offer strong {
+  display: block;
+  margin: 0;
+  color: #fff;
+  font-size: 15.5pt;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+body.is-generating-pdf .print-booking-offer strong span {
+  color: #fff5cd;
+  white-space: nowrap;
+}
+
+body.is-generating-pdf .print-booking-offer p {
+  margin: 1.4mm 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 9.4pt;
+  line-height: 1.25;
+  font-weight: 600;
+}
