@@ -7297,6 +7297,72 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
 })();
 
 
+/* =========================================================
+   V10 PRINT BOOKING OFFER
+   - franja final solo para impresión/PDF
+   - precio mejorado: total cotizado - 10%, redondeado hacia arriba a terminación 9.90
+   - vigencia automática hasta el día siguiente en formato largo
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  MyCuscoTripQuotePackages.prototype.getNextDayLongDateLabel = function () {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+
+    return date.toLocaleDateString("es-PE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  };
+
+  MyCuscoTripQuotePackages.prototype.roundUpToCommercial990 = function (amount) {
+    const value = Number(amount || 0);
+    if (!Number.isFinite(value) || value <= 0) return 0;
+
+    const block = Math.floor(value / 10) * 10;
+    const candidate = block + 9.9;
+    const rounded = value <= candidate ? candidate : block + 19.9;
+
+    return Number(rounded.toFixed(2));
+  };
+
+  MyCuscoTripQuotePackages.prototype.getPrintBookingOfferAmount = function (breakdown = this.getPricingBreakdown()) {
+    const total = Number(breakdown?.total || 0);
+    if (!Number.isFinite(total) || total <= 0) return 0;
+
+    const improved = total * 0.9;
+    return this.roundUpToCommercial990(improved);
+  };
+
+  MyCuscoTripQuotePackages.prototype.updatePrintBookingOffer = function (breakdown = this.getPricingBreakdown()) {
+    const box = document.getElementById("printBookingOffer");
+    if (!box) return;
+
+    const amount = this.getPrintBookingOfferAmount(breakdown);
+    box.hidden = amount <= 0;
+
+    this.setText("printBookingOfferAmount", this.formatCurrency(amount, this.quoteCurrency));
+    this.setText("printBookingOfferUntil", this.getNextDayLongDateLabel());
+  };
+
+  const previousUpdatePrintQuotationV10 = MyCuscoTripQuotePackages.prototype.updatePrintQuotation;
+  MyCuscoTripQuotePackages.prototype.updatePrintQuotation = function (...args) {
+    const result = previousUpdatePrintQuotationV10.apply(this, args);
+    this.updatePrintBookingOffer();
+    return result;
+  };
+
+  const previousUpdatePricingV10 = MyCuscoTripQuotePackages.prototype.updatePricing;
+  MyCuscoTripQuotePackages.prototype.updatePricing = function (...args) {
+    const result = previousUpdatePricingV10.apply(this, args);
+    this.updatePrintBookingOffer(this.getPricingBreakdown());
+    return result;
+  };
+})();
+
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
