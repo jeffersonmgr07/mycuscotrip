@@ -2637,3 +2637,28 @@ body.is-generating-pdf .quote-modal {
     gap: 6px;
   }
 }
+
+
+/* Ajuste final: campos de hora nativos, sin popup visual de Flatpickr */
+.quote-native-time-input {
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  cursor: text;
+}
+
+.quote-extra-item small {
+  display: block;
+  margin-top: 2px;
+  color: #6b7772;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.quote-extra-item em {
+  display: block;
+  margin-top: 4px;
+  color: #8a6518;
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
