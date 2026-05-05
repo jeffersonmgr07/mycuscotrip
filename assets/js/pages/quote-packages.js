@@ -7080,6 +7080,195 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
   };
 })();
 
+
+/* =========================================================
+   V8 PRINT FINAL TOUCHES
+   - orden/etiquetas de transfer y actividad impresa igual a web
+   - imagen fallback por día para Machu Picchu y traslados
+   - contactos compactos se controlan desde CSS
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  const TRANSFER_IN_CODES_V8 = new Set(["arrival_transfer", "TRANSFER_IN"]);
+  const TRANSFER_OUT_CODES_V8 = new Set(["departure_transfer", "TRANSFER_OUT"]);
+  const NON_TOUR_CODES_V8 = new Set(["arrival_transfer", "departure_transfer", "free_day", "TRANSFER_IN", "TRANSFER_OUT", "FREE_DAY"]);
+
+  function arrayV8(value) {
+    return Array.isArray(value) ? value : [];
+  }
+
+  function normalizeCodeV8(code) {
+    return String(code || "").trim();
+  }
+
+  MyCuscoTripQuotePackages.prototype.getPrintFallbackImageForCode = function (code) {
+    const clean = normalizeCodeV8(code);
+
+    if (TRANSFER_IN_CODES_V8.has(clean) || TRANSFER_OUT_CODES_V8.has(clean)) {
+      return this.resolveAssetPath("assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg");
+    }
+
+    if (/^MAPI/i.test(clean)) {
+      return this.resolveAssetPath("assets/img/quote/fallbacks/machu-picchu.jpg");
+    }
+
+    const fallbacks = {
+      CUZ001: "assets/img/quote/fallbacks/tour-panoramico-cusco.jpg",
+      CUZ002: "assets/img/quote/fallbacks/city-tour-cusco.jpg",
+      CUZ003FD: "assets/img/quote/fallbacks/valle-sagrado.jpg",
+      CUZ003CON: "assets/img/quote/fallbacks/valle-sagrado.jpg",
+      CUZ003VIP: "assets/img/quote/fallbacks/valle-sagrado-vip.jpg",
+      CUZ003VIPCON: "assets/img/quote/fallbacks/valle-sagrado-vip.jpg",
+      CUZ004: "assets/img/quote/fallbacks/maras-moray.jpg",
+      CUZ005: "assets/img/quote/fallbacks/valle-sur.jpg",
+      CUZ006: "assets/img/quote/fallbacks/laguna-humantay.jpg",
+      CUZ007: "assets/img/quote/fallbacks/vinicunca.jpg",
+      CUZ008: "assets/img/quote/fallbacks/palcoyo.jpg",
+      CUZ009: "assets/img/quote/fallbacks/siete-lagunas.jpg",
+      FREE_DAY: "assets/img/quote/fallbacks/cusco-tiempo-libre.jpg",
+      free_day: "assets/img/quote/fallbacks/cusco-tiempo-libre.jpg"
+    };
+
+    return fallbacks[clean] ? this.resolveAssetPath(fallbacks[clean]) : this.resolveAssetPath("assets/img/quote/fallbacks/cusco.jpg");
+  };
+
+  MyCuscoTripQuotePackages.prototype.getPrintTourImage = function (codes = []) {
+    const orderedCodes = arrayV8(codes).map(normalizeCodeV8).filter(Boolean);
+    const realCodes = orderedCodes.filter((code) => !NON_TOUR_CODES_V8.has(code));
+    const candidatesByCode = realCodes.length ? realCodes : orderedCodes;
+
+    for (const code of candidatesByCode) {
+      const tour = this.getTourByQuoteCode ? this.getTourByQuoteCode(code) : null;
+      const candidates = [
+        tour?.images?.cover,
+        ...(Array.isArray(tour?.images?.gallery) ? tour.images.gallery : []),
+        tour?.image,
+        tour?.cover,
+        tour?.imageUrl,
+        tour?.thumbnail
+      ].filter(Boolean);
+
+      if (candidates.length) {
+        return {
+          src: this.resolveAssetPath(candidates[0]),
+          fallback: this.getPrintFallbackImageForCode(code)
+        };
+      }
+    }
+
+    const fallbackCode = candidatesByCode[0] || "cusco";
+    return {
+      src: this.getPrintFallbackImageForCode(fallbackCode),
+      fallback: this.getPrintFallbackImageForCode(fallbackCode)
+    };
+  };
+
+  const previousBuildActivityV8 = MyCuscoTripQuotePackages.prototype.buildActivity;
+  MyCuscoTripQuotePackages.prototype.buildActivity = function (code, options = {}) {
+    const clean = normalizeCodeV8(code);
+
+    if (TRANSFER_IN_CODES_V8.has(clean)) {
+      return {
+        code,
+        title: "Recojo aeropuerto · Recepción en Cusco",
+        startTime: this.arrivalTime || "",
+        description: "Recepción en aeropuerto o terminal terrestre y traslado inicial al hotel o punto coordinado en Cusco.",
+        places: "Aeropuerto/terminal · hotel en Cusco",
+        note: "Se reserva una ventana aproximada de 1 hora y 30 minutos para traslado, check-in o coordinación inicial."
+      };
+    }
+
+    if (TRANSFER_OUT_CODES_V8.has(clean)) {
+      return {
+        code,
+        title: "Traslado al aeropuerto · Traslado de salida",
+        startTime: "",
+        description: "Recojo desde el hotel o punto coordinado y traslado al aeropuerto o terminal terrestre según el horario real de salida.",
+        places: "Hotel en Cusco · aeropuerto/terminal",
+        note: "Se reserva una ventana de 2 horas antes de la salida para el traslado final."
+      };
+    }
+
+    const activity = previousBuildActivityV8.call(this, code, options);
+    if (activity?.title) {
+      activity.title = String(activity.title)
+        .replace(/Transfer\s+IN\s*·\s*recepci[oó]n\s+en\s+Cusco/gi, "Recojo aeropuerto · Recepción en Cusco")
+        .replace(/Transfer\s+OUT\s*·\s*traslado\s+de\s+salida/gi, "Traslado al aeropuerto · Traslado de salida");
+    }
+    return activity;
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderPrintItinerary = function () {
+    const itineraryTarget = document.getElementById("printItinerary");
+    if (!itineraryTarget) return;
+
+    const itinerary = Array.isArray(this.selectedItineraryOption?.itinerary)
+      ? this.selectedItineraryOption.itinerary
+      : [];
+
+    if (!itinerary.length) {
+      itineraryTarget.innerHTML = `<p>Itinerario por confirmar.</p>`;
+      return;
+    }
+
+    itineraryTarget.innerHTML = itinerary.map((item) => {
+      const dateLabel = this.getItineraryDateLabel(item.day);
+      const dayTitle = this.cleanDayTitle(item.title || this.getDayTitleForCodes?.(item.tourCodes, item.day) || "", item.day);
+      const codes = item.tourCodes || item.realTourCodes || [];
+      const imageData = this.getPrintTourImage(codes);
+      const image = imageData?.src || "";
+      const fallback = imageData?.fallback || "";
+      const activities = Array.isArray(item.activities) && item.activities.length
+        ? item.activities
+        : arrayV8(codes).map((code) => this.buildActivity(code, { day: item.day }));
+
+      return `
+        <div class="print-itinerary-item ${image ? "print-itinerary-item--with-image" : ""}">
+          ${image ? `
+            <div class="print-itinerary-thumb">
+              <img
+                src="${this.escapeHtml(image)}"
+                ${fallback ? `data-fallback-src="${this.escapeHtml(fallback)}"` : ""}
+                alt="${this.escapeHtml(dayTitle || "Itinerario")}" 
+                onerror="if(this.dataset.fallbackSrc && this.src.indexOf(this.dataset.fallbackSrc) === -1){this.src=this.dataset.fallbackSrc;}else{this.closest('.print-itinerary-thumb')?.remove();}"
+              />
+            </div>
+          ` : ""}
+          <div class="print-itinerary-content">
+            <div class="print-itinerary-day-header">
+              <span class="print-itinerary-day-badge">Día ${this.escapeHtml(item.day)}</span>
+              ${dateLabel ? `<span class="print-itinerary-day-date">${this.escapeHtml(dateLabel)}</span>` : ""}
+              <span class="print-itinerary-day-title">${this.escapeHtml(dayTitle)}</span>
+            </div>
+            <div class="print-itinerary-activities">
+              ${activities.map((activity) => `
+                <div class="print-itinerary-activity">
+                  <div class="print-itinerary-activity__title">
+                    ${activity.startTime ? `<span class="print-itinerary-activity__time">${this.escapeHtml(activity.startTime)}</span>` : ""}
+                    <span>${this.escapeHtml(activity.title || "Actividad")}</span>
+                  </div>
+                  ${activity.description ? `<p class="print-itinerary-activity__description">${this.escapeHtml(activity.description)}</p>` : ""}
+                  ${activity.places ? `<p class="print-itinerary-activity__places"><strong>Lugares principales:</strong> ${this.escapeHtml(activity.places)}</p>` : ""}
+                  ${activity.note ? `<p class="print-itinerary-activity__note">${this.escapeHtml(activity.note)}</p>` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  const previousUpdatePrintQuotationV8 = MyCuscoTripQuotePackages.prototype.updatePrintQuotation;
+  MyCuscoTripQuotePackages.prototype.updatePrintQuotation = function (...args) {
+    const result = previousUpdatePrintQuotationV8.apply(this, args);
+    this.renderPrintItinerary();
+    return result;
+  };
+})();
+
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
