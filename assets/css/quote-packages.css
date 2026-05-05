@@ -2662,3 +2662,133 @@ body.is-generating-pdf .quote-modal {
   font-style: normal;
   line-height: 1.35;
 }
+
+/* =========================================================
+   AJUSTES VISUALES V5 - COTIZADOR
+   ========================================================= */
+
+.quote-form-grid--travel .quote-field small[hidden],
+#travelRangeHelp[hidden] {
+  display: none !important;
+}
+
+.train-option-card {
+  cursor: pointer;
+}
+
+.train-option-card.is-selected {
+  border-color: #042015;
+  background: #e9f4ec;
+  box-shadow: 0 18px 36px rgba(4, 32, 21, 0.2);
+}
+
+.train-option-card.is-selected .train-option-card__company h3 {
+  color: #042015;
+}
+
+.train-option-card__radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(6, 40, 3, 0.35);
+  border-radius: 50%;
+  background: #fff;
+  flex: 0 0 auto;
+  margin-top: 4px;
+  position: relative;
+}
+
+.train-option-card.is-selected .train-option-card__radio {
+  border-color: #042015;
+  background: #042015;
+}
+
+.train-option-card.is-selected .train-option-card__radio::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.train-option-card__top-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.train-details-link {
+  border: 0;
+  background: #edf3ef;
+  color: #0a3a26;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.train-details-link:hover {
+  background: #0a3a26;
+  color: #fff;
+}
+
+.train-option-card__actions {
+  display: none !important;
+}
+
+.train-option-card--local {
+  border-color: rgba(187, 82, 18, 0.35);
+  background: #fff6f0;
+}
+
+.train-option-card--local.is-selected {
+  border-color: #8f350d;
+  background: #fff0e6;
+}
+
+.train-option-card__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff1e7;
+  border-color: #f0b083;
+  color: #7d310d;
+}
+
+.train-option-card__warning i {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #b84a12;
+}
+
+@media (max-width: 640px) {
+  .train-option-card__header {
+    gap: 12px;
+  }
+
+  .train-option-card__company {
+    align-items: flex-start;
+  }
+
+  .train-option-card__logo {
+    width: 64px;
+    max-width: 64px;
+  }
+
+  .train-option-card__top-actions {
+    align-items: flex-end;
+  }
+
+  .train-details-link,
+  .train-option-card__price {
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+}
