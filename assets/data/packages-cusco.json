@@ -255,7 +255,7 @@
     "sortItineraryAfterGeneration": true,
     "respectArrivalDepartureProfiles": true,
     "respectTourOperationalSchedule": true,
-    "firstDayBufferHoursAfterArrival": 2,
+    "firstDayBufferHoursAfterArrival": 1.5,
     "lastDayBufferHoursBeforeDeparture": 2,
     "minimumRestHoursBeforeTrekkings": 8,
     "maximumOneMachuPicchuExperiencePerPackage": true,
@@ -850,11 +850,12 @@
         "MAPI001",
         "MAPI002",
         "MAPI003",
-        "MAPI004"
+        "MAPI004",
+        "CUZ003FD",
+        "CUZ004",
+        "CUZ005"
       ],
-      "requiredTours": [
-        "MAPI001"
-      ],
+      "requiredTours": [],
       "optionalTourGroups": [
         "welcome",
         "cityTour"
