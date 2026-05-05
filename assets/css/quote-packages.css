@@ -2908,3 +2908,143 @@ body.is-generating-pdf .quote-modal {
     min-width: 116px;
   }
 }
+
+
+/* =========================================================
+   V7 ajustes finales de impresión
+   ========================================================= */
+.print-company {
+  width: 48mm;
+  justify-items: center;
+  text-align: center;
+}
+
+.print-logo {
+  width: 44mm;
+}
+
+.print-company p {
+  width: 48mm;
+  max-width: 48mm;
+  text-align: center;
+  justify-self: center;
+}
+
+.print-company p:first-of-type {
+  color: #5a6661 !important;
+  font-weight: 400 !important;
+  font-size: 7.5pt;
+  line-height: 1.25;
+}
+
+.print-company p:not(:first-of-type) {
+  color: #4a5752;
+  font-size: 7.2pt;
+}
+
+.print-quote-badge {
+  padding: 2.6mm 5.8mm !important;
+  font-size: 9.8pt !important;
+  letter-spacing: 0.065em;
+}
+
+.print-service-row {
+  display: grid !important;
+  grid-template-columns: minmax(30mm, 42mm) minmax(0, 1fr);
+  align-items: start;
+  gap: 4mm;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.print-service-row span,
+.print-service-row strong {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.print-service-row strong:last-child {
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-align: right;
+  line-height: 1.25;
+}
+
+.print-service-row--extras strong:last-child {
+  text-align: left;
+  justify-self: stretch;
+  color: #17322a;
+}
+
+.print-itinerary-item--with-image {
+  display: grid;
+  grid-template-columns: 25mm minmax(0, 1fr);
+  gap: 2.5mm;
+  align-items: stretch;
+}
+
+.print-itinerary-thumb {
+  width: 25mm;
+  min-height: 20mm;
+  border-radius: 2.2mm;
+  overflow: hidden;
+  background: #edf3ef;
+}
+
+.print-itinerary-thumb img {
+  width: 100%;
+  height: 100%;
+  min-height: 20mm;
+  object-fit: cover;
+  display: block;
+}
+
+.print-itinerary-content {
+  min-width: 0;
+}
+
+@media print {
+  .print-company {
+    width: 48mm !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  .print-logo {
+    width: 44mm !important;
+  }
+
+  .print-company p {
+    width: 48mm !important;
+    max-width: 48mm !important;
+  }
+
+  .print-service-row {
+    grid-template-columns: minmax(30mm, 42mm) minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .print-service-row strong:last-child {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .print-itinerary-item--with-image {
+    display: grid !important;
+    grid-template-columns: 24mm minmax(0, 1fr) !important;
+    gap: 2.2mm !important;
+  }
+
+  .print-itinerary-thumb {
+    width: 24mm !important;
+    min-height: 18mm !important;
+  }
+
+  .print-itinerary-thumb img {
+    min-height: 18mm !important;
+  }
+}
