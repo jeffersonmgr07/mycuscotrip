@@ -6284,6 +6284,127 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
         ${this.paymentMode === "partial" ? `<div><span>Pagarás luego el saldo pendiente</span><strong>${this.formatCurrency(breakdown.balance, this.quoteCurrency)}</strong></div>` : ""}
       </div>`;
   };
+
+  /* =========================================================
+     PATCH FINAL 2026-05-05 - Precio Machu Picchu para cotizador
+     Alcance: solo quote-packages.js.
+     - Machu Picchu en el precio base del cotizador NO incluye tren base.
+     - Para turistas nacionales, utilidad objetivo Machu Picchu = USD 25.
+     - Para otras nacionalidades, se mantiene la utilidad objetivo del JSON.
+     - Los trenes seleccionados en el cotizador se suman como tarifa completa.
+     - No modifica tours-machu-picchu.json ni otros canales de venta.
+     ========================================================= */
+
+  MyCuscoTripQuotePackages.prototype.isMachuPicchuQuoteCode = function (code) {
+    return /^MAPI/i.test(String(code || ""));
+  };
+
+  MyCuscoTripQuotePackages.prototype.roundUsdToCommercialEnding90 = function (amount) {
+    const value = Number(amount || 0);
+    if (!Number.isFinite(value) || value <= 0) return 0;
+    const integer = Math.floor(value);
+    const ending = integer + 0.9;
+    if (value <= ending + 0.000001) return Number(ending.toFixed(2));
+    return Number((integer + 1.9).toFixed(2));
+  };
+
+  MyCuscoTripQuotePackages.prototype.getMachuPicchuEntranceUsdForQuote = function (tour, passengerType = "adult") {
+    const ticket = tour?.ticketPricingByNationality?.machuPicchuEntrance || {};
+    const nationalityTicket = ticket[this.nationality] || ticket.national || ticket.foreign || {};
+    const penAmount = Number(
+      passengerType === "child"
+        ? (nationalityTicket.childPEN ?? nationalityTicket.adultPEN ?? 0)
+        : (nationalityTicket.adultPEN ?? 0)
+    );
+    if (!Number.isFinite(penAmount) || penAmount <= 0) return 0;
+    const exchangeRate = Number(tour?.financialRules?.exchangeRateUsed || this.exchangeRate || 3.75);
+    return exchangeRate > 0 ? penAmount / exchangeRate : penAmount / 3.75;
+  };
+
+  MyCuscoTripQuotePackages.prototype.getMachuPicchuBusUsdForQuote = function (tour) {
+    const bus = tour?.ticketPricingByNationality?.consetturBusRoundTripUSD || {};
+    const amount = Number(bus[this.nationality] ?? bus.national ?? bus.foreign ?? 0);
+    return Number.isFinite(amount) && amount > 0 ? amount : 0;
+  };
+
+  MyCuscoTripQuotePackages.prototype.getMachuPicchuTargetProfitUsdForQuote = function (tour) {
+    if (this.nationality === "national") return 25;
+    const target = Number(tour?.internalPricing?.targetNetProfitUSD || 50);
+    return Number.isFinite(target) && target > 0 ? target : 50;
+  };
+
+  MyCuscoTripQuotePackages.prototype.getMachuPicchuQuoteBaseUsdWithoutTrain = function (tour, passengerType = "adult") {
+    if (!tour || !this.isMachuPicchuQuoteCode(tour.internalCode || tour.code || tour.id)) return null;
+
+    const internal = tour.internalPricing || {};
+    const guideCost = Number(internal.guideCostUSD || 0);
+    const busCost = this.getMachuPicchuBusUsdForQuote(tour);
+    const entranceCost = this.getMachuPicchuEntranceUsdForQuote(tour, passengerType);
+    const targetProfit = this.getMachuPicchuTargetProfitUsdForQuote(tour);
+    const netFactor = Number(tour?.financialRules?.netFactor || 0.9283);
+
+    const netTarget = guideCost + busCost + entranceCost + targetProfit;
+    if (!Number.isFinite(netTarget) || netTarget <= 0) return null;
+
+    const gross = netFactor > 0 ? netTarget / netFactor : netTarget;
+    return this.roundUsdToCommercialEnding90(gross);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTourUnitPriceInCurrency = function (code, passengerType = "adult", currency = this.quoteCurrency) {
+    const tour = this.getTourByQuoteCode(code);
+    if (!tour) return 0;
+
+    const machuQuoteUsd = this.getMachuPicchuQuoteBaseUsdWithoutTrain(tour, passengerType);
+    if (machuQuoteUsd !== null) {
+      return this.convertCurrency(machuQuoteUsd, "USD", currency);
+    }
+
+    const byNationality = tour.basePricingByNationality?.[this.nationality] || null;
+    const pricing = byNationality || tour.basePricing || tour.pricing || {};
+    const raw = Number(passengerType === "child" ? (pricing.child ?? pricing.publishedChildUSD ?? pricing.adult ?? pricing.publishedAdultUSD) : (pricing.adult ?? pricing.publishedAdultUSD ?? pricing.price));
+    const sourceCurrency = pricing.currency || tour.currency || tour.pricing?.displayCurrency || "USD";
+    if (!Number.isFinite(raw) || raw <= 0) return 0;
+    return this.convertCurrency(raw, sourceCurrency, currency);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTrainTotal = function () {
+    if (!this.selectedPackage || !this.selectedItineraryOption) return 0;
+    const config = this.getTrainSelectionConfig();
+    if (!config.required) return 0;
+
+    const outbound = this.getTrainByCode(config.outboundRoute, this.selectedOutboundTrainCode);
+    const returning = this.getTrainByCode(config.returnRoute, this.selectedReturnTrainCode);
+
+    const calc = (selected, passengerType, count) => {
+      if (!selected || !count) return 0;
+      if (selected.isLocalTrain || selected.categoryCode === "local_train") return 0;
+      return this.getTrainPriceInQuoteCurrency(selected, passengerType) * Number(count || 0);
+    };
+
+    return (
+      calc(outbound, "adult", this.adults) +
+      calc(outbound, "child", this.children) +
+      calc(returning, "adult", this.adults) +
+      calc(returning, "child", this.children)
+    );
+  };
+
+  MyCuscoTripQuotePackages.prototype.calculateTrainAdditional = function () {
+    return this.getTrainTotal();
+  };
+
+  MyCuscoTripQuotePackages.prototype.getTrainSummaryText = function (trainTotal) {
+    const config = this.getTrainSelectionConfig();
+    if (!config.required) return "No aplica";
+    const hasOutbound = this.hasSelectedTrain("outbound");
+    const hasReturn = this.hasSelectedTrain("return");
+    if (!hasOutbound && !hasReturn) return "Por elegir";
+    if (hasOutbound && !hasReturn) return "Falta retorno";
+    if (!hasOutbound && hasReturn) return "Falta ida";
+    if (Number(trainTotal || 0) > 0) return this.formatCurrency(trainTotal, this.quoteCurrency);
+    return "Tren local seleccionado · sin adicional";
+  };
+
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
