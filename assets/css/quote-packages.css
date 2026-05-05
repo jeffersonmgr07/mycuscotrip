@@ -2440,3 +2440,200 @@ body.is-generating-pdf .quote-modal {
     width: 210mm;
   }
 }
+
+
+/* =========================================================
+   REFINAMIENTO FINAL COTIZADOR DE PAQUETES - 2026-05
+   Itinerarios comerciales descriptivos, badges de día,
+   actividades visuales y estados Por elegir para hoteles/trenes.
+   ========================================================= */
+
+.quote-itinerary-options::before {
+  content: "Elige una ruta sugerida para tu viaje";
+  display: block;
+  font-weight: 900;
+  color: #062803;
+  margin: 2px 0 4px;
+}
+
+.quote-itinerary-option {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fcf9 100%);
+}
+
+.quote-itinerary-option.is-selected::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: #0a3a26;
+}
+
+.quote-itinerary-option__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 4px;
+}
+
+.quote-itinerary-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #edf3ef;
+  color: #0a3a26;
+  font-size: 0.77rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 7px 10px;
+}
+
+.quote-itinerary-route-label {
+  color: #a86a16;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.quote-itinerary-list {
+  gap: 14px;
+}
+
+.quote-itinerary-item {
+  border: 1px solid rgba(6, 40, 3, 0.1);
+  border-left: none;
+  border-radius: 20px;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 8px 22px rgba(10, 58, 38, 0.055);
+}
+
+.quote-itinerary-day-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.quote-itinerary-day-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #062803;
+  color: #fff;
+  font-weight: 900;
+  font-size: 0.82rem;
+  padding: 8px 13px;
+  line-height: 1;
+}
+
+.quote-itinerary-day-date {
+  color: #a86a16;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.quote-itinerary-day-title {
+  color: #062803;
+  font-weight: 900;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.quote-itinerary-activities {
+  display: grid;
+  gap: 12px;
+}
+
+.quote-itinerary-activity {
+  position: relative;
+  padding-left: 22px;
+}
+
+.quote-itinerary-activity::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.52rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #0a3a26;
+  box-shadow: 0 0 0 4px rgba(10, 58, 38, 0.11);
+}
+
+.quote-itinerary-activity__title {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-bottom: 4px;
+  color: #062803;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.quote-itinerary-activity__time {
+  color: #a86a16;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.quote-itinerary-activity__description,
+.quote-itinerary-activity__places,
+.quote-itinerary-activity__note {
+  margin: 0;
+  color: #56645f;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.quote-itinerary-activity__places {
+  margin-top: 4px;
+  color: #41524c;
+}
+
+.quote-itinerary-activity__note {
+  margin-top: 5px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff7e7;
+  color: #82560c;
+  font-size: 0.86rem;
+}
+
+.quote-itinerary-time {
+  white-space: normal;
+}
+
+.quote-summary__line strong:empty::after,
+#basePackageTotal:empty::after {
+  content: "S/ 0.00";
+}
+
+@media (max-width: 768px) {
+  .quote-itinerary-item {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .quote-itinerary-day-header {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .quote-itinerary-day-title {
+    flex-basis: 100%;
+  }
+
+  .quote-itinerary-activity {
+    padding-left: 20px;
+  }
+
+  .quote-itinerary-option__summary {
+    gap: 6px;
+  }
+}
