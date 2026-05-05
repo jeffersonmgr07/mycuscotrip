@@ -6900,6 +6900,186 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
   };
 })();
 
+
+/* =========================================================
+   V7 FINAL PRINT POLISH
+   - evita desborde de extras largos en servicios seleccionados
+   - agrega una imagen referencial por día en itinerario impreso
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  const TRANSFER_CODES = new Set(["arrival_transfer", "departure_transfer", "free_day", "TRANSFER_IN", "TRANSFER_OUT", "FREE_DAY"]);
+
+  function toArrayV7(value) {
+    return Array.isArray(value) ? value : [];
+  }
+
+  MyCuscoTripQuotePackages.prototype.getPrintTourImage = function (codes = []) {
+    const realCodes = toArrayV7(codes).filter((code) => !TRANSFER_CODES.has(String(code)));
+
+    for (const code of realCodes) {
+      const tour = this.getTourByQuoteCode ? this.getTourByQuoteCode(code) : null;
+      const candidates = [
+        tour?.images?.cover,
+        ...(Array.isArray(tour?.images?.gallery) ? tour.images.gallery : []),
+        tour?.image,
+        tour?.cover,
+        tour?.imageUrl,
+        tour?.thumbnail
+      ].filter(Boolean);
+
+      if (candidates.length) return this.resolveAssetPath(candidates[0]);
+    }
+
+    return "";
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderPrintItinerary = function () {
+    const itineraryTarget = document.getElementById("printItinerary");
+    if (!itineraryTarget) return;
+
+    const itinerary = Array.isArray(this.selectedItineraryOption?.itinerary)
+      ? this.selectedItineraryOption.itinerary
+      : [];
+
+    if (!itinerary.length) {
+      itineraryTarget.innerHTML = `<p>Itinerario por confirmar.</p>`;
+      return;
+    }
+
+    itineraryTarget.innerHTML = itinerary.map((item) => {
+      const start = this.getItineraryDayStartMinutes(item);
+      const end = this.getItineraryDayEndMinutes(item);
+      const cleanTitle = this.cleanDayTitle(item.title || this.getDayTitleForCodes?.(item.tourCodes, item.day) || "", item.day);
+      const dateLabel = this.getItineraryDateLabel(item.day);
+      const image = this.getPrintTourImage(item.tourCodes || item.realTourCodes || []);
+
+      const activities = Array.isArray(item.activities) && item.activities.length
+        ? item.activities
+        : toArrayV7(item.tourCodes).map((code) => this.buildActivity(code, { day: item.day }));
+
+      const activitySummary = activities
+        .map((activity) => activity?.title || "")
+        .filter(Boolean)
+        .slice(0, 3)
+        .join(" · ");
+
+      const timeInfo =
+        start !== null || end !== null
+          ? `
+            <span class="print-itinerary-time">
+              ${start !== null ? `Inicio ${this.minutesToTimeLabel(start)}` : "Inicio por confirmar"}
+              ·
+              ${end !== null ? `Fin ${this.minutesToTimeLabel(end)}` : "Fin por confirmar"}
+            </span>
+          `
+          : "";
+
+      return `
+        <div class="print-itinerary-item ${image ? "print-itinerary-item--with-image" : ""}">
+          ${image ? `
+            <div class="print-itinerary-thumb">
+              <img src="${this.escapeHtml(image)}" alt="${this.escapeHtml(cleanTitle || "Itinerario")}" />
+            </div>
+          ` : ""}
+          <div class="print-itinerary-content">
+            <h4>
+              Día ${this.escapeHtml(item.day)}:
+              ${dateLabel ? `(${this.escapeHtml(dateLabel)})` : ""}
+              ${this.escapeHtml(cleanTitle)}
+            </h4>
+            <p>${this.escapeHtml(item.description || activitySummary || "Actividad programada según itinerario seleccionado.")}</p>
+            ${timeInfo}
+          </div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  const previousUpdatePrintQuotationV7 = MyCuscoTripQuotePackages.prototype.updatePrintQuotation;
+  MyCuscoTripQuotePackages.prototype.updatePrintQuotation = function (...args) {
+    const result = previousUpdatePrintQuotationV7.apply(this, args);
+    this.renderPrintItinerary();
+    return result;
+  };
+
+  MyCuscoTripQuotePackages.prototype.renderPrintSelectedServices = function () {
+    const servicesTarget = document.getElementById("printSelectedServices");
+    const hotelImagesTarget = document.getElementById("printHotelImages");
+
+    if (!servicesTarget && !hotelImagesTarget) return;
+
+    const trainConfig = this.selectedPackage && this.selectedItineraryOption
+      ? this.getTrainSelectionConfig()
+      : null;
+
+    const outboundTrain = trainConfig
+      ? this.getTrainByCode(trainConfig.outboundRoute, this.selectedOutboundTrainCode)
+      : null;
+
+    const returnTrain = trainConfig
+      ? this.getTrainByCode(trainConfig.returnRoute, this.selectedReturnTrainCode)
+      : null;
+
+    const selectedExtras = this.getSelectedExtras ? this.getSelectedExtras() : [];
+
+    const serviceRows = [];
+
+    serviceRows.push(`
+      <div class="print-service-row">
+        <span>Itinerario seleccionado</span>
+        <strong>${this.escapeHtml(this.getCleanItineraryOptionTitle(this.selectedItineraryOption) || "Por confirmar")}</strong>
+      </div>
+    `);
+
+    if (outboundTrain) {
+      serviceRows.push(`
+        <div class="print-service-row">
+          <span>Tren de ida</span>
+          <strong>${this.escapeHtml(this.getTrainDisplayName(outboundTrain))}</strong>
+        </div>
+      `);
+    }
+
+    if (returnTrain) {
+      serviceRows.push(`
+        <div class="print-service-row">
+          <span>Tren de retorno</span>
+          <strong>${this.escapeHtml(this.getTrainDisplayName(returnTrain))}</strong>
+        </div>
+      `);
+    }
+
+    if (selectedExtras.length) {
+      serviceRows.push(`
+        <div class="print-service-row print-service-row--extras">
+          <span>Extras seleccionados</span>
+          <strong>${this.escapeHtml(selectedExtras.map((item) => item.label || item.title || "Extra").join(" · "))}</strong>
+        </div>
+      `);
+    }
+
+    if (servicesTarget) {
+      servicesTarget.innerHTML = `
+        <div class="print-services-list">
+          ${serviceRows.join("")}
+        </div>
+      `;
+    }
+
+    if (hotelImagesTarget) {
+      const hotelRows = this.getPrintHotelRows ? this.getPrintHotelRows() : [];
+
+      if (!hotelRows.length) {
+        hotelImagesTarget.innerHTML = `<p>Sin alojamiento seleccionado.</p>`;
+      } else {
+        hotelImagesTarget.innerHTML = hotelRows.join("");
+      }
+    }
+  };
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
