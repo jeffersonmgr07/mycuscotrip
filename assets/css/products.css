@@ -479,3 +479,56 @@
   display: flex;
   gap: var(--spacing-sm);
 }
+
+/* =====================================================
+   BLOQUE 3 - Ajustes conservadores para cards del index
+   ===================================================== */
+.featured-products-grid,
+.products-grid {
+  align-items: stretch;
+}
+
+.product-card,
+.featured-card,
+.package-duration-card {
+  min-width: 0;
+}
+
+.product-image,
+.featured-card__image,
+.package-duration-card__image {
+  max-height: 230px;
+}
+
+.product-content,
+.featured-card__content,
+.package-duration-card__content {
+  min-width: 0;
+}
+
+.product-card .btn,
+.featured-card__actions .btn,
+.package-duration-card .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .product-image,
+  .featured-card__image,
+  .package-duration-card__image {
+    height: 190px;
+    max-height: 190px;
+  }
+
+  .product-content,
+  .featured-card__content,
+  .package-duration-card__content {
+    padding: 16px;
+  }
+}
