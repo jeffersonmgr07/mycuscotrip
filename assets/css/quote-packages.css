@@ -3561,6 +3561,8 @@ body.is-generating-pdf .print-booking-offer__eyebrow {
   font-weight: 700;
 }
 
+/* V13: se revierte el intento de panel scrollable de v12.
+   El resumen vuelve a comportarse como antes: sin alto fijo y sin barra propia. */
 @media (min-width: 1101px) {
   .quote-page,
   .quote-content,
@@ -3573,29 +3575,20 @@ body.is-generating-pdf .print-booking-offer__eyebrow {
   }
 
   .quote-sidebar {
-    position: sticky !important;
-    top: 88px !important;
+    position: relative !important;
+    top: auto !important;
     align-self: start !important;
-    z-index: 120 !important;
-    height: max-content !important;
+    z-index: auto !important;
+    height: auto !important;
   }
 
   .quote-summary-panel {
     position: static !important;
     top: auto !important;
-    max-height: calc(100vh - 104px) !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-  }
-
-  .quote-summary-panel::-webkit-scrollbar {
-    width: 7px;
-  }
-
-  .quote-summary-panel::-webkit-scrollbar-thumb {
-    background: rgba(10, 58, 38, 0.25);
-    border-radius: 999px;
+    max-height: none !important;
+    overflow: visible !important;
+    overscroll-behavior: auto;
+    scrollbar-width: auto;
   }
 }
 
