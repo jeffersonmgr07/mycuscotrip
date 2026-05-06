@@ -3551,3 +3551,68 @@ body.is-generating-pdf .print-booking-offer p {
 body.is-generating-pdf .print-booking-offer__eyebrow {
   background: rgba(255, 255, 255, 0.14) !important;
 }
+
+
+/* =========================================================
+   V12 FINAL: header/footer, sidebar desktop y PDF
+   ========================================================= */
+.quote-field-preset-active::placeholder {
+  color: #0a3a26;
+  font-weight: 700;
+}
+
+@media (min-width: 1101px) {
+  .quote-page,
+  .quote-content,
+  .quote-layout {
+    overflow: visible !important;
+  }
+
+  .quote-layout {
+    align-items: start !important;
+  }
+
+  .quote-sidebar {
+    position: sticky !important;
+    top: 88px !important;
+    align-self: start !important;
+    z-index: 120 !important;
+    height: max-content !important;
+  }
+
+  .quote-summary-panel {
+    position: static !important;
+    top: auto !important;
+    max-height: calc(100vh - 104px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .quote-summary-panel::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .quote-summary-panel::-webkit-scrollbar-thumb {
+    background: rgba(10, 58, 38, 0.25);
+    border-radius: 999px;
+  }
+}
+
+@media print {
+  .print-booking-offer__content {
+    background-color: #2c0018 !important;
+    background-image: linear-gradient(100deg, #050005 0%, #210013 46%, #5f0038 72%, #92004f 100%) !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+body.is-generating-pdf .print-booking-offer__content {
+  background-color: #2c0018 !important;
+  background-image: linear-gradient(100deg, #050005 0%, #210013 46%, #5f0038 72%, #92004f 100%) !important;
+  box-shadow: none !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
