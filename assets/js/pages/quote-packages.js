@@ -7670,6 +7670,90 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
 })();
 
 
+
+
+/* =========================================================
+   V12: soporte de enlaces directos desde vitrinas del index
+   - Ejemplo: quote-packages.html?days=4&nights=3&option=0
+   - Permite abrir el cotizador ya enfocado en la duración y primera ruta.
+   - No inventa fechas reales; el cliente aún puede seleccionar sus fechas.
+   ========================================================= */
+(function () {
+  if (!window.MyCuscoTripQuotePackages) return;
+
+  const previousInitV12 = MyCuscoTripQuotePackages.prototype.init;
+
+  MyCuscoTripQuotePackages.prototype.init = async function (...args) {
+    const result = await previousInitV12.apply(this, args);
+    this.applyInitialQuotePresetFromUrlV12();
+    return result;
+  };
+
+  MyCuscoTripQuotePackages.prototype.applyInitialQuotePresetFromUrlV12 = function () {
+    const params = new URLSearchParams(window.location.search || "");
+    const days = Number(params.get("days") || params.get("d") || 0);
+    const nights = Number(params.get("nights") || params.get("n") || 0);
+
+    if (!days || !nights) return;
+    if (days < 1 || nights < 0 || days !== nights + 1) return;
+
+    this.travelDays = days;
+    this.travelNights = nights;
+    this.travelStartDate = "";
+    this.travelEndDate = "";
+    this.visibleItineraryOptionsCount = 4;
+
+    const travelRange = document.getElementById("travelRange");
+    if (travelRange) {
+      travelRange.placeholder = `${days} días / ${nights} noches preseleccionado · elige tus fechas reales`;
+      travelRange.classList.add("quote-field-preset-active");
+    }
+
+    const help = document.getElementById("travelRangeHelp");
+    if (help) {
+      help.hidden = false;
+      help.textContent = `Duración preseleccionada desde la vitrina: ${days} días / ${nights} noches. Selecciona tus fechas para afinar disponibilidad y operación.`;
+    }
+
+    const compatible = this.getCompatiblePackages();
+    if (!compatible.length) {
+      this.renderPackageOptions();
+      this.updatePricing();
+      this.updatePrintQuotation();
+      return;
+    }
+
+    const requestedSlug = params.get("package") || params.get("slug") || "";
+    const requestedIndex = Number(params.get("option") || params.get("route") || 0);
+    const pkg = requestedSlug
+      ? compatible.find((item) => String(item.slug || item.id || "") === requestedSlug) || compatible[0]
+      : compatible[0];
+
+    this.selectPackage(pkg);
+
+    const options = this.getAvailableItineraryOptions();
+    if (options.length && Number.isFinite(requestedIndex)) {
+      const safeIndex = Math.max(0, Math.min(options.length - 1, requestedIndex));
+      this.selectedItineraryOption = options[safeIndex];
+      this.refreshAccommodationSelections();
+      this.selectedOutboundTrainCode = "";
+      this.selectedReturnTrainCode = "";
+      this.renderItineraryOptions();
+      this.renderPackageIncludes();
+      this.renderTrainSelectors();
+      this.renderExtras();
+      this.updatePricing();
+      this.updatePrintQuotation();
+    }
+
+    const packageSection = document.getElementById("packageSection") || document.getElementById("itinerarySection");
+    if (packageSection && window.location.hash === "#cotizar") {
+      setTimeout(() => packageSection.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    }
+  };
+})();
+
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
