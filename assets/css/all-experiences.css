@@ -524,3 +524,32 @@
     min-height: auto;
   }
 }
+
+/* =====================================================
+   BLOQUE 3 - Protecciones responsive All Experiences
+   ===================================================== */
+.all-experiences-layout,
+.experiences-layout,
+.catalog-layout {
+  min-width: 0;
+}
+
+.experiences-grid,
+.catalog-grid,
+.products-grid {
+  min-width: 0;
+}
+
+.experience-card,
+.catalog-card,
+.product-card {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .filters-sidebar,
+  .catalog-sidebar,
+  .all-experiences-sidebar {
+    max-width: 100%;
+  }
+}
