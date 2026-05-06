@@ -157,7 +157,41 @@
               <h2>Itinerario</h2>
             </div>
 
-            <div id="packageOptions"></div>
+            <section
+              id="packageOptions"
+              class="package-route-chooser"
+              aria-label="Opciones de ruta sugerida para paquetes dinámicos"
+              aria-live="polite"
+            >
+              <div class="package-route-chooser__header">
+                <p class="package-route-chooser__eyebrow">Elige tu ruta sugerida</p>
+                <h3>Compara itinerarios recomendados para tu paquete</h3>
+                <p>
+                  Selecciona la ruta que mejor combine Machu Picchu, Cusco, naturaleza y aventura.
+                  Las opciones se actualizarán según la disponibilidad del paquete.
+                </p>
+              </div>
+
+              <div
+                id="packageRouteOptions"
+                class="package-route-options"
+                role="list"
+                aria-label="Rutas disponibles"
+              ></div>
+
+              <div id="packageRouteMoreActions" class="package-route-more-actions" hidden>
+                <button type="button" id="packageRouteShowMore" class="btn booking-secondary-btn">
+                  Ver más opciones
+                </button>
+              </div>
+
+              <div id="packageSelectedRouteDetail" class="package-selected-route-detail" aria-live="polite">
+                <div id="packageSelectedRouteSummary" class="package-selected-route-summary"></div>
+                <div id="packageIncludedTours" class="package-included-tours"></div>
+                <div id="packageRouteCta" class="package-route-cta"></div>
+              </div>
+            </section>
+
             <div id="productItinerary" class="experience-itinerary"></div>
           </article>
 
@@ -450,6 +484,7 @@
   <script src="./assets/js/core/payment-service.js"></script>
   <script src="./assets/js/core/package-content-service.js"></script>
   <script src="./assets/js/pages/product.js"></script>
+  <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
 <
