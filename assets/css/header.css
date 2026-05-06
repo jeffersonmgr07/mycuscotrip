@@ -435,3 +435,51 @@
     transform: none;
   }
 }
+
+/* =====================================================
+   BLOQUE 3 - Tolerancia visual para dropdown Trekking
+   ===================================================== */
+@media (min-width: 993px) {
+  .nav-item--dropdown,
+  .nav-item--trekkings {
+    position: relative;
+  }
+
+  .nav-dropdown,
+  .nav-dropdown--trekkings {
+    top: calc(100% + 8px);
+    transition: opacity 0.16s ease, transform 0.16s ease, visibility 0s linear 0.16s;
+  }
+
+  .nav-dropdown::before,
+  .nav-dropdown-bridge {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -18px;
+    height: 18px;
+    display: block;
+    pointer-events: auto;
+  }
+
+  .nav-item--dropdown:hover .nav-dropdown,
+  .nav-item--dropdown:focus-within .nav-dropdown,
+  .nav-item--dropdown.is-open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0s;
+  }
+
+  .nav-dropdown-toggle:focus-visible,
+  .nav-dropdown a:focus-visible {
+    outline: 3px solid rgba(221, 176, 79, 0.5);
+    outline-offset: 3px;
+  }
+
+  .nav-dropdown--trekkings {
+    min-width: 250px;
+  }
+}
