@@ -263,7 +263,7 @@
       const description = this.truncate(item.shortDescription, 118);
 
       return `
-        <article class="destino-card product-card featured-product-card" data-product-slug="${this.escapeHtml(item.slug)}">
+        <article class="destino-card product-card featured-product-card featured-home-card" data-product-slug="${this.escapeHtml(item.slug)}">
           <a class="product-card__media" href="${this.escapeHtml(href)}" aria-label="Ver ${this.escapeHtml(item.title)}">
             <img
               src="${this.escapeHtml(image)}"
