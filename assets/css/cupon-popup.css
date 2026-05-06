@@ -1,0 +1,171 @@
+/* =====================================================
+   Coupon popup - My Cusco Trip
+   ===================================================== */
+.coupon-popup[hidden],
+.coupon-popup-overlay[hidden] {
+  display: none !important;
+}
+
+.coupon-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(5, 32, 24, 0.48);
+  backdrop-filter: blur(6px);
+}
+
+.coupon-popup {
+  position: relative;
+  width: min(100%, 460px);
+  border-radius: 28px;
+  border: 1px solid rgba(221, 176, 79, 0.24);
+  background:
+    radial-gradient(circle at top left, rgba(221, 176, 79, 0.18), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+  color: #172b27;
+  overflow: hidden;
+}
+
+.coupon-popup__inner {
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+}
+
+.coupon-popup__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(10, 58, 38, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0a3a26;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.coupon-popup__badge {
+  display: inline-flex;
+  width: max-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(221, 176, 79, 0.18);
+  color: #7a5412;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.coupon-popup h2 {
+  margin: 0;
+  max-width: 340px;
+  color: #0a3a26;
+  font-size: clamp(1.5rem, 4vw, 2.05rem);
+  line-height: 1.12;
+}
+
+.coupon-popup p {
+  margin: 0;
+  color: #56645f;
+  line-height: 1.5;
+}
+
+.coupon-popup__form {
+  display: grid;
+  gap: 12px;
+}
+
+.coupon-popup__field {
+  display: grid;
+  gap: 6px;
+}
+
+.coupon-popup__field label {
+  color: #0a3a26;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.coupon-popup__field input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  border-radius: 14px;
+  background: #fff;
+  padding: 12px 14px;
+  color: #172b27;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.coupon-popup__field input:focus {
+  border-color: #ddb04f;
+  box-shadow: 0 0 0 4px rgba(221, 176, 79, 0.18);
+}
+
+.coupon-popup__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0a3a26, #14533b);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 16px 34px rgba(10, 58, 38, 0.2);
+}
+
+.coupon-popup__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 38px rgba(10, 58, 38, 0.24);
+}
+
+.coupon-popup__message {
+  min-height: 20px;
+  color: #7a3f0c;
+  font-size: 0.88rem;
+}
+
+.coupon-popup__fineprint {
+  color: #71807a;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 640px) {
+  .coupon-popup-overlay {
+    align-items: end;
+    padding: 0;
+  }
+
+  .coupon-popup {
+    width: 100%;
+    border-radius: 26px 26px 0 0;
+  }
+
+  .coupon-popup__inner {
+    padding: 26px 18px 22px;
+  }
+}
+
+@media print {
+  .coupon-popup,
+  .coupon-popup-overlay {
+    display: none !important;
+  }
+}
