@@ -105,7 +105,9 @@ function normalizeTour(item, source = "unknown") {
       ? "machu-picchu-tour"
       : source === "toursPeru"
         ? "peru-tour"
-        : "cusco-tour"
+        : source === "trekkingsCusco"
+          ? "cusco-trekking"
+          : "cusco-tour"
   );
 
   const price = normalizePrice(item);
@@ -225,7 +227,8 @@ function normalizeCatalog(allData = {}) {
   const tourSources = [
     "toursCusco",
     "toursMachuPicchu",
-    "toursPeru"
+    "toursPeru",
+    "trekkingsCusco"
   ];
 
   tourSources.forEach((sourceKey) => {
