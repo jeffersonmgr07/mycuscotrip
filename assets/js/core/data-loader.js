@@ -10,6 +10,7 @@ const MCT_DATA_PATHS = {
   toursCusco: "assets/data/tours-cusco.json",
   toursMachuPicchu: "assets/data/tours-machu-picchu.json",
   toursPeru: "assets/data/tours-peru.json",
+  trekkingsCusco: "assets/data/trekkings-cusco.json",
   packagesCusco: "assets/data/packages-cusco.json",
   packagesPeru: "assets/data/packages-peru.json",
   trains: "assets/data/trains.json",
