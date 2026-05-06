@@ -3609,3 +3609,168 @@ body.is-generating-pdf .print-booking-offer__content {
   -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
 }
+
+/* =====================================================
+   BLOQUE 3 - Panel cotizador sin scroll interno desktop
+   ===================================================== */
+@media (min-width: 1101px) {
+  .quote-layout {
+    align-items: start !important;
+    overflow: visible !important;
+  }
+
+  .quote-sidebar {
+    align-self: start !important;
+    overflow: visible !important;
+  }
+
+  .quote-summary-panel,
+  .quote-summary-panel--page-flow,
+  .quote-summary-panel[data-scroll-mode="page"] {
+    position: sticky !important;
+    top: 92px !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    align-self: start !important;
+  }
+
+  .quote-summary-panel .quote-summary,
+  .quote-summary-panel .quote-actions,
+  .quote-summary-panel .quote-payment-info,
+  .quote-summary-panel .quote-discount-box,
+  .quote-summary-panel .quote-payment-mode {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .quote-summary-panel,
+  .quote-summary-panel--page-flow,
+  .quote-summary-panel[data-scroll-mode="page"] {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* =====================================================
+   BLOQUE 3 - UX visual de trenes del cotizador
+   ===================================================== */
+.train-option-card {
+  border-radius: 22px;
+  border: 1px solid rgba(10, 58, 38, 0.12);
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(10, 58, 38, 0.06);
+}
+
+.train-option-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(221, 176, 79, 0.78);
+  box-shadow: 0 18px 38px rgba(10, 58, 38, 0.12);
+}
+
+.train-option-card.is-selected {
+  border-color: #0a3a26 !important;
+  background: linear-gradient(135deg, rgba(10, 58, 38, 0.055), rgba(221, 176, 79, 0.1)), #fff;
+  box-shadow: 0 18px 42px rgba(10, 58, 38, 0.16);
+}
+
+.train-option-card__logo,
+.train-detail-logo,
+.quote-train-selector-card img {
+  border-radius: 14px !important;
+  border: 1px solid rgba(10, 58, 38, 0.1);
+  background: #fff;
+}
+
+.train-option-card__header {
+  gap: 12px;
+}
+
+.train-option-card__company h3 {
+  color: #0a3a26;
+  line-height: 1.2;
+}
+
+.train-option-card__price {
+  border-radius: 999px;
+  background: rgba(10, 58, 38, 0.08);
+  color: #0a3a26;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.train-option-card.is-selected .train-option-card__price {
+  background: #0a3a26;
+  color: #fff;
+}
+
+.train-option-card__warning,
+.train-combination-note,
+.train-option-card--local .train-option-card__warning {
+  border: 1px solid rgba(184, 88, 19, 0.22);
+  background: #fff4e8;
+  color: #7a3f0c;
+  border-radius: 14px;
+  padding: 10px 12px;
+  line-height: 1.45;
+}
+
+.train-option-card--local {
+  border-color: rgba(184, 88, 19, 0.28);
+  background: linear-gradient(135deg, rgba(255, 244, 232, 0.9), #fff);
+}
+
+.train-option-card--local.is-selected {
+  border-color: #b85813 !important;
+  box-shadow: 0 18px 42px rgba(184, 88, 19, 0.14);
+}
+
+.train-details-link,
+.train-option-card__actions .quote-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #0a3a26;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.train-option-card__top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .train-option-card {
+    border-radius: 18px;
+  }
+
+  .train-option-card__header,
+  .train-option-card__top-actions {
+    align-items: flex-start;
+  }
+
+  .train-option-card__price,
+  .train-details-link {
+    width: max-content;
+    max-width: 100%;
+  }
+}
+
+@media print {
+  .quote-summary-panel,
+  .quote-summary-panel--page-flow {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+}
