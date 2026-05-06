@@ -62,38 +62,35 @@
       margin-bottom: 10px;
     }
 
-    .hero-mini-trust {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      max-width: 980px;
-      margin: 18px auto 0;
-    }
-
-    .hero-mini-trust__item {
+    .hero-search-hint {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 12px;
+      gap: 10px;
+      width: min(940px, calc(100% - 20px));
+      min-height: 46px;
+      margin: 16px auto 0;
+      padding: 11px 20px;
       border-radius: 999px;
       color: #fff;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(8px);
-      font-size: 0.9rem;
-      font-weight: 700;
-      line-height: 1.1;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.13);
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.25;
+      text-align: center;
     }
 
-    .hero-mini-trust__item i {
+    .hero-search-hint i {
+      flex: 0 0 auto;
       color: #ffd36a;
       font-size: 1rem;
     }
 
     .ota-section {
-      padding: 72px 0;
+      padding: 70px 0;
       background: #fff;
     }
 
@@ -125,7 +122,7 @@
       margin: 0;
       color: var(--mct-green-dark);
       font-family: "Montserrat", sans-serif;
-      font-size: clamp(1.75rem, 3vw, 2.55rem);
+      font-size: clamp(1.75rem, 3vw, 2.45rem);
       line-height: 1.08;
     }
 
@@ -168,6 +165,160 @@
       transform: translateY(-1px);
     }
 
+    .featured-products-grid {
+      align-items: stretch;
+    }
+
+    .featured-home-card {
+      display: flex !important;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid rgba(10, 58, 38, 0.1);
+      box-shadow: 0 18px 42px rgba(10, 58, 38, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .featured-home-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 50px rgba(10, 58, 38, 0.12);
+    }
+
+    .featured-home-card .product-card__media {
+      position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      max-height: 238px;
+      overflow: hidden;
+      background: #e8eee9;
+      text-decoration: none;
+    }
+
+    .featured-home-card .product-card__media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .featured-home-card:hover .product-card__media img {
+      transform: scale(1.05);
+    }
+
+    .featured-home-card .product-card__badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      color: #062803;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
+      font-size: 0.76rem;
+      font-weight: 900;
+      max-width: calc(100% - 28px);
+    }
+
+    .featured-home-card .product-card__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      padding: 18px 18px 20px;
+      min-height: 0;
+    }
+
+    .featured-home-card .product-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 11px;
+      color: var(--mct-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .featured-home-card .product-card__meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .featured-home-card h3 {
+      margin: 0 0 9px;
+      color: var(--mct-green-dark);
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .featured-home-card p {
+      margin: 0 0 16px;
+      color: var(--mct-muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .featured-home-card .product-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(10, 58, 38, 0.1);
+    }
+
+    .featured-home-card .product-card__price {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      color: var(--mct-green-dark);
+    }
+
+    .featured-home-card .product-card__price small {
+      color: var(--mct-muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .featured-home-card .product-card__price strong {
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .featured-home-card .product-card__cta {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: auto !important;
+      min-width: 138px;
+      min-height: 42px;
+      margin: 0 !important;
+      padding: 10px 14px !important;
+      border-radius: 999px !important;
+      line-height: 1 !important;
+      text-align: center;
+      white-space: nowrap;
+      background: var(--mct-green) !important;
+      color: #fff !important;
+      font-weight: 900;
+      box-shadow: 0 12px 22px rgba(10, 58, 38, 0.16);
+    }
+
     .ota-featured-note {
       margin-top: 22px;
       color: var(--mct-muted);
@@ -176,11 +327,14 @@
     }
 
     .ota-quote-strip {
-      padding: 34px 0;
-      background:
-        radial-gradient(circle at 16% 30%, rgba(217, 154, 0, 0.18), transparent 34%),
-        linear-gradient(135deg, #062803 0%, #0a3a26 56%, #123d2a 100%);
+      padding: 36px 0;
       color: #fff;
+      background:
+        linear-gradient(135deg, rgba(6, 40, 3, 0.94) 0%, rgba(10, 58, 38, 0.88) 52%, rgba(12, 75, 50, 0.92) 100%),
+        url('./assets/img/quote/fallbacks/valle-sagrado.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: scroll;
     }
 
     .ota-quote-card {
@@ -190,9 +344,10 @@
       align-items: center;
       padding: 28px;
       border-radius: 28px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
     }
 
     .ota-quote-card h2 {
@@ -204,7 +359,7 @@
     .ota-quote-card p {
       margin: 8px 0 0;
       max-width: 720px;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.84);
       line-height: 1.5;
     }
 
@@ -241,132 +396,133 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .intent-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .intent-card {
-      position: relative;
-      display: flex;
-      min-height: 174px;
-      padding: 20px;
-      border-radius: 24px;
-      overflow: hidden;
-      text-decoration: none;
-      background: #0a3a26;
-      color: #fff;
-      box-shadow: 0 16px 36px rgba(10, 58, 38, 0.12);
-      isolation: isolate;
-    }
-
-    .intent-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.52)),
-        var(--intent-image, linear-gradient(135deg, #0a3a26, #d99a00));
-      background-size: cover;
-      background-position: center;
-      z-index: -2;
-      transform: scale(1.02);
-      transition: transform 0.25s ease;
-    }
-
-    .intent-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(6, 40, 3, 0.72), rgba(6, 40, 3, 0.2));
-      z-index: -1;
-    }
-
-    .intent-card:hover::before {
-      transform: scale(1.08);
-    }
-
-    .intent-card__content {
-      align-self: flex-end;
-    }
-
-    .intent-card span {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      margin-bottom: 10px;
-      border-radius: 50%;
-      color: var(--mct-green);
-      background: #fff;
-      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
-    }
-
-    .intent-card h3 {
-      margin: 0;
-      font-size: 1rem;
-      color: #fff;
-      line-height: 1.25;
-    }
-
-    .intent-card p {
-      margin: 6px 0 0;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 0.85rem;
-      line-height: 1.35;
-    }
-
-    .steps-grid {
+    .package-showcase-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
-    .step-card {
-      padding: 24px;
-      border-radius: 24px;
-      background: #fff;
-      border: 1px solid var(--mct-border);
-      box-shadow: 0 18px 36px rgba(10, 58, 38, 0.07);
-    }
-
-    .step-card__number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      margin-bottom: 16px;
-      border-radius: 50%;
+    .package-showcase-card {
+      position: relative;
+      display: grid;
+      align-content: end;
+      min-height: 225px;
+      overflow: hidden;
+      border-radius: 26px;
+      padding: 22px;
+      text-decoration: none;
       color: #fff;
       background: var(--mct-green);
+      box-shadow: 0 18px 38px rgba(10, 58, 38, 0.12);
+      isolation: isolate;
+    }
+
+    .package-showcase-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.68)),
+        var(--pkg-image, linear-gradient(135deg, #0a3a26, #d99a00));
+      background-size: cover;
+      background-position: center;
+      z-index: -2;
+      transform: scale(1.01);
+      transition: transform 0.3s ease;
+    }
+
+    .package-showcase-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(6, 40, 3, 0.62), rgba(6, 40, 3, 0.16));
+      z-index: -1;
+    }
+
+    .package-showcase-card:hover::before {
+      transform: scale(1.08);
+    }
+
+    .package-showcase-card__tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--mct-green);
+      background: #fff;
+      font-size: 0.76rem;
       font-weight: 900;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
     }
 
-    .step-card h3 {
-      margin: 0 0 8px;
-      color: var(--mct-green-dark);
-      font-size: 1.05rem;
+    .package-showcase-card h3 {
+      margin: 0 0 7px;
+      color: #fff;
+      font-size: 1.18rem;
+      line-height: 1.2;
     }
 
-    .step-card p {
-      margin: 0;
-      color: var(--mct-muted);
-      line-height: 1.55;
-      font-size: 0.94rem;
+    .package-showcase-card p {
+      margin: 0 0 14px;
+      max-width: 95%;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .package-showcase-card__footer {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      color: #fff;
     }
 
     .mobile-sticky-cta {
       display: none;
     }
 
-    @media (max-width: 992px) {
-      .hero-mini-trust {
+    /* Refuerzo genérico para que submenús del header no desaparezcan tan rápido.
+       Si tu header usa otros nombres de clase, pásame header.html/header.css y lo ajusto exacto. */
+    .main-nav li,
+    .nav-menu li,
+    .navbar li,
+    .header-nav li {
+      position: relative;
+    }
+
+    .main-nav li:hover > ul,
+    .main-nav li:focus-within > ul,
+    .nav-menu li:hover > ul,
+    .nav-menu li:focus-within > ul,
+    .navbar li:hover > ul,
+    .navbar li:focus-within > ul,
+    .header-nav li:hover > ul,
+    .header-nav li:focus-within > ul {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .main-nav li > ul,
+    .nav-menu li > ul,
+    .navbar li > ul,
+    .header-nav li > ul {
+      transition: opacity 0.16s ease, visibility 0.16s ease;
+    }
+
+    @media (max-width: 1100px) {
+      .package-showcase-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+    }
 
+    @media (max-width: 992px) {
       .ota-header {
         display: block;
       }
@@ -374,14 +530,6 @@
       .ota-tabs {
         margin-top: 18px;
         justify-content: flex-start;
-      }
-
-      .intent-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .steps-grid {
-        grid-template-columns: 1fr;
       }
 
       .ota-quote-card {
@@ -395,21 +543,36 @@
 
     @media (max-width: 768px) {
       .ota-section {
-        padding: 50px 0;
+        padding: 48px 0;
       }
 
-      .hero-mini-trust {
-        grid-template-columns: 1fr;
-        margin-top: 14px;
-      }
-
-      .hero-mini-trust__item {
-        justify-content: flex-start;
+      .hero-search-hint {
+        width: min(94%, 620px);
         border-radius: 18px;
+        align-items: flex-start;
+        text-align: left;
+        font-size: 0.88rem;
       }
 
-      .intent-grid {
+      .featured-home-card .product-card__media {
+        max-height: 210px;
+      }
+
+      .featured-home-card .product-card__footer {
+        display: grid;
         grid-template-columns: 1fr;
+      }
+
+      .featured-home-card .product-card__cta {
+        width: 100% !important;
+      }
+
+      .package-showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .package-showcase-card {
+        min-height: 205px;
       }
 
       .ota-quote-card {
@@ -489,23 +652,9 @@
 
         <div id="search-bar-container"></div>
 
-        <div class="hero-mini-trust" aria-label="Beneficios de reservar con My Cusco Trip">
-          <div class="hero-mini-trust__item">
-            <i class="fa-solid fa-headset"></i>
-            Atención por WhatsApp
-          </div>
-          <div class="hero-mini-trust__item">
-            <i class="fa-solid fa-location-dot"></i>
-            Operador local en Cusco
-          </div>
-          <div class="hero-mini-trust__item">
-            <i class="fa-solid fa-route"></i>
-            Itinerarios flexibles
-          </div>
-          <div class="hero-mini-trust__item">
-            <i class="fa-solid fa-file-invoice-dollar"></i>
-            Cotización personalizada
-          </div>
+        <div class="hero-search-hint">
+          <i class="fa-solid fa-compass"></i>
+          <span>Selecciona tus fechas y criterios de búsqueda para encontrar la mejor experiencia para tu viaje.</span>
         </div>
       </div>
     </div>
@@ -524,9 +673,7 @@
             Favoritos de viajeros
           </span>
           <h2>Experiencias más reservadas en Cusco y Machu Picchu</h2>
-          <p>
-            Elige entre tours clásicos, rutas de aventura y paquetes flexibles diseñados por especialistas locales.
-          </p>
+          <p>Elige entre tours clásicos, rutas de aventura y experiencias diseñadas por especialistas locales.</p>
         </div>
 
         <nav class="ota-tabs" aria-label="Categorías destacadas">
@@ -551,14 +698,10 @@
 
       <div class="destinos-grid featured-products-grid" id="products-container"></div>
 
-      <p class="ota-featured-note">
-        Precios, horarios y disponibilidad pueden variar según temporada, trenes y cupos de ingreso.
-      </p>
+      <p class="ota-featured-note">Precios, horarios y disponibilidad pueden variar según temporada, trenes y cupos de ingreso.</p>
 
       <div class="more-experiences-wrap">
-        <a href="./all-experiences.html" class="btn more-experiences-btn">
-          Ver más experiencias
-        </a>
+        <a href="./all-experiences.html" class="btn more-experiences-btn">Ver más experiencias</a>
       </div>
     </div>
   </section>
@@ -568,9 +711,7 @@
       <div class="ota-quote-card">
         <div>
           <h2>Diseña tu viaje a Cusco en minutos</h2>
-          <p>
-            Arma un paquete con Machu Picchu, Valle Sagrado, hoteles, trenes y extras según tus fechas reales de llegada y salida.
-          </p>
+          <p>Arma un paquete con Machu Picchu, Valle Sagrado, hoteles, trenes y extras según tus fechas reales de llegada y salida.</p>
         </div>
         <div class="ota-quote-actions">
           <a href="./quote-packages.html" class="ota-main-btn">
@@ -586,98 +727,82 @@
     </div>
   </section>
 
-  <section class="ota-section ota-section--soft">
+  <section class="ota-section ota-section--soft" id="paquetes-cusco">
     <div class="container">
       <div class="ota-header">
         <div>
           <span class="ota-kicker">
-            <i class="fa-solid fa-compass"></i>
-            Encuentra tu estilo de viaje
+            <i class="fa-solid fa-suitcase-rolling"></i>
+            Paquetes sugeridos
           </span>
-          <h2>¿Qué tipo de experiencia estás buscando?</h2>
-          <p>
-            Te ayudamos a elegir más rápido según tu forma de viajar, tu tiempo disponible y el tipo de experiencia que quieres vivir.
-          </p>
+          <h2>Paquetes Cusco y Machu Picchu más cotizados</h2>
+          <p>Empieza con una ruta base y personaliza hoteles, trenes y extras dentro del cotizador.</p>
         </div>
       </div>
 
-      <div class="intent-grid">
-        <a class="intent-card" href="./all-experiences.html?q=primera%20vez%20cusco" style="--intent-image:url('./assets/img/tours/city-tour/cover.jpg');">
-          <div class="intent-card__content">
-            <span><i class="fa-solid fa-map"></i></span>
-            <h3>Voy por primera vez</h3>
-            <p>Rutas clásicas para conocer lo esencial de Cusco y Machu Picchu.</p>
-          </div>
+      <div class="package-showcase-grid">
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/machu-picchu.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-train"></i> Overnight</span>
+          <h3>Machu Picchu 2D/1N</h3>
+          <p>La forma más cómoda de visitar la ciudadela con noche en Machu Picchu Pueblo.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
-        <a class="intent-card" href="./all-experiences.html?destino=machu-picchu" style="--intent-image:url('./assets/img/quote/fallbacks/machu-picchu.jpg');">
-          <div class="intent-card__content">
-            <span><i class="fa-solid fa-mountain-sun"></i></span>
-            <h3>Quiero Machu Picchu</h3>
-            <p>Opciones full day, overnight y conexiones por el Valle Sagrado.</p>
-          </div>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/cusco.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-star"></i> Clásico</span>
+          <h3>Cusco y Machu Picchu 3D/2N</h3>
+          <p>Ideal para una primera visita con Cusco, experiencias suaves y Machu Picchu.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
-        <a class="intent-card" href="./all-experiences.html?tema=aventura" style="--intent-image:url('./assets/img/quote/fallbacks/vinicunca.jpg');">
-          <div class="intent-card__content">
-            <span><i class="fa-solid fa-person-hiking"></i></span>
-            <h3>Quiero aventura</h3>
-            <p>Montaña de Colores, Humantay, Palcoyo y rutas de naturaleza.</p>
-          </div>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/valle-sagrado-vip.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-map-location-dot"></i> Recomendado</span>
+          <h3>Cusco, Valle y Machu Picchu 4D/3N</h3>
+          <p>Una ruta equilibrada con Valle Sagrado y visita organizada a Machu Picchu.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
-        <a class="intent-card" href="./quote-packages.html" style="--intent-image:url('./assets/img/quote/fallbacks/valle-sagrado.jpg');">
-          <div class="intent-card__content">
-            <span><i class="fa-solid fa-clock"></i></span>
-            <h3>Tengo pocos días</h3>
-            <p>Paquetes compactos de 3 a 5 días optimizados por horarios.</p>
-          </div>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/vinicunca.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-person-hiking"></i> Aventura</span>
+          <h3>Cusco Aventura 5D/4N</h3>
+          <p>Machu Picchu, Valle Sagrado y una ruta natural como Vinicunca o Humantay.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
-        <a class="intent-card" href="./quote-packages.html" style="--intent-image:url('./assets/img/quote/fallbacks/cusco.jpg');">
-          <div class="intent-card__content">
-            <span><i class="fa-solid fa-people-group"></i></span>
-            <h3>Viajo en familia</h3>
-            <p>Itinerarios flexibles, hoteles por elegir y asistencia local.</p>
-          </div>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/laguna-humantay.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-mountain-sun"></i> Completo</span>
+          <h3>Cusco y Naturaleza 6D/5N</h3>
+          <p>Más tiempo para combinar Machu Picchu, Valle Sagrado y tours de naturaleza.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
         </a>
-      </div>
-    </div>
-  </section>
 
-  <section class="ota-section">
-    <div class="container">
-      <div class="ota-header">
-        <div>
-          <span class="ota-kicker">
-            <i class="fa-solid fa-check-circle"></i>
-            Fácil y seguro
-          </span>
-          <h2>Reserva con acompañamiento local</h2>
-          <p>
-            Compara opciones, cotiza tu paquete y recibe asistencia antes y durante tu viaje.
-          </p>
-        </div>
-      </div>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/valle-sur.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-route"></i> Flexible</span>
+          <h3>Cusco Profundo 7D/6N</h3>
+          <p>Una semana para sumar experiencias culturales y rutas de aventura sin correr.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
 
-      <div class="steps-grid">
-        <article class="step-card">
-          <span class="step-card__number">1</span>
-          <h3>Elige tu experiencia</h3>
-          <p>Selecciona un tour o paquete según tus fechas, estilo de viaje y tiempo disponible.</p>
-        </article>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/maras-moray.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-camera-retro"></i> Experiencias</span>
+          <h3>Cusco Experiencial 8D/7N</h3>
+          <p>Más días para visitar Machu Picchu, Valle Sagrado, Maras, Moray y rutas naturales.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
 
-        <article class="step-card">
-          <span class="step-card__number">2</span>
-          <h3>Personaliza tu viaje</h3>
-          <p>Agrega hoteles, trenes, extras y preferencias con una cotización clara.</p>
-        </article>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/siete-lagunas.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-water"></i> Naturaleza</span>
+          <h3>Cusco Total 9D/8N</h3>
+          <p>Una ruta amplia para combinar iconos de Cusco con caminatas y paisajes andinos.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
 
-        <article class="step-card">
-          <span class="step-card__number">3</span>
-          <h3>Viaja con asistencia</h3>
-          <p>Recibe coordinación por WhatsApp y soporte local en Cusco durante tu experiencia.</p>
-        </article>
+        <a class="package-showcase-card" href="./quote-packages.html" style="--pkg-image:url('./assets/img/quote/fallbacks/palcoyo.jpg');">
+          <span class="package-showcase-card__tag"><i class="fa-solid fa-gem"></i> Gran viaje</span>
+          <h3>Cusco sin prisa 10D/9N</h3>
+          <p>La alternativa más completa para explorar Cusco con descansos y rutas a medida.</p>
+          <span class="package-showcase-card__footer">Cotizar ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
       </div>
     </div>
   </section>
@@ -858,7 +983,7 @@
   <script src="./assets/js/lib/utils.js"></script>
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/search-bar.js"></script>
-  <script src="./assets/js/components/products.js"></script>
+  <script src="./assets/js/components/products.js?v=20260506-index-ota-v2"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
