@@ -2166,3 +2166,277 @@ body.hotel-modal-open {
     max-height: 150px;
   }
 }
+
+/* =====================================================
+   BLOQUE 3 - UX visual para rutas de paquetes dinamicos
+   ===================================================== */
+.package-route-chooser,
+.package-options-section {
+  margin: 28px 0 34px;
+  padding: 24px;
+  border: 1px solid rgba(10, 58, 38, 0.12);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top left, rgba(221, 176, 79, 0.14), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
+  box-shadow: 0 20px 45px rgba(5, 50, 32, 0.08);
+  overflow: hidden;
+}
+
+.package-route-chooser__header,
+.package-options-section__header {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.package-route-chooser__eyebrow,
+.package-options-section__header::before {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(221, 176, 79, 0.16);
+  color: #7a5412;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.package-options-section__header::before {
+  content: "Rutas sugeridas";
+}
+
+.package-route-chooser__header h2,
+.package-options-section__header h2 {
+  margin: 0;
+  color: #0a3a26;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.15;
+}
+
+.package-route-chooser__header p,
+.package-options-section__header p {
+  max-width: 760px;
+  margin: 0;
+  color: #53635d;
+  font-size: 0.98rem;
+}
+
+.package-route-options,
+.package-options-list,
+.package-options-list--cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.package-option-card {
+  min-width: 0;
+  height: 100%;
+}
+
+.package-option-btn,
+.package-option-btn--card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  width: 100%;
+  min-height: 100%;
+  padding: 18px;
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #172b27;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(5, 50, 32, 0.06);
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.package-option-btn:hover,
+.package-option-btn:focus-visible,
+.package-option-card:hover .package-option-btn {
+  transform: translateY(-2px);
+  border-color: rgba(221, 176, 79, 0.8);
+  box-shadow: 0 18px 36px rgba(5, 50, 32, 0.12);
+  outline: none;
+}
+
+.package-option-card.is-selected .package-option-btn,
+.package-option-btn.is-selected,
+.package-option-btn[aria-pressed="true"] {
+  border-color: #0a3a26;
+  background:
+    linear-gradient(135deg, rgba(10, 58, 38, 0.06), rgba(221, 176, 79, 0.12)),
+    #ffffff;
+  box-shadow: 0 22px 42px rgba(10, 58, 38, 0.16);
+}
+
+.package-option-card.is-selected .package-option-btn::after,
+.package-option-btn.is-selected::after,
+.package-option-btn[aria-pressed="true"]::after {
+  content: "Seleccionada";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.package-option-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  max-width: calc(100% - 104px);
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(10, 58, 38, 0.08);
+  color: #0a3a26;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.package-option-btn strong,
+.package-option-btn--card strong {
+  display: block;
+  color: #0a3a26;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.08rem;
+  line-height: 1.22;
+  padding-right: 80px;
+}
+
+.package-option-card__summary {
+  color: #35443f;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.package-option-card__summary::before {
+  content: "Tours: ";
+  color: #7a5412;
+  font-weight: 800;
+}
+
+.package-option-btn small,
+.package-option-btn--card small {
+  color: #687670;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.package-option-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.package-option-btn.is-selected .package-option-card__cta,
+.package-option-btn[aria-pressed="true"] .package-option-card__cta {
+  background: #ddb04f;
+  color: #11251d;
+}
+
+.package-route-more-actions,
+.package-options-section__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.package-route-more-actions[hidden] {
+  display: none !important;
+}
+
+.package-route-more-actions .btn,
+.package-options-section__more .btn {
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  background: #ffffff;
+  color: #0a3a26;
+  box-shadow: 0 12px 26px rgba(10, 58, 38, 0.08);
+}
+
+.package-selected-route-detail {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px dashed rgba(10, 58, 38, 0.22);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.package-selected-route-summary,
+.package-included-tours,
+.package-route-cta {
+  display: grid;
+  gap: 8px;
+}
+
+@media (max-width: 860px) {
+  .package-route-chooser,
+  .package-options-section {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .package-route-options,
+  .package-options-list,
+  .package-options-list--cards {
+    grid-template-columns: 1fr;
+  }
+
+  .package-option-btn,
+  .package-option-btn--card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .package-option-btn strong,
+  .package-option-btn--card strong {
+    padding-right: 0;
+  }
+
+  .package-option-card.is-selected .package-option-btn::after,
+  .package-option-btn.is-selected::after,
+  .package-option-btn[aria-pressed="true"]::after {
+    position: static;
+    width: max-content;
+    order: -1;
+  }
+
+  .package-option-card__eyebrow {
+    max-width: 100%;
+  }
+
+  .package-option-card__cta {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .package-route-chooser,
+  .package-options-section {
+    margin: 22px 0 28px;
+    padding: 14px;
+  }
+}
