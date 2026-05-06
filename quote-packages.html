@@ -520,6 +520,52 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script src="./assets/js/components.js"></script>
+  <script src="./assets/js/components/header.js"></script>
+
+  <script>
+    (function () {
+      const IS_GITHUB_PAGES_QUOTE = window.location.hostname.includes('github.io');
+      const BASE_PATH_QUOTE = IS_GITHUB_PAGES_QUOTE ? '/mycuscotrip/' : '/';
+
+      async function loadQuoteComponent(componentName, targetId) {
+        const target = document.getElementById(targetId);
+        if (!target || target.children.length) return;
+
+        try {
+          const response = await fetch(`${BASE_PATH_QUOTE}components/${componentName}.html`, { cache: 'no-store' });
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          target.innerHTML = await response.text();
+
+          target.querySelectorAll('img[src^="assets/"]').forEach((img) => {
+            img.setAttribute('src', `${BASE_PATH_QUOTE}${img.getAttribute('src')}`.replace(/([^:]\/)\/{2,}/g, '$1'));
+          });
+        } catch (error) {
+          console.warn(`No se pudo cargar ${componentName}:`, error);
+        }
+      }
+
+      function syncQuoteFooterAccordions() {
+        const accordions = document.querySelectorAll('.footer-accordion');
+        const isDesktop = window.innerWidth >= 769;
+        accordions.forEach((item) => { item.open = isDesktop; });
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await Promise.all([
+          loadQuoteComponent('header', 'header-container'),
+          loadQuoteComponent('footer', 'footer-container')
+        ]);
+
+        syncQuoteFooterAccordions();
+        window.addEventListener('resize', syncQuoteFooterAccordions);
+
+        if (typeof MyCuscoTripHeader === 'function') {
+          try { new MyCuscoTripHeader(); } catch (error) { console.warn('Header JS no inicializado:', error); }
+        }
+      });
+    })();
+  </script>
+
   <script src="./assets/js/core/package-generator.js"></script>
   <script src="./assets/js/pages/quote-packages.js?v=16"></script>
 </body>
