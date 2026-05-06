@@ -7363,6 +7363,313 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
 })();
 
 
+/* =========================================================
+   V11 FINAL TOUCHES
+   - formato monetario con separadores de miles en todo el cotizador
+   - selector de hora híbrido: Flatpickr en desktop, nativo en móvil
+   - fallback de imágenes de impresión más robusto para Machu Picchu
+   - oferta final usando el nuevo formato monetario
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripQuotePackages === "undefined") return;
+
+  MyCuscoTripQuotePackages.prototype.getMoneyLocale = function () {
+    return this.moneyLocale || "es-PE";
+  };
+
+  MyCuscoTripQuotePackages.prototype.formatMoneyAmount = function (amount) {
+    const value = Number(amount || 0);
+    const safeValue = Number.isFinite(value) ? value : 0;
+
+    try {
+      return new Intl.NumberFormat(this.getMoneyLocale(), {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(safeValue);
+    } catch (error) {
+      const fixed = safeValue.toFixed(2);
+      const parts = fixed.split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+  };
+
+  MyCuscoTripQuotePackages.prototype.formatCurrency = function (amount, currency = this.quoteCurrency) {
+    const value = this.formatMoneyAmount(amount);
+
+    if (currency === "PEN") return `S/ ${value}`;
+    if (currency === "USD") return `USD ${value}`;
+
+    return `${currency || "USD"} ${value}`;
+  };
+
+  MyCuscoTripQuotePackages.prototype.initTimePickers = function () {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    const unwrapFlatpickrInput = (input) => {
+      if (!input) return input;
+
+      if (input._flatpickr && typeof input._flatpickr.destroy === "function") {
+        input._flatpickr.destroy();
+      }
+
+      const wrapper = input.closest(".flatpickr-wrapper");
+      if (wrapper && wrapper.parentNode) {
+        const original = wrapper.querySelector("input:not(.flatpickr-alt-input)") || input;
+        wrapper.parentNode.insertBefore(original, wrapper);
+        wrapper.remove();
+        return original;
+      }
+
+      return input;
+    };
+
+    const onTimeChange = (assignValue) => (value) => {
+      assignValue(value || "");
+      this.visibleItineraryOptionsCount = 4;
+      this.refreshItineraryByTimeRules();
+      this.updatePrintQuotation();
+    };
+
+    const bindNativeTime = (input, assignValue) => {
+      input = unwrapFlatpickrInput(input);
+      if (!input) return;
+
+      input.type = "time";
+      input.removeAttribute("readonly");
+      input.setAttribute("step", "900");
+      input.classList.add("quote-native-time-input");
+      input.classList.remove("quote-desktop-time-input");
+
+      const handler = (event) => onTimeChange(assignValue)(event.target.value || "");
+      input.addEventListener("input", handler);
+      input.addEventListener("change", handler);
+    };
+
+    const bindDesktopPicker = (input, assignValue) => {
+      input = unwrapFlatpickrInput(input);
+      if (!input) return;
+
+      input.type = "text";
+      input.setAttribute("readonly", "readonly");
+      input.classList.add("quote-desktop-time-input");
+      input.classList.remove("quote-native-time-input");
+
+      if (typeof flatpickr === "undefined") {
+        bindNativeTime(input, assignValue);
+        return;
+      }
+
+      flatpickr(input, {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        altInput: true,
+        altFormat: "h:i K",
+        time_24hr: false,
+        minuteIncrement: 15,
+        allowInput: false,
+        disableMobile: true,
+        locale: flatpickr.l10ns?.es || undefined,
+        appendTo: input.closest(".quote-field") || document.body,
+        positionElement: input,
+        static: true,
+        onChange: (_, value) => onTimeChange(assignValue)(value || "")
+      });
+    };
+
+    const arrivalInput = document.getElementById("arrivalTime");
+    const departureInput = document.getElementById("departureTime");
+
+    if (isMobile) {
+      bindNativeTime(arrivalInput, (value) => { this.arrivalTime = value; });
+      bindNativeTime(departureInput, (value) => { this.departureTime = value; });
+    } else {
+      bindDesktopPicker(arrivalInput, (value) => { this.arrivalTime = value; });
+      bindDesktopPicker(departureInput, (value) => { this.departureTime = value; });
+    }
+  };
+
+  MyCuscoTripQuotePackages.prototype.getPrintFallbackImageForCode = function (code) {
+    const clean = String(code || "").trim();
+    const text = clean.toLowerCase();
+
+    if (["arrival_transfer", "transfer_in", "TRANSFER_IN"].includes(clean) || text.includes("recojo") || text.includes("aeropuerto")) {
+      return this.resolveAssetPath("assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg");
+    }
+
+    if (["departure_transfer", "transfer_out", "TRANSFER_OUT"].includes(clean) || text.includes("traslado de salida")) {
+      return this.resolveAssetPath("assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg");
+    }
+
+    if (/^MAPI/i.test(clean) || text.includes("machu")) {
+      return this.resolveAssetPath("assets/img/quote/fallbacks/machu-picchu.jpg");
+    }
+
+    const fallbacks = {
+      CUZ001: "assets/img/quote/fallbacks/tour-panoramico-cusco.jpg",
+      CUZ002: "assets/img/quote/fallbacks/city-tour-cusco.jpg",
+      CUZ003FD: "assets/img/quote/fallbacks/valle-sagrado.jpg",
+      CUZ003CON: "assets/img/quote/fallbacks/valle-sagrado.jpg",
+      CUZ003VIP: "assets/img/quote/fallbacks/valle-sagrado-vip.jpg",
+      CUZ003VIPCON: "assets/img/quote/fallbacks/valle-sagrado-vip.jpg",
+      CUZ004: "assets/img/quote/fallbacks/maras-moray.jpg",
+      CUZ005: "assets/img/quote/fallbacks/valle-sur.jpg",
+      CUZ006: "assets/img/quote/fallbacks/laguna-humantay.jpg",
+      CUZ007: "assets/img/quote/fallbacks/vinicunca.jpg",
+      CUZ008: "assets/img/quote/fallbacks/palcoyo.jpg",
+      CUZ009: "assets/img/quote/fallbacks/siete-lagunas.jpg",
+      FREE_DAY: "assets/img/quote/fallbacks/cusco-tiempo-libre.jpg",
+      free_day: "assets/img/quote/fallbacks/cusco-tiempo-libre.jpg"
+    };
+
+    return fallbacks[clean]
+      ? this.resolveAssetPath(fallbacks[clean])
+      : this.resolveAssetPath("assets/img/quote/fallbacks/cusco.jpg");
+  };
+
+  MyCuscoTripQuotePackages.prototype.getPrintImageCodesForDay = function (item = {}) {
+    const codes = [];
+    const push = (value) => {
+      if (!value) return;
+      if (Array.isArray(value)) value.forEach(push);
+      else codes.push(String(value).trim());
+    };
+
+    push(item.tourCodes);
+    push(item.realTourCodes);
+    push(item.includedTourCodes);
+
+    const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
+    if (text.includes("machu") && !codes.some((code) => /^MAPI/i.test(code))) codes.unshift("MAPI_FALLBACK");
+    if ((text.includes("transfer") || text.includes("traslado") || text.includes("recojo")) && !codes.length) codes.push("TRANSFER_IN");
+
+    return codes.filter(Boolean);
+  };
+
+  MyCuscoTripQuotePackages.prototype.getPrintTourImage = function (codes = []) {
+    const orderedCodes = Array.isArray(codes) ? codes.map((code) => String(code || "").trim()).filter(Boolean) : [];
+    const nonTourCodes = new Set(["arrival_transfer", "departure_transfer", "free_day", "TRANSFER_IN", "TRANSFER_OUT", "FREE_DAY"]);
+    const realCodes = orderedCodes.filter((code) => !nonTourCodes.has(code));
+    const candidatesByCode = realCodes.length ? realCodes : orderedCodes;
+
+    for (const code of candidatesByCode) {
+      if (/^MAPI/i.test(code) || code.toLowerCase().includes("machu")) {
+        const tour = this.getTourByQuoteCode ? this.getTourByQuoteCode(code) : null;
+        const candidates = [
+          tour?.images?.cover,
+          ...(Array.isArray(tour?.images?.gallery) ? tour.images.gallery : []),
+          tour?.image,
+          tour?.cover,
+          tour?.imageUrl,
+          tour?.thumbnail
+        ].filter(Boolean);
+
+        return {
+          src: candidates.length ? this.resolveAssetPath(candidates[0]) : this.getPrintFallbackImageForCode(code),
+          fallback: this.getPrintFallbackImageForCode(code)
+        };
+      }
+    }
+
+    for (const code of candidatesByCode) {
+      const tour = this.getTourByQuoteCode ? this.getTourByQuoteCode(code) : null;
+      const candidates = [
+        tour?.images?.cover,
+        ...(Array.isArray(tour?.images?.gallery) ? tour.images.gallery : []),
+        tour?.image,
+        tour?.cover,
+        tour?.imageUrl,
+        tour?.thumbnail
+      ].filter(Boolean);
+
+      if (candidates.length) {
+        return {
+          src: this.resolveAssetPath(candidates[0]),
+          fallback: this.getPrintFallbackImageForCode(code)
+        };
+      }
+    }
+
+    const fallbackCode = candidatesByCode[0] || "cusco";
+    return {
+      src: this.getPrintFallbackImageForCode(fallbackCode),
+      fallback: this.getPrintFallbackImageForCode(fallbackCode)
+    };
+  };
+
+  const previousRenderPrintItineraryV11 = MyCuscoTripQuotePackages.prototype.renderPrintItinerary;
+  MyCuscoTripQuotePackages.prototype.renderPrintItinerary = function (...args) {
+    const itineraryTarget = document.getElementById("printItinerary");
+    if (!itineraryTarget) return previousRenderPrintItineraryV11?.apply(this, args);
+
+    const itinerary = Array.isArray(this.selectedItineraryOption?.itinerary)
+      ? this.selectedItineraryOption.itinerary
+      : [];
+
+    if (!itinerary.length) {
+      itineraryTarget.innerHTML = `<p>Itinerario por confirmar.</p>`;
+      return;
+    }
+
+    itineraryTarget.innerHTML = itinerary.map((item) => {
+      const dateLabel = this.getItineraryDateLabel(item.day);
+      const dayTitle = this.cleanDayTitle(item.title || this.getDayTitleForCodes?.(item.tourCodes, item.day) || "", item.day);
+      const codes = this.getPrintImageCodesForDay(item);
+      const imageData = this.getPrintTourImage(codes);
+      const image = imageData?.src || "";
+      const fallback = imageData?.fallback || "";
+      const activities = Array.isArray(item.activities) && item.activities.length
+        ? item.activities
+        : codes.map((code) => this.buildActivity(code, { day: item.day }));
+
+      return `
+        <div class="print-itinerary-item ${image ? "print-itinerary-item--with-image" : ""}">
+          ${image ? `
+            <div class="print-itinerary-thumb">
+              <img
+                src="${this.escapeHtml(image)}"
+                ${fallback ? `data-fallback-src="${this.escapeHtml(fallback)}"` : ""}
+                alt="${this.escapeHtml(dayTitle || "Itinerario")}" 
+                onerror="if(this.dataset.fallbackSrc && this.src.indexOf(this.dataset.fallbackSrc) === -1){this.src=this.dataset.fallbackSrc;}else{var p=this.parentNode;if(p){p.parentNode.removeChild(p);}}"
+              />
+            </div>
+          ` : ""}
+          <div class="print-itinerary-content">
+            <div class="print-itinerary-day-header">
+              <span class="print-itinerary-day-badge">Día ${this.escapeHtml(item.day)}</span>
+              ${dateLabel ? `<span class="print-itinerary-day-date">${this.escapeHtml(dateLabel)}</span>` : ""}
+              <span class="print-itinerary-day-title">${this.escapeHtml(dayTitle)}</span>
+            </div>
+            <div class="print-itinerary-activities">
+              ${activities.map((activity) => `
+                <div class="print-itinerary-activity">
+                  <div class="print-itinerary-activity__title">
+                    ${activity.startTime ? `<span class="print-itinerary-activity__time">${this.escapeHtml(activity.startTime)}</span>` : ""}
+                    <span>${this.escapeHtml(activity.title || "Actividad")}</span>
+                  </div>
+                  ${activity.description ? `<p class="print-itinerary-activity__description">${this.escapeHtml(activity.description)}</p>` : ""}
+                  ${activity.places ? `<p class="print-itinerary-activity__places"><strong>Lugares principales:</strong> ${this.escapeHtml(activity.places)}</p>` : ""}
+                  ${activity.note ? `<p class="print-itinerary-activity__note">${this.escapeHtml(activity.note)}</p>` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  const previousUpdatePrintBookingOfferV11 = MyCuscoTripQuotePackages.prototype.updatePrintBookingOffer;
+  MyCuscoTripQuotePackages.prototype.updatePrintBookingOffer = function (breakdown = this.getPricingBreakdown()) {
+    const result = previousUpdatePrintBookingOfferV11?.call(this, breakdown);
+    const amount = this.getPrintBookingOfferAmount ? this.getPrintBookingOfferAmount(breakdown) : 0;
+    this.setText("printBookingOfferAmount", this.formatCurrency(amount, this.quoteCurrency));
+    return result;
+  };
+})();
+
+
 document.addEventListener("DOMContentLoaded", () => {
   new MyCuscoTripQuotePackages();
 });
