@@ -12,6 +12,8 @@ class MyCuscoTripHeader {
     this.langLabel = this.langToggle?.querySelector("span");
 
     this.currentActiveLink = null;
+    this.dropdownCloseDelay = 200;
+    this.dropdownTimers = new WeakMap();
 
     this.init();
   }
@@ -34,10 +36,22 @@ class MyCuscoTripHeader {
 
     this.dropdownItems.forEach((item) => {
       const toggle = item.querySelector(".nav-dropdown-toggle");
-      item.addEventListener("mouseenter", () => toggle?.setAttribute("aria-expanded", "true"));
-      item.addEventListener("mouseleave", () => toggle?.setAttribute("aria-expanded", "false"));
-      item.addEventListener("focusin", () => toggle?.setAttribute("aria-expanded", "true"));
-      item.addEventListener("focusout", () => toggle?.setAttribute("aria-expanded", "false"));
+
+      item.addEventListener("mouseenter", () => this.openDropdown(item));
+      item.addEventListener("mouseleave", () => this.scheduleDropdownClose(item));
+      item.addEventListener("focusin", () => this.openDropdown(item));
+      item.addEventListener("focusout", (event) => {
+        if (!item.contains(event.relatedTarget)) {
+          this.scheduleDropdownClose(item);
+        }
+      });
+
+      toggle?.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          this.closeDropdown(item);
+          toggle.focus();
+        }
+      });
     });
 
     if (this.langToggle) {
@@ -55,6 +69,41 @@ class MyCuscoTripHeader {
     window.addEventListener("resize", () => this.handleResize());
 
     document.addEventListener("click", (event) => this.handleOutsideClick(event));
+  }
+
+  openDropdown(item) {
+    if (!item) return;
+
+    const timer = this.dropdownTimers.get(item);
+    if (timer) window.clearTimeout(timer);
+
+    const toggle = item.querySelector(".nav-dropdown-toggle");
+    toggle?.setAttribute("aria-expanded", "true");
+    item.classList.add("is-dropdown-open");
+  }
+
+  scheduleDropdownClose(item) {
+    if (!item) return;
+
+    const timer = this.dropdownTimers.get(item);
+    if (timer) window.clearTimeout(timer);
+
+    const nextTimer = window.setTimeout(() => {
+      this.closeDropdown(item);
+    }, this.dropdownCloseDelay);
+
+    this.dropdownTimers.set(item, nextTimer);
+  }
+
+  closeDropdown(item) {
+    if (!item) return;
+
+    const timer = this.dropdownTimers.get(item);
+    if (timer) window.clearTimeout(timer);
+
+    const toggle = item.querySelector(".nav-dropdown-toggle");
+    toggle?.setAttribute("aria-expanded", "false");
+    item.classList.remove("is-dropdown-open");
   }
 
   toggleMobileMenu() {
