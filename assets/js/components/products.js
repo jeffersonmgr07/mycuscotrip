@@ -257,7 +257,8 @@
     }
 
     renderCard(item) {
-      const href = this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}`);
+      const optionParam = item.productKind === "package" ? "&option=0" : "";
+      const href = this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}${optionParam}`);
       const image = item.image || this.resolvePath("assets/img/quote/fallbacks/machu-picchu.jpg");
       const price = item.price ? `${item.price.currency} ${this.formatMoney(item.price.amount)}` : "Cotización flexible";
       const description = this.truncate(item.shortDescription, 118);
