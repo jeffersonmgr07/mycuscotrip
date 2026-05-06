@@ -36,12 +36,19 @@
         <li><a href="./cusco-tours.html">Tours en Cusco</a></li>
         <li><a href="./paquetes-cusco.html">Paquetes completos</a></li>
         <li><a href="./explora-peru.html">Explora Perú</a></li>
-        <li class="nav-item nav-item--dropdown">
-          <a class="nav-dropdown-toggle" href="./trekkings.html" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item nav-item--dropdown nav-item--trekkings" data-dropdown="trekkings">
+          <a
+            class="nav-dropdown-toggle"
+            href="./trekkings.html"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="trekkingsDropdown"
+          >
             Trekkings
             <i class="fas fa-chevron-down" aria-hidden="true"></i>
           </a>
-          <ul class="nav-dropdown" aria-label="Submenú de trekkings">
+          <span class="nav-dropdown-bridge" aria-hidden="true"></span>
+          <ul id="trekkingsDropdown" class="nav-dropdown nav-dropdown--trekkings" aria-label="Submenú de trekkings">
             <li><a href="./trekkings.html?categoria=camino-inca">Camino Inca</a></li>
             <li><a href="./trekkings.html?categoria=rutas-machu-picchu">Rutas a Machu Picchu</a></li>
             <li><a href="./trekkings.html?categoria=inca-jungle">Inca Jungle</a></li>
