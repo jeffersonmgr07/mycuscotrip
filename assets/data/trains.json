@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-01",
+  "updatedAt": "2026-05-06",
   "currency": "USD",
   "description": "Catálogo centralizado de trenes para tours y paquetes Machu Picchu. Las tarifas son tarifas brutas de tren según tarifarios proporcionados y no incluyen comisión PayPal ni retiro bancario.",
   "pricingNotes": {
@@ -49,6 +49,13 @@
         "hiram_bingham"
       ],
       "benefitsSource": "BENEFICIOS EXPEDITION / VISTADOME / VISTADOME OBSERVATORY / HIRAM BINGHAM"
+    },
+    "local": {
+      "name": "Tren Local",
+      "categories": [
+        "local"
+      ],
+      "benefitsSource": "Servicio ferroviario local sujeto a disponibilidad, documentación nacional y confirmación operativa."
     }
   },
   "categoryBenefits": {
@@ -125,7 +132,21 @@
     ],
     "preferredOvernightOutboundRoute": "OLLA_MAPI",
     "preferredFullDayRoute": "CUSCO_MAPI",
-    "preferredReturnRoute": "MAPI_CUSCO"
+    "preferredReturnRoute": "MAPI_CUSCO",
+    "localTrainNationalitiesOnly": [
+      "PE"
+    ],
+    "localTrainCanMixCompanies": true,
+    "fullDayMinimumReturnBufferMinutes": 360,
+    "overnightMinimumReturnDepartureTime": "12:00",
+    "sacredValleyConnectionRecommendedAfter": "15:37",
+    "sacredValleyConnectionIdealAfter": "16:36",
+    "touristRoundTripMustUseSameCompanyExceptLocal": true,
+    "warnings": {
+      "localTrain": "Tren local sujeto a disponibilidad, documentación peruana vigente y confirmación operativa. No aplica para turistas extranjeros.",
+      "sacredValleyEarlyConnection": "Horario operativo, pero poco ideal después de Valle Sagrado. Recomendamos salidas desde 15:37, idealmente 16:36.",
+      "overnightEarlyReturn": "Para overnight se recomienda retorno desde las 12:00 para evitar una visita apresurada."
+    }
   },
   "trains": [
     {
@@ -149,11 +170,30 @@
       },
       "recommendedDefault": true,
       "tags": [
+        "fixed",
         "full-day-classic-base",
-        "full-day-express-outbound",
-        "fixed"
+        "full-day-express-outbound"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_61",
@@ -176,7 +216,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_VOYAGER_41",
@@ -199,7 +258,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_VOYAGER_61",
@@ -222,7 +300,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_43",
@@ -245,7 +342,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_VOYAGER_43",
@@ -268,7 +384,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_45",
@@ -291,7 +426,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_67",
@@ -314,7 +468,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_VOYAGER_45",
@@ -338,9 +511,30 @@
       "recommendedDefault": true,
       "tags": [
         "overnight-classic-base",
-        "overnight-express-outbound"
+        "overnight-express-outbound",
+        "sacred-valley-connection",
+        "sacred-valley-connection-ideal"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": true,
+        "sacredValleyConnectionIdeal": true,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_VOYAGER_67",
@@ -362,8 +556,30 @@
         "guide": 44
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "sacred-valley-connection",
+        "sacred-valley-connection-ideal"
+      ],
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": true,
+        "sacredValleyConnectionIdeal": true,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_360_BIMODAL_61",
@@ -386,7 +602,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_360_61",
@@ -409,7 +644,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_360_BIMODAL_65",
@@ -432,7 +686,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_360_65",
@@ -455,7 +728,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
@@ -480,7 +772,26 @@
       "tags": [
         "prime-base-outbound"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_PRIME_41",
@@ -503,7 +814,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_PRIME_BIMODAL_43",
@@ -526,7 +856,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_PRIME_43",
@@ -549,7 +898,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_PRIME_BIMODAL_45",
@@ -572,7 +940,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_PRIME_45",
@@ -594,8 +981,30 @@
         "guide": 93
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "sacred-valley-connection",
+        "sacred-valley-connection-ideal"
+      ],
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": true,
+        "sacredValleyConnectionIdeal": true,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_CUSCO_MAPI_FIRST_CLASS_BIMODAL_43",
@@ -618,7 +1027,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_OLLA_MAPI_FIRST_CLASS_43",
@@ -641,7 +1069,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_42",
@@ -663,8 +1110,32 @@
         "guide": 46
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_42",
@@ -686,8 +1157,32 @@
         "guide": 59
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_62",
@@ -709,8 +1204,32 @@
         "guide": 59
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_62",
@@ -732,8 +1251,32 @@
         "guide": 46
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_44",
@@ -756,11 +1299,30 @@
       },
       "recommendedDefault": true,
       "tags": [
+        "fixed",
         "full-day-express-return",
-        "overnight-express-return",
-        "fixed"
+        "overnight-express-return"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
@@ -783,7 +1345,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_64",
@@ -806,7 +1387,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_64",
@@ -829,7 +1429,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_46",
@@ -852,7 +1471,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_46",
@@ -875,7 +1513,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_66",
@@ -898,7 +1555,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_66",
@@ -921,7 +1597,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_VOYAGER_68",
@@ -944,7 +1639,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68",
@@ -970,7 +1684,26 @@
         "full-day-classic-base-return",
         "overnight-classic-base-return"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_360_BIMODAL_62",
@@ -992,8 +1725,32 @@
         "guide": 69
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_OLLA_360_62",
@@ -1015,8 +1772,32 @@
         "guide": 55
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_OLLA_360_64",
@@ -1039,7 +1820,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_360_BIMODAL_64",
@@ -1062,7 +1862,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_PRIME_42",
@@ -1084,8 +1903,32 @@
         "guide": 65
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_CUSCO_PRIME_BIMODAL_42",
@@ -1107,8 +1950,32 @@
         "guide": 82
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "INCA_MAPI_CUSCO_PRIME_BIMODAL_44",
@@ -1131,7 +1998,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_PRIME_44",
@@ -1154,7 +2040,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_PRIME_46",
@@ -1177,7 +2082,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_PRIME_BIMODAL_46",
@@ -1202,7 +2126,26 @@
       "tags": [
         "prime-base-return"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_OLLA_FIRST_CLASS_46",
@@ -1225,7 +2168,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
@@ -1248,7 +2210,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "incarail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_WANCHAQ_MAPI_EXPEDITION_81",
@@ -1271,7 +2252,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_WANCHAQ_MAPI_VISTADOME_OBS_83",
@@ -1294,7 +2294,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_WANCHAQ_MAPI_EXPEDITION_83P",
@@ -1317,7 +2336,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_WANCHAQ_MAPI_EXPEDITION_33",
@@ -1340,7 +2378,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_SANPEDRO_MAPI_EXPEDITION_31",
@@ -1363,7 +2420,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_SANPEDRO_MAPI_VISTADOME_31",
@@ -1388,7 +2464,26 @@
       "tags": [
         "observatory-base-outbound"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_SANPEDRO_MAPI_EXPEDITION_203",
@@ -1411,7 +2506,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_SANPEDRO_MAPI_VISTADOME_OBS_203",
@@ -1434,7 +2548,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
@@ -1459,7 +2592,26 @@
       "tags": [
         "luxury-base-outbound"
       ],
-      "notes": "Poroy no es estación preferida, pero Hiram Bingham opera desde Poroy según tarifario visible."
+      "notes": "Poroy no es estación preferida, pero Hiram Bingham opera desde Poroy según tarifario visible.",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_EXPEDITION_71",
@@ -1482,7 +2634,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_EXPEDITION_81",
@@ -1505,7 +2676,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_301",
@@ -1528,7 +2718,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_EXPEDITION_83P",
@@ -1551,7 +2760,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_OBS_83",
@@ -1574,7 +2802,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_601",
@@ -1597,7 +2844,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_EXPEDITION_33",
@@ -1620,7 +2886,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_OBS_33",
@@ -1643,7 +2928,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_501",
@@ -1666,7 +2970,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_EXPEDITION_31",
@@ -1689,7 +3012,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_OLLA_MAPI_VISTADOME_31",
@@ -1712,7 +3054,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_50",
@@ -1734,8 +3095,32 @@
         "guide": null
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_72P",
@@ -1757,8 +3142,32 @@
         "guide": null
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "PERU_MAPI_OLLA_VISTADOME_OBS_302",
@@ -1780,8 +3189,32 @@
         "guide": null
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_204",
@@ -1804,7 +3237,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_VISTADOME_OBS_204",
@@ -1827,7 +3279,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_74P",
@@ -1850,7 +3321,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_34",
@@ -1873,7 +3363,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_VISTADOME_304",
@@ -1896,7 +3405,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_504",
@@ -1919,7 +3447,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_VISTADOME_OBS_504",
@@ -1942,7 +3489,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_32",
@@ -1965,7 +3531,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_VISTADOME_32",
@@ -1988,7 +3573,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_HIRAM_BINGHAM_12",
@@ -2011,7 +3615,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_86P",
@@ -2034,7 +3657,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_OLLA_EXPEDITION_76",
@@ -2057,7 +3699,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_72P",
@@ -2079,8 +3740,32 @@
         "guide": null
       },
       "recommendedDefault": false,
-      "tags": [],
-      "notes": ""
+      "tags": [
+        "overnight-early-return-warning"
+      ],
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": false,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      },
+      "warnings": [
+        "overnight-return-before-noon"
+      ]
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_204",
@@ -2103,7 +3788,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_VISTADOME_OBS_204",
@@ -2126,7 +3830,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_74P",
@@ -2149,7 +3872,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_34",
@@ -2172,7 +3914,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_POROY_EXPEDITION_34",
@@ -2195,7 +3956,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_504",
@@ -2218,7 +3998,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_VISTADOME_OBS_504",
@@ -2241,7 +4040,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
@@ -2264,7 +4082,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_SANPEDRO_VISTADOME_32",
@@ -2287,7 +4124,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_POROY_HIRAM_BINGHAM_12",
@@ -2310,7 +4166,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_VISTADOME_606",
@@ -2333,7 +4208,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_84P",
@@ -2356,7 +4250,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_VISTADOME_84P",
@@ -2379,7 +4292,26 @@
       },
       "recommendedDefault": false,
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     },
     {
       "code": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
@@ -2404,7 +4336,232 @@
       "tags": [
         "perurail-economic-night-return"
       ],
-      "notes": ""
+      "notes": "",
+      "direction": "inbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": false
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
+    },
+    {
+      "code": "LOCAL_OLLA_MAPI_NACIONAL_AM",
+      "company": "local",
+      "companyName": "Tren Local",
+      "category": "local",
+      "serviceName": "Tren Local Nacional",
+      "route": "OLLA_MAPI",
+      "departureStation": "Ollantaytambo",
+      "arrivalStation": "Machu Picchu",
+      "departureTime": "06:00",
+      "arrivalTime": "07:45",
+      "frequency": "nacional-referencial",
+      "modality": "train",
+      "currency": "PEN",
+      "priceMode": "consult",
+      "price": {
+        "adult": 0,
+        "child": 0,
+        "guide": 0
+      },
+      "recommendedDefault": false,
+      "direction": "outbound",
+      "isLocalTrain": true,
+      "operatorKey": "local",
+      "tags": [
+        "local-train",
+        "national-passengers-only"
+      ],
+      "warnings": [
+        "local-train-national-passengers-only"
+      ],
+      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": true,
+        "nationalitiesOnly": [
+          "PE"
+        ],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": false,
+        "canMixWithAnyOperator": true,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
+    },
+    {
+      "code": "LOCAL_OLLA_MAPI_NACIONAL_PM",
+      "company": "local",
+      "companyName": "Tren Local",
+      "category": "local",
+      "serviceName": "Tren Local Nacional",
+      "route": "OLLA_MAPI",
+      "departureStation": "Ollantaytambo",
+      "arrivalStation": "Machu Picchu",
+      "departureTime": "16:36",
+      "arrivalTime": "18:10",
+      "frequency": "nacional-referencial",
+      "modality": "train",
+      "currency": "PEN",
+      "priceMode": "consult",
+      "price": {
+        "adult": 0,
+        "child": 0,
+        "guide": 0
+      },
+      "recommendedDefault": false,
+      "direction": "outbound",
+      "isLocalTrain": true,
+      "operatorKey": "local",
+      "tags": [
+        "local-train",
+        "national-passengers-only",
+        "sacred-valley-connection",
+        "sacred-valley-connection-ideal"
+      ],
+      "warnings": [
+        "local-train-national-passengers-only"
+      ],
+      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": true,
+        "nationalitiesOnly": [
+          "PE"
+        ],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": true,
+        "sacredValleyConnectionIdeal": true,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": false,
+        "canMixWithAnyOperator": true,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
+    },
+    {
+      "code": "LOCAL_MAPI_OLLA_NACIONAL_MD",
+      "company": "local",
+      "companyName": "Tren Local",
+      "category": "local",
+      "serviceName": "Tren Local Nacional",
+      "route": "MAPI_OLLA",
+      "departureStation": "Machu Picchu",
+      "arrivalStation": "Ollantaytambo",
+      "departureTime": "12:35",
+      "arrivalTime": "14:15",
+      "frequency": "nacional-referencial",
+      "modality": "train",
+      "currency": "PEN",
+      "priceMode": "consult",
+      "price": {
+        "adult": 0,
+        "child": 0,
+        "guide": 0
+      },
+      "recommendedDefault": false,
+      "direction": "inbound",
+      "isLocalTrain": true,
+      "operatorKey": "local",
+      "tags": [
+        "local-train",
+        "national-passengers-only"
+      ],
+      "warnings": [
+        "local-train-national-passengers-only"
+      ],
+      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": true,
+        "nationalitiesOnly": [
+          "PE"
+        ],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": false,
+        "canMixWithAnyOperator": true,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
+    },
+    {
+      "code": "LOCAL_MAPI_OLLA_NACIONAL_PM",
+      "company": "local",
+      "companyName": "Tren Local",
+      "category": "local",
+      "serviceName": "Tren Local Nacional",
+      "route": "MAPI_OLLA",
+      "departureStation": "Machu Picchu",
+      "arrivalStation": "Ollantaytambo",
+      "departureTime": "18:20",
+      "arrivalTime": "20:00",
+      "frequency": "nacional-referencial",
+      "modality": "train",
+      "currency": "PEN",
+      "priceMode": "consult",
+      "price": {
+        "adult": 0,
+        "child": 0,
+        "guide": 0
+      },
+      "recommendedDefault": false,
+      "direction": "inbound",
+      "isLocalTrain": true,
+      "operatorKey": "local",
+      "tags": [
+        "local-train",
+        "national-passengers-only"
+      ],
+      "warnings": [
+        "local-train-national-passengers-only"
+      ],
+      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "operationalUse": {
+        "direction": "inbound",
+        "isLocalTrain": true,
+        "nationalitiesOnly": [
+          "PE"
+        ],
+        "appliesToFullDay": true,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": false,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": false,
+        "canMixWithAnyOperator": true,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     }
   ]
 }
