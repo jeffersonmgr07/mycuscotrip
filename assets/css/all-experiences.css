@@ -553,3 +553,18 @@
     max-width: 100%;
   }
 }
+
+
+/* Corrección: ocultar el estado vacío heredado cuando la vitrina ya muestra cards. */
+.listing-empty[hidden],
+#listingEmptyState[hidden] {
+  display: none !important;
+}
+
+/* Corrección de chips/badges bajo hero: mantener contraste en hover. */
+.listing-quick-chips button:hover,
+.listing-quick-chips button:focus-visible,
+.listing-hero .btn:hover,
+.listing-hero .btn:focus-visible {
+  color: #ffffff !important;
+}
