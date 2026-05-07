@@ -44,7 +44,7 @@
 
     .news-page {
       min-height: 100vh;
-      padding: 118px 0 76px;
+      padding: 96px 0 64px;
       background:
         linear-gradient(rgba(6, 40, 3, 0.75), rgba(5, 50, 32, 0.88)),
         url("./assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
@@ -62,7 +62,7 @@
       gap: 28px;
       align-items: end;
       color: #fff;
-      margin-bottom: 30px;
+      margin-bottom: 16px;
     }
 
     .news-eyebrow {
@@ -135,13 +135,13 @@
     }
 
     .news-panel-head {
-      padding: 26px 30px 22px;
+      padding: 20px 30px 16px;
       background: linear-gradient(180deg, #ffffff 0%, #fbfaf7 100%);
       border-bottom: 1px solid #edf1f4;
     }
 
     .news-panel-head .label-top {
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       color: #a16207;
       font-size: .82rem;
       font-weight: 800;
@@ -150,9 +150,9 @@
     }
 
     .news-panel-head h2 {
-      margin: 0 0 10px;
+      margin: 0 0 6px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.9rem;
+      font-size: 1.85rem;
       color: var(--mct-green);
     }
 
@@ -167,7 +167,7 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
-      padding: 26px 30px 30px;
+      padding: 18px 30px 28px;
     }
 
     .news-card {
@@ -385,8 +385,8 @@
     }
 
     .ad-slot {
+      display: none !important;
       min-height: 250px;
-      display: grid;
       place-items: center;
       padding: 18px;
       border-radius: 22px;
@@ -444,9 +444,12 @@
     }
 
     @media (max-width: 720px) {
-      .news-page { padding: 108px 0 58px; }
-      .news-grid { grid-template-columns: 1fr; padding: 20px; }
-      .news-panel-head { padding: 22px 20px 18px; }
+      .news-page { padding: 92px 0 52px; }
+      .news-hero { margin-bottom: 14px; }
+      .news-eyebrow { margin-bottom: 10px; }
+      .news-hero h1 { margin-bottom: 10px; }
+      .news-grid { grid-template-columns: 1fr; padding: 16px 20px 22px; }
+      .news-panel-head { padding: 18px 20px 14px; }
       .news-card__media,
       .news-card__media img { min-height: 190px; }
     }
