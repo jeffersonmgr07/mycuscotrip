@@ -234,10 +234,12 @@
         ],
         "allowedRoutes": {
           "outbound": [
-            "CUSCO_MAPI"
+            "CUSCO_MAPI",
+            "OLLA_MAPI"
           ],
           "return": [
-            "MAPI_CUSCO"
+            "MAPI_CUSCO",
+            "MAPI_OLLA"
           ]
         },
         "allowedCategories": "all_available",
@@ -245,7 +247,20 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "same_company_as_outbound",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "07:30"
+          },
+          "return": {
+            "min": "16:00",
+            "max": "22:00"
+          }
+        },
+        "maxOptions": {
+          "return": 3
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -837,9 +852,9 @@
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
-        "mode": "flexible_same_company",
-        "sameCompanyRoundTrip": true,
-        "allowMixedCompanies": false,
+        "mode": "flexible_any_company",
+        "sameCompanyRoundTrip": false,
+        "allowMixedCompanies": true,
         "defaultTrainCodes": {
           "outbound": "INCA_OLLA_MAPI_VOYAGER_45",
           "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68"
@@ -860,9 +875,19 @@
         "allowedCategories": "all_available",
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "same_company_as_outbound",
+        "returnOptionsRule": "any_company_afternoon_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "15:00",
+            "max": "22:00"
+          },
+          "return": {
+            "min": "12:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -1138,37 +1163,53 @@
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
-        "mode": "fixed",
+        "mode": "fixed_alternatives",
         "sameCompanyRoundTrip": false,
-        "allowMixedCompanies": false,
+        "allowMixedCompanies": true,
         "defaultTrainCodes": {
           "outbound": "INCA_OLLA_MAPI_VOYAGER_45",
           "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44"
         },
         "allowedCompanies": [
-          "incarail"
+          "incarail",
+          "perurail"
         ],
         "allowedRoutes": {
           "outbound": [
             "OLLA_MAPI"
           ],
           "return": [
-            "MAPI_CUSCO"
+            "MAPI_CUSCO",
+            "MAPI_OLLA"
           ]
         },
-        "allowedCategories": {
+        "allowedCategories": "all_available",
+        "fixedSelection": false,
+        "customerCanChangeTrain": true,
+        "returnOptionsRule": "fixed_shortlist",
+        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "allowedTrainCodes": {
           "outbound": [
-            "voyager"
+            "INCA_OLLA_MAPI_VOYAGER_45",
+            "PERU_OLLA_MAPI_EXPEDITION_15_27"
           ],
           "return": [
-            "voyager"
+            "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+            "PERU_MAPI_OLLA_EXPEDITION_74P",
+            "PERU_MAPI_WANCHAQ_EXPEDITION_74P"
           ]
         },
-        "fixedSelection": true,
-        "customerCanChangeTrain": false,
-        "returnOptionsRule": "fixed_default_only",
-        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "timeWindows": {
+          "outbound": {
+            "min": "15:00",
+            "max": "17:00"
+          },
+          "return": {
+            "min": "14:00",
+            "max": "15:10"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -1457,7 +1498,7 @@
         "required": true,
         "source": "assets/data/trains.json",
         "mode": "restricted_category",
-        "sameCompanyRoundTrip": false,
+        "sameCompanyRoundTrip": true,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
           "outbound": "PERU_SANPEDRO_MAPI_VISTADOME_31",
@@ -1468,7 +1509,8 @@
         ],
         "allowedRoutes": {
           "outbound": [
-            "CUSCO_MAPI"
+            "CUSCO_MAPI",
+            "OLLA_MAPI"
           ],
           "return": [
             "MAPI_CUSCO",
@@ -1481,16 +1523,25 @@
             "vistadome_observatory"
           ],
           "return": [
-            "expedition",
             "vistadome",
             "vistadome_observatory"
           ]
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "perurail_only_restricted_category",
+        "returnOptionsRule": "same_category_family",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "09:30"
+          },
+          "return": {
+            "min": "16:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -1774,7 +1825,7 @@
         "required": true,
         "source": "assets/data/trains.json",
         "mode": "restricted_category",
-        "sameCompanyRoundTrip": false,
+        "sameCompanyRoundTrip": true,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
           "outbound": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
@@ -1785,7 +1836,8 @@
         ],
         "allowedRoutes": {
           "outbound": [
-            "CUSCO_MAPI"
+            "CUSCO_MAPI",
+            "OLLA_MAPI"
           ],
           "return": [
             "MAPI_CUSCO",
@@ -1797,17 +1849,24 @@
             "prime"
           ],
           "return": [
-            "voyager",
-            "360",
-            "prime",
-            "first_class"
+            "prime"
           ]
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "incarail_only_restricted_category",
+        "returnOptionsRule": "prime_only",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "04:00",
+            "max": "08:30"
+          },
+          "return": {
+            "min": "16:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -2102,7 +2161,8 @@
         ],
         "allowedRoutes": {
           "outbound": [
-            "CUSCO_MAPI"
+            "CUSCO_MAPI",
+            "OLLA_MAPI"
           ],
           "return": [
             "MAPI_CUSCO",
@@ -2122,9 +2182,19 @@
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "incarail_only_restricted_category",
+        "returnOptionsRule": "incarail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "08:00",
+            "max": "12:00"
+          },
+          "return": {
+            "min": "16:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -2427,9 +2497,19 @@
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "incarail_only_restricted_category",
+        "returnOptionsRule": "incarail_afternoon_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "timeWindows": {
+          "outbound": {
+            "min": "10:00",
+            "max": "12:00"
+          },
+          "return": {
+            "min": "14:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -2719,7 +2799,7 @@
         "source": "assets/data/trains.json",
         "mode": "luxury_flexible",
         "sameCompanyRoundTrip": false,
-        "allowMixedCompanies": true,
+        "allowMixedCompanies": false,
         "defaultTrainCodes": {
           "outbound": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
           "return": "PERU_MAPI_WANCHAQ_EXPEDITION_86P"
@@ -2749,9 +2829,20 @@
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "luxury_return_can_downgrade_or_keep_hiram",
+        "returnOptionsRule": "perurail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fixedDirection": "outbound",
+        "timeWindows": {
+          "outbound": {
+            "min": "09:00",
+            "max": "10:00"
+          },
+          "return": {
+            "min": "18:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -3027,7 +3118,7 @@
         "source": "assets/data/trains.json",
         "mode": "luxury_flexible",
         "sameCompanyRoundTrip": false,
-        "allowMixedCompanies": true,
+        "allowMixedCompanies": false,
         "defaultTrainCodes": {
           "outbound": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11",
           "return": "PERU_MAPI_WANCHAQ_EXPEDITION_86P"
@@ -3057,9 +3148,20 @@
         },
         "fixedSelection": false,
         "customerCanChangeTrain": true,
-        "returnOptionsRule": "luxury_return_can_downgrade_or_keep_hiram",
+        "returnOptionsRule": "perurail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fixedDirection": "outbound",
+        "timeWindows": {
+          "outbound": {
+            "min": "10:00",
+            "max": "12:00"
+          },
+          "return": {
+            "min": "18:00",
+            "max": "22:00"
+          }
+        }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
