@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-01",
+  "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/tours.json",
   "targetFile": "assets/data/tours-cusco.json",
   "scope": "cusco-simple-tours",
@@ -277,7 +277,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_002",
@@ -594,7 +595,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_003_fd",
@@ -883,7 +885,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_003_con",
@@ -1166,7 +1169,8 @@
       "pricingNotes": [
         "Esta variante finaliza en Ollantaytambo y está pensada para paquetes con Machu Picchu Overnight.",
         "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_003_vip",
@@ -1532,7 +1536,8 @@
       "pricingNotes": [
         "Ruta VIP con Maras y Moray.",
         "El ingreso a Salineras de Maras se maneja como extra obligatorio de esta variante."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_003_vip_con",
@@ -1884,7 +1889,8 @@
       "pricingNotes": [
         "Esta variante está pensada como ruta preferida para paquetes con Machu Picchu Overnight.",
         "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_004",
@@ -2220,7 +2226,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_005",
@@ -2534,7 +2541,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_006",
@@ -2814,7 +2822,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_007",
@@ -3132,7 +3141,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_008",
@@ -3444,7 +3454,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     },
     {
       "id": "exp_009",
@@ -3790,7 +3801,8 @@
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
-      ]
+      ],
+      "places": []
     }
   ]
 }
