@@ -215,7 +215,8 @@
     [
       ...getProductsFromSource(data.toursCusco),
       ...getProductsFromSource(data.toursMachuPicchu),
-      ...getProductsFromSource(data.toursPeru)
+      ...getProductsFromSource(data.toursPeru),
+      ...getProductsFromSource(data.trekkingsCusco)
     ].forEach((tour) => {
       if (tour?.internalCode) index.set(tour.internalCode, tour);
       if (tour?.id) index.set(tour.id, tour);
@@ -647,11 +648,11 @@
 
     const total = state.filteredCatalog.length;
     if (count) count.textContent = `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
-    if (summary) summary.textContent = total ? "Explora tours en Cusco, experiencias a Machu Picchu, rutas por Perú y paquetes variados." : "Prueba limpiando filtros o usando otro destino.";
+    if (summary) summary.textContent = "Explora experiencias disponibles según los filtros seleccionados.";
 
     if (!total) {
       grid.innerHTML = "";
-      if (empty) empty.hidden = false;
+      if (empty) empty.hidden = true;
       return;
     }
 
