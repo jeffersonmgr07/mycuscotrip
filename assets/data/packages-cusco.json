@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-03",
+  "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/packages-cusco.json",
   "scope": "cusco-dynamic-packages",
   "description": "Archivo de configuración para generar paquetes dinámicos de Cusco y Machu Picchu. No contiene itinerarios hardcodeados; define reglas, referencias, duraciones, perfiles de llegada/salida, restricciones operativas y metadatos para búsqueda, cards y página de detalle.",
@@ -355,7 +355,20 @@
           "cusco machu picchu 3 dias",
           "3 dias 2 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 3 días / 2 noches",
+      "recommendedTitle": "Escapada esencial a Cusco y Machu Picchu",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Machu Picchu",
+        "Experiencia cultural"
+      ],
+      "highlights": [
+        "Ideal para viajes cortos",
+        "Opciones Full Day u Overnight según horario",
+        "Ruta compacta y flexible"
+      ]
     },
     {
       "id": "pkg_cusco_4d3n",
@@ -418,7 +431,21 @@
           "machu picchu humantay",
           "machu picchu montaña de colores"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 4 días / 3 noches",
+      "recommendedTitle": "Ruta recomendada Cusco, Valle Sagrado y Machu Picchu",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "City Tour",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Humantay o Vinicunca"
+      ],
+      "highlights": [
+        "Más vendido",
+        "Permite naturaleza o aventura",
+        "Buen equilibrio de tiempo y experiencias"
+      ]
     },
     {
       "id": "pkg_cusco_5d4n",
@@ -485,7 +512,21 @@
           "paquete cusco machu picchu",
           "5 dias 4 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 5 días / 4 noches",
+      "recommendedTitle": "Cusco completo con aventura opcional",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Montaña o Laguna"
+      ],
+      "highlights": [
+        "Ritmo cómodo",
+        "Más opciones de excursiones",
+        "Recomendado para primera visita"
+      ]
     },
     {
       "id": "pkg_cusco_6d5n",
@@ -551,7 +592,21 @@
           "cusco completo",
           "6 dias 5 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 6 días / 5 noches",
+      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 6 días / 5 noches",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Naturaleza andina"
+      ],
+      "highlights": [
+        "Más días para personalizar",
+        "Compatible con rutas culturales y naturales",
+        "Permite una experiencia menos apresurada"
+      ]
     },
     {
       "id": "pkg_cusco_7d6n",
@@ -620,7 +675,21 @@
           "cusco machu picchu ausangate",
           "7 dias 6 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 7 días / 6 noches",
+      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 7 días / 6 noches",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Naturaleza andina"
+      ],
+      "highlights": [
+        "Más días para personalizar",
+        "Compatible con rutas culturales y naturales",
+        "Permite una experiencia menos apresurada"
+      ]
     },
     {
       "id": "pkg_cusco_8d7n",
@@ -690,7 +759,21 @@
           "cusco profundo",
           "8 dias 7 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 8 días / 7 noches",
+      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 8 días / 7 noches",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Naturaleza andina"
+      ],
+      "highlights": [
+        "Más días para personalizar",
+        "Compatible con rutas culturales y naturales",
+        "Permite una experiencia menos apresurada"
+      ]
     },
     {
       "id": "pkg_cusco_9d8n",
@@ -758,7 +841,21 @@
           "cusco lento",
           "9 dias 8 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 9 días / 8 noches",
+      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 9 días / 8 noches",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Naturaleza andina"
+      ],
+      "highlights": [
+        "Más días para personalizar",
+        "Compatible con rutas culturales y naturales",
+        "Permite una experiencia menos apresurada"
+      ]
     },
     {
       "id": "pkg_cusco_10d9n",
@@ -830,7 +927,21 @@
           "gran viaje cusco",
           "10 dias 9 noches"
         ]
-      }
+      },
+      "commercialLabel": "Paquete flexible 10 días / 9 noches",
+      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 10 días / 9 noches",
+      "optionDisplayMode": "commercial-cards",
+      "itinerarySummary": [
+        "Cusco",
+        "Valle Sagrado",
+        "Machu Picchu",
+        "Naturaleza andina"
+      ],
+      "highlights": [
+        "Más días para personalizar",
+        "Compatible con rutas culturales y naturales",
+        "Permite una experiencia menos apresurada"
+      ]
     }
   ],
   "durationConfigs": [
@@ -1374,7 +1485,20 @@
     "showTrainSelectorWhenFlexible": true,
     "hideTrainSelectorWhenFixed": true,
     "showHotelSelectorWhenNightsGreaterThanZero": true,
-    "priceCalculationMode": "sum_selected_tours_plus_required_extras_plus_train_delta_plus_hotel_delta_plus_payment_fees"
+    "priceCalculationMode": "sum_selected_tours_plus_required_extras_plus_train_delta_plus_hotel_delta_plus_payment_fees",
+    "optionDisplayMode": "commercial-cards",
+    "optionUi": {
+      "title": "Elige tu ruta sugerida",
+      "maxVisibleOptions": 4,
+      "showMoreLabel": "Ver más opciones",
+      "hideTechnicalCodes": true,
+      "labels": [
+        "Ruta recomendada",
+        "Ruta clásica",
+        "Ruta con aventura",
+        "Ruta con naturaleza"
+      ]
+    }
   },
   "compatibility": {
     "allExperiencesJs": {
