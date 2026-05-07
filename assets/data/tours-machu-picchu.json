@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-04",
+  "updatedAt": "2026-05-06",
   "description": "Catálogo de tours Machu Picchu separado de tours-cusco.json. Esta versión ya no contiene un catálogo de trenes embebido; usa referencias a assets/data/trains.json para resolver horarios, rutas, empresas, categorías y tarifas ferroviarias.",
   "currencyConfigReference": "assets/data/currency-config.json",
   "pricingAssumptions": {
@@ -351,7 +351,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-classic",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_002",
@@ -652,7 +664,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-express",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-full-day-express/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Express",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_003",
@@ -949,7 +973,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "overnight-classic",
+      "tripMode": "overnight",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Overnight",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_004",
@@ -1243,7 +1279,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "overnight-express",
+      "tripMode": "overnight",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-overnight-express/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Overnight",
+        "speedLabel": "Express",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_005",
@@ -1548,7 +1596,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-classic",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_006",
@@ -1853,7 +1913,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-premium",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-the-prime/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_007",
@@ -2158,7 +2230,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-premium",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-first-class/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_008",
@@ -2456,7 +2540,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "overnight-premium",
+      "tripMode": "overnight",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-first-class-overnight/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Overnight",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_009",
@@ -2764,7 +2860,19 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "full-day-premium",
+      "tripMode": "full-day",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-luxury-hiram-bingham/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Full Day",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     },
     {
       "id": "mapi_010",
@@ -3063,8 +3171,26 @@
           "tour machu picchu"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "machuPicchuMode": "overnight-premium",
+      "tripMode": "overnight",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "quotePackageBaseExcludesTrain": true,
+      "quoteTrainSelectionRequired": true,
+      "fallbackImage": "./assets/img/tours/machu-picchu-luxury-overnight/cover.jpg",
+      "displayMeta": {
+        "commercialModeLabel": "Overnight",
+        "speedLabel": "Clásico",
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+      }
     }
   ],
-  "trainCatalogReference": "assets/data/trains.json"
+  "trainCatalogReference": "assets/data/trains.json",
+  "quoteRules": {
+    "publicProductIncludesTrain": true,
+    "quotePackageBaseExcludesTrain": true,
+    "trainCatalog": "assets/data/trains.json",
+    "modeField": "machuPicchuMode"
+  }
 }
