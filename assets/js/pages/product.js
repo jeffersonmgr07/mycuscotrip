@@ -17,6 +17,7 @@ class MyCuscoTripProductPage {
     this.productType = null;
 
     this.packageOptions = [];
+    this.packageOptionsExpanded = false;
     this.selectedPackageOption = null;
     this.selectedPackageOptionIndex = 0;
     this.selectedItinerary = [];
@@ -492,6 +493,12 @@ class MyCuscoTripProductPage {
 
   renderItinerary(items) {
     const target = document.getElementById("productItinerary");
+    const packageOptions = document.getElementById("packageOptions");
+
+    if (packageOptions && !this.isPackage(this.product)) {
+      packageOptions.hidden = true;
+      packageOptions.innerHTML = "";
+    }
 
     if (!target) return;
 
@@ -501,10 +508,12 @@ class MyCuscoTripProductPage {
     }
 
     target.innerHTML = items.map((item, index) => {
-      const images = this.collectItineraryItemImages(item).slice(0, 2);
+      const images = this.shouldShowTourItineraryImages()
+        ? this.collectItineraryItemImages(item).slice(0, 1)
+        : [];
 
       return `
-        <div class="experience-itinerary-item experience-itinerary-item--visual">
+        <div class="experience-itinerary-item ${images.length ? "experience-itinerary-item--visual" : ""}">
           <div class="experience-itinerary-item__content">
             <h3 class="experience-itinerary-day-title">${this.escapeHtml(item.title || `Paso ${index + 1}`)}</h3>
             <p>${this.escapeHtml(item.description || "")}</p>
@@ -513,6 +522,16 @@ class MyCuscoTripProductPage {
         </div>
       `;
     }).join("");
+  }
+
+  shouldShowTourItineraryImages() {
+    // Oculto por ahora para tours sueltos. Para reactivarlas más adelante, cambia esta función a true
+    // o agrega una bandera por producto, por ejemplo: product.showItineraryImages = true.
+    return Boolean(this.product?.showItineraryImages === true || this.product?.raw?.showItineraryImages === true);
+  }
+
+  getItineraryImageSourceNotes() {
+    return "Las imágenes del itinerario se toman desde cada item del JSON: itinerary[].image, itinerary[].images, itinerary[].media.image o itinerary[].media.images. En paquetes dinámicos también se usan images.cover o image del tour relacionado.";
   }
 
   renderFaq(items) {
@@ -752,7 +771,7 @@ class MyCuscoTripProductPage {
     const trainCatalog = this.getTrainCatalog();
     const defaultSelection = this.getDefaultTrainSelection(product);
     const trainConfig = this.getTrainConfig(product);
-    const sameCompanyOnly = String(trainConfig.mode || "").toLowerCase().includes("same_company");
+    const sameCompanyOnly = this.shouldKeepSameTrainCompany(trainConfig);
 
     this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId);
     this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId);
@@ -765,29 +784,31 @@ class MyCuscoTripProductPage {
     if (!this.availableOutboundTrains.length && !this.availableReturnTrains.length) return;
 
     this.selectedOutboundTrainId = defaultSelection.outboundTrainId || this.availableOutboundTrains[0]?.id || "";
-    this.selectedReturnTrainId = defaultSelection.returnTrainId || this.availableReturnTrains[0]?.id || "";
+    this.selectedReturnTrainId = defaultSelection.returnTrainId || this.getCompatibleReturnTrains(sameCompanyOnly)[0]?.id || this.availableReturnTrains[0]?.id || "";
 
     section.hidden = false;
     container.innerHTML = `
       <div class="booking-train-selection" data-train-selection>
         <div class="booking-train-selection__intro">
           <strong>Tren turístico</strong>
-          <small>Elige los servicios de tren para tu experiencia a Machu Picchu. El cálculo compara contra el tren incluido por defecto.</small>
+          <small>${this.escapeHtml(this.getTrainSelectionIntro(product, trainConfig))}</small>
         </div>
         ${this.availableOutboundTrains.length ? `
           <label class="booking-train-select-field" for="outboundTrainSelect">
             <span>Tren de ida</span>
-            <select id="outboundTrainSelect" data-train-direction="outbound">
+            <select id="outboundTrainSelect" data-train-direction="outbound" ${this.isTrainDirectionLocked("outbound", trainConfig) ? "disabled" : ""}>
               ${this.availableOutboundTrains.map((train) => this.renderTrainOption(train, this.selectedOutboundTrainId)).join("")}
             </select>
+            ${this.isTrainDirectionLocked("outbound", trainConfig) ? `<small class="booking-field-help">Tren de ida fijo para esta versión.</small>` : ""}
           </label>
         ` : ""}
         ${this.availableReturnTrains.length ? `
           <label class="booking-train-select-field" for="returnTrainSelect">
             <span>Tren de retorno</span>
-            <select id="returnTrainSelect" data-train-direction="return">
+            <select id="returnTrainSelect" data-train-direction="return" ${this.isTrainDirectionLocked("return", trainConfig) ? "disabled" : ""}>
               ${this.getCompatibleReturnTrains(sameCompanyOnly).map((train) => this.renderTrainOption(train, this.selectedReturnTrainId)).join("")}
             </select>
+            ${this.isTrainDirectionLocked("return", trainConfig) ? `<small class="booking-field-help">Tren de retorno fijo para esta versión.</small>` : ""}
           </label>
         ` : ""}
         <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
@@ -824,9 +845,8 @@ class MyCuscoTripProductPage {
 
   isTrainSelectionEnabled(product) {
     if (!product || this.isPackage(product)) return false;
-    const code = String(product.internalCode || product.code || product.id || "").toUpperCase();
     const config = this.getTrainConfig(product);
-    return Boolean(config.customerCanChangeTrain === true || String(config.mode || "").toLowerCase().includes("flexible") || ["MAPI001", "MAPI003"].includes(code));
+    return Boolean(config.required === true && config.fixedSelection !== true || config.customerCanChangeTrain === true || config.fixedDirection || config.fixedDirections);
   }
 
   getTrainConfig(product) {
@@ -835,8 +855,9 @@ class MyCuscoTripProductPage {
 
   getDefaultTrainSelection(product) {
     const source = product?.defaultTrainSelection || product?.raw?.defaultTrainSelection || this.getTrainConfig(product)?.defaultTrainSelection || this.getTrainConfig(product)?.defaultSelection || {};
-    const outboundTrainId = String(source.outboundTrainId || source.outbound || source.outboundCode || source.departureTrainId || source.departureTrainCode || source.goingTrainId || source.goingTrainCode || source.trainOut || "").trim();
-    const returnTrainId = String(source.returnTrainId || source.return || source.returnCode || source.inboundTrainId || source.inboundTrainCode || source.backTrainId || source.backTrainCode || source.trainReturn || "").trim();
+    const defaultCodes = this.getTrainConfig(product)?.defaultTrainCodes || {};
+    const outboundTrainId = String(source.outboundTrainId || source.outboundTrainCode || source.outbound || source.outboundCode || source.departureTrainId || source.departureTrainCode || source.goingTrainId || source.goingTrainCode || source.trainOut || defaultCodes.outbound || "").trim();
+    const returnTrainId = String(source.returnTrainId || source.returnTrainCode || source.return || source.returnCode || source.inboundTrainId || source.inboundTrainCode || source.backTrainId || source.backTrainCode || source.trainReturn || defaultCodes.return || "").trim();
     return { outboundTrainId, returnTrainId };
   }
 
@@ -849,7 +870,7 @@ class MyCuscoTripProductPage {
       if (Array.isArray(value)) { value.forEach((item) => visit(item, parent)); return; }
       if (typeof value !== "object") return;
 
-      const looksLikeTrain = Boolean(value.id || value.code || value.trainCode || value.serviceCode || value.name || value.label) && Boolean(value.departureTime || value.arrivalTime || value.direction || value.route || value.price || value.priceUSD || value.publishedPricing);
+      const looksLikeTrain = Boolean(value.id || value.code || value.trainCode || value.serviceCode || value.name || value.label || value.serviceName) && Boolean(value.departureTime || value.arrivalTime || value.direction || value.route || value.price || value.priceUSD || value.publishedPricing);
       if (looksLikeTrain) flattened.push(this.normalizeTrainOption({ ...parent, ...value }));
 
       Object.entries(value).forEach(([key, child]) => {
@@ -872,28 +893,115 @@ class MyCuscoTripProductPage {
 
   normalizeTrainOption(raw) {
     const id = String(raw.id || raw.code || raw.trainCode || raw.serviceCode || raw.slug || raw.name || "").trim();
-    const company = String(raw.company || raw.companyCode || raw.operator || raw.railCompany || "").trim();
+    const company = String(raw.company || raw.companyCode || raw.operator || raw.operatorKey || raw.railCompany || "").trim().toLowerCase();
+    const companyName = String(raw.companyName || raw.operatorName || raw.companyLabel || company || "").trim();
+    const category = String(raw.category || raw.trainCategory || raw.serviceCategory || "").trim().toLowerCase();
     const label = String(raw.label || raw.name || raw.serviceName || raw.trainName || id || "Tren turístico").trim();
-    const direction = String(raw.direction || raw.routeDirection || raw.type || "").toLowerCase();
-    const route = raw.route || raw.segment || raw.path || "";
+    const rawDirection = String(raw.direction || raw.operationalUse?.direction || raw.routeDirection || raw.type || "").toLowerCase();
+    const direction = rawDirection === "inbound" ? "return" : rawDirection;
+    const route = String(raw.route || raw.segment || raw.path || "").trim();
     const departureTime = String(raw.departureTime || raw.departure || raw.startTime || raw.time || "").trim();
     const arrivalTime = String(raw.arrivalTime || raw.arrival || raw.endTime || "").trim();
-    const price = Number(raw.priceUSD ?? raw.publishedPriceUSD ?? raw.price?.amount ?? raw.pricing?.amount ?? raw.publishedPricing?.amount ?? raw.additionalPriceUSD ?? 0);
-    return { id, company, label, direction, route, departureTime, arrivalTime, price, raw };
+    const price = Number(raw.priceUSD ?? raw.publishedPriceUSD ?? raw.price?.adult ?? raw.price?.amount ?? raw.pricing?.amount ?? raw.publishedPricing?.amount ?? raw.additionalPriceUSD ?? 0);
+    const isLocalTrain = Boolean(raw.isLocalTrain || company === "local" || category === "local");
+    return { id, company, companyName, category, label, direction, route, departureTime, arrivalTime, price, isLocalTrain, raw };
   }
 
   getDirectionalTrains(catalog, direction, defaultId = "") {
     const normalizedDirection = String(direction || "").toLowerCase();
+    const trainConfig = this.getTrainConfig(this.product);
     const filtered = catalog.filter((train) => {
       const trainDirection = String(train.direction || "").toLowerCase();
       const route = String(train.route || "").toLowerCase();
       const id = String(train.id || "").toLowerCase();
-      if (!trainDirection && !route) return true;
-      if (normalizedDirection === "outbound") return trainDirection.includes("out") || trainDirection.includes("ida") || trainDirection.includes("going") || id.includes("out") || id.includes("ida");
-      return trainDirection.includes("return") || trainDirection.includes("inbound") || trainDirection.includes("retorno") || trainDirection.includes("vuelta") || id.includes("return") || id.includes("ret");
+      const matchesDirection = normalizedDirection === "outbound"
+        ? trainDirection.includes("out") || trainDirection.includes("ida") || trainDirection.includes("going") || id.includes("out") || id.includes("ida") || route.endsWith("mapi")
+        : trainDirection.includes("return") || trainDirection.includes("inbound") || trainDirection.includes("retorno") || trainDirection.includes("vuelta") || id.includes("return") || id.includes("ret") || route.startsWith("mapi");
+      return matchesDirection && this.isTrainAllowedForDirection(train, normalizedDirection, trainConfig);
     });
-    const defaultTrain = defaultId ? catalog.find((train) => train.id === defaultId) : null;
-    return defaultTrain ? [defaultTrain, ...filtered.filter((train) => train.id !== defaultId)] : filtered;
+
+    const defaultTrain = defaultId ? catalog.find((train) => train.id === defaultId && this.isTrainAllowedForDirection(train, normalizedDirection, trainConfig, true)) : null;
+    const sorted = this.sortTrainOptions(filtered, normalizedDirection, trainConfig);
+    return defaultTrain ? [defaultTrain, ...sorted.filter((train) => train.id !== defaultId)] : sorted;
+  }
+
+  isTrainAllowedForDirection(train, direction, config, allowDefault = false) {
+    if (!train) return false;
+    const defaultCodes = config?.defaultTrainCodes || {};
+    const fixedDirection = this.isTrainDirectionLocked(direction, config);
+    const defaultId = direction === "outbound" ? defaultCodes.outbound : defaultCodes.return;
+
+    if (fixedDirection) return train.id === defaultId || allowDefault;
+
+    const allowedTrainCodes = config?.allowedTrainCodes?.[direction] || config?.allowedTrainCodes?.[direction === "return" ? "inbound" : direction];
+    if (allowedTrainCodes && !this.isAllowedByList(train.id, allowedTrainCodes)) return false;
+
+    if (!this.isAllowedByList(train.company, config?.allowedCompanies)) return false;
+    const allowedRoutes = config?.allowedRoutes?.[direction] || config?.allowedRoutes?.[direction === "return" ? "inbound" : direction];
+    if (!this.isAllowedByList(train.route, allowedRoutes)) return false;
+
+    const allowedCategories = config?.allowedCategories;
+    const directionCategories = allowedCategories && typeof allowedCategories === "object" && !Array.isArray(allowedCategories)
+      ? allowedCategories[direction] || allowedCategories[direction === "return" ? "inbound" : direction]
+      : allowedCategories;
+    if (directionCategories !== "all_available" && !this.isAllowedByList(train.category, directionCategories)) return false;
+
+    const windowRule = config?.timeWindows?.[direction] || config?.timeWindows?.[direction === "return" ? "inbound" : direction];
+    if (windowRule && !this.isTrainInsideTimeWindow(train, windowRule)) return false;
+
+    return true;
+  }
+
+  isAllowedByList(value, allowed) {
+    if (!allowed || allowed === "all_available") return true;
+    const list = Array.isArray(allowed) ? allowed : [allowed];
+    return list.map((item) => String(item || "").toLowerCase()).includes(String(value || "").toLowerCase());
+  }
+
+  isTrainInsideTimeWindow(train, rule) {
+    const minutes = this.timeToMinutes(train?.departureTime);
+    if (!Number.isFinite(minutes)) return true;
+    const min = this.timeToMinutes(rule?.min || rule?.from || rule?.after || "");
+    const max = this.timeToMinutes(rule?.max || rule?.to || rule?.before || "");
+    if (Number.isFinite(min) && minutes < min) return false;
+    if (Number.isFinite(max) && minutes > max) return false;
+    return true;
+  }
+
+  timeToMinutes(value) {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})/);
+    if (!match) return NaN;
+    return Number(match[1]) * 60 + Number(match[2]);
+  }
+
+  sortTrainOptions(list, direction, config) {
+    const sorted = [...list].sort((a, b) => {
+      const aMinutes = this.timeToMinutes(a.departureTime);
+      const bMinutes = this.timeToMinutes(b.departureTime);
+      return (Number.isFinite(aMinutes) ? aMinutes : 9999) - (Number.isFinite(bMinutes) ? bMinutes : 9999);
+    });
+
+    const max = config?.maxOptions?.[direction] || config?.maxOptions?.[direction === "return" ? "inbound" : direction];
+    return max ? sorted.slice(0, Number(max)) : sorted;
+  }
+
+  shouldKeepSameTrainCompany(config) {
+    if (!config) return false;
+    return Boolean(config.sameCompanyRoundTrip === true || String(config.mode || "").toLowerCase().includes("same_company") || config.returnOptionsRule === "same_company_as_outbound");
+  }
+
+  isTrainDirectionLocked(direction, config) {
+    const key = direction === "return" ? "return" : "outbound";
+    if (config?.fixedSelection === true) return true;
+    if (config?.fixedDirection === key) return true;
+    if (Array.isArray(config?.fixedDirections)) return config.fixedDirections.includes(key);
+    return false;
+  }
+
+  getTrainSelectionIntro(product, config) {
+    if (config?.fixedSelection === true) return "Esta versión ya tiene trenes definidos para mantener el horario operativo.";
+    if (config?.fixedDirection === "outbound" || config?.fixedDirections?.includes?.("outbound")) return "El tren de ida está definido por la categoría del producto. Puedes elegir el retorno disponible según la operación.";
+    return "Elige los servicios de tren disponibles para esta versión. La diferencia de precio se calculará según el tren seleccionado.";
   }
 
   createFallbackTrainOption(id, label) {
@@ -925,11 +1033,30 @@ class MyCuscoTripProductPage {
   }
 
   getCompatibleReturnTrains(sameCompanyOnly) {
-    if (!sameCompanyOnly) return this.availableReturnTrains;
     const outbound = this.getSelectedOutboundTrain();
-    if (!outbound?.company) return this.availableReturnTrains;
-    const compatible = this.availableReturnTrains.filter((train) => train.company === outbound.company);
-    return compatible.length ? compatible : this.availableReturnTrains;
+    const config = this.getTrainConfig(this.product);
+    let compatible = this.availableReturnTrains.filter((train) => this.isReturnTrainCompatible(outbound, train, sameCompanyOnly, config));
+    if (!compatible.length) compatible = [...this.availableReturnTrains];
+    return this.sortTrainOptions(compatible, "return", config);
+  }
+
+  isReturnTrainCompatible(outbound, returning, sameCompanyOnly, config = {}) {
+    if (!returning) return false;
+    if (this.isTrainDirectionLocked("return", config)) return true;
+    if (!outbound) return true;
+    if (outbound.isLocalTrain || returning.isLocalTrain) return true;
+    if (sameCompanyOnly && outbound.company && returning.company && outbound.company !== returning.company) return false;
+
+    const mode = String(this.product?.tripMode || this.product?.machuPicchuMode || "").toLowerCase();
+    const outboundArrival = this.timeToMinutes(outbound.arrivalTime);
+    const returnDeparture = this.timeToMinutes(returning.departureTime);
+    if (mode.includes("full") && Number.isFinite(outboundArrival) && Number.isFinite(returnDeparture)) {
+      return returnDeparture - outboundArrival >= 360;
+    }
+    if (mode.includes("overnight") && Number.isFinite(returnDeparture)) {
+      return returnDeparture >= 12 * 60;
+    }
+    return true;
   }
 
   updateTrainSelectionState(sameCompanyOnly) {
@@ -2205,37 +2332,34 @@ class MyCuscoTripProductPage {
       document.getElementById("packageOptions") ||
       this.createDynamicSection("packageOptions", "productItinerary");
 
-    if (!target) return;
+    if (!target || !Array.isArray(this.packageOptions)) return;
+
+    target.hidden = false;
+
+    const visibleLimit = 4;
+    const visibleOptions = this.packageOptionsExpanded
+      ? this.packageOptions
+      : this.packageOptions.slice(0, visibleLimit);
+    const hasMoreOptions = this.packageOptions.length > visibleLimit && !this.packageOptionsExpanded;
 
     target.innerHTML = `
-      <section class="package-options-section">
+      <section class="package-options-section" aria-label="Opciones de itinerario">
         <div class="package-options-section__header">
-          <h2>Opciones de itinerario disponibles</h2>
-          <p>Opciones generadas dinámicamente desde la configuración del paquete.</p>
+          <h2>Elige tu ruta sugerida</h2>
+          <p>Compara alternativas comerciales según ritmo, dificultad y experiencias principales. Puedes cambiar de opción sin perder la reserva.</p>
         </div>
 
-        <div class="package-options-list">
-          ${this.packageOptions.map((option, index) => {
-            const codes = Array.isArray(option.includedTourCodes)
-              ? option.includedTourCodes
-              : [];
-
-            const tourCount = codes.length;
-            const label = option.generationReason || "dinámica";
-
-            return `
-              <button
-                type="button"
-                class="package-option-btn ${index === this.selectedPackageOptionIndex ? "is-selected" : ""}"
-                data-package-option-index="${index}"
-              >
-                <strong>Opción ${index + 1}</strong>
-                <span>${tourCount} experiencia${tourCount === 1 ? "" : "s"}</span>
-                <small>${this.escapeHtml(label)}</small>
-              </button>
-            `;
-          }).join("")}
+        <div class="package-options-list package-options-list--cards">
+          ${visibleOptions.map((option, index) => this.renderDynamicPackageOptionCard(option, index)).join("")}
         </div>
+
+        ${hasMoreOptions ? `
+          <div class="package-options-section__more">
+            <button type="button" class="btn booking-secondary-btn" data-show-all-package-options>
+              Ver más opciones
+            </button>
+          </div>
+        ` : ""}
       </section>
     `;
 
@@ -2244,6 +2368,199 @@ class MyCuscoTripProductPage {
         this.selectDynamicPackageOption(Number(button.dataset.packageOptionIndex || 0));
       });
     });
+
+    target.querySelector("[data-show-all-package-options]")?.addEventListener("click", () => {
+      this.packageOptionsExpanded = true;
+      this.renderDynamicPackageOptions();
+    });
+  }
+
+  renderDynamicPackageOptionCard(option, index) {
+    const presentation = this.getPackageOptionPresentation(option, index);
+    const selected = index === this.selectedPackageOptionIndex;
+
+    return `
+      <article class="package-option-card ${selected ? "is-selected" : ""}">
+        <button
+          type="button"
+          class="package-option-btn package-option-btn--card ${selected ? "is-selected" : ""}"
+          data-package-option-index="${index}"
+          aria-pressed="${selected ? "true" : "false"}"
+        >
+          <span class="package-option-card__eyebrow">${this.escapeHtml(presentation.eyebrow)}</span>
+          <strong>${this.escapeHtml(presentation.title)}</strong>
+          <span class="package-option-card__summary">${this.escapeHtml(presentation.summary)}</span>
+          <small>${this.escapeHtml(presentation.description)}</small>
+          <span class="package-option-card__difficulty">${this.escapeHtml(presentation.difficulty)}</span>
+          <span class="package-option-card__cta">${selected ? "Ruta seleccionada" : "Seleccionar esta ruta"}</span>
+        </button>
+      </article>
+    `;
+  }
+
+  getPackageOptionPresentation(option, index) {
+    const titles = this.getPackageOptionTourTitles(option).slice(0, 6);
+    const title = this.getPackageOptionCommercialTitle(option, index, titles);
+    const summary = this.getPackageOptionCommercialSummary(option, titles);
+
+    return {
+      eyebrow: `Itinerario ${this.getAlphabeticIndex(index)}`,
+      title,
+      summary,
+      description: this.getPackageOptionCommercialDescription(option, titles),
+      difficulty: this.getPackageOptionDifficultyLabel(option, titles)
+    };
+  }
+
+  getPackageOptionTourTitles(option) {
+    const codes = this.getPackageOptionCodes(option);
+    const fallbackLabels = {
+      CUZ001: "City Tour",
+      CUZ002: "Valle Sagrado",
+      CUZ003: "Valle Sagrado",
+      CUZ003FD: "Valle Sagrado",
+      CUZ003CON: "Valle Sagrado con conexión",
+      CUZ003VIP: "Valle Sagrado VIP",
+      CUZ003VIPCON: "Valle Sagrado VIP con conexión",
+      CUZ004: "Maras y Moray",
+      CUZ005: "Laguna Humantay",
+      CUZ006: "Montaña de Colores",
+      CUZ007: "Palcoyo",
+      CUZ008: "Valle Sur",
+      CUZ009: "Bienvenida ancestral",
+      MAPI001: "Machu Picchu clásico",
+      MAPI002: "Machu Picchu express",
+      MAPI003: "Machu Picchu overnight",
+      MAPI004: "Machu Picchu overnight express"
+    };
+
+    return codes
+      .map((code) => {
+        const title = this.getTourTitleByCode(code);
+        return title && title !== code ? this.getCleanCommercialTourTitle(title) : fallbackLabels[code] || "Experiencia seleccionada";
+      })
+      .filter(Boolean)
+      .filter((title, position, list) => list.indexOf(title) === position);
+  }
+
+  getPackageOptionCodes(option) {
+    const codes = [];
+    const addCode = (value) => {
+      const clean = String(value || "").trim();
+      if (clean && /^(CUZ|MAPI|PER|TRK|TREK)/i.test(clean) && !codes.includes(clean)) codes.push(clean);
+    };
+
+    if (Array.isArray(option?.includedTourCodes)) option.includedTourCodes.forEach(addCode);
+    if (Array.isArray(option?.tourCodes)) option.tourCodes.forEach(addCode);
+    if (Array.isArray(option?.itineraryDays)) {
+      option.itineraryDays.forEach((day) => {
+        if (Array.isArray(day?.items)) {
+          day.items.forEach((item) => {
+            addCode(item?.internalCode || item?.code || item?.tourCode || item?.sourceTourCode);
+          });
+        }
+      });
+    }
+    if (Array.isArray(option?.days)) {
+      option.days.forEach((day) => {
+        if (Array.isArray(day?.items)) {
+          day.items.forEach((item) => addCode(item?.internalCode || item?.code || item?.tourCode || item?.sourceTourCode));
+        }
+      });
+    }
+
+    return codes;
+  }
+
+  getCleanCommercialTourTitle(title) {
+    return String(title || "")
+      .replace(/^tour\s+/i, "")
+      .replace(/\s+full\s*day$/i, "")
+      .replace(/\s+cl[aá]sico$/i, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  getPackageOptionCommercialTitle(option, index, titles = []) {
+    const text = this.normalizePlainText([
+      option?.commercialLabel,
+      option?.recommendedTitle,
+      option?.generationReason,
+      option?.machuPicchuMode,
+      option?.connectionMode,
+      option?.sacredValleyMode,
+      ...this.getPackageOptionCodes(option),
+      ...titles
+    ].join(" "));
+
+    if (index === 0 || text.includes("recommended") || text.includes("recomendada")) return "Ruta recomendada";
+    if (text.includes("humantay") && (text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo"))) return "Ruta intensa de naturaleza";
+    if (text.includes("humantay") || text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("trek")) return "Ruta con aventura";
+    if (text.includes("maras") || text.includes("moray") || text.includes("laguna") || text.includes("montana")) return "Ruta con naturaleza";
+    if (text.includes("vip") || text.includes("completa")) return "Ruta más completa";
+    if (text.includes("classic") || text.includes("clasica") || text.includes("city") || text.includes("valle")) return "Ruta clásica";
+
+    return `Itinerario ${this.getAlphabeticIndex(index)}`;
+  }
+
+  getPackageOptionCommercialSummary(option, titles = []) {
+    const cleanTitles = titles.filter(Boolean);
+    if (!cleanTitles.length) return "Ruta sugerida con experiencias principales por confirmar.";
+    if (cleanTitles.length <= 4) return cleanTitles.join(" · ");
+    return `${cleanTitles.slice(0, 4).join(" · ")} · +${cleanTitles.length - 4} más`;
+  }
+
+  getPackageOptionDifficultyLabel(option, titles = []) {
+    const text = this.normalizePlainText([...titles, ...this.getPackageOptionCodes(option), option?.generationReason].join(" "));
+    const hasHumantay = text.includes("humantay");
+    const hasMountain = text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("cuz006") || text.includes("cuz007");
+    const hasVip = text.includes("vip") || text.includes("completa");
+
+    if (hasHumantay && hasMountain) return "Ritmo alto · más naturaleza y caminatas";
+    if (hasHumantay || hasMountain) return "Ritmo medio/alto · incluye caminata escénica";
+    if (hasVip) return "Ritmo completo · más visitas en Valle Sagrado";
+    if (text.includes("conexion")) return "Ritmo eficiente · menos traslados repetidos";
+    return "Ritmo cómodo · ideal para primera visita";
+  }
+
+  getPackageOptionCommercialDescription(option, titles = []) {
+    const text = this.normalizePlainText([...titles, ...this.getPackageOptionCodes(option), option?.generationReason, option?.connectionMode, option?.sacredValleyMode].join(" "));
+    const hasMachu = text.includes("machu") || text.includes("mapi");
+    const hasValley = text.includes("valle") || text.includes("cuz002") || text.includes("cuz003");
+    const hasHumantay = text.includes("humantay") || text.includes("cuz005");
+    const hasMountain = text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("cuz006") || text.includes("cuz007");
+
+    if (hasHumantay && hasMountain) {
+      return "Pensada para viajeros que quieren sumar los paisajes naturales más fuertes de Cusco, con días de caminata y descansos intercalados.";
+    }
+
+    if (hasHumantay || hasMountain) {
+      return "Combina los imperdibles culturales con una salida de naturaleza para darle variedad al viaje sin hacerlo demasiado pesado.";
+    }
+
+    if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection" || text.includes("conexion")) {
+      return "Ruta eficiente que conecta Valle Sagrado con Machu Picchu y reduce traslados repetidos.";
+    }
+
+    if (hasMachu && hasValley) {
+      return "Opción equilibrada para conocer Cusco, Valle Sagrado y Machu Picchu con un ritmo cómodo.";
+    }
+
+    return "Ruta sugerida según duración, horarios de llegada y experiencias principales del paquete.";
+  }
+
+  getAlphabeticIndex(index) {
+    const value = Number(index || 0);
+    return String.fromCharCode(65 + Math.max(0, value % 26));
+  }
+
+  normalizePlainText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
   }
 
   selectDynamicPackageOption(index = 0) {
@@ -2257,11 +2574,15 @@ class MyCuscoTripProductPage {
     this.packageContent = null;
     this.dynamicQuote = null;
 
+    this.updatePackageOptionUrl(index);
+    this.renderDynamicPackageOptions();
+
     document.querySelectorAll("[data-package-option-index]").forEach((button) => {
       button.classList.toggle(
         "is-selected",
         Number(button.dataset.packageOptionIndex || 0) === index
       );
+      button.setAttribute("aria-pressed", Number(button.dataset.packageOptionIndex || 0) === index ? "true" : "false");
     });
 
     this.renderDynamicPackageItinerary();
@@ -2269,6 +2590,14 @@ class MyCuscoTripProductPage {
     this.renderDynamicPackageContent();
     this.refreshAccommodationSelections();
     this.updatePricing();
+  }
+
+  updatePackageOptionUrl(index) {
+    if (!window.history?.replaceState) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("option", String(index));
+    window.history.replaceState({}, "", url.toString());
   }
 
   renderDynamicPackageItinerary() {
@@ -2290,7 +2619,7 @@ class MyCuscoTripProductPage {
     if (!target) return;
 
     target.innerHTML = this.selectedItinerary.map((day) => {
-      const dayImages = this.collectDynamicDayImages(day).slice(0, 2);
+      const dayImages = this.collectDynamicDayImages(day).slice(0, 1);
 
       return `
         <div class="experience-itinerary-item experience-itinerary-item--visual experience-itinerary-item--day">
