@@ -4562,6 +4562,52 @@
         "fullDayMinimumReturnBufferMinutes": 360,
         "overnightMinimumReturnDepartureTime": "12:00"
       }
+    },
+    {
+      "code": "PERU_OLLA_MAPI_EXPEDITION_15_27",
+      "company": "perurail",
+      "companyName": "PeruRail",
+      "category": "expedition",
+      "serviceName": "Expedition referencial 15:27",
+      "route": "OLLA_MAPI",
+      "departureStation": "Ollantaytambo",
+      "arrivalStation": "Machu Picchu",
+      "departureTime": "15:27",
+      "arrivalTime": "17:02",
+      "frequency": "15:27",
+      "modality": "train",
+      "currency": "USD",
+      "price": {
+        "adult": 0,
+        "child": 0,
+        "guide": 0
+      },
+      "priceMode": "consult",
+      "recommendedDefault": false,
+      "tags": [
+        "overnight-express-outbound",
+        "pending-price-sync"
+      ],
+      "notes": "Horario agregado como referencia operativa para Overnight Express. Sin tarifa exacta cargada; actualizar precio antes de calcular diferencias.",
+      "direction": "outbound",
+      "isLocalTrain": false,
+      "operatorKey": "perurail",
+      "operationalUse": {
+        "direction": "outbound",
+        "isLocalTrain": false,
+        "nationalitiesOnly": [],
+        "appliesToFullDay": false,
+        "appliesToOvernight": true,
+        "sacredValleyConnectionRecommended": true,
+        "sacredValleyConnectionIdeal": false,
+        "requiresWarning": true
+      },
+      "compatibility": {
+        "sameOperatorRoundTripRequired": true,
+        "canMixWithAnyOperator": false,
+        "fullDayMinimumReturnBufferMinutes": 360,
+        "overnightMinimumReturnDepartureTime": "12:00"
+      }
     }
   ]
 }
