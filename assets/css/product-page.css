@@ -2440,3 +2440,26 @@ body.hotel-modal-open {
     padding: 14px;
   }
 }
+
+
+/* Corrección: si un día dinámico trae más de una imagen, apilarlas para evitar composición amontonada. */
+.experience-itinerary-item--day .experience-itinerary-media {
+  grid-template-columns: 1fr !important;
+}
+
+.experience-itinerary-item--day .experience-itinerary-media img {
+  width: 100%;
+}
+
+.package-option-card__difficulty {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(235, 181, 80, 0.16);
+  color: #70450c;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
