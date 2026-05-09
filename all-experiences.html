@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="./assets/css/header.css">
   <link rel="stylesheet" href="./assets/css/footer.css">
   <link rel="stylesheet" href="./assets/css/responsive.css">
-  <link rel="stylesheet" href="./assets/css/all-experiences.css">
+  <link rel="stylesheet" href="./assets/css/all-experiences.css?v=2">
 </head>
 <body>
   <div id="header-container"></div>
@@ -51,21 +51,14 @@
             </div>
           </div>
 
-          <div class="listing-quick-chips" aria-label="Filtros rápidos">
-            <button type="button" data-filter-chip="machu-picchu">Machu Picchu</button>
-            <button type="button" data-filter-chip="cusco">Cusco</button>
-            <button type="button" data-filter-chip="valle-sagrado">Valle Sagrado</button>
-            <button type="button" data-filter-chip="naturaleza">Naturaleza</button>
-            <button type="button" data-filter-chip="aventura">Aventura</button>
-            <button type="button" data-filter-chip="cultural">Cultural</button>
-            <button type="button" data-filter-chip="full-day">Full day</button>
-            <button type="button" data-filter-chip="paquetes">Paquetes</button>
-            <button type="button" data-filter-chip="con-hotel">Con hotel</button>
-            <button type="button" data-filter-chip="con-tren">Con tren</button>
-          </div>
+          <button id="toggleListingFiltersBtn" class="listing-more-options-btn" type="button" aria-expanded="false" aria-controls="listingAdvancedFilters">
+            Más opciones
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
 
-          <div class="listing-filter-group">
-            <label for="filterKind">Tipo de producto</label>
+          <div id="listingAdvancedFilters" class="listing-advanced-filters">
+            <div class="listing-filter-group">
+              <label for="filterKind">Tipo de producto</label>
             <select id="filterKind">
               <option value="">Todos</option>
               <option value="tours">Tours</option>
@@ -123,6 +116,7 @@
           <button id="clearFiltersBtn" class="btn listing-clear-btn" type="button">
             Limpiar filtros
           </button>
+          </div>
         </div>
       </aside>
 
@@ -217,6 +211,13 @@
       syncFooterAccordions();
       setTimeout(syncFooterAccordions, 200);
       setTimeout(initializeComponents, 300);
+      const toggleFiltersBtn = document.getElementById('toggleListingFiltersBtn');
+      const advancedFilters = document.getElementById('listingAdvancedFilters');
+      toggleFiltersBtn?.addEventListener('click', () => {
+        const isOpen = advancedFilters?.classList.toggle('is-open');
+        toggleFiltersBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
     }
 
     window.addEventListener('resize', syncFooterAccordions);
@@ -233,7 +234,7 @@
   <script src="./assets/js/core/catalog-normalizer.js"></script>
   <script src="./assets/js/core/search-service.js"></script>
   <script src="./assets/js/core/package-generator.js"></script>
-  <script src="./assets/js/pages/all-experiences.js"></script>
+  <script src="./assets/js/pages/all-experiences.js?v=2"></script>
   <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
