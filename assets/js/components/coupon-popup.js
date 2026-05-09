@@ -2,15 +2,13 @@
 
 /**
  * My Cusco Trip - Coupon Popup
- * Captura leads con cupón sin bloquear navegación ni formularios existentes.
- * Para conectar backend, reemplazar submitCouponLead(payload).
+ * Popup de captura de leads con cupón.
  */
 (function () {
   const STORAGE_KEY = "mct_coupon_popup_state";
   const DISMISS_DAYS = 7;
   const MIN_DELAY_MS = 2500;
   const MAX_DELAY_MS = 3500;
-  const SCROLL_THRESHOLD = 0.35;
 
   class MyCuscoTripCouponPopup {
     constructor(options = {}) {
@@ -42,14 +40,15 @@
       return (
         path.includes("registro-pasajeros") ||
         path.includes("booking-status") ||
-        path.includes("mi-reserva")
+        path.includes("mi-reserva") ||
+        path.includes("detalle-reserva") ||
+        path.includes("verificar-reserva")
       );
     }
 
     shouldSuppressPopup() {
       const state = this.getStoredState();
       if (state.registered === true) return true;
-
       if (!state.dismissedAt) return false;
 
       const dismissedAt = Number(state.dismissedAt);
@@ -75,29 +74,17 @@
     scheduleShow() {
       const delay = this.getRandomDelay();
       this.timer = window.setTimeout(() => this.show(), delay);
-      window.addEventListener("scroll", this.handleScroll, { passive: true });
     }
 
     getRandomDelay() {
       return Math.round(MIN_DELAY_MS + Math.random() * (MAX_DELAY_MS - MIN_DELAY_MS));
     }
 
-    handleScroll = () => {
-      if (this.hasShown) return;
-
-      const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-      const progress = window.scrollY / scrollable;
-
-      if (progress >= SCROLL_THRESHOLD) {
-        if (this.timer) window.clearTimeout(this.timer);
-        this.show();
-      }
-    };
-
     render() {
-      if (document.getElementById("couponPopup")) {
-        this.popup = document.getElementById("couponPopup");
-        this.form = this.popup?.querySelector("form") || null;
+      const existing = document.getElementById("couponPopup");
+      if (existing) {
+        this.popup = existing;
+        this.form = existing.querySelector("form") || null;
         return;
       }
 
@@ -106,37 +93,55 @@
       wrapper.className = "coupon-popup";
       wrapper.hidden = true;
       wrapper.setAttribute("role", "dialog");
-      wrapper.setAttribute("aria-modal", "false");
+      wrapper.setAttribute("aria-modal", "true");
       wrapper.setAttribute("aria-labelledby", "couponPopupTitle");
 
       wrapper.innerHTML = `
         <div class="coupon-popup__backdrop" data-coupon-close></div>
         <div class="coupon-popup__panel">
-          <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
-          <p class="coupon-popup__eyebrow">Oferta especial</p>
-          <h2 id="couponPopupTitle">Recibe ${this.escapeHtml(this.options.discountLabel)}</h2>
-          <p class="coupon-popup__intro">Déjanos tus datos y recibe un cupón para tu experiencia en Cusco o Machu Picchu.</p>
+          <div class="coupon-popup__visual" aria-hidden="true">
+            <div class="coupon-popup__phone"></div>
+            <div class="coupon-popup__ticket">
+              <span class="coupon-popup__ticket-icon">%</span>
+              <div>
+                <strong>${this.escapeHtml(this.options.discountLabel)}</strong>
+                <span>Aplica para tours y paquetes seleccionados</span>
+              </div>
+            </div>
+          </div>
 
-          <form class="coupon-popup__form" novalidate>
-            <label>
-              <span>Nombre</span>
-              <input type="text" name="name" autocomplete="name" required minlength="2" />
-            </label>
+          <div class="coupon-popup__content">
+            <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
+            <p class="coupon-popup__eyebrow">Oferta especial</p>
+            <h2 id="couponPopupTitle">Recibe ${this.escapeHtml(this.options.discountLabel)} en tu viaje a Cusco</h2>
+            <p class="coupon-popup__intro">Déjanos tus datos y recibe un cupón para reservar experiencias en Cusco, Machu Picchu y paquetes seleccionados.</p>
 
-            <label>
-              <span>WhatsApp</span>
-              <input type="tel" name="whatsapp" autocomplete="tel" required inputmode="tel" />
-            </label>
+            <div class="coupon-popup__code-box">
+              <span>Código</span>
+              <strong>${this.escapeHtml(this.options.couponCode)}</strong>
+            </div>
 
-            <label>
-              <span>Correo</span>
-              <input type="email" name="email" autocomplete="email" required />
-            </label>
+            <form class="coupon-popup__form" novalidate>
+              <label>
+                <span>Nombre</span>
+                <input type="text" name="name" autocomplete="name" required minlength="2" />
+              </label>
 
-            <p class="coupon-popup__message" data-coupon-message aria-live="polite"></p>
+              <label>
+                <span>WhatsApp</span>
+                <input type="tel" name="whatsapp" autocomplete="tel" required inputmode="tel" />
+              </label>
 
-            <button type="submit" class="btn coupon-popup__submit">Recibir cupón</button>
-          </form>
+              <label>
+                <span>Correo</span>
+                <input type="email" name="email" autocomplete="email" required />
+              </label>
+
+              <p class="coupon-popup__message" data-coupon-message aria-live="polite"></p>
+
+              <button type="submit" class="btn coupon-popup__submit">Recibir cupón</button>
+            </form>
+          </div>
         </div>
       `;
 
@@ -161,17 +166,16 @@
 
     show() {
       if (this.hasShown || !this.popup || this.shouldSuppressPopup()) return;
-    
+
       this.hasShown = true;
       this.popup.hidden = false;
       this.popup.classList.add("is-visible");
       document.body.classList.add("coupon-popup-open");
-      window.removeEventListener("scroll", this.handleScroll);
     }
 
     hide() {
       if (!this.popup) return;
-    
+
       this.popup.classList.remove("is-visible");
       this.popup.hidden = true;
       document.body.classList.remove("coupon-popup-open");
