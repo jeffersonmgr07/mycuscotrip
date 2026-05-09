@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/product-page.css?v=17" />
+  <link rel="stylesheet" href="./assets/css/product-page.css?v=18" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -364,7 +364,7 @@
               <div id="paymentInfo" class="booking-payment-info"></div>
 
               <button type="button" id="paypalButton" class="btn booking-main-btn">
-                Continuar con pago
+                Continuar a reserva
               </button>
             </form>
           </div>
@@ -464,6 +464,14 @@
         loadComponent("header", "header-container"),
         loadComponent("footer", "footer-container")
       ]);
+
+      if (typeof MyCuscoTripHeader === "function") {
+        try {
+          window.MyCuscoTripHeaderInstance = new MyCuscoTripHeader();
+        } catch (error) {
+          console.warn("Header JS no inicializado:", error);
+        }
+      }
     }
 
     if (document.readyState === "loading") {
@@ -484,8 +492,8 @@
   <script src="./assets/js/core/currency-service.js"></script>
   <script src="./assets/js/core/payment-service.js"></script>
   <script src="./assets/js/core/package-content-service.js"></script>
-  <script src="./assets/js/pages/product.js"></script>
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/pages/product.js?v=18"></script>
   <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
-<
