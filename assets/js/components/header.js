@@ -193,7 +193,7 @@ class MyCuscoTripHeader {
       "paquetes-cusco.html": ["paquetes-cusco.html"],
       "explora-peru.html": ["explora-peru.html"],
       "trekkings.html": ["trekkings.html"],
-      "mi-reserva.html": ["mi-reserva.html", "booking-status.html"]
+      "mi-reserva.html": ["mi-reserva.html"]
     };
 
     let activeLink = null;
@@ -218,18 +218,11 @@ class MyCuscoTripHeader {
         }
       });
 
-      if (!activeLink && currentFile === "booking-status.html" && href.includes("mi-reserva.html")) {
-        activeLink = link;
-      }
 
       if (!activeLink && (currentFile === "index.html" || currentFile === "") && currentHash) {
         if (href.endsWith(currentHash)) activeLink = link;
       }
     });
-
-    if (!activeLink && (currentFile === "index.html" || currentFile === "") && this.navLinks.length > 0) {
-      activeLink = this.navLinks[0];
-    }
 
     if (activeLink) {
       activeLink.classList.add("active");
