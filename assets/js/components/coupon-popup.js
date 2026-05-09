@@ -8,8 +8,8 @@
 (function () {
   const STORAGE_KEY = "mct_coupon_popup_state";
   const DISMISS_DAYS = 7;
-  const MIN_DELAY_MS = 8000;
-  const MAX_DELAY_MS = 12000;
+  const MIN_DELAY_MS = 2500;
+  const MAX_DELAY_MS = 3500;
   const SCROLL_THRESHOLD = 0.35;
 
   class MyCuscoTripCouponPopup {
@@ -161,17 +161,20 @@
 
     show() {
       if (this.hasShown || !this.popup || this.shouldSuppressPopup()) return;
-
+    
       this.hasShown = true;
       this.popup.hidden = false;
       this.popup.classList.add("is-visible");
+      document.body.classList.add("coupon-popup-open");
       window.removeEventListener("scroll", this.handleScroll);
     }
 
     hide() {
       if (!this.popup) return;
+    
       this.popup.classList.remove("is-visible");
       this.popup.hidden = true;
+      document.body.classList.remove("coupon-popup-open");
     }
 
     dismiss() {
