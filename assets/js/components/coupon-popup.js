@@ -2,7 +2,7 @@
 
 /**
  * My Cusco Trip - Coupon Popup
- * Popup de captura de leads con cupón.
+ * Captura leads con cupón sin bloquear navegación ni formularios existentes.
  */
 (function () {
   const STORAGE_KEY = "mct_coupon_popup_state";
@@ -13,8 +13,9 @@
   class MyCuscoTripCouponPopup {
     constructor(options = {}) {
       this.options = {
-        couponCode: options.couponCode || "CUSCO10",
+        couponCode: options.couponCode || "BESTWELCOME10",
         discountLabel: options.discountLabel || "10% de descuento",
+        title: options.title || "Recibe 10% de descuento en tu viaje a Cusco",
         endpoint: options.endpoint || "",
         ...options
       };
@@ -49,6 +50,7 @@
     shouldSuppressPopup() {
       const state = this.getStoredState();
       if (state.registered === true) return true;
+
       if (!state.dismissedAt) return false;
 
       const dismissedAt = Number(state.dismissedAt);
@@ -81,10 +83,9 @@
     }
 
     render() {
-      const existing = document.getElementById("couponPopup");
-      if (existing) {
-        this.popup = existing;
-        this.form = existing.querySelector("form") || null;
+      if (document.getElementById("couponPopup")) {
+        this.popup = document.getElementById("couponPopup");
+        this.form = this.popup?.querySelector("form") || null;
         return;
       }
 
@@ -99,26 +100,29 @@
       wrapper.innerHTML = `
         <div class="coupon-popup__backdrop" data-coupon-close></div>
         <div class="coupon-popup__panel">
-          <div class="coupon-popup__visual" aria-hidden="true">
-            <div class="coupon-popup__phone"></div>
-            <div class="coupon-popup__ticket">
-              <span class="coupon-popup__ticket-icon">%</span>
-              <div>
-                <strong>${this.escapeHtml(this.options.discountLabel)}</strong>
-                <span>Aplica para tours y paquetes seleccionados</span>
-              </div>
+          <section class="coupon-popup__visual" aria-hidden="true">
+            <div class="coupon-popup__card-image"></div>
+            <div class="coupon-popup__offer-card">
+              <span class="coupon-popup__offer-icon">%</span>
+              <span>
+                <strong class="coupon-popup__offer-title">${this.escapeHtml(this.options.discountLabel)}</strong>
+                <small class="coupon-popup__offer-text">Aplica para tours y paquetes seleccionados.</small>
+              </span>
             </div>
-          </div>
+          </section>
 
-          <div class="coupon-popup__content">
+          <section class="coupon-popup__content">
             <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
             <p class="coupon-popup__eyebrow">Oferta especial</p>
-            <h2 id="couponPopupTitle">Recibe ${this.escapeHtml(this.options.discountLabel)} en tu viaje a Cusco</h2>
-            <p class="coupon-popup__intro">Déjanos tus datos y recibe un cupón para reservar experiencias en Cusco, Machu Picchu y paquetes seleccionados.</p>
+            <h2 id="couponPopupTitle">${this.escapeHtml(this.options.title)}</h2>
+            <p class="coupon-popup__intro">Déjanos tus datos y recibe un cupón para tu experiencia en Cusco o Machu Picchu.</p>
 
-            <div class="coupon-popup__code-box">
-              <span>Código</span>
-              <strong>${this.escapeHtml(this.options.couponCode)}</strong>
+            <div class="coupon-popup__code-card">
+              <p class="coupon-popup__code-label">Usa este código al momento de reservar</p>
+              <div class="coupon-popup__code-row">
+                <strong class="coupon-popup__code" data-coupon-code>${this.escapeHtml(this.options.couponCode)}</strong>
+                <button type="button" class="coupon-popup__copy" data-coupon-copy>Copiar</button>
+              </div>
             </div>
 
             <form class="coupon-popup__form" novalidate>
@@ -141,7 +145,7 @@
 
               <button type="submit" class="btn coupon-popup__submit">Recibir cupón</button>
             </form>
-          </div>
+          </section>
         </div>
       `;
 
@@ -153,6 +157,10 @@
     bindEvents() {
       this.popup?.querySelectorAll("[data-coupon-close]").forEach((button) => {
         button.addEventListener("click", () => this.dismiss());
+      });
+
+      this.popup?.querySelector("[data-coupon-copy]")?.addEventListener("click", () => {
+        this.copyCouponCode();
       });
 
       this.form?.addEventListener("submit", (event) => this.handleSubmit(event));
@@ -184,6 +192,30 @@
     dismiss() {
       this.setStoredState({ dismissedAt: Date.now() });
       this.hide();
+    }
+
+    async copyCouponCode() {
+      const code = this.options.couponCode;
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          const temp = document.createElement("textarea");
+          temp.value = code;
+          temp.setAttribute("readonly", "");
+          temp.style.position = "fixed";
+          temp.style.left = "-9999px";
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand("copy");
+          temp.remove();
+        }
+
+        this.setMessage(`Código ${code} copiado.`, false);
+      } catch (error) {
+        this.setMessage(`Tu código es ${code}.`, false);
+      }
     }
 
     async handleSubmit(event) {
@@ -275,7 +307,7 @@
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
+        .replace(/\"/g, "&quot;")
         .replace(/'/g, "&#039;");
     }
   }
