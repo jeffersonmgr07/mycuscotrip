@@ -1148,12 +1148,12 @@ class MyCuscoTripQuotePackages {
   getNoHotelOption(destination) {
     return {
       hotelCode: "no-hotel",
-      hotelName: "Opción sin alojamiento",
+      hotelName: "Sin alojamiento",
       destination,
       stars: 0,
       location: this.getDestinationLabel(destination),
       address: "",
-      summary: "El cliente gestionará su alojamiento por cuenta propia.",
+      summary: "El cliente seleccionará su propio alojamiento.",
       features: [],
       amenities: {},
       images: {
@@ -1369,6 +1369,29 @@ class MyCuscoTripQuotePackages {
     document.body.classList.add("quote-modal-open");
   }
 
+  renderQuoteHotelFeatures(hotel) {
+    const rawFeatures = Array.isArray(hotel?.features) ? hotel.features : [];
+    const amenityFeatures = [
+      hotel?.amenities?.breakfast ? `Desayuno: ${hotel.amenities.breakfast}` : "",
+      hotel?.amenities?.wifi ? "Wifi" : "",
+      hotel?.amenities?.commonAreas ? "Áreas comunes" : ""
+    ];
+
+    const features = [...amenityFeatures, ...rawFeatures]
+      .map((item) => String(item || "").trim())
+      .filter(Boolean)
+      .filter((item, index, arr) => arr.findIndex((other) => other.toLowerCase() === item.toLowerCase()) === index)
+      .slice(0, 7);
+
+    if (!features.length) return "";
+
+    return `
+      <div class="hotel-option-card__features" aria-label="Características del hotel">
+        ${features.map((feature) => `<span><i class="fas fa-check" aria-hidden="true"></i>${this.escapeHtml(feature)}</span>`).join("")}
+      </div>
+    `;
+  }
+
   renderHotelModalOptions(destination) {
     const list = document.getElementById("hotelModalList");
     if (!list) return;
@@ -1389,8 +1412,7 @@ class MyCuscoTripQuotePackages {
           <article class="hotel-option-card hotel-option-card--no-hotel ${isSelectedHotel ? "is-selected" : ""}">
             <div class="hotel-option-card__header">
               <div>
-                <h3>Opción sin alojamiento</h3>
-                <p>El cliente gestionará su alojamiento por cuenta propia.</p>
+                <h3>Sin alojamiento</h3>
               </div>
               <span class="hotel-option-card__badge">${priceZero}</span>
             </div>
@@ -1405,8 +1427,8 @@ class MyCuscoTripQuotePackages {
                     data-combo-key="no-room"
                   >
                     <span class="hotel-combo-btn__radio"></span>
-                    <span class="hotel-combo-btn__main">Seleccionar sin alojamiento</span>
-                    <span class="hotel-combo-btn__sub">${priceZero}</span>
+                    <span class="hotel-combo-btn__main">Seleccionar opción sin alojamiento</span>
+                    <span class="hotel-combo-btn__sub">El cliente seleccionará su propio alojamiento · ${priceZero}</span>
                   </button>
                 </div>
               </div>
@@ -1479,6 +1501,8 @@ class MyCuscoTripQuotePackages {
                   `
               }
             </div>
+
+            ${this.renderQuoteHotelFeatures ? this.renderQuoteHotelFeatures(hotel) : ""}
 
             <div class="hotel-option-card__body">
               <label>Opciones disponibles</label>
@@ -6136,8 +6160,12 @@ MyCuscoTripQuotePackages.prototype.updatePricing = function () {
 
   MyCuscoTripQuotePackages.prototype.getRoomQuantityLabel = function (quantity, singular, plural) {
     const safeQuantity = Math.max(1, Number(quantity || 1));
-    const prefix = String(safeQuantity).padStart(2, "0");
-    return `${prefix} ${safeQuantity === 1 ? singular : plural}`;
+    const cleanSingular = String(singular || "Habitación").replace(/^habitación\s+/i, "");
+    const cleanPlural = String(plural || "Habitaciones").replace(/^habitaciones\s+/i, "");
+    const cap = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+    return safeQuantity === 1
+      ? `Una Habitación ${cap(cleanSingular)}`
+      : `${safeQuantity} Habitaciones ${cap(cleanPlural)}`;
   };
 
   MyCuscoTripQuotePackages.prototype.cleanRoomLabelForQuote = function (room = {}) {
