@@ -568,3 +568,96 @@
 .listing-hero .btn:focus-visible {
   color: #ffffff !important;
 }
+
+/* Ajustes visuales All Experiences: filtros compactos y cards móviles */
+.listing-more-options-btn {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.listing-advanced-filters {
+  display: grid;
+}
+
+.listing-layout,
+.listing-results,
+.listing-grid,
+.listing-card,
+.listing-card__content {
+  min-width: 0;
+}
+
+@media (max-width: 1280px) {
+  .listing-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .listing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .listing-page .container,
+  .listing-layout {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .listing-filter-card {
+    border-radius: 20px;
+    padding: 16px;
+  }
+
+  .listing-filter-card h2 {
+    margin-bottom: 12px;
+    font-size: 1.12rem;
+  }
+
+  .listing-more-options-btn {
+    display: inline-flex;
+  }
+
+  .listing-advanced-filters {
+    display: none;
+    margin-top: 14px;
+  }
+
+  .listing-advanced-filters.is-open {
+    display: grid;
+  }
+
+  .listing-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .listing-card,
+  .experience-card,
+  .product-card {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .listing-card__content {
+    padding: 16px;
+  }
+
+  .listing-card__button,
+  .experience-card__button {
+    white-space: normal;
+    min-height: 44px;
+  }
+}
