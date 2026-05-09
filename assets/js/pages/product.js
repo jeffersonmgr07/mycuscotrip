@@ -228,26 +228,51 @@ class MyCuscoTripProductPage {
 
   async loadTours() {
     const localProducts = JSON.parse(localStorage.getItem("experiences") || "[]");
-
+  
     if (Array.isArray(localProducts) && localProducts.length > 0) {
       return localProducts.filter((item) => item.status !== "draft");
     }
-
-    const response = await fetch(this.resolvePath("assets/data/tours.json"), {
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error("No se pudo cargar tours.json");
+  
+    const sources = {
+      toursCusco: "assets/data/tours-cusco.json",
+      toursMachuPicchu: "assets/data/tours-machu-picchu.json",
+      toursPeru: "assets/data/tours-peru.json",
+      trekkingsCusco: "assets/data/trekkings-cusco.json",
+      packagesCusco: "assets/data/packages-cusco.json",
+      packagesPeru: "assets/data/packages-peru.json"
+    };
+  
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, path]) => {
+        try {
+          const response = await fetch(this.resolvePath(path), {
+            cache: "no-store"
+          });
+  
+          if (!response.ok) {
+            console.warn(`No se pudo cargar ${path}`);
+            return [key, null];
+          }
+  
+          return [key, await response.json()];
+        } catch (error) {
+          console.warn(`Error cargando ${path}:`, error);
+          return [key, null];
+        }
+      })
+    );
+  
+    const allData = {
+      data: Object.fromEntries(entries)
+    };
+  
+    if (window.MyCuscoTripCatalogNormalizer) {
+      return window.MyCuscoTripCatalogNormalizer
+        .normalizeCatalog(allData)
+        .filter((item) => item.status !== "draft");
     }
-
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      throw new Error("tours.json no contiene un array válido");
-    }
-
-    return data.filter((item) => item.status !== "draft");
+  
+    return [];
   }
 
   async loadHotels() {
