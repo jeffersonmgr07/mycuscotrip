@@ -3774,3 +3774,46 @@ body.is-generating-pdf .print-booking-offer__content {
     box-shadow: none !important;
   }
 }
+
+/* Ajustes visuales modal hotel cotizador */
+.hotel-option-card__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.hotel-option-card__features span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #eef7f1;
+  color: #0a3a26;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+.hotel-option-card--no-hotel .hotel-option-card__header {
+  padding-bottom: 8px;
+}
+.hotel-option-card--no-hotel .hotel-combo-btn {
+  min-height: 58px;
+  border-radius: 16px;
+}
+@media (max-width: 768px) {
+  .hotel-modal__header,
+  .quote-modal__header {
+    background: #0a3a26;
+    color: #fff;
+  }
+  .hotel-modal__header h2,
+  .hotel-modal__header p,
+  .quote-modal__header h2,
+  .quote-modal__header p {
+    color: #fff;
+  }
+  .hotel-option-card__features {
+    padding: 0 14px 12px;
+    margin-top: 0;
+  }
+}
