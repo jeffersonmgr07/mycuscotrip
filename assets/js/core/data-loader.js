@@ -17,7 +17,8 @@ const MCT_DATA_PATHS = {
   hotels: "assets/data/hotels.json",
   currencyConfig: "assets/data/currency-config.json",
   paymentConfig: "assets/data/payment-config.json",
-  destinations: "assets/data/destinations.json"
+  destinations: "assets/data/destinations.json",
+  privatePackages: "assets/data/private-packages.json"
 };
 
 async function loadJson(path) {
