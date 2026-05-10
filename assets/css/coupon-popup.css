@@ -1,9 +1,14 @@
 /* =====================================================
    Coupon Popup - My Cusco Trip
    Diseño promocional responsive
+
    Imágenes esperadas:
-   assets/css/img/coupon/background.jpg
-   assets/css/img/coupon/cover.jpg
+   assets/img/coupon/background.jpg
+   assets/img/coupon/cover.jpg
+
+   Rutas usadas desde CSS:
+   /assets/img/coupon/background.jpg
+   /assets/img/coupon/cover.jpg
    ===================================================== */
 
 #couponPopup[hidden] {
@@ -60,15 +65,21 @@
   }
 }
 
+/* =========================
+   Columna visual izquierda
+   ========================= */
+
 #couponPopup .coupon-popup__visual {
   position: relative !important;
   min-height: 548px !important;
   padding: 28px !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
+
   background-image: url("/assets/img/coupon/background.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
+  background-repeat: no-repeat !important;
 }
 
 #couponPopup .coupon-popup__visual::before {
@@ -77,7 +88,12 @@
   inset: 0;
   background:
     radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.24), transparent 26%),
-    linear-gradient(135deg, rgba(230, 9, 162, 0.72) 0%, rgba(154, 0, 112, 0.83) 52%, rgba(42, 0, 40, 0.94) 100%);
+    linear-gradient(
+      135deg,
+      rgba(230, 9, 162, 0.72) 0%,
+      rgba(154, 0, 112, 0.83) 52%,
+      rgba(42, 0, 40, 0.94) 100%
+    );
 }
 
 #couponPopup .coupon-popup__visual::after {
@@ -99,9 +115,12 @@
   margin: 18px auto 0 !important;
   border: 10px solid rgba(255, 255, 255, 0.92) !important;
   border-radius: 34px !important;
-  background-image: url("assets/img/coupon/cover.jpg") !important;
+
+  background-image: url("/assets/img/coupon/cover.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
+  background-repeat: no-repeat !important;
+
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.26) !important;
 }
 
@@ -149,6 +168,10 @@
   font-size: 0.82rem !important;
   line-height: 1.25 !important;
 }
+
+/* =========================
+   Contenido derecho
+   ========================= */
 
 #couponPopup .coupon-popup__content {
   position: relative !important;
@@ -331,23 +354,27 @@ body.coupon-popup-open {
   overflow: hidden !important;
 }
 
+/* =========================
+   Móvil
+   ========================= */
+
 @media (max-width: 760px) {
   #couponPopup.coupon-popup {
     align-items: center !important;
-    padding: 10px !important;
+    padding: 8px !important;
   }
 
   #couponPopup .coupon-popup__panel {
-    width: min(100%, 390px) !important;
-    max-height: 88vh !important;
+    width: min(100%, 370px) !important;
+    max-height: 86vh !important;
     grid-template-columns: 1fr !important;
-    border-radius: 24px !important;
+    border-radius: 22px !important;
     overflow-y: auto !important;
   }
 
   #couponPopup .coupon-popup__visual {
-    min-height: 116px !important;
-    padding: 14px !important;
+    min-height: 96px !important;
+    padding: 12px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -357,7 +384,12 @@ body.coupon-popup-open {
   #couponPopup .coupon-popup__visual::before {
     background:
       radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.18), transparent 28%),
-      linear-gradient(135deg, rgba(230, 9, 162, 0.76) 0%, rgba(139, 0, 102, 0.9) 58%, rgba(39, 0, 36, 0.96) 100%);
+      linear-gradient(
+        135deg,
+        rgba(230, 9, 162, 0.76) 0%,
+        rgba(139, 0, 102, 0.9) 58%,
+        rgba(39, 0, 36, 0.96) 100%
+      );
   }
 
   #couponPopup .coupon-popup__visual::after {
@@ -374,12 +406,12 @@ body.coupon-popup-open {
     right: auto !important;
     bottom: auto !important;
     width: auto !important;
-    min-width: 188px !important;
-    max-width: 220px !important;
+    min-width: 174px !important;
+    max-width: 210px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    padding: 10px 18px !important;
+    padding: 9px 16px !important;
     border-radius: 999px !important;
     text-align: center !important;
     background: rgba(255, 255, 255, 0.95) !important;
@@ -391,41 +423,41 @@ body.coupon-popup-open {
   }
 
   #couponPopup .coupon-popup__offer-title {
-    font-size: 0.98rem !important;
+    font-size: 0.92rem !important;
     line-height: 1.05 !important;
     text-align: center !important;
   }
 
   #couponPopup .coupon-popup__content {
-    gap: 6px !important;
-    padding: 12px 14px 12px !important;
-    font-size: 88% !important;
+    gap: 5px !important;
+    padding: 10px 12px 11px !important;
+    font-size: 86% !important;
   }
 
   #couponPopup .coupon-popup__close {
-    top: 10px !important;
-    right: 10px !important;
-    width: 38px !important;
-    height: 38px !important;
+    top: 8px !important;
+    right: 8px !important;
+    width: 36px !important;
+    height: 36px !important;
     color: #fff !important;
     background: rgba(230, 9, 162, 0.92) !important;
-    font-size: 1.55rem !important;
+    font-size: 1.45rem !important;
   }
 
   #couponPopup .coupon-popup__eyebrow {
     padding: 4px 9px !important;
-    font-size: 0.62rem !important;
+    font-size: 0.6rem !important;
   }
 
   #couponPopup h2 {
-    margin-right: 46px !important;
-    font-size: 0.9rem !important;
+    margin-right: 42px !important;
+    font-size: 0.84rem !important;
     line-height: 1.1 !important;
   }
 
   #couponPopup .coupon-popup__intro {
-    font-size: 0.69rem !important;
-    line-height: 1.25 !important;
+    font-size: 0.66rem !important;
+    line-height: 1.24 !important;
     margin-bottom: 0 !important;
   }
 
@@ -437,7 +469,7 @@ body.coupon-popup-open {
   }
 
   #couponPopup .coupon-popup__code-label {
-    font-size: 0.66rem !important;
+    font-size: 0.64rem !important;
   }
 
   #couponPopup .coupon-popup__code-row {
@@ -446,66 +478,67 @@ body.coupon-popup-open {
   }
 
   #couponPopup .coupon-popup__code {
-    min-height: 32px !important;
+    min-height: 31px !important;
     padding: 6px 10px !important;
-    font-size: 0.78rem !important;
+    font-size: 0.76rem !important;
   }
 
   #couponPopup .coupon-popup__copy {
-    min-height: 32px !important;
-    font-size: 0.72rem !important;
+    min-height: 31px !important;
+    font-size: 0.7rem !important;
   }
 
   #couponPopup .coupon-popup__form {
-    gap: 5px !important;
+    gap: 4px !important;
   }
 
   #couponPopup .coupon-popup__form label {
     gap: 3px !important;
-    font-size: 0.66rem !important;
+    font-size: 0.64rem !important;
   }
 
   #couponPopup .coupon-popup__form input {
-    min-height: 34px !important;
+    min-height: 33px !important;
     padding: 7px 10px !important;
     border-radius: 11px !important;
-    font-size: 0.78rem !important;
+    font-size: 0.76rem !important;
   }
 
   #couponPopup .coupon-popup__message {
-    min-height: 12px !important;
-    font-size: 0.66rem !important;
+    min-height: 11px !important;
+    font-size: 0.64rem !important;
   }
 
   #couponPopup .coupon-popup__submit {
-    min-height: 36px !important;
-    font-size: 0.72rem !important;
+    min-height: 35px !important;
+    font-size: 0.7rem !important;
   }
 }
 
 @media (max-width: 380px) {
   #couponPopup.coupon-popup {
-    padding: 8px !important;
+    padding: 6px !important;
   }
 
   #couponPopup .coupon-popup__panel {
-    max-height: 89vh !important;
+    width: min(100%, 350px) !important;
+    max-height: 88vh !important;
   }
 
   #couponPopup .coupon-popup__visual {
-    min-height: 102px !important;
+    min-height: 88px !important;
   }
 
   #couponPopup .coupon-popup__content {
-    padding: 10px 12px 10px !important;
+    padding: 9px 11px 10px !important;
   }
 
   #couponPopup h2 {
-    font-size: 0.84rem !important;
+    font-size: 0.8rem !important;
   }
 
   #couponPopup .coupon-popup__intro {
-    font-size: 0.66rem !important;
+    font-size: 0.64rem !important;
   }
 }
 
