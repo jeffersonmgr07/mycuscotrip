@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-10",
   "sourceFile": "assets/data/hotels.json",
   "scope": "hotel-catalog-for-dynamic-packages",
   "description": "Catálogo centralizado de hoteles por destino para paquetes dinámicos My Cusco Trip. Guarda tarifas netas confidenciales, margen hotelero del 25%, precio publicado estimado con comisiones de cobro/retiro y metadatos para futura vista privada de utilidad y descuento.",
@@ -1284,7 +1284,237 @@
       "destinationAliases": [
         "tambopata"
       ],
-      "hotels": [],
+      "hotels": [
+        {
+          "hotelCode": "tambopata-comfort-lodge-3s",
+          "hotelName": "Tambopata Comfort Lodge",
+          "stars": 3,
+          "destination": "tambopata",
+          "destinationLabel": "Tambopata / Puerto Maldonado",
+          "location": "Zona lodge Tambopata",
+          "address": "Puerto Maldonado / corredor Tambopata",
+          "summary": "Lodge amazónico cómodo para familias, con operación práctica para programas de 3 días y 2 noches.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Pensión completa según programa",
+            "Traslados fluviales o terrestres según operación",
+            "Habitaciones con baño privado",
+            "Mosquiteros",
+            "Áreas comunes",
+            "Actividades guiadas",
+            "Toallas incluidas"
+          ],
+          "amenities": {
+            "breakfast": "Desayuno incluido",
+            "meals": "Alimentación según programa",
+            "checkin": "Según llegada de vuelo",
+            "checkout": "Según salida de vuelo"
+          },
+          "images": {
+            "cover": "./assets/img/quote/fallbacks/cusco.jpg",
+            "gallery": [
+              "./assets/img/quote/fallbacks/cusco.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "double-matrimonial",
+              "label": "Cabaña matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "amount": 160,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Cabaña doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "amount": 170,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "triple",
+              "label": "Cabaña triple",
+              "bedType": "3 camas o distribución similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "amount": 230,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "family-4",
+              "label": "Cabaña familiar",
+              "bedType": "Distribución familiar hasta 4 pasajeros",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 3,
+              "publishedPricing": {
+                "amount": 285,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            }
+          ],
+          "search": {
+            "kind": "hotel",
+            "destinations": [
+              "tambopata",
+              "puerto-maldonado"
+            ],
+            "keywords": [
+              "tambopata lodge",
+              "puerto maldonado",
+              "amazonas",
+              "lodge"
+            ],
+            "stars": [
+              3
+            ],
+            "roomTypes": [
+              "double-matrimonial",
+              "double-twin",
+              "triple",
+              "family-4"
+            ]
+          }
+        },
+        {
+          "hotelCode": "tambopata-premium-eco-lodge-4s",
+          "hotelName": "Tambopata Premium Eco Lodge",
+          "stars": 4,
+          "destination": "tambopata",
+          "destinationLabel": "Tambopata / Puerto Maldonado",
+          "location": "Reserva / zona Tambopata",
+          "address": "Puerto Maldonado / Tambopata",
+          "summary": "Opción superior de lodge para familias que buscan mayor comodidad, mejor experiencia gastronómica y espacios más cuidados.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Pensión completa según programa",
+            "Guía local especializado",
+            "Habitaciones con baño privado",
+            "Mosquiteros",
+            "Áreas comunes panorámicas",
+            "Amenities básicos",
+            "Toallas incluidas",
+            "Actividades de naturaleza"
+          ],
+          "amenities": {
+            "breakfast": "Desayuno incluido",
+            "meals": "Pensión completa según programa",
+            "checkin": "Según llegada de vuelo",
+            "checkout": "Según salida de vuelo"
+          },
+          "images": {
+            "cover": "./assets/img/quote/fallbacks/cusco.jpg",
+            "gallery": [
+              "./assets/img/quote/fallbacks/cusco.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "double-matrimonial",
+              "label": "Cabaña superior matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "amount": 230,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Cabaña superior doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "amount": 240,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "triple",
+              "label": "Cabaña superior triple",
+              "bedType": "3 camas o distribución similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "amount": 330,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            },
+            {
+              "roomType": "family-4",
+              "label": "Cabaña superior familiar",
+              "bedType": "Distribución familiar hasta 4 pasajeros",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 3,
+              "publishedPricing": {
+                "amount": 430,
+                "currency": "USD",
+                "pricingIncludesPaymentFees": true
+              },
+              "notes": "Tarifa referencial para propuesta privada, sujeta a disponibilidad del lodge."
+            }
+          ],
+          "search": {
+            "kind": "hotel",
+            "destinations": [
+              "tambopata",
+              "puerto-maldonado"
+            ],
+            "keywords": [
+              "tambopata premium lodge",
+              "eco lodge",
+              "amazonas",
+              "puerto maldonado"
+            ],
+            "stars": [
+              4
+            ],
+            "roomTypes": [
+              "double-matrimonial",
+              "double-twin",
+              "triple",
+              "family-4"
+            ]
+          }
+        }
+      ],
       "status": "prepared_without_hotels",
       "notes": "Destino preparado para paquetes Perú. Agregar hoteles cuando existan tarifas netas confirmadas."
     }
