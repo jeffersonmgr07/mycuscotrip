@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-01",
+  "updatedAt": "2026-05-10",
   "description": "Catálogo inicial referencial de tours fuera de Cusco para My Cusco Trip. Tarifas marcadas como referenciales hasta recibir costos reales de operadores.",
   "sourceNotes": [
     "Estructura creada para All Experience y product.html.",
@@ -1818,6 +1818,123 @@
         ]
       },
       "status": "published"
+    },
+    {
+      "id": "peru_010_private",
+      "internalCode": "PER010",
+      "slug": "tambopata-lodge-3d-2n-privado",
+      "title": "Tambopata Lodge 3D/2N - Servicio privado",
+      "category": "peru",
+      "productKind": "tour",
+      "productFamily": "peru-tour",
+      "destination": "tambopata",
+      "type": "amazon-lodge",
+      "typeLabel": "3 días / 2 noches",
+      "badge": "Amazonía",
+      "featured": false,
+      "status": "draft",
+      "visibility": "private-source",
+      "showInCatalog": false,
+      "location": "Puerto Maldonado / Tambopata",
+      "currency": "USD",
+      "allowedCurrencies": [
+        "USD",
+        "PEN",
+        "EUR"
+      ],
+      "defaultCurrency": "USD",
+      "days": 3,
+      "nights": 2,
+      "shortDescription": "Programa amazónico referencial para propuestas privadas con lodge en Tambopata o Puerto Maldonado.",
+      "description": "Programa privado o semiprivado de Amazonía con traslados en Puerto Maldonado, alojamiento en lodge, alimentación según programa y actividades de naturaleza.",
+      "duration": {
+        "label": "3 días / 2 noches",
+        "maxGroupSize": 8,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "operation": {
+        "frequency": "daily_on_request",
+        "pickupWindow": "Según vuelo de llegada a Puerto Maldonado",
+        "endTimeReference": "Según vuelo de salida"
+      },
+      "basePricing": {
+        "adult": 390,
+        "teen": 390,
+        "child": 350,
+        "currency": "USD",
+        "pricingStatus": "reference_pending_confirmation"
+      },
+      "serviceModes": {
+        "private": {
+          "enabled": true,
+          "label": "Servicio privado bajo solicitud"
+        }
+      },
+      "capacity": 8,
+      "images": {
+        "cover": "./assets/img/quote/fallbacks/cusco.jpg",
+        "gallery": [
+          "./assets/img/quote/fallbacks/cusco.jpg"
+        ]
+      },
+      "includes": [
+        "Recepción en aeropuerto de Puerto Maldonado",
+        "Traslados terrestres y/o fluviales según lodge",
+        "02 noches de alojamiento en lodge",
+        "Alimentación según programa",
+        "Actividades amazónicas programadas",
+        "Guía local"
+      ],
+      "excludes": [
+        "Vuelos internos",
+        "Bebidas alcohólicas",
+        "Propinas",
+        "Gastos personales"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Puerto Maldonado y traslado al lodge",
+          "description": "Recepción en aeropuerto, traslado al lodge, almuerzo y primera actividad amazónica."
+        },
+        {
+          "day": 2,
+          "title": "Experiencia amazónica en Tambopata",
+          "description": "Caminata interpretativa, observación de flora y fauna y actividad nocturna según programa del lodge."
+        },
+        {
+          "day": 3,
+          "title": "Retorno a Puerto Maldonado",
+          "description": "Desayuno y traslado al aeropuerto para tomar vuelo de salida."
+        }
+      ],
+      "search": {
+        "destinations": [
+          "tambopata",
+          "puerto-maldonado"
+        ],
+        "durationKeys": [
+          "3d2n"
+        ],
+        "includedTags": [
+          "amazonas",
+          "tambopata",
+          "lodge"
+        ],
+        "themes": [
+          "naturaleza",
+          "familias"
+        ],
+        "keywords": [
+          "tambopata",
+          "amazonas",
+          "puerto maldonado",
+          "lodge"
+        ]
+      }
     }
   ]
 }
