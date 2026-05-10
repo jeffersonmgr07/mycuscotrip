@@ -66,7 +66,7 @@
   padding: 28px !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
-  background-image: url("img/coupon/background.jpg") !important;
+  background-image: url("..img/coupon/background.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
 }
@@ -99,7 +99,7 @@
   margin: 18px auto 0 !important;
   border: 10px solid rgba(255, 255, 255, 0.92) !important;
   border-radius: 34px !important;
-  background-image: url("img/coupon/cover.jpg") !important;
+  background-image: url("..img/coupon/cover.jpg") !important;
   background-size: cover !important;
   background-position: center !important;
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.26) !important;
