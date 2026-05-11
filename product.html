@@ -421,6 +421,78 @@
     </div>
   </div>
 
+
+  <!-- MODAL DE PASAJEROS / PRE-RESERVA -->
+  <div id="passengerReservationModal" class="passenger-modal" hidden>
+    <div class="passenger-modal__backdrop" data-close-passenger-modal></div>
+
+    <div class="passenger-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="passengerModalTitle">
+      <button type="button" class="passenger-modal__close" id="closePassengerModalBtn" aria-label="Cerrar modal">
+        <i class="fas fa-xmark"></i>
+      </button>
+
+      <div class="passenger-modal__header">
+        <p class="passenger-modal__eyebrow">Pre-reserva generada</p>
+        <h2 id="passengerModalTitle">Registra a los pasajeros</h2>
+        <p id="passengerReservationCode" class="passenger-modal__code">CUS000000</p>
+        <p id="passengerReservationTimestamp" class="passenger-modal__subtitle"></p>
+      </div>
+
+      <div class="passenger-modal__body">
+        <div id="passengerPaymentSnapshot" class="passenger-modal__snapshot"></div>
+
+        <form id="passengerReservationForm" class="passenger-modal__form" novalidate>
+          <section class="passenger-modal__section passenger-modal__section--holder">
+            <div class="passenger-modal__section-title">
+              <strong>Pasajero 1 / Titular de reserva</strong>
+              <span>Datos obligatorios para continuar</span>
+            </div>
+
+            <div class="passenger-modal__grid">
+              <label>
+                <span>Nombres y apellidos</span>
+                <input type="text" name="holderFullName" required minlength="3" autocomplete="name" />
+              </label>
+              <label>
+                <span>Documento / Pasaporte</span>
+                <input type="text" name="holderDocument" required autocomplete="off" />
+              </label>
+              <label>
+                <span>WhatsApp</span>
+                <input type="tel" name="holderWhatsapp" required inputmode="tel" autocomplete="tel" />
+              </label>
+              <label>
+                <span>Correo</span>
+                <input type="email" name="holderEmail" required autocomplete="email" />
+              </label>
+            </div>
+
+            <label class="passenger-modal__check">
+              <input type="checkbox" name="holderTravels" checked />
+              <span>El titular también será pasajero de esta reserva.</span>
+            </label>
+          </section>
+
+          <section class="passenger-modal__section">
+            <div class="passenger-modal__section-title">
+              <strong>Otros turistas</strong>
+              <span>Puedes completarlos ahora o hasta 15 a 30 días antes de la fecha del viaje.</span>
+            </div>
+            <div id="additionalPassengersContainer" class="passenger-modal__additional"></div>
+          </section>
+
+          <p class="passenger-modal__message" data-passenger-message aria-live="polite"></p>
+
+          <div class="passenger-modal__actions">
+            <button type="button" class="btn booking-secondary-btn" data-close-passenger-modal>Completar después</button>
+            <button type="submit" class="btn booking-main-btn">Guardar pre-reserva</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <div id="footer-container"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -466,7 +538,13 @@
         loadComponent("footer", "footer-container")
       ]);
 
-      if (typeof MyCuscoTripHeader === "function") {
+      if (typeof window.initMyCuscoTripHeader === "function") {
+        try {
+          window.initMyCuscoTripHeader();
+        } catch (error) {
+          console.warn("Header JS no inicializado:", error);
+        }
+      } else if (typeof MyCuscoTripHeader === "function") {
         try {
           window.MyCuscoTripHeaderInstance = new MyCuscoTripHeader();
         } catch (error) {
