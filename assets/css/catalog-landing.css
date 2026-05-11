@@ -274,3 +274,10 @@
     height: 200px;
   }
 }
+
+
+/* Ocultar estado vacio en vitrinas catalogo cuando el catalogo ya se renderiza. */
+.catalog-empty,
+#catalogLandingEmpty {
+  display: none !important;
+}
