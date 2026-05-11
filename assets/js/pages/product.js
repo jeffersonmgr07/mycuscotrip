@@ -45,6 +45,7 @@ class MyCuscoTripProductPage {
     this.selectedCombinationsByDestination = {};
 
     this.activeHotelModalDestination = null;
+    this.currentPreReservation = null;
 
     this.init();
   }
@@ -2366,24 +2367,180 @@ class MyCuscoTripProductPage {
   }
 
   handlePaypalAction() {
-    const summary = this.getBookingSummary();
-    const actionTitle = this.isPeruPackage(this.product) ? "Aquí conectarás la solicitud de cotización." : "Aquí conectarás PayPal.";
-
-    alert(
-      `${actionTitle}\n\n` +
-      `Tour: ${summary.title}\n` +
-      `Fecha: ${summary.date}\n` +
-      `Horario: ${summary.departureTime || "No aplica"}\n` +
-      `Adultos: ${summary.adults}\n` +
-      `Niños: ${summary.children}\n` +
-      `Modalidad servicio: ${summary.serviceMode}\n` +
-      `Alojamiento: ${summary.accommodation.join(" | ") || "No aplica"}\n` +
-      `Extras: ${summary.extras.join(", ") || "Ninguno"}\n` +
-      `Modalidad pago: ${summary.paymentMode}\n` +
-      `Monto a pagar ahora: ${summary.payNow}\n` +
-      `Pagarás luego: ${summary.payLater}`
-    );
+    this.openPassengerReservationModal();
   }
+
+  openPassengerReservationModal() {
+    const modal = document.getElementById("passengerReservationModal");
+    if (!modal) return;
+
+    const preReservation = this.generatePreReservation();
+    this.currentPreReservation = preReservation;
+
+    this.setText("passengerReservationCode", preReservation.code);
+    this.setText("passengerReservationTimestamp", `Generada el ${preReservation.createdAtLabel}`);
+    this.renderPassengerPaymentSnapshot(preReservation);
+    this.renderAdditionalPassengerFields();
+    this.bindPassengerReservationModalEvents();
+
+    modal.hidden = false;
+    document.body.classList.add("passenger-modal-open");
+  }
+
+  closePassengerReservationModal() {
+    const modal = document.getElementById("passengerReservationModal");
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("passenger-modal-open");
+  }
+
+  bindPassengerReservationModalEvents() {
+    if (this.passengerModalEventsBound) return;
+    this.passengerModalEventsBound = true;
+
+    document.querySelectorAll("[data-close-passenger-modal]").forEach((button) => {
+      button.addEventListener("click", () => this.closePassengerReservationModal());
+    });
+
+    document.getElementById("closePassengerModalBtn")?.addEventListener("click", () => {
+      this.closePassengerReservationModal();
+    });
+
+    document.getElementById("passengerReservationForm")?.addEventListener("submit", (event) => {
+      this.handlePassengerReservationSubmit(event);
+    });
+  }
+
+  generatePreReservation() {
+    const now = new Date();
+    const timestampSeed = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+      String(now.getHours()).padStart(2, "0"),
+      String(now.getMinutes()).padStart(2, "0"),
+      String(now.getSeconds()).padStart(2, "0")
+    ].join("");
+
+    const hex = (Number(timestampSeed) % 0xffffff).toString(16).toUpperCase().padStart(6, "0").slice(-6);
+    const summary = this.getBookingSummary();
+
+    return {
+      code: `CUS${hex}`,
+      createdAt: now.toISOString(),
+      createdAtLabel: now.toLocaleString("es-PE", {
+        dateStyle: "medium",
+        timeStyle: "medium"
+      }),
+      productSlug: this.slug,
+      productTitle: summary.title,
+      date: summary.date,
+      adults: summary.adults,
+      children: summary.children,
+      totalPassengers: this.getTotalPassengers(),
+      paymentMode: summary.paymentMode,
+      serviceTotal: summary.serviceTotal,
+      payNow: summary.payNow,
+      payLater: summary.payLater,
+      summary
+    };
+  }
+
+  renderPassengerPaymentSnapshot(preReservation) {
+    const target = document.getElementById("passengerPaymentSnapshot");
+    if (!target) return;
+
+    target.innerHTML = `
+      <div><span>Producto</span><strong>${this.escapeHtml(preReservation.productTitle)}</strong></div>
+      <div><span>Fecha de viaje</span><strong>${this.escapeHtml(preReservation.date)}</strong></div>
+      <div><span>Total servicio</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
+      <div><span>Monto preparado para pago</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
+      <div><span>Saldo pendiente</span><strong>${this.escapeHtml(preReservation.payLater)}</strong></div>
+    `;
+  }
+
+  renderAdditionalPassengerFields() {
+    const container = document.getElementById("additionalPassengersContainer");
+    if (!container) return;
+
+    const additionalCount = Math.max(this.getTotalPassengers() - 1, 0);
+
+    if (!additionalCount) {
+      container.innerHTML = `<p class="passenger-modal__note">No hay pasajeros adicionales según la cantidad seleccionada.</p>`;
+      return;
+    }
+
+    container.innerHTML = Array.from({ length: additionalCount }, (_, index) => {
+      const passengerNumber = index + 2;
+      return `
+        <details class="passenger-modal__optional-passenger">
+          <summary>Pasajero ${passengerNumber} <span>Opcional por ahora</span></summary>
+          <div class="passenger-modal__grid">
+            <label>
+              <span>Nombres y apellidos</span>
+              <input type="text" name="passenger_${passengerNumber}_name" autocomplete="name" />
+            </label>
+            <label>
+              <span>Documento / Pasaporte</span>
+              <input type="text" name="passenger_${passengerNumber}_document" autocomplete="off" />
+            </label>
+            <label>
+              <span>Nacionalidad</span>
+              <input type="text" name="passenger_${passengerNumber}_nationality" autocomplete="country-name" />
+            </label>
+            <label>
+              <span>Fecha de nacimiento</span>
+              <input type="date" name="passenger_${passengerNumber}_birthdate" />
+            </label>
+          </div>
+        </details>
+      `;
+    }).join("");
+  }
+
+  handlePassengerReservationSubmit(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const message = document.querySelector("[data-passenger-message]");
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      if (message) {
+        message.textContent = "Completa los datos obligatorios del titular de reserva.";
+        message.classList.add("is-error");
+      }
+      return;
+    }
+
+    const data = new FormData(form);
+    const payload = {
+      ...this.currentPreReservation,
+      holder: {
+        fullName: String(data.get("holderFullName") || "").trim(),
+        document: String(data.get("holderDocument") || "").trim(),
+        whatsapp: String(data.get("holderWhatsapp") || "").trim(),
+        email: String(data.get("holderEmail") || "").trim(),
+        travels: data.get("holderTravels") === "on"
+      },
+      passengers: []
+    };
+
+    try {
+      localStorage.setItem(`mct_pre_reservation_${payload.code}`, JSON.stringify(payload));
+      if (message) {
+        message.textContent = `Pre-reserva ${payload.code} guardada. Lista para conectar con PayPal o pasarela de pago.`;
+        message.classList.remove("is-error");
+      }
+    } catch (error) {
+      console.error("No se pudo guardar la pre-reserva:", error);
+      if (message) {
+        message.textContent = "No se pudo guardar localmente la pre-reserva.";
+        message.classList.add("is-error");
+      }
+    }
+  }
+
   initDynamicPackageEngine() {
     if (!this.product || !this.isPackage(this.product)) return;
 
