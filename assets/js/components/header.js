@@ -131,21 +131,24 @@ class MyCuscoTripHeader {
 
   openMobileMenu() {
     this.navMenu?.classList.add("active");
+    document.body.classList.add("mobile-menu-open");
     document.body.style.overflow = "hidden";
   }
 
   closeMobileMenu() {
     this.navMenu?.classList.remove("active");
+    document.body.classList.remove("mobile-menu-open");
     document.body.style.overflow = "";
   }
 
   handleNavClick(event) {
     const link = event.currentTarget;
     const href = link.getAttribute("href") || "";
+    const isDropdownToggle = link.classList.contains("nav-dropdown-toggle");
 
     this.setActiveLink(link);
 
-    if (window.innerWidth < 992) {
+    if (window.innerWidth < 992 && !isDropdownToggle) {
       this.closeMobileMenu();
       const icon = this.mobileMenuBtn?.querySelector("i");
       if (icon) {
@@ -339,6 +342,20 @@ class MyCuscoTripHeader {
   }
 }
 
+window.MyCuscoTripHeader = MyCuscoTripHeader;
+
+window.initMyCuscoTripHeader = function initMyCuscoTripHeader() {
+  const headerElement = document.querySelector(".header");
+  if (!headerElement) return null;
+
+  if (window.MyCuscoTripHeaderInstance?.header === headerElement) {
+    return window.MyCuscoTripHeaderInstance;
+  }
+
+  window.MyCuscoTripHeaderInstance = new MyCuscoTripHeader();
+  return window.MyCuscoTripHeaderInstance;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-  window.MyCuscoTripHeader = new MyCuscoTripHeader();
+  window.initMyCuscoTripHeader();
 });
