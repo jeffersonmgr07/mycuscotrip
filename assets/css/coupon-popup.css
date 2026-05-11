@@ -5,6 +5,7 @@
    Imágenes esperadas:
    assets/img/coupon/background.jpg
    assets/img/coupon/cover.jpg
+   assets/img/coupon/banner-cupon-movil.jpg
 
    Rutas usadas desde CSS:
    /assets/img/coupon/background.jpg
@@ -545,5 +546,27 @@ body.coupon-popup-open {
 @media print {
   #couponPopup {
     display: none !important;
+  }
+}
+
+#couponPopup .coupon-popup__code-note {
+  margin: 0 !important;
+  color: #56645f !important;
+  font-size: 0.72rem !important;
+  line-height: 1.28 !important;
+  text-align: center !important;
+}
+
+
+@media (max-width: 760px) {
+  #couponPopup .coupon-popup__visual {
+    background-image: url("/assets/img/coupon/banner-cupon-movil.jpg") !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+
+  #couponPopup .coupon-popup__code-note {
+    font-size: 0.58rem !important;
+    line-height: 1.18 !important;
   }
 }
