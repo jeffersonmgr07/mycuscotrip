@@ -47,11 +47,7 @@
 
         <div id="catalogLandingGrid" class="catalog-grid"></div>
 
-        <div id="catalogLandingEmpty" class="catalog-empty" hidden>
-          <i class="fas fa-map-signs"></i>
-          <h3>No encontramos experiencias disponibles</h3>
-          <p>Revisa el catálogo general o vuelve más adelante para nuevas opciones.</p>
-        </div>
+        <div id="catalogLandingEmpty" class="catalog-empty" hidden aria-hidden="true"></div>
       </div>
     </section>
   </main>
@@ -88,9 +84,10 @@
     }
 
     function initializeHeader() {
-      if (window.MyCuscoTripHeader instanceof MyCuscoTripHeader) return;
-      if (typeof MyCuscoTripHeader === "function") {
-        window.MyCuscoTripHeader = new MyCuscoTripHeader();
+      if (typeof window.initMyCuscoTripHeader === "function") {
+        window.initMyCuscoTripHeader();
+      } else if (typeof MyCuscoTripHeader === "function") {
+        window.MyCuscoTripHeaderInstance = new MyCuscoTripHeader();
       }
     }
 
