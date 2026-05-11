@@ -13,9 +13,9 @@
   class MyCuscoTripCouponPopup {
     constructor(options = {}) {
       this.options = {
-        couponCode: options.couponCode || "BESTWELCOME10",
-        discountLabel: options.discountLabel || "10% de descuento",
-        title: options.title || "Recibe 10% de descuento en tu viaje a Cusco",
+        couponCode: options.couponCode || "BETSWELCOME05",
+        discountLabel: options.discountLabel || "Hasta 15% de descuento",
+        title: options.title || "Recibe hasta 15% de descuento en tu próximo viaje a Cusco",
         endpoint: options.endpoint || "",
         ...options
       };
@@ -115,14 +115,15 @@
             <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
             <p class="coupon-popup__eyebrow">Oferta especial</p>
             <h2 id="couponPopupTitle">${this.escapeHtml(this.options.title)}</h2>
-            <p class="coupon-popup__intro">Déjanos tus datos y recibe un cupón para tu experiencia en Cusco o Machu Picchu.</p>
+            <p class="coupon-popup__intro">Déjanos tu nombre, WhatsApp y correo para recibir el cupón real de hasta 15% y vivir una experiencia en Cusco o Machu Picchu.</p>
 
             <div class="coupon-popup__code-card">
-              <p class="coupon-popup__code-label">Usa este código al momento de reservar</p>
+              <p class="coupon-popup__code-label">Usa este código temporal</p>
               <div class="coupon-popup__code-row">
                 <strong class="coupon-popup__code" data-coupon-code>${this.escapeHtml(this.options.couponCode)}</strong>
                 <button type="button" class="coupon-popup__copy" data-coupon-copy>Copiar</button>
               </div>
+              <p class="coupon-popup__code-note">Este código solo ofrece 5% de descuento. Suscríbete con tus datos para mejorar este descuento y recibir el cupón real de hasta 15%.</p>
             </div>
 
             <form class="coupon-popup__form" novalidate>
@@ -228,6 +229,7 @@
         whatsapp: String(formData.get("whatsapp") || "").trim(),
         email: String(formData.get("email") || "").trim(),
         couponCode: this.options.couponCode,
+        requestedCouponLabel: "hasta 15%",
         page: window.location.href,
         createdAt: new Date().toISOString()
       };
@@ -243,7 +245,7 @@
       try {
         await this.submitCouponLead(payload);
         this.setStoredState({ registered: true, registeredAt: Date.now(), couponCode: this.options.couponCode });
-        this.setMessage(`Listo. Tu cupón es ${this.options.couponCode}.`, false);
+        this.setMessage("Listo. Recibimos tus datos y te enviaremos el cupón real de hasta 15%.", false);
         window.setTimeout(() => this.hide(), 1800);
       } catch (error) {
         console.error("No se pudo registrar el cupón:", error);
