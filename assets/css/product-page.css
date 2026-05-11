@@ -2637,3 +2637,254 @@ body.hotel-modal-open {
     background: transparent;
   }
 }
+
+
+/* =====================================================
+   Passenger reservation modal
+   ===================================================== */
+.passenger-modal[hidden] {
+  display: none !important;
+}
+
+.passenger-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2147482500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+}
+
+.passenger-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 18, 15, 0.72);
+  backdrop-filter: blur(7px);
+}
+
+.passenger-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 880px);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+}
+
+.passenger-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(10, 58, 38, 0.08);
+  color: #0a3a26;
+  cursor: pointer;
+}
+
+.passenger-modal__header {
+  padding: 30px 34px 20px;
+  background: linear-gradient(135deg, #0a3a26, #14533b);
+  color: #fff;
+}
+
+.passenger-modal__eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.passenger-modal__header h2 {
+  margin: 0 52px 8px 0;
+  color: #fff;
+}
+
+.passenger-modal__code {
+  display: inline-flex;
+  margin: 0 0 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 950;
+  letter-spacing: 0.12em;
+}
+
+.passenger-modal__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.passenger-modal__body {
+  padding: 24px 34px 32px;
+}
+
+.passenger-modal__snapshot {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.passenger-modal__snapshot div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #f4f8f5;
+  border: 1px solid rgba(10, 58, 38, 0.08);
+}
+
+.passenger-modal__snapshot span {
+  color: #66736b;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.passenger-modal__snapshot strong {
+  color: #0a3a26;
+  font-size: 0.9rem;
+}
+
+.passenger-modal__form,
+.passenger-modal__section {
+  display: grid;
+  gap: 16px;
+}
+
+.passenger-modal__section {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(10, 58, 38, 0.1);
+  background: #fff;
+}
+
+.passenger-modal__section--holder {
+  background: linear-gradient(135deg, rgba(10, 58, 38, 0.04), rgba(230, 9, 162, 0.04));
+}
+
+.passenger-modal__section-title {
+  display: grid;
+  gap: 4px;
+}
+
+.passenger-modal__section-title strong {
+  color: #0a3a26;
+}
+
+.passenger-modal__section-title span,
+.passenger-modal__note {
+  color: #66736b;
+  font-size: 0.9rem;
+}
+
+.passenger-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.passenger-modal__grid label {
+  display: grid;
+  gap: 6px;
+  color: #0a3a26;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
+.passenger-modal__grid input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(10, 58, 38, 0.14);
+  border-radius: 13px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.passenger-modal__check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #0a3a26;
+  font-weight: 700;
+}
+
+.passenger-modal__optional-passenger {
+  border: 1px solid rgba(10, 58, 38, 0.1);
+  border-radius: 16px;
+  padding: 12px;
+  background: #f9fbfa;
+}
+
+.passenger-modal__optional-passenger summary {
+  cursor: pointer;
+  color: #0a3a26;
+  font-weight: 900;
+}
+
+.passenger-modal__optional-passenger summary span {
+  color: #66736b;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.passenger-modal__optional-passenger .passenger-modal__grid {
+  margin-top: 12px;
+}
+
+.passenger-modal__message {
+  min-height: 20px;
+  margin: 0;
+  color: #0a3a26;
+  font-weight: 700;
+}
+
+.passenger-modal__message.is-error {
+  color: #a63a1a;
+}
+
+.passenger-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+body.passenger-modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .passenger-modal {
+    padding: 10px;
+  }
+
+  .passenger-modal__dialog {
+    width: 100%;
+    border-radius: 22px;
+  }
+
+  .passenger-modal__header,
+  .passenger-modal__body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .passenger-modal__snapshot,
+  .passenger-modal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .passenger-modal__actions {
+    flex-direction: column-reverse;
+  }
+}
