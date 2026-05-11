@@ -661,3 +661,32 @@
     min-height: 44px;
   }
 }
+
+
+/* Corrección móvil definitiva: filtros arriba y cards debajo en una sola columna. */
+@media (max-width: 768px) {
+  .listing-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+  }
+
+  .listing-sidebar,
+  .listing-results {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+
+  .listing-results {
+    display: block !important;
+    clear: both !important;
+  }
+
+  .listing-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+}
