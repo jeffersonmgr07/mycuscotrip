@@ -356,7 +356,7 @@
     "titularReserva": "John Klever Batista Rivera",
     "telefonoContacto": "+507 6714-5233",
     "codigoCupon": "VIA-85475879",
-    "cantidadPaxs": 7,
+    "cantidadPaxs": 6,
     "destino": "Cusco - Montaña de Colores Vinicunca",
     "packTour": "Tour Montaña de Colores - Vinicunca Full Day",
     "agenteAsignado": "Jefferson García",
@@ -431,8 +431,8 @@
         "incluido": true
       },
       {
-        "codigo": "UPG-ATV-FW",
-        "nombre": "Upgrade ATV Fort White - Cuatrimotos",
+        "codigo": "UPG-FOUR-WHEELER",
+        "nombre": "Upgrade Four-wheeler - Cuatrimotos",
         "fecha": "Jue - 14-May-2026",
         "horaInicio": "Por confirmar",
         "horaFin": "Por confirmar",
@@ -449,8 +449,8 @@
       "Asistencia personalizada durante la excursión"
     ],
     "noIncluye": [
-      "Ticket de ingreso a la montaña: US$ 8.00 por persona",
-      "Opción de cuatrimotos: US$ 45.00 por persona"
+      "Ticket de ingreso: US$ 8.90 por persona",
+      "Four-wheeler / cuatrimotos: US$ 59.90 por persona"
     ],
     "informacionAdicional": [
       "Punto de recogida: Ayenda Casa Escondida San Cristobal Premium, Calle Pumacurco, Cusco, Peru.",
@@ -479,16 +479,15 @@
       },
       "extras": [
         {
-          "label": "Pago pendiente - ATV Fort White",
-          "descripcion": "Pago de Fort White para la fecha de ingreso 14 de mayo de 2026.",
+          "label": "Pago Pendiente",
+          "descripcion": "Pago pendiente para la fecha de ingreso 14 de mayo de 2026.",
           "montoPen": 0,
-          "montoUsd": 270,
+          "montoUsd": 412.8,
           "url": "https://www.paypal.com/invoice/p/#LNWPQCCH4PBS24RX",
           "detalle": [
-            "Upgrade ATV Fort White / Cuatrimotos",
-            "Fecha de ingreso: Jue - 14-May-2026",
-            "PAXS #02 al #07 - USD 45.00 por persona",
-            "TOTAL PENDIENTE USD 270.00"
+            "Four-wheeler: USD 59.90 por persona x 6 = USD 359.40",
+            "Ticket de ingreso: USD 8.90 por persona x 6 = USD 53.40",
+            "TOTAL PENDIENTE USD 412.80"
           ],
           "badge": "PENDIENTE"
         }
