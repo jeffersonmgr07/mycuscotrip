@@ -179,6 +179,10 @@
       this.popup.hidden = false;
       this.popup.classList.add("is-visible");
       document.body.classList.add("coupon-popup-open");
+      this.trackEvent("coupon_popup_open", {
+        coupon_code: this.options.couponCode,
+        discount_label: this.options.discountLabel
+      });
     }
 
     hide() {
@@ -213,6 +217,10 @@
         }
 
         this.setMessage(`Código ${code} copiado.`, false);
+        this.trackEvent("coupon_code_copy", {
+          coupon_code: code,
+          event_category: "coupon"
+        });
       } catch (error) {
         this.setMessage(`Tu código es ${code}.`, false);
       }
@@ -244,6 +252,17 @@
       try {
         await this.submitCouponLead(payload);
         this.setStoredState({ registered: true, registeredAt: Date.now(), couponCode: this.options.couponCode });
+        this.trackEvent("coupon_form_submit", {
+          coupon_code: payload.couponCode,
+          requested_coupon_label: payload.requestedCouponLabel,
+          lead_source: "coupon_popup",
+          contact_channel: "form",
+          email_domain: payload.email.split("@")[1] || ""
+        }, { metaEventName: "Lead" });
+        this.trackEvent("generate_lead", {
+          lead_source: "coupon_popup",
+          coupon_code: payload.couponCode
+        }, { metaEventName: "Lead" });
         this.setMessage("Listo. Recibimos tus datos y te enviaremos el cupón real de hasta 15%.", false);
         window.setTimeout(() => this.hide(), 1800);
       } catch (error) {
@@ -301,6 +320,14 @@
       if (!target) return;
       target.textContent = message || "";
       target.classList.toggle("is-error", Boolean(isError));
+    }
+
+    trackEvent(eventName, params = {}, options = {}) {
+      if (typeof window.mctTrack === "function") {
+        window.mctTrack(eventName, params, options);
+      } else if (window.MyCuscoTripTracking?.track) {
+        window.MyCuscoTripTracking.track(eventName, params, options);
+      }
     }
 
     escapeHtml(value) {
