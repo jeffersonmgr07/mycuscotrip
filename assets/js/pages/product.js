@@ -1300,17 +1300,24 @@ class MyCuscoTripProductPage {
     container.innerHTML = summary.map((item) => {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additionalPerPerson = this.calculateAccommodationAdditionalPerPerson(item.destination);
-
       const destinationLabel = this.getDestinationLabel(item.destination);
-
       const cardTitle = destinationLabel.toLowerCase().includes("cusco")
         ? "Hotel en Cusco"
         : destinationLabel.toLowerCase().includes("aguas")
           ? "Hotel en Aguas Calientes"
           : `Hotel en ${destinationLabel}`;
+      const hasHotel = Boolean(selection?.hotel);
+      const isNoHotel = selection?.hotel?.hotelCode === "no-hotel";
+      const image = selection?.hotel?.images?.cover || selection?.hotel?.images?.gallery?.[0] || "";
 
       return `
-        <div class="booking-accommodation-card">
+        <div class="booking-accommodation-card ${hasHotel ? "booking-accommodation-card--selected" : ""}">
+          ${hasHotel && image && !isNoHotel ? `
+            <div class="booking-accommodation-card__thumb">
+              <img src="${this.resolveAssetPath(image)}" alt="${this.escapeHtml(selection.hotel.hotelName)}" loading="lazy" />
+            </div>
+          ` : ""}
+
           <div class="booking-accommodation-card__header">
             <strong>${this.escapeHtml(cardTitle)}</strong>
             <small>${item.nights} noche${item.nights > 1 ? "s" : ""}</small>
@@ -2378,10 +2385,11 @@ class MyCuscoTripProductPage {
     this.currentPreReservation = preReservation;
 
     this.setText("passengerReservationCode", preReservation.code);
-    this.setText("passengerReservationTimestamp", `Generada el ${preReservation.createdAtLabel}`);
+    this.setText("passengerReservationTimestamp", `Reserva generada: ${preReservation.createdAtDisplayLabel}`);
     this.renderPassengerPaymentSnapshot(preReservation);
-    this.renderAdditionalPassengerFields();
     this.bindPassengerReservationModalEvents();
+    this.syncPassengerHolderState();
+    this.renderAdditionalPassengerFields();
 
     modal.hidden = false;
     document.body.classList.add("passenger-modal-open");
@@ -2394,6 +2402,16 @@ class MyCuscoTripProductPage {
     document.body.classList.remove("passenger-modal-open");
   }
 
+
+  syncPassengerHolderState() {
+    const holderTravels = document.getElementById("holderTravelsCheckbox")?.checked !== false;
+    const title = document.getElementById("holderSectionTitle");
+
+    if (title) {
+      title.textContent = holderTravels ? "Titular de reserva / Pasajero 1" : "Titular de reserva";
+    }
+  }
+
   bindPassengerReservationModalEvents() {
     if (this.passengerModalEventsBound) return;
     this.passengerModalEventsBound = true;
@@ -2404,6 +2422,20 @@ class MyCuscoTripProductPage {
 
     document.getElementById("closePassengerModalBtn")?.addEventListener("click", () => {
       this.closePassengerReservationModal();
+    });
+
+    document.getElementById("holderTravelsCheckbox")?.addEventListener("change", () => {
+      this.syncPassengerHolderState();
+      this.renderAdditionalPassengerFields();
+    });
+
+    document.getElementById("passengerDetailsToggle")?.addEventListener("click", (event) => {
+      const button = event.currentTarget;
+      const snapshot = document.getElementById("passengerPaymentSnapshot");
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", expanded ? "false" : "true");
+      button.textContent = expanded ? "Ver detalles de la reserva" : "Ocultar detalles";
+      snapshot?.classList.toggle("is-open", !expanded);
     });
 
     document.getElementById("passengerReservationForm")?.addEventListener("submit", (event) => {
@@ -2426,22 +2458,30 @@ class MyCuscoTripProductPage {
     const summary = this.getBookingSummary();
 
     return {
-      code: `CUS${hex}`,
+      code: `CUZ${hex}`,
       createdAt: now.toISOString(),
       createdAtLabel: now.toLocaleString("es-PE", {
         dateStyle: "medium",
         timeStyle: "medium"
       }),
+      createdAtDisplayLabel: now.toLocaleString("es-PE", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }),
       productSlug: this.slug,
+      productId: this.product?.id || this.product?.code || this.slug,
       productTitle: summary.title,
       date: summary.date,
       adults: summary.adults,
       children: summary.children,
       totalPassengers: this.getTotalPassengers(),
+      currency: this.product?.currency || "USD",
       paymentMode: summary.paymentMode,
       serviceTotal: summary.serviceTotal,
       payNow: summary.payNow,
       payLater: summary.payLater,
+      status: "pre_reservation",
+      paymentStatus: "pending",
       summary
     };
   }
@@ -2453,8 +2493,8 @@ class MyCuscoTripProductPage {
     target.innerHTML = `
       <div><span>Producto</span><strong>${this.escapeHtml(preReservation.productTitle)}</strong></div>
       <div><span>Fecha de viaje</span><strong>${this.escapeHtml(preReservation.date)}</strong></div>
-      <div><span>Total servicio</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
-      <div><span>Monto preparado para pago</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
+      <div><span>Total del servicio</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
+      <div><span>Monto a pagar ahora</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
       <div><span>Saldo pendiente</span><strong>${this.escapeHtml(preReservation.payLater)}</strong></div>
     `;
   }
@@ -2463,7 +2503,10 @@ class MyCuscoTripProductPage {
     const container = document.getElementById("additionalPassengersContainer");
     if (!container) return;
 
-    const additionalCount = Math.max(this.getTotalPassengers() - 1, 0);
+    const holderTravels = document.getElementById("holderTravelsCheckbox")?.checked !== false;
+    const totalPassengers = this.getTotalPassengers();
+    const additionalCount = holderTravels ? Math.max(totalPassengers - 1, 0) : Math.max(totalPassengers, 0);
+    const startNumber = holderTravels ? 2 : 1;
 
     if (!additionalCount) {
       container.innerHTML = `<p class="passenger-modal__note">No hay pasajeros adicionales según la cantidad seleccionada.</p>`;
@@ -2471,18 +2514,36 @@ class MyCuscoTripProductPage {
     }
 
     container.innerHTML = Array.from({ length: additionalCount }, (_, index) => {
-      const passengerNumber = index + 2;
+      const passengerNumber = startNumber + index;
       return `
-        <details class="passenger-modal__optional-passenger">
-          <summary>Pasajero ${passengerNumber} <span>Opcional por ahora</span></summary>
-          <div class="passenger-modal__grid">
+        <details class="passenger-modal__optional-passenger" open>
+          <summary>Pasajero ${passengerNumber} <span>Datos del turista</span></summary>
+          <label class="passenger-modal__check passenger-modal__check--later">
+            <input type="checkbox" name="passenger_${passengerNumber}_complete_later" data-passenger-later="${passengerNumber}" />
+            <span>Ingresaré los datos de este pasajero más adelante.</span>
+          </label>
+          <div class="passenger-modal__grid" data-passenger-fields="${passengerNumber}">
             <label>
-              <span>Nombres y apellidos</span>
-              <input type="text" name="passenger_${passengerNumber}_name" autocomplete="name" />
+              <span>Nombres</span>
+              <input type="text" name="passenger_${passengerNumber}_firstName" autocomplete="given-name" />
             </label>
             <label>
-              <span>Documento / Pasaporte</span>
-              <input type="text" name="passenger_${passengerNumber}_document" autocomplete="off" />
+              <span>Apellidos</span>
+              <input type="text" name="passenger_${passengerNumber}_lastName" autocomplete="family-name" />
+            </label>
+            <label>
+              <span>Tipo de documento</span>
+              <select name="passenger_${passengerNumber}_documentType">
+                <option value="">Selecciona</option>
+                <option value="passport">Pasaporte</option>
+                <option value="dni">DNI</option>
+                <option value="id_card">Documento de identidad</option>
+                <option value="other">Otro</option>
+              </select>
+            </label>
+            <label>
+              <span>Número de documento</span>
+              <input type="text" name="passenger_${passengerNumber}_documentNumber" autocomplete="off" />
             </label>
             <label>
               <span>Nacionalidad</span>
@@ -2496,6 +2557,17 @@ class MyCuscoTripProductPage {
         </details>
       `;
     }).join("");
+
+    container.querySelectorAll("[data-passenger-later]").forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        const number = checkbox.dataset.passengerLater;
+        const fields = container.querySelector(`[data-passenger-fields="${CSS.escape(number)}"]`);
+        fields?.classList.toggle("is-disabled", checkbox.checked);
+        fields?.querySelectorAll("input, select").forEach((field) => {
+          field.disabled = checkbox.checked;
+        });
+      });
+    });
   }
 
   handlePassengerReservationSubmit(event) {
@@ -2514,28 +2586,86 @@ class MyCuscoTripProductPage {
     }
 
     const data = new FormData(form);
+    const holderTravels = data.get("holderTravels") === "on";
+    const totalPassengers = this.getTotalPassengers();
+    const startNumber = holderTravels ? 2 : 1;
+    const passengerSlots = holderTravels ? Math.max(totalPassengers - 1, 0) : Math.max(totalPassengers, 0);
+
+    const holder = {
+      firstName: String(data.get("holderFirstName") || "").trim(),
+      lastName: String(data.get("holderLastName") || "").trim(),
+      documentType: String(data.get("holderDocumentType") || "").trim(),
+      documentNumber: String(data.get("holderDocumentNumber") || "").trim(),
+      nationality: String(data.get("holderNationality") || "").trim(),
+      birthdate: String(data.get("holderBirthdate") || "").trim(),
+      whatsapp: String(data.get("holderWhatsapp") || "").trim(),
+      email: String(data.get("holderEmail") || "").trim(),
+      travels: holderTravels
+    };
+
+    const passengers = [];
+
+    if (holderTravels) {
+      passengers.push({
+        passengerNumber: 1,
+        role: "holder_passenger",
+        completionStatus: "complete",
+        firstName: holder.firstName,
+        lastName: holder.lastName,
+        documentType: holder.documentType,
+        documentNumber: holder.documentNumber,
+        nationality: holder.nationality,
+        birthdate: holder.birthdate,
+        whatsapp: holder.whatsapp,
+        email: holder.email
+      });
+    }
+
+    for (let i = 0; i < passengerSlots; i += 1) {
+      const number = startNumber + i;
+      const completeLater = data.get(`passenger_${number}_complete_later`) === "on";
+
+      passengers.push({
+        passengerNumber: number,
+        role: "traveler",
+        completionStatus: completeLater ? "pending" : "provided",
+        completeLater,
+        firstName: completeLater ? "" : String(data.get(`passenger_${number}_firstName`) || "").trim(),
+        lastName: completeLater ? "" : String(data.get(`passenger_${number}_lastName`) || "").trim(),
+        documentType: completeLater ? "" : String(data.get(`passenger_${number}_documentType`) || "").trim(),
+        documentNumber: completeLater ? "" : String(data.get(`passenger_${number}_documentNumber`) || "").trim(),
+        nationality: completeLater ? "" : String(data.get(`passenger_${number}_nationality`) || "").trim(),
+        birthdate: completeLater ? "" : String(data.get(`passenger_${number}_birthdate`) || "").trim()
+      });
+    }
+
     const payload = {
       ...this.currentPreReservation,
-      holder: {
-        fullName: String(data.get("holderFullName") || "").trim(),
-        document: String(data.get("holderDocument") || "").trim(),
-        whatsapp: String(data.get("holderWhatsapp") || "").trim(),
-        email: String(data.get("holderEmail") || "").trim(),
-        travels: data.get("holderTravels") === "on"
-      },
-      passengers: []
+      holderIsPassenger: holderTravels,
+      holder,
+      passengers,
+      passengerDataPolicy: "additional_passengers_can_be_completed_15_to_30_days_before_travel",
+      paymentGatewayReady: true,
+      checkoutPayload: {
+        reservationCode: this.currentPreReservation?.code,
+        currency: this.currentPreReservation?.currency || this.product?.currency || "USD",
+        amountToPayNow: this.currentPreReservation?.payNow,
+        pendingBalance: this.currentPreReservation?.payLater,
+        productId: this.currentPreReservation?.productId,
+        productTitle: this.currentPreReservation?.productTitle
+      }
     };
 
     try {
       localStorage.setItem(`mct_pre_reservation_${payload.code}`, JSON.stringify(payload));
       if (message) {
-        message.textContent = `Pre-reserva ${payload.code} guardada. Lista para conectar con PayPal o pasarela de pago.`;
+        message.textContent = `Reserva ${payload.code} lista. Continuaremos al pago cuando la pasarela esté conectada.`;
         message.classList.remove("is-error");
       }
     } catch (error) {
       console.error("No se pudo guardar la pre-reserva:", error);
       if (message) {
-        message.textContent = "No se pudo guardar localmente la pre-reserva.";
+        message.textContent = "No se pudo guardar localmente la reserva.";
         message.classList.add("is-error");
       }
     }
@@ -3271,9 +3401,17 @@ class MyCuscoTripProductPage {
   }
 
   formatRoomLabel(label) {
-    const normalized = String(label || "Habitación").trim();
+    const normalized = String(label || "Habitación").trim().replace(/\s+/g, " ");
     if (!normalized) return "Habitación";
-    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+
+    const cleaned = normalized
+      .replace(/^una?\s+/i, "")
+      .replace(/^\d+\s+/i, "")
+      .replace(/^habitaciones?\s+/i, "")
+      .trim();
+
+    const base = cleaned || "habitación";
+    return base.toLowerCase();
   }
 
   buildCombinationLabel(usedRooms) {
@@ -3283,10 +3421,12 @@ class MyCuscoTripProductPage {
           return entry.room.label;
         }
 
+        const count = Number(entry.count || 0);
         const roomLabel = this.formatRoomLabel(entry.room.label);
-        return entry.count === 1
-          ? `Una ${roomLabel}`
-          : `${entry.count} ${roomLabel}s`;
+        const roomWord = count === 1 ? "Habitación" : "Habitaciones";
+        const quantity = String(count).padStart(2, "0");
+
+        return `${quantity} ${roomWord} ${roomLabel}`;
       })
       .join(" + ");
   }
