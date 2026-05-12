@@ -2390,6 +2390,7 @@ class MyCuscoTripProductPage {
     this.bindPassengerReservationModalEvents();
     this.syncPassengerHolderState();
     this.renderAdditionalPassengerFields();
+    this.populateCountrySelects();
 
     modal.hidden = false;
     document.body.classList.add("passenger-modal-open");
@@ -2499,6 +2500,36 @@ class MyCuscoTripProductPage {
     `;
   }
 
+
+  getCountryOptionsHtml() {
+    const countries = [
+      "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia", "Argentina", "Armenia", "Australia", "Austria", "Azerbaiyán",
+      "Bahamas", "Bangladés", "Barbados", "Baréin", "Bélgica", "Belice", "Benín", "Bielorrusia", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután",
+      "Cabo Verde", "Camboya", "Camerún", "Canadá", "Catar", "Chad", "Chile", "China", "Chipre", "Colombia", "Comoras", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba",
+      "Dinamarca", "Dominica", "Ecuador", "Egipto", "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", "Estonia", "Etiopía",
+      "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", "Granada", "Grecia", "Guatemala", "Guinea", "Guinea-Bisáu", "Guinea Ecuatorial", "Guyana",
+      "Haití", "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón", "Israel", "Italia",
+      "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo",
+      "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México", "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montenegro", "Mozambique", "Myanmar",
+      "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger", "Nigeria", "Noruega", "Nueva Zelanda", "Omán", "Países Bajos", "Pakistán", "Palaos", "Panamá", "Papúa Nueva Guinea", "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Centroafricana", "República Checa", "República del Congo", "República Democrática del Congo", "República Dominicana", "Ruanda", "Rumanía", "Rusia",
+      "Samoa", "San Cristóbal y Nieves", "San Marino", "San Vicente y las Granadinas", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Serbia", "Seychelles", "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Sudáfrica", "Sudán", "Sudán del Sur", "Suecia", "Suiza", "Surinam",
+      "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez", "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Vaticano", "Venezuela", "Vietnam", "Yemen", "Yibuti", "Zambia", "Zimbabue"
+    ];
+
+    return `<option value="">Selecciona país</option>${countries.map((country) => `<option value="${this.escapeHtml(country)}">${this.escapeHtml(country)}</option>`).join("")}`;
+  }
+
+  populateCountrySelects(scope = document) {
+    const options = this.getCountryOptionsHtml();
+    scope.querySelectorAll?.("select[data-country-select]").forEach((select) => {
+      const current = select.value;
+      if (select.dataset.countriesLoaded === "true") return;
+      select.innerHTML = options;
+      if (current) select.value = current;
+      select.dataset.countriesLoaded = "true";
+    });
+  }
+
   renderAdditionalPassengerFields() {
     const container = document.getElementById("additionalPassengersContainer");
     if (!container) return;
@@ -2557,6 +2588,8 @@ class MyCuscoTripProductPage {
         </details>
       `;
     }).join("");
+
+    this.populateCountrySelects(container);
 
     container.querySelectorAll("[data-passenger-later]").forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
@@ -2721,24 +2754,21 @@ class MyCuscoTripProductPage {
     const hasMoreOptions = this.packageOptions.length > visibleLimit && !this.packageOptionsExpanded;
 
     target.innerHTML = `
-      <section class="package-options-section" aria-label="Opciones de itinerario">
-        <div class="package-options-section__header">
-          <h2>Elige tu ruta sugerida</h2>
-          <p>Compara alternativas comerciales según ritmo, dificultad y experiencias principales. Puedes cambiar de opción sin perder la reserva.</p>
-        </div>
+      <div class="package-options-section__header package-options-section__header--simple">
+        <p>Elige la alternativa que mejor se acomode a tus expectativas de viaje según dificultad, ritmo, experiencias deseadas o lugares que quieres visitar. Puedes cambiar de opción sin perder la reserva.</p>
+      </div>
 
-        <div class="package-options-list package-options-list--cards">
-          ${visibleOptions.map((option, index) => this.renderDynamicPackageOptionCard(option, index)).join("")}
-        </div>
+      <div class="package-options-list package-options-list--cards">
+        ${visibleOptions.map((option, index) => this.renderDynamicPackageOptionCard(option, index)).join("")}
+      </div>
 
-        ${hasMoreOptions ? `
-          <div class="package-options-section__more">
-            <button type="button" class="btn booking-secondary-btn" data-show-all-package-options>
-              Ver más opciones
-            </button>
-          </div>
-        ` : ""}
-      </section>
+      ${hasMoreOptions ? `
+        <div class="package-options-section__more">
+          <button type="button" class="btn booking-secondary-btn" data-show-all-package-options>
+            Ver más opciones
+          </button>
+        </div>
+      ` : ""}
     `;
 
     target.querySelectorAll("[data-package-option-index]").forEach((button) => {
