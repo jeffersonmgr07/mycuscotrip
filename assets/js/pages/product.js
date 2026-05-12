@@ -79,6 +79,7 @@ class MyCuscoTripProductPage {
 
       try {
         this.renderProduct(product);
+        this.trackProductView(product);
       } catch (renderError) {
         console.error("Error rendering product:", renderError);
         console.error(renderError?.stack || "Sin stack");
@@ -110,6 +111,30 @@ class MyCuscoTripProductPage {
       console.error(error?.stack || "Sin stack");
       this.renderNotFound("No se pudo cargar la experiencia.");
     }
+  }
+
+  trackEvent(eventName, params = {}, options = {}) {
+    if (typeof window.mctTrack === "function") {
+      window.mctTrack(eventName, params, options);
+    } else if (window.MyCuscoTripTracking?.track) {
+      window.MyCuscoTripTracking.track(eventName, params, options);
+    }
+  }
+
+  trackProductView(product) {
+    const productId = product?.id || product?.code || this.slug || "";
+    const price = Number(product?.price || product?.basePrice || product?.adultPrice || product?.pricing?.adult || 0) || 0;
+
+    this.trackEvent("view_item", {
+      item_id: productId,
+      item_name: product?.title || product?.name || "Experiencia",
+      item_category: product?.category || this.productType || "tour",
+      item_brand: "My Cusco Trip",
+      currency: product?.currency || "USD",
+      value: price,
+      product_slug: this.slug,
+      product_type: this.productType
+    }, { metaEventName: "ViewContent" });
   }
 
   async loadProductData() {
@@ -1542,6 +1567,14 @@ class MyCuscoTripProductPage {
 
     modal.hidden = false;
     document.body.classList.add("hotel-modal-open");
+    this.trackEvent("hotel_modal_open", {
+      destination,
+      destination_label: destinationLabel,
+      product_id: this.product?.id || this.product?.code || this.slug,
+      product_name: this.product?.title || "",
+      passengers,
+      nights
+    });
   }
 
   closeHotelModal() {
@@ -1638,6 +1671,18 @@ class MyCuscoTripProductPage {
     this.renderAccommodationOptions(this.product);
     this.bindAccommodationEvents();
     this.updatePricing();
+    this.trackEvent("hotel_selected", {
+      destination,
+      hotel_code: hotel.hotelCode,
+      hotel_name: hotel.hotelName,
+      hotel_stars: hotel.stars || 0,
+      accommodation_label: combo.label,
+      accommodation_key: combo.key,
+      additional_per_person: Number(combo.additionalPerPerson || 0),
+      currency: this.product?.currency || "USD",
+      product_id: this.product?.id || this.product?.code || this.slug,
+      product_name: this.product?.title || ""
+    });
     this.closeHotelModal();
   }
 
@@ -2306,6 +2351,9 @@ class MyCuscoTripProductPage {
         serviceTotal: `${currency} ${this.formatMoney(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0)}`,
         payNow: `${currency} ${this.formatMoney(this.dynamicQuote.payNow || 0)}`,
         payLater: `${currency} ${this.formatMoney(this.dynamicQuote.payLater || 0)}`,
+        rawServiceTotal: Number(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0),
+        rawPayNow: Number(this.dynamicQuote.payNow || 0),
+        rawPayLater: Number(this.dynamicQuote.payLater || 0),
         paymentMode: this.paymentMode === "full" ? "Pago completo" : "Pagar solo un adelanto"
       };
     }
@@ -2369,6 +2417,9 @@ class MyCuscoTripProductPage {
       serviceTotal: `${currency} ${this.formatMoney(serviceTotal)}`,
       payNow: `${currency} ${this.formatMoney(payNow)}`,
       payLater: `${currency} ${this.formatMoney(payLater)}`,
+      rawServiceTotal: Number(serviceTotal || 0),
+      rawPayNow: Number(payNow || 0),
+      rawPayLater: Number(payLater || 0),
       paymentMode: this.paymentMode === "full" ? "Pago completo" : "Pagar solo un adelanto"
     };
   }
@@ -2394,6 +2445,28 @@ class MyCuscoTripProductPage {
 
     modal.hidden = false;
     document.body.classList.add("passenger-modal-open");
+    this.trackEvent("passenger_modal_open", {
+      reservation_code: preReservation.code,
+      product_id: preReservation.productId,
+      product_name: preReservation.productTitle,
+      travel_date: preReservation.date,
+      currency: preReservation.currency,
+      value: Number(preReservation.payNowValue || 0),
+      total_value: Number(preReservation.serviceTotalValue || 0),
+      passengers: preReservation.totalPassengers
+    }, { metaEventName: "InitiateCheckout" });
+    this.trackEvent("begin_checkout", {
+      reservation_code: preReservation.code,
+      currency: preReservation.currency,
+      value: Number(preReservation.payNowValue || 0),
+      items: [{
+        item_id: preReservation.productId,
+        item_name: preReservation.productTitle,
+        item_category: this.productType || "tour",
+        quantity: 1,
+        price: Number(preReservation.serviceTotalValue || 0)
+      }]
+    }, { metaEventName: "InitiateCheckout" });
   }
 
   closePassengerReservationModal() {
@@ -2481,6 +2554,9 @@ class MyCuscoTripProductPage {
       serviceTotal: summary.serviceTotal,
       payNow: summary.payNow,
       payLater: summary.payLater,
+      serviceTotalValue: Number(summary.rawServiceTotal || 0),
+      payNowValue: Number(summary.rawPayNow || 0),
+      payLaterValue: Number(summary.rawPayLater || 0),
       status: "pre_reservation",
       paymentStatus: "pending",
       summary
@@ -2691,6 +2767,26 @@ class MyCuscoTripProductPage {
 
     try {
       localStorage.setItem(`mct_pre_reservation_${payload.code}`, JSON.stringify(payload));
+      this.trackEvent("pre_reservation_created", {
+        reservation_code: payload.code,
+        product_id: payload.productId,
+        product_name: payload.productTitle,
+        travel_date: payload.date,
+        currency: payload.currency || "USD",
+        value: Number(payload.payNowValue || 0),
+        total_value: Number(payload.serviceTotalValue || 0),
+        pending_balance: Number(payload.payLaterValue || 0),
+        passenger_count: payload.passengers?.length || payload.totalPassengers || 0,
+        holder_is_passenger: Boolean(payload.holderIsPassenger)
+      }, { metaEventName: "CompleteRegistration" });
+      this.trackEvent("begin_payment", {
+        reservation_code: payload.code,
+        product_id: payload.productId,
+        product_name: payload.productTitle,
+        currency: payload.currency || "USD",
+        value: Number(payload.payNowValue || 0),
+        payment_status: "pending"
+      }, { metaEventName: "InitiateCheckout" });
       if (message) {
         message.textContent = `Reserva ${payload.code} lista. Continuaremos al pago cuando la pasarela esté conectada.`;
         message.classList.remove("is-error");
