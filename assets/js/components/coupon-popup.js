@@ -115,15 +115,14 @@
             <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
             <p class="coupon-popup__eyebrow">Oferta especial</p>
             <h2 id="couponPopupTitle">${this.escapeHtml(this.options.title)}</h2>
-            <p class="coupon-popup__intro">Déjanos tus datos para recibir un mayor descuento.</p>
+            <p class="coupon-popup__intro">Suscríbete para recibir un mayor descuento.</p>
 
             <div class="coupon-popup__code-card">
-              <p class="coupon-popup__code-label">Usa este código temporal</p>
               <div class="coupon-popup__code-row">
                 <strong class="coupon-popup__code" data-coupon-code>${this.escapeHtml(this.options.couponCode)}</strong>
                 <button type="button" class="coupon-popup__copy" data-coupon-copy>Copiar</button>
               </div>
-              <p class="coupon-popup__code-note">Este código ofrece 5% de descuento. Suscríbete para mejorar este descuento.</p>
+              <p class="coupon-popup__code-note">Este código ofrece 5% de descuento. Suscríbete para mejorar este cupón de descuento.</p>
             </div>
 
             <form class="coupon-popup__form" novalidate>
@@ -144,7 +143,7 @@
 
               <p class="coupon-popup__message" data-coupon-message aria-live="polite"></p>
 
-              <button type="submit" class="btn coupon-popup__submit">Quiero mi mayor descuento</button>
+              <button type="submit" class="btn coupon-popup__submit">Suscribirme</button>
             </form>
           </section>
         </div>
