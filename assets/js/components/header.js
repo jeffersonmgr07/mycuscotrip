@@ -335,7 +335,8 @@ class MyCuscoTripHeader {
     const labels = {
       es: "ES",
       en: "EN",
-      pt: "PT"
+      pt: "PT",
+      fr: "FR"
     };
 
     this.langLabel.textContent = labels[lang] || "ES";
