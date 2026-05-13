@@ -34,7 +34,7 @@
       --radius-lg: 22px;
       --radius-md: 16px;
       --radius-sm: 12px;
-      --section-title-bg: #ffe97a;
+      --section-title-bg: #ffd84d;
     }
 
     * { box-sizing: border-box; }
@@ -1028,10 +1028,13 @@
 
       .pv-meta-item strong {
         display: block;
-        font-size: 10px;
+        font-size: 9.6px;
         text-transform: uppercase;
         color: #6b7280;
         margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .pv-meta-item span {
@@ -1041,14 +1044,17 @@
       }
 
       .pv-section-title {
-        background: #ece2b0;
-        border: 1px solid #d2c48c;
+        background: #ffd84d;
+        border: 1px solid #e5b900;
         padding: 6px 8px;
         font-weight: 800;
-        font-size: 12px;
+        font-size: 12.5px;
         text-transform: uppercase;
         margin-top: 10px;
         margin-bottom: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .pv-table {
@@ -1067,8 +1073,11 @@
       .pv-table th {
         background: #f6f6f6;
         text-align: center;
-        font-size: 10.5px;
+        font-size: 10.2px;
         text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .pv-table td {
@@ -1119,6 +1128,9 @@
         margin-bottom: 6px;
         font-size: 11px;
         color: #253b2f;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .pv-assist-box {
@@ -1227,13 +1239,18 @@
 
       .pv-services-table th,
       .pv-services-table td {
-        font-size: 10.7px;
-        line-height: 1.18;
+        font-size: 11.3px;
+        line-height: 1.2;
         padding: 5px 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: middle;
+      }
+
+      .pv-services-table th:nth-child(6),
+      .pv-services-table td:nth-child(6) {
+        font-size: 9px;
       }
 
       .pv-services-table th:nth-child(1),
@@ -1291,6 +1308,111 @@
 
       .birthday-icon {
         font-size: 1em;
+      }
+
+
+
+      .pv-section,
+      .pv-signature-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .pv-section-title,
+      .pv-section-title + .pv-table,
+      .pv-section-title + .pv-hotels-grid,
+      .pv-section-title + .pv-bottom {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      .pv-signature-section {
+        border: 1px solid #d7dbe0;
+        border-radius: 12px;
+        margin-top: 12px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .pv-signature-main {
+        display: grid;
+        grid-template-columns: 1fr 1.35fr;
+        gap: 12px;
+        align-items: center;
+        padding: 11px 14px;
+        background: linear-gradient(135deg, #f8fafc, #fff7cf);
+        border-bottom: 1px solid #d7dbe0;
+      }
+
+      .pv-signature-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .pv-signature-brand img {
+        width: 96px;
+        height: auto;
+        opacity: .62;
+        filter: grayscale(1);
+      }
+
+      .pv-signature-copy strong {
+        display: block;
+        color: #253b2f;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .pv-signature-copy span {
+        display: block;
+        color: #6b7280;
+        font-size: 10.5px;
+        line-height: 1.25;
+      }
+
+      .pv-socials {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      .pv-social-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid #d7dbe0;
+        border-radius: 999px;
+        padding: 5px 7px;
+        background: #fff;
+        color: #253b2f;
+        font-size: 9.5px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .pv-ad-banner-slot {
+        min-height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: .02em;
+        background: repeating-linear-gradient(135deg, #f8fafc, #f8fafc 8px, #f1f5f9 8px, #f1f5f9 16px);
+      }
+
+      .pv-ad-banner-slot img {
+        width: 100%;
+        max-height: 86px;
+        object-fit: cover;
+        display: block;
       }
 
       @page {
@@ -1713,6 +1835,46 @@
         .trim();
     }
 
+
+    function getPrimaryNameAndSurname(fullName) {
+      const parts = String(fullName || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .split(" ")
+        .filter(Boolean);
+      if (!parts.length) return { firstName: "Cliente", firstSurname: "" };
+      const firstName = parts[0];
+      const firstSurname = parts.length >= 3 ? parts[2] : (parts[1] || "");
+      return { firstName, firstSurname };
+    }
+
+    function formatVoucherTitleDate(reserva) {
+      const parts = parseDateParts(reserva?.fechaViaje || reserva?.fechaVoucher || reserva?.fechaEmision || "");
+      if (!parts) return "Travel-Voucher";
+      return `${String(parts.month).padStart(2, "0")}-${String(parts.day).padStart(2, "0")}-${parts.year}`;
+    }
+
+    function sanitizeDocumentTitle(value) {
+      return String(value || "")
+        .trim()
+        .replace(/[\\/:*?"<>|]+/g, "-")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+
+    function buildVoucherDocumentTitle(reserva) {
+      const date = formatVoucherTitleDate(reserva);
+      const { firstName, firstSurname } = getPrimaryNameAndSurname(reserva?.titularReserva || "");
+      const code = reserva?.codigo || "SIN-CODIGO";
+      return sanitizeDocumentTitle([date, firstName, firstSurname, code].filter(Boolean).join("-"));
+    }
+
+    function applyVoucherDocumentTitle(reserva) {
+      const title = buildVoucherDocumentTitle(reserva);
+      if (title) document.title = title;
+    }
+
     function applyStaticTranslations() {
       const t = i18n[currentLanguage];
       document.documentElement.lang = currentLanguage;
@@ -2107,8 +2269,9 @@
             <div class="pv-meta-item"><strong>${esc(t.coupon)}</strong><span>${esc(reserva.codigoCupon || t.noData)}</span></div>
           </div>
 
-          <div class="pv-section-title">${esc(t.passengers)}</div>
-          <table class="pv-table">
+          <div class="pv-section">
+            <div class="pv-section-title">${esc(t.passengers)}</div>
+            <table class="pv-table">
             <thead>
               <tr>
                 <th>${esc(t.fullName)}</th>
@@ -2133,10 +2296,12 @@
                 `;
               }).join("")}
             </tbody>
-          </table>
+            </table>
+          </div>
 
           ${hoteles.length ? `
-            <div class="pv-section-title">${esc(t.lodging)}</div>
+            <div class="pv-section">
+              <div class="pv-section-title">${esc(t.lodging)}</div>
             <div class="pv-hotels-grid">
               ${hoteles.map(h => `
                 <div class="pv-hotel-card">
@@ -2153,9 +2318,11 @@
                 </div>
               `).join("")}
             </div>
+            </div>
           ` : ""}
 
-          <div class="pv-section-title">${esc(t.services)}</div>
+          <div class="pv-section">
+            <div class="pv-section-title">${esc(t.services)}</div>
           <table class="pv-table pv-services-table">
             <thead>
               <tr>
@@ -2180,9 +2347,11 @@
               `).join("")}
             </tbody>
           </table>
+          </div>
 
           ${vuelos.length ? `
-            <div class="pv-section-title">${esc(t.transfers)}</div>
+            <div class="pv-section">
+              <div class="pv-section-title">${esc(t.transfers)}</div>
             <table class="pv-table">
               <thead>
                 <tr>
@@ -2207,9 +2376,11 @@
                 `).join("")}
               </tbody>
             </table>
+            </div>
           ` : ""}
 
-          <div class="pv-section-title">Información adicional</div>
+          <div class="pv-section">
+            <div class="pv-section-title">Información adicional</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
               ${incluye.length ? `<div class="pv-subtitle">Servicios incluidos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
@@ -2247,6 +2418,28 @@
               ` : ""}
             </div>
           </div>
+          </div>
+
+          <div class="pv-signature-section">
+            <div class="pv-signature-main">
+              <div class="pv-signature-brand">
+                <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
+                <div class="pv-signature-copy">
+                  <strong>My Cusco Trip</strong>
+                  <span>Gracias por viajar con nosotros. Síguenos y comparte tu experiencia.</span>
+                </div>
+              </div>
+              <div class="pv-socials">
+                <span class="pv-social-pill"><i class="fa-brands fa-instagram"></i> @mycuscotrip</span>
+                <span class="pv-social-pill"><i class="fa-brands fa-facebook-f"></i> My Cusco Trip</span>
+                <span class="pv-social-pill"><i class="fa-brands fa-tiktok"></i> @mycuscotrip</span>
+                <span class="pv-social-pill"><i class="fa-brands fa-whatsapp"></i> +51 900 608 980</span>
+              </div>
+            </div>
+            <div class="pv-ad-banner-slot">
+              ${reserva.bannerPromocional ? `<img src="${esc(reserva.bannerPromocional)}" alt="Banner promocional">` : `Espacio reservado para banner publicitario · sugerido: assets/img/reserva/banner-restaurantes.jpg`}
+            </div>
+          </div>
         </div>
       `;
     }
@@ -2266,6 +2459,7 @@
 
       try {
         const reserva = JSON.parse(reservaRaw);
+        applyVoucherDocumentTitle(reserva);
         webEl.innerHTML = renderWebVoucher(reserva);
 
         if (printEl) {
@@ -2292,6 +2486,13 @@
         initVoucher();
       });
     }
+
+    window.addEventListener("beforeprint", () => {
+      try {
+        const reserva = JSON.parse(localStorage.getItem("reservaSeleccionada") || "null");
+        if (reserva) applyVoucherDocumentTitle(reserva);
+      } catch (error) {}
+    });
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', async () => {
