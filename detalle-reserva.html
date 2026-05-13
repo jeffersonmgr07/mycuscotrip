@@ -881,23 +881,21 @@
     .birthday-name {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-weight: 800;
       color: #7a4a00;
     }
 
-    .birthday-badge {
+    .birthday-icon {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      margin-left: 8px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #ffe8a8;
-      color: #7a4a00;
-      font-size: .72rem;
-      font-weight: 800;
-      white-space: nowrap;
+      justify-content: center;
+      font-size: 1.05em;
+      line-height: 1;
+    }
+
+    .birthday-badge {
+      display: none !important;
     }
 
     @media print {
@@ -1229,9 +1227,9 @@
 
       .pv-services-table th,
       .pv-services-table td {
-        font-size: 9.4px;
-        line-height: 1.15;
-        padding: 4px 4px;
+        font-size: 10.7px;
+        line-height: 1.18;
+        padding: 5px 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1239,17 +1237,43 @@
       }
 
       .pv-services-table th:nth-child(1),
-      .pv-services-table td:nth-child(1) { width: 12%; }
+      .pv-services-table td:nth-child(1) { width: 11%; }
       .pv-services-table th:nth-child(2),
-      .pv-services-table td:nth-child(2) { width: 37%; }
+      .pv-services-table td:nth-child(2) { width: 38%; }
       .pv-services-table th:nth-child(3),
-      .pv-services-table td:nth-child(3) { width: 17%; }
+      .pv-services-table td:nth-child(3) { width: 16%; }
       .pv-services-table th:nth-child(4),
-      .pv-services-table td:nth-child(4) { width: 12%; }
+      .pv-services-table td:nth-child(4) { width: 11%; }
       .pv-services-table th:nth-child(5),
-      .pv-services-table td:nth-child(5) { width: 12%; }
+      .pv-services-table td:nth-child(5) { width: 11%; }
       .pv-services-table th:nth-child(6),
-      .pv-services-table td:nth-child(6) { width: 10%; }
+      .pv-services-table td:nth-child(6) {
+        width: 13%;
+        text-align: center;
+        font-size: 9px;
+      }
+
+      .pv-status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 52px;
+        padding: 3px 6px;
+        border-radius: 999px;
+        border: 1px solid #a7d9b8;
+        background: #ecfdf3;
+        color: #137333;
+        font-size: 8.6px;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .pv-status-pill.extra {
+        border-color: #f4c7a1;
+        background: #fff4e8;
+        color: #9a4b00;
+      }
 
       .pv-bottom,
       .pv-hotels-grid,
@@ -1261,9 +1285,12 @@
         white-space: nowrap;
       }
 
-      .birthday-badge {
-        font-size: 9px;
-        padding: 2px 5px;
+      .birthday-name {
+        gap: 5px;
+      }
+
+      .birthday-icon {
+        font-size: 1em;
       }
 
       @page {
@@ -1790,7 +1817,7 @@
                         const birthdayInfo = getTravelerBirthdayInfo(turista, servicios);
                         return `
                         <tr class="${birthdayInfo.active ? "birthday-row" : ""}">
-                          <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(birthdayInfo.icon)}</span>${esc(nombreTurista)}</span><span class="birthday-badge">${esc(birthdayInfo.text)}</span>` : esc(nombreTurista)}</td>
+                          <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(nombreTurista)}</span><span class="birthday-icon">${esc(birthdayInfo.icon)}</span></span>` : esc(nombreTurista)}</td>
                           <td>${esc(turista.tipoDocumento || t.noData)}</td>
                           <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                           <td>${esc(turista.nacionalidad || t.noData)}</td>
@@ -2097,7 +2124,7 @@
                 const birthdayInfo = getTravelerBirthdayInfo(turista, servicios);
                 return `
                 <tr class="${birthdayInfo.active ? "pv-birthday-row" : ""}">
-                  <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(birthdayInfo.icon)}</span>${esc(nombreTurista)}</span><span class="birthday-badge">${esc(birthdayInfo.text)}</span>` : esc(nombreTurista)}</td>
+                  <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(nombreTurista)}</span><span class="birthday-icon">${esc(birthdayInfo.icon)}</span></span>` : esc(nombreTurista)}</td>
                   <td>${esc(turista.tipoDocumento || t.noData)}</td>
                   <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                   <td>${esc(turista.nacionalidad || t.noData)}</td>
@@ -2148,7 +2175,7 @@
                   <td>${esc(formatServiceDatePrint(s.fecha) || t.noData)}</td>
                   <td>${esc(s.horaInicio || t.noData)}</td>
                   <td>${esc(s.horaFin || t.noData)}</td>
-                  <td>${esc(s.incluido ? t.included : t.extra)}</td>
+                  <td><span class="pv-status-pill ${s.incluido ? 'included' : 'extra'}">${esc(s.incluido ? t.included : t.extra)}</span></td>
                 </tr>
               `).join("")}
             </tbody>
