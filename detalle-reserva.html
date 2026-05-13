@@ -870,6 +870,36 @@
       }
     }
 
+
+    .birthday-row td,
+    .pv-birthday-row td {
+      background: #fff7df !important;
+      border-top: 1px solid #f2d28a;
+      border-bottom: 1px solid #f2d28a;
+    }
+
+    .birthday-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      color: #7a4a00;
+    }
+
+    .birthday-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #ffe8a8;
+      color: #7a4a00;
+      font-size: .72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
     @media print {
       body { background: white; }
       #header-container, #footer-container, .wa-float, .top-actions { display: none !important; }
@@ -1144,9 +1174,101 @@
         margin-bottom: 2px;
       }
 
+
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      .pv-classic {
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+      }
+
+      .pv-meta-item,
+      .pv-hotel-card,
+      .pv-info-box,
+      .pv-side-box,
+      .pv-payment-card,
+      .pv-qr-box img {
+        border-radius: 10px;
+      }
+
+      .pv-section-title {
+        border-radius: 10px 10px 0 0;
+        border-bottom: 0;
+      }
+
+      .pv-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid #d7dbe0;
+        border-top: 0;
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+        page-break-inside: avoid;
+      }
+
+      .pv-table th,
+      .pv-table td {
+        border-top: 1px solid #d7dbe0;
+        border-left: 1px solid #d7dbe0;
+        border-right: 0;
+        border-bottom: 0;
+      }
+
+      .pv-table th:first-child,
+      .pv-table td:first-child {
+        border-left: 0;
+      }
+
+      .pv-services-table {
+        table-layout: fixed;
+      }
+
+      .pv-services-table th,
+      .pv-services-table td {
+        font-size: 9.4px;
+        line-height: 1.15;
+        padding: 4px 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+      }
+
+      .pv-services-table th:nth-child(1),
+      .pv-services-table td:nth-child(1) { width: 12%; }
+      .pv-services-table th:nth-child(2),
+      .pv-services-table td:nth-child(2) { width: 37%; }
+      .pv-services-table th:nth-child(3),
+      .pv-services-table td:nth-child(3) { width: 17%; }
+      .pv-services-table th:nth-child(4),
+      .pv-services-table td:nth-child(4) { width: 12%; }
+      .pv-services-table th:nth-child(5),
+      .pv-services-table td:nth-child(5) { width: 12%; }
+      .pv-services-table th:nth-child(6),
+      .pv-services-table td:nth-child(6) { width: 10%; }
+
+      .pv-bottom,
+      .pv-hotels-grid,
+      .pv-meta-grid {
+        max-width: 100%;
+      }
+
+      .pv-birthday-row td {
+        white-space: nowrap;
+      }
+
+      .birthday-badge {
+        font-size: 9px;
+        padding: 2px 5px;
+      }
+
       @page {
         size: A4 portrait;
-        margin: 10mm;
+        margin: 12mm;
       }
     }
   </style>
@@ -1244,7 +1366,7 @@
         includes: "Servicios incluidos",
         notIncludes: "Servicios no incluidos / adicionales",
         recommendations: "Recomendaciones",
-        pendingPayments: "Pagos pendientes y extras",
+        pendingPayments: "Pagos pendientes",
         payNow: "Pagar ahora",
         goToPayment: "Ir al pago",
         completePayment: "Completar pago total",
@@ -1303,7 +1425,7 @@
         includes: "Included services",
         notIncludes: "Not included / additional services",
         recommendations: "Recommendations",
-        pendingPayments: "Pending and extra payments",
+        pendingPayments: "Pending payments",
         payNow: "Pay now",
         goToPayment: "Go to payment",
         completePayment: "Complete total payment",
@@ -1456,6 +1578,114 @@
       return field;
     }
 
+
+    function normalizeDateText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function parseDateParts(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return null;
+
+      let match = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+      if (match) {
+        return { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) };
+      }
+
+      match = raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+      if (match) {
+        const year = Number(match[3].length === 2 ? `20${match[3]}` : match[3]);
+        return { day: Number(match[1]), month: Number(match[2]), year };
+      }
+
+      const normalized = normalizeDateText(raw)
+        .replace(/\b(lunes|martes|miercoles|jueves|viernes|sabado|domingo|lun|mar|mie|jue|vie|sab|dom)\b/g, "")
+        .replace(/[,.]/g, " ")
+        .replace(/\s*-\s*/g, " ")
+        .replace(/\s+de\s+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      const monthMap = {
+        ene: 1, enero: 1, jan: 1, january: 1,
+        feb: 2, febrero: 2, february: 2,
+        mar: 3, marzo: 3, march: 3,
+        abr: 4, abril: 4, apr: 4, april: 4,
+        may: 5, mayo: 5,
+        jun: 6, junio: 6, june: 6,
+        jul: 7, julio: 7, july: 7,
+        ago: 8, agosto: 8, aug: 8, august: 8,
+        sep: 9, set: 9, sept: 9, septiembre: 9, setiembre: 9, september: 9,
+        oct: 10, octubre: 10, october: 10,
+        nov: 11, noviembre: 11, november: 11,
+        dic: 12, diciembre: 12, dec: 12, december: 12
+      };
+
+      match = normalized.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
+      if (match && monthMap[match[2]]) {
+        return { day: Number(match[1]), month: monthMap[match[2]], year: Number(match[3]) };
+      }
+
+      match = normalized.match(/([a-z]+)\s+(\d{1,2})\s+(\d{4})/);
+      if (match && monthMap[match[1]]) {
+        return { day: Number(match[2]), month: monthMap[match[1]], year: Number(match[3]) };
+      }
+
+      return null;
+    }
+
+    function getServiceDateParts(servicios) {
+      return (Array.isArray(servicios) ? servicios : [])
+        .map((servicio) => parseDateParts(servicio.fecha))
+        .filter(Boolean);
+    }
+
+    function getTravelerBirthdayInfo(turista, servicios) {
+      if (turista && turista.destacado) {
+        return {
+          active: true,
+          icon: turista.destacadoIcono || "🎂",
+          text: turista.destacadoTexto || "Cumpleaños"
+        };
+      }
+
+      const birth = parseDateParts(turista?.fechaNacimiento || turista?.fechaNacimientoTexto || "");
+      if (!birth) return { active: false, icon: "🎂", text: "" };
+
+      const matchingServiceDate = getServiceDateParts(servicios)
+        .find((date) => date.day === birth.day && date.month === birth.month);
+
+      if (!matchingServiceDate) return { active: false, icon: "🎂", text: "" };
+
+      const day = String(birth.day).padStart(2, "0");
+      const month = String(birth.month).padStart(2, "0");
+      return {
+        active: true,
+        icon: "🎂",
+        text: currentLanguage === "en"
+          ? `Birthday during service - ${month}/${day}`
+          : `Cumpleaños durante el servicio - ${day}/${month}`
+      };
+    }
+
+    function formatServiceDatePrint(value) {
+      const parts = parseDateParts(value);
+      if (!parts) return value || "";
+      const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+      return `${String(parts.day).padStart(2, "0")}-${months[parts.month - 1] || String(parts.month).padStart(2, "0")}-${parts.year}`;
+    }
+
+    function getServiceNamePrint(nombre) {
+      return String(getLocalizedField(nombre, currentLanguage) || "")
+        .replace(/\s+Full\s+Day\b/gi, " Full")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
     function applyStaticTranslations() {
       const t = i18n[currentLanguage];
       document.documentElement.lang = currentLanguage;
@@ -1555,15 +1785,19 @@
                       </tr>
                     </thead>
                     <tbody>
-                      ${turistas.map(turista => `
-                        <tr>
-                          <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
+                      ${turistas.map(turista => {
+                        const nombreTurista = turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData;
+                        const birthdayInfo = getTravelerBirthdayInfo(turista, servicios);
+                        return `
+                        <tr class="${birthdayInfo.active ? "birthday-row" : ""}">
+                          <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(birthdayInfo.icon)}</span>${esc(nombreTurista)}</span><span class="birthday-badge">${esc(birthdayInfo.text)}</span>` : esc(nombreTurista)}</td>
                           <td>${esc(turista.tipoDocumento || t.noData)}</td>
                           <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                           <td>${esc(turista.nacionalidad || t.noData)}</td>
                           <td>${esc(turista.fechaNacimiento || t.noData)}</td>
                         </tr>
-                      `).join("")}
+                        `;
+                      }).join("")}
                     </tbody>
                   </table>
                 </div>
@@ -1778,7 +2012,7 @@
 
                         ${p.url ? `
                           <a class="pay-link" href="${esc(p.url)}" target="_blank" rel="noopener">
-                            ${esc(t.goToPayment)}
+                            ${esc(t.payNow)}
                           </a>
                         ` : ""}
                       </div>
@@ -1858,15 +2092,19 @@
               </tr>
             </thead>
             <tbody>
-              ${turistas.map(turista => `
-                <tr>
-                  <td>${esc(turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData)}</td>
+              ${turistas.map(turista => {
+                const nombreTurista = turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData;
+                const birthdayInfo = getTravelerBirthdayInfo(turista, servicios);
+                return `
+                <tr class="${birthdayInfo.active ? "pv-birthday-row" : ""}">
+                  <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(birthdayInfo.icon)}</span>${esc(nombreTurista)}</span><span class="birthday-badge">${esc(birthdayInfo.text)}</span>` : esc(nombreTurista)}</td>
                   <td>${esc(turista.tipoDocumento || t.noData)}</td>
                   <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                   <td>${esc(turista.nacionalidad || t.noData)}</td>
                   <td>${esc(turista.fechaNacimiento || t.noData)}</td>
                 </tr>
-              `).join("")}
+                `;
+              }).join("")}
             </tbody>
           </table>
 
@@ -1891,7 +2129,7 @@
           ` : ""}
 
           <div class="pv-section-title">${esc(t.services)}</div>
-          <table class="pv-table">
+          <table class="pv-table pv-services-table">
             <thead>
               <tr>
                 <th>${esc(t.code)}</th>
@@ -1906,8 +2144,8 @@
               ${servicios.map(s => `
                 <tr>
                   <td>${esc(s.codigo || t.noData)}</td>
-                  <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
-                  <td>${esc(s.fecha || t.noData)}</td>
+                  <td>${esc(getServiceNamePrint(s.nombre) || t.noData)}</td>
+                  <td>${esc(formatServiceDatePrint(s.fecha) || t.noData)}</td>
                   <td>${esc(s.horaInicio || t.noData)}</td>
                   <td>${esc(s.horaFin || t.noData)}</td>
                   <td>${esc(s.incluido ? t.included : t.extra)}</td>
