@@ -1,0 +1,556 @@
+{
+  "version": "2026-05-13",
+  "description": "Catálogo de tours para agencias autorizadas, con tarifas netas en soles y pagos por transferencia sujetos a validación.",
+  "currency": "PEN",
+  "paymentPolicy": {
+    "paymentGatewayEnabled": false,
+    "acceptedMethods": [
+      "Transferencia bancaria",
+      "Depósito en cuenta",
+      "Yape / Plin corporativo si aplica"
+    ],
+    "approvalFlow": [
+      "Agencia registra la reserva",
+      "Agencia registra el pago y sube comprobante",
+      "Operaciones revisa y aprueba",
+      "Se emite voucher / confirmación"
+    ]
+  },
+  "services": [
+    {
+      "id": "exp_001",
+      "slug": "bienvenida-ancestral-cusco",
+      "name": "Bienvenida Ancestral Cusco",
+      "shortName": "Bienvenida Ancestral Cusco",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 40,
+        "child": 40,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 11.9,
+        "adultPENApprox": 45
+      },
+      "durationLabel": "2 h 30 min",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Bus panorámico",
+        "Guía bilingüe",
+        "Ceremonia andina",
+        "Visita textil",
+        "Mirador"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "09:00",
+          "duration": "2 h 30 min",
+          "pickup": "Plaza Regocijo",
+          "capacity": 28,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "15:00",
+          "duration": "2 h 30 min",
+          "pickup": "Plaza Regocijo",
+          "capacity": 28,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_002",
+      "slug": "city-tour-cusco",
+      "name": "City Tour Cusco",
+      "shortName": "City Tour Cusco",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 30,
+        "child": 30,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 9.9,
+        "adultPENApprox": 40
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "08:30",
+          "duration": "Medio día",
+          "pickup": "Centro Histórico",
+          "capacity": 20,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "10:30",
+          "duration": "Medio día",
+          "pickup": "Plaza Regocijo",
+          "capacity": 20,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "13:00",
+          "duration": "Medio día",
+          "pickup": "Hotel céntrico",
+          "capacity": 20,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "15:30",
+          "duration": "Medio día",
+          "pickup": "Centro Histórico",
+          "capacity": 20,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_fd",
+      "slug": "valle-sagrado-full-day",
+      "name": "Valle Sagrado - Full Day",
+      "shortName": "Valle Sagrado",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 100,
+        "child": 100,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 29.9,
+        "adultPENApprox": 115
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Retorno a Cusco al finalizar el tour"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "07:00",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_con",
+      "slug": "valle-sagrado-conexion-machu-picchu",
+      "name": "Valle Sagrado con conexión a Machu Picchu",
+      "shortName": "Valle Sagrado con conexión a Machu Picchu",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 100,
+        "child": 100,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 29.9,
+        "adultPENApprox": 115
+      },
+      "durationLabel": "Full Day con conexión",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico por el Valle Sagrado",
+        "Guía profesional",
+        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "07:00",
+          "duration": "Full Day con conexión",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_vip",
+      "slug": "valle-sagrado-vip-full-day",
+      "name": "Valle Sagrado VIP - Full Day",
+      "shortName": "Valle Sagrado VIP",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 100,
+        "child": 100,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 29.9,
+        "adultPENApprox": 115
+      },
+      "durationLabel": "Full Day VIP",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
+        "Retorno a Cusco al finalizar el tour"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "06:40",
+          "duration": "Full Day VIP",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_004",
+      "slug": "maras-y-moray",
+      "name": "Maras y Moray",
+      "shortName": "Maras y Moray",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 70,
+        "child": 70,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 20.9,
+        "adultPENApprox": 80
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "08:00",
+          "duration": "Medio día",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "14:30",
+          "duration": "Medio día",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_005",
+      "slug": "valle-sur",
+      "name": "Valle Sur",
+      "shortName": "Valle Sur",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 70,
+        "child": 70,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 20.9,
+        "adultPENApprox": 80
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "08:30",
+          "duration": "Medio día",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_006",
+      "slug": "laguna-humantay",
+      "name": "Laguna Humantay",
+      "shortName": "Laguna Humantay",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 110,
+        "child": 110,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 31.9,
+        "adultPENApprox": 120
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Desayuno",
+        "Almuerzo"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "05:00",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_007",
+      "slug": "montana-de-colores",
+      "name": "Montaña de Colores (Vinicunca)",
+      "shortName": "Montaña de Colores",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 100,
+        "child": 100,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 29.9,
+        "adultPENApprox": 115
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "05:00",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_008",
+      "slug": "montana-palcoyo",
+      "name": "Montaña Palcoyo",
+      "shortName": "Montaña Palcoyo",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 160,
+        "child": 160,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 46.9,
+        "adultPENApprox": 180
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo de su hotel en Cusco",
+        "Transporte turístico",
+        "1 desayuno",
+        "1 almuerzo buffet",
+        "Ingreso a la Cordillera Palcoyo",
+        "Guía profesional Inglés – Español",
+        "Botiquín de primeros auxilios",
+        "Balón de oxígeno"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_009",
+      "slug": "siete-lagunas-ausangate",
+      "name": "Siete Lagunas del Ausangate",
+      "shortName": "Siete Lagunas del Ausangate",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentNetRate": {
+        "adult": 300,
+        "child": 300,
+        "guide": 0
+      },
+      "publishedReference": {
+        "adultUSD": 86.9,
+        "adultPENApprox": 330
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico ida y vuelta",
+        "Guía profesional",
+        "Desayuno",
+        "Almuerzo",
+        "Botiquín de primeros auxilios",
+        "Balón de oxígeno"
+      ],
+      "importantNotes": [
+        "Tarifa neta para agencias autorizadas",
+        "Pago por transferencia bancaria o depósito",
+        "Reserva sujeta a confirmación operativa"
+      ],
+      "schedules": [
+        {
+          "time": "04:00",
+          "duration": "Full Day",
+          "pickup": "Hotel en centro histórico",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    }
+  ]
+}
