@@ -405,37 +405,48 @@
         "telefono": "-"
       },
       {
-        "nombreCompleto": "Soledad Aurora Castro de Gracia",
+        "nombreCompleto": "Soledad Aurora Castro de García",
         "tipoDocumento": "Pasaporte",
         "numeroDocumento": "PA1337728",
         "nacionalidad": "Panameña",
         "fechaNacimiento": "14/05/1965",
-        "telefono": "-"
+        "telefono": "-",
+        "destacado": true,
+        "destacadoIcono": "🎂",
+        "destacadoTexto": "Cumpleaños - 14 de mayo"
       }
     ],
     "servicios": [
       {
-        "codigo": "TRA011",
+        "codigo": "TR03",
         "nombre": "Recojo desde hotel",
         "fecha": "Jue - 14-May-2026",
-        "horaInicio": "04:00 a. m.",
-        "horaFin": "04:30 a. m.",
+        "horaInicio": "06:50 a. m.",
+        "horaFin": "06:00 a. m.",
         "incluido": true
       },
       {
         "codigo": "CUS010",
-        "nombre": "Tour Montaña de Colores - Vinicunca Full Day",
+        "nombre": "Tour de Montaña de Colores - Vinicunca Full Day",
         "fecha": "Jue - 14-May-2026",
-        "horaInicio": "04:30 a. m.",
-        "horaFin": "06:00 p. m.",
+        "horaInicio": "06:00 a. m.",
+        "horaFin": "05:00 p. m.",
         "incluido": true
       },
       {
-        "codigo": "UPG-FOUR-WHEELER",
+        "codigo": "UP-CUS0010",
         "nombre": "Upgrade Four-wheeler - Cuatrimotos",
         "fecha": "Jue - 14-May-2026",
-        "horaInicio": "Por confirmar",
-        "horaFin": "Por confirmar",
+        "horaInicio": "Incluido",
+        "horaFin": "Incluido",
+        "incluido": true
+      },
+      {
+        "codigo": "TCK-CUS010",
+        "nombre": "Ticket de ingreso a Montaña Vinicunca",
+        "fecha": "Jue - 14-May-2026",
+        "horaInicio": "Sin hora",
+        "horaFin": "Sin hora",
         "incluido": true
       }
     ],
@@ -443,14 +454,15 @@
     "incluye": [
       "Desayuno básico con alimentos típicos de la zona",
       "Almuerzo con platos típicos de la zona",
-      "Vehículo con aire acondicionado",
+      "Transporte turístico",
       "Botiquín de primeros auxilios y equipo de asistencia",
       "Acceso preferencial sin filas",
-      "Asistencia personalizada durante la excursión"
+      "Asistencia personalizada durante la excursión",
+      "4 unidades de cuatrimotos: 2 cuatrimotos individuales y 2 cuatrimotos dobles para 2 personas cada una"
     ],
     "noIncluye": [
-      "Ticket de ingreso: US$ 8.90 por persona",
-      "Four-wheeler / cuatrimotos: US$ 59.90 por persona"
+      "Tickets de ingreso a Montaña Vinicunca ya pagados",
+      "Upgrade Four-wheeler / cuatrimotos pagado"
     ],
     "informacionAdicional": [
       "Punto de recogida: Ayenda Casa Escondida San Cristobal Premium, Calle Pumacurco, Cusco, Peru.",
@@ -461,37 +473,20 @@
     ],
     "pagos": {
       "totalPendiente": {
-        "label": "Reserva totalmente pagada",
-        "descripcion": "Todos los servicios han sido cancelados en su totalidad.",
+        "label": "Todo pagado",
+        "descripcion": "Todos los servicios, tickets de ingreso y upgrade de cuatrimotos han sido pagados en su totalidad.",
         "montoPen": 0,
         "montoUsd": 0,
         "url": "",
         "detalle": [
-          "PAXS #02 - USD 39.00",
-          "PAXS #03 - USD 39.00",
-          "PAXS #04 - USD 39.00",
-          "PAXS #05 - USD 39.00",
-          "PAXS #06 - USD 39.00",
-          "PAXS #07 - USD 39.00",
-          "TOTAL PAGADO USD 234.00"
+          "Reserva base: PAGADA",
+          "Tickets de ingreso a Montaña Vinicunca: PAGADOS",
+          "Upgrade Four-wheeler / cuatrimotos: PAGADO",
+          "TOTAL PENDIENTE USD 0.00"
         ],
         "badge": "PAGADO"
       },
-      "extras": [
-        {
-          "label": "Pago Pendiente",
-          "descripcion": "Pago pendiente para la fecha de ingreso 14 de mayo de 2026.",
-          "montoPen": 0,
-          "montoUsd": 412.8,
-          "url": "https://www.paypal.com/invoice/p/#LNWPQCCH4PBS24RX",
-          "detalle": [
-            "Four-wheeler: USD 59.90 por persona x 6 = USD 359.40",
-            "Ticket de ingreso: USD 8.90 por persona x 6 = USD 53.40",
-            "TOTAL PENDIENTE USD 412.80"
-          ],
-          "badge": "PENDIENTE"
-        }
-      ]
+      "extras": []
     }
   }
 ]
