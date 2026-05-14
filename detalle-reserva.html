@@ -1631,9 +1631,152 @@
       }
 
 
+      /* Corrección de estructura y compacidad de cabecera impresa */
+      .pv-classic {
+        font-size: 11.2px;
+        line-height: 1.16;
+      }
+
+      .pv-top {
+        grid-template-columns: 224px 1fr;
+        gap: 10px;
+        margin-top: 0;
+        margin-bottom: 5px;
+        align-items: start;
+      }
+
+      .pv-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pv-left img {
+        width: 185px;
+        margin-bottom: 2px;
+      }
+
+      .pv-subcopy {
+        width: 190px;
+        text-align: center;
+        font-size: 9.8px;
+        line-height: 1.08;
+        margin-bottom: 2px;
+      }
+
+      .pv-contact {
+        width: 205px;
+        font-size: 9.4px;
+        line-height: 1.06;
+        text-align: center;
+      }
+
+      .pv-right {
+        padding-top: 0;
+      }
+
+      .pv-date {
+        font-size: 12.4px;
+        margin-bottom: 2px;
+      }
+
+      .pv-title {
+        font-size: 21px;
+        margin-bottom: 4px;
+      }
+
+      .pv-code-box {
+        min-width: 176px;
+        padding: 5px 9px;
+      }
+
+      .pv-qr-box img {
+        width: 64px;
+        height: 64px;
+      }
+
+      .pv-meta-grid {
+        grid-template-columns: 1.35fr .52fr 1.22fr 1.55fr;
+        grid-template-areas:
+          "holder duration destination pack"
+          "passengers language phone coupon";
+        gap: 5px;
+        margin-bottom: 5px;
+      }
+
+      .pv-meta-item {
+        min-height: 31px;
+        padding: 4px 6px;
+        border-radius: 9px;
+      }
+
+      .pv-meta-item strong {
+        font-size: 7.5px;
+        line-height: 1;
+        margin-bottom: 1px;
+        white-space: nowrap;
+      }
+
+      .pv-meta-item span {
+        font-size: 9.5px;
+        line-height: 1.05;
+        max-height: 2.1em;
+        -webkit-line-clamp: 2;
+      }
+
+      .pv-meta-duration span,
+      .pv-meta-language span {
+        font-size: 9.1px;
+      }
+
+      .pv-section-title {
+        margin-top: 5px;
+        padding: 3.5px 7px;
+        font-size: 10.9px;
+        line-height: 1;
+      }
+
+      .pv-tourists-table th,
+      .pv-tourists-table td {
+        padding: 3px 5px;
+        line-height: 1.08;
+      }
+
+      .pv-tourists-table th {
+        font-size: 8.4px;
+      }
+
+      .pv-tourists-table td {
+        font-size: 9.7px;
+      }
+
+      .pv-tourists-table th:nth-child(1),
+      .pv-tourists-table td:nth-child(1) { width: 38%; }
+      .pv-tourists-table th:nth-child(2),
+      .pv-tourists-table td:nth-child(2) { width: 15%; }
+      .pv-tourists-table th:nth-child(3),
+      .pv-tourists-table td:nth-child(3) { width: 18%; }
+      .pv-tourists-table th:nth-child(4),
+      .pv-tourists-table td:nth-child(4) { width: 16%; }
+      .pv-tourists-table th:nth-child(5),
+      .pv-tourists-table td:nth-child(5) { width: 13%; }
+
+      .pv-ad-banner-slot {
+        min-height: 54px;
+        overflow: hidden;
+      }
+
+      .pv-ad-banner-slot img {
+        width: 100%;
+        height: 100%;
+        min-height: 54px;
+        max-height: 94px;
+        object-fit: cover;
+      }
+
       @page {
         size: A4 portrait;
-        margin: 7mm 9mm 9mm;
+        margin: 4mm 8mm 8mm;
       }
     }
   </style>
@@ -1700,7 +1843,7 @@
         language: "Idioma",
         phone: "Teléfono de contacto",
         coupon: "Cupón / referencia",
-        passengers: "Pasajeros de la reserva",
+        passengers: "Datos de los turistas",
         travelers: "viajero(s)",
         fullName: "Nombre completo",
         documentType: "Tipo documento",
@@ -1759,7 +1902,7 @@
         language: "Language",
         phone: "Contact phone",
         coupon: "Coupon / reference",
-        passengers: "Reservation travelers",
+        passengers: "Traveler details",
         travelers: "traveler(s)",
         fullName: "Full name",
         documentType: "Document type",
@@ -2037,6 +2180,52 @@
       };
     }
 
+    function buildPassengerSummary(reserva, turistas, lang = "es") {
+      const total = Number(reserva?.cantidadPaxs || turistas?.length || 0);
+      const serviceParts = parseDateParts(reserva?.fechaViaje || reserva?.fechaVoucher || reserva?.fechaEmision || "");
+      let adults = 0;
+      let children = 0;
+
+      (Array.isArray(turistas) ? turistas : []).forEach((turista) => {
+        const rawType = normalizeDateText(turista?.tipoPasajero || turista?.tipo || turista?.categoria || turista?.tarifa || "");
+        if (/nino|niño|child|menor/.test(rawType)) {
+          children += 1;
+          return;
+        }
+        if (/adult/.test(rawType)) {
+          adults += 1;
+          return;
+        }
+
+        const birth = parseDateParts(turista?.fechaNacimiento || turista?.fechaNacimientoTexto || "");
+        if (birth && serviceParts) {
+          let age = serviceParts.year - birth.year;
+          if (serviceParts.month < birth.month || (serviceParts.month === birth.month && serviceParts.day < birth.day)) {
+            age -= 1;
+          }
+          if (age >= 0 && age < 12) children += 1;
+          else adults += 1;
+        } else {
+          adults += 1;
+        }
+      });
+
+      if (!adults && !children && total) adults = total;
+      if (total && adults + children < total) adults += total - adults - children;
+
+      if (lang === "en") {
+        const parts = [];
+        if (adults) parts.push(`${adults} adult${adults === 1 ? "" : "s"}`);
+        if (children) parts.push(`${children} child${children === 1 ? "" : "ren"}`);
+        return parts.join(" and ") || i18n[lang].noData;
+      }
+
+      const parts = [];
+      if (adults) parts.push(`${adults} adulto${adults === 1 ? "" : "s"}`);
+      if (children) parts.push(`${children} niño${children === 1 ? "" : "s"}`);
+      return parts.join(" y ") || i18n[lang].noData;
+    }
+
     function formatServiceDatePrint(value) {
       const parts = parseDateParts(value);
       if (!parts) return value || "";
@@ -2164,7 +2353,7 @@
           <div class="summary-card"><span class="label">${esc(t.travelDate)}</span><div class="value">${esc(reserva.duracion || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.destination)}</span><div class="value">${esc(reserva.destino || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.pack)}</span><div class="value">${esc(reserva.packTour || t.noData)}</div></div>
-          <div class="summary-card"><span class="label">${esc(t.passengersCount)}</span><div class="value">${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</div></div>
+          <div class="summary-card"><span class="label">${esc(t.passengersCount)}</span><div class="value">${esc(buildPassengerSummary(reserva, turistas, currentLanguage))}</div></div>
           <div class="summary-card"><span class="label">${esc(t.language)}</span><div class="value">${esc(reserva.idioma || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.phone)}</span><div class="value">${esc(reserva.telefonoContacto || t.noData)}</div></div>
           <div class="summary-card"><span class="label">${esc(t.coupon)}</span><div class="value">${esc(reserva.codigoCupon || t.noData)}</div></div>
@@ -2479,15 +2668,15 @@
             <div class="pv-meta-item pv-meta-duration"><strong>${esc(t.travelDate)}</strong><span>${esc(reserva.duracion || t.noData)}</span></div>
             <div class="pv-meta-item pv-meta-destination"><strong>${esc(t.destination)}</strong><span>${esc(reserva.destino || t.noData)}</span></div>
             <div class="pv-meta-item pv-meta-pack"><strong>${esc(t.pack)}</strong><span>${esc(reserva.packTour || t.noData)}</span></div>
-            <div class="pv-meta-item pv-meta-passengers"><strong>${esc(t.passengersCount)}</strong><span>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-passengers"><strong>${esc(t.passengersCount)}</strong><span>${esc(buildPassengerSummary(reserva, turistas, currentLanguage))}</span></div>
             <div class="pv-meta-item pv-meta-language"><strong>${esc(t.language)}</strong><span>${esc(reserva.idioma || t.noData)}</span></div>
             <div class="pv-meta-item pv-meta-phone"><strong>${esc(t.phone)}</strong><span>${esc(reserva.telefonoContacto || t.noData)}</span></div>
             <div class="pv-meta-item pv-meta-coupon"><strong>${esc(t.coupon)}</strong><span>${esc(reserva.codigoCupon || t.noData)}</span></div>
           </div>
 
-          <div class="pv-section">
+          <div class="pv-section pv-tourists-section">
             <div class="pv-section-title">${esc(t.passengers)}</div>
-            <table class="pv-table">
+            <table class="pv-table pv-tourists-table">
             <thead>
               <tr>
                 <th>${esc(t.fullName)}</th>
@@ -2654,7 +2843,8 @@
               </div>
             </div>
             <div class="pv-ad-banner-slot">
-              ${reserva.bannerPromocional ? `<img src="${esc(reserva.bannerPromocional)}" alt="Banner promocional">` : `Espacio reservado para banner publicitario · sugerido: assets/img/reserva/banner-restaurantes.jpg`}
+              <img src="./assets/img/reserva/banner-restaurantes.jpg" alt="Banner promocional" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <span style="display:none;">Espacio reservado para banner publicitario · sugerido: assets/img/reserva/banner-restaurantes.jpg</span>
             </div>
           </div>
         </div>
