@@ -3168,6 +3168,10 @@
       `;
     }
 
+    function codigoCoincideExacto(valorA, valorB) {
+      return String(valorA || "").trim().toUpperCase() === String(valorB || "").trim().toUpperCase();
+    }
+
     async function obtenerReservaActual() {
       const params = new URLSearchParams(window.location.search);
       const codigoUrl = params.get("codigo");
@@ -3176,7 +3180,7 @@
       if (reservaRaw) {
         try {
           const reservaLocal = JSON.parse(reservaRaw);
-          if (!codigoUrl || normalizarTexto(reservaLocal?.codigo) === normalizarTexto(codigoUrl)) {
+          if (!codigoUrl || codigoCoincideExacto(reservaLocal?.codigo, codigoUrl)) {
             return reservaLocal;
           }
         } catch (error) {
@@ -3190,7 +3194,7 @@
       const response = await fetch("./data/reservas.json", { cache: "no-store" });
       if (!response.ok) throw new Error("No se pudo cargar data/reservas.json");
       const reservas = await response.json();
-      const reservaEncontrada = reservas.find((reserva) => normalizarTexto(reserva.codigo) === normalizarTexto(codigoUrl));
+      const reservaEncontrada = reservas.find((reserva) => codigoCoincideExacto(reserva.codigo, codigoUrl));
 
       if (reservaEncontrada) {
         localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaEncontrada));
