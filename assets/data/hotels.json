@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updatedAt": "2026-05-10",
+  "updatedAt": "2026-05-14",
   "sourceFile": "assets/data/hotels.json",
   "scope": "hotel-catalog-for-dynamic-packages",
   "description": "Catálogo centralizado de hoteles por destino para paquetes dinámicos My Cusco Trip. Guarda tarifas netas confidenciales, margen hotelero del 25%, precio publicado estimado con comisiones de cobro/retiro y metadatos para futura vista privada de utilidad y descuento.",
@@ -1248,7 +1248,308 @@
       "destinationAliases": [
         "arequipa"
       ],
-      "hotels": [],
+      "hotels": [
+        {
+          "hotelCode": "catedral-boutique-arequipa-3s",
+          "hotelName": "Catedral Boutique Arequipa",
+          "stars": 3,
+          "destination": "arequipa",
+          "destinationLabel": "Arequipa",
+          "location": "Arequipa",
+          "address": "Centro histórico de Arequipa",
+          "summary": "Hotel boutique/estándar céntrico, útil para city tour y operación turística en Arequipa.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/catedral-boutique-arequipa/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/catedral-boutique-arequipa/1.jpg",
+              "./assets/img/hotels/catedral-boutique-arequipa/2.jpg",
+              "./assets/img/hotels/catedral-boutique-arequipa/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        },
+        {
+          "hotelCode": "casablanca-arequipa-3s",
+          "hotelName": "Casablanca Hostal Arequipa",
+          "stars": 3,
+          "destination": "arequipa",
+          "destinationLabel": "Arequipa",
+          "location": "Arequipa",
+          "address": "Centro histórico de Arequipa",
+          "summary": "Opción colonial estándar en zona céntrica, similar al estilo boutique solicitado.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/casablanca-arequipa/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/casablanca-arequipa/1.jpg",
+              "./assets/img/hotels/casablanca-arequipa/2.jpg",
+              "./assets/img/hotels/casablanca-arequipa/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        },
+        {
+          "hotelCode": "riviera-arequipa-3s",
+          "hotelName": "Hotel Riviera Arequipa",
+          "stars": 3,
+          "destination": "arequipa",
+          "destinationLabel": "Arequipa",
+          "location": "Arequipa",
+          "address": "Centro de Arequipa",
+          "summary": "Alternativa estándar céntrica para grupos, con buena operación para traslados y tours.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/riviera-arequipa/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/riviera-arequipa/1.jpg",
+              "./assets/img/hotels/riviera-arequipa/2.jpg",
+              "./assets/img/hotels/riviera-arequipa/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        }
+      ],
       "status": "prepared_without_hotels",
       "notes": "Destino preparado para paquetes Perú. Agregar hoteles cuando existan tarifas netas confirmadas."
     },
@@ -1257,7 +1558,308 @@
       "destinationAliases": [
         "puno"
       ],
-      "hotels": [],
+      "hotels": [
+        {
+          "hotelCode": "sol-plaza-puno-3s",
+          "hotelName": "Sol Plaza Hotel Puno",
+          "stars": 3,
+          "destination": "puno",
+          "destinationLabel": "Puno",
+          "location": "Puno",
+          "address": "Jr. Puno 307, centro de Puno",
+          "summary": "Hotel estándar céntrico en Puno, práctico para una noche antes o después del Lago Titicaca.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/sol-plaza-puno/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/sol-plaza-puno/1.jpg",
+              "./assets/img/hotels/sol-plaza-puno/2.jpg",
+              "./assets/img/hotels/sol-plaza-puno/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        },
+        {
+          "hotelCode": "conde-de-lemos-puno-3s",
+          "hotelName": "Hotel Conde de Lemos Puno",
+          "stars": 3,
+          "destination": "puno",
+          "destinationLabel": "Puno",
+          "location": "Puno",
+          "address": "Centro histórico de Puno",
+          "summary": "Opción estándar/boutique cercana a Plaza de Armas, adecuada para grupos que priorizan ubicación.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/conde-de-lemos-puno/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/conde-de-lemos-puno/1.jpg",
+              "./assets/img/hotels/conde-de-lemos-puno/2.jpg",
+              "./assets/img/hotels/conde-de-lemos-puno/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        },
+        {
+          "hotelCode": "qalasaya-puno-3s",
+          "hotelName": "Hotel Qalasaya Puno",
+          "stars": 3,
+          "destination": "puno",
+          "destinationLabel": "Puno",
+          "location": "Puno",
+          "address": "Centro de Puno",
+          "summary": "Alternativa estándar céntrica para operación de tours al Lago Titicaca.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Agua caliente",
+            "Baño privado",
+            "Desayuno",
+            "Recepción",
+            "Ubicación operativa para tours"
+          ],
+          "amenities": {
+            "checkin": "Desde 12:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno incluido o sujeto a confirmación"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/qalasaya-puno/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/qalasaya-puno/1.jpg",
+              "./assets/img/hotels/qalasaya-puno/2.jpg",
+              "./assets/img/hotels/qalasaya-puno/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 46.9,
+                "penApprox": 176,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 59.9,
+                "penApprox": 225,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o configuración similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 76.9,
+                "penApprox": 289,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingStatus": "reference_pending_confirmation",
+              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+            }
+          ]
+        }
+      ],
       "status": "prepared_without_hotels",
       "notes": "Destino preparado para paquetes Perú. Agregar hoteles cuando existan tarifas netas confirmadas."
     },
