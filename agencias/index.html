@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portal para Agencias | My Cusco Trip</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Portal privado para agencias autorizadas de My Cusco Trip." />
+  <link rel="icon" href="./public/favicon.ico" />
+  <link rel="stylesheet" href="./assets/css/agencias.css" />
+</head>
+<body>
+  <div class="agency-shell" data-app="agencias">
+    <header class="agency-topbar">
+      <a class="agency-brand" href="../index.html" aria-label="Volver al inicio de My Cusco Trip">
+        <img class="agency-brand__logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
+        <span class="agency-brand__badge">Tour operador</span>
+      </a>
+
+      <div class="agency-topbar__right">
+        <p id="agencySessionLabel">Agencias autorizadas <span>|</span> Tarifas confidenciales</p>
+        <nav class="agency-mainnav" aria-label="Menú principal para agencias">
+          <a href="#inicio">Inicio</a>
+          <a href="#servicios">Servicios</a>
+          <a href="#reservas">Reservas</a>
+          <a href="#reportes">Historial</a>
+          <button type="button" id="logoutButton" class="topbar-link">Salir</button>
+        </nav>
+      </div>
+    </header>
+
+    <div class="agency-layout">
+      <aside class="agency-sidebar" aria-label="Servicios para agencias">
+        <div class="agency-sidebar__intro">
+          <span>Portal operador</span>
+          <strong>Tours diarios</strong>
+        </div>
+        <nav id="serviceMenu" class="agency-service-menu" aria-label="Lista de tours">
+          <button type="button" class="is-active" data-service="all">
+            <span class="service-icon" aria-hidden="true">⌁</span>
+            <span>Todos los tours</span>
+            <small>Disponibilidad general</small>
+          </button>
+        </nav>
+      </aside>
+
+      <main class="agency-content" id="inicio">
+        <section class="agency-hero" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow">Uso exclusivo para agencias</p>
+            <h1 id="pageTitle">Reserva de Tours</h1>
+            <p class="agency-hero__lead">Consulta horarios, registra pasajeros y confirma solicitudes con tarifas confidenciales en soles para empresas turísticas autorizadas.</p>
+          </div>
+          <div class="agency-hero__status" aria-label="Estado operativo">
+            <span class="status-dot"></span>
+            <strong>Operación diaria</strong>
+            <small>Confirmación por el equipo de reservas</small>
+          </div>
+        </section>
+
+        <section class="agency-card agency-filter-card" id="servicios" aria-labelledby="filtersTitle">
+          <div class="agency-card__header">
+            <div>
+              <p class="eyebrow">Paso 1</p>
+              <h2 id="filtersTitle">Buscar disponibilidad</h2>
+            </div>
+            <span class="agency-chip agency-chip--secure">Tarifas en soles</span>
+          </div>
+
+          <form id="searchForm" class="agency-filters">
+            <label>
+              <span>Servicio</span>
+              <select id="serviceSelect" name="service">
+                <option value="all">Todos los tours</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Fecha de viaje</span>
+              <input id="travelDate" type="date" name="date" required />
+            </label>
+
+            <fieldset class="passenger-grid">
+              <legend>Pasajeros</legend>
+              <label>
+                <span>Adulto</span>
+                <input id="adultCount" type="number" min="1" max="60" value="2" />
+              </label>
+              <label>
+                <span>Niño</span>
+                <input id="childCount" type="number" min="0" max="60" value="0" />
+              </label>
+              <label>
+                <span>Guía / TC</span>
+                <input id="guideCount" type="number" min="0" max="10" value="0" />
+              </label>
+            </fieldset>
+
+            <label>
+              <span>Idioma</span>
+              <select id="languageSelect" name="language">
+                <option value="Español / Inglés">Español / Inglés</option>
+                <option value="Español">Español</option>
+                <option value="Inglés">Inglés</option>
+              </select>
+            </label>
+
+            <button type="submit" class="agency-button agency-button--primary">
+              <span aria-hidden="true">⌕</span>
+              Buscar
+            </button>
+          </form>
+        </section>
+
+        <section class="agency-grid agency-kpis" aria-label="Resumen de búsqueda">
+          <article class="agency-mini-card"><small>Servicios</small><strong id="kpiServices">0</strong></article>
+          <article class="agency-mini-card"><small>Horarios</small><strong id="kpiSchedules">0</strong></article>
+          <article class="agency-mini-card"><small>Tarifa desde</small><strong id="kpiFrom">S/ 0.00</strong></article>
+          <article class="agency-mini-card agency-mini-card--notice"><small>Sesión</small><strong id="kpiAgency">Agencia</strong></article>
+        </section>
+
+        <section class="agency-card" aria-labelledby="resultsTitle">
+          <div class="agency-card__header agency-card__header--inline">
+            <div>
+              <p class="eyebrow">Paso 2</p>
+              <h2 id="resultsTitle">Tours y horarios disponibles</h2>
+            </div>
+            <div class="agency-tools">
+              <label class="agency-search-mini">
+                <span class="sr-only">Filtrar por texto</span>
+                <input id="quickFilter" type="search" placeholder="Filtrar por tour, hora o recojo" />
+              </label>
+              <button type="button" id="clearSelection" class="agency-button agency-button--ghost">Limpiar</button>
+            </div>
+          </div>
+
+          <div class="agency-table-wrap" role="region" aria-label="Tabla de tours disponibles" tabindex="0">
+            <table class="agency-table">
+              <thead>
+                <tr>
+                  <th>Elegir</th>
+                  <th>Servicio</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Duración</th>
+                  <th>Recojo</th>
+                  <th>Idioma</th>
+                  <th>Tarifa</th>
+                  <th>Subtotal</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+          <p id="emptyResults" class="agency-empty" hidden>No se encontraron tours para esos filtros.</p>
+        </section>
+
+        <section class="agency-split agency-split--single" id="reservas">
+          <article class="agency-card agency-summary" aria-labelledby="summaryTitle">
+            <div class="agency-card__header">
+              <div>
+                <p class="eyebrow">Paso 3</p>
+                <h2 id="summaryTitle">Resumen de reserva</h2>
+              </div>
+              <span id="summaryStatus" class="agency-chip">Sin selección</span>
+            </div>
+
+            <div id="selectedSummary" class="summary-empty">Selecciona un horario para ver el resumen de la reserva.</div>
+
+            <div class="agency-total-box">
+              <span>Total agencia</span>
+              <strong id="totalAmount">S/ 0.00</strong>
+              <small>Importe sujeto a disponibilidad y confirmación operativa.</small>
+            </div>
+
+            <div class="agency-actions">
+              <button type="button" id="reserveButton" class="agency-button agency-button--primary" disabled>Registrar reserva</button>
+              <button type="button" id="paymentButton" class="agency-button agency-button--secondary" disabled>Registrar pago</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="agency-card" id="reportes" aria-labelledby="requestsTitle">
+          <div class="agency-card__header agency-card__header--inline">
+            <div>
+              <p class="eyebrow">Seguimiento</p>
+              <h2 id="requestsTitle">Reservas registradas</h2>
+            </div>
+            <button type="button" id="exportRequests" class="agency-button agency-button--ghost">Exportar CSV</button>
+          </div>
+          <div id="requestsList" class="requests-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="reserveDialog" class="agency-dialog">
+    <form method="dialog" id="reserveForm" class="agency-dialog__panel">
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar">×</button>
+      <p class="eyebrow">Nueva reserva</p>
+      <h2>Datos de pasajeros</h2>
+      <p class="dialog-help">Completa los datos requeridos para emitir la solicitud de reserva.</p>
+      <div class="dialog-grid">
+        <label class="dialog-grid__full">
+          <span>Punto de recojo</span>
+          <textarea id="pickupPoint" rows="2" required placeholder="Nombre del hotel + dirección completa"></textarea>
+        </label>
+        <label class="dialog-grid__full">
+          <span>Observaciones</span>
+          <textarea id="bookingNotes" rows="2" placeholder="Requerimientos especiales, referencia del hotel, contacto adicional, etc."></textarea>
+        </label>
+      </div>
+      <div class="passenger-section">
+        <div class="passenger-section__header">
+          <h3>Pasajeros</h3>
+          <small>El celular es obligatorio para el primer pasajero.</small>
+        </div>
+        <div id="passengerForms" class="passenger-forms"></div>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="agency-button agency-button--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" class="agency-button agency-button--primary">Guardar reserva pendiente</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="paymentDialog" class="agency-dialog">
+    <form method="dialog" id="paymentForm" class="agency-dialog__panel">
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar">×</button>
+      <p class="eyebrow">Registrar pago</p>
+      <h2>Comprobante de pago</h2>
+      <div class="dialog-grid">
+        <label><span>Código de reserva</span><input id="paymentReservationCode" readonly /></label>
+        <label><span>Monto pagado</span><input id="paymentAmount" type="number" min="0" step="0.01" required /></label>
+        <label><span>Método</span><select id="paymentMethod"><option>Transferencia bancaria</option><option>Depósito en cuenta</option><option>Yape / Plin</option></select></label>
+        <label><span>Número de operación</span><input id="paymentOperation" required placeholder="Ej. 00981231" /></label>
+        <label class="dialog-grid__full"><span>Comprobante</span><input id="paymentProof" type="file" accept="image/*,.pdf" required /></label>
+        <label class="dialog-grid__full"><span>Nota de pago</span><textarea id="paymentNotes" rows="2" placeholder="Banco, titular, hora aproximada, etc."></textarea></label>
+      </div>
+      <div class="dialog-alert">El pago quedará como <strong>pendiente de validación</strong>.</div>
+      <div class="dialog-actions">
+        <button type="button" class="agency-button agency-button--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" class="agency-button agency-button--primary">Registrar pago</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="requestTemplate">
+    <article class="request-card">
+      <div><strong data-field="code"></strong><span data-field="title"></span></div>
+      <p data-field="meta"></p>
+      <div class="request-card__footer"><span data-field="amount"></span><span data-field="status" class="agency-chip"></span></div>
+    </article>
+  </template>
+
+  <script src="./assets/js/pages/agencias.js" defer></script>
+</body>
+</html>

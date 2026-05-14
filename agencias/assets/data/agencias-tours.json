@@ -1,0 +1,632 @@
+{
+  "version": "2.0",
+  "description": "Catálogo de tarifas para agencias autorizadas en soles.",
+  "currency": "PEN",
+  "services": [
+    {
+      "id": "exp_001",
+      "slug": "bienvenida-ancestral-cusco",
+      "name": "Bienvenida Ancestral Cusco",
+      "shortName": "Bienvenida Ancestral",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 25,
+        "child": 25,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 20,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "2 h 30 min",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Bus panorámico",
+        "Guía bilingüe",
+        "Ceremonia andina",
+        "Visita textil",
+        "Mirador"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "09:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "10:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "11:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "12:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "13:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "14:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "15:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "16:00",
+          "duration": "2 h 30 min",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_002",
+      "slug": "city-tour-cusco",
+      "name": "City Tour Cusco",
+      "shortName": "City Tour",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 20,
+        "child": 20,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 15,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "09:00",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "10:00",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "13:00",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "14:00",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_fd",
+      "slug": "valle-sagrado-full-day",
+      "name": "Valle Sagrado ",
+      "shortName": "Valle Sagrado",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 55,
+        "child": 55,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 50,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Retorno a Cusco al finalizar el tour"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "07:00",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_con",
+      "slug": "valle-sagrado-conexion-machu-picchu",
+      "name": "Valle Sagrado con conexión a Machu Picchu",
+      "shortName": "Valle Sagrado conexión",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 55,
+        "child": 55,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 50,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day con conexión",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico por el Valle Sagrado",
+        "Guía profesional",
+        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "07:00",
+          "duration": "Full Day con conexión",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_003_vip",
+      "slug": "valle-sagrado-vip-full-day",
+      "name": "Valle Sagrado VIP",
+      "shortName": "Valle Sagrado VIP",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 55,
+        "child": 55,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 50,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day VIP",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
+        "Retorno a Cusco al finalizar el tour"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "06:40",
+          "duration": "Full Day VIP",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_004",
+      "slug": "maras-y-moray",
+      "name": "Maras y Moray",
+      "shortName": "Maras y Moray",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 40,
+        "child": 40,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 35,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "08:00",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "14:30",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_005",
+      "slug": "valle-sur",
+      "name": "Valle Sur",
+      "shortName": "Valle Sur",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 40,
+        "child": 40,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 35,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Medio día",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "08:30",
+          "duration": "Medio día",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_006",
+      "slug": "laguna-humantay",
+      "name": "Laguna Humantay",
+      "shortName": "Laguna Humantay",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 60,
+        "child": 60,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 55,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional",
+        "Desayuno",
+        "Almuerzo"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "05:00",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_007",
+      "slug": "montana-de-colores",
+      "name": "Montaña de Colores (Vinicunca)",
+      "shortName": "Montaña de Colores ",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 55,
+        "child": 55,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 50,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "05:00",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_008",
+      "slug": "montana-palcoyo",
+      "name": "Montaña Palcoyo",
+      "shortName": "Montaña Palcoyo",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 85,
+        "child": 85,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 80,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo de su hotel en Cusco",
+        "Transporte turístico",
+        "1 desayuno",
+        "1 almuerzo buffet",
+        "Ingreso a la Cordillera Palcoyo",
+        "Guía profesional Inglés – Español"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "04:30",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "exp_009",
+      "slug": "siete-lagunas-ausangate",
+      "name": "Siete Lagunas del Ausangate",
+      "shortName": "Siete Lagunas del Ausangate",
+      "category": "cusco",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 155,
+        "child": 155,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 150,
+        "source": "Tarifa base interna + S/ 5"
+      },
+      "durationLabel": "Full Day",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico ida y vuelta",
+        "Guía profesional",
+        "Desayuno",
+        "Almuerzo",
+        "Botiquín de primeros auxilios"
+      ],
+      "importantNotes": [
+        "Servicio sujeto a disponibilidad operativa.",
+        "El punto de recojo será verificado por el equipo de reservas."
+      ],
+      "schedules": [
+        {
+          "time": "04:00",
+          "duration": "Full Day",
+          "pickup": "Recojo en hotel o punto coordinado",
+          "capacity": 18,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    },
+    {
+      "id": "mapi_guiado_001",
+      "slug": "guiado-machu-picchu",
+      "name": "Guiado Machu Picchu",
+      "shortName": "Guiado Machu Picchu",
+      "category": "machu-picchu",
+      "currency": "PEN",
+      "agentRate": {
+        "adult": 30,
+        "child": 30,
+        "guide": 0
+      },
+      "baseCostReference": {
+        "adult": 30,
+        "source": "Tarifa definida para agencias"
+      },
+      "durationLabel": "2 h 30 min",
+      "languages": [
+        "Español",
+        "Inglés"
+      ],
+      "includes": [
+        "Guía profesional en Machu Picchu",
+        "Asistencia para coordinación del punto de encuentro"
+      ],
+      "importantNotes": [
+        "No incluye boleto de ingreso a Machu Picchu.",
+        "Servicio sujeto al horario de ingreso del pasajero."
+      ],
+      "schedules": [
+        {
+          "time": "08:00",
+          "duration": "2 h 30 min",
+          "pickup": "Punto de encuentro coordinado en Machu Picchu",
+          "capacity": 12,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "10:00",
+          "duration": "2 h 30 min",
+          "pickup": "Punto de encuentro coordinado en Machu Picchu",
+          "capacity": 12,
+          "status": "Disponible",
+          "frequency": "Diario"
+        },
+        {
+          "time": "12:00",
+          "duration": "2 h 30 min",
+          "pickup": "Punto de encuentro coordinado en Machu Picchu",
+          "capacity": 12,
+          "status": "Disponible",
+          "frequency": "Diario"
+        }
+      ]
+    }
+  ]
+}

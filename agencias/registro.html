@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro de Agencia | My Cusco Trip</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="./public/favicon.ico" />
+  <link rel="stylesheet" href="./assets/css/agencias.css" />
+</head>
+<body class="auth-page auth-page--wide">
+  <main class="auth-shell auth-shell--wide">
+    <section class="auth-card auth-card--wide">
+      <a class="auth-brand" href="../index.html"><img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip"><span>Tour operador</span></a>
+      <p class="eyebrow">Solicitud de acceso</p>
+      <h1>Registro de Agencia</h1>
+      <p class="auth-lead">Completa los datos de la empresa y del contacto autorizado para crear el acceso al portal.</p>
+
+      <form id="agencyRegisterForm" class="register-form">
+        <section class="form-block">
+          <h2>Datos de la empresa</h2>
+          <div class="dialog-grid">
+            <label><span>Razón social</span><input id="companyName" required></label>
+            <label><span>RUC</span><input id="companyTaxId" required inputmode="numeric"></label>
+            <label><span>Correo principal</span><input id="companyEmail" type="email" required></label>
+            <label><span>Celular / WhatsApp</span><input id="companyPhone" required></label>
+            <label class="dialog-grid__full"><span>Dirección fiscal</span><input id="companyAddress" required></label>
+            <label class="dialog-grid__full"><span>Página web o red social</span><input id="companyWebsite" placeholder="https://..."></label>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <h2>Representante legal</h2>
+          <div class="dialog-grid">
+            <label><span>Nombres</span><input id="legalFirstName" required></label>
+            <label><span>Apellidos</span><input id="legalLastName" required></label>
+            <label><span>Tipo de documento</span><select id="legalDocType"><option>DNI</option><option>Carnet de extranjería</option><option>Pasaporte</option></select></label>
+            <label><span>Número de documento</span><input id="legalDocNumber" required></label>
+            <label class="dialog-grid__full"><span>Documento adjunto</span><input id="legalDocumentFile" type="file" accept="image/*,.pdf"></label>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <h2>Contacto comercial y acceso</h2>
+          <label class="check-row"><input id="sameContact" type="checkbox" checked><span>Usar el correo principal de la agencia como correo de acceso.</span></label>
+          <div id="commercialContactFields" class="dialog-grid" hidden>
+            <label><span>Nombres</span><input id="commercialFirstName"></label>
+            <label><span>Apellidos</span><input id="commercialLastName"></label>
+            <label><span>Tipo de documento</span><select id="commercialDocType"><option>DNI</option><option>Carnet de extranjería</option><option>Pasaporte</option></select></label>
+            <label><span>Número de documento</span><input id="commercialDocNumber"></label>
+            <label><span>Correo de acceso</span><input id="commercialEmail" type="email"></label>
+            <label><span>Celular</span><input id="commercialPhone"></label>
+          </div>
+          <div class="dialog-grid">
+            <label><span>Crear contraseña</span><input id="registerPassword" type="password" minlength="6" required></label>
+            <label><span>Confirmar contraseña</span><input id="registerPasswordConfirm" type="password" minlength="6" required></label>
+          </div>
+        </section>
+
+        <p id="registerMessage" class="form-message" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <a class="agency-button agency-button--ghost" href="./login.html">Ya tengo acceso</a>
+          <button type="submit" class="agency-button agency-button--primary">Registrar agencia</button>
+        </div>
+      </form>
+    </section>
+  </main>
+  <script src="./assets/js/pages/registro-agencias.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ingreso para Agencias | My Cusco Trip</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="./public/favicon.ico" />
+  <link rel="stylesheet" href="./assets/css/agencias.css" />
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-card">
+      <a class="auth-brand" href="../index.html"><img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip"><span>Tour operador</span></a>
+      <p class="eyebrow">Agencias autorizadas</p>
+      <h1>Ingresar al portal</h1>
+      <p class="auth-lead">Accede con el correo registrado para consultar tarifas y registrar reservas.</p>
+      <form id="loginForm" class="auth-form">
+        <label><span>Correo de acceso</span><input id="loginEmail" type="email" autocomplete="email" required placeholder="reservas@agencia.com"></label>
+        <label><span>Contraseña</span><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Tu contraseña"></label>
+        <p id="loginMessage" class="form-message" role="alert" hidden></p>
+        <button type="submit" class="agency-button agency-button--primary">Ingresar</button>
+      </form>
+      <div class="auth-actions"><span>¿Aún no tienes acceso?</span><a href="./registro.html">Registrar agencia</a></div>
+    </section>
+  </main>
+  <script src="./assets/js/pages/acceso-agencias.js" defer></script>
+</body>
+</html>
