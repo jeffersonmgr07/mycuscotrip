@@ -438,12 +438,87 @@
     const errorMessage = document.getElementById("errorMessage");
     const buscarBtn = document.getElementById("buscarBtn");
 
-    function normalizarTexto(texto) {
-      return texto
+    function normalizarTexto(valor) {
+      return String(valor || "")
         .trim()
         .toUpperCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[Ñ]/g, "N")
+        .replace(/[^A-Z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function normalizarCodigo(valor) {
+      return normalizarTexto(valor).replace(/\s+/g, "").replace(/[^A-Z0-9]/g, "");
+    }
+
+    function palabrasClave(valor) {
+      return normalizarTexto(valor)
+        .split(" ")
+        .filter((parte) => parte && parte.length >= 2);
+    }
+
+    function equivalenciasApellido(apellido) {
+      const base = normalizarTexto(apellido);
+      const opciones = new Set([base]);
+      // Corrección frecuente en esta reserva: Batista / Bautista.
+      if (base.includes("BATISTA")) opciones.add(base.replace(/BATISTA/g, "BAUTISTA"));
+      if (base.includes("BAUTISTA")) opciones.add(base.replace(/BAUTISTA/g, "BATISTA"));
+      return [...opciones];
+    }
+
+    function obtenerTextosValidacion(reserva) {
+      const textos = [
+        reserva?.apellido,
+        reserva?.titularReserva,
+        reserva?.nombreTitular,
+        reserva?.cliente,
+        reserva?.pasajeroPrincipal,
+        reserva?.contacto?.nombre,
+        reserva?.contacto?.apellido
+      ];
+
+      if (Array.isArray(reserva?.turistas)) {
+        reserva.turistas.forEach((turista) => {
+          textos.push(turista?.nombreCompleto, turista?.apellido, turista?.apellidos);
+        });
+      }
+
+      return textos.filter(Boolean).map(normalizarTexto);
+    }
+
+    function apellidoCoincide(reserva, apellidoIngresado) {
+      const apellido = normalizarTexto(apellidoIngresado);
+      if (!apellido) return false;
+
+      const opciones = equivalenciasApellido(apellido);
+      const textos = obtenerTextosValidacion(reserva);
+
+      return textos.some((texto) => {
+        if (!texto) return false;
+
+        // Coincidencia directa: apellido completo o valor guardado en reserva.apellido.
+        if (opciones.some((opcion) => texto === opcion || texto.includes(opcion))) return true;
+
+        // Coincidencia por palabras, útil cuando el cliente escribe solo el primer apellido.
+        const partesIngresadas = opciones.flatMap(palabrasClave);
+        const partesTexto = palabrasClave(texto);
+        return partesIngresadas.some((parte) => partesTexto.includes(parte));
+      });
+    }
+
+    async function cargarReservas() {
+      const response = await fetch("./data/reservas.json", { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`No se pudo cargar data/reservas.json (${response.status})`);
+      }
+      const reservas = await response.json();
+      if (!Array.isArray(reservas)) {
+        throw new Error("El archivo data/reservas.json no contiene una lista válida de reservas.");
+      }
+      return reservas;
     }
 
     form.addEventListener("submit", async function (e) {
@@ -456,30 +531,38 @@
 
       const codigo = document.getElementById("codigo").value;
       const apellido = document.getElementById("apellido").value;
+      const codigoNormalizado = normalizarCodigo(codigo);
+
+      if (!codigoNormalizado || !normalizarTexto(apellido)) {
+        errorMessage.textContent = "Ingresa el código de reserva y el apellido.";
+        errorMessage.style.display = "block";
+        buscarBtn.disabled = false;
+        buscarBtn.textContent = "Buscar reserva";
+        return;
+      }
 
       try {
-        const response = await fetch("./data/reservas.json");
-        const reservas = await response.json();
+        const reservas = await cargarReservas();
 
         const reservaEncontrada = reservas.find((reserva) => {
           return (
-            normalizarCodigo(reserva.codigo) === normalizarCodigo(codigo) &&
+            normalizarCodigo(reserva?.codigo) === codigoNormalizado &&
             apellidoCoincide(reserva, apellido)
           );
         });
 
         if (!reservaEncontrada) {
-          errorMessage.textContent = "No encontramos una reserva con esos datos.";
+          errorMessage.textContent = "No encontramos una reserva con ese código y apellido. Verifica que el código esté completo y prueba con el primer apellido del titular.";
           errorMessage.style.display = "block";
           return;
         }
 
         localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaEncontrada));
         const codigoUrl = encodeURIComponent(reservaEncontrada.codigo || codigo);
-        window.location.href = `./detalle-reserva.html?codigo=${codigoUrl}`;
+        window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
       } catch (error) {
-        console.error(error);
-        errorMessage.textContent = "Ocurrió un error al consultar la reserva.";
+        console.error("Error consultando reserva:", error);
+        errorMessage.textContent = "No se pudo consultar el archivo de reservas. Verifica que data/reservas.json exista en el servidor.";
         errorMessage.style.display = "block";
       } finally {
         buscarBtn.disabled = false;
