@@ -463,8 +463,8 @@
 
         const reservaEncontrada = reservas.find((reserva) => {
           return (
-            normalizarTexto(reserva.codigo) === normalizarTexto(codigo) &&
-            normalizarTexto(reserva.apellido) === normalizarTexto(apellido)
+            normalizarCodigo(reserva.codigo) === normalizarCodigo(codigo) &&
+            apellidoCoincide(reserva, apellido)
           );
         });
 
@@ -475,7 +475,8 @@
         }
 
         localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaEncontrada));
-        window.location.href = "./detalle-reserva.html";
+        const codigoUrl = encodeURIComponent(reservaEncontrada.codigo || codigo);
+        window.location.href = `./detalle-reserva.html?codigo=${codigoUrl}`;
       } catch (error) {
         console.error(error);
         errorMessage.textContent = "Ocurrió un error al consultar la reserva.";
