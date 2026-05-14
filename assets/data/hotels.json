@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updatedAt": "2026-05-14",
+  "updatedAt": "2026-05-10",
   "sourceFile": "assets/data/hotels.json",
   "scope": "hotel-catalog-for-dynamic-packages",
   "description": "Catálogo centralizado de hoteles por destino para paquetes dinámicos My Cusco Trip. Guarda tarifas netas confidenciales, margen hotelero del 25%, precio publicado estimado con comisiones de cobro/retiro y metadatos para futura vista privada de utilidad y descuento.",
@@ -1221,7 +1221,326 @@
       "destinationAliases": [
         "lima"
       ],
-      "hotels": [],
+      "hotels": [
+        {
+          "hotelCode": "arawi-miraflores-3s",
+          "hotelName": "Arawi Miraflores Express",
+          "stars": 3,
+          "destination": "lima",
+          "destinationLabel": "Lima / Miraflores",
+          "location": "Lima / Miraflores",
+          "address": "Miraflores, Lima",
+          "summary": "Opción estándar en Miraflores, práctica para grupos que desean estar cerca de Larcomar, restaurantes y zonas turísticas.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Baño privado",
+            "Agua caliente",
+            "Desayuno",
+            "Recepción",
+            "Buena ubicación para tours"
+          ],
+          "amenities": {
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/arawi-miraflores/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/arawi-miraflores/1.jpg",
+              "./assets/img/hotels/arawi-miraflores/2.jpg",
+              "./assets/img/hotels/arawi-miraflores/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 64.8
+              },
+              "pricePerNight": 64.8,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 79.2
+              },
+              "pricePerNight": 79.2,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 79.2
+              },
+              "pricePerNight": 79.2,
+              "currency": "USD"
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas o configuración triple",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 105.6
+              },
+              "pricePerNight": 105.6,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 134.4
+              },
+              "pricePerNight": 134.4,
+              "currency": "USD"
+            }
+          ]
+        },
+        {
+          "hotelCode": "tierra-viva-miraflores-3s",
+          "hotelName": "Tierra Viva Miraflores",
+          "stars": 3,
+          "destination": "lima",
+          "destinationLabel": "Lima / Miraflores",
+          "location": "Lima / Miraflores",
+          "address": "Miraflores, Lima",
+          "summary": "Hotel de estilo moderno y cómodo en Miraflores, recomendado para una operación ordenada en Lima.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Baño privado",
+            "Agua caliente",
+            "Desayuno",
+            "Recepción",
+            "Buena ubicación para tours"
+          ],
+          "amenities": {
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/tierra-viva-miraflores/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/tierra-viva-miraflores/1.jpg",
+              "./assets/img/hotels/tierra-viva-miraflores/2.jpg",
+              "./assets/img/hotels/tierra-viva-miraflores/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 74.25
+              },
+              "pricePerNight": 74.25,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 90.75
+              },
+              "pricePerNight": 90.75,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 90.75
+              },
+              "pricePerNight": 90.75,
+              "currency": "USD"
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas o configuración triple",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 121.0
+              },
+              "pricePerNight": 121.0,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 154.0
+              },
+              "pricePerNight": 154.0,
+              "currency": "USD"
+            }
+          ]
+        },
+        {
+          "hotelCode": "casa-andina-select-miraflores-3s",
+          "hotelName": "Casa Andina Select Miraflores",
+          "stars": 3,
+          "destination": "lima",
+          "destinationLabel": "Lima / Miraflores",
+          "location": "Lima / Miraflores",
+          "address": "Miraflores, Lima",
+          "summary": "Alternativa superior estándar en Miraflores, ideal para pasajeros que buscan más confort y excelente ubicación.",
+          "status": "published",
+          "pricingStatus": "reference_pending_confirmation",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Baño privado",
+            "Agua caliente",
+            "Desayuno",
+            "Recepción",
+            "Buena ubicación para tours"
+          ],
+          "amenities": {
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/casa-andina-select-miraflores/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/casa-andina-select-miraflores/1.jpg",
+              "./assets/img/hotels/casa-andina-select-miraflores/2.jpg",
+              "./assets/img/hotels/casa-andina-select-miraflores/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama individual",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 91.8
+              },
+              "pricePerNight": 91.8,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 112.2
+              },
+              "pricePerNight": 112.2,
+              "currency": "USD"
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 112.2
+              },
+              "pricePerNight": 112.2,
+              "currency": "USD"
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas o configuración triple",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 1,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 149.6
+              },
+              "pricePerNight": 149.6,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 190.4
+              },
+              "pricePerNight": 190.4,
+              "currency": "USD"
+            }
+          ]
+        }
+      ],
       "status": "prepared_without_hotels",
       "notes": "Destino preparado para paquetes Perú. Agregar hoteles cuando existan tarifas netas confirmadas."
     },
@@ -1257,22 +1576,22 @@
           "destinationLabel": "Arequipa",
           "location": "Arequipa",
           "address": "Centro histórico de Arequipa",
-          "summary": "Hotel boutique/estándar céntrico, útil para city tour y operación turística en Arequipa.",
+          "summary": "Opción boutique céntrica para disfrutar la Ciudad Blanca caminando desde el centro histórico.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/catedral-boutique-arequipa/cover.jpg",
@@ -1292,12 +1611,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 64.8
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 64.8,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1305,15 +1622,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 79.2
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 79.2,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1321,31 +1636,41 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 79.2
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 79.2,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 105.6
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 105.6,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 134.4
+              },
+              "pricePerNight": 134.4,
+              "currency": "USD"
             }
           ]
         },
@@ -1357,22 +1682,22 @@
           "destinationLabel": "Arequipa",
           "location": "Arequipa",
           "address": "Centro histórico de Arequipa",
-          "summary": "Opción colonial estándar en zona céntrica, similar al estilo boutique solicitado.",
+          "summary": "Alojamiento de estilo colonial y ubicación práctica para city tours y excursiones.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/casablanca-arequipa/cover.jpg",
@@ -1392,12 +1717,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 56.7
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 56.7,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1405,15 +1728,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 69.3
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 69.3,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1421,31 +1742,41 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 69.3
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 69.3,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 92.4
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 92.4,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 117.6
+              },
+              "pricePerNight": 117.6,
+              "currency": "USD"
             }
           ]
         },
@@ -1456,23 +1787,23 @@
           "destination": "arequipa",
           "destinationLabel": "Arequipa",
           "location": "Arequipa",
-          "address": "Centro de Arequipa",
-          "summary": "Alternativa estándar céntrica para grupos, con buena operación para traslados y tours.",
+          "address": "Arequipa centro",
+          "summary": "Opción estándar funcional para grupos, con acceso conveniente a zonas turísticas y traslados.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/riviera-arequipa/cover.jpg",
@@ -1492,12 +1823,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 59.4
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 59.4,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1505,15 +1834,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 72.6
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 72.6,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1521,31 +1848,41 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 72.6
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 72.6,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 96.8
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 96.8,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 123.2
+              },
+              "pricePerNight": 123.2,
+              "currency": "USD"
             }
           ]
         }
@@ -1566,23 +1903,23 @@
           "destination": "puno",
           "destinationLabel": "Puno",
           "location": "Puno",
-          "address": "Jr. Puno 307, centro de Puno",
-          "summary": "Hotel estándar céntrico en Puno, práctico para una noche antes o después del Lago Titicaca.",
+          "address": "Centro de Puno",
+          "summary": "Hotel céntrico y práctico para grupos, ideal para operar excursiones al Lago Titicaca.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/sol-plaza-puno/cover.jpg",
@@ -1602,12 +1939,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 54.0
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 54.0,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1615,15 +1950,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 66.0
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 66.0,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1631,58 +1964,68 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 66.0
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 66.0,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 88.0
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 88.0,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 112.0
+              },
+              "pricePerNight": 112.0,
+              "currency": "USD"
             }
           ]
         },
         {
           "hotelCode": "conde-de-lemos-puno-3s",
-          "hotelName": "Hotel Conde de Lemos Puno",
+          "hotelName": "Hotel Conde de Lemos",
           "stars": 3,
           "destination": "puno",
           "destinationLabel": "Puno",
           "location": "Puno",
           "address": "Centro histórico de Puno",
-          "summary": "Opción estándar/boutique cercana a Plaza de Armas, adecuada para grupos que priorizan ubicación.",
+          "summary": "Opción estándar cerca de la Plaza de Armas, conveniente para estadías cortas y salidas al lago.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/conde-de-lemos-puno/cover.jpg",
@@ -1702,12 +2045,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 56.7
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 56.7,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1715,15 +2056,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 69.3
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 69.3,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1731,58 +2070,68 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 69.3
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 69.3,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 92.4
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 92.4,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 117.6
+              },
+              "pricePerNight": 117.6,
+              "currency": "USD"
             }
           ]
         },
         {
           "hotelCode": "qalasaya-puno-3s",
-          "hotelName": "Hotel Qalasaya Puno",
+          "hotelName": "Hotel Qalasaya",
           "stars": 3,
           "destination": "puno",
           "destinationLabel": "Puno",
           "location": "Puno",
           "address": "Centro de Puno",
-          "summary": "Alternativa estándar céntrica para operación de tours al Lago Titicaca.",
+          "summary": "Hotel céntrico de categoría estándar, recomendado para una noche antes o después del Lago Titicaca.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
             "Wifi",
-            "Agua caliente",
             "Baño privado",
+            "Agua caliente",
             "Desayuno",
             "Recepción",
-            "Ubicación operativa para tours"
+            "Buena ubicación para tours"
           ],
           "amenities": {
-            "checkin": "Desde 12:00",
-            "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido o sujeto a confirmación"
+            "checkin": "Según política del hotel",
+            "checkout": "Según política del hotel",
+            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
           },
           "images": {
             "cover": "./assets/img/hotels/qalasaya-puno/cover.jpg",
@@ -1802,12 +2151,10 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 46.9,
-                "penApprox": 176,
-                "pricingIncludesPaymentFees": true
+                "amount": 60.75
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 60.75,
+              "currency": "USD"
             },
             {
               "roomType": "double-twin",
@@ -1815,15 +2162,13 @@
               "bedType": "2 camas individuales",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 74.25
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 74.25,
+              "currency": "USD"
             },
             {
               "roomType": "double-matrimonial",
@@ -1831,31 +2176,41 @@
               "bedType": "1 cama matrimonial",
               "capacity": 2,
               "maxAdults": 2,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 59.9,
-                "penApprox": 225,
-                "pricingIncludesPaymentFees": true
+                "amount": 74.25
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 74.25,
+              "currency": "USD"
             },
             {
               "roomType": "triple",
               "label": "Habitación triple",
-              "bedType": "3 camas individuales o configuración similar",
+              "bedType": "3 camas o configuración triple",
               "capacity": 3,
               "maxAdults": 3,
-              "maxChildren": 0,
+              "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 76.9,
-                "penApprox": 289,
-                "pricingIncludesPaymentFees": true
+                "amount": 99.0
               },
-              "pricingStatus": "reference_pending_confirmation",
-              "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
+              "pricePerNight": 99.0,
+              "currency": "USD"
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar cuádruple",
+              "bedType": "Configuración familiar",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 126.0
+              },
+              "pricePerNight": 126.0,
+              "currency": "USD"
             }
           ]
         }
