@@ -1774,6 +1774,71 @@
         object-fit: cover;
       }
 
+
+      /* Ajuste final solicitado: cabecera uniforme y banner sin recorte */
+      .pv-meta-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-areas: none !important;
+        gap: 6px !important;
+        margin-bottom: 7px !important;
+      }
+
+      .pv-meta-holder,
+      .pv-meta-duration,
+      .pv-meta-destination,
+      .pv-meta-pack,
+      .pv-meta-passengers,
+      .pv-meta-language,
+      .pv-meta-phone,
+      .pv-meta-coupon {
+        grid-area: auto !important;
+      }
+
+      .pv-meta-item {
+        min-height: 40px !important;
+        padding: 6px 7px !important;
+        border-radius: 10px !important;
+      }
+
+      .pv-meta-item strong {
+        font-size: 8.6px !important;
+        line-height: 1.05 !important;
+        letter-spacing: .02em !important;
+        margin-bottom: 2px !important;
+        white-space: nowrap !important;
+      }
+
+      .pv-meta-item span,
+      .pv-meta-duration span,
+      .pv-meta-language span,
+      .pv-meta-passengers span,
+      .pv-meta-phone span,
+      .pv-meta-coupon span {
+        font-size: 10.2px !important;
+        line-height: 1.12 !important;
+        max-height: 2.24em !important;
+        -webkit-line-clamp: 2 !important;
+      }
+
+      .pv-ad-banner-slot {
+        min-height: 0 !important;
+        padding: 5px !important;
+        background: #0b1f18 !important;
+        overflow: visible !important;
+      }
+
+      .pv-ad-banner-slot img {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+        display: block !important;
+        border-radius: 8px !important;
+      }
+
       @page {
         size: A4 portrait;
         margin: 4mm 8mm 8mm;
@@ -2262,17 +2327,16 @@
     function sanitizeDocumentTitle(value) {
       return String(value || "")
         .trim()
-        .replace(/[\\/:*?"<>|]+/g, "-")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "");
+        .replace(/[\\/:*?"<>|]+/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
     function buildVoucherDocumentTitle(reserva) {
       const date = formatVoucherTitleDate(reserva);
       const { firstName, firstSurname } = getPrimaryNameAndSurname(reserva?.titularReserva || "");
       const code = reserva?.codigo || "SIN-CODIGO";
-      return sanitizeDocumentTitle([date, firstName, firstSurname, code].filter(Boolean).join("-"));
+      return sanitizeDocumentTitle([date, firstName, firstSurname, code].filter(Boolean).join(" "));
     }
 
     function applyVoucherDocumentTitle(reserva) {
