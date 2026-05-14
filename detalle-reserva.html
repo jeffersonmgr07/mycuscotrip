@@ -1439,9 +1439,201 @@
         display: block;
       }
 
+
+
+      /* Ajustes finales de impresión: más contenido en la primera hoja */
+      .pv-classic {
+        font-size: 11.4px;
+        line-height: 1.22;
+      }
+
+      .pv-top {
+        grid-template-columns: 250px 1fr;
+        gap: 12px;
+        align-items: start;
+        margin-top: 0;
+        margin-bottom: 7px;
+      }
+
+      .pv-left img {
+        width: 198px;
+        margin-bottom: 3px;
+      }
+
+      .pv-subcopy {
+        width: 220px;
+        font-size: 10.4px;
+        line-height: 1.14;
+        margin-bottom: 3px;
+      }
+
+      .pv-contact {
+        width: 220px;
+        font-size: 9.9px;
+        line-height: 1.08;
+      }
+
+      .pv-right {
+        padding-top: 0;
+      }
+
+      .pv-date {
+        font-size: 13.4px;
+        margin-bottom: 3px;
+        white-space: nowrap;
+      }
+
+      .pv-title {
+        font-size: 23px;
+        line-height: 1;
+        margin-bottom: 6px;
+        white-space: nowrap;
+      }
+
+      .pv-code-row {
+        gap: 8px;
+      }
+
+      .pv-code-box {
+        min-width: 190px;
+        padding: 6px 10px;
+        border-radius: 9px;
+      }
+
+      .pv-code-box span {
+        font-size: 8.8px;
+        margin-bottom: 2px;
+      }
+
+      .pv-code-box strong {
+        font-size: 15.5px;
+      }
+
+      .pv-qr-box img {
+        width: 70px;
+        height: 70px;
+        padding: 3px;
+      }
+
+      .pv-meta-grid {
+        display: grid;
+        grid-template-columns: 1.28fr .52fr 1.58fr .54fr .72fr .72fr;
+        grid-template-areas:
+          "holder duration destination passengers phone coupon"
+          "holder language pack passengers phone coupon";
+        gap: 5px;
+        margin-bottom: 7px;
+      }
+
+      .pv-meta-holder { grid-area: holder; }
+      .pv-meta-duration { grid-area: duration; }
+      .pv-meta-language { grid-area: language; }
+      .pv-meta-destination { grid-area: destination; }
+      .pv-meta-pack { grid-area: pack; }
+      .pv-meta-passengers { grid-area: passengers; }
+      .pv-meta-phone { grid-area: phone; }
+      .pv-meta-coupon { grid-area: coupon; }
+
+      .pv-meta-item {
+        min-height: 34px;
+        padding: 4px 5px;
+        border-radius: 9px;
+      }
+
+      .pv-meta-item strong {
+        font-size: 7.8px;
+        letter-spacing: .02em;
+        margin-bottom: 1px;
+      }
+
+      .pv-meta-item span {
+        font-size: 9.8px;
+        line-height: 1.08;
+        max-height: 2.16em;
+        -webkit-line-clamp: 2;
+      }
+
+      .pv-meta-duration span,
+      .pv-meta-language span,
+      .pv-meta-passengers span,
+      .pv-meta-phone span,
+      .pv-meta-coupon span {
+        font-size: 9.2px;
+      }
+
+      .pv-section-title {
+        padding: 4px 7px;
+        font-size: 11.2px;
+        line-height: 1.05;
+        margin-top: 6px;
+        background: #ffd21f;
+        border-color: #d8aa00;
+      }
+
+      .pv-table {
+        margin-bottom: 7px;
+      }
+
+      .pv-table th,
+      .pv-table td {
+        padding: 4px 5px;
+      }
+
+      .pv-table th {
+        font-size: 8.9px;
+        line-height: 1.05;
+      }
+
+      .pv-table td {
+        font-size: 10.3px;
+        line-height: 1.13;
+      }
+
+      .pv-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .pv-services-table th,
+      .pv-services-table td {
+        font-size: 10.8px;
+        padding: 4px 4px;
+      }
+
+      .pv-services-table th:nth-child(6),
+      .pv-services-table td:nth-child(6) {
+        font-size: 8.4px;
+      }
+
+      .pv-signature-main {
+        grid-template-columns: 112px 1fr;
+        gap: 10px;
+        padding: 9px 12px;
+      }
+
+      .pv-signature-brand img {
+        width: 88px;
+        max-height: 62px;
+        object-fit: contain;
+      }
+
+      .pv-social-title {
+        font-size: 10.6px;
+      }
+
+      .pv-social-pill {
+        font-size: 8.1px;
+        padding: 4px 5px;
+      }
+
+      .pv-ad-banner-slot {
+        min-height: 54px;
+      }
+
+
       @page {
         size: A4 portrait;
-        margin: 12mm;
+        margin: 7mm 9mm 9mm;
       }
     }
   </style>
@@ -2283,14 +2475,14 @@
           </div>
 
           <div class="pv-meta-grid">
-            <div class="pv-meta-item"><strong>${esc(t.holder)}</strong><span>${esc(reserva.titularReserva || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.travelDate)}</strong><span>${esc(reserva.duracion || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.destination)}</strong><span>${esc(reserva.destino || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.pack)}</strong><span>${esc(reserva.packTour || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.passengersCount)}</strong><span>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.language)}</strong><span>${esc(reserva.idioma || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.phone)}</strong><span>${esc(reserva.telefonoContacto || t.noData)}</span></div>
-            <div class="pv-meta-item"><strong>${esc(t.coupon)}</strong><span>${esc(reserva.codigoCupon || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-holder"><strong>${esc(t.holder)}</strong><span>${esc(reserva.titularReserva || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-duration"><strong>${esc(t.travelDate)}</strong><span>${esc(reserva.duracion || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-destination"><strong>${esc(t.destination)}</strong><span>${esc(reserva.destino || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-pack"><strong>${esc(t.pack)}</strong><span>${esc(reserva.packTour || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-passengers"><strong>${esc(t.passengersCount)}</strong><span>${esc(reserva.cantidadPaxs || turistas.length || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-language"><strong>${esc(t.language)}</strong><span>${esc(reserva.idioma || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-phone"><strong>${esc(t.phone)}</strong><span>${esc(reserva.telefonoContacto || t.noData)}</span></div>
+            <div class="pv-meta-item pv-meta-coupon"><strong>${esc(t.coupon)}</strong><span>${esc(reserva.codigoCupon || t.noData)}</span></div>
           </div>
 
           <div class="pv-section">
@@ -2447,7 +2639,7 @@
           <div class="pv-signature-section">
             <div class="pv-signature-main">
               <div class="pv-signature-brand">
-                <img src="./assets/img/logos/Logo1.png" alt="My Cusco Trip">
+                <img src="./assets/img/logos/Logo2.png" alt="My Cusco Trip">
               </div>
               <div class="pv-social-area">
                 <div class="pv-social-title">Síguenos en nuestras redes sociales</div>
