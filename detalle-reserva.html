@@ -2097,6 +2097,113 @@
         line-height: .98 !important;
       }
     }
+
+
+    /* Corrección definitiva de impresión: turistas en flujo continuo y sin salto artificial */
+    .pv-tourists-grid {
+      width: 100%;
+      display: block;
+      border: 1px solid #d7dbe0;
+      border-top: 0;
+      border-radius: 0 0 10px 10px;
+      overflow: hidden;
+      margin-bottom: 7px;
+      background: #fff;
+    }
+
+    .pv-tourists-grid-row {
+      display: grid;
+      grid-template-columns: 38% 15% 18% 16% 13%;
+    }
+
+    .pv-tourists-grid-row > div {
+      border-top: 1px solid #d7dbe0;
+      border-left: 1px solid #d7dbe0;
+      padding: 3px 5px;
+      font-size: 10.3px;
+      line-height: 1.12;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+    }
+
+    .pv-tourists-grid-row > div:first-child {
+      border-left: 0;
+    }
+
+    .pv-tourists-grid-head > div {
+      background: #f6f6f6;
+      text-align: center;
+      font-size: 8.9px;
+      font-weight: 800;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      line-height: 1.05;
+    }
+
+    .pv-tourists-grid-row.pv-birthday-row > div {
+      background: #fff7df !important;
+      border-top-color: #f2d28a;
+    }
+
+    @media print {
+      .pv-tourists-section {
+        display: block !important;
+        margin-top: 0 !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+
+      .pv-tourists-section .pv-section-title {
+        display: block !important;
+        margin-top: 2px !important;
+        margin-bottom: 0 !important;
+        padding: 2.6px 7px !important;
+        font-size: 10.4px !important;
+        line-height: 1 !important;
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+
+      .pv-tourists-grid {
+        display: block !important;
+        margin-bottom: 4px !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+
+      .pv-tourists-grid-row {
+        display: grid !important;
+        grid-template-columns: 38% 15% 18% 16% 13% !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .pv-tourists-grid-row > div {
+        padding: 1.55px 4px !important;
+        font-size: 8.7px !important;
+        line-height: .98 !important;
+      }
+
+      .pv-tourists-grid-head > div {
+        padding-top: 1.6px !important;
+        padding-bottom: 1.6px !important;
+        font-size: 7.9px !important;
+        line-height: .98 !important;
+      }
+
+      .pv-tourists-table {
+        display: none !important;
+      }
+
+      .pv-section:not(.pv-tourists-section) {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -2574,7 +2681,7 @@
     function formatVoucherTitleDate(reserva) {
       const parts = parseDateParts(reserva?.fechaViaje || reserva?.fechaVoucher || reserva?.fechaEmision || "");
       if (!parts) return "Travel-Voucher";
-      return `${String(parts.month).padStart(2, "0")}-${String(parts.day).padStart(2, "0")}-${parts.year}`;
+      return `${String(parts.month).padStart(2, "0")}${String(parts.day).padStart(2, "0")}${parts.year}`;
     }
 
     function sanitizeDocumentTitle(value) {
@@ -2589,7 +2696,7 @@
       const date = formatVoucherTitleDate(reserva);
       const { firstName, firstSurname } = getPrimaryNameAndSurname(reserva?.titularReserva || "");
       const code = reserva?.codigo || "SIN-CODIGO";
-      return sanitizeDocumentTitle([date, firstName, firstSurname, code].filter(Boolean).join(" "));
+      return sanitizeDocumentTitle([date, firstName, firstSurname, code].filter(Boolean).join(" ").toUpperCase());
     }
 
     function applyVoucherDocumentTitle(reserva) {
@@ -2993,32 +3100,28 @@
 
           <div class="pv-section pv-tourists-section">
             <div class="pv-section-title">${esc(t.passengers)}</div>
-            <table class="pv-table pv-tourists-table">
-            <thead>
-              <tr>
-                <th>${esc(t.fullName)}</th>
-                <th>${esc(t.documentType)}</th>
-                <th>${esc(t.documentNumber)}</th>
-                <th>${esc(t.nationality)}</th>
-                <th>${esc(t.birthDate)}</th>
-              </tr>
-            </thead>
-            <tbody>
+            <div class="pv-tourists-grid" role="table" aria-label="${esc(t.passengers)}">
+              <div class="pv-tourists-grid-row pv-tourists-grid-head" role="row">
+                <div role="columnheader">${esc(t.fullName)}</div>
+                <div role="columnheader">${esc(t.documentType)}</div>
+                <div role="columnheader">${esc(t.documentNumber)}</div>
+                <div role="columnheader">${esc(t.nationality)}</div>
+                <div role="columnheader">${esc(t.birthDate)}</div>
+              </div>
               ${turistas.map(turista => {
                 const nombreTurista = turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData;
                 const birthdayInfo = getTravelerBirthdayInfo(turista, servicios);
                 return `
-                <tr class="${birthdayInfo.active ? "pv-birthday-row" : ""}">
-                  <td>${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(nombreTurista)}</span><span class="birthday-icon">${esc(birthdayInfo.icon)}</span></span>` : esc(nombreTurista)}</td>
-                  <td>${esc(turista.tipoDocumento || t.noData)}</td>
-                  <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
-                  <td>${esc(turista.nacionalidad || t.noData)}</td>
-                  <td>${esc(turista.fechaNacimiento || t.noData)}</td>
-                </tr>
+                <div class="pv-tourists-grid-row ${birthdayInfo.active ? "pv-birthday-row" : ""}" role="row">
+                  <div role="cell">${birthdayInfo.active ? `<span class="birthday-name"><span>${esc(nombreTurista)}</span><span class="birthday-icon">${esc(birthdayInfo.icon)}</span></span>` : esc(nombreTurista)}</div>
+                  <div role="cell">${esc(turista.tipoDocumento || t.noData)}</div>
+                  <div role="cell">${esc(turista.numeroDocumento || turista.documento || t.noData)}</div>
+                  <div role="cell">${esc(turista.nacionalidad || t.noData)}</div>
+                  <div role="cell">${esc(turista.fechaNacimiento || t.noData)}</div>
+                </div>
                 `;
               }).join("")}
-            </tbody>
-            </table>
+            </div>
           </div>
 
           ${hoteles.length ? `
