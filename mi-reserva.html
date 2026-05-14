@@ -438,75 +438,66 @@
     const errorMessage = document.getElementById("errorMessage");
     const buscarBtn = document.getElementById("buscarBtn");
 
-    function normalizarTexto(valor) {
-      return String(valor || "")
-        .trim()
-        .toUpperCase()
+    function limpiarExacto(valor) {
+      return String(valor || "").trim().toUpperCase();
+    }
+
+    function normalizarParaSugerencia(valor) {
+      return limpiarExacto(valor)
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[Ñ]/g, "N")
-        .replace(/[^A-Z0-9\s]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+        .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function normalizarCodigo(valor) {
-      return normalizarTexto(valor).replace(/\s+/g, "").replace(/[^A-Z0-9]/g, "");
+    function obtenerApellidoReserva(reserva) {
+      return String(reserva?.apellido || "").trim();
     }
 
-    function palabrasClave(valor) {
-      return normalizarTexto(valor)
-        .split(" ")
-        .filter((parte) => parte && parte.length >= 2);
+    function codigoCoincideExacto(reserva, codigoIngresado) {
+      return limpiarExacto(reserva?.codigo) === limpiarExacto(codigoIngresado);
     }
 
-    function equivalenciasApellido(apellido) {
-      const base = normalizarTexto(apellido);
-      const opciones = new Set([base]);
-      // Corrección frecuente en esta reserva: Batista / Bautista.
-      if (base.includes("BATISTA")) opciones.add(base.replace(/BATISTA/g, "BAUTISTA"));
-      if (base.includes("BAUTISTA")) opciones.add(base.replace(/BAUTISTA/g, "BATISTA"));
-      return [...opciones];
+    function apellidoCoincideExacto(reserva, apellidoIngresado) {
+      const apellidoReserva = obtenerApellidoReserva(reserva);
+      if (!apellidoReserva || !String(apellidoIngresado || "").trim()) return false;
+      return limpiarExacto(apellidoReserva) === limpiarExacto(apellidoIngresado);
     }
 
-    function obtenerTextosValidacion(reserva) {
-      const textos = [
-        reserva?.apellido,
-        reserva?.titularReserva,
-        reserva?.nombreTitular,
-        reserva?.cliente,
-        reserva?.pasajeroPrincipal,
-        reserva?.contacto?.nombre,
-        reserva?.contacto?.apellido
-      ];
+    function distanciaLevenshtein(a, b) {
+      const textoA = normalizarParaSugerencia(a);
+      const textoB = normalizarParaSugerencia(b);
+      const matriz = Array.from({ length: textoA.length + 1 }, () => []);
 
-      if (Array.isArray(reserva?.turistas)) {
-        reserva.turistas.forEach((turista) => {
-          textos.push(turista?.nombreCompleto, turista?.apellido, turista?.apellidos);
-        });
+      for (let i = 0; i <= textoA.length; i++) matriz[i][0] = i;
+      for (let j = 0; j <= textoB.length; j++) matriz[0][j] = j;
+
+      for (let i = 1; i <= textoA.length; i++) {
+        for (let j = 1; j <= textoB.length; j++) {
+          const costo = textoA[i - 1] === textoB[j - 1] ? 0 : 1;
+          matriz[i][j] = Math.min(
+            matriz[i - 1][j] + 1,
+            matriz[i][j - 1] + 1,
+            matriz[i - 1][j - 1] + costo
+          );
+        }
       }
 
-      return textos.filter(Boolean).map(normalizarTexto);
+      return matriz[textoA.length][textoB.length];
     }
 
-    function apellidoCoincide(reserva, apellidoIngresado) {
-      const apellido = normalizarTexto(apellidoIngresado);
-      if (!apellido) return false;
+    function pareceApellidoMalEscrito(reserva, apellidoIngresado) {
+      const apellidoReserva = obtenerApellidoReserva(reserva);
+      const apellido = String(apellidoIngresado || "").trim();
+      if (!apellidoReserva || !apellido) return false;
 
-      const opciones = equivalenciasApellido(apellido);
-      const textos = obtenerTextosValidacion(reserva);
+      const esperado = normalizarParaSugerencia(apellidoReserva);
+      const ingresado = normalizarParaSugerencia(apellido);
+      if (!esperado || !ingresado) return false;
 
-      return textos.some((texto) => {
-        if (!texto) return false;
-
-        // Coincidencia directa: apellido completo o valor guardado en reserva.apellido.
-        if (opciones.some((opcion) => texto === opcion || texto.includes(opcion))) return true;
-
-        // Coincidencia por palabras, útil cuando el cliente escribe solo el primer apellido.
-        const partesIngresadas = opciones.flatMap(palabrasClave);
-        const partesTexto = palabrasClave(texto);
-        return partesIngresadas.some((parte) => partesTexto.includes(parte));
-      });
+      // Solo sugerimos error de escritura cuando el dato es razonablemente cercano.
+      // Ejemplos: BATISTA / BAUTISTA, MELENDEZ / MELENDES, MUCKLE / MUKLE.
+      const distancia = distanciaLevenshtein(esperado, ingresado);
+      const limite = esperado.length <= 6 ? 1 : 2;
+      return distancia > 0 && distancia <= limite;
     }
 
     async function cargarReservas() {
@@ -531,9 +522,8 @@
 
       const codigo = document.getElementById("codigo").value;
       const apellido = document.getElementById("apellido").value;
-      const codigoNormalizado = normalizarCodigo(codigo);
 
-      if (!codigoNormalizado || !normalizarTexto(apellido)) {
+      if (!String(codigo || "").trim() || !String(apellido || "").trim()) {
         errorMessage.textContent = "Ingresa el código de reserva y el apellido.";
         errorMessage.style.display = "block";
         buscarBtn.disabled = false;
@@ -543,22 +533,24 @@
 
       try {
         const reservas = await cargarReservas();
+        const reservaPorCodigo = reservas.find((reserva) => codigoCoincideExacto(reserva, codigo));
 
-        const reservaEncontrada = reservas.find((reserva) => {
-          return (
-            normalizarCodigo(reserva?.codigo) === codigoNormalizado &&
-            apellidoCoincide(reserva, apellido)
-          );
-        });
-
-        if (!reservaEncontrada) {
-          errorMessage.textContent = "No encontramos una reserva con ese código y apellido. Verifica que el código esté completo y prueba con el primer apellido del titular.";
+        if (!reservaPorCodigo) {
+          errorMessage.textContent = "No existe una reserva con esos datos.";
           errorMessage.style.display = "block";
           return;
         }
 
-        localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaEncontrada));
-        const codigoUrl = encodeURIComponent(reservaEncontrada.codigo || codigo);
+        if (!apellidoCoincideExacto(reservaPorCodigo, apellido)) {
+          errorMessage.textContent = pareceApellidoMalEscrito(reservaPorCodigo, apellido)
+            ? "Parece que escribiste mal tu apellido. Revisa que coincida exactamente con el apellido registrado."
+            : "No existe una reserva con esos datos.";
+          errorMessage.style.display = "block";
+          return;
+        }
+
+        localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaPorCodigo));
+        const codigoUrl = encodeURIComponent(reservaPorCodigo.codigo || String(codigo).trim());
         window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
       } catch (error) {
         console.error("Error consultando reserva:", error);
