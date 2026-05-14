@@ -351,7 +351,9 @@ class MyCuscoTripProductPage {
     this.setText("productBadge", badge);
     this.setText("productTitle", title);
     this.setText("productDescription", description);
-    if (this.isPeruPackage(product)) {
+    if (this.isPeruPackage(product) && basePrice > 0) {
+      this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
+    } else if (this.isPeruPackage(product)) {
       this.setText("productBasePrice", "Cotización flexible");
     } else {
       this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
@@ -396,6 +398,7 @@ class MyCuscoTripProductPage {
         },
         onChange: (_, dateStr, instance) => {
           this.date = dateStr;
+          this.refreshItineraryDates();
 
           if (instance.altInput) {
             instance.altInput.style.width = "100%";
@@ -595,20 +598,52 @@ class MyCuscoTripProductPage {
     }
 
     target.innerHTML = items.map((item, index) => {
+      const dayNumber = Number(item?.day || index + 1);
+      const dayLabel = `Día ${dayNumber}`;
+      const dateLabel = this.getItineraryDateLabel(dayNumber);
+      const title = item.title || `Paso ${index + 1}`;
       const images = this.shouldShowTourItineraryImages()
         ? this.collectItineraryItemImages(item).slice(0, 1)
         : [];
 
       return `
-        <div class="experience-itinerary-item ${images.length ? "experience-itinerary-item--visual" : ""}">
+        <div class="experience-itinerary-item ${images.length ? "experience-itinerary-item--visual" : ""}" data-itinerary-day="${this.escapeHtml(dayNumber)}">
           <div class="experience-itinerary-item__content">
-            <h3 class="experience-itinerary-day-title">${this.escapeHtml(item.title || `Paso ${index + 1}`)}</h3>
+            <div class="experience-itinerary-day-meta">
+              <span class="experience-itinerary-day-pill">${this.escapeHtml(dayLabel)}</span>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="${this.escapeHtml(dayNumber)}" ${dateLabel ? "" : "hidden"}>${this.escapeHtml(dateLabel)}</span>
+            </div>
+            <h3 class="experience-itinerary-day-title">${this.escapeHtml(title)}</h3>
             <p>${this.escapeHtml(item.description || "")}</p>
           </div>
-          ${this.renderItineraryMedia(images, item.title || `Paso ${index + 1}`)}
+          ${this.renderItineraryMedia(images, title)}
         </div>
       `;
     }).join("");
+  }
+
+  getItineraryDateLabel(dayNumber) {
+    if (!this.date) return "";
+
+    const start = new Date(`${this.date}T00:00:00`);
+    if (Number.isNaN(start.getTime())) return "";
+
+    const date = new Date(start);
+    date.setDate(start.getDate() + Math.max(Number(dayNumber || 1) - 1, 0));
+
+    return date.toLocaleDateString("es-PE", {
+      day: "numeric",
+      month: "long"
+    });
+  }
+
+  refreshItineraryDates() {
+    document.querySelectorAll("[data-itinerary-date-for]").forEach((el) => {
+      const day = Number(el.dataset.itineraryDateFor || 1);
+      const label = this.getItineraryDateLabel(day);
+      el.textContent = label;
+      el.hidden = !label;
+    });
   }
 
   shouldShowTourItineraryImages() {
@@ -3128,9 +3163,10 @@ class MyCuscoTripProductPage {
       return `
         <div class="experience-itinerary-item experience-itinerary-item--visual experience-itinerary-item--day">
           <div class="experience-itinerary-item__content">
-            <h3 class="experience-itinerary-day-title">
+            <div class="experience-itinerary-day-meta">
               <span class="experience-itinerary-day-pill">Día ${this.escapeHtml(day.day)}</span>
-            </h3>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="${this.escapeHtml(day.day)}" ${this.getItineraryDateLabel(day.day) ? "" : "hidden"}>${this.escapeHtml(this.getItineraryDateLabel(day.day))}</span>
+            </div>
             ${(day.items || []).map((item) => `
               <p>
                 <strong>${this.escapeHtml(item.title || "Actividad")}</strong>
