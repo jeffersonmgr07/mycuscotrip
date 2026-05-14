@@ -2204,6 +2204,292 @@
       }
     }
 
+
+    /* Corrección final real: quitar saltos artificiales entre turistas y servicios */
+    @media print {
+      @page {
+        size: A4;
+        margin: 6mm 8mm 8mm 8mm;
+      }
+
+      html,
+      body {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .pv-classic {
+        font-size: 10px !important;
+        line-height: 1.16 !important;
+        overflow: visible !important;
+      }
+
+      /* Regresar logo/bloque izquierdo a su sitio y solo ajustar el bloque derecho */
+      .pv-top {
+        grid-template-columns: 255px 1fr !important;
+        gap: 12px !important;
+        align-items: start !important;
+        margin-bottom: 6px !important;
+      }
+
+      .pv-left {
+        justify-self: start !important;
+        max-width: 255px !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        transform: none !important;
+      }
+
+      .pv-left img {
+        width: 176px !important;
+        margin: 0 0 2px 0 !important;
+      }
+
+      .pv-subcopy {
+        width: 206px !important;
+        font-size: 8.8px !important;
+        line-height: 1 !important;
+        margin: 0 0 2px 0 !important;
+        text-align: center !important;
+      }
+
+      .pv-contact {
+        width: 206px !important;
+        font-size: 8.5px !important;
+        line-height: 1 !important;
+        text-align: center !important;
+      }
+
+      .pv-right {
+        justify-self: end !important;
+        width: 280px !important;
+        min-width: 0 !important;
+        max-width: 280px !important;
+        margin: 0 12px 0 0 !important;
+        padding: 9px 0 0 0 !important;
+        transform: none !important;
+        text-align: center !important;
+      }
+
+      .pv-date,
+      .pv-title {
+        text-align: center !important;
+      }
+
+      .pv-date {
+        font-size: 10.5px !important;
+        line-height: 1 !important;
+        margin-bottom: 1px !important;
+      }
+
+      .pv-title {
+        font-size: 18px !important;
+        line-height: 1 !important;
+        margin-bottom: 4px !important;
+      }
+
+      .pv-code-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 7px !important;
+        margin: 0 !important;
+      }
+
+      .pv-code-box {
+        min-width: 154px !important;
+        padding: 4px 8px !important;
+        border-radius: 8px !important;
+      }
+
+      .pv-code-box span {
+        font-size: 7.4px !important;
+        line-height: 1 !important;
+        margin-bottom: 1px !important;
+      }
+
+      .pv-code-box strong {
+        font-size: 12.8px !important;
+        line-height: 1 !important;
+        letter-spacing: .05em !important;
+      }
+
+      .pv-qr-box img {
+        width: 54px !important;
+        height: 54px !important;
+        padding: 2px !important;
+        border-radius: 7px !important;
+      }
+
+      .pv-meta-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 4px !important;
+        margin-top: 1px !important;
+        margin-bottom: 4px !important;
+      }
+
+      .pv-meta-item {
+        min-height: 32px !important;
+        padding: 4px 5px !important;
+        border-radius: 8px !important;
+      }
+
+      .pv-meta-item strong {
+        font-size: 7.5px !important;
+        line-height: 1 !important;
+        margin-bottom: 1px !important;
+      }
+
+      .pv-meta-item span {
+        font-size: 8.8px !important;
+        line-height: 1.05 !important;
+        max-height: 2.1em !important;
+        -webkit-line-clamp: 2 !important;
+      }
+
+      .pv-section-title {
+        margin-top: 3px !important;
+        padding: 2.2px 7px !important;
+        font-size: 10px !important;
+        line-height: 1 !important;
+        border-radius: 8px 8px 0 0 !important;
+      }
+
+      /* Lo importante: no obligar secciones/tablas completas a saltar a la siguiente página */
+      .pv-section,
+      .pv-section:not(.pv-tourists-section),
+      .pv-table,
+      .pv-services-table,
+      .pv-bottom,
+      .pv-info-box,
+      .pv-side-box,
+      .pv-signature-section,
+      .pv-tourists-section,
+      .pv-tourists-grid {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+        break-before: auto !important;
+        page-break-before: auto !important;
+        break-after: auto !important;
+        page-break-after: auto !important;
+      }
+
+      .pv-section-title,
+      .pv-section-title + .pv-table,
+      .pv-section-title + .pv-hotels-grid,
+      .pv-section-title + .pv-bottom {
+        break-after: auto !important;
+        page-break-after: auto !important;
+      }
+
+      .pv-tourists-grid {
+        margin-bottom: 3px !important;
+        border-radius: 0 0 8px 8px !important;
+      }
+
+      .pv-tourists-grid-row {
+        display: grid !important;
+        grid-template-columns: 38% 15% 18% 16% 13% !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .pv-tourists-grid-row > div {
+        padding: 1.2px 3px !important;
+        font-size: 8.2px !important;
+        line-height: .98 !important;
+        min-height: 0 !important;
+      }
+
+      .pv-tourists-grid-head > div {
+        font-size: 7.4px !important;
+        padding-top: 1.2px !important;
+        padding-bottom: 1.2px !important;
+      }
+
+      .birthday-name {
+        gap: 2px !important;
+      }
+
+      .birthday-icon {
+        font-size: .85em !important;
+      }
+
+      .pv-services-table {
+        table-layout: fixed !important;
+        margin-bottom: 4px !important;
+      }
+
+      .pv-services-table th,
+      .pv-services-table td {
+        padding: 3px 4px !important;
+        font-size: 9px !important;
+        line-height: 1.05 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        vertical-align: middle !important;
+      }
+
+      .pv-services-table th:nth-child(6),
+      .pv-services-table td:nth-child(6) {
+        font-size: 8px !important;
+      }
+
+      .pv-status-pill {
+        min-width: 45px !important;
+        padding: 2px 5px !important;
+        font-size: 7.5px !important;
+      }
+
+      .pv-bottom {
+        gap: 8px !important;
+        margin-top: 5px !important;
+      }
+
+      .pv-info-box,
+      .pv-side-box {
+        min-height: 0 !important;
+        padding: 8px !important;
+        font-size: 9px !important;
+        line-height: 1.15 !important;
+        border-radius: 9px !important;
+      }
+
+      .pv-subtitle {
+        font-size: 9.2px !important;
+        margin-bottom: 4px !important;
+      }
+
+      .pv-assist-text,
+      .pv-payment-lines div {
+        font-size: 8.8px !important;
+        line-height: 1.16 !important;
+      }
+
+      .pv-agent-name,
+      .pv-agent-phone {
+        font-size: 9.2px !important;
+      }
+
+      .pv-payment-card {
+        padding: 6px !important;
+        margin-top: 6px !important;
+      }
+
+      .pv-payment-title {
+        font-size: 9px !important;
+        margin-bottom: 3px !important;
+      }
+
+      .pv-signature-section {
+        margin-top: 8px !important;
+      }
+    }
+
 </style>
 </head>
 <body>
