@@ -2028,7 +2028,76 @@
         margin: 3mm 8mm 8mm;
       }
     }
-  </style>
+  
+
+    /* Ajuste final: acceso mi-reserva + formato impreso continuo */
+    @media print {
+      .pv-top {
+        grid-template-columns: 285px 1fr !important;
+        align-items: start !important;
+        gap: 12px !important;
+      }
+
+      .pv-left {
+        max-width: 285px !important;
+      }
+
+      .pv-right {
+        justify-self: end !important;
+        width: auto !important;
+        min-width: 300px !important;
+        text-align: right !important;
+        padding-top: 14px !important;
+        padding-right: 2px !important;
+        margin-left: auto !important;
+      }
+
+      .pv-date,
+      .pv-title {
+        text-align: right !important;
+      }
+
+      .pv-code-row {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 9px !important;
+        margin-left: auto !important;
+      }
+
+      .pv-tourists-section,
+      .pv-tourists-table {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+
+      .pv-tourists-section {
+        margin-top: 0 !important;
+      }
+
+      .pv-tourists-table {
+        table-layout: fixed !important;
+        width: 100% !important;
+        margin-bottom: 3px !important;
+      }
+
+      .pv-tourists-table thead {
+        display: table-header-group !important;
+      }
+
+      .pv-tourists-table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .pv-tourists-table th,
+      .pv-tourists-table td {
+        padding-top: 1.4px !important;
+        padding-bottom: 1.4px !important;
+        line-height: .98 !important;
+      }
+    }
+</style>
 </head>
 <body>
   <div id="header-container"></div>
