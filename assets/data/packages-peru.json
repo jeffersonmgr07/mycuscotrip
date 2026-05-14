@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-14",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "Archivo de configuración para generar paquetes dinámicos combinados de Perú. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
@@ -1273,6 +1273,383 @@
           "amazonas"
         ]
       }
+    },
+    {
+      "id": "pkg_peru_lima_huacachina_cusco_mapi_puno_arequipa_10d9n",
+      "slug": "peru-lima-huacachina-cusco-machu-picchu-puno-arequipa-10d9n",
+      "title": "Perú completo: Lima, Huacachina, Cusco, Machu Picchu, Puno y Arequipa 10D/9N",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 10,
+      "nights": 9,
+      "typeLabel": "10 días / 9 noches",
+      "badge": "Ruta completa",
+      "featured": true,
+      "location": "Lima / Huacachina / Cusco / Machu Picchu / Puno / Arequipa / Perú",
+      "shortDescription": "Ruta multidestino ideal para grupos: Lima nocturna, Huacachina, Cusco con bienvenida ancestral, Valle Sagrado, Machu Picchu, Ruta del Sol, Titicaca y Arequipa.",
+      "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
+      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "status": "published",
+      "recommendedGroupSize": 25,
+      "market": "international-groups",
+      "defaultTravelDates": {
+        "startDate": "2026-08-25",
+        "endDate": "2026-09-03",
+        "arrivalCity": "Lima",
+        "departureCity": "Lima"
+      },
+      "accommodationSummary": [
+        {
+          "destination": "lima",
+          "nights": 3,
+          "label": "Lima - 3 noches"
+        },
+        {
+          "destination": "cusco",
+          "nights": 2,
+          "label": "Cusco - 2 noches"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 noche"
+        },
+        {
+          "destination": "puno",
+          "nights": 1,
+          "label": "Puno - 1 noche"
+        },
+        {
+          "destination": "arequipa",
+          "nights": 1,
+          "label": "Arequipa - 1 noche"
+        }
+      ],
+      "overnightTransport": [
+        {
+          "date": "2026-08-31",
+          "route": "Puno - Arequipa",
+          "type": "bus_nocturno",
+          "hotelNight": false,
+          "notes": "Noche en bus turístico o servicio ejecutivo sujeto a disponibilidad."
+        }
+      ],
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu",
+          "aguas-calientes",
+          "puno",
+          "titicaca",
+          "arequipa"
+        ],
+        "durationKeys": [
+          "10d9n",
+          "10-dias",
+          "9-noches",
+          "10-days",
+          "9-nights"
+        ],
+        "includedTourCodes": [
+          "PER001",
+          "PER003",
+          "CUZ001",
+          "CUZ002",
+          "CUZ003CON",
+          "MAPI003",
+          "PER007",
+          "PER005",
+          "PER006"
+        ],
+        "includedTags": [
+          "lima",
+          "huacachina",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu",
+          "ruta-del-sol",
+          "puno",
+          "titicaca",
+          "arequipa",
+          "grupo-privado"
+        ],
+        "themes": [
+          "cultural",
+          "classic",
+          "multidestino",
+          "grupos",
+          "machu-picchu"
+        ],
+        "keywords": [
+          "peru completo 10 dias",
+          "lima huacachina cusco machu picchu puno arequipa",
+          "paquete peru grupo washington",
+          "ruta del sol cusco puno",
+          "titicaca arequipa"
+        ]
+      },
+      "includes": [
+        "Traslados de llegada y salida según itinerario",
+        "Tour nocturno en Lima: Circuito Mágico del Agua y Larcomar",
+        "Full Day Paracas, Ica y Huacachina desde Lima",
+        "Vuelo doméstico Lima - Cusco sujeto a cotización",
+        "Bienvenida ancestral en Cusco",
+        "City Tour Cusco y centros arqueológicos",
+        "Valle Sagrado con conexión hacia Machu Picchu Pueblo",
+        "Tour Machu Picchu con tren, bus, ingreso y guía según disponibilidad",
+        "Ruta del Sol Cusco - Puno",
+        "Full Day Lago Titicaca: Uros y Taquile",
+        "Bus nocturno Puno - Arequipa",
+        "Tours en Arequipa según opción elegida",
+        "Alojamiento configurable por destino"
+      ],
+      "excludes": [
+        "Vuelos internacionales",
+        "Vuelos domésticos hasta confirmación de tarifa",
+        "Alimentación no mencionada",
+        "Early check-in o late check-out no confirmado",
+        "Propinas y gastos personales"
+      ],
+      "itineraryOptions": [
+        {
+          "code": "peru-completo-10d9n-washington-ruta-sugerida",
+          "label": "Ruta sugerida para grupo 25 pasajeros",
+          "title": "Lima, Huacachina, Cusco, Machu Picchu, Puno y Arequipa",
+          "routeLabel": "Ruta completa 10D/9N",
+          "recommended": true,
+          "summary": "Itinerario optimizado para llegada a Lima el 25 de agosto por la tarde y retorno internacional el 3 de septiembre.",
+          "includedTourCodes": [
+            "PER001",
+            "PER003",
+            "CUZ001",
+            "CUZ002",
+            "CUZ003CON",
+            "MAPI003",
+            "PER007",
+            "PER005",
+            "PER006"
+          ],
+          "accommodationSummary": [
+            {
+              "destination": "lima",
+              "nights": 3,
+              "label": "Lima - 3 noches"
+            },
+            {
+              "destination": "cusco",
+              "nights": 2,
+              "label": "Cusco - 2 noches"
+            },
+            {
+              "destination": "aguas-calientes",
+              "nights": 1,
+              "label": "Aguas Calientes - 1 noche"
+            },
+            {
+              "destination": "puno",
+              "nights": 1,
+              "label": "Puno - 1 noche"
+            },
+            {
+              "destination": "arequipa",
+              "nights": 1,
+              "label": "Arequipa - 1 noche"
+            }
+          ],
+          "trainMode": "sacred_valley_connection",
+          "outboundRoute": "sacred_valley_connection_outbound",
+          "returnRoute": "machu_picchu_return",
+          "itinerary": [
+            {
+              "day": 1,
+              "title": "Llegada a Lima y tour nocturno",
+              "tourCodes": [
+                "arrival_transfer",
+                "PER001"
+              ],
+              "activities": [
+                {
+                  "startTime": "Tarde",
+                  "title": "Recepción en Lima",
+                  "description": "Llegada del grupo a Lima y traslado al hotel estándar seleccionado."
+                },
+                {
+                  "startTime": "Noche",
+                  "title": "Circuito Mágico del Agua y Larcomar",
+                  "description": "Recorrido nocturno ligero para iniciar el viaje sin exigir demasiado después del vuelo internacional."
+                }
+              ]
+            },
+            {
+              "day": 2,
+              "title": "Full Day Paracas, Ica y Huacachina",
+              "tourCodes": [
+                "PER003"
+              ],
+              "activities": [
+                {
+                  "startTime": "Temprano",
+                  "title": "Salida hacia Paracas e Ica",
+                  "description": "Full day desde Lima con Islas Ballestas o experiencia costera según operación, visita a bodega y oasis de Huacachina."
+                }
+              ]
+            },
+            {
+              "day": 3,
+              "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
+              "tourCodes": [
+                "CUZ001",
+                "CUZ002"
+              ],
+              "activities": [
+                {
+                  "startTime": "Muy temprano",
+                  "title": "Vuelo Lima - Cusco",
+                  "description": "Traslado al aeropuerto y vuelo doméstico hacia Cusco."
+                },
+                {
+                  "startTime": "Mediodía",
+                  "title": "Bienvenida ancestral",
+                  "description": "Ceremonia de bienvenida para conectar con la cultura andina y aclimatar progresivamente."
+                },
+                {
+                  "startTime": "Tarde",
+                  "title": "City Tour Cusco",
+                  "description": "Recorrido por la ciudad y centros arqueológicos cercanos."
+                }
+              ]
+            },
+            {
+              "day": 4,
+              "title": "Valle Sagrado con conexión a Machu Picchu",
+              "tourCodes": [
+                "CUZ003CON"
+              ],
+              "activities": [
+                {
+                  "startTime": "Mañana",
+                  "title": "Valle Sagrado de los Incas",
+                  "description": "Visita al Valle Sagrado con paradas culturales y conexión operativa hacia Ollantaytambo."
+                },
+                {
+                  "startTime": "Tarde/Noche",
+                  "title": "Tren a Aguas Calientes",
+                  "description": "Viaje en tren hacia Machu Picchu Pueblo y noche en Aguas Calientes."
+                }
+              ]
+            },
+            {
+              "day": 5,
+              "title": "Machu Picchu y retorno a Cusco",
+              "tourCodes": [
+                "MAPI003"
+              ],
+              "activities": [
+                {
+                  "startTime": "Mañana",
+                  "title": "Tour Machu Picchu",
+                  "description": "Ingreso a Machu Picchu con guía profesional, sujeto a circuito y horario disponible."
+                },
+                {
+                  "startTime": "Tarde/Noche",
+                  "title": "Retorno a Cusco",
+                  "description": "Bus, tren de retorno y traslado final al hotel en Cusco."
+                }
+              ]
+            },
+            {
+              "day": 6,
+              "title": "Ruta del Sol Cusco - Puno",
+              "tourCodes": [],
+              "activities": [
+                {
+                  "startTime": "Día completo",
+                  "title": "Bus turístico Ruta del Sol",
+                  "description": "Traslado turístico de Cusco a Puno con paradas culturales como Andahuaylillas, Raqchi y Pucará según operador."
+                }
+              ]
+            },
+            {
+              "day": 7,
+              "title": "Lago Titicaca y bus nocturno a Arequipa",
+              "tourCodes": [
+                "PER007"
+              ],
+              "activities": [
+                {
+                  "startTime": "Día completo",
+                  "title": "Uros y Taquile",
+                  "description": "Full day Lago Titicaca visitando islas flotantes de los Uros y Taquile."
+                },
+                {
+                  "startTime": "Noche",
+                  "title": "Bus nocturno Puno - Arequipa",
+                  "description": "Traslado nocturno hacia Arequipa. Esta noche no requiere hotel."
+                }
+              ]
+            },
+            {
+              "day": 8,
+              "title": "Arequipa monumental",
+              "tourCodes": [
+                "PER005"
+              ],
+              "activities": [
+                {
+                  "startTime": "Mañana",
+                  "title": "Llegada a Arequipa",
+                  "description": "Llegada por la mañana, traslado al hotel y tiempo para desayuno o early check-in sujeto a disponibilidad."
+                },
+                {
+                  "startTime": "Tarde",
+                  "title": "City Tour Arequipa y Santa Catalina",
+                  "description": "Visita de la ciudad blanca, miradores y Monasterio de Santa Catalina según operación."
+                }
+              ]
+            },
+            {
+              "day": 9,
+              "title": "Arequipa y vuelo a Lima",
+              "tourCodes": [
+                "PER006"
+              ],
+              "activities": [
+                {
+                  "startTime": "Mañana",
+                  "title": "Tour corto en Arequipa",
+                  "description": "Opción recomendada: Ruta del Sillar, campiña arequipeña o Colca corto según horario real de vuelo."
+                },
+                {
+                  "startTime": "Tarde/Noche",
+                  "title": "Vuelo Arequipa - Lima",
+                  "description": "Retorno aéreo a Lima y última noche de conexión antes del vuelo internacional."
+                }
+              ]
+            },
+            {
+              "day": 10,
+              "title": "Salida internacional desde Lima",
+              "tourCodes": [
+                "departure_transfer"
+              ],
+              "activities": [
+                {
+                  "startTime": "Según vuelo",
+                  "title": "Traslado al aeropuerto",
+                  "description": "Traslado desde el hotel en Lima al aeropuerto para el vuelo internacional de retorno."
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "durationConfigs": [
