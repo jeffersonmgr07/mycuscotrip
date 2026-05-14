@@ -3710,3 +3710,90 @@ class MyCuscoTripProductPage {
 document.addEventListener("DOMContentLoaded", () => {
   window.MyCuscoTripProductPage = new MyCuscoTripProductPage();
 });
+
+/* =========================================================
+   PATCH MCT 2026-05-14 - Detalle comercial para Paquetes Perú
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripProductPage === "undefined") return;
+
+  MyCuscoTripProductPage.prototype.renderHighlights = function (product) {
+    const target = document.getElementById("productHighlights");
+    if (!target) return;
+
+    const customHighlights = Array.isArray(product?.highlights) ? product.highlights : [];
+    const experienceType = Array.isArray(product?.experienceType) ? product.experienceType.join(" · ") : "";
+    const details = Array.isArray(product?.details) ? product.details : [];
+
+    const highlights = customHighlights.length
+      ? [
+          ...customHighlights,
+          experienceType ? `Tipo de viaje: ${experienceType}` : null,
+          product?.duration?.label ? `Duración: ${product.duration.label}` : null,
+          product?.capacity ? `Grupo: hasta ${product.capacity} personas` : null,
+          ...details
+        ].filter(Boolean)
+      : [
+          product?.shortDescription,
+          product?.duration?.label ? `Duración: ${product.duration.label}` : null,
+          experienceType ? `Tipo de viaje: ${experienceType}` : null,
+          product?.duration?.guideLanguages?.length ? `Idiomas: ${product.duration.guideLanguages.join(", ")}` : null
+        ].filter(Boolean);
+
+    target.innerHTML = highlights.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
+  };
+
+  MyCuscoTripProductPage.prototype.renderFaq = function (items) {
+    const target = document.getElementById("productFaq");
+    if (!target) return;
+
+    if (!items.length) {
+      target.innerHTML = "<p>Pronto agregaremos preguntas frecuentes.</p>";
+      return;
+    }
+
+    target.innerHTML = items.map((item) => `
+      <div class="experience-faq-item">
+        <h3>${this.escapeHtml(item.q || item.question || "Pregunta")}</h3>
+        <p>${this.escapeHtml(item.a || item.answer || "")}</p>
+      </div>
+    `).join("");
+  };
+
+  MyCuscoTripProductPage.prototype.renderPeruPackageFallback = function (product) {
+    const packageOptionsTarget = document.getElementById("packageOptions");
+    const itineraryTarget = document.getElementById("productItinerary");
+    const paypalButton = document.getElementById("paypalButton");
+
+    if (packageOptionsTarget) packageOptionsTarget.innerHTML = "";
+    if (paypalButton) paypalButton.textContent = "Solicitar cotización";
+    if (!itineraryTarget) return;
+
+    const itinerary = Array.isArray(product?.dailyItinerary) && product.dailyItinerary.length
+      ? product.dailyItinerary
+      : Array.isArray(product?.itinerary) ? product.itinerary : [];
+
+    if (itinerary.length) {
+      this.renderItinerary(itinerary);
+      const pickupInfo = product.pickupInfo ? `
+        <div class="experience-itinerary-item">
+          <h3>Recojos y coordinación</h3>
+          <p>${this.escapeHtml(product.pickupInfo)}</p>
+        </div>` : "";
+      const important = Array.isArray(product.importantInfo) && product.importantInfo.length ? `
+        <div class="experience-itinerary-item">
+          <h3>Información importante antes de viajar</h3>
+          <ul>${product.importantInfo.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}</ul>
+        </div>` : "";
+      itineraryTarget.insertAdjacentHTML("beforeend", `${pickupInfo}${important}`);
+      return;
+    }
+
+    itineraryTarget.innerHTML = `
+      <div class="experience-itinerary-item">
+        <h3>Ruta sugerida</h3>
+        <p>${this.escapeHtml(product.shortDescription || product.description || "Paquete multidestino preparado para cotización personalizada.")}</p>
+      </div>
+    `;
+  };
+})();
