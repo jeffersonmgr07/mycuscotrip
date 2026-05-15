@@ -3194,3 +3194,128 @@ body.passenger-modal-open {
 .experience-itinerary-day-meta + .experience-itinerary-day-title {
   margin-top: 0;
 }
+
+/* Ajustes finales: FAQ plegable, recojos/informacion plegables y listas mas respirables */
+.experience-faq-item {
+  padding: 0;
+  overflow: hidden;
+}
+
+.experience-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 48px 16px 16px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #062803;
+  position: relative;
+}
+
+.experience-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.experience-faq-item summary::after {
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.82rem;
+  color: #0a3a26;
+}
+
+.experience-faq-item[open] summary::after {
+  content: "\f077";
+}
+
+.experience-faq-item p {
+  padding: 0 16px 16px;
+  margin: 0;
+}
+
+.experience-itinerary-disclosure {
+  padding: 0;
+  overflow: hidden;
+}
+
+.experience-itinerary-disclosure summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 15px 48px 15px 18px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 0.94rem;
+  color: #062803;
+  position: relative;
+}
+
+.experience-itinerary-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.experience-itinerary-disclosure summary::after {
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.82rem;
+  color: #0a3a26;
+}
+
+.experience-itinerary-disclosure[open] summary::after {
+  content: "\f077";
+}
+
+.experience-itinerary-disclosure p {
+  padding: 0 18px 18px;
+  margin: 0;
+}
+
+.experience-itinerary-list,
+.experience-itinerary-item ul {
+  margin: 0;
+  padding: 0 18px 18px 42px;
+  color: #56645f;
+  display: grid;
+  gap: 9px;
+}
+
+.experience-itinerary-list li,
+.experience-itinerary-item ul li {
+  padding-left: 4px;
+  line-height: 1.55;
+}
+
+@media (min-width: 769px) {
+  .experience-faq-item[open] p,
+  .experience-faq-item p {
+    font-size: 0.94rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .experience-faq-item:not([open]) p,
+  .experience-itinerary-disclosure:not([open]) p,
+  .experience-itinerary-disclosure:not([open]) ul {
+    display: none;
+  }
+
+  .experience-faq-item summary {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .experience-itinerary-list,
+  .experience-itinerary-item ul {
+    padding-left: 40px;
+    padding-right: 18px;
+  }
+}
