@@ -1147,6 +1147,7 @@
         "Reservas instantáneas al confirmar con tu agente y posibilidad de obtener precio mejorado"
       ],
       "includes": [
+        "Precio base sin hoteles: incluye tours, traslados operativos, tren base, ingreso a Machu Picchu, bus a Machu Picchu, boletos turísticos requeridos, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa y vuelo Arequipa-Lima sujeto a disponibilidad y confirmación de tarifa.",
         "Recojo desde el aeropuerto de Lima y traslado al hotel seleccionado en Lima",
         "Traslados de salida y llegada necesarios según el itinerario confirmado",
         "Recojo desde el hotel para las excursiones programadas en todos los destinos",
@@ -1498,7 +1499,19 @@
           "PERU_MAPI_WANCHAQ_VISTADOME_84P",
           "PERU_MAPI_WANCHAQ_VISTADOME_606"
         ]
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1149,
+        "child": 1099,
+        "currency": "USD",
+        "mode": "sin_hoteles",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Incluye tours, traslados operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa y vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
+      },
+      "priceFrom": 1149,
+      "priceLabel": "Desde USD 1,149 por persona sin hoteles",
+      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final."
     },
     {
       "id": "pkg_peru_12d11n",
