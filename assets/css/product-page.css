@@ -3161,3 +3161,36 @@ body.passenger-modal-open {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Badges de día y fecha en itinerarios */
+.experience-itinerary-day-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.experience-itinerary-date-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #f3faf4;
+  color: #0a3a26;
+  border: 1px solid rgba(10, 58, 38, 0.12);
+  font-weight: 800;
+  font-size: 0.88rem;
+  line-height: 1.15;
+}
+
+.experience-itinerary-date-pill[hidden] {
+  display: none !important;
+}
+
+.experience-itinerary-day-meta + .experience-itinerary-day-title {
+  margin-top: 0;
+}
