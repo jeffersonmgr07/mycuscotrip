@@ -1423,19 +1423,40 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        height: 66px;
-        min-width: 192px;
-        margin-left: 10px;
+        height: 42px;
+        width: 118px;
+        max-width: 118px;
+        margin-left: 2px;
         padding: 0;
         align-self: center;
+        flex: 0 0 118px;
+        overflow: hidden;
       }
 
       .pv-tripadvisor-award img {
         display: block;
-        max-height: 66px;
-        max-width: 192px;
+        max-height: 40px;
+        max-width: 116px;
         width: auto;
+        height: auto;
         object-fit: contain;
+      }
+
+      .pv-ta-icon {
+        display: inline-flex;
+        width: 12px;
+        height: 12px;
+        align-items: center;
+        justify-content: center;
+        color: #ffd84d;
+        flex: 0 0 12px;
+      }
+
+      .pv-ta-icon svg {
+        display: block;
+        width: 12px;
+        height: 12px;
+        fill: currentColor;
       }
 
       .pv-ad-banner-slot {
@@ -1646,15 +1667,24 @@
       }
 
       .pv-tripadvisor-award {
-        height: 54px;
-        min-width: 168px;
-        margin-left: 8px;
+        height: 38px;
+        width: 108px;
+        min-width: 108px;
+        max-width: 108px;
+        margin-left: 2px;
         padding: 0;
+        flex-basis: 108px;
       }
 
       .pv-tripadvisor-award img {
-        max-height: 54px;
-        max-width: 168px;
+        max-height: 36px;
+        max-width: 106px;
+      }
+
+      .pv-ta-icon,
+      .pv-ta-icon svg {
+        width: 10px;
+        height: 10px;
       }
 
       .pv-ad-banner-slot {
@@ -2559,6 +2589,75 @@
         margin-bottom: 5px !important;
       }
     }
+
+    /* Ajuste final banner redes + bloque Travel Voucher */
+    @media print {
+      .pv-socials {
+        gap: 4px !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .pv-social-pill {
+        border-radius: 999px !important;
+        padding: 4px 5px !important;
+        font-size: 8.1px !important;
+        line-height: 1 !important;
+        height: auto !important;
+        min-height: 18px !important;
+        flex: 0 0 auto !important;
+      }
+
+      .pv-social-pill i {
+        font-size: 9px !important;
+        line-height: 1 !important;
+      }
+
+      .pv-tripadvisor-award {
+        height: 38px !important;
+        width: 108px !important;
+        min-width: 108px !important;
+        max-width: 108px !important;
+        margin-left: 2px !important;
+        padding: 0 !important;
+        flex: 0 0 108px !important;
+        overflow: hidden !important;
+      }
+
+      .pv-tripadvisor-award img {
+        max-height: 36px !important;
+        max-width: 106px !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+      }
+
+      .voucher-head {
+        padding-top: 7px !important;
+      }
+
+      .voucher-head .date {
+        font-size: 1.11rem !important;
+      }
+
+      .voucher-head .title {
+        font-size: 2.08rem !important;
+      }
+
+      .voucher-code span {
+        font-size: .84rem !important;
+      }
+
+      .voucher-code strong {
+        font-size: 1.52rem !important;
+      }
+
+      .voucher-qr img {
+        width: 148px !important;
+        height: 148px !important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -3613,7 +3712,7 @@
                   <span class="pv-social-pill"><i class="fa-brands fa-tiktok"></i> @mycuscotrip</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-whatsapp"></i> +51 900 608 980</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-youtube"></i> My Cusco Trip</span>
-                  <span class="pv-social-pill"><i class="fa-brands fa-tripadvisor" aria-hidden="true"></i> My Cusco Trip</span>
+                  <span class="pv-social-pill"><span class="pv-ta-icon" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><path d="M32 18c-8.5 0-15.9 2.6-22.6 7.7L4 18H0l6.4 9.4C2.5 31 0 36.2 0 42c0 8.3 6.7 15 15 15 6.6 0 12.2-4.3 14.2-10.2L32 39l2.8 7.8C36.8 52.7 42.4 57 49 57c8.3 0 15-6.7 15-15 0-5.8-2.5-11-6.4-14.6L64 18h-4l-5.4 7.7C47.9 20.6 40.5 18 32 18Zm-17 12a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm34 0a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm-34 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm34 0a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z"/></svg></span> My Cusco Trip</span>
                   <span class="pv-tripadvisor-award" aria-label="TripAdvisor"><img src="./assets/img/reserva/tripadvisor-adwards.png" alt="TripAdvisor Awards"></span>
                 </div>
               </div>
