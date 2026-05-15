@@ -2490,6 +2490,44 @@
       }
     }
 
+
+
+    /* Ajuste fino final: legibilidad de Datos de los turistas y bloque Travel Voucher */
+    @media print {
+      .pv-right {
+        padding-top: 14px !important;
+      }
+
+      .pv-tourists-grid-row > div {
+        padding: 3px 4px !important;
+        font-size: 9px !important;
+        line-height: 1.05 !important;
+        min-height: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .pv-tourists-grid-head > div {
+        padding: 3px 4px !important;
+        font-size: 8px !important;
+        line-height: 1.05 !important;
+        min-height: 18px !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+
+      .pv-tourists-grid-row:not(.pv-tourists-grid-head) > div:nth-child(n+2) {
+        padding-left: 10px !important;
+      }
+
+      .pv-tourists-grid-row:not(.pv-tourists-grid-head) > div:first-child {
+        padding-left: 6px !important;
+      }
+
+      .pv-tourists-grid {
+        margin-bottom: 5px !important;
+      }
+    }
 </style>
 </head>
 <body>
