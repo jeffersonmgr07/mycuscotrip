@@ -667,10 +667,10 @@ class MyCuscoTripProductPage {
     }
 
     target.innerHTML = items.map((item) => `
-      <div class="experience-faq-item">
-        <h3>${this.escapeHtml(item.q || "Pregunta")}</h3>
-        <p>${this.escapeHtml(item.a || "")}</p>
-      </div>
+      <details class="experience-faq-item">
+        <summary>${this.escapeHtml(item.q || item.question || "Pregunta")}</summary>
+        <p>${this.escapeHtml(item.a || item.answer || "")}</p>
+      </details>
     `).join("");
   }
 
@@ -3789,10 +3789,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     target.innerHTML = items.map((item) => `
-      <div class="experience-faq-item">
-        <h3>${this.escapeHtml(item.q || item.question || "Pregunta")}</h3>
+      <details class="experience-faq-item">
+        <summary>${this.escapeHtml(item.q || item.question || "Pregunta")}</summary>
         <p>${this.escapeHtml(item.a || item.answer || "")}</p>
-      </div>
+      </details>
     `).join("");
   };
 
@@ -3812,15 +3812,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (itinerary.length) {
       this.renderItinerary(itinerary);
       const pickupInfo = product.pickupInfo ? `
-        <div class="experience-itinerary-item">
-          <h3>Recojos y coordinación</h3>
+        <details class="experience-itinerary-item experience-itinerary-disclosure">
+          <summary>Recojos y coordinación</summary>
           <p>${this.escapeHtml(product.pickupInfo)}</p>
-        </div>` : "";
+        </details>` : "";
       const important = Array.isArray(product.importantInfo) && product.importantInfo.length ? `
-        <div class="experience-itinerary-item">
-          <h3>Información importante antes de viajar</h3>
-          <ul>${product.importantInfo.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}</ul>
-        </div>` : "";
+        <details class="experience-itinerary-item experience-itinerary-disclosure">
+          <summary>Información importante antes de viajar</summary>
+          <ul class="experience-itinerary-list">${product.importantInfo.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}</ul>
+        </details>` : "";
       itineraryTarget.insertAdjacentHTML("beforeend", `${pickupInfo}${important}`);
       return;
     }
