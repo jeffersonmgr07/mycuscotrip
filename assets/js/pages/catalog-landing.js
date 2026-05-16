@@ -66,6 +66,21 @@
     return `${base}${clean}`;
   }
 
+
+  function t(key, fallback = "") {
+    return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+  }
+
+  function resolveAssetUrl(url) {
+    if (!url) return "";
+    const raw = String(url).trim();
+    if (/^(https?:)?\/\//i.test(raw) || raw.startsWith("data:")) return raw;
+    if (raw.startsWith("/")) return raw;
+    const clean = raw.replace(/^\.?\//, "");
+    const base = window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
+    return `${base}${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -110,7 +125,7 @@
 
   function formatMoney(value, currency = "USD") {
     const number = Number(value);
-    if (!Number.isFinite(number) || number <= 0) return "Consultar";
+    if (!Number.isFinite(number) || number <= 0) return t("cards.checkPrice", "Consultar");
 
     try {
       return new Intl.NumberFormat("es-PE", {
@@ -151,7 +166,7 @@
     if (typeof item.image === "string" && item.image) return item.image;
     if (item.images?.cover) return item.images.cover;
     if (Array.isArray(item.images?.gallery) && item.images.gallery[0]) return item.images.gallery[0];
-    return "./assets/img/tours/machu-picchu-full-day-clasico/cover.jpg";
+    return "assets/img/tours/machu-picchu-full-day-clasico/cover.jpg";
   }
 
   function normalizeProduct(item, source) {
@@ -177,7 +192,7 @@
       badge: item.badge || (productKind === "package" ? "Paquete" : "Tour"),
       location: item.location || "Perú",
       shortDescription: item.shortDescription || item.description || "Experiencia seleccionada por My Cusco Trip.",
-      image: getImage(item),
+      image: resolveAssetUrl(getImage(item)),
       featured: Boolean(item.featured),
       status: item.status || "published",
       days: Number(item.days || 0),
@@ -351,7 +366,7 @@
     const total = state.filtered.length;
     const category = getTrekkingCategoryConfig();
     const suffix = category ? ` en ${category.label}` : "";
-    count.textContent = `${total} ${total === 1 ? "experiencia encontrada" : "experiencias encontradas"}${suffix}`;
+    count.textContent = `${total} ${total === 1 ? t("catalog.experienceFound", "experiencia encontrada") : t("catalog.experiencesFound", "experiencias encontradas")}${suffix}`;
   }
 
   function renderCards() {
@@ -370,16 +385,16 @@
 
     grid.innerHTML = state.filtered.map((item) => {
       const priceLabel = item.price
-        ? `Desde ${formatMoney(item.price, item.currency)}`
+        ? `${t("cards.from", "Desde")} ${formatMoney(item.price, item.currency)}`
         : item.productKind === "package"
-          ? "Cotización flexible"
-          : "Consultar precio";
+          ? t("cards.flexibleQuote", "Cotización flexible")
+          : t("cards.checkPrice", "Consultar precio");
 
       const chips = buildChips(item);
 
       return `
         <article class="catalog-card">
-          <a class="catalog-card__image" href="${escapeHtml(item.url)}" aria-label="Ver ${escapeHtml(item.title)}">
+          <a class="catalog-card__image" href="${escapeHtml(item.url)}" aria-label="${escapeHtml(t("cards.viewExperience", "Ver experiencia"))} ${escapeHtml(item.title)}">
             <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" />
             <span class="catalog-card__badge">${escapeHtml(item.badge)}</span>
           </a>
@@ -395,7 +410,7 @@
 
             <div class="catalog-card__footer">
               <strong>${escapeHtml(priceLabel)}</strong>
-              <a class="btn catalog-card__button" href="${escapeHtml(item.url)}">Ver experiencia</a>
+              <a class="btn catalog-card__button" href="${escapeHtml(item.url)}">${escapeHtml(t("cards.viewExperience", "Ver experiencia"))}</a>
             </div>
           </div>
         </article>
@@ -407,19 +422,19 @@
     const chips = [];
 
     if (item.productFamily === "machu-picchu-tour") chips.push("Machu Picchu");
-    if (item.productFamily === "cusco-tour") chips.push("Tour en Cusco");
-    if (item.productFamily === "peru-tour") chips.push("Experiencia Perú");
-    if (item.productFamily === "cusco-package") chips.push("Paquete Cusco");
-    if (item.productFamily === "peru-package") chips.push("Multidestino");
+    if (item.productFamily === "cusco-tour") chips.push(t("chips.cuscoTour", "Tour en Cusco"));
+    if (item.productFamily === "peru-tour") chips.push(t("chips.peruExperience", "Experiencia Perú"));
+    if (item.productFamily === "cusco-package") chips.push(t("chips.cuscoPackage", "Paquete Cusco"));
+    if (item.productFamily === "peru-package") chips.push(t("chips.multidestination", "Multidestino"));
 
     const themes = Array.isArray(item.search.themes) ? item.search.themes : [];
-    if (themes.includes("aventura")) chips.push("Aventura");
-    if (themes.includes("naturaleza")) chips.push("Naturaleza");
-    if (themes.includes("cultural")) chips.push("Cultural");
+    if (themes.includes("aventura")) chips.push(t("chips.adventure", "Aventura"));
+    if (themes.includes("naturaleza")) chips.push(t("chips.nature", "Naturaleza"));
+    if (themes.includes("cultural")) chips.push(t("chips.cultural", "Cultural"));
 
     const tags = Array.isArray(item.search.includedTags) ? item.search.includedTags : [];
-    if (tags.some((tag) => String(tag).includes("tren"))) chips.push("Con tren");
-    if (item.productKind === "package") chips.push("Hotel configurable");
+    if (tags.some((tag) => String(tag).includes("tren"))) chips.push(t("chips.withTrain", "Con tren"));
+    if (item.productKind === "package") chips.push(t("chips.configurableHotel", "Hotel configurable"));
 
     return Array.from(new Set(chips)).slice(0, 4);
   }
@@ -456,7 +471,7 @@
     if (eyebrow) eyebrow.textContent = "Trekkings";
     if (heroTitle) heroTitle.textContent = category.label;
     if (heroText) heroText.textContent = category.note;
-    if (topTitle) topTitle.textContent = `Experiencias de ${category.label}`;
+    if (topTitle) topTitle.textContent = `${t("catalog.experiencesOf", "Experiencias de")} ${category.label}`;
     if (note) note.textContent = "Esta vista muestra una selección filtrada. Si no encuentras una salida publicada, podemos ayudarte a armar una ruta personalizada.";
   }
 

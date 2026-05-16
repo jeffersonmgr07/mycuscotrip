@@ -2,6 +2,9 @@
   const SUPPORTED_LOCALES = ["es", "en", "pt", "fr", "de", "it", "zh", "ja"];
   const DEFAULT_LOCALE = "es";
   const STORAGE_KEY = "site_lang";
+  let activeDictionary = {};
+  let activeLocale = DEFAULT_LOCALE;
+  let observerStarted = false;
 
   function getBasePath() {
     return window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/";
@@ -19,6 +22,7 @@
   }
 
   function getLocaleFromUrl() {
+    if (window.MCT_LOCALE) return normalizeLocale(window.MCT_LOCALE);
     const params = new URLSearchParams(window.location.search);
     return normalizeLocale(params.get("lang") || getCurrentFolderLocale() || localStorage.getItem(STORAGE_KEY) || DEFAULT_LOCALE);
   }
@@ -38,6 +42,18 @@
     }
   }
 
+  function deepMerge(target, source) {
+    const output = { ...(target || {}) };
+    Object.entries(source || {}).forEach(([key, value]) => {
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        output[key] = deepMerge(output[key], value);
+      } else {
+        output[key] = value;
+      }
+    });
+    return output;
+  }
+
   async function loadTranslations(locale) {
     const lang = normalizeLocale(locale);
     const baseTranslations = await fetchJsonIfExists(getAssetPath("assets/data/ui-translations.json")) || {};
@@ -47,32 +63,69 @@
 
     return {
       locale: lang,
-      dictionary: Object.assign(
-        {},
-        baseTranslations[DEFAULT_LOCALE] || {},
-        baseTranslations[lang] || {},
+      dictionary: deepMerge(
+        deepMerge(baseTranslations[DEFAULT_LOCALE] || {}, baseTranslations[lang] || {}),
         localeTranslations
       )
     };
   }
 
-  function applyTranslations(dictionary) {
-    if (!dictionary) return;
+  function getValue(dictionary, key) {
+    if (!dictionary || !key) return "";
+    if (Object.prototype.hasOwnProperty.call(dictionary, key)) return dictionary[key];
+    return String(key).split(".").reduce((acc, part) => acc && acc[part], dictionary) || "";
+  }
 
-    document.querySelectorAll("[data-i18n]").forEach((node) => {
+  function t(key, fallback = "") {
+    const value = getValue(activeDictionary, key);
+    return value || fallback || key;
+  }
+
+  function applyTranslations(dictionary = activeDictionary, root = document) {
+    if (!dictionary || !root) return;
+
+    root.querySelectorAll?.("[data-i18n]").forEach((node) => {
       const key = node.dataset.i18n;
-      if (dictionary[key]) node.textContent = dictionary[key];
+      const value = getValue(dictionary, key);
+      if (value) node.textContent = value;
     });
 
-    document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+    root.querySelectorAll?.("[data-i18n-html]").forEach((node) => {
+      const key = node.dataset.i18nHtml;
+      const value = getValue(dictionary, key);
+      if (value) node.innerHTML = value;
+    });
+
+    root.querySelectorAll?.("[data-i18n-placeholder]").forEach((node) => {
       const key = node.dataset.i18nPlaceholder;
-      if (dictionary[key]) node.setAttribute("placeholder", dictionary[key]);
+      const value = getValue(dictionary, key);
+      if (value) node.setAttribute("placeholder", value);
     });
 
-    document.querySelectorAll("[data-i18n-label]").forEach((node) => {
+    root.querySelectorAll?.("[data-i18n-label]").forEach((node) => {
       const key = node.dataset.i18nLabel;
-      if (dictionary[key]) node.setAttribute("aria-label", dictionary[key]);
+      const value = getValue(dictionary, key);
+      if (value) node.setAttribute("aria-label", value);
     });
+
+    root.querySelectorAll?.("[data-i18n-title]").forEach((node) => {
+      const key = node.dataset.i18nTitle;
+      const value = getValue(dictionary, key);
+      if (value) node.setAttribute("title", value);
+    });
+  }
+
+  function startObserver() {
+    if (observerStarted || !document.documentElement) return;
+    observerStarted = true;
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) applyTranslations(activeDictionary, node);
+        });
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
   }
 
   function getLocalizedPath(locale, path) {
@@ -87,13 +140,16 @@
 
   async function initI18n(locale) {
     const lang = normalizeLocale(locale || getLocaleFromUrl());
+    activeLocale = lang;
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.setAttribute("lang", lang === "zh" ? "zh-Hans" : lang);
     document.body?.setAttribute("data-locale", lang);
 
     try {
       const result = await loadTranslations(lang);
-      applyTranslations(result.dictionary);
+      activeDictionary = result.dictionary || {};
+      applyTranslations(activeDictionary);
+      startObserver();
       window.dispatchEvent(new CustomEvent("mct:i18n-ready", { detail: result }));
       return result;
     } catch (error) {
@@ -112,6 +168,9 @@
     normalizeLocale,
     loadTranslations,
     applyTranslations,
+    t,
+    get dictionary() { return activeDictionary; },
+    get locale() { return activeLocale; },
     init: initI18n
   };
 

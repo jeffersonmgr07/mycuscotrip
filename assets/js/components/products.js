@@ -241,15 +241,19 @@
       });
     }
 
+    t(key, fallback = "") {
+      return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+    }
+
     renderLoading() {
       this.container.innerHTML = `
         <div class="featured-products-empty" style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#56645f;">
-          Cargando experiencias destacadas...
+          ${this.t("home.loadingFeatured", "Cargando experiencias destacadas...")}
         </div>
       `;
     }
 
-    renderEmpty(message = "No hay experiencias destacadas todavía.") {
+    renderEmpty(message = this.t("home.noFeatured", "No hay experiencias destacadas todavía.")) {
       this.container.innerHTML = `
         <div class="featured-products-empty" style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#56645f;">
           ${this.escapeHtml(message)}
@@ -269,13 +273,13 @@
     renderCard(item) {
       const optionParam = item.productKind === "package" ? "&option=0" : "";
       const href = this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}${optionParam}`);
-      const image = item.image || this.resolvePath("assets/img/quote/fallbacks/machu-picchu.jpg");
-      const price = item.price ? `${item.price.currency} ${this.formatMoney(item.price.amount)}` : "Cotización flexible";
+      const image = this.resolvePath(item.image || "assets/img/quote/fallbacks/machu-picchu.jpg");
+      const price = item.price ? `${item.price.currency} ${this.formatMoney(item.price.amount)}` : this.t("cards.flexibleQuote", "Cotización flexible");
       const description = this.truncate(item.shortDescription, 118);
 
       return `
         <article class="destino-card product-card featured-product-card featured-home-card" data-product-slug="${this.escapeHtml(item.slug)}">
-          <a class="product-card__media" href="${this.escapeHtml(href)}" aria-label="Ver ${this.escapeHtml(item.title)}">
+          <a class="product-card__media" href="${this.escapeHtml(href)}" aria-label="${this.escapeHtml(this.t("cards.viewExperience", "Ver experiencia"))} ${this.escapeHtml(item.title)}">
             <img
               src="${this.escapeHtml(image)}"
               alt="${this.escapeHtml(item.title)}"
@@ -293,10 +297,10 @@
             <p>${this.escapeHtml(description)}</p>
             <div class="product-card__footer">
               <div class="product-card__price">
-                <small>Desde</small>
+                <small>${this.escapeHtml(this.t("cards.from", "Desde"))}</small>
                 <strong>${this.escapeHtml(price)}</strong>
               </div>
-              <a class="btn product-card__cta" href="${this.escapeHtml(href)}">Ver experiencia</a>
+              <a class="btn product-card__cta" href="${this.escapeHtml(href)}">${this.escapeHtml(this.t("cards.viewExperience", "Ver experiencia"))}</a>
             </div>
           </div>
         </article>

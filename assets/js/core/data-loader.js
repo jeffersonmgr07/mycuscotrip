@@ -13,7 +13,9 @@ const MCT_LOCALIZABLE_DATA_KEYS = new Set([
   "packagesCusco",
   "packagesPeru",
   "destinations",
-  "privatePackages"
+  "privatePackages",
+  "hotels",
+  "trains"
 ]);
 
 const MCT_DATA_PATHS = {
