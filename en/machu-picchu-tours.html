@@ -123,7 +123,7 @@
 <img alt="WhatsApp" src="../assets/img/logos/LogoWhatsapp.png"/>
 </a>
 <main>
-<section class="catalog-hero" style="background-image: linear-gradient(135deg, rgba(6, 40, 3, 0.92), rgba(10, 58, 38, 0.86)), url('./assets/img/tours/machu-picchu-full-day-clasico/cover.jpg');">
+<section class="catalog-hero" style="background-image: linear-gradient(135deg, rgba(6, 40, 3, 0.92), rgba(10, 58, 38, 0.86)), url('/assets/img/tours/machu-picchu-full-day-clasico/cover.jpg');">
 <div class="container catalog-hero__inner">
 <p class="catalog-eyebrow">Machu Picchu Tours</p>
 <h1>Machu Picchu Tours</h1>
@@ -146,7 +146,7 @@
 <div aria-hidden="true" class="catalog-empty" hidden="" id="catalogLandingEmpty"></div>
 </div>
 </section>
-<section aria-labelledby="seo-heading" class="seo-content seo-content--styled" style="--seo-bg-image: url('./assets/img/machu-picchu/machu-picchu-hero.jpg')">
+<section aria-labelledby="seo-heading" class="seo-content seo-content--styled" style="--seo-bg-image: url('/assets/img/machu-picchu/machu-picchu-hero.jpg')">
 <div class="container seo-content__shell">
 <div class="seo-content__grid">
 <div class="seo-content__copy">
@@ -199,7 +199,7 @@
 <div id="footer-container"></div>
 <script>
     const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
-    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "./";
+    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "/";
 
     async function loadComponent(componentName, targetId) {
       try {

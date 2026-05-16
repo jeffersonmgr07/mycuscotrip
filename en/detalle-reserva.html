@@ -54,7 +54,7 @@
       padding: 74px 0 50px;
       background:
         linear-gradient(rgba(255,255,255,.90), rgba(255,255,255,.90)),
-        url("./assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
+        url("/assets/img/reserva/machu-picchu-fondo.jpg") center/cover no-repeat fixed;
     }
 
     .voucher-shell {
@@ -3182,12 +3182,12 @@
       const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
       const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
       const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
-      const agenteFoto = reserva.agenteFoto || "./assets/img/agentes/jefferson-garcia.jpg";
+      const agenteFoto = reserva.agenteFoto || "/assets/img/agentes/jefferson-garcia.jpg";
 
       return `
         <div class="voucher-top">
           <div class="voucher-brand">
-            <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
+            <img src="/assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
 
             <div class="subcopy">
               ${esc(t.subtitle)}
@@ -3510,7 +3510,7 @@
         <div class="pv-classic">
           <div class="pv-top">
             <div class="pv-left">
-              <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
+              <img src="/assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
               <div class="pv-subcopy">${esc(t.subtitle)}</div>
               <div class="pv-contact">
                 <div>${esc(t.contact1)}</div>
@@ -3697,7 +3697,7 @@
           <div class="pv-signature-section">
             <div class="pv-signature-main">
               <div class="pv-signature-brand">
-                <img src="./assets/img/logos/Logo2.png" alt="My Cusco Trip">
+                <img src="/assets/img/logos/Logo2.png" alt="My Cusco Trip">
               </div>
               <div class="pv-social-area">
                 <div class="pv-social-title">Síguenos en nuestras redes sociales</div>
@@ -3708,12 +3708,12 @@
                   <span class="pv-social-pill"><i class="fa-brands fa-whatsapp"></i> +51 900 608 980</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-youtube"></i> My Cusco Trip</span>
                   <span class="pv-social-pill"><span class="pv-ta-icon" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><path d="M32 18c-8.5 0-15.9 2.6-22.6 7.7L4 18H0l6.4 9.4C2.5 31 0 36.2 0 42c0 8.3 6.7 15 15 15 6.6 0 12.2-4.3 14.2-10.2L32 39l2.8 7.8C36.8 52.7 42.4 57 49 57c8.3 0 15-6.7 15-15 0-5.8-2.5-11-6.4-14.6L64 18h-4l-5.4 7.7C47.9 20.6 40.5 18 32 18Zm-17 12a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm34 0a12 12 0 1 1 0 24 12 12 0 0 1 0-24Zm-34 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm34 0a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z"/></svg></span> My Cusco Trip</span>
-                  <span class="pv-tripadvisor-award" aria-label="TripAdvisor"><img src="./assets/img/reserva/tripadvisor-adwards.png" alt="TripAdvisor Awards"></span>
+                  <span class="pv-tripadvisor-award" aria-label="TripAdvisor"><img src="/assets/img/reserva/tripadvisor-adwards.png" alt="TripAdvisor Awards"></span>
                 </div>
               </div>
             </div>
             <div class="pv-ad-banner-slot">
-              <img src="./assets/img/reserva/banner-restaurantes.jpg" alt="Banner promocional" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Banner promocional" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
               <span style="display:none;">Espacio reservado para banner publicitario · sugerido: assets/img/reserva/banner-restaurantes.jpg</span>
             </div>
           </div>

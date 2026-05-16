@@ -38,11 +38,11 @@
 <div class="experience-actions">
 <button class="experience-action-btn" type="button">
 <i class="fas fa-share-nodes"></i>
-<span>Compartir</span>
+<span data-i18n="product.share">Compartir</span>
 </button>
 <button class="experience-action-btn" type="button">
 <i class="far fa-heart"></i>
-<span>Guardar</span>
+<span data-i18n="product.save">Guardar</span>
 </button>
 </div>
 </div>
@@ -54,11 +54,11 @@
 <section class="experience-tabs-wrap">
 <div class="container experience-tabs-container">
 <nav aria-label="Secciones de la experiencia" class="experience-tabs">
-<a href="#overview">Resumen</a>
-<a href="#details">Detalles</a>
+<a href="#overview" data-i18n="product.summary">Resumen</a>
+<a href="#details" data-i18n="product.details">Detalles</a>
 <a href="#itinerary">Itinéraire</a>
-<a href="#faq">FAQ</a>
-<a href="#similar-mobile">Similares</a>
+<a href="#faq" data-i18n="product.faq">FAQ</a>
+<a href="#similar-mobile" data-i18n="product.similar">Similares</a>
 </nav>
 </div>
 </section>
@@ -67,70 +67,70 @@
 <div class="experience-main">
 <article class="experience-card" id="overview">
 <div class="experience-card__header">
-<h2>Resumen</h2>
+<h2 data-i18n="product.summary">Resumen</h2>
 </div>
 <p class="experience-description" id="productDescription"></p>
 <div class="experience-benefits">
 <div class="benefit-item">
 <i class="fas fa-circle-check"></i>
 <div>
-<strong>Reserva flexible</strong>
-<p>Separa tu cupo y completa el pago según la modalidad de la experiencia.</p>
+<strong data-i18n="product.flexibleBooking">Reserva flexible</strong>
+<p data-i18n="product.flexibleBookingText">Separa tu cupo y completa el pago según la modalidad de la experiencia.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-bolt"></i>
 <div>
-<strong>Confirmación rápida</strong>
-<p>Proceso pensado para continuar con pago online y confirmación posterior.</p>
+<strong data-i18n="product.quickConfirmation">Confirmación rápida</strong>
+<p data-i18n="product.quickConfirmationText">Proceso pensado para continuar con pago online y confirmación posterior.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-shield-heart"></i>
 <div>
-<strong>Atención personalizada</strong>
-<p>Operación local y acompañamiento en cada paso de tu reserva.</p>
+<strong data-i18n="product.personalSupport">Atención personalizada</strong>
+<p data-i18n="product.personalSupportText">Operación local y acompañamiento en cada paso de tu reserva.</p>
 </div>
 </div>
 </div>
 </article>
 <article class="experience-card" id="details">
 <div class="experience-card__header">
-<h2>Detalles de la experiencia</h2>
+<h2 data-i18n="product.experienceDetails">Detalles de la experiencia</h2>
 </div>
 <ul class="experience-icon-list">
 <li><i class="fas fa-users"></i> <span id="detailCapacity"></span></li>
 <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
 <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
 <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
-<li><i class="fas fa-ticket"></i> <span>Reserva online con cálculo automático</span></li>
+<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Reserva online con cálculo automático</span></li>
 </ul>
 </article>
 <article class="experience-card">
 <div class="experience-card__header">
-<h2>Aspectos destacados</h2>
+<h2 data-i18n="product.highlights">Aspectos destacados</h2>
 </div>
 <ul class="experience-highlights" id="productHighlights"></ul>
 </article>
 <article class="experience-card experience-accordion-group">
 <details class="experience-accordion" open="">
-<summary>Qué incluye</summary>
+<summary data-i18n="product.includes">Qué incluye</summary>
 <ul class="experience-list" id="productIncludes"></ul>
 </details>
 <details class="experience-accordion">
-<summary>Qué no incluye</summary>
+<summary data-i18n="product.excludes">Qué no incluye</summary>
 <ul class="experience-list" id="productExcludes"></ul>
 </details>
 <details class="experience-accordion">
-<summary>Recojo y punto de encuentro</summary>
+<summary data-i18n="product.pickupMeeting">Recojo y punto de encuentro</summary>
 <div class="experience-note-box">
-<p>El recojo y la coordinación final se confirmarán según la experiencia reservada, la fecha seleccionada y la operación vigente.</p>
+<p data-i18n="product.pickupMeetingText">El recojo y la coordinación final se confirmarán según la experiencia reservada, la fecha seleccionada y la operación vigente.</p>
 </div>
 </details>
 <details class="experience-accordion">
-<summary>Información importante</summary>
+<summary data-i18n="product.importantInfo">Información importante</summary>
 <div class="experience-note-box">
-<p>Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
+<p data-i18n="product.importantInfoText">Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
 </div>
 </details>
 </article>
@@ -176,7 +176,7 @@
 <div class="booking-panel__price">
 <span>À partir de</span>
 <strong id="productBasePrice">USD 0</strong>
-<small>por adulto</small>
+<small data-i18n="product.perAdult">por adulto</small>
 </div>
 <form class="booking-panel__form" id="productBookingForm">
 <div class="booking-field">
@@ -184,13 +184,13 @@
 <input id="travelDate" placeholder="Selecciona fecha" readonly="" type="text"/>
 </div>
 <div class="booking-field" hidden="" id="departureTimeSection">
-<label for="departureTimeSelect" id="departureTimeLabel">Horario de salida</label>
+<label for="departureTimeSelect" id="departureTimeLabel" data-i18n="product.departureTime">Horario de salida</label>
 <select hidden="" id="departureTimeSelect"></select>
 <div class="booking-note-box" hidden="" id="departureTimeFixed"></div>
 <small class="booking-field-help" id="departureTimeHelp"></small>
 </div>
 <div class="booking-field" hidden="" id="trainSelectionSection">
-<label id="trainSelectionLabel">Tren turístico</label>
+<label id="trainSelectionLabel" data-i18n="product.touristTrain">Tren turístico</label>
 <div class="booking-train-selection" id="trainSelectionContainer"></div>
 <small class="booking-field-help" id="trainSelectionHelp"></small>
 </div>
@@ -222,10 +222,10 @@
 </div>
 </div>
 <div class="booking-field" hidden="" id="serviceModeSection">
-<label for="serviceMode">Modalidad del servicio</label>
+<label for="serviceMode" data-i18n="product.serviceMode">Modalidad del servicio</label>
 <select id="serviceMode">
-<option value="group">Tour en grupo</option>
-<option value="private">Tour privado</option>
+<option value="group" data-i18n="product.groupTour">Tour en grupo</option>
+<option value="private" data-i18n="product.privateTour">Tour privado</option>
 </select>
 <small class="booking-field-help" id="serviceModeHelp"></small>
 </div>
@@ -233,24 +233,24 @@
 <div class="booking-dynamic-stack" id="hotelSelectorsContainer"></div>
 </div>
 <div class="booking-field" hidden="" id="extrasSection">
-<label>Extras</label>
+<label data-i18n="product.extras">Extras</label>
 <div class="booking-extras" id="extrasContainer"></div>
 </div>
 <div class="booking-benefits-box">
 <div class="booking-benefit-line">
 <i class="fas fa-rotate-left"></i>
-<p><strong>Política de cancelación</strong> · Cancela dentro del plazo permitido según la experiencia.</p>
+<p><strong data-i18n="product.cancellationPolicy">Política de cancelación</strong> · <span data-i18n="product.cancellationPolicyText">Cancela dentro del plazo permitido según la experiencia.</span></p>
 </div>
 <div class="booking-benefit-line">
 <i class="fas fa-wallet"></i>
-<p><strong>Reserva ahora y paga después</strong> · Puedes separar tu cupo con pago parcial cuando esté disponible.</p>
+<p><strong data-i18n="product.reserveNowPayLater">Reserva ahora y paga después</strong> · <span data-i18n="product.reserveNowPayLaterText">Puedes separar tu cupo con pago parcial cuando esté disponible.</span></p>
 </div>
 </div>
 <div class="booking-discount-box">
 <label for="discountCode">Code promo</label>
 <div class="booking-discount-row">
 <input id="discountCode" placeholder="Ingresa tu código" type="text"/>
-<button class="booking-apply-btn" id="applyDiscountBtn" type="button">Aplicar</button>
+<button class="booking-apply-btn" id="applyDiscountBtn" type="button" data-i18n="apply">Aplicar</button>
 </div>
 <p class="booking-discount-message" id="discountMessage"></p>
 </div>
@@ -258,11 +258,11 @@
 <label for="paymentMode">Mode de paiement</label>
 <select id="paymentMode">
 <option value="full">Paiement complet</option>
-<option value="partial">Pagar solo un adelanto</option>
+<option value="partial" data-i18n="product.depositOnly">Pagar solo un adelanto</option>
 </select>
 </div>
 <div class="booking-summary-wrap">
-<div class="booking-summary-title">Detalles del pago</div>
+<div class="booking-summary-title" data-i18n="product.paymentDetails">Detalles del pago</div>
 <div class="booking-summary">
 <div class="booking-summary__line">
 <span>Adultes</span>
@@ -273,7 +273,7 @@
 <strong id="childrenTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="accommodationTotalRow">
-<span>Alojamiento</span>
+<span data-i18n="product.accommodation">Alojamiento</span>
 <strong id="accommodationTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line">
@@ -281,19 +281,19 @@
 <strong id="extrasTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="discountRow">
-<span>Descuento</span>
+<span data-i18n="product.discount">Descuento</span>
 <strong id="discountTotal">- USD 0</strong>
 </div>
 <div class="booking-summary__line" id="serviceTotalRow">
-<span>Total servicio</span>
+<span data-i18n="product.serviceTotal">Total servicio</span>
 <strong id="serviceTotal">USD 0</strong>
 </div>
 <div class="booking-summary__total">
-<span id="payNowLabel">Pagar ahora</span>
+<span id="payNowLabel" data-i18n="payNow">Pagar ahora</span>
 <strong id="payNowTotal">USD 0</strong>
 </div>
 <div class="booking-summary__later" hidden="" id="payLaterRow">
-<span>Pagarás luego</span>
+<span data-i18n="product.payLater">Pagarás luego</span>
 <strong id="payLaterTotal">USD 0</strong>
 </div>
 </div>
@@ -322,8 +322,8 @@
 <i class="fas fa-xmark"></i>
 </button>
 <div class="hotel-modal__header">
-<p class="hotel-modal__eyebrow" id="hotelModalEyebrow">Selección de alojamiento</p>
-<h2 id="hotelModalTitle">Elige tu hotel</h2>
+<p class="hotel-modal__eyebrow" id="hotelModalEyebrow" data-i18n="product.hotelSelection">Selección de alojamiento</p>
+<h2 id="hotelModalTitle" data-i18n="product.chooseHotel">Elige tu hotel</h2>
 <p class="hotel-modal__subtitle" id="hotelModalSubtitle">
           Compara categorías, fotos, habitaciones y tarifas adicionales.
         </p>
@@ -346,7 +346,7 @@
 <i class="fas fa-xmark"></i>
 </button>
 <div class="passenger-modal__header">
-<h2 id="passengerModalTitle">Registro de viajeros</h2>
+<h2 id="passengerModalTitle" data-i18n="product.passengerRegistration">Registro de viajeros</h2>
 <div aria-label="Código de reserva" class="passenger-modal__code-card">
 <p class="passenger-modal__code" id="passengerReservationCode">CUZ000000</p>
 </div>
@@ -354,7 +354,7 @@
 <p class="passenger-modal__warning">Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
 </div>
 <div class="passenger-modal__body">
-<button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button">Ver detalles de la reserva</button>
+<button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
 <div class="passenger-modal__snapshot" id="passengerPaymentSnapshot"></div>
 <form class="passenger-modal__form" id="passengerReservationForm" novalidate="">
 <section class="passenger-modal__section passenger-modal__section--holder">
@@ -488,6 +488,7 @@
       initializeApp();
     }
   </script>
+<script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/core/data-loader.js"></script>
 <script src="../assets/js/core/catalog-normalizer.js"></script>
 <script src="../assets/js/core/destination-service.js"></script>
