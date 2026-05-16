@@ -60,7 +60,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência full day a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión clásico de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "Full Day",
@@ -171,8 +171,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -197,7 +197,7 @@
           ]
         },
         {
-          "title": "Bus Consettur e ingreso oficial a Machu Picchu",
+          "title": "Bus Consettur e entrada oficial a Machu Picchu",
           "description": "Al llegar a Machu Picchu Pueblo, coordinaremos la subida en bus Consettur hacia la puerta de ingreso. El acceso se realizará con ticket oficial y circuito confirmado según disponibilidad del Ministerio de Cultura.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
@@ -381,7 +381,7 @@
       },
       "seo": {
         "title": "Machu Picchu Full Day Clássico | My Cusco Trip",
-        "description": "Experiência full day a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência full day a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -401,7 +401,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day express a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência full day express a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión express de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "Full Day Express",
@@ -512,8 +512,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -533,7 +533,7 @@
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e ingreso oficial al santuario según circuito confirmado."
+          "description": "Subida en bus Consettur e entrada oficial al santuario según circuito confirmado."
         },
         {
           "title": "Passeio guiado en Machu Picchu",
@@ -698,7 +698,7 @@
       },
       "seo": {
         "title": "Machu Picchu Full Day Express | My Cusco Trip",
-        "description": "Experiência full day express a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência full day express a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -718,7 +718,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experiência 2 dias / 1 noite a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência 2 dias / 1 noite a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "2 dias / 1 noite",
@@ -829,8 +829,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1021,7 +1021,7 @@
       },
       "seo": {
         "title": "Machu Picchu Overnight Clássico | My Cusco Trip",
-        "description": "Experiência 2 dias / 1 noite a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência 2 dias / 1 noite a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -1041,7 +1041,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experiência 2 dias / 1 noite express a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência 2 dias / 1 noite express a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión overnight express de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "2 dias / 1 noite Express",
@@ -1152,8 +1152,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1169,7 +1169,7 @@
         },
         {
           "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, ingreso oficial, visita guiada y retorno en tren según horario seleccionado."
+          "description": "Bus de subida, entrada oficial, visita guiada y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -1347,30 +1347,30 @@
       },
       "seo": {
         "title": "Machu Picchu Overnight Express | My Cusco Trip",
-        "description": "Experiência 2 dias / 1 noite express a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência 2 dias / 1 noite express a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
       "id": "mapi_005",
       "internalCode": "MAPI005",
       "slug": "machu-picchu-panoramico-vistadome",
-      "title": "Machu Picchu Panorámico Vistadome",
+      "title": "Machu Picchu Panorâmico Vistadome",
       "category": "machu-picchu",
       "productKind": "tour",
       "productFamily": "machu-picchu-tour",
       "machuPicchuVersion": "panoramico-vistadome",
       "type": "machu-picchu-tour",
-      "typeLabel": "Full Day Panorámico",
-      "badge": "Panorámico",
+      "typeLabel": "Full Day Panorâmico",
+      "badge": "Panorâmico",
       "featured": true,
       "location": "Cusco / Vale Sagrado / Machu Picchu",
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day panorámico a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
-      "description": "Versión panorámico de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experiência full day panorâmico a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
+      "description": "Versión panorâmico de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
-        "label": "Full Day Panorámico",
+        "label": "Full Day Panorâmico",
         "maxGroupSize": 15,
         "guideLanguages": [
           "es",
@@ -1478,8 +1478,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1499,7 +1499,7 @@
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e ingreso oficial al santuario según circuito confirmado."
+          "description": "Subida en bus Consettur e entrada oficial al santuario según circuito confirmado."
         },
         {
           "title": "Passeio guiado en Machu Picchu",
@@ -1649,7 +1649,7 @@
           "tren",
           "bus-consettur",
           "entrada-machu-picchu",
-          "panorámico"
+          "panorâmico"
         ],
         "themes": [
           "cultural",
@@ -1657,7 +1657,7 @@
           "premium"
         ],
         "keywords": [
-          "machu picchu panorámico vistadome",
+          "machu picchu panorâmico vistadome",
           "machu-picchu-panoramico-vistadome",
           "machu picchu",
           "tour machu picchu"
@@ -1677,8 +1677,8 @@
         "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
       },
       "seo": {
-        "title": "Machu Picchu Panorámico Vistadome | My Cusco Trip",
-        "description": "Experiência full day panorámico a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "title": "Machu Picchu Panorâmico Vistadome | My Cusco Trip",
+        "description": "Experiência full day panorâmico a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -1698,7 +1698,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day premium a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência full day premium a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión premium de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "Full Day Premium",
@@ -1809,8 +1809,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1830,7 +1830,7 @@
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e ingreso oficial al santuario según circuito confirmado."
+          "description": "Subida en bus Consettur e entrada oficial al santuario según circuito confirmado."
         },
         {
           "title": "Passeio guiado en Machu Picchu",
@@ -2007,7 +2007,7 @@
       },
       "seo": {
         "title": "Machu Picchu The Prime | My Cusco Trip",
-        "description": "Experiência full day premium a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência full day premium a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -2027,7 +2027,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day first class a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência full day first class a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión first class de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "Full Day First Class",
@@ -2138,8 +2138,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2159,7 +2159,7 @@
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e ingreso oficial al santuario según circuito confirmado."
+          "description": "Subida en bus Consettur e entrada oficial al santuario según circuito confirmado."
         },
         {
           "title": "Passeio guiado en Machu Picchu",
@@ -2339,7 +2339,7 @@
       },
       "seo": {
         "title": "Machu Picchu First Class | My Cusco Trip",
-        "description": "Experiência full day first class a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência full day first class a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -2359,7 +2359,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experiência 2 dias / 1 noite first class a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência 2 dias / 1 noite first class a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión first class overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "2 dias / 1 noite First Class",
@@ -2470,8 +2470,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2487,7 +2487,7 @@
         },
         {
           "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, ingreso oficial, visita guiada y retorno en tren según horario seleccionado."
+          "description": "Bus de subida, entrada oficial, visita guiada y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -2663,7 +2663,7 @@
       },
       "seo": {
         "title": "Machu Picchu First Class Overnight | My Cusco Trip",
-        "description": "Experiência 2 dias / 1 noite first class a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência 2 dias / 1 noite first class a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -2683,7 +2683,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experiência full day luxury a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência full day luxury a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión luxury de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "Full Day Luxury",
@@ -2794,8 +2794,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2815,7 +2815,7 @@
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e ingreso oficial al santuario según circuito confirmado."
+          "description": "Subida en bus Consettur e entrada oficial al santuario según circuito confirmado."
         },
         {
           "title": "Passeio guiado en Machu Picchu",
@@ -2998,7 +2998,7 @@
       },
       "seo": {
         "title": "Machu Picchu Luxury Hiram Bingham | My Cusco Trip",
-        "description": "Experiência full day luxury a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência full day luxury a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     },
     {
@@ -3018,7 +3018,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experiência 2 dias / 1 noite luxury a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
+      "shortDescription": "Experiência 2 dias / 1 noite luxury a Machu Picchu com trem, bus, entrada oficial y guia profissional.",
       "description": "Versión luxury overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
       "duration": {
         "label": "2 dias / 1 noite Luxury",
@@ -3129,8 +3129,8 @@
         "Asistencia de viaje antes y durante la experiencia",
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español o inglés",
+        "Entrada oficial a Machu Picchu conforme disponibilidade",
+        "Guia profissional em espanhol ou inglês",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -3146,7 +3146,7 @@
         },
         {
           "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, ingreso oficial, visita guiada y retorno en tren según horario seleccionado."
+          "description": "Bus de subida, entrada oficial, visita guiada y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -3324,7 +3324,7 @@
       },
       "seo": {
         "title": "Machu Picchu Luxury Overnight | My Cusco Trip",
-        "description": "Experiência 2 dias / 1 noite luxury a Machu Picchu con tren, bus, ingreso oficial y guía profesional."
+        "description": "Experiência 2 dias / 1 noite luxury a Machu Picchu com trem, bus, entrada oficial y guia profissional."
       }
     }
   ],

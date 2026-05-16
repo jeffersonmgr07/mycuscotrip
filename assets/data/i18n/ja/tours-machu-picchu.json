@@ -172,7 +172,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -197,7 +197,7 @@
           ]
         },
         {
-          "title": "Bus Consettur e ingreso oficial a マチュピチュ",
+          "title": "Bus Consettur e 公式入場券 a マチュピチュ",
           "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
@@ -513,7 +513,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -830,7 +830,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1153,7 +1153,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1354,14 +1354,14 @@
       "id": "mapi_005",
       "internalCode": "MAPI005",
       "slug": "machu-picchu-panoramico-vistadome-ja",
-      "title": "マチュピチュ Panorámico Vistadome",
+      "title": "マチュピチュ パノラマ Vistadome",
       "category": "machu-picchu",
       "productKind": "tour",
       "productFamily": "machu-picchu-tour",
       "machuPicchuVersion": "panoramico-vistadome",
       "type": "machu-picchu-tour",
-      "typeLabel": "日帰り Panorámico",
-      "badge": "Panorámico",
+      "typeLabel": "日帰り パノラマ",
+      "badge": "パノラマ",
       "featured": true,
       "location": "クスコ / 聖なる谷 / マチュピチュ",
       "currency": "USD",
@@ -1370,7 +1370,7 @@
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "duration": {
-        "label": "日帰り Panorámico",
+        "label": "日帰り パノラマ",
         "maxGroupSize": 15,
         "guideLanguages": [
           "es",
@@ -1479,7 +1479,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1649,7 +1649,7 @@
           "tren",
           "bus-consettur",
           "entrada-machu-picchu",
-          "panorámico"
+          "パノラマ"
         ],
         "themes": [
           "cultural",
@@ -1657,7 +1657,7 @@
           "premium"
         ],
         "keywords": [
-          "machu picchu panorámico vistadome",
+          "machu picchu パノラマ vistadome",
           "machu-picchu-panoramico-vistadome",
           "machu picchu",
           "tour machu picchu"
@@ -1677,7 +1677,7 @@
         "trainPricingBehavior": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       },
       "seo": {
-        "title": "マチュピチュ Panorámico Vistadome | My Cusco Trip",
+        "title": "マチュピチュ パノラマ Vistadome | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       }
     },
@@ -1810,7 +1810,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2139,7 +2139,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2471,7 +2471,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2795,7 +2795,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -3130,7 +3130,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a マチュピチュ",
         "Ingreso oficial a マチュピチュ según disponibilidad",
-        "Guía profesional en español o inglés",
+        "プロガイド en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [

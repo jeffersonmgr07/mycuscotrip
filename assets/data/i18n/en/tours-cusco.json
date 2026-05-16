@@ -65,8 +65,8 @@
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
-      "shortDescription": "Enjoy un recorrido panorámico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco.",
-      "description": "Bienvenida Ancestral y Recorrido Panorámico por Cusco. Enjoy las vistas más emblemáticas desde nuestro bus panorámico de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una ceremonia andina de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Discover un centro textil especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal for fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
+      "shortDescription": "Enjoy a scenic tour of Cusco with an Andean ceremony, textile center and unforgettable views from Cristo Blanco.",
+      "description": "Bienvenida Ancestral y Recorrido Scenic por Cusco. Enjoy las vistas más emblemáticas desde nuestro bus scenic de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una Andean ceremony de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Discover un textile center especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal for fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
       "duration": {
         "label": "2 h 30 min",
         "maxGroupSize": 28,
@@ -99,26 +99,26 @@
         ]
       },
       "includes": [
-        "Bus panorámico",
+        "Bus scenic",
         "Guía bilingüe",
         "Ceremonia andina",
         "Visita textil",
         "Mirador"
       ],
       "excludes": [
-        "Gastos personales",
+        "Personal expenses",
         "Servicios no mencionados"
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus panorámico",
-          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus panorámico de dos pisos, ideal for tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
+          "title": "Encuentro y salida en bus scenic",
+          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus scenic de dos pisos, ideal for tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
           ]
         },
         {
-          "title": "Recorrido panorámico por Cusco",
+          "title": "Recorrido scenic por Cusco",
           "description": "Durante el trayecto, el guía compartirá datos históricos y culturales mientras observas sectores representativos de la ciudad, vistas hacia Sacsayhuamán y paisajes urbanos ideales para fotografías.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
@@ -133,14 +133,14 @@
         },
         {
           "title": "Centro textil y cultura andina",
-          "description": "Visitaremos un centro textil especializado en fibra de alpaca y baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales y detalles de la vestimenta andina.",
+          "description": "Visitaremos un textile center especializado en fibra de alpaca y baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales y detalles de la vestimenta andina.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/centro-textil.jpg"
           ]
         },
         {
           "title": "Mirador del Cristo Blanco",
-          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos panorámicos más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
+          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos scenics más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
           ]
@@ -281,7 +281,7 @@
       "places": [],
       "seo": {
         "title": "Bienvenida Ancestral Cusco | My Cusco Trip",
-        "description": "Enjoy un recorrido panorámico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco."
+        "description": "Enjoy a scenic tour of Cusco with an Andean ceremony, textile center and unforgettable views from Cristo Blanco."
       }
     },
     {
@@ -329,14 +329,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional"
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
-        "Boleto turístico",
+        "Tourist ticket",
         "Ingreso a Catedral o Koricancha",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -652,15 +652,15 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
-        "Boleto turístico",
+        "Tourist ticket",
         "Almuerzo buffet",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -946,16 +946,16 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico por el Sacred Valley",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport por el Sacred Valley",
+        "Professional guide",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
-        "Boleto turístico",
+        "Tourist ticket",
         "Almuerzo buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1201,8 +1201,8 @@
       "featured": true,
       "location": "Cusco / Sacred Valley / Maras / Moray",
       "currency": "USD",
-      "shortDescription": "Ruta completa por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac.",
-      "description": "Versión VIP del Sacred Valley de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, las Salineras de Maras, el centro arqueológico de Moray, Urubamba como punto de almuerzo, Ollantaytambo, Pisac arqueológico y el mercado artesanal de Pisac. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "shortDescription": "Complete route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac.",
+      "description": "VIP version of the Sacred Valley de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, las Salineras de Maras, el centro arqueológico de Moray, Urubamba como punto de almuerzo, Ollantaytambo, Pisac arqueológico y el mercado artesanal de Pisac. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
       "duration": {
         "label": "Full Day VIP",
         "maxGroupSize": 18,
@@ -1234,17 +1234,17 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
-        "Boleto turístico",
+        "Tourist ticket",
         "Ingreso a Salineras de Maras",
         "Almuerzo buffet",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1556,7 +1556,7 @@
       "places": [],
       "seo": {
         "title": "Sacred Valley de los Incas VIP - Full Day | My Cusco Trip",
-        "description": "Ruta completa por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac."
+        "description": "Complete route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac."
       }
     },
     {
@@ -1605,17 +1605,17 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico por ruta VIP del Sacred Valley",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport por ruta VIP del Sacred Valley",
+        "Professional guide",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
-        "Boleto turístico",
+        "Tourist ticket",
         "Ingreso a Salineras de Maras",
         "Almuerzo buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1929,7 +1929,7 @@
       "location": "Cusco / Maras / Moray",
       "currency": "USD",
       "shortDescription": "Descubre el laboratorio agrícola inca de Moray y las famosas Salineras de Maras.",
-      "description": "Uno de los tours preferidos por los viajeros es el tour de Maras and Moray, que les permite disfrutar de los paisajes y experiencias de estos pueblos y sus atractivos. La ruta incluye visita al centro textil de Chinchero, recorrido por Moray, considerado un laboratorio agrícola inca por sus terrazas circulares, y visita a Maras y sus salineras, donde podrás conocer el antiguo sistema de extracción de sal usado desde épocas preincaicas.",
+      "description": "Uno de los tours preferidos por los viajeros es el tour de Maras and Moray, que les permite disfrutar de los paisajes y experiencias de estos pueblos y sus atractivos. La ruta incluye visita al textile center de Chinchero, recorrido por Moray, considerado un laboratorio agrícola inca por sus terrazas circulares, y visita a Maras y sus salineras, donde podrás conocer el antiguo sistema de extracción de sal usado desde épocas preincaicas.",
       "duration": {
         "label": "Medio day",
         "maxGroupSize": 18,
@@ -1961,14 +1961,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional"
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
-        "Boleto turístico parcial",
+        "Tourist ticket parcial",
         "Ingreso a Salineras",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -2302,13 +2302,13 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional"
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
-        "Boleto turístico parcial",
-        "Gastos personales"
+        "Tourist ticket parcial",
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -2621,16 +2621,16 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide",
         "Desayuno",
         "Almuerzo"
       ],
       "excludes": [
         "Ingreso",
         "Caballo opcional",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -2906,14 +2906,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional"
+        "Pickup in Cusco",
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
         "Ingreso",
         "Caballo opcional",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -3230,17 +3230,17 @@
       },
       "includes": [
         "Recojo de su hotel en Cusco",
-        "Transporte turístico",
+        "Tourist transport",
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
+        "Professional guide Inglés – Español",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
       "excludes": [
         "Cena",
-        "Gastos personales",
+        "Personal expenses",
         "Servicios no mencionados"
       ],
       "itinerary": [
@@ -3547,9 +3547,9 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico ida y vuelta",
-        "Guía profesional",
+        "Pickup in Cusco",
+        "Tourist transport ida y vuelta",
+        "Professional guide",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",
@@ -3559,7 +3559,7 @@
         "Ingreso a las lagunas si aplica pago local",
         "Baños termales de Pacchanta si aplican pago adicional",
         "Caballo opcional",
-        "Gastos personales",
+        "Personal expenses",
         "Servicios no mencionados"
       ],
       "itinerary": [

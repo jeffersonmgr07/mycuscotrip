@@ -99,7 +99,7 @@
         ]
       },
       "includes": [
-        "Bus panorámico",
+        "Bus パノラマ",
         "Guía bilingüe",
         "Ceremonia andina",
         "Visita textil",
@@ -111,14 +111,14 @@
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus panorámico",
+          "title": "Encuentro y salida en bus パノラマ",
           "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
           "images": [
             "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
           ]
         },
         {
-          "title": "Recorrido panorámico por クスコ",
+          "title": "Recorrido パノラマ por クスコ",
           "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
@@ -331,7 +331,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional"
+        "プロガイド"
       ],
       "excludes": [
         "Boleto turístico",
@@ -654,7 +654,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional",
+        "プロガイド",
         "Retorno a クスコ al finalizar el tour"
       ],
       "excludes": [
@@ -948,7 +948,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico por el 聖なる谷",
-        "Guía profesional",
+        "プロガイド",
         "Finalización en Ollantaytambo para conexión hacia マチュピチュ"
       ],
       "excludes": [
@@ -1236,7 +1236,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional",
+        "プロガイド",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a クスコ al finalizar el tour"
       ],
@@ -1607,7 +1607,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico por ruta VIP del 聖なる谷",
-        "Guía profesional",
+        "プロガイド",
         "Finalización en Ollantaytambo para conexión hacia マチュピチュ"
       ],
       "excludes": [
@@ -1963,7 +1963,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional"
+        "プロガイド"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2304,7 +2304,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional"
+        "プロガイド"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2623,7 +2623,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional",
+        "プロガイド",
         "Desayuno",
         "Almuerzo"
       ],
@@ -2908,7 +2908,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico",
-        "Guía profesional"
+        "プロガイド"
       ],
       "excludes": [
         "Ingreso",
@@ -3234,7 +3234,7 @@
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
+        "プロガイド Inglés – Español",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
@@ -3549,7 +3549,7 @@
       "includes": [
         "Recojo en クスコ",
         "Transporte turístico ida y vuelta",
-        "Guía profesional",
+        "プロガイド",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",

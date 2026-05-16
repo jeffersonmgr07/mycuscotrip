@@ -99,7 +99,7 @@
         ]
       },
       "includes": [
-        "Bus panorámico",
+        "Bus 观景",
         "Guía bilingüe",
         "Ceremonia andina",
         "Visita textil",
@@ -111,14 +111,14 @@
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus panorámico",
+          "title": "Encuentro y salida en bus 观景",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
             "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
           ]
         },
         {
-          "title": "Recorrido panorámico por 库斯科",
+          "title": "Recorrido 观景 por 库斯科",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
@@ -331,7 +331,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Boleto turístico",
@@ -654,7 +654,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional",
+        "专业导游",
         "Retorno a 库斯科 al finalizar el tour"
       ],
       "excludes": [
@@ -948,7 +948,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico por el 圣谷",
-        "Guía profesional",
+        "专业导游",
         "Finalización en Ollantaytambo para conexión hacia 马丘比丘"
       ],
       "excludes": [
@@ -1236,7 +1236,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional",
+        "专业导游",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a 库斯科 al finalizar el tour"
       ],
@@ -1607,7 +1607,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico por ruta VIP del 圣谷",
-        "Guía profesional",
+        "专业导游",
         "Finalización en Ollantaytambo para conexión hacia 马丘比丘"
       ],
       "excludes": [
@@ -1963,7 +1963,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2304,7 +2304,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2623,7 +2623,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional",
+        "专业导游",
         "Desayuno",
         "Almuerzo"
       ],
@@ -2908,7 +2908,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Ingreso",
@@ -3234,7 +3234,7 @@
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
+        "专业导游 Inglés – Español",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
@@ -3549,7 +3549,7 @@
       "includes": [
         "Recojo en 库斯科",
         "Transporte turístico ida y vuelta",
-        "Guía profesional",
+        "专业导游",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",

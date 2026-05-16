@@ -83,14 +83,14 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas",
-        "Transporte turístico",
-        "Guía profesional",
-        "Recorrido panorámico"
+        "Tourist transport",
+        "Professional guide",
+        "Recorrido scenic"
       ],
       "excludes": [
         "Entradas no especificadas",
         "Alimentos y bebidas",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -99,7 +99,7 @@
         },
         {
           "title": "Lima moderna",
-          "description": "Recorrido panorámico por zonas turísticas como Miraflores o San Isidro, según operación."
+          "description": "Recorrido scenic por zonas turísticas como Miraflores o San Isidro, según operación."
         },
         {
           "title": "Centro histórico",
@@ -240,7 +240,7 @@
         "Impuestos o tasas portuarias si aplican",
         "Traslados desde Lima",
         "Alimentos",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -382,7 +382,7 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas de Lima",
-        "Transporte turístico",
+        "Tourist transport",
         "Tour Islas Ballestas",
         "Visita a bodega",
         "Huacachina",
@@ -392,7 +392,7 @@
       "excludes": [
         "Alimentación no especificada",
         "Tasas turísticas si aplican",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -552,7 +552,7 @@
         "Tasas aeroportuarias si aplican",
         "Traslados desde otra ciudad",
         "Alimentos",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -690,13 +690,13 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas",
-        "Transporte turístico",
-        "Guía profesional"
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
         "Ingreso a Santa Catalina si aplica",
         "Alimentos",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -847,14 +847,14 @@
       },
       "includes": [
         "Recojo en Arequipa",
-        "Transporte turístico",
-        "Guía profesional"
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
-        "Boleto turístico Colca",
+        "Tourist ticket Colca",
         "Desayuno/almuerzo si no se especifica",
         "Termales opcionales",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -877,7 +877,7 @@
       "extras": [
         {
           "code": "colca-tourist-ticket",
-          "label": "Boleto turístico Colca",
+          "label": "Tourist ticket Colca",
           "price": 20,
           "currency": "USD",
           "perPerson": true,
@@ -1007,13 +1007,13 @@
         "Recojo en Puno",
         "Traslado al puerto",
         "Lancha turística",
-        "Guía profesional",
+        "Professional guide",
         "Visita a Uros y Taquile"
       ],
       "excludes": [
         "Almuerzo si no se especifica",
         "Ingresos locales si aplican",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1165,13 +1165,13 @@
       },
       "includes": [
         "Recojo en Puno",
-        "Transporte turístico",
-        "Guía profesional"
+        "Tourist transport",
+        "Professional guide"
       ],
       "excludes": [
         "Ingreso a Sillustani",
         "Alimentos",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1316,7 +1316,7 @@
       },
       "includes": [
         "Recojo en Tarapoto",
-        "Transporte turístico",
+        "Tourist transport",
         "Cruce en balsa si aplica",
         "Paseo en bote referencial",
         "Guía o coordinador"
@@ -1324,7 +1324,7 @@
       "excludes": [
         "Almuerzo si no se especifica",
         "Actividades acuáticas opcionales",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1474,13 +1474,13 @@
       },
       "includes": [
         "Recojo en Tarapoto",
-        "Transporte turístico",
+        "Tourist transport",
         "Guía o coordinador"
       ],
       "excludes": [
         "Ingreso si aplica",
         "Alimentos",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1636,7 +1636,7 @@
       "excludes": [
         "Almuerzo si no se especifica",
         "Ingresos si aplican",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1794,7 +1794,7 @@
       "excludes": [
         "Ingreso a reserva si aplica",
         "Almuerzo si no se especifica",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {
@@ -1930,7 +1930,7 @@
       },
       "includes": [
         "Recepción en aeropuerto de Puerto Maldonado",
-        "Traslados terrestres y/o fluviales según lodge",
+        "Ground transfers y/o fluviales según lodge",
         "02 nights de alojamiento en lodge",
         "Alimentación según programa",
         "Actividades amazónicas programadas",
@@ -1940,7 +1940,7 @@
         "Vuelos internos",
         "Bebidas alcohólicas",
         "Propinas",
-        "Gastos personales"
+        "Personal expenses"
       ],
       "itinerary": [
         {

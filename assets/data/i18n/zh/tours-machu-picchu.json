@@ -172,7 +172,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -197,7 +197,7 @@
           ]
         },
         {
-          "title": "Bus Consettur e ingreso oficial a 马丘比丘",
+          "title": "Bus Consettur e 官方门票 a 马丘比丘",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
@@ -513,7 +513,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -830,7 +830,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1153,7 +1153,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1354,14 +1354,14 @@
       "id": "mapi_005",
       "internalCode": "MAPI005",
       "slug": "machu-picchu-panoramico-vistadome-zh",
-      "title": "马丘比丘 Panorámico Vistadome",
+      "title": "马丘比丘 观景 Vistadome",
       "category": "machu-picchu",
       "productKind": "tour",
       "productFamily": "machu-picchu-tour",
       "machuPicchuVersion": "panoramico-vistadome",
       "type": "machu-picchu-tour",
-      "typeLabel": "一日游 Panorámico",
-      "badge": "Panorámico",
+      "typeLabel": "一日游 观景",
+      "badge": "观景",
       "featured": true,
       "location": "库斯科 / 圣谷 / 马丘比丘",
       "currency": "USD",
@@ -1370,7 +1370,7 @@
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "duration": {
-        "label": "一日游 Panorámico",
+        "label": "一日游 观景",
         "maxGroupSize": 15,
         "guideLanguages": [
           "es",
@@ -1479,7 +1479,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1649,7 +1649,7 @@
           "tren",
           "bus-consettur",
           "entrada-machu-picchu",
-          "panorámico"
+          "观景"
         ],
         "themes": [
           "cultural",
@@ -1657,7 +1657,7 @@
           "premium"
         ],
         "keywords": [
-          "machu picchu panorámico vistadome",
+          "machu picchu 观景 vistadome",
           "machu-picchu-panoramico-vistadome",
           "machu picchu",
           "tour machu picchu"
@@ -1677,7 +1677,7 @@
         "trainPricingBehavior": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
       },
       "seo": {
-        "title": "马丘比丘 Panorámico Vistadome | My Cusco Trip",
+        "title": "马丘比丘 观景 Vistadome | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
       }
     },
@@ -1810,7 +1810,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2139,7 +2139,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2471,7 +2471,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2795,7 +2795,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -3130,7 +3130,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a 马丘比丘",
         "Ingreso oficial a 马丘比丘 según disponibilidad",
-        "Guía profesional en español o inglés",
+        "专业导游 en español o inglés",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [

@@ -84,8 +84,8 @@
       "includes": [
         "Recojo en zonas seleccionadas",
         "Transporte turístico",
-        "Guía profesional",
-        "Recorrido panorámico"
+        "专业导游",
+        "Recorrido 观景"
       ],
       "excludes": [
         "Entradas no especificadas",
@@ -691,7 +691,7 @@
       "includes": [
         "Recojo en zonas seleccionadas",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Ingreso a Santa Catalina si aplica",
@@ -848,7 +848,7 @@
       "includes": [
         "Recojo en Arequipa",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Boleto turístico Colca",
@@ -1007,7 +1007,7 @@
         "Recojo en Puno",
         "Traslado al puerto",
         "Lancha turística",
-        "Guía profesional",
+        "专业导游",
         "Visita a Uros y Taquile"
       ],
       "excludes": [
@@ -1166,7 +1166,7 @@
       "includes": [
         "Recojo en Puno",
         "Transporte turístico",
-        "Guía profesional"
+        "专业导游"
       ],
       "excludes": [
         "Ingreso a Sillustani",

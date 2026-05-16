@@ -65,8 +65,8 @@
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
-      "shortDescription": "Goditi un recorrido panorámico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco.",
-      "description": "Bienvenida Ancestral y Recorrido Panorámico por Cusco. Goditi las vistas más emblemáticas desde nuestro bus panorámico de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una ceremonia andina de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Scopri un centro textil especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideale per fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
+      "shortDescription": "Goditi un recorrido panoramico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco.",
+      "description": "Bienvenida Ancestral y Recorrido Panoramico por Cusco. Goditi las vistas más emblemáticas desde nuestro bus panoramico de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una ceremonia andina de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Scopri un centro textil especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideale per fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
       "duration": {
         "label": "2 h 30 min",
         "maxGroupSize": 28,
@@ -99,7 +99,7 @@
         ]
       },
       "includes": [
-        "Bus panorámico",
+        "Bus panoramico",
         "Guía bilingüe",
         "Ceremonia andina",
         "Visita textil",
@@ -111,14 +111,14 @@
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus panorámico",
-          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus panorámico de dos pisos, ideale per tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
+          "title": "Encuentro y salida en bus panoramico",
+          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus panoramico de dos pisos, ideale per tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
           ]
         },
         {
-          "title": "Recorrido panorámico por Cusco",
+          "title": "Recorrido panoramico por Cusco",
           "description": "Durante el trayecto, el guía compartirá datos históricos y culturales mientras observas sectores representativos de la ciudad, vistas hacia Sacsayhuamán y paisajes urbanos ideales para fotografías.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
@@ -140,7 +140,7 @@
         },
         {
           "title": "Mirador del Cristo Blanco",
-          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos panorámicos más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
+          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos panoramicos más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
           ]
@@ -281,7 +281,7 @@
       "places": [],
       "seo": {
         "title": "Bienvenida Ancestral Cusco | My Cusco Trip",
-        "description": "Goditi un recorrido panorámico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco."
+        "description": "Goditi un recorrido panoramico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco."
       }
     },
     {
@@ -331,7 +331,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guida professionale"
       ],
       "excludes": [
         "Boleto turístico",
@@ -654,7 +654,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guida professionale",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
@@ -948,7 +948,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico por el Valle Sacra",
-        "Guía profesional",
+        "Guida professionale",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
@@ -1236,7 +1236,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guida professionale",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a Cusco al finalizar el tour"
       ],
@@ -1607,7 +1607,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico por ruta VIP del Valle Sacra",
-        "Guía profesional",
+        "Guida professionale",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
@@ -1963,7 +1963,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guida professionale"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2304,7 +2304,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guida professionale"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -2623,7 +2623,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guida professionale",
         "Desayuno",
         "Almuerzo"
       ],
@@ -2908,7 +2908,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guida professionale"
       ],
       "excludes": [
         "Ingreso",
@@ -3234,7 +3234,7 @@
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
+        "Guida professionale Inglés – Español",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
@@ -3549,7 +3549,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico ida y vuelta",
-        "Guía profesional",
+        "Guida professionale",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",
