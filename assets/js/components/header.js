@@ -307,13 +307,10 @@ class MyCuscoTripHeader {
   }
 
   initializeLanguage() {
-    const params = new URLSearchParams(window.location.search);
-    const langFromUrl = params.get("lang");
-    const langFromStorage = localStorage.getItem("site_lang");
-    const lang = langFromUrl || langFromStorage || "es";
-
+    const lang = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || localStorage.getItem("site_lang") || "es";
     this.updateLanguageLabel(lang);
     localStorage.setItem("site_lang", lang);
+    this.localizeHeaderLinks(lang);
   }
 
   handleLanguageSelect(event) {
@@ -324,9 +321,26 @@ class MyCuscoTripHeader {
     this.updateLanguageLabel(lang);
     this.closeLanguageMenu();
 
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", lang);
-    window.location.href = url.toString();
+    const nextPath = window.MyCuscoTripI18n?.getLocalizedPath?.(lang, window.location.href) || `/${lang}/`;
+    window.location.href = nextPath;
+  }
+
+  localizeHeaderLinks(lang) {
+    const currentLang = lang || "es";
+    const pagePrefix = currentLang === "es" ? "/" : `/${currentLang}/`;
+    this.navLinks.forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      if (!href || href.startsWith("http") || href.startsWith("#")) return;
+      const url = new URL(href, window.location.origin);
+      const parts = url.pathname.split("/").filter(Boolean);
+      if (["en", "pt", "fr", "de", "it", "zh", "ja"].includes(parts[0])) parts.shift();
+      const clean = parts.join("/") || "index.html";
+      link.setAttribute("href", `${pagePrefix}${clean === "index.html" ? "" : clean}${url.search}${url.hash}`);
+    });
+    this.langLinks.forEach((link) => {
+      const targetLang = link.dataset.lang || "es";
+      link.setAttribute("href", window.MyCuscoTripI18n?.getLocalizedPath?.(targetLang, window.location.href) || `/${targetLang}/`);
+    });
   }
 
   updateLanguageLabel(lang) {
@@ -336,7 +350,11 @@ class MyCuscoTripHeader {
       es: "ES",
       en: "EN",
       pt: "PT",
-      fr: "FR"
+      fr: "FR",
+      de: "DE",
+      it: "IT",
+      zh: "ZH",
+      ja: "JA"
     };
 
     this.langLabel.textContent = labels[lang] || "ES";

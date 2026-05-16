@@ -48,6 +48,24 @@
     return document.querySelector(selector);
   }
 
+  function getLocalePrefix() {
+    const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    const base = window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
+    return locale === "es" ? base : `${base}${locale}/`;
+  }
+
+  function resolveDataUrl(url) {
+    const clean = String(url || "").replace(/^\.?\//, "");
+    const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    const filename = clean.split("/").pop();
+    const localizable = ["tours-cusco.json", "tours-machu-picchu.json", "tours-peru.json", "packages-cusco.json", "packages-peru.json", "trekkings-cusco.json"];
+    const base = window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
+    if (locale !== "es" && clean.startsWith("assets/data/") && localizable.includes(filename)) {
+      return `${base}assets/data/i18n/${locale}/${filename}`;
+    }
+    return `${base}${clean}`;
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -167,13 +185,13 @@
       price,
       currency,
       search: item.search || {},
-      url: item.slug ? `./product.html?slug=${encodeURIComponent(item.slug)}` : "./all-experiences.html"
+      url: item.slug ? `${getLocalePrefix()}product.html?slug=${encodeURIComponent(item.slug)}` : `${getLocalePrefix()}all-experiences.html`
     };
   }
 
   async function loadJson(source) {
     try {
-      const response = await fetch(source.url, { cache: "no-store" });
+      const response = await fetch(resolveDataUrl(source.url), { cache: "no-store" });
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
       return await response.json();
     } catch (error) {

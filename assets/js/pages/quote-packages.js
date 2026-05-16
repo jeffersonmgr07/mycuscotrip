@@ -1,6 +1,6 @@
 class MyCuscoTripQuotePackages {
   constructor() {
-    this.basePath = window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/";
+    this.basePath = window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
 
     this.packagesData = { packages: [], paymentOptions: {}, currencyRules: {} };
     this.trainsData = { routes: {}, trainCategories: {}, exchangeRate: {} };
@@ -3015,9 +3015,18 @@ class MyCuscoTripQuotePackages {
   resolvePath(path) {
     if (!path) return "";
     if (/^https?:\/\//i.test(path)) return path;
+    if (path.startsWith("/")) return path;
 
-    const cleanPath = String(path).replace(/^\.?\//, "");
-
+    let cleanPath = String(path).replace(/^\.?\//, "");
+    const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    const localizable = ["packages-peru.json", "packages-cusco.json", "tours-cusco.json", "tours-machu-picchu.json", "tours-peru.json", "hotels.json", "trains.json"];
+    const filename = cleanPath.split("/").pop();
+    if (locale !== "es" && cleanPath.startsWith("assets/data/") && localizable.includes(filename)) {
+      cleanPath = `assets/data/i18n/${locale}/${filename}`;
+    }
+    if (locale !== "es" && !cleanPath.startsWith("assets/") && (cleanPath.endsWith(".html") || cleanPath.includes(".html?"))) {
+      cleanPath = `${locale}/${cleanPath}`;
+    }
     if (this.basePath.endsWith("/")) {
       return `${this.basePath}${cleanPath}`;
     }

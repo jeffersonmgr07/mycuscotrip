@@ -21,7 +21,7 @@
       if (typeof window.BASE_PATH === "string" && window.BASE_PATH) {
         return window.BASE_PATH.endsWith("/") ? window.BASE_PATH : `${window.BASE_PATH}/`;
       }
-      return window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/";
+      return window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
     }
 
     resolvePath(path) {
@@ -29,7 +29,17 @@
       const raw = String(path).trim();
       if (/^(https?:)?\/\//i.test(raw) || raw.startsWith("data:")) return raw;
       if (raw.startsWith("/")) return raw;
-      const clean = raw.replace(/^\.\//, "");
+      let clean = raw.replace(/^\.\//, "");
+      const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+      const localizable = ["tours-cusco.json", "tours-machu-picchu.json", "packages-cusco.json"];
+      const filename = clean.split("/").pop();
+      if (locale !== "es" && clean.startsWith("assets/data/") && localizable.includes(filename)) {
+        clean = `assets/data/i18n/${locale}/${filename}`;
+        return `${this.basePath}${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
+      }
+      if (locale !== "es" && clean.endsWith(".html") || (locale !== "es" && clean.includes(".html?"))) {
+        return `${this.basePath}${locale}/${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
+      }
       return `${this.basePath}${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
     }
 
