@@ -9,13 +9,13 @@
       "id": "PRV001",
       "quoteCode": "CUSFAM001",
       "accessToken": "familia5-mapi-amazonas-demo",
-      "slug": "paquete-privado-machu-picchu-y-amazonas-para-familia",
+      "slug": "package-privado-machu-picchu-y-amazonas-para-familia",
       "status": "private",
       "visibility": "hidden",
       "showInCatalog": false,
       "expiresAt": "2026-12-31",
       "title": "Paquete privado Machu Picchu y Amazonas para familia",
-      "subtitle": "Servicio privado para 2 adultos y 3 adolescentes, con guía bilingüe y asistencia por WhatsApp.",
+      "subtitle": "Servicio privado para 2 adultos y 3 adolescentes, con bilingual guide y asistencia por WhatsApp.",
       "badge": "Propuesta privada",
       "serviceType": "private",
       "language": [
@@ -90,7 +90,7 @@
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Cusco",
+          "title": "Arrival in Cusco",
           "overnight": "Cusco",
           "image": "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg",
           "items": [
@@ -105,9 +105,9 @@
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "items": [
-            "Recojo privado en hotel.",
+            "Pickup privado en hotel.",
             "Ruta sugerida: Chinchero, Maras, Moray y Ollantaytambo según horarios.",
-            "Guía privado bilingüe español/inglés.",
+            "Private Spanish/English bilingual guide.",
             "Tren turístico hacia Machu Picchu Pueblo."
           ]
         },
@@ -118,9 +118,9 @@
           "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
           "items": [
             "Bus Consettur ida y vuelta.",
-            "Ingreso a Machu Picchu según disponibilidad.",
-            "Guía privado bilingüe.",
-            "Tren de retorno y traslado privado a hotel en Cusco."
+            "Machu Picchu entrance according to availability.",
+            "Private bilingual guide.",
+            "Return train and private transfer to your hotel in Cusco."
           ]
         },
         {
@@ -161,7 +161,7 @@
       ],
       "includes": [
         "Servicios privados en Cusco, Sacred Valley y Machu Picchu.",
-        "Guía privado bilingüe español/inglés en Cusco y Machu Picchu.",
+        "Private Spanish/English bilingual guide en Cusco y Machu Picchu.",
         "Traslados privados indicados en itinerario.",
         "Tren turístico estándar Ollantaytambo - Machu Picchu Pueblo - Ollantaytambo.",
         "Ingreso a Machu Picchu sujeto a disponibilidad.",
@@ -177,7 +177,7 @@
         "Seguro de viaje.",
         "Propinas.",
         "Personal expenses.",
-        "Upgrade de tren o habitación no seleccionado."
+        "Upgrade de tren o room no seleccionado."
       ],
       "notes": [
         "Cotización referencial sujeta a disponibilidad de entradas, trenes, hoteles/lodges y vuelos.",

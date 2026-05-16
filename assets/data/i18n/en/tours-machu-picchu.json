@@ -176,14 +176,14 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo en hotel y traslado a estación",
+          "title": "Hotel pickup y traslado a estación",
           "description": "Iniciaremos con el recojo desde tu hotel o punto previamente coordinado en Cusco. Según el horario del tren seleccionado, realizaremos el traslado hacia la estación correspondiente para iniciar la ruta hacia Machu Picchu.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/recojo-estacion.jpg"
@@ -205,7 +205,7 @@
         },
         {
           "title": "Tour guiado en Machu Picchu",
-          "description": "Realizarás una visita guiada por los sectores principales de la ciudadela. El guía explicará la historia, arquitectura, organización urbana y significado ceremonial de Machu Picchu durante el recorrido autorizado.",
+          "description": "Realizarás una guided visit por los sectores principales de la ciudadela. El guide will explain la historia, arquitectura, organización urbana y significado ceremonial de Machu Picchu durante el recorrido autorizado.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/tour-guiado.jpg"
           ]
@@ -328,7 +328,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -377,7 +377,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Full Day Classic | My Cusco Trip",
@@ -517,15 +517,15 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Pickup and transfer to the station",
+          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
@@ -645,7 +645,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -694,7 +694,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Express",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Full Day Express | My Cusco Trip",
@@ -834,14 +834,14 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
+          "title": "Day 1: Viaje a Aguas Calientes",
           "description": "Iniciaremos con el traslado desde Cusco o el punto coordinado hacia la estación correspondiente. Abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando el paisaje del Sacred Valley y la ruta ferroviaria hacia la ceja de selva. A tu llegada, tendrás asistencia para ubicarte en Aguas Calientes y coordinar los detalles de la visita del day siguiente. La night será en Aguas Calientes según el hotel seleccionado.",
           "images": [
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-viaje-tren.jpg",
@@ -849,8 +849,8 @@
           ]
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur hacia la ciudadela de Machu Picchu. Realizarás la visita guiada por el circuito confirmado, con explicación de los sectores principales, historia y arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado y continuar con el traslado final hacia Cusco o punto coordinado.",
+          "title": "Day 2: Machu Picchu y retorno",
+          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur hacia la ciudadela de Machu Picchu. Realizarás la guided visit por el circuito confirmado, con explicación de los sectores principales, historia y arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado y continuar con el traslado final hacia Cusco o punto coordinado.",
           "images": [
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-machu-picchu.jpg",
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-retorno.jpg"
@@ -967,7 +967,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -1017,7 +1017,7 @@
       "displayMeta": {
         "commercialModeLabel": "Overnight",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Overnight Classic | My Cusco Trip",
@@ -1157,19 +1157,19 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
+          "title": "Day 1: Viaje a Aguas Calientes",
           "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu y retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -1293,7 +1293,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -1343,7 +1343,7 @@
       "displayMeta": {
         "commercialModeLabel": "Overnight",
         "speedLabel": "Express",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Overnight Express | My Cusco Trip",
@@ -1483,15 +1483,15 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Pickup and transfer to the station",
+          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
@@ -1625,7 +1625,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -1674,7 +1674,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Scenic Vistadome | My Cusco Trip",
@@ -1814,15 +1814,15 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Pickup and transfer to the station",
+          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
@@ -1954,7 +1954,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -2003,7 +2003,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu The Prime | My Cusco Trip",
@@ -2143,15 +2143,15 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Pickup and transfer to the station",
+          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
@@ -2286,7 +2286,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -2335,7 +2335,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu First Class | My Cusco Trip",
@@ -2475,19 +2475,19 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
+          "title": "Day 1: Viaje a Aguas Calientes",
           "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu y retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -2609,7 +2609,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -2659,7 +2659,7 @@
       "displayMeta": {
         "commercialModeLabel": "Overnight",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu First Class Overnight | My Cusco Trip",
@@ -2799,15 +2799,15 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Pickup and transfer to the station",
+          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
@@ -2945,7 +2945,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -2994,7 +2994,7 @@
       "displayMeta": {
         "commercialModeLabel": "Full Day",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Luxury Hiram Bingham | My Cusco Trip",
@@ -3134,19 +3134,19 @@
         "Ground transfers necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
+        "Meals y bebidas no especificados",
         "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
+          "title": "Day 1: Viaje a Aguas Calientes",
           "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu y retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -3270,7 +3270,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 149,
-        "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
+        "partialPaymentLabel": "Reserve with a deposit and complete the balance before the trip"
       },
       "booking": {
         "reservationCodePrefix": "MAPI"
@@ -3320,7 +3320,7 @@
       "displayMeta": {
         "commercialModeLabel": "Overnight",
         "speedLabel": "Classic",
-        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de paquetes, el tren se calcula separado."
+        "trainPricingBehavior": "El precio público del producto individual incluye tren. En cotizador de packages, el tren se calcula separado."
       },
       "seo": {
         "title": "Machu Picchu Luxury Overnight | My Cusco Trip",

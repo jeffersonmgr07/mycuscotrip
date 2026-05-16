@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "updatedAt": "2026-05-02",
-  "description": "Catálogo maestro de destinos para My Cusco Trip. Normaliza destinos, alias, jerarquías, zonas de alojamiento, filtros, rutas y equivalencias operativas para tours, paquetes, hoteles y búsqueda.",
+  "description": "Catálogo maestro de destinos para My Cusco Trip. Normaliza destinos, alias, jerarquías, zonas de alojamiento, filtros, rutas y equivalencias operativas para tours, packages, hoteles y búsqueda.",
   "status": "published",
   "defaultCountry": "peru",
   "defaultLanguage": "es",
@@ -154,7 +154,7 @@
           "peru",
           "perú",
           "viajes peru",
-          "paquetes peru",
+          "packages peru",
           "tours peru"
         ]
       }
@@ -209,7 +209,7 @@
           "cusco",
           "cuzco",
           "city tour cusco",
-          "paquete cusco"
+          "Cusco package"
         ]
       },
       "logistics": {
@@ -1442,7 +1442,7 @@
       "id": "dest_tambopata",
       "slug": "tambopata",
       "label": "Tambopata",
-      "commercialLabel": "Reserva Nacional Tambopata",
+      "commercialLabel": "Tambopata National Reserve",
       "shortLabel": "Tambopata",
       "country": "peru",
       "region": "Madre de Dios",
@@ -1596,7 +1596,7 @@
     "All Experience debe filtrar por destination usando slug, aliases y search.tags controlados.",
     "Product.html debe resolver alojamiento usando hotelDestinationKey o globalRules.hotelDestinationResolution.",
     "Machu Picchu no debe usarse como destino de hotel; debe resolverse a aguas-calientes.",
-    "Los paquetes Peru pueden usar destinationGroups para combinar destinos sin duplicar lógica.",
+    "Los packages Peru pueden usar destinationGroups para combinar destinos sin duplicar lógica.",
     "No buscar en includes, excludes, FAQ ni descripciones largas para evitar falsos positivos comerciales."
   ]
 }

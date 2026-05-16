@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/trekkings-cusco.json",
   "scope": "cusco-trekkings",
-  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto y filtros, sin mezclarse con paquetes dinámicos.",
+  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto y filtros, sin mezclarse con packages dinámicos.",
   "currency": "USD",
   "status": "draft-ready",
   "productKind": "trekking",
@@ -86,7 +86,7 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de pasajeros."
+        "notes": "Sujeto a disponibilidad oficial y datos completos de travelers."
       },
       "accommodationType": [
         "campamento o alojamiento según operación"
@@ -178,7 +178,7 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de pasajeros."
+        "notes": "Sujeto a disponibilidad oficial y datos completos de travelers."
       },
       "accommodationType": [
         "campamento"

@@ -66,7 +66,7 @@
       "location": "Cusco",
       "currency": "USD",
       "shortDescription": "Enjoy a scenic tour of Cusco with an Andean ceremony, textile center and unforgettable views from Cristo Blanco.",
-      "description": "Bienvenida Ancestral y Recorrido Scenic por Cusco. Enjoy las vistas más emblemáticas desde nuestro bus scenic de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una Andean ceremony de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Discover un textile center especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal for fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
+      "description": "Bienvenida Ancestral y Recorrido Scenic por Cusco. Enjoy the views más emblemáticas desde nuestro bus scenic de double-decker, con live guide que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una Andean Mother Earth offering ceremony realizada por un Andean priestino para atraer armonía y buenas energías en tu visita. Discover un textile center especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Viewpoint del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal for fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
       "duration": {
         "label": "2 h 30 min",
         "maxGroupSize": 28,
@@ -99,34 +99,34 @@
         ]
       },
       "includes": [
-        "Bus scenic",
-        "Guía bilingüe",
-        "Ceremonia andina",
-        "Visita textil",
-        "Mirador"
+        "Scenic bus",
+        "Bilingual guide",
+        "Andean ceremony",
+        "Textile visit",
+        "Viewpoint"
       ],
       "excludes": [
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Encuentro y salida en bus scenic",
-          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus scenic de dos pisos, ideal for tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
+          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. From allí iniciaremos el recorrido en bus scenic de double-decker, ideal for tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
           ]
         },
         {
-          "title": "Recorrido scenic por Cusco",
-          "description": "Durante el trayecto, el guía compartirá datos históricos y culturales mientras observas sectores representativos de la ciudad, vistas hacia Sacsayhuamán y paisajes urbanos ideales para fotografías.",
+          "title": "Scenic route through Cusco",
+          "description": "During the ride, the guide will share historical and cultural insights while you enjoy representative areas of the city, views toward Sacsayhuaman and urban landscapes ideal for fotografías.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
           ]
         },
         {
-          "title": "Ceremonia andina de bienvenida",
-          "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un sacerdote andino. Esta experiencia está pensada como un ritual de armonía, gratitud y buen augurio para iniciar tu viaje por Cusco y Machu Picchu.",
+          "title": "Andean ceremony de bienvenida",
+          "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un Andean priestino. Esta experiencia está pensada como un ritual de armonía, gratitud y buen augurio para iniciar tu viaje por Cusco y Machu Picchu.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/ceremonia-andina.jpg"
           ]
@@ -139,7 +139,7 @@
           ]
         },
         {
-          "title": "Mirador del Cristo Blanco",
+          "title": "Viewpoint del Cristo Blanco",
           "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos scenics más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
@@ -164,7 +164,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 10.00 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -432,7 +432,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 12.9,
-        "partialPaymentLabel": "Reserva con USD 12.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 12.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CTY"
@@ -760,7 +760,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 19.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VAL"
@@ -954,7 +954,7 @@
       "excludes": [
         "Tourist ticket",
         "Almuerzo buffet",
-        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Tren a Aguas Calientes, salvo que esté incluido dentro del package seleccionado",
         "Personal expenses"
       ],
       "itinerary": [
@@ -994,7 +994,7 @@
         },
         {
           "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "a": "No como tour individual. En packages dinámicos, el tren se calcula según la configuración del package."
         }
       ],
       "extras": [
@@ -1048,7 +1048,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 19.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALCON"
@@ -1179,8 +1179,8 @@
         ]
       },
       "pricingNotes": [
-        "Esta variante finaliza en Ollantaytambo y está pensada para paquetes con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
+        "Esta variante finaliza en Ollantaytambo y está pensada para packages con Machu Picchu Overnight.",
+        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un package."
       ],
       "places": [],
       "seo": {
@@ -1386,7 +1386,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 19.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALVIP"
@@ -1614,7 +1614,7 @@
         "Tourist ticket",
         "Ingreso a Salineras de Maras",
         "Almuerzo buffet",
-        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Tren a Aguas Calientes, salvo que esté incluido dentro del package seleccionado",
         "Personal expenses"
       ],
       "itinerary": [
@@ -1661,7 +1661,7 @@
         },
         {
           "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "a": "No como tour individual. En packages dinámicos, el tren se calcula según la configuración del package."
         }
       ],
       "extras": [
@@ -1743,7 +1743,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 19.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALVIPCON"
@@ -1907,8 +1907,8 @@
         ]
       },
       "pricingNotes": [
-        "Esta variante está pensada como ruta preferida para paquetes con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
+        "Esta variante está pensada como ruta preferida para packages con Machu Picchu Overnight.",
+        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un package."
       ],
       "places": [],
       "seo": {
@@ -1972,8 +1972,8 @@
       ],
       "itinerary": [
         {
-          "title": "Recojo en hotel",
-          "description": "Recojo desde tu hotel o punto coordinado en Cusco para iniciar la ruta hacia Chinchero, Maras and Moray.",
+          "title": "Hotel pickup",
+          "description": "Pickup from your hotel or coordinated meeting point en Cusco para iniciar la ruta hacia Chinchero, Maras and Moray.",
           "images": [
             "./assets/img/tours/maras-moray/itinerary/recojo-cusco.jpg"
           ]
@@ -2037,7 +2037,7 @@
               "publishedPENApprox": 80
             }
           },
-          "availabilityNote": "No cobrar si el pasajero ya compró el Circuito 2 para Sacred Valley en el mismo viaje."
+          "availabilityNote": "No cobrar si el traveler ya compró el Circuito 2 para Sacred Valley en el mismo viaje."
         },
         {
           "code": "maras-salt-mines-ticket",
@@ -2089,7 +2089,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 10.00 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -2181,7 +2181,7 @@
               "publishedPENApprox": 80
             }
           },
-          "availabilityNote": "No cobrar si el pasajero ya compró el Circuito 2 para Sacred Valley en el mismo viaje."
+          "availabilityNote": "No cobrar si el traveler ya compró el Circuito 2 para Sacred Valley en el mismo viaje."
         },
         {
           "code": "maras-salt-mines-ticket",
@@ -2270,7 +2270,7 @@
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
       "currency": "USD",
       "shortDescription": "Explore Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco.",
-      "description": "Este tour inicia desde el recojo de su hotel alrededor de las 8:00 a 8:30 a. m. Luego partiremos en bus hacia el sur de Cusco. La primera parada será el centro arqueológico de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales y retablos barrocos. Regreso aproximado a Cusco a las 2:30 p. m.",
+      "description": "Este tour inicia desde el recojo de su hotel alrededor de las 8:00 a 8:30 AM Luego partiremos en bus hacia el sur de Cusco. La primera parada será el centro arqueológico de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales y retablos barrocos. Regreso aproximado a Cusco a las 2:30 PM",
       "duration": {
         "label": "Medio day",
         "maxGroupSize": 18,
@@ -2313,7 +2313,7 @@
       "itinerary": [
         {
           "title": "Salida desde Cusco",
-          "description": "Recojo desde tu hotel entre 8:00 y 8:30 a. m. para iniciar la ruta hacia el sur del Cusco.",
+          "description": "Pickup from your hotel entre 8:00 y 8:30 AM para iniciar la ruta hacia el sur del Cusco.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
           ]
@@ -2343,7 +2343,7 @@
       "faq": [
         {
           "q": "¿Cuánto dura el tour?",
-          "a": "La experiencia dura aproximadamente medio day, con retorno a Cusco hacia las 2:30 p. m."
+          "a": "La experiencia dura aproximadamente medio day, con retorno a Cusco hacia las 2:30 PM"
         },
         {
           "q": "¿Incluye boleto turístico?",
@@ -2411,7 +2411,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 10.00 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -2635,7 +2635,7 @@
       "itinerary": [
         {
           "title": "Salida desde Cusco",
-          "description": "Recojo temprano y viaje hacia Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
+          "description": "Pickup temprano y viaje hacia Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
           "images": [
             "./assets/img/tours/laguna-humantay/itinerary/salida-cusco.jpg"
           ]
@@ -2723,7 +2723,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 14.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "HUM"
@@ -2918,7 +2918,7 @@
       "itinerary": [
         {
           "title": "Salida de madrugada",
-          "description": "Recojo temprano en Cusco y viaje hacia el punto de inicio de la ruta a Vinicunca.",
+          "description": "Pickup temprano en Cusco y viaje hacia el punto de inicio de la ruta a Vinicunca.",
           "images": [
             "./assets/img/tours/montana-colores/itinerary/salida-madrugada.jpg"
           ]
@@ -3042,7 +3042,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 14.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VIN"
@@ -3229,7 +3229,7 @@
         ]
       },
       "includes": [
-        "Recojo de su hotel en Cusco",
+        "Pickup de su hotel en Cusco",
         "Tourist transport",
         "1 desayuno",
         "1 almuerzo buffet",
@@ -3241,12 +3241,12 @@
       "excludes": [
         "Cena",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y salida",
-          "description": "Recojo entre 4:30 y 5:00 a. m. desde tu hotel en Cusco para iniciar el viaje hacia el sur de la región.",
+          "title": "Pickup and departure",
+          "description": "Pickup entre 4:30 y 5:00 AM desde tu hotel en Cusco para iniciar el viaje hacia el sur de la región.",
           "images": [
             "./assets/img/tours/montana-palcoyo/itinerary/salida-cusco.jpg"
           ]
@@ -3359,7 +3359,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 14.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -3560,12 +3560,12 @@
         "Baños termales de Pacchanta si aplican pago adicional",
         "Caballo opcional",
         "Personal expenses",
-        "Servicios no mencionados"
+        "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Recojo y salida desde Cusco",
-          "description": "Recojo entre 4:00 y 4:30 a. m. desde tu hotel y viaje hacia Pacchanta, en la zona del Ausangate.",
+          "title": "Pickup and departure from Cusco",
+          "description": "Pickup entre 4:00 y 4:30 AM desde tu hotel y viaje hacia Pacchanta, en la zona del Ausangate.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/salida-cusco.jpg"
           ]
@@ -3693,7 +3693,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve with USD 14.90 per person and pay the balance in Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"

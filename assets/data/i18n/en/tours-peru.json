@@ -82,20 +82,20 @@
         ]
       },
       "includes": [
-        "Recojo en zonas seleccionadas",
+        "Pickup in selected areas",
         "Tourist transport",
         "Professional guide",
         "Recorrido scenic"
       ],
       "excludes": [
         "Entradas no especificadas",
-        "Alimentos y bebidas",
+        "Meals y bebidas",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Recojo y salida",
-          "description": "Recojo desde hotel o punto de encuentro coordinado."
+          "title": "Pickup and departure",
+          "description": "Pickup desde hotel o punto de encuentro coordinado."
         },
         {
           "title": "Lima moderna",
@@ -119,7 +119,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10 por persona y confirma el saldo según operación"
+        "partialPaymentLabel": "Reserve with USD 10 per person and confirm the balance according to the operation"
       },
       "booking": {
         "reservationCodePrefix": "LIM"
@@ -234,12 +234,12 @@
       "includes": [
         "Asistencia en muelle",
         "Paseo en lancha",
-        "Guía durante la navegación"
+        "Guide during the boat tour"
       ],
       "excludes": [
-        "Impuestos o tasas portuarias si aplican",
-        "Traslados desde Lima",
-        "Alimentos",
+        "Port taxes or fees if applicable",
+        "Transfers from Lima",
+        "Meals",
         "Personal expenses"
       ],
       "itinerary": [
@@ -269,7 +269,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10 por persona"
+        "partialPaymentLabel": "Reserve with USD 10 per person"
       },
       "booking": {
         "reservationCodePrefix": "PAR"
@@ -381,23 +381,23 @@
         ]
       },
       "includes": [
-        "Recojo en zonas seleccionadas de Lima",
+        "Pickup in selected areas de Lima",
         "Tourist transport",
         "Tour Islas Ballestas",
         "Visita a bodega",
         "Huacachina",
         "Buggies y sandboarding según operación",
-        "Guía o coordinador"
+        "Guide or coordinator"
       ],
       "excludes": [
-        "Alimentación no especificada",
-        "Tasas turísticas si aplican",
+        "Meals not specified",
+        "Tourist fees if applicable",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Salida desde Lima",
-          "description": "Recojo temprano y salida hacia Paracas."
+          "description": "Pickup temprano y salida hacia Paracas."
         },
         {
           "title": "Islas Ballestas",
@@ -425,7 +425,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 20,
-        "partialPaymentLabel": "Reserva con USD 20 por persona"
+        "partialPaymentLabel": "Reserve with USD 20 per person"
       },
       "booking": {
         "reservationCodePrefix": "PIC"
@@ -495,7 +495,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Vuelo escénico sobre los geoglifos más representativos de Nazca.",
-      "description": "Experience referencial para observar desde el aire las famosas Líneas de Nazca. La operación depende de clima, disponibilidad aérea, peso del pasajero y tasas aeroportuarias.",
+      "description": "Experience referencial para observar desde el aire las famosas Líneas de Nazca. La operación depende de clima, disponibilidad aérea, peso del traveler y tasas aeroportuarias.",
       "duration": {
         "label": "35 min de vuelo aprox.",
         "maxGroupSize": 12,
@@ -551,7 +551,7 @@
       "excludes": [
         "Tasas aeroportuarias si aplican",
         "Traslados desde otra ciudad",
-        "Alimentos",
+        "Meals",
         "Personal expenses"
       ],
       "itinerary": [
@@ -577,7 +577,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 30,
-        "partialPaymentLabel": "Reserva con USD 30 por persona"
+        "partialPaymentLabel": "Reserve with USD 30 per person"
       },
       "booking": {
         "reservationCodePrefix": "NAZ"
@@ -689,19 +689,19 @@
         ]
       },
       "includes": [
-        "Recojo en zonas seleccionadas",
+        "Pickup in selected areas",
         "Tourist transport",
         "Professional guide"
       ],
       "excludes": [
         "Ingreso a Santa Catalina si aplica",
-        "Alimentos",
+        "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Recojo",
-          "description": "Recojo y salida hacia el centro histórico."
+          "title": "Pickup",
+          "description": "Pickup and departure hacia el centro histórico."
         },
         {
           "title": "Centro histórico",
@@ -712,7 +712,7 @@
           "description": "Visita al monasterio según operación confirmada."
         },
         {
-          "title": "Miradores",
+          "title": "Viewpointes",
           "description": "Parada panorámica en miradores seleccionados."
         }
       ],
@@ -734,7 +734,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10 por persona"
+        "partialPaymentLabel": "Reserve with USD 10 per person"
       },
       "booking": {
         "reservationCodePrefix": "AQP"
@@ -846,7 +846,7 @@
         ]
       },
       "includes": [
-        "Recojo en Arequipa",
+        "Pickup en Arequipa",
         "Tourist transport",
         "Professional guide"
       ],
@@ -859,7 +859,7 @@
       "itinerary": [
         {
           "title": "Salida de madrugada",
-          "description": "Recojo temprano desde Arequipa."
+          "description": "Pickup temprano desde Arequipa."
         },
         {
           "title": "Chivay y ruta al Colca",
@@ -892,7 +892,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 20,
-        "partialPaymentLabel": "Reserva con USD 20 por persona"
+        "partialPaymentLabel": "Reserve with USD 20 per person"
       },
       "booking": {
         "reservationCodePrefix": "COL"
@@ -1004,7 +1004,7 @@
         ]
       },
       "includes": [
-        "Recojo en Puno",
+        "Pickup en Puno",
         "Traslado al puerto",
         "Lancha turística",
         "Professional guide",
@@ -1051,7 +1051,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 15,
-        "partialPaymentLabel": "Reserva con USD 15 por persona"
+        "partialPaymentLabel": "Reserve with USD 15 per person"
       },
       "booking": {
         "reservationCodePrefix": "PUN"
@@ -1164,23 +1164,23 @@
         ]
       },
       "includes": [
-        "Recojo en Puno",
+        "Pickup en Puno",
         "Tourist transport",
         "Professional guide"
       ],
       "excludes": [
         "Ingreso a Sillustani",
-        "Alimentos",
+        "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Salida desde Puno",
-          "description": "Recojo y traslado hacia Sillustani."
+          "description": "Pickup y traslado hacia Sillustani."
         },
         {
           "title": "Complejo arqueológico",
-          "description": "Visita guiada por chullpas y miradores."
+          "description": "Guided visit por chullpas y miradores."
         },
         {
           "title": "Retorno",
@@ -1205,7 +1205,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10 por persona"
+        "partialPaymentLabel": "Reserve with USD 10 per person"
       },
       "booking": {
         "reservationCodePrefix": "PUN"
@@ -1315,11 +1315,11 @@
         ]
       },
       "includes": [
-        "Recojo en Tarapoto",
+        "Pickup en Tarapoto",
         "Tourist transport",
         "Cruce en balsa si aplica",
         "Paseo en bote referencial",
-        "Guía o coordinador"
+        "Guide or coordinator"
       ],
       "excludes": [
         "Almuerzo si no se especifica",
@@ -1329,7 +1329,7 @@
       "itinerary": [
         {
           "title": "Salida desde Tarapoto",
-          "description": "Recojo y viaje hacia Sauce."
+          "description": "Pickup y viaje hacia Sauce."
         },
         {
           "title": "Laguna Azul",
@@ -1362,7 +1362,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 15,
-        "partialPaymentLabel": "Reserva con USD 15 por persona"
+        "partialPaymentLabel": "Reserve with USD 15 per person"
       },
       "booking": {
         "reservationCodePrefix": "TPP"
@@ -1473,19 +1473,19 @@
         ]
       },
       "includes": [
-        "Recojo en Tarapoto",
+        "Pickup en Tarapoto",
         "Tourist transport",
-        "Guía o coordinador"
+        "Guide or coordinator"
       ],
       "excludes": [
         "Ingreso si aplica",
-        "Alimentos",
+        "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Salida",
-          "description": "Recojo y traslado hacia Ahuashiyacu."
+          "description": "Pickup y traslado hacia Ahuashiyacu."
         },
         {
           "title": "Caminata corta",
@@ -1518,7 +1518,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10 por persona"
+        "partialPaymentLabel": "Reserve with USD 10 per person"
       },
       "booking": {
         "reservationCodePrefix": "TPP"
@@ -1628,9 +1628,9 @@
         ]
       },
       "includes": [
-        "Recojo en Iquitos",
+        "Pickup en Iquitos",
         "Traslado fluvial",
-        "Guía o coordinador",
+        "Guide or coordinator",
         "Visitas según operación"
       ],
       "excludes": [
@@ -1640,7 +1640,7 @@
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado al embarcadero",
+          "title": "Pickup y traslado al embarcadero",
           "description": "Inicio del servicio desde Iquitos."
         },
         {
@@ -1674,7 +1674,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 20,
-        "partialPaymentLabel": "Reserva con USD 20 por persona"
+        "partialPaymentLabel": "Reserve with USD 20 per person"
       },
       "booking": {
         "reservationCodePrefix": "IQT"
@@ -1787,7 +1787,7 @@
         ]
       },
       "includes": [
-        "Recojo en Puerto Maldonado",
+        "Pickup en Puerto Maldonado",
         "Transporte terrestre/fluvial según operación",
         "Guía naturalista referencial"
       ],
@@ -1799,7 +1799,7 @@
       "itinerary": [
         {
           "title": "Salida",
-          "description": "Recojo y traslado según ruta confirmada."
+          "description": "Pickup y traslado según ruta confirmada."
         },
         {
           "title": "Actividad natural",
@@ -1828,7 +1828,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 0,
         "partialPaymentPerPerson": 20,
-        "partialPaymentLabel": "Reserva con USD 20 por persona"
+        "partialPaymentLabel": "Reserve with USD 20 per person"
       },
       "booking": {
         "reservationCodePrefix": "PEM"

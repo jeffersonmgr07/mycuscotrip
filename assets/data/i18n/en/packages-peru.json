@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-02",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
-  "description": "Archivo de configuración para generar paquetes dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
+  "description": "Archivo de configuración para generar packages dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
   "status": "draft_ready_for_review",
   "dataSources": {
     "cuscoPackageConfig": "assets/data/packages-cusco.json",
@@ -46,19 +46,19 @@
       "key": "early-arrival__late-departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "late-departure",
-      "label": "Llegada temprano / salida tarde",
+      "label": "Early arrival / late departure",
       "arrivalAvailableFrom": "11:00",
       "departureAvailableUntil": "20:00",
       "rules": [
-        "Permite city tour, visita panorámica o experiencia medio day el primer day.",
-        "Permite tour corto o actividad urbana el último day si no hay traslado interurbano."
+        "Allows a city tour, scenic visit or half-day experience on the first day.",
+        "Allows a short tour or urban activity on the last day when there is no intercity transfer."
       ]
     },
     {
       "key": "early-arrival__early-departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "early-departure",
-      "label": "Llegada temprano / salida temprano",
+      "label": "Early arrival / early departure",
       "arrivalAvailableFrom": "11:00",
       "departureAvailableUntil": "10:00",
       "rules": [
@@ -70,7 +70,7 @@
       "key": "late-arrival__late-departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "late-departure",
-      "label": "Llegada tarde / salida tarde",
+      "label": "Late arrival / late departure",
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "20:00",
       "rules": [
@@ -82,7 +82,7 @@
       "key": "late-arrival__early-departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "early-departure",
-      "label": "Llegada tarde / salida temprano",
+      "label": "Late arrival / early departure",
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "10:00",
       "rules": [
@@ -616,10 +616,10 @@
     },
     "commercialRules": [
       "Priorizar rutas vendibles y comprensibles para cliente final.",
-      "No saturar paquetes cortos con demasiados traslados.",
+      "No saturar packages cortos con demasiados traslados.",
       "No programar full day al day siguiente de una llegada nocturna o bus nocturno sin descanso.",
       "No programar trekkings de alta exigencia antes de aclimatación mínima en Cusco.",
-      "Evitar dos tours de madrugada consecutivos salvo paquetes largos y con nota comercial."
+      "Evitar dos tours de madrugada consecutivos salvo packages largos y con nota comercial."
     ],
     "pricingRules": {
       "pricingMode": "sum_selected_products_plus_hotels_transport_extras",
@@ -747,7 +747,7 @@
           "lima",
           "cusco",
           "machu-picchu",
-          "paquete-peru"
+          "package-peru"
         ],
         "themes": [
           "cultural",
@@ -755,13 +755,13 @@
           "classic"
         ],
         "keywords": [
-          "paquetes perú: lima + cusco 5 days / 4 nights",
-          "paquete peru 5 dias",
+          "packages perú: lima + cusco 5 days / 4 nights",
+          "package peru 5 dias",
           "peru 5 dias 4 nights",
           "lima",
           "cusco",
           "machu-picchu",
-          "paquete-peru"
+          "package-peru"
         ]
       },
       "seo": {
@@ -818,8 +818,8 @@
           "classic"
         ],
         "keywords": [
-          "paquetes perú: lima + cusco 6 days / 5 nights",
-          "paquete peru 6 dias",
+          "packages perú: lima + cusco 6 days / 5 nights",
+          "package peru 6 dias",
           "peru 6 dias 5 nights",
           "lima",
           "cusco",
@@ -884,8 +884,8 @@
           "aventura"
         ],
         "keywords": [
-          "paquetes perú: lima + paracas/ica + cusco 7 days / 6 nights",
-          "paquete peru 7 dias",
+          "packages perú: lima + paracas/ica + cusco 7 days / 6 nights",
+          "package peru 7 dias",
           "peru 7 dias 6 nights",
           "lima",
           "paracas",
@@ -954,8 +954,8 @@
           "aventura"
         ],
         "keywords": [
-          "paquetes perú: lima + paracas/ica + cusco/puno 8 days / 7 nights",
-          "paquete peru 8 dias",
+          "packages perú: lima + paracas/ica + cusco/puno 8 days / 7 nights",
+          "package peru 8 dias",
           "peru 8 dias 7 nights",
           "lima",
           "paracas",
@@ -1023,8 +1023,8 @@
           "paisaje"
         ],
         "keywords": [
-          "paquetes perú: lima + arequipa + cusco 9 days / 8 nights",
-          "paquete peru 9 dias",
+          "packages perú: lima + arequipa + cusco 9 days / 8 nights",
+          "package peru 9 dias",
           "peru 9 dias 8 nights",
           "lima",
           "arequipa",
@@ -1041,16 +1041,16 @@
     {
       "id": "pkg_peru_10d9n",
       "slug": "peru-10-day-tour-lima-huacachina-cusco-machu-picchu-titicaca-arequipa",
-      "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Titicaca and Arequipa",
+      "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Lake Titicaca & Arequipa",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 10,
       "nights": 9,
       "typeLabel": "10 days / 9 nights",
-      "badge": "Complete route",
+      "badge": "Complete Peru Route",
       "featured": true,
-      "location": "Lima, Huacachina, Cusco, Machu Picchu, Titicaca and Arequipa",
-      "shortDescription": "A complete 10-day Peru itinerary combining Lima, Barranco and Miraflores, Huacachina desert adventure, Paracas marine wildlife, Cusco, the Sacred Valley, Machu Picchu by train, the Route of the Sun to Puno, Lake Titicaca and colonial Arequipa with an optional Colca Canyon experience.",
+      "location": "Lima, Huacachina, Cusco, Machu Picchu, Lake Titicaca and Arequipa",
+      "shortDescription": "A complete 10-day Peru itinerary for travelers who want to experience the country’s most iconic destinations in one well-organized journey: Lima, the desert oasis of Huacachina, Cusco, Machu Picchu, Lake Titicaca and Arequipa.",
       "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1112,7 +1112,7 @@
         "keywords": [
           "peru 10 dias 9 nights",
           "lima huacachina cusco puno arequipa",
-          "paquete peru multidestino",
+          "package peru multidestino",
           "machu picchu titicaca arequipa",
           "paracas ica huacachina",
           "ruta del sol cusco puno"
@@ -1123,12 +1123,11 @@
         "label": "10 days / 9 nights",
         "maxGroupSize": 30,
         "guideLanguages": [
-          "español",
-          "inglés",
-          "otros idiomas a consultar"
+          "Spanish and English",
+          "Other languages available upon request"
         ]
       },
-      "description": "Travel through Peru’s most iconic destinations in one well-coordinated itinerary: Lima, Paracas, Huacachina, Cusco, the Sacred Valley, Machu Picchu, Puno, Lake Titicaca and Arequipa. This package is designed for travelers who want a complete Peru journey with organized transfers, guided tours, train options, accommodation selection and local assistance throughout the trip.",
+      "description": "Travel through Peru’s most iconic destinations with a carefully coordinated route that combines coastal landscapes, desert adventure, Andean culture, Machu Picchu by train, Lake Titicaca and the colonial charm of Arequipa. This package is ideal for travelers who want a complete Peru experience with local assistance, hotel options by destination and flexible quote customization.",
       "images": {
         "cover": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
         "gallery": [
@@ -1148,42 +1147,43 @@
         "Customizable hotels"
       ],
       "highlights": [
-        "Night tour in Lima through Miraflores, Barranco, Larcomar and the Magic Water Circuit",
-        "Full-day Paracas, Ica and Huacachina with marine wildlife, winery experience and desert dunes",
-        "Ancestral welcome in Cusco and City Tour through the main Inca archaeological sites",
-        "Sacred Valley experience with train connection to Machu Picchu Pueblo",
-        "Guided visit to Machu Picchu with return train to Cusco",
-        "Route of the Sun from Cusco to Puno and Lake Titicaca experience",
-        "Colonial Arequipa with the option to include Colca Canyon"
+        "Explore Lima, Barranco, Miraflores and the Magic Water Circuit on your first night in Peru",
+        "Visit Paracas, Ica and Huacachina with marine wildlife, pisco tasting and desert landscapes",
+        "Experience Cusco with an ancestral welcome and the main Inca archaeological sites",
+        "Travel through the Sacred Valley and take the train to Machu Picchu Pueblo",
+        "Enjoy a guided visit to Machu Picchu with return train service to Cusco",
+        "Cross the Andes on the Route of the Sun from Cusco to Puno",
+        "Discover Lake Titicaca and continue to Arequipa, with the option to include Colca Canyon"
       ],
       "details": [
-        "Group service for up to 30 travelers",
-        "Guides in Spanish and English; other languages on request",
+        "Small-group service for up to 30 travelers",
+        "Professional guide in Spanish and English; other languages available upon request",
         "Hotels can be selected by destination before final confirmation",
-        "Instant reservation flow with your travel advisor and option to improve the final quote"
+        "Flexible online quote with hotels, transfers, trains and extras reviewed by a travel advisor"
       ],
       "includes": [
-        "Base price without hotels: includes tours, operational transfers, base train service, Machu Picchu entrance, bus to Machu Picchu, required tourist tickets, Route of the Sun, Titicaca experience, Puno-Arequipa overnight bus and Arequipa-Lima flight subject to fare confirmation and availability.",
-        "Pickup from Lima airport and transfer to the selected hotel in Lima",
-        "Required arrival and departure transfers according to the confirmed itinerary",
+        "Base package price without hotels: includes scheduled tours, operational transfers, base train service, Machu Picchu entrance, bus to Machu Picchu, required tourist tickets, Route of the Sun service, Lake Titicaca experience, Puno–Arequipa overnight bus and Arequipa–Lima flight subject to fare confirmation and availability.",
+        "Pickup from Lima airport and transfer to your selected hotel in Lima",
+        "Arrival and departure transfers required for the confirmed itinerary",
         "Guided tours mentioned in the itinerary",
-        "Tourist train to and from Machu Picchu according to the selected option",
-        "Entrance tickets required for the included tours when specified",
-        "Local assistance during the booking and coordination process"
+        "Round-trip tourist train to Machu Picchu according to the selected option",
+        "Entrance tickets required for included tours when specified",
+        "Local assistance during booking, coordination and trip follow-up"
       ],
       "excludes": [
         "International flights",
-        "Meals not mentioned in the program",
+        "Hotels, unless selected and added to the final quote",
+        "Meals not specifically mentioned in the itinerary",
         "Early check-in or late check-out not confirmed by the hotel",
         "Personal expenses, tips and optional activities",
         "Travel insurance",
         "Hotel upgrades, private services or extra nights not selected in the quote"
       ],
-      "pickupInfo": "For all excursions, pickups are coordinated from the hotel in each destination. Final pickup times, meeting points and transfers are confirmed according to the selected hotels, travel dates, current operation and reserved services.",
+      "pickupInfo": "Pickups are coordinated from the selected hotel in each destination. Final pickup times, meeting points and transfers are confirmed according to your hotels, travel dates, current operation and reserved services.",
       "importantInfo": [
-        "Each passenger must travel with a valid passport in good condition. A minimum validity of 6 months is recommended to enter and leave Peru.",
+        "Each passenger must travel with a valid passport in good condition. A minimum validity of 6 months is recommended for entering and leaving Peru.",
         "Names and document numbers must match exactly with flights, trains and tourist entrance tickets.",
-        "We recommend carrying cash in Peruvian soles for small purchases, personal services, tips or places with limited internet connection.",
+        "We recommend carrying cash in Peruvian soles for small purchases, personal services, tips and places with limited internet connection.",
         "Domestic flight schedules, trains, buses and Machu Picchu entrance times are subject to availability at the time of booking.",
         "The order of visits may be adjusted due to weather, availability, official regulations, tourism operation or group safety."
       ],
@@ -1514,15 +1514,15 @@
         "child": 1099,
         "currency": "USD",
         "mode": "sin_hoteles",
-        "label": "Precio base por persona sin hoteles",
+        "label": "Precio base per person sin hoteles",
         "description": "Includes tours, transfers operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa y vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
       },
       "priceFrom": 1149,
-      "priceLabel": "Desde USD 1,149 por persona sin hoteles",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
+      "priceLabel": "From USD 1,149 per person sin hoteles",
+      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de room elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
       "seo": {
-        "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Titicaca and Arequipa | My Cusco Trip",
-        "description": "A complete 10-day Peru itinerary combining Lima, Barranco and Miraflores, Huacachina desert adventure, Paracas marine wildlife, Cusco, the Sacred Valley, Machu Picchu by train, the Route of the Sun to Puno, Lake Titicaca and colonial Arequipa with an optional Colca Canyon experience."
+        "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Titicaca & Arequipa | My Cusco Trip",
+        "description": "Explore Peru in 10 days with a complete itinerary through Lima, Huacachina, Cusco, Machu Picchu, Lake Titicaca and Arequipa. Flexible quote, local assistance and guided experiences."
       }
     },
     {
@@ -1585,8 +1585,8 @@
           "paisaje"
         ],
         "keywords": [
-          "paquetes perú: lima + paracas + arequipa + puno + cusco 12 days / 11 nights",
-          "paquete peru 12 dias",
+          "packages perú: lima + paracas + arequipa + puno + cusco 12 days / 11 nights",
+          "package peru 12 dias",
           "peru 12 dias 11 nights",
           "lima",
           "paracas",
@@ -1664,8 +1664,8 @@
           "aventura"
         ],
         "keywords": [
-          "paquetes perú sur + amazonía 14 days / 13 nights",
-          "paquete peru 14 dias",
+          "packages perú sur + amazonía 14 days / 13 nights",
+          "package peru 14 dias",
           "peru 14 dias 13 nights",
           "lima",
           "paracas",
@@ -1748,8 +1748,8 @@
           "selva"
         ],
         "keywords": [
-          "paquetes perú completo 15 days / 14 nights",
-          "paquete peru 15 dias",
+          "packages perú completo 15 days / 14 nights",
+          "package peru 15 dias",
           "peru 15 dias 14 nights",
           "lima",
           "paracas",
@@ -2322,7 +2322,7 @@
   },
   "implementationNotes": [
     "Este archivo no reemplaza tours-peru.json ni packages-cusco.json; los orquesta por referencia.",
-    "Los paquetes Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
+    "Los packages Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
     "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
     "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
   ]
