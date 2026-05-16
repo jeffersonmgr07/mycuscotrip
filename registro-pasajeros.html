@@ -1,20 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Pasajeros | MyCuscoTrip</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  <link rel="stylesheet" href="./assets/css/header.css">
-  <link rel="stylesheet" href="./assets/css/footer.css">
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registro de Pasajeros | MyCuscoTrip</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&amp;family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="./assets/css/main.css" rel="stylesheet"/>
+<link href="./assets/css/components.css" rel="stylesheet"/>
+<link href="./assets/css/header.css" rel="stylesheet"/>
+<link href="./assets/css/footer.css" rel="stylesheet"/>
+<link href="./assets/css/responsive.css" rel="stylesheet"/>
+<style>
     :root {
       --mct-green: #053220;
       --mct-green-2: #0b5d3b;
@@ -499,280 +497,258 @@
     }
   </style>
 </head>
-
 <body>
-  <div id="header-container"></div>
-
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
-
-  <main class="registro-page">
-    <div class="registro-shell">
-      <div class="registro-grid">
-        <aside class="registro-copy">
-          <span class="eyebrow">Registro de pasajeros</span>
-          <h1>Completa los datos de tu <span>viaje</span></h1>
-          <p>
+<div id="header-container"></div>
+<a aria-label="WhatsApp" class="wa-float" href="https://wa.me/51900608980" rel="noopener" target="_blank">
+<img alt="WhatsApp" src="./assets/img/logos/LogoWhatsapp.png"/>
+</a>
+<main class="registro-page">
+<div class="registro-shell">
+<div class="registro-grid">
+<aside class="registro-copy">
+<span class="eyebrow">Registro de pasajeros</span>
+<h1>Completa los datos de tu <span>viaje</span></h1>
+<p>
             Ingresa el código de reserva enviado por tu asesor y registra los datos de los pasajeros,
             información de llegada a Cusco y contacto de emergencia.
           </p>
-
-          <div class="registro-info-list">
-            <div class="registro-info-item">
-              <i class="fa-solid fa-user-check"></i>
-              <div>El primer pasajero será el titular de coordinación del grupo.</div>
-            </div>
-            <div class="registro-info-item">
-              <i class="fa-solid fa-users"></i>
-              <div>Puedes registrar hasta 10 pasajeros por reserva.</div>
-            </div>
-            <div class="registro-info-item">
-              <i class="fa-solid fa-plane-arrival"></i>
-              <div>Los vuelos pueden completarse ahora o enviarse más adelante.</div>
-            </div>
-          </div>
-        </aside>
-
-        <section class="registro-panel">
-          <div class="registro-panel-head">
-            <div class="label-top">Acceso seguro</div>
-            <h2>Formulario de registro</h2>
-            <p>
+<div class="registro-info-list">
+<div class="registro-info-item">
+<i class="fa-solid fa-user-check"></i>
+<div>El primer pasajero será el titular de coordinación del grupo.</div>
+</div>
+<div class="registro-info-item">
+<i class="fa-solid fa-users"></i>
+<div>Puedes registrar hasta 10 pasajeros por reserva.</div>
+</div>
+<div class="registro-info-item">
+<i class="fa-solid fa-plane-arrival"></i>
+<div>Los vuelos pueden completarse ahora o enviarse más adelante.</div>
+</div>
+</div>
+</aside>
+<section class="registro-panel">
+<div class="registro-panel-head">
+<div class="label-top">Acceso seguro</div>
+<h2>Formulario de registro</h2>
+<p>
               Valida tu reserva y completa la información requerida para preparar la operación de tu viaje y generar tu Travel Voucher.
             </p>
-          </div>
-
-          <div class="registro-body">
-            <div class="step-bar" id="stepBar">
-              <div class="step-item is-active" data-step-label="0">Acceso</div>
-              <div class="step-item" data-step-label="1">Pasajeros</div>
-              <div class="step-item" data-step-label="2">Llegada</div>
-              <div class="step-item" data-step-label="3">Emergencia</div>
-            </div>
-
-            <div id="globalAlert" class="alert error"></div>
-
-            <section id="accessCard" class="access-card is-active">
-              <div class="form-section">
-                <div class="form-section-head">
-                  <h3>Validar reserva</h3>
-                  <small>Paso inicial</small>
-                </div>
-                <div class="form-section-body">
-                  <div class="field-grid">
-                    <div class="field">
-                      <label for="bookingCode">Código de reserva</label>
-                      <input id="bookingCode" type="text" placeholder="Ej. CUS12345" autocomplete="off" required />
-                    </div>
-                    <div class="field">
-                      <label for="bookingKey">Apellido del primer pasajero o clave</label>
-                      <input id="bookingKey" type="text" placeholder="Ej. García" autocomplete="off" required />
-                    </div>
-                  </div>
-                  <p class="help-text">
+</div>
+<div class="registro-body">
+<div class="step-bar" id="stepBar">
+<div class="step-item is-active" data-step-label="0">Acceso</div>
+<div class="step-item" data-step-label="1">Pasajeros</div>
+<div class="step-item" data-step-label="2">Llegada</div>
+<div class="step-item" data-step-label="3">Emergencia</div>
+</div>
+<div class="alert error" id="globalAlert"></div>
+<section class="access-card is-active" id="accessCard">
+<div class="form-section">
+<div class="form-section-head">
+<h3>Validar reserva</h3>
+<small>Paso inicial</small>
+</div>
+<div class="form-section-body">
+<div class="field-grid">
+<div class="field">
+<label for="bookingCode">Código de reserva</label>
+<input autocomplete="off" id="bookingCode" placeholder="Ej. CUS12345" required="" type="text"/>
+</div>
+<div class="field">
+<label for="bookingKey">Apellido del primer pasajero o clave</label>
+<input autocomplete="off" id="bookingKey" placeholder="Ej. García" required="" type="text"/>
+</div>
+</div>
+<p class="help-text">
                     Sugerencia: puedes enviar al pasajero un código de reserva y una clave corta. Por ejemplo: código CUS12345 + apellido del titular.
                   </p>
-                </div>
-              </div>
-
-              <div class="actions-row">
-                <div></div>
-                <div class="actions-right">
-                  <button type="button" class="btn-primary" id="validateReservationBtn">Ingresar al formulario</button>
-                </div>
-              </div>
-            </section>
-
-            <form id="passengerForm" novalidate>
-              <section class="form-step" data-step="1">
-                <div id="reservationSummaryMount"></div>
-                <div class="form-section">
-                  <div class="form-section-head">
-                    <h3>Datos de pasajeros</h3>
-                    <small id="passengerCounter">1 pasajero</small>
-                  </div>
-                  <div class="form-section-body">
-                    <div id="passengersContainer"></div>
-
-                    <button type="button" class="btn-ghost" id="addPassengerBtn">
-                      <i class="fa-solid fa-user-plus"></i> Agregar pasajero
+</div>
+</div>
+<div class="actions-row">
+<div></div>
+<div class="actions-right">
+<button class="btn-primary" id="validateReservationBtn" type="button">Ingresar al formulario</button>
+</div>
+</div>
+</section>
+<form id="passengerForm" novalidate="">
+<section class="form-step" data-step="1">
+<div id="reservationSummaryMount"></div>
+<div class="form-section">
+<div class="form-section-head">
+<h3>Datos de pasajeros</h3>
+<small id="passengerCounter">1 pasajero</small>
+</div>
+<div class="form-section-body">
+<div id="passengersContainer"></div>
+<button class="btn-ghost" id="addPassengerBtn" type="button">
+<i class="fa-solid fa-user-plus"></i> Agregar pasajero
                     </button>
-                    <p class="help-text">El pasajero 1 será considerado titular de coordinación del grupo.</p>
-                  </div>
-                </div>
-              </section>
-
-              <section class="form-step" data-step="2">
-                <div class="form-section">
-                  <div class="form-section-head">
-                    <h3>Medio de llegada a Cusco</h3>
-                    <small>Itinerario de viaje</small>
-                  </div>
-                  <div class="form-section-body">
-                    <div class="field-grid">
-                      <div class="field-full">
-                        <label for="arrivalMode">¿Por qué medio llegarán a Cusco?</label>
-                        <select id="arrivalMode" required>
-                          <option value="">Selecciona una opción</option>
-                          <option value="aereo">Vía aérea</option>
-                          <option value="terrestre">Vía terrestre</option>
-                          <option value="mas-adelante">Ingresaré los datos de llegada más adelante</option>
-                          <option value="mycuscotrip">My Cusco Trip se encarga de la operación de mi vuelo</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div id="flightBox" class="conditional-box">
-                      <div class="field-grid three">
-                        <div class="field">
-                          <label for="arrivalFlightDate">Fecha de llegada</label>
-                          <input id="arrivalFlightDate" type="date" />
-                        </div>
-                        <div class="field">
-                          <label for="arrivalFlightTime">Hora de llegada</label>
-                          <input id="arrivalFlightTime" type="time" />
-                        </div>
-                        <div class="field">
-                          <label for="arrivalFlightNumber">Número de vuelo llegada</label>
-                          <input id="arrivalFlightNumber" type="text" placeholder="Ej. LA2045" />
-                        </div>
-                      </div>
-
-                      <div class="field-grid three" style="margin-top:16px;">
-                        <div class="field">
-                          <label for="departureFlightDate">Fecha de salida de Cusco</label>
-                          <input id="departureFlightDate" type="date" />
-                        </div>
-                        <div class="field">
-                          <label for="departureFlightTime">Hora de salida</label>
-                          <input id="departureFlightTime" type="time" />
-                        </div>
-                        <div class="field">
-                          <label for="departureFlightNumber">Número de vuelo salida</label>
-                          <input id="departureFlightNumber" type="text" placeholder="Ej. LA2050" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div id="landBox" class="conditional-box">
-                      <div class="field-grid three">
-                        <div class="field">
-                          <label for="landArrivalDate">Fecha de llegada</label>
-                          <input id="landArrivalDate" type="date" />
-                        </div>
-                        <div class="field">
-                          <label for="landArrivalTime">Hora aproximada</label>
-                          <input id="landArrivalTime" type="time" />
-                        </div>
-                        <div class="field">
-                          <label for="landCompany">Empresa / transporte</label>
-                          <input id="landCompany" type="text" placeholder="Ej. Cruz del Sur" />
-                        </div>
-                      </div>
-                      <div class="field-grid" style="margin-top:16px;">
-                        <div class="field">
-                          <label for="landDepartureDate">Fecha de salida de Cusco</label>
-                          <input id="landDepartureDate" type="date" />
-                        </div>
-                        <div class="field">
-                          <label for="landDepartureTime">Hora aproximada de salida</label>
-                          <input id="landDepartureTime" type="time" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div id="laterBox" class="conditional-box">
-                      <div class="field-grid">
-                        <div class="field">
-                          <label for="approxArrivalDate">Fecha aproximada de llegada</label>
-                          <input id="approxArrivalDate" type="date" />
-                        </div>
-                        <div class="field">
-                          <label for="approxDepartureDate">Fecha aproximada de salida</label>
-                          <input id="approxDepartureDate" type="date" />
-                        </div>
-                      </div>
-                      <p class="help-text">Tu asesor de My Cusco Trip podrá completar o actualizar esta información después.</p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="form-step" data-step="3">
-                <div class="form-section">
-                  <div class="form-section-head">
-                    <h3>Contacto de emergencia</h3>
-                    <small>Información importante</small>
-                  </div>
-                  <div class="form-section-body">
-                    <div class="field-grid">
-                      <div class="field">
-                        <label for="emergencyName">Nombre completo</label>
-                        <input id="emergencyName" type="text" required />
-                      </div>
-                      <div class="field">
-                        <label for="emergencyRelation">Parentesco o relación</label>
-                        <input id="emergencyRelation" type="text" placeholder="Ej. Madre, esposo, amiga" required />
-                      </div>
-                      <div class="field">
-                        <label for="emergencyPhone">Celular de emergencia</label>
-                        <input id="emergencyPhone" type="tel" placeholder="Incluye código de país" required />
-                      </div>
-                      <div class="field">
-                        <label for="emergencyEmail">Correo de emergencia opcional</label>
-                        <input id="emergencyEmail" type="email" />
-                      </div>
-                      <div class="field-full">
-                        <label for="additionalNotes">Comentarios adicionales opcionales</label>
-                        <textarea id="additionalNotes" placeholder="Alergias, restricciones alimentarias, observaciones médicas relevantes o indicaciones para coordinación."></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="form-step" data-step="4">
-                <div class="form-section">
-                  <div class="form-section-head">
-                    <h3>Revisión final</h3>
-                    <small>Antes de enviar</small>
-                  </div>
-                  <div class="form-section-body">
-                    <div id="reviewBox" class="review-box"></div>
-                    <p class="help-text">
+<p class="help-text">El pasajero 1 será considerado titular de coordinación del grupo.</p>
+</div>
+</div>
+</section>
+<section class="form-step" data-step="2">
+<div class="form-section">
+<div class="form-section-head">
+<h3>Medio de llegada a Cusco</h3>
+<small>Itinerario de viaje</small>
+</div>
+<div class="form-section-body">
+<div class="field-grid">
+<div class="field-full">
+<label for="arrivalMode">¿Por qué medio llegarán a Cusco?</label>
+<select id="arrivalMode" required="">
+<option value="">Selecciona una opción</option>
+<option value="aereo">Vía aérea</option>
+<option value="terrestre">Vía terrestre</option>
+<option value="mas-adelante">Ingresaré los datos de llegada más adelante</option>
+<option value="mycuscotrip">My Cusco Trip se encarga de la operación de mi vuelo</option>
+</select>
+</div>
+</div>
+<div class="conditional-box" id="flightBox">
+<div class="field-grid three">
+<div class="field">
+<label for="arrivalFlightDate">Fecha de llegada</label>
+<input id="arrivalFlightDate" type="date"/>
+</div>
+<div class="field">
+<label for="arrivalFlightTime">Hora de llegada</label>
+<input id="arrivalFlightTime" type="time"/>
+</div>
+<div class="field">
+<label for="arrivalFlightNumber">Número de vuelo llegada</label>
+<input id="arrivalFlightNumber" placeholder="Ej. LA2045" type="text"/>
+</div>
+</div>
+<div class="field-grid three" style="margin-top:16px;">
+<div class="field">
+<label for="departureFlightDate">Fecha de salida de Cusco</label>
+<input id="departureFlightDate" type="date"/>
+</div>
+<div class="field">
+<label for="departureFlightTime">Hora de salida</label>
+<input id="departureFlightTime" type="time"/>
+</div>
+<div class="field">
+<label for="departureFlightNumber">Número de vuelo salida</label>
+<input id="departureFlightNumber" placeholder="Ej. LA2050" type="text"/>
+</div>
+</div>
+</div>
+<div class="conditional-box" id="landBox">
+<div class="field-grid three">
+<div class="field">
+<label for="landArrivalDate">Fecha de llegada</label>
+<input id="landArrivalDate" type="date"/>
+</div>
+<div class="field">
+<label for="landArrivalTime">Hora aproximada</label>
+<input id="landArrivalTime" type="time"/>
+</div>
+<div class="field">
+<label for="landCompany">Empresa / transporte</label>
+<input id="landCompany" placeholder="Ej. Cruz del Sur" type="text"/>
+</div>
+</div>
+<div class="field-grid" style="margin-top:16px;">
+<div class="field">
+<label for="landDepartureDate">Fecha de salida de Cusco</label>
+<input id="landDepartureDate" type="date"/>
+</div>
+<div class="field">
+<label for="landDepartureTime">Hora aproximada de salida</label>
+<input id="landDepartureTime" type="time"/>
+</div>
+</div>
+</div>
+<div class="conditional-box" id="laterBox">
+<div class="field-grid">
+<div class="field">
+<label for="approxArrivalDate">Fecha aproximada de llegada</label>
+<input id="approxArrivalDate" type="date"/>
+</div>
+<div class="field">
+<label for="approxDepartureDate">Fecha aproximada de salida</label>
+<input id="approxDepartureDate" type="date"/>
+</div>
+</div>
+<p class="help-text">Tu asesor de My Cusco Trip podrá completar o actualizar esta información después.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="form-step" data-step="3">
+<div class="form-section">
+<div class="form-section-head">
+<h3>Contacto de emergencia</h3>
+<small>Información importante</small>
+</div>
+<div class="form-section-body">
+<div class="field-grid">
+<div class="field">
+<label for="emergencyName">Nombre completo</label>
+<input id="emergencyName" required="" type="text"/>
+</div>
+<div class="field">
+<label for="emergencyRelation">Parentesco o relación</label>
+<input id="emergencyRelation" placeholder="Ej. Madre, esposo, amiga" required="" type="text"/>
+</div>
+<div class="field">
+<label for="emergencyPhone">Celular de emergencia</label>
+<input id="emergencyPhone" placeholder="Incluye código de país" required="" type="tel"/>
+</div>
+<div class="field">
+<label for="emergencyEmail">Correo de emergencia opcional</label>
+<input id="emergencyEmail" type="email"/>
+</div>
+<div class="field-full">
+<label for="additionalNotes">Comentarios adicionales opcionales</label>
+<textarea id="additionalNotes" placeholder="Alergias, restricciones alimentarias, observaciones médicas relevantes o indicaciones para coordinación."></textarea>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="form-step" data-step="4">
+<div class="form-section">
+<div class="form-section-head">
+<h3>Revisión final</h3>
+<small>Antes de enviar</small>
+</div>
+<div class="form-section-body">
+<div class="review-box" id="reviewBox"></div>
+<p class="help-text">
                       Al enviar, la información se guardará directamente en tu hoja de Google Sheets mediante Google Apps Script.
                     </p>
-                  </div>
-                </div>
-              </section>
-
-              <div class="actions-row" id="formActions" style="display:none;">
-                <button type="button" class="btn-secondary" id="prevStepBtn">Volver</button>
-                <div class="actions-right">
-                  <button type="button" class="btn-primary" id="nextStepBtn">Continuar</button>
-                  <button type="submit" class="btn-primary" id="submitFormBtn" style="display:none;">Enviar registro</button>
-                </div>
-              </div>
-            </form>
-
-            <section id="successCard" class="success-card">
-              <i class="fa-solid fa-circle-check"></i>
-              <h3>Registro preparado</h3>
-              <p>
+</div>
+</div>
+</section>
+<div class="actions-row" id="formActions" style="display:none;">
+<button class="btn-secondary" id="prevStepBtn" type="button">Volver</button>
+<div class="actions-right">
+<button class="btn-primary" id="nextStepBtn" type="button">Continuar</button>
+<button class="btn-primary" id="submitFormBtn" style="display:none;" type="submit">Enviar registro</button>
+</div>
+</div>
+</form>
+<section class="success-card" id="successCard">
+<i class="fa-solid fa-circle-check"></i>
+<h3>Registro preparado</h3>
+<p>
                 La información fue enviada correctamente y quedó registrada en la hoja de Google Sheets de My Cusco Trip.
               </p>
-              <button type="button" class="btn-primary" id="newRegisterBtn">Registrar otra reserva</button>
-            </section>
-          </div>
-        </section>
-      </div>
-    </div>
-  </main>
-
-  <div id="footer-container"></div>
-
-  <script>
+<button class="btn-primary" id="newRegisterBtn" type="button">Registrar otra reserva</button>
+</section>
+</div>
+</section>
+</div>
+</div>
+</main>
+<div id="footer-container"></div>
+<script>
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
 
@@ -1350,10 +1326,9 @@
     renderPassengers();
     initializeSharedComponents();
   </script>
-
-  <script src="./assets/js/config/tracking-config.js"></script>
-  <script src="./assets/js/components/tracking.js"></script>
-  <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/lib/utils.js"></script>
+<script src="./assets/js/config/tracking-config.js"></script>
+<script src="./assets/js/components/tracking.js"></script>
+<script src="./assets/js/components/header.js"></script>
+<script src="./assets/js/lib/utils.js"></script>
 </body>
 </html>

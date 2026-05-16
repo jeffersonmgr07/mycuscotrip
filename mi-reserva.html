@@ -1,20 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Reserva | MyCuscoTrip</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  <link rel="stylesheet" href="./assets/css/header.css">
-  <link rel="stylesheet" href="./assets/css/footer.css">
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mi Reserva | MyCuscoTrip</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="./assets/css/main.css" rel="stylesheet"/>
+<link href="./assets/css/components.css" rel="stylesheet"/>
+<link href="./assets/css/header.css" rel="stylesheet"/>
+<link href="./assets/css/footer.css" rel="stylesheet"/>
+<link href="./assets/css/responsive.css" rel="stylesheet"/>
+<style>
     .reserva-hero {
       position: relative;
       min-height: 100vh;
@@ -239,80 +237,56 @@
     }
   </style>
 </head>
-
 <body>
-  <div id="header-container"></div>
-
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
-
-  <section class="reserva-hero">
-    <div class="container">
-      <div class="reserva-grid">
-        <div class="reserva-copy">
-          <span class="eyebrow">Mi Reserva</span>
-          <h1>Consulta tu <span>viaje</span> en segundos</h1>
-          <p>
+<div id="header-container"></div>
+<a aria-label="WhatsApp" class="wa-float" href="https://wa.me/51900608980" rel="noopener" target="_blank">
+<img alt="WhatsApp" src="./assets/img/logos/LogoWhatsapp.png"/>
+</a>
+<section class="reserva-hero">
+<div class="container">
+<div class="reserva-grid">
+<div class="reserva-copy">
+<span class="eyebrow">Mi Reserva</span>
+<h1>Consulta tu <span>viaje</span> en segundos</h1>
+<p>
             Ingresa tu código de reserva y tu apellido para revisar el detalle
             de tu itinerario, tarifas, viajeros y enlace de pago.
           </p>
-        </div>
-
-        <div class="reserva-panel">
-          <div class="reserva-image" aria-label="Machu Picchu"></div>
-
-          <div class="reserva-form-wrap">
-            <div class="reserva-form-box">
-              <div class="label-top">Acceso a reserva</div>
-              <h2>Buscar reserva</h2>
-              <p class="intro">
+</div>
+<div class="reserva-panel">
+<div aria-label="Machu Picchu" class="reserva-image"></div>
+<div class="reserva-form-wrap">
+<div class="reserva-form-box">
+<div class="label-top">Acceso a reserva</div>
+<h2>Buscar reserva</h2>
+<p class="intro">
                 Completa los datos registrados en tu compra para ver toda la información de tu reserva.
               </p>
-
-              <form id="reservaForm">
-                <div class="reserva-field">
-                  <label for="codigo">Código de reserva</label>
-                  <input
-                    type="text"
-                    id="codigo"
-                    name="codigo"
-                    placeholder="Ej. CUS12345"
-                    required
-                  />
-                </div>
-
-                <div class="reserva-field">
-                  <label for="apellido">Apellido</label>
-                  <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    placeholder="Ej. Garcia"
-                    required
-                  />
-                </div>
-
-                <div id="errorMessage" class="reserva-error"></div>
-
-                <button type="submit" class="reserva-btn" id="buscarBtn">
+<form id="reservaForm">
+<div class="reserva-field">
+<label for="codigo">Código de reserva</label>
+<input id="codigo" name="codigo" placeholder="Ej. CUS12345" required="" type="text"/>
+</div>
+<div class="reserva-field">
+<label for="apellido">Apellido</label>
+<input id="apellido" name="apellido" placeholder="Ej. Garcia" required="" type="text"/>
+</div>
+<div class="reserva-error" id="errorMessage"></div>
+<button class="reserva-btn" id="buscarBtn" type="submit">
                   Buscar reserva
                 </button>
-
-                <p class="reserva-help">
+<p class="reserva-help">
                   Validamos los datos comparándolos con el archivo de reservas cargado en tu sitio.
                 </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div id="footer-container"></div>
-
-  <script>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div id="footer-container"></div>
+<script>
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
 
@@ -427,13 +401,11 @@
       initializeApp();
     }
   </script>
-
-  <script src="./assets/js/config/tracking-config.js"></script>
-  <script src="./assets/js/components/tracking.js"></script>
-  <script src="./assets/js/components/header.js"></script>
-  <script src="./assets/js/lib/utils.js"></script>
-
-  <script>
+<script src="./assets/js/config/tracking-config.js"></script>
+<script src="./assets/js/components/tracking.js"></script>
+<script src="./assets/js/components/header.js"></script>
+<script src="./assets/js/lib/utils.js"></script>
+<script>
     const form = document.getElementById("reservaForm");
     const errorMessage = document.getElementById("errorMessage");
     const buscarBtn = document.getElementById("buscarBtn");

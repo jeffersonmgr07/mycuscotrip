@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reserva Verificada | MyCuscoTrip</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet"/>
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reserva Verificada | MyCuscoTrip</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
     :root {
       --brand-dark: #253b2f;
       --brand-gold: #b08a2d;
@@ -162,50 +162,44 @@
   </style>
 </head>
 <body>
-  <main class="card">
-    <section class="top">
-      <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
-      <div class="divider"></div>
-      <h1>Reserva Verificada</h1>
-      <p>Validación oficial de MyCuscoTrip</p>
-    </section>
-
-    <section class="body">
-      <div class="ok-box">
+<main class="card">
+<section class="top">
+<img alt="MyCuscoTrip" src="./assets/img/reserva/logo-color.png"/>
+<div class="divider"></div>
+<h1>Reserva Verificada</h1>
+<p>Validación oficial de MyCuscoTrip</p>
+</section>
+<section class="body">
+<div class="ok-box">
         Esta reserva fue validada correctamente.
       </div>
-
-      <div class="grid">
-        <div class="field">
-          <span class="label">Código de reserva</span>
-          <div class="value" id="codigo">-</div>
-        </div>
-
-        <div class="field">
-          <span class="label">Fecha de viaje</span>
-          <div class="value" id="fecha">-</div>
-        </div>
-
-        <div class="field full">
-          <span class="label">Titular de la reserva</span>
-          <div class="value" id="titular">-</div>
-        </div>
-      </div>
-
-      <div class="footer-note">
+<div class="grid">
+<div class="field">
+<span class="label">Código de reserva</span>
+<div class="value" id="codigo">-</div>
+</div>
+<div class="field">
+<span class="label">Fecha de viaje</span>
+<div class="value" id="fecha">-</div>
+</div>
+<div class="field full">
+<span class="label">Titular de la reserva</span>
+<div class="value" id="titular">-</div>
+</div>
+</div>
+<div class="footer-note">
         Si necesita asistencia adicional, comuníquese con MyCuscoTrip por nuestros canales oficiales.
       </div>
-    </section>
-  </main>
-
-  <script>
+</section>
+</main>
+<script>
     const params = new URLSearchParams(window.location.search);
 
     document.getElementById("codigo").textContent = params.get("codigo") || "-";
     document.getElementById("titular").textContent = params.get("titular") || "-";
     document.getElementById("fecha").textContent = params.get("fecha") || "-";
   </script>
-  <script src="./assets/js/config/tracking-config.js"></script>
-  <script src="./assets/js/components/tracking.js"></script>
+<script src="./assets/js/config/tracking-config.js"></script>
+<script src="./assets/js/components/tracking.js"></script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cotizador de vuelos</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cotizador de vuelos</title>
+<style>
     :root {
       --bg: #f3f3f3;
       --card: #ffffff;
@@ -635,156 +636,132 @@
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="title">Cotizador de vuelos</div>
-
-    <section class="search-box">
-      <div class="trip-switches">
-        <button class="trip-btn active" data-trip="oneway" type="button">One way</button>
-        <button class="trip-btn" data-trip="roundtrip" type="button">Round trip</button>
-      </div>
-
-      <form id="flightForm" class="search-grid">
-        <div class="field">
-          <label for="origin">Origen</label>
-          <input id="origin" type="text" value="Lima" />
-        </div>
-
-        <div class="field">
-          <label for="destination">Destino</label>
-          <input id="destination" type="text" value="Arequipa" />
-        </div>
-
-        <div class="field">
-          <label for="departureDate">Fecha ida</label>
-          <input id="departureDate" type="date" value="2026-04-02" />
-        </div>
-
-        <div class="field">
-          <label for="departureTime">Hora salida ida</label>
-          <input id="departureTime" type="time" value="06:10" />
-        </div>
-
-        <div class="field">
-          <label for="arrivalTime">Hora llegada ida</label>
-          <input id="arrivalTime" type="time" value="07:42" />
-        </div>
-
-        <div class="field" id="returnDateField" style="display:none;">
-          <label for="returnDate">Fecha vuelta</label>
-          <input id="returnDate" type="date" value="2026-04-05" />
-        </div>
-
-        <div class="field" id="returnDepartureTimeField" style="display:none;">
-          <label for="returnDepartureTime">Hora salida vuelta</label>
-          <input id="returnDepartureTime" type="time" value="09:45" />
-        </div>
-
-        <div class="field" id="returnArrivalTimeField" style="display:none;">
-          <label for="returnArrivalTime">Hora llegada vuelta</label>
-          <input id="returnArrivalTime" type="time" value="11:25" />
-        </div>
-
-        <div class="field">
-          <label for="airline">Aerolínea</label>
-          <select id="airline">
-            <option value="jetsmart">JetSMART</option>
-            <option value="latam">LATAM</option>
-            <option value="sky">SKY</option>
-            <option value="custom">Otra</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="price">Precio final total (USD)</label>
-          <input id="price" type="number" value="280.26" step="0.01" />
-        </div>
-
-        <div class="field">
-          <label for="passengers">Pasajeros</label>
-          <select id="passengers">
-            <option value="1">1 adulto</option>
-            <option value="2">2 adultos</option>
-            <option value="3">3 adultos</option>
-            <option value="4">4 adultos</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="bags">Objeto personal</label>
-          <select id="bags">
-            <option value="1">1</option>
-            <option value="0">0</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="carryon">Equipaje cabina</label>
-          <select id="carryon">
-            <option value="0">0</option>
-            <option value="1">1</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="checked">Equipaje bodega</label>
-          <select id="checked">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="cabinClass">Cabina</label>
-          <select id="cabinClass">
-            <option value="Economy">Economy</option>
-            <option value="Premium Economy">Premium Economy</option>
-            <option value="Business">Business</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="insurancePrice">Seguro adicional (USD)</label>
-          <input id="insurancePrice" type="number" value="0" step="0.01" />
-        </div>
-
-        <div class="field">
-          <label for="flexiblePrice">Vuelo flexible (USD)</label>
-          <input id="flexiblePrice" type="number" value="0" step="0.01" />
-        </div>
-
-        <div class="field">
-          <label for="cardFeePercent">Cargo tarjeta (%)</label>
-          <input id="cardFeePercent" type="number" value="5" step="0.01" />
-        </div>
-
-        <div class="field">
-          <label>Seguro de viaje</label>
-          <label class="field-checkbox">
-            <input id="includeInsurance" type="checkbox" />
-            <span>Agregar seguro</span>
-          </label>
-        </div>
-
-        <div class="field">
-          <label>Vuelo flexible</label>
-          <label class="field-checkbox">
-            <input id="includeFlexible" type="checkbox" />
-            <span>Agregar opción flexible</span>
-          </label>
-        </div>
-
-        <div class="search-action">
-          <button type="submit" class="btn-primary">Generar cotización</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="results" id="results"></section>
-  </div>
-
-  <script>
+<div class="page">
+<div class="title">Cotizador de vuelos</div>
+<section class="search-box">
+<div class="trip-switches">
+<button class="trip-btn active" data-trip="oneway" type="button">One way</button>
+<button class="trip-btn" data-trip="roundtrip" type="button">Round trip</button>
+</div>
+<form class="search-grid" id="flightForm">
+<div class="field">
+<label for="origin">Origen</label>
+<input id="origin" type="text" value="Lima"/>
+</div>
+<div class="field">
+<label for="destination">Destino</label>
+<input id="destination" type="text" value="Arequipa"/>
+</div>
+<div class="field">
+<label for="departureDate">Fecha ida</label>
+<input id="departureDate" type="date" value="2026-04-02"/>
+</div>
+<div class="field">
+<label for="departureTime">Hora salida ida</label>
+<input id="departureTime" type="time" value="06:10"/>
+</div>
+<div class="field">
+<label for="arrivalTime">Hora llegada ida</label>
+<input id="arrivalTime" type="time" value="07:42"/>
+</div>
+<div class="field" id="returnDateField" style="display:none;">
+<label for="returnDate">Fecha vuelta</label>
+<input id="returnDate" type="date" value="2026-04-05"/>
+</div>
+<div class="field" id="returnDepartureTimeField" style="display:none;">
+<label for="returnDepartureTime">Hora salida vuelta</label>
+<input id="returnDepartureTime" type="time" value="09:45"/>
+</div>
+<div class="field" id="returnArrivalTimeField" style="display:none;">
+<label for="returnArrivalTime">Hora llegada vuelta</label>
+<input id="returnArrivalTime" type="time" value="11:25"/>
+</div>
+<div class="field">
+<label for="airline">Aerolínea</label>
+<select id="airline">
+<option value="jetsmart">JetSMART</option>
+<option value="latam">LATAM</option>
+<option value="sky">SKY</option>
+<option value="custom">Otra</option>
+</select>
+</div>
+<div class="field">
+<label for="price">Precio final total (USD)</label>
+<input id="price" step="0.01" type="number" value="280.26"/>
+</div>
+<div class="field">
+<label for="passengers">Pasajeros</label>
+<select id="passengers">
+<option value="1">1 adulto</option>
+<option value="2">2 adultos</option>
+<option value="3">3 adultos</option>
+<option value="4">4 adultos</option>
+</select>
+</div>
+<div class="field">
+<label for="bags">Objeto personal</label>
+<select id="bags">
+<option value="1">1</option>
+<option value="0">0</option>
+</select>
+</div>
+<div class="field">
+<label for="carryon">Equipaje cabina</label>
+<select id="carryon">
+<option value="0">0</option>
+<option value="1">1</option>
+</select>
+</div>
+<div class="field">
+<label for="checked">Equipaje bodega</label>
+<select id="checked">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+</select>
+</div>
+<div class="field">
+<label for="cabinClass">Cabina</label>
+<select id="cabinClass">
+<option value="Economy">Economy</option>
+<option value="Premium Economy">Premium Economy</option>
+<option value="Business">Business</option>
+</select>
+</div>
+<div class="field">
+<label for="insurancePrice">Seguro adicional (USD)</label>
+<input id="insurancePrice" step="0.01" type="number" value="0"/>
+</div>
+<div class="field">
+<label for="flexiblePrice">Vuelo flexible (USD)</label>
+<input id="flexiblePrice" step="0.01" type="number" value="0"/>
+</div>
+<div class="field">
+<label for="cardFeePercent">Cargo tarjeta (%)</label>
+<input id="cardFeePercent" step="0.01" type="number" value="5"/>
+</div>
+<div class="field">
+<label>Seguro de viaje</label>
+<label class="field-checkbox">
+<input id="includeInsurance" type="checkbox"/>
+<span>Agregar seguro</span>
+</label>
+</div>
+<div class="field">
+<label>Vuelo flexible</label>
+<label class="field-checkbox">
+<input id="includeFlexible" type="checkbox"/>
+<span>Agregar opción flexible</span>
+</label>
+</div>
+<div class="search-action">
+<button class="btn-primary" type="submit">Generar cotización</button>
+</div>
+</form>
+</section>
+<section class="results" id="results"></section>
+</div>
+<script>
     const airlineData = {
       jetsmart: {
         name: "JetSMART",
@@ -1284,7 +1261,7 @@ Total tarjeta: ${formatMoney(totals.cardTotal)}`
 
     renderResults(getFormValues());
   </script>
-  <script src="./assets/js/config/tracking-config.js"></script>
-  <script src="./assets/js/components/tracking.js"></script>
+<script src="./assets/js/config/tracking-config.js"></script>
+<script src="./assets/js/components/tracking.js"></script>
 </body>
 </html>
