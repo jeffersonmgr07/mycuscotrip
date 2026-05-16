@@ -337,21 +337,44 @@ class MyCuscoTripProductPage {
       return { destinations: {} };
     }
   }
+  formatGuideLanguages(languages) {
+    const values = Array.isArray(languages) ? languages : [];
+    const normalized = values.map((item) => String(item || "").trim()).filter(Boolean);
+    const hasSpanish = normalized.some((item) => /espa[nñ]ol|spanish/i.test(item));
+    const hasEnglish = normalized.some((item) => /ingl[eé]s|english/i.test(item));
+    const hasOther = normalized.some((item) => /otro|other|request|consult/i.test(item));
+
+    const parts = [];
+    if (hasSpanish && hasEnglish) {
+      parts.push(this.t("product.guideSpanishEnglish", "Spanish and English"));
+    } else {
+      normalized.forEach((item) => {
+        let value = item
+          .replace(/espa[nñ]ol/gi, "Spanish")
+          .replace(/ingl[eé]s/gi, "English")
+          .replace(/otros idiomas a consultar/gi, this.t("product.otherLanguagesOnRequest", "Other languages available upon request"));
+        if (!/otro|other|request|consult/i.test(value)) parts.push(value);
+      });
+    }
+    if (hasOther) parts.push(this.t("product.otherLanguagesOnRequest", "Other languages available upon request"));
+    return [...new Set(parts)].join("; ") || this.t("product.toConfirm", "To be confirmed");
+  }
+
   renderProduct(product) {
-    const title = product?.title || "Experiencia";
+    const title = product?.title || this.t("cards.experience", "Experience");
     const description =
       product?.description ||
       product?.shortDescription ||
       this.t("product.moreDetailsSoon", "Pronto agregaremos más detalles de esta experiencia.");
 
-    const badge = product?.badge || "Destacado";
+    const badge = product?.badge || this.t("cards.experience", "Experience");
     const basePrice = product?.basePricing?.adult || product?.price?.amount || 0;
     const currency = product?.currency || product?.price?.currency || "USD";
     const location = product?.location || this.t("product.defaultLocation", "Cusco, Perú");
-    const duration = product?.duration?.label || product?.typeLabel || this.t("product.durationPending", "Duración por confirmar");
+    const duration = product?.duration?.label || product?.typeLabel || this.t("product.durationPending", "Duration to be confirmed");
     const languages = product?.duration?.guideLanguages?.length
-      ? product.duration.guideLanguages.join(", ")
-      : this.t("product.toConfirm", "Por confirmar");
+      ? this.formatGuideLanguages(product.duration.guideLanguages)
+      : this.t("product.toConfirm", "To be confirmed");
     const capacity = product?.capacity || product?.duration?.maxGroupSize || this.t("product.toConfirm", "Por confirmar");
 
     document.title = `${title} | My Cusco Trip`;
@@ -609,7 +632,7 @@ class MyCuscoTripProductPage {
       const dayNumber = Number(item?.day || index + 1);
       const dayLabel = `${this.t("product.day", "Día")} ${dayNumber}`;
       const dateLabel = this.getItineraryDateLabel(dayNumber);
-      const title = item.title || `Paso ${index + 1}`;
+      const title = item.title || `${this.t("product.step", "Step")} ${index + 1}`;
       const images = this.shouldShowTourItineraryImages()
         ? this.collectItineraryItemImages(item).slice(0, 1)
         : [];
@@ -676,7 +699,7 @@ class MyCuscoTripProductPage {
 
     target.innerHTML = items.map((item) => `
       <details class="experience-faq-item">
-        <summary>${this.escapeHtml(item.q || item.question || "Pregunta")}</summary>
+        <summary>${this.escapeHtml(item.q || item.question || this.t("product.question", "Question"))}</summary>
         <p>${this.escapeHtml(item.a || item.answer || "")}</p>
       </details>
     `).join("");
@@ -704,7 +727,7 @@ class MyCuscoTripProductPage {
           <input type="checkbox" id="extra-${this.escapeHtml(extra.code)}" data-extra-code="${this.escapeHtml(extra.code)}" />
           <div class="booking-extra-text">
             <strong>${this.escapeHtml(extra.label)}</strong>
-            <small>${extra.perPerson ? "Precio por persona" : "Precio por reserva"} · ${extraPrice}</small>
+            <small>${extra.perPerson ? this.t("product.pricePerPerson", "Price per person") : this.t("product.pricePerBooking", "Price per booking")} · ${extraPrice}</small>
           </div>
         </label>
       `;
@@ -839,7 +862,7 @@ class MyCuscoTripProductPage {
     const paypalButton = document.getElementById("paypalButton");
 
     if (packageOptionsTarget) packageOptionsTarget.innerHTML = "";
-    if (paypalButton) paypalButton.textContent = this.t("product.requestQuote", "Solicitar cotización");
+    if (paypalButton) paypalButton.textContent = this.t("product.requestQuote", "Request a quote");
 
     if (!itineraryTarget) return;
 
@@ -856,8 +879,8 @@ class MyCuscoTripProductPage {
 
     itineraryTarget.innerHTML = `
       <div class="experience-itinerary-item">
-        <h3>Ruta sugerida</h3>
-        <p>${this.escapeHtml(product.shortDescription || product.description || this.t("product.multidestinationPackage", "Paquete multidestino preparado para cotización personalizada."))}</p>
+        <h3>${this.t("product.routeSuggested", "Suggested route")}</h3>
+        <p>${this.escapeHtml(product.shortDescription || product.description || this.t("product.multidestinationPackage", "Multi-destination package prepared for a personalized quote."))}</p>
       </div>
 
       <div class="experience-itinerary-item">
@@ -1369,11 +1392,7 @@ class MyCuscoTripProductPage {
       const selection = this.getSelectedAccommodationForDestination(item.destination);
       const additionalPerPerson = this.calculateAccommodationAdditionalPerPerson(item.destination);
       const destinationLabel = this.getDestinationLabel(item.destination);
-      const cardTitle = destinationLabel.toLowerCase().includes("cusco")
-        ? "Hotel en Cusco"
-        : destinationLabel.toLowerCase().includes("aguas")
-          ? "Hotel en Aguas Calientes"
-          : `Hotel en ${destinationLabel}`;
+      const cardTitle = this.t("product.hotelInDestination", "Hotel in {destination}", { destination: destinationLabel });
       const hasHotel = Boolean(selection?.hotel);
       const isNoHotel = selection?.hotel?.hotelCode === "no-hotel";
       const image = selection?.hotel?.images?.cover || selection?.hotel?.images?.gallery?.[0] || "";
@@ -1388,24 +1407,24 @@ class MyCuscoTripProductPage {
 
           <div class="booking-accommodation-card__header">
             <strong>${this.escapeHtml(cardTitle)}</strong>
-            <small>${item.nights} noche${item.nights > 1 ? "s" : ""}</small>
+            <small>${item.nights} ${this.t(item.nights === 1 ? "product.night" : "product.nights", item.nights === 1 ? "night" : "nights")}</small>
           </div>
 
           <div class="booking-accommodation-card__body">
             <p class="booking-accommodation-card__selected">
               ${selection?.hotel
                 ? `${this.escapeHtml(selection.hotel.hotelName)}${selection.hotel.stars > 0 ? ` · ${this.renderStars(selection.hotel.stars)}` : ""}`
-                : "Sin hotel seleccionado"}
+                : this.t("product.noHotelSelected", "No hotel selected")}
             </p>
 
             <p class="booking-accommodation-card__selected">
               ${selection?.combination
                 ? this.escapeHtml(selection.combination.label)
-                : this.t("product.accommodationPending", "Acomodación por confirmar")}
+                : this.t("product.accommodationPending", "Accommodation to be confirmed")}
             </p>
 
             <p class="booking-accommodation-card__price">
-              + ${this.product.currency || "USD"} ${this.formatMoney(additionalPerPerson)} por persona
+              + ${this.product.currency || "USD"} ${this.formatMoney(additionalPerPerson)} ${this.t("product.perPerson", "per person")}
             </p>
 
             <button
@@ -1413,7 +1432,7 @@ class MyCuscoTripProductPage {
               class="btn booking-secondary-btn open-hotel-modal-btn"
               data-destination="${this.escapeHtml(item.destination)}"
             >
-              ${selection?.hotel ? "Cambiar hotel" : "Elegir hotel"}
+              ${selection?.hotel ? this.t("product.changeHotel", "Change hotel") : this.t("product.chooseHotel", "Choose hotel")}
             </button>
           </div>
         </div>
@@ -1463,22 +1482,22 @@ class MyCuscoTripProductPage {
     this.activeHotelModalDestination = destination;
 
     if (cancelBtn) {
-      cancelBtn.textContent = "Seleccionar Hotel y acomodación";
+      cancelBtn.textContent = this.t("product.selectHotelRoom", "Select hotel and room");
     }
 
     const destinationLabel = this.getDestinationLabel(destination);
     const summaryItem = this.getAccommodationSummary(this.product).find((item) => item.destination === destination);
     const nights = Number(summaryItem?.nights || 0);
 
-    title.textContent = `Elige tu hotel en ${destinationLabel}`;
-    subtitle.textContent = `Compara hoteles, fotos y opciones de acomodación para ${nights} noche${nights !== 1 ? "s" : ""}.`;
+    title.textContent = this.t("product.chooseHotelInDestination", "Choose your hotel in {destination}", { destination: destinationLabel });
+    subtitle.textContent = this.t("product.compareHotelsForNights", "Compare hotels, photos and room options for {nights} {nightLabel}.", { nights, nightLabel: this.t(nights === 1 ? "product.night" : "product.nights", nights === 1 ? "night" : "nights") });
 
     const hotels = this.getHotelsByDestination(destination);
     const passengers = this.getTotalPassengers();
 
     const noHotelOption = {
       hotelCode: "no-hotel",
-      hotelName: "Sin alojamiento",
+      hotelName: this.t("product.noAccommodation", "No accommodation"),
       stars: 0,
       location: destinationLabel,
       address: "",
@@ -1494,7 +1513,7 @@ class MyCuscoTripProductPage {
       rooms: [
         {
           roomType: "no-hotel",
-          label: "Seleccionar opción sin alojamiento",
+          label: this.t("product.noHotelOption", "Choose the option without accommodation"),
           bedType: "",
           capacity: Math.max(passengers, 1),
           pricePerNight: 0,
@@ -1550,7 +1569,7 @@ class MyCuscoTripProductPage {
 
             <div class="hotel-option-card__badge">
               ${combinations.length
-                ? `+ ${this.product.currency || "USD"} ${this.formatMoney(combinations[0].additionalPerPerson)} por persona`
+                ? `+ ${this.product.currency || "USD"} ${this.formatMoney(combinations[0].additionalPerPerson)} ${this.t("product.perPerson", "per person")}`
                 : this.t("product.noValidOptions", "Sin opciones válidas")}
             </div>
           </div>
@@ -1571,7 +1590,7 @@ class MyCuscoTripProductPage {
             }
 
             <div class="hotel-option-card__body ${hotel.hotelCode === "no-hotel" ? "hotel-option-card__body--no-hotel" : ""}">
-              ${hotel.hotelCode === "no-hotel" ? "" : `<label>Selecciona tipo habitación</label>`}
+              ${hotel.hotelCode === "no-hotel" ? "" : `<label>${this.t("product.selectRoomType", "Select room type")}</label>`}
 
               <div class="hotel-option-card__options">
                 ${combinations.length
@@ -1591,12 +1610,12 @@ class MyCuscoTripProductPage {
                           ${
                             hotel.hotelCode === "no-hotel"
                               ? this.t("product.clientChoosesAccommodation", "El cliente seleccionará su propio alojamiento.")
-                              : `${combo.totalRooms} hab. | Total + ${this.product.currency || "USD"} ${this.formatMoney(combo.additionalPerPerson)} por persona`
+                              : `${combo.totalRooms} ${this.t(combo.totalRooms === 1 ? "product.room" : "product.rooms", combo.totalRooms === 1 ? "room" : "rooms")} | ${this.t("product.total", "Total")} + ${this.product.currency || "USD"} ${this.formatMoney(combo.additionalPerPerson)} ${this.t("product.perPerson", "per person")}`
                           }
                         </span>
                       </button>
                     `).join("")
-                  : `<p>No hay acomodaciones válidas para ${passengers} pasajero${passengers !== 1 ? "s" : ""}.</p>`
+                  : `<p>${this.t("product.noValidAccommodationForPassengers", "No valid room options for {count} {travelerLabel}.", { count: passengers, travelerLabel: this.t(passengers === 1 ? "product.traveler" : "product.travelers", passengers === 1 ? "traveler" : "travelers") })}</p>`
                 }
               </div>
             </div>
@@ -1668,7 +1687,7 @@ class MyCuscoTripProductPage {
     if (hotelCode === "no-hotel") {
       hotel = {
         hotelCode: "no-hotel",
-        hotelName: "Sin alojamiento",
+        hotelName: this.t("product.noAccommodation", "No accommodation"),
         stars: 0,
         location: this.getDestinationLabel(destination),
         address: "",
@@ -1684,7 +1703,7 @@ class MyCuscoTripProductPage {
         rooms: [
           {
             roomType: "no-hotel",
-            label: "Seleccionar opción sin alojamiento",
+            label: this.t("product.noHotelOption", "Choose the option without accommodation"),
             bedType: "",
             capacity: Math.max(this.getTotalPassengers(), 1),
             pricePerNight: 0,
@@ -1851,8 +1870,8 @@ class MyCuscoTripProductPage {
     const mobileTarget = document.getElementById("similarExperiencesMobile");
 
     if (!this.product || !Array.isArray(this.tours)) {
-      if (desktopTarget) desktopTarget.innerHTML = "<p>No hay experiencias similares disponibles por ahora.</p>";
-      if (mobileTarget) mobileTarget.innerHTML = "<p>No hay experiencias similares disponibles por ahora.</p>";
+      if (desktopTarget) desktopTarget.innerHTML = `<p>${this.t("product.noSimilarExperiences", "No similar experiences are available right now.")}</p>`;
+      if (mobileTarget) mobileTarget.innerHTML = `<p>${this.t("product.noSimilarExperiences", "No similar experiences are available right now.")}</p>`;
       return;
     }
 
@@ -1870,14 +1889,14 @@ class MyCuscoTripProductPage {
       .map((entry) => entry.item);
 
     const html = !similar.length
-      ? "<p>No hay experiencias similares disponibles por ahora.</p>"
+      ? `<p>${this.t("product.noSimilarExperiences", "No similar experiences are available right now.")}</p>`
       : similar.map((item) => `
         <article class="similar-card">
-          <img src="${this.resolveAssetPath(item?.images?.cover || item?.image || "assets/img/tours/machu-picchu-full-day/cover.jpg")}" alt="${this.escapeHtml(item?.title || "Experiencia")}" loading="lazy" />
+          <img src="${this.resolveAssetPath(item?.images?.cover || item?.image || "assets/img/tours/machu-picchu-full-day/cover.jpg")}" alt="${this.escapeHtml(item?.title || this.t("cards.experience", "Experience"))}" loading="lazy" />
           <div class="similar-card__content">
-            <h3>${this.escapeHtml(item?.title || "Experiencia")}</h3>
-            <p>${this.escapeHtml(item?.shortDescription || "Experiencia disponible.")}</p>
-            <a class="btn" href="${this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}`)}">Ver experiencia</a>
+            <h3>${this.escapeHtml(item?.title || this.t("cards.experience", "Experience"))}</h3>
+            <p>${this.escapeHtml(item?.shortDescription || this.t("product.experienceAvailable", "Experience available."))}</p>
+            <a class="btn" href="${this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}`)}">${this.t("cards.viewExperience", "View experience")}</a>
           </div>
         </article>
       `).join("");
@@ -1976,7 +1995,7 @@ class MyCuscoTripProductPage {
       discount = serviceTotal * (fullDiscountPercent / 100);
       payNow = serviceTotal - discount;
       payLater = 0;
-      infoText = `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`;
+      infoText = this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent });
     } else {
       const totalPassengers = this.getTotalPassengers();
       payNow = totalPassengers * partialPerPerson;
@@ -1986,7 +2005,7 @@ class MyCuscoTripProductPage {
 
       infoText =
         this.product.paymentOptions?.partialPaymentLabel ||
-        `Reserva con ${currency} ${this.formatMoney(partialPerPerson)} por persona y completa el saldo antes del viaje.`;
+        this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) });
     }
 
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
@@ -2176,7 +2195,7 @@ class MyCuscoTripProductPage {
       discount = serviceTotal * (fullDiscountPercent / 100);
       payNow = serviceTotal - discount;
       payLater = 0;
-      infoText = `Pagando el total ahora accedes a un descuento del ${fullDiscountPercent}%.`;
+      infoText = this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent });
     } else {
       const totalPassengers = this.getTotalPassengers();
       payNow = totalPassengers * partialPerPerson;
@@ -2186,7 +2205,7 @@ class MyCuscoTripProductPage {
 
       infoText =
         this.product.paymentOptions?.partialPaymentLabel ||
-        `Reserva con ${currency} ${this.formatMoney(partialPerPerson)} por persona y completa el saldo antes del viaje.`;
+        this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) });
     }
 
     this.dynamicQuote = {
@@ -3172,7 +3191,7 @@ class MyCuscoTripProductPage {
         <div class="experience-itinerary-item experience-itinerary-item--visual experience-itinerary-item--day">
           <div class="experience-itinerary-item__content">
             <div class="experience-itinerary-day-meta">
-              <span class="experience-itinerary-day-pill">Día ${this.escapeHtml(day.day)}</span>
+              <span class="experience-itinerary-day-pill">${this.t("product.day", "Day")} ${this.escapeHtml(day.day)}</span>
               <span class="experience-itinerary-date-pill" data-itinerary-date-for="${this.escapeHtml(day.day)}" ${this.getItineraryDateLabel(day.day) ? "" : "hidden"}>${this.escapeHtml(this.getItineraryDateLabel(day.day))}</span>
             </div>
             ${(day.items || []).map((item) => `
@@ -3571,8 +3590,8 @@ class MyCuscoTripProductPage {
   }
 
   formatRoomLabel(label) {
-    const normalized = String(label || "Habitación").trim().replace(/\s+/g, " ");
-    if (!normalized) return "Habitación";
+    const normalized = String(label || this.t("product.room", "Room")).trim().replace(/\s+/g, " ");
+    if (!normalized) return this.t("product.room", "Room");
 
     const cleaned = normalized
       .replace(/^una?\s+/i, "")
@@ -3580,7 +3599,7 @@ class MyCuscoTripProductPage {
       .replace(/^habitaciones?\s+/i, "")
       .trim();
 
-    const base = cleaned || "habitación";
+    const base = cleaned || this.t("product.room", "room");
     return base.toLowerCase();
   }
 
@@ -3593,7 +3612,7 @@ class MyCuscoTripProductPage {
 
         const count = Number(entry.count || 0);
         const roomLabel = this.formatRoomLabel(entry.room.label);
-        const roomWord = count === 1 ? "Habitación" : "Habitaciones";
+        const roomWord = count === 1 ? this.t("product.room", "Room") : this.t("product.rooms", "Rooms");
         const quantity = String(count).padStart(2, "0");
 
         return `${quantity} ${roomWord} ${roomLabel}`;
@@ -3613,7 +3632,7 @@ class MyCuscoTripProductPage {
       const allHotels = [
         {
           hotelCode: "no-hotel",
-          hotelName: "Sin alojamiento",
+          hotelName: this.t("product.noAccommodation", "No accommodation"),
           stars: 0,
           location: this.getDestinationLabel(item.destination),
           address: "",
@@ -3629,7 +3648,7 @@ class MyCuscoTripProductPage {
           rooms: [
             {
               roomType: "no-hotel",
-              label: "Seleccionar opción sin alojamiento",
+              label: this.t("product.noHotelOption", "Choose the option without accommodation"),
               bedType: "",
               capacity: Math.max(passengers, 1),
               pricePerNight: 0,
@@ -3776,22 +3795,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!target) return;
 
     const customHighlights = Array.isArray(product?.highlights) ? product.highlights : [];
-    const experienceType = Array.isArray(product?.experienceType) ? product.experienceType.join(" · ") : "";
+    const experienceType = Array.isArray(product?.experienceType) ? product.experienceType.join(" · ") : (product?.typeLabel || "");
     const details = Array.isArray(product?.details) ? product.details : [];
+    const capacity = product?.capacity || product?.duration?.maxGroupSize || "";
 
     const highlights = customHighlights.length
       ? [
           ...customHighlights,
-          experienceType ? `Tipo de viaje: ${experienceType}` : null,
-          product?.duration?.label ? `Duración: ${product.duration.label}` : null,
-          product?.capacity ? `Grupo: hasta ${product.capacity} personas` : null,
+          experienceType ? `${this.t("product.travelStyle", "Travel style")}: ${experienceType}` : null,
+          product?.duration?.label ? `${this.t("product.duration", "Duration")}: ${product.duration.label}` : null,
+          capacity ? this.t("product.groupUpTo", "Group service for up to {count} travelers", { count: capacity }) : null,
           ...details
         ].filter(Boolean)
       : [
           product?.shortDescription,
-          product?.duration?.label ? `Duración: ${product.duration.label}` : null,
-          experienceType ? `Tipo de viaje: ${experienceType}` : null,
-          product?.duration?.guideLanguages?.length ? `Idiomas: ${product.duration.guideLanguages.join(", ")}` : null
+          product?.duration?.label ? `${this.t("product.duration", "Duration")}: ${product.duration.label}` : null,
+          experienceType ? `${this.t("product.travelStyle", "Travel style")}: ${experienceType}` : null,
+          product?.duration?.guideLanguages?.length ? `${this.t("product.languages", "Languages")}: ${this.formatGuideLanguages(product.duration.guideLanguages)}` : null
         ].filter(Boolean);
 
     target.innerHTML = highlights.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
@@ -3808,7 +3828,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     target.innerHTML = items.map((item) => `
       <details class="experience-faq-item">
-        <summary>${this.escapeHtml(item.q || item.question || "Pregunta")}</summary>
+        <summary>${this.escapeHtml(item.q || item.question || this.t("product.question", "Question"))}</summary>
         <p>${this.escapeHtml(item.a || item.answer || "")}</p>
       </details>
     `).join("");
@@ -3820,7 +3840,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const paypalButton = document.getElementById("paypalButton");
 
     if (packageOptionsTarget) packageOptionsTarget.innerHTML = "";
-    if (paypalButton) paypalButton.textContent = this.t("product.requestQuote", "Solicitar cotización");
+    if (paypalButton) paypalButton.textContent = this.t("product.requestQuote", "Request a quote");
     if (!itineraryTarget) return;
 
     const itinerary = Array.isArray(product?.dailyItinerary) && product.dailyItinerary.length
@@ -3831,12 +3851,12 @@ document.addEventListener("DOMContentLoaded", () => {
       this.renderItinerary(itinerary);
       const pickupInfo = product.pickupInfo ? `
         <details class="experience-itinerary-item experience-itinerary-disclosure">
-          <summary>Recojos y coordinación</summary>
+          <summary>${this.t("product.pickupMeeting", "Pickup & Trip Coordination")}</summary>
           <p>${this.escapeHtml(product.pickupInfo)}</p>
         </details>` : "";
       const important = Array.isArray(product.importantInfo) && product.importantInfo.length ? `
         <details class="experience-itinerary-item experience-itinerary-disclosure">
-          <summary>Información importante antes de viajar</summary>
+          <summary>${this.t("product.importantInfo", "Important Information Before You Travel")}</summary>
           <ul class="experience-itinerary-list">${product.importantInfo.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")}</ul>
         </details>` : "";
       itineraryTarget.insertAdjacentHTML("beforeend", `${pickupInfo}${important}`);
@@ -3845,8 +3865,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     itineraryTarget.innerHTML = `
       <div class="experience-itinerary-item">
-        <h3>Ruta sugerida</h3>
-        <p>${this.escapeHtml(product.shortDescription || product.description || this.t("product.multidestinationPackage", "Paquete multidestino preparado para cotización personalizada."))}</p>
+        <h3>${this.t("product.routeSuggested", "Suggested route")}</h3>
+        <p>${this.escapeHtml(product.shortDescription || product.description || this.t("product.multidestinationPackage", "Multi-destination package prepared for a personalized quote."))}</p>
       </div>
     `;
   };
