@@ -653,7 +653,7 @@
 <input id="destination" type="text" value="Arequipa"/>
 </div>
 <div class="field">
-<label for="departureDate">Fecha ida</label>
+<label for="departureDate">Departure date</label>
 <input id="departureDate" type="date" value="2026-04-02"/>
 </div>
 <div class="field">
@@ -665,7 +665,7 @@
 <input id="arrivalTime" type="time" value="07:42"/>
 </div>
 <div class="field" id="returnDateField" style="display:none;">
-<label for="returnDate">Fecha vuelta</label>
+<label for="returnDate">Return date</label>
 <input id="returnDate" type="date" value="2026-04-05"/>
 </div>
 <div class="field" id="returnDepartureTimeField" style="display:none;">
@@ -677,7 +677,7 @@
 <input id="returnArrivalTime" type="time" value="11:25"/>
 </div>
 <div class="field">
-<label for="airline">Aerolínea</label>
+<label for="airline">Airline</label>
 <select id="airline">
 <option value="jetsmart">JetSMART</option>
 <option value="latam">LATAM</option>
@@ -690,7 +690,7 @@
 <input id="price" step="0.01" type="number" value="280.26"/>
 </div>
 <div class="field">
-<label for="passengers">Pasajeros</label>
+<label for="passengers">Passengers</label>
 <select id="passengers">
 <option value="1">1 adulto</option>
 <option value="2">2 adultos</option>
@@ -751,11 +751,11 @@
 <label>Vuelo flexible</label>
 <label class="field-checkbox">
 <input id="includeFlexible" type="checkbox"/>
-<span>Agregar opción flexible</span>
+<span>Add flexible option</span>
 </label>
 </div>
 <div class="search-action">
-<button class="btn-primary" type="submit">Generar cotización</button>
+<button class="btn-primary" type="submit">Generate quote</button>
 </div>
 </form>
 </section>
@@ -776,7 +776,7 @@
         logo: "assets/img/airlines/sky.png"
       },
       custom: {
-        name: "Aerolínea",
+        name: "Airline",
         logo: "assets/img/airlines/default.png"
       }
     };
@@ -1063,7 +1063,7 @@
           <div class="quote-grid">
             <div>
               <section class="quote-section">
-                <div class="quote-section-title">Información del vuelo</div>
+                <div class="quote-section-title">Flight information</div>
                 <div class="detail-list">
                   <div class="detail-row">
                     <div class="detail-label">Ruta ida</div>
@@ -1074,7 +1074,7 @@
                     <div class="detail-value">${routes.vuelta}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Aerolínea</div>
+                    <div class="detail-label">Airline</div>
                     <div class="detail-value">${airline.name}</div>
                   </div>
                   <div class="detail-row">
@@ -1082,7 +1082,7 @@
                     <div class="detail-value">${values.cabinClass}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Pasajeros</div>
+                    <div class="detail-label">Passengers</div>
                     <div class="detail-value">${values.passengers} adulto(s)</div>
                   </div>
                   <div class="detail-row">
@@ -1102,7 +1102,7 @@
                   <div class="option-card">
                     <div class="option-left">
                       <div class="option-title">Seguro de viaje</div>
-                      <div class="option-desc">Cobertura adicional para el pasajero.</div>
+                      <div class="option-desc">Additional coverage for the passenger.</div>
                     </div>
                     <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}</div>
                   </div>
@@ -1121,11 +1121,11 @@
                 <div class="quote-section-title">Opciones de pago</div>
                 <div class="detail-list">
                   <div class="detail-row">
-                    <div class="detail-label">Transferencia / depósito</div>
+                    <div class="detail-label">Bank transfer / deposit</div>
                     <div class="detail-value">${formatMoney(totals.transferTotal)}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Pago con tarjeta</div>
+                    <div class="detail-label">Card payment</div>
                     <div class="detail-value">${formatMoney(totals.cardTotal)}</div>
                   </div>
                   <div class="detail-row">
@@ -1165,13 +1165,13 @@
 
             <aside class="quote-summary-box">
               <div class="quote-summary-top">
-                <div class="mini-title">Precio por Adulto</div>
+                <div class="mini-title">Price per Adult</div>
                 <div class="big-price">${formatMoney(totals.baseFare)}</div>
               </div>
 
               <div class="price-breakdown">
                 <div class="price-line">
-                  <span>1 Adulto</span>
+                  <span>1 Adult</span>
                   <strong>${formatMoney(totals.baseFare)}</strong>
                 </div>
 
@@ -1206,7 +1206,7 @@
               </div>
 
               <div class="payment-methods">
-                <div class="payment-title">Opción de pago con tarjeta</div>
+                <div class="payment-title">Card payment option</div>
                 <div class="price-line">
                   <span>Cargo tarjeta</span>
                   <strong>${formatMoney(totals.cardFee)}</strong>
@@ -1223,16 +1223,16 @@
 
       document.getElementById("buyNowBtn").addEventListener("click", () => {
         const text = encodeURIComponent(
-`Hola, quiero comprar esta cotización.
+`Hello, I would like to purchase this quote.
 
 Tipo de viaje: ${tripType}
 Ruta ida: ${routes.ida}
 Ruta vuelta: ${routes.vuelta}
-Aerolínea: ${airline.name}
+Airline: ${airline.name}
 Precio boleto: ${formatMoney(values.price)}
 Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}
 Flexible: ${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}
-Total transferencia: ${formatMoney(totals.transferTotal)}
+Bank transfer total: ${formatMoney(totals.transferTotal)}
 Total tarjeta: ${formatMoney(totals.cardTotal)}`
         );
 

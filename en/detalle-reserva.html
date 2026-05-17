@@ -1481,7 +1481,7 @@
 
 
 
-      /* Ajustes finales de impresión: más contenido en la primera hoja */
+      /* Final print adjustments: more content on the first page */
       .pv-classic {
         font-size: 11.4px;
         line-height: 1.22;
@@ -1693,7 +1693,7 @@
       }
 
 
-      /* Corrección de estructura y compacidad de cabecera impresa */
+      /* Printed header structure and compactness correction */
       .pv-classic {
         font-size: 11.2px;
         line-height: 1.16;
@@ -2161,7 +2161,7 @@
     }
 
 
-    /* Corrección definitiva de impresión: turistas en flujo continuo y sin salto artificial */
+    /* Final print correction: travelers in continuous flow with no artificial break */
     .pv-tourists-grid {
       width: 100%;
       display: block;
@@ -2267,7 +2267,7 @@
     }
 
 
-    /* Corrección final real: quitar saltos artificiales entre turistas y servicios */
+    /* Final real correction: remove artificial breaks between travelers and services */
     @media print {
       @page {
         size: A4;
@@ -2420,7 +2420,7 @@
         border-radius: 8px 8px 0 0 !important;
       }
 
-      /* Lo importante: no obligar secciones/tablas completas a saltar a la siguiente página */
+      /* Important: do not force full sections/tables to jump to the next page */
       .pv-section,
       .pv-section:not(.pv-tourists-section),
       .pv-table,
@@ -2699,17 +2699,17 @@
       es: {
         langLabel: "Idioma",
         back: "Volver",
-        print: "Imprimir voucher",
-        emptyTitle: "Reserva no encontrada",
+        print: "Print voucher",
+        emptyTitle: "Reservation not found",
         emptyText: "No hay una reserva cargada para mostrar.",
-        emptyBtn: "Ir a Mi Reserva",
+        emptyBtn: "Go to My Booking",
         subtitle: "Especialistas diseñando viajes llenos de emociones al Valle Sagrado de los Incas",
         contact1: "Portal de Panes 123 - Plaza de Armas Cusco",
         contact2: "Whatsapp: +51 900 608 980",
         contact3: "Email: reservas@mycuscotrip.com",
         contact4: "Web: www.mycuscotrip.com",
         travelVoucher: "TRAVEL VOUCHER",
-        bookingCode: "Código de reserva",
+        bookingCode: "Booking code",
         holder: "Titular reserva",
         travelDate: "Duración",
         destination: "Destino",
@@ -2720,7 +2720,7 @@
         coupon: "Cupón / referencia",
         passengers: "Datos de los turistas",
         travelers: "viajero(s)",
-        fullName: "Nombre completo",
+        fullName: "Full name",
         documentType: "Tipo documento",
         documentNumber: "Nro documento",
         nationality: "Nacionalidad",
@@ -2743,9 +2743,9 @@
         number: "Número",
         origin: "Origen",
         arrival: "Llegada",
-        assistance: "Asistencia personalizada",
+        assistance: "Personal assistance",
         assignedAgent: "Agente asignado",
-        assignedAgentText: "Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:",
+        assignedAgentText: "For any assistance during your trip, please contact your assigned travel agent:",
         includes: "Servicios incluidos",
         notIncludes: "Servicios no incluidos / adicionales",
         recommendations: "Recomendaciones",
@@ -3032,7 +3032,7 @@
         return {
           active: true,
           icon: turista.destacadoIcono || "🎂",
-          text: turista.destacadoTexto || "Cumpleaños"
+          text: turista.destacadoTexto || "Birthday"
         };
       }
 
@@ -3051,7 +3051,7 @@
         icon: "🎂",
         text: currentLanguage === "en"
           ? `Birthday during service - ${month}/${day}`
-          : `Cumpleaños durante el servicio - ${day}/${month}`
+          : `Birthday during service - ${day}/${month}`
       };
     }
 
@@ -3283,15 +3283,15 @@
                   ${hoteles.map(h => `
                     <div class="hotel-card">
                       <h3>${esc(h.nombre || t.noData)}</h3>
-                      <p><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</p>
+                      <p><strong>Location:</strong> ${esc(h.ubicacion || t.noData)}</p>
                       <p><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</p>
                       <p><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</p>
-                      <p><strong>Noches:</strong> ${esc(h.noches || t.noData)}</p>
-                      <p><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</p>
-                      <p><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</p>
-                      <p><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</p>
-                      <p><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</p>
-                      <p><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</p>
+                      <p><strong>Nights:</strong> ${esc(h.noches || t.noData)}</p>
+                      <p><strong>Category:</strong> ${esc(h.categoria || t.noData)}</p>
+                      <p><strong>Room:</strong> ${esc(h.habitacion || t.noData)}</p>
+                      <p><strong>Address:</strong> ${esc(h.direccion || t.noData)}</p>
+                      <p><strong>Phone:</strong> ${esc(h.telefono || t.noData)}</p>
+                      <p><strong>Notes:</strong> ${esc(h.observaciones || t.noData)}</p>
                     </div>
                   `).join("")}
                 </div>
@@ -3581,15 +3581,15 @@
               ${hoteles.map(h => `
                 <div class="pv-hotel-card">
                   <div class="pv-hotel-name">${esc(h.nombre || t.noData)}</div>
-                  <div><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</div>
+                  <div><strong>Location:</strong> ${esc(h.ubicacion || t.noData)}</div>
                   <div><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</div>
                   <div><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</div>
-                  <div><strong>Noches:</strong> ${esc(h.noches || t.noData)}</div>
-                  <div><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</div>
-                  <div><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</div>
-                  <div><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</div>
-                  <div><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</div>
-                  <div><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</div>
+                  <div><strong>Nights:</strong> ${esc(h.noches || t.noData)}</div>
+                  <div><strong>Category:</strong> ${esc(h.categoria || t.noData)}</div>
+                  <div><strong>Room:</strong> ${esc(h.habitacion || t.noData)}</div>
+                  <div><strong>Address:</strong> ${esc(h.direccion || t.noData)}</div>
+                  <div><strong>Phone:</strong> ${esc(h.telefono || t.noData)}</div>
+                  <div><strong>Notes:</strong> ${esc(h.observaciones || t.noData)}</div>
                 </div>
               `).join("")}
             </div>
@@ -3655,7 +3655,7 @@
           ` : ""}
 
           <div class="pv-section">
-            <div class="pv-section-title">Información adicional</div>
+            <div class="pv-section-title">Additional information</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
               ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
@@ -3665,8 +3665,8 @@
 
             <div class="pv-side-box">
               <div class="pv-assist-box">
-                <div class="pv-subtitle">Asistencia personalizada</div>
-                <div class="pv-assist-text">Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
+                <div class="pv-subtitle">Personal assistance</div>
+                <div class="pv-assist-text">For any assistance during your trip, please contact your assigned travel agent:</div>
                 <div class="pv-agent-name">${esc(reserva.agenteAsignado || t.noData)}</div>
                 <div class="pv-agent-phone">${esc(reserva.agenteTelefono || t.noData)}</div>
               </div>
@@ -3701,7 +3701,7 @@
                 <img src="/assets/img/logos/Logo2.png" alt="My Cusco Trip">
               </div>
               <div class="pv-social-area">
-                <div class="pv-social-title">Síguenos en nuestras redes sociales</div>
+                <div class="pv-social-title">Follow us on social media</div>
                 <div class="pv-socials">
                   <span class="pv-social-pill"><i class="fa-brands fa-instagram"></i> @mycuscotrip</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-facebook-f"></i> My Cusco Trip</span>

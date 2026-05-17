@@ -15,15 +15,15 @@
 <header class="agency-topbar">
 <a aria-label="Volver al inicio de My Cusco Trip" class="agency-brand" href="index.html">
 <img alt="My Cusco Trip" class="agency-brand__logo" src="../assets/img/reserva/logo-color.png"/>
-<span class="agency-brand__badge">Tour operador</span>
+<span class="agency-brand__badge">Tour operator</span>
 </a>
 <div class="agency-topbar__right">
-<p>Agencias autorizadas <span>|</span> Tarifas confidenciales</p>
-<nav aria-label="Menú principal para agencias" class="agency-mainnav">
+<p>Authorized agencies <span>|</span> Confidential rates</p>
+<nav aria-label="Main menu for agencies" class="agency-mainnav">
 <a href="#inicio">Inicio</a>
 <a href="#servicios">Servicios</a>
-<a href="#reservas">Reservas</a>
-<a href="#pagos">Pagos</a>
+<a href="#reservas">Bookings</a>
+<a href="#pagos">Payments</a>
 <a href="#reportes">Reportes</a>
 </nav>
 </div>
@@ -46,13 +46,13 @@
 <section aria-labelledby="pageTitle" class="agency-hero">
 <div>
 <p class="eyebrow">Uso exclusivo para agencias</p>
-<h1 id="pageTitle">Reserva de Tours</h1>
-<p class="agency-hero__lead">Consulta horarios disponibles, elige cupos y registra solicitudes para tu agencia. Los precios mostrados son tarifas netas en soles para agencias autorizadas.</p>
+<h1 id="pageTitle">Tour Reservations</h1>
+<p class="agency-hero__lead">Check available schedules, select spaces and register requests for your agency. Displayed prices are net rates in Peruvian soles for authorized agencies.</p>
 </div>
 <div aria-label="Estado operativo" class="agency-hero__status">
 <span class="status-dot"></span>
-<strong>Operación diaria</strong>
-<small>Confirmación manual por equipo de reservas</small>
+<strong>Daily operation</strong>
+<small>Manual confirmation by the reservations team</small>
 </div>
 </section>
 <section aria-labelledby="filtersTitle" class="agency-card agency-filter-card" id="servicios">
@@ -75,26 +75,26 @@
 <input id="travelDate" name="date" required="" type="date"/>
 </label>
 <fieldset class="passenger-grid">
-<legend>Pasajeros</legend>
+<legend>Passengers</legend>
 <label>
-<span>Adulto</span>
+<span>Adult</span>
 <input id="adultCount" max="60" min="1" type="number" value="2"/>
 </label>
 <label>
-<span>Niño</span>
+<span>Child</span>
 <input id="childCount" max="60" min="0" type="number" value="0"/>
 </label>
 <label>
-<span>Guía / TC</span>
+<span>Guide / Tour leader</span>
 <input id="guideCount" max="10" min="0" type="number" value="0"/>
 </label>
 </fieldset>
 <label>
 <span>Idioma</span>
 <select id="languageSelect" name="language">
-<option value="Español / Inglés">Español / Inglés</option>
-<option value="Español">Español</option>
-<option value="Inglés">Inglés</option>
+<option value="Español / Inglés">Spanish / English</option>
+<option value="Español">Spanish</option>
+<option value="Inglés">English</option>
 </select>
 </label>
 <button class="agency-button agency-button--primary" type="submit">
@@ -103,7 +103,7 @@
             </button>
 </form>
 </section>
-<section aria-label="Resumen de búsqueda" class="agency-grid agency-kpis">
+<section aria-label="Search summary" class="agency-grid agency-kpis">
 <article class="agency-mini-card">
 <small>Servicios disponibles</small>
 <strong id="kpiServices">0</strong>
@@ -117,7 +117,7 @@
 <strong id="kpiFrom">S/ 0.00</strong>
 </article>
 <article class="agency-mini-card agency-mini-card--notice">
-<small>Estado de pago</small>
+<small>Payment status</small>
 <strong>Manual</strong>
 </article>
 </section>
@@ -130,7 +130,7 @@
 <div class="agency-tools">
 <label class="agency-search-mini">
 <span class="sr-only">Filtrar por texto</span>
-<input id="quickFilter" placeholder="Filtrar por nombre, hora o punto de recojo" type="search"/>
+<input id="quickFilter" placeholder="Filter by name, time or pickup point" type="search"/>
 </label>
 <button class="agency-button agency-button--ghost" id="clearSelection" type="button">Limpiar</button>
 </div>
@@ -141,9 +141,9 @@
 <tr>
 <th>Elegir</th>
 <th>Servicio</th>
-<th>Fecha</th>
+<th>Date</th>
 <th>Hora</th>
-<th>Duración</th>
+<th>Duration</th>
 <th>Recojo</th>
 <th>Idioma</th>
 <th>Tarifa neta</th>
@@ -161,17 +161,17 @@
 <div class="agency-card__header">
 <div>
 <p class="eyebrow">Paso 3</p>
-<h2 id="summaryTitle">Resumen de reserva</h2>
+<h2 id="summaryTitle">Booking summary</h2>
 </div>
-<span class="agency-chip" id="summaryStatus">Sin selección</span>
+<span class="agency-chip" id="summaryStatus">No selection</span>
 </div>
 <div class="summary-empty" id="selectedSummary">
-              Selecciona un horario para ver el resumen de la reserva.
+              Select a schedule to view the booking summary.
             </div>
 <div class="agency-total-box">
-<span>Total neto agencia</span>
+<span>Net agency total</span>
 <strong id="totalAmount">S/ 0.00</strong>
-<small>Importe sujeto a validación y confirmación operativa.</small>
+<small>Amount subject to validation and operational confirmation.</small>
 </div>
 <div class="agency-actions">
 <button class="agency-button agency-button--primary" disabled="" id="reserveButton" type="button">Registrar reserva</button>
@@ -181,19 +181,19 @@
 <article aria-labelledby="paymentTitle" class="agency-card agency-payment" id="pagos">
 <div class="agency-card__header">
 <div>
-<p class="eyebrow">Pago por transferencia</p>
-<h2 id="paymentTitle">Transferencia y comprobante</h2>
+<p class="eyebrow">Bank transfer payment</p>
+<h2 id="paymentTitle">Transfer and receipt</h2>
 </div>
 </div>
 <ol class="approval-steps">
-<li><strong>Reserva registrada</strong><span>La agencia separa cupos para una fecha y horario.</span></li>
-<li><strong>Pago manual</strong><span>Sube comprobante de transferencia o depósito.</span></li>
-<li><strong>Revisión interna</strong><span>Reservas valida el pago y aprueba la operación.</span></li>
-<li><strong>Confirmación</strong><span>Se emite voucher o confirmación final.</span></li>
+<li><strong>Booking registered</strong><span>The agency holds spaces for a selected date and time.</span></li>
+<li><strong>Manual payment</strong><span>Upload the bank transfer or deposit receipt.</span></li>
+<li><strong>Internal review</strong><span>The reservations team validates the payment and approves the operation.</span></li>
+<li><strong>Confirmation</strong><span>A voucher or final confirmation is issued.</span></li>
 </ol>
 <div class="bank-box">
 <strong>Datos bancarios</strong>
-<p>Los pagos se registran mediante transferencia o depósito y serán validados por el equipo de reservas.</p>
+<p>Payments are recorded by bank transfer or deposit and will be validated by the reservations team.</p>
 </div>
 </article>
 </section>
@@ -201,7 +201,7 @@
 <div class="agency-card__header agency-card__header--inline">
 <div>
 <p class="eyebrow">Seguimiento</p>
-<h2 id="requestsTitle">Reservas y pagos registrados</h2>
+<h2 id="requestsTitle">Registered bookings and payments</h2>
 </div>
 <button class="agency-button agency-button--ghost" id="exportRequests" type="button">Exportar CSV</button>
 </div>
@@ -214,14 +214,14 @@
 <form class="agency-dialog__panel" id="reserveForm" method="dialog">
 <button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
 <p class="eyebrow">Nueva reserva</p>
-<h2>Datos de la agencia y pasajeros</h2>
+<h2>Agency and passenger details</h2>
 <div class="dialog-grid">
-<label><span>Agencia</span><input id="agencyName" placeholder="Nombre comercial" required=""/></label>
-<label><span>Ejecutivo / contacto</span><input id="agencyContact" placeholder="Nombre del ejecutivo" required=""/></label>
-<label><span>Correo</span><input id="agencyEmail" placeholder="reservas@agencia.com" required="" type="email"/></label>
+<label><span>Agency</span><input id="agencyName" placeholder="Business name" required=""/></label>
+<label><span>Account executive / contact</span><input id="agencyContact" placeholder="Contact name" required=""/></label>
+<label><span>Email</span><input id="agencyEmail" placeholder="reservas@agencia.com" required="" type="email"/></label>
 <label><span>WhatsApp</span><input id="agencyPhone" placeholder="+51 ..." required=""/></label>
-<label class="dialog-grid__full"><span>Nombre del pasajero líder</span><input id="leadPassenger" placeholder="Nombre y apellido" required=""/></label>
-<label class="dialog-grid__full"><span>Observaciones operativas</span><textarea id="bookingNotes" placeholder="Hotel de recojo, idioma, requerimientos especiales, etc." rows="3"></textarea></label>
+<label class="dialog-grid__full"><span>Lead passenger name</span><input id="leadPassenger" placeholder="First and last name" required=""/></label>
+<label class="dialog-grid__full"><span>Operational notes</span><textarea id="bookingNotes" placeholder="Pickup hotel, language, special requirements, etc." rows="3"></textarea></label>
 </div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
@@ -232,17 +232,17 @@
 <dialog class="agency-dialog" id="paymentDialog">
 <form class="agency-dialog__panel" id="paymentForm" method="dialog">
 <button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
-<p class="eyebrow">Registrar pago manual</p>
-<h2>Subir comprobante</h2>
+<p class="eyebrow">Register manual payment</p>
+<h2>Upload receipt</h2>
 <div class="dialog-grid">
-<label><span>Código de reserva</span><input id="paymentReservationCode" readonly=""/></label>
-<label><span>Monto pagado</span><input id="paymentAmount" min="0" required="" step="0.01" type="number"/></label>
-<label><span>Método</span><select id="paymentMethod"><option>Transferencia bancaria</option><option>Depósito en cuenta</option><option>Yape / Plin corporativo</option></select></label>
-<label><span>Número de operación</span><input id="paymentOperation" placeholder="Ej. 00981231" required=""/></label>
+<label><span>Booking code</span><input id="paymentReservationCode" readonly=""/></label>
+<label><span>Amount paid</span><input id="paymentAmount" min="0" required="" step="0.01" type="number"/></label>
+<label><span>Method</span><select id="paymentMethod"><option>Bank transfer</option><option>Account deposit</option><option>Corporate Yape / Plin</option></select></label>
+<label><span>Transaction number</span><input id="paymentOperation" placeholder="e.g. 00981231" required=""/></label>
 <label class="dialog-grid__full"><span>Comprobante</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
 <label class="dialog-grid__full"><span>Nota de pago</span><textarea id="paymentNotes" placeholder="Banco, titular, hora aproximada, etc." rows="3"></textarea></label>
 </div>
-<div class="dialog-alert">El comprobante quedará en estado <strong>Pendiente de aprobación</strong> hasta la validación del equipo de reservas.</div>
+<div class="dialog-alert">The receipt will remain <strong>Pending approval</strong> until the reservations team validates it.</div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
 <button class="agency-button agency-button--primary" type="submit">Registrar pago pendiente</button>

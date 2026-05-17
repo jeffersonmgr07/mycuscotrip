@@ -506,8 +506,8 @@
       display: none;
     }
 
-    /* Refuerzo genérico para que submenús del header no desaparezcan tan rápido.
-       Si tu header usa otros nombres de clase, pásame header.html/header.css y lo ajusto exacto. */
+    /* Generic reinforcement so header submenus do not disappear too quickly.
+       If your header uses other class names, pass me header.html/header.css and I will adjust it exactly. */
     .main-nav li,
     .nav-menu li,
     .navbar li,
@@ -773,11 +773,11 @@
 <div class="ota-quote-actions">
 <a class="ota-main-btn" href="quote-packages.html">
 <i class="fa-solid fa-calculator"></i>
-            <span data-i18n="home.quotePackage">Cotizar paquete</span>
+            <span data-i18n="home.quotePackage">Quote package</span>
           </a>
 <a class="ota-ghost-btn" href="https://wa.me/51900608980" rel="noopener" target="_blank">
 <i class="fa-brands fa-whatsapp"></i>
-            <span data-i18n="footer.talkAdvisor">Hablar con un asesor</span>
+            <span data-i18n="footer.talkAdvisor">Talk to an advisor</span>
           </a>
 </div>
 </div>
@@ -841,7 +841,7 @@
 <a class="package-showcase-card" href="product.html?slug=cusco-package-9-days-8-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/siete-lagunas.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-water"></i> <span data-i18n="chips.nature">Naturaleza</span></span>
 <h3>Complete Cusco 9D/8N</h3>
-<p data-i18n="home.pkg9dDesc">Una ruta amplia para combinar iconos de Cusco con caminatas y paisajes andinos.</p>
+<p data-i18n="home.pkg9dDesc">A broader route to combine Cusco icons with hikes and Andean landscapes.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
 <a class="package-showcase-card" href="product.html?slug=cusco-package-10-days-9-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/palcoyo.jpg');">
@@ -915,7 +915,7 @@
     async function loadComponent(componentName, targetId) {
       try {
         const componentPath = `${BASE_PATH}components/${componentName}.html`;
-        console.log(`Cargando: ${componentPath}`);
+        console.log(`Loading: ${componentPath}`);
 
         const response = await fetch(componentPath);
 
