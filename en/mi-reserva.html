@@ -249,7 +249,7 @@
 <span class="eyebrow">My Booking</span>
 <h1>Consulta tu <span>viaje</span> en segundos</h1>
 <p>
-            Ingresa tu código de reserva y tu apellido para revisar el detalle
+            Enter your booking code and last name to review the details
             de tu itinerario, tarifas, viajeros y enlace de pago.
           </p>
 </div>
@@ -257,26 +257,26 @@
 <div aria-label="Machu Picchu" class="reserva-image"></div>
 <div class="reserva-form-wrap">
 <div class="reserva-form-box">
-<div class="label-top">Acceso a reserva</div>
-<h2>Buscar reserva</h2>
+<div class="label-top">Booking access</div>
+<h2>Find booking</h2>
 <p class="intro">
-                Completa los datos registrados en tu compra para ver toda la información de tu reserva.
+                Enter the details used for your purchase to view all your booking information.
               </p>
 <form id="reservaForm">
 <div class="reserva-field">
-<label for="codigo">Código de reserva</label>
+<label for="codigo">Booking code</label>
 <input id="codigo" name="codigo" placeholder="Ej. CUS12345" required="" type="text"/>
 </div>
 <div class="reserva-field">
-<label for="apellido">Apellido</label>
+<label for="apellido">Last name</label>
 <input id="apellido" name="apellido" placeholder="Ej. Garcia" required="" type="text"/>
 </div>
 <div class="reserva-error" id="errorMessage"></div>
 <button class="reserva-btn" id="buscarBtn" type="submit">
-                  Buscar reserva
+                  Find booking
                 </button>
 <p class="reserva-help">
-                  Validamos los datos comparándolos con el archivo de reservas cargado en tu sitio.
+                  We validate the information against the booking file loaded on your website.
                 </p>
 </form>
 </div>
@@ -341,7 +341,7 @@
               <div style="color:white;font-weight:bold;font-size:1.2rem;">MyCuscoTrip</div>
               <nav>
                 <a href="./index.html" style="color:white;margin:0 10px;">Home</a>
-                <a href="./mi-reserva.html" style="color:white;margin:0 10px;">Mi Reserva</a>
+                <a href="./mi-reserva.html" style="color:white;margin:0 10px;">My Booking</a>
               </nav>
             </div>
           </header>
@@ -420,7 +420,7 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function obtenerApellidoReserva(reserva) {
+    function obtenerLast nameReserva(reserva) {
       return String(reserva?.apellido || "").trim();
     }
 
@@ -429,7 +429,7 @@
     }
 
     function apellidoCoincideExacto(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerApellidoReserva(reserva);
+      const apellidoReserva = obtenerLast nameReserva(reserva);
       if (!apellidoReserva || !String(apellidoIngresado || "").trim()) return false;
       return limpiarExacto(apellidoReserva) === limpiarExacto(apellidoIngresado);
     }
@@ -456,8 +456,8 @@
       return matriz[textoA.length][textoB.length];
     }
 
-    function pareceApellidoMalEscrito(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerApellidoReserva(reserva);
+    function pareceLast nameMalEscrito(reserva, apellidoIngresado) {
+      const apellidoReserva = obtenerLast nameReserva(reserva);
       const apellido = String(apellidoIngresado || "").trim();
       if (!apellidoReserva || !apellido) return false;
 
@@ -475,11 +475,11 @@
     async function cargarReservas() {
       const response = await fetch("./data/reservas.json", { cache: "no-store" });
       if (!response.ok) {
-        throw new Error(`No se pudo cargar data/reservas.json (${response.status})`);
+        throw new Error(`Could not load data/reservas.json (${response.status})`);
       }
       const reservas = await response.json();
       if (!Array.isArray(reservas)) {
-        throw new Error("El archivo data/reservas.json no contiene una lista válida de reservas.");
+        throw new Error("The data/reservas.json file does not contain a valid booking list.");
       }
       return reservas;
     }
@@ -490,16 +490,16 @@
       errorMessage.style.display = "none";
       errorMessage.textContent = "";
       buscarBtn.disabled = true;
-      buscarBtn.textContent = "Buscando...";
+      buscarBtn.textContent = "Searching...";
 
       const codigo = document.getElementById("codigo").value;
       const apellido = document.getElementById("apellido").value;
 
       if (!String(codigo || "").trim() || !String(apellido || "").trim()) {
-        errorMessage.textContent = "Ingresa el código de reserva y el apellido.";
+        errorMessage.textContent = "Enter your booking code and last name.";
         errorMessage.style.display = "block";
         buscarBtn.disabled = false;
-        buscarBtn.textContent = "Buscar reserva";
+        buscarBtn.textContent = "Find booking";
         return;
       }
 
@@ -514,7 +514,7 @@
         }
 
         if (!apellidoCoincideExacto(reservaPorCodigo, apellido)) {
-          errorMessage.textContent = pareceApellidoMalEscrito(reservaPorCodigo, apellido)
+          errorMessage.textContent = pareceLast nameMalEscrito(reservaPorCodigo, apellido)
             ? "Parece que escribiste mal tu apellido. Revisa que coincida exactamente con el apellido registrado."
             : "No existe una reserva con esos datos.";
           errorMessage.style.display = "block";
@@ -530,7 +530,7 @@
         errorMessage.style.display = "block";
       } finally {
         buscarBtn.disabled = false;
-        buscarBtn.textContent = "Buscar reserva";
+        buscarBtn.textContent = "Find booking";
       }
     });
   </script>
