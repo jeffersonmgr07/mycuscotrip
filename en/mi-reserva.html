@@ -265,11 +265,11 @@
 <form id="reservaForm">
 <div class="reserva-field">
 <label for="codigo">Booking code</label>
-<input id="codigo" name="codigo" placeholder="Ej. CUS12345" required="" type="text"/>
+<input id="codigo" name="codigo" placeholder="Ex. CUS12345" required="" type="text"/>
 </div>
 <div class="reserva-field">
 <label for="apellido">Last name</label>
-<input id="apellido" name="apellido" placeholder="Ej. Garcia" required="" type="text"/>
+<input id="apellido" name="apellido" placeholder="Ex. Garcia" required="" type="text"/>
 </div>
 <div class="reserva-error" id="errorMessage"></div>
 <button class="reserva-btn" id="buscarBtn" type="submit">
@@ -403,6 +403,7 @@
   </script>
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
+<script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/components/header.js"></script>
 <script src="../assets/js/lib/utils.js"></script>
 <script>
@@ -420,7 +421,7 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function obtenerLast nameReserva(reserva) {
+    function obtenerApellidoReserva(reserva) {
       return String(reserva?.apellido || "").trim();
     }
 
@@ -429,7 +430,7 @@
     }
 
     function apellidoCoincideExacto(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerLast nameReserva(reserva);
+      const apellidoReserva = obtenerApellidoReserva(reserva);
       if (!apellidoReserva || !String(apellidoIngresado || "").trim()) return false;
       return limpiarExacto(apellidoReserva) === limpiarExacto(apellidoIngresado);
     }
@@ -456,8 +457,8 @@
       return matriz[textoA.length][textoB.length];
     }
 
-    function pareceLast nameMalEscrito(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerLast nameReserva(reserva);
+    function pareceApellidoMalEscrito(reserva, apellidoIngresado) {
+      const apellidoReserva = obtenerApellidoReserva(reserva);
       const apellido = String(apellidoIngresado || "").trim();
       if (!apellidoReserva || !apellido) return false;
 
@@ -473,9 +474,9 @@
     }
 
     async function cargarReservas() {
-      const response = await fetch("./data/reservas.json", { cache: "no-store" });
+      const response = await fetch("../data/reservas.json", { cache: "no-store" });
       if (!response.ok) {
-        throw new Error(`Could not load data/reservas.json (${response.status})`);
+        throw new Error(`Could not load ../data/reservas.json (${response.status})`);
       }
       const reservas = await response.json();
       if (!Array.isArray(reservas)) {
@@ -508,15 +509,15 @@
         const reservaPorCodigo = reservas.find((reserva) => codigoCoincideExacto(reserva, codigo));
 
         if (!reservaPorCodigo) {
-          errorMessage.textContent = "No existe una reserva con esos datos.";
+          errorMessage.textContent = "No booking was found with those details.";
           errorMessage.style.display = "block";
           return;
         }
 
         if (!apellidoCoincideExacto(reservaPorCodigo, apellido)) {
-          errorMessage.textContent = pareceLast nameMalEscrito(reservaPorCodigo, apellido)
-            ? "Parece que escribiste mal tu apellido. Revisa que coincida exactamente con el apellido registrado."
-            : "No existe una reserva con esos datos.";
+          errorMessage.textContent = pareceApellidoMalEscrito(reservaPorCodigo, apellido)
+            ? "It looks like your last name may be misspelled. Please check that it matches the last name registered in your booking."
+            : "No booking was found with those details.";
           errorMessage.style.display = "block";
           return;
         }
@@ -526,7 +527,7 @@
         window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
       } catch (error) {
         console.error("Error consultando reserva:", error);
-        errorMessage.textContent = "No se pudo consultar el archivo de reservas. Verifica que data/reservas.json exista en el servidor.";
+        errorMessage.textContent = "We could not access the booking file. Please try again or contact us on WhatsApp.";
         errorMessage.style.display = "block";
       } finally {
         buscarBtn.disabled = false;
