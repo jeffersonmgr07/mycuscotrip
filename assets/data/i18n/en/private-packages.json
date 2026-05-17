@@ -14,8 +14,8 @@
       "visibility": "hidden",
       "showInCatalog": false,
       "expiresAt": "2026-12-31",
-      "title": "Paquete privado Machu Picchu y Amazonas para familia",
-      "subtitle": "Servicio privado para 2 adultos y 3 adolescentes, con bilingual guide y asistencia por WhatsApp.",
+      "title": "Package privado Machu Picchu and Amazonas para familia",
+      "subtitle": "Servicio privado para 2 adultos and 3 adolescentes, con bilingual guide and asistencia por WhatsApp.",
       "badge": "Propuesta privada",
       "serviceType": "private",
       "language": [
@@ -62,7 +62,7 @@
         "baseServicesPerPerson": 980,
         "currency": "USD",
         "domesticFlightsIncluded": false,
-        "flightsNote": "Vuelos internos Cusco - Puerto Maldonado y Puerto Maldonado - Lima/Cusco no incluidos; se cotizan según fecha y disponibilidad."
+        "flightsNote": "Vuelos internos Cusco - Puerto Maldonado and Puerto Maldonado - Lima/Cusco no incluidos; se cotizan según fecha and disponibilidad."
       },
       "lodging": [
         {
@@ -96,28 +96,28 @@
           "items": [
             "Recepción privada en aeropuerto de Cusco.",
             "Traslado privado al hotel.",
-            "Tiempo de aclimatación y briefing por WhatsApp o presencial."
+            "Tiempo de aclimatación and briefing por WhatsApp o presencial."
           ]
         },
         {
           "day": 2,
-          "title": "Sacred Valley privado y tren a Machu Picchu Pueblo",
+          "title": "Sacred Valley privado and tren a Machu Picchu Pueblo",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "items": [
             "Pickup privado en hotel.",
-            "Ruta sugerida: Chinchero, Maras, Moray y Ollantaytambo según horarios.",
+            "Ruta sugerida: Chinchero, Maras, Moray and Ollantaytambo según horarios.",
             "Private Spanish/English bilingual guide.",
-            "Tren turístico hacia Machu Picchu Pueblo."
+            "Tren turístico to Machu Picchu Pueblo."
           ]
         },
         {
           "day": 3,
-          "title": "Machu Picchu privado y retorno a Cusco",
+          "title": "Machu Picchu privado and retorno a Cusco",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
           "items": [
-            "Bus Consettur ida y vuelta.",
+            "Bus Consettur ida and vuelta.",
             "Machu Picchu entrance according to availability.",
             "Private bilingual guide.",
             "Return train and private transfer to your hotel in Cusco."
@@ -125,14 +125,14 @@
         },
         {
           "day": 4,
-          "title": "Vuelo a Puerto Maldonado y traslado al lodge",
+          "title": "Vuelo a Puerto Maldonado and traslado al lodge",
           "overnight": "Tambopata",
           "image": "./assets/img/quote/fallbacks/cusco.jpg",
           "items": [
             "Traslado privado hotel Cusco - aeropuerto.",
             "Vuelo Cusco - Puerto Maldonado no incluido en tarifa base.",
-            "Recepción en Puerto Maldonado y traslado al lodge.",
-            "Almuerzo/cena y actividad amazónica según programa."
+            "Recepción en Puerto Maldonado and traslado al lodge.",
+            "Lunch/dinner and actividad amazónica según programa."
           ]
         },
         {
@@ -142,30 +142,30 @@
           "image": "./assets/img/quote/fallbacks/cusco.jpg",
           "items": [
             "Caminata interpretativa o actividad de naturaleza.",
-            "Observación de flora y fauna.",
+            "Observación de flora and fauna.",
             "Alimentación incluida según programa del lodge.",
-            "Actividad nocturna sujeta a operación y clima."
+            "Actividad nocturna sujeta a operación and clima."
           ]
         },
         {
           "day": 6,
-          "title": "Retorno desde Puerto Maldonado",
+          "title": "Retorno from Puerto Maldonado",
           "overnight": "Fin de servicios",
           "image": "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg",
           "items": [
-            "Desayuno.",
+            "Breakfast.",
             "Traslado al aeropuerto de Puerto Maldonado.",
             "Vuelo de salida no incluido en tarifa base."
           ]
         }
       ],
       "includes": [
-        "Servicios privados en Cusco, Sacred Valley y Machu Picchu.",
-        "Private Spanish/English bilingual guide en Cusco y Machu Picchu.",
+        "Servicios privados en Cusco, Sacred Valley and Machu Picchu.",
+        "Private Spanish/English bilingual guide en Cusco and Machu Picchu.",
         "Traslados privados indicados en itinerario.",
         "Tren turístico estándar Ollantaytambo - Machu Picchu Pueblo - Ollantaytambo.",
         "Ingreso a Machu Picchu sujeto a disponibilidad.",
-        "Bus Consettur ida y vuelta.",
+        "Bus Consettur ida and vuelta.",
         "Alojamiento según selección del cliente.",
         "Programa amazónico en lodge según selección.",
         "Asistencia personalizada por WhatsApp."
@@ -173,20 +173,20 @@
       "excludes": [
         "Vuelos internacionales.",
         "Vuelos internos, salvo cotización adicional.",
-        "Almuerzos y cenas no mencionados fuera del lodge.",
+        "Lunchs and dinners no mencionados fuera del lodge.",
         "Seguro de viaje.",
         "Propinas.",
         "Personal expenses.",
         "Upgrade de tren o room no seleccionado."
       ],
       "notes": [
-        "Cotización referencial sujeta a disponibilidad de entradas, trenes, hoteles/lodges y vuelos.",
+        "Cotización referencial sujeta a disponibilidad de entradas, trenes, hoteles/lodges and vuelos.",
         "El enlace privado no debe compartirse en vitrinas públicas.",
         "Para privacidad real, migrar las propuestas a una base de datos con backend o serverless."
       ],
       "seo": {
-        "title": "Paquete privado Machu Picchu y Amazonas para familia | My Cusco Trip",
-        "description": "Book Paquete privado Machu Picchu y Amazonas para familia with My Cusco Trip."
+        "title": "Package privado Machu Picchu and Amazonas para familia | My Cusco Trip",
+        "description": "Book Package privado Machu Picchu and Amazonas para familia with My Cusco Trip."
       }
     }
   ]

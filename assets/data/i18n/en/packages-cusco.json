@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/packages-cusco.json",
   "scope": "cusco-dynamic-packages",
-  "description": "Archivo de configuración para generar packages dinámicos de Cusco y Machu Picchu. No contiene itinerarios hardcodeados; define reglas, referencias, duraciones, perfiles de llegada/salida, restricciones operativas y metadatos para búsqueda, cards y página de detalle.",
+  "description": "Archivo de configuración para generar packages dinámicos de Cusco and Machu Picchu. No contiene itinerarios hardcodeados; define reglas, referencias, duraciones, perfiles de llegada/salida, restricciones operativas and metadatos para búsqueda, cards and página de detalle.",
   "status": "published",
   "dataSources": {
     "cuscoTours": "assets/data/tours-cusco.json",
@@ -230,7 +230,7 @@
   "defaultLogisticsServices": {
     "arrival": {
       "code": "TRANSFER_IN",
-      "title": "Pickup desde aeropuerto o terminal terrestre",
+      "title": "Pickup from aeropuerto o terminal terrestre",
       "description": "Included service al inicio del package, coordinado according to the actual time de llegada del traveler.",
       "dayPosition": "first_day",
       "required": true,
@@ -317,7 +317,7 @@
       "badge": "Escapada esencial",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Opciones dinámicas para conocer Cusco y Machu Picchu en una escapada corta.",
+      "shortDescription": "Opciones dinámicas para conocer Cusco and Machu Picchu en una escapada corta.",
       "image": "./assets/img/packages/cusco/3d2n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -357,7 +357,7 @@
         ]
       },
       "commercialLabel": "Flexible package 3 days / 2 nights",
-      "recommendedTitle": "Escapada esencial a Cusco y Machu Picchu",
+      "recommendedTitle": "Escapada esencial a Cusco and Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -367,11 +367,11 @@
       "highlights": [
         "Ideal para viajes cortos",
         "Opciones Full Day u Overnight según horario",
-        "Ruta compacta y flexible"
+        "Ruta compacta and flexible"
       ],
       "seo": {
         "title": "Cusco Packages 3 days / 2 nights | My Cusco Trip",
-        "description": "Opciones dinámicas para conocer Cusco y Machu Picchu en una escapada corta."
+        "description": "Opciones dinámicas para conocer Cusco and Machu Picchu en una escapada corta."
       }
     },
     {
@@ -386,7 +386,7 @@
       "badge": "Más vendido",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Combinaciones dinámicas con City Tour, Machu Picchu y una excursión adicional.",
+      "shortDescription": "Combinaciones dinámicas con City Tour, Machu Picchu and una excursión adicional.",
       "image": "./assets/img/packages/cusco/4d3n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -437,7 +437,7 @@
         ]
       },
       "commercialLabel": "Flexible package 4 days / 3 nights",
-      "recommendedTitle": "Ruta recomendada Cusco, Sacred Valley y Machu Picchu",
+      "recommendedTitle": "Ruta recomendada Cusco, Sacred Valley and Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "City Tour",
@@ -448,11 +448,11 @@
       "highlights": [
         "Más vendido",
         "Permite naturaleza o aventura",
-        "Buen equilibrio de tiempo y experiencias"
+        "Buen equilibrio de tiempo and experiencias"
       ],
       "seo": {
         "title": "Cusco Packages 4 days / 3 nights | My Cusco Trip",
-        "description": "Combinaciones dinámicas con City Tour, Machu Picchu y una excursión adicional."
+        "description": "Combinaciones dinámicas con City Tour, Machu Picchu and una excursión adicional."
       }
     },
     {
@@ -467,7 +467,7 @@
       "badge": "Recomendado",
       "featured": true,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Flexible packages con Cusco, Sacred Valley, Machu Picchu y trekking opcional.",
+      "shortDescription": "Flexible packages con Cusco, Sacred Valley, Machu Picchu and trekking opcional.",
       "image": "./assets/img/packages/cusco/5d4n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -537,7 +537,7 @@
       ],
       "seo": {
         "title": "Cusco Packages 5 days / 4 nights | My Cusco Trip",
-        "description": "Flexible packages con Cusco, Sacred Valley, Machu Picchu y trekking opcional."
+        "description": "Flexible packages con Cusco, Sacred Valley, Machu Picchu and trekking opcional."
       }
     },
     {
@@ -552,7 +552,7 @@
       "badge": "Completo",
       "featured": true,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Combinaciones completas con rutas culturales, Machu Picchu y naturaleza andina.",
+      "shortDescription": "Combinaciones completas con rutas culturales, Machu Picchu and naturaleza andina.",
       "image": "./assets/img/packages/cusco/6d5n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -606,7 +606,7 @@
         ]
       },
       "commercialLabel": "Flexible package 6 days / 5 nights",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 6 days / 5 nights",
+      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 6 days / 5 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -616,12 +616,12 @@
       ],
       "highlights": [
         "Más days para personalizar",
-        "Compatible con rutas culturales y naturales",
+        "Compatible con rutas culturales and naturales",
         "Permite una experiencia menos apresurada"
       ],
       "seo": {
         "title": "Cusco Packages 6 days / 5 nights | My Cusco Trip",
-        "description": "Combinaciones completas con rutas culturales, Machu Picchu y naturaleza andina."
+        "description": "Combinaciones completas con rutas culturales, Machu Picchu and naturaleza andina."
       }
     },
     {
@@ -636,7 +636,7 @@
       "badge": "Experience amplia",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Mayor variedad de combinaciones con cultura, Machu Picchu y hasta dos rutas de naturaleza.",
+      "shortDescription": "Mayor variedad de combinaciones con cultura, Machu Picchu and hasta dos rutas de naturaleza.",
       "image": "./assets/img/packages/cusco/7d6n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -693,7 +693,7 @@
         ]
       },
       "commercialLabel": "Flexible package 7 days / 6 nights",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 7 days / 6 nights",
+      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 7 days / 6 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -703,12 +703,12 @@
       ],
       "highlights": [
         "Más days para personalizar",
-        "Compatible con rutas culturales y naturales",
+        "Compatible con rutas culturales and naturales",
         "Permite una experiencia menos apresurada"
       ],
       "seo": {
         "title": "Cusco Packages 7 days / 6 nights | My Cusco Trip",
-        "description": "Mayor variedad de combinaciones con cultura, Machu Picchu y hasta dos rutas de naturaleza."
+        "description": "Mayor variedad de combinaciones con cultura, Machu Picchu and hasta dos rutas de naturaleza."
       }
     },
     {
@@ -723,7 +723,7 @@
       "badge": "Profundo",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "Diseñado para combinar los principales clásicos con rutas naturales y culturales menos saturadas.",
+      "shortDescription": "Diseñado para combinar los principales clásicos con rutas naturales and culturales menos saturadas.",
       "image": "./assets/img/packages/cusco/8d7n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -781,7 +781,7 @@
         ]
       },
       "commercialLabel": "Flexible package 8 days / 7 nights",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 8 days / 7 nights",
+      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 8 days / 7 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -791,12 +791,12 @@
       ],
       "highlights": [
         "Más days para personalizar",
-        "Compatible con rutas culturales y naturales",
+        "Compatible con rutas culturales and naturales",
         "Permite una experiencia menos apresurada"
       ],
       "seo": {
         "title": "Cusco Packages 8 days / 7 nights | My Cusco Trip",
-        "description": "Diseñado para combinar los principales clásicos con rutas naturales y culturales menos saturadas."
+        "description": "Diseñado para combinar los principales clásicos con rutas naturales and culturales menos saturadas."
       }
     },
     {
@@ -811,7 +811,7 @@
       "badge": "Flexible",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "Configuración amplia para itinerarios con más descanso, rutas alternativas y upgrades.",
+      "shortDescription": "Configuración amplia para itinerarios con más descanso, rutas alternativas and upgrades.",
       "image": "./assets/img/packages/cusco/9d8n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -867,7 +867,7 @@
         ]
       },
       "commercialLabel": "Flexible package 9 days / 8 nights",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 9 days / 8 nights",
+      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 9 days / 8 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -877,12 +877,12 @@
       ],
       "highlights": [
         "Más days para personalizar",
-        "Compatible con rutas culturales y naturales",
+        "Compatible con rutas culturales and naturales",
         "Permite una experiencia menos apresurada"
       ],
       "seo": {
         "title": "Cusco Packages 9 days / 8 nights | My Cusco Trip",
-        "description": "Configuración amplia para itinerarios con más descanso, rutas alternativas y upgrades."
+        "description": "Configuración amplia para itinerarios con más descanso, rutas alternativas and upgrades."
       }
     },
     {
@@ -897,7 +897,7 @@
       "badge": "Gran viaje",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "La configuración más completa para combinar clásicos, experiencias culturales y rutas naturales.",
+      "shortDescription": "La configuración más completa para combinar clásicos, experiencias culturales and rutas naturales.",
       "image": "./assets/img/packages/cusco/10d9n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -957,7 +957,7 @@
         ]
       },
       "commercialLabel": "Flexible package 10 days / 9 nights",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 10 days / 9 nights",
+      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 10 days / 9 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -967,12 +967,12 @@
       ],
       "highlights": [
         "Más days para personalizar",
-        "Compatible con rutas culturales y naturales",
+        "Compatible con rutas culturales and naturales",
         "Permite una experiencia menos apresurada"
       ],
       "seo": {
         "title": "Cusco Packages 10 days / 9 nights | My Cusco Trip",
-        "description": "La configuración más completa para combinar clásicos, experiencias culturales y rutas naturales."
+        "description": "La configuración más completa para combinar clásicos, experiencias culturales and rutas naturales."
       }
     }
   ],
@@ -1021,7 +1021,7 @@
       ],
       "salesNotes": [
         "Ideal para viajes cortos.",
-        "Debe priorizar Machu Picchu Full Day y solo agregar medio day si los horarios lo permiten."
+        "Debe priorizar Machu Picchu Full Day and solo agregar medio day si los horarios lo permiten."
       ]
     },
     {
@@ -1132,7 +1132,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Duración ideal para City Tour, Sacred Valley, Machu Picchu y un trekking.",
+        "Duración ideal para City Tour, Sacred Valley, Machu Picchu and un trekking.",
         "Valle VIP puede reemplazar Sacred Valley + Maras para evitar duplicidad."
       ]
     },
@@ -1192,7 +1192,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Permite dos rutas de naturaleza si los horarios y descanso son compatibles.",
+        "Permite dos rutas de naturaleza si los horarios and descanso son compatibles.",
         "Si hay trekking después de Machu Picchu, usar Overnight Express."
       ]
     },
@@ -1255,7 +1255,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Duración suficiente para combinar clásicos y rutas alternativas.",
+        "Duración suficiente para combinar clásicos and rutas alternativas.",
         "Mantener máximo dos trekkings para evitar fatiga."
       ]
     },
@@ -1390,8 +1390,8 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Usar days libres o experiencias cortas para mejorar UX y no saturar el viaje.",
-        "Ideal para upsells de tren, hotel y experiencias privadas."
+        "Usar days libres o experiencias cortas para mejorar UX and no saturar el viaje.",
+        "Ideal para upsells de tren, hotel and experiencias privadas."
       ]
     },
     {
@@ -1474,7 +1474,7 @@
         "MAPI008",
         "MAPI010"
       ],
-      "description": "Cuando Sacred Valley se usa como conexión hacia Ollantaytambo o Aguas Calientes, el package debe convertir Machu Picchu a modalidad overnight.",
+      "description": "Cuando Sacred Valley se usa como conexión to Ollantaytambo o Aguas Calientes, el package debe convertir Machu Picchu a modalidad overnight.",
       "triggerTourCodes": [
         "CUZ003VIPCON",
         "CUZ003CON"
@@ -1489,7 +1489,7 @@
         "CUZ009"
       ],
       "requiresMachuPicchuCode": "MAPI004",
-      "description": "Si después de Machu Picchu hay trekking, usar Machu Picchu Overnight Express para volver antes y permitir descanso operativo."
+      "description": "Si después de Machu Picchu hay trekking, usar Machu Picchu Overnight Express para volver antes and permitir descanso operativo."
     },
     "valleVip": {
       "enabled": true,

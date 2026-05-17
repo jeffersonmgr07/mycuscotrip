@@ -4,7 +4,7 @@
   "sourceFile": "assets/data/tours.json",
   "targetFile": "assets/data/tours-cusco.json",
   "scope": "cusco-simple-tours",
-  "description": "Tours simples de Cusco separados del catálogo principal. El precio publicado se calcula para que el neto final estimado después de PayPal y retiro bancario sea igual al doble del costo interno del tour. Los extras no se duplican; solo cubren comisiones de cobro y retiro.",
+  "description": "Tours simples de Cusco separados del catálogo principal. El precio publicado se calcula para que el neto final estimado después de PayPal and retiro bancario sea igual al doble del costo interno del tour. Los extras no se duplican; solo cubren comisiones de cobro and retiro.",
   "pricingEngine": {
     "baseCurrency": "PEN",
     "displayCurrency": "USD",
@@ -28,7 +28,7 @@
     "extrasMarkup": {
       "mode": "net_cost_only_plus_payment_fees",
       "targetNetFormula": "internalCost",
-      "description": "Los extras, tickets y alimentación no se duplican. Solo se publica el valor necesario para cubrir comisiones y recibir el costo neto indicado."
+      "description": "Los extras, tickets and alimentación no se duplican. Solo se publica el valor necesario para cubrir comisiones and recibir el costo neto indicado."
     },
     "fees": {
       "paypalPercent": 0.054,
@@ -61,12 +61,12 @@
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "2 h 30 min",
-      "badge": "Nuevo",
+      "badge": "New",
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
       "shortDescription": "Enjoy a scenic tour of Cusco with an Andean ceremony, textile center and unforgettable views from Cristo Blanco.",
-      "description": "Bienvenida Ancestral y Recorrido Scenic por Cusco. Enjoy the views más emblemáticas desde nuestro bus scenic de double-decker, con live guide que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una Andean Mother Earth offering ceremony realizada por un Andean priestino para atraer armonía y buenas energías en tu visita. Discover un textile center especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Viewpoint del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal for fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
+      "description": "Bienvenida Ancestral and Recorrido Scenic por Cusco. Enjoy the most iconic views from nuestro double-decker scenic bus, con live guide que compartirá datos históricos and culturales. Observa la fortaleza de Sacsayhuamán, participa en una Andean offering ceremony to Mother Earth realizada por un Andean priest para atraer armonía and buenas energías en tu visita. Discover a textile center especializado en fibra de baby alpaca and aprende sobre el arte del tejido andino. Finaliza en el Cristo Blanco viewpoint con espectaculares vistas panorámicas de Cusco, ideal for unforgettable photos. Este tour is more than a sightseeing tour: es un ritual de good energy para conectarte con la cultura andina and recibir las mejores energías para tu stay in Cusco and Machu Picchu.",
       "duration": {
         "label": "2 h 30 min",
         "maxGroupSize": 28,
@@ -111,8 +111,8 @@
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus scenic",
-          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. From allí iniciaremos el recorrido en bus scenic de double-decker, ideal for tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
+          "title": "Encuentro and salida en bus scenic",
+          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. From allí iniciaremos el recorrido en double-decker scenic bus, ideal for tener una primera conexión visual con la ciudad del Cusco and sus alrededores.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
           ]
@@ -126,21 +126,21 @@
         },
         {
           "title": "Andean ceremony de bienvenida",
-          "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un Andean priestino. Esta experiencia está pensada como un ritual de armonía, gratitud y buen augurio para iniciar tu viaje por Cusco y Machu Picchu.",
+          "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un Andean priest. Esta experiencia está pensada como un ritual de armonía, gratitud and good energy para iniciar tu viaje por Cusco and Machu Picchu.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/ceremonia-andina.jpg"
           ]
         },
         {
-          "title": "Centro textil y cultura andina",
-          "description": "Visitaremos un textile center especializado en fibra de alpaca y baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales y detalles de la vestimenta andina.",
+          "title": "Centro textil and cultura andina",
+          "description": "Visitremos un textile center especializado en fibra de alpaca and baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales and detalles de la vestimenta andina.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/centro-textil.jpg"
           ]
         },
         {
-          "title": "Viewpoint del Cristo Blanco",
-          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos scenics más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
+          "title": "Cristo Blanco viewpoint",
+          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos scenics más fotografiados de Cusco, con tiempo para contemplar la ciudad and capturar imágenes memorables.",
           "images": [
             "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
           ]
@@ -149,7 +149,7 @@
       "faq": [
         {
           "q": "¿Cuánto dura el tour?",
-          "a": "La duración aproximada es de 2 horas y 30 minutos."
+          "a": "La duración aproximada es de 2 horas and 30 minutos."
         },
         {
           "q": "¿Dónde es el punto de encuentro?",
@@ -157,7 +157,7 @@
         },
         {
           "q": "¿Qué horarios tiene?",
-          "a": "Los horarios disponibles son 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 y 16:00, de lunes a domingo."
+          "a": "Los horarios disponibles son 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 and 16:00, de lunes a domingo."
         }
       ],
       "extras": [],
@@ -276,7 +276,7 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
@@ -292,12 +292,12 @@
       "category": "cusco",
       "type": "half-day-tour",
       "typeLabel": "Medio day",
-      "badge": "Imperdible",
+      "badge": "Must-see",
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
-      "shortDescription": "Explore Cusco, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay.",
-      "description": "Discover los sitios más emblemáticos de la ciudad imperial y sus alrededores en un recorrido clásico de medio day, ideal for aclimatarte y comenzar a descubrir Cusco.",
+      "shortDescription": "Explore Cusco, Sacsayhuamán, Qenqo, Puka Pukara and Tambomachay.",
+      "description": "Discover los sitios más emblemáticos de la ciudad imperial and sus alrededores en un recorrido clásico de medio day, ideal for aclimatarte and comenzar a descubrir Cusco.",
       "duration": {
         "label": "Medio day",
         "maxGroupSize": 20,
@@ -341,21 +341,21 @@
       "itinerary": [
         {
           "title": "Centro histórico de Cusco",
-          "description": "Iniciaremos el recorrido con una introducción a la ciudad imperial, sus calles coloniales, templos y espacios históricos que muestran la fusión entre la arquitectura inca y española.",
+          "description": "Iniciaremos el recorrido con una introducción a la ciudad imperial, sus calles coloniales, templos and espacios históricos que muestran la fusión entre la arquitectura inca and española.",
           "images": [
             "./assets/img/tours/city-tour/itinerary/centro-historico.jpg"
           ]
         },
         {
           "title": "Sacsayhuamán",
-          "description": "Visitaremos el imponente complejo arqueológico de Sacsayhuamán, reconocido por sus enormes bloques de piedra perfectamente ensamblados y su importancia ceremonial para el antiguo Cusco.",
+          "description": "Visitremos el imponente complejo arqueológico de Sacsayhuamán, reconocido por sus enormes bloques de piedra perfectamente ensamblados and su importancia ceremonial para el antiguo Cusco.",
           "images": [
             "./assets/img/tours/city-tour/itinerary/sacsayhuaman.jpg"
           ]
         },
         {
-          "title": "Qenqo, Puka Pukara y Tambomachay",
-          "description": "Continuaremos hacia los centros arqueológicos cercanos a la ciudad. Discoverrás espacios ceremoniales, antiguos puntos de control y estructuras vinculadas al culto al agua.",
+          "title": "Qenqo, Puka Pukara and Tambomachay",
+          "description": "Continuaremos to los centros arqueológicos cercanos a la ciudad. Discoverrás espacios ceremoniales, antiguos puntos de control and estructuras vinculadas al culto al agua.",
           "images": [
             "./assets/img/tours/city-tour/itinerary/qenqo-puka-pukara-tambomachay.jpg"
           ]
@@ -598,19 +598,19 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "City Tour Cusco + Centros Arqueológicos | My Cusco Trip",
-        "description": "Explore Cusco, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay."
+        "description": "Explore Cusco, Sacsayhuamán, Qenqo, Puka Pukara and Tambomachay."
       }
     },
     {
       "id": "exp_003_fd",
       "internalCode": "CUZ003FD",
       "slug": "sacred-valley-de-los-incas-full-day",
-      "title": "Sacred Valley de los Incas - Full Day",
+      "title": "Sacred Valley of the Incas - Full Day",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day",
@@ -619,8 +619,8 @@
       "featured": true,
       "location": "Cusco / Sacred Valley",
       "currency": "USD",
-      "shortDescription": "Explore Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Sacred Valley.",
-      "description": "Tour full day por el Sacred Valley de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita el centro arqueológico de Pisac, el mercado artesanal de Pisac, Urubamba como punto de almuerzo, el centro arqueológico de Ollantaytambo y Chinchero con demostración textil y visita cultural. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "shortDescription": "Explore Pisac, Urubamba, Ollantaytambo and Chinchero en una ruta cultural completa por el Sacred Valley.",
+      "description": "Tour full day por el Sacred Valley of the Incas. Starts approximately a las 7:00 a.m. from Cusco and visita el archaeological site de Pisac, el craft market de Pisac, Urubamba como lunch stop, el archaeological site de Ollantaytambo and Chinchero con textile demonstration and visita cultural. Ends approximately a las 8:00 p.m. en Cusco.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
@@ -659,41 +659,41 @@
       ],
       "excludes": [
         "Tourist ticket",
-        "Almuerzo buffet",
+        "Lunch buffet",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Pisac arqueológico",
-          "description": "Salida desde Cusco hacia el Sacred Valley para visitar el centro arqueológico de Pisac, famoso por sus terrazas agrícolas, vistas panorámicas y legado inca.",
+          "description": "Salida from Cusco to el Sacred Valley para visitar el archaeological site de Pisac, famoso por sus terrazas agrícolas, vistas panorámicas and legado inca.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tiempo para recorrer el mercado artesanal, conocer productos locales, textiles, cerámica y piezas inspiradas en la iconografía andina.",
+          "description": "Tiempo para recorrer el craft market, conocer productos locales, textiles, cerámica and piezas inspiradas en la iconografía andina.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Llegaremos a Urubamba, corazón del Sacred Valley, donde tendrás espacio para tomar un almuerzo buffet opcional antes de continuar la ruta.",
+          "description": "Llegaremos a Urubamba, corazón del Sacred Valley, donde tendrás espacio para tomar un lunch buffet opcional antes de continuar la ruta.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
-          "description": "Visitaremos el centro arqueológico de Ollantaytambo, antigua ciudad inca viva y punto estratégico del valle por su arquitectura, terrazas y templos.",
+          "description": "Visitremos el archaeological site de Ollantaytambo, antigua ciudad inca viva and punto estratégico del valle por su arquitectura, terrazas and templos.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
           ]
         },
         {
           "title": "Chinchero",
-          "description": "Cerraremos la ruta con una visita cultural en Chinchero, reconocido por sus tradiciones textiles, paisaje andino y herencia histórica.",
+          "description": "Cerraremos la ruta con una visita cultural en Chinchero, reconocido por sus tradiciones textiles, paisaje andino and herencia histórica.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
           ]
@@ -701,8 +701,8 @@
       ],
       "faq": [
         {
-          "q": "¿Incluye almuerzo?",
-          "a": "No. Puedes añadir el almuerzo buffet como extra cuando esté disponible."
+          "q": "¿Incluye lunch?",
+          "a": "No. Puedes añadir el lunch buffet como extra cuando esté disponible."
         },
         {
           "q": "¿Incluye boleto turístico?",
@@ -740,7 +740,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Sacred Valley",
+          "label": "Lunch buffet Sacred Valley",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -892,19 +892,19 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
-        "title": "Sacred Valley de los Incas - Full Day | My Cusco Trip",
-        "description": "Explore Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Sacred Valley."
+        "title": "Sacred Valley of the Incas - Full Day | My Cusco Trip",
+        "description": "Explore Pisac, Urubamba, Ollantaytambo and Chinchero en una ruta cultural completa por el Sacred Valley."
       }
     },
     {
       "id": "exp_003_con",
       "internalCode": "CUZ003CON",
       "slug": "sacred-valley-de-los-incas-con-conexion-a-machu-picchu",
-      "title": "Sacred Valley de los Incas con conexión a Machu Picchu",
+      "title": "Sacred Valley of the Incas con conexión a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day con conexión",
@@ -913,8 +913,8 @@
       "featured": true,
       "location": "Cusco / Sacred Valley / Ollantaytambo",
       "currency": "USD",
-      "shortDescription": "Ruta clásica por el Sacred Valley finalizando en Ollantaytambo para conectar con el tren hacia Aguas Calientes.",
-      "description": "Versión con conexión del Sacred Valley de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita Pisac arqueológico, el mercado artesanal de Pisac, Urubamba como punto de almuerzo y el centro arqueológico de Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu.",
+      "shortDescription": "Ruta clásica por el Sacred Valley finalizando en Ollantaytambo para conectar con el tren to Aguas Calientes.",
+      "description": "Versión con conexión del Sacred Valley of the Incas. Starts approximately a las 7:00 a.m. from Cusco and visita Pisac arqueológico, el craft market de Pisac, Urubamba como lunch stop and el archaeological site de Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar to Aguas Calientes o conectar con servicios relacionados a Machu Picchu.",
       "duration": {
         "label": "Full Day con conexión",
         "maxGroupSize": 18,
@@ -949,39 +949,39 @@
         "Pickup in Cusco",
         "Tourist transport por el Sacred Valley",
         "Professional guide",
-        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+        "Finalización en Ollantaytambo para conexión to Machu Picchu"
       ],
       "excludes": [
         "Tourist ticket",
-        "Almuerzo buffet",
+        "Lunch buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del package seleccionado",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Pisac arqueológico",
-          "description": "Iniciaremos la ruta por el Sacred Valley visitando Pisac arqueológico, con terrazas incas, miradores naturales y una introducción al legado agrícola del valle.",
+          "description": "Iniciaremos la ruta por el Sacred Valley visitando Pisac arqueológico, con terrazas incas, miradores naturales and una introducción al legado agrícola del valle.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tendrás tiempo para recorrer el mercado artesanal y conocer productos locales antes de continuar hacia el corazón del Sacred Valley.",
+          "description": "Tendrás tiempo para recorrer el craft market and conocer productos locales antes de continuar to el corazón del Sacred Valley.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Realizaremos una parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
+          "description": "Realizaremos una parada en Urubamba para lunch opcional and descanso antes de continuar to Ollantaytambo.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
           ]
         },
         {
-          "title": "Ollantaytambo y conexión a Machu Picchu",
-          "description": "Visitaremos Ollantaytambo y finalizaremos en este punto para facilitar la conexión hacia Aguas Calientes según el tren o servicio coordinado para Machu Picchu.",
+          "title": "Ollantaytambo and conexión a Machu Picchu",
+          "description": "Visitremos Ollantaytambo and finalizaremos en este punto para facilitar la conexión to Aguas Calientes según el tren o servicio coordinado para Machu Picchu.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
           ]
@@ -990,7 +990,7 @@
       "faq": [
         {
           "q": "¿Esta versión retorna a Cusco?",
-          "a": "No. Esta versión finaliza en Ollantaytambo para continuar hacia Aguas Calientes o conectar con el programa de Machu Picchu."
+          "a": "No. Esta versión finaliza en Ollantaytambo para continuar to Aguas Calientes o conectar con el programa de Machu Picchu."
         },
         {
           "q": "¿Incluye tren a Aguas Calientes?",
@@ -1028,7 +1028,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Sacred Valley",
+          "label": "Lunch buffet Sacred Valley",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1179,20 +1179,20 @@
         ]
       },
       "pricingNotes": [
-        "Esta variante finaliza en Ollantaytambo y está pensada para packages con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un package."
+        "Esta variante finaliza en Ollantaytambo and está pensada para packages con Machu Picchu Overnight.",
+        "El tren a Aguas Calientes se gestiona from trains.json cuando forma parte de un package."
       ],
       "places": [],
       "seo": {
-        "title": "Sacred Valley de los Incas con conexión a Machu Picchu | My Cusco Trip",
-        "description": "Ruta clásica por el Sacred Valley finalizando en Ollantaytambo para conectar con el tren hacia Aguas Calientes."
+        "title": "Sacred Valley of the Incas con conexión a Machu Picchu | My Cusco Trip",
+        "description": "Ruta clásica por el Sacred Valley finalizando en Ollantaytambo para conectar con el tren to Aguas Calientes."
       }
     },
     {
       "id": "exp_003_vip",
       "internalCode": "CUZ003VIP",
       "slug": "sacred-valley-de-los-incas-vip-full-day",
-      "title": "Sacred Valley de los Incas VIP - Full Day",
+      "title": "Sacred Valley of the Incas VIP - Full Day",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day VIP",
@@ -1202,7 +1202,7 @@
       "location": "Cusco / Sacred Valley / Maras / Moray",
       "currency": "USD",
       "shortDescription": "Complete route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac.",
-      "description": "VIP version of the Sacred Valley de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, las Salineras de Maras, el centro arqueológico de Moray, Urubamba como punto de almuerzo, Ollantaytambo, Pisac arqueológico y el mercado artesanal de Pisac. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "description": "VIP version of the Sacred Valley of the Incas. Inicia from Cusco visitando Chinchero con textile demonstration, las Salineras de Maras, el archaeological site de Moray, Urubamba como lunch stop, Ollantaytambo, Pisac arqueológico and el craft market de Pisac. Ends approximately a las 8:00 p.m. en Cusco.",
       "duration": {
         "label": "Full Day VIP",
         "maxGroupSize": 18,
@@ -1237,61 +1237,61 @@
         "Pickup in Cusco",
         "Tourist transport",
         "Professional guide",
-        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
+        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo and Pisac",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
         "Tourist ticket",
         "Ingreso a Salineras de Maras",
-        "Almuerzo buffet",
+        "Lunch buffet",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Chinchero",
-          "description": "Comenzaremos con Chinchero, donde conocerás su tradición textil, paisajes andinos y expresiones culturales vivas del Sacred Valley.",
+          "description": "Comenzaremos con Chinchero, donde conocerás su tradición textil, paisajes andinos and expresiones culturales vivas del Sacred Valley.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
-          "description": "Visitaremos las Salineras de Maras, un paisaje único formado por miles de pozas de sal utilizadas desde tiempos antiguos.",
+          "description": "Visitremos las Salineras de Maras, un paisaje único formado por miles de pozas de sal utilizadas from tiempos antiguos.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
           ]
         },
         {
           "title": "Moray",
-          "description": "Exploraremos Moray, conocido por sus terrazas circulares y su posible uso como laboratorio agrícola inca.",
+          "description": "Exploraremos Moray, conocido por sus terrazas circulares and su posible uso como laboratorio agrícola inca.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Parada para almuerzo buffet opcional en Urubamba, rodeado por el paisaje fértil del Sacred Valley.",
+          "description": "Parada para lunch buffet opcional en Urubamba, rodeado por el paisaje fértil del Sacred Valley.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
-          "description": "Recorrido por Ollantaytambo, una antigua ciudad inca viva con terrazas monumentales y calles históricas.",
+          "description": "Recorrido por Ollantaytambo, una antigua ciudad inca viva con terrazas monumentales and calles históricas.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
           ]
         },
         {
           "title": "Pisac arqueológico",
-          "description": "Visita a Pisac arqueológico para apreciar terrazas, caminos y vistas panorámicas del valle.",
+          "description": "Visit a Pisac arqueológico para apreciar terrazas, caminos and vistas panorámicas del valle.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tiempo para recorrer el mercado artesanal antes del retorno final a Cusco.",
+          "description": "Tiempo para recorrer el craft market antes del retorno final a Cusco.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
           ]
@@ -1300,7 +1300,7 @@
       "faq": [
         {
           "q": "¿Qué diferencia tiene la ruta VIP?",
-          "a": "La ruta VIP agrega Chinchero, Maras and Moray antes de continuar hacia Urubamba, Ollantaytambo y Pisac."
+          "a": "La ruta VIP agrega Chinchero, Maras and Moray antes de continuar to Urubamba, Ollantaytambo and Pisac."
         },
         {
           "q": "¿Incluye ingreso a Maras?",
@@ -1366,7 +1366,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Sacred Valley",
+          "label": "Lunch buffet Sacred Valley",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1555,7 +1555,7 @@
       ],
       "places": [],
       "seo": {
-        "title": "Sacred Valley de los Incas VIP - Full Day | My Cusco Trip",
+        "title": "Sacred Valley of the Incas VIP - Full Day | My Cusco Trip",
         "description": "Complete route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac."
       }
     },
@@ -1563,7 +1563,7 @@
       "id": "exp_003_vip_con",
       "internalCode": "CUZ003VIPCON",
       "slug": "sacred-valley-de-los-incas-vip-con-conexion-a-machu-picchu",
-      "title": "Sacred Valley de los Incas VIP con conexión a Machu Picchu",
+      "title": "Sacred Valley of the Incas VIP con conexión a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day VIP con conexión",
@@ -1572,8 +1572,8 @@
       "featured": true,
       "location": "Cusco / Sacred Valley / Ollantaytambo",
       "currency": "USD",
-      "shortDescription": "Ruta VIP por Chinchero, Maras, Moray, Urubamba y Ollantaytambo, finalizando en Ollantaytambo para conexión hacia Machu Picchu.",
-      "description": "Versión VIP con conexión del Sacred Valley de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, Salineras de Maras, Moray, Urubamba como punto de almuerzo y Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu. Esta variante no continúa hacia Pisac ni retorna a Cusco.",
+      "shortDescription": "Ruta VIP por Chinchero, Maras, Moray, Urubamba and Ollantaytambo, finalizando en Ollantaytambo para conexión to Machu Picchu.",
+      "description": "Versión VIP con conexión del Sacred Valley of the Incas. Inicia from Cusco visitando Chinchero con textile demonstration, Salineras de Maras, Moray, Urubamba como lunch stop and Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar to Aguas Calientes o conectar con servicios relacionados a Machu Picchu. Esta variante no continúa to Pisac ni retorna a Cusco.",
       "duration": {
         "label": "Full Day VIP con conexión",
         "maxGroupSize": 18,
@@ -1608,47 +1608,47 @@
         "Pickup in Cusco",
         "Tourist transport por ruta VIP del Sacred Valley",
         "Professional guide",
-        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+        "Finalización en Ollantaytambo para conexión to Machu Picchu"
       ],
       "excludes": [
         "Tourist ticket",
         "Ingreso a Salineras de Maras",
-        "Almuerzo buffet",
+        "Lunch buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del package seleccionado",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Chinchero",
-          "description": "Iniciaremos la ruta VIP con una visita cultural a Chinchero y una demostración textil tradicional.",
+          "description": "Iniciaremos la ruta VIP con una visita cultural a Chinchero and una textile demonstration tradicional.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
-          "description": "Continuaremos hacia las Salineras de Maras, con tiempo para observar las pozas de sal y el paisaje del valle.",
+          "description": "Continuaremos to las Salineras de Maras, con tiempo para observar las pozas de sal and el paisaje del valle.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
           ]
         },
         {
           "title": "Moray",
-          "description": "Visitaremos Moray, centro arqueológico famoso por sus terrazas circulares y microclimas agrícolas.",
+          "description": "Visitremos Moray, archaeological site famoso por sus terrazas circulares and microclimas agrícolas.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
+          "description": "Parada en Urubamba para lunch opcional and descanso antes de continuar to Ollantaytambo.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
           ]
         },
         {
-          "title": "Ollantaytambo y conexión a Machu Picchu",
-          "description": "Finalizaremos en Ollantaytambo para conectar con el programa hacia Machu Picchu o Aguas Calientes, según la opción seleccionada.",
+          "title": "Ollantaytambo and conexión a Machu Picchu",
+          "description": "Finalizaremos en Ollantaytambo para conectar con el programa to Machu Picchu o Aguas Calientes, según la opción seleccionada.",
           "images": [
             "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
           ]
@@ -1657,7 +1657,7 @@
       "faq": [
         {
           "q": "¿Esta versión visita Pisac?",
-          "a": "No. Para permitir la conexión hacia Machu Picchu, esta versión finaliza en Ollantaytambo y no continúa hacia Pisac."
+          "a": "No. Para permitir la conexión to Machu Picchu, esta versión finaliza en Ollantaytambo and no continúa to Pisac."
         },
         {
           "q": "¿Incluye tren a Aguas Calientes?",
@@ -1723,7 +1723,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Sacred Valley",
+          "label": "Lunch buffet Sacred Valley",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1908,12 +1908,12 @@
       },
       "pricingNotes": [
         "Esta variante está pensada como ruta preferida para packages con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un package."
+        "El tren a Aguas Calientes se gestiona from trains.json cuando forma parte de un package."
       ],
       "places": [],
       "seo": {
-        "title": "Sacred Valley de los Incas VIP con conexión a Machu Picchu | My Cusco Trip",
-        "description": "Ruta VIP por Chinchero, Maras, Moray, Urubamba y Ollantaytambo, finalizando en Ollantaytambo para conexión hacia Machu Picchu."
+        "title": "Sacred Valley of the Incas VIP con conexión a Machu Picchu | My Cusco Trip",
+        "description": "Ruta VIP por Chinchero, Maras, Moray, Urubamba and Ollantaytambo, finalizando en Ollantaytambo para conexión to Machu Picchu."
       }
     },
     {
@@ -1924,12 +1924,12 @@
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Medio day",
-      "badge": "Imperdible",
+      "badge": "Must-see",
       "featured": true,
       "location": "Cusco / Maras / Moray",
       "currency": "USD",
-      "shortDescription": "Descubre el laboratorio agrícola inca de Moray y las famosas Salineras de Maras.",
-      "description": "Uno de los tours preferidos por los viajeros es el tour de Maras and Moray, que les permite disfrutar de los paisajes y experiencias de estos pueblos y sus atractivos. La ruta incluye visita al textile center de Chinchero, recorrido por Moray, considerado un laboratorio agrícola inca por sus terrazas circulares, y visita a Maras y sus salineras, donde podrás conocer el antiguo sistema de extracción de sal usado desde épocas preincaicas.",
+      "shortDescription": "Descubre el laboratorio agrícola inca de Moray and las famosas Salineras de Maras.",
+      "description": "Uno de los tours preferidos por los viajeros es el tour de Maras and Moray, que les permite disfrutar de los paisajes and experiencias de estos pueblos and sus atractivos. La ruta incluye visita al textile center de Chinchero, recorrido por Moray, considerado un laboratorio agrícola inca por sus terrazas circulares, and visita a Maras and sus salineras, donde podrás conocer el antiguo sistema de extracción de sal usado from épocas preincaicas.",
       "duration": {
         "label": "Medio day",
         "maxGroupSize": 18,
@@ -1973,14 +1973,14 @@
       "itinerary": [
         {
           "title": "Hotel pickup",
-          "description": "Pickup from your hotel or coordinated meeting point en Cusco para iniciar la ruta hacia Chinchero, Maras and Moray.",
+          "description": "Pickup from your hotel or coordinated meeting point en Cusco para iniciar la ruta to Chinchero, Maras and Moray.",
           "images": [
             "./assets/img/tours/maras-moray/itinerary/recojo-cusco.jpg"
           ]
         },
         {
           "title": "Centro textil de Chinchero",
-          "description": "Visita cultural para conocer técnicas tradicionales de tejido, tintes naturales y productos elaborados con fibra de alpaca.",
+          "description": "Visit cultural para conocer técnicas tradicionales de tejido, tintes naturales and productos elaborados con fibra de alpaca.",
           "images": [
             "./assets/img/tours/maras-moray/itinerary/chinchero-textil.jpg"
           ]
@@ -1993,8 +1993,8 @@
           ]
         },
         {
-          "title": "Maras y Salineras",
-          "description": "Visita al pueblo de Maras y a las famosas salineras, con miles de pozas que forman uno de los paisajes más fotogénicos del Sacred Valley.",
+          "title": "Maras and Salineras",
+          "description": "Visit al pueblo de Maras and a las famosas salineras, con miles de pozas que forman uno de los paisajes más fotogénicos del Sacred Valley.",
           "images": [
             "./assets/img/tours/maras-moray/itinerary/salineras-maras.jpg"
           ]
@@ -2003,7 +2003,7 @@
       "faq": [
         {
           "q": "¿Incluye entradas?",
-          "a": "No. El boleto turístico parcial y el ingreso a Salineras se pagan aparte."
+          "a": "No. El boleto turístico parcial and el ingreso a Salineras se pagan aparte."
         },
         {
           "q": "¿Se puede hacer en cuatrimoto?",
@@ -2236,7 +2236,7 @@
           "cultural"
         ],
         "keywords": [
-          "maras y moray",
+          "maras and moray",
           "maras-y-moray",
           "cusco / maras / moray",
           "maras-moray",
@@ -2249,12 +2249,12 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "Maras and Moray | My Cusco Trip",
-        "description": "Descubre el laboratorio agrícola inca de Moray y las famosas Salineras de Maras."
+        "description": "Descubre el laboratorio agrícola inca de Moray and las famosas Salineras de Maras."
       }
     },
     {
@@ -2269,8 +2269,8 @@
       "featured": true,
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
       "currency": "USD",
-      "shortDescription": "Explore Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco.",
-      "description": "Este tour inicia desde el recojo de su hotel alrededor de las 8:00 a 8:30 AM Luego partiremos en bus hacia el sur de Cusco. La primera parada será el centro arqueológico de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales y retablos barrocos. Regreso aproximado a Cusco a las 2:30 PM",
+      "shortDescription": "Explore Tipón, Pikillacta and Andahuaylillas en una ruta cultural al sur de Cusco.",
+      "description": "Este tour inicia from el recojo de su hotel alrededor de las 8:00 a 8:30 AM Luego partiremos en bus to el sur de Cusco. La primera parada será el archaeological site de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales and retablos barrocos. Regreso aproximado a Cusco a las 2:30 PM",
       "duration": {
         "label": "Medio day",
         "maxGroupSize": 18,
@@ -2312,15 +2312,15 @@
       ],
       "itinerary": [
         {
-          "title": "Salida desde Cusco",
-          "description": "Pickup from your hotel entre 8:00 y 8:30 AM para iniciar la ruta hacia el sur del Cusco.",
+          "title": "Salida from Cusco",
+          "description": "Pickup from your hotel entre 8:00 and 8:30 AM para iniciar la ruta to el sur del Cusco.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
           ]
         },
         {
           "title": "Tipón",
-          "description": "Visita al centro arqueológico de Tipón, famoso por su sistema hidráulico inca y canales de agua aún funcionales.",
+          "description": "Visit al archaeological site de Tipón, famoso por su sistema hidráulico inca and canales de agua aún funcionales.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/tipon.jpg"
           ]
@@ -2334,7 +2334,7 @@
         },
         {
           "title": "Andahuaylillas",
-          "description": "Visitaremos la iglesia de Andahuaylillas, conocida como la Sixtina de América por su arte mural, lienzos y retablos barrocos.",
+          "description": "Visitremos la iglesia de Andahuaylillas, conocida como la Sixtina de América por su arte mural, lienzos and retablos barrocos.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/andahuaylillas.jpg"
           ]
@@ -2343,7 +2343,7 @@
       "faq": [
         {
           "q": "¿Cuánto dura el tour?",
-          "a": "La experiencia dura aproximadamente medio day, con retorno a Cusco hacia las 2:30 PM"
+          "a": "La experiencia dura aproximadamente medio day, con retorno a Cusco to las 2:30 PM"
         },
         {
           "q": "¿Incluye boleto turístico?",
@@ -2568,12 +2568,12 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "Valle Sur | My Cusco Trip",
-        "description": "Explore Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco."
+        "description": "Explore Tipón, Pikillacta and Andahuaylillas en una ruta cultural al sur de Cusco."
       }
     },
     {
@@ -2589,7 +2589,7 @@
       "location": "Cusco / Humantay",
       "currency": "USD",
       "shortDescription": "Descubre la impresionante laguna turquesa a los pies del nevado Humantay.",
-      "description": "La excursión a Humantay Lake es una de las experiencias naturales más impactantes cerca de Cusco. Combina transporte, caminata en altura, paisajes de montaña y una vista espectacular de aguas turquesas.",
+      "description": "La excursión a Humantay Lake es una de las experiencias naturales más impactantes cerca de Cusco. Combina transporte, caminata en altura, paisajes de montaña and una vista espectacular de aguas turquesas.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
@@ -2624,8 +2624,8 @@
         "Pickup in Cusco",
         "Tourist transport",
         "Professional guide",
-        "Desayuno",
-        "Almuerzo"
+        "Breakfast",
+        "Lunch"
       ],
       "excludes": [
         "Ingreso",
@@ -2634,38 +2634,38 @@
       ],
       "itinerary": [
         {
-          "title": "Salida desde Cusco",
-          "description": "Pickup temprano y viaje hacia Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
+          "title": "Salida from Cusco",
+          "description": "Pickup temprano and viaje to Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
           "images": [
             "./assets/img/tours/laguna-humantay/itinerary/salida-cusco.jpg"
           ]
         },
         {
-          "title": "Desayuno e inicio de caminata",
-          "description": "Parada para desayuno y preparación antes de iniciar la caminata hacia la Humantay Lake.",
+          "title": "Breakfast e inicio de caminata",
+          "description": "Parada para desayuno and preparación antes de iniciar la caminata to la Humantay Lake.",
           "images": [
             "./assets/img/tours/laguna-humantay/itinerary/desayuno-caminata.jpg"
           ]
         },
         {
           "title": "Llegada a Humantay Lake",
-          "description": "Arribo a la laguna turquesa ubicada a los pies del nevado Humantay, con tiempo para fotos, descanso y explicación del guía.",
+          "description": "Arribo a la laguna turquesa ubicada a los pies del nevado Humantay, con tiempo para fotos, descanso and explicación del guía.",
           "images": [
             "./assets/img/tours/laguna-humantay/itinerary/laguna-humantay.jpg"
           ]
         },
         {
-          "title": "Retorno y almuerzo",
-          "description": "Descenso por la misma ruta, almuerzo en la zona y retorno en transporte turístico hacia Cusco.",
+          "title": "Retorno and lunch",
+          "description": "Descenso por la misma ruta, lunch en la zona and retorno en transporte turístico to Cusco.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/tours/laguna-humantay/itinerary/retorno-lunch.jpg"
           ]
         }
       ],
       "faq": [
         {
           "q": "¿Se necesita buena condición física?",
-          "a": "Sí, porque la caminata es en altura y con pendiente."
+          "a": "Sí, porque la caminata es en altura and con pendiente."
         },
         {
           "q": "¿Hay opción de caballo?",
@@ -2703,7 +2703,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Breakfast básico + lunch básico",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -2853,7 +2853,7 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
@@ -2873,8 +2873,8 @@
       "featured": true,
       "location": "Cusco / Vinicunca",
       "currency": "USD",
-      "shortDescription": "Vive una aventura inolvidable hacia la famosa montaña arcoíris de los Andes.",
-      "description": "Enjoy una de las excursiones más impactantes de Cusco. La caminata hacia la Rainbow Mountain te permitirá admirar paisajes de altura, comunidades andinas y uno de los escenarios más fotografiados del Peru.",
+      "shortDescription": "Vive una aventura inolvidable to la famosa montaña arcoíris de los Andes.",
+      "description": "Enjoy una de las excursiones más impactantes de Cusco. La caminata to la Rainbow Mountain te permitirá admirar paisajes de altura, comunidades andinas and uno de los esdinnerrios más fotografiados del Peru.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
@@ -2918,37 +2918,37 @@
       "itinerary": [
         {
           "title": "Salida de madrugada",
-          "description": "Pickup temprano en Cusco y viaje hacia el punto de inicio de la ruta a Vinicunca.",
+          "description": "Pickup temprano en Cusco and viaje to el punto de inicio de la ruta a Vinicunca.",
           "images": [
             "./assets/img/tours/montana-colores/itinerary/salida-madrugada.jpg"
           ]
         },
         {
-          "title": "Desayuno y caminata",
-          "description": "Parada para desayuno antes de iniciar la caminata hacia la Rainbow Mountain, atravesando paisajes altoandinos.",
+          "title": "Breakfast and caminata",
+          "description": "Parada para desayuno antes de iniciar la caminata to la Rainbow Mountain, atravesando paisajes altoandinos.",
           "images": [
             "./assets/img/tours/montana-colores/itinerary/desayuno-caminata.jpg"
           ]
         },
         {
           "title": "Llegada a la Rainbow Mountain",
-          "description": "Tiempo para fotografías, explicación del guía y contemplación del paisaje de la montaña arcoíris.",
+          "description": "Tiempo para fotografías, explicación del guía and contemplación del paisaje de la montaña arcoíris.",
           "images": [
             "./assets/img/tours/montana-colores/itinerary/vinicunca.jpg"
           ]
         },
         {
-          "title": "Retorno y almuerzo",
-          "description": "Descenso, almuerzo y retorno a Cusco al finalizar la experiencia.",
+          "title": "Retorno and lunch",
+          "description": "Descenso, lunch and retorno a Cusco al finalizar la experiencia.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/tours/montana-colores/itinerary/retorno-lunch.jpg"
           ]
         }
       ],
       "faq": [
         {
           "q": "¿La caminata es exigente?",
-          "a": "Sí, se recomienda buena condición física y aclimatación previa."
+          "a": "Sí, se recomienda buena condición física and aclimatación previa."
         },
         {
           "q": "¿Puedo alquilar caballo o ATV?",
@@ -2986,7 +2986,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Breakfast básico + lunch básico",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3176,12 +3176,12 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "Rainbow Mountain (Vinicunca) | My Cusco Trip",
-        "description": "Vive una aventura inolvidable hacia la famosa montaña arcoíris de los Andes."
+        "description": "Vive una aventura inolvidable to la famosa montaña arcoíris de los Andes."
       }
     },
     {
@@ -3196,8 +3196,8 @@
       "featured": true,
       "location": "Cusco / Palcoyo",
       "currency": "USD",
-      "shortDescription": "Explora la cordillera de colores de Palcoyo y su bosque de piedras en una caminata más accesible que Vinicunca.",
-      "description": "La Cordillera Palcoyo es considerada la prima hermana de Vinicunca, pero con mejor accesibilidad. Sus montañas de colores, el bosque de piedras y los paisajes altoandinos hacen de esta excursión una excelente opción para quienes buscan una experiencia natural impactante con menor exigencia física que la Rainbow Mountain clásica.",
+      "shortDescription": "Explora la cordillera de colores de Palcoyo and su bosque de piedras en una caminata más accesible que Vinicunca.",
+      "description": "La Cordillera Palcoyo es considerada la prima hermana de Vinicunca, pero con mejor accesibilidad. Sus montañas de colores, el bosque de piedras and los paisajes altoandinos hacen de esta excursión una excelente opción para quienes buscan una experiencia natural impactante con menor exigencia física que la Rainbow Mountain clásica.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
@@ -3232,62 +3232,62 @@
         "Pickup de su hotel en Cusco",
         "Tourist transport",
         "1 desayuno",
-        "1 almuerzo buffet",
+        "1 lunch buffet",
         "Ingreso a la Cordillera Palcoyo",
         "Professional guide Inglés – Español",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
       "excludes": [
-        "Cena",
+        "Dinner",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and departure",
-          "description": "Pickup entre 4:30 y 5:00 AM desde tu hotel en Cusco para iniciar el viaje hacia el sur de la región.",
+          "description": "Pickup entre 4:30 and 5:00 AM from tu hotel en Cusco para iniciar el viaje to el sur de la región.",
           "images": [
             "./assets/img/tours/montana-palcoyo/itinerary/salida-cusco.jpg"
           ]
         },
         {
-          "title": "Desayuno en Cusipata",
-          "description": "Parada en Cusipata para desayuno antes de continuar hacia la comunidad de Palcoyo.",
+          "title": "Breakfast en Cusipata",
+          "description": "Parada en Cusipata para desayuno antes de continuar to la comunidad de Palcoyo.",
           "images": [
             "./assets/img/tours/montana-palcoyo/itinerary/desayuno-cusipata.jpg"
           ]
         },
         {
           "title": "Llegada a Palcoyo",
-          "description": "Arribo a la zona de Palcoyo, desde donde se aprecian montañas de colores y paisajes altoandinos.",
+          "description": "Arribo a la zona de Palcoyo, from donde se aprecian montañas de colores and paisajes altoandinos.",
           "images": [
             "./assets/img/tours/montana-palcoyo/itinerary/palcoyo.jpg"
           ]
         },
         {
-          "title": "Caminata y bosque de piedras",
-          "description": "Caminata accesible para recorrer la cordillera de colores y el bosque de piedras.",
+          "title": "Caminata and bosque de piedras",
+          "description": "Caminata accesible para recorrer la cordillera de colores and el bosque de piedras.",
           "images": [
             "./assets/img/tours/montana-palcoyo/itinerary/bosque-piedras.jpg"
           ]
         },
         {
-          "title": "Almuerzo y retorno",
-          "description": "Almuerzo en ruta y retorno a Cusco durante la tarde.",
+          "title": "Lunch and retorno",
+          "description": "Lunch en ruta and retorno a Cusco durante la tarde.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/tours/montana-palcoyo/itinerary/retorno-lunch.jpg"
           ]
         }
       ],
       "faq": [
         {
           "q": "¿Es más fácil que Vinicunca?",
-          "a": "Sí. Palcoyo suele ser una opción más accesible por tener una caminata más corta y menos exigente."
+          "a": "Sí. Palcoyo suele ser una opción más accesible por tener una caminata más corta and menos exigente."
         },
         {
           "q": "¿Qué atractivos incluye?",
-          "a": "Includes la Cordillera Palcoyo, el bosque de piedras y paisajes con llamas, alpacas y en temporada el río rojo."
+          "a": "Includes la Cordillera Palcoyo, el bosque de piedras and paisajes con llamas, alpacas and en temporada el río rojo."
         }
       ],
       "extras": [
@@ -3321,7 +3321,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Breakfast básico + lunch básico",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3493,12 +3493,12 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "Montaña Palcoyo | My Cusco Trip",
-        "description": "Explora la cordillera de colores de Palcoyo y su bosque de piedras en una caminata más accesible que Vinicunca."
+        "description": "Explora la cordillera de colores de Palcoyo and su bosque de piedras en una caminata más accesible que Vinicunca."
       }
     },
     {
@@ -3513,8 +3513,8 @@
       "featured": true,
       "location": "Cusco / Pacchanta / Ausangate",
       "currency": "USD",
-      "shortDescription": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares y paisajes altoandinos inolvidables.",
-      "description": "Descubre uno de los paisajes más impresionantes de la cordillera del Vilcanota en un tour full day desde Cusco. La experiencia a las Siete Lagunas del Ausangate combina traslado temprano, desayuno en ruta, caminata de altura por senderos andinos, vistas del nevado Ausangate y recorrido por lagunas de colores turquesa, verde y azul profundo. Durante el trayecto podrás apreciar fauna local, comunidades altoandinas y, según la operación del day, disfrutar de las aguas termales de Pacchanta al finalizar la caminata. Es una excelente alternativa para viajeros que buscan aventura, naturaleza y una inmersión auténtica en los Andes del Cusco.",
+      "shortDescription": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares and paisajes altoandinos inolvidables.",
+      "description": "Descubre uno de los paisajes más impresionantes de la cordillera del Vilcanota en un tour full day from Cusco. La experiencia a las Siete Lagunas del Ausangate combina traslado temprano, desayuno en ruta, caminata de altura por senderos andinos, vistas del nevado Ausangate and recorrido por lagunas de colores turquesa, verde and azul profundo. Durante el trayecto podrás apreciar fauna local, comunidades altoandinas y, según la operación del day, disfrutar de las aguas termales de Pacchanta al finalizar la caminata. Es una excelente alternativa para viajeros que buscan aventura, naturaleza and una inmersión auténtica en los Andes del Cusco.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 18,
@@ -3548,10 +3548,10 @@
       },
       "includes": [
         "Pickup in Cusco",
-        "Tourist transport ida y vuelta",
+        "Tourist transport ida and vuelta",
         "Professional guide",
-        "Desayuno",
-        "Almuerzo",
+        "Breakfast",
+        "Lunch",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
@@ -3565,42 +3565,42 @@
       "itinerary": [
         {
           "title": "Pickup and departure from Cusco",
-          "description": "Pickup entre 4:00 y 4:30 AM desde tu hotel y viaje hacia Pacchanta, en la zona del Ausangate.",
+          "description": "Pickup entre 4:00 and 4:30 AM from tu hotel and viaje to Pacchanta, en la zona del Ausangate.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/salida-cusco.jpg"
           ]
         },
         {
-          "title": "Desayuno en Pacchanta",
-          "description": "Llegada a Pacchanta, desayuno y explicación del guía sobre la ruta, altitud y recomendaciones para la caminata.",
+          "title": "Breakfast en Pacchanta",
+          "description": "Llegada a Pacchanta, desayuno and explicación del guía sobre la ruta, altitud and recomendaciones para la caminata.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/desayuno-pacchanta.jpg"
           ]
         },
         {
           "title": "Inicio de la caminata",
-          "description": "Inicio del trekking por senderos altoandinos con vistas del nevado Ausangate y la cordillera del Vilcanota.",
+          "description": "Inicio del trekking por senderos altoandinos con vistas del nevado Ausangate and la cordillera del Vilcanota.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/inicio-caminata.jpg"
           ]
         },
         {
           "title": "Recorrido por las 7 lagunas",
-          "description": "Visita a las lagunas del circuito, reconocidas por sus tonos turquesa, verde esmeralda y azul profundo.",
+          "description": "Visit a las lagunas del circuito, reconocidas por sus tonos turquesa, verde esmeralda and azul profundo.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/siete-lagunas.jpg"
           ]
         },
         {
           "title": "Retorno a Pacchanta",
-          "description": "Descenso hacia Pacchanta. Según la operación del day, opción de disfrutar las aguas termales de la zona.",
+          "description": "Descenso to Pacchanta. Según la operación del day, opción de disfrutar las aguas termales de la zona.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/pacchanta.jpg"
           ]
         },
         {
-          "title": "Almuerzo y regreso a Cusco",
-          "description": "Almuerzo en la zona y retorno en transporte turístico hacia Cusco, llegando al atardecer.",
+          "title": "Lunch and regreso a Cusco",
+          "description": "Lunch en la zona and retorno en transporte turístico to Cusco, llegando al atardecer.",
           "images": [
             "./assets/img/tours/siete-lagunas-ausangate/itinerary/retorno-cusco.jpg"
           ]
@@ -3613,7 +3613,7 @@
         },
         {
           "q": "¿Cuál es la altitud máxima?",
-          "a": "El circuito alcanza aproximadamente entre 4,800 y 4,850 m s. n. m., dependiendo de la ruta operada."
+          "a": "El circuito alcanza aproximadamente entre 4,800 and 4,850 m s. n. m., dependiendo de la ruta operada."
         },
         {
           "q": "¿Incluye aguas termales?",
@@ -3621,7 +3621,7 @@
         },
         {
           "q": "¿Qué debo llevar?",
-          "a": "Se recomienda llevar ropa abrigadora, impermeable, bloqueador, lentes de sol, agua, snacks y calzado adecuado para trekking."
+          "a": "Se recomienda llevar ropa abrigadora, impermeable, bloqueador, lentes de sol, agua, snacks and calzado adecuado para trekking."
         }
       ],
       "extras": [
@@ -3655,7 +3655,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Breakfast básico + lunch básico",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3844,12 +3844,12 @@
       "pricingNotes": [
         "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "Actualizar el tipo de cambio operativo from currency-config.json antes de publicar precios finales."
       ],
       "places": [],
       "seo": {
         "title": "Siete Lagunas del Ausangate | My Cusco Trip",
-        "description": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares y paisajes altoandinos inolvidables."
+        "description": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares and paisajes altoandinos inolvidables."
       }
     }
   ]

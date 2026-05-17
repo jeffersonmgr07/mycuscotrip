@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/trekkings-cusco.json",
   "scope": "cusco-trekkings",
-  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto y filtros, sin mezclarse con packages dinámicos.",
+  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto and filtros, sin mezclarse con packages dinámicos.",
   "currency": "USD",
   "status": "draft-ready",
   "productKind": "trekking",
@@ -64,8 +64,8 @@
       "priceFrom": null,
       "days": 2,
       "nights": 1,
-      "shortDescription": "Versión corta del Camino Inca para conectar trekking, historia y Machu Picchu en una ruta compacta.",
-      "description": "Versión corta del Camino Inca para conectar trekking, historia y Machu Picchu en una ruta compacta.",
+      "shortDescription": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta.",
+      "description": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta.",
       "duration": {
         "label": "2D/1N",
         "days": 2,
@@ -86,12 +86,12 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de travelers."
+        "notes": "Sujeto a disponibilidad oficial and datos completos de travelers."
       },
       "accommodationType": [
-        "campamento o alojamiento según operación"
+        "campamento o alojamiento according to the confirmed operation"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -99,11 +99,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/camino-inca-2-dias-1-noche/cover.jpg",
+        "cover": "./assets/img/trekkings/camino-inca-2-dias-1-night/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -134,7 +134,7 @@
       "status": "draft",
       "seo": {
         "title": "Camino Inca 2D/1N | My Cusco Trip",
-        "description": "Versión corta del Camino Inca para conectar trekking, historia y Machu Picchu en una ruta compacta."
+        "description": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta."
       }
     },
     {
@@ -155,8 +155,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta clásica hacia Machu Picchu por antiguos caminos incas, campamentos y sitios arqueológicos.",
-      "description": "Ruta clásica hacia Machu Picchu por antiguos caminos incas, campamentos y sitios arqueológicos.",
+      "shortDescription": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos.",
+      "description": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -178,12 +178,12 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de travelers."
+        "notes": "Sujeto a disponibilidad oficial and datos completos de travelers."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -191,11 +191,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/camino-inca-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/trekkings/camino-inca-4-dias-3-nights/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -227,7 +227,7 @@
       "status": "draft",
       "seo": {
         "title": "Camino Inca Classic 4D/3N | My Cusco Trip",
-        "description": "Ruta clásica hacia Machu Picchu por antiguos caminos incas, campamentos y sitios arqueológicos."
+        "description": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos."
       }
     },
     {
@@ -248,8 +248,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta de aventura hacia Machu Picchu with paisajes de montaña, cambios de ecosistema y caminatas exigentes.",
-      "description": "Ruta de aventura hacia Machu Picchu with paisajes de montaña, cambios de ecosistema y caminatas exigentes.",
+      "shortDescription": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
+      "description": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -270,13 +270,13 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "campamento",
         "alojamiento básico"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -284,11 +284,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/salkantay-trek-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/trekkings/salkantay-trek-4-dias-3-nights/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -319,7 +319,7 @@
       "status": "draft",
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
-        "description": "Ruta de aventura hacia Machu Picchu with paisajes de montaña, cambios de ecosistema y caminatas exigentes."
+        "description": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes."
       }
     },
     {
@@ -340,8 +340,8 @@
       "priceFrom": null,
       "days": 5,
       "nights": 4,
-      "shortDescription": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación y conexión con Machu Picchu.",
-      "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación y conexión con Machu Picchu.",
+      "shortDescription": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu.",
+      "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu.",
       "duration": {
         "label": "5D/4N",
         "days": 5,
@@ -362,13 +362,13 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "campamento",
         "alojamiento básico"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -376,11 +376,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/salkantay-trek-5-dias-4-noches/cover.jpg",
+        "cover": "./assets/img/trekkings/salkantay-trek-5-dias-4-nights/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -411,7 +411,7 @@
       "status": "draft",
       "seo": {
         "title": "Salkantay Trek 5D/4N | My Cusco Trip",
-        "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación y conexión con Machu Picchu."
+        "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu."
       }
     },
     {
@@ -432,8 +432,8 @@
       "priceFrom": null,
       "days": 5,
       "nights": 4,
-      "shortDescription": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia y buena aclimatación.",
-      "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia y buena aclimatación.",
+      "shortDescription": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación.",
+      "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación.",
       "duration": {
         "label": "5D/4N",
         "days": 5,
@@ -453,12 +453,12 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -466,8 +466,8 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
         "cover": "./assets/img/trekkings/ausangate-trek/cover.jpg",
@@ -500,7 +500,7 @@
       "status": "draft",
       "seo": {
         "title": "Ausangate Trek | My Cusco Trip",
-        "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia y buena aclimatación."
+        "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación."
       }
     },
     {
@@ -543,12 +543,12 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -556,8 +556,8 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
         "cover": "./assets/img/trekkings/ausangate-vinicunca/cover.jpg",
@@ -612,8 +612,8 @@
       "priceFrom": null,
       "days": 3,
       "nights": 2,
-      "shortDescription": "Ruta activa hacia Machu Picchu with combinación de aventura, naturaleza y tramos de caminata.",
-      "description": "Ruta activa hacia Machu Picchu with combinación de aventura, naturaleza y tramos de caminata.",
+      "shortDescription": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata.",
+      "description": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata.",
       "duration": {
         "label": "3D/2N",
         "days": 3,
@@ -634,12 +634,12 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "alojamiento básico"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -647,11 +647,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/inca-jungle-3-dias-2-noches/cover.jpg",
+        "cover": "./assets/img/trekkings/inca-jungle-3-dias-2-nights/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -682,7 +682,7 @@
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
-        "description": "Ruta activa hacia Machu Picchu with combinación de aventura, naturaleza y tramos de caminata."
+        "description": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata."
       }
     },
     {
@@ -703,8 +703,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura y conexión con Machu Picchu.",
-      "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura y conexión con Machu Picchu.",
+      "shortDescription": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu.",
+      "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -725,12 +725,12 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeto a operación, clima and disponibilidad."
       },
       "accommodationType": [
         "alojamiento básico"
       ],
-      "season": "Todo el año sujeto a clima y disponibilidad",
+      "season": "Todo el año sujeto a clima and disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
@@ -738,11 +738,11 @@
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
-        "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
+        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
       ],
       "images": {
-        "cover": "./assets/img/trekkings/inca-jungle-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/trekkings/inca-jungle-4-dias-3-nights/cover.jpg",
         "gallery": []
       },
       "search": {
@@ -773,7 +773,7 @@
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
-        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura y conexión con Machu Picchu."
+        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu."
       }
     }
   ]

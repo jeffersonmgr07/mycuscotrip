@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "updatedAt": "2026-05-06",
-  "description": "Catálogo de tours Machu Picchu separado de tours-cusco.json. Esta versión ya no contiene un catálogo de trenes embebido; usa referencias a assets/data/trains.json para resolver horarios, rutas, empresas, categorías y tarifas ferroviarias.",
+  "description": "Catálogo de tours Machu Picchu separado de tours-cusco.json. Esta versión ya no contiene un catálogo de trenes embebido; usa referencias a assets/data/trains.json para resolver horarios, rutas, empresas, categorías and tarifas ferroviarias.",
   "currencyConfigReference": "assets/data/currency-config.json",
   "pricingAssumptions": {
     "exchangeRateUSDToPEN": 3.75,
@@ -34,12 +34,12 @@
     "sameCompanyRoundTripDefault": true,
     "allowMixedCompaniesDefault": false,
     "trainPricesSource": "assets/data/trains.json",
-    "priceResolution": "El precio base del tour se calcula con los trenes predeterminados referenciados por código. Los cambios de tren se calculan comparando el costo del nuevo tren contra el costo del default train.",
+    "priceResolution": "El precio base del tour se calcula con los trenes predeterminados referenciados por código. Los cambios de tren se calculan comparando el costo del new tren contra el costo del default train.",
     "notes": [
       "Para tours flexibles, al elegir tren de ida se bloquea la empresa ferroviaria para el retorno.",
-      "Para versiones express, la selección de tren queda fija y no debe mostrar alternativas al cliente.",
+      "Para versiones express, la selección de tren queda fija and no debe mostrar alternativas al cliente.",
       "Para versiones premium/luxury, las categorías permitidas se restringen por versión del producto.",
-      "Los precios reales deben sincronizarse desde trains.json antes de publicar o vender."
+      "Los precios reales deben sincronizarse from trains.json antes de publicar o vender."
     ]
   },
   "tours": [
@@ -61,7 +61,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Full-day Machu Picchu experience with train, bus, official entrance ticket and professional guide.",
-      "description": "Classic version de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Classic version de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day",
         "maxGroupSize": 15,
@@ -168,51 +168,51 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
-          "title": "Hotel pickup y traslado a estación",
-          "description": "Iniciaremos con el recojo desde tu hotel o punto previamente coordinado en Cusco. Según el horario del tren seleccionado, realizaremos el traslado hacia la estación correspondiente para iniciar la ruta hacia Machu Picchu.",
+          "title": "Hotel pickup and traslado a estación",
+          "description": "Iniciaremos con el recojo from tu hotel o punto previamente coordinado en Cusco. Según el horario del tren seleccionado, realizaremos el traslado to la estación correspondiente para iniciar la ruta to Machu Picchu.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/recojo-estacion.jpg"
           ]
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordarás el tren turístico incluido o el tren que elijas durante la reserva. Durante el trayecto disfrutarás paisajes del Sacred Valley, montañas andinas y el ingreso progresivo hacia la ceja de selva de Machu Picchu Pueblo.",
+          "description": "Abordarás el tren turístico incluido o el tren que elijas durante la reserva. Durante el trayecto disfrutarás paisajes del Sacred Valley, montañas andinas and el ingreso progresivo to la ceja de selva de Machu Picchu Pueblo.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/viaje-tren.jpg"
           ]
         },
         {
           "title": "Bus Consettur e official entrance ticket a Machu Picchu",
-          "description": "Al llegar a Machu Picchu Pueblo, coordinaremos la subida en bus Consettur hacia la puerta de ingreso. El acceso se realizará con ticket oficial y circuito confirmado según disponibilidad del Ministerio de Cultura.",
+          "description": "Al llegar a Machu Picchu Pueblo, coordinaremos la subida en bus Consettur to la puerta de ingreso. El acceso se realizará con ticket oficial and circuito confirmado según disponibilidad del Ministerio de Cultura.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
           ]
         },
         {
           "title": "Tour guiado en Machu Picchu",
-          "description": "Realizarás una guided visit por los sectores principales de la ciudadela. El guide will explain la historia, arquitectura, organización urbana y significado ceremonial de Machu Picchu durante el recorrido autorizado.",
+          "description": "Realizarás una guided visit por los sectores principales de la ciudadela. El guide will explain la historia, arquitectura, organización urbana and significado ceremonial de Machu Picchu durante el recorrido autorizado.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/tour-guiado.jpg"
           ]
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Después de la visita, descenderás a Machu Picchu Pueblo para tomar el tren de retorno seleccionado. Al llegar a la estación final, realizaremos el traslado terrestre correspondiente hacia Cusco o punto coordinado.",
+          "description": "Después de la visita, descenderás a Machu Picchu Pueblo para tomar el tren de retorno seleccionado. Al llegar a la estación final, realizaremos el traslado terrestre correspondiente to Cusco o punto coordinado.",
           "images": [
             "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/retorno-cusco.jpg"
           ]
@@ -247,7 +247,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "same_company_as_outbound",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "05:00",
@@ -308,7 +308,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -317,7 +317,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -401,8 +401,8 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day express a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión express de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience full day express a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión express de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Express",
         "maxGroupSize": 15,
@@ -509,27 +509,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and transfer to the station",
-          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
+          "description": "Pickup from your hotel or coordinated meeting point según estación and horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "description": "Abordaje del tren turístico to Aguas Calientes según la categoría elegida."
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
@@ -541,7 +541,7 @@
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "description": "Descenso a Aguas Calientes, tren de retorno and traslado final a Cusco."
         }
       ],
       "trainSelection": {
@@ -577,7 +577,7 @@
         "customerCanChangeTrain": false,
         "returnOptionsRule": "fixed_default_only",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación."
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación."
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
@@ -625,7 +625,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -634,7 +634,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -698,7 +698,7 @@
       },
       "seo": {
         "title": "Machu Picchu Full Day Express | My Cusco Trip",
-        "description": "Experience full day express a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience full day express a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -719,7 +719,7 @@
       "days": 2,
       "nights": 1,
       "shortDescription": "2-day / 1-night Machu Picchu experience with train, bus, official entrance ticket and professional guide.",
-      "description": "Versión overnight de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Versión overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night",
         "maxGroupSize": 15,
@@ -826,31 +826,31 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Day 1: Viaje a Aguas Calientes",
-          "description": "Iniciaremos con el traslado desde Cusco o el punto coordinado hacia la estación correspondiente. Abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando el paisaje del Sacred Valley y la ruta ferroviaria hacia la ceja de selva. A tu llegada, tendrás asistencia para ubicarte en Aguas Calientes y coordinar los detalles de la visita del day siguiente. La night será en Aguas Calientes según el hotel seleccionado.",
+          "description": "Iniciaremos con el traslado from Cusco o el punto coordinado to la estación correspondiente. Abordarás el tren turístico to Machu Picchu Pueblo, disfrutando el paisaje del Sacred Valley and la ruta ferroviaria to la ceja de selva. A tu llegada, tendrás asistencia para ubicarte en Aguas Calientes and coordinar los detalles de la visita del day siguiente. La night será en Aguas Calientes según el hotel seleccionado.",
           "images": [
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-viaje-tren.jpg",
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-aguas-calientes.jpg"
           ]
         },
         {
-          "title": "Day 2: Machu Picchu y retorno",
-          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur hacia la ciudadela de Machu Picchu. Realizarás la guided visit por el circuito confirmado, con explicación de los sectores principales, historia y arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado y continuar con el traslado final hacia Cusco o punto coordinado.",
+          "title": "Day 2: Machu Picchu and retorno",
+          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur to la ciudadela de Machu Picchu. Realizarás la guided visit por el circuito confirmado, con explicación de los sectores principales, historia and arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado and continuar con el traslado final to Cusco o punto coordinado.",
           "images": [
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-machu-picchu.jpg",
             "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-retorno.jpg"
@@ -885,7 +885,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "any_company_afternoon_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "15:00",
@@ -947,7 +947,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -956,7 +956,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1041,8 +1041,8 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión overnight express de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión overnight express de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night Express",
         "maxGroupSize": 15,
@@ -1149,27 +1149,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Day 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "description": "Traslado a estación and viaje en tren to Machu Picchu Pueblo. Night en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Day 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu and retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit and retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -1200,7 +1200,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "fixed_shortlist",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "allowedTrainCodes": {
           "outbound": [
             "INCA_OLLA_MAPI_VOYAGER_45",
@@ -1273,7 +1273,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1282,7 +1282,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1347,7 +1347,7 @@
       },
       "seo": {
         "title": "Machu Picchu Overnight Express | My Cusco Trip",
-        "description": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -1367,8 +1367,8 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión scenic de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión scenic de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full-Day Scenic Tour",
         "maxGroupSize": 15,
@@ -1475,27 +1475,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and transfer to the station",
-          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
+          "description": "Pickup from your hotel or coordinated meeting point según estación and horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "description": "Abordaje del tren turístico to Aguas Calientes según la categoría elegida."
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
@@ -1507,7 +1507,7 @@
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "description": "Descenso a Aguas Calientes, tren de retorno and traslado final a Cusco."
         }
       ],
       "trainSelection": {
@@ -1547,7 +1547,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "same_category_family",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "05:00",
@@ -1605,7 +1605,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1614,7 +1614,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1678,7 +1678,7 @@
       },
       "seo": {
         "title": "Machu Picchu Scenic Vistadome | My Cusco Trip",
-        "description": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -1698,8 +1698,8 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión premium de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión premium de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Premium",
         "maxGroupSize": 15,
@@ -1806,27 +1806,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and transfer to the station",
-          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
+          "description": "Pickup from your hotel or coordinated meeting point según estación and horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "description": "Abordaje del tren turístico to Aguas Calientes según la categoría elegida."
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
@@ -1838,7 +1838,7 @@
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "description": "Descenso a Aguas Calientes, tren de retorno and traslado final a Cusco."
         }
       ],
       "trainSelection": {
@@ -1876,7 +1876,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "prime_only",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "04:00",
@@ -1934,7 +1934,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1943,7 +1943,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2007,7 +2007,7 @@
       },
       "seo": {
         "title": "Machu Picchu The Prime | My Cusco Trip",
-        "description": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -2027,8 +2027,8 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión first class de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión first class de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day First Class",
         "maxGroupSize": 8,
@@ -2135,27 +2135,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and transfer to the station",
-          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
+          "description": "Pickup from your hotel or coordinated meeting point según estación and horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "description": "Abordaje del tren turístico to Aguas Calientes según la categoría elegida."
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
@@ -2167,7 +2167,7 @@
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "description": "Descenso a Aguas Calientes, tren de retorno and traslado final a Cusco."
         }
       ],
       "trainSelection": {
@@ -2208,7 +2208,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "incarail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "08:00",
@@ -2266,7 +2266,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2275,7 +2275,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2339,7 +2339,7 @@
       },
       "seo": {
         "title": "Machu Picchu First Class | My Cusco Trip",
-        "description": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -2359,8 +2359,8 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión first class overnight de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión first class overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night First Class",
         "maxGroupSize": 8,
@@ -2467,27 +2467,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Day 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "description": "Traslado a estación and viaje en tren to Machu Picchu Pueblo. Night en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Day 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu and retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit and retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -2527,7 +2527,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "incarail_afternoon_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
             "min": "10:00",
@@ -2589,7 +2589,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2598,7 +2598,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2663,7 +2663,7 @@
       },
       "seo": {
         "title": "Machu Picchu First Class Overnight | My Cusco Trip",
-        "description": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -2683,8 +2683,8 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión luxury de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión luxury de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Luxury",
         "maxGroupSize": 8,
@@ -2791,27 +2791,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Pickup and transfer to the station",
-          "description": "Pickup from your hotel or coordinated meeting point según estación y horario del tren seleccionado."
+          "description": "Pickup from your hotel or coordinated meeting point según estación and horario del tren seleccionado."
         },
         {
           "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "description": "Abordaje del tren turístico to Aguas Calientes según la categoría elegida."
         },
         {
           "title": "Bus e ingreso a Machu Picchu",
@@ -2823,7 +2823,7 @@
         },
         {
           "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "description": "Descenso a Aguas Calientes, tren de retorno and traslado final a Cusco."
         }
       ],
       "trainSelection": {
@@ -2863,7 +2863,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "perurail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "fixedDirection": "outbound",
         "timeWindows": {
           "outbound": {
@@ -2925,7 +2925,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2934,7 +2934,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2998,7 +2998,7 @@
       },
       "seo": {
         "title": "Machu Picchu Luxury Hiram Bingham | My Cusco Trip",
-        "description": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     },
     {
@@ -3018,8 +3018,8 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket y professional guide.",
-      "description": "Versión luxury overnight de Machu Picchu with train rules, nationality-based fares y estructura preparada para upgrades de tren, hotel y extras.",
+      "shortDescription": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "description": "Versión luxury overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night Luxury",
         "maxGroupSize": 8,
@@ -3126,27 +3126,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
+        "Asistencia de viaje antes and durante la experiencia",
         "Ticket de tren turístico según selección o default train",
         "Round-trip Consettur bus to Machu Picchu",
         "Official Machu Picchu entrance ticket according to availability",
         "Professional guide in Spanish or English",
-        "Ground transfers necesarios según estación y modalidad seleccionada"
+        "Ground transfers necesarios según estación and modalidad seleccionada"
       ],
       "excludes": [
-        "Meals y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Meals and bebidas no especificados",
+        "Hotel en Aguas Calientes cuando la modalidad sea overnight and no se haya seleccionado hotel",
         "Personal expenses",
         "Services not mentioned"
       ],
       "itinerary": [
         {
           "title": "Day 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "description": "Traslado a estación and viaje en tren to Machu Picchu Pueblo. Night en Aguas Calientes según hotel seleccionado."
         },
         {
-          "title": "Day 2: Machu Picchu y retorno",
-          "description": "Bus de subida, official entrance ticket, guided visit y retorno en tren según horario seleccionado."
+          "title": "Day 2: Machu Picchu and retorno",
+          "description": "Bus de subida, official entrance ticket, guided visit and retorno en tren según horario seleccionado."
         }
       ],
       "trainSelection": {
@@ -3186,7 +3186,7 @@
         "customerCanChangeTrain": true,
         "returnOptionsRule": "perurail_evening_return",
         "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
-        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
+        "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción and mostrar pendiente de confirmación.",
         "fixedDirection": "outbound",
         "timeWindows": {
           "outbound": {
@@ -3250,7 +3250,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Lunch buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -3259,7 +3259,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Lunch turístico en restaurante Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -3324,7 +3324,7 @@
       },
       "seo": {
         "title": "Machu Picchu Luxury Overnight | My Cusco Trip",
-        "description": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket y professional guide."
+        "description": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket and professional guide."
       }
     }
   ],

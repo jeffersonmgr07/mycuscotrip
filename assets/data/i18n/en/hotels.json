@@ -85,7 +85,7 @@
     "packageCalculation": {
       "customerPriceFormula": "sum published prices from tours + machu picchu + hotels + trains + extras + hidden package service fee",
       "internalProfitFormula": "sum target net revenue - sum real net costs",
-      "discountGuardrail": "Los descuentos deben calcularse desde la utilidad total del package y la utilidad mínima aceptada, no desde el precio bruto del package."
+      "discountGuardrail": "Discounts should be calculated from total package margin and the minimum accepted margin, not from the gross package price."
     }
   },
   "roomTypeDefinitions": {
@@ -139,18 +139,18 @@
           "pricingStatus": "confirmed_net_rates",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Agua caliente",
-            "Toallas",
-            "Baño privado",
-            "Desayuno",
+            "Wi-Fi",
+            "Hot water",
+            "Towels",
+            "Private bathroom",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "From 11:00",
             "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno semi buffet"
+            "breakfast": "Semi-buffet breakfast"
           },
           "images": {
             "cover": "./assets/img/hotels/cusco-boutique/cover.jpg",
@@ -423,7 +423,7 @@
                 "minimumAcceptedNetProfitPEN": 27.5,
                 "discountGuardrail": "Calculate the maximum discount from the total package profit, not from the isolated room."
               },
-              "notes": "Recomendada para dos adultos y dos niños."
+              "notes": "Recommended for two adults and two children."
             },
             {
               "roomType": "super-family-5",
@@ -467,7 +467,7 @@
                 "minimumAcceptedNetProfitPEN": 32.5,
                 "discountGuardrail": "Calculate the maximum discount from the total package profit, not from the isolated room."
               },
-              "notes": "Recomendada para dos adultos y tres niños."
+              "notes": "Recommended for two adults and three children."
             }
           ],
           "search": {
@@ -509,18 +509,18 @@
           "pricingStatus": "reference_from_previous_catalog_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Agua caliente",
-            "Toallas",
-            "Baño privado",
-            "Desayuno",
+            "Wi-Fi",
+            "Hot water",
+            "Towels",
+            "Private bathroom",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "From 11:00",
             "checkout": "Hasta 10:00",
-            "breakfast": "Desayuno incluido"
+            "breakfast": "Breakfast included"
           },
           "images": {
             "cover": "./assets/img/hotels/royal-qosqo/cover.jpg",
@@ -755,18 +755,18 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Agua caliente",
-            "Toallas",
-            "Baño privado",
-            "Desayuno",
+            "Wi-Fi",
+            "Hot water",
+            "Towels",
+            "Private bathroom",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "From 12:00",
             "checkout": "Hasta 09:00",
-            "breakfast": "Desayuno incluido"
+            "breakfast": "Breakfast included"
           },
           "images": {
             "cover": "./assets/img/hotels/luz-garden/cover.jpg",
@@ -991,18 +991,18 @@
           "pricingStatus": "reference_from_previous_catalog_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Agua caliente",
-            "Toallas",
-            "Baño privado",
-            "Desayuno",
+            "Wi-Fi",
+            "Hot water",
+            "Towels",
+            "Private bathroom",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "From 12:00",
             "checkout": "Hasta 09:00",
-            "breakfast": "Desayuno incluido"
+            "breakfast": "Breakfast included"
           },
           "images": {
             "cover": "./assets/img/hotels/vista-machu-picchu/cover.jpg",
@@ -1235,17 +1235,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/arawi-miraflores/cover.jpg",
@@ -1341,17 +1341,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/tierra-viva-miraflores/cover.jpg",
@@ -1447,17 +1447,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/casa-andina-select-miraflores/cover.jpg",
@@ -1576,22 +1576,22 @@
           "destinationLabel": "Arequipa",
           "location": "Arequipa",
           "address": "Centro histórico de Arequipa",
-          "summary": "Opción boutique céntrica para disfrutar la Ciudad Blanca caminando desde el centro histórico.",
+          "summary": "Centrally located boutique option for enjoying the White City within walking distance of the historic center.",
           "status": "published",
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/catedral-boutique-arequipa/cover.jpg",
@@ -1687,17 +1687,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/casablanca-arequipa/cover.jpg",
@@ -1793,17 +1793,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/riviera-arequipa/cover.jpg",
@@ -1909,17 +1909,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/sol-plaza-puno/cover.jpg",
@@ -2015,17 +2015,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/conde-de-lemos-puno/cover.jpg",
@@ -2121,17 +2121,17 @@
           "pricingStatus": "reference_pending_confirmation",
           "recommendedForPackages": true,
           "features": [
-            "Wifi",
-            "Baño privado",
-            "Agua caliente",
-            "Desayuno",
+            "Wi-Fi",
+            "Private bathroom",
+            "Hot water",
+            "Breakfast",
             "Recepción",
             "Buena ubicación para tours"
           ],
           "amenities": {
             "checkin": "Según política del hotel",
             "checkout": "Según política del hotel",
-            "breakfast": "Desayuno incluido o sujeto a tarifa confirmada"
+            "breakfast": "Breakfast included or subject to the confirmed rate"
           },
           "images": {
             "cover": "./assets/img/hotels/qalasaya-puno/cover.jpg",
@@ -2259,12 +2259,12 @@
             "Traslados fluviales o terrestres según operación",
             "Rooms with private bathroom",
             "Mosquiteros",
-            "Áreas comunes",
+            "Common areas",
             "Actividades guiadas",
-            "Toallas incluidas"
+            "Towels incluidas"
           ],
           "amenities": {
-            "breakfast": "Desayuno incluido",
+            "breakfast": "Breakfast included",
             "meals": "Alimentación según programa",
             "checkin": "Según llegada de vuelo",
             "checkout": "Según salida de vuelo"
@@ -2375,11 +2375,11 @@
             "Mosquiteros",
             "Scenic common areas",
             "Basic amenities",
-            "Toallas incluidas",
+            "Towels incluidas",
             "Actividades de naturaleza"
           ],
           "amenities": {
-            "breakfast": "Desayuno incluido",
+            "breakfast": "Breakfast included",
             "meals": "Full board according to the program",
             "checkin": "Según llegada de vuelo",
             "checkout": "Según salida de vuelo"

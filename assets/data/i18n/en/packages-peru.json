@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-02",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
-  "description": "Archivo de configuración para generar packages dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
+  "description": "Archivo de configuración para generar packages dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida and metadatos para All Experience and product.html.",
   "status": "draft_ready_for_review",
   "dataSources": {
     "cuscoPackageConfig": "assets/data/packages-cusco.json",
@@ -75,7 +75,7 @@
       "departureAvailableUntil": "20:00",
       "rules": [
         "No programar full day el primer day.",
-        "Permite actividad corta el último day si el destino y traslado lo permiten."
+        "Permite actividad corta el último day si el destino and traslado lo permiten."
       ]
     },
     {
@@ -86,8 +86,8 @@
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "10:00",
       "rules": [
-        "Primer y último day deben tratarse como days logísticos salvo disponibilidad real.",
-        "Reducir cantidad de tours y priorizar experiencias esenciales."
+        "Primer and último day deben tratarse como days logísticos salvo disponibilidad real.",
+        "Reducir cantidad de tours and priorizar experiencias esenciales."
       ]
     }
   ],
@@ -185,7 +185,7 @@
           "avoidAlsoIncluding": [
             "PER002"
           ],
-          "reason": "PER003 ya incluye la experiencia de Islas Ballestas dentro del full day desde Lima."
+          "reason": "PER003 ya incluye la experiencia de Islas Ballestas dentro del full day from Lima."
         }
       ],
       "logistics": {
@@ -401,7 +401,7 @@
       "domesticTransport": [
         "LIM-CUZ"
       ],
-      "salesPosition": "Ruta comercial fuerte para combinar costa, desierto y Andes."
+      "salesPosition": "Ruta comercial fuerte para combinar costa, desierto and Andes."
     },
     {
       "key": "lima-arequipa-cusco",
@@ -433,7 +433,7 @@
         "LIM-AQP",
         "AQP-CUZ"
       ],
-      "salesPosition": "Ruta cultural y paisajística para viajeros que quieren Arequipa y Colca."
+      "salesPosition": "Ruta cultural and paisajística para viajeros que quieren Arequipa and Colca."
     },
     {
       "key": "lima-puno-cusco",
@@ -464,7 +464,7 @@
         "LIM-JUL",
         "JUL-CUZ_or_tourist_bus"
       ],
-      "salesPosition": "Ruta andina con cultura viva y Machu Picchu."
+      "salesPosition": "Ruta andina con cultura viva and Machu Picchu."
     },
     {
       "key": "lima-paracas-arequipa-puno-cusco",
@@ -543,7 +543,7 @@
         "CUZ-PEM",
         "PEM-LIM"
       ],
-      "salesPosition": "Ruta extensa para combinar Andes y Amazonía."
+      "salesPosition": "Ruta extensa para combinar Andes and Amazonía."
     },
     {
       "key": "lima-paracas-cusco-puno-arequipa",
@@ -590,7 +590,7 @@
         "LIM-CUZ",
         "AQP-LIM"
       ],
-      "salesPosition": "Ruta multidestino comercial para grupos que combina costa, Andes, Titicaca y Arequipa."
+      "salesPosition": "Ruta multidestino comercial para grupos que combina costa, Andes, Titicaca and Arequipa."
     }
   ],
   "globalRules": {
@@ -615,11 +615,11 @@
       "useTrainsJsonAsSourceOfTruth": true
     },
     "commercialRules": [
-      "Priorizar rutas vendibles y comprensibles para cliente final.",
+      "Priorizar rutas vendibles and comprensibles para cliente final.",
       "No saturar packages cortos con demasiados traslados.",
       "No programar full day al day siguiente de una llegada nocturna o bus nocturno sin descanso.",
       "No programar trekkings de alta exigencia antes de aclimatación mínima en Cusco.",
-      "Evitar dos tours de madrugada consecutivos salvo packages largos y con nota comercial."
+      "Evitar dos tours de madrugada consecutivos salvo packages largos and con nota comercial."
     ],
     "pricingRules": {
       "pricingMode": "sum_selected_products_plus_hotels_transport_extras",
@@ -719,7 +719,7 @@
       "badge": "Primer viaje",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Peru",
-      "shortDescription": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos days.",
+      "shortDescription": "Ruta corta para combinar Lima, Cusco and Machu Picchu en pocos days.",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -766,7 +766,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Cusco 5 days / 4 nights | My Cusco Trip",
-        "description": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos days."
+        "description": "Ruta corta para combinar Lima, Cusco and Machu Picchu en pocos days."
       }
     },
     {
@@ -781,7 +781,7 @@
       "badge": "Classic",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Sacred Valley / Peru",
-      "shortDescription": "Ruta clásica con Lima, Sacred Valley, Cusco y Machu Picchu.",
+      "shortDescription": "Ruta clásica con Lima, Sacred Valley, Cusco and Machu Picchu.",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -829,7 +829,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Cusco 6 days / 5 nights | My Cusco Trip",
-        "description": "Ruta clásica con Lima, Sacred Valley, Cusco y Machu Picchu."
+        "description": "Ruta clásica con Lima, Sacred Valley, Cusco and Machu Picchu."
       }
     },
     {
@@ -844,7 +844,7 @@
       "badge": "Top ventas",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Peru",
-      "shortDescription": "Combina costa sur, desierto, Cusco y Machu Picchu.",
+      "shortDescription": "Combina costa sur, desierto, Cusco and Machu Picchu.",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -897,7 +897,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Paracas/Ica + Cusco 7 days / 6 nights | My Cusco Trip",
-        "description": "Combina costa sur, desierto, Cusco y Machu Picchu."
+        "description": "Combina costa sur, desierto, Cusco and Machu Picchu."
       }
     },
     {
@@ -912,7 +912,7 @@
       "badge": "Completo",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Peru",
-      "shortDescription": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca.",
+      "shortDescription": "Ruta extendida con costa sur, Andes, Machu Picchu and Lago Titicaca.",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -968,7 +968,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Paracas/Ica + Cusco/Puno 8 days / 7 nights | My Cusco Trip",
-        "description": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca."
+        "description": "Ruta extendida con costa sur, Andes, Machu Picchu and Lago Titicaca."
       }
     },
     {
@@ -983,7 +983,7 @@
       "badge": "Andes del Sur",
       "featured": false,
       "location": "Lima / Arequipa / Colca / Cusco / Peru",
-      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu.",
+      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco and Machu Picchu.",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1035,7 +1035,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Arequipa + Cusco 9 days / 8 nights | My Cusco Trip",
-        "description": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu."
+        "description": "Ruta andina con Lima, Arequipa, Colca, Cusco and Machu Picchu."
       }
     },
     {
@@ -1193,7 +1193,7 @@
           "title": "Arrival in Lima and night tour",
           "description": "Upon your afternoon arrival in Lima, our team will welcome you at the airport and transfer you to the selected hotel. At night, enjoy your first experience in Peru’s capital with a panoramic route through Miraflores and Barranco, Larcomar by the Pacific Ocean and the Magic Water Circuit, one of Lima’s most memorable evening shows.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-noche.jpg",
+          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-night.jpg",
           "images": [
             "./assets/img/packages/peru/lima-night/cover.jpg",
             "./assets/img/packages/peru/lima-night/1.jpg"
@@ -1304,7 +1304,7 @@
           "title": "Arrival in Lima and night tour",
           "description": "Upon your afternoon arrival in Lima, our team will welcome you at the airport and transfer you to the selected hotel. At night, enjoy your first experience in Peru’s capital with a panoramic route through Miraflores and Barranco, Larcomar by the Pacific Ocean and the Magic Water Circuit, one of Lima’s most memorable evening shows.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-noche.jpg",
+          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-night.jpg",
           "images": [
             "./assets/img/packages/peru/lima-night/cover.jpg",
             "./assets/img/packages/peru/lima-night/1.jpg"
@@ -1515,11 +1515,11 @@
         "currency": "USD",
         "mode": "sin_hoteles",
         "label": "Precio base per person sin hoteles",
-        "description": "Includes tours, transfers operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa y vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
+        "description": "Includes tours, transfers operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa and vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
       },
       "priceFrom": 1149,
       "priceLabel": "From USD 1,149 per person sin hoteles",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de room elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
+      "hotelPricingNote": "El alojamiento se suma aparte según el hotel and tipo de room elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa and Lima final.",
       "seo": {
         "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Titicaca & Arequipa | My Cusco Trip",
         "description": "Explore Peru in 10 days with a complete itinerary through Lima, Huacachina, Cusco, Machu Picchu, Lake Titicaca and Arequipa. Flexible quote, local assistance and guided experiences."
@@ -1537,7 +1537,7 @@
       "badge": "Peru esencial",
       "featured": true,
       "location": "Lima / Paracas / Ica / Arequipa / Peru",
-      "shortDescription": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco y Machu Picchu.",
+      "shortDescription": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco and Machu Picchu.",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1601,7 +1601,7 @@
       },
       "seo": {
         "title": "Peru Packages: Lima + Paracas + Arequipa + Puno + Cusco 12 days / 11 nights | My Cusco Trip",
-        "description": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco y Machu Picchu."
+        "description": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco and Machu Picchu."
       }
     },
     {
@@ -1814,7 +1814,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -1861,7 +1861,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -1914,7 +1914,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -1970,7 +1970,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -2024,7 +2024,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -2084,7 +2084,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Ruta comercial fija para cliente final con Lima, Paracas/Ica, Cusco, Machu Picchu, Puno y Arequipa.",
+        "Ruta comercial fija para cliente final con Lima, Paracas/Ica, Cusco, Machu Picchu, Puno and Arequipa.",
         "El tren debe mostrarse en versión resumida usando opciones existentes de trains.json.",
         "Los hoteles son configurables por destino según disponibilidad."
       ]
@@ -2145,7 +2145,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -2201,7 +2201,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     },
     {
@@ -2257,7 +2257,7 @@
       "salesNotes": [
         "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
         "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses y horarios reales."
+        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
       ]
     }
   ],
@@ -2297,7 +2297,7 @@
         "PER011"
       ],
       "preferredPosition": "start_or_end_by_flight_logic",
-      "salesNote": "Extensión amazónica que requiere validar vuelos y logística."
+      "salesNote": "Extensión amazónica que requiere validar vuelos and logística."
     }
   },
   "detailPageBehavior": {
@@ -2323,7 +2323,7 @@
   "implementationNotes": [
     "Este archivo no reemplaza tours-peru.json ni packages-cusco.json; los orquesta por referencia.",
     "Los packages Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
-    "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
+    "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json and tours-machu-picchu.json.",
     "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
   ]
 }
