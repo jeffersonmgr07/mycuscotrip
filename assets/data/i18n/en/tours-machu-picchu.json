@@ -60,7 +60,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Full-day Machu Picchu experience with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Full-day Machu Picchu experience with train, bus, official entrance ticket and a professional guide.",
       "description": "Classic version de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day",
@@ -151,11 +151,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": false,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -401,7 +401,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day express a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience full day express a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión express de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Express",
@@ -492,11 +492,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": false,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -718,7 +718,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "2-day / 1-night Machu Picchu experience with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "2-day / 1-night Machu Picchu experience with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night",
@@ -809,11 +809,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": false,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -1041,7 +1041,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience 2 days / 1 night express a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión overnight express de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night Express",
@@ -1132,11 +1132,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": false,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -1367,7 +1367,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience full day scenic a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión scenic de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full-Day Scenic Tour",
@@ -1458,11 +1458,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -1698,7 +1698,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience full day premium a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión premium de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Premium",
@@ -1789,11 +1789,11 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 15,
@@ -2027,7 +2027,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience full day first class a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión first class de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day First Class",
@@ -2118,11 +2118,11 @@
       "serviceModes": {
         "group": {
           "enabled": false,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 8,
@@ -2359,7 +2359,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience 2 days / 1 night first class a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión first class overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night First Class",
@@ -2450,11 +2450,11 @@
       "serviceModes": {
         "group": {
           "enabled": false,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 8,
@@ -2683,7 +2683,7 @@
       "currency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience full day luxury a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión luxury de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "Full Day Luxury",
@@ -2774,11 +2774,11 @@
       "serviceModes": {
         "group": {
           "enabled": false,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 8,
@@ -3018,7 +3018,7 @@
       "currency": "USD",
       "days": 2,
       "nights": 1,
-      "shortDescription": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket and professional guide.",
+      "shortDescription": "Experience 2 days / 1 night luxury a Machu Picchu with train, bus, official entrance ticket and a professional guide.",
       "description": "Versión luxury overnight de Machu Picchu with train rules, nationality-based fares and estructura preparada para upgrades de tren, hotel and extras.",
       "duration": {
         "label": "2 days / 1 night Luxury",
@@ -3109,11 +3109,11 @@
       "serviceModes": {
         "group": {
           "enabled": false,
-          "label": "Tour en grupo"
+          "label": "Group tour"
         },
         "private": {
           "enabled": true,
-          "label": "Tour privado o semiprivado"
+          "label": "Private or semi-private tour"
         }
       },
       "capacity": 8,

@@ -307,17 +307,17 @@
   "packageCards": [
     {
       "id": "pkg_cusco_3d2n",
-      "slug": "cusco-packages-3-days-2-nights",
-      "title": "Cusco Packages 3 days / 2 nights",
+      "slug": "cusco-package-3-days-2-nights",
+      "title": "Cusco & Machu Picchu Package 3 Days / 2 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 3,
       "nights": 2,
       "typeLabel": "3 days / 2 nights",
-      "badge": "Escapada esencial",
+      "badge": "Essential Escape",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Opciones dinámicas para conocer Cusco and Machu Picchu en una escapada corta.",
+      "shortDescription": "A short, flexible getaway to experience Cusco and Machu Picchu with options such as a City Tour, cultural visits and a well-organized citadel experience.",
       "image": "./assets/img/packages/cusco/3d2n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -362,31 +362,31 @@
       "itinerarySummary": [
         "Cusco",
         "Machu Picchu",
-        "Experience cultural"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Ideal para viajes cortos",
-        "Opciones Full Day u Overnight según horario",
-        "Ruta compacta and flexible"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 3 days / 2 nights | My Cusco Trip",
-        "description": "Opciones dinámicas para conocer Cusco and Machu Picchu en una escapada corta."
+        "title": "Cusco & Machu Picchu Package 3 Days / 2 Nights | My Cusco Trip",
+        "description": "A short, flexible getaway to experience Cusco and Machu Picchu with options such as a City Tour, cultural visits and a well-organized citadel experience."
       }
     },
     {
       "id": "pkg_cusco_4d3n",
-      "slug": "cusco-packages-4-days-3-nights",
-      "title": "Cusco Packages 4 days / 3 nights",
+      "slug": "cusco-package-4-days-3-nights",
+      "title": "Cusco & Machu Picchu Package 4 Days / 3 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 4,
       "nights": 3,
       "typeLabel": "4 days / 3 nights",
-      "badge": "Más vendido",
+      "badge": "Best Seller",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Combinaciones dinámicas con City Tour, Machu Picchu and una excursión adicional.",
+      "shortDescription": "A balanced itinerary combining Cusco, the Sacred Valley and Machu Picchu, ideal for a first visit with smooth logistics and a comfortable pace.",
       "image": "./assets/img/packages/cusco/4d3n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -440,34 +440,33 @@
       "recommendedTitle": "Ruta recomendada Cusco, Sacred Valley and Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
-        "City Tour",
-        "Sacred Valley",
+        "Cusco",
         "Machu Picchu",
-        "Humantay o Vinicunca"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más vendido",
-        "Permite naturaleza o aventura",
-        "Buen equilibrio de tiempo and experiencias"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 4 days / 3 nights | My Cusco Trip",
-        "description": "Combinaciones dinámicas con City Tour, Machu Picchu and una excursión adicional."
+        "title": "Cusco & Machu Picchu Package 4 Days / 3 Nights | My Cusco Trip",
+        "description": "A balanced itinerary combining Cusco, the Sacred Valley and Machu Picchu, ideal for a first visit with smooth logistics and a comfortable pace."
       }
     },
     {
       "id": "pkg_cusco_5d4n",
-      "slug": "cusco-packages-5-days-4-nights",
-      "title": "Cusco Packages 5 days / 4 nights",
+      "slug": "cusco-package-5-days-4-nights",
+      "title": "Cusco & Machu Picchu Package 5 Days / 4 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 5,
       "nights": 4,
       "typeLabel": "5 days / 4 nights",
-      "badge": "Recomendado",
+      "badge": "Recommended",
       "featured": true,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Flexible packages con Cusco, Sacred Valley, Machu Picchu and trekking opcional.",
+      "shortDescription": "A flexible package with the Sacred Valley, Machu Picchu and one additional experience such as Rainbow Mountain, Humantay Lake, Maras & Moray or the South Valley.",
       "image": "./assets/img/packages/cusco/5d4n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -526,33 +525,32 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Montaña o Laguna"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Ritmo cómodo",
-        "Más opciones de excursiones",
-        "Recomendado para primera visita"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 5 days / 4 nights | My Cusco Trip",
-        "description": "Flexible packages con Cusco, Sacred Valley, Machu Picchu and trekking opcional."
+        "title": "Cusco & Machu Picchu Package 5 Days / 4 Nights | My Cusco Trip",
+        "description": "A flexible package with the Sacred Valley, Machu Picchu and one additional experience such as Rainbow Mountain, Humantay Lake, Maras & Moray or the South Valley."
       }
     },
     {
       "id": "pkg_cusco_6d5n",
-      "slug": "cusco-packages-6-days-5-nights",
-      "title": "Cusco Packages 6 days / 5 nights",
+      "slug": "cusco-package-6-days-5-nights",
+      "title": "Cusco & Machu Picchu Package 6 Days / 5 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 6,
       "nights": 5,
       "typeLabel": "6 days / 5 nights",
-      "badge": "Completo",
+      "badge": "Complete Route",
       "featured": true,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Combinaciones completas con rutas culturales, Machu Picchu and naturaleza andina.",
+      "shortDescription": "A complete program to combine Cusco, the Sacred Valley, Machu Picchu and two additional nature or cultural experiences according to your travel dates.",
       "image": "./assets/img/packages/cusco/6d5n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -610,33 +608,32 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más days para personalizar",
-        "Compatible con rutas culturales and naturales",
-        "Permite una experiencia menos apresurada"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 6 days / 5 nights | My Cusco Trip",
-        "description": "Combinaciones completas con rutas culturales, Machu Picchu and naturaleza andina."
+        "title": "Cusco & Machu Picchu Package 6 Days / 5 Nights | My Cusco Trip",
+        "description": "A complete program to combine Cusco, the Sacred Valley, Machu Picchu and two additional nature or cultural experiences according to your travel dates."
       }
     },
     {
       "id": "pkg_cusco_7d6n",
-      "slug": "cusco-packages-7-days-6-nights",
-      "title": "Cusco Packages 7 days / 6 nights",
+      "slug": "cusco-package-7-days-6-nights",
+      "title": "Cusco & Machu Picchu Package 7 Days / 6 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 7,
       "nights": 6,
       "typeLabel": "7 days / 6 nights",
-      "badge": "Experience amplia",
+      "badge": "Full Week",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu",
-      "shortDescription": "Mayor variedad de combinaciones con cultura, Machu Picchu and hasta dos rutas de naturaleza.",
+      "shortDescription": "A full week to enjoy Machu Picchu, the Sacred Valley, Cusco City Tour and routes such as Humantay, Vinicunca, Palcoyo, Maras & Moray or the South Valley.",
       "image": "./assets/img/packages/cusco/7d6n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -697,33 +694,32 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más days para personalizar",
-        "Compatible con rutas culturales and naturales",
-        "Permite una experiencia menos apresurada"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 7 days / 6 nights | My Cusco Trip",
-        "description": "Mayor variedad de combinaciones con cultura, Machu Picchu and hasta dos rutas de naturaleza."
+        "title": "Cusco & Machu Picchu Package 7 Days / 6 Nights | My Cusco Trip",
+        "description": "A full week to enjoy Machu Picchu, the Sacred Valley, Cusco City Tour and routes such as Humantay, Vinicunca, Palcoyo, Maras & Moray or the South Valley."
       }
     },
     {
       "id": "pkg_cusco_8d7n",
-      "slug": "cusco-packages-8-days-7-nights",
-      "title": "Cusco Packages 8 days / 7 nights",
+      "slug": "cusco-package-8-days-7-nights",
+      "title": "Cusco & Machu Picchu Package 8 Days / 7 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 8,
       "nights": 7,
       "typeLabel": "8 days / 7 nights",
-      "badge": "Profundo",
+      "badge": "Deep Cusco",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "Diseñado para combinar los principales clásicos con rutas naturales and culturales menos saturadas.",
+      "shortDescription": "A broader itinerary designed to combine Cusco’s classics with natural and cultural experiences at a more relaxed pace.",
       "image": "./assets/img/packages/cusco/8d7n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -785,33 +781,32 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más days para personalizar",
-        "Compatible con rutas culturales and naturales",
-        "Permite una experiencia menos apresurada"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 8 days / 7 nights | My Cusco Trip",
-        "description": "Diseñado para combinar los principales clásicos con rutas naturales and culturales menos saturadas."
+        "title": "Cusco & Machu Picchu Package 8 Days / 7 Nights | My Cusco Trip",
+        "description": "A broader itinerary designed to combine Cusco’s classics with natural and cultural experiences at a more relaxed pace."
       }
     },
     {
       "id": "pkg_cusco_9d8n",
-      "slug": "cusco-packages-9-days-8-nights",
-      "title": "Cusco Packages 9 days / 8 nights",
+      "slug": "cusco-package-9-days-8-nights",
+      "title": "Cusco & Machu Picchu Package 9 Days / 8 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 9,
       "nights": 8,
       "typeLabel": "9 days / 8 nights",
-      "badge": "Flexible",
+      "badge": "Flexible Journey",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "Configuración amplia para itinerarios con más descanso, rutas alternativas and upgrades.",
+      "shortDescription": "An extended setup to add soft treks, alternative routes, extra nights and hotel or train upgrades based on your travel style.",
       "image": "./assets/img/packages/cusco/9d8n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -871,33 +866,32 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más days para personalizar",
-        "Compatible con rutas culturales and naturales",
-        "Permite una experiencia menos apresurada"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 9 days / 8 nights | My Cusco Trip",
-        "description": "Configuración amplia para itinerarios con más descanso, rutas alternativas and upgrades."
+        "title": "Cusco & Machu Picchu Package 9 Days / 8 Nights | My Cusco Trip",
+        "description": "An extended setup to add soft treks, alternative routes, extra nights and hotel or train upgrades based on your travel style."
       }
     },
     {
       "id": "pkg_cusco_10d9n",
-      "slug": "cusco-packages-10-days-9-nights",
-      "title": "Cusco Packages 10 days / 9 nights",
+      "slug": "cusco-package-10-days-9-nights",
+      "title": "Cusco & Machu Picchu Package 10 Days / 9 Nights",
       "productKind": "package",
       "productFamily": "cusco-package",
       "days": 10,
       "nights": 9,
       "typeLabel": "10 days / 9 nights",
-      "badge": "Gran viaje",
+      "badge": "Grand Journey",
       "featured": false,
       "location": "Cusco / Sacred Valley / Machu Picchu / Ausangate",
-      "shortDescription": "La configuración más completa para combinar clásicos, experiencias culturales and rutas naturales.",
+      "shortDescription": "The most complete option to combine Machu Picchu, the Sacred Valley, cultural experiences, Andean nature routes and rest time in Cusco.",
       "image": "./assets/img/packages/cusco/10d9n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -961,18 +955,17 @@
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
-        "Sacred Valley",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Flexible itinerary"
       ],
       "highlights": [
-        "Más days para personalizar",
-        "Compatible con rutas culturales and naturales",
-        "Permite una experiencia menos apresurada"
+        "Flexible itinerary planning",
+        "Hotel and train options available",
+        "Local assistance before booking"
       ],
       "seo": {
-        "title": "Cusco Packages 10 days / 9 nights | My Cusco Trip",
-        "description": "La configuración más completa para combinar clásicos, experiencias culturales and rutas naturales."
+        "title": "Cusco & Machu Picchu Package 10 Days / 9 Nights | My Cusco Trip",
+        "description": "The most complete option to combine Machu Picchu, the Sacred Valley, cultural experiences, Andean nature routes and rest time in Cusco."
       }
     }
   ],

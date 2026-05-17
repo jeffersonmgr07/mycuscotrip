@@ -709,17 +709,17 @@
   "packageCards": [
     {
       "id": "pkg_peru_5d4n",
-      "slug": "peru-packages-lima-cusco-5-days-4-nights",
-      "title": "Peru Packages: Lima + Cusco 5 days / 4 nights",
+      "slug": "peru-package-lima-cusco-machu-picchu-5-days-4-nights",
+      "title": "Peru 5-Day Tour: Lima, Cusco & Machu Picchu",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 5,
       "nights": 4,
       "typeLabel": "5 days / 4 nights",
-      "badge": "Primer viaje",
+      "badge": "First Peru Trip",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Peru",
-      "shortDescription": "Ruta corta para combinar Lima, Cusco and Machu Picchu en pocos days.",
+      "shortDescription": "A compact Peru itinerary for travelers who want to combine Lima, Cusco and Machu Picchu in a short, well-organized journey.",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -765,23 +765,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Cusco 5 days / 4 nights | My Cusco Trip",
-        "description": "Ruta corta para combinar Lima, Cusco and Machu Picchu en pocos days."
+        "title": "Peru 5-Day Tour: Lima, Cusco & Machu Picchu | My Cusco Trip",
+        "description": "A compact Peru itinerary for travelers who want to combine Lima, Cusco and Machu Picchu in a short, well-organized journey."
       }
     },
     {
       "id": "pkg_peru_6d5n",
-      "slug": "peru-packages-lima-cusco-6-days-5-nights",
-      "title": "Peru Packages: Lima + Cusco 6 days / 5 nights",
+      "slug": "peru-package-lima-cusco-sacred-valley-machu-picchu-6-days-5-nights",
+      "title": "Peru 6-Day Tour: Lima, Cusco, Sacred Valley & Machu Picchu",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 6,
       "nights": 5,
       "typeLabel": "6 days / 5 nights",
-      "badge": "Classic",
+      "badge": "Classic Peru",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Sacred Valley / Peru",
-      "shortDescription": "Ruta clásica con Lima, Sacred Valley, Cusco and Machu Picchu.",
+      "shortDescription": "A classic route through Lima, Cusco, the Sacred Valley and Machu Picchu, designed for travelers who want Peru’s must-see highlights with clear logistics.",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -828,23 +828,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Cusco 6 days / 5 nights | My Cusco Trip",
-        "description": "Ruta clásica con Lima, Sacred Valley, Cusco and Machu Picchu."
+        "title": "Peru 6-Day Tour: Lima, Cusco, Sacred Valley & Machu Picchu | My Cusco Trip",
+        "description": "A classic route through Lima, Cusco, the Sacred Valley and Machu Picchu, designed for travelers who want Peru’s must-see highlights with clear logistics."
       }
     },
     {
       "id": "pkg_peru_7d6n",
-      "slug": "peru-packages-lima-paracas-ica-cusco-7-days-6-nights",
-      "title": "Peru Packages: Lima + Paracas/Ica + Cusco 7 days / 6 nights",
+      "slug": "peru-package-lima-paracas-huacachina-cusco-machu-picchu-7-days-6-nights",
+      "title": "Peru 7-Day Tour: Lima, Paracas, Huacachina, Cusco & Machu Picchu",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 7,
       "nights": 6,
       "typeLabel": "7 days / 6 nights",
-      "badge": "Top ventas",
+      "badge": "Coast & Andes",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Peru",
-      "shortDescription": "Combina costa sur, desierto, Cusco and Machu Picchu.",
+      "shortDescription": "A dynamic journey combining Lima, the southern coast, desert landscapes, Cusco and Machu Picchu in one balanced itinerary.",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -896,23 +896,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Paracas/Ica + Cusco 7 days / 6 nights | My Cusco Trip",
-        "description": "Combina costa sur, desierto, Cusco and Machu Picchu."
+        "title": "Peru 7-Day Tour: Lima, Paracas, Huacachina, Cusco & Machu Picchu | My Cusco Trip",
+        "description": "A dynamic journey combining Lima, the southern coast, desert landscapes, Cusco and Machu Picchu in one balanced itinerary."
       }
     },
     {
       "id": "pkg_peru_8d7n",
-      "slug": "peru-packages-lima-paracas-ica-cusco-puno-8-days-7-nights",
-      "title": "Peru Packages: Lima + Paracas/Ica + Cusco/Puno 8 days / 7 nights",
+      "slug": "peru-package-lima-paracas-cusco-puno-machu-picchu-8-days-7-nights",
+      "title": "Peru 8-Day Tour: Lima, Paracas, Cusco, Machu Picchu & Lake Titicaca",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 8,
       "nights": 7,
       "typeLabel": "8 days / 7 nights",
-      "badge": "Completo",
+      "badge": "Extended Peru",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Peru",
-      "shortDescription": "Ruta extendida con costa sur, Andes, Machu Picchu and Lago Titicaca.",
+      "shortDescription": "An extended Peru route with coastal scenery, Andean culture, Machu Picchu and Lake Titicaca for travelers who want more than the classic circuit.",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -967,23 +967,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Paracas/Ica + Cusco/Puno 8 days / 7 nights | My Cusco Trip",
-        "description": "Ruta extendida con costa sur, Andes, Machu Picchu and Lago Titicaca."
+        "title": "Peru 8-Day Tour: Lima, Paracas, Cusco, Machu Picchu & Lake Titicaca | My Cusco Trip",
+        "description": "An extended Peru route with coastal scenery, Andean culture, Machu Picchu and Lake Titicaca for travelers who want more than the classic circuit."
       }
     },
     {
       "id": "pkg_peru_9d8n",
-      "slug": "peru-packages-lima-arequipa-cusco-9-days-8-nights",
-      "title": "Peru Packages: Lima + Arequipa + Cusco 9 days / 8 nights",
+      "slug": "peru-package-lima-arequipa-cusco-machu-picchu-9-days-8-nights",
+      "title": "Peru 9-Day Tour: Lima, Arequipa, Cusco & Machu Picchu",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 9,
       "nights": 8,
       "typeLabel": "9 days / 8 nights",
-      "badge": "Andes del Sur",
+      "badge": "Southern Andes",
       "featured": false,
       "location": "Lima / Arequipa / Colca / Cusco / Peru",
-      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco and Machu Picchu.",
+      "shortDescription": "A scenic southern Andes itinerary combining Lima, Arequipa, Colca landscapes, Cusco and Machu Picchu with organized travel support.",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1034,8 +1034,8 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Arequipa + Cusco 9 days / 8 nights | My Cusco Trip",
-        "description": "Ruta andina con Lima, Arequipa, Colca, Cusco and Machu Picchu."
+        "title": "Peru 9-Day Tour: Lima, Arequipa, Cusco & Machu Picchu | My Cusco Trip",
+        "description": "A scenic southern Andes itinerary combining Lima, Arequipa, Colca landscapes, Cusco and Machu Picchu with organized travel support."
       }
     },
     {
@@ -1527,17 +1527,17 @@
     },
     {
       "id": "pkg_peru_12d11n",
-      "slug": "peru-packages-lima-paracas-arequipa-puno-cusco-12-days-11-nights",
-      "title": "Peru Packages: Lima + Paracas + Arequipa + Puno + Cusco 12 days / 11 nights",
+      "slug": "peru-package-lima-paracas-arequipa-puno-cusco-12-days-11-nights",
+      "title": "Peru 12-Day Tour: Lima, Paracas, Arequipa, Puno, Cusco & Machu Picchu",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 12,
       "nights": 11,
       "typeLabel": "12 days / 11 nights",
-      "badge": "Peru esencial",
+      "badge": "Essential Peru",
       "featured": true,
       "location": "Lima / Paracas / Ica / Arequipa / Peru",
-      "shortDescription": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco and Machu Picchu.",
+      "shortDescription": "A complete southern Peru route with coast, desert, Arequipa, Colca, Lake Titicaca, Cusco and Machu Picchu.",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1600,23 +1600,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages: Lima + Paracas + Arequipa + Puno + Cusco 12 days / 11 nights | My Cusco Trip",
-        "description": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco and Machu Picchu."
+        "title": "Peru 12-Day Tour: Lima, Paracas, Arequipa, Puno, Cusco & Machu Picchu | My Cusco Trip",
+        "description": "A complete southern Peru route with coast, desert, Arequipa, Colca, Lake Titicaca, Cusco and Machu Picchu."
       }
     },
     {
       "id": "pkg_peru_14d13n",
-      "slug": "peru-packages-sur-amazonia-14-days-13-nights",
-      "title": "Peru Packages Sur + Amazonía 14 days / 13 nights",
+      "slug": "peru-south-and-amazon-14-day-tour",
+      "title": "Peru 14-Day Tour: Southern Peru & Amazon Extension",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 14,
       "nights": 13,
       "typeLabel": "14 days / 13 nights",
-      "badge": "Naturaleza",
+      "badge": "Nature Extension",
       "featured": false,
       "location": "Lima / Paracas / Arequipa / Puno / Peru",
-      "shortDescription": "Ruta amplia para combinar el sur clásico del Peru con una extensión de Amazonía.",
+      "shortDescription": "A broader itinerary that combines Peru’s classic southern route with an Amazon extension for travelers who want culture, nature and adventure.",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1678,23 +1678,23 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages Sur + Amazonía 14 days / 13 nights | My Cusco Trip",
-        "description": "Ruta amplia para combinar el sur clásico del Peru con una extensión de Amazonía."
+        "title": "Peru 14-Day Tour: Southern Peru & Amazon Extension | My Cusco Trip",
+        "description": "A broader itinerary that combines Peru’s classic southern route with an Amazon extension for travelers who want culture, nature and adventure."
       }
     },
     {
       "id": "pkg_peru_15d14n",
-      "slug": "peru-packages-completo-15-days-14-nights",
-      "title": "Peru Packages completo 15 days / 14 nights",
+      "slug": "complete-peru-15-day-tour",
+      "title": "Complete Peru 15-Day Tour",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 15,
       "nights": 14,
       "typeLabel": "15 days / 14 nights",
-      "badge": "Mega viaje",
+      "badge": "Ultimate Peru",
       "featured": false,
       "location": "Lima / Paracas / Ica / Nazca / Peru",
-      "shortDescription": "Versión extensa para viajeros que quieren una experiencia completa del Peru.",
+      "shortDescription": "An extended Peru journey for travelers who want a deeper experience with iconic destinations, flexible logistics and personalized assistance.",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
       "priceMode": "dynamic_from_selected_route_and_itinerary",
       "status": "published",
@@ -1764,8 +1764,8 @@
         ]
       },
       "seo": {
-        "title": "Peru Packages completo 15 days / 14 nights | My Cusco Trip",
-        "description": "Versión extensa para viajeros que quieren una experiencia completa del Peru."
+        "title": "Complete Peru 15-Day Tour | My Cusco Trip",
+        "description": "An extended Peru journey for travelers who want a deeper experience with iconic destinations, flexible logistics and personalized assistance."
       }
     }
   ],

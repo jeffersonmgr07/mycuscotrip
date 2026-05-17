@@ -180,7 +180,7 @@
   "footer.rights": "© 2026 My Cusco Trip. All rights reserved.",
   "footer.designedForTravelers": "Experiences designed for domestic and international travelers.",
   "home.featuredTitle": "Most-booked experiences in Cusco and Machu Picchu",
-  "home.featuredText": "Choose from classic tours, adventure routes and experiences designed by local specialists.",
+  "home.featuredText": "Choose classic tours, adventure routes and local experiences designed by specialists.",
   "home.featuredNote": "Prices, schedules and availability may vary according to season, trains and entrance availability.",
   "home.moreExperiences": "See more experiences",
   "home.quoteTitle": "Design your Cusco trip in minutes",
@@ -188,7 +188,7 @@
   "home.quotePackage": "Quote package",
   "home.suggestedPackages": "Suggested packages",
   "home.packagesTitle": "Top-requested Cusco and Machu Picchu packages",
-  "home.packagesText": "Start with a base route and customize hotels, trains and extras inside the quote builder.",
+  "home.packagesText": "Start with a base route and customize hotels, trains and extras in the quote builder.",
   "home.viewPackage": "View package",
   "home.seoEyebrow": "Plan with local experts",
   "home.seoTitle": "Cusco, Machu Picchu and Peru tours with local experts",
@@ -300,5 +300,12 @@
   "catalog.checkAvailability": "Check availability",
   "home.heroLine1": "Planning a trip to",
   "home.heroHighlight": "Machu Picchu?",
-  "home.heroLine2": "Find the perfect experience here"
+  "home.heroLine2": "Find the perfect experience here",
+  "catalog.availablePackages": "Available travel packages",
+  "catalog.availableRoutes": "Available routes",
+  "chips.mustSee": "Must-see",
+  "chips.bestSeller": "Best seller",
+  "chips.topRated": "Top rated",
+  "chips.new": "New",
+  "chips.scenic": "Scenic"
 }
