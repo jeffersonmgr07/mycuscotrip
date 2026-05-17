@@ -1748,11 +1748,41 @@ class MyCuscoTripProductPage {
     this.closeHotelModal();
   }
 
+  translateHotelFeature(feature) {
+    const value = String(feature || "").trim();
+    if (!value) return "";
+    const normalized = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const map = new Map([
+      ["desayuno", this.t("product.breakfastIncluded", "Breakfast included")],
+      ["desayuno incluido", this.t("product.breakfastIncluded", "Breakfast included")],
+      ["desayuno semi buffet", this.t("product.breakfast", "Breakfast") + ": semi-buffet"],
+      ["wifi", this.t("product.wifi", "Wi-Fi")],
+      ["wi-fi", this.t("product.wifi", "Wi-Fi")],
+      ["agua caliente", this.t("product.hotWater", "Hot water")],
+      ["toallas", this.t("product.towels", "Towels")],
+      ["bano privado", this.t("product.privateBathroom", "Private bathroom")],
+      ["baño privado", this.t("product.privateBathroom", "Private bathroom")],
+      ["areas comunes", this.t("product.commonAreas", "Common areas")],
+      ["áreas comunes", this.t("product.commonAreas", "Common areas")]
+    ]);
+    if (map.has(normalized)) return map.get(normalized);
+    return value
+      .replace(/desayuno incluido o sujeto a tarifa confirmada/ig, "Breakfast included or subject to the confirmed rate")
+      .replace(/desayuno incluido/ig, this.t("product.breakfastIncluded", "Breakfast included"))
+      .replace(/desayuno/ig, this.t("product.breakfast", "Breakfast"))
+      .replace(/agua caliente/ig, this.t("product.hotWater", "Hot water"))
+      .replace(/toallas/ig, this.t("product.towels", "Towels"))
+      .replace(/baño privado/ig, this.t("product.privateBathroom", "Private bathroom"))
+      .replace(/bano privado/ig, this.t("product.privateBathroom", "Private bathroom"))
+      .replace(/áreas comunes/ig, this.t("product.commonAreas", "Common areas"))
+      .replace(/areas comunes/ig, this.t("product.commonAreas", "Common areas"));
+  }
+
   renderHotelFeatures(hotel) {
     const rawFeatures = Array.isArray(hotel?.features) ? hotel.features : [];
     const amenityFeatures = [
-      hotel?.amenities?.breakfast ? `Desayuno: ${hotel.amenities.breakfast}` : "",
-      hotel?.amenities?.wifi ? "Wifi" : "",
+      hotel?.amenities?.breakfast ? `${this.t("product.breakfast", "Breakfast")}: ${this.translateHotelFeature(hotel.amenities.breakfast)}` : "",
+      hotel?.amenities?.wifi ? this.t("product.wifi", "Wi-Fi") : "",
       hotel?.amenities?.commonAreas ? this.t("product.commonAreas", "Áreas comunes") : ""
     ];
 
@@ -1760,7 +1790,7 @@ class MyCuscoTripProductPage {
       ...amenityFeatures,
       ...rawFeatures
     ]
-      .map((item) => String(item || "").trim())
+      .map((item) => this.translateHotelFeature(item))
       .filter(Boolean)
       .filter((item, index, arr) => arr.findIndex((other) => other.toLowerCase() === item.toLowerCase()) === index)
       .slice(0, 7);
@@ -1768,7 +1798,7 @@ class MyCuscoTripProductPage {
     if (!preferred.length) return "";
 
     return `
-      <div class="hotel-option-card__features" aria-label="Características del hotel">
+      <div class="hotel-option-card__features" aria-label="${this.escapeHtml(this.t("product.hotelFeatures", "Hotel features"))}">
         ${preferred.map((feature) => `
           <span><i class="fas fa-check" aria-hidden="true"></i>${this.escapeHtml(feature)}</span>
         `).join("")}
@@ -2023,14 +2053,14 @@ class MyCuscoTripProductPage {
       const partialOption = paymentModeSelect.querySelector('option[value="partial"]');
 
       if (partialOption) {
-        partialOption.textContent = "Pagar solo un adelanto";
+        partialOption.textContent = this.t("product.depositOnly", "Reserve with a deposit");
       }
     }
 
     const payNowLabel = document.getElementById("payNowLabel");
 
     if (payNowLabel) {
-      payNowLabel.textContent = "Pagar ahora";
+      payNowLabel.textContent = this.t("product.payNow", "Pay now");
     }
 
     const adultsRow = document.getElementById("adultsTotal")?.closest(".booking-summary__line");
@@ -2039,7 +2069,7 @@ class MyCuscoTripProductPage {
       const adultsLabel = adultsRow.querySelector("span");
 
       if (adultsLabel) {
-        adultsLabel.textContent = `Adultos x${String(this.adults).padStart(2, "0")}`;
+        adultsLabel.textContent = `${this.t("product.adults", "Adults")} x${String(this.adults).padStart(2, "0")}`;
       }
 
       adultsRow.hidden = false;
@@ -2067,7 +2097,7 @@ class MyCuscoTripProductPage {
       const accommodationLabel = accommodationRow.querySelector("span");
 
       if (accommodationLabel) {
-        accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
+        accommodationLabel.textContent = this.t("product.accommodationNights", "Accommodation x{count} nights", { count: String(totalAccommodationNights).padStart(2, "0") });
       }
     }
 
@@ -2080,7 +2110,7 @@ class MyCuscoTripProductPage {
       const extrasLabel = extrasRow.querySelector("span");
 
       if (extrasLabel) {
-        extrasLabel.textContent = "Extras";
+        extrasLabel.textContent = this.t("product.extras", "Extras");
       }
     }
 
@@ -2092,7 +2122,7 @@ class MyCuscoTripProductPage {
       const serviceLabel = serviceTotalRow.querySelector("span");
 
       if (serviceLabel) {
-        serviceLabel.textContent = "Total servicio";
+        serviceLabel.textContent = this.t("product.serviceTotal", "Service total");
       }
 
       serviceTotalRow.hidden = false;
@@ -2107,7 +2137,7 @@ class MyCuscoTripProductPage {
       const discountLabel = discountRow.querySelector("span");
 
       if (discountLabel) {
-        discountLabel.textContent = "Descuento";
+        discountLabel.textContent = this.t("product.discount", "Discount");
       }
     }
 
@@ -2232,14 +2262,14 @@ class MyCuscoTripProductPage {
       const partialOption = paymentModeSelect.querySelector('option[value="partial"]');
 
       if (partialOption) {
-        partialOption.textContent = "Pagar solo un adelanto";
+        partialOption.textContent = this.t("product.depositOnly", "Reserve with a deposit");
       }
     }
 
     const payNowLabel = document.getElementById("payNowLabel");
 
     if (payNowLabel) {
-      payNowLabel.textContent = "Pagar ahora";
+      payNowLabel.textContent = this.t("product.payNow", "Pay now");
     }
 
     const adultsRow = document.getElementById("adultsTotal")?.closest(".booking-summary__line");
@@ -2248,7 +2278,7 @@ class MyCuscoTripProductPage {
       const adultsLabel = adultsRow.querySelector("span");
 
       if (adultsLabel) {
-        adultsLabel.textContent = "Tours y Machu Picchu";
+        adultsLabel.textContent = this.t("product.toursAndMachuPicchu", "Tours and Machu Picchu");
       }
 
       adultsRow.hidden = false;
@@ -2268,7 +2298,7 @@ class MyCuscoTripProductPage {
       const accommodationLabel = accommodationRow.querySelector("span");
 
       if (accommodationLabel) {
-        accommodationLabel.textContent = `Alojamiento x${String(totalAccommodationNights).padStart(2, "0")} noches`;
+        accommodationLabel.textContent = this.t("product.accommodationNights", "Accommodation x{count} nights", { count: String(totalAccommodationNights).padStart(2, "0") });
       }
     }
 
@@ -2280,7 +2310,7 @@ class MyCuscoTripProductPage {
       const extrasLabel = extrasRow.querySelector("span");
 
       if (extrasLabel) {
-        extrasLabel.textContent = "Extras";
+        extrasLabel.textContent = this.t("product.extras", "Extras");
       }
     }
 
@@ -2290,7 +2320,7 @@ class MyCuscoTripProductPage {
       const serviceLabel = serviceTotalRow.querySelector("span");
 
       if (serviceLabel) {
-        serviceLabel.textContent = "Total servicio";
+        serviceLabel.textContent = this.t("product.serviceTotal", "Service total");
       }
 
       serviceTotalRow.hidden = false;
@@ -2304,7 +2334,7 @@ class MyCuscoTripProductPage {
       const discountLabel = discountRow.querySelector("span");
 
       if (discountLabel) {
-        discountLabel.textContent = "Descuento";
+        discountLabel.textContent = this.t("product.discount", "Discount");
       }
     }
 
@@ -2402,12 +2432,12 @@ class MyCuscoTripProductPage {
 
       return {
         title: this.product.title,
-        date: this.date || "No seleccionada",
+        date: this.date || this.t("product.toConfirm", "To be confirmed"),
         adults: this.adults,
         children: this.children,
         departureTime: this.getSelectedDepartureTimeLabel(),
         trainSelection: this.getSelectedTrainSummaryLabel(),
-        serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
+        serviceMode: this.serviceMode === "private" ? this.t("product.privateTour", "Private tour") : this.t("product.groupTour", "Group tour"),
         accommodation,
         extras: selectedExtras,
         serviceTotal: `${currency} ${this.formatMoney(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0)}`,
@@ -2416,7 +2446,7 @@ class MyCuscoTripProductPage {
         rawServiceTotal: Number(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0),
         rawPayNow: Number(this.dynamicQuote.payNow || 0),
         rawPayLater: Number(this.dynamicQuote.payLater || 0),
-        paymentMode: this.paymentMode === "full" ? "Pago completo" : "Pagar solo un adelanto"
+        paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit")
       };
     }
 
@@ -2468,12 +2498,12 @@ class MyCuscoTripProductPage {
 
     return {
       title: this.product.title,
-      date: this.date || "No seleccionada",
+      date: this.date || this.t("product.toConfirm", "To be confirmed"),
       adults: this.adults,
       children: this.children,
       departureTime: this.getSelectedDepartureTimeLabel(),
       trainSelection: this.getSelectedTrainSummaryLabel(),
-      serviceMode: this.serviceMode === "private" ? "Tour privado" : "Tour en grupo",
+      serviceMode: this.serviceMode === "private" ? this.t("product.privateTour", "Private tour") : this.t("product.groupTour", "Group tour"),
       accommodation,
       extras: selectedExtras,
       serviceTotal: `${currency} ${this.formatMoney(serviceTotal)}`,
@@ -2482,7 +2512,7 @@ class MyCuscoTripProductPage {
       rawServiceTotal: Number(serviceTotal || 0),
       rawPayNow: Number(payNow || 0),
       rawPayLater: Number(payLater || 0),
-      paymentMode: this.paymentMode === "full" ? "Pago completo" : "Pagar solo un adelanto"
+      paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit")
     };
   }
 
@@ -2498,7 +2528,7 @@ class MyCuscoTripProductPage {
     this.currentPreReservation = preReservation;
 
     this.setText("passengerReservationCode", preReservation.code);
-    this.setText("passengerReservationTimestamp", `Reserva generada: ${preReservation.createdAtDisplayLabel}`);
+    this.setText("passengerReservationTimestamp", this.t("product.bookingGenerated", "Reservation generated: {date}", { date: preReservation.createdAtDisplayLabel }));
     this.renderPassengerPaymentSnapshot(preReservation);
     this.bindPassengerReservationModalEvents();
     this.syncPassengerHolderState();
@@ -2544,7 +2574,7 @@ class MyCuscoTripProductPage {
     const title = document.getElementById("holderSectionTitle");
 
     if (title) {
-      title.textContent = holderTravels ? "Titular de reserva / Pasajero 1" : "Titular de reserva";
+      title.textContent = holderTravels ? this.t("product.holderPassenger", "Reservation holder / Traveler 1") : this.t("product.holder", "Reservation holder");
     }
   }
 
@@ -2570,7 +2600,7 @@ class MyCuscoTripProductPage {
       const snapshot = document.getElementById("passengerPaymentSnapshot");
       const expanded = button.getAttribute("aria-expanded") === "true";
       button.setAttribute("aria-expanded", expanded ? "false" : "true");
-      button.textContent = expanded ? "Ver detalles de la reserva" : "Ocultar detalles";
+      button.textContent = expanded ? this.t("product.showBookingDetails", "View booking details") : this.t("product.hideBookingDetails", "Hide details");
       snapshot?.classList.toggle("is-open", !expanded);
     });
 
@@ -2596,11 +2626,11 @@ class MyCuscoTripProductPage {
     return {
       code: `CUZ${hex}`,
       createdAt: now.toISOString(),
-      createdAtLabel: now.toLocaleString("es-PE", {
+      createdAtLabel: now.toLocaleString(this.locale === "en" ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "medium"
       }),
-      createdAtDisplayLabel: now.toLocaleString("es-PE", {
+      createdAtDisplayLabel: now.toLocaleString(this.locale === "en" ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "short"
       }),
@@ -2632,8 +2662,8 @@ class MyCuscoTripProductPage {
     target.innerHTML = `
       <div><span>Producto</span><strong>${this.escapeHtml(preReservation.productTitle)}</strong></div>
       <div><span>Fecha de viaje</span><strong>${this.escapeHtml(preReservation.date)}</strong></div>
-      <div><span>Total del servicio</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
-      <div><span>Monto a pagar ahora</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
+      <div><span>${this.escapeHtml(this.t("product.totalService", "Total service"))}</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
+      <div><span>${this.escapeHtml(this.t("product.amountToPayNow", "Amount to pay now"))}</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
       <div><span>Saldo pendiente</span><strong>${this.escapeHtml(preReservation.payLater)}</strong></div>
     `;
   }

@@ -71,6 +71,18 @@
     return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
   }
 
+
+  function waitForI18nReady() {
+    const hasDictionary = window.MyCuscoTripI18n?.dictionary && Object.keys(window.MyCuscoTripI18n.dictionary).length;
+    if (hasDictionary) return Promise.resolve();
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => { if (!done) { done = true; resolve(); } };
+      window.addEventListener("mct:i18n-ready", finish, { once: true });
+      setTimeout(finish, 900);
+    });
+  }
+
   function resolveAssetUrl(url) {
     if (!url) return "";
     const raw = String(url).trim();
@@ -365,7 +377,7 @@
 
     const total = state.filtered.length;
     const category = getTrekkingCategoryConfig();
-    const suffix = category ? ` en ${category.label}` : "";
+    const suffix = category ? ` ${category.label}` : "";
     count.textContent = `${total} ${total === 1 ? t("catalog.experienceFound", "experiencia encontrada") : t("catalog.experiencesFound", "experiencias encontradas")}${suffix}`;
   }
 
@@ -472,17 +484,19 @@
     if (heroTitle) heroTitle.textContent = category.label;
     if (heroText) heroText.textContent = category.note;
     if (topTitle) topTitle.textContent = `${t("catalog.experiencesOf", "Experiencias de")} ${category.label}`;
-    if (note) note.textContent = "Esta vista muestra una selección filtrada. Si no encuentras una salida publicada, podemos ayudarte a armar una ruta personalizada.";
+    if (note) note.remove();
   }
 
   async function init() {
     const grid = qs("#catalogLandingGrid");
     if (!grid) return;
 
+    await waitForI18nReady();
+
     grid.innerHTML = `
       <div class="catalog-loading">
         <i class="fas fa-spinner fa-spin"></i>
-        <span>Cargando experiencias...</span>
+        <span>${escapeHtml(t("catalog.loadingExperiences", "Cargando experiencias..."))}</span>
       </div>
     `;
 
