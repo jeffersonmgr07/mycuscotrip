@@ -2692,7 +2692,8 @@
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
 
-    let currentLanguage = localStorage.getItem("voucherLanguage") || "es";
+    const voucherPathLocale = window.location.pathname.split("/").filter(Boolean)[0];
+    let currentLanguage = voucherPathLocale === "en" ? "en" : "es";
 
     const i18n = {
       es: {
@@ -3657,9 +3658,9 @@
             <div class="pv-section-title">Información adicional</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
-              ${incluye.length ? `<div class="pv-subtitle">Servicios incluidos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${noIncluye.length ? `<div class="pv-subtitle">Servicios no incluidos / adicionales</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${infoAdicional.length ? `<div class="pv-subtitle">Recomendaciones</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
+              ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${noIncluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Not included / additional services" : "Servicios no incluidos / adicionales")}</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${infoAdicional.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Recommendations" : "Recomendaciones")}</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
             </div>
 
             <div class="pv-side-box">
@@ -3823,6 +3824,7 @@
   </script>
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
+<script src="./assets/js/i18n.js"></script>
 <script src="./assets/js/components/header.js"></script>
 <script src="./assets/js/lib/utils.js"></script>
 </body>
