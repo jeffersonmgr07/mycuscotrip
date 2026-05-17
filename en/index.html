@@ -143,10 +143,14 @@
 
     .ota-header p {
       margin: 10px 0 0;
-      max-width: 650px;
+      max-width: min(980px, 100%);
       color: var(--mct-muted);
       font-size: 1rem;
       line-height: 1.55;
+    }
+
+    @media (min-width: 993px) {
+      .ota-header p { white-space: nowrap; }
     }
 
     .ota-tabs {
@@ -253,8 +257,9 @@
 
     .featured-home-card .product-card__meta {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
       margin-bottom: 11px;
       color: var(--mct-muted);
       font-size: 0.82rem;
@@ -651,7 +656,7 @@
       "@type": "WebPage",
       "@id": "https://mycuscotrip.com/#webpage",
       "url": "https://mycuscotrip.com/",
-      "name": "Tours en Cusco y Machu Picchu | Travel packages en Perú | My Cusco Trip",
+      "name": "Cusco and Machu Picchu Tours | Peru Travel Packages | My Cusco Trip",
       "description": "Book Cusco, Machu Picchu, Sacred Valley and Peru travel packages with local experts, personalized assistance and flexible payment options.",
       "inLanguage": "en",
       "isPartOf": {
@@ -731,7 +736,7 @@
 <div id="search-bar-container"></div>
 <div class="hero-search-hint">
 <i class="fa-solid fa-compass"></i>
-<span>Choose your dates and travel preferences to find the best experience for your trip.</span>
+<span data-i18n="search.hint">Choose your dates and travel preferences to find the best experience for your trip.</span>
 </div>
 </div>
 </div>
@@ -747,14 +752,14 @@
 <i class="fa-solid fa-star"></i>
             Favoritos de viajeros
           </span>
-<h2 data-i18n="home.featuredTitle">Experiencias más reservadas en Cusco y Machu Picchu</h2>
-<p data-i18n="home.featuredText">Elige entre tours clásicos, rutas de aventura y experiencias diseñadas por especialistas locales.</p>
+<h2 data-i18n="home.featuredTitle">Most-booked experiences in Cusco and Machu Picchu</h2>
+<p data-i18n="home.featuredText">Choose classic tours, adventure routes and local experiences designed by specialists.</p>
 </div>
 </div>
 <div class="destinos-grid featured-products-grid" id="products-container"></div>
-<p class="ota-featured-note" data-i18n="home.featuredNote">Precios, horarios y disponibilidad pueden variar según temporada, trenes y cupos de ingreso.</p>
+<p class="ota-featured-note" data-i18n="home.featuredNote">Prices, schedules and availability may vary according to season, trains and entrance availability.</p>
 <div class="more-experiences-wrap">
-<a class="btn more-experiences-btn" href="all-experiences.html" data-i18n="home.moreExperiences">Ver más experiencias</a>
+<a class="btn more-experiences-btn" href="all-experiences.html" data-i18n="home.moreExperiences">See more experiences</a>
 </div>
 </div>
 </section>
@@ -762,8 +767,8 @@
 <div class="container">
 <div class="ota-quote-card">
 <div>
-<h2 data-i18n="home.quoteTitle">Diseña tu viaje a Cusco en minutos</h2>
-<p data-i18n="home.quoteText">Arma un paquete con Machu Picchu, Valle Sagrado, hoteles, trenes y extras según tus fechas reales de llegada y salida.</p>
+<h2 data-i18n="home.quoteTitle">Design your Cusco trip in minutes</h2>
+<p data-i18n="home.quoteText">Build a package with Machu Picchu, the Sacred Valley, hotels, trains and extras according to your real arrival and departure dates.</p>
 </div>
 <div class="ota-quote-actions">
 <a class="ota-main-btn" href="quote-packages.html">
@@ -786,7 +791,7 @@
 <i class="fa-solid fa-suitcase-rolling"></i>
             <span data-i18n="home.suggestedPackages">Paquetes sugeridos</span>
           </span>
-<h2 data-i18n="home.packagesTitle">Paquetes a Cusco y Machu Picchu más cotizados</h2>
+<h2 data-i18n="home.packagesTitle">Top-requested Cusco and Machu Picchu packages</h2>
 <p data-i18n="home.packagesText">Empieza con una ruta base y personaliza hoteles, trenes y extras dentro del cotizador.</p>
 </div>
 </div>
@@ -794,55 +799,55 @@
 <a class="package-showcase-card" href="product.html?slug=machu-picchu-overnight-clasico" style="--pkg-image:url('/assets/img/quote/fallbacks/machu-picchu.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-train"></i> Overnight</span>
 <h3>Machu Picchu 2D/1N</h3>
-<p data-i18n="home.pkg2dDesc">La forma más cómoda de visitar la ciudadela con noche en Machu Picchu Pueblo.</p>
+<p data-i18n="home.pkg2dDesc">The most comfortable way to visit the citadel with one night in Machu Picchu Pueblo.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-3-dias-2-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/cusco.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-3-days-2-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/cusco.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-star"></i> Classic</span>
 <h3>Cusco and Machu Picchu 3D/2N</h3>
 <p data-i18n="home.pkg3dDesc">Ideal para una primera visita con Cusco, experiencias suaves y Machu Picchu.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-4-dias-3-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/valle-sagrado-vip.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-4-days-3-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/valle-sagrado-vip.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-map-location-dot"></i> <span data-i18n="home.tagRecommended">Recomendado</span></span>
 <h3>Cusco, Sacred Valley and Machu Picchu 4D/3N</h3>
 <p data-i18n="home.pkg4dDesc">Una ruta equilibrada con Valle Sagrado y visita organizada a Machu Picchu.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-5-dias-4-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/vinicunca.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-5-days-4-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/vinicunca.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-person-hiking"></i> <span data-i18n="chips.adventure">Aventura</span></span>
 <h3>Cusco Adventure 5D/4N</h3>
 <p data-i18n="home.pkg5dDesc">Machu Picchu, Valle Sagrado y una ruta natural como Vinicunca o Humantay.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-6-dias-5-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/laguna-humantay.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-6-days-5-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/laguna-humantay.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-mountain-sun"></i> <span data-i18n="home.tagComplete">Completo</span></span>
 <h3>Cusco and Nature 6D/5N</h3>
-<p data-i18n="home.pkg6dDesc">Más tiempo para combinar Machu Picchu, Valle Sagrado y tours de naturaleza.</p>
+<p data-i18n="home.pkg6dDesc">More time to combine Machu Picchu, the Sacred Valley and nature tours.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-7-dias-6-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/valle-sur.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-7-days-6-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/valle-sur.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-route"></i> Flexible</span>
 <h3>Deep Cusco 7D/6N</h3>
 <p data-i18n="home.pkg7dDesc">Una semana para sumar experiencias culturales y rutas de aventura sin correr.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-8-dias-7-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/maras-moray.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-8-days-7-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/maras-moray.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-camera-retro"></i> <span data-i18n="home.tagExperiences">Experiences</span></span>
 <h3>Cusco Experiences 8D/7N</h3>
-<p data-i18n="home.pkg8dDesc">Más días para visitar Machu Picchu, Valle Sagrado, Maras, Moray y rutas naturales.</p>
+<p data-i18n="home.pkg8dDesc">More days to visit Machu Picchu, the Sacred Valley, Maras, Moray and nature routes.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-9-dias-8-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/siete-lagunas.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-9-days-8-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/siete-lagunas.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-water"></i> <span data-i18n="chips.nature">Naturaleza</span></span>
 <h3>Complete Cusco 9D/8N</h3>
 <p data-i18n="home.pkg9dDesc">Una ruta amplia para combinar iconos de Cusco con caminatas y paisajes andinos.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
-<a class="package-showcase-card" href="product.html?slug=paquetes-cusco-10-dias-9-noches&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/palcoyo.jpg');">
+<a class="package-showcase-card" href="product.html?slug=cusco-package-10-days-9-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/palcoyo.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-gem"></i> <span data-i18n="home.tagGrandTrip">Gran viaje</span></span>
 <h3>Slow Cusco 10D/9N</h3>
-<p data-i18n="home.pkg10dDesc">La alternativa más completa para explorar Cusco con descansos y rutas a medida.</p>
+<p data-i18n="home.pkg10dDesc">The most complete alternative to explore Cusco with rest time and custom routes.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">Ver paquete <i class="fa-solid fa-arrow-right"></i></span>
 </a>
 </div>
@@ -905,7 +910,7 @@
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
 
-    console.log('Configuración:', { IS_GITHUB_PAGES, BASE_PATH });
+    console.log('Configuration:', { IS_GITHUB_PAGES, BASE_PATH });
 
     async function loadComponent(componentName, targetId) {
       try {
@@ -971,7 +976,7 @@
         "search-bar": `
           <div style="background:white;padding:20px;border-radius:10px;margin-top:20px;">
             <div style="text-align:center;color:#666;padding:20px;">
-              Barra de búsqueda temporalmente no disponible
+              Search bar temporarily unavailable
             </div>
           </div>
         `,
@@ -980,7 +985,7 @@
             <div class="container">
               <div style="text-align:center;">
                 <p>© 2026 MyCuscoTrip</p>
-                <p>Especialistas en viajes a Cusco y Machu Picchu</p>
+                <p>Specialists in trips to Cusco and Machu Picchu</p>
               </div>
             </div>
           </footer>
@@ -1035,7 +1040,7 @@
     }
 
     async function initializeApp() {
-      console.log('Iniciando aplicación...');
+      console.log('Starting app...');
 
       await Promise.all([
         loadComponent('header', 'header-container'),
