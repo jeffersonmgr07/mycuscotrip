@@ -257,6 +257,33 @@
       return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
     }
 
+    translateVisibleLabel(value) {
+      const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+      if (locale === "es") return value;
+      const key = String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+      const map = {
+        "nuevo": "New",
+        "imperdible": "Must-see",
+        "top ventas": "Best seller",
+        "mas vendido": "Best seller",
+        "recomendado": "Recommended",
+        "aventura": "Adventure",
+        "naturaleza": "Nature",
+        "cultural": "Cultural",
+        "con tren": "Train included",
+        "ruta vip": "VIP route",
+        "conexion machu picchu": "Machu Picchu connection",
+        "vip + conexion": "VIP + connection",
+        "completo": "Complete",
+        "escapada esencial": "Essential escape",
+        "gran viaje": "Grand journey",
+        "experiencia amplia": "Full experience",
+        "profundo": "Deep route",
+        "flexible": "Flexible"
+      };
+      return map[key] || value;
+    }
+
     renderLoading() {
       this.container.innerHTML = `
         <div class="featured-products-empty" style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#56645f;">
@@ -298,12 +325,12 @@
               loading="lazy"
               onerror="this.onerror=null;this.src='${this.escapeHtml(this.resolvePath("assets/img/quote/fallbacks/machu-picchu.jpg"))}';"
             >
-            ${item.badge ? `<span class="product-card__badge">${this.escapeHtml(item.badge)}</span>` : ""}
+            ${item.badge ? `<span class="product-card__badge">${this.escapeHtml(this.translateVisibleLabel(item.badge))}</span>` : ""}
           </a>
           <div class="product-card__body destino-content">
             <div class="product-card__meta">
               <span><i class="fa-solid fa-location-dot"></i> ${this.escapeHtml(item.location)}</span>
-              <span><i class="fa-regular fa-clock"></i> ${this.escapeHtml(item.typeLabel)}</span>
+              <span><i class="fa-regular fa-clock"></i> ${this.escapeHtml(this.translateVisibleLabel(item.typeLabel))}</span>
             </div>
             <h3>${this.escapeHtml(item.title)}</h3>
             <p>${this.escapeHtml(description)}</p>

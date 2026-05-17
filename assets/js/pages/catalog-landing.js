@@ -72,6 +72,38 @@
   }
 
 
+
+  function translateVisibleLabel(value) {
+    const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    if (locale === "es") return value;
+    const key = String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    const map = {
+      "nuevo": "New",
+      "imperdible": "Must-see",
+      "top ventas": "Best seller",
+      "mas vendido": "Best seller",
+      "recomendado": "Recommended",
+      "aventura": "Adventure",
+      "naturaleza": "Nature",
+      "cultural": "Cultural",
+      "con tren": "Train included",
+      "ruta vip": "VIP route",
+      "conexion machu picchu": "Machu Picchu connection",
+      "vip + conexion": "VIP + connection",
+      "completo": "Complete",
+      "escapada esencial": "Essential escape",
+      "gran viaje": "Grand journey",
+      "experiencia amplia": "Full experience",
+      "profundo": "Deep route",
+      "flexible": "Flexible",
+      "andes del sur": "Southern Andes",
+      "peru esencial": "Essential Peru",
+      "primer viaje": "First trip",
+      "ruta completa": "Complete route"
+    };
+    return map[key] || value;
+  }
+
   function waitForI18nReady() {
     const hasDictionary = window.MyCuscoTripI18n?.dictionary && Object.keys(window.MyCuscoTripI18n.dictionary).length;
     if (hasDictionary) return Promise.resolve();
@@ -158,6 +190,14 @@
     const days = Number(item.days || 0);
     const nights = Number(item.nights || 0);
 
+    const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    if (locale !== "es") {
+      if (days > 0 && nights > 0) return `${days} days / ${nights} nights`;
+      if (days === 1) return "Full day";
+      if (days > 1) return `${days} days`;
+      return "Experience";
+    }
+
     if (days > 0 && nights > 0) return `${days} días / ${nights} noches`;
     if (days === 1) return "Full day";
     if (days > 1) return `${days} días`;
@@ -197,13 +237,13 @@
       sourceKey: source.key,
       id: item.id || item.slug || `${source.key}-${Math.random().toString(36).slice(2)}`,
       slug: item.slug || "",
-      title: item.title || "Experiencia",
+      title: item.title || t("cards.experience", "Experience"),
       productKind,
       productFamily,
       typeLabel: formatDuration(item),
-      badge: item.badge || (productKind === "package" ? "Paquete" : "Tour"),
-      location: item.location || "Perú",
-      shortDescription: item.shortDescription || item.description || "Experiencia seleccionada por My Cusco Trip.",
+      badge: translateVisibleLabel(item.badge || (productKind === "package" ? t("cards.package", "Package") : "Tour")),
+      location: item.location || (window.MyCuscoTripI18n?.getLocaleFromUrl?.() === "es" ? "Perú" : "Peru"),
+      shortDescription: item.shortDescription || item.description || t("cards.selectedExperience", "Experience selected by My Cusco Trip."),
       image: resolveAssetUrl(getImage(item)),
       featured: Boolean(item.featured),
       status: item.status || "published",
@@ -412,7 +452,7 @@
           </a>
 
           <div class="catalog-card__body">
-            <p class="catalog-card__meta">${escapeHtml(item.typeLabel)} · ${escapeHtml(item.location)}</p>
+            <p class="catalog-card__meta">${escapeHtml(translateVisibleLabel(item.typeLabel))} · ${escapeHtml(item.location)}</p>
             <h2>${escapeHtml(item.title)}</h2>
             <p class="catalog-card__description">${escapeHtml(item.shortDescription)}</p>
 
@@ -440,12 +480,13 @@
     if (item.productFamily === "peru-package") chips.push(t("chips.multidestination", "Multidestino"));
 
     const themes = Array.isArray(item.search.themes) ? item.search.themes : [];
-    if (themes.includes("aventura")) chips.push(t("chips.adventure", "Aventura"));
-    if (themes.includes("naturaleza")) chips.push(t("chips.nature", "Naturaleza"));
-    if (themes.includes("cultural")) chips.push(t("chips.cultural", "Cultural"));
+    const normalizedThemes = themes.map((theme) => normalizeText(theme));
+    if (normalizedThemes.some((theme) => ["aventura", "adventure"].includes(theme))) chips.push(t("chips.adventure", "Adventure"));
+    if (normalizedThemes.some((theme) => ["naturaleza", "nature"].includes(theme))) chips.push(t("chips.nature", "Nature"));
+    if (normalizedThemes.some((theme) => ["cultural", "culture"].includes(theme))) chips.push(t("chips.cultural", "Cultural"));
 
     const tags = Array.isArray(item.search.includedTags) ? item.search.includedTags : [];
-    if (tags.some((tag) => String(tag).includes("tren"))) chips.push(t("chips.withTrain", "Con tren"));
+    if (tags.some((tag) => /tren|train/i.test(String(tag)))) chips.push(t("chips.withTrain", "Train included"));
     if (item.productKind === "package") chips.push(t("chips.configurableHotel", "Hotel configurable"));
 
     return Array.from(new Set(chips)).slice(0, 4);

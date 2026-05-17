@@ -148,8 +148,14 @@
     try {
       const result = await loadTranslations(lang);
       activeDictionary = result.dictionary || {};
-      applyTranslations(activeDictionary);
       startObserver();
+      applyTranslations(activeDictionary);
+      // Components such as header, search bar and footer are injected asynchronously on several pages.
+      // Re-apply translations a few times so late-loaded components never remain in Spanish on localized pages.
+      [80, 250, 600, 1200, 2200].forEach((delay) => {
+        setTimeout(() => applyTranslations(activeDictionary), delay);
+      });
+      window.addEventListener("load", () => applyTranslations(activeDictionary), { once: true });
       window.dispatchEvent(new CustomEvent("mct:i18n-ready", { detail: result }));
       return result;
     } catch (error) {
