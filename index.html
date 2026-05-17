@@ -143,10 +143,14 @@
 
     .ota-header p {
       margin: 10px 0 0;
-      max-width: 650px;
+      max-width: min(980px, 100%);
       color: var(--mct-muted);
       font-size: 1rem;
       line-height: 1.55;
+    }
+
+    @media (min-width: 993px) {
+      .ota-header p { white-space: nowrap; }
     }
 
     .ota-tabs {
@@ -253,8 +257,9 @@
 
     .featured-home-card .product-card__meta {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
       margin-bottom: 11px;
       color: var(--mct-muted);
       font-size: 0.82rem;
@@ -731,7 +736,7 @@
 <div id="search-bar-container"></div>
 <div class="hero-search-hint">
 <i class="fa-solid fa-compass"></i>
-<span>Selecciona tus fechas y criterios de búsqueda para encontrar la mejor experiencia para tu viaje.</span>
+<span data-i18n="search.hint">Selecciona tus fechas y criterios de búsqueda para encontrar la mejor experiencia para tu viaje.</span>
 </div>
 </div>
 </div>
