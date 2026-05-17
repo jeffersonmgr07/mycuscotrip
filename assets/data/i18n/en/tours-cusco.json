@@ -291,7 +291,7 @@
       "title": "Cusco City Tour + Archaeological Sites",
       "category": "cusco",
       "type": "half-day-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Must-see",
       "featured": true,
       "location": "Cusco",
@@ -299,7 +299,7 @@
       "shortDescription": "Visit Cusco’s most important nearby archaeological sites, including Sacsayhuamán, Qenqo, Puka Pukara and Tambomachay.",
       "description": "Visit Cusco’s most important nearby archaeological sites, including Sacsayhuamán, Qenqo, Puka Pukara and Tambomachay.",
       "duration": {
-        "label": "Medio day",
+        "label": "Half day",
         "maxGroupSize": 20,
         "guideLanguages": [
           "es",
@@ -364,7 +364,7 @@
       "faq": [
         {
           "q": "¿Es un tour largo?",
-          "a": "No, es un tour de medio day ideal para comenzar tu viaje."
+          "a": "No. It is a half-day tour, ideal for starting your trip."
         },
         {
           "q": "¿Incluye boleto turístico?",
@@ -498,7 +498,7 @@
           "13:00",
           "14:00"
         ],
-        "durationLabel": "Medio day",
+        "durationLabel": "Half day",
         "frequency": "Diario"
       },
       "ticketPricingByNationality": [
@@ -907,7 +907,7 @@
       "title": "Sacred Valley with Connection to Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Full Day con conexión",
+      "typeLabel": "Full Day with Connection",
       "variantType": "connection",
       "badge": "Machu Picchu Connection",
       "featured": true,
@@ -916,7 +916,7 @@
       "shortDescription": "Travel through the Sacred Valley and finish in Ollantaytambo to connect smoothly with your train to Aguas Calientes.",
       "description": "Travel through the Sacred Valley and finish in Ollantaytambo to connect smoothly with your train to Aguas Calientes.",
       "duration": {
-        "label": "Full Day con conexión",
+        "label": "Full Day with Connection",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1110,7 +1110,7 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:30",
-        "durationLabel": "Full Day con conexión",
+        "durationLabel": "Full Day with Connection",
         "frequency": "Diario"
       },
       "ticketPricingByNationality": [
@@ -1566,7 +1566,7 @@
       "title": "Sacred Valley VIP with Connection to Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Full Day VIP con conexión",
+      "typeLabel": "VIP Full Day with Connection",
       "variantType": "vip-connection",
       "badge": "VIP + Connection",
       "featured": true,
@@ -1575,7 +1575,7 @@
       "shortDescription": "A VIP Sacred Valley route through Chinchero, Maras, Moray, Urubamba and Ollantaytambo, ending with your connection to Machu Picchu.",
       "description": "A VIP Sacred Valley route through Chinchero, Maras, Moray, Urubamba and Ollantaytambo, ending with your connection to Machu Picchu.",
       "duration": {
-        "label": "Full Day VIP con conexión",
+        "label": "VIP Full Day with Connection",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1719,7 +1719,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Sacred Valley VIP con conexión."
+          "availabilityNote": "Apply to the Sacred Valley VIP with Connection route."
         },
         {
           "code": "sacred-valley-buffet-basic",
@@ -1805,7 +1805,7 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:30",
-        "durationLabel": "Full Day VIP con conexión",
+        "durationLabel": "VIP Full Day with Connection",
         "frequency": "Diario"
       },
       "ticketPricingByNationality": [
@@ -1863,7 +1863,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Sacred Valley VIP con conexión."
+          "availabilityNote": "Apply to the Sacred Valley VIP with Connection route."
         }
       ],
       "search": {
@@ -1923,7 +1923,7 @@
       "title": "Maras & Moray",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Must-see",
       "featured": true,
       "location": "Cusco / Maras / Moray",
@@ -1931,7 +1931,7 @@
       "shortDescription": "Discover Moray’s impressive Inca agricultural terraces and the famous Maras Salt Mines on a scenic half-day tour.",
       "description": "Discover Moray’s impressive Inca agricultural terraces and the famous Maras Salt Mines on a scenic half-day tour.",
       "duration": {
-        "label": "Medio day",
+        "label": "Half day",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -2151,7 +2151,7 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:00",
-        "durationLabel": "Medio day",
+        "durationLabel": "Half day",
         "frequency": "Diario"
       },
       "ticketPricingByNationality": [
@@ -2264,7 +2264,7 @@
       "title": "South Valley of Cusco",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Cultural",
       "featured": true,
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
@@ -2272,7 +2272,7 @@
       "shortDescription": "Explore Tipón, Pikillacta and Andahuaylillas on a cultural route through the southern side of Cusco.",
       "description": "Explore Tipón, Pikillacta and Andahuaylillas on a cultural route through the southern side of Cusco.",
       "duration": {
-        "label": "Medio day",
+        "label": "Half day",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -2343,7 +2343,7 @@
       "faq": [
         {
           "q": "¿Cuánto dura el tour?",
-          "a": "La experiencia dura aproximadamente medio day, con retorno a Cusco to las 2:30 PM"
+          "a": "The experience lasts approximately half a day, with return to Cusco around 2:30 PM"
         },
         {
           "q": "¿Incluye boleto turístico?",
@@ -2473,7 +2473,7 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "14:30",
-        "durationLabel": "Medio day",
+        "durationLabel": "Half day",
         "frequency": "Diario"
       },
       "ticketPricingByNationality": [
@@ -2838,7 +2838,7 @@
           "naturaleza"
         ],
         "themes": [
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -3159,7 +3159,7 @@
           "caballo"
         ],
         "themes": [
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -3476,7 +3476,7 @@
           "atv"
         ],
         "themes": [
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -3827,7 +3827,7 @@
           "trekking"
         ],
         "themes": [
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [

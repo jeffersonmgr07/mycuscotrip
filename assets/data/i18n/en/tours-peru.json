@@ -18,7 +18,7 @@
       "productFamily": "peru-tour",
       "destination": "lima",
       "type": "cultural-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Cultural",
       "featured": true,
       "location": "Lima",
@@ -34,7 +34,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Recorrido por el centro histórico de Lima, plazas, casonas coloniales, iglesias and zonas modernas de la ciudad.",
-      "description": "Tour referencial de medio day para descubrir los principales atractivos de Lima colonial and moderna. Includes una ruta panorámica por distritos turísticos and visita al centro histórico according to the confirmed operation confirmada.",
+      "description": "Tour referencial de half day para descubrir los principales atractivos de Lima colonial and moderna. Includes una ruta panorámica por distritos turísticos and visita al centro histórico according to the confirmed operation confirmada.",
       "duration": {
         "label": "3 a 4 horas",
         "maxGroupSize": 18,
@@ -168,7 +168,7 @@
       "productFamily": "peru-tour",
       "destination": "paracas",
       "type": "nature-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Naturaleza",
       "featured": true,
       "location": "Paracas",
@@ -318,7 +318,7 @@
       "destination": "ica-paracas",
       "type": "full-day-tour",
       "typeLabel": "Full Day",
-      "badge": "Top ventas",
+      "badge": "Best seller",
       "featured": true,
       "location": "Lima / Paracas / Ica / Huacachina",
       "currency": "USD",
@@ -333,7 +333,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Ruta completa from Lima con Islas Ballestas, winery en Ica, oasis de Huacachina, buggies and sandboarding.",
-      "description": "Tour referencial full day to la costa sur del Peru. Combina naturaleza marina en Paracas, experiencia vitivinícola en Ica and aventura en las dunas de Huacachina.",
+      "description": "Tour referencial full day to la costa sur del Peru. Combina naturaleza marina en Paracas, experiencia vitivinícola en Ica and adventure en las dunas de Huacachina.",
       "duration": {
         "label": "Full Day / 16 a 18 horas",
         "maxGroupSize": 18,
@@ -409,7 +409,7 @@
         },
         {
           "title": "Huacachina",
-          "description": "Tiempo en el oasis and actividad de aventura en las dunas."
+          "description": "Tiempo en el oasis and actividad de adventure en las dunas."
         },
         {
           "title": "Retorno a Lima",
@@ -453,7 +453,7 @@
         ],
         "themes": [
           "naturaleza",
-          "aventura",
+          "adventure",
           "desierto"
         ],
         "keywords": [
@@ -479,7 +479,7 @@
       "productFamily": "peru-tour",
       "destination": "nazca",
       "type": "scenic-flight",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Icónico",
       "featured": false,
       "location": "Nazca",
@@ -625,7 +625,7 @@
       "productFamily": "peru-tour",
       "destination": "arequipa",
       "type": "cultural-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Cultural",
       "featured": true,
       "location": "Arequipa",
@@ -1101,7 +1101,7 @@
       "productFamily": "peru-tour",
       "destination": "puno",
       "type": "cultural-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Arqueología",
       "featured": false,
       "location": "Puno / Sillustani",
@@ -1117,7 +1117,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Visit el complejo funerario de Sillustani and sus chullpas frente a la laguna Umayo.",
-      "description": "Tour cultural de medio day from Puno to el sitio arqueológico de Sillustani, reconocido por sus torres funerarias preincas e incas.",
+      "description": "Tour cultural de half day from Puno to el sitio arqueológico de Sillustani, reconocido por sus torres funerarias preincas e incas.",
       "duration": {
         "label": "3 a 4 horas",
         "maxGroupSize": 18,
@@ -1410,7 +1410,7 @@
       "productFamily": "peru-tour",
       "destination": "tarapoto",
       "type": "nature-tour",
-      "typeLabel": "Medio day",
+      "typeLabel": "Half day",
       "badge": "Selva",
       "featured": false,
       "location": "Tarapoto / Ahuashiyacu",
@@ -1426,7 +1426,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Visit una de las cataratas más conocidas de Tarapoto en una excursión corta de naturaleza.",
-      "description": "Tour referencial de medio day to la Catarata de Ahuashiyacu, ideal for viajeros que buscan una experiencia corta de selva and paisaje natural.",
+      "description": "Tour referencial de half day to la Catarata de Ahuashiyacu, ideal for viajeros que buscan una experiencia corta de selva and paisaje natural.",
       "duration": {
         "label": "3 a 4 horas",
         "maxGroupSize": 18,

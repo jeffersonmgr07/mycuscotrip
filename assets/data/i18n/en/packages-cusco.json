@@ -428,7 +428,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura"
+          "adventure"
         ],
         "keywords": [
           "Cusco package 4 dias",
@@ -512,7 +512,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura"
+          "adventure"
         ],
         "keywords": [
           "Cusco package 5 dias",
@@ -521,7 +521,7 @@
         ]
       },
       "commercialLabel": "Flexible package 5 days / 4 nights",
-      "recommendedTitle": "Cusco completo con aventura opcional",
+      "recommendedTitle": "Cusco completo con adventure opcional",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -595,7 +595,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura"
+          "adventure"
         ],
         "keywords": [
           "Cusco package 6 dias",
@@ -680,7 +680,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura",
+          "adventure",
           "fotografia"
         ],
         "keywords": [
@@ -767,7 +767,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura",
+          "adventure",
           "fotografia"
         ],
         "keywords": [
@@ -852,7 +852,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura",
+          "adventure",
           "slow-travel"
         ],
         "keywords": [
@@ -941,7 +941,7 @@
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura",
+          "adventure",
           "slow-travel"
         ],
         "keywords": [
@@ -1014,7 +1014,7 @@
       ],
       "salesNotes": [
         "Ideal para viajes cortos.",
-        "Debe priorizar Machu Picchu Full Day and solo agregar medio day si los horarios lo permiten."
+        "Debe priorizar Machu Picchu Full Day and solo agregar half day si los horarios lo permiten."
       ]
     },
     {
@@ -1248,7 +1248,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Duración suficiente para combinar clásicos and rutas alternativas.",
+        "Duración suficiente para combinar classics and rutas alternativas.",
         "Mantener máximo dos trekkings para evitar fatiga."
       ]
     },
@@ -1520,7 +1520,7 @@
       "labels": [
         "Ruta recomendada",
         "Ruta clásica",
-        "Ruta con aventura",
+        "Adventure route",
         "Ruta con naturaleza"
       ]
     }

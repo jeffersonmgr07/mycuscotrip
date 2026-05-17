@@ -102,7 +102,7 @@
     },
     {
       "code": "south-peru-classic",
-      "label": "Sur clásico del Peru",
+      "label": "Classic Southern Peru",
       "country": "peru",
       "featured": true,
       "destinations": [
@@ -1574,7 +1574,7 @@
       },
       {
         "value": "south-peru-classic",
-        "label": "Sur clásico del Peru"
+        "label": "Classic Southern Peru"
       },
       {
         "value": "amazon-peru",

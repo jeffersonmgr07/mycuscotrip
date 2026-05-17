@@ -22,7 +22,7 @@
   "filters": {
     "types": [
       "trekking",
-      "aventura",
+      "adventure",
       "naturaleza",
       "machu-picchu"
     ],
@@ -120,7 +120,7 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -170,7 +170,7 @@
         "camino-inca"
       ],
       "highlights": [
-        "Camino Inca clásico",
+        "Camino Inca classic",
         "Wiñay Wayna",
         "Inti Punku",
         "Machu Picchu"
@@ -212,13 +212,13 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
-          "camino inca clásico 4d/3n",
+          "camino inca classic 4d/3n",
           "camino inca 4 dias 3 nights",
-          "Camino Inca clásico",
+          "Camino Inca classic",
           "Wiñay Wayna",
           "Inti Punku",
           "Machu Picchu"
@@ -248,8 +248,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
-      "description": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
+      "shortDescription": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
+      "description": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -305,7 +305,7 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -319,7 +319,7 @@
       "status": "draft",
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
-        "description": "Ruta de aventura to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes."
+        "description": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes."
       }
     },
     {
@@ -397,7 +397,7 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -486,7 +486,7 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -521,8 +521,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta de aventura que combina paisajes del Ausangate con la Rainbow Mountain.",
-      "description": "Ruta de aventura que combina paisajes del Ausangate con la Rainbow Mountain.",
+      "shortDescription": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain.",
+      "description": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -577,7 +577,7 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
@@ -591,7 +591,7 @@
       "status": "draft",
       "seo": {
         "title": "Ausangate + Vinicunca | My Cusco Trip",
-        "description": "Ruta de aventura que combina paisajes del Ausangate con la Rainbow Mountain."
+        "description": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain."
       }
     },
     {
@@ -612,8 +612,8 @@
       "priceFrom": null,
       "days": 3,
       "nights": 2,
-      "shortDescription": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata.",
-      "description": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata.",
+      "shortDescription": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata.",
+      "description": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata.",
       "duration": {
         "label": "3D/2N",
         "days": 3,
@@ -627,7 +627,7 @@
         "inca-jungle"
       ],
       "highlights": [
-        "Aventura",
+        "Adventure",
         "Selva alta",
         "Machu Picchu"
       ],
@@ -668,13 +668,13 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
           "inca jungle 3d/2n",
           "inca jungle 3 dias 2 nights",
-          "Aventura",
+          "Adventure",
           "Selva alta",
           "Machu Picchu"
         ]
@@ -682,7 +682,7 @@
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
-        "description": "Ruta activa to Machu Picchu with combinación de aventura, naturaleza and tramos de caminata."
+        "description": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata."
       }
     },
     {
@@ -703,8 +703,8 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu.",
-      "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu.",
+      "shortDescription": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu.",
+      "description": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
@@ -718,7 +718,7 @@
         "inca-jungle"
       ],
       "highlights": [
-        "Aventura completa",
+        "Adventure completa",
         "Selva alta",
         "Machu Picchu"
       ],
@@ -759,13 +759,13 @@
         ],
         "themes": [
           "trekking",
-          "aventura",
+          "adventure",
           "naturaleza"
         ],
         "keywords": [
           "inca jungle 4d/3n",
           "inca jungle 4 dias 3 nights",
-          "Aventura completa",
+          "Adventure completa",
           "Selva alta",
           "Machu Picchu"
         ]
@@ -773,7 +773,7 @@
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
-        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura and conexión con Machu Picchu."
+        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu."
       }
     }
   ]
