@@ -23,8 +23,18 @@
 
   function getLocaleFromUrl() {
     if (window.MCT_LOCALE) return normalizeLocale(window.MCT_LOCALE);
+
     const params = new URLSearchParams(window.location.search);
-    return normalizeLocale(params.get("lang") || getCurrentFolderLocale() || localStorage.getItem(STORAGE_KEY) || DEFAULT_LOCALE);
+    const paramLang = params.get("lang");
+    if (paramLang) return normalizeLocale(paramLang);
+
+    const folderLocale = getCurrentFolderLocale();
+    if (folderLocale) return normalizeLocale(folderLocale);
+
+    // The root site must always load in Spanish. Do not reuse a previous
+    // language saved in localStorage on /, because that makes the header
+    // appear in English while the Spanish home content remains in Spanish.
+    return DEFAULT_LOCALE;
   }
 
   function getAssetPath(path) {
