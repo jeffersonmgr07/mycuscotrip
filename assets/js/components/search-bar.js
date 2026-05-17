@@ -30,6 +30,14 @@ class MyCuscoTripSearchBar {
     this.init();
   }
 
+  t(key, fallback = "", params = {}) {
+    let value = window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+    Object.entries(params || {}).forEach(([name, val]) => {
+      value = String(value).replace(new RegExp(`\\{${name}\\}`, "g"), val);
+    });
+    return value;
+  }
+
   init() {
     this.setupTabs();
     this.setupQuantityControls();
@@ -67,9 +75,9 @@ class MyCuscoTripSearchBar {
     if (!this.destinoSelect || !this.dateInput) return;
 
     if (this.currentTab === "paquetes") {
-      this.dateInput.placeholder = "Selecciona rango de fechas";
+      this.dateInput.placeholder = this.t("search.selectDateRange", "Selecciona rango de fechas");
     } else {
-      this.dateInput.placeholder = "Selecciona fecha";
+      this.dateInput.placeholder = this.t("search.selectDate", "Selecciona fecha");
     }
 
     if (this.flatpickrInstance) {
@@ -87,7 +95,8 @@ class MyCuscoTripSearchBar {
       this.dateInput._flatpickr.destroy();
     }
 
-    const locale = flatpickr.l10ns.es || flatpickr.l10ns.default;
+    const activeLocale = window.MyCuscoTripI18n?.locale || window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+    const locale = flatpickr.l10ns[activeLocale] || flatpickr.l10ns.es || flatpickr.l10ns.default;
     const plugins = [];
 
     if (typeof confirmDatePlugin !== "undefined") {
@@ -173,7 +182,7 @@ class MyCuscoTripSearchBar {
         this.selectedDays = String(days);
         this.selectedNights = String(nights);
 
-        this.durationEl.innerHTML = `<i class="fa-regular fa-moon"></i> ${days} días / ${nights} noches`;
+        this.durationEl.innerHTML = `<i class="fa-regular fa-moon"></i> ${this.t("search.daysNights", "{days} días / {nights} noches", { days, nights })}`;
         this.durationEl.style.display = "block";
       } else {
         this.durationEl.textContent = "";
@@ -185,7 +194,7 @@ class MyCuscoTripSearchBar {
         this.selectedDays = "";
         this.selectedNights = "";
 
-        this.durationEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> Fecha seleccionada`;
+        this.durationEl.innerHTML = `<i class="fa-regular fa-calendar-check"></i> ${this.t("search.selectedDate", "Fecha seleccionada")}`;
         this.durationEl.style.display = "block";
       } else {
         this.durationEl.textContent = "";
@@ -267,7 +276,7 @@ class MyCuscoTripSearchBar {
   updateQuantityLabel() {
     if (!this.qtyLabel) return;
     const total = this.adults + this.children;
-    this.qtyLabel.textContent = `${total} ${total === 1 ? "pasajero" : "pasajeros"}`;
+    this.qtyLabel.textContent = `${total} ${total === 1 ? this.t("search.passenger", "pasajero") : this.t("search.passengers", "pasajeros")}`;
   }
 
   closeQuantityPanel() {
@@ -331,5 +340,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!window.__mctSearchBarInitialized) {
     window.__mctSearchBarInitialized = true;
     window.mctSearchBarInstance = new MyCuscoTripSearchBar();
+  }
+});
+
+window.addEventListener("mct:i18n-ready", () => {
+  if (window.mctSearchBarInstance) {
+    window.mctSearchBarInstance.applyTabRules();
+    window.mctSearchBarInstance.updateQuantityLabel();
   }
 });

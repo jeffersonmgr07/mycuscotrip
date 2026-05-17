@@ -31,7 +31,7 @@
       if (raw.startsWith("/")) return raw;
       let clean = raw.replace(/^\.\//, "");
       const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
-      const localizable = ["tours-cusco.json", "tours-machu-picchu.json", "packages-cusco.json"];
+      const localizable = ["tours-cusco.json", "tours-machu-picchu.json", "tours-peru.json", "packages-cusco.json", "packages-peru.json", "trekkings-cusco.json"];
       const filename = clean.split("/").pop();
       if (locale !== "es" && clean.startsWith("assets/data/") && localizable.includes(filename)) {
         clean = `assets/data/i18n/${locale}/${filename}`;
@@ -43,7 +43,19 @@
       return `${this.basePath}${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
     }
 
+    async waitForI18nReady() {
+      const hasDictionary = window.MyCuscoTripI18n?.dictionary && Object.keys(window.MyCuscoTripI18n.dictionary).length;
+      if (hasDictionary) return;
+      await new Promise((resolve) => {
+        let done = false;
+        const finish = () => { if (!done) { done = true; resolve(); } };
+        window.addEventListener("mct:i18n-ready", finish, { once: true });
+        setTimeout(finish, 900);
+      });
+    }
+
     async init() {
+      await this.waitForI18nReady();
       this.renderLoading();
       try {
         const data = await this.loadFeaturedData();
