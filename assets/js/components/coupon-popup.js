@@ -14,8 +14,8 @@
     constructor(options = {}) {
       this.options = {
         couponCode: options.couponCode || "BETSWELCOME05",
-        discountLabel: options.discountLabel || "Hasta 15% de descuento",
-        title: options.title || "Recibe hasta 15% de descuento en tu próximo viaje a Cusco",
+        discountLabel: options.discountLabel || "",
+        title: options.title || "",
         endpoint: options.endpoint || "",
         ...options
       };
@@ -58,6 +58,19 @@
 
       const elapsedDays = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
       return elapsedDays < DISMISS_DAYS;
+    }
+
+
+    t(key, fallback = "") {
+      return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+    }
+
+    formatMessage(key, fallback, params = {}) {
+      let message = this.t(key, fallback);
+      Object.entries(params).forEach(([name, value]) => {
+        message = message.replace(new RegExp(`\{${name}\}`, "g"), String(value));
+      });
+      return message;
     }
 
     getStoredState() {
@@ -105,45 +118,45 @@
             <div class="coupon-popup__offer-card">
               <span class="coupon-popup__offer-icon">%</span>
               <span>
-                <strong class="coupon-popup__offer-title">${this.escapeHtml(this.options.discountLabel)}</strong>
-                <small class="coupon-popup__offer-text">Aplica para tours y paquetes seleccionados.</small>
+                <strong class="coupon-popup__offer-title">${this.escapeHtml(this.options.discountLabel || this.t("coupon.discountLabel", "Hasta 15% de descuento"))}</strong>
+                <small class="coupon-popup__offer-text">${this.escapeHtml(this.t("coupon.appliesTo", "Aplica para tours y paquetes seleccionados."))}</small>
               </span>
             </div>
           </section>
 
           <section class="coupon-popup__content">
-            <button type="button" class="coupon-popup__close" data-coupon-close aria-label="Cerrar cupón">×</button>
-            <p class="coupon-popup__eyebrow">Oferta especial</p>
-            <h2 id="couponPopupTitle">${this.escapeHtml(this.options.title)}</h2>
-            <p class="coupon-popup__intro">Suscríbete para recibir un mayor descuento.</p>
+            <button type="button" class="coupon-popup__close" data-coupon-close aria-label="${this.escapeHtml(this.t("coupon.close", "Cerrar cupón"))}">×</button>
+            <p class="coupon-popup__eyebrow">${this.escapeHtml(this.t("coupon.eyebrow", "Oferta especial"))}</p>
+            <h2 id="couponPopupTitle">${this.escapeHtml(this.options.title || this.t("coupon.title", "Recibe hasta 15% de descuento en tu próximo viaje a Cusco"))}</h2>
+            <p class="coupon-popup__intro">${this.escapeHtml(this.t("coupon.intro", "Suscríbete para recibir un mayor descuento."))}</p>
 
             <div class="coupon-popup__code-card">
               <div class="coupon-popup__code-row">
                 <strong class="coupon-popup__code" data-coupon-code>${this.escapeHtml(this.options.couponCode)}</strong>
-                <button type="button" class="coupon-popup__copy" data-coupon-copy>Copiar</button>
+                <button type="button" class="coupon-popup__copy" data-coupon-copy>${this.escapeHtml(this.t("coupon.copy", "Copiar"))}</button>
               </div>
-              <p class="coupon-popup__code-note">Este código ofrece 5% de descuento. Suscríbete para mejorar este cupón de descuento.</p>
+              <p class="coupon-popup__code-note">${this.escapeHtml(this.t("coupon.codeNote", "Este código ofrece 5% de descuento. Suscríbete para mejorar este cupón de descuento."))}</p>
             </div>
 
             <form class="coupon-popup__form" novalidate>
               <label>
-                <span>Nombre</span>
+                <span>${this.escapeHtml(this.t("coupon.name", "Nombre"))}</span>
                 <input type="text" name="name" autocomplete="name" required minlength="2" />
               </label>
 
               <label>
-                <span>WhatsApp</span>
+                <span>${this.escapeHtml(this.t("coupon.whatsapp", "WhatsApp"))}</span>
                 <input type="tel" name="whatsapp" autocomplete="tel" required inputmode="tel" />
               </label>
 
               <label>
-                <span>Correo</span>
+                <span>${this.escapeHtml(this.t("coupon.email", "Correo"))}</span>
                 <input type="email" name="email" autocomplete="email" required />
               </label>
 
               <p class="coupon-popup__message" data-coupon-message aria-live="polite"></p>
 
-              <button type="submit" class="btn coupon-popup__submit">Suscribirme</button>
+              <button type="submit" class="btn coupon-popup__submit">${this.escapeHtml(this.t("coupon.submit", "Suscribirme"))}</button>
             </form>
           </section>
         </div>
@@ -216,13 +229,13 @@
           temp.remove();
         }
 
-        this.setMessage(`Código ${code} copiado.`, false);
+        this.setMessage(this.formatMessage("coupon.copySuccess", "Código {code} copiado.", { code }), false);
         this.trackEvent("coupon_code_copy", {
           coupon_code: code,
           event_category: "coupon"
         });
       } catch (error) {
-        this.setMessage(`Tu código es ${code}.`, false);
+        this.setMessage(this.formatMessage("coupon.copyFallback", "Tu código es {code}.", { code }), false);
       }
     }
 
@@ -247,7 +260,7 @@
         return;
       }
 
-      this.setMessage("Registrando tus datos...", false);
+      this.setMessage(this.t("coupon.submitting", "Registrando tus datos..."), false);
 
       try {
         await this.submitCouponLead(payload);
@@ -263,25 +276,25 @@
           lead_source: "coupon_popup",
           coupon_code: payload.couponCode
         }, { metaEventName: "Lead" });
-        this.setMessage("Listo. Recibimos tus datos y te enviaremos el cupón real de hasta 15%.", false);
+        this.setMessage(this.t("coupon.success", "Listo. Recibimos tus datos y te enviaremos el cupón real de hasta 15%."), false);
         window.setTimeout(() => this.hide(), 1800);
       } catch (error) {
         console.error("No se pudo registrar el cupón:", error);
-        this.setMessage("No pudimos registrar tus datos. Inténtalo nuevamente.", true);
+        this.setMessage(this.t("coupon.error", "No pudimos registrar tus datos. Inténtalo nuevamente."), true);
       }
     }
 
     validatePayload(payload) {
       if (!payload.name || payload.name.length < 2) {
-        return { valid: false, message: "Ingresa tu nombre." };
+        return { valid: false, message: this.t("coupon.validationName", "Ingresa tu nombre.") };
       }
 
       if (!this.isValidWhatsApp(payload.whatsapp)) {
-        return { valid: false, message: "Ingresa un WhatsApp válido con código de país o ciudad." };
+        return { valid: false, message: this.t("coupon.validationWhatsApp", "Ingresa un WhatsApp válido con código de país o ciudad.") };
       }
 
       if (!this.isValidEmail(payload.email)) {
-        return { valid: false, message: "Ingresa un correo válido." };
+        return { valid: false, message: this.t("coupon.validationEmail", "Ingresa un correo válido.") };
       }
 
       return { valid: true, message: "" };

@@ -321,8 +321,23 @@ class MyCuscoTripHeader {
     this.updateLanguageLabel(lang);
     this.closeLanguageMenu();
 
-    const nextPath = window.MyCuscoTripI18n?.getLocalizedPath?.(lang, window.location.href) || `/${lang}/`;
+    const nextPath = this.buildLocalizedPath(lang, window.location.href);
     window.location.href = nextPath;
+  }
+
+  buildLocalizedPath(lang, href = window.location.href) {
+    const supportedLocales = ["en", "pt", "fr", "de", "it", "zh", "ja", "es"];
+    if (window.MyCuscoTripI18n?.getLocalizedPath) {
+      return window.MyCuscoTripI18n.getLocalizedPath(lang, href);
+    }
+
+    const targetLang = supportedLocales.includes(lang) ? lang : "es";
+    const url = new URL(href, window.location.origin);
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (supportedLocales.includes(parts[0])) parts.shift();
+    const cleanPath = parts.join("/") || "index.html";
+    const prefix = targetLang === "es" ? "/" : `/${targetLang}/`;
+    return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${url.search}${url.hash}`;
   }
 
   localizeHeaderLinks(lang) {
@@ -339,7 +354,7 @@ class MyCuscoTripHeader {
     });
     this.langLinks.forEach((link) => {
       const targetLang = link.dataset.lang || "es";
-      link.setAttribute("href", window.MyCuscoTripI18n?.getLocalizedPath?.(targetLang, window.location.href) || `/${targetLang}/`);
+      link.setAttribute("href", this.buildLocalizedPath(targetLang, window.location.href));
     });
   }
 
