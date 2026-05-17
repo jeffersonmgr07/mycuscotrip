@@ -52,6 +52,20 @@
     "otros-destinos": "Otros destinos"
   };
 
+  const PUBLIC_DESTINATION_LABELS_EN = {
+    "cusco": "Cusco",
+    "machu-picchu": "Machu Picchu",
+    "valle-sagrado": "Sacred Valley",
+    "puno": "Puno",
+    "arequipa": "Arequipa",
+    "ica": "Ica",
+    "lima": "Lima",
+    "paracas": "Paracas",
+    "maras-moray": "Maras and Moray",
+    "tarapoto": "Tarapoto",
+    "otros-destinos": "Other destinations"
+  };
+
   const HIDDEN_DESTINATIONS = new Set([
     "peru",
     "aguas-calientes",
@@ -132,6 +146,18 @@
     return Array.from(new Set(toArray(values).filter(Boolean)));
   }
 
+  function getLocale() {
+    return String(window.MCT_LOCALE || document.documentElement.lang || "es").slice(0, 2).toLowerCase();
+  }
+
+  function isEnglishLocale() {
+    return getLocale() === "en";
+  }
+
+  function tr(esValue, enValue) {
+    return isEnglishLocale() ? enValue : esValue;
+  }
+
   function formatLabel(value) {
     return String(value || "")
       .replace(/-/g, " ")
@@ -148,7 +174,8 @@
 
   function getPublicDestinationLabel(destination) {
     const publicValue = getPublicDestinationValue(destination);
-    return PUBLIC_DESTINATION_LABELS[publicValue] || formatLabel(publicValue);
+    const labels = isEnglishLocale() ? PUBLIC_DESTINATION_LABELS_EN : PUBLIC_DESTINATION_LABELS;
+    return labels[publicValue] || formatLabel(publicValue);
   }
 
   function isVisiblePublicDestination(destination) {
@@ -181,7 +208,7 @@
     const halfDayAliases = new Set(["medio-dia", "half-day", "halfday", "medio-dia-tour"]);
 
     if (fullDayAliases.has(key)) return { key: "full-day", label: "Full day", rank: 20 };
-    if (halfDayAliases.has(key)) return { key: "medio-dia", label: "Medio día", rank: 10 };
+    if (halfDayAliases.has(key)) return { key: "medio-dia", label: tr("Medio día", "Half day"), rank: 10 };
 
     const match = key.match(/^(\d+)d(?:(\d+)n)?$/);
     if (match) {
@@ -189,7 +216,9 @@
       const nights = Number(match[2] || Math.max(days - 1, 0));
       return {
         key: `${days}d${nights}n`,
-        label: `${days} días / ${nights} noche${nights === 1 ? "" : "s"}`,
+        label: isEnglishLocale()
+          ? `${days} day${days === 1 ? "" : "s"} / ${nights} night${nights === 1 ? "" : "s"}`
+          : `${days} días / ${nights} noche${nights === 1 ? "" : "s"}`,
         rank: 100 + days
       };
     }
@@ -353,28 +382,28 @@
     const highlights = getOptionHighlights(option, tourIndex);
     const search = card?.search || {};
     const optionBadge = optionIndex === 0
-      ? "Opción recomendada"
+      ? tr("Opción recomendada", "Recommended option")
       : optionIndex === 1
-        ? "Alternativa flexible"
+        ? tr("Alternativa flexible", "Flexible alternative")
         : optionIndex === 2
-          ? "Ruta especial"
-          : card?.badge || "Paquete";
+          ? tr("Ruta especial", "Special route")
+          : card?.badge || tr("Paquete", "Package");
 
-    const optionLabel = `Opción ${optionIndex + 1}`;
-    const subtitle = highlights.length ? highlights.join(" + ") : card?.shortDescription || "Combinación flexible";
+    const optionLabel = `${tr("Opción", "Option")} ${optionIndex + 1}`;
+    const subtitle = highlights.length ? highlights.join(" + ") : card?.shortDescription || tr("Combinación flexible", "Flexible combination");
 
     return {
       id: `${card?.id || card?.slug || "pkg"}__option_${optionIndex}`,
       internalCode: "",
       slug: card?.slug || option?.slug || "",
-      title: `${card?.title || option?.title || "Paquete variado"} · ${optionLabel}`,
+      title: `${card?.title || option?.title || tr("Paquete variado", "Varied package")} · ${optionLabel}`,
       category: card?.category || "cusco",
       productKind: "package",
       productFamily: option?.productFamily || card?.productFamily || "cusco-package",
       days: Number(card?.days || option?.days || 0),
       nights: Number(card?.nights || option?.nights || 0),
-      typeLabel: card?.typeLabel || option?.typeLabel || "Paquete",
-      duration: { label: card?.typeLabel || option?.typeLabel || "Paquete" },
+      typeLabel: card?.typeLabel || option?.typeLabel || tr("Paquete", "Package"),
+      duration: { label: card?.typeLabel || option?.typeLabel || tr("Paquete", "Package") },
       location: card?.location || option?.location || "Cusco / Machu Picchu",
       image: card?.image || option?.image || "",
       badge: optionBadge,
@@ -384,7 +413,7 @@
       price: { amount: 0, currency: option?.currency || "USD", mode: "dynamic_from_selected_itinerary" },
       currency: option?.currency || "USD",
       shortDescription: subtitle,
-      description: card?.shortDescription || option?.generationReason || "Opción creada desde la configuración del paquete.",
+      description: card?.shortDescription || option?.generationReason || tr("Opción creada desde la configuración del paquete.", "Option created from the package configuration."),
       search: {
         kind: "package",
         destinations: toArray(search.destinations),
@@ -510,7 +539,7 @@
       .filter(isVisiblePublicDestination);
 
     select.innerHTML = `
-      <option value="">Todos los destinos</option>
+      <option value="">${tr("Todos los destinos", "All destinations")}</option>
       ${destinations.map((destination) => `<option value="${escapeHtml(destination)}">${escapeHtml(getPublicDestinationLabel(destination))}</option>`).join("")}
     `;
 
@@ -524,17 +553,17 @@
 
     const currentValue = state.filters.durationKey || buildDurationKey(state.filters.days, state.filters.nights) || select.value;
     const preferred = [
-      { key: "medio-dia", label: "Medio día", rank: 10 },
+      { key: "medio-dia", label: tr("Medio día", "Half day"), rank: 10 },
       { key: "full-day", label: "Full day", rank: 20 },
-      { key: "2d1n", label: "2 días / 1 noche", rank: 102 },
-      { key: "3d2n", label: "3 días / 2 noches", rank: 103 },
-      { key: "4d3n", label: "4 días / 3 noches", rank: 104 },
-      { key: "5d4n", label: "5 días / 4 noches", rank: 105 },
-      { key: "6d5n", label: "6 días / 5 noches", rank: 106 },
-      { key: "7d6n", label: "7 días / 6 noches", rank: 107 },
-      { key: "8d7n", label: "8 días / 7 noches", rank: 108 },
-      { key: "9d8n", label: "9 días / 8 noches", rank: 109 },
-      { key: "10d9n", label: "10 días / 9 noches", rank: 110 }
+      { key: "2d1n", label: tr("2 días / 1 noche", "2 days / 1 night"), rank: 102 },
+      { key: "3d2n", label: tr("3 días / 2 noches", "3 days / 2 nights"), rank: 103 },
+      { key: "4d3n", label: tr("4 días / 3 noches", "4 days / 3 nights"), rank: 104 },
+      { key: "5d4n", label: tr("5 días / 4 noches", "5 days / 4 nights"), rank: 105 },
+      { key: "6d5n", label: tr("6 días / 5 noches", "6 days / 5 nights"), rank: 106 },
+      { key: "7d6n", label: tr("7 días / 6 noches", "7 days / 6 nights"), rank: 107 },
+      { key: "8d7n", label: tr("8 días / 7 noches", "8 days / 7 nights"), rank: 108 },
+      { key: "9d8n", label: tr("9 días / 8 noches", "9 days / 8 nights"), rank: 109 },
+      { key: "10d9n", label: tr("10 días / 9 noches", "10 days / 9 nights"), rank: 110 }
     ];
 
     const existing = new Map(preferred.map((item) => [item.key, item]));
@@ -550,7 +579,7 @@
     });
 
     select.innerHTML = `
-      <option value="">Todas las duraciones</option>
+      <option value="">${tr("Todas las duraciones", "All durations")}</option>
       ${durations.map((duration) => `<option value="${escapeHtml(duration.key)}">${escapeHtml(duration.label)}</option>`).join("")}
     `;
     select.value = currentValue;
@@ -566,13 +595,15 @@
 
   function getPriceLabel(product) {
     if (product.productKind === "package" || product.priceMode === "dynamic_from_selected_itinerary") {
-      return product.productFamily === "peru-package" ? "Cotización flexible" : "Precio según selección";
+      return product.productFamily === "peru-package"
+        ? tr("Cotización flexible", "Flexible quote")
+        : tr("Precio según selección", "Price based on selection");
     }
 
     const amount = Number(product.price?.amount || 0);
     const currency = product.price?.currency || product.currency || "USD";
-    if (!Number.isFinite(amount) || amount <= 0) return "Consultar";
-    return `Desde ${currency} ${amount.toFixed(2)}`;
+    if (!Number.isFinite(amount) || amount <= 0) return tr("Consultar", "Ask for details");
+    return `${tr("Desde", "From")} ${currency} ${amount.toFixed(2)}`;
   }
 
   function getDetails(product) {
@@ -584,18 +615,18 @@
     if (product.typeLabel) chips.push(product.typeLabel);
 
     if (product.productKind === "package") {
-      chips.push(product.productFamily === "peru-package" ? "Multidestino" : "Machu Picchu");
-      chips.push("Hotel configurable");
-      chips.push("Tren configurable");
+      chips.push(product.productFamily === "peru-package" ? tr("Multidestino", "Multi-destination") : "Machu Picchu");
+      chips.push(tr("Hotel configurable", "Configurable hotel"));
+      chips.push(tr("Tren configurable", "Configurable train"));
     } else if (family === "machu-picchu-tour") {
-      chips.push("Con tren");
-      chips.push("Entrada incluida");
-      chips.push("Guía profesional");
+      chips.push(tr("Con tren", "Train included"));
+      chips.push(tr("Entrada incluida", "Entrance included"));
+      chips.push(tr("Guía profesional", "Professional guide"));
     } else {
       if (themes.length) chips.push(themes[0]);
       if (tags.includes("full-day")) chips.push("Full day");
-      if (tags.includes("medio-dia") || tags.includes("half-day")) chips.push("Medio día");
-      chips.push("Tour diario");
+      if (tags.includes("medio-dia") || tags.includes("half-day")) chips.push(tr("Medio día", "Half day"));
+      chips.push(tr("Tour diario", "Daily tour"));
     }
 
     return unique(chips)
@@ -605,12 +636,12 @@
 
   function renderProductCard(product) {
     const image = product.image || DEFAULT_IMAGE;
-    const kindLabel = product.productKind === "package" ? "Paquete" : "Tour";
+    const kindLabel = product.productKind === "package" ? tr("Paquete", "Package") : "Tour";
     const details = getDetails(product);
 
     return `
       <article class="listing-card" data-product-kind="${escapeHtml(product.productKind)}" data-product-family="${escapeHtml(product.productFamily)}">
-        <a class="listing-card__link" href="${escapeHtml(getProductUrl(product))}" aria-label="Ver ${escapeHtml(product.title)}">
+        <a class="listing-card__link" href="${escapeHtml(getProductUrl(product))}" aria-label="${tr("Ver", "View")} ${escapeHtml(product.title)}">
           <div class="listing-card__image">
             <img src="${escapeHtml(image)}" alt="${escapeHtml(product.title)}" loading="lazy" onerror="this.src='${DEFAULT_IMAGE}'">
             <span class="listing-card__badge">${escapeHtml(product.badge || kindLabel)}</span>
@@ -618,7 +649,7 @@
           <div class="listing-card__content">
             <div class="listing-card__meta">
               <span>${escapeHtml(kindLabel)}</span>
-              ${product.optionIndex !== undefined ? `<span>Opción ${Number(product.optionIndex) + 1}</span>` : ""}
+              ${product.optionIndex !== undefined ? `<span>${tr("Opción", "Option")} ${Number(product.optionIndex) + 1}</span>` : ""}
             </div>
             <h3>${escapeHtml(product.title)}</h3>
             ${product.shortDescription ? `<p class="listing-card__description">${escapeHtml(product.shortDescription)}</p>` : ""}
@@ -627,7 +658,7 @@
             </div>
             <div class="listing-card__actions">
               <strong class="listing-card__price">${escapeHtml(getPriceLabel(product))}</strong>
-              <span class="btn listing-card__button">Ver experiencia</span>
+              <span class="btn listing-card__button">${tr("Ver experiencia", "View experience")}</span>
             </div>
           </div>
         </a>
@@ -642,13 +673,17 @@
     const summary = getFirstElement(selectors.summary);
 
     if (!grid) {
-      console.warn("[MyCuscoTrip AllExperiences] No se encontró contenedor de cards.");
+      console.warn("[MyCuscoTrip AllExperiences] Cards container was not found.");
       return;
     }
 
     const total = state.filteredCatalog.length;
-    if (count) count.textContent = `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
-    if (summary) summary.textContent = "Explora experiencias disponibles según los filtros seleccionados.";
+    if (count) {
+      count.textContent = isEnglishLocale()
+        ? `${total} experience${total === 1 ? "" : "s"} found`
+        : `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
+    }
+    if (summary) summary.textContent = tr("Explora experiencias disponibles según los filtros seleccionados.", "Explore available experiences based on the selected filters.");
 
     if (!total) {
       grid.innerHTML = "";
@@ -786,13 +821,13 @@
       bindFilters();
       applyFilters({ updateUrl: false });
     } catch (error) {
-      console.error("[MyCuscoTrip AllExperiences] Error inicializando página:", error);
+      console.error("[MyCuscoTrip AllExperiences] Error initializing page:", error);
       const grid = getFirstElement(selectors.grid);
       if (grid) {
         grid.innerHTML = `
           <div class="listing-error">
-            <h3>No se pudieron cargar las experiencias</h3>
-            <p>Revisa que existan los JSON y que estén cargados los scripts core antes de all-experiences.js.</p>
+            <h3>${tr("No se pudieron cargar las experiencias", "Experiences could not be loaded")}</h3>
+            <p>${tr("Revisa que existan los JSON y que estén cargados los scripts core antes de all-experiences.js.", "Check that the JSON files exist and that the core scripts are loaded before all-experiences.js.")}</p>
           </div>
         `;
       }

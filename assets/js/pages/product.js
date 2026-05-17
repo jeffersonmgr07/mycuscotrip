@@ -58,6 +58,18 @@ class MyCuscoTripProductPage {
     return value;
   }
 
+  getLocale() {
+    return String(window.MCT_LOCALE || document.documentElement.lang || "es").slice(0, 2).toLowerCase();
+  }
+
+  isEnglishLocale() {
+    return this.getLocale() === "en";
+  }
+
+  label(esValue, enValue) {
+    return this.isEnglishLocale() ? enValue : esValue;
+  }
+
   async init() {
     if (!this.slug) {
       this.renderNotFound(this.t("product.invalidProduct", "No se recibió un producto válido."));
@@ -340,8 +352,8 @@ class MyCuscoTripProductPage {
   formatGuideLanguages(languages) {
     const values = Array.isArray(languages) ? languages : [];
     const normalized = values.map((item) => String(item || "").trim()).filter(Boolean);
-    const hasSpanish = normalized.some((item) => /espa[nñ]ol|spanish/i.test(item));
-    const hasEnglish = normalized.some((item) => /ingl[eé]s|english/i.test(item));
+    const hasSpanish = normalized.some((item) => /^(es|spa)$/i.test(item) || /espa[nñ]ol|spanish/i.test(item));
+    const hasEnglish = normalized.some((item) => /^(en|eng)$/i.test(item) || /ingl[eé]s|english/i.test(item));
     const hasOther = normalized.some((item) => /otro|other|request|consult/i.test(item));
 
     const parts = [];
@@ -350,6 +362,8 @@ class MyCuscoTripProductPage {
     } else {
       normalized.forEach((item) => {
         let value = item
+          .replace(/^(es|spa)$/i, "Spanish")
+          .replace(/^(en|eng)$/i, "English")
           .replace(/espa[nñ]ol/gi, "Spanish")
           .replace(/ingl[eé]s/gi, "English")
           .replace(/otros idiomas a consultar/gi, this.t("product.otherLanguagesOnRequest", "Other languages available upon request"));
@@ -375,7 +389,7 @@ class MyCuscoTripProductPage {
     const languages = product?.duration?.guideLanguages?.length
       ? this.formatGuideLanguages(product.duration.guideLanguages)
       : this.t("product.toConfirm", "To be confirmed");
-    const capacity = product?.capacity || product?.duration?.maxGroupSize || this.t("product.toConfirm", "Por confirmar");
+    const capacity = product?.capacity || product?.duration?.maxGroupSize || this.t("product.toConfirm", this.label("Por confirmar", "To be confirmed"));
 
     document.title = `${title} | My Cusco Trip`;
 
@@ -390,9 +404,9 @@ class MyCuscoTripProductPage {
       this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
     }
 
-    this.setText("detailCapacity", this.t("product.maxTravelers", "Máximo {count} viajeros por grupo", { count: capacity }));
+    this.setText("detailCapacity", this.t("product.maxTravelers", this.label("Máximo {count} viajeros por grupo", "Maximum {count} travelers per group"), { count: capacity }));
     this.setText("detailDuration", duration);
-    this.setText("detailLanguages", this.t("product.guideIn", "Guía en {languages}", { languages }));
+    this.setText("detailLanguages", this.t("product.guideIn", this.label("Guía en {languages}", "Professional guide: {languages}"), { languages }));
     this.setText("detailLocation", location);
 
     this.renderGallery(product?.images || {});
@@ -929,8 +943,8 @@ class MyCuscoTripProductPage {
     this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId);
     this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId);
 
-    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, "Tren de ida incluido");
-    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, "Tren de retorno incluido");
+    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.label("Tren de ida incluido", "Included outbound train"));
+    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.label("Tren de retorno incluido", "Included return train"));
 
     if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
     if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
@@ -943,25 +957,25 @@ class MyCuscoTripProductPage {
     container.innerHTML = `
       <div class="booking-train-selection" data-train-selection>
         <div class="booking-train-selection__intro">
-          <strong>Tren turístico</strong>
+          <strong>${this.escapeHtml(this.t("product.touristTrain", this.label("Tren turístico", "Tourist train")))}</strong>
           <small>${this.escapeHtml(this.getTrainSelectionIntro(product, trainConfig))}</small>
         </div>
         ${this.availableOutboundTrains.length ? `
           <label class="booking-train-select-field" for="outboundTrainSelect">
-            <span>Tren de ida</span>
+            <span>${this.escapeHtml(this.label("Tren de ida", "Outbound train"))}</span>
             <select id="outboundTrainSelect" data-train-direction="outbound" ${this.isTrainDirectionLocked("outbound", trainConfig) ? "disabled" : ""}>
               ${this.availableOutboundTrains.map((train) => this.renderTrainOption(train, this.selectedOutboundTrainId)).join("")}
             </select>
-            ${this.isTrainDirectionLocked("outbound", trainConfig) ? `<small class="booking-field-help">Tren de ida fijo para esta versión.</small>` : ""}
+            ${this.isTrainDirectionLocked("outbound", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.label("Tren de ida fijo para esta versión.", "Outbound train fixed for this version."))}</small>` : ""}
           </label>
         ` : ""}
         ${this.availableReturnTrains.length ? `
           <label class="booking-train-select-field" for="returnTrainSelect">
-            <span>Tren de retorno</span>
+            <span>${this.escapeHtml(this.label("Tren de retorno", "Return train"))}</span>
             <select id="returnTrainSelect" data-train-direction="return" ${this.isTrainDirectionLocked("return", trainConfig) ? "disabled" : ""}>
               ${this.getCompatibleReturnTrains(sameCompanyOnly).map((train) => this.renderTrainOption(train, this.selectedReturnTrainId)).join("")}
             </select>
-            ${this.isTrainDirectionLocked("return", trainConfig) ? `<small class="booking-field-help">Tren de retorno fijo para esta versión.</small>` : ""}
+            ${this.isTrainDirectionLocked("return", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.label("Tren de retorno fijo para esta versión.", "Return train fixed for this version."))}</small>` : ""}
           </label>
         ` : ""}
         <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
@@ -983,7 +997,7 @@ class MyCuscoTripProductPage {
     section.id = "trainSelectionSection";
     section.className = "booking-field";
     section.hidden = true;
-    section.innerHTML = `<label>Tren turístico</label><div id="trainSelectionContainer" class="booking-train-selection-wrap"></div>`;
+    section.innerHTML = `<label>${this.escapeHtml(this.t("product.touristTrain", this.label("Tren turístico", "Tourist train")))}</label><div id="trainSelectionContainer" class="booking-train-selection-wrap"></div>`;
     reference.parentNode.insertBefore(section, reference.nextSibling);
     return section;
   }
@@ -1152,9 +1166,9 @@ class MyCuscoTripProductPage {
   }
 
   getTrainSelectionIntro(product, config) {
-    if (config?.fixedSelection === true) return "Esta versión ya tiene trenes definidos para mantener el horario operativo.";
-    if (config?.fixedDirection === "outbound" || config?.fixedDirections?.includes?.("outbound")) return "El tren de ida está definido por la categoría del producto. Puedes elegir el retorno disponible según la operación.";
-    return "Elige los servicios de tren disponibles para esta versión. La diferencia de precio se calculará según el tren seleccionado.";
+    if (config?.fixedSelection === true) return this.label("Esta versión ya tiene trenes definidos para mantener el horario operativo.", "This version already has defined trains to maintain the operating schedule.");
+    if (config?.fixedDirection === "outbound" || config?.fixedDirections?.includes?.("outbound")) return this.label("El tren de ida está definido por la categoría del producto. Puedes elegir el retorno disponible según la operación.", "The outbound train is defined by the product category. You can choose the available return according to the operation.");
+    return this.label("Elige los servicios de tren disponibles para esta versión. La diferencia de precio se calculará según el tren seleccionado.", "Choose the train services available for this version. The price difference will be calculated according to the selected train.");
   }
 
   createFallbackTrainOption(id, label) {
@@ -1164,7 +1178,7 @@ class MyCuscoTripProductPage {
 
   renderTrainOption(train, selectedId) {
     const selected = train.id === selectedId ? " selected" : "";
-    const meta = [train.company, train.departureTime, train.arrivalTime ? `llega ${train.arrivalTime}` : ""].filter(Boolean).join(" · ");
+    const meta = [train.company, train.departureTime, train.arrivalTime ? `${this.label("llega", "arrives")} ${train.arrivalTime}` : ""].filter(Boolean).join(" · ");
     const price = train.price > 0 ? ` · USD ${this.formatMoney(train.price)}` : "";
     return `<option value="${this.escapeHtml(train.id)}"${selected}>${this.escapeHtml(train.label)}${meta ? ` · ${this.escapeHtml(meta)}` : ""}${price}</option>`;
   }
@@ -1224,8 +1238,10 @@ class MyCuscoTripProductPage {
 
     const summary = document.getElementById("trainSelectionSummary");
     if (!summary) return;
-    const companyNote = sameCompanyOnly ? "Los trenes de ida y retorno se mantienen con la misma compañía cuando hay disponibilidad." : "";
-    const adjustmentText = this.selectedTrainAdjustmentTotal > 0 ? `Diferencia total: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}` : "Sin diferencia adicional frente al tren incluido.";
+    const companyNote = sameCompanyOnly ? this.label("Los trenes de ida y retorno se mantienen con la misma compañía cuando hay disponibilidad.", "Outbound and return trains stay with the same company when available.") : "";
+    const adjustmentText = this.selectedTrainAdjustmentTotal > 0
+      ? `${this.label("Diferencia total", "Total difference")}: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
+      : this.label("Sin diferencia adicional frente al tren incluido.", "No additional difference from the included train.");
     summary.innerHTML = `<small>${this.escapeHtml(this.getSelectedTrainSummaryLabel())}</small><strong>${this.escapeHtml(adjustmentText)}</strong>${companyNote ? `<small>${this.escapeHtml(companyNote)}</small>` : ""}`;
   }
 
@@ -1258,7 +1274,7 @@ class MyCuscoTripProductPage {
       row = document.createElement("div");
       row.id = "trainAdjustmentTotalRow";
       row.className = "booking-summary__line";
-      row.innerHTML = `<span>Tren seleccionado</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
+      row.innerHTML = `<span>${this.escapeHtml(this.label("Tren seleccionado", "Selected train"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
       summary.insertBefore(row, serviceTotalRow);
     }
     row.hidden = !(amount > 0);
@@ -1269,10 +1285,10 @@ class MyCuscoTripProductPage {
   getSelectedTrainSummaryLabel() {
     const outbound = this.getSelectedOutboundTrain();
     const returning = this.getSelectedReturnTrain();
-    if (!outbound && !returning) return "No aplica";
+    if (!outbound && !returning) return this.label("No aplica", "Not applicable");
     const parts = [];
-    if (outbound) parts.push(`Ida: ${outbound.label}`);
-    if (returning) parts.push(`Retorno: ${returning.label}`);
+    if (outbound) parts.push(`${this.label("Ida", "Outbound")}: ${outbound.label}`);
+    if (returning) parts.push(`${this.label("Retorno", "Return")}: ${returning.label}`);
     return parts.join(" | ");
   }
 
