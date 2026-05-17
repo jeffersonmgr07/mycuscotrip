@@ -1222,3 +1222,15 @@ section {
     padding: 10px;
   }
 }
+
+
+/* i18n-safe hero title: keep the pre-title white and only highlight Machu Picchu. */
+.hero-text h2 .hero-title-pre {
+  color: #fff;
+  display: inline;
+}
+
+.hero-text h2 .hero-title-highlight {
+  color: var(--accent2);
+  display: block;
+}
