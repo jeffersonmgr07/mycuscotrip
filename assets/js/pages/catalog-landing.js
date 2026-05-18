@@ -210,7 +210,8 @@
     if (item.basePricing?.adult) return Number(item.basePricing.adult);
     if (item.pricing?.publishedAdultUSD) return Number(item.pricing.publishedAdultUSD);
     if (item.price?.adult) return Number(item.price.adult);
-    if (item.price) return Number(item.price);
+    if (item.price?.amount) return Number(item.price.amount);
+    if (typeof item.price === "number") return Number(item.price);
     return null;
   }
 
