@@ -69,7 +69,11 @@
       "duration": {
         "label": "2D/1N",
         "days": 2,
-        "nights": 1
+        "nights": 1,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 2700,
@@ -131,7 +135,29 @@
           "Ruta histórica"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 2D/1N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_002",
@@ -156,7 +182,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada-alta",
       "maxAltitudeMeters": 4200,
@@ -220,7 +250,29 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 4D/3N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_003",
@@ -245,7 +297,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 4600,
@@ -308,7 +364,29 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 4D/3N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_004",
@@ -333,7 +411,11 @@
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 4600,
@@ -396,7 +478,29 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 5D/4N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_005",
@@ -421,7 +525,11 @@
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 5200,
@@ -481,7 +589,29 @@
           "Comunidades andinas"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 5D/4N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_006",
@@ -506,7 +636,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 5200,
@@ -568,7 +702,29 @@
           "Paisajes altoandinos"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 4D/3N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_007",
@@ -593,7 +749,11 @@
       "duration": {
         "label": "3D/2N",
         "days": 3,
-        "nights": 2
+        "nights": 2,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 4300,
@@ -655,7 +815,29 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3D/2N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "trk_cusco_008",
@@ -680,7 +862,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 4300,
@@ -742,7 +928,29 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft"
+      "status": "draft",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 4D/3N. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     }
   ]
 }

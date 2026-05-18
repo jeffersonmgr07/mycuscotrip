@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "updatedAt": "2026-05-06",
   "currency": "USD",
-  "description": "Catálogo centralizado de trenes para tours y packages Machu Picchu. Las tarifas son tarifas brutas de tren según tarifarios proporcionados y no incluyen comisión PayPal ni retiro bancario.",
+  "description": "Centralized train catalog for Machu Picchu tours and packages. Fares are gross train rates based on supplied tariff sheets and do not include PayPal fees or bank withdrawal fees.",
   "pricingNotes": {
     "trainPricesAreSupplierFares": true,
     "applyPaymentFeesInTourOrCheckout": true,
@@ -11,10 +11,10 @@
     "guideFieldFromIncaRailTariffIsStoredWhenVisible": true
   },
   "routeCodes": {
-    "CUSCO_MAPI": "Cusco / San Pedro / Wanchaq / Poroy hacia Machu Picchu",
-    "OLLA_MAPI": "Ollantaytambo hacia Machu Picchu",
-    "MAPI_CUSCO": "Machu Picchu hacia Cusco / San Pedro / Wanchaq / Poroy",
-    "MAPI_OLLA": "Machu Picchu hacia Ollantaytambo"
+    "CUSCO_MAPI": "Cusco / San Pedro / Wanchaq / Poroy to Machu Picchu",
+    "OLLA_MAPI": "Ollantaytambo to Machu Picchu",
+    "MAPI_CUSCO": "Machu Picchu to Cusco / San Pedro / Wanchaq / Poroy",
+    "MAPI_OLLA": "Machu Picchu to Ollantaytambo"
   },
   "stations": {
     "cusco": [
@@ -51,74 +51,74 @@
       "benefitsSource": "BENEFICIOS EXPEDITION / VISTADOME / VISTADOME OBSERVATORY / HIRAM BINGHAM"
     },
     "local": {
-      "name": "Tren Local",
+      "name": "Local Train",
       "categories": [
         "local"
       ],
-      "benefitsSource": "Servicio ferroviario local sujeto a disponibilidad, documentación nacional y confirmación operativa."
+      "benefitsSource": "Local rail service subject to availability, national documentation and operational confirmation."
     }
   },
   "categoryBenefits": {
     "incarail": {
+      "360": [
+        "Observation car with open balcony",
+        "Panoramic windows",
+        "Coche bar con bebidas y show",
+        "Spacious seats with tables",
+        "Complimentary snack and drink"
+      ],
       "voyager": [
-        "Asientos cómodos",
+        "Comfortable seats",
         "Ventanas amplias",
-        "Música ambiental",
+        "Ambient music",
         "Venta de alimentos y bebidas"
       ],
-      "360": [
-        "Coche observatorio con balcón abierto",
-        "Ventanas panorámicas",
-        "Coche bar con bebidas y show",
-        "Asientos amplios con mesas",
-        "Snacks y bebida de cortesía"
-      ],
       "prime": [
-        "Ventanas panorámicas",
-        "Asientos cómodos con mesas",
-        "Snacks y bebida de cortesía",
-        "Representación cultural en vivo",
+        "Panoramic windows",
+        "Comfortable seats with tables",
+        "Complimentary snack and drink",
+        "Live cultural performance",
         "Desfile de baby alpaca"
       ],
       "first_class": [
         "Experience premium",
-        "Gastronomía gourmet",
+        "Gourmet dining",
         "Bebidas de bienvenida",
-        "Música en vivo",
+        "Live music",
         "Ambiente de mayor exclusividad"
       ]
     },
     "perurail": {
       "expedition": [
-        "Asientos cómodos",
-        "Música ambiental",
+        "Comfortable seats",
+        "Ambient music",
         "Venta de alimentos y bebidas",
         "Equipaje de mano permitido"
       ],
       "vistadome": [
-        "Ventanas panorámicas",
-        "Audio turístico y música ambiental",
-        "Asientos cómodos con mesas",
-        "Servicio turístico scenic"
+        "Panoramic windows",
+        "Tour audio and ambient music",
+        "Comfortable seats with tables",
+        "Scenic tourist service"
       ],
       "vistadome_observatory": [
-        "Coche observatorio con balcón abierto",
-        "Ventanas panorámicas",
+        "Observation car with open balcony",
+        "Panoramic windows",
         "Coche bar con bebidas y show",
-        "Snacks y bebida de cortesía",
-        "Danza y música típica en vivo"
+        "Complimentary snack and drink",
+        "Live traditional dance and music"
       ],
       "hiram_bingham": [
         "Sala VIP con show en vivo antes del viaje",
-        "Coche observatorio con balcón abierto",
-        "Coche bar con selección de bebidas y cócteles",
+        "Observation car with open balcony",
+        "Bar car with a selection of drinks and cocktails",
         "Coche restaurante con servicio exclusivo",
-        "Almuerzo y cena gourmet a bordo",
+        "Gourmet lunch and dinner on board",
         "Show musical en vivo",
-        "Boleto de ingreso a Machu Picchu incluido según condiciones del operador",
-        "Bus de subida y bajada a Machu Picchu incluido según condiciones del operador",
+        "Machu Picchu entrance ticket included according to operator conditions",
+        "Round-trip bus to Machu Picchu included according to operator conditions",
         "Tour guide in Spanish and English according to operator conditions",
-        "Cóctel en hotel Sanctuary Lodge"
+        "Cocktail at Sanctuary Lodge hotel"
       ]
     }
   },
@@ -143,9 +143,9 @@
     "sacredValleyConnectionIdealAfter": "16:36",
     "touristRoundTripMustUseSameCompanyExceptLocal": true,
     "warnings": {
-      "localTrain": "Tren local sujeto a disponibilidad, documentación peruana vigente y confirmación operativa. No aplica para turistas extranjeros.",
-      "sacredValleyEarlyConnection": "Horario operativo, pero poco ideal después de Sacred Valley. Recomendamos salidas desde 15:37, idealmente 16:36.",
-      "overnightEarlyReturn": "Para overnight se recomienda retorno desde las 12:00 para evitar una visita apresurada."
+      "localTrain": "Local train subject to availability, valid Peruvian documentation and operational confirmation. Not available for foreign tourists.",
+      "sacredValleyEarlyConnection": "Operational schedule, but not ideal after the Sacred Valley. We recommend departures from 15:37, ideally 16:36.",
+      "overnightEarlyReturn": "For overnight services, return from 12:00 onward is recommended to avoid a rushed visit."
     }
   },
   "trains": [
@@ -2456,8 +2456,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": true,
@@ -2592,7 +2592,7 @@
       "tags": [
         "luxury-base-outbound"
       ],
-      "notes": "Poroy no es estación preferida, pero Hiram Bingham opera desde Poroy según tarifario visible.",
+      "notes": "Poroy is not the preferred station, but Hiram Bingham operates from Poroy according to the visible tariff sheet.",
       "direction": "outbound",
       "isLocalTrain": false,
       "operatorKey": "perurail",
@@ -2712,8 +2712,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2796,8 +2796,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2838,8 +2838,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2922,8 +2922,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3048,8 +3048,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3268,7 +3268,7 @@
       "departureStation": "Machu Picchu",
       "arrivalStation": "13:37",
       "departureTime": "15:04",
-      "arrivalTime": 133.0,
+      "arrivalTime": 133,
       "frequency": "train",
       "modality": "train",
       "currency": "USD",
@@ -3399,8 +3399,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3483,8 +3483,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3567,8 +3567,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4118,8 +4118,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4202,8 +4202,8 @@
       "modality": "train_bus",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4286,8 +4286,8 @@
       "modality": "train_bus",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4360,9 +4360,9 @@
     {
       "code": "LOCAL_OLLA_MAPI_NACIONAL_AM",
       "company": "local",
-      "companyName": "Tren Local",
+      "companyName": "Local Train",
       "category": "local",
-      "serviceName": "Tren Local Nacional",
+      "serviceName": "National Local Train",
       "route": "OLLA_MAPI",
       "departureStation": "Ollantaytambo",
       "arrivalStation": "Machu Picchu",
@@ -4388,7 +4388,7 @@
       "warnings": [
         "local-train-national-passengers-only"
       ],
-      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "notes": "Reference schedule for the quoting flow. Requires operational confirmation and a Peruvian national ID.",
       "operationalUse": {
         "direction": "outbound",
         "isLocalTrain": true,
@@ -4411,9 +4411,9 @@
     {
       "code": "LOCAL_OLLA_MAPI_NACIONAL_PM",
       "company": "local",
-      "companyName": "Tren Local",
+      "companyName": "Local Train",
       "category": "local",
-      "serviceName": "Tren Local Nacional",
+      "serviceName": "National Local Train",
       "route": "OLLA_MAPI",
       "departureStation": "Ollantaytambo",
       "arrivalStation": "Machu Picchu",
@@ -4441,7 +4441,7 @@
       "warnings": [
         "local-train-national-passengers-only"
       ],
-      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "notes": "Reference schedule for the quoting flow. Requires operational confirmation and a Peruvian national ID.",
       "operationalUse": {
         "direction": "outbound",
         "isLocalTrain": true,
@@ -4464,9 +4464,9 @@
     {
       "code": "LOCAL_MAPI_OLLA_NACIONAL_MD",
       "company": "local",
-      "companyName": "Tren Local",
+      "companyName": "Local Train",
       "category": "local",
-      "serviceName": "Tren Local Nacional",
+      "serviceName": "National Local Train",
       "route": "MAPI_OLLA",
       "departureStation": "Machu Picchu",
       "arrivalStation": "Ollantaytambo",
@@ -4492,7 +4492,7 @@
       "warnings": [
         "local-train-national-passengers-only"
       ],
-      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "notes": "Reference schedule for the quoting flow. Requires operational confirmation and a Peruvian national ID.",
       "operationalUse": {
         "direction": "inbound",
         "isLocalTrain": true,
@@ -4515,9 +4515,9 @@
     {
       "code": "LOCAL_MAPI_OLLA_NACIONAL_PM",
       "company": "local",
-      "companyName": "Tren Local",
+      "companyName": "Local Train",
       "category": "local",
-      "serviceName": "Tren Local Nacional",
+      "serviceName": "National Local Train",
       "route": "MAPI_OLLA",
       "departureStation": "Machu Picchu",
       "arrivalStation": "Ollantaytambo",
@@ -4543,7 +4543,7 @@
       "warnings": [
         "local-train-national-passengers-only"
       ],
-      "notes": "Horario referencial para flujo de cotización. Requiere confirmación operativa y documento nacional peruano.",
+      "notes": "Reference schedule for the quoting flow. Requires operational confirmation and a Peruvian national ID.",
       "operationalUse": {
         "direction": "inbound",
         "isLocalTrain": true,
@@ -4568,7 +4568,7 @@
       "company": "perurail",
       "companyName": "PeruRail",
       "category": "expedition",
-      "serviceName": "Expedition referencial 15:27",
+      "serviceName": "Reference Expedition 15:27",
       "route": "OLLA_MAPI",
       "departureStation": "Ollantaytambo",
       "arrivalStation": "Machu Picchu",
@@ -4588,7 +4588,7 @@
         "overnight-express-outbound",
         "pending-price-sync"
       ],
-      "notes": "Horario agregado como referencia operativa para Overnight Express. Sin tarifa exacta cargada; actualizar precio antes de calcular diferencias.",
+      "notes": "Schedule added as an operational reference for Overnight Express. No exact fare loaded; update the price before calculating differences.",
       "direction": "outbound",
       "isLocalTrain": false,
       "operatorKey": "perurail",

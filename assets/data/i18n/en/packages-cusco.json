@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/packages-cusco.json",
   "scope": "cusco-dynamic-packages",
-  "description": "Archivo de configuración para generar packages dinámicos de Cusco and Machu Picchu. No contiene itinerarios hardcodeados; define reglas, referencias, duraciones, perfiles de llegada/salida, restricciones operativas and metadatos para búsqueda, cards and página de detalle.",
+  "description": "Configuration file for generating dynamic Cusco and Machu Picchu packages. It does not contain hardcoded itineraries; it defines rules, references, durations, arrival/departure profiles, operating restrictions and metadata for search, cards and product detail pages.",
   "status": "published",
   "dataSources": {
     "cuscoTours": "assets/data/tours-cusco.json",
@@ -41,7 +41,7 @@
   "arrivalDepartureProfiles": {
     "early-arrival__late-departure": {
       "id": "early-arrival__late-departure",
-      "label": "Llegada temprano / salida tarde",
+      "label": "Early arrival / late departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "late-departure",
       "arrivalAvailableFrom": "12:00",
@@ -61,7 +61,7 @@
     },
     "early-arrival__early-departure": {
       "id": "early-arrival__early-departure",
-      "label": "Llegada temprano / salida temprano",
+      "label": "Early arrival / early departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "early-departure",
       "arrivalAvailableFrom": "12:00",
@@ -78,7 +78,7 @@
     },
     "late-arrival__late-departure": {
       "id": "late-arrival__late-departure",
-      "label": "Llegada tarde / salida tarde",
+      "label": "Late arrival / late departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "late-departure",
       "arrivalAvailableFrom": "16:00",
@@ -98,7 +98,7 @@
     },
     "late-arrival__early-departure": {
       "id": "late-arrival__early-departure",
-      "label": "Llegada tarde / salida temprano",
+      "label": "Late arrival / early departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "early-departure",
       "arrivalAvailableFrom": "16:00",
@@ -230,8 +230,8 @@
   "defaultLogisticsServices": {
     "arrival": {
       "code": "TRANSFER_IN",
-      "title": "Pickup from aeropuerto o terminal terrestre",
-      "description": "Included service al inicio del package, coordinado according to the actual time de llegada del traveler.",
+      "title": "Pickup from airport or bus terminal",
+      "description": "Included service at the beginning of the package, coordinated according to your actual arrival time.",
       "dayPosition": "first_day",
       "required": true,
       "includedByDefault": true,
@@ -239,8 +239,8 @@
     },
     "departure": {
       "code": "TRANSFER_OUT",
-      "title": "Traslado al aeropuerto o terminal terrestre",
-      "description": "Included service al finalizar el package, coordinado according to the actual time de salida del traveler.",
+      "title": "Transfer to airport or bus terminal",
+      "description": "Included service at the end of the package, coordinated according to your actual departure time.",
       "dayPosition": "last_day",
       "required": true,
       "includedByDefault": true,
@@ -372,7 +372,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 3 Days / 2 Nights | My Cusco Trip",
         "description": "A short, flexible getaway to experience Cusco and Machu Picchu with options such as a City Tour, cultural visits and a well-organized citadel experience."
-      }
+      },
+      "duration": {
+        "label": "3 days / 2 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 3 days / 2 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_4d3n",
@@ -427,7 +460,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure"
         ],
         "keywords": [
@@ -452,7 +485,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 4 Days / 3 Nights | My Cusco Trip",
         "description": "A balanced itinerary combining Cusco, the Sacred Valley and Machu Picchu, ideal for a first visit with smooth logistics and a comfortable pace."
-      }
+      },
+      "duration": {
+        "label": "4 days / 3 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 4 days / 3 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_5d4n",
@@ -511,7 +577,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure"
         ],
         "keywords": [
@@ -536,7 +602,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 5 Days / 4 Nights | My Cusco Trip",
         "description": "A flexible package with the Sacred Valley, Machu Picchu and one additional experience such as Rainbow Mountain, Humantay Lake, Maras & Moray or the South Valley."
-      }
+      },
+      "duration": {
+        "label": "5 days / 4 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 5 days / 4 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_6d5n",
@@ -594,7 +693,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure"
         ],
         "keywords": [
@@ -619,7 +718,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 6 Days / 5 Nights | My Cusco Trip",
         "description": "A complete program to combine Cusco, the Sacred Valley, Machu Picchu and two additional nature or cultural experiences according to your travel dates."
-      }
+      },
+      "duration": {
+        "label": "6 days / 5 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 6 days / 5 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_7d6n",
@@ -679,7 +811,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure",
           "fotografia"
         ],
@@ -705,7 +837,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 7 Days / 6 Nights | My Cusco Trip",
         "description": "A full week to enjoy Machu Picchu, the Sacred Valley, Cusco City Tour and routes such as Humantay, Vinicunca, Palcoyo, Maras & Moray or the South Valley."
-      }
+      },
+      "duration": {
+        "label": "7 days / 6 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 7 days / 6 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_8d7n",
@@ -766,7 +931,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure",
           "fotografia"
         ],
@@ -792,7 +957,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 8 Days / 7 Nights | My Cusco Trip",
         "description": "A broader itinerary designed to combine Cusco’s classics with natural and cultural experiences at a more relaxed pace."
-      }
+      },
+      "duration": {
+        "label": "8 days / 7 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 8 days / 7 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_9d8n",
@@ -847,11 +1045,11 @@
           "machu-picchu",
           "trekking",
           "cultural",
-          "naturaleza"
+          "nature"
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure",
           "slow-travel"
         ],
@@ -877,7 +1075,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 9 Days / 8 Nights | My Cusco Trip",
         "description": "An extended setup to add soft treks, alternative routes, extra nights and hotel or train upgrades based on your travel style."
-      }
+      },
+      "duration": {
+        "label": "9 days / 8 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 9 days / 8 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_10d9n",
@@ -940,7 +1171,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "adventure",
           "slow-travel"
         ],
@@ -966,7 +1197,40 @@
       "seo": {
         "title": "Cusco & Machu Picchu Package 10 Days / 9 Nights | My Cusco Trip",
         "description": "The most complete option to combine Machu Picchu, the Sacred Valley, cultural experiences, Andean nature routes and rest time in Cusco."
-      }
+      },
+      "duration": {
+        "label": "10 days / 9 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 10 days / 9 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -1066,8 +1330,8 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Permite una excursión adicional como Humantay, Vinicunca o Siete Lagunas.",
-        "Si se usa Sacred Valley conexión, cambiar Machu Picchu a overnight."
+        "Allows one additional excursion such as Humantay, Vinicunca or Seven Lagoons.",
+        "If the Sacred Valley connection is used, switch Machu Picchu to overnight."
       ]
     },
     {
@@ -1125,7 +1389,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Duración ideal para City Tour, Sacred Valley, Machu Picchu and un trekking.",
+        "Ideal duration for City Tour, Sacred Valley, Machu Picchu and one trek.",
         "Valle VIP puede reemplazar Sacred Valley + Maras para evitar duplicidad."
       ]
     },
@@ -1185,8 +1449,8 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Permite dos rutas de naturaleza si los horarios and descanso son compatibles.",
-        "Si hay trekking después de Machu Picchu, usar Overnight Express."
+        "Allows two nature routes if schedules and rest time are compatible.",
+        "If there is a trek after Machu Picchu, use Overnight Express."
       ]
     },
     {
@@ -1248,8 +1512,8 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Duración suficiente para combinar classics and rutas alternativas.",
-        "Mantener máximo dos trekkings para evitar fatiga."
+        "Enough duration to combine classics and alternative routes.",
+        "Keep a maximum of two treks to avoid fatigue."
       ]
     },
     {
@@ -1315,7 +1579,7 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Permite packages más completos con descanso intercalado.",
+        "Allows more complete packages with rest days in between.",
         "No renderizar todas las combinaciones; priorizar las mejores opciones por ranking."
       ]
     },
@@ -1384,7 +1648,7 @@
       ],
       "salesNotes": [
         "Usar days libres o experiencias cortas para mejorar UX and no saturar el viaje.",
-        "Ideal para upsells de tren, hotel and experiencias privadas."
+        "Ideal for train, hotel and private experience upsells."
       ]
     },
     {
@@ -1452,8 +1716,8 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Máxima duración Cusco antes de pasar a packages-peru.json.",
-        "Mantener escalabilidad para futuras experiencias como rutas privadas o packages temáticos."
+        "Maximum Cusco duration before moving to packages-peru.json.",
+        "Keep scalability for future experiences such as private routes or themed packages."
       ]
     }
   ],
@@ -1467,7 +1731,7 @@
         "MAPI008",
         "MAPI010"
       ],
-      "description": "Cuando Sacred Valley se usa como conexión to Ollantaytambo o Aguas Calientes, el package debe convertir Machu Picchu a modalidad overnight.",
+      "description": "When the Sacred Valley is used as a connection to Ollantaytambo or Aguas Calientes, the package should switch Machu Picchu to overnight mode.",
       "triggerTourCodes": [
         "CUZ003VIPCON",
         "CUZ003CON"
@@ -1482,7 +1746,7 @@
         "CUZ009"
       ],
       "requiresMachuPicchuCode": "MAPI004",
-      "description": "Si después de Machu Picchu hay trekking, usar Machu Picchu Overnight Express para volver antes and permitir descanso operativo."
+      "description": "If there is a trek after Machu Picchu, use Machu Picchu Overnight Express to return earlier and allow operational rest."
     },
     "valleVip": {
       "enabled": true,
@@ -1513,15 +1777,15 @@
     "priceCalculationMode": "sum_selected_tours_plus_required_extras_plus_train_delta_plus_hotel_delta_plus_payment_fees",
     "optionDisplayMode": "commercial-cards",
     "optionUi": {
-      "title": "Elige tu ruta sugerida",
+      "title": "Choose the route that best matches your travel pace, interests and preferred places to visit. You can switch options without losing your reservation.",
       "maxVisibleOptions": 4,
-      "showMoreLabel": "Ver más opciones",
+      "showMoreLabel": "Show more options",
       "hideTechnicalCodes": true,
       "labels": [
-        "Ruta recomendada",
-        "Ruta clásica",
+        "Recommended route",
+        "Classic route",
         "Adventure route",
-        "Ruta con naturaleza"
+        "Nature route"
       ]
     }
   },
@@ -1543,5 +1807,9 @@
       "groupByDuration": true,
       "openDetailWithQueryParams": true
     }
-  }
+  },
+  "defaultGuideLanguages": [
+    "es",
+    "en"
+  ]
 }

@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-02",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
-  "description": "Archivo de configuración para generar packages dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida and metadatos para All Experience and product.html.",
+  "description": "Configuration file for generating combined dynamic Peru packages. It does not contain hardcoded itineraries; it defines cards, sales routes, destination blocks, tour references, operating rules, arrival/departure filters and metadata for All Experiences and product.html.",
   "status": "draft_ready_for_review",
   "dataSources": {
     "cuscoPackageConfig": "assets/data/packages-cusco.json",
@@ -63,7 +63,7 @@
       "departureAvailableUntil": "10:00",
       "rules": [
         "Permite actividad ligera el primer day.",
-        "El último day debe reservarse para traslado, aeropuerto o salida."
+        "The last day should be reserved for transfer, airport or departure."
       ]
     },
     {
@@ -75,7 +75,7 @@
       "departureAvailableUntil": "20:00",
       "rules": [
         "No programar full day el primer day.",
-        "Permite actividad corta el último day si el destino and traslado lo permiten."
+        "Allows a short activity on the last day if the destination and transfer allow it."
       ]
     },
     {
@@ -86,7 +86,7 @@
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "10:00",
       "rules": [
-        "Primer and último day deben tratarse como days logísticos salvo disponibilidad real.",
+        "The first and last days should be treated as logistics days unless actual availability allows otherwise.",
         "Reducir cantidad de tours and priorizar experiencias esenciales."
       ]
     }
@@ -185,7 +185,7 @@
           "avoidAlsoIncluding": [
             "PER002"
           ],
-          "reason": "PER003 ya incluye la experiencia de Islas Ballestas dentro del full day from Lima."
+          "reason": "PER003 already includes the Ballestas Islands experience within the full day from Lima."
         }
       ],
       "logistics": {
@@ -370,7 +370,7 @@
       "domesticTransport": [
         "LIM-CUZ"
       ],
-      "salesPosition": "Primer viaje corto a Peru."
+      "salesPosition": "Short first trip to Peru."
     },
     {
       "key": "lima-paracas-cusco",
@@ -401,7 +401,7 @@
       "domesticTransport": [
         "LIM-CUZ"
       ],
-      "salesPosition": "Ruta comercial fuerte para combinar costa, desierto and Andes."
+      "salesPosition": "Strong sales route combining coast, desert and Andes."
     },
     {
       "key": "lima-arequipa-cusco",
@@ -433,7 +433,7 @@
         "LIM-AQP",
         "AQP-CUZ"
       ],
-      "salesPosition": "Ruta cultural and paisajística para viajeros que quieren Arequipa and Colca."
+      "salesPosition": "Cultural and scenic route for travelers who want Arequipa and Colca."
     },
     {
       "key": "lima-puno-cusco",
@@ -509,7 +509,7 @@
     },
     {
       "key": "peru-sur-amazonia",
-      "label": "Peru Sur + Amazonía",
+      "label": "Southern Peru + Amazon",
       "minDays": 12,
       "maxDays": 15,
       "destinationBlocks": [
@@ -543,7 +543,7 @@
         "CUZ-PEM",
         "PEM-LIM"
       ],
-      "salesPosition": "Ruta extensa para combinar Andes and Amazonía."
+      "salesPosition": "Extended route combining the Andes and the Amazon."
     },
     {
       "key": "lima-paracas-cusco-puno-arequipa",
@@ -618,7 +618,7 @@
       "Priorizar rutas vendibles and comprensibles para cliente final.",
       "No saturar packages cortos con demasiados traslados.",
       "No programar full day al day siguiente de una llegada nocturna o bus nocturno sin descanso.",
-      "No programar trekkings de alta exigencia antes de aclimatación mínima en Cusco.",
+      "Do not schedule highly demanding treks before minimum acclimatization in Cusco.",
       "Evitar dos tours de madrugada consecutivos salvo packages largos and con nota comercial."
     ],
     "pricingRules": {
@@ -767,7 +767,40 @@
       "seo": {
         "title": "Peru 5-Day Tour: Lima, Cusco & Machu Picchu | My Cusco Trip",
         "description": "A compact Peru itinerary for travelers who want to combine Lima, Cusco and Machu Picchu in a short, well-organized journey."
-      }
+      },
+      "duration": {
+        "label": "5 days / 4 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 5 days / 4 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_6d5n",
@@ -830,7 +863,40 @@
       "seo": {
         "title": "Peru 6-Day Tour: Lima, Cusco, Sacred Valley & Machu Picchu | My Cusco Trip",
         "description": "A classic route through Lima, Cusco, the Sacred Valley and Machu Picchu, designed for travelers who want Peru’s must-see highlights with clear logistics."
-      }
+      },
+      "duration": {
+        "label": "6 days / 5 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 6 days / 5 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_7d6n",
@@ -880,7 +946,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "aventura"
         ],
         "keywords": [
@@ -898,7 +964,40 @@
       "seo": {
         "title": "Peru 7-Day Tour: Lima, Paracas, Huacachina, Cusco & Machu Picchu | My Cusco Trip",
         "description": "A dynamic journey combining Lima, the southern coast, desert landscapes, Cusco and Machu Picchu in one balanced itinerary."
-      }
+      },
+      "duration": {
+        "label": "7 days / 6 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 7 days / 6 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_8d7n",
@@ -950,7 +1049,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "aventura"
         ],
         "keywords": [
@@ -969,7 +1068,40 @@
       "seo": {
         "title": "Peru 8-Day Tour: Lima, Paracas, Cusco, Machu Picchu & Lake Titicaca | My Cusco Trip",
         "description": "An extended Peru route with coastal scenery, Andean culture, Machu Picchu and Lake Titicaca for travelers who want more than the classic circuit."
-      }
+      },
+      "duration": {
+        "label": "8 days / 7 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 8 days / 7 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1019,7 +1151,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "paisaje"
         ],
         "keywords": [
@@ -1036,7 +1168,40 @@
       "seo": {
         "title": "Peru 9-Day Tour: Lima, Arequipa, Cusco & Machu Picchu | My Cusco Trip",
         "description": "A scenic southern Andes itinerary combining Lima, Arequipa, Colca landscapes, Cusco and Machu Picchu with organized travel support."
-      }
+      },
+      "duration": {
+        "label": "9 days / 8 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 9 days / 8 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1103,7 +1268,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "aventura-suave",
           "gastronomia",
           "viaje-en-grupo",
@@ -1123,8 +1288,8 @@
         "label": "10 days / 9 nights",
         "maxGroupSize": 30,
         "guideLanguages": [
-          "Spanish and English",
-          "Other languages available upon request"
+          "es",
+          "en"
         ]
       },
       "description": "Travel through Peru’s most iconic destinations with a carefully coordinated route that combines coastal landscapes, desert adventure, Andean culture, Machu Picchu by train, Lake Titicaca and the colonial charm of Arequipa. This package is ideal for travelers who want a complete Peru experience with local assistance, hotel options by destination and flexible quote customization.",
@@ -1411,36 +1576,28 @@
       ],
       "faq": [
         {
-          "q": "Is this package recommended for large groups?",
-          "a": "Yes. The experience is designed for groups of up to 30 travelers with coordinated transfers, hotel pickups and assistance by destination."
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 10 days / 9 nights route with main experiences, transfers, trains and accommodation according to the selected option."
         },
         {
-          "q": "Can I choose hotels before confirming?",
-          "a": "Yes. Hotels can be selected by destination. The final fare depends on category, availability, room type and group distribution."
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
         },
         {
-          "q": "Are trains to Machu Picchu included?",
-          "a": "Yes. Round-trip train service is considered according to the selected quote option. You may choose summarized Inca Rail and PeruRail options available for this package."
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
         },
         {
-          "q": "What document do I need for Machu Picchu and the trains?",
-          "a": "You must travel with a valid passport in good condition. The document must match the information used for train tickets, Machu Picchu entrance and flights."
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
         },
         {
-          "q": "Can the itinerary change?",
-          "a": "The order may be adjusted due to flight, train, Machu Picchu entrance availability, weather or current operation. The essence of the contracted route is always maintained."
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
         },
         {
-          "q": "Is the Arequipa-Lima flight included?",
-          "a": "Yes. The package considers the domestic Arequipa-Lima flight, subject to fare, schedule and availability confirmation at the time of booking."
-        },
-        {
-          "q": "Should I carry cash?",
-          "a": "Yes. Although card payments are available in main cities, we recommend carrying Peruvian soles for small purchases, tips, markets, public restrooms or areas with limited signal."
-        },
-        {
-          "q": "Can I replace the Arequipa tour with Colca Canyon?",
-          "a": "Yes. The Arequipa day can be configured with City Tour, Sillar Route, countryside or Colca Canyon depending on flight schedule and group preference."
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
         }
       ],
       "accommodationSummary": [
@@ -1514,12 +1671,12 @@
         "child": 1099,
         "currency": "USD",
         "mode": "sin_hoteles",
-        "label": "Precio base per person sin hoteles",
-        "description": "Includes tours, transfers operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa and vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
+        "label": "Base price per person without hotels",
+        "description": "Includes tours, operating transfers, selected base train, Machu Picchu entrance, tourist bus to Machu Picchu, required tourist tickets, Route of the Sun, Titicaca, overnight bus Puno-Arequipa and Arequipa-Lima flight subject to final fare confirmation. Hotels are added separately according to the customer’s selection."
       },
       "priceFrom": 1149,
       "priceLabel": "From USD 1,149 per person sin hoteles",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel and tipo de room elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa and Lima final.",
+      "hotelPricingNote": "Accommodation is added separately according to the hotel and room type selected in Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa and final Lima stay.",
       "seo": {
         "title": "Peru 10-Day Tour: Lima, Huacachina, Cusco, Machu Picchu, Titicaca & Arequipa | My Cusco Trip",
         "description": "Explore Peru in 10 days with a complete itinerary through Lima, Huacachina, Cusco, Machu Picchu, Lake Titicaca and Arequipa. Flexible quote, local assistance and guided experiences."
@@ -1580,7 +1737,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "aventura",
           "paisaje"
         ],
@@ -1602,7 +1759,40 @@
       "seo": {
         "title": "Peru 12-Day Tour: Lima, Paracas, Arequipa, Puno, Cusco & Machu Picchu | My Cusco Trip",
         "description": "A complete southern Peru route with coast, desert, Arequipa, Colca, Lake Titicaca, Cusco and Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "12 days / 11 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 12 days / 11 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1659,8 +1849,8 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
-          "selva",
+          "nature",
+          "jungle",
           "aventura"
         ],
         "keywords": [
@@ -1680,7 +1870,40 @@
       "seo": {
         "title": "Peru 14-Day Tour: Southern Peru & Amazon Extension | My Cusco Trip",
         "description": "A broader itinerary that combines Peru’s classic southern route with an Amazon extension for travelers who want culture, nature and adventure."
-      }
+      },
+      "duration": {
+        "label": "14 days / 13 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 14 days / 13 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1742,10 +1965,10 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "aventura",
           "arqueologia",
-          "selva"
+          "jungle"
         ],
         "keywords": [
           "packages perú completo 15 days / 14 nights",
@@ -1766,7 +1989,40 @@
       "seo": {
         "title": "Complete Peru 15-Day Tour | My Cusco Trip",
         "description": "An extended Peru journey for travelers who want a deeper experience with iconic destinations, flexible logistics and personalized assistance."
-      }
+      },
+      "duration": {
+        "label": "15 days / 14 nights",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this package organized?",
+          "a": "The package is built as a flexible 15 days / 14 nights route with main experiences, transfers, trains and accommodation according to the selected option."
+        },
+        {
+          "q": "Does it include a guide?",
+          "a": "Yes. Package tours include a professional guide in Spanish and English. Other languages are coordinated upon request and may have an additional cost."
+        },
+        {
+          "q": "What is included in the base package?",
+          "a": "It includes arrival and departure transfers, travel assistance, tourist transport according to the program and the experiences indicated in the itinerary."
+        },
+        {
+          "q": "What is not included?",
+          "a": "Domestic or international flights, personal expenses, voluntary tips, services not mentioned and optional upgrades not selected are not included."
+        },
+        {
+          "q": "Can I choose hotels and trains?",
+          "a": "Yes. You can review hotel and train options when the package allows it; the fare adjusts according to the selected category."
+        },
+        {
+          "q": "Are extras translated and calculated separately?",
+          "a": "Yes. Extras such as tourist tickets, entrance fees or lunches appear translated and can be added before completing the reservation."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -1812,9 +2068,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -1859,9 +2115,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -1912,9 +2168,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -1968,9 +2224,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -2022,9 +2278,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -2085,8 +2341,8 @@
       ],
       "salesNotes": [
         "Ruta comercial fija para cliente final con Lima, Paracas/Ica, Cusco, Machu Picchu, Puno and Arequipa.",
-        "El tren debe mostrarse en versión resumida usando opciones existentes de trains.json.",
-        "Los hoteles son configurables por destino según disponibilidad."
+        "The train should be shown in summarized form using existing trains.json options.",
+        "Hotels are configurable by destination according to availability."
       ]
     },
     {
@@ -2143,9 +2399,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -2199,9 +2455,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     },
     {
@@ -2255,9 +2511,9 @@
         "late-arrival__early-departure"
       ],
       "salesNotes": [
-        "Debe generar rutas según bloques de destino, no itinerarios escritos a mano.",
-        "Debe eliminar duplicados por contenido turístico aunque cambie el orden de generación.",
-        "Debe ordenar después por lógica geográfica, vuelos/buses and horarios reales."
+        "Should generate routes according to destination blocks, not manually written itineraries.",
+        "Should remove duplicates by tourism content even if the generation order changes.",
+        "Should then order by geographic logic, flights/buses and actual schedules."
       ]
     }
   ],
@@ -2269,7 +2525,7 @@
         "PER004"
       ],
       "requiresDestinationBlock": "paracas_ica",
-      "salesNote": "Agregar solo cuando el cliente acepte traslado más largo o night estratégica en Ica/Nazca."
+      "salesNote": "Add only when the customer accepts a longer transfer or a strategic night in Ica/Nazca."
     },
     "withAmazonTambopata": {
       "label": "Agregar extensión Amazonía Tambopata",
@@ -2278,7 +2534,7 @@
         "PER012"
       ],
       "preferredPosition": "end_of_trip_after_cusco",
-      "salesNote": "Ideal después de Cusco por conectividad con Puerto Maldonado."
+      "salesNote": "Ideal after Cusco because of the connection with Puerto Maldonado."
     },
     "withTarapoto": {
       "label": "Agregar extensión Tarapoto",
@@ -2288,7 +2544,7 @@
         "PER010"
       ],
       "preferredPosition": "start_or_end_by_flight_logic",
-      "salesNote": "Extensión de naturaleza suave con vuelos domésticos."
+      "salesNote": "Soft nature extension with domestic flights."
     },
     "withIquitos": {
       "label": "Agregar extensión Iquitos",
@@ -2297,7 +2553,7 @@
         "PER011"
       ],
       "preferredPosition": "start_or_end_by_flight_logic",
-      "salesNote": "Extensión amazónica que requiere validar vuelos and logística."
+      "salesNote": "Amazon extension that requires validating flights and logistics."
     }
   },
   "detailPageBehavior": {
@@ -2322,8 +2578,12 @@
   },
   "implementationNotes": [
     "Este archivo no reemplaza tours-peru.json ni packages-cusco.json; los orquesta por referencia.",
-    "Los packages Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
+    "Peru packages should be shown as sellable cards by duration/route, but the detail page should generate the real combinations on the fly.",
     "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json and tours-machu-picchu.json.",
-    "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+    "Prices in tours-peru.json marked as reference values must be commercially validated before final publication."
+  ],
+  "defaultGuideLanguages": [
+    "es",
+    "en"
   ]
 }

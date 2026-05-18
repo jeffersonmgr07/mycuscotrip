@@ -767,7 +767,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Cusco 5 jours / 4 nuits | My Cusco Trip",
         "description": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos jours."
-      }
+      },
+      "duration": {
+        "label": "5 jours / 4 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 5 jours / 4 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_6d5n",
@@ -830,7 +863,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Cusco 6 jours / 5 nuits | My Cusco Trip",
         "description": "Ruta clásica con Lima, Vallée Sacrée, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "6 jours / 5 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 6 jours / 5 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_7d6n",
@@ -898,7 +964,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Paracas/Ica + Cusco 7 jours / 6 nuits | My Cusco Trip",
         "description": "Combina costa sur, desierto, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "7 jours / 6 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 7 jours / 6 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_8d7n",
@@ -969,7 +1068,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Paracas/Ica + Cusco/Puno 8 jours / 7 nuits | My Cusco Trip",
         "description": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca."
-      }
+      },
+      "duration": {
+        "label": "8 jours / 7 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 8 jours / 7 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1036,7 +1168,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Arequipa + Cusco 9 jours / 8 nuits | My Cusco Trip",
         "description": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "9 jours / 8 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 9 jours / 8 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1123,9 +1288,8 @@
         "label": "10 jours / 9 nuits",
         "maxGroupSize": 30,
         "guideLanguages": [
-          "español",
-          "inglés",
-          "otros idiomas a consultar"
+          "es",
+          "en"
         ]
       },
       "description": "Un itinéraire complet de 10 jours au Pérou combinant Lima, Huacachina, Paracas, Cusco, la Vallée Sacrée, le Machu Picchu en train, la Route du Soleil, le lac Titicaca et Arequipa coloniale.",
@@ -1411,36 +1575,28 @@
       ],
       "faq": [
         {
-          "q": "Is this package recommended for large groups?",
-          "a": "Yes. The experience is designed for groups of up to 30 travelers with coordinated transfers, hotel pickups and assistance by destination."
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 10 jours / 9 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
         },
         {
-          "q": "Can I choose hotels before confirming?",
-          "a": "Yes. Hotels can be selected by destination. The final fare depends on category, availability, room type and group distribution."
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
         },
         {
-          "q": "Are trains to Machu Picchu included?",
-          "a": "Yes. Round-trip train service is considered according to the selected quote option. You may choose summarized Inca Rail and PeruRail options available for this package."
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
         },
         {
-          "q": "What document do I need for Machu Picchu and the trains?",
-          "a": "You must travel with a valid passport in good condition. The document must match the information used for train tickets, Machu Picchu entrance and flights."
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
         },
         {
-          "q": "Can the itinerary change?",
-          "a": "The order may be adjusted due to flight, train, Machu Picchu entrance availability, weather or current operation. The essence of the contracted route is always maintained."
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
         },
         {
-          "q": "Is the Arequipa-Lima flight included?",
-          "a": "Yes. The package considers the domestic Arequipa-Lima flight, subject to fare, schedule and availability confirmation at the time of booking."
-        },
-        {
-          "q": "Should I carry cash?",
-          "a": "Yes. Although card payments are available in main cities, we recommend carrying Peruvian soles for small purchases, tips, markets, public restrooms or areas with limited signal."
-        },
-        {
-          "q": "Can I replace the Arequipa tour with Colca Canyon?",
-          "a": "Yes. The Arequipa day can be configured with City Tour, Sillar Route, countryside or Colca Canyon depending on flight schedule and group preference."
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
         }
       ],
       "accommodationSummary": [
@@ -1602,7 +1758,40 @@
       "seo": {
         "title": "Forfaits Pérou: Lima + Paracas + Arequipa + Puno + Cusco 12 jours / 11 nuits | My Cusco Trip",
         "description": "Ruta esencial del Pérou sur con costa, Colca, Titicaca, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "12 jours / 11 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 12 jours / 11 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1680,7 +1869,40 @@
       "seo": {
         "title": "Forfaits Pérou Sur + Amazonía 14 jours / 13 nuits | My Cusco Trip",
         "description": "Ruta amplia para combinar el sur clásico del Pérou con una extensión de Amazonía."
-      }
+      },
+      "duration": {
+        "label": "14 jours / 13 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 14 jours / 13 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1766,7 +1988,40 @@
       "seo": {
         "title": "Forfaits Pérou completo 15 jours / 14 nuits | My Cusco Trip",
         "description": "Versión extensa para viajeros que quieren una experiencia completa del Pérou."
-      }
+      },
+      "duration": {
+        "label": "15 jours / 14 nuits",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Comment ce forfait est-il organisé ?",
+          "a": "Le forfait est construit comme un itinéraire flexible de 15 jours / 14 nuits avec expériences principales, transferts, trains et hébergement selon l'option sélectionnée."
+        },
+        {
+          "q": "Le guide est-il inclus ?",
+          "a": "Oui. Les tours du forfait incluent un guide professionnel en espagnol et en anglais. Le français est coordonné sur demande et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Qu'est-ce qui est inclus dans la base du forfait ?",
+          "a": "La base inclut les transferts d'arrivée et de départ, l'assistance voyage, le transport touristique selon le programme et les expériences indiquées dans l'itinéraire."
+        },
+        {
+          "q": "Qu'est-ce qui n'est pas inclus ?",
+          "a": "Les vols nationaux ou internationaux, dépenses personnelles, pourboires volontaires, services non mentionnés et surclassements optionnels non sélectionnés ne sont pas inclus."
+        },
+        {
+          "q": "Puis-je choisir les hôtels et les trains ?",
+          "a": "Oui. Vous pouvez vérifier les options d'hébergement et de train lorsque le forfait le permet ; le tarif s'ajuste selon la catégorie sélectionnée."
+        },
+        {
+          "q": "Les extras sont-ils traduits et calculés séparément ?",
+          "a": "Oui. Les extras tels que billets touristiques, entrées ou déjeuners apparaissent traduits et peuvent être ajoutés avant de terminer la réservation."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -2325,5 +2580,9 @@
     "Los paquetes Pérou deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
     "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
     "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+  ],
+  "defaultGuideLanguages": [
+    "es",
+    "en"
   ]
 }

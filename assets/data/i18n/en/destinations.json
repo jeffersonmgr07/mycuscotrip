@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "updatedAt": "2026-05-02",
-  "description": "Catálogo maestro de destinos para My Cusco Trip. Normaliza destinos, alias, jerarquías, zonas de alojamiento, filtros, rutas y equivalencias operativas para tours, packages, hoteles y búsqueda.",
+  "description": "Master destination catalog for My Cusco Trip. It standardizes destinations, aliases, hierarchies, accommodation zones, filters, routes and operating equivalences for tours, packages, hotels and search.",
   "status": "published",
   "defaultCountry": "peru",
   "defaultLanguage": "es",
@@ -937,7 +937,7 @@
           "huacachina",
           "buggies",
           "sandboarding",
-          "desierto"
+          "desert"
         ],
         "keywords": [
           "huacachina",
@@ -1121,7 +1121,7 @@
         ],
         "keywords": [
           "colca",
-          "cañon del colca",
+          "colca canyon",
           "cruz del condor"
         ]
       },
@@ -1294,13 +1294,13 @@
         ],
         "tags": [
           "tarapoto",
-          "selva",
-          "naturaleza"
+          "jungle",
+          "nature"
         ],
         "keywords": [
           "tarapoto",
-          "selva",
-          "amazonía"
+          "jungle",
+          "amazon"
         ]
       },
       "logistics": {
@@ -1353,12 +1353,12 @@
         "tags": [
           "iquitos",
           "amazonas",
-          "selva"
+          "jungle"
         ],
         "keywords": [
           "iquitos",
           "amazonas",
-          "selva peruana"
+          "peruvian amazon"
         ]
       },
       "logistics": {
@@ -1415,12 +1415,12 @@
         "tags": [
           "puerto-maldonado",
           "tambopata",
-          "selva"
+          "jungle"
         ],
         "keywords": [
           "puerto maldonado",
           "tambopata",
-          "selva peruana"
+          "peruvian amazon"
         ]
       },
       "logistics": {
@@ -1473,13 +1473,13 @@
         ],
         "tags": [
           "tambopata",
-          "selva",
-          "amazonía"
+          "jungle",
+          "amazon"
         ],
         "keywords": [
           "tambopata",
           "reserva nacional tambopata",
-          "amazonía"
+          "amazon"
         ]
       },
       "logistics": {
@@ -1592,11 +1592,11 @@
     "q": "query"
   },
   "implementationNotes": [
-    "Este archivo debe usarse como fuente de verdad para etiquetas de destino, aliases, filtros y resolución de alojamiento.",
+    "This file should be used as the source of truth for destination labels, aliases, filters and accommodation resolution.",
     "All Experience debe filtrar por destination usando slug, aliases y search.tags controlados.",
     "Product.html debe resolver alojamiento usando hotelDestinationKey o globalRules.hotelDestinationResolution.",
     "Machu Picchu no debe usarse como destino de hotel; debe resolverse a aguas-calientes.",
-    "Los packages Peru pueden usar destinationGroups para combinar destinos sin duplicar lógica.",
+    "Peru packages can use destinationGroups to combine destinations without duplicating logic.",
     "No buscar en includes, excludes, FAQ ni descripciones largas para evitar falsos positivos comerciales."
   ]
 }

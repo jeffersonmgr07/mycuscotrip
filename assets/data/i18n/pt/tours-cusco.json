@@ -57,7 +57,7 @@
       "id": "exp_001",
       "internalCode": "CUZ001",
       "slug": "bienvenida-ancestral-cusco",
-      "title": "Bienvenida Ancestral Cusco",
+      "title": "Boas-vindas Ancestrais em Cusco",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "2 h 30 min",
@@ -65,8 +65,8 @@
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
-      "shortDescription": "Aproveite un recorrido panorâmico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco.",
-      "description": "Bienvenida Ancestral y Recorrido Panorâmico por Cusco. Aproveite las vistas más emblemáticas desde nuestro bus panorâmico de dos pisos, con guía en vivo que compartirá datos históricos y culturales. Observa la fortaleza de Sacsayhuamán, participa en una ceremonia andina de Pago a la Tierra realizada por un sacerdote andino para atraer armonía y buenas energías en tu visita. Conheça un centro textil especializado en fibra de baby alpaca y aprende sobre el arte del tejido andino. Finaliza en el Mirador del Cristo Blanco con espectaculares vistas panorámicas de Cusco, ideal para fotos inolvidables. Este tour es más que una visita panorámica: es un ritual de buen augurio para conectarte con la cultura andina y recibir las mejores energías para tu paso por Cusco y Machu Picchu.",
+      "shortDescription": "Aproveite uma introdução panorâmica a Cusco com cerimônia andina, visita a um centro têxtil e vistas do Cristo Blanco.",
+      "description": "Uma experiência curta e cultural para começar sua viagem em Cusco com contexto, paisagens e uma cerimônia simbólica de boas-vindas andina.",
       "duration": {
         "label": "2 h 30 min",
         "maxGroupSize": 28,
@@ -106,7 +106,7 @@
         "Mirador"
       ],
       "excludes": [
-        "Gastos personales",
+        "Despesas pessoais",
         "Servicios no mencionados"
       ],
       "itinerary": [
@@ -148,16 +148,24 @@
       ],
       "faq": [
         {
-          "q": "¿Cuánto dura el tour?",
-          "a": "La duración aproximada es de 2 horas y 30 minutos."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é 2 h 30 min. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Dónde es el punto de encuentro?",
-          "a": "El punto de encuentro principal es Plaza Regocijo, también conocida como Plaza Kusipata."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
         },
         {
-          "q": "¿Qué horarios tiene?",
-          "a": "Los horarios disponibles son 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 y 16:00, de lunes a domingo."
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Se algum ingresso especial se aplicar à sua data, a equipe de reservas revisará isso com você antes do pagamento."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [],
@@ -280,15 +288,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Bienvenida Ancestral Cusco | My Cusco Trip",
-        "description": "Aproveite un recorrido panorâmico por Cusco con ceremonia andina, centro textil y vistas inolvidables desde el Cristo Blanco."
+        "title": "Boas-vindas Ancestrais em Cusco | My Cusco Trip",
+        "description": "Aproveite uma introdução panorâmica a Cusco com cerimônia andina, visita a um centro têxtil e vistas do Cristo Blanco."
       }
     },
     {
       "id": "exp_002",
       "internalCode": "CUZ002",
       "slug": "city-passeio-cusco-centros-arqueologicos",
-      "title": "City Passeio Cusco + Centros Arqueológicos",
+      "title": "City Tour Cusco + Sítios Arqueológicos",
       "category": "cusco",
       "type": "half-day-tour",
       "typeLabel": "Medio dia",
@@ -296,10 +304,10 @@
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
-      "shortDescription": "Percorra Cusco, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay.",
-      "description": "Conheça los sitios más emblemáticos de la ciudad imperial y sus alrededores en un recorrido clásico de medio dia, ideal para aclimatarte y comenzar a descubrir Cusco.",
+      "shortDescription": "Percorra Cusco, Sacsayhuamán, Qenqo, Puka Pukara e Tambomachay em uma tarde cultural.",
+      "description": "Tour clássico de meio dia pelos principais sítios arqueológicos próximos a Cusco, ideal para entender a história inca antes de visitar o Vale Sagrado e Machu Picchu.",
       "duration": {
-        "label": "Medio dia",
+        "label": "Meio dia",
         "maxGroupSize": 20,
         "guideLanguages": [
           "es",
@@ -329,14 +337,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional"
+        "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
         "Boleto turístico",
         "Ingreso a Catedral o Koricancha",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -363,18 +371,30 @@
       ],
       "faq": [
         {
-          "q": "¿Es un tour largo?",
-          "a": "No, es un tour de medio dia ideal para comenzar tu viaje."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Meio dia. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No, se paga aparte."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-1-nationality",
-          "label": "Boleto Turístico Parcial Circuito 1",
+          "label": "Bilhete Turístico Parcial Circuito 1",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -402,7 +422,7 @@
         },
         {
           "code": "qoricancha-ticket",
-          "label": "Ingreso al Templo Qoricancha",
+          "label": "Entrada ao Templo Qoricancha",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -471,7 +491,7 @@
         "publishedChildPENApprox": 40,
         "grossBeforeRoundingUSD": 8.9262,
         "targetNetPEN": 30,
-        "targetNetUSD": 8.0,
+        "targetNetUSD": 8,
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
@@ -504,7 +524,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-1-nationality",
-          "label": "Boleto Turístico Parcial Circuito 1",
+          "label": "Bilhete Turístico Parcial Circuito 1",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -532,7 +552,7 @@
         },
         {
           "code": "qoricancha-ticket",
-          "label": "Ingreso al Templo Qoricancha",
+          "label": "Entrada ao Templo Qoricancha",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -602,15 +622,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "City Passeio Cusco + Centros Arqueológicos | My Cusco Trip",
-        "description": "Percorra Cusco, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay."
+        "title": "City Tour Cusco + Sítios Arqueológicos | My Cusco Trip",
+        "description": "Percorra Cusco, Sacsayhuamán, Qenqo, Puka Pukara e Tambomachay em uma tarde cultural."
       }
     },
     {
       "id": "exp_003_fd",
       "internalCode": "CUZ003FD",
       "slug": "vale-sagrado-de-los-incas-full-day",
-      "title": "Vale Sagrado de los Incas - Full Day",
+      "title": "Vale Sagrado dos Incas - Dia inteiro",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day",
@@ -619,10 +639,10 @@
       "featured": true,
       "location": "Cusco / Vale Sagrado",
       "currency": "USD",
-      "shortDescription": "Percorra Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Vale Sagrado.",
-      "description": "Passeio full day por el Vale Sagrado de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita el centro arqueológico de Pisac, el mercado artesanal de Pisac, Urubamba como punto de almuerzo, el centro arqueológico de Ollantaytambo y Chinchero con demostración textil y visita cultural. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "shortDescription": "Conheça Pisac, Urubamba, Ollantaytambo e Chinchero em uma rota cultural completa pelo Vale Sagrado.",
+      "description": "Rota full day pelo Vale Sagrado dos Incas, combinando sítios arqueológicos, paisagens andinas, mercado artesanal, tradições têxteis e tempo para almoço opcional em Urubamba.",
       "duration": {
-        "label": "Full Day",
+        "label": "Dia inteiro",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -652,15 +672,15 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
         "Boleto turístico",
         "Almuerzo buffet",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -701,18 +721,30 @@
       ],
       "faq": [
         {
-          "q": "¿Incluye almuerzo?",
-          "a": "No. Puedes añadir el almuerzo buffet como extra cuando esté disponible."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Dia inteiro. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No. El boleto turístico se paga aparte."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -740,7 +772,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Vale Sagrado",
+          "label": "Almoço buffet no Vale Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -828,7 +860,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -896,15 +928,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Vale Sagrado de los Incas - Full Day | My Cusco Trip",
-        "description": "Percorra Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Vale Sagrado."
+        "title": "Vale Sagrado dos Incas - Dia inteiro | My Cusco Trip",
+        "description": "Conheça Pisac, Urubamba, Ollantaytambo e Chinchero em uma rota cultural completa pelo Vale Sagrado."
       }
     },
     {
       "id": "exp_003_con",
       "internalCode": "CUZ003CON",
       "slug": "vale-sagrado-de-los-incas-con-conexion-a-machu-picchu",
-      "title": "Vale Sagrado de los Incas con conexión a Machu Picchu",
+      "title": "Vale Sagrado com conexão a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day con conexión",
@@ -913,8 +945,8 @@
       "featured": true,
       "location": "Cusco / Vale Sagrado / Ollantaytambo",
       "currency": "USD",
-      "shortDescription": "Ruta clásica por el Vale Sagrado finalizando en Ollantaytambo para conectar con el tren hacia Aguas Calientes.",
-      "description": "Versión con conexión del Vale Sagrado de los Incas. Inicia aproximadamente a las 7:00 a.m. desde Cusco y visita Pisac arqueológico, el mercado artesanal de Pisac, Urubamba como punto de almuerzo y el centro arqueológico de Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu.",
+      "shortDescription": "Rota clássica pelo Vale Sagrado finalizando em Ollantaytambo para conectar com o trem a Aguas Calientes.",
+      "description": "Versão do Vale Sagrado pensada para quem continuará a Machu Picchu, evitando retornar a Cusco e aproveitando melhor a logística da viagem.",
       "duration": {
         "label": "Full Day con conexión",
         "maxGroupSize": 18,
@@ -946,16 +978,16 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico por el Vale Sagrado",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
         "Boleto turístico",
         "Almuerzo buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -989,18 +1021,34 @@
       ],
       "faq": [
         {
-          "q": "¿Esta versión retorna a Cusco?",
-          "a": "No. Esta versión finaliza en Ollantaytambo para continuar hacia Aguas Calientes o conectar con el programa de Machu Picchu."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Full Day con conexión. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
+        },
+        {
+          "q": "Os ingressos para Machu Picchu são garantidos?",
+          "a": "Os ingressos são gerenciados conforme a disponibilidade oficial para sua data e circuito selecionado. Revisamos a melhor opção disponível antes de confirmar a reserva."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1028,7 +1076,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Vale Sagrado",
+          "label": "Almoço buffet no Vale Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1116,7 +1164,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1184,15 +1232,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Vale Sagrado de los Incas con conexión a Machu Picchu | My Cusco Trip",
-        "description": "Ruta clásica por el Vale Sagrado finalizando en Ollantaytambo para conectar con el tren hacia Aguas Calientes."
+        "title": "Vale Sagrado com conexão a Machu Picchu | My Cusco Trip",
+        "description": "Rota clássica pelo Vale Sagrado finalizando em Ollantaytambo para conectar com o trem a Aguas Calientes."
       }
     },
     {
       "id": "exp_003_vip",
       "internalCode": "CUZ003VIP",
       "slug": "vale-sagrado-de-los-incas-vip-full-day",
-      "title": "Vale Sagrado de los Incas VIP - Full Day",
+      "title": "Vale Sagrado VIP - Dia inteiro",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day VIP",
@@ -1201,8 +1249,8 @@
       "featured": true,
       "location": "Cusco / Vale Sagrado / Maras / Moray",
       "currency": "USD",
-      "shortDescription": "Ruta completa por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac.",
-      "description": "Versión VIP del Vale Sagrado de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, las Salineras de Maras, el centro arqueológico de Moray, Urubamba como punto de almuerzo, Ollantaytambo, Pisac arqueológico y el mercado artesanal de Pisac. Finaliza aproximadamente a las 8:00 p.m. en Cusco.",
+      "shortDescription": "Rota ampliada por Chinchero, Maras, Moray, Urubamba, Ollantaytambo e Pisac.",
+      "description": "Experiência mais completa pelo Vale Sagrado, incluindo Salineras de Maras e Moray junto aos principais sítios culturais do vale.",
       "duration": {
         "label": "Full Day VIP",
         "maxGroupSize": 18,
@@ -1234,9 +1282,9 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a Cusco al finalizar el tour"
       ],
@@ -1244,7 +1292,7 @@
         "Boleto turístico",
         "Ingreso a Salineras de Maras",
         "Almuerzo buffet",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -1299,18 +1347,30 @@
       ],
       "faq": [
         {
-          "q": "¿Qué diferencia tiene la ruta VIP?",
-          "a": "La ruta VIP agrega Chinchero, Maras e Moray antes de continuar hacia Urubamba, Ollantaytambo y Pisac."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Full Day VIP. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye ingreso a Maras?",
-          "a": "No. El ingreso a las Salineras de Maras se maneja como extra."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1338,7 +1398,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1362,11 +1422,11 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Vale Sagrado VIP."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP."
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Vale Sagrado",
+          "label": "Almoço buffet no Vale Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1454,7 +1514,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1482,7 +1542,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1506,7 +1566,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Vale Sagrado VIP."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP."
         }
       ],
       "search": {
@@ -1555,15 +1615,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Vale Sagrado de los Incas VIP - Full Day | My Cusco Trip",
-        "description": "Ruta completa por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac."
+        "title": "Vale Sagrado VIP - Dia inteiro | My Cusco Trip",
+        "description": "Rota ampliada por Chinchero, Maras, Moray, Urubamba, Ollantaytambo e Pisac."
       }
     },
     {
       "id": "exp_003_vip_con",
       "internalCode": "CUZ003VIPCON",
       "slug": "vale-sagrado-de-los-incas-vip-con-conexion-a-machu-picchu",
-      "title": "Vale Sagrado de los Incas VIP con conexión a Machu Picchu",
+      "title": "Vale Sagrado VIP com conexão a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Full Day VIP con conexión",
@@ -1572,8 +1632,8 @@
       "featured": true,
       "location": "Cusco / Vale Sagrado / Ollantaytambo",
       "currency": "USD",
-      "shortDescription": "Ruta VIP por Chinchero, Maras, Moray, Urubamba y Ollantaytambo, finalizando en Ollantaytambo para conexión hacia Machu Picchu.",
-      "description": "Versión VIP con conexión del Vale Sagrado de los Incas. Inicia desde Cusco visitando Chinchero con demostración textil, Salineras de Maras, Moray, Urubamba como punto de almuerzo y Ollantaytambo. El tour finaliza aproximadamente a las 3:30 p.m. en Ollantaytambo para continuar hacia Aguas Calientes o conectar con servicios relacionados a Machu Picchu. Esta variante no continúa hacia Pisac ni retorna a Cusco.",
+      "shortDescription": "Rota VIP por Chinchero, Maras, Moray, Urubamba e Ollantaytambo, finalizando com conexão a Machu Picchu.",
+      "description": "Opção eficiente para unir a rota VIP do Vale Sagrado com a continuação para Aguas Calientes ou Machu Picchu.",
       "duration": {
         "label": "Full Day VIP con conexión",
         "maxGroupSize": 18,
@@ -1605,9 +1665,9 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico por ruta VIP del Vale Sagrado",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
@@ -1615,7 +1675,7 @@
         "Ingreso a Salineras de Maras",
         "Almuerzo buffet",
         "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -1656,18 +1716,34 @@
       ],
       "faq": [
         {
-          "q": "¿Esta versión visita Pisac?",
-          "a": "No. Para permitir la conexión hacia Machu Picchu, esta versión finaliza en Ollantaytambo y no continúa hacia Pisac."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Full Day VIP con conexión. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
+        },
+        {
+          "q": "Os ingressos para Machu Picchu são garantidos?",
+          "a": "Os ingressos são gerenciados conforme a disponibilidade oficial para sua data e circuito selecionado. Revisamos a melhor opção disponível antes de confirmar a reserva."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1695,7 +1771,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1719,11 +1795,11 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Vale Sagrado VIP con conexión."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP con conexión."
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Vale Sagrado",
+          "label": "Almoço buffet no Vale Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1811,7 +1887,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1839,7 +1915,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1863,7 +1939,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplicar para ruta Vale Sagrado VIP con conexión."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP con conexión."
         }
       ],
       "search": {
@@ -1912,8 +1988,8 @@
       ],
       "places": [],
       "seo": {
-        "title": "Vale Sagrado de los Incas VIP con conexión a Machu Picchu | My Cusco Trip",
-        "description": "Ruta VIP por Chinchero, Maras, Moray, Urubamba y Ollantaytambo, finalizando en Ollantaytambo para conexión hacia Machu Picchu."
+        "title": "Vale Sagrado VIP com conexão a Machu Picchu | My Cusco Trip",
+        "description": "Rota VIP por Chinchero, Maras, Moray, Urubamba e Ollantaytambo, finalizando com conexão a Machu Picchu."
       }
     },
     {
@@ -1928,10 +2004,10 @@
       "featured": true,
       "location": "Cusco / Maras / Moray",
       "currency": "USD",
-      "shortDescription": "Descubre el laboratorio agrícola inca de Moray y las famosas Salineras de Maras.",
-      "description": "Uno de los tours preferidos por los viajeros es el tour de Maras e Moray, que les permite disfrutar de los paisajes y experiencias de estos pueblos y sus atractivos. La ruta incluye visita al centro textil de Chinchero, recorrido por Moray, considerado un laboratorio agrícola inca por sus terrazas circulares, y visita a Maras y sus salineras, donde podrás conocer el antiguo sistema de extracción de sal usado desde épocas preincaicas.",
+      "shortDescription": "Descubra o laboratório agrícola inca de Moray e as famosas Salineras de Maras.",
+      "description": "Tour de meio dia ideal para conhecer paisagens agrícolas, terraços circulares incas e as tradicionais piscinas de sal de Maras.",
       "duration": {
-        "label": "Medio dia",
+        "label": "Meio dia",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1961,14 +2037,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional"
+        "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
-        "Boleto turístico parcial",
+        "Bilhete turístico parcial",
         "Ingreso a Salineras",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -2002,18 +2078,30 @@
       ],
       "faq": [
         {
-          "q": "¿Incluye entradas?",
-          "a": "No. El boleto turístico parcial y el ingreso a Salineras se pagan aparte."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Meio dia. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Se puede hacer en cuatrimoto?",
-          "a": "Sí, puedes elegir la opción ATV como extra cuando esté disponible."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2041,7 +2129,7 @@
         },
         {
           "code": "maras-salt-mines-ticket",
-          "label": "Ingreso a Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2069,7 +2157,7 @@
         },
         {
           "code": "atv-maras-moray",
-          "label": "Cuatrimoto ATV Maras e Moray",
+          "label": "Quadriciclo ATV Maras e Moray",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -2157,7 +2245,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-2-nationality",
-          "label": "Boleto Turístico Parcial Circuito 2",
+          "label": "Bilhete Turístico Parcial Circuito 2",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2185,7 +2273,7 @@
         },
         {
           "code": "maras-salt-mines-ticket",
-          "label": "Ingreso a Salineras de Maras",
+          "label": "Entrada às Salineras de Maras",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2254,14 +2342,14 @@
       "places": [],
       "seo": {
         "title": "Maras e Moray | My Cusco Trip",
-        "description": "Descubre el laboratorio agrícola inca de Moray y las famosas Salineras de Maras."
+        "description": "Descubra o laboratório agrícola inca de Moray e as famosas Salineras de Maras."
       }
     },
     {
       "id": "exp_005",
       "internalCode": "CUZ005",
       "slug": "valle-sur",
-      "title": "Valle Sur",
+      "title": "Vale Sul de Cusco",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Medio dia",
@@ -2269,10 +2357,10 @@
       "featured": true,
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
       "currency": "USD",
-      "shortDescription": "Percorra Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco.",
-      "description": "Este tour inicia desde el recojo de su hotel alrededor de las 8:00 a 8:30 a. m. Luego partiremos en bus hacia el sur de Cusco. La primera parada será el centro arqueológico de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales y retablos barrocos. Regreso aproximado a Cusco a las 2:30 p. m.",
+      "shortDescription": "Conheça Tipón, Pikillacta e Andahuaylillas em uma rota cultural de meio dia ao sul de Cusco.",
+      "description": "Este tour de meio dia começa com a busca no seu hotel em Cusco entre 8:00 e 8:30. Seguimos para o sul para visitar Tipón, reconhecido pela engenharia hidráulica inca; Pikillacta, antiga cidadela Wari; e a igreja de Andahuaylillas, famosa por seus murais e retábulos barrocos. O retorno a Cusco costuma ser por volta das 14:30.",
       "duration": {
-        "label": "Medio dia",
+        "label": "Meio dia",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -2302,39 +2390,40 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional"
+        "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
-        "Boleto turístico parcial",
-        "Gastos personales"
+        "Bilhete Turístico Parcial Circuito 3",
+        "Entrada à Igreja de Andahuaylillas",
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
-          "title": "Salida desde Cusco",
-          "description": "Recojo desde tu hotel entre 8:00 y 8:30 a. m. para iniciar la ruta hacia el sur del Cusco.",
+          "title": "Saída de Cusco",
+          "description": "Busca no seu hotel entre 8:00 e 8:30 para iniciar a rota ao sul de Cusco.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
           ]
         },
         {
           "title": "Tipón",
-          "description": "Visita al centro arqueológico de Tipón, famoso por su sistema hidráulico inca y canales de agua aún funcionales.",
+          "description": "Visita ao sítio arqueológico de Tipón, famoso por seus canais de água e pelo sistema hidráulico inca ainda funcional.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/tipon.jpg"
           ]
         },
         {
           "title": "Pikillacta",
-          "description": "Recorrido por la antigua ciudadela Wari de Pikillacta, una muestra importante de urbanismo preinca.",
+          "description": "Percurso pela antiga cidadela Wari de Pikillacta, uma importante mostra de urbanismo pré-inca.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/pikillacta.jpg"
           ]
         },
         {
           "title": "Andahuaylillas",
-          "description": "Visitaremos la iglesia de Andahuaylillas, conocida como la Sixtina de América por su arte mural, lienzos y retablos barrocos.",
+          "description": "Visita à igreja de Andahuaylillas, conhecida como a Capela Sistina da América por seus murais, telas e retábulos barrocos.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/andahuaylillas.jpg"
           ]
@@ -2342,18 +2431,30 @@
       ],
       "faq": [
         {
-          "q": "¿Cuánto dura el tour?",
-          "a": "La experiencia dura aproximadamente medio dia, con retorno a Cusco hacia las 2:30 p. m."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Meio dia. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No, el boleto turístico parcial se paga aparte."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "btc-circuit-3-nationality",
-          "label": "Boleto Turístico Parcial Circuito 3",
+          "label": "Bilhete Turístico Parcial Circuito 3",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2381,7 +2482,7 @@
         },
         {
           "code": "andahuaylillas-church-ticket",
-          "label": "Ingreso Iglesia de Andahuaylillas",
+          "label": "Entrada à Igreja de Andahuaylillas",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -2479,7 +2580,7 @@
       "ticketPricingByNationality": [
         {
           "code": "btc-circuit-3-nationality",
-          "label": "Boleto Turístico Parcial Circuito 3",
+          "label": "Bilhete Turístico Parcial Circuito 3",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2507,7 +2608,7 @@
         },
         {
           "code": "andahuaylillas-church-ticket",
-          "label": "Ingreso Iglesia de Andahuaylillas",
+          "label": "Entrada à Igreja de Andahuaylillas",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -2588,10 +2689,10 @@
       "featured": true,
       "location": "Cusco / Humantay",
       "currency": "USD",
-      "shortDescription": "Descubre la impresionante laguna turquesa a los pies del nevado Humantay.",
-      "description": "La excursión a Lago Humantay es una de las experiencias naturales más impactantes cerca de Cusco. Combina transporte, caminata en altura, paisajes de montaña y una vista espectacular de aguas turquesas.",
+      "shortDescription": "Caminhe até a lagoa turquesa aos pés do nevado Humantay.",
+      "description": "Full day de natureza e caminhada de altitude até uma das paisagens mais impressionantes da região de Cusco.",
       "duration": {
-        "label": "Full Day",
+        "label": "Dia inteiro",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -2621,16 +2722,16 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Desayuno",
         "Almuerzo"
       ],
       "excludes": [
         "Ingreso",
         "Caballo opcional",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -2664,18 +2765,30 @@
       ],
       "faq": [
         {
-          "q": "¿Se necesita buena condición física?",
-          "a": "Sí, porque la caminata es en altura y con pendiente."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Dia inteiro. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Hay opción de caballo?",
-          "a": "Sí, en la mayoría de salidas puedes contratar caballo por un pago adicional."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "humantay-entrance-ticket",
-          "label": "Ingreso Lago Humantay",
+          "label": "Entrada ao Lago Humantay",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2703,7 +2816,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Café da manhã e almoço básicos",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -2791,7 +2904,7 @@
       "ticketPricingByNationality": [
         {
           "code": "humantay-entrance-ticket",
-          "label": "Ingreso Lago Humantay",
+          "label": "Entrada ao Lago Humantay",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2858,14 +2971,14 @@
       "places": [],
       "seo": {
         "title": "Lago Humantay | My Cusco Trip",
-        "description": "Descubre la impresionante laguna turquesa a los pies del nevado Humantay."
+        "description": "Caminhe até a lagoa turquesa aos pés do nevado Humantay."
       }
     },
     {
       "id": "exp_007",
       "internalCode": "CUZ007",
       "slug": "montanha-colorida-vinicunca",
-      "title": "Montanha Colorida (Vinicunca)",
+      "title": "Montanha Colorida Vinicunca",
       "category": "cusco",
       "type": "adventure-tour",
       "typeLabel": "Full Day",
@@ -2873,10 +2986,10 @@
       "featured": true,
       "location": "Cusco / Vinicunca",
       "currency": "USD",
-      "shortDescription": "Vive una aventura inolvidable hacia la famosa montaña arcoíris de los Andes.",
-      "description": "Aproveite una de las excursiones más impactantes de Cusco. La caminata hacia la Montanha Colorida te permitirá admirar paisajes de altura, comunidades andinas y uno de los escenarios más fotografiados del Peru.",
+      "shortDescription": "Viva uma aventura até a famosa montanha arco-íris dos Andes.",
+      "description": "Caminhada de dia inteiro em alta montanha para visitar Vinicunca, com paisagens andinas, comunidades locais e vistas panorâmicas.",
       "duration": {
-        "label": "Full Day",
+        "label": "Dia inteiro",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -2906,14 +3019,14 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico",
-        "Guia profissional"
+        "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
         "Ingreso",
         "Caballo opcional",
-        "Gastos personales"
+        "Despesas pessoais"
       ],
       "itinerary": [
         {
@@ -2947,18 +3060,30 @@
       ],
       "faq": [
         {
-          "q": "¿La caminata es exigente?",
-          "a": "Sí, se recomienda buena condición física y aclimatación previa."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Dia inteiro. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Puedo alquilar caballo o ATV?",
-          "a": "Sí, puedes añadir opciones disponibles como extra según la temporada."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "vinicunca-entrance-ticket",
-          "label": "Ingreso Montanha Colorida Vinicunca",
+          "label": "Entrada à Montanha Colorida Vinicunca",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2986,7 +3111,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Café da manhã e almoço básicos",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3004,7 +3129,7 @@
         },
         {
           "code": "atv-vinicunca",
-          "label": "Cuatrimoto ATV Vinicunca",
+          "label": "Quadriciclo ATV Vinicunca",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -3022,7 +3147,7 @@
         },
         {
           "code": "horse-vinicunca",
-          "label": "Caballo opcional Vinicunca",
+          "label": "Cavalo opcional em Vinicunca",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -3110,7 +3235,7 @@
       "ticketPricingByNationality": [
         {
           "code": "vinicunca-entrance-ticket",
-          "label": "Ingreso Montanha Colorida Vinicunca",
+          "label": "Entrada à Montanha Colorida Vinicunca",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3180,15 +3305,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Montanha Colorida (Vinicunca) | My Cusco Trip",
-        "description": "Vive una aventura inolvidable hacia la famosa montaña arcoíris de los Andes."
+        "title": "Montanha Colorida Vinicunca | My Cusco Trip",
+        "description": "Viva uma aventura até a famosa montanha arco-íris dos Andes."
       }
     },
     {
       "id": "exp_008",
       "internalCode": "CUZ008",
       "slug": "montana-palcoyo",
-      "title": "Montaña Palcoyo",
+      "title": "Montanha Palcoyo",
       "category": "cusco",
       "type": "adventure-tour",
       "typeLabel": "Full Day",
@@ -3196,10 +3321,10 @@
       "featured": true,
       "location": "Cusco / Palcoyo",
       "currency": "USD",
-      "shortDescription": "Explora la cordillera de colores de Palcoyo y su bosque de piedras en una caminata más accesible que Vinicunca.",
-      "description": "La Cordillera Palcoyo es considerada la prima hermana de Vinicunca, pero con mejor accesibilidad. Sus montañas de colores, el bosque de piedras y los paisajes altoandinos hacen de esta excursión una excelente opción para quienes buscan una experiencia natural impactante con menor exigencia física que la Montanha Colorida clásica.",
+      "shortDescription": "Explore a cordilheira colorida de Palcoyo e seu bosque de pedras em uma caminhada mais acessível.",
+      "description": "Alternativa cênica à Montanha Colorida tradicional, com caminhada mais suave e várias montanhas coloridas no percurso.",
       "duration": {
-        "label": "Full Day",
+        "label": "Dia inteiro",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -3234,13 +3359,13 @@
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guia profissional Inglés – Español",
+        "Guia profissional em espanhol e inglês",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
       "excludes": [
         "Cena",
-        "Gastos personales",
+        "Despesas pessoais",
         "Servicios no mencionados"
       ],
       "itinerary": [
@@ -3282,18 +3407,30 @@
       ],
       "faq": [
         {
-          "q": "¿Es más fácil que Vinicunca?",
-          "a": "Sí. Palcoyo suele ser una opción más accesible por tener una caminata más corta y menos exigente."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Dia inteiro. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Qué atractivos incluye?",
-          "a": "Inclui la Cordillera Palcoyo, el bosque de piedras y paisajes con llamas, alpacas y en temporada el río rojo."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
+        },
+        {
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
+        },
+        {
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "palcoyo-entrance-ticket",
-          "label": "Ingreso Montaña Palcoyo",
+          "label": "Entrada à Montanha Palcoyo",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3321,7 +3458,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Café da manhã e almoço básicos",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3339,7 +3476,7 @@
         },
         {
           "code": "atv-palcoyo",
-          "label": "Cuatrimoto ATV Palcoyo",
+          "label": "Quadriciclo ATV Palcoyo",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -3427,7 +3564,7 @@
       "ticketPricingByNationality": [
         {
           "code": "palcoyo-entrance-ticket",
-          "label": "Ingreso Montaña Palcoyo",
+          "label": "Entrada à Montanha Palcoyo",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3497,15 +3634,15 @@
       ],
       "places": [],
       "seo": {
-        "title": "Montaña Palcoyo | My Cusco Trip",
-        "description": "Explora la cordillera de colores de Palcoyo y su bosque de piedras en una caminata más accesible que Vinicunca."
+        "title": "Montanha Palcoyo | My Cusco Trip",
+        "description": "Explore a cordilheira colorida de Palcoyo e seu bosque de pedras em uma caminhada mais acessível."
       }
     },
     {
       "id": "exp_009",
       "internalCode": "CUZ009",
       "slug": "siete-lagunas-del-ausangate",
-      "title": "Siete Lagunas del Ausangate",
+      "title": "Sete Lagoas do Ausangate",
       "category": "cusco",
       "type": "adventure-tour",
       "typeLabel": "Full Day",
@@ -3513,10 +3650,10 @@
       "featured": true,
       "location": "Cusco / Pacchanta / Ausangate",
       "currency": "USD",
-      "shortDescription": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares y paisajes altoandinos inolvidables.",
-      "description": "Descubre uno de los paisajes más impresionantes de la cordillera del Vilcanota en un tour full day desde Cusco. La experiencia a las Siete Lagunas del Ausangate combina traslado temprano, desayuno en ruta, caminata de altura por senderos andinos, vistas del nevado Ausangate y recorrido por lagunas de colores turquesa, verde y azul profundo. Durante el trayecto podrás apreciar fauna local, comunidades altoandinas y, según la operación del dia, disfrutar de las aguas termales de Pacchanta al finalizar la caminata. Es una excelente alternativa para viajeros que buscan aventura, naturaleza y una inmersión auténtica en los Andes del Cusco.",
+      "shortDescription": "Explore as Sete Lagoas do Ausangate em um full day entre montanhas, glaciares e paisagens altoandinas.",
+      "description": "Rota de natureza aos pés do Ausangate, combinando caminhada, lagoas de altitude e a possibilidade de visitar as águas termais de Pacchanta.",
       "duration": {
-        "label": "Full Day",
+        "label": "Dia inteiro",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -3547,9 +3684,9 @@
         ]
       },
       "includes": [
-        "Recojo en Cusco",
+        "Busca em Cusco",
         "Transporte turístico ida y vuelta",
-        "Guia profissional",
+        "Guia profissional em espanhol e inglês",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",
@@ -3559,7 +3696,7 @@
         "Ingreso a las lagunas si aplica pago local",
         "Baños termales de Pacchanta si aplican pago adicional",
         "Caballo opcional",
-        "Gastos personales",
+        "Despesas pessoais",
         "Servicios no mencionados"
       ],
       "itinerary": [
@@ -3608,26 +3745,30 @@
       ],
       "faq": [
         {
-          "q": "¿Qué tan difícil es la caminata?",
-          "a": "Es una caminata de dificultad moderada por la altura. Se recomienda haber pasado al menos 1 o 2 dias de aclimatación en Cusco."
+          "q": "Quanto tempo dura a experiência?",
+          "a": "A duração referencial é Dia inteiro. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
-          "q": "¿Cuál es la altitud máxima?",
-          "a": "El circuito alcanza aproximadamente entre 4,800 y 4,850 m s. n. m., dependiendo de la ruta operada."
+          "q": "O tour inclui guia?",
+          "a": "Sim. Todos os nossos tours incluem guia profissional em espanhol e inglês. Português está sujeito a consulta/coordenação prévia e pode ter custo adicional."
         },
         {
-          "q": "¿Incluye aguas termales?",
-          "a": "Muchos operadores incluyen tiempo para visitar las termas de Pacchanta, pero a veces el ingreso se paga aparte según la operación."
+          "q": "Quais ingressos ou extras devo considerar?",
+          "a": "Ingressos, bilhetes turísticos, almoços ou outros extras aparecem na seção de extras para que você possa adicioná-los ou revisá-los antes de reservar."
         },
         {
-          "q": "¿Qué debo llevar?",
-          "a": "Se recomienda llevar ropa abrigadora, impermeable, bloqueador, lentes de sol, agua, snacks y calzado adecuado para trekking."
+          "q": "Onde começa o serviço?",
+          "a": "A busca ou ponto de encontro é coordenado conforme o tour, seu hotel e a operação do dia. Enviamos os detalhes finais por WhatsApp ou e-mail antes da experiência."
+        },
+        {
+          "q": "O que devo levar?",
+          "a": "Recomendamos levar passaporte ou documento de identidade, água, proteção solar, roupa confortável, agasalho leve e dinheiro em espécie para despesas pessoais ou ingressos não incluídos."
         }
       ],
       "extras": [
         {
           "code": "seven-lagoons-entrance-ticket",
-          "label": "Ingreso Siete Lagunas Ausangate",
+          "label": "Entrada às Sete Lagoas do Ausangate",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3655,7 +3796,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Café da manhã e almoço básicos",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3673,7 +3814,7 @@
         },
         {
           "code": "pacchanta-hot-springs",
-          "label": "Ingreso a termas de Pacchanta",
+          "label": "Entrada às águas termais de Pacchanta",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -3732,7 +3873,7 @@
         "publishedChildPENApprox": 330,
         "grossBeforeRoundingUSD": 86.4075,
         "targetNetPEN": 300,
-        "targetNetUSD": 80.0,
+        "targetNetUSD": 80,
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
@@ -3761,7 +3902,7 @@
       "ticketPricingByNationality": [
         {
           "code": "seven-lagoons-entrance-ticket",
-          "label": "Ingreso Siete Lagunas Ausangate",
+          "label": "Entrada às Sete Lagoas do Ausangate",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3789,7 +3930,7 @@
         },
         {
           "code": "pacchanta-hot-springs",
-          "label": "Ingreso a termas de Pacchanta",
+          "label": "Entrada às águas termais de Pacchanta",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -3848,8 +3989,8 @@
       ],
       "places": [],
       "seo": {
-        "title": "Siete Lagunas del Ausangate | My Cusco Trip",
-        "description": "Explora las 7 Lagunas del Ausangate en una caminata full day entre montañas, glaciares y paisajes altoandinos inolvidables."
+        "title": "Sete Lagoas do Ausangate | My Cusco Trip",
+        "description": "Explore as Sete Lagoas do Ausangate em um full day entre montanhas, glaciares e paisagens altoandinas."
       }
     }
   ]

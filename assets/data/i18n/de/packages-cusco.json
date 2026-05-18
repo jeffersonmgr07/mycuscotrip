@@ -230,8 +230,8 @@
   "defaultLogisticsServices": {
     "arrival": {
       "code": "TRANSFER_IN",
-      "title": "Recojo desde aeropuerto o terminal terrestre",
-      "description": "Servicio incluido al inicio del paquete, coordinado según la hora real de llegada del pasajero.",
+      "title": "Abholung am Flughafen oder Busbahnhof",
+      "description": "Inklusive Leistung zu Beginn des Pakets, abgestimmt auf Ihre tatsächliche Ankunftszeit.",
       "dayPosition": "first_day",
       "required": true,
       "includedByDefault": true,
@@ -239,8 +239,8 @@
     },
     "departure": {
       "code": "TRANSFER_OUT",
-      "title": "Traslado al aeropuerto o terminal terrestre",
-      "description": "Servicio incluido al finalizar el paquete, coordinado según la hora real de salida del pasajero.",
+      "title": "Transfer zum Flughafen oder Busbahnhof",
+      "description": "Inklusive Leistung am Ende des Pakets, abgestimmt auf Ihre tatsächliche Abfahrtszeit.",
       "dayPosition": "last_day",
       "required": true,
       "includedByDefault": true,
@@ -372,7 +372,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 3 Tage / 2 Nächte | My Cusco Trip",
         "description": "Opciones dinámicas para conocer Cusco y Machu Picchu en una escapada corta."
-      }
+      },
+      "duration": {
+        "label": "3 Tage / 2 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 3 Tage / 2 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_4d3n",
@@ -453,7 +486,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 4 Tage / 3 Nächte | My Cusco Trip",
         "description": "Combinaciones dinámicas con Stadtrundfahrt, Machu Picchu y una excursión adicional."
-      }
+      },
+      "duration": {
+        "label": "4 Tage / 3 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 4 Tage / 3 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_5d4n",
@@ -538,7 +604,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 5 Tage / 4 Nächte | My Cusco Trip",
         "description": "Paquetes flexibles con Cusco, Heiliges Tal, Machu Picchu y trekking opcional."
-      }
+      },
+      "duration": {
+        "label": "5 Tage / 4 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 5 Tage / 4 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_6d5n",
@@ -622,7 +721,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 6 Tage / 5 Nächte | My Cusco Trip",
         "description": "Combinaciones completas con rutas culturales, Machu Picchu y naturaleza andina."
-      }
+      },
+      "duration": {
+        "label": "6 Tage / 5 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 6 Tage / 5 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_7d6n",
@@ -709,7 +841,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 7 Tage / 6 Nächte | My Cusco Trip",
         "description": "Mayor variedad de combinaciones con cultura, Machu Picchu y hasta dos rutas de naturaleza."
-      }
+      },
+      "duration": {
+        "label": "7 Tage / 6 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 7 Tage / 6 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_8d7n",
@@ -797,7 +962,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 8 Tage / 7 Nächte | My Cusco Trip",
         "description": "Diseñado para combinar los principales clásicos con rutas naturales y culturales menos saturadas."
-      }
+      },
+      "duration": {
+        "label": "8 Tage / 7 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 8 Tage / 7 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_9d8n",
@@ -883,7 +1081,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 9 Tage / 8 Nächte | My Cusco Trip",
         "description": "Configuración amplia para itinerarios con más descanso, rutas alternativas y upgrades."
-      }
+      },
+      "duration": {
+        "label": "9 Tage / 8 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 9 Tage / 8 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_cusco_10d9n",
@@ -973,7 +1204,40 @@
       "seo": {
         "title": "Cusco-Reisepakete 10 Tage / 9 Nächte | My Cusco Trip",
         "description": "La configuración más completa para combinar clásicos, experiencias culturales y rutas naturales."
-      }
+      },
+      "duration": {
+        "label": "10 Tage / 9 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 10 Tage / 9 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -1520,15 +1784,15 @@
     "priceCalculationMode": "sum_selected_tours_plus_required_extras_plus_train_delta_plus_hotel_delta_plus_payment_fees",
     "optionDisplayMode": "commercial-cards",
     "optionUi": {
-      "title": "Elige tu ruta sugerida",
+      "title": "Wählen Sie die Route, die am besten zu Ihrem Reisetempo, Ihren Interessen und bevorzugten Orten passt. Sie können die Option wechseln, ohne Ihre Reservierung zu verlieren.",
       "maxVisibleOptions": 4,
-      "showMoreLabel": "Ver más opciones",
+      "showMoreLabel": "Weitere Optionen anzeigen",
       "hideTechnicalCodes": true,
       "labels": [
-        "Ruta recomendada",
-        "Ruta clásica",
-        "Ruta con aventura",
-        "Ruta con naturaleza"
+        "Empfohlene Route",
+        "Klassische Route",
+        "Abenteuerroute",
+        "Naturroute"
       ]
     }
   },
@@ -1550,5 +1814,9 @@
       "groupByDuration": true,
       "openDetailWithQueryParams": true
     }
-  }
+  },
+  "defaultGuideLanguages": [
+    "es",
+    "en"
+  ]
 }

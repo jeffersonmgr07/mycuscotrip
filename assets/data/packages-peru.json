@@ -763,7 +763,40 @@
           "machu-picchu",
           "paquete-peru"
         ]
-      }
+      },
+      "duration": {
+        "label": "5 días / 4 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 5 días / 4 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_6d5n",
@@ -822,7 +855,40 @@
           "valle-sagrado",
           "machu-picchu"
         ]
-      }
+      },
+      "duration": {
+        "label": "6 días / 5 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 6 días / 5 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_7d6n",
@@ -886,7 +952,40 @@
           "cusco",
           "machu-picchu"
         ]
-      }
+      },
+      "duration": {
+        "label": "7 días / 6 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 7 días / 6 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_8d7n",
@@ -953,7 +1052,40 @@
           "puno",
           "titicaca"
         ]
-      }
+      },
+      "duration": {
+        "label": "8 días / 7 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 8 días / 7 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1016,7 +1148,40 @@
           "cusco",
           "machu-picchu"
         ]
-      }
+      },
+      "duration": {
+        "label": "9 días / 8 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 9 días / 8 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1103,9 +1268,8 @@
         "label": "10 días / 9 noches",
         "maxGroupSize": 30,
         "guideLanguages": [
-          "español",
-          "inglés",
-          "otros idiomas a consultar"
+          "es",
+          "en"
         ]
       },
       "description": "Este paquete multidestino ha sido diseñado para viajeros que desean conocer lo más representativo del Perú en una sola ruta: la energía urbana de Lima, el desierto de Ica y Huacachina, la fauna marina de Paracas, la espiritualidad andina de Cusco, la grandeza de Machu Picchu, los paisajes de la Ruta del Sol, la vida ancestral del Lago Titicaca y el encanto volcánico de Arequipa. Es una experiencia ideal para grupos que buscan comodidad, asistencia coordinada, hoteles configurables y tours seleccionados en cada destino.",
@@ -1403,36 +1567,28 @@
       ],
       "faq": [
         {
-          "q": "¿Este paquete es recomendado para grupos grandes?",
-          "a": "Sí. La experiencia está pensada para grupos de hasta 30 personas, con coordinación de traslados, recojos desde hoteles y asistencia por destino."
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 10 días / 9 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
         },
         {
-          "q": "¿Puedo elegir los hoteles antes de confirmar?",
-          "a": "Sí. El paquete permite elegir hoteles por destino. La tarifa final dependerá de la categoría, disponibilidad, tipo de habitación y distribución del grupo."
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
         },
         {
-          "q": "¿Los trenes a Machu Picchu están incluidos?",
-          "a": "Sí, se considera tren de ida y retorno según la opción seleccionada en la cotización. Puedes elegir entre opciones resumidas de Inca Rail y PeruRail disponibles para este paquete."
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
         },
         {
-          "q": "¿Qué documento necesito para Machu Picchu y los trenes?",
-          "a": "Debes viajar con pasaporte vigente y en buen estado. El documento debe coincidir con la información usada para emitir boletos de tren, ingreso a Machu Picchu y vuelos."
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
         },
         {
-          "q": "¿El itinerario puede cambiar?",
-          "a": "El orden puede ajustarse por disponibilidad de vuelos, trenes, ingresos a Machu Picchu, clima u operación vigente. Siempre se mantiene la esencia de la ruta contratada."
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
         },
         {
-          "q": "¿El vuelo Arequipa - Lima está considerado?",
-          "a": "Sí. El paquete contempla el vuelo doméstico Arequipa - Lima, sujeto a confirmación de tarifa, horario y disponibilidad al momento de reservar."
-        },
-        {
-          "q": "¿Debo llevar efectivo?",
-          "a": "Sí. Aunque en las ciudades principales hay pagos con tarjeta, recomendamos llevar efectivo en soles para compras pequeñas, propinas, mercados, baños públicos o zonas con señal limitada."
-        },
-        {
-          "q": "¿Puedo cambiar el tour en Arequipa por Cañón del Colca?",
-          "a": "Sí. El día en Arequipa puede configurarse con City Tour, Ruta del Sillar, campiña o Cañón del Colca, según horario de vuelo y preferencia del grupo."
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
       ],
       "accommodationSummary": [
@@ -1586,7 +1742,40 @@
           "cusco",
           "machu-picchu"
         ]
-      }
+      },
+      "duration": {
+        "label": "12 días / 11 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 12 días / 11 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1660,7 +1849,40 @@
           "amazonas",
           "tambopata"
         ]
-      }
+      },
+      "duration": {
+        "label": "14 días / 13 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 14 días / 13 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1742,7 +1964,40 @@
           "machu-picchu",
           "amazonas"
         ]
-      }
+      },
+      "duration": {
+        "label": "15 días / 14 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 15 días / 14 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -2301,5 +2556,9 @@
     "Los paquetes Perú deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
     "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
     "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+  ],
+  "defaultGuideLanguages": [
+    "es",
+    "en"
   ]
 }

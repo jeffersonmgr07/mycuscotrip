@@ -175,9 +175,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 125.0,
+                "amount": 125,
                 "marginPercent": 25,
-                "marginAmountPEN": 25.0
+                "marginAmountPEN": 25
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -196,8 +196,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 35.9,
-                "estimatedTargetNetPEN": 125.0,
-                "estimatedNetProfitPEN": 25.0,
+                "estimatedTargetNetPEN": 125,
+                "estimatedNetProfitPEN": 25,
                 "estimatedNetProfitUSD": 6.67,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 12.5,
@@ -242,7 +242,7 @@
                 "estimatedGrossRevenueUSD": 53.9,
                 "estimatedTargetNetPEN": 187.5,
                 "estimatedNetProfitPEN": 37.5,
-                "estimatedNetProfitUSD": 10.0,
+                "estimatedNetProfitUSD": 10,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 18.75,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -263,9 +263,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 175.0,
+                "amount": 175,
                 "marginPercent": 25,
-                "marginAmountPEN": 35.0
+                "marginAmountPEN": 35
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -284,8 +284,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 50.9,
-                "estimatedTargetNetPEN": 175.0,
-                "estimatedNetProfitPEN": 35.0,
+                "estimatedTargetNetPEN": 175,
+                "estimatedNetProfitPEN": 35,
                 "estimatedNetProfitUSD": 9.33,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 17.5,
@@ -307,9 +307,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -328,9 +328,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -351,9 +351,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -372,9 +372,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -395,9 +395,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 275.0,
+                "amount": 275,
                 "marginPercent": 25,
-                "marginAmountPEN": 55.0
+                "marginAmountPEN": 55
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -416,8 +416,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 79.9,
-                "estimatedTargetNetPEN": 275.0,
-                "estimatedNetProfitPEN": 55.0,
+                "estimatedTargetNetPEN": 275,
+                "estimatedNetProfitPEN": 55,
                 "estimatedNetProfitUSD": 14.67,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 27.5,
@@ -439,9 +439,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 325.0,
+                "amount": 325,
                 "marginPercent": 25,
-                "marginAmountPEN": 65.0
+                "marginAmountPEN": 65
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -460,8 +460,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 93.9,
-                "estimatedTargetNetPEN": 325.0,
-                "estimatedNetProfitPEN": 65.0,
+                "estimatedTargetNetPEN": 325,
+                "estimatedNetProfitPEN": 65,
                 "estimatedNetProfitUSD": 17.33,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 32.5,
@@ -545,9 +545,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -566,9 +566,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -589,9 +589,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 325.0,
+                "amount": 325,
                 "marginPercent": 25,
-                "marginAmountPEN": 65.0
+                "marginAmountPEN": 65
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -610,8 +610,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 93.9,
-                "estimatedTargetNetPEN": 325.0,
-                "estimatedNetProfitPEN": 65.0,
+                "estimatedTargetNetPEN": 325,
+                "estimatedNetProfitPEN": 65,
                 "estimatedNetProfitUSD": 17.33,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 32.5,
@@ -633,9 +633,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 325.0,
+                "amount": 325,
                 "marginPercent": 25,
-                "marginAmountPEN": 65.0
+                "marginAmountPEN": 65
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -654,8 +654,8 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 93.9,
-                "estimatedTargetNetPEN": 325.0,
-                "estimatedNetProfitPEN": 65.0,
+                "estimatedTargetNetPEN": 325,
+                "estimatedNetProfitPEN": 65,
                 "estimatedNetProfitUSD": 17.33,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 32.5,
@@ -791,9 +791,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 150.0,
+                "amount": 150,
                 "marginPercent": 25,
-                "marginAmountPEN": 30.0
+                "marginAmountPEN": 30
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -812,11 +812,11 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 43.9,
-                "estimatedTargetNetPEN": 150.0,
-                "estimatedNetProfitPEN": 30.0,
-                "estimatedNetProfitUSD": 8.0,
+                "estimatedTargetNetPEN": 150,
+                "estimatedNetProfitPEN": 30,
+                "estimatedNetProfitUSD": 8,
                 "minimumAcceptedMarginPercent": 12.5,
-                "minimumAcceptedNetProfitPEN": 15.0,
+                "minimumAcceptedNetProfitPEN": 15,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
               },
               "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
@@ -835,9 +835,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -856,9 +856,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -879,9 +879,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -900,9 +900,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -923,9 +923,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 300.0,
+                "amount": 300,
                 "marginPercent": 25,
-                "marginAmountPEN": 60.0
+                "marginAmountPEN": 60
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -944,11 +944,11 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 86.9,
-                "estimatedTargetNetPEN": 300.0,
-                "estimatedNetProfitPEN": 60.0,
-                "estimatedNetProfitUSD": 16.0,
+                "estimatedTargetNetPEN": 300,
+                "estimatedNetProfitPEN": 60,
+                "estimatedNetProfitUSD": 16,
                 "minimumAcceptedMarginPercent": 12.5,
-                "minimumAcceptedNetProfitPEN": 30.0,
+                "minimumAcceptedNetProfitPEN": 30,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
               },
               "notes": "Tarifa referencial pendiente de confirmación final del proveedor."
@@ -1027,9 +1027,9 @@
               },
               "targetNet": {
                 "currency": "PEN",
-                "amount": 225.0,
+                "amount": 225,
                 "marginPercent": 25,
-                "marginAmountPEN": 45.0
+                "marginAmountPEN": 45
               },
               "publishedPricing": {
                 "currency": "USD",
@@ -1048,9 +1048,9 @@
               },
               "internalAnalytics": {
                 "estimatedGrossRevenueUSD": 64.9,
-                "estimatedTargetNetPEN": 225.0,
-                "estimatedNetProfitPEN": 45.0,
-                "estimatedNetProfitUSD": 12.0,
+                "estimatedTargetNetPEN": 225,
+                "estimatedNetProfitPEN": 45,
+                "estimatedNetProfitUSD": 12,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 22.5,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -1094,7 +1094,7 @@
                 "estimatedGrossRevenueUSD": 96.9,
                 "estimatedTargetNetPEN": 337.5,
                 "estimatedNetProfitPEN": 67.5,
-                "estimatedNetProfitUSD": 18.0,
+                "estimatedNetProfitUSD": 18,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 33.75,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -1138,7 +1138,7 @@
                 "estimatedGrossRevenueUSD": 96.9,
                 "estimatedTargetNetPEN": 337.5,
                 "estimatedNetProfitPEN": 67.5,
-                "estimatedNetProfitUSD": 18.0,
+                "estimatedNetProfitUSD": 18,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 33.75,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -1182,7 +1182,7 @@
                 "estimatedGrossRevenueUSD": 118.9,
                 "estimatedTargetNetPEN": 412.5,
                 "estimatedNetProfitPEN": 82.5,
-                "estimatedNetProfitUSD": 22.0,
+                "estimatedNetProfitUSD": 22,
                 "minimumAcceptedMarginPercent": 12.5,
                 "minimumAcceptedNetProfitPEN": 41.25,
                 "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada."
@@ -1413,9 +1413,9 @@
               "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 121.0
+                "amount": 121
               },
-              "pricePerNight": 121.0,
+              "pricePerNight": 121,
               "currency": "USD"
             },
             {
@@ -1427,9 +1427,9 @@
               "maxChildren": 2,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 154.0
+                "amount": 154
               },
-              "pricePerNight": 154.0,
+              "pricePerNight": 154,
               "currency": "USD"
             }
           ]
@@ -1939,9 +1939,9 @@
               "maxChildren": 0,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 54.0
+                "amount": 54
               },
-              "pricePerNight": 54.0,
+              "pricePerNight": 54,
               "currency": "USD"
             },
             {
@@ -1953,9 +1953,9 @@
               "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 66.0
+                "amount": 66
               },
-              "pricePerNight": 66.0,
+              "pricePerNight": 66,
               "currency": "USD"
             },
             {
@@ -1967,9 +1967,9 @@
               "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 66.0
+                "amount": 66
               },
-              "pricePerNight": 66.0,
+              "pricePerNight": 66,
               "currency": "USD"
             },
             {
@@ -1981,9 +1981,9 @@
               "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 88.0
+                "amount": 88
               },
-              "pricePerNight": 88.0,
+              "pricePerNight": 88,
               "currency": "USD"
             },
             {
@@ -1995,9 +1995,9 @@
               "maxChildren": 2,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 112.0
+                "amount": 112
               },
-              "pricePerNight": 112.0,
+              "pricePerNight": 112,
               "currency": "USD"
             }
           ]
@@ -2193,9 +2193,9 @@
               "maxChildren": 1,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 99.0
+                "amount": 99
               },
-              "pricePerNight": 99.0,
+              "pricePerNight": 99,
               "currency": "USD"
             },
             {
@@ -2207,9 +2207,9 @@
               "maxChildren": 2,
               "publishedPricing": {
                 "currency": "USD",
-                "amount": 126.0
+                "amount": 126
               },
-              "pricePerNight": 126.0,
+              "pricePerNight": 126,
               "currency": "USD"
             }
           ]

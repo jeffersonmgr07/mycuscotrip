@@ -767,7 +767,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Cusco 5 Tage / 4 Nächte | My Cusco Trip",
         "description": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos Tage."
-      }
+      },
+      "duration": {
+        "label": "5 Tage / 4 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 5 Tage / 4 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_6d5n",
@@ -830,7 +863,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Cusco 6 Tage / 5 Nächte | My Cusco Trip",
         "description": "Ruta clásica con Lima, Heiliges Tal, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "6 Tage / 5 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 6 Tage / 5 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_7d6n",
@@ -898,7 +964,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Paracas/Ica + Cusco 7 Tage / 6 Nächte | My Cusco Trip",
         "description": "Combina costa sur, desierto, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "7 Tage / 6 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 7 Tage / 6 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_8d7n",
@@ -969,7 +1068,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Paracas/Ica + Cusco/Puno 8 Tage / 7 Nächte | My Cusco Trip",
         "description": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca."
-      }
+      },
+      "duration": {
+        "label": "8 Tage / 7 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 8 Tage / 7 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1036,7 +1168,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Arequipa + Cusco 9 Tage / 8 Nächte | My Cusco Trip",
         "description": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "9 Tage / 8 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 9 Tage / 8 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1123,9 +1288,8 @@
         "label": "10 Tage / 9 Nächte",
         "maxGroupSize": 30,
         "guideLanguages": [
-          "español",
-          "inglés",
-          "otros idiomas a consultar"
+          "es",
+          "en"
         ]
       },
       "description": "Eine komplette 10-tägige Peru-Reise mit Lima, Huacachina, Paracas, Cusco, dem Heiligen Tal, Machu Picchu per Zug, der Route der Sonne, dem Titicacasee und dem kolonialen Arequipa.",
@@ -1411,36 +1575,28 @@
       ],
       "faq": [
         {
-          "q": "Is this package recommended for large groups?",
-          "a": "Yes. The experience is designed for groups of up to 30 travelers with coordinated transfers, hotel pickups and assistance by destination."
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 10 Tage / 9 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
         },
         {
-          "q": "Can I choose hotels before confirming?",
-          "a": "Yes. Hotels can be selected by destination. The final fare depends on category, availability, room type and group distribution."
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
         },
         {
-          "q": "Are trains to Machu Picchu included?",
-          "a": "Yes. Round-trip train service is considered according to the selected quote option. You may choose summarized Inca Rail and PeruRail options available for this package."
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
         },
         {
-          "q": "What document do I need for Machu Picchu and the trains?",
-          "a": "You must travel with a valid passport in good condition. The document must match the information used for train tickets, Machu Picchu entrance and flights."
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
         },
         {
-          "q": "Can the itinerary change?",
-          "a": "The order may be adjusted due to flight, train, Machu Picchu entrance availability, weather or current operation. The essence of the contracted route is always maintained."
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
         },
         {
-          "q": "Is the Arequipa-Lima flight included?",
-          "a": "Yes. The package considers the domestic Arequipa-Lima flight, subject to fare, schedule and availability confirmation at the time of booking."
-        },
-        {
-          "q": "Should I carry cash?",
-          "a": "Yes. Although card payments are available in main cities, we recommend carrying Peruvian soles for small purchases, tips, markets, public restrooms or areas with limited signal."
-        },
-        {
-          "q": "Can I replace the Arequipa tour with Colca Canyon?",
-          "a": "Yes. The Arequipa day can be configured with City Tour, Sillar Route, countryside or Colca Canyon depending on flight schedule and group preference."
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
         }
       ],
       "accommodationSummary": [
@@ -1602,7 +1758,40 @@
       "seo": {
         "title": "Peru-Reisepakete: Lima + Paracas + Arequipa + Puno + Cusco 12 Tage / 11 Nächte | My Cusco Trip",
         "description": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco y Machu Picchu."
-      }
+      },
+      "duration": {
+        "label": "12 Tage / 11 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 12 Tage / 11 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1680,7 +1869,40 @@
       "seo": {
         "title": "Peru-Reisepakete Sur + Amazonía 14 Tage / 13 Nächte | My Cusco Trip",
         "description": "Ruta amplia para combinar el sur clásico del Peru con una extensión de Amazonía."
-      }
+      },
+      "duration": {
+        "label": "14 Tage / 13 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 14 Tage / 13 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1766,7 +1988,40 @@
       "seo": {
         "title": "Peru-Reisepakete completo 15 Tage / 14 Nächte | My Cusco Trip",
         "description": "Versión extensa para viajeros que quieren una experiencia completa del Peru."
-      }
+      },
+      "duration": {
+        "label": "15 Tage / 14 Nächte",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "Wie ist dieses Paket organisiert?",
+          "a": "Das Paket wird als flexible Route von 15 Tage / 14 Nächte mit Haupterlebnissen, Transfers, Zügen und Unterkunft gemäß der ausgewählten Option aufgebaut."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Die Touren des Pakets beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch wird auf Anfrage koordiniert und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Was ist im Basispaket enthalten?",
+          "a": "Enthalten sind Ankunfts- und Abreisetransfers, Reisebetreuung, touristischer Transport gemäß Programm und die im Reiseverlauf angegebenen Erlebnisse."
+        },
+        {
+          "q": "Was ist nicht enthalten?",
+          "a": "Nationale oder internationale Flüge, persönliche Ausgaben, freiwillige Trinkgelder, nicht erwähnte Leistungen und nicht ausgewählte optionale Upgrades sind nicht enthalten."
+        },
+        {
+          "q": "Kann ich Hotels und Züge auswählen?",
+          "a": "Ja. Wenn das Paket es erlaubt, können Sie Unterkunfts- und Zugoptionen prüfen; der Preis passt sich der gewählten Kategorie an."
+        },
+        {
+          "q": "Sind Extras übersetzt und separat berechnet?",
+          "a": "Ja. Extras wie Touristentickets, Eintritte oder Mittagessen erscheinen übersetzt und können vor Abschluss der Reservierung hinzugefügt werden."
+        }
+      ]
     }
   ],
   "durationConfigs": [
@@ -2325,5 +2580,9 @@
     "Los paquetes Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
     "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
     "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+  ],
+  "defaultGuideLanguages": [
+    "es",
+    "en"
   ]
 }

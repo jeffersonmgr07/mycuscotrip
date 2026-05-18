@@ -84,7 +84,7 @@
       "includes": [
         "Recojo en zonas seleccionadas",
         "Transporte turístico",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Recorrido panorámico"
       ],
       "excludes": [
@@ -152,7 +152,29 @@
           "lima moderna"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3 a 4 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_002",
@@ -297,7 +319,29 @@
           "candelabro"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 2 horas aprox.. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_003",
@@ -455,7 +499,29 @@
           "sandboarding"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 16 a 18 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_004",
@@ -534,7 +600,8 @@
       "includes": [
         "Asistencia en aeródromo",
         "Sobrevuelo compartido",
-        "Briefing referencial"
+        "Briefing referencial",
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Tasas aeroportuarias si aplican",
@@ -597,7 +664,29 @@
           "sobrevuelo"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 35 min de vuelo aprox.. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_005",
@@ -675,7 +764,7 @@
       "includes": [
         "Recojo en zonas seleccionadas",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Ingreso a Santa Catalina si aplica",
@@ -703,7 +792,7 @@
       "extras": [
         {
           "code": "santa-catalina-ticket",
-          "label": "Ingreso Monasterio de Santa Catalina",
+          "label": "Entrance to Santa Catalina Monastery",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -751,7 +840,29 @@
           "ciudad blanca"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3 a 4 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_006",
@@ -828,7 +939,7 @@
       "includes": [
         "Recojo en Arequipa",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Boleto turístico Colca",
@@ -857,7 +968,7 @@
       "extras": [
         {
           "code": "colca-tourist-ticket",
-          "label": "Boleto turístico Colca",
+          "label": "Colca tourist ticket",
           "price": 20,
           "currency": "USD",
           "perPerson": true,
@@ -905,7 +1016,29 @@
           "arequipa"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 14 a 16 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_007",
@@ -983,7 +1116,7 @@
         "Recojo en Puno",
         "Traslado al puerto",
         "Lancha turística",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Visita a Uros y Taquile"
       ],
       "excludes": [
@@ -1012,7 +1145,7 @@
       "extras": [
         {
           "code": "titicaca-lunch",
-          "label": "Almuerzo local en Taquile",
+          "label": "Local lunch in Taquile",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1061,7 +1194,29 @@
           "lago titicaca"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 8 a 10 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_008",
@@ -1138,7 +1293,7 @@
       "includes": [
         "Recojo en Puno",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Ingreso a Sillustani",
@@ -1162,7 +1317,7 @@
       "extras": [
         {
           "code": "sillustani-ticket",
-          "label": "Ingreso a Sillustani",
+          "label": "Entrance to Sillustani",
           "price": 5,
           "currency": "USD",
           "perPerson": true,
@@ -1209,7 +1364,29 @@
           "puno"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3 a 4 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_009",
@@ -1315,7 +1492,7 @@
       "extras": [
         {
           "code": "laguna-azul-lunch",
-          "label": "Almuerzo regional",
+          "label": "Regional lunch",
           "price": 12,
           "currency": "USD",
           "perPerson": true,
@@ -1362,7 +1539,29 @@
           "sauce"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 8 a 10 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_010",
@@ -1467,7 +1666,7 @@
       "extras": [
         {
           "code": "ahuashiyacu-ticket",
-          "label": "Ingreso a Ahuashiyacu",
+          "label": "Entrance to Ahuashiyacu",
           "price": 3,
           "currency": "USD",
           "perPerson": true,
@@ -1513,7 +1712,29 @@
           "catarata"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3 a 4 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_011",
@@ -1619,7 +1840,7 @@
       "extras": [
         {
           "code": "amazonas-lunch",
-          "label": "Almuerzo amazónico",
+          "label": "Amazonian lunch",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1668,7 +1889,29 @@
           "selva peruana"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 7 a 9 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_012",
@@ -1769,7 +2012,7 @@
       "extras": [
         {
           "code": "tambopata-lunch",
-          "label": "Almuerzo regional",
+          "label": "Regional lunch",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1817,7 +2060,29 @@
           "amazonas"
         ]
       },
-      "status": "published"
+      "status": "published",
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day / 8 a 10 horas. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     },
     {
       "id": "peru_010_private",
@@ -1934,7 +2199,29 @@
           "puerto maldonado",
           "lodge"
         ]
-      }
+      },
+      "faq": [
+        {
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 3 días / 2 noches. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
+        },
+        {
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        }
+      ]
     }
   ]
 }

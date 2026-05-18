@@ -60,18 +60,18 @@
   },
   "categoryBenefits": {
     "incarail": {
-      "voyager": [
-        "Asientos cómodos",
-        "Ventanas amplias",
-        "Música ambiental",
-        "Venta de alimentos y bebidas"
-      ],
       "360": [
         "Coche observatorio con balcón abierto",
         "Ventanas panorámicas",
         "Coche bar con bebidas y show",
         "Asientos amplios con mesas",
         "Snacks y bebida de cortesía"
+      ],
+      "voyager": [
+        "Asientos cómodos",
+        "Ventanas amplias",
+        "Música ambiental",
+        "Venta de alimentos y bebidas"
       ],
       "prime": [
         "Ventanas panorámicas",
@@ -2456,8 +2456,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": true,
@@ -2712,8 +2712,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2796,8 +2796,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2838,8 +2838,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -2922,8 +2922,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3048,8 +3048,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3268,7 +3268,7 @@
       "departureStation": "Machu Picchu",
       "arrivalStation": "13:37",
       "departureTime": "15:04",
-      "arrivalTime": 133.0,
+      "arrivalTime": 133,
       "frequency": "train",
       "modality": "train",
       "currency": "USD",
@@ -3399,8 +3399,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 95.0,
-        "child": 95.0,
+        "adult": 95,
+        "child": 95,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3483,8 +3483,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -3567,8 +3567,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4118,8 +4118,8 @@
       "modality": "train",
       "currency": "USD",
       "price": {
-        "adult": 133.0,
-        "child": 133.0,
+        "adult": 133,
+        "child": 133,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4202,8 +4202,8 @@
       "modality": "train_bus",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,
@@ -4286,8 +4286,8 @@
       "modality": "train_bus",
       "currency": "USD",
       "price": {
-        "adult": 114.0,
-        "child": 114.0,
+        "adult": 114,
+        "child": 114,
         "guide": null
       },
       "recommendedDefault": false,

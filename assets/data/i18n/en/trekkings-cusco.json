@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/trekkings-cusco.json",
   "scope": "cusco-trekkings",
-  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto and filtros, sin mezclarse con packages dinámicos.",
+  "description": "Future standalone Cusco trekking catalog. Prepared for All Experiences, product pages and filters, without mixing with dynamic packages.",
   "currency": "USD",
   "status": "draft-ready",
   "productKind": "trekking",
@@ -23,7 +23,7 @@
     "types": [
       "trekking",
       "adventure",
-      "naturaleza",
+      "nature",
       "machu-picchu"
     ],
     "destinations": [
@@ -34,9 +34,9 @@
       "vinicunca"
     ],
     "difficulty": [
-      "moderada",
-      "moderada-alta",
-      "alta"
+      "moderate",
+      "moderate-high",
+      "high"
     ],
     "durationKeys": [
       "2d1n",
@@ -56,7 +56,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "2 days / 1 night",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -64,14 +64,18 @@
       "priceFrom": null,
       "days": 2,
       "nights": 1,
-      "shortDescription": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta.",
-      "description": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta.",
+      "shortDescription": "Short Inca Trail version that connects trekking, history and Machu Picchu in a compact route.",
+      "description": "Short Inca Trail version that connects trekking, history and Machu Picchu in a compact route.",
       "duration": {
         "label": "2D/1N",
         "days": 2,
-        "nights": 1
+        "nights": 1,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "moderada",
+      "difficulty": "moderate",
       "maxAltitudeMeters": 2700,
       "destinations": [
         "cusco",
@@ -80,27 +84,27 @@
       ],
       "highlights": [
         "Camino Inca corto",
-        "Ingreso a Machu Picchu",
-        "Ruta histórica"
+        "Machu Picchu entrance ticket",
+        "Historic route"
       ],
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial and datos completos de travelers."
+        "notes": "Subject to official availability and complete traveler details."
       },
       "accommodationType": [
-        "campamento o alojamiento according to the confirmed operation"
+        "camping or accommodation according to the confirmed operation"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/camino-inca-2-dias-1-night/cover.jpg",
@@ -121,21 +125,43 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "camino inca 2d/1n",
           "camino inca 2 dias 1 night",
           "Camino Inca corto",
-          "Ingreso a Machu Picchu",
-          "Ruta histórica"
+          "Machu Picchu entrance ticket",
+          "Historic route"
         ]
       },
       "status": "draft",
       "seo": {
         "title": "Camino Inca 2D/1N | My Cusco Trip",
-        "description": "Versión corta del Camino Inca para conectar trekking, historia and Machu Picchu en una ruta compacta."
-      }
+        "description": "Short Inca Trail version that connects trekking, history and Machu Picchu in a compact route."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 2D/1N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_002",
@@ -147,7 +173,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -155,14 +181,18 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos.",
-      "description": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos.",
+      "shortDescription": "Classic route to Machu Picchu along ancient Inca trails, campsites and archaeological sites.",
+      "description": "Classic route to Machu Picchu along ancient Inca trails, campsites and archaeological sites.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "moderada-alta",
+      "difficulty": "moderate-high",
       "maxAltitudeMeters": 4200,
       "destinations": [
         "cusco",
@@ -178,21 +208,21 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial and datos completos de travelers."
+        "notes": "Subject to official availability and complete traveler details."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/camino-inca-4-dias-3-nights/cover.jpg",
@@ -213,7 +243,7 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "camino inca classic 4d/3n",
@@ -227,8 +257,30 @@
       "status": "draft",
       "seo": {
         "title": "Camino Inca Classic 4D/3N | My Cusco Trip",
-        "description": "Ruta clásica to Machu Picchu por antiguos caminos incas, campamentos and sitios arqueológicos."
-      }
+        "description": "Classic route to Machu Picchu along ancient Inca trails, campsites and archaeological sites."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 4D/3N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_003",
@@ -240,7 +292,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -248,14 +300,18 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
-      "description": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes.",
+      "shortDescription": "Adventure route to Machu Picchu with mountain landscapes, changing ecosystems and demanding hikes.",
+      "description": "Adventure route to Machu Picchu with mountain landscapes, changing ecosystems and demanding hikes.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "alta",
+      "difficulty": "high",
       "maxAltitudeMeters": 4600,
       "destinations": [
         "cusco",
@@ -264,28 +320,28 @@
       ],
       "highlights": [
         "Nevado Salkantay",
-        "Paisajes altoandinos",
+        "High-Andean landscapes",
         "Machu Picchu"
       ],
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
         "campamento",
-        "alojamiento básico"
+        "basic accommodation"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/salkantay-trek-4-dias-3-nights/cover.jpg",
@@ -306,21 +362,43 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "salkantay trek 4d/3n",
           "salkantay trek 4 dias 3 nights",
           "Nevado Salkantay",
-          "Paisajes altoandinos",
+          "High-Andean landscapes",
           "Machu Picchu"
         ]
       },
       "status": "draft",
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
-        "description": "Ruta de adventure to Machu Picchu with paisajes de montaña, cambios de ecosistema and caminatas exigentes."
-      }
+        "description": "Adventure route to Machu Picchu with mountain landscapes, changing ecosystems and demanding hikes."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 4D/3N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_004",
@@ -332,7 +410,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "5 days / 4 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -340,14 +418,18 @@
       "priceFrom": null,
       "days": 5,
       "nights": 4,
-      "shortDescription": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu.",
-      "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu.",
+      "shortDescription": "More complete Salkantay Trek version with a better pace for acclimatization and connection with Machu Picchu.",
+      "description": "More complete Salkantay Trek version with a better pace for acclimatization and connection with Machu Picchu.",
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "alta",
+      "difficulty": "high",
       "maxAltitudeMeters": 4600,
       "destinations": [
         "cusco",
@@ -355,29 +437,29 @@
         "machu-picchu"
       ],
       "highlights": [
-        "Ruta Salkantay completa",
+        "Complete Salkantay route",
         "Humantay Lake opcional",
         "Machu Picchu"
       ],
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
         "campamento",
-        "alojamiento básico"
+        "basic accommodation"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/salkantay-trek-5-dias-4-nights/cover.jpg",
@@ -398,12 +480,12 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "salkantay trek 5d/4n",
           "salkantay trek 5 dias 4 nights",
-          "Ruta Salkantay completa",
+          "Complete Salkantay route",
           "Humantay Lake opcional",
           "Machu Picchu"
         ]
@@ -411,8 +493,30 @@
       "status": "draft",
       "seo": {
         "title": "Salkantay Trek 5D/4N | My Cusco Trip",
-        "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación and conexión con Machu Picchu."
-      }
+        "description": "More complete Salkantay Trek version with a better pace for acclimatization and connection with Machu Picchu."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 5D/4N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_005",
@@ -424,7 +528,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "5 days / 4 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -432,14 +536,18 @@
       "priceFrom": null,
       "days": 5,
       "nights": 4,
-      "shortDescription": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación.",
-      "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación.",
+      "shortDescription": "High-mountain trek around Ausangate, ideal for experienced travelers with good acclimatization.",
+      "description": "High-mountain trek around Ausangate, ideal for experienced travelers with good acclimatization.",
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "alta",
+      "difficulty": "high",
       "maxAltitudeMeters": 5200,
       "destinations": [
         "cusco",
@@ -453,21 +561,21 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/ausangate-trek/cover.jpg",
@@ -487,7 +595,7 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "ausangate trek",
@@ -500,8 +608,30 @@
       "status": "draft",
       "seo": {
         "title": "Ausangate Trek | My Cusco Trip",
-        "description": "Trekking de alta montaña alrededor del Ausangate, ideal for viajeros con experiencia and buena aclimatación."
-      }
+        "description": "High-mountain trek around Ausangate, ideal for experienced travelers with good acclimatization."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 5D/4N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_006",
@@ -513,7 +643,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -521,14 +651,18 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain.",
-      "description": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain.",
+      "shortDescription": "Adventure route combining Ausangate landscapes with Rainbow Mountain.",
+      "description": "Adventure route combining Ausangate landscapes with Rainbow Mountain.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "alta",
+      "difficulty": "high",
       "maxAltitudeMeters": 5200,
       "destinations": [
         "cusco",
@@ -538,26 +672,26 @@
       "highlights": [
         "Ausangate",
         "Rainbow Mountain",
-        "Paisajes altoandinos"
+        "High-Andean landscapes"
       ],
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
         "campamento"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/ausangate-vinicunca/cover.jpg",
@@ -578,21 +712,43 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "ausangate + vinicunca",
           "ausangate vinicunca",
           "Ausangate",
           "Rainbow Mountain",
-          "Paisajes altoandinos"
+          "High-Andean landscapes"
         ]
       },
       "status": "draft",
       "seo": {
         "title": "Ausangate + Vinicunca | My Cusco Trip",
-        "description": "Ruta de adventure que combina paisajes del Ausangate con la Rainbow Mountain."
-      }
+        "description": "Adventure route combining Ausangate landscapes with Rainbow Mountain."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 4D/3N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_007",
@@ -604,7 +760,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "3 days / 2 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -612,14 +768,18 @@
       "priceFrom": null,
       "days": 3,
       "nights": 2,
-      "shortDescription": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata.",
-      "description": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata.",
+      "shortDescription": "Active route to Machu Picchu combining adventure, nature and hiking sections.",
+      "description": "Active route to Machu Picchu combining adventure, nature and hiking sections.",
       "duration": {
         "label": "3D/2N",
         "days": 3,
-        "nights": 2
+        "nights": 2,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "moderada",
+      "difficulty": "moderate",
       "maxAltitudeMeters": 4300,
       "destinations": [
         "cusco",
@@ -628,27 +788,27 @@
       ],
       "highlights": [
         "Adventure",
-        "Selva alta",
+        "High jungle",
         "Machu Picchu"
       ],
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
-        "alojamiento básico"
+        "basic accommodation"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/inca-jungle-3-dias-2-nights/cover.jpg",
@@ -669,21 +829,43 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "inca jungle 3d/2n",
           "inca jungle 3 dias 2 nights",
           "Adventure",
-          "Selva alta",
+          "High jungle",
           "Machu Picchu"
         ]
       },
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
-        "description": "Ruta activa to Machu Picchu with combinación de adventure, naturaleza and tramos de caminata."
-      }
+        "description": "Active route to Machu Picchu combining adventure, nature and hiking sections."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3D/2N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "trk_cusco_008",
@@ -695,7 +877,7 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Próximamente",
+      "badge": "Coming soon",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
@@ -703,14 +885,18 @@
       "priceFrom": null,
       "days": 4,
       "nights": 3,
-      "shortDescription": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu.",
-      "description": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu.",
+      "shortDescription": "More complete Inca Jungle version with more time for adventure activities and the connection to Machu Picchu.",
+      "description": "More complete Inca Jungle version with more time for adventure activities and the connection to Machu Picchu.",
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
-      "difficulty": "moderada",
+      "difficulty": "moderate",
       "maxAltitudeMeters": 4300,
       "destinations": [
         "cusco",
@@ -718,28 +904,28 @@
         "inca-jungle"
       ],
       "highlights": [
-        "Adventure completa",
-        "Selva alta",
+        "Complete adventure",
+        "High jungle",
         "Machu Picchu"
       ],
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima and disponibilidad."
+        "notes": "Subject to operation, weather and availability."
       },
       "accommodationType": [
-        "alojamiento básico"
+        "basic accommodation"
       ],
-      "season": "Todo el año sujeto a clima and disponibilidad",
+      "season": "Year-round, subject to weather and availability",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirm availability before charging the booking."
       },
       "operationalNotes": [
-        "Requiere evaluación básica de condición física.",
-        "Itinerario and campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo and servicios incluidos."
+        "A basic fitness assessment is recommended.",
+        "The itinerary and campsites may vary due to weather, permits or local regulations.",
+        "Final prices will be confirmed according to travel date, group size and included services."
       ],
       "images": {
         "cover": "./assets/img/trekkings/inca-jungle-4-dias-3-nights/cover.jpg",
@@ -760,21 +946,43 @@
         "themes": [
           "trekking",
           "adventure",
-          "naturaleza"
+          "nature"
         ],
         "keywords": [
           "inca jungle 4d/3n",
           "inca jungle 4 dias 3 nights",
-          "Adventure completa",
-          "Selva alta",
+          "Complete adventure",
+          "High jungle",
           "Machu Picchu"
         ]
       },
       "status": "draft",
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
-        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de adventure and conexión con Machu Picchu."
-      }
+        "description": "More complete Inca Jungle version with more time for adventure activities and the connection to Machu Picchu."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 4D/3N. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     }
   ]
 }

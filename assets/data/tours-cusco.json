@@ -148,16 +148,24 @@
       ],
       "faq": [
         {
-          "q": "¿Cuánto dura el tour?",
-          "a": "La duración aproximada es de 2 horas y 30 minutos."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es 2 h 30 min. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Dónde es el punto de encuentro?",
-          "a": "El punto de encuentro principal es Plaza Regocijo, también conocida como Plaza Kusipata."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
         },
         {
-          "q": "¿Qué horarios tiene?",
-          "a": "Los horarios disponibles son 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 y 16:00, de lunes a domingo."
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Si alguna entrada especial aplica para tu fecha, el equipo de reservas la revisará contigo antes del pago."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [],
@@ -327,7 +335,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Boleto turístico",
@@ -359,12 +367,24 @@
       ],
       "faq": [
         {
-          "q": "¿Es un tour largo?",
-          "a": "No, es un tour de medio día ideal para comenzar tu viaje."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Medio día. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No, se paga aparte."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
@@ -467,7 +487,7 @@
         "publishedChildPENApprox": 40,
         "grossBeforeRoundingUSD": 8.9262,
         "targetNetPEN": 30,
-        "targetNetUSD": 8.0,
+        "targetNetUSD": 8,
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
@@ -646,7 +666,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Retorno a Cusco al finalizar el tour"
       ],
       "excludes": [
@@ -693,12 +713,24 @@
       ],
       "faq": [
         {
-          "q": "¿Incluye almuerzo?",
-          "a": "No. Puedes añadir el almuerzo buffet como extra cuando esté disponible."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No. El boleto turístico se paga aparte."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
@@ -732,7 +764,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Valle Sagrado",
+          "label": "Almuerzo buffet en el Valle Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -936,7 +968,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico por el Valle Sagrado",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
@@ -977,12 +1009,28 @@
       ],
       "faq": [
         {
-          "q": "¿Esta versión retorna a Cusco?",
-          "a": "No. Esta versión finaliza en Ollantaytambo para continuar hacia Aguas Calientes o conectar con el programa de Machu Picchu."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day con conexión. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        },
+        {
+          "q": "¿Las entradas a Machu Picchu están garantizadas?",
+          "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
       ],
       "extras": [
@@ -1016,7 +1064,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Valle Sagrado",
+          "label": "Almuerzo buffet en el Valle Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1220,7 +1268,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
         "Retorno a Cusco al finalizar el tour"
       ],
@@ -1283,12 +1331,24 @@
       ],
       "faq": [
         {
-          "q": "¿Qué diferencia tiene la ruta VIP?",
-          "a": "La ruta VIP agrega Chinchero, Maras y Moray antes de continuar hacia Urubamba, Ollantaytambo y Pisac."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day VIP. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye ingreso a Maras?",
-          "a": "No. El ingreso a las Salineras de Maras se maneja como extra."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
@@ -1322,7 +1382,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1350,7 +1410,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Valle Sagrado",
+          "label": "Almuerzo buffet en el Valle Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1466,7 +1526,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1587,7 +1647,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico por ruta VIP del Valle Sagrado",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
       ],
       "excludes": [
@@ -1636,12 +1696,28 @@
       ],
       "faq": [
         {
-          "q": "¿Esta versión visita Pisac?",
-          "a": "No. Para permitir la conexión hacia Machu Picchu, esta versión finaliza en Ollantaytambo y no continúa hacia Pisac."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day VIP con conexión. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye tren a Aguas Calientes?",
-          "a": "No como tour individual. En paquetes dinámicos, el tren se calcula según la configuración del paquete."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
+        },
+        {
+          "q": "¿Las entradas a Machu Picchu están garantizadas?",
+          "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
       ],
       "extras": [
@@ -1675,7 +1751,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1703,7 +1779,7 @@
         },
         {
           "code": "sacred-valley-buffet-basic",
-          "label": "Almuerzo buffet Valle Sagrado",
+          "label": "Almuerzo buffet en el Valle Sagrado",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -1819,7 +1895,7 @@
         },
         {
           "code": "maras-salt-mines-ticket-vip-only",
-          "label": "Ingreso Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -1939,7 +2015,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Boleto turístico parcial",
@@ -1978,12 +2054,24 @@
       ],
       "faq": [
         {
-          "q": "¿Incluye entradas?",
-          "a": "No. El boleto turístico parcial y el ingreso a Salineras se pagan aparte."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Medio día. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Se puede hacer en cuatrimoto?",
-          "a": "Sí, puedes elegir la opción ATV como extra cuando esté disponible."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
@@ -2017,7 +2105,7 @@
         },
         {
           "code": "maras-salt-mines-ticket",
-          "label": "Ingreso a Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2045,7 +2133,7 @@
         },
         {
           "code": "atv-maras-moray",
-          "label": "Cuatrimoto ATV Maras y Moray",
+          "label": "Maras and Moray ATV quad bike",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -2161,7 +2249,7 @@
         },
         {
           "code": "maras-salt-mines-ticket",
-          "label": "Ingreso a Salineras de Maras",
+          "label": "Entrance to Maras Salt Mines",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2233,7 +2321,7 @@
       "id": "exp_005",
       "internalCode": "CUZ005",
       "slug": "valle-sur",
-      "title": "Valle Sur",
+      "title": "Valle Sur de Cusco",
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "Medio día",
@@ -2241,8 +2329,8 @@
       "featured": true,
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
       "currency": "USD",
-      "shortDescription": "Recorre Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco.",
-      "description": "Este tour inicia desde el recojo de su hotel alrededor de las 8:00 a 8:30 a. m. Luego partiremos en bus hacia el sur de Cusco. La primera parada será el centro arqueológico de Tipón, famoso por su ingeniería hidráulica inca. Posteriormente visitaremos Pikillacta, antigua ciudadela amurallada del Imperio Wari. Finalmente concluiremos visitando la Iglesia de Andahuaylillas, conocida como la Sixtina de América por sus lienzos, pinturas murales y retablos barrocos. Regreso aproximado a Cusco a las 2:30 p. m.",
+      "shortDescription": "Recorre Tipón, Pikillacta y Andahuaylillas en una ruta cultural de medio día al sur de Cusco.",
+      "description": "Este tour de medio día inicia con el recojo en tu hotel de Cusco entre las 8:00 y 8:30 a. m. Viajaremos hacia el sur para visitar Tipón, reconocido por su ingeniería hidráulica inca; Pikillacta, antigua ciudadela Wari; y la iglesia de Andahuaylillas, famosa por su arte mural y retablos barrocos. El retorno a Cusco suele ser alrededor de las 2:30 p. m.",
       "duration": {
         "label": "Medio día",
         "maxGroupSize": 18,
@@ -2276,23 +2364,24 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
-        "Boleto turístico parcial",
+        "Boleto turístico parcial Circuito 3",
+        "Ingreso a la Iglesia de Andahuaylillas",
         "Gastos personales"
       ],
       "itinerary": [
         {
           "title": "Salida desde Cusco",
-          "description": "Recojo desde tu hotel entre 8:00 y 8:30 a. m. para iniciar la ruta hacia el sur del Cusco.",
+          "description": "Recojo en tu hotel entre las 8:00 y 8:30 a. m. para iniciar la ruta hacia el sur del Cusco.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
           ]
         },
         {
           "title": "Tipón",
-          "description": "Visita al centro arqueológico de Tipón, famoso por su sistema hidráulico inca y canales de agua aún funcionales.",
+          "description": "Visita al sitio arqueológico de Tipón, famoso por sus canales de agua y su sistema hidráulico inca aún funcional.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/tipon.jpg"
           ]
@@ -2306,7 +2395,7 @@
         },
         {
           "title": "Andahuaylillas",
-          "description": "Visitaremos la iglesia de Andahuaylillas, conocida como la Sixtina de América por su arte mural, lienzos y retablos barrocos.",
+          "description": "Visita a la iglesia de Andahuaylillas, conocida como la Capilla Sixtina de América por sus murales, lienzos y retablos barrocos.",
           "images": [
             "./assets/img/tours/valle-sur/itinerary/andahuaylillas.jpg"
           ]
@@ -2314,12 +2403,24 @@
       ],
       "faq": [
         {
-          "q": "¿Cuánto dura el tour?",
-          "a": "La experiencia dura aproximadamente medio día, con retorno a Cusco hacia las 2:30 p. m."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Medio día. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Incluye boleto turístico?",
-          "a": "No, el boleto turístico parcial se paga aparte."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
@@ -2353,7 +2454,7 @@
         },
         {
           "code": "andahuaylillas-church-ticket",
-          "label": "Ingreso Iglesia de Andahuaylillas",
+          "label": "Ingreso a la Iglesia de Andahuaylillas",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -2479,7 +2580,7 @@
         },
         {
           "code": "andahuaylillas-church-ticket",
-          "label": "Ingreso Iglesia de Andahuaylillas",
+          "label": "Ingreso a la Iglesia de Andahuaylillas",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -2591,7 +2692,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Desayuno",
         "Almuerzo"
       ],
@@ -2632,18 +2733,30 @@
       ],
       "faq": [
         {
-          "q": "¿Se necesita buena condición física?",
-          "a": "Sí, porque la caminata es en altura y con pendiente."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Hay opción de caballo?",
-          "a": "Sí, en la mayoría de salidas puedes contratar caballo por un pago adicional."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
         {
           "code": "humantay-entrance-ticket",
-          "label": "Ingreso Laguna Humantay",
+          "label": "Humantay Lake entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2671,7 +2784,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Basic breakfast and lunch",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -2759,7 +2872,7 @@
       "ticketPricingByNationality": [
         {
           "code": "humantay-entrance-ticket",
-          "label": "Ingreso Laguna Humantay",
+          "label": "Humantay Lake entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2872,7 +2985,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional en español e inglés"
       ],
       "excludes": [
         "Ingreso",
@@ -2911,18 +3024,30 @@
       ],
       "faq": [
         {
-          "q": "¿La caminata es exigente?",
-          "a": "Sí, se recomienda buena condición física y aclimatación previa."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Puedo alquilar caballo o ATV?",
-          "a": "Sí, puedes añadir opciones disponibles como extra según la temporada."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
         {
           "code": "vinicunca-entrance-ticket",
-          "label": "Ingreso Montaña de Colores Vinicunca",
+          "label": "Rainbow Mountain Vinicunca entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -2950,7 +3075,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Basic breakfast and lunch",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -2968,7 +3093,7 @@
         },
         {
           "code": "atv-vinicunca",
-          "label": "Cuatrimoto ATV Vinicunca",
+          "label": "Vinicunca ATV quad bike",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -2986,7 +3111,7 @@
         },
         {
           "code": "horse-vinicunca",
-          "label": "Caballo opcional Vinicunca",
+          "label": "Optional horse in Vinicunca",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -3074,7 +3199,7 @@
       "ticketPricingByNationality": [
         {
           "code": "vinicunca-entrance-ticket",
-          "label": "Ingreso Montaña de Colores Vinicunca",
+          "label": "Rainbow Mountain Vinicunca entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3194,7 +3319,7 @@
         "1 desayuno",
         "1 almuerzo buffet",
         "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
+        "Guía profesional en español e inglés",
         "Botiquín de primeros auxilios",
         "Balón de oxígeno"
       ],
@@ -3242,18 +3367,30 @@
       ],
       "faq": [
         {
-          "q": "¿Es más fácil que Vinicunca?",
-          "a": "Sí. Palcoyo suele ser una opción más accesible por tener una caminata más corta y menos exigente."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Qué atractivos incluye?",
-          "a": "Incluye la Cordillera Palcoyo, el bosque de piedras y paisajes con llamas, alpacas y en temporada el río rojo."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
+        },
+        {
+          "q": "¿Qué debo llevar?",
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
         {
           "code": "palcoyo-entrance-ticket",
-          "label": "Ingreso Montaña Palcoyo",
+          "label": "Palcoyo Mountain entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3281,7 +3418,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Basic breakfast and lunch",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3299,7 +3436,7 @@
         },
         {
           "code": "atv-palcoyo",
-          "label": "Cuatrimoto ATV Palcoyo",
+          "label": "Palcoyo ATV quad bike",
           "type": "activity-upgrade",
           "required": false,
           "optional": true,
@@ -3387,7 +3524,7 @@
       "ticketPricingByNationality": [
         {
           "code": "palcoyo-entrance-ticket",
-          "label": "Ingreso Montaña Palcoyo",
+          "label": "Palcoyo Mountain entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3505,7 +3642,7 @@
       "includes": [
         "Recojo en Cusco",
         "Transporte turístico ida y vuelta",
-        "Guía profesional",
+        "Guía profesional en español e inglés",
         "Desayuno",
         "Almuerzo",
         "Botiquín de primeros auxilios",
@@ -3564,26 +3701,30 @@
       ],
       "faq": [
         {
-          "q": "¿Qué tan difícil es la caminata?",
-          "a": "Es una caminata de dificultad moderada por la altura. Se recomienda haber pasado al menos 1 o 2 días de aclimatación en Cusco."
+          "q": "¿Cuánto dura la experiencia?",
+          "a": "La duración referencial es Full Day. El horario final se coordina antes de la salida para que sepas con claridad el recojo, las visitas y el retorno."
         },
         {
-          "q": "¿Cuál es la altitud máxima?",
-          "a": "El circuito alcanza aproximadamente entre 4,800 y 4,850 m s. n. m., dependiendo de la ruta operada."
+          "q": "¿El tour incluye guía?",
+          "a": "Sí. Todos nuestros tours incluyen guía profesional en español e inglés. Otros idiomas se atienden previa consulta/coordinación y pueden tener costo adicional."
         },
         {
-          "q": "¿Incluye aguas termales?",
-          "a": "Muchos operadores incluyen tiempo para visitar las termas de Pacchanta, pero a veces el ingreso se paga aparte según la operación."
+          "q": "¿Qué entradas o extras debo considerar?",
+          "a": "Las entradas, boletos turísticos, almuerzos u otros extras aparecen en la sección de extras para que puedas agregarlos o revisarlos antes de reservar."
+        },
+        {
+          "q": "¿Dónde empieza el servicio?",
+          "a": "El recojo o punto de encuentro se coordina según el tour, tu hotel y la operación del día. Te enviaremos la información final por WhatsApp o correo antes de la experiencia."
         },
         {
           "q": "¿Qué debo llevar?",
-          "a": "Se recomienda llevar ropa abrigadora, impermeable, bloqueador, lentes de sol, agua, snacks y calzado adecuado para trekking."
+          "a": "Recomendamos llevar documento de identidad o pasaporte, agua, protección solar, ropa cómoda, abrigo ligero y dinero en efectivo para gastos personales o entradas no incluidas."
         }
       ],
       "extras": [
         {
           "code": "seven-lagoons-entrance-ticket",
-          "label": "Ingreso Siete Lagunas Ausangate",
+          "label": "Seven Lagoons of Ausangate entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3611,7 +3752,7 @@
         },
         {
           "code": "trekking-food-pack",
-          "label": "Desayuno básico + almuerzo básico",
+          "label": "Basic breakfast and lunch",
           "type": "meal",
           "required": false,
           "optional": true,
@@ -3629,7 +3770,7 @@
         },
         {
           "code": "pacchanta-hot-springs",
-          "label": "Ingreso a termas de Pacchanta",
+          "label": "Entrance to Pacchanta hot springs",
           "type": "ticket",
           "required": false,
           "optional": true,
@@ -3688,7 +3829,7 @@
         "publishedChildPENApprox": 330,
         "grossBeforeRoundingUSD": 86.4075,
         "targetNetPEN": 300,
-        "targetNetUSD": 80.0,
+        "targetNetUSD": 80,
         "calculationProfile": "paypal_usd_plus_bank_withdrawal_pe"
       },
       "basePricingByNationality": {
@@ -3717,7 +3858,7 @@
       "ticketPricingByNationality": [
         {
           "code": "seven-lagoons-entrance-ticket",
-          "label": "Ingreso Siete Lagunas Ausangate",
+          "label": "Seven Lagoons of Ausangate entrance ticket",
           "type": "ticket",
           "required": true,
           "optional": false,
@@ -3745,7 +3886,7 @@
         },
         {
           "code": "pacchanta-hot-springs",
-          "label": "Ingreso a termas de Pacchanta",
+          "label": "Entrance to Pacchanta hot springs",
           "type": "ticket",
           "required": false,
           "optional": true,

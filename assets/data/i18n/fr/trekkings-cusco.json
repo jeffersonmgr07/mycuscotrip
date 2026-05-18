@@ -69,7 +69,11 @@
       "duration": {
         "label": "2D/1N",
         "days": 2,
-        "nights": 1
+        "nights": 1,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 2700,
@@ -135,7 +139,29 @@
       "seo": {
         "title": "Camino Inca 2D/1N | My Cusco Trip",
         "description": "Versión corta del Camino Inca para conectar trekking, historia y Machu Picchu en una ruta compacta."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 2D/1N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_002",
@@ -160,7 +186,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada-alta",
       "maxAltitudeMeters": 4200,
@@ -228,7 +258,29 @@
       "seo": {
         "title": "Camino Inca Classique 4D/3N | My Cusco Trip",
         "description": "Ruta clásica hacia Machu Picchu por antiguos caminos incas, campamentos y sitios arqueológicos."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 4D/3N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_003",
@@ -253,7 +305,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 4600,
@@ -320,7 +376,29 @@
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
         "description": "Ruta de aventura hacia Machu Picchu con paisajes de montaña, cambios de ecosistema y caminatas exigentes."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 4D/3N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_004",
@@ -345,7 +423,11 @@
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 4600,
@@ -412,7 +494,29 @@
       "seo": {
         "title": "Salkantay Trek 5D/4N | My Cusco Trip",
         "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación y conexión con Machu Picchu."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 5D/4N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_005",
@@ -437,7 +541,11 @@
       "duration": {
         "label": "5D/4N",
         "days": 5,
-        "nights": 4
+        "nights": 4,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 5200,
@@ -501,7 +609,29 @@
       "seo": {
         "title": "Ausangate Trek | My Cusco Trip",
         "description": "Trekking de alta montaña alrededor del Ausangate, idéal pour viajeros con experiencia y buena aclimatación."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 5D/4N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_006",
@@ -526,7 +656,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "alta",
       "maxAltitudeMeters": 5200,
@@ -592,7 +726,29 @@
       "seo": {
         "title": "Ausangate + Vinicunca | My Cusco Trip",
         "description": "Ruta de aventura que combina paisajes del Ausangate con la Montagne Arc-en-ciel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 4D/3N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_007",
@@ -617,7 +773,11 @@
       "duration": {
         "label": "3D/2N",
         "days": 3,
-        "nights": 2
+        "nights": 2,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 4300,
@@ -683,7 +843,29 @@
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
         "description": "Ruta activa hacia Machu Picchu con combinación de aventura, naturaleza y tramos de caminata."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 3D/2N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     },
     {
       "id": "trk_cusco_008",
@@ -708,7 +890,11 @@
       "duration": {
         "label": "4D/3N",
         "days": 4,
-        "nights": 3
+        "nights": 3,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
       },
       "difficulty": "moderada",
       "maxAltitudeMeters": 4300,
@@ -774,7 +960,29 @@
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
         "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura y conexión con Machu Picchu."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 4D/3N. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Si un billet spécial s'applique à votre date, l'équipe de réservation le vérifiera avec vous avant le paiement."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        }
+      ]
     }
   ]
 }

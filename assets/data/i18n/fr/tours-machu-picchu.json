@@ -172,7 +172,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -308,7 +308,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -317,7 +317,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -382,7 +382,33 @@
       "seo": {
         "title": "Machu Picchu Journée complète Classique | My Cusco Trip",
         "description": "Expérience full day a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_002",
@@ -513,7 +539,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -625,7 +651,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -634,7 +660,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -699,7 +725,33 @@
       "seo": {
         "title": "Machu Picchu Journée complète Express | My Cusco Trip",
         "description": "Expérience full day express a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète Express. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_003",
@@ -830,7 +882,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -947,7 +999,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -956,7 +1008,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1022,7 +1074,33 @@
       "seo": {
         "title": "Machu Picchu Overnight Classique | My Cusco Trip",
         "description": "Expérience 2 jours / 1 nuit a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 2 jours / 1 nuit. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_004",
@@ -1153,7 +1231,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1273,7 +1351,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1282,7 +1360,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1348,7 +1426,33 @@
       "seo": {
         "title": "Machu Picchu Overnight Express | My Cusco Trip",
         "description": "Expérience 2 jours / 1 nuit express a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 2 jours / 1 nuit Express. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_005",
@@ -1404,7 +1508,7 @@
         "targetNetProfitUSD": 50,
         "guideCostUSD": 25,
         "defaultTrainCostUSD": 227.05,
-        "defaultOutboundTrainCostUSD": 114.0,
+        "defaultOutboundTrainCostUSD": 114,
         "defaultReturnTrainCostUSD": 113.05,
         "trainPricingSource": "assets/data/trains.json",
         "defaultOutboundTrainCode": "PERU_SANPEDRO_MAPI_VISTADOME_31",
@@ -1479,7 +1583,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1565,7 +1669,7 @@
         "returnTrainCode": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
         "pricingSnapshot": {
           "currency": "USD",
-          "outboundAdultCost": 114.0,
+          "outboundAdultCost": 114,
           "returnAdultCost": 113.05,
           "totalAdultTrainCost": 227.05,
           "snapshotDate": "2026-05-01",
@@ -1581,7 +1685,7 @@
           "departureTime": "06:40",
           "arrivalTime": "10:52",
           "currency": "USD",
-          "adultCostUSD": 114.0
+          "adultCostUSD": 114
         },
         "resolvedReturn": {
           "trainCode": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
@@ -1605,7 +1709,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1614,7 +1718,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -1679,7 +1783,33 @@
       "seo": {
         "title": "Machu Picchu Panoramique Vistadome | My Cusco Trip",
         "description": "Expérience full day panoramique a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète Panoramique. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_006",
@@ -1810,7 +1940,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -1934,7 +2064,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -1943,7 +2073,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2008,7 +2138,33 @@
       "seo": {
         "title": "Machu Picchu The Prime | My Cusco Trip",
         "description": "Expérience full day premium a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète Premium. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_007",
@@ -2139,7 +2295,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2266,7 +2422,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2275,7 +2431,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2340,7 +2496,33 @@
       "seo": {
         "title": "Machu Picchu First Class | My Cusco Trip",
         "description": "Expérience full day first class a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète First Class. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_008",
@@ -2471,7 +2653,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2589,7 +2771,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2598,7 +2780,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2664,7 +2846,33 @@
       "seo": {
         "title": "Machu Picchu First Class Overnight | My Cusco Trip",
         "description": "Expérience 2 jours / 1 nuit first class a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 2 jours / 1 nuit First Class. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_009",
@@ -2795,7 +3003,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -2925,7 +3133,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -2934,7 +3142,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -2999,7 +3207,33 @@
       "seo": {
         "title": "Machu Picchu Luxury Hiram Bingham | My Cusco Trip",
         "description": "Expérience full day luxury a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est Journée complète Luxury. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     },
     {
       "id": "mapi_010",
@@ -3130,7 +3364,7 @@
         "Ticket de tren turístico según selección o tren predeterminado",
         "Bus Consettur de subida y bajada a Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol ou anglais",
+        "Guide professionnel en espagnol et en anglais",
         "Traslados terrestres necesarios según estación y modalidad seleccionada"
       ],
       "excludes": [
@@ -3250,7 +3484,7 @@
       "extras": [
         {
           "code": "lunch-tinkuy-belmond",
-          "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+          "label": "Déjeuner buffet Tinkuy by Belmond Sanctuary Lodge",
           "currency": "USD",
           "costUSD": 45,
           "priceModel": "cost_plus_payment_fees",
@@ -3259,7 +3493,7 @@
         },
         {
           "code": "lunch-alpaquito",
-          "label": "Almuerzo turístico en restaurante Alpaquito",
+          "label": "Déjeuner touristique au restaurant Alpaquito",
           "currency": "USD",
           "costUSD": 25,
           "priceModel": "cost_plus_payment_fees",
@@ -3325,7 +3559,33 @@
       "seo": {
         "title": "Machu Picchu Luxury Overnight | My Cusco Trip",
         "description": "Expérience 2 jours / 1 nuit luxury a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel."
-      }
+      },
+      "faq": [
+        {
+          "q": "Combien de temps dure l'expérience ?",
+          "a": "La durée indicative est 2 jours / 1 nuit Luxury. L'horaire final est coordonné avant le départ afin que vous connaissiez clairement la prise en charge, les visites et le retour."
+        },
+        {
+          "q": "Le tour inclut-il un guide ?",
+          "a": "Oui. Tous nos tours incluent un guide professionnel en espagnol et en anglais. Le français est disponible sur demande/coordination préalable et peut entraîner un coût supplémentaire."
+        },
+        {
+          "q": "Quels billets ou extras dois-je prévoir ?",
+          "a": "Les billets d'entrée, billets touristiques, déjeuners ou autres extras sont affichés dans la section extras afin que vous puissiez les ajouter ou les vérifier avant de réserver."
+        },
+        {
+          "q": "Où commence le service ?",
+          "a": "La prise en charge ou le point de rendez-vous est coordonné selon le tour, votre hôtel et l'opération du jour. Nous envoyons les détails finaux par WhatsApp ou e-mail avant l'expérience."
+        },
+        {
+          "q": "Que dois-je apporter ?",
+          "a": "Nous recommandons d'apporter passeport ou pièce d'identité, eau, protection solaire, vêtements confortables, veste légère et espèces pour les dépenses personnelles ou billets non inclus."
+        },
+        {
+          "q": "Les billets pour Machu Picchu sont-ils garantis ?",
+          "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
+        }
+      ]
     }
   ],
   "trainCatalogReference": "assets/data/trains.json",

@@ -231,7 +231,7 @@
     "arrival": {
       "code": "TRANSFER_IN",
       "title": "Recojo desde aeropuerto o terminal terrestre",
-      "description": "Servicio incluido al inicio del paquete, coordinado según la hora real de llegada del pasajero.",
+      "description": "Servicio incluido al inicio del paquete, coordinado según tu hora real de llegada.",
       "dayPosition": "first_day",
       "required": true,
       "includedByDefault": true,
@@ -240,7 +240,7 @@
     "departure": {
       "code": "TRANSFER_OUT",
       "title": "Traslado al aeropuerto o terminal terrestre",
-      "description": "Servicio incluido al finalizar el paquete, coordinado según la hora real de salida del pasajero.",
+      "description": "Servicio incluido al finalizar el paquete, coordinado según tu hora real de salida.",
       "dayPosition": "last_day",
       "required": true,
       "includedByDefault": true,
@@ -368,6 +368,39 @@
         "Ideal para viajes cortos",
         "Opciones Full Day u Overnight según horario",
         "Ruta compacta y flexible"
+      ],
+      "duration": {
+        "label": "3 días / 2 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 3 días / 2 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -445,6 +478,39 @@
         "Más vendido",
         "Permite naturaleza o aventura",
         "Buen equilibrio de tiempo y experiencias"
+      ],
+      "duration": {
+        "label": "4 días / 3 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 4 días / 3 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -526,6 +592,39 @@
         "Ritmo cómodo",
         "Más opciones de excursiones",
         "Recomendado para primera visita"
+      ],
+      "duration": {
+        "label": "5 días / 4 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 5 días / 4 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -606,6 +705,39 @@
         "Más días para personalizar",
         "Compatible con rutas culturales y naturales",
         "Permite una experiencia menos apresurada"
+      ],
+      "duration": {
+        "label": "6 días / 5 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 6 días / 5 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -689,6 +821,39 @@
         "Más días para personalizar",
         "Compatible con rutas culturales y naturales",
         "Permite una experiencia menos apresurada"
+      ],
+      "duration": {
+        "label": "7 días / 6 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 7 días / 6 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -773,6 +938,39 @@
         "Más días para personalizar",
         "Compatible con rutas culturales y naturales",
         "Permite una experiencia menos apresurada"
+      ],
+      "duration": {
+        "label": "8 días / 7 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 8 días / 7 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -855,6 +1053,39 @@
         "Más días para personalizar",
         "Compatible con rutas culturales y naturales",
         "Permite una experiencia menos apresurada"
+      ],
+      "duration": {
+        "label": "9 días / 8 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 9 días / 8 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     },
     {
@@ -941,6 +1172,39 @@
         "Más días para personalizar",
         "Compatible con rutas culturales y naturales",
         "Permite una experiencia menos apresurada"
+      ],
+      "duration": {
+        "label": "10 días / 9 noches",
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "faq": [
+        {
+          "q": "¿Cómo se organiza este paquete?",
+          "a": "El paquete se arma como una ruta flexible de 10 días / 9 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+        },
+        {
+          "q": "¿Incluye guía?",
+          "a": "Sí. Los tours del paquete incluyen guía profesional en español e inglés. Otros idiomas se coordinan previa consulta y pueden tener costo adicional."
+        },
+        {
+          "q": "¿Qué incluye la base del paquete?",
+          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+        },
+        {
+          "q": "¿Qué no está incluido?",
+          "a": "No incluye vuelos nacionales o internacionales, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+        },
+        {
+          "q": "¿Puedo elegir hoteles y trenes?",
+          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+        },
+        {
+          "q": "¿Los extras se traducen y se calculan aparte?",
+          "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
+        }
       ]
     }
   ],
@@ -1488,7 +1752,7 @@
     "priceCalculationMode": "sum_selected_tours_plus_required_extras_plus_train_delta_plus_hotel_delta_plus_payment_fees",
     "optionDisplayMode": "commercial-cards",
     "optionUi": {
-      "title": "Elige tu ruta sugerida",
+      "title": "Elige la alternativa que mejor se acomode a tu ritmo de viaje, intereses y lugares preferidos. Puedes cambiar de opción sin perder la reserva.",
       "maxVisibleOptions": 4,
       "showMoreLabel": "Ver más opciones",
       "hideTechnicalCodes": true,
@@ -1518,5 +1782,9 @@
       "groupByDuration": true,
       "openDetailWithQueryParams": true
     }
-  }
+  },
+  "defaultGuideLanguages": [
+    "es",
+    "en"
+  ]
 }

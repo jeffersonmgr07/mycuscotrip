@@ -36,7 +36,7 @@
       "shortDescription": "Recorrido por el centro histórico de Lima, plazas, casonas coloniales, iglesias y zonas modernas de la ciudad.",
       "description": "Tour referencial de medio Tag para descubrir los principales atractivos de Lima colonial y moderna. Inklusive una ruta panorámica por distritos turísticos y visita al centro histórico según operación confirmada.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 bis 4 Stunden",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -83,14 +83,14 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Professioneller Guide",
         "Recorrido Panorama"
       ],
       "excludes": [
         "Entradas no especificadas",
         "Alimentos y bebidas",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -156,7 +156,29 @@
       "seo": {
         "title": "Stadtrundfahrt Lima Colonial y Moderna | My Cusco Trip",
         "description": "Recorrido por el centro histórico de Lima, plazas, casonas coloniales, iglesias y zonas modernas de la ciudad."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt 3 bis 4 Stunden. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Falls für Ihr Datum ein besonderes Ticket gilt, prüft das Reservierungsteam dies vor der Zahlung mit Ihnen."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_002",
@@ -186,7 +208,7 @@
       "shortDescription": "Navega hacia las Islas Ballestas para observar fauna marina, aves guaneras, lobos marinos y el Candelabro de Paracas.",
       "description": "Excursión clásica en lancha desde Paracas hacia las Islas Ballestas, ideal für observar fauna marina y paisajes costeros. La operación depende de condiciones marítimas y autorización portuaria.",
       "duration": {
-        "label": "2 horas aprox.",
+        "label": "ca. 2 Stunden",
         "maxGroupSize": 35,
         "guideLanguages": [
           "es",
@@ -240,7 +262,7 @@
         "Impuestos o tasas portuarias si aplican",
         "Traslados desde Lima",
         "Alimentos",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -305,7 +327,29 @@
       "seo": {
         "title": "Tour Islas Ballestas | My Cusco Trip",
         "description": "Navega hacia las Islas Ballestas para observar fauna marina, aves guaneras, lobos marinos y el Candelabro de Paracas."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt ca. 2 Stunden. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Falls für Ihr Datum ein besonderes Ticket gilt, prüft das Reservierungsteam dies vor der Zahlung mit Ihnen."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_003",
@@ -382,7 +426,7 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas de Lima",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Tour Islas Ballestas",
         "Visita a bodega",
         "Huacachina",
@@ -392,7 +436,7 @@
       "excludes": [
         "Alimentación no especificada",
         "Tasas turísticas si aplican",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -467,7 +511,29 @@
       "seo": {
         "title": "Ganztägig Paracas, Ica y Huacachina desde Lima | My Cusco Trip",
         "description": "Ruta completa desde Lima con Islas Ballestas, bodega en Ica, oasis de Huacachina, buggies y sandboarding."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 16 a 18 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Falls für Ihr Datum ein besonderes Ticket gilt, prüft das Reservierungsteam dies vor der Zahlung mit Ihnen."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_004",
@@ -497,7 +563,7 @@
       "shortDescription": "Vuelo escénico sobre los geoglifos más representativos de Nazca.",
       "description": "Erlebnis referencial para observar desde el aire las famosas Líneas de Nazca. La operación depende de clima, disponibilidad aérea, peso del pasajero y tasas aeroportuarias.",
       "duration": {
-        "label": "35 min de vuelo aprox.",
+        "label": "ca. 35 Minuten Flug",
         "maxGroupSize": 12,
         "guideLanguages": [
           "es",
@@ -546,13 +612,14 @@
       "includes": [
         "Asistencia en aeródromo",
         "Sobrevuelo compartido",
-        "Briefing referencial"
+        "Briefing referencial",
+        "Professionelle Reiseleitung auf Spanisch und Englisch"
       ],
       "excludes": [
         "Tasas aeroportuarias si aplican",
         "Traslados desde otra ciudad",
         "Alimentos",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -613,7 +680,29 @@
       "seo": {
         "title": "Sobrevuelo Líneas de Nazca | My Cusco Trip",
         "description": "Vuelo escénico sobre los geoglifos más representativos de Nazca."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt ca. 35 Minuten Flug. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Falls für Ihr Datum ein besonderes Ticket gilt, prüft das Reservierungsteam dies vor der Zahlung mit Ihnen."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_005",
@@ -643,7 +732,7 @@
       "shortDescription": "Erkunden Sie el centro histórico de Arequipa, miradores y el Monasterio de Santa Catalina.",
       "description": "Tour referencial para conocer la Ciudad Blanca, su arquitectura colonial, principales miradores y el Monasterio de Santa Catalina según operación.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 bis 4 Stunden",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -690,13 +779,13 @@
       },
       "includes": [
         "Recojo en zonas seleccionadas",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Professioneller Guide"
       ],
       "excludes": [
         "Ingreso a Santa Catalina si aplica",
         "Alimentos",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -719,7 +808,7 @@
       "extras": [
         {
           "code": "santa-catalina-ticket",
-          "label": "Ingreso Monasterio de Santa Catalina",
+          "label": "Eintritt zum Kloster Santa Catalina",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -771,7 +860,29 @@
       "seo": {
         "title": "Stadtrundfahrt Arequipa y Monasterio de Santa Catalina | My Cusco Trip",
         "description": "Erkunden Sie el centro histórico de Arequipa, miradores y el Monasterio de Santa Catalina."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt 3 bis 4 Stunden. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_006",
@@ -847,14 +958,14 @@
       },
       "includes": [
         "Recojo en Arequipa",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Professioneller Guide"
       ],
       "excludes": [
         "Boleto turístico Colca",
         "Desayuno/almuerzo si no se especifica",
         "Termales opcionales",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -877,7 +988,7 @@
       "extras": [
         {
           "code": "colca-tourist-ticket",
-          "label": "Boleto turístico Colca",
+          "label": "Touristenticket Colca",
           "price": 20,
           "currency": "USD",
           "perPerson": true,
@@ -929,7 +1040,29 @@
       "seo": {
         "title": "Ganztägig Cañón del Colca desde Arequipa | My Cusco Trip",
         "description": "Excursión de Tag completo al Valle del Colca y Cruz del Cóndor desde Arequipa."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 14 a 16 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_007",
@@ -1013,7 +1146,7 @@
       "excludes": [
         "Almuerzo si no se especifica",
         "Ingresos locales si aplican",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1036,7 +1169,7 @@
       "extras": [
         {
           "code": "titicaca-lunch",
-          "label": "Almuerzo local en Taquile",
+          "label": "Lokales Mittagessen in Taquile",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1089,7 +1222,29 @@
       "seo": {
         "title": "Lago Titicaca: Uros y Taquile Ganztägig | My Cusco Trip",
         "description": "Visita las islas flotantes de los Uros y la isla Taquile en el Lago Titicaca."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 8 a 10 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_008",
@@ -1119,7 +1274,7 @@
       "shortDescription": "Visita el complejo funerario de Sillustani y sus chullpas frente a la laguna Umayo.",
       "description": "Tour cultural de medio Tag desde Puno hacia el sitio arqueológico de Sillustani, reconocido por sus torres funerarias preincas e incas.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 bis 4 Stunden",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1165,13 +1320,13 @@
       },
       "includes": [
         "Recojo en Puno",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Professioneller Guide"
       ],
       "excludes": [
         "Ingreso a Sillustani",
         "Alimentos",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1190,7 +1345,7 @@
       "extras": [
         {
           "code": "sillustani-ticket",
-          "label": "Ingreso a Sillustani",
+          "label": "Eintritt nach Sillustani",
           "price": 5,
           "currency": "USD",
           "perPerson": true,
@@ -1241,7 +1396,29 @@
       "seo": {
         "title": "Chullpas de Sillustani | My Cusco Trip",
         "description": "Visita el complejo funerario de Sillustani y sus chullpas frente a la laguna Umayo."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt 3 bis 4 Stunden. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_009",
@@ -1316,7 +1493,7 @@
       },
       "includes": [
         "Recojo en Tarapoto",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Cruce en balsa si aplica",
         "Paseo en bote referencial",
         "Guía o coordinador"
@@ -1324,7 +1501,7 @@
       "excludes": [
         "Almuerzo si no se especifica",
         "Actividades acuáticas opcionales",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1347,7 +1524,7 @@
       "extras": [
         {
           "code": "laguna-azul-lunch",
-          "label": "Almuerzo regional",
+          "label": "Regionales Mittagessen",
           "price": 12,
           "currency": "USD",
           "perPerson": true,
@@ -1398,7 +1575,29 @@
       "seo": {
         "title": "Laguna Azul Ganztägig desde Tarapoto | My Cusco Trip",
         "description": "Genießen Sie la Laguna Azul en Sauce con navegación, paisajes amazónicos y tiempo libre."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 8 a 10 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_010",
@@ -1428,7 +1627,7 @@
       "shortDescription": "Visita una de las cataratas más conocidas de Tarapoto en una excursión corta de naturaleza.",
       "description": "Tour referencial de medio Tag hacia la Catarata de Ahuashiyacu, ideal für viajeros que buscan una experiencia corta de selva y paisaje natural.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 bis 4 Stunden",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es"
@@ -1474,13 +1673,13 @@
       },
       "includes": [
         "Recojo en Tarapoto",
-        "Transporte turístico",
+        "Touristischer Transport",
         "Guía o coordinador"
       ],
       "excludes": [
         "Ingreso si aplica",
         "Alimentos",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1503,7 +1702,7 @@
       "extras": [
         {
           "code": "ahuashiyacu-ticket",
-          "label": "Ingreso a Ahuashiyacu",
+          "label": "Eintritt nach Ahuashiyacu",
           "price": 3,
           "currency": "USD",
           "perPerson": true,
@@ -1553,7 +1752,29 @@
       "seo": {
         "title": "Catarata de Ahuashiyacu | My Cusco Trip",
         "description": "Visita una de las cataratas más conocidas de Tarapoto en una excursión corta de naturaleza."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt 3 bis 4 Stunden. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_011",
@@ -1636,7 +1857,7 @@
       "excludes": [
         "Almuerzo si no se especifica",
         "Ingresos si aplican",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1659,7 +1880,7 @@
       "extras": [
         {
           "code": "amazonas-lunch",
-          "label": "Almuerzo amazónico",
+          "label": "Amazonas-Mittagessen",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1712,7 +1933,29 @@
       "seo": {
         "title": "Ganztägig Amazonas desde Iquitos | My Cusco Trip",
         "description": "Erlebnis amazónica de Tag completo con navegación por el río Amazonas y visitas referenciales."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 7 a 9 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_012",
@@ -1794,7 +2037,7 @@
       "excludes": [
         "Ingreso a reserva si aplica",
         "Almuerzo si no se especifica",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1813,7 +2056,7 @@
       "extras": [
         {
           "code": "tambopata-lunch",
-          "label": "Almuerzo regional",
+          "label": "Regionales Mittagessen",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1865,7 +2108,29 @@
       "seo": {
         "title": "Ganztägig Tambopata desde Puerto Maldonado | My Cusco Trip",
         "description": "Introducción a la selva de Tambopata con navegación, caminata y experiencia natural."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt Ganztägig / 8 a 10 horas. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Eintrittskarten, Touristentickets, Mittagessen oder andere Extras werden im Extras-Bereich angezeigt, damit Sie sie vor der Buchung hinzufügen oder prüfen können."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     },
     {
       "id": "peru_010_private",
@@ -1940,7 +2205,7 @@
         "Vuelos internos",
         "Bebidas alcohólicas",
         "Propinas",
-        "Gastos personales"
+        "Persönliche Ausgaben"
       ],
       "itinerary": [
         {
@@ -1986,7 +2251,29 @@
       "seo": {
         "title": "Tambopata Lodge 3D/2N - Servicio privado | My Cusco Trip",
         "description": "Programa amazónico referencial para propuestas privadas con lodge en Tambopata o Puerto Maldonado."
-      }
+      },
+      "faq": [
+        {
+          "q": "Wie lange dauert das Erlebnis?",
+          "a": "Die Richtdauer beträgt 3 Tage / 2 Nächte. Der endgültige Zeitplan wird vor der Abfahrt koordiniert, damit Abholung, Besuche und Rückkehr klar sind."
+        },
+        {
+          "q": "Ist eine Reiseleitung enthalten?",
+          "a": "Ja. Alle unsere Touren beinhalten eine professionelle Reiseleitung auf Spanisch und Englisch. Deutsch ist auf Anfrage/Vorabkoordination verfügbar und kann einen Aufpreis haben."
+        },
+        {
+          "q": "Welche Tickets oder Extras sollte ich einplanen?",
+          "a": "Falls für Ihr Datum ein besonderes Ticket gilt, prüft das Reservierungsteam dies vor der Zahlung mit Ihnen."
+        },
+        {
+          "q": "Wo beginnt der Service?",
+          "a": "Abholung oder Treffpunkt werden je nach Tour, Hotel und Tagesbetrieb koordiniert. Die finalen Details senden wir vor dem Erlebnis per WhatsApp oder E-Mail."
+        },
+        {
+          "q": "Was sollte ich mitbringen?",
+          "a": "Wir empfehlen Reisepass oder Ausweis, Wasser, Sonnenschutz, bequeme Kleidung, eine leichte Jacke und Bargeld für persönliche Ausgaben oder nicht enthaltene Tickets."
+        }
+      ]
     }
   ]
 }

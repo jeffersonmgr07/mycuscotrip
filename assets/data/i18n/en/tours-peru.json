@@ -1,18 +1,18 @@
 {
   "version": "1.0.0",
   "updatedAt": "2026-05-10",
-  "description": "Catálogo inicial referencial de tours fuera de Cusco para My Cusco Trip. Tarifas marcadas como referenciales hasta recibir costos reales de operadores.",
+  "description": "Initial reference catalog of tours outside Cusco for My Cusco Trip. Rates are marked as reference values until actual operator costs are received.",
   "sourceNotes": [
     "Estructura creada para All Experience and product.html.",
-    "No usar precios referenciales como tarifa final sin validación comercial.",
-    "No buscar en includes/excludes para filtros; usar search."
+    "Do not use reference prices as final rates without commercial validation.",
+    "Do not search includes/excludes for filters; use the search object."
   ],
   "products": [
     {
       "id": "peru_001",
       "internalCode": "PER001",
       "slug": "city-tour-lima-colonial-y-moderna",
-      "title": "City Tour Lima Colonial and Moderna",
+      "title": "Colonial and Modern Lima City Tour",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
@@ -33,10 +33,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Recorrido por el centro histórico de Lima, plazas, casonas coloniales, iglesias and zonas modernas de la ciudad.",
-      "description": "Tour referencial de half day para descubrir los principales atractivos de Lima colonial and moderna. Includes una ruta panorámica por distritos turísticos and visita al centro histórico according to the confirmed operation confirmada.",
+      "shortDescription": "Route through Lima’s historic center, squares, colonial mansions, churches and modern areas of the city.",
+      "description": "Reference half-day tour to discover the main highlights of colonial and modern Lima. Includes a panoramic route through tourist districts and a visit to the historic center according to the confirmed operation.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 to 4 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -49,7 +49,7 @@
           "09:00",
           "14:00"
         ],
-        "pickupWindow": "Coordinar según hotel",
+        "pickupWindow": "Coordinate according to hotel",
         "endTimeReference": "13:00 / 18:00"
       },
       "basePricing": {
@@ -61,7 +61,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Tarifa referencial hasta recibir costos reales del operador."
+        "notes": "Reference rate until actual operator costs are received."
       },
       "serviceModes": {
         "group": {
@@ -84,30 +84,30 @@
       "includes": [
         "Pickup in selected areas",
         "Tourist transport",
-        "Professional guide",
-        "Recorrido scenic"
+        "Professional guide in Spanish and English",
+        "Scenic route"
       ],
       "excludes": [
         "Entradas no especificadas",
-        "Meals and bebidas",
+        "Meals and drinks",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Pickup and departure",
-          "description": "Pickup from hotel o punto de encuentro coordinado."
+          "description": "Pickup from hotel or coordinated meeting point."
         },
         {
-          "title": "Lima moderna",
-          "description": "Recorrido scenic por zonas turísticas como Miraflores o San Isidro, according to the confirmed operation."
+          "title": "Modern Lima",
+          "description": "Scenic route through tourist areas such as Miraflores or San Isidro, according to the confirmed operation."
         },
         {
-          "title": "Centro histórico",
-          "description": "Visit a plazas, calles coloniales and exteriores de edificios históricos."
+          "title": "Historic center",
+          "description": "Visit squares, colonial streets and the exteriors of historic buildings."
         },
         {
-          "title": "Retorno",
-          "description": "Retorno al hotel o punto coordinado."
+          "title": "Return",
+          "description": "Return to the hotel or coordinated point."
         }
       ],
       "extras": [],
@@ -154,22 +154,44 @@
       },
       "status": "published",
       "seo": {
-        "title": "City Tour Lima Colonial and Moderna | My Cusco Trip",
-        "description": "Recorrido por el centro histórico de Lima, plazas, casonas coloniales, iglesias and zonas modernas de la ciudad."
-      }
+        "title": "Colonial and Modern Lima City Tour | My Cusco Trip",
+        "description": "Route through Lima’s historic center, squares, colonial mansions, churches and modern areas of the city."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3 to 4 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_002",
       "internalCode": "PER002",
       "slug": "tour-islas-ballestas",
-      "title": "Tour Islas Ballestas",
+      "title": "Ballestas Islands Tour",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "paracas",
       "type": "nature-tour",
       "typeLabel": "Half day",
-      "badge": "Naturaleza",
+      "badge": "Nature",
       "featured": true,
       "location": "Paracas",
       "currency": "USD",
@@ -183,10 +205,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Navega to las Islas Ballestas para observar marine wildlife, aves guaneras, lobos marinos and el Candelabro de Paracas.",
-      "description": "Excursión clásica en boat from Paracas to las Islas Ballestas, ideal for observar marine wildlife and paisajes costeros. La operación depende de sea conditions and port authorization.",
+      "shortDescription": "Navigate to the Ballestas Islands to observe marine wildlife, guano birds, sea lions and the Paracas Candelabro.",
+      "description": "Classic boat excursion from Paracas to the Ballestas Islands, ideal for observing marine wildlife and coastal landscapes. Operation depends on sea conditions and port authorization.",
       "duration": {
-        "label": "2 horas aprox.",
+        "label": "Approx. 2 hours",
         "maxGroupSize": 35,
         "guideLanguages": [
           "es",
@@ -199,8 +221,8 @@
           "08:00",
           "10:00"
         ],
-        "pickupWindow": "Coordinar en Paracas",
-        "endTimeReference": "Según horario elegido"
+        "pickupWindow": "Coordinate in Paracas",
+        "endTimeReference": "According to selected schedule"
       },
       "basePricing": {
         "adult": 29.9,
@@ -211,7 +233,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Pendiente tarifa neta de operador and tasas portuarias."
+        "notes": "Pending operator net rate and port taxes."
       },
       "serviceModes": {
         "group": {
@@ -244,20 +266,20 @@
       ],
       "itinerary": [
         {
-          "title": "Embarque en Paracas",
-          "description": "Presentación en el muelle and control previo a la navegación."
+          "title": "Boarding in Paracas",
+          "description": "Arrival at the pier and pre-navigation check."
         },
         {
-          "title": "Candelabro de Paracas",
-          "description": "Vista panorámica del geoglifo conocido como el Candelabro."
+          "title": "Paracas Candelabro",
+          "description": "Panoramic view of the geoglyph known as the Candelabro."
         },
         {
-          "title": "Islas Ballestas",
-          "description": "Recorrido alrededor de las islas para observar lobos marinos, aves and fauna local."
+          "title": "Ballestas Islands",
+          "description": "Route around the islands to observe sea lions, birds and local wildlife."
         },
         {
-          "title": "Retorno al muelle",
-          "description": "Regreso a Paracas después de la navegación."
+          "title": "Return to the pier",
+          "description": "Return to Paracas after the boat ride."
         }
       ],
       "extras": [],
@@ -291,7 +313,7 @@
           "candelabro"
         ],
         "themes": [
-          "naturaleza",
+          "nature",
           "fauna-marina"
         ],
         "keywords": [
@@ -304,8 +326,30 @@
       "status": "published",
       "seo": {
         "title": "Tour Islas Ballestas | My Cusco Trip",
-        "description": "Navega to las Islas Ballestas para observar marine wildlife, aves guaneras, lobos marinos and el Candelabro de Paracas."
-      }
+        "description": "Navigate to the Ballestas Islands to observe marine wildlife, guano birds, sea lions and the Paracas Candelabro."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Approx. 2 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_003",
@@ -332,10 +376,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Ruta completa from Lima con Islas Ballestas, winery en Ica, oasis de Huacachina, buggies and sandboarding.",
-      "description": "Tour referencial full day to la costa sur del Peru. Combina naturaleza marina en Paracas, experiencia vitivinícola en Ica and adventure en las dunas de Huacachina.",
+      "shortDescription": "Complete route from Lima with the Ballestas Islands, an Ica winery, the Huacachina oasis, buggies and sandboarding.",
+      "description": "Reference full-day tour to Peru’s southern coast. Combines marine nature in Paracas, a wine experience in Ica and adventure in the Huacachina dunes.",
       "duration": {
-        "label": "Full Day / 16 a 18 horas",
+        "label": "Full Day / 16 to 18 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -347,7 +391,7 @@
         "startTimes": [
           "05:00"
         ],
-        "pickupWindow": "04:30 - 05:30 from selected areas de Lima",
+        "pickupWindow": "04:30 - 05:30 from selected areas of Lima",
         "endTimeReference": "22:30 aprox."
       },
       "basePricing": {
@@ -359,7 +403,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar tarifa neta según operador, temporada and punto de recojo."
+        "notes": "Confirm the net rate according to operator, season and pickup point."
       },
       "serviceModes": {
         "group": {
@@ -381,9 +425,9 @@
         ]
       },
       "includes": [
-        "Pickup in selected areas de Lima",
+        "Pickup in selected areas of Lima",
         "Tourist transport",
-        "Tour Islas Ballestas",
+        "Ballestas Islands Tour",
         "Visit a winery",
         "Huacachina",
         "buggies and sandboarding according to the confirmed operation",
@@ -396,24 +440,24 @@
       ],
       "itinerary": [
         {
-          "title": "Salida from Lima",
-          "description": "Pickup temprano and salida to Paracas."
+          "title": "Departure from Lima",
+          "description": "Early pickup and departure to Paracas."
         },
         {
-          "title": "Islas Ballestas",
-          "description": "Navegación para observar marine wildlife and el Candelabro."
+          "title": "Ballestas Islands",
+          "description": "Boat ride to observe marine wildlife and the Candelabro."
         },
         {
           "title": "Ica and winery",
-          "description": "Visit a winery tradicional con degustación referencial según operador."
+          "description": "Visit a traditional winery with a reference tasting according to the operator."
         },
         {
           "title": "Huacachina",
-          "description": "Tiempo en el oasis and actividad de adventure en las dunas."
+          "description": "Time at the oasis and adventure activity in the dunes."
         },
         {
-          "title": "Retorno a Lima",
-          "description": "Retorno por la night a Lima."
+          "title": "Return to Lima",
+          "description": "Return to Lima at night."
         }
       ],
       "extras": [],
@@ -452,9 +496,9 @@
           "buggies"
         ],
         "themes": [
-          "naturaleza",
+          "nature",
           "adventure",
-          "desierto"
+          "desert"
         ],
         "keywords": [
           "paracas ica huacachina",
@@ -466,21 +510,43 @@
       "status": "published",
       "seo": {
         "title": "Full Day Paracas, Ica and Huacachina from Lima | My Cusco Trip",
-        "description": "Ruta completa from Lima con Islas Ballestas, winery en Ica, oasis de Huacachina, buggies and sandboarding."
-      }
+        "description": "Complete route from Lima with the Ballestas Islands, an Ica winery, the Huacachina oasis, buggies and sandboarding."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 16 to 18 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_004",
       "internalCode": "PER004",
       "slug": "sobrevuelo-lineas-de-nazca",
-      "title": "Sobrevuelo Líneas de Nazca",
+      "title": "Nazca Lines Flight",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "nazca",
       "type": "scenic-flight",
       "typeLabel": "Half day",
-      "badge": "Icónico",
+      "badge": "Iconic",
       "featured": false,
       "location": "Nazca",
       "currency": "USD",
@@ -494,10 +560,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Vuelo escénico sobre los geoglifos más representativos de Nazca.",
-      "description": "Experience referencial para observar from el aire las famosas Líneas de Nazca. La operación depende de clima, disponibilidad aérea, peso del traveler and tasas aeroportuarias.",
+      "shortDescription": "Scenic flight over the most representative Nazca geoglyphs.",
+      "description": "Reference experience to observe the famous Nazca Lines from the air. Operation depends on weather, flight availability, traveler weight and airport taxes.",
       "duration": {
-        "label": "35 min de vuelo aprox.",
+        "label": "Approx. 35-minute flight",
         "maxGroupSize": 12,
         "guideLanguages": [
           "es",
@@ -511,8 +577,8 @@
           "10:00",
           "12:00"
         ],
-        "pickupWindow": "Coordinar en Nazca",
-        "endTimeReference": "Según horario confirmado"
+        "pickupWindow": "Coordinate in Nazca",
+        "endTimeReference": "According to confirmed schedule"
       },
       "basePricing": {
         "adult": 119.9,
@@ -523,7 +589,7 @@
       "internalPricing": {
         "costSource": "pending_air_operator_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar tarifa aérea, tasas and condiciones por peso."
+        "notes": "Confirm airfare, taxes and weight conditions."
       },
       "serviceModes": {
         "group": {
@@ -544,9 +610,10 @@
         ]
       },
       "includes": [
-        "Asistencia en aeródromo",
+        "Airfield assistance",
         "Sobrevuelo compartido",
-        "Briefing referencial"
+        "Reference briefing",
+        "Professional guide in Spanish and English"
       ],
       "excludes": [
         "Tasas aeroportuarias si aplican",
@@ -556,16 +623,16 @@
       ],
       "itinerary": [
         {
-          "title": "Presentación en aeródromo",
-          "description": "Registro, control de peso and briefing."
+          "title": "Arrival at the airfield",
+          "description": "Registration, weight check and briefing."
         },
         {
           "title": "Sobrevuelo",
-          "description": "Vuelo escénico sobre geoglifos seleccionados."
+          "description": "Scenic flight over selected geoglyphs."
         },
         {
           "title": "Fin del servicio",
-          "description": "Retorno al punto coordinado."
+          "description": "Return to the coordinated point."
         }
       ],
       "extras": [],
@@ -611,15 +678,37 @@
       },
       "status": "published",
       "seo": {
-        "title": "Sobrevuelo Líneas de Nazca | My Cusco Trip",
-        "description": "Vuelo escénico sobre los geoglifos más representativos de Nazca."
-      }
+        "title": "Nazca Lines Flight | My Cusco Trip",
+        "description": "Scenic flight over the most representative Nazca geoglyphs."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Approx. 35-minute flight. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_005",
       "internalCode": "PER005",
       "slug": "city-tour-arequipa-y-monasterio-de-santa-catalina",
-      "title": "City Tour Arequipa and Monasterio de Santa Catalina",
+      "title": "Arequipa City Tour and Santa Catalina Monastery",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
@@ -640,10 +729,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Explore el centro histórico de Arequipa, miradores and el Monasterio de Santa Catalina.",
-      "description": "Tour referencial para conocer la Ciudad Blanca, su arquitectura colonial, principales miradores and el Monasterio de Santa Catalina according to the confirmed operation.",
+      "shortDescription": "Explore Arequipa’s historic center, viewpoints and the Santa Catalina Monastery.",
+      "description": "Reference tour to discover the White City, its colonial architecture, main viewpoints and the Santa Catalina Monastery according to the confirmed operation.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 to 4 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -656,7 +745,7 @@
           "09:00",
           "14:00"
         ],
-        "pickupWindow": "Coordinar según hotel",
+        "pickupWindow": "Coordinate according to hotel",
         "endTimeReference": "13:00 / 18:00"
       },
       "basePricing": {
@@ -668,7 +757,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar ingreso a Santa Catalina and transporte."
+        "notes": "Confirm Santa Catalina entrance and transport."
       },
       "serviceModes": {
         "group": {
@@ -691,35 +780,35 @@
       "includes": [
         "Pickup in selected areas",
         "Tourist transport",
-        "Professional guide"
+        "Professional guide in Spanish and English"
       ],
       "excludes": [
-        "Ingreso a Santa Catalina si aplica",
+        "Entrance to Santa Catalina if applicable",
         "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "title": "Pickup",
-          "description": "Pickup and departure to el centro histórico."
+          "description": "Pickup and departure to the historic center."
         },
         {
-          "title": "Centro histórico",
-          "description": "Recorrido por plaza and casonas coloniales."
+          "title": "Historic center",
+          "description": "Route through the square and colonial mansions."
         },
         {
           "title": "Santa Catalina",
-          "description": "Visit al monasterio according to the confirmed operation confirmada."
+          "description": "Visit the monastery according to the confirmed operation."
         },
         {
           "title": "Viewpointes",
-          "description": "Parada panorámica en miradores seleccionados."
+          "description": "Panoramic stop at selected viewpoints."
         }
       ],
       "extras": [
         {
           "code": "santa-catalina-ticket",
-          "label": "Ingreso Monasterio de Santa Catalina",
+          "label": "Entrance to Santa Catalina Monastery",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -769,22 +858,44 @@
       },
       "status": "published",
       "seo": {
-        "title": "City Tour Arequipa and Monasterio de Santa Catalina | My Cusco Trip",
-        "description": "Explore el centro histórico de Arequipa, miradores and el Monasterio de Santa Catalina."
-      }
+        "title": "Arequipa City Tour and Santa Catalina Monastery | My Cusco Trip",
+        "description": "Explore Arequipa’s historic center, viewpoints and the Santa Catalina Monastery."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3 to 4 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_006",
       "internalCode": "PER006",
       "slug": "full-day-canon-del-colca-from-arequipa",
-      "title": "Full Day Cañón del Colca from Arequipa",
+      "title": "Colca Canyon Full Day from Arequipa",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "colca",
       "type": "nature-tour",
       "typeLabel": "Full Day",
-      "badge": "Naturaleza",
+      "badge": "Nature",
       "featured": true,
       "location": "Arequipa / Chivay / Colca",
       "currency": "USD",
@@ -798,10 +909,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Excursión de day completo al Valle del Colca and Cruz del Cóndor from Arequipa.",
-      "description": "Ruta referencial de day completo para visitar el Valle del Colca, pueblos tradicionales, miradores and la Cruz del Cóndor. Requiere salida de madrugada.",
+      "shortDescription": "Full-day excursion to the Colca Valley and Cruz del Condor from Arequipa.",
+      "description": "Reference full-day route to visit the Colca Valley, traditional villages, viewpoints and Cruz del Condor. Requires an early morning departure.",
       "duration": {
-        "label": "Full Day / 14 a 16 horas",
+        "label": "Full Day / 14 to 16 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -825,7 +936,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar boleto turístico del Colca and termales si aplican."
+        "notes": "Confirm the Colca tourist ticket and hot springs fees when applicable."
       },
       "serviceModes": {
         "group": {
@@ -846,9 +957,9 @@
         ]
       },
       "includes": [
-        "Pickup en Arequipa",
+        "Pickup in Arequipa",
         "Tourist transport",
-        "Professional guide"
+        "Professional guide in Spanish and English"
       ],
       "excludes": [
         "Tourist ticket Colca",
@@ -858,26 +969,26 @@
       ],
       "itinerary": [
         {
-          "title": "Salida de madrugada",
-          "description": "Pickup temprano from Arequipa."
+          "title": "Early morning departure",
+          "description": "Early pickup from Arequipa."
         },
         {
           "title": "Chivay and ruta al Colca",
-          "description": "Paradas panorámicas and desayuno according to the confirmed operation."
+          "description": "Panoramic stops and breakfast according to the confirmed operation."
         },
         {
-          "title": "Cruz del Cóndor",
-          "description": "Tiempo para observar el vuelo del cóndor and el cañón."
+          "title": "Cruz del Condor",
+          "description": "Time to observe the condor flight and the canyon."
         },
         {
-          "title": "Retorno",
-          "description": "Retorno a Arequipa por la tarde."
+          "title": "Return",
+          "description": "Return to Arequipa in the afternoon."
         }
       ],
       "extras": [
         {
           "code": "colca-tourist-ticket",
-          "label": "Tourist ticket Colca",
+          "label": "Colca tourist ticket",
           "price": 20,
           "currency": "USD",
           "perPerson": true,
@@ -914,28 +1025,50 @@
           "chivay"
         ],
         "themes": [
-          "naturaleza",
+          "nature",
           "paisaje",
           "fauna"
         ],
         "keywords": [
           "colca",
-          "cañon del colca",
+          "colca canyon",
           "cruz del condor",
           "arequipa"
         ]
       },
       "status": "published",
       "seo": {
-        "title": "Full Day Cañón del Colca from Arequipa | My Cusco Trip",
-        "description": "Excursión de day completo al Valle del Colca and Cruz del Cóndor from Arequipa."
-      }
+        "title": "Colca Canyon Full Day from Arequipa | My Cusco Trip",
+        "description": "Full-day excursion to the Colca Valley and Cruz del Condor from Arequipa."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 14 to 16 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_007",
       "internalCode": "PER007",
       "slug": "lago-titicaca-uros-y-taquile-full-day",
-      "title": "Lago Titicaca: Uros and Taquile Full Day",
+      "title": "Lake Titicaca: Uros and Taquile Full Day",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
@@ -956,10 +1089,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Visit las islas flotantes de los Uros and la isla Taquile en el Lago Titicaca.",
-      "description": "Excursión clásica from Puno para conocer las islas flotantes de los Uros and la comunidad de Taquile, combinando navegación, cultura viva and paisajes del lago.",
+      "shortDescription": "Visit the floating islands of the Uros and Taquile Island on Lake Titicaca.",
+      "description": "Classic excursion from Puno to visit the floating islands of the Uros and the Taquile community, combining boat travel, living culture and lake landscapes.",
       "duration": {
-        "label": "Full Day / 8 a 10 horas",
+        "label": "Full Day / 8 to 10 hours",
         "maxGroupSize": 25,
         "guideLanguages": [
           "es",
@@ -983,7 +1116,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar embarcación, ingresos and lunch comunitario."
+        "notes": "Confirm boat service, entrance fees and community lunch."
       },
       "serviceModes": {
         "group": {
@@ -1004,10 +1137,10 @@
         ]
       },
       "includes": [
-        "Pickup en Puno",
-        "Traslado al puerto",
-        "Lancha turística",
-        "Professional guide",
+        "Pickup in Puno",
+        "Transfer to the port",
+        "Tourist boat",
+        "Professional guide in Spanish and English",
         "Visit a Uros and Taquile"
       ],
       "excludes": [
@@ -1017,26 +1150,26 @@
       ],
       "itinerary": [
         {
-          "title": "Puerto de Puno",
-          "description": "Traslado al puerto and embarque."
+          "title": "Port of Puno",
+          "description": "Transfer to the port and boarding."
         },
         {
-          "title": "Islas Uros",
-          "description": "Visit a las islas flotantes and explicación cultural."
+          "title": "Uros Islands",
+          "description": "Visit the floating islands and receive a cultural explanation."
         },
         {
           "title": "Taquile",
-          "description": "Navegación and visita a comunidad local."
+          "description": "Boat ride and visit to a local community."
         },
         {
-          "title": "Retorno a Puno",
-          "description": "Regreso al puerto and traslado final."
+          "title": "Return to Puno",
+          "description": "Return to the port and final transfer."
         }
       ],
       "extras": [
         {
           "code": "titicaca-lunch",
-          "label": "Lunch local en Taquile",
+          "label": "Local lunch in Taquile",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1074,7 +1207,7 @@
         ],
         "themes": [
           "cultural",
-          "naturaleza",
+          "nature",
           "comunidad"
         ],
         "keywords": [
@@ -1088,8 +1221,30 @@
       "status": "published",
       "seo": {
         "title": "Lago Titicaca: Uros and Taquile Full Day | My Cusco Trip",
-        "description": "Visit las islas flotantes de los Uros and la isla Taquile en el Lago Titicaca."
-      }
+        "description": "Visit the floating islands of the Uros and Taquile Island on Lake Titicaca."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 8 to 10 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_008",
@@ -1102,7 +1257,7 @@
       "destination": "puno",
       "type": "cultural-tour",
       "typeLabel": "Half day",
-      "badge": "Arqueología",
+      "badge": "Archaeology",
       "featured": false,
       "location": "Puno / Sillustani",
       "currency": "USD",
@@ -1116,10 +1271,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Visit el complejo funerario de Sillustani and sus chullpas frente a la laguna Umayo.",
-      "description": "Tour cultural de half day from Puno to el sitio arqueológico de Sillustani, reconocido por sus torres funerarias preincas e incas.",
+      "shortDescription": "Visit the Sillustani funerary complex and its chullpas facing Lake Umayo.",
+      "description": "Cultural half-day tour from Puno to the Sillustani archaeological site, known for its pre-Inca and Inca funerary towers.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 to 4 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1143,7 +1298,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar ingreso a Sillustani."
+        "notes": "Confirm Sillustani entrance."
       },
       "serviceModes": {
         "group": {
@@ -1164,33 +1319,33 @@
         ]
       },
       "includes": [
-        "Pickup en Puno",
+        "Pickup in Puno",
         "Tourist transport",
-        "Professional guide"
+        "Professional guide in Spanish and English"
       ],
       "excludes": [
-        "Ingreso a Sillustani",
+        "Entrance to Sillustani",
         "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Salida from Puno",
-          "description": "Pickup and traslado to Sillustani."
+          "title": "Departure from Puno",
+          "description": "Pickup and transfer to Sillustani."
         },
         {
-          "title": "Complejo arqueológico",
+          "title": "Archaeological complex",
           "description": "Guided visit por chullpas and miradores."
         },
         {
-          "title": "Retorno",
+          "title": "Return",
           "description": "Regreso a Puno."
         }
       ],
       "extras": [
         {
           "code": "sillustani-ticket",
-          "label": "Ingreso a Sillustani",
+          "label": "Entrance to Sillustani",
           "price": 5,
           "currency": "USD",
           "perPerson": true,
@@ -1240,21 +1395,43 @@
       "status": "published",
       "seo": {
         "title": "Chullpas de Sillustani | My Cusco Trip",
-        "description": "Visit el complejo funerario de Sillustani and sus chullpas frente a la laguna Umayo."
-      }
+        "description": "Visit the Sillustani funerary complex and its chullpas facing Lake Umayo."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3 to 4 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_009",
       "internalCode": "PER009",
       "slug": "laguna-azul-full-day-from-tarapoto",
-      "title": "Laguna Azul Full Day from Tarapoto",
+      "title": "Blue Lagoon Full Day from Tarapoto",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "tarapoto",
       "type": "nature-tour",
       "typeLabel": "Full Day",
-      "badge": "Selva",
+      "badge": "Jungle",
       "featured": true,
       "location": "Tarapoto / Sauce",
       "currency": "USD",
@@ -1268,10 +1445,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Enjoy la Laguna Azul en Sauce con navegación, paisajes amazónicos and tiempo libre.",
-      "description": "Tour referencial full day from Tarapoto to Sauce and Laguna Azul. Ideal para naturaleza, descanso and actividades acuáticas opcionales.",
+      "shortDescription": "Enjoy Blue Lagoon in Sauce with a boat ride, Amazonian landscapes and free time.",
+      "description": "Reference full-day tour from Tarapoto to Sauce and Blue Lagoon. Ideal for nature, relaxation and optional water activities.",
       "duration": {
-        "label": "Full Day / 8 a 10 horas",
+        "label": "Full Day / 8 to 10 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es"
@@ -1294,7 +1471,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar navegación and lunch según operador."
+        "notes": "Confirm boat ride and lunch according to the operator."
       },
       "serviceModes": {
         "group": {
@@ -1315,39 +1492,39 @@
         ]
       },
       "includes": [
-        "Pickup en Tarapoto",
+        "Pickup in Tarapoto",
         "Tourist transport",
         "Cruce en balsa si aplica",
-        "Paseo en bote referencial",
+        "Reference boat ride",
         "Guide or coordinator"
       ],
       "excludes": [
         "Lunch si no se especifica",
-        "Actividades acuáticas opcionales",
+        "Optional water activities",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Salida from Tarapoto",
-          "description": "Pickup and viaje to Sauce."
+          "title": "Departure from Tarapoto",
+          "description": "Pickup and trip to Sauce."
         },
         {
-          "title": "Laguna Azul",
-          "description": "Paseo and tiempo para disfrutar el entorno."
+          "title": "Blue Lagoon",
+          "description": "Boat ride and time to enjoy the surroundings."
         },
         {
           "title": "Tiempo libre",
           "description": "Espacio para lunch o actividades opcionales."
         },
         {
-          "title": "Retorno",
+          "title": "Return",
           "description": "Regreso a Tarapoto por la tarde."
         }
       ],
       "extras": [
         {
           "code": "laguna-azul-lunch",
-          "label": "Lunch regional",
+          "label": "Regional lunch",
           "price": 12,
           "currency": "USD",
           "perPerson": true,
@@ -1380,12 +1557,12 @@
         ],
         "includedTags": [
           "laguna-azul",
-          "selva",
+          "jungle",
           "sauce"
         ],
         "themes": [
-          "naturaleza",
-          "selva",
+          "nature",
+          "jungle",
           "relax"
         ],
         "keywords": [
@@ -1397,8 +1574,30 @@
       "status": "published",
       "seo": {
         "title": "Laguna Azul Full Day from Tarapoto | My Cusco Trip",
-        "description": "Enjoy la Laguna Azul en Sauce con navegación, paisajes amazónicos and tiempo libre."
-      }
+        "description": "Enjoy Blue Lagoon in Sauce with a boat ride, Amazonian landscapes and free time."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 8 to 10 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_010",
@@ -1411,7 +1610,7 @@
       "destination": "tarapoto",
       "type": "nature-tour",
       "typeLabel": "Half day",
-      "badge": "Selva",
+      "badge": "Jungle",
       "featured": false,
       "location": "Tarapoto / Ahuashiyacu",
       "currency": "USD",
@@ -1425,10 +1624,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Visit una de las cataratas más conocidas de Tarapoto en una excursión corta de naturaleza.",
-      "description": "Tour referencial de half day to la Catarata de Ahuashiyacu, ideal for viajeros que buscan una experiencia corta de selva and paisaje natural.",
+      "shortDescription": "Visit one of Tarapoto’s best-known waterfalls on a short nature excursion.",
+      "description": "Reference half-day tour to Ahuashiyacu Waterfall, ideal for travelers looking for a short jungle and natural landscape experience.",
       "duration": {
-        "label": "3 a 4 horas",
+        "label": "3 to 4 hours",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es"
@@ -1440,8 +1639,8 @@
           "09:00",
           "14:00"
         ],
-        "pickupWindow": "Coordinar según hotel",
-        "endTimeReference": "Según horario elegido"
+        "pickupWindow": "Coordinate according to hotel",
+        "endTimeReference": "According to selected schedule"
       },
       "basePricing": {
         "adult": 24.9,
@@ -1452,7 +1651,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar ingreso a catarata."
+        "notes": "Confirm waterfall entrance fee."
       },
       "serviceModes": {
         "group": {
@@ -1473,37 +1672,37 @@
         ]
       },
       "includes": [
-        "Pickup en Tarapoto",
+        "Pickup in Tarapoto",
         "Tourist transport",
         "Guide or coordinator"
       ],
       "excludes": [
-        "Ingreso si aplica",
+        "Entrance fee if applicable",
         "Meals",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Salida",
-          "description": "Pickup and traslado to Ahuashiyacu."
+          "title": "Departure",
+          "description": "Pickup and transfer to Ahuashiyacu."
         },
         {
-          "title": "Caminata corta",
-          "description": "Ingreso por sendero to la catarata."
+          "title": "Short hike",
+          "description": "Entry by trail to the waterfall."
         },
         {
           "title": "Tiempo libre",
-          "description": "Tiempo para fotos and disfrute del entorno."
+          "description": "Time for photos and to enjoy the surroundings."
         },
         {
-          "title": "Retorno",
+          "title": "Return",
           "description": "Regreso a Tarapoto."
         }
       ],
       "extras": [
         {
           "code": "ahuashiyacu-ticket",
-          "label": "Ingreso a Ahuashiyacu",
+          "label": "Entrance to Ahuashiyacu",
           "price": 3,
           "currency": "USD",
           "perPerson": true,
@@ -1537,11 +1736,11 @@
         "includedTags": [
           "ahuashiyacu",
           "catarata",
-          "selva"
+          "jungle"
         ],
         "themes": [
-          "naturaleza",
-          "selva"
+          "nature",
+          "jungle"
         ],
         "keywords": [
           "tarapoto",
@@ -1552,23 +1751,45 @@
       "status": "published",
       "seo": {
         "title": "Catarata de Ahuashiyacu | My Cusco Trip",
-        "description": "Visit una de las cataratas más conocidas de Tarapoto en una excursión corta de naturaleza."
-      }
+        "description": "Visit one of Tarapoto’s best-known waterfalls on a short nature excursion."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3 to 4 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_011",
       "internalCode": "PER011",
       "slug": "full-day-amazonas-from-iquitos",
-      "title": "Full Day Amazonas from Iquitos",
+      "title": "Amazon Full Day from Iquitos",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "iquitos",
       "type": "nature-tour",
       "typeLabel": "Full Day",
-      "badge": "Amazonía",
+      "badge": "Amazon",
       "featured": true,
-      "location": "Iquitos / Río Amazonas",
+      "location": "Iquitos / Amazon River",
       "currency": "USD",
       "allowedCurrencies": [
         "USD",
@@ -1580,10 +1801,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Experience amazónica de day completo con navegación por el río Amazonas and visitas referenciales.",
-      "description": "Tour referencial from Iquitos para una introducción a la Amazonía peruana, con navegación, comunidades o centros de conservación according to the confirmed operation confirmada.",
+      "shortDescription": "Full-day Amazon experience with navigation on the Amazon River and reference visits.",
+      "description": "Reference tour from Iquitos for an introduction to the Peruvian Amazon, with navigation, communities or conservation centers according to the confirmed operation.",
       "duration": {
-        "label": "Full Day / 7 a 9 horas",
+        "label": "Full Day / 7 to 9 hours",
         "maxGroupSize": 16,
         "guideLanguages": [
           "es",
@@ -1628,8 +1849,8 @@
         ]
       },
       "includes": [
-        "Pickup en Iquitos",
-        "Traslado fluvial",
+        "Pickup in Iquitos",
+        "River transfer",
         "Guide or coordinator",
         "Visits according to the confirmed operation"
       ],
@@ -1640,26 +1861,26 @@
       ],
       "itinerary": [
         {
-          "title": "Pickup and traslado al embarcadero",
+          "title": "Pickup and transfer to the pier",
           "description": "Inicio del servicio from Iquitos."
         },
         {
-          "title": "Navegación amazónica",
-          "description": "Recorrido por el río Amazonas o afluentes según temporada."
+          "title": "Amazon navigation",
+          "description": "Route along the Amazon River or tributaries according to season."
         },
         {
           "title": "Visits referenciales",
-          "description": "Centro de conservación, comunidad o actividad natural according to the confirmed operation."
+          "description": "Conservation center, community or nature activity according to the confirmed operation."
         },
         {
-          "title": "Retorno",
+          "title": "Return",
           "description": "Regreso a Iquitos."
         }
       ],
       "extras": [
         {
           "code": "amazonas-lunch",
-          "label": "Lunch amazónico",
+          "label": "Amazonian lunch",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1694,25 +1915,47 @@
           "amazonas",
           "iquitos",
           "rio-amazonas",
-          "selva"
+          "jungle"
         ],
         "themes": [
-          "naturaleza",
-          "selva",
-          "amazonía"
+          "nature",
+          "jungle",
+          "amazon"
         ],
         "keywords": [
           "iquitos",
           "amazonas",
           "rio amazonas",
-          "selva peruana"
+          "peruvian amazon"
         ]
       },
       "status": "published",
       "seo": {
         "title": "Full Day Amazonas from Iquitos | My Cusco Trip",
-        "description": "Experience amazónica de day completo con navegación por el río Amazonas and visitas referenciales."
-      }
+        "description": "Full-day Amazon experience with navigation on the Amazon River and reference visits."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 7 to 9 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_012",
@@ -1725,7 +1968,7 @@
       "destination": "puerto-maldonado",
       "type": "nature-tour",
       "typeLabel": "Full Day",
-      "badge": "Amazonía",
+      "badge": "Amazon",
       "featured": false,
       "location": "Puerto Maldonado / Tambopata",
       "currency": "USD",
@@ -1739,10 +1982,10 @@
       "defaultCurrency": "USD",
       "days": 1,
       "nights": 0,
-      "shortDescription": "Introducción a la selva de Tambopata con navegación, caminata and experiencia natural.",
-      "description": "Tour referencial de day completo from Puerto Maldonado to zonas naturales de Tambopata, sujeto a operación, permisos and temporada.",
+      "shortDescription": "Introduction to the Tambopata jungle with navigation, hiking and a nature experience.",
+      "description": "Reference full-day tour from Puerto Maldonado to Tambopata natural areas, subject to operation, permits and season.",
       "duration": {
-        "label": "Full Day / 8 a 10 horas",
+        "label": "Full Day / 8 to 10 hours",
         "maxGroupSize": 16,
         "guideLanguages": [
           "es",
@@ -1766,7 +2009,7 @@
       "internalPricing": {
         "costSource": "pending_supplier_rate",
         "costCurrency": "USD",
-        "notes": "Confirmar ingreso a reserva, boat and lunch."
+        "notes": "Confirm reserve entrance, boat and lunch."
       },
       "serviceModes": {
         "group": {
@@ -1787,33 +2030,33 @@
         ]
       },
       "includes": [
-        "Pickup en Puerto Maldonado",
+        "Pickup in Puerto Maldonado",
         "Transporte terrestre/fluvial according to the confirmed operation",
-        "Guía naturalista referencial"
+        "Reference naturalist guide"
       ],
       "excludes": [
-        "Ingreso a reserva si aplica",
+        "Reserve entrance fee if applicable",
         "Lunch si no se especifica",
         "Personal expenses"
       ],
       "itinerary": [
         {
-          "title": "Salida",
-          "description": "Pickup and traslado según ruta confirmada."
+          "title": "Departure",
+          "description": "Pickup and transfer according to the confirmed route."
         },
         {
           "title": "Actividad natural",
-          "description": "Caminata, navegación o visita a zona natural según temporada."
+          "description": "Hike, navigation or visit to a natural area according to season."
         },
         {
-          "title": "Retorno",
+          "title": "Return",
           "description": "Regreso a Puerto Maldonado."
         }
       ],
       "extras": [
         {
           "code": "tambopata-lunch",
-          "label": "Lunch regional",
+          "label": "Regional lunch",
           "price": 15,
           "currency": "USD",
           "perPerson": true,
@@ -1846,39 +2089,61 @@
         ],
         "includedTags": [
           "tambopata",
-          "selva",
-          "amazonía"
+          "jungle",
+          "amazon"
         ],
         "themes": [
-          "naturaleza",
-          "selva",
+          "nature",
+          "jungle",
           "fauna"
         ],
         "keywords": [
           "puerto maldonado",
           "tambopata",
-          "selva",
+          "jungle",
           "amazonas"
         ]
       },
       "status": "published",
       "seo": {
         "title": "Full Day Tambopata from Puerto Maldonado | My Cusco Trip",
-        "description": "Introducción a la selva de Tambopata con navegación, caminata and experiencia natural."
-      }
+        "description": "Introduction to the Tambopata jungle with navigation, hiking and a nature experience."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is Full Day / 8 to 10 hours. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "Entrance tickets, tourist tickets, lunches or other extras are shown in the extras section so you can add or review them before booking."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     },
     {
       "id": "peru_010_private",
       "internalCode": "PER010",
       "slug": "tambopata-lodge-3d-2n-servicio-privado",
-      "title": "Tambopata Lodge 3D/2N - Servicio privado",
+      "title": "Tambopata Lodge 3D/2N - Private service",
       "category": "peru",
       "productKind": "tour",
       "productFamily": "peru-tour",
       "destination": "tambopata",
       "type": "amazon-lodge",
       "typeLabel": "3 days / 2 nights",
-      "badge": "Amazonía",
+      "badge": "Amazon",
       "featured": false,
       "status": "draft",
       "visibility": "private-source",
@@ -1893,8 +2158,8 @@
       "defaultCurrency": "USD",
       "days": 3,
       "nights": 2,
-      "shortDescription": "Programa amazónico referencial para propuestas privadas con lodge en Tambopata o Puerto Maldonado.",
-      "description": "Programa privado o semiprivado de Amazonía con transfers en Puerto Maldonado, alojamiento en lodge, alimentación según programa and actividades de naturaleza.",
+      "shortDescription": "Reference Amazon program for private proposals with a lodge in Tambopata or Puerto Maldonado.",
+      "description": "Private or semi-private Amazon program with transfers in Puerto Maldonado, lodge accommodation, meals according to program and nature activities.",
       "duration": {
         "label": "3 days / 2 nights",
         "maxGroupSize": 8,
@@ -1905,8 +2170,8 @@
       },
       "operation": {
         "frequency": "daily_on_request",
-        "pickupWindow": "Según vuelo de llegada a Puerto Maldonado",
-        "endTimeReference": "Según vuelo de salida"
+        "pickupWindow": "According to arrival flight in Puerto Maldonado",
+        "endTimeReference": "According to departure flight"
       },
       "basePricing": {
         "adult": 390,
@@ -1929,34 +2194,34 @@
         ]
       },
       "includes": [
-        "Recepción en aeropuerto de Puerto Maldonado",
-        "Ground transfers y/o fluviales según lodge",
-        "02 nights de alojamiento en lodge",
-        "Alimentación según programa",
-        "Actividades amazónicas programadas",
-        "Guía local"
+        "Reception at Puerto Maldonado airport",
+        "Ground and/or river transfers according to lodge",
+        "02 nights of lodge accommodation",
+        "Meals according to program",
+        "Scheduled Amazon activities",
+        "Local guide"
       ],
       "excludes": [
-        "Vuelos internos",
-        "Bebidas alcohólicas",
+        "Domestic flights",
+        "Alcoholic beverages",
         "Propinas",
         "Personal expenses"
       ],
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Puerto Maldonado and traslado al lodge",
-          "description": "Recepción en aeropuerto, traslado al lodge, lunch and primera actividad amazónica."
+          "title": "Arrival in Puerto Maldonado and transfer to the lodge",
+          "description": "Airport reception, transfer to the lodge, lunch and first Amazon activity."
         },
         {
           "day": 2,
-          "title": "Experience amazónica en Tambopata",
-          "description": "Caminata interpretativa, observación de flora and fauna and actividad nocturna según programa del lodge."
+          "title": "Amazon experience in Tambopata",
+          "description": "Interpretive hike, flora and fauna observation and night activity according to the lodge program."
         },
         {
           "day": 3,
-          "title": "Retorno a Puerto Maldonado",
-          "description": "Breakfast and traslado al aeropuerto para tomar vuelo de salida."
+          "title": "Return to Puerto Maldonado",
+          "description": "Breakfast and transfer to the airport for the departure flight."
         }
       ],
       "search": {
@@ -1973,7 +2238,7 @@
           "lodge"
         ],
         "themes": [
-          "naturaleza",
+          "nature",
           "familias"
         ],
         "keywords": [
@@ -1985,8 +2250,30 @@
       },
       "seo": {
         "title": "Tambopata Lodge 3D/2N - Servicio privado | My Cusco Trip",
-        "description": "Programa amazónico referencial para propuestas privadas con lodge en Tambopata o Puerto Maldonado."
-      }
+        "description": "Reference Amazon program for private proposals with a lodge in Tambopata or Puerto Maldonado."
+      },
+      "faq": [
+        {
+          "q": "How long does the experience last?",
+          "a": "The reference duration is 3 days / 2 nights. The final schedule is coordinated before departure so you clearly know the pickup, visits and return time."
+        },
+        {
+          "q": "Does the tour include a guide?",
+          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+        },
+        {
+          "q": "Which tickets or extras should I consider?",
+          "a": "If a special entrance ticket applies for your date, the reservations team will review it with you before payment."
+        },
+        {
+          "q": "Where does the service start?",
+          "a": "Pickup or the meeting point is coordinated according to the tour, your hotel and the operation of the day. We send the final details by WhatsApp or email before the experience."
+        },
+        {
+          "q": "What should I bring?",
+          "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
+        }
+      ]
     }
   ]
 }
