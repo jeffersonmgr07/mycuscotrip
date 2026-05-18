@@ -152,10 +152,28 @@ function normalizePackageCard(card, config = {}, source = "unknown") {
   const days = safeNumber(card.days, 0);
   const nights = safeNumber(card.nights, Math.max(days - 1, 0));
 
+  const baseAmount = firstValid(
+    card.basePricing?.adult,
+    card.basePricing?.publishedAdultUSD,
+    card.pricing?.publishedAdultUSD,
+    card.pricing?.amount,
+    card.price?.amount,
+    card.price
+  );
+
   const price = {
-    amount: 0,
-    currency: safeString(card.currency || config.defaultCurrency || config.baseCurrency, "USD"),
-    mode: safeString(card.priceMode, "dynamic_from_selected_itinerary")
+    amount: safeNumber(baseAmount, 0),
+    currency: safeString(
+      firstValid(
+        card.basePricing?.currency,
+        card.pricing?.displayCurrency,
+        card.currency,
+        config.defaultCurrency,
+        config.baseCurrency
+      ),
+      "USD"
+    ),
+    mode: safeString(card.priceMode, baseAmount ? "static_base_plus_configurable_services" : "dynamic_from_selected_itinerary")
   };
 
   const durationLabel = safeString(card.typeLabel, `${days} días / ${nights} noches`);
