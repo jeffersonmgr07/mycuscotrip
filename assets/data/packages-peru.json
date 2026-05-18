@@ -812,7 +812,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 939.9,
+      "priceLabel": "Desde USD 939.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_6d5n",
@@ -920,7 +922,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 1119.9,
+      "priceLabel": "Desde USD 1,119.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_7d6n",
@@ -1033,7 +1037,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 1309.9,
+      "priceLabel": "Desde USD 1,309.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_8d7n",
@@ -1149,7 +1155,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 1439.9,
+      "priceLabel": "Desde USD 1,439.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1261,7 +1269,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 1499.9,
+      "priceLabel": "Desde USD 1,499.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1748,8 +1758,8 @@
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
       },
-      "priceFrom": 1149,
-      "priceLabel": "Desde USD 1,149 por persona sin hoteles",
+      "priceFrom": 1569.9,
+      "priceLabel": "Desde USD 1,569.90 por persona sin hoteles",
       "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
@@ -1878,7 +1888,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 1869.9,
+      "priceLabel": "Desde USD 1,869.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_14d13n",
@@ -2001,7 +2013,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 2239.9,
+      "priceLabel": "Desde USD 2,239.90 por persona sin hoteles"
     },
     {
       "id": "pkg_peru_15d14n",
@@ -2132,7 +2146,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "priceFrom": 2489.9,
+      "priceLabel": "Desde USD 2,489.90 por persona sin hoteles"
     }
   ],
   "durationConfigs": [
