@@ -33,7 +33,7 @@
 <div class="experience-rating">
 <span class="experience-rating__score">4.9</span>
 <span class="experience-rating__stars">★ ★ ★ ★ ★</span>
-<span class="experience-rating__reviews">(24 reseñas)</span>
+<span class="experience-rating__reviews" data-i18n="product.reviewsCount">(24 reseñas)</span>
 </div>
 <div class="experience-actions">
 <button class="experience-action-btn" type="button">
@@ -181,7 +181,7 @@
 <form class="booking-panel__form" id="productBookingForm">
 <div class="booking-field">
 <label for="travelDate">Fecha de viaje</label>
-<input id="travelDate" placeholder="Selecciona fecha" readonly="" type="text"/>
+<input id="travelDate" data-i18n-placeholder="search.selectDate" placeholder="Selecciona fecha" readonly="" type="text"/>
 </div>
 <div class="booking-field" hidden="" id="departureTimeSection">
 <label for="departureTimeSelect" id="departureTimeLabel" data-i18n="product.departureTime">Horario de salida</label>
@@ -374,7 +374,7 @@
 <label>
 <span>Tipo de documento</span>
 <select name="holderDocumentType" required="">
-<option value="">Selecciona</option>
+<option value="" data-i18n="product.select">Selecciona</option>
 <option value="passport">Pasaporte</option>
 <option value="dni">DNI</option>
 <option value="id_card">Documento de identidad</option>
@@ -388,7 +388,7 @@
 <label>
 <span>Nacionalidad</span>
 <select autocomplete="country-name" data-country-select="" name="holderNationality" required="">
-<option value="">Selecciona país</option>
+<option value="" data-i18n="product.selectCountry">Selecciona país</option>
 </select>
 </label>
 <label>
@@ -503,7 +503,7 @@
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
-<script src="./assets/js/pages/product.js?v=18"></script>
+<script src="./assets/js/pages/product.js?v=19"></script>
 <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
