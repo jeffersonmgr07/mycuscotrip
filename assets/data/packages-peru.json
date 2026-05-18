@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-18",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "Archivo de configuración para generar paquetes dinámicos combinados de Perú. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
@@ -721,7 +721,7 @@
       "location": "Lima / Cusco / Machu Picchu / Perú",
       "shortDescription": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos días.",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -796,7 +796,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 939.9,
+        "child": 939.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 749.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_6d5n",
@@ -812,7 +828,7 @@
       "location": "Lima / Cusco / Machu Picchu / Valle Sagrado / Perú",
       "shortDescription": "Ruta clásica con Lima, Valle Sagrado, Cusco y Machu Picchu.",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -888,7 +904,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1119.9,
+        "child": 1119.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 899.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_7d6n",
@@ -904,7 +936,7 @@
       "location": "Lima / Paracas / Ica / Cusco / Perú",
       "shortDescription": "Combina costa sur, desierto, Cusco y Machu Picchu.",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -985,7 +1017,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1309.9,
+        "child": 1309.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1049.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_8d7n",
@@ -1001,7 +1049,7 @@
       "location": "Lima / Paracas / Ica / Cusco / Perú",
       "shortDescription": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca.",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1085,7 +1133,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1439.9,
+        "child": 1439.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1149.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1101,7 +1165,7 @@
       "location": "Lima / Arequipa / Colca / Cusco / Perú",
       "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu.",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1181,7 +1245,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1499.9,
+        "child": 1499.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1199.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1197,7 +1277,7 @@
       "location": "Lima / Paracas / Ica / Huacachina / Cusco / Machu Picchu / Puno / Arequipa",
       "shortDescription": "Vive una ruta completa por el Perú combinando Lima nocturna, Barranco y Miraflores, aventura en Huacachina, experiencia marina en Paracas, bienvenida ancestral en Cusco, Valle Sagrado, tren hacia Machu Picchu, Ruta del Sol hacia Puno, Lago Titicaca y la magia colonial de Arequipa con opción de Cañón del Colca.",
       "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1658,16 +1738,23 @@
       },
       "currency": "USD",
       "basePricing": {
-        "adult": 1149,
-        "child": 1099,
+        "adult": 1569.9,
+        "child": 1569.9,
         "currency": "USD",
-        "mode": "sin_hoteles",
+        "mode": "published_price_without_hotels",
         "label": "Precio base por persona sin hoteles",
-        "description": "Incluye tours, traslados operativos, tren base seleccionado, ingreso a Machu Picchu, bus turístico a Machu Picchu, boletos turísticos necesarios, Ruta del Sol, Titicaca, bus nocturno Puno-Arequipa y vuelo Arequipa-Lima sujeto a confirmación final de tarifa. Los hoteles se agregan aparte según elección del cliente."
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1259.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
       },
       "priceFrom": 1149,
       "priceLabel": "Desde USD 1,149 por persona sin hoteles",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final."
+      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_12d11n",
@@ -1683,7 +1770,7 @@
       "location": "Lima / Paracas / Ica / Arequipa / Perú",
       "shortDescription": "Ruta esencial del Perú sur con costa, Colca, Titicaca, Cusco y Machu Picchu.",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1775,7 +1862,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1869.9,
+        "child": 1869.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1499.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1791,7 +1894,7 @@
       "location": "Lima / Paracas / Arequipa / Puno / Perú",
       "shortDescription": "Ruta amplia para combinar el sur clásico del Perú con una extensión de Amazonía.",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1882,7 +1985,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2239.9,
+        "child": 2239.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1799.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1898,7 +2017,7 @@
       "location": "Lima / Paracas / Ica / Nazca / Perú",
       "shortDescription": "Versión extensa para viajeros que quieren una experiencia completa del Perú.",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1997,7 +2116,23 @@
           "q": "¿Los extras se traducen y se calculan aparte?",
           "a": "Sí. Los extras como boletos turísticos, ingresos o almuerzos aparecen traducidos y se pueden agregar antes de completar la reserva."
         }
-      ]
+      ],
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2489.9,
+        "child": 2489.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1999.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      }
     }
   ],
   "durationConfigs": [
@@ -2560,5 +2695,16 @@
   "defaultGuideLanguages": [
     "es",
     "en"
-  ]
+  ],
+  "pricingProtection": {
+    "strategy": "published_price_protects_net_after_max_discount_and_paypal_fee",
+    "maxDiscountPercent": 15,
+    "paypalPercent": 5.4,
+    "formula": "publishedPrice = protectedNet / ((1 - 0.15) * (1 - 0.054)), rounded up to a commercial price ending in 9.90",
+    "exchangeRateReference": {
+      "usdPen": 3.4345,
+      "date": "2026-05-18",
+      "note": "Reference only; package prices are stored in USD."
+    }
+  }
 }
