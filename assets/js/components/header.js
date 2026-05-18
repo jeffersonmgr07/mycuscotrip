@@ -14,6 +14,7 @@ class MyCuscoTripHeader {
     this.currentActiveLink = null;
     this.dropdownCloseDelay = 200;
     this.dropdownTimers = new WeakMap();
+    this.slugMapCache = new Map();
 
     this.init();
   }
@@ -313,7 +314,7 @@ class MyCuscoTripHeader {
     this.localizeHeaderLinks(lang);
   }
 
-  handleLanguageSelect(event) {
+  async handleLanguageSelect(event) {
     event.preventDefault();
 
     const lang = event.currentTarget.dataset.lang || "es";
@@ -321,23 +322,117 @@ class MyCuscoTripHeader {
     this.updateLanguageLabel(lang);
     this.closeLanguageMenu();
 
-    const nextPath = this.buildLocalizedPath(lang, window.location.href);
+    const nextPath = await this.buildLocalizedPath(lang, window.location.href);
     window.location.href = nextPath;
   }
 
-  buildLocalizedPath(lang, href = window.location.href) {
-    const supportedLocales = ["en", "pt", "fr", "de", "it", "zh", "ja", "es"];
-    if (window.MyCuscoTripI18n?.getLocalizedPath) {
-      return window.MyCuscoTripI18n.getLocalizedPath(lang, href);
-    }
+  getSupportedLocales() {
+    return ["en", "pt", "fr", "de", "it", "zh", "ja", "es"];
+  }
 
+  getBasePath() {
+    return window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
+  }
+
+  resolveAssetPath(path) {
+    const clean = String(path || "").replace(/^\.?\//, "");
+    return `${this.getBasePath()}${clean}`.replace(/([^:]\/)\/{2,}/g, "$1");
+  }
+
+  getCatalogSourcePaths(locale) {
+    const files = [
+      "tours-cusco.json",
+      "tours-machu-picchu.json",
+      "tours-peru.json",
+      "trekkings-cusco.json",
+      "packages-cusco.json",
+      "packages-peru.json",
+      "private-packages.json"
+    ];
+
+    return files.map((file) => {
+      return locale && locale !== "es"
+        ? `assets/data/i18n/${locale}/${file}`
+        : `assets/data/${file}`;
+    });
+  }
+
+  async fetchJsonIfExists(path) {
+    try {
+      const response = await fetch(this.resolveAssetPath(path), { cache: "no-store" });
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  extractCatalogItems(data) {
+    if (!data) return [];
+    if (Array.isArray(data)) return data;
+    return [
+      ...(Array.isArray(data.products) ? data.products : []),
+      ...(Array.isArray(data.tours) ? data.tours : []),
+      ...(Array.isArray(data.items) ? data.items : []),
+      ...(Array.isArray(data.packageCards) ? data.packageCards : []),
+      ...(Array.isArray(data.cards) ? data.cards : [])
+    ];
+  }
+
+  async loadSlugIndex(locale) {
+    const normalizedLocale = this.getSupportedLocales().includes(locale) ? locale : "es";
+    const cacheKey = `slug-index:${normalizedLocale}`;
+    if (this.slugMapCache.has(cacheKey)) return this.slugMapCache.get(cacheKey);
+
+    const index = new Map();
+    const sources = this.getCatalogSourcePaths(normalizedLocale);
+    const results = await Promise.all(sources.map((path) => this.fetchJsonIfExists(path)));
+
+    results.forEach((data) => {
+      this.extractCatalogItems(data).forEach((item) => {
+        const slug = String(item?.slug || "").trim();
+        const id = String(item?.id || item?.internalCode || item?.code || "").trim();
+        if (!slug || !id) return;
+        index.set(id, slug);
+        index.set(`slug:${slug}`, id);
+      });
+    });
+
+    this.slugMapCache.set(cacheKey, index);
+    return index;
+  }
+
+  async translateProductSlugForLocale(currentSlug, currentLocale, targetLocale) {
+    if (!currentSlug || !targetLocale || currentLocale === targetLocale) return currentSlug;
+
+    const currentIndex = await this.loadSlugIndex(currentLocale || "es");
+    const targetIndex = await this.loadSlugIndex(targetLocale || "es");
+    const productId = currentIndex.get(`slug:${currentSlug}`);
+    const translatedSlug = productId ? targetIndex.get(productId) : "";
+
+    return translatedSlug || currentSlug;
+  }
+
+  async buildLocalizedPath(lang, href = window.location.href) {
+    const supportedLocales = this.getSupportedLocales();
     const targetLang = supportedLocales.includes(lang) ? lang : "es";
+    const currentLang = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
     const url = new URL(href, window.location.origin);
     const parts = url.pathname.split("/").filter(Boolean);
     if (supportedLocales.includes(parts[0])) parts.shift();
+
     const cleanPath = parts.join("/") || "index.html";
+    const params = new URLSearchParams(url.search);
+
+    if (cleanPath === "product.html" && params.has("slug")) {
+      const currentSlug = params.get("slug") || "";
+      const nextSlug = await this.translateProductSlugForLocale(currentSlug, currentLang, targetLang);
+      params.set("slug", nextSlug);
+    }
+
     const prefix = targetLang === "es" ? "/" : `/${targetLang}/`;
-    return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${url.search}${url.hash}`;
+    const query = params.toString() ? `?${params.toString()}` : "";
+    return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${query}${url.hash}`;
   }
 
   localizeHeaderLinks(lang) {
@@ -354,7 +449,9 @@ class MyCuscoTripHeader {
     });
     this.langLinks.forEach((link) => {
       const targetLang = link.dataset.lang || "es";
-      link.setAttribute("href", this.buildLocalizedPath(targetLang, window.location.href));
+      this.buildLocalizedPath(targetLang, window.location.href).then((localizedPath) => {
+        link.setAttribute("href", localizedPath);
+      });
     });
   }
 
