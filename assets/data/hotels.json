@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updatedAt": "2026-05-10",
+  "updatedAt": "2026-05-18",
   "sourceFile": "assets/data/hotels.json",
   "scope": "hotel-catalog-for-dynamic-packages",
   "description": "Catálogo centralizado de hoteles por destino para paquetes dinámicos My Cusco Trip. Guarda tarifas netas confidenciales, margen hotelero del 25%, precio publicado estimado con comisiones de cobro/retiro y metadatos para futura vista privada de utilidad y descuento.",
@@ -55,7 +55,8 @@
         "puno": "Usar hoteles de Puno si el paquete incluye Titicaca o pernocte en Puno.",
         "lima": "Usar hoteles de Lima si el paquete incluye pernocte en Lima.",
         "paracas": "Usar hoteles de Paracas si el paquete incluye pernocte en Paracas.",
-        "ica": "Usar hoteles de Ica si el paquete incluye pernocte en Ica."
+        "ica": "Usar hoteles de Ica si el paquete incluye pernocte en Ica.",
+        "uyuni": "Usar hoteles de Uyuni para las noches del paquete que incluye Salar de Uyuni y Bolivia."
       }
     },
     "privateDashboardReadiness": {
@@ -2474,6 +2475,656 @@
       ],
       "status": "prepared_without_hotels",
       "notes": "Destino preparado para paquetes Perú. Agregar hoteles cuando existan tarifas netas confirmadas."
+    },
+    "uyuni": {
+      "label": "Uyuni",
+      "destinationAliases": [
+        "uyuni",
+        "salar-de-uyuni",
+        "salar_de_uyuni",
+        "bolivia",
+        "potosi"
+      ],
+      "hotels": [
+        {
+          "hotelCode": "hotel-salty-house-uyuni",
+          "hotelName": "Hotel Salty House",
+          "stars": 3,
+          "destination": "uyuni",
+          "destinationLabel": "Uyuni",
+          "location": "Uyuni centro",
+          "address": "Uyuni, Potosí, Bolivia",
+          "summary": "Hotel pequeño y práctico en Uyuni, recomendado para paquetes con extensión al Salar de Uyuni por su ubicación operativa, desayuno incluido y habitaciones privadas.",
+          "status": "published",
+          "pricingStatus": "estimated_public_reference_rates",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Desayuno continental",
+            "Baño privado",
+            "Habitaciones familiares",
+            "Buena ubicación para tours en Uyuni",
+            "Recepción",
+            "Opción práctica para extensión al Salar"
+          ],
+          "amenities": {
+            "checkin": "Desde 11:30 hasta 20:00",
+            "checkout": "Hasta 10:00",
+            "breakfast": "Desayuno continental",
+            "wifi": "Incluido"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/uyuni/salty-house/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/uyuni/salty-house/1.jpg",
+              "./assets/img/hotels/uyuni/salty-house/2.jpg",
+              "./assets/img/hotels/uyuni/salty-house/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple",
+              "bedType": "1 cama doble o distribución similar",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 135.0,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 36
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 168.75,
+                "marginPercent": 25,
+                "marginAmountPEN": 33.75
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 48.9,
+                "penApprox": 185,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 48.9,
+                "estimatedTargetNetPEN": 168.75,
+                "estimatedNetProfitPEN": 33.75,
+                "estimatedNetProfitUSD": 9.0,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 16.88,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Referencia pública encontrada desde USD 36 por noche; aplicar margen interno y comisiones."
+              },
+              "notes": "Referencial para 1 pasajero usando habitación privada disponible."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin",
+              "bedType": "2 camas individuales",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 135.0,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 36
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 168.75,
+                "marginPercent": 25,
+                "marginAmountPEN": 33.75
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 48.9,
+                "penApprox": 185,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 48.9,
+                "estimatedTargetNetPEN": 168.75,
+                "estimatedNetProfitPEN": 33.75,
+                "estimatedNetProfitUSD": 9.0,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 16.88,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Referencia pública encontrada desde USD 36 por noche; aplicar margen interno y comisiones."
+              },
+              "notes": "Recomendada para dos pasajeros que requieren camas separadas."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación matrimonial",
+              "bedType": "1 cama matrimonial",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 135.0,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 36
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 168.75,
+                "marginPercent": 25,
+                "marginAmountPEN": 33.75
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 48.9,
+                "penApprox": 185,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 48.9,
+                "estimatedTargetNetPEN": 168.75,
+                "estimatedNetProfitPEN": 33.75,
+                "estimatedNetProfitUSD": 9.0,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 16.88,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Referencia pública encontrada desde USD 36 por noche; aplicar margen interno y comisiones."
+              },
+              "notes": "Recomendada para pareja."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple",
+              "bedType": "3 camas individuales o distribución similar",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 187.5,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 50
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 234.38,
+                "marginPercent": 25,
+                "marginAmountPEN": 46.88
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 67.9,
+                "penApprox": 255,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 67.9,
+                "estimatedTargetNetPEN": 234.38,
+                "estimatedNetProfitPEN": 46.88,
+                "estimatedNetProfitUSD": 12.5,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 23.44,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Hotel con habitaciones familiares; tarifa triple estimada desde referencia pública y debe confirmarse."
+              },
+              "notes": "Tarifa estimada proporcional para ocupación triple."
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación familiar",
+              "bedType": "Distribución familiar hasta 4 pasajeros",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 217.5,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 58
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 271.88,
+                "marginPercent": 25,
+                "marginAmountPEN": 54.38
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 78.9,
+                "penApprox": 300,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 78.9,
+                "estimatedTargetNetPEN": 271.88,
+                "estimatedNetProfitPEN": 54.38,
+                "estimatedNetProfitUSD": 14.5,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 27.19,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Hotel con habitaciones familiares; tarifa familiar estimada desde referencia pública y debe confirmarse."
+              },
+              "notes": "Tarifa estimada para familia o grupo pequeño."
+            }
+          ],
+          "search": {
+            "kind": "hotel",
+            "destinations": [
+              "uyuni",
+              "salar-de-uyuni",
+              "bolivia"
+            ],
+            "stars": [
+              3
+            ],
+            "roomTypes": [
+              "single",
+              "double-twin",
+              "double-matrimonial",
+              "triple",
+              "family-4"
+            ],
+            "keywords": [
+              "hotel salty house",
+              "salty house uyuni",
+              "hotel en uyuni",
+              "salar de uyuni",
+              "bolivia",
+              "alojamiento uyuni"
+            ]
+          }
+        },
+        {
+          "hotelCode": "hostal-la-magia-de-uyuni",
+          "hotelName": "Hotel La Magia de Uyuni",
+          "stars": 3,
+          "destination": "uyuni",
+          "destinationLabel": "Uyuni",
+          "location": "Centro de Uyuni",
+          "address": "Calle Colón 432, Uyuni, Potosí, Bolivia",
+          "summary": "Alojamiento céntrico de 3 estrellas en Uyuni, recomendado para pasajeros que buscan una opción cómoda con desayuno, restaurante y buena ubicación para iniciar excursiones al Salar.",
+          "status": "published",
+          "pricingStatus": "estimated_public_reference_rates",
+          "recommendedForPackages": true,
+          "features": [
+            "Wifi",
+            "Desayuno buffet",
+            "Restaurante",
+            "Bar",
+            "Baño privado",
+            "Recepción 24 horas",
+            "Estacionamiento",
+            "Buena ubicación céntrica"
+          ],
+          "amenities": {
+            "checkin": "Desde 11:00",
+            "checkout": "Hasta 10:30",
+            "breakfast": "Desayuno buffet",
+            "wifi": "Incluido",
+            "parking": "Incluido según disponibilidad"
+          },
+          "images": {
+            "cover": "./assets/img/hotels/uyuni/la-magia-de-uyuni/cover.jpg",
+            "gallery": [
+              "./assets/img/hotels/uyuni/la-magia-de-uyuni/1.jpg",
+              "./assets/img/hotels/uyuni/la-magia-de-uyuni/2.jpg",
+              "./assets/img/hotels/uyuni/la-magia-de-uyuni/3.jpg"
+            ]
+          },
+          "rooms": [
+            {
+              "roomType": "single",
+              "label": "Habitación simple estándar",
+              "bedType": "1 cama individual o matrimonial según disponibilidad",
+              "capacity": 1,
+              "maxAdults": 1,
+              "maxChildren": 0,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 176.25,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 47
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 220.31,
+                "marginPercent": 25,
+                "marginAmountPEN": 44.06
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 63.9,
+                "penApprox": 240,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 63.9,
+                "estimatedTargetNetPEN": 220.31,
+                "estimatedNetProfitPEN": 44.06,
+                "estimatedNetProfitUSD": 11.75,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 22.03,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Referencia pública desde USD 47 por noche; KAYAK muestra estándar desde USD 54 con fees para fechas próximas."
+              },
+              "notes": "Tarifa referencial para ocupación individual."
+            },
+            {
+              "roomType": "double-matrimonial",
+              "label": "Habitación doble estándar",
+              "bedType": "1 cama queen",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 202.5,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 54
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 253.12,
+                "marginPercent": 25,
+                "marginAmountPEN": 50.62
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 72.9,
+                "penApprox": 275,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 72.9,
+                "estimatedTargetNetPEN": 253.12,
+                "estimatedNetProfitPEN": 50.62,
+                "estimatedNetProfitUSD": 13.5,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 25.31,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "KAYAK muestra habitación estándar queen desde USD 54 con fees para fechas próximas."
+              },
+              "notes": "Habitación estándar recomendada para pareja."
+            },
+            {
+              "roomType": "double-twin",
+              "label": "Habitación doble twin estándar",
+              "bedType": "2 camas individuales o distribución similar",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 202.5,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 54
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 253.12,
+                "marginPercent": 25,
+                "marginAmountPEN": 50.62
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 72.9,
+                "penApprox": 275,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 72.9,
+                "estimatedTargetNetPEN": 253.12,
+                "estimatedNetProfitPEN": 50.62,
+                "estimatedNetProfitUSD": 13.5,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 25.31,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Referencia alineada a habitación estándar desde USD 54 con fees; confirmar disponibilidad de camas twin."
+              },
+              "notes": "Recomendada para dos pasajeros que requieren camas separadas."
+            },
+            {
+              "roomType": "superior-double",
+              "label": "Habitación superior doble",
+              "bedType": "1 cama king o distribución superior",
+              "capacity": 2,
+              "maxAdults": 2,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 236.25,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 63
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 295.31,
+                "marginPercent": 25,
+                "marginAmountPEN": 59.06
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 84.9,
+                "penApprox": 320,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 84.9,
+                "estimatedTargetNetPEN": 295.31,
+                "estimatedNetProfitPEN": 59.06,
+                "estimatedNetProfitUSD": 15.75,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 29.53,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "KAYAK muestra habitación superior desde USD 63 con fees para fechas próximas."
+              },
+              "notes": "Opción superior para pasajeros que prefieren más comodidad."
+            },
+            {
+              "roomType": "triple",
+              "label": "Habitación triple estándar",
+              "bedType": "3 camas individuales",
+              "capacity": 3,
+              "maxAdults": 3,
+              "maxChildren": 1,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 255.0,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 68
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 318.75,
+                "marginPercent": 25,
+                "marginAmountPEN": 63.75
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 91.9,
+                "penApprox": 345,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 91.9,
+                "estimatedTargetNetPEN": 318.75,
+                "estimatedNetProfitPEN": 63.75,
+                "estimatedNetProfitUSD": 17.0,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 31.88,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Expedia lista habitación triple estándar; tarifa estimada proporcional y sujeta a confirmación."
+              },
+              "notes": "Tarifa referencial para tres pasajeros."
+            },
+            {
+              "roomType": "family-4",
+              "label": "Habitación cuádruple estándar",
+              "bedType": "Distribución cuádruple según disponibilidad",
+              "capacity": 4,
+              "maxAdults": 4,
+              "maxChildren": 2,
+              "netCost": {
+                "currency": "PEN",
+                "amount": 300.0,
+                "confidential": true,
+                "estimatedFromPublicReferenceUSD": 80
+              },
+              "targetNet": {
+                "currency": "PEN",
+                "amount": 375.0,
+                "marginPercent": 25,
+                "marginAmountPEN": 75.0
+              },
+              "publishedPricing": {
+                "currency": "USD",
+                "amount": 107.9,
+                "penApprox": 405,
+                "pricingIncludesPaymentFees": true
+              },
+              "pricingBreakdown": {
+                "exchangeRateUSDToPEN": 3.75,
+                "paypalPercent": 0.054,
+                "paypalFixedUSDIncluded": false,
+                "bankWithdrawalPercent": 0.015,
+                "peruIgvPercentOnBankWithdrawal": 0.18,
+                "bankWithdrawalEffectivePercent": 0.017699999999999997,
+                "roundingRule": "ceil_to_usd_ending_0.90"
+              },
+              "internalAnalytics": {
+                "estimatedGrossRevenueUSD": 107.9,
+                "estimatedTargetNetPEN": 375.0,
+                "estimatedNetProfitPEN": 75.0,
+                "estimatedNetProfitUSD": 20.0,
+                "minimumAcceptedMarginPercent": 12.5,
+                "minimumAcceptedNetProfitPEN": 37.5,
+                "discountGuardrail": "Calcular el descuento máximo desde la utilidad total del paquete, no desde la habitación aislada.",
+                "pricingSourceNote": "Expedia lista habitación cuádruple estándar; tarifa estimada proporcional y sujeta a confirmación."
+              },
+              "notes": "Tarifa referencial para familia o grupo pequeño."
+            }
+          ],
+          "search": {
+            "kind": "hotel",
+            "destinations": [
+              "uyuni",
+              "salar-de-uyuni",
+              "bolivia"
+            ],
+            "stars": [
+              3
+            ],
+            "roomTypes": [
+              "single",
+              "double-matrimonial",
+              "double-twin",
+              "superior-double",
+              "triple",
+              "family-4"
+            ],
+            "keywords": [
+              "hotel la magia de uyuni",
+              "hostal la magia de uyuni",
+              "la magia uyuni",
+              "hotel en uyuni",
+              "salar de uyuni",
+              "bolivia",
+              "alojamiento uyuni"
+            ]
+          }
+        }
+      ]
     }
   }
 }
