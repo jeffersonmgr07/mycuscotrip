@@ -70,6 +70,10 @@ class MyCuscoTripProductPage {
     return this.isEnglishLocale() ? enValue : esValue;
   }
 
+  getDefaultGuideLanguages() {
+    return ["es", "en"];
+  }
+
   async init() {
     if (!this.slug) {
       this.renderNotFound(this.t("product.invalidProduct", "No se recibió un producto válido."));
@@ -350,7 +354,7 @@ class MyCuscoTripProductPage {
     }
   }
   formatGuideLanguages(languages) {
-    const values = Array.isArray(languages) ? languages : [];
+    const values = Array.isArray(languages) && languages.length ? languages : this.getDefaultGuideLanguages();
     const normalized = values.map((item) => String(item || "").trim()).filter(Boolean);
     const hasSpanish = normalized.some((item) => /^(es|spa)$/i.test(item) || /espa[nñ]ol|spanish/i.test(item));
     const hasEnglish = normalized.some((item) => /^(en|eng)$/i.test(item) || /ingl[eé]s|english/i.test(item));
@@ -371,7 +375,7 @@ class MyCuscoTripProductPage {
       });
     }
     if (hasOther) parts.push(this.t("product.otherLanguagesOnRequest", "Other languages available upon request"));
-    return [...new Set(parts)].join("; ") || this.t("product.toConfirm", "To be confirmed");
+    return [...new Set(parts)].join("; ") || this.t("product.guideSpanishEnglish", "Spanish and English");
   }
 
   renderProduct(product) {
@@ -379,17 +383,15 @@ class MyCuscoTripProductPage {
     const description =
       product?.description ||
       product?.shortDescription ||
-      this.t("product.moreDetailsSoon", "Pronto agregaremos más detalles de esta experiencia.");
+      this.t("product.moreDetailsSoon", "More details about this experience will be added soon.");
 
     const badge = product?.badge || this.t("cards.experience", "Experience");
     const basePrice = product?.basePricing?.adult || product?.price?.amount || 0;
     const currency = product?.currency || product?.price?.currency || "USD";
     const location = product?.location || this.t("product.defaultLocation", "Cusco, Perú");
-    const duration = product?.duration?.label || product?.typeLabel || this.t("product.durationPending", "Duration to be confirmed");
-    const languages = product?.duration?.guideLanguages?.length
-      ? this.formatGuideLanguages(product.duration.guideLanguages)
-      : this.t("product.toConfirm", "To be confirmed");
-    const capacity = product?.capacity || product?.duration?.maxGroupSize || this.t("product.toConfirm", this.label("Por confirmar", "To be confirmed"));
+    const duration = product?.duration?.label || product?.typeLabel || this.t("product.durationPending", "Flexible duration by selected route");
+    const languages = this.formatGuideLanguages(product?.duration?.guideLanguages || this.getDefaultGuideLanguages());
+    const capacity = product?.capacity || product?.duration?.maxGroupSize || this.t("product.groupSizeFlexible", "According to the selected service");
 
     document.title = `${title} | My Cusco Trip`;
 
@@ -406,7 +408,7 @@ class MyCuscoTripProductPage {
 
     this.setText("detailCapacity", this.t("product.maxTravelers", this.label("Máximo {count} viajeros por grupo", "Maximum {count} travelers per group"), { count: capacity }));
     this.setText("detailDuration", duration);
-    this.setText("detailLanguages", this.t("product.guideIn", this.label("Guía en {languages}", "Professional guide: {languages}"), { languages }));
+    this.setText("detailLanguages", this.t("product.guideIn", this.label("Guía profesional: {languages}", "Professional guide: {languages}"), { languages }));
     this.setText("detailLocation", location);
 
     this.renderGallery(product?.images || {});
@@ -595,7 +597,7 @@ class MyCuscoTripProductPage {
 
     target.innerHTML = items.length
       ? items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")
-      : "<li>Información por confirmar.</li>";
+      : `<li>${this.escapeHtml(this.t("product.infoPending", "Information will be provided by your travel advisor."))}</li>`;
   }
 
   renderExcludes(items) {
@@ -605,7 +607,7 @@ class MyCuscoTripProductPage {
 
     target.innerHTML = items.length
       ? items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("")
-      : "<li>Información por confirmar.</li>";
+      : `<li>${this.escapeHtml(this.t("product.infoPending", "Information will be provided by your travel advisor."))}</li>`;
   }
 
   renderHighlights(product) {
@@ -616,11 +618,11 @@ class MyCuscoTripProductPage {
     const highlights = [
       product?.shortDescription,
       `${this.t("product.location", "Ubicación")}: ${product?.location || this.t("product.defaultLocation", "Cusco, Perú")}`,
-      `${this.t("product.duration", "Duración")}: ${product?.duration?.label || product?.typeLabel || this.t("product.toConfirm", "Por confirmar")}`,
-      product?.typeLabel ? `Tipo: ${product.typeLabel}` : null,
+      `${this.t("product.duration", "Duración")}: ${product?.duration?.label || product?.typeLabel || this.t("product.durationPending", "Flexible duration by selected route")}`,
+      product?.typeLabel ? `${this.t("product.travelStyle", "Type")}: ${product.typeLabel}` : null,
       product?.duration?.guideLanguages?.length
-        ? `Idiomas: ${product.duration.guideLanguages.join(", ")}`
-        : null
+        ? `${this.t("product.languages", "Languages")}: ${this.formatGuideLanguages(product.duration.guideLanguages)}`
+        : `${this.t("product.languages", "Languages")}: ${this.formatGuideLanguages(this.getDefaultGuideLanguages())}`
     ].filter(Boolean);
 
     target.innerHTML = highlights.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
@@ -638,13 +640,41 @@ class MyCuscoTripProductPage {
     if (!target) return;
 
     if (!items.length) {
-      target.innerHTML = "<p>Itinerario por confirmar.</p>";
+      target.innerHTML = `<p>${this.escapeHtml(this.t("product.itineraryPending", "Your detailed itinerary will be coordinated for your travel dates."))}</p>`;
+      return;
+    }
+
+    const isSingleDayTour =
+      !this.isPackage(this.product) &&
+      Number(this.product?.days || this.product?.raw?.days || 1) <= 1 &&
+      !items.some((item) => Number(item?.day || 1) > 1);
+
+    if (isSingleDayTour) {
+      const dayLabel = `${this.t("product.day", "Day")} 1`;
+      const dateLabel = this.getItineraryDateLabel(1);
+      target.innerHTML = `
+        <div class="experience-itinerary-item experience-itinerary-item--day" data-itinerary-day="1">
+          <div class="experience-itinerary-item__content">
+            <div class="experience-itinerary-day-meta">
+              <span class="experience-itinerary-day-pill">${this.escapeHtml(dayLabel)}</span>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="1" ${dateLabel ? "" : "hidden"}>${this.escapeHtml(dateLabel)}</span>
+            </div>
+            <h3 class="experience-itinerary-day-title">${this.escapeHtml(this.t("product.fullDayItinerary", "Detailed day itinerary"))}</h3>
+            ${items.map((item, index) => `
+              <p>
+                <strong>${this.escapeHtml(item.title || `${this.t("product.step", "Step")} ${index + 1}`)}</strong>
+                ${item.description ? `<br>${this.escapeHtml(item.description)}` : ""}
+              </p>
+            `).join("")}
+          </div>
+        </div>
+      `;
       return;
     }
 
     target.innerHTML = items.map((item, index) => {
       const dayNumber = Number(item?.day || index + 1);
-      const dayLabel = `${this.t("product.day", "Día")} ${dayNumber}`;
+      const dayLabel = `${this.t("product.day", "Day")} ${dayNumber}`;
       const dateLabel = this.getItineraryDateLabel(dayNumber);
       const title = item.title || `${this.t("product.step", "Step")} ${index + 1}`;
       const images = this.shouldShowTourItineraryImages()
@@ -707,7 +737,7 @@ class MyCuscoTripProductPage {
     if (!target) return;
 
     if (!items.length) {
-      target.innerHTML = "<p>Pronto agregaremos preguntas frecuentes.</p>";
+      target.innerHTML = `<p>${this.escapeHtml(this.t("product.faqPending", "Frequently asked questions will be added soon."))}</p>`;
       return;
     }
 
@@ -826,21 +856,21 @@ class MyCuscoTripProductPage {
     if (times.length === 1) {
       this.selectedDepartureTime = times[0];
       select.disabled = true;
-      select.innerHTML = `<option value="${this.escapeHtml(times[0])}" selected>Salida ${this.escapeHtml(times[0])}</option>`;
+      select.innerHTML = `<option value="${this.escapeHtml(times[0])}" selected>${this.escapeHtml(this.t("product.departureAt", "Departure {time}", { time: times[0] }))}</option>`;
       fixed.hidden = true;
       fixed.style.display = "none";
-      if (help) help.textContent = "Este tour tiene un horario fijo de salida.";
+      if (help) help.textContent = this.t("product.departureTimeFixed", "This tour has a fixed departure time.");
       return;
     }
 
     select.disabled = false;
     select.innerHTML = `
-      <option value="">Selecciona un horario</option>
+      <option value="">${this.escapeHtml(this.t("product.selectDepartureTime", "Select a departure time"))}</option>
       ${times.map((time) => `<option value="${this.escapeHtml(time)}">${this.escapeHtml(time)}</option>`).join("")}
     `;
 
     if (help) {
-      help.textContent = "Elige el horario que prefieres. La disponibilidad final será confirmada por el equipo de reservas.";
+      help.textContent = this.t("product.departureTimeHelp", "Choose your preferred time. The reservations team will review the final availability.");
     }
   }
 
@@ -849,9 +879,9 @@ class MyCuscoTripProductPage {
 
     const times = this.getProductStartTimes(this.product);
     if (times.length === 1) return times[0];
-    if (times.length > 1) return "Pendiente de selección";
+    if (times.length > 1) return this.t("product.pendingSelection", "Pending selection");
 
-    return "No aplica";
+    return this.t("product.notApplicable", "Not applicable");
   }
 
   isPeruPackage(product) {
@@ -898,26 +928,26 @@ class MyCuscoTripProductPage {
       </div>
 
       <div class="experience-itinerary-item">
-        <h3>Destinos incluidos</h3>
-        <p>${this.escapeHtml(destinationLabels.length ? destinationLabels.join(" / ") : product.location || "Perú")}</p>
+        <h3>${this.escapeHtml(this.t("product.includedDestinations", "Included destinations"))}</h3>
+        <p>${this.escapeHtml(destinationLabels.length ? destinationLabels.join(" / ") : product.location || "Peru")}</p>
       </div>
 
       <div class="experience-itinerary-item">
-        <h3>Experiencias principales</h3>
+        <h3>${this.escapeHtml(this.t("product.mainExperiences", "Main experiences"))}</h3>
         ${tourTitles.length
           ? `<ul>${tourTitles.map((title) => `<li>${this.escapeHtml(title)}</li>`).join("")}</ul>`
-          : `<p>Experiencias principales por confirmar según la ruta elegida.</p>`}
+          : `<p>${this.escapeHtml(this.t("product.mainExperiencesPending", "Main experiences are adjusted according to the selected route."))}</p>`}
       </div>
 
       <div class="experience-itinerary-item">
-        <h3>Hoteles configurables</h3>
-        <p>El alojamiento se puede ajustar por destino, categoría y disponibilidad. La propuesta final se confirmará mediante cotización personalizada.</p>
+        <h3>${this.escapeHtml(this.t("product.configurableHotels", "Configurable hotels"))}</h3>
+        <p>${this.escapeHtml(this.t("product.configurableHotelsText", "Accommodation can be adjusted by destination, category and availability. The final proposal is reviewed through a personalized quote."))}</p>
       </div>
 
       <div class="experience-itinerary-item">
-        <h3>Solicitar cotización</h3>
-        <p>Este paquete todavía no usa itinerario dinámico día por día. Nuestro equipo puede preparar la ruta final según fechas, hoteles, vuelos internos y preferencias de viaje.</p>
-        ${themes.length ? `<p><small>Estilo de viaje: ${this.escapeHtml(themes.join(" · "))}</small></p>` : ""}
+        <h3>${this.escapeHtml(this.t("product.requestQuote", "Request a quote"))}</h3>
+        <p>${this.escapeHtml(this.t("product.customQuoteText", "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences."))}</p>
+        ${themes.length ? `<p><small>${this.escapeHtml(this.t("product.travelStyle", "Travel style"))}: ${this.escapeHtml(themes.join(" · "))}</small></p>` : ""}
       </div>
     `;
   }
@@ -1436,7 +1466,7 @@ class MyCuscoTripProductPage {
             <p class="booking-accommodation-card__selected">
               ${selection?.combination
                 ? this.escapeHtml(selection.combination.label)
-                : this.t("product.accommodationPending", "Accommodation to be confirmed")}
+                : this.t("product.accommodationPending", "Accommodation according to the selected category")}
             </p>
 
             <p class="booking-accommodation-card__price">
@@ -2959,7 +2989,7 @@ class MyCuscoTripProductPage {
 
     target.innerHTML = `
       <div class="package-options-section__header package-options-section__header--simple">
-        <p>Elige la alternativa que mejor se acomode a tus expectativas de viaje según dificultad, ritmo, experiencias deseadas o lugares que quieres visitar. Puedes cambiar de opción sin perder la reserva.</p>
+        <p>${this.escapeHtml(this.t("product.packageOptionsIntro", "Choose the route that best matches your travel pace, interests and preferred places to visit. You can switch options without losing your reservation."))}</p>
       </div>
 
       <div class="package-options-list package-options-list--cards">
@@ -2969,7 +2999,7 @@ class MyCuscoTripProductPage {
       ${hasMoreOptions ? `
         <div class="package-options-section__more">
           <button type="button" class="btn booking-secondary-btn" data-show-all-package-options>
-            Ver más opciones
+            ${this.escapeHtml(this.t("product.showMoreOptions", "Show more options"))}
           </button>
         </div>
       ` : ""}
@@ -3004,7 +3034,7 @@ class MyCuscoTripProductPage {
           <span class="package-option-card__summary">${this.escapeHtml(presentation.summary)}</span>
           <small>${this.escapeHtml(presentation.description)}</small>
           <span class="package-option-card__difficulty">${this.escapeHtml(presentation.difficulty)}</span>
-          <span class="package-option-card__cta">${selected ? this.t("product.selectedRoute", "Ruta seleccionada") : this.t("product.selectRoute", "Seleccionar esta ruta")}</span>
+          <span class="package-option-card__cta">${selected ? this.t("product.selectedRoute", "Selected route") : this.t("product.selectRoute", "Select this route")}</span>
         </button>
       </article>
     `;
@@ -3016,7 +3046,7 @@ class MyCuscoTripProductPage {
     const summary = this.getPackageOptionCommercialSummary(option, titles);
 
     return {
-      eyebrow: `Itinerario ${this.getAlphabeticIndex(index)}`,
+      eyebrow: `${this.t("product.itineraryOption", "Itinerary")} ${this.getAlphabeticIndex(index)}`,
       title,
       summary,
       description: this.getPackageOptionCommercialDescription(option, titles),
@@ -3027,21 +3057,21 @@ class MyCuscoTripProductPage {
   getPackageOptionTourTitles(option) {
     const codes = this.getPackageOptionCodes(option);
     const fallbackLabels = {
-      CUZ001: "City Tour",
-      CUZ002: "Valle Sagrado",
-      CUZ003: "Valle Sagrado",
-      CUZ003FD: "Valle Sagrado",
-      CUZ003CON: "Valle Sagrado con conexión",
-      CUZ003VIP: "Valle Sagrado VIP",
-      CUZ003VIPCON: "Valle Sagrado VIP con conexión",
+      CUZ001: this.t("product.ancestralWelcome", "Ancestral Welcome"),
+      CUZ002: this.t("product.cityTour", "Cusco City Tour"),
+      CUZ003: this.t("product.sacredValley", "Sacred Valley"),
+      CUZ003FD: this.t("product.sacredValley", "Sacred Valley"),
+      CUZ003CON: this.t("product.sacredValleyConnection", "Sacred Valley with connection"),
+      CUZ003VIP: this.t("product.sacredValleyVip", "Sacred Valley VIP"),
+      CUZ003VIPCON: this.t("product.sacredValleyVipConnection", "Sacred Valley VIP with connection"),
       CUZ004: "Maras y Moray",
-      CUZ005: "Laguna Humantay",
-      CUZ006: "Montaña de Colores",
-      CUZ007: "Palcoyo",
-      CUZ008: "Valle Sur",
-      CUZ009: "Bienvenida ancestral",
-      MAPI001: "Machu Picchu clásico",
-      MAPI002: "Machu Picchu express",
+      CUZ005: this.t("product.southValley", "South Valley"),
+      CUZ006: this.t("product.humantayLake", "Humantay Lake"),
+      CUZ007: this.t("product.rainbowMountain", "Rainbow Mountain"),
+      CUZ008: this.t("product.palcoyoMountain", "Palcoyo Mountain"),
+      CUZ009: this.t("product.sevenLakes", "Seven Lakes of Ausangate"),
+      MAPI001: this.t("product.machuPicchuClassic", "Machu Picchu Classic"),
+      MAPI002: this.t("product.machuPicchuExpress", "Machu Picchu Express"),
       MAPI003: "Machu Picchu overnight",
       MAPI004: "Machu Picchu overnight express"
     };
@@ -3105,21 +3135,21 @@ class MyCuscoTripProductPage {
       ...titles
     ].join(" "));
 
-    if (index === 0 || text.includes("recommended") || text.includes("recomendada")) return "Ruta recomendada";
-    if (text.includes("humantay") && (text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo"))) return "Ruta intensa de naturaleza";
-    if (text.includes("humantay") || text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("trek")) return "Ruta con aventura";
-    if (text.includes("maras") || text.includes("moray") || text.includes("laguna") || text.includes("montana")) return "Ruta con naturaleza";
-    if (text.includes("vip") || text.includes("completa")) return "Ruta más completa";
-    if (text.includes("classic") || text.includes("clasica") || text.includes("city") || text.includes("valle")) return "Ruta clásica";
+    if (index === 0 || text.includes("recommended") || text.includes("recomendada")) return this.t("product.routeRecommended", "Recommended route");
+    if (text.includes("humantay") && (text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo"))) return this.t("product.routeIntenseNature", "Nature-intensive route");
+    if (text.includes("humantay") || text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("trek")) return this.t("product.routeAdventure", "Adventure route");
+    if (text.includes("maras") || text.includes("moray") || text.includes("laguna") || text.includes("montana")) return this.t("product.routeNature", "Nature route");
+    if (text.includes("vip") || text.includes("completa")) return this.t("product.routeComplete", "Most complete route");
+    if (text.includes("classic") || text.includes("clasica") || text.includes("city") || text.includes("valle")) return this.t("product.routeClassic", "Classic route");
 
-    return `Itinerario ${this.getAlphabeticIndex(index)}`;
+    return `${this.t("product.itineraryOption", "Itinerary")} ${this.getAlphabeticIndex(index)}`;
   }
 
   getPackageOptionCommercialSummary(option, titles = []) {
     const cleanTitles = titles.filter(Boolean);
-    if (!cleanTitles.length) return "Ruta sugerida con experiencias principales por confirmar.";
+    if (!cleanTitles.length) return this.t("product.routeSuggested", "Suggested route adjusted to your selected duration.");
     if (cleanTitles.length <= 4) return cleanTitles.join(" · ");
-    return `${cleanTitles.slice(0, 4).join(" · ")} · +${cleanTitles.length - 4} más`;
+    return `${cleanTitles.slice(0, 4).join(" · ")} · +${cleanTitles.length - 4} ${this.t("product.more", "more")}`;
   }
 
   getPackageOptionDifficultyLabel(option, titles = []) {
@@ -3128,11 +3158,11 @@ class MyCuscoTripProductPage {
     const hasMountain = text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("cuz006") || text.includes("cuz007");
     const hasVip = text.includes("vip") || text.includes("completa");
 
-    if (hasHumantay && hasMountain) return "Ritmo alto · más naturaleza y caminatas";
-    if (hasHumantay || hasMountain) return "Ritmo medio/alto · incluye caminata escénica";
-    if (hasVip) return "Ritmo completo · más visitas en Valle Sagrado";
-    if (text.includes("conexion")) return "Ritmo eficiente · menos traslados repetidos";
-    return "Ritmo cómodo · ideal para primera visita";
+    if (hasHumantay && hasMountain) return this.t("product.paceHighNature", "High pace · more nature and hiking");
+    if (hasHumantay || hasMountain) return this.t("product.paceMediumHigh", "Medium/high pace · includes a scenic hike");
+    if (hasVip) return this.t("product.paceComplete", "Complete pace · more Sacred Valley visits");
+    if (text.includes("conexion")) return this.t("product.paceEfficient", "Efficient pace · fewer repeated transfers");
+    return this.t("product.paceComfortable", "Comfortable pace · ideal for a first visit");
   }
 
   getPackageOptionCommercialDescription(option, titles = []) {
@@ -3143,22 +3173,22 @@ class MyCuscoTripProductPage {
     const hasMountain = text.includes("colores") || text.includes("vinicunca") || text.includes("palcoyo") || text.includes("cuz006") || text.includes("cuz007");
 
     if (hasHumantay && hasMountain) {
-      return "Pensada para viajeros que quieren sumar los paisajes naturales más fuertes de Cusco, con días de caminata y descansos intercalados.";
+      return this.t("product.routeDescriptionIntenseNature", "Designed for travelers who want Cusco's strongest natural landscapes, with hiking days and balanced rest.");
     }
 
     if (hasHumantay || hasMountain) {
-      return "Combina los imperdibles culturales con una salida de naturaleza para darle variedad al viaje sin hacerlo demasiado pesado.";
+      return this.t("product.routeDescriptionAdventure", "Combines cultural essentials with a nature outing to add variety without making the trip too heavy.");
     }
 
     if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection" || text.includes("conexion")) {
-      return "Ruta eficiente que conecta Valle Sagrado con Machu Picchu y reduce traslados repetidos.";
+      return this.t("product.routeDescriptionConnection", "Efficient route connecting the Sacred Valley with Machu Picchu and reducing repeated transfers.");
     }
 
     if (hasMachu && hasValley) {
-      return "Opción equilibrada para conocer Cusco, Valle Sagrado y Machu Picchu con un ritmo cómodo.";
+      return this.t("product.routeDescriptionClassic", "Balanced option to visit Cusco, the Sacred Valley and Machu Picchu at a comfortable pace.");
     }
 
-    return "Ruta sugerida según duración, horarios de llegada y experiencias principales del paquete.";
+    return this.t("product.routeDescriptionSuggested", "Suggested route based on duration, arrival times and the package's main experiences.");
   }
 
   getAlphabeticIndex(index) {
@@ -3242,13 +3272,13 @@ class MyCuscoTripProductPage {
             </div>
             ${(day.items || []).map((item) => `
               <p>
-                <strong>${this.escapeHtml(item.title || "Actividad")}</strong>
+                <strong>${this.escapeHtml(item.title || this.t("product.activity", "Activity"))}</strong>
                 ${item.description ? `<br>${this.escapeHtml(item.description)}` : ""}
                 ${item.duration ? `<br><small>${this.escapeHtml(item.duration)}</small>` : ""}
               </p>
             `).join("")}
           </div>
-          ${this.renderItineraryMedia(dayImages, `${this.t("product.day", "Día")} ${day.day}`)}
+          ${this.renderItineraryMedia(dayImages, `${this.t("product.day", "Day")} ${day.day}`)}
         </div>
       `;
     }).join("");
@@ -3326,8 +3356,8 @@ class MyCuscoTripProductPage {
               ${allInclusiveChecked ? "checked" : ""}
             />
             <div class="booking-extra-text">
-              <strong>Servicios todo incluido</strong>
-              <small>Agrega automáticamente tickets, entradas, almuerzos y servicios recomendados.</small>
+              <strong>${this.escapeHtml(this.t("product.allInclusiveServices", "All-inclusive services"))}</strong>
+              <small>${this.escapeHtml(this.t("product.allInclusiveServicesText", "Automatically add recommended tickets, entrance fees, lunches and services."))}</small>
             </div>
           </label>
         ` : ""}
@@ -3342,9 +3372,9 @@ class MyCuscoTripProductPage {
             ${this.selectedPackageExtraCodes.includes(extra.code) ? "checked" : ""}
           />
           <div class="booking-extra-text">
-            <strong>${this.escapeHtml(extra.label || extra.code || "Servicio adicional")}</strong>
+            <strong>${this.escapeHtml(extra.label || extra.code || this.t("product.additionalService", "Additional service"))}</strong>
             <small>
-              ${extra.recommended ? "Recomendado" : "Opcional"}
+              ${extra.recommended ? this.escapeHtml(this.t("product.recommended", "Recommended")) : this.escapeHtml(this.t("product.optional", "Optional"))}
               ${extra.sourceTourTitle ? ` · ${this.escapeHtml(extra.sourceTourTitle)}` : ""}
             </small>
           </div>
@@ -3420,10 +3450,10 @@ class MyCuscoTripProductPage {
       <section class="experience-content">
         <div class="container">
           <div class="experience-card">
-            <h1>Experiencia no disponible</h1>
+            <h1>${this.escapeHtml(this.t("product.experienceUnavailable", "Experience unavailable"))}</h1>
             <p>${this.escapeHtml(message)}</p>
             <br />
-            <a class="btn" href="${this.resolvePath("all-experiences.html")}">Ver todas las experiencias</a>
+            <a class="btn" href="${this.resolvePath("all-experiences.html")}">${this.escapeHtml(this.t("product.viewAllExperiences", "View all experiences"))}</a>
           </div>
         </div>
       </section>
@@ -3827,7 +3857,20 @@ class MyCuscoTripProductPage {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  window.MyCuscoTripProductPage = new MyCuscoTripProductPage();
+  let started = false;
+  const startProductPage = () => {
+    if (started) return;
+    started = true;
+    window.MyCuscoTripProductPage = new MyCuscoTripProductPage();
+  };
+
+  if (window.MyCuscoTripI18n?.dictionary && Object.keys(window.MyCuscoTripI18n.dictionary).length) {
+    startProductPage();
+    return;
+  }
+
+  window.addEventListener("mct:i18n-ready", startProductPage, { once: true });
+  window.setTimeout(startProductPage, 900);
 });
 
 /* =========================================================
@@ -3868,7 +3911,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!target) return;
 
     if (!items.length) {
-      target.innerHTML = "<p>Pronto agregaremos preguntas frecuentes.</p>";
+      target.innerHTML = `<p>${this.escapeHtml(this.t("product.faqPending", "Frequently asked questions will be added soon."))}</p>`;
       return;
     }
 

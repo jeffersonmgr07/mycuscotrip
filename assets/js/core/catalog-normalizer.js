@@ -158,6 +158,13 @@ function normalizePackageCard(card, config = {}, source = "unknown") {
     mode: safeString(card.priceMode, "dynamic_from_selected_itinerary")
   };
 
+  const durationLabel = safeString(card.typeLabel, `${days} días / ${nights} noches`);
+  const guideLanguages = Array.isArray(card.duration?.guideLanguages) && card.duration.guideLanguages.length
+    ? card.duration.guideLanguages
+    : Array.isArray(config.defaultGuideLanguages) && config.defaultGuideLanguages.length
+      ? config.defaultGuideLanguages
+      : ["es", "en"];
+
   return {
     id: safeString(card.id, card.slug || ""),
     internalCode: safeString(card.internalCode, ""),
@@ -168,9 +175,10 @@ function normalizePackageCard(card, config = {}, source = "unknown") {
     productFamily,
     days,
     nights,
-    typeLabel: safeString(card.typeLabel, `${days} días / ${nights} noches`),
+    typeLabel: durationLabel,
     duration: {
-      label: safeString(card.typeLabel, `${days} días / ${nights} noches`)
+      label: durationLabel,
+      guideLanguages
     },
     location: safeString(card.location, ""),
     image: normalizeImage(card),

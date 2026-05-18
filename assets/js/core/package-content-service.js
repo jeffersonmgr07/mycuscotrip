@@ -23,6 +23,10 @@
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  function t(key, fallback = "") {
+    return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+  }
+
   function dedupeTextList(items = []) {
     const seen = new Set();
 
@@ -107,10 +111,9 @@
     const type = normalizeText(extra.type || "");
 
     if (type === "ticket") return true;
-    if (label.includes("boleto")) return true;
-    if (label.includes("ingreso")) return true;
-    if (label.includes("entrada")) return true;
-    if (label.includes("almuerzo")) return true;
+    if (label.includes("boleto") || label.includes("bilhete") || label.includes("billet") || label.includes("ticket")) return true;
+    if (label.includes("ingreso") || label.includes("entrada") || label.includes("entrance") || label.includes("entree") || label.includes("eintritt")) return true;
+    if (label.includes("almuerzo") || label.includes("almoço") || label.includes("dejeuner") || label.includes("lunch") || label.includes("mittagessen")) return true;
 
     return false;
   }
@@ -132,25 +135,25 @@
 
   function buildBaseIncludes(option = {}, accommodationPlan = []) {
     const base = [
-      "Transfer IN al inicio del paquete",
-      "Transfer OUT al finalizar el paquete",
-      "Asistencia de viaje antes y durante la experiencia",
-      "Tours indicados en el itinerario",
-      "Transporte turístico según programa",
-      "Guía profesional en español o inglés según operación"
+      t("product.transferIn", "Arrival transfer at the beginning of the package"),
+      t("product.transferOut", "Departure transfer at the end of the package"),
+      t("product.travelAssistance", "Travel assistance before and during the experience"),
+      t("product.indicatedTours", "Tours indicated in the itinerary"),
+      t("product.touristTransportProgram", "Tourist transport according to the program"),
+      t("product.professionalGuideIncluded", "Professional guide in Spanish and English")
     ];
 
     const hasMachuPicchu = toArray(option.includedTourCodes).some((code) => /^MAPI/i.test(code));
 
     if (hasMachuPicchu) {
-      base.push("Experiencia Machu Picchu según modalidad seleccionada");
-      base.push("Tren turístico según selección o configuración del paquete");
-      base.push("Bus Consettur de subida y bajada a Machu Picchu");
-      base.push("Ingreso oficial a Machu Picchu según disponibilidad");
+      base.push(t("product.machuExperience", "Machu Picchu experience according to the selected option"));
+      base.push(t("product.touristTrainSelected", "Tourist train according to the selected service"));
+      base.push(t("product.consetturBus", "Consettur bus up and down to Machu Picchu"));
+      base.push(t("product.officialMachuEntry", "Official Machu Picchu entrance ticket"));
     }
 
     if (toArray(accommodationPlan).length) {
-      base.push("Alojamiento según categoría y habitación seleccionada");
+      base.push(t("product.accommodationByCategory", "Accommodation according to the selected category and room"));
     }
 
     return dedupeTextList(base);
@@ -175,11 +178,11 @@
     const tourExcludes = collectTourExcludes(option);
 
     const dynamicExcludes = [
-      "Vuelos nacionales o internacionales",
-      "Gastos personales",
-      "Servicios no mencionados expresamente",
-      "Propinas voluntarias",
-      "Upgrades opcionales no seleccionados"
+      t("product.domesticInternationalFlights", "Domestic or international flights"),
+      t("product.personalExpenses", "Personal expenses"),
+      t("product.notMentionedServices", "Services not expressly mentioned"),
+      t("product.voluntaryTips", "Voluntary tips"),
+      t("product.optionalUpgradesNotSelected", "Optional upgrades not selected")
     ];
 
     const extras = collectPackageExtras(option);
@@ -201,7 +204,7 @@
 
     return collectPackageExtras(option).map((extra) => ({
       code: extra.code || "",
-      label: extra.label || extra.code || "Extra",
+      label: extra.label || extra.code || t("product.additionalService", "Additional service"),
       type: extra.type || "extra",
       required: Boolean(extra.required),
       optional: Boolean(extra.optional),

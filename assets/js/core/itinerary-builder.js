@@ -60,6 +60,10 @@
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  function t(key, fallback = "") {
+    return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+  }
+
   function getTourText(tour) {
     return normalizeText([
       tour?.internalCode,
@@ -625,7 +629,9 @@
           items: [
             {
               type: "free",
-              title: index === days.length - 1 ? "Tiempo libre hasta el traslado de salida" : "Tiempo libre"
+              title: index === days.length - 1
+                ? t("product.freeTimeUntilDepartureTransfer", "Free time until the departure transfer")
+                : t("product.freeTime", "Free time")
             }
           ]
         };

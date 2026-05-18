@@ -154,8 +154,61 @@
     return getLocale() === "en";
   }
 
+  const INLINE_TRANSLATIONS = {
+    pt: {
+      "Medio día": "Meio dia",
+      "Opción recomendada": "Opção recomendada",
+      "Paquete": "Pacote",
+      "Opción": "Opção",
+      "Paquete variado": "Pacote variado",
+      "Opción creada desde la configuración del paquete.": "Opção criada a partir da configuração do pacote.",
+      "Cotización flexible": "Cotação flexível",
+      "Desde": "A partir de",
+      "Guía profesional": "Guia profissional",
+      "Tour diario": "Tour diário",
+      "Ver": "Ver",
+      "Ver experiencia": "Ver experiência",
+      "Explora experiencias disponibles según los filtros seleccionados.": "Explore experiências disponíveis conforme os filtros selecionados.",
+      "No se pudieron cargar las experiencias": "Não foi possível carregar as experiências"
+    },
+    fr: {
+      "Medio día": "Demi-journée",
+      "Opción recomendada": "Option recommandée",
+      "Paquete": "Forfait",
+      "Opción": "Option",
+      "Paquete variado": "Forfait varié",
+      "Opción creada desde la configuración del paquete.": "Option créée à partir de la configuration du forfait.",
+      "Cotización flexible": "Devis flexible",
+      "Desde": "À partir de",
+      "Guía profesional": "Guide professionnel",
+      "Tour diario": "Tour quotidien",
+      "Ver": "Voir",
+      "Ver experiencia": "Voir l’expérience",
+      "Explora experiencias disponibles según los filtros seleccionados.": "Explorez les expériences disponibles selon les filtres sélectionnés.",
+      "No se pudieron cargar las experiencias": "Impossible de charger les expériences"
+    },
+    de: {
+      "Medio día": "Halbtägig",
+      "Opción recomendada": "Empfohlene Option",
+      "Paquete": "Paket",
+      "Opción": "Option",
+      "Paquete variado": "Vielfältiges Paket",
+      "Opción creada desde la configuración del paquete.": "Option aus der Paketkonfiguration erstellt.",
+      "Cotización flexible": "Flexibles Angebot",
+      "Desde": "Ab",
+      "Guía profesional": "Professionelle Reiseleitung",
+      "Tour diario": "Tagestour",
+      "Ver": "Ansehen",
+      "Ver experiencia": "Erlebnis ansehen",
+      "Explora experiencias disponibles según los filtros seleccionados.": "Entdecken Sie verfügbare Erlebnisse entsprechend den ausgewählten Filtern.",
+      "No se pudieron cargar las experiencias": "Erlebnisse konnten nicht geladen werden"
+    }
+  };
+
   function tr(esValue, enValue) {
-    return isEnglishLocale() ? enValue : esValue;
+    const locale = getLocale();
+    if (locale === "en") return enValue;
+    return INLINE_TRANSLATIONS[locale]?.[esValue] || esValue;
   }
 
   function formatLabel(value) {
