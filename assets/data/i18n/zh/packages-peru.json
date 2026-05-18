@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-18",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
@@ -721,7 +721,7 @@
       "location": "Lima / 库斯科 / 马丘比丘 / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -767,7 +767,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + 库斯科 5 天 / 4 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 939.9,
+        "child": 939.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 749.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 939.9,
+      "priceLabel": "USD 939.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_6d5n",
@@ -783,7 +801,7 @@
       "location": "Lima / 库斯科 / 马丘比丘 / 圣谷 / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -830,7 +848,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + 库斯科 6 天 / 5 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1119.9,
+        "child": 1119.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 899.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1119.9,
+      "priceLabel": "USD 1,119.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_7d6n",
@@ -846,7 +882,7 @@
       "location": "Lima / Paracas / Ica / 库斯科 / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -898,7 +934,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + Paracas/Ica + 库斯科 7 天 / 6 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1309.9,
+        "child": 1309.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1049.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1309.9,
+      "priceLabel": "USD 1,309.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_8d7n",
@@ -914,7 +968,7 @@
       "location": "Lima / Paracas / Ica / 库斯科 / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -969,7 +1023,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + Paracas/Ica + 库斯科/Puno 8 天 / 7 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1439.9,
+        "child": 1439.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1149.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1439.9,
+      "priceLabel": "USD 1,439.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_9d8n",
@@ -985,7 +1057,7 @@
       "location": "Lima / Arequipa / Colca / 库斯科 / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1036,7 +1108,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + Arequipa + 库斯科 9 天 / 8 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1499.9,
+        "child": 1499.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1199.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1499.9,
+      "priceLabel": "USD 1,499.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1052,7 +1142,7 @@
       "location": "Lima, Huacachina, Cusco, Machu Picchu, Titicaca and Arequipa",
       "shortDescription": "完整的秘鲁10日行程，连接利马、瓦卡奇纳、帕拉卡斯、库斯科、圣谷、乘火车前往马丘比丘、太阳之路、的的喀喀湖和殖民城市阿雷基帕。",
       "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1510,19 +1600,26 @@
       },
       "currency": "USD",
       "basePricing": {
-        "adult": 1149,
-        "child": 1099,
+        "adult": 1569.9,
+        "child": 1569.9,
         "currency": "USD",
-        "mode": "sin_hoteles",
+        "mode": "published_price_without_hotels",
         "label": "Precio base por persona sin hoteles",
-        "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1259.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
       },
-      "priceFrom": 1149,
-      "priceLabel": "Desde USD 1,149 por persona sin hoteles",
+      "priceFrom": 1569.9,
+      "priceLabel": "USD 1,569.90 起 / 每人 / 不含酒店",
       "hotelPricingNote": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "seo": {
         "title": "秘鲁10日游：利马、瓦卡奇纳、库斯科、马丘比丘、的的喀喀湖和阿雷基帕 | My Cusco Trip",
         "description": "完整的秘鲁10日行程，连接利马、瓦卡奇纳、帕拉卡斯、库斯科、圣谷、乘火车前往马丘比丘、太阳之路、的的喀喀湖和殖民城市阿雷基帕。"
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
       }
     },
     {
@@ -1539,7 +1636,7 @@
       "location": "Lima / Paracas / Ica / Arequipa / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1602,7 +1699,25 @@
       "seo": {
         "title": "秘鲁套餐: Lima + Paracas + Arequipa + Puno + 库斯科 12 天 / 11 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1869.9,
+        "child": 1869.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1499.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1869.9,
+      "priceLabel": "USD 1,869.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1618,7 +1733,7 @@
       "location": "Lima / Paracas / Arequipa / Puno / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1680,7 +1795,25 @@
       "seo": {
         "title": "秘鲁套餐 Sur + Amazonía 14 天 / 13 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2239.9,
+        "child": 2239.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1799.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 2239.9,
+      "priceLabel": "USD 2,239.90 起 / 每人 / 不含酒店"
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1696,7 +1829,7 @@
       "location": "Lima / Paracas / Ica / Nazca / 秘鲁",
       "shortDescription": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1766,7 +1899,25 @@
       "seo": {
         "title": "秘鲁套餐 completo 15 天 / 14 晚 | My Cusco Trip",
         "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2489.9,
+        "child": 2489.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1999.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 2489.9,
+      "priceLabel": "USD 2,489.90 起 / 每人 / 不含酒店"
     }
   ],
   "durationConfigs": [
@@ -2325,5 +2476,16 @@
     "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
     "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
     "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
-  ]
+  ],
+  "pricingProtection": {
+    "strategy": "published_price_protects_net_after_max_discount_and_paypal_fee",
+    "maxDiscountPercent": 15,
+    "paypalPercent": 5.4,
+    "formula": "publishedPrice = protectedNet / ((1 - 0.15) * (1 - 0.054)), rounded up to a commercial price ending in 9.90",
+    "exchangeRateReference": {
+      "usdPen": 3.4345,
+      "date": "2026-05-18",
+      "note": "Reference only; package prices are stored in USD."
+    }
+  }
 }

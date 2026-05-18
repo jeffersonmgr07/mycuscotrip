@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-05-02",
+  "updatedAt": "2026-05-18",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
@@ -721,7 +721,7 @@
       "location": "Lima / クスコ / マチュピチュ / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -767,7 +767,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + クスコ 5 日間 / 4 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 939.9,
+        "child": 939.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 749.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 939.9,
+      "priceLabel": "USD 939.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_6d5n",
@@ -783,7 +801,7 @@
       "location": "Lima / クスコ / マチュピチュ / 聖なる谷 / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -830,7 +848,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + クスコ 6 日間 / 5 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1119.9,
+        "child": 1119.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 899.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1119.9,
+      "priceLabel": "USD 1,119.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_7d6n",
@@ -846,7 +882,7 @@
       "location": "Lima / Paracas / Ica / クスコ / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -898,7 +934,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + Paracas/Ica + クスコ 7 日間 / 6 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1309.9,
+        "child": 1309.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1049.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1309.9,
+      "priceLabel": "USD 1,309.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_8d7n",
@@ -914,7 +968,7 @@
       "location": "Lima / Paracas / Ica / クスコ / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -969,7 +1023,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + Paracas/Ica + クスコ/Puno 8 日間 / 7 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1439.9,
+        "child": 1439.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1149.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1439.9,
+      "priceLabel": "USD 1,439.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_9d8n",
@@ -985,7 +1057,7 @@
       "location": "Lima / Arequipa / Colca / クスコ / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1036,7 +1108,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + Arequipa + クスコ 9 日間 / 8 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1499.9,
+        "child": 1499.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1199.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1499.9,
+      "priceLabel": "USD 1,499.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1052,7 +1142,7 @@
       "location": "Lima, Huacachina, Cusco, Machu Picchu, Titicaca and Arequipa",
       "shortDescription": "リマ、ワカチナ、パラカス、クスコ、聖なる谷、列車で行くマチュピチュ、太陽の道、チチカカ湖、植民都市アレキパを巡る10日間のペルー周遊プランです。",
       "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1510,19 +1600,26 @@
       },
       "currency": "USD",
       "basePricing": {
-        "adult": 1149,
-        "child": 1099,
+        "adult": 1569.9,
+        "child": 1569.9,
         "currency": "USD",
-        "mode": "sin_hoteles",
+        "mode": "published_price_without_hotels",
         "label": "Precio base por persona sin hoteles",
-        "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1259.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
       },
-      "priceFrom": 1149,
-      "priceLabel": "Desde USD 1,149 por persona sin hoteles",
+      "priceFrom": 1569.9,
+      "priceLabel": "USD 1,569.90～ / 1名様 / ホテルなし",
       "hotelPricingNote": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "seo": {
         "title": "ペルー10日間ツアー：リマ、ワカチナ、クスコ、マチュピチュ、チチカカ湖、アレキパ | My Cusco Trip",
         "description": "リマ、ワカチナ、パラカス、クスコ、聖なる谷、列車で行くマチュピチュ、太陽の道、チチカカ湖、植民都市アレキパを巡る10日間のペルー周遊プランです。"
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
       }
     },
     {
@@ -1539,7 +1636,7 @@
       "location": "Lima / Paracas / Ica / Arequipa / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1602,7 +1699,25 @@
       "seo": {
         "title": "ペルーパッケージ: Lima + Paracas + Arequipa + Puno + クスコ 12 日間 / 11 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1869.9,
+        "child": 1869.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1499.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1869.9,
+      "priceLabel": "USD 1,869.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_14d13n",
@@ -1618,7 +1733,7 @@
       "location": "Lima / Paracas / Arequipa / Puno / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1680,7 +1795,25 @@
       "seo": {
         "title": "ペルーパッケージ Sur + Amazonía 14 日間 / 13 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2239.9,
+        "child": 2239.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1799.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 2239.9,
+      "priceLabel": "USD 2,239.90～ / 1名様 / ホテルなし"
     },
     {
       "id": "pkg_peru_15d14n",
@@ -1696,7 +1829,7 @@
       "location": "Lima / Paracas / Ica / Nazca / ペルー",
       "shortDescription": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
-      "priceMode": "dynamic_from_selected_route_and_itinerary",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
         "kind": "package",
@@ -1766,7 +1899,25 @@
       "seo": {
         "title": "ペルーパッケージ completo 15 日間 / 14 泊 | My Cusco Trip",
         "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-      }
+      },
+      "currency": "USD",
+      "basePricing": {
+        "adult": 2489.9,
+        "child": 2489.9,
+        "currency": "USD",
+        "mode": "published_price_without_hotels",
+        "label": "Precio base por persona sin hoteles",
+        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "protectedNetAfterMaxDiscountAndPaypal": 1999.9,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 2489.9,
+      "priceLabel": "USD 2,489.90～ / 1名様 / ホテルなし"
     }
   ],
   "durationConfigs": [
@@ -2325,5 +2476,16 @@
     "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
     "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
     "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
-  ]
+  ],
+  "pricingProtection": {
+    "strategy": "published_price_protects_net_after_max_discount_and_paypal_fee",
+    "maxDiscountPercent": 15,
+    "paypalPercent": 5.4,
+    "formula": "publishedPrice = protectedNet / ((1 - 0.15) * (1 - 0.054)), rounded up to a commercial price ending in 9.90",
+    "exchangeRateReference": {
+      "usdPen": 3.4345,
+      "date": "2026-05-18",
+      "note": "Reference only; package prices are stored in USD."
+    }
+  }
 }
