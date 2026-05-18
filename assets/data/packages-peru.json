@@ -2084,7 +2084,7 @@
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Puno / Uyuni",
       "shortDescription": "Ruta multidestino que combina lo esencial del Perú con una extensión hacia el Salar de Uyuni en Bolivia.",
-      "image": "./assets/img/packages/peru/10d9n/cover.jpg",
+      "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
       "search": {
@@ -2155,14 +2155,18 @@
       },
       "description": "Este paquete combina Lima, Paracas, Ica, Huacachina, Cusco, Valle Sagrado, Machu Picchu, Ruta del Sol, Lago Titicaca y una extensión hacia el Salar de Uyuni. Es una opción pensada para viajeros que desean unir Perú y Bolivia en una sola ruta, con servicios principales coordinados, hoteles configurables y conexiones sujetas a disponibilidad operativa.",
       "images": {
-        "cover": "./assets/img/packages/peru/10d9n/cover.jpg",
+        "cover": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/cover.jpg",
         "gallery": [
+          "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/cover.jpg",
           "./assets/img/packages/peru/lima-night/cover.jpg",
           "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "./assets/img/tours/valle-sagrado/cover.jpg",
           "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-          "./assets/img/packages/peru/titicaca/cover.jpg"
+          "./assets/img/packages/peru/titicaca/cover.jpg",
+          "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg",
+          "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg",
+          "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg"
         ]
       },
       "showItineraryImages": true,
@@ -2303,9 +2307,9 @@
           "title": "Llegada a Uyuni y Salar de Uyuni",
           "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
           "overnight": "Uyuni",
-          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg"
           ]
         },
         {
@@ -2313,9 +2317,9 @@
           "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
           "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
           "overnight": "Uyuni",
-          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg"
           ]
         },
         {
@@ -2323,9 +2327,9 @@
           "title": "Salida desde Uyuni o conexión a La Paz",
           "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg"
           ]
         }
       ],
@@ -2412,9 +2416,9 @@
           "title": "Llegada a Uyuni y Salar de Uyuni",
           "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
           "overnight": "Uyuni",
-          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg"
           ]
         },
         {
@@ -2422,9 +2426,9 @@
           "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
           "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
           "overnight": "Uyuni",
-          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg"
           ]
         },
         {
@@ -2432,9 +2436,9 @@
           "title": "Salida desde Uyuni o conexión a La Paz",
           "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg"
           ]
         }
       ],
