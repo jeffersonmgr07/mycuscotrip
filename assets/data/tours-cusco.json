@@ -959,7 +959,7 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "cover": "./assets/img/tours/valle-sagrado/cover2.jpg",
         "gallery": [
           "./assets/img/tours/valle-sagrado/1.jpg",
           "./assets/img/tours/valle-sagrado/2.jpg"
@@ -1259,7 +1259,7 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "cover": "./assets/img/tours/valle-sagrado/cover3.jpg",
         "gallery": [
           "./assets/img/tours/valle-sagrado/1.jpg",
           "./assets/img/tours/valle-sagrado/2.jpg"
@@ -1638,7 +1638,7 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/valle-sagrado/cover.jpg",
+        "cover": "./assets/img/tours/valle-sagrado/cover4.jpg",
         "gallery": [
           "./assets/img/tours/valle-sagrado/1.jpg",
           "./assets/img/tours/valle-sagrado/2.jpg"
