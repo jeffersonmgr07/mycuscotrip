@@ -1696,7 +1696,7 @@ class MyCuscoTripProductPage {
     this.activeHotelModalDestination = null;
 
     if (cancelBtn) {
-      cancelBtn.textContent = "Cerrar";
+      cancelBtn.textContent = this.t("product.close", "Cerrar");
     }
   }
 
@@ -1813,7 +1813,7 @@ class MyCuscoTripProductPage {
     ]);
     if (map.has(normalized)) return map.get(normalized);
     return value
-      .replace(/desayuno incluido o sujeto a tarifa confirmada/ig, "Breakfast included or subject to the confirmed rate")
+      .replace(/desayuno incluido o sujeto a tarifa confirmada/ig, this.t("product.breakfastIncludedSubjectToRate", "Desayuno incluido o sujeto a tarifa confirmada"))
       .replace(/desayuno incluido/ig, this.t("product.breakfastIncluded", "Breakfast included"))
       .replace(/desayuno/ig, this.t("product.breakfast", "Breakfast"))
       .replace(/agua caliente/ig, this.t("product.hotWater", "Hot water"))
@@ -3665,18 +3665,63 @@ class MyCuscoTripProductPage {
     });
   }
 
+  normalizeHotelTextKey(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ");
+  }
+
+  getLocalizedRoomDescriptor(descriptor) {
+    const locale = this.getLocale();
+    const key = this.normalizeHotelTextKey(descriptor)
+      .replace(/^una?\s+/i, "")
+      .replace(/^\d+\s+/i, "")
+      .replace(/^habitaciones?\s+/i, "")
+      .replace(/^habitacion\s+/i, "")
+      .replace(/^cabana\s+/i, "")
+      .trim();
+
+    const labels = {
+      simple: { es: "simple", en: "single", pt: "individual", fr: "individuelle", de: "Einzel", it: "singola", zh: "单人", ja: "シングル" },
+      "doble twin": { es: "doble twin", en: "twin", pt: "duplo twin", fr: "lits jumeaux", de: "Zweibett", it: "doppia twin", zh: "双床", ja: "ツイン" },
+      matrimonial: { es: "matrimonial", en: "double", pt: "casal", fr: "double", de: "Doppel", it: "matrimoniale", zh: "大床", ja: "ダブル" },
+      triple: { es: "triple", en: "triple", pt: "triplo", fr: "triple", de: "Dreibett", it: "tripla", zh: "三人", ja: "トリプル" },
+      familiar: { es: "familiar", en: "family", pt: "familiar", fr: "familiale", de: "Familien", it: "familiare", zh: "家庭", ja: "ファミリー" },
+      "super familiar": { es: "súper familiar", en: "super family", pt: "super familiar", fr: "super familiale", de: "großes Familien", it: "super familiare", zh: "大型家庭", ja: "スーパーファミリー" },
+      "matrimonial + cama adicional": { es: "matrimonial + cama adicional", en: "double + extra bed", pt: "casal + cama extra", fr: "double + lit supplémentaire", de: "Doppel + Zustellbett", it: "matrimoniale + letto extra", zh: "大床 + 加床", ja: "ダブル＋エキストラベッド" },
+      "familiar cuadruple": { es: "familiar cuádruple", en: "quadruple family", pt: "familiar quádruplo", fr: "familiale quadruple", de: "Vierbett-Familien", it: "familiare quadrupla", zh: "四人家庭", ja: "4名用ファミリー" },
+      "simple estandar": { es: "simple estándar", en: "standard single", pt: "individual standard", fr: "individuelle standard", de: "Standard-Einzel", it: "singola standard", zh: "标准单人", ja: "スタンダードシングル" },
+      "doble estandar": { es: "doble estándar", en: "standard double", pt: "duplo standard", fr: "double standard", de: "Standard-Doppel", it: "doppia standard", zh: "标准大床", ja: "スタンダードダブル" },
+      "doble twin estandar": { es: "doble twin estándar", en: "standard twin", pt: "duplo twin standard", fr: "lits jumeaux standard", de: "Standard-Zweibett", it: "doppia twin standard", zh: "标准双床", ja: "スタンダードツイン" },
+      "superior doble": { es: "superior doble", en: "superior double", pt: "superior duplo", fr: "double supérieure", de: "Superior-Doppel", it: "doppia superior", zh: "高级大床", ja: "スーペリアダブル" },
+      "superior matrimonial": { es: "superior matrimonial", en: "superior double", pt: "superior casal", fr: "double supérieure", de: "Superior-Doppel", it: "matrimoniale superior", zh: "高级大床", ja: "スーペリアダブル" },
+      "superior doble twin": { es: "superior doble twin", en: "superior twin", pt: "superior twin", fr: "lits jumeaux supérieure", de: "Superior-Zweibett", it: "superior twin", zh: "高级双床", ja: "スーペリアツイン" },
+      "triple estandar": { es: "triple estándar", en: "standard triple", pt: "triplo standard", fr: "triple standard", de: "Standard-Dreibett", it: "tripla standard", zh: "标准三人", ja: "スタンダードトリプル" },
+      "cuadruple estandar": { es: "cuádruple estándar", en: "standard quadruple", pt: "quádruplo standard", fr: "quadruple standard", de: "Standard-Vierbett", it: "quadrupla standard", zh: "标准四人", ja: "スタンダード4名用" }
+    };
+
+    return labels[key]?.[locale] || labels[key]?.es || descriptor;
+  }
+
   formatRoomLabel(label) {
-    const normalized = String(label || this.t("product.room", "Room")).trim().replace(/\s+/g, " ");
-    if (!normalized) return this.t("product.room", "Room");
+    const normalized = String(label || this.t("product.room", "habitación")).trim().replace(/\s+/g, " ");
+    if (!normalized) return this.t("product.room", "habitación");
 
     const cleaned = normalized
       .replace(/^una?\s+/i, "")
       .replace(/^\d+\s+/i, "")
       .replace(/^habitaciones?\s+/i, "")
+      .replace(/^habitación\s+/i, "")
+      .replace(/^cabaña\s+/i, "")
       .trim();
 
-    const base = cleaned || this.t("product.room", "room");
-    return base.toLowerCase();
+    const localized = this.getLocalizedRoomDescriptor(cleaned || normalized);
+    const locale = this.getLocale();
+
+    return ["zh", "ja"].includes(locale) ? localized : localized.toLowerCase();
   }
 
   buildCombinationLabel(usedRooms) {
