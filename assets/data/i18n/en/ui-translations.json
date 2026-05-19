@@ -401,5 +401,9 @@
   "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
   "product.select": "Select",
   "product.selectCountry": "Select country",
-  "product.reviewsCount": "(24 reviews)"
+  "product.reviewsCount": "(24 reviews)",
+  "product.close": "Close",
+  "product.closeModal": "Close modal",
+  "product.hotelModalIntro": "Compare categories, photos, rooms and additional rates.",
+  "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate"
 }
