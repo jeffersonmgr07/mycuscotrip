@@ -14,6 +14,18 @@
     el.hidden = false;
   };
 
+  const toHex = (buffer) => [...new Uint8Array(buffer)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  const createSalt = () => {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  };
+  async function hashPassword(password, salt) {
+    const input = new TextEncoder().encode(`${salt}:${password}`);
+    const digest = await crypto.subtle.digest('SHA-256', input);
+    return toHex(digest);
+  }
+
   $('#sameContact')?.addEventListener('change', () => {
     const hidden = $('#sameContact').checked;
     $('#commercialContactFields').hidden = hidden;
@@ -23,7 +35,7 @@
     });
   });
 
-  $('#agencyRegisterForm')?.addEventListener('submit', (event) => {
+  $('#agencyRegisterForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = $('#agencyRegisterForm');
     if (!form.reportValidity()) return;
@@ -43,13 +55,17 @@
       return;
     }
 
+    const salt = createSalt();
+    const passwordHash = await hashPassword(password, salt);
     const file = $('#legalDocumentFile').files[0];
     const agency = {
       id: `agency_${Date.now()}`,
       status: 'Pendiente de revisión',
       createdAt: new Date().toISOString(),
       accessEmail,
-      password,
+      passwordSalt: salt,
+      passwordHash,
+      authMode: 'browser_demo_hash',
       company: {
         name: value('#companyName'),
         taxId: value('#companyTaxId'),
@@ -88,9 +104,10 @@
       email: agency.accessEmail,
       companyName: agency.company.name,
       contactName: agency.commercialContact.firstName,
-      loggedAt: new Date().toISOString()
+      loggedAt: new Date().toISOString(),
+      demoSession: true
     });
-    show('Registro creado correctamente. Ingresando al portal...', 'is-success');
+    show('Registro creado correctamente en modo demo. Para producción debe autenticarse desde backend.', 'is-success');
     setTimeout(() => { window.location.href = './index.html'; }, 900);
   });
 })();
