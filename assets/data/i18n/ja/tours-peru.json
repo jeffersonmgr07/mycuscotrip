@@ -75,10 +75,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/lima-city-tour/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/lima-city-tour/1.jpg",
-          "./assets/img/tours/peru/lima-city-tour/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -225,10 +225,10 @@
       },
       "capacity": 35,
       "images": {
-        "cover": "./assets/img/tours/peru/islas-ballestas/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/islas-ballestas/1.jpg",
-          "./assets/img/tours/peru/islas-ballestas/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -373,11 +373,11 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/paracas-ica-huacachina/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/paracas-ica-huacachina/1.jpg",
-          "./assets/img/tours/peru/paracas-ica-huacachina/2.jpg",
-          "./assets/img/tours/peru/paracas-ica-huacachina/3.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -537,10 +537,10 @@
       },
       "capacity": 12,
       "images": {
-        "cover": "./assets/img/tours/peru/lineas-nazca/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/lineas-nazca/1.jpg",
-          "./assets/img/tours/peru/lineas-nazca/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -682,10 +682,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/arequipa-city-tour/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/arequipa-city-tour/1.jpg",
-          "./assets/img/tours/peru/arequipa-city-tour/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -839,10 +839,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/colca-full-day/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/colca-full-day/1.jpg",
-          "./assets/img/tours/peru/colca-full-day/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -997,10 +997,10 @@
       },
       "capacity": 25,
       "images": {
-        "cover": "./assets/img/tours/peru/titicaca-uros-taquile/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/titicaca-uros-taquile/1.jpg",
-          "./assets/img/tours/peru/titicaca-uros-taquile/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1157,10 +1157,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/sillustani/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/sillustani/1.jpg",
-          "./assets/img/tours/peru/sillustani/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1308,10 +1308,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/tarapoto-laguna-azul/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/tarapoto-laguna-azul/1.jpg",
-          "./assets/img/tours/peru/tarapoto-laguna-azul/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1466,10 +1466,10 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/tours/peru/ahuashiyacu/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/ahuashiyacu/1.jpg",
-          "./assets/img/tours/peru/ahuashiyacu/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1621,10 +1621,10 @@
       },
       "capacity": 16,
       "images": {
-        "cover": "./assets/img/tours/peru/iquitos-amazonas/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/iquitos-amazonas/1.jpg",
-          "./assets/img/tours/peru/iquitos-amazonas/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1780,10 +1780,10 @@
       },
       "capacity": 16,
       "images": {
-        "cover": "./assets/img/tours/peru/tambopata-full-day/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": [
-          "./assets/img/tours/peru/tambopata-full-day/1.jpg",
-          "./assets/img/tours/peru/tambopata-full-day/2.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [

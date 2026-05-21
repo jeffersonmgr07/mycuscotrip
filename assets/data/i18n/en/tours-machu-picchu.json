@@ -164,7 +164,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-full-day-clasico/1.jpg",
           "./assets/img/tours/machu-picchu-full-day-clasico/2.jpg",
-          "./assets/img/tours/machu-picchu-full-day-clasico/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -186,35 +186,35 @@
           "title": "Hotel pickup and transfer to the station",
           "description": "We will begin with pickup from your hotel or previously coordinated point in Cusco. According to the selected train schedule, we will transfer to the corresponding station to begin the route to Machu Picchu.",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/recojo-estacion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Train journey to Machu Picchu Pueblo",
           "description": "You will board the included tourist train or the train you choose during booking. Along the way, you will enjoy Sacred Valley landscapes, Andean mountains and the gradual entrance into the cloud forest around Machu Picchu Pueblo.",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/viaje-tren.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Consettur bus and official Machu Picchu entrance ticket",
           "description": "Upon arrival in Machu Picchu Pueblo, we will coordinate the Consettur bus up to the entrance gate. Access will be with an official ticket and a confirmed circuit according to Ministry of Culture availability.",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Guided tour in Machu Picchu",
           "description": "You will take a guided visit through the main sectors of the citadel. The guide will explain Machu Picchu’s history, architecture, urban organization and ceremonial meaning during the authorized route.",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/tour-guiado.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Return to Cusco",
           "description": "After the visit, you will descend to Machu Picchu Pueblo to take the selected return train. Upon arrival at the final station, we will provide the corresponding ground transfer to Cusco or the coordinated point.",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/retorno-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -872,9 +872,9 @@
       "images": {
         "cover": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
         "gallery": [
-          "./assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
-          "./assets/img/tours/machu-picchu-overnight-clasico/2.jpg",
-          "./assets/img/tours/machu-picchu-overnight-clasico/3.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -896,16 +896,16 @@
           "title": "Day 1: Journey to Aguas Calientes",
           "description": "We will begin with the transfer from Cusco or the coordinated point to the corresponding station. You will board the tourist train to Machu Picchu Pueblo, enjoying the Sacred Valley landscape and the railway route toward the cloud forest. Upon arrival, you will receive assistance getting settled in Aguas Calientes and coordinating the details of the next day’s visit. The night will be in Aguas Calientes according to the selected hotel.",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-viaje-tren.jpg",
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-aguas-calientes.jpg"
+            "./assets/img/placeholder/experience.jpg",
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Day 2: Machu Picchu and return",
           "description": "After breakfast or at the coordinated time, you will take the Consettur bus up to the Machu Picchu citadel. You will take the guided visit along the confirmed circuit, with explanations of the main sectors, history and Inca architecture. At the end, you will return to Machu Picchu Pueblo to take the selected return train and continue with the final transfer to Cusco or the coordinated point.",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-machu-picchu.jpg",
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-retorno.jpg"
+            "./assets/img/placeholder/experience.jpg",
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1222,8 +1222,8 @@
         "cover": "./assets/img/tours/machu-picchu-overnight-express/cover.jpg",
         "gallery": [
           "./assets/img/tours/machu-picchu-overnight-express/1.jpg",
-          "./assets/img/tours/machu-picchu-overnight-express/2.jpg",
-          "./assets/img/tours/machu-picchu-overnight-express/3.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1575,7 +1575,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-panoramico-vistadome/1.jpg",
           "./assets/img/tours/machu-picchu-panoramico-vistadome/2.jpg",
-          "./assets/img/tours/machu-picchu-panoramico-vistadome/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1932,7 +1932,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-the-prime/1.jpg",
           "./assets/img/tours/machu-picchu-the-prime/2.jpg",
-          "./assets/img/tours/machu-picchu-the-prime/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -2645,7 +2645,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-first-class-overnight/1.jpg",
           "./assets/img/tours/machu-picchu-first-class-overnight/2.jpg",
-          "./assets/img/tours/machu-picchu-first-class-overnight/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -2995,7 +2995,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-luxury-hiram-bingham/1.jpg",
           "./assets/img/tours/machu-picchu-luxury-hiram-bingham/2.jpg",
-          "./assets/img/tours/machu-picchu-luxury-hiram-bingham/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -3356,7 +3356,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-luxury-overnight/1.jpg",
           "./assets/img/tours/machu-picchu-luxury-overnight/2.jpg",
-          "./assets/img/tours/machu-picchu-luxury-overnight/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [

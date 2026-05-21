@@ -164,7 +164,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-full-day-clasico/1.jpg",
           "./assets/img/tours/machu-picchu-full-day-clasico/2.jpg",
-          "./assets/img/tours/machu-picchu-full-day-clasico/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -186,35 +186,35 @@
           "title": "Recojo en hotel y traslado a estación",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/recojo-estacion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Viaje en tren a 马丘比丘 Pueblo",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/viaje-tren.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Bus Consettur e 官方门票 a 马丘比丘",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/bus-ingreso.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "旅游 guiado en 马丘比丘",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/tour-guiado.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Retorno a 库斯科",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-full-day-clasico/itinerary/retorno-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -820,9 +820,9 @@
       "images": {
         "cover": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
         "gallery": [
-          "./assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
-          "./assets/img/tours/machu-picchu-overnight-clasico/2.jpg",
-          "./assets/img/tours/machu-picchu-overnight-clasico/3.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -844,7 +844,7 @@
           "title": "Día 1: Viaje a Aguas Calientes",
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-1-viaje-tren.jpg",
+            "./assets/img/placeholder/experience.jpg",
             "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。"
           ]
         },
@@ -853,7 +853,7 @@
           "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
           "images": [
             "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
-            "./assets/img/tours/machu-picchu-overnight-clasico/itinerary/dia-2-retorno.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1144,8 +1144,8 @@
         "cover": "./assets/img/tours/machu-picchu-overnight-express/cover.jpg",
         "gallery": [
           "./assets/img/tours/machu-picchu-overnight-express/1.jpg",
-          "./assets/img/tours/machu-picchu-overnight-express/2.jpg",
-          "./assets/img/tours/machu-picchu-overnight-express/3.jpg"
+          "./assets/img/placeholder/experience.jpg",
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1471,7 +1471,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-panoramico-vistadome/1.jpg",
           "./assets/img/tours/machu-picchu-panoramico-vistadome/2.jpg",
-          "./assets/img/tours/machu-picchu-panoramico-vistadome/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -1802,7 +1802,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-the-prime/1.jpg",
           "./assets/img/tours/machu-picchu-the-prime/2.jpg",
-          "./assets/img/tours/machu-picchu-the-prime/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -2463,7 +2463,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-first-class-overnight/1.jpg",
           "./assets/img/tours/machu-picchu-first-class-overnight/2.jpg",
-          "./assets/img/tours/machu-picchu-first-class-overnight/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -2787,7 +2787,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-luxury-hiram-bingham/1.jpg",
           "./assets/img/tours/machu-picchu-luxury-hiram-bingham/2.jpg",
-          "./assets/img/tours/machu-picchu-luxury-hiram-bingham/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -3122,7 +3122,7 @@
         "gallery": [
           "./assets/img/tours/machu-picchu-luxury-overnight/1.jpg",
           "./assets/img/tours/machu-picchu-luxury-overnight/2.jpg",
-          "./assets/img/tours/machu-picchu-luxury-overnight/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [

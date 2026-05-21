@@ -17,7 +17,7 @@
       "PE",
       "FOREIGN"
     ],
-    "imagesFallback": "./assets/img/placeholder/trekking-cusco.jpg"
+    "imagesFallback": "./assets/img/placeholder/experience.jpg"
   },
   "filters": {
     "types": [
@@ -103,7 +103,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/camino-inca-2-dias-1-noche/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -195,7 +195,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/camino-inca-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -288,7 +288,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/salkantay-trek-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -380,7 +380,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/salkantay-trek-5-dias-4-noches/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -470,7 +470,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/ausangate-trek/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -560,7 +560,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/ausangate-vinicunca/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -651,7 +651,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/inca-jungle-3-dias-2-noches/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {
@@ -742,7 +742,7 @@
         "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。"
       ],
       "images": {
-        "cover": "./assets/img/trekkings/inca-jungle-4-dias-3-noches/cover.jpg",
+        "cover": "./assets/img/placeholder/experience.jpg",
         "gallery": []
       },
       "search": {

@@ -405,5 +405,7 @@
   "product.close": "Close",
   "product.closeModal": "Close modal",
   "product.hotelModalIntro": "Compare categories, photos, rooms and additional rates.",
-  "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate"
+  "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate",
+  "product.notAvailable": "This experience is not publicly available.",
+  "product.savingReservation": "Saving reservation..."
 }

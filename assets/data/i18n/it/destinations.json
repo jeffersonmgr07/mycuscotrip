@@ -227,7 +227,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Cusco",
-        "cardImage": "./assets/img/destinations/cusco/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "valle-sagrado": {
@@ -294,7 +294,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Valle Sacra",
-        "cardImage": "./assets/img/destinations/valle-sagrado/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "aguas-calientes": {
@@ -357,7 +357,7 @@
       "ui": {
         "showInFilters": false,
         "filterLabel": "Aguas Calientes",
-        "cardImage": "./assets/img/destinations/aguas-calientes/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "machu-picchu": {
@@ -421,7 +421,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Machu Picchu",
-        "cardImage": "./assets/img/destinations/machu-picchu/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "ollantaytambo": {
@@ -482,7 +482,7 @@
       "ui": {
         "showInFilters": false,
         "filterLabel": "Ollantaytambo",
-        "cardImage": "./assets/img/destinations/ollantaytambo/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "humantay": {
@@ -537,7 +537,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Humantay",
-        "cardImage": "./assets/img/destinations/humantay/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "vinicunca": {
@@ -595,7 +595,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Montagna Arcobaleno",
-        "cardImage": "./assets/img/destinations/vinicunca/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "palcoyo": {
@@ -651,7 +651,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Palcoyo",
-        "cardImage": "./assets/img/destinations/palcoyo/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "ausangate": {
@@ -707,7 +707,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Siete Lagunas",
-        "cardImage": "./assets/img/destinations/ausangate/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "lima": {
@@ -773,7 +773,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Lima",
-        "cardImage": "./assets/img/destinations/lima/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "paracas": {
@@ -832,7 +832,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Paracas",
-        "cardImage": "./assets/img/destinations/paracas/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "ica": {
@@ -895,7 +895,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Ica / Huacachina",
-        "cardImage": "./assets/img/destinations/ica/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "huacachina": {
@@ -952,7 +952,7 @@
       "ui": {
         "showInFilters": false,
         "filterLabel": "Huacachina",
-        "cardImage": "./assets/img/destinations/huacachina/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "nazca": {
@@ -1011,7 +1011,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Nazca",
-        "cardImage": "./assets/img/destinations/nazca/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "arequipa": {
@@ -1075,7 +1075,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Arequipa",
-        "cardImage": "./assets/img/destinations/arequipa/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "colca": {
@@ -1132,7 +1132,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Colca",
-        "cardImage": "./assets/img/destinations/colca/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "puno": {
@@ -1200,7 +1200,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Puno",
-        "cardImage": "./assets/img/destinations/puno/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "lago-titicaca": {
@@ -1257,7 +1257,7 @@
       "ui": {
         "showInFilters": false,
         "filterLabel": "Lago Titicaca",
-        "cardImage": "./assets/img/destinations/lago-titicaca/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "tarapoto": {
@@ -1314,7 +1314,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Tarapoto",
-        "cardImage": "./assets/img/destinations/tarapoto/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "iquitos": {
@@ -1373,7 +1373,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Iquitos",
-        "cardImage": "./assets/img/destinations/iquitos/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "puerto-maldonado": {
@@ -1435,7 +1435,7 @@
       "ui": {
         "showInFilters": true,
         "filterLabel": "Puerto Maldonado",
-        "cardImage": "./assets/img/destinations/puerto-maldonado/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     },
     "tambopata": {
@@ -1488,7 +1488,7 @@
       "ui": {
         "showInFilters": false,
         "filterLabel": "Tambopata",
-        "cardImage": "./assets/img/destinations/tambopata/cover.jpg"
+        "cardImage": "./assets/img/placeholder/experience.jpg"
       }
     }
   },

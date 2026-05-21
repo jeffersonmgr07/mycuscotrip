@@ -114,35 +114,35 @@
           "title": "Meeting and departure by panoramic bus",
           "description": "We will meet at Plaza Regocijo or the previously coordinated point. From there, we will begin the route on a double-decker panoramic bus, ideal for a first visual connection with the city of Cusco and its surroundings.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Scenic route through Cusco",
           "description": "During the ride, the guide will share historical and cultural insights while you enjoy representative areas of the city, views toward Sacsayhuaman and urban landscapes ideal for photos.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Andean ceremony de bienvenida",
           "description": "You will take part in a symbolic Mother Earth offering ceremony guided by an Andean priest. This experience is designed as a ritual of harmony, gratitude and good energy to begin your journey through Cusco and Machu Picchu.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/ceremonia-andina.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Textile center and Andean culture",
           "description": "We will visit a textile center specializing in alpaca and baby alpaca fiber, where you will learn about traditional weaving techniques, natural dyes and details of Andean clothing.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/centro-textil.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Cristo Blanco viewpoint",
           "description": "We will finish at the Cristo Blanco viewpoint, one of Cusco’s most photographed scenic spots, with time to enjoy the city views and capture memorable images.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -351,21 +351,21 @@
           "title": "Historic center of Cusco",
           "description": "We will begin the route with an introduction to the imperial city, its colonial streets, temples and historic spaces that reveal the fusion of Inca and Spanish architecture.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/centro-historico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Sacsayhuamán",
           "description": "We will visit the impressive archaeological complex of Sacsayhuaman, known for its enormous perfectly fitted stone blocks and its ceremonial importance for ancient Cusco.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/sacsayhuaman.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Qenqo, Puka Pukara and Tambomachay",
           "description": "We will continue to the archaeological sites near the city. You will discover ceremonial spaces, ancient control points and structures linked to water worship.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/qenqo-puka-pukara-tambomachay.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -687,35 +687,35 @@
           "title": "Pisac archaeological site",
           "description": "Departure from Cusco to the Sacred Valley to visit the Pisac archaeological site, famous for its agricultural terraces, panoramic views and Inca heritage.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac craft market",
           "description": "Time to explore the craft market and discover local products, textiles, ceramics and pieces inspired by Andean iconography.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "We will arrive in Urubamba, the heart of the Sacred Valley, where you will have time for an optional buffet lunch before continuing the route.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
           "description": "We will visit the Ollantaytambo archaeological site, an ancient living Inca town and a strategic point in the valley because of its architecture, terraces and temples.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Chinchero",
           "description": "We will close the route with a cultural visit in Chinchero, known for its textile traditions, Andean landscape and historic heritage.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -994,28 +994,28 @@
           "title": "Pisac archaeological site",
           "description": "We will begin the Sacred Valley route by visiting Pisac archaeological site, with Inca terraces, natural viewpoints and an introduction to the valley’s agricultural legacy.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac craft market",
           "description": "You will have time to explore the craft market and discover local products before continuing to the heart of the Sacred Valley.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "We will stop in Urubamba for an optional lunch and a short rest before continuing to Ollantaytambo.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo and connection to Machu Picchu",
           "description": "We will visit Ollantaytambo and finish at this point to facilitate the connection to Aguas Calientes according to the train or service coordinated for Machu Picchu.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1299,49 +1299,49 @@
           "title": "Chinchero",
           "description": "We will start with Chinchero, where you will discover its textile tradition, Andean landscapes and living cultural expressions of the Sacred Valley.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Maras Salt Mines",
           "description": "We will visit the Maras Salt Mines, a unique landscape formed by thousands of salt pools used since ancient times.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "We will explore Moray, known for its circular terraces and possible use as an Inca agricultural laboratory.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Stop for an optional buffet lunch in Urubamba, surrounded by the fertile landscape of the Sacred Valley.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
           "description": "Route through Ollantaytambo, an ancient living Inca town with monumental terraces and historic streets.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac archaeological site",
           "description": "Visit the Pisac archaeological site to appreciate terraces, paths and panoramic valley views.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac craft market",
           "description": "Time to explore the craft market before the final return to Cusco.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1682,35 +1682,35 @@
           "title": "Chinchero",
           "description": "We will begin the VIP route with a cultural visit to Chinchero and a traditional textile demonstration.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Maras Salt Mines",
           "description": "We will continue to the Maras Salt Mines, with time to observe the salt pools and valley landscape.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "We will visit Moray, an archaeological site famous for its circular terraces and agricultural microclimates.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Stop in Urubamba for an optional lunch and rest before continuing to Ollantaytambo.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo and connection to Machu Picchu",
           "description": "We will finish in Ollantaytambo to connect with the program to Machu Picchu or Aguas Calientes, according to the selected option.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2051,28 +2051,28 @@
           "title": "Hotel pickup",
           "description": "Pickup from your hotel or coordinated meeting point in Cusco to begin the route to Chinchero, Maras and Moray.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/recojo-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Chinchero textile center",
           "description": "Cultural visit to learn about traditional weaving techniques, natural dyes and products made with alpaca fiber.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/chinchero-textil.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "Route through the circular terraces of Moray, considered one of the most interesting experimental agricultural spaces in the Andean world.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Maras and Salt Mines",
           "description": "Visit the town of Maras and the famous salt mines, with thousands of pools that form one of the Sacred Valley’s most photogenic landscapes.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2404,28 +2404,28 @@
           "title": "Departure from Cusco",
           "description": "Pickup from your hotel between 8:00 and 8:30 AM to begin the route to southern Cusco.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Tipon",
           "description": "Visit the Tipon archaeological site, famous for its Inca hydraulic system and still-functioning water channels.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/tipon.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pikillacta",
           "description": "Explore the ancient Wari citadel of Pikillacta, an important example of pre-Inca urban planning.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/pikillacta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Andahuaylillas",
           "description": "Visit Andahuaylillas Church, known as the Sistine Chapel of the Americas for its murals, canvases and baroque altarpieces.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/andahuaylillas.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2738,28 +2738,28 @@
           "title": "Departure from Cusco",
           "description": "Early pickup and trip to Mollepata, crossing Andean landscapes until reaching the starting area of the excursion.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Breakfast and start of the hike",
           "description": "Stop for breakfast and preparation before starting the hike to Humantay Lake.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/desayuno-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Arrival at Humantay Lake",
           "description": "Arrival at the turquoise lagoon located at the foot of the Humantay snow-capped mountain, with time for photos, rest and guide explanation.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/laguna-humantay.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Return and lunch",
           "description": "Descent along the same route, lunch in the area and return by tourist transport to Cusco.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/retorno-lunch.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -3033,28 +3033,28 @@
           "title": "Early morning departure",
           "description": "Early pickup in Cusco and trip to the starting point of the Vinicunca route.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/salida-madrugada.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Breakfast and hike",
           "description": "Stop for breakfast before starting the hike to Rainbow Mountain, crossing high-Andean landscapes.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/desayuno-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Arrival at Rainbow Mountain",
           "description": "Time for photos, guide explanation and contemplation of the rainbow mountain landscape.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/vinicunca.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Return and lunch",
           "description": "Descent, lunch and return to Cusco at the end of the experience.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/retorno-lunch.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -3373,35 +3373,35 @@
           "title": "Pickup and departure",
           "description": "Pickup between 4:30 and 5:00 AM from your hotel in Cusco to begin the trip to the south of the region.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Breakfast en Cusipata",
           "description": "Stop in Cusipata for breakfast before continuing to the community of Palcoyo.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/desayuno-cusipata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Arrival at Palcoyo",
           "description": "Arrival in the Palcoyo area, where colorful mountains and high-Andean landscapes can be seen.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/palcoyo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Hike and stone forest",
           "description": "Accessible hike through the colorful mountain range and stone forest.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/bosque-piedras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Lunch and return",
           "description": "Lunch en route and return to Cusco during the afternoon.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/retorno-lunch.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -3680,7 +3680,7 @@
         "gallery": [
           "./assets/img/tours/siete-lagunas-ausangate/1.jpg",
           "./assets/img/tours/siete-lagunas-ausangate/2.jpg",
-          "./assets/img/tours/siete-lagunas-ausangate/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -3704,42 +3704,42 @@
           "title": "Pickup and departure from Cusco",
           "description": "Pickup between 4:00 and 4:30 AM from your hotel and trip to Pacchanta, in the Ausangate area.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Breakfast en Pacchanta",
           "description": "Arrival in Pacchanta, breakfast and guide explanation about the route, altitude and hiking recommendations.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/desayuno-pacchanta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Start of the hike",
           "description": "Start of the trek along high-Andean trails with views of the Ausangate snow-capped mountain and the Vilcanota range.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/inicio-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Route through the 7 lagoons",
           "description": "Visit the lagoons on the circuit, known for their turquoise, emerald green and deep blue tones.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/siete-lagunas.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Return to Pacchanta",
           "description": "Descent to Pacchanta. Depending on the day’s operation, there may be an option to enjoy the area’s hot springs.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/pacchanta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Lunch and regreso a Cusco",
           "description": "Lunch in the area and return by tourist transport to Cusco, arriving at sunset.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/retorno-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],

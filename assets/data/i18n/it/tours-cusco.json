@@ -114,35 +114,35 @@
           "title": "Encuentro y salida en bus panoramico",
           "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus panoramico de dos pisos, ideale per tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/salida-bus-panoramico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Recorrido panoramico por Cusco",
           "description": "Durante el trayecto, el guía compartirá datos históricos y culturales mientras observas sectores representativos de la ciudad, vistas hacia Sacsayhuamán y paisajes urbanos ideales para fotografías.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/recorrido-panoramico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ceremonia andina de bienvenida",
           "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un sacerdote andino. Esta experiencia está pensada como un ritual de armonía, gratitud y buen augurio para iniciar tu viaje por Cusco y Machu Picchu.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/ceremonia-andina.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Centro textil y cultura andina",
           "description": "Visitaremos un centro textil especializado en fibra de alpaca y baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales y detalles de la vestimenta andina.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/centro-textil.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mirador del Cristo Blanco",
           "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos panoramicos más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/itinerary/cristo-blanco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -343,21 +343,21 @@
           "title": "Centro histórico de Cusco",
           "description": "Iniciaremos el recorrido con una introducción a la ciudad imperial, sus calles coloniales, templos y espacios históricos que muestran la fusión entre la arquitectura inca y española.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/centro-historico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Sacsayhuamán",
           "description": "Visitaremos el imponente complejo arqueológico de Sacsayhuamán, reconocido por sus enormes bloques de piedra perfectamente ensamblados y su importancia ceremonial para el antiguo Cusco.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/sacsayhuaman.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Qenqo, Puka Pukara y Tambomachay",
           "description": "Continuaremos hacia los centros arqueológicos cercanos a la ciudad. Scoprirás espacios ceremoniales, antiguos puntos de control y estructuras vinculadas al culto al agua.",
           "images": [
-            "./assets/img/tours/city-tour/itinerary/qenqo-puka-pukara-tambomachay.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -667,35 +667,35 @@
           "title": "Pisac arqueológico",
           "description": "Salida desde Cusco hacia el Valle Sacra para visitar el centro arqueológico de Pisac, famoso por sus terrazas agrícolas, vistas panorámicas y legado inca.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
           "description": "Tiempo para recorrer el mercado artesanal, conocer productos locales, textiles, cerámica y piezas inspiradas en la iconografía andina.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Llegaremos a Urubamba, corazón del Valle Sacra, donde tendrás espacio para tomar un almuerzo buffet opcional antes de continuar la ruta.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
           "description": "Visitaremos el centro arqueológico de Ollantaytambo, antigua ciudad inca viva y punto estratégico del valle por su arquitectura, terrazas y templos.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Chinchero",
           "description": "Cerraremos la ruta con una visita cultural en Chinchero, reconocido por sus tradiciones textiles, paisaje andino y herencia histórica.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -962,28 +962,28 @@
           "title": "Pisac arqueológico",
           "description": "Iniciaremos la ruta por el Valle Sacra visitando Pisac arqueológico, con terrazas incas, miradores naturales y una introducción al legado agrícola del valle.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
           "description": "Tendrás tiempo para recorrer el mercado artesanal y conocer productos locales antes de continuar hacia el corazón del Valle Sacra.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Realizaremos una parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo y conexión a Machu Picchu",
           "description": "Visitaremos Ollantaytambo y finalizaremos en este punto para facilitar la conexión hacia Aguas Calientes según el tren o servicio coordinado para Machu Picchu.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1251,49 +1251,49 @@
           "title": "Chinchero",
           "description": "Comenzaremos con Chinchero, donde conocerás su tradición textil, paisajes andinos y expresiones culturales vivas del Valle Sacra.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
           "description": "Visitaremos las Salineras de Maras, un paisaje único formado por miles de pozas de sal utilizadas desde tiempos antiguos.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "Exploraremos Moray, conocido por sus terrazas circulares y su posible uso como laboratorio agrícola inca.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Parada para almuerzo buffet opcional en Urubamba, rodeado por el paisaje fértil del Valle Sacra.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
           "description": "Recorrido por Ollantaytambo, una antigua ciudad inca viva con terrazas monumentales y calles históricas.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac arqueológico",
           "description": "Visita a Pisac arqueológico para apreciar terrazas, caminos y vistas panorámicas del valle.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/pisac-arqueologico.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
           "description": "Tiempo para recorrer el mercado artesanal antes del retorno final a Cusco.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/mercado-pisac.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1622,35 +1622,35 @@
           "title": "Chinchero",
           "description": "Iniciaremos la ruta VIP con una visita cultural a Chinchero y una demostración textil tradicional.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/chinchero.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
           "description": "Continuaremos hacia las Salineras de Maras, con tiempo para observar las pozas de sal y el paisaje del valle.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "Visitaremos Moray, centro arqueológico famoso por sus terrazas circulares y microclimas agrícolas.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
           "description": "Parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/urubamba.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo y conexión a Machu Picchu",
           "description": "Finalizaremos en Ollantaytambo para conectar con el programa hacia Machu Picchu o Aguas Calientes, según la opción seleccionada.",
           "images": [
-            "./assets/img/tours/valle-sagrado/itinerary/ollantaytambo-conexion.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -1975,28 +1975,28 @@
           "title": "Recojo en hotel",
           "description": "Recojo desde tu hotel o punto coordinado en Cusco para iniciar la ruta hacia Chinchero, Maras e Moray.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/recojo-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Centro textil de Chinchero",
           "description": "Visita cultural para conocer técnicas tradicionales de tejido, tintes naturales y productos elaborados con fibra de alpaca.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/chinchero-textil.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
           "description": "Recorrido por las terrazas circulares de Moray, consideradas uno de los espacios agrícolas experimentales más interesantes del mundo andino.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/moray.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Maras y Salineras",
           "description": "Visita al pueblo de Maras y a las famosas salineras, con miles de pozas que forman uno de los paisajes más fotogénicos del Valle Sacra.",
           "images": [
-            "./assets/img/tours/maras-moray/itinerary/salineras-maras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2315,28 +2315,28 @@
           "title": "Salida desde Cusco",
           "description": "Recojo desde tu hotel entre 8:00 y 8:30 a. m. para iniciar la ruta hacia el sur del Cusco.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Tipón",
           "description": "Visita al centro arqueológico de Tipón, famoso por su sistema hidráulico inca y canales de agua aún funcionales.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/tipon.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pikillacta",
           "description": "Recorrido por la antigua ciudadela Wari de Pikillacta, una muestra importante de urbanismo preinca.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/pikillacta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Andahuaylillas",
           "description": "Visitaremos la iglesia de Andahuaylillas, conocida como la Sixtina de América por su arte mural, lienzos y retablos barrocos.",
           "images": [
-            "./assets/img/tours/valle-sur/itinerary/andahuaylillas.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2637,28 +2637,28 @@
           "title": "Salida desde Cusco",
           "description": "Recojo temprano y viaje hacia Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Desayuno e inicio de caminata",
           "description": "Parada para desayuno y preparación antes de iniciar la caminata hacia la Lago Humantay.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/desayuno-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Llegada a Lago Humantay",
           "description": "Arribo a la laguna turquesa ubicada a los pies del nevado Humantay, con tiempo para fotos, descanso y explicación del guía.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/laguna-humantay.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Retorno y almuerzo",
           "description": "Descenso por la misma ruta, almuerzo en la zona y retorno en transporte turístico hacia Cusco.",
           "images": [
-            "./assets/img/tours/laguna-humantay/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -2920,28 +2920,28 @@
           "title": "Salida de madrugada",
           "description": "Recojo temprano en Cusco y viaje hacia el punto de inicio de la ruta a Vinicunca.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/salida-madrugada.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Desayuno y caminata",
           "description": "Parada para desayuno antes de iniciar la caminata hacia la Montagna Arcobaleno, atravesando paisajes altoandinos.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/desayuno-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Llegada a la Montagna Arcobaleno",
           "description": "Tiempo para fotografías, explicación del guía y contemplación del paisaje de la montaña arcoíris.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/vinicunca.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Retorno y almuerzo",
           "description": "Descenso, almuerzo y retorno a Cusco al finalizar la experiencia.",
           "images": [
-            "./assets/img/tours/montana-colores/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -3248,35 +3248,35 @@
           "title": "Recojo y salida",
           "description": "Recojo entre 4:30 y 5:00 a. m. desde tu hotel en Cusco para iniciar el viaje hacia el sur de la región.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Desayuno en Cusipata",
           "description": "Parada en Cusipata para desayuno antes de continuar hacia la comunidad de Palcoyo.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/desayuno-cusipata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Llegada a Palcoyo",
           "description": "Arribo a la zona de Palcoyo, desde donde se aprecian montañas de colores y paisajes altoandinos.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/palcoyo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Caminata y bosque de piedras",
           "description": "Caminata accesible para recorrer la cordillera de colores y el bosque de piedras.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/bosque-piedras.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Almuerzo y retorno",
           "description": "Almuerzo en ruta y retorno a Cusco durante la tarde.",
           "images": [
-            "./assets/img/tours/montana-palcoyo/itinerary/retorno-almuerzo.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
@@ -3543,7 +3543,7 @@
         "gallery": [
           "./assets/img/tours/siete-lagunas-ausangate/1.jpg",
           "./assets/img/tours/siete-lagunas-ausangate/2.jpg",
-          "./assets/img/tours/siete-lagunas-ausangate/3.jpg"
+          "./assets/img/placeholder/experience.jpg"
         ]
       },
       "includes": [
@@ -3567,42 +3567,42 @@
           "title": "Recojo y salida desde Cusco",
           "description": "Recojo entre 4:00 y 4:30 a. m. desde tu hotel y viaje hacia Pacchanta, en la zona del Ausangate.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/salida-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Desayuno en Pacchanta",
           "description": "Llegada a Pacchanta, desayuno y explicación del guía sobre la ruta, altitud y recomendaciones para la caminata.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/desayuno-pacchanta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Inicio de la caminata",
           "description": "Inicio del trekking por senderos altoandinos con vistas del nevado Ausangate y la cordillera del Vilcanota.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/inicio-caminata.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Recorrido por las 7 lagunas",
           "description": "Visita a las lagunas del circuito, reconocidas por sus tonos turquesa, verde esmeralda y azul profundo.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/siete-lagunas.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Retorno a Pacchanta",
           "description": "Descenso hacia Pacchanta. Según la operación del giorno, opción de disfrutar las aguas termales de la zona.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/pacchanta.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Almuerzo y regreso a Cusco",
           "description": "Almuerzo en la zona y retorno en transporte turístico hacia Cusco, llegando al atardecer.",
           "images": [
-            "./assets/img/tours/siete-lagunas-ausangate/itinerary/retorno-cusco.jpg"
+            "./assets/img/placeholder/experience.jpg"
           ]
         }
       ],
