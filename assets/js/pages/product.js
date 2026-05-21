@@ -58,6 +58,15 @@ class MyCuscoTripProductPage {
     return value;
   }
 
+
+  isPublicProduct(item) {
+    if (window.MyCuscoTripCatalogNormalizer?.isPublicProduct) {
+      return window.MyCuscoTripCatalogNormalizer.isPublicProduct(item);
+    }
+    const status = String(item?.status || "draft").trim().toLowerCase();
+    return Boolean(item?.slug) && status === "published";
+  }
+
   getLocale() {
     return String(window.MCT_LOCALE || document.documentElement.lang || "es").slice(0, 2).toLowerCase();
   }
@@ -87,6 +96,11 @@ class MyCuscoTripProductPage {
 
       if (!product) {
         this.renderNotFound(this.t("product.notFound", "No encontramos esta experiencia."));
+        return;
+      }
+
+      if (!this.isPublicProduct(product)) {
+        this.renderNotFound(this.t("product.notAvailable", "Esta experiencia no está disponible públicamente."));
         return;
       }
 
@@ -168,7 +182,7 @@ class MyCuscoTripProductPage {
       this.catalog = window.MyCuscoTripCatalogNormalizer.normalizeCatalog(this.allData);
 
       this.tours = Array.isArray(this.catalog)
-        ? this.catalog.filter((item) => item.status !== "draft")
+        ? this.catalog.filter((item) => this.isPublicProduct(item))
         : [];
 
       const loadedHotels = this.allData?.data?.hotels;
@@ -280,7 +294,7 @@ class MyCuscoTripProductPage {
     const localProducts = JSON.parse(localStorage.getItem("experiences") || "[]");
   
     if (Array.isArray(localProducts) && localProducts.length > 0) {
-      return localProducts.filter((item) => item.status !== "draft");
+      return localProducts.filter((item) => this.isPublicProduct(item));
     }
   
     const sources = {
@@ -319,7 +333,7 @@ class MyCuscoTripProductPage {
     if (window.MyCuscoTripCatalogNormalizer) {
       return window.MyCuscoTripCatalogNormalizer
         .normalizeCatalog(allData)
-        .filter((item) => item.status !== "draft");
+        .filter((item) => this.isPublicProduct(item));
     }
   
     return [];
@@ -1957,7 +1971,7 @@ class MyCuscoTripProductPage {
     const currentDays = Number(current.days || 0);
 
     const similar = this.tours
-      .filter((item) => item && item.slug && item.slug !== current.slug && item.status !== "draft")
+      .filter((item) => item && item.slug && item.slug !== current.slug && this.isPublicProduct(item))
       .map((item) => ({ item, score: this.calculateSimilarityScore(current, item, currentFamily, currentKind, currentDays) }))
       .filter((entry) => entry.score > 0)
       .sort((a, b) => b.score - a.score || String(a.item.title || "").localeCompare(String(b.item.title || ""), "es"))
@@ -2817,7 +2831,7 @@ class MyCuscoTripProductPage {
     });
   }
 
-  handlePassengerReservationSubmit(event) {
+  async handlePassengerReservationSubmit(event) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -2892,19 +2906,34 @@ class MyCuscoTripProductPage {
       holder,
       passengers,
       passengerDataPolicy: "additional_passengers_can_be_completed_15_to_30_days_before_travel",
-      paymentGatewayReady: true,
+      paymentGatewayReady: false,
+      paymentGatewayProvider: "paypal_prepared",
       checkoutPayload: {
         reservationCode: this.currentPreReservation?.code,
         currency: this.currentPreReservation?.currency || this.product?.currency || "USD",
         amountToPayNow: this.currentPreReservation?.payNow,
+        amountToPayNowValue: Number(this.currentPreReservation?.payNowValue || 0),
         pendingBalance: this.currentPreReservation?.payLater,
+        pendingBalanceValue: Number(this.currentPreReservation?.payLaterValue || 0),
         productId: this.currentPreReservation?.productId,
-        productTitle: this.currentPreReservation?.productTitle
+        productTitle: this.currentPreReservation?.productTitle,
+        provider: "paypal",
+        backendRequired: true
       }
     };
 
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.dataset.originalText = submitButton.textContent || "";
+      submitButton.textContent = this.t("product.savingReservation", "Guardando reserva...");
+    }
+
     try {
-      localStorage.setItem(`mct_pre_reservation_${payload.code}`, JSON.stringify(payload));
+      const apiResult = window.MyCuscoTripApiClient?.createPreReservation
+        ? await window.MyCuscoTripApiClient.createPreReservation(payload)
+        : null;
+
       this.trackEvent("pre_reservation_created", {
         reservation_code: payload.code,
         product_id: payload.productId,
@@ -2915,7 +2944,8 @@ class MyCuscoTripProductPage {
         total_value: Number(payload.serviceTotalValue || 0),
         pending_balance: Number(payload.payLaterValue || 0),
         passenger_count: payload.passengers?.length || payload.totalPassengers || 0,
-        holder_is_passenger: Boolean(payload.holderIsPassenger)
+        holder_is_passenger: Boolean(payload.holderIsPassenger),
+        persistence_mode: apiResult?.mock ? "mock" : "backend"
       }, { metaEventName: "CompleteRegistration" });
       this.trackEvent("begin_payment", {
         reservation_code: payload.code,
@@ -2923,17 +2953,25 @@ class MyCuscoTripProductPage {
         product_name: payload.productTitle,
         currency: payload.currency || "USD",
         value: Number(payload.payNowValue || 0),
-        payment_status: "pending"
+        payment_status: "pending",
+        payment_provider: "paypal"
       }, { metaEventName: "InitiateCheckout" });
       if (message) {
-        message.textContent = `Reserva ${payload.code} lista. Continuaremos al pago cuando la pasarela esté conectada.`;
+        message.textContent = apiResult?.mock
+          ? `Reserva ${payload.code} creada como borrador seguro. Cuando conectes el backend, se enviará a PayPal para pago real.`
+          : `Reserva ${payload.code} registrada. Continúa con el pago seguro por PayPal.`;
         message.classList.remove("is-error");
       }
     } catch (error) {
       console.error("No se pudo guardar la pre-reserva:", error);
       if (message) {
-        message.textContent = "No se pudo guardar localmente la reserva.";
+        message.textContent = "No se pudo registrar la reserva. Revisa la conexión o la configuración del backend.";
         message.classList.add("is-error");
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = submitButton.dataset.originalText || this.t("product.continueToPayment", "Continuar al pago");
       }
     }
   }

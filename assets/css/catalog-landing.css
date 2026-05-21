@@ -281,3 +281,136 @@
 #catalogLandingEmpty {
   display: none !important;
 }
+
+/* Quote builder lite - pre-backend ready */
+.quote-builder-lite {
+  margin: 0 0 30px;
+  padding: 26px;
+  border-radius: 26px;
+  background: #ffffff;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+  box-shadow: 0 18px 42px rgba(6, 40, 3, 0.08);
+}
+
+.quote-builder-lite__header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.quote-builder-lite__header p {
+  margin: 0;
+  color: #0a7f49;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .78rem;
+}
+
+.quote-builder-lite__header h2 {
+  margin: 0;
+  color: #062803;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+}
+
+.quote-builder-lite__header span {
+  color: #5e6b66;
+  line-height: 1.6;
+}
+
+.quote-builder-lite__form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quote-builder-lite__form label {
+  display: grid;
+  gap: 7px;
+  font-weight: 800;
+  color: #17322a;
+  font-size: .92rem;
+}
+
+.quote-builder-lite__form input,
+.quote-builder-lite__form select,
+.quote-builder-lite__form textarea {
+  width: 100%;
+  border: 1px solid rgba(6, 40, 3, .16);
+  border-radius: 14px;
+  padding: 12px 13px;
+  font: inherit;
+  color: #17322a;
+  background: #fbfdfb;
+}
+
+.quote-builder-lite__wide,
+.quote-builder-lite__actions,
+.quote-builder-lite__result {
+  grid-column: 1 / -1;
+}
+
+.quote-builder-lite__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.quote-builder-lite__actions small {
+  color: #697871;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.quote-builder-lite__result {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  line-height: 1.5;
+}
+
+.quote-builder-lite__result.is-success {
+  background: #edf8f0;
+  color: #17482d;
+  border: 1px solid rgba(21, 128, 61, .18);
+}
+
+.quote-builder-lite__result.is-error {
+  background: #fff3f1;
+  color: #923122;
+  border: 1px solid rgba(185, 28, 28, .18);
+}
+
+.quote-builder-lite__result a {
+  display: inline-flex;
+  margin-left: 10px;
+  font-weight: 800;
+  color: #0a7f49;
+}
+
+@media (max-width: 900px) {
+  .quote-builder-lite__form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .quote-builder-lite {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .quote-builder-lite__form {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-builder-lite__actions {
+    align-items: stretch;
+  }
+
+  .quote-builder-lite__actions .btn {
+    width: 100%;
+  }
+}

@@ -134,6 +134,12 @@
       .replace(/'/g, "&#039;");
   }
 
+
+  function isPublicProduct(item) {
+    const status = String(item?.status || "draft").trim().toLowerCase();
+    return Boolean(item?.slug) && status === "published";
+  }
+
   function normalizeText(value) {
     return String(value || "")
       .toLowerCase()
@@ -285,7 +291,7 @@
 
     state.catalog = loaded
       .flat()
-      .filter((item) => item.slug && item.status !== "hidden" && item.status !== "archived");
+      .filter(isPublicProduct);
   }
 
   function getPageConfig() {

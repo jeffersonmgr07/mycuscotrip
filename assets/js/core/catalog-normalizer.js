@@ -23,6 +23,14 @@ function firstValid(...values) {
   return values.find((value) => value !== undefined && value !== null && value !== "") ?? null;
 }
 
+function normalizeStatus(value) {
+  return safeString(value, "draft").toLowerCase();
+}
+
+function isPublicProduct(item) {
+  return normalizeStatus(item?.status) === "published";
+}
+
 function normalizeImage(item) {
   if (!item) return "";
 
@@ -309,6 +317,8 @@ function groupCatalogByFamily(catalog = []) {
 }
 
 window.MyCuscoTripCatalogNormalizer = {
+  normalizeStatus,
+  isPublicProduct,
   normalizeTour,
   normalizePackageCard,
   normalizeCatalog,

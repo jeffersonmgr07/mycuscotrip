@@ -125,6 +125,15 @@
     return Array.isArray(value) ? value : [];
   }
 
+
+  function isPublicProduct(item) {
+    if (window.MyCuscoTripCatalogNormalizer?.isPublicProduct) {
+      return window.MyCuscoTripCatalogNormalizer.isPublicProduct(item);
+    }
+    const status = String(item?.status || "draft").trim().toLowerCase();
+    return Boolean(item?.slug) && status === "published";
+  }
+
   function normalizeText(value) {
     return String(value || "")
       .toLowerCase()
@@ -497,7 +506,7 @@
   function buildDynamicCuscoPackageCards(loaded) {
     const data = getDataPayload(loaded);
     const packagesCusco = data.packagesCusco;
-    const cards = toArray(packagesCusco?.packageCards).filter((card) => card.status !== "draft");
+    const cards = toArray(packagesCusco?.packageCards).filter(isPublicProduct);
     const tourIndex = buildTourIndex(data);
 
     if (!cards.length) return [];
@@ -544,7 +553,7 @@
       .map((product, index) => createStaticPackageCard(product, index));
 
     return [...tours, ...dynamicCuscoPackages, ...peruPackages]
-      .filter((product) => product.slug && product.status !== "draft")
+      .filter(isPublicProduct)
       .map((product, index) => ({
         ...product,
         showcaseIndex: index,

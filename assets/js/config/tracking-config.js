@@ -11,7 +11,7 @@
  */
 window.MCT_TRACKING_CONFIG = {
   enabled: true,
-  debug: true,
+  debug: false,
 
   // Meta / Facebook Pixel
   facebookPixelId: "1046487399026701",
