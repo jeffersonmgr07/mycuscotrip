@@ -5755,100 +5755,104 @@ body.is-generating-pdf .print-booking-offer__content {
   object-fit: contain !important;
 }
 
-/* v27 ajustes puntuales: impresión e itinerario en pantalla */
-.quote-itinerary-item--activity-list {
-  display: block !important;
-  padding: 18px !important;
-  border: 1px solid rgba(6, 40, 3, 0.10) !important;
-  border-left: 5px solid #0a3a26 !important;
-  border-radius: 22px !important;
-  background: #ffffff !important;
-  box-shadow: 0 14px 35px rgba(6, 40, 3, 0.08) !important;
-}
-.quote-itinerary-item__dayline--screen {
-  margin-bottom: 14px !important;
-}
-.quote-itinerary-day-activities {
+/* === V27: SOLO cabecera del formato de impresión según referencia enviada === */
+#printQuotation .print-header,
+.print-header,
+body.is-generating-pdf .print-header {
   display: grid !important;
-  gap: 14px !important;
-}
-.quote-itinerary-activity-row {
-  display: grid !important;
-  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr) !important;
-  gap: 16px !important;
+  grid-template-columns: 1fr 0.92fr !important;
+  gap: 12mm !important;
   align-items: start !important;
-  padding-top: 14px !important;
-  border-top: 1px solid rgba(6, 40, 3, 0.08) !important;
-}
-.quote-itinerary-activity-row:first-child {
-  padding-top: 0 !important;
-  border-top: 0 !important;
-}
-.quote-itinerary-activity-row__image {
-  margin: 0 !important;
-  overflow: hidden !important;
-  border-radius: 18px !important;
-  background: #edf4ef !important;
-}
-.quote-itinerary-activity-row__image img {
-  display: block !important;
-  width: 100% !important;
-  height: 142px !important;
-  object-fit: cover !important;
-}
-.quote-itinerary-item--activity-list .quote-itinerary-activity {
-  padding-left: 0 !important;
-}
-.quote-itinerary-item--activity-list .quote-itinerary-activity::before {
-  display: none !important;
-  content: none !important;
-}
-@media (max-width: 680px) {
-  .quote-itinerary-activity-row {
-    grid-template-columns: 1fr !important;
-  }
-  .quote-itinerary-activity-row__image img {
-    height: 190px !important;
-  }
+  padding: 0 0 4.5mm !important;
+  margin: 0 0 5mm !important;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.16) !important;
+  background: #ffffff !important;
 }
 
-#printQuotation .print-itinerary-item--activity-images,
-.print-itinerary-item--activity-images,
-body.is-generating-pdf .print-itinerary-item--activity-images {
-  padding-left: 4mm !important;
+#printQuotation .print-company,
+.print-company,
+body.is-generating-pdf .print-company {
+  display: block !important;
+  text-align: left !important;
 }
-#printQuotation .print-itinerary-dayline,
-.print-itinerary-dayline,
-body.is-generating-pdf .print-itinerary-dayline {
-  display: flex !important;
-  align-items: center !important;
-  gap: 2mm !important;
-  margin: 0 0 1.6mm 2mm !important;
+
+#printQuotation .print-logo,
+.print-logo,
+body.is-generating-pdf .print-logo {
+  width: 54mm !important;
+  max-width: 54mm !important;
+  height: auto !important;
+  max-height: 30mm !important;
+  object-fit: contain !important;
+  object-position: left top !important;
+  margin: 0 0 3.5mm !important;
 }
-#printQuotation .print-day-badge,
-.print-day-badge,
-body.is-generating-pdf .print-day-badge {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 17mm !important;
-  padding: 1.1mm 3.2mm !important;
-  border-radius: 999px !important;
-  background: #0a3a26 !important;
-  color: #ffffff !important;
-  font-weight: 900 !important;
-  font-size: 7.7pt !important;
+
+#printQuotation .print-company p,
+.print-company p,
+body.is-generating-pdf .print-company p {
+  margin: 0 0 1.15mm !important;
+  padding: 0 !important;
+  color: #333333 !important;
+  font-size: 9pt !important;
+  line-height: 1.25 !important;
+  font-weight: 400 !important;
+}
+
+#printQuotation .print-company p strong,
+.print-company p strong,
+body.is-generating-pdf .print-company p strong,
+#printQuotation .print-company i,
+.print-company i,
+body.is-generating-pdf .print-company i {
+  display: none !important;
+}
+
+#printQuotation .print-header__right,
+.print-header__right,
+body.is-generating-pdf .print-header__right {
+  display: block !important;
+  text-align: right !important;
+  padding-top: 5mm !important;
+}
+
+#printQuotation .print-header__right h1,
+.print-header__right h1,
+body.is-generating-pdf .print-header__right h1 {
+  margin: 0 0 4.2mm !important;
+  color: #062803 !important;
+  font-size: 22pt !important;
   line-height: 1 !important;
-}
-#printQuotation .print-itinerary-dayline .print-itinerary-date-label,
-.print-itinerary-dayline .print-itinerary-date-label,
-body.is-generating-pdf .print-itinerary-dayline .print-itinerary-date-label {
-  color: #9a6a2f !important;
   font-weight: 900 !important;
-  font-size: 7.8pt !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
 }
-#printQuotation .print-itinerary-activity-block--with-image img,
-.print-itinerary-activity-block--with-image img,
-body.is-generating-pdf .print-itinerary-activity-block--with-image img {
-  margin-top: 1.2mm !important;
+
+#printQuotation .print-quote-badge,
+.print-quote-badge,
+body.is-generating-pdf .print-quote-badge {
+  display: inline !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #062803 !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+#printQuotation .print-header__right p,
+.print-header__right p,
+body.is-generating-pdf .print-header__right p {
+  margin: 0 0 1.15mm !important;
+  color: #333333 !important;
+  font-size: 8.8pt !important;
+  line-height: 1.25 !important;
+  font-weight: 400 !important;
+}
+
+#printQuotation .print-header__right p strong,
+.print-header__right p strong,
+body.is-generating-pdf .print-header__right p strong {
+  color: #333333 !important;
+  font-weight: 900 !important;
 }
