@@ -160,6 +160,23 @@
     return resolveAssetPath(tour?.images?.cover || tour?.image || "./assets/img/placeholder/experience.jpg");
   }
 
+  function getActivityImage(activity, day) {
+    if (activity?.tour) return getImageFromTour(activity.tour);
+
+    const title = normalizeText(activity?.syntheticTitle || activity?.note || "");
+    const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
+
+    if (title.includes("recojo") || title.includes("aeropuerto") || title.includes("terminal")) {
+      return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
+    }
+
+    if (title.includes("traslado") || day?.day === totalDays) {
+      return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
+    }
+
+    return "./assets/img/quote/fallbacks/cusco.jpg";
+  }
+
   function money(amount, currency = state.currency) {
     const value = Number(amount || 0);
     const code = currency || "USD";
@@ -810,8 +827,17 @@
 
     const days = buildItineraryItems(option);
     target.innerHTML = days.map((day) => {
-      const firstTour = day.activities.find((item) => item.tour)?.tour;
-      const image = getImageFromTour(firstTour);
+      const mediaHtml = day.activities.map((activity, index) => {
+        const title = getActivityDisplayTitle(activity, day);
+        const image = getActivityImage(activity, day);
+        return `
+          <figure class="quote-itinerary-activity-media">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">
+            ${day.activities.length > 1 ? `<figcaption>${escapeHtml(title)}</figcaption>` : ""}
+          </figure>
+        `;
+      }).join("");
+
       const activityHtml = day.activities.map((activity, index) => {
         const tour = activity.tour;
         const title = getActivityDisplayTitle(activity, day);
@@ -832,8 +858,8 @@
 
       return `
         <div class="quote-itinerary-item quote-itinerary-item--media">
-          <div class="quote-itinerary-item__media">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(firstTour?.title || `Día ${day.displayDay}`)}" loading="lazy">
+          <div class="quote-itinerary-item__media quote-itinerary-item__media--stack">
+            ${mediaHtml}
           </div>
           <div class="quote-itinerary-item__body">
             <div class="quote-itinerary-item__dayline">
@@ -1268,8 +1294,9 @@
     const allowedCompanies = toArray(config.allowedCompanies).map(normalizeText);
     const defaultCode = config.defaultTrainCodes?.[normalizedDirection];
     const timeWindow = config.timeWindows?.[normalizedDirection];
-    const outboundOperator = state.selectedTrains.outbound?.operatorKey || state.selectedTrains.outbound?.company;
-    const sameCompanyRequired = normalizedDirection === "return" && config.returnOptionsRule === "same_company_as_outbound" && outboundOperator && outboundOperator !== "local";
+    const outboundTrain = state.selectedTrains.outbound;
+    const outboundOperator = outboundTrain?.operatorKey || outboundTrain?.company;
+    const sameCompanyRequired = normalizedDirection === "return" && outboundTrain && !outboundTrain.isLocalTrain && outboundOperator;
 
     let options = trains.filter((train) => {
       if (normalizedDirection === "outbound" && !isOutboundTrain(train)) return false;
@@ -1432,9 +1459,7 @@
     state.selectedTrains[direction] = train;
     if (direction === "outbound") {
       const returnTrain = state.selectedTrains.return;
-      const config = getTrainSelectionConfig();
-      const sameRequired = config?.returnOptionsRule === "same_company_as_outbound";
-      if (sameRequired && returnTrain && !returnTrain.isLocalTrain && !train.isLocalTrain && normalizeText(returnTrain.operatorKey || returnTrain.company) !== normalizeText(train.operatorKey || train.company)) {
+      if (returnTrain && !train.isLocalTrain && normalizeText(returnTrain.operatorKey || returnTrain.company) !== normalizeText(train.operatorKey || train.company)) {
         state.selectedTrains.return = null;
       }
     }
@@ -1773,27 +1798,32 @@
 
     const printItinerary = $("#printItinerary");
     if (printItinerary) {
-      printItinerary.innerHTML = buildItineraryItems(option).map((day) => {
-        const firstTour = day.activities.find((item) => item.tour)?.tour;
-        const image = getImageFromTour(firstTour);
-        return `
-          <div class="print-itinerary-item print-itinerary-item--media">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(firstTour?.title || `Día ${day.displayDay}`)}">
-            <div>
-              <strong>Día ${day.displayDay} · <span class="print-itinerary-date-label">${escapeHtml(formatDate(day.date))}</span></strong>
-              ${day.activities.map((activity, index) => {
-                const tour = activity.tour;
-                const title = getActivityDisplayTitle(activity, day);
-                const time = getActivityDisplayTime(activity, day, index);
-                const description = getActivityDisplayDescription(activity, day);
-                const places = getActivityPlacesText(activity, day);
-                const note = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "";
-                return `<div class="print-itinerary-activity-block">${time ? `<span class="print-itinerary-start-time">${escapeHtml(time)}</span>` : ""}<h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>${places ? `<p class="print-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}</div>`;
-              }).join("")}
-            </div>
-          </div>
-        `;
-      }).join("");
+      printItinerary.innerHTML = buildItineraryItems(option).map((day) => `
+        <div class="print-itinerary-item print-itinerary-item--activity-images">
+          <strong>Día ${day.displayDay} · <span class="print-itinerary-date-label">${escapeHtml(formatDate(day.date))}</span></strong>
+          ${day.activities.map((activity, index) => {
+            const tour = activity.tour;
+            const title = getActivityDisplayTitle(activity, day);
+            const time = getActivityDisplayTime(activity, day, index);
+            const description = getActivityDisplayDescription(activity, day);
+            const places = getActivityPlacesText(activity, day);
+            const note = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "";
+            const image = getActivityImage(activity, day);
+            return `
+              <div class="print-itinerary-activity-block print-itinerary-activity-block--with-image">
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}">
+                <div>
+                  ${time ? `<span class="print-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
+                  <h4>${escapeHtml(title)}</h4>
+                  <p>${escapeHtml(description)}</p>
+                  ${places ? `<p class="print-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
+                  ${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `).join("");
     }
 
     const offer = $("#printBookingOffer");
