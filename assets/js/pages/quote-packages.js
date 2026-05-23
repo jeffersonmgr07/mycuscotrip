@@ -495,6 +495,15 @@
     return 180;
   }
 
+  function getAvailableStartTime(arrivalTime) {
+    const arrival = timeToMinutes(arrivalTime || "09:00");
+    // Margen operativo aproximado para recojo, equipaje y traslado al hotel.
+    const available = arrival + 90;
+    const h = Math.floor(available / 60) % 24;
+    const m = available % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+
   function getOptionCommercialBadge(option, index) {
     if (index === 0) return "Recomendado";
     if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return "Más vendido";
@@ -757,33 +766,31 @@
     return convert(amount, currency, "USD");
   }
 
+  function getRoomCapacity(room) {
+    return Number(room?.capacity || room?.maxAdults || 1) || 1;
+  }
+
+  function getRoomTypeId(room) {
+    return String(room?.roomType || room?.label || "room").replace(/\s+/g, "-").toLowerCase();
+  }
+
   function isRoomCompatible(room) {
-    const pax = getPassengerCount();
-    const adults = state.adults;
-    const children = state.children;
-    const capacity = Number(room?.capacity || room?.maxAdults || 1);
-    const maxAdults = Number(room?.maxAdults || capacity);
-    const maxChildren = Number(room?.maxChildren ?? capacity);
-    return (capacity >= pax) || (maxAdults >= adults && maxChildren >= children);
+    return getRoomCapacity(room) >= 1;
   }
 
   function chooseBestRoom(hotel) {
-    const rooms = toArray(hotel?.rooms);
+    const rooms = toArray(hotel?.rooms).filter(isRoomCompatible);
     if (!rooms.length) return null;
     const pax = getPassengerCount();
-    const candidates = rooms
-      .filter(isRoomCompatible)
-      .map((room) => {
-        const capacity = Number(room.capacity || room.maxAdults || 1);
-        const exact = capacity === pax ? 0 : Math.abs(capacity - pax) + 1;
-        return { room, score: exact + getRoomPriceUSD(room) / 1000 };
-      })
-      .sort((a, b) => a.score - b.score);
-    return candidates[0]?.room || rooms[0];
+    return rooms
+      .map((room) => ({ room, score: Math.abs(getRoomCapacity(room) - pax) + getRoomPriceUSD(room) / 1000 }))
+      .sort((a, b) => a.score - b.score)[0]?.room || rooms[0];
   }
 
-  function getHotelSelectionKey(destination, hotel, room) {
-    return `${destination}::${hotel?.hotelCode || "hotel"}::${room?.roomType || "room"}`;
+  function getHotelSelectionKey(destination, hotel, roomOrRooms) {
+    const rooms = Array.isArray(roomOrRooms) ? roomOrRooms : [roomOrRooms].filter(Boolean);
+    const roomKey = rooms.length ? rooms.map(getRoomTypeId).join("+") : "room";
+    return `${destination}::${hotel?.hotelCode || "hotel"}::${roomKey}`;
   }
 
   function getRoomDescription(room) {
@@ -793,6 +800,65 @@
       Number(room?.capacity || 0) ? `capacidad ${room.capacity}` : ""
     ].filter(Boolean);
     return parts.join(" · ");
+  }
+
+  function getRoomsSummary(rooms = []) {
+    const list = toArray(rooms).filter(Boolean);
+    if (!list.length) return "Habitación por confirmar";
+    const counts = new Map();
+    list.forEach((room) => {
+      const label = room?.label || room?.roomType || "Habitación";
+      counts.set(label, (counts.get(label) || 0) + 1);
+    });
+    return Array.from(counts.entries()).map(([label, count]) => `${count > 1 ? `${count} × ` : ""}${label}`).join(" + ");
+  }
+
+  function getRoomsDetails(rooms = []) {
+    return toArray(rooms).filter(Boolean).map(getRoomDescription).join(" | ");
+  }
+
+  function buildRoomCombinations(hotel, maxResults = 8) {
+    const pax = Math.max(1, getPassengerCount());
+    const rooms = toArray(hotel?.rooms).filter(isRoomCompatible);
+    if (!rooms.length) return [];
+
+    const normalized = rooms
+      .map((room) => ({ room, capacity: getRoomCapacity(room), price: getRoomPriceUSD(room) }))
+      .filter((item) => item.capacity > 0)
+      .sort((a, b) => a.price - b.price || a.capacity - b.capacity);
+
+    const maxRooms = Math.min(4, Math.max(1, pax));
+    const combos = [];
+
+    function walk(startIndex, picked, capacity, price) {
+      if (capacity >= pax) {
+        const extra = capacity - pax;
+        combos.push({
+          rooms: picked.map((item) => item.room),
+          capacity,
+          priceUSDPerNight: price,
+          score: picked.length * 1000 + extra * 100 + price
+        });
+        return;
+      }
+      if (picked.length >= maxRooms) return;
+      for (let i = startIndex; i < normalized.length; i += 1) {
+        const item = normalized[i];
+        walk(i, [...picked, item], capacity + item.capacity, price + item.price);
+      }
+    }
+
+    walk(0, [], 0, 0);
+
+    const unique = new Map();
+    combos
+      .sort((a, b) => a.score - b.score)
+      .forEach((combo) => {
+        const key = combo.rooms.map(getRoomTypeId).sort().join("+");
+        if (!unique.has(key)) unique.set(key, combo);
+      });
+
+    return Array.from(unique.values()).slice(0, maxResults);
   }
 
   function buildHotelOptions(destination) {
@@ -805,23 +871,27 @@
       label: "Sin hotel / solo tours",
       description: "No se suma alojamiento para este destino.",
       priceUSD: 0,
-      nights: plan?.nights || 0
+      nights: plan?.nights || 0,
+      rooms: []
     }];
 
     hotels.forEach((hotel) => {
-      const rooms = toArray(hotel.rooms).filter(isRoomCompatible);
-      const roomList = rooms.length ? rooms : toArray(hotel.rooms).slice(0, 1);
-      roomList.forEach((room) => {
-        if (!room) return;
-        const priceUSD = getRoomPriceUSD(room) * Number(plan?.nights || 1);
+      const combos = buildRoomCombinations(hotel);
+      combos.forEach((combo) => {
+        const priceUSD = combo.priceUSDPerNight * Number(plan?.nights || 1);
         options.push({
-          key: getHotelSelectionKey(destination, hotel, room),
+          key: getHotelSelectionKey(destination, hotel, combo.rooms),
           destination,
           type: "hotel",
           hotel,
-          room,
+          room: combo.rooms[0] || null,
+          rooms: combo.rooms,
           label: hotel.hotelName || "Hotel seleccionado",
-          description: `${hotel.stars || ""}★ · ${hotel.location || plan?.label || destination} · ${getRoomDescription(room)}`,
+          description: `${hotel.stars || ""}★ · ${hotel.location || plan?.label || destination} · ${getRoomsSummary(combo.rooms)}`,
+          roomsSummary: getRoomsSummary(combo.rooms),
+          roomsDetails: getRoomsDetails(combo.rooms),
+          capacity: combo.capacity,
+          priceUSDPerNight: combo.priceUSDPerNight,
           priceUSD,
           nights: plan?.nights || 0
         });
@@ -871,7 +941,7 @@
 
   function openHotelModal(destination) {
     state.activeHotelDestination = destination;
-    state.pendingHotelKey = state.selectedHotels[destination]?.key || null;
+    state.pendingHotelKey = state.selectedHotels[destination]?.key || `${destination}::none`;
     const modal = $("#hotelModal");
     const title = $("#hotelModalTitle");
     const intro = $("#hotelModalIntro");
@@ -880,41 +950,76 @@
     if (!modal || !list || !plan) return;
 
     if (title) title.textContent = `Elige alojamiento en ${plan.label}`;
-    if (intro) intro.textContent = `Selecciona hotel y tipo de habitación para ${plan.nights} noche(s), compatible con ${getPassengerCount()} pasajero(s).`;
+    if (intro) intro.textContent = `Elige un hotel y luego una combinación de habitaciones para ${getPassengerCount()} pasajero(s) durante ${plan.nights} noche(s).`;
 
     const options = buildHotelOptions(destination);
-    list.innerHTML = options.map((option) => {
-      const selected = option.key === state.pendingHotelKey || (!state.pendingHotelKey && option.type === "none");
-      const gallery = option.hotel?.images?.gallery || [];
-      const imgPath = option.hotel?.images?.cover || gallery[0];
-      const features = toArray(option.hotel?.features).slice(0, 4);
-      const amenities = toArray(option.hotel?.amenities).slice(0, 4);
-      const image = option.type === "hotel"
-        ? `<div class="quote-hotel-modal-card__image"><img src="${escapeHtml(resolveAssetPath(imgPath))}" alt="${escapeHtml(option.label)}" loading="lazy"></div>`
-        : `<div class="quote-hotel-modal-card__image quote-hotel-modal-card__image--empty"><i class="fas fa-bed"></i></div>`;
-      const room = option.room;
+    const noneOption = options.find((option) => option.type === "none");
+    const hotelOptions = options.filter((option) => option.type === "hotel");
+    const grouped = hotelOptions.reduce((acc, option) => {
+      const code = option.hotel?.hotelCode || option.label;
+      if (!acc.has(code)) acc.set(code, { hotel: option.hotel, options: [] });
+      acc.get(code).options.push(option);
+      return acc;
+    }, new Map());
+
+    const noneSelected = state.pendingHotelKey === noneOption?.key;
+    const noneHtml = noneOption ? `
+      <button type="button" class="quote-hotel-choice-card quote-hotel-choice-card--none ${noneSelected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(noneOption.key)}">
+        <span class="quote-choice-dot" aria-hidden="true"></span>
+        <div>
+          <strong>Sin hotel / solo tours</strong>
+          <p>No se suma alojamiento para este destino. Puedes reservarlo por tu cuenta.</p>
+          <em>Sin costo de hotel</em>
+        </div>
+      </button>
+    ` : "";
+
+    const hotelHtml = Array.from(grouped.values()).map((group) => {
+      const hotel = group.hotel;
+      const gallery = hotel?.images?.gallery || [];
+      const imgPath = hotel?.images?.cover || gallery[0];
+      const features = [...toArray(hotel?.features), ...toArray(hotel?.amenities)].slice(0, 5);
+      const selectedInHotel = group.options.some((option) => option.key === state.pendingHotelKey);
+      const roomsHtml = group.options.map((option) => {
+        const selected = option.key === state.pendingHotelKey;
+        return `
+          <button type="button" class="quote-room-combo ${selected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(option.key)}">
+            <span class="quote-choice-dot" aria-hidden="true"></span>
+            <div>
+              <strong>${escapeHtml(option.roomsSummary)}</strong>
+              <small>${escapeHtml(option.roomsDetails || `Capacidad ${option.capacity} pasajero(s)`)}</small>
+            </div>
+            <em>${escapeHtml(money(convert(option.priceUSD, "USD", state.currency)))} · ${option.nights} noche(s)</em>
+          </button>
+        `;
+      }).join("");
+
       return `
-        <button type="button" class="quote-modal-card quote-hotel-modal-card ${selected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(option.key)}">
-          ${image}
-          <div class="quote-hotel-modal-card__content">
-            <span>${escapeHtml(option.type === "none" ? "Flexible" : `${option.hotel?.stars || ""} estrellas`)}</span>
-            <strong>${escapeHtml(option.label)}</strong>
-            <p>${escapeHtml(option.hotel?.summary || option.description)}</p>
-            ${option.type === "hotel" ? `
-              <div class="quote-hotel-room-box">
-                <b>${escapeHtml(room?.label || "Habitación")}</b>
-                <small>${escapeHtml(getRoomDescription(room))}</small>
-              </div>
-              <div class="quote-hotel-feature-list">
-                ${[...features, ...amenities].slice(0, 5).map((item) => `<small>${escapeHtml(item)}</small>`).join("")}
-              </div>
-            ` : ""}
-            <em>${option.priceUSD > 0 ? `${money(convert(option.priceUSD, "USD", state.currency))} · ${option.nights} noche(s)` : "Sin costo de hotel"}</em>
+        <article class="quote-hotel-group-card ${selectedInHotel ? "is-selected" : ""}">
+          <div class="quote-hotel-group-card__media">
+            <img src="${escapeHtml(resolveAssetPath(imgPath))}" alt="${escapeHtml(hotel?.hotelName || "Hotel")}" loading="lazy">
           </div>
-          <span class="quote-choice-dot" aria-hidden="true"></span>
-        </button>
+          <div class="quote-hotel-group-card__content">
+            <div class="quote-hotel-group-card__head">
+              <span>${escapeHtml(hotel?.stars ? `${hotel.stars} estrellas` : "Hotel sugerido")}</span>
+              <strong>${escapeHtml(hotel?.hotelName || "Hotel seleccionado")}</strong>
+              <p>${escapeHtml(hotel?.summary || hotel?.location || "Alojamiento sugerido para este paquete.")}</p>
+            </div>
+            ${features.length ? `<div class="quote-hotel-feature-list">${features.map((item) => `<small>${escapeHtml(item)}</small>`).join("")}</div>` : ""}
+            <div class="quote-room-combo-list">
+              ${roomsHtml}
+            </div>
+          </div>
+        </article>
       `;
     }).join("");
+
+    list.innerHTML = `
+      <div class="quote-hotel-modal-list">
+        ${noneHtml}
+        ${hotelHtml || `<div class="quote-empty-state"><strong>No hay hoteles configurados para este destino.</strong><p>Puedes continuar sin hotel o consultar una opción manual.</p></div>`}
+      </div>
+    `;
     modal.hidden = false;
   }
 
@@ -1386,7 +1491,7 @@
         <div class="print-service-list">
           ${option ? `<p><strong>Paquete:</strong> ${escapeHtml(option.rawCard?.recommendedTitle || option.title || "Paquete dinámico")}</p>` : ""}
           ${getOptionTours(option).map((tour) => `<p><strong>${escapeHtml(tour.internalCode || "Servicio")}:</strong> ${escapeHtml(tour.title || "")}</p>`).join("")}
-          ${hotelItems.map((item) => `<p><strong>Hotel ${escapeHtml(item.destination)}:</strong> ${escapeHtml(item.label)} · ${escapeHtml(item.room?.label || "Habitación")} · ${item.nights} noche(s)</p>`).join("")}
+          ${hotelItems.map((item) => `<p><strong>Hotel ${escapeHtml(item.destination)}:</strong> ${escapeHtml(item.label)} · ${escapeHtml(item.roomsSummary || item.room?.label || "Habitación")} · ${item.nights} noche(s)</p>`).join("")}
           ${trainItems.map((train) => `<p><strong>Tren:</strong> ${escapeHtml(train.companyName || train.company)} · ${escapeHtml(train.serviceName)} · ${escapeHtml(train.departureTime)} ${escapeHtml(train.departureStation)} → ${escapeHtml(train.arrivalTime)} ${escapeHtml(train.arrivalStation)}</p>`).join("")}
         </div>
       `;
