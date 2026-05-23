@@ -35,6 +35,7 @@
     selectedTrains: { outbound: null, return: null },
     selectedExtras: new Set(),
     manualDiscount: null,
+    showAllItineraryOptions: false,
     activeHotelDestination: null,
     pendingHotelKey: null,
     activeTrainDirection: null,
@@ -374,6 +375,7 @@
       state.options = getFallbackOptions(params);
     }
 
+    state.showAllItineraryOptions = false;
     if (section) section.hidden = false;
     renderPackageOptions();
 
@@ -547,7 +549,11 @@
       return;
     }
 
-    target.innerHTML = state.options.map((option, index) => {
+    const maxInitialOptions = 4;
+    const visibleCount = state.showAllItineraryOptions ? state.options.length : Math.min(maxInitialOptions, state.options.length);
+    target.setAttribute("data-expanded", state.showAllItineraryOptions ? "true" : "false");
+    const visibleOptions = state.options.slice(0, visibleCount);
+    const cardsHtml = visibleOptions.map((option, index) => {
       const tours = getOptionTours(option);
       const titles = tours.slice(0, 4).map((tour) => tour.title).join(" · ");
       const baseAdult = convert(getOptionBaseAdult(option), "USD", state.currency);
@@ -564,6 +570,17 @@
         </button>
       `;
     }).join("");
+
+    const moreHtml = !state.showAllItineraryOptions && state.options.length > visibleCount ? `
+      <button type="button" class="quote-show-more-itineraries" data-show-more-itineraries>
+        Ver más itinerarios (${state.options.length - visibleCount} más)
+      </button>
+    ` : "";
+
+    target.innerHTML = `${cardsHtml}${moreHtml}`;
+    Array.from(target.querySelectorAll(".quote-package-option")).forEach((card, idx) => {
+      card.hidden = !state.showAllItineraryOptions && idx >= maxInitialOptions;
+    });
   }
 
   function selectPackageOption(index, options = {}) {
@@ -691,6 +708,16 @@
     });
   }
 
+  function getActivityDisplayTitle(activity, day) {
+    const tour = activity?.tour;
+    const rawTitle = tour?.title || activity?.syntheticTitle || "Actividad";
+    const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
+    if (day?.day === totalDays && tour && isWelcomeTour(tour)) {
+      return "Tour panorámico Cusco";
+    }
+    return rawTitle;
+  }
+
   function renderItineraryPreview() {
     const target = $("#itineraryPreview");
     const optionsTarget = $("#itineraryOptions");
@@ -715,7 +742,7 @@
       const image = getImageFromTour(firstTour);
       const activityHtml = day.activities.map((activity) => {
         const tour = activity.tour;
-        const title = tour?.title || activity.syntheticTitle || "Actividad";
+        const title = getActivityDisplayTitle(activity, day);
         const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
         const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
         return `
@@ -817,8 +844,77 @@
     return toArray(rooms).filter(Boolean).map(getRoomDescription).join(" | ");
   }
 
+  function isRoomType(room, type) {
+    return normalizeText(room?.roomType || room?.label).includes(normalizeText(type));
+  }
+
+  function findRoomByTypes(rooms, types) {
+    return types.map((type) => rooms.find((room) => isRoomType(room, type))).find(Boolean) || null;
+  }
+
+  function makeCombo(rooms) {
+    const cleanRooms = toArray(rooms).filter(Boolean);
+    const capacity = cleanRooms.reduce((sum, room) => sum + getRoomCapacity(room), 0);
+    const priceUSDPerNight = cleanRooms.reduce((sum, room) => sum + getRoomPriceUSD(room), 0);
+    return {
+      rooms: cleanRooms,
+      capacity,
+      priceUSDPerNight,
+      score: cleanRooms.length * 1000 + Math.max(0, capacity - getPassengerCount()) * 100 + priceUSDPerNight
+    };
+  }
+
+  function buildPreferredRoomCombinations(hotel) {
+    const pax = Math.max(1, getPassengerCount());
+    const rooms = toArray(hotel?.rooms).filter(isRoomCompatible);
+    const single = findRoomByTypes(rooms, ["single", "simple"]);
+    const twin = findRoomByTypes(rooms, ["double-twin", "doble twin", "twin"]);
+    const matrimonial = findRoomByTypes(rooms, ["double-matrimonial", "matrimonial"]);
+    const triple = findRoomByTypes(rooms, ["triple"]);
+    const extraBed = findRoomByTypes(rooms, ["extra-bed", "cama adicional"]);
+    const family4 = findRoomByTypes(rooms, ["family-4", "familiar", "cuadruple"]);
+    const family5 = findRoomByTypes(rooms, ["super-family-5", "super familiar"]);
+
+    let preferred = [];
+    if (pax === 1) preferred = [[single], [matrimonial], [twin]];
+    else if (pax === 2) preferred = [[matrimonial], [twin], [single, single]];
+    else if (pax === 3) preferred = [[triple], [twin, single], [matrimonial, single], [single, single, single], [extraBed]];
+    else if (pax === 4) preferred = [[family4], [triple, single], [twin, twin], [matrimonial, twin], [single, single, single, single]];
+    else if (pax === 5) preferred = [[family5], [family4, single], [triple, twin], [triple, matrimonial], [single, single, single, single, single]];
+
+    const unique = new Map();
+    preferred.forEach((candidate) => {
+      const clean = toArray(candidate).filter(Boolean);
+      if (!clean.length) return;
+      const combo = makeCombo(clean);
+      if (combo.capacity < pax) return;
+      const key = combo.rooms.map(getRoomTypeId).sort().join("+");
+      if (!unique.has(key)) unique.set(key, combo);
+    });
+    return Array.from(unique.values()).sort((a, b) => a.score - b.score);
+  }
+
+  function getRoomComboDisplayTitle(rooms = []) {
+    const list = toArray(rooms).filter(Boolean);
+    const counts = new Map();
+    list.forEach((room) => {
+      const label = room?.label || room?.roomType || "Habitación";
+      counts.set(label, (counts.get(label) || 0) + 1);
+    });
+    return Array.from(counts.entries()).map(([label, count]) => `${String(count).padStart(2, "0")} ${count === 1 ? label.toLowerCase() : `${label.toLowerCase()}s`}`).join(" + ");
+  }
+
+  function getHotelGalleryImages(hotel) {
+    const gallery = toArray(hotel?.images?.gallery);
+    const cover = hotel?.images?.cover;
+    return [cover, ...gallery].filter(Boolean).filter((item, index, arr) => arr.indexOf(item) === index);
+  }
+
   function buildRoomCombinations(hotel, maxResults = 8) {
     const pax = Math.max(1, getPassengerCount());
+    const preferred = buildPreferredRoomCombinations(hotel);
+    if (preferred.length) return preferred.slice(0, maxResults);
+
     const rooms = toArray(hotel?.rooms).filter(isRoomCompatible);
     if (!rooms.length) return [];
 
@@ -827,7 +923,7 @@
       .filter((item) => item.capacity > 0)
       .sort((a, b) => a.price - b.price || a.capacity - b.capacity);
 
-    const maxRooms = Math.min(4, Math.max(1, pax));
+    const maxRooms = Math.min(5, Math.max(1, pax));
     const combos = [];
 
     function walk(startIndex, picked, capacity, price) {
@@ -950,7 +1046,7 @@
     if (!modal || !list || !plan) return;
 
     if (title) title.textContent = `Elige alojamiento en ${plan.label}`;
-    if (intro) intro.textContent = `Elige un hotel y luego una combinación de habitaciones para ${getPassengerCount()} pasajero(s) durante ${plan.nights} noche(s).`;
+    if (intro) intro.textContent = `Selecciona el hotel y luego una combinación de habitación compatible para ${getPassengerCount()} pasajero(s).`;
 
     const options = buildHotelOptions(destination);
     const noneOption = options.find((option) => option.type === "none");
@@ -976,36 +1072,49 @@
 
     const hotelHtml = Array.from(grouped.values()).map((group) => {
       const hotel = group.hotel;
-      const gallery = hotel?.images?.gallery || [];
-      const imgPath = hotel?.images?.cover || gallery[0];
-      const features = [...toArray(hotel?.features), ...toArray(hotel?.amenities)].slice(0, 5);
+      const images = getHotelGalleryImages(hotel);
+      const firstImage = images[0];
+      const features = [
+        hotel?.amenities?.breakfast ? `Desayuno: ${hotel.amenities.breakfast}` : "",
+        ...toArray(hotel?.features),
+        ...toArray(hotel?.amenities).filter((item) => typeof item === "string")
+      ].filter(Boolean).slice(0, 7);
       const selectedInHotel = group.options.some((option) => option.key === state.pendingHotelKey);
+      const minPrice = Math.min(...group.options.map((option) => Number(option.priceUSD || 0)).filter((n) => Number.isFinite(n)));
       const roomsHtml = group.options.map((option) => {
         const selected = option.key === state.pendingHotelKey;
+        const total = convert(option.priceUSD, "USD", state.currency);
         return `
           <button type="button" class="quote-room-combo ${selected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(option.key)}">
             <span class="quote-choice-dot" aria-hidden="true"></span>
             <div>
-              <strong>${escapeHtml(option.roomsSummary)}</strong>
-              <small>${escapeHtml(option.roomsDetails || `Capacidad ${option.capacity} pasajero(s)`)}</small>
+              <strong>${escapeHtml(getRoomComboDisplayTitle(option.rooms))}</strong>
+              <small>${option.rooms.length} habitación(es) | Total + ${escapeHtml(money(total))}</small>
             </div>
-            <em>${escapeHtml(money(convert(option.priceUSD, "USD", state.currency)))} · ${option.nights} noche(s)</em>
           </button>
         `;
       }).join("");
 
       return `
-        <article class="quote-hotel-group-card ${selectedInHotel ? "is-selected" : ""}">
-          <div class="quote-hotel-group-card__media">
-            <img src="${escapeHtml(resolveAssetPath(imgPath))}" alt="${escapeHtml(hotel?.hotelName || "Hotel")}" loading="lazy">
-          </div>
-          <div class="quote-hotel-group-card__content">
-            <div class="quote-hotel-group-card__head">
-              <span>${escapeHtml(hotel?.stars ? `${hotel.stars} estrellas` : "Hotel sugerido")}</span>
+        <article class="quote-hotel-group-card quote-hotel-group-card--wide ${selectedInHotel ? "is-selected" : ""}">
+          <div class="quote-hotel-group-card__left">
+            <div class="quote-hotel-group-card__head quote-hotel-group-card__head--top">
               <strong>${escapeHtml(hotel?.hotelName || "Hotel seleccionado")}</strong>
-              <p>${escapeHtml(hotel?.summary || hotel?.location || "Alojamiento sugerido para este paquete.")}</p>
+              <p>${escapeHtml(`${hotel?.stars ? "★".repeat(Number(hotel.stars)) : "Hotel"} · ${hotel?.location || plan.label}`)}</p>
+              ${hotel?.address ? `<p>${escapeHtml(hotel.address)}</p>` : ""}
             </div>
-            ${features.length ? `<div class="quote-hotel-feature-list">${features.map((item) => `<small>${escapeHtml(item)}</small>`).join("")}</div>` : ""}
+            <div class="quote-hotel-gallery" data-gallery-index="0">
+              ${firstImage ? `<img src="${escapeHtml(resolveAssetPath(firstImage))}" alt="${escapeHtml(hotel?.hotelName || "Hotel")}" loading="lazy">` : `<div class="quote-hotel-gallery__empty"><i class="fas fa-hotel"></i></div>`}
+              ${images.length > 1 ? `
+                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--prev" data-hotel-gallery="prev" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="Foto anterior">‹</button>
+                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--next" data-hotel-gallery="next" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="Foto siguiente">›</button>
+              ` : ""}
+            </div>
+            ${features.length ? `<div class="quote-hotel-feature-list quote-hotel-feature-list--pills">${features.map((item) => `<small><i class="fas fa-check"></i> ${escapeHtml(item)}</small>`).join("")}</div>` : ""}
+          </div>
+          <div class="quote-hotel-group-card__right">
+            <div class="quote-hotel-price-pill">+ ${escapeHtml(money(convert(Number.isFinite(minPrice) ? minPrice : 0, "USD", state.currency)))} total</div>
+            <h3>Selecciona tipo de acomodación</h3>
             <div class="quote-room-combo-list">
               ${roomsHtml}
             </div>
@@ -1015,7 +1124,7 @@
     }).join("");
 
     list.innerHTML = `
-      <div class="quote-hotel-modal-list">
+      <div class="quote-hotel-modal-list quote-hotel-modal-list--wide">
         ${noneHtml}
         ${hotelHtml || `<div class="quote-empty-state"><strong>No hay hoteles configurados para este destino.</strong><p>Puedes continuar sin hotel o consultar una opción manual.</p></div>`}
       </div>
@@ -1456,12 +1565,19 @@
     updatePrintableTemplate();
   }
 
+  function getCommercialOfferAmount(total) {
+    const discounted = Number(total || 0) * 0.9;
+    if (!Number.isFinite(discounted) || discounted <= 0) return 0;
+    const rounded = Math.floor(discounted / 10) * 10 + 9.9;
+    return Math.max(0, rounded);
+  }
+
   function updatePrintableTemplate() {
     const option = getSelectedOption();
     const payment = getPaymentBreakdown();
     const ref = $("#quoteReference")?.textContent || "COT-PE---";
     const today = new Date();
-    const validUntil = addDays(today, 3);
+    const validUntil = addDays(today, 1);
 
     setText("#printQuoteReference", ref);
     setText("#printIssueDate", formatDateShort(today));
@@ -1485,16 +1601,41 @@
 
     const services = $("#printSelectedServices");
     if (services) {
-      const hotelItems = Object.values(state.selectedHotels).filter((item) => item?.type === "hotel");
       const trainItems = [state.selectedTrains.outbound, state.selectedTrains.return].filter(Boolean);
+      const itineraryTours = buildItineraryItems(option)
+        .flatMap((day) => day.activities.map((activity) => getActivityDisplayTitle(activity, day)))
+        .filter(Boolean);
+      const uniqueTours = [...new Set(itineraryTours)];
       services.innerHTML = `
-        <div class="print-service-list">
-          ${option ? `<p><strong>Paquete:</strong> ${escapeHtml(option.rawCard?.recommendedTitle || option.title || "Paquete dinámico")}</p>` : ""}
-          ${getOptionTours(option).map((tour) => `<p><strong>${escapeHtml(tour.internalCode || "Servicio")}:</strong> ${escapeHtml(tour.title || "")}</p>`).join("")}
-          ${hotelItems.map((item) => `<p><strong>Hotel ${escapeHtml(item.destination)}:</strong> ${escapeHtml(item.label)} · ${escapeHtml(item.roomsSummary || item.room?.label || "Habitación")} · ${item.nights} noche(s)</p>`).join("")}
-          ${trainItems.map((train) => `<p><strong>Tren:</strong> ${escapeHtml(train.companyName || train.company)} · ${escapeHtml(train.serviceName)} · ${escapeHtml(train.departureTime)} ${escapeHtml(train.departureStation)} → ${escapeHtml(train.arrivalTime)} ${escapeHtml(train.arrivalStation)}</p>`).join("")}
+        <div class="print-service-list print-service-list--clean">
+          <p><strong>Incluye:</strong> recojo del aeropuerto o terminal, asistencia local durante el viaje y coordinación operativa de la reserva.</p>
+          ${uniqueTours.length ? `<p><strong>Tours incluidos:</strong> ${escapeHtml(uniqueTours.join(" · "))}</p>` : ""}
+          ${trainItems.length ? `<p><strong>Tickets de tren:</strong> ${escapeHtml(trainItems.map((train) => `${train.companyName || train.company} ${train.serviceName || ""} (${train.departureTime} ${train.departureStation} → ${train.arrivalTime} ${train.arrivalStation})`).join(" · "))}</p>` : ""}
+          <p><strong>Importante:</strong> ingresos, tickets y horarios quedan sujetos a disponibilidad al momento de confirmar la reserva.</p>
         </div>
       `;
+    }
+
+    const hotelImages = $("#printHotelImages");
+    if (hotelImages) {
+      const hotelItems = Object.values(state.selectedHotels).filter((item) => item?.type === "hotel");
+      hotelImages.innerHTML = hotelItems.length ? `
+        <div class="print-lodging-title">Alojamientos incluidos</div>
+        <div class="print-lodging-grid">
+          ${hotelItems.map((item) => {
+            const image = getHotelGalleryImages(item.hotel)[0];
+            return `
+              <figure class="print-hotel-image-card">
+                ${image ? `<img src="${escapeHtml(resolveAssetPath(image))}" alt="${escapeHtml(item.label || "Hotel")}">` : ""}
+                <figcaption>
+                  <strong>${escapeHtml(item.label || "Hotel seleccionado")}</strong>
+                  <span>${escapeHtml(item.roomsSummary || "Habitación seleccionada")} · ${Number(item.nights || 0)} noche(s)</span>
+                </figcaption>
+              </figure>
+            `;
+          }).join("")}
+        </div>
+      ` : "";
     }
 
     const paymentTarget = $("#printPaymentDetails");
@@ -1512,22 +1653,30 @@
 
     const printItinerary = $("#printItinerary");
     if (printItinerary) {
-      printItinerary.innerHTML = buildItineraryItems(option).map((day) => `
-        <div class="print-itinerary-item">
-          <strong>Día ${day.displayDay} · ${escapeHtml(formatDate(day.date))}</strong>
-          ${day.activities.map((activity) => {
-            const tour = activity.tour;
-            const title = tour?.title || activity.syntheticTitle || "Actividad";
-            const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
-            return `<h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>`;
-          }).join("")}
-        </div>
-      `).join("");
+      printItinerary.innerHTML = buildItineraryItems(option).map((day) => {
+        const firstTour = day.activities.find((item) => item.tour)?.tour;
+        const image = getImageFromTour(firstTour);
+        return `
+          <div class="print-itinerary-item print-itinerary-item--media">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(firstTour?.title || `Día ${day.displayDay}`)}">
+            <div>
+              <strong>Día ${day.displayDay} · ${escapeHtml(formatDate(day.date))}</strong>
+              ${day.activities.map((activity) => {
+                const tour = activity.tour;
+                const title = getActivityDisplayTitle(activity, day);
+                const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
+                const note = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "";
+                return `<div class="print-itinerary-activity-block"><h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}</div>`;
+              }).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
     const offer = $("#printBookingOffer");
     if (offer) offer.hidden = !option;
-    setText("#printBookingOfferAmount", money(payment.total));
+    setText("#printBookingOfferAmount", money(getCommercialOfferAmount(payment.total)));
     setText("#printBookingOfferUntil", formatDateShort(validUntil));
   }
 
@@ -1602,6 +1751,29 @@
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
+      const showMoreBtn = event.target.closest("[data-show-more-itineraries]");
+      if (showMoreBtn) {
+        state.showAllItineraryOptions = true;
+        renderPackageOptions();
+        return;
+      }
+
+      const galleryBtn = event.target.closest("[data-hotel-gallery]");
+      if (galleryBtn) {
+        const gallery = galleryBtn.closest(".quote-hotel-gallery");
+        const img = gallery?.querySelector("img");
+        const images = String(galleryBtn.dataset.images || "").split("|").filter(Boolean);
+        if (gallery && img && images.length) {
+          const current = Number(gallery.dataset.galleryIndex || 0) || 0;
+          const next = galleryBtn.dataset.hotelGallery === "prev"
+            ? (current - 1 + images.length) % images.length
+            : (current + 1) % images.length;
+          gallery.dataset.galleryIndex = String(next);
+          img.src = images[next];
+        }
+        return;
+      }
+
       const optionBtn = event.target.closest("[data-option-index]");
       if (optionBtn) selectPackageOption(Number(optionBtn.dataset.optionIndex));
 
