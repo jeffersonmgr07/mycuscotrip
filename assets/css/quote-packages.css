@@ -3986,3 +3986,246 @@ body.is-generating-pdf .print-booking-offer__content {
     height: 120px;
   }
 }
+
+/* =============================================
+   Mejoras cotizador dinámico v19
+   Itinerario con imagen, badges de día, hoteles y trenes
+   ============================================= */
+.quote-itinerary-preview > h3 {
+  display: block;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #0a3a26;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.quote-itinerary-item.quote-itinerary-item--media {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px;
+  border-left: 0;
+  border: 1px solid rgba(6, 40, 3, 0.10);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(6, 40, 3, 0.06);
+}
+
+.quote-itinerary-item__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  border-radius: 18px;
+  object-fit: cover;
+  background: #edf2ef;
+}
+
+.quote-itinerary-item__body {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.quote-itinerary-item__dayline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.quote-day-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #0a3a26;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.quote-itinerary-item__dayline strong {
+  color: #0a3a26;
+  font-size: 0.92rem;
+}
+
+.quote-itinerary-activity {
+  padding: 0 0 12px;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08);
+}
+
+.quote-itinerary-activity:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.quote-itinerary-activity small {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #edf7ef;
+  color: #0a3a26;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.quote-hotel-modal-card,
+.quote-train-modal-card {
+  position: relative;
+  grid-template-columns: 180px minmax(0, 1fr) 24px;
+  align-items: stretch;
+  gap: 16px;
+  padding: 14px;
+}
+
+.quote-hotel-modal-card__image img,
+.quote-hotel-modal-card__image--empty,
+.quote-train-modal-card__logo {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  border-radius: 18px;
+  object-fit: cover;
+  background: #edf2ef;
+  overflow: hidden;
+}
+
+.quote-hotel-modal-card__image img {
+  height: 100%;
+}
+
+.quote-hotel-modal-card__image--empty,
+.quote-train-modal-card__logo {
+  display: grid;
+  place-items: center;
+  color: #0a3a26;
+  font-size: 1.6rem;
+}
+
+.quote-hotel-modal-card__content,
+.quote-train-modal-card__body {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.quote-hotel-room-box {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f7faf8;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+}
+
+.quote-hotel-room-box b {
+  color: #062803;
+  font-size: 0.92rem;
+}
+
+.quote-hotel-feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.quote-hotel-feature-list small,
+.quote-train-schedule-row small {
+  margin: 0;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #edf7ef;
+  color: #0a3a26;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.quote-choice-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(10, 58, 38, 0.32);
+  background: #fff;
+  align-self: start;
+  justify-self: end;
+  box-shadow: inset 0 0 0 4px #fff;
+}
+
+.quote-modal-card.is-selected .quote-choice-dot {
+  background: #0a3a26;
+  border-color: #0a3a26;
+}
+
+.quote-train-selected-content {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.quote-train-selected-logo {
+  width: 72px;
+  height: 42px;
+  object-fit: contain;
+  padding: 6px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+}
+
+.quote-train-modal-card__logo img {
+  width: 82%;
+  max-height: 90px;
+  object-fit: contain;
+}
+
+.quote-train-schedule-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quote-train-schedule-row div {
+  padding: 10px;
+  border-radius: 14px;
+  background: #f7faf8;
+  border: 1px solid rgba(6, 40, 3, 0.08);
+}
+
+.quote-train-schedule-row b {
+  display: block;
+  margin-top: 5px;
+  color: #062803;
+  font-size: 0.86rem;
+}
+
+@media (max-width: 768px) {
+  .quote-itinerary-item.quote-itinerary-item--media,
+  .quote-hotel-modal-card,
+  .quote-train-modal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-itinerary-item__media img,
+  .quote-hotel-modal-card__image img,
+  .quote-hotel-modal-card__image--empty,
+  .quote-train-modal-card__logo {
+    min-height: 130px;
+  }
+
+  .quote-choice-dot {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+  }
+
+  .quote-train-schedule-row {
+    grid-template-columns: 1fr;
+  }
+}
