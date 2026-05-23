@@ -5441,3 +5441,122 @@ body.is-generating-pdf .print-booking-offer__content {
   object-fit: cover;
   border-radius: 8px;
 }
+
+/* === V25: horas del itinerario + color fecha + banner premium === */
+.quote-itinerary-item__dayline {
+  align-items: flex-start !important;
+}
+.quote-itinerary-date-label,
+.quote-itinerary-item__dayline strong.quote-itinerary-date-label,
+.quote-itinerary-item__dayline strong {
+  color: #b07a35 !important;
+  font-weight: 900 !important;
+}
+.quote-itinerary-start-time {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: fit-content !important;
+  margin: 0 0 6px !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  background: #fff4df !important;
+  color: #9a651f !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+.quote-itinerary-start-time::before {
+  content: "Hora de inicio: ";
+  font-weight: 800;
+  color: #8a5b1b;
+}
+.quote-itinerary-places {
+  margin-top: 6px !important;
+  color: #42534d !important;
+  font-size: 0.88rem !important;
+}
+.quote-itinerary-places strong {
+  color: #0a3a26 !important;
+}
+.quote-itinerary-activity h4 {
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+}
+.quote-itinerary-activity p {
+  line-height: 1.52 !important;
+}
+
+#printQuotation .print-itinerary-date-label,
+.print-itinerary-date-label {
+  color: #b07a35 !important;
+  font-weight: 900 !important;
+}
+#printQuotation .print-itinerary-start-time,
+.print-itinerary-start-time {
+  display: inline-flex !important;
+  width: fit-content !important;
+  margin: 0 0 0.8mm !important;
+  padding: 0.75mm 1.8mm !important;
+  border-radius: 99px !important;
+  background: #fff2dd !important;
+  color: #935f1d !important;
+  font-size: 7pt !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+#printQuotation .print-itinerary-start-time::before,
+.print-itinerary-start-time::before {
+  content: "Hora de inicio: ";
+  color: #7f541d !important;
+}
+#printQuotation .print-itinerary-places,
+.print-itinerary-places {
+  margin-top: 0.7mm !important;
+  color: #4f625c !important;
+  font-size: 7pt !important;
+  line-height: 1.24 !important;
+}
+#printQuotation .print-itinerary-places strong,
+.print-itinerary-places strong {
+  color: #0a3a26 !important;
+}
+
+#printQuotation .print-booking-offer__content,
+.print-booking-offer__content,
+body.is-generating-pdf .print-booking-offer__content {
+  background: linear-gradient(135deg, #050505 0%, #171019 42%, #31143d 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.16) !important;
+  box-shadow: 0 8px 24px rgba(12, 4, 20, 0.22) !important;
+}
+#printQuotation .print-booking-offer__content *,
+.print-booking-offer__content *,
+body.is-generating-pdf .print-booking-offer__content * {
+  color: #fff !important;
+}
+#printQuotation .print-booking-offer strong span,
+.print-booking-offer strong span,
+body.is-generating-pdf .print-booking-offer strong span {
+  color: #ffe6a8 !important;
+}
+
+#trainSelectionModal .quote-modal__header {
+  background: #062803 !important;
+  color: #f5f8f2 !important;
+}
+#trainSelectionModal .quote-modal__header h2,
+#trainSelectionModal .quote-modal__header p,
+#trainSelectionModal .quote-modal__eyebrow {
+  color: #f5f8f2 !important;
+}
+#trainSelectionModal .quote-train-title-row {
+  align-items: center !important;
+}
+#trainSelectionModal .quote-train-inline-logo {
+  width: auto !important;
+  height: auto !important;
+  max-width: 54px !important;
+  max-height: 26px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
