@@ -428,6 +428,95 @@
     return price;
   }
 
+  function getTourCode(tour) {
+    return tour?.internalCode || tour?.code || tour?.id || "";
+  }
+
+  function hasTourWord(tour, words = []) {
+    const haystack = normalizeText(`${getTourCode(tour)} ${tour?.title || ""} ${tour?.slug || ""} ${tour?.category || ""} ${tour?.typeLabel || ""} ${tour?.variantType || ""}`);
+    return words.some((word) => haystack.includes(normalizeText(word)));
+  }
+
+  function isWelcomeTour(tour) {
+    return hasTourWord(tour, ["bienvenida", "ancestral", "panoramico", "panorámico"]);
+  }
+
+  function isCityTour(tour) {
+    return getTourCode(tour) === "CUZ002" || hasTourWord(tour, ["city tour"]);
+  }
+
+  function isSacredValleyTour(tour) {
+    return hasTourWord(tour, ["valle sagrado", "sacred valley"]);
+  }
+
+  function isSacredValleyConnectionTour(tour) {
+    return isSacredValleyTour(tour) && hasTourWord(tour, ["conexion", "conexión", "connection"]);
+  }
+
+  function isFullDayLikeTour(tour) {
+    return hasTourWord(tour, ["full day", "montana de colores", "montaña de colores", "humantay", "palcoyo", "7 lagunas", "valle sur"]);
+  }
+
+  function getTourEndMinutes(tour) {
+    const explicit = tour?.operationalSchedule?.endTime;
+    if (explicit) return timeToMinutes(explicit);
+    if (isCityTour(tour)) return timeToMinutes("18:00");
+    if (isWelcomeTour(tour)) return timeToMinutes("18:30");
+    if (isMachuPicchuTour(tour)) return timeToMinutes("21:00");
+    if (isFullDayLikeTour(tour)) return timeToMinutes("17:00");
+    return timeToMinutes("18:00");
+  }
+
+  function canUseTourOnLastDay(tour) {
+    const departureLimit = timeToMinutes(state.departureTime) - 90;
+    return departureLimit >= getTourEndMinutes(tour);
+  }
+
+  function getFirstAvailableStartTime(tour, minTime) {
+    const min = timeToMinutes(minTime);
+    const starts = toArray(tour?.operationalSchedule?.startTimes);
+    if (!starts.length) return null;
+    return starts.find((time) => timeToMinutes(time) >= min) || null;
+  }
+
+  function addMinutesToTime(time, minutesToAdd) {
+    const total = timeToMinutes(time) + Number(minutesToAdd || 0);
+    const h = Math.floor(total / 60) % 24;
+    const m = total % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+
+  function getTourDurationMinutes(tour) {
+    const label = normalizeText(tour?.duration?.label || tour?.operationalSchedule?.durationLabel || "");
+    if (label.includes("2 h 30")) return 150;
+    if (label.includes("medio dia") || label.includes("medio día")) return 300;
+    if (label.includes("full day")) return 600;
+    if (label.includes("2 dias") || label.includes("2 días")) return 1440;
+    return 180;
+  }
+
+  function getOptionCommercialBadge(option, index) {
+    if (index === 0) return "Recomendado";
+    if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return "Más vendido";
+    if (option?.hasTrekkingAfterMachuPicchu) return "Aventura";
+    if (Number(option?.freeUsefulDays || 0) === 0) return "Aprovecha mejor el tiempo";
+    return option?.badge || option?.rawCard?.badge || "Ruta sugerida";
+  }
+
+  function getOptionCommercialText(option, index) {
+    if (!option) return "Ruta sugerida según tus fechas y horarios.";
+    const codes = toArray(option.includedTourCodes);
+    if (option.sacredValleyMode === "connection") {
+      return "Ruta recomendada: combina Valle Sagrado con conexión hacia Aguas Calientes y Machu Picchu al día siguiente, evitando traslados innecesarios.";
+    }
+    if (option.hasTrekkingAfterMachuPicchu || codes.some((code) => ["CUZ006", "CUZ007", "CUZ008", "CUZ009"].includes(code))) {
+      return "Ruta para aprovechar al máximo el tiempo, agregando excursiones de naturaleza o trekking sin repetir servicios.";
+    }
+    if (index === 0) return "Ruta equilibrada y comercialmente recomendada para conocer Cusco, Valle Sagrado y Machu Picchu con buen ritmo.";
+    if (codes.length <= 3) return "Ruta más suave y pausada, ideal si prefieres evitar demasiadas excursiones o caminatas exigentes.";
+    return "Ruta clásica con actividades culturales, pensada para mantener un buen balance entre visitas, traslados y descanso.";
+  }
+
   function renderPackageOptions() {
     const target = $("#packageOptions");
     const intro = $("#itinerarySectionIntro");
@@ -454,13 +543,15 @@
       const titles = tours.slice(0, 4).map((tour) => tour.title).join(" · ");
       const baseAdult = convert(getOptionBaseAdult(option), "USD", state.currency);
       const isSelected = index === state.selectedOptionIndex;
+      const badge = getOptionCommercialBadge(option, index);
+      const commercialText = getOptionCommercialText(option, index);
       return `
         <button type="button" class="quote-package-option ${isSelected ? "is-selected" : ""}" data-option-index="${index}">
-          <span class="quote-package-option__badge">${escapeHtml(option.badge || option.rawCard?.badge || "Ruta sugerida")}</span>
+          <span class="quote-package-option__badge">${escapeHtml(badge)}</span>
           <strong>${escapeHtml(option.rawCard?.recommendedTitle || option.title || `Paquete ${option.days}D/${option.nights}N`)}</strong>
-          <small>${escapeHtml(option.arrivalDepartureProfile?.label || "Compatible con tus horarios")}</small>
+          <small>${escapeHtml(commercialText)}</small>
           <p>${escapeHtml(titles || option.shortDescription || "Itinerario armado desde los JSON del proyecto.")}</p>
-          <em>Base desde ${money(baseAdult)} por adulto sin hoteles ni trenes seleccionados</em>
+          <em>Precio base desde ${money(baseAdult)} por adulto, sin hoteles ni trenes seleccionados</em>
         </button>
       `;
     }).join("");
@@ -487,64 +578,108 @@
     }
   }
 
-  function getTourDayLabel(index, total, tour) {
-    const title = normalizeText(tour?.title);
-    if (index === 0) return "Día 1";
-    if (index === total - 1) return `Día ${state.dates.days}`;
-    if (title.includes("machu")) return "Día Machu Picchu";
-    return `Día ${Math.min(index + 1, state.dates.days)}`;
-  }
-
   function buildItineraryItems(option = getSelectedOption()) {
     if (!option) return [];
-    const tours = getOptionTours(option);
-    const items = [];
+
+    const tours = getOptionTours(option).filter((tour) => !normalizeText(tour?.title).includes("transfer"));
+    const remaining = [...tours];
     const startDate = state.dates.start;
+    const totalDays = Math.max(Number(state.dates.days || option.days || 1), 1);
+    const days = Array.from({ length: totalDays }, (_, index) => ({
+      day: index + 1,
+      date: startDate ? addDays(startDate, index) : null,
+      activities: []
+    }));
 
-    items.push({
-      day: 1,
-      date: startDate,
-      title: "Llegada a Cusco · Recojo y asistencia",
-      description: state.arrivalTime >= "15:00"
-        ? "Llegada, traslado al hotel, aclimatación y revisión de la ruta. Por el horario, evitamos tours exigentes el primer día."
-        : "Llegada, traslado y primera actividad compatible con tu horario de arribo.",
-      meta: `Disponible desde aprox. ${getAvailableStartTime(state.arrivalTime)}`,
-      synthetic: true
+    function take(predicate) {
+      const idx = remaining.findIndex(predicate);
+      if (idx < 0) return null;
+      return remaining.splice(idx, 1)[0];
+    }
+
+    function put(dayNumber, tour, note = "") {
+      if (!tour) return false;
+      const day = days[Math.max(0, Math.min(totalDays - 1, dayNumber - 1))];
+      if (day.activities.some((item) => getTourCode(item.tour) === getTourCode(tour))) return false;
+      day.activities.push({ tour, note });
+      return true;
+    }
+
+    const availableFrom = getAvailableStartTime(state.arrivalTime);
+    const welcome = take(isWelcomeTour);
+    const city = take(isCityTour);
+
+    if (welcome || city) {
+      const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) : null;
+      const cityStart = city ? getFirstAvailableStartTime(city, availableFrom) : null;
+      let placedWelcome = false;
+      let placedCity = false;
+
+      if (welcome && welcomeStart && timeToMinutes(welcomeStart) <= timeToMinutes("10:00") && city && getFirstAvailableStartTime(city, addMinutesToTime(welcomeStart, getTourDurationMinutes(welcome) + 30))) {
+        placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+        placedCity = put(1, city, "Salida sugerida 13:00.");
+      } else if (city && cityStart && timeToMinutes(cityStart) <= timeToMinutes("14:00")) {
+        placedCity = put(1, city, `Salida sugerida ${cityStart}.`);
+      } else if (welcome && welcomeStart) {
+        placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+      }
+
+      if (welcome && !placedWelcome) remaining.unshift(welcome);
+      if (city && !placedCity) remaining.unshift(city);
+    }
+
+    const valleyConnection = take(isSacredValleyConnectionTour);
+    const valleyFullDay = !valleyConnection ? take((tour) => isSacredValleyTour(tour)) : null;
+    const machu = take(isMachuPicchuTour);
+    const hints = option.itineraryHints || {};
+
+    if (valleyConnection) {
+      const valleyDay = totalDays >= 4 ? 2 : Math.min(2, totalDays);
+      put(valleyDay, valleyConnection, "Conexión hacia Aguas Calientes para dormir cerca de Machu Picchu.");
+      if (machu) put(Math.min(valleyDay + 1, totalDays), machu, "Machu Picchu se programa al día siguiente de la conexión del Valle Sagrado.");
+    } else {
+      if (machu) put(totalDays >= 3 ? 2 : Math.min(2, totalDays), machu, "Versión Full Day compatible con Valle Sagrado Full Day o ruta clásica.");
+      if (valleyFullDay) put(totalDays >= 4 ? 3 : Math.min(2, totalDays), valleyFullDay, "Valle Sagrado en versión Full Day, sin noche previa en Aguas Calientes.");
+    }
+
+    const forcedLastDayCodes = toArray(hints.forceLastDayTourCodes);
+    forcedLastDayCodes.forEach((code) => {
+      const idx = remaining.findIndex((tour) => getTourCode(tour) === code);
+      if (idx >= 0 && canUseTourOnLastDay(remaining[idx])) {
+        put(totalDays, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida." );
+      }
     });
 
-    const realTours = tours.filter((tour) => !normalizeText(tour?.title).includes("transfer"));
-    realTours.forEach((tour, idx) => {
-      const suggestedDay = Math.min(Math.max(idx + 1, 1), state.dates.days);
-      const day = isMachuPicchuTour(tour) ? Math.min(Math.max(2, suggestedDay + 1), Math.max(2, state.dates.days - 1)) : suggestedDay;
-      items.push({
-        day,
-        date: startDate ? addDays(startDate, day - 1) : null,
-        title: tour.title || tour.name || tour.internalCode || "Experiencia incluida",
-        description: tour.shortDescription || tour.description || `Servicio incluido desde ${tour.internalCode || "JSON"}.`,
-        meta: tour.duration?.label || tour.typeLabel || tour.category || "Actividad turística",
-        tour
+    if (!days[totalDays - 1].activities.length) {
+      const idx = remaining.findIndex((tour) => canUseTourOnLastDay(tour) && !isMachuPicchuTour(tour));
+      if (idx >= 0) put(totalDays, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida.");
+    }
+
+    remaining.forEach((tour) => {
+      let targetDay = days.find((day) => {
+        if (day.day === totalDays && !canUseTourOnLastDay(tour)) return false;
+        const hasExclusive = day.activities.some((item) => isFullDayLikeTour(item.tour) || isMachuPicchuTour(item.tour) || isSacredValleyTour(item.tour));
+        if (isWelcomeTour(tour) || isCityTour(tour)) return day.activities.length < 2 && !hasExclusive;
+        return day.activities.length === 0;
       });
+      if (!targetDay) targetDay = days.find((day) => day.activities.length === 0) || days[days.length - 1];
+      put(targetDay.day, tour);
     });
 
-    items.push({
-      day: state.dates.days || items.length + 1,
-      date: startDate ? addDays(startDate, Math.max(state.dates.days - 1, 0)) : null,
-      title: "Traslado de salida",
-      description: `Cierre de servicios y traslado al aeropuerto/terminal. Se reserva una ventana operativa antes de tu salida de ${state.departureTime}.`,
-      meta: "Transfer OUT",
-      synthetic: true
+    return days.map((day) => {
+      const activities = day.activities.length ? day.activities : [{
+        tour: null,
+        note: day.day === 1 ? "Llegada, traslado al hotel y aclimatación ligera." : day.day === totalDays ? "Traslado de salida y asistencia final." : "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.",
+        syntheticTitle: day.day === 1 ? "Llegada a Cusco · Recojo y asistencia" : day.day === totalDays ? "Traslado de salida" : "Día flexible"
+      }];
+
+      return {
+        day: day.day,
+        displayDay: day.day,
+        date: day.date,
+        activities
+      };
     });
-
-    return items
-      .sort((a, b) => Number(a.day) - Number(b.day))
-      .map((item, index) => ({ ...item, displayDay: Math.min(index + 1, state.dates.days || index + 1) }));
-  }
-
-  function getAvailableStartTime(time) {
-    const [h, m] = String(time || "09:00").split(":").map(Number);
-    const date = new Date(2000, 0, 1, h || 9, m || 0);
-    date.setMinutes(date.getMinutes() + 90);
-    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
   }
 
   function renderItineraryPreview() {
@@ -553,6 +688,8 @@
     const option = getSelectedOption();
     if (!target) return;
 
+    if (optionsTarget) optionsTarget.innerHTML = "";
+
     if (!option) {
       target.innerHTML = `
         <div class="quote-empty-state">
@@ -560,33 +697,42 @@
           <p>El cotizador revisará duración y horarios para proponer la ruta compatible.</p>
         </div>
       `;
-      if (optionsTarget) optionsTarget.innerHTML = "";
       return;
     }
 
-    const services = getOptionTours(option);
-    if (optionsTarget) {
-      optionsTarget.innerHTML = `
-        <div class="quote-services-strip">
-          ${services.map((tour) => `<span>${escapeHtml(tour.internalCode || "SERV")} · ${escapeHtml(tour.title || "Servicio")}</span>`).join("")}
+    const days = buildItineraryItems(option);
+    target.innerHTML = days.map((day) => {
+      const firstTour = day.activities.find((item) => item.tour)?.tour;
+      const image = getImageFromTour(firstTour);
+      const activityHtml = day.activities.map((activity) => {
+        const tour = activity.tour;
+        const title = tour?.title || activity.syntheticTitle || "Actividad";
+        const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
+        const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
+        return `
+          <div class="quote-itinerary-activity">
+            <h4>${escapeHtml(title)}</h4>
+            <p>${escapeHtml(description)}</p>
+            ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <div class="quote-itinerary-item quote-itinerary-item--media">
+          <div class="quote-itinerary-item__media">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(firstTour?.title || `Día ${day.displayDay}`)}" loading="lazy">
+          </div>
+          <div class="quote-itinerary-item__body">
+            <div class="quote-itinerary-item__dayline">
+              <span class="quote-day-badge">Día ${day.displayDay}</span>
+              <strong>${escapeHtml(formatDate(day.date))}</strong>
+            </div>
+            ${activityHtml}
+          </div>
         </div>
       `;
-    }
-
-    const items = buildItineraryItems(option);
-    target.innerHTML = items.map((item) => `
-      <div class="quote-itinerary-item">
-        <div class="quote-itinerary-item__day">
-          <strong>Día ${item.displayDay}</strong>
-          <span>${escapeHtml(formatDate(item.date))}</span>
-        </div>
-        <div class="quote-itinerary-item__content">
-          <h4>${escapeHtml(item.title)}</h4>
-          <p>${escapeHtml(item.description)}</p>
-          <small>${escapeHtml(item.meta || "")}</small>
-        </div>
-      </div>
-    `).join("");
+    }).join("");
   }
 
   function getAccommodationPlan(option = getSelectedOption()) {
@@ -611,22 +757,26 @@
     return convert(amount, currency, "USD");
   }
 
+  function isRoomCompatible(room) {
+    const pax = getPassengerCount();
+    const adults = state.adults;
+    const children = state.children;
+    const capacity = Number(room?.capacity || room?.maxAdults || 1);
+    const maxAdults = Number(room?.maxAdults || capacity);
+    const maxChildren = Number(room?.maxChildren ?? capacity);
+    return (capacity >= pax) || (maxAdults >= adults && maxChildren >= children);
+  }
+
   function chooseBestRoom(hotel) {
     const rooms = toArray(hotel?.rooms);
     if (!rooms.length) return null;
     const pax = getPassengerCount();
-    const adults = state.adults;
-    const children = state.children;
     const candidates = rooms
-      .filter((room) => Number(room.capacity || room.maxAdults || 0) >= Math.min(pax, Number(room.capacity || pax)))
+      .filter(isRoomCompatible)
       .map((room) => {
         const capacity = Number(room.capacity || room.maxAdults || 1);
-        const maxAdults = Number(room.maxAdults || capacity);
-        const maxChildren = Number(room.maxChildren ?? capacity);
-        const fitsAdults = maxAdults >= adults || capacity >= pax;
-        const fitsChildren = maxChildren >= children || capacity >= pax;
         const exact = capacity === pax ? 0 : Math.abs(capacity - pax) + 1;
-        return { room, score: (fitsAdults && fitsChildren ? 0 : 100) + exact + getRoomPriceUSD(room) / 1000 };
+        return { room, score: exact + getRoomPriceUSD(room) / 1000 };
       })
       .sort((a, b) => a.score - b.score);
     return candidates[0]?.room || rooms[0];
@@ -634,6 +784,15 @@
 
   function getHotelSelectionKey(destination, hotel, room) {
     return `${destination}::${hotel?.hotelCode || "hotel"}::${room?.roomType || "room"}`;
+  }
+
+  function getRoomDescription(room) {
+    const parts = [
+      room?.label || room?.roomType || "Habitación",
+      room?.bedType,
+      Number(room?.capacity || 0) ? `capacidad ${room.capacity}` : ""
+    ].filter(Boolean);
+    return parts.join(" · ");
   }
 
   function buildHotelOptions(destination) {
@@ -650,19 +809,22 @@
     }];
 
     hotels.forEach((hotel) => {
-      const room = chooseBestRoom(hotel);
-      if (!room) return;
-      const priceUSD = getRoomPriceUSD(room) * Number(plan?.nights || 1);
-      options.push({
-        key: getHotelSelectionKey(destination, hotel, room),
-        destination,
-        type: "hotel",
-        hotel,
-        room,
-        label: hotel.hotelName || "Hotel seleccionado",
-        description: `${hotel.stars || ""}★ · ${hotel.location || plan?.label || destination} · ${room.label || room.roomType || "Habitación"}`,
-        priceUSD,
-        nights: plan?.nights || 0
+      const rooms = toArray(hotel.rooms).filter(isRoomCompatible);
+      const roomList = rooms.length ? rooms : toArray(hotel.rooms).slice(0, 1);
+      roomList.forEach((room) => {
+        if (!room) return;
+        const priceUSD = getRoomPriceUSD(room) * Number(plan?.nights || 1);
+        options.push({
+          key: getHotelSelectionKey(destination, hotel, room),
+          destination,
+          type: "hotel",
+          hotel,
+          room,
+          label: hotel.hotelName || "Hotel seleccionado",
+          description: `${hotel.stars || ""}★ · ${hotel.location || plan?.label || destination} · ${getRoomDescription(room)}`,
+          priceUSD,
+          nights: plan?.nights || 0
+        });
       });
     });
 
@@ -718,19 +880,38 @@
     if (!modal || !list || !plan) return;
 
     if (title) title.textContent = `Elige alojamiento en ${plan.label}`;
-    if (intro) intro.textContent = `Tarifa referencial para ${plan.nights} noche(s), según habitaciones compatibles con ${getPassengerCount()} pasajero(s).`;
+    if (intro) intro.textContent = `Selecciona hotel y tipo de habitación para ${plan.nights} noche(s), compatible con ${getPassengerCount()} pasajero(s).`;
 
     const options = buildHotelOptions(destination);
     list.innerHTML = options.map((option) => {
       const selected = option.key === state.pendingHotelKey || (!state.pendingHotelKey && option.type === "none");
-      const img = option.hotel?.images?.cover ? `<img src="${escapeHtml(resolveAssetPath(option.hotel.images.cover))}" alt="${escapeHtml(option.label)}" loading="lazy">` : "";
+      const gallery = option.hotel?.images?.gallery || [];
+      const imgPath = option.hotel?.images?.cover || gallery[0];
+      const features = toArray(option.hotel?.features).slice(0, 4);
+      const amenities = toArray(option.hotel?.amenities).slice(0, 4);
+      const image = option.type === "hotel"
+        ? `<div class="quote-hotel-modal-card__image"><img src="${escapeHtml(resolveAssetPath(imgPath))}" alt="${escapeHtml(option.label)}" loading="lazy"></div>`
+        : `<div class="quote-hotel-modal-card__image quote-hotel-modal-card__image--empty"><i class="fas fa-bed"></i></div>`;
+      const room = option.room;
       return `
-        <button type="button" class="quote-modal-card ${selected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(option.key)}">
-          ${img}
-          <span>${escapeHtml(option.type === "none" ? "Flexible" : `${option.hotel?.stars || ""} estrellas`)}</span>
-          <strong>${escapeHtml(option.label)}</strong>
-          <p>${escapeHtml(option.description)}</p>
-          <em>${option.priceUSD > 0 ? money(convert(option.priceUSD, "USD", state.currency)) : "Sin costo de hotel"}</em>
+        <button type="button" class="quote-modal-card quote-hotel-modal-card ${selected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(option.key)}">
+          ${image}
+          <div class="quote-hotel-modal-card__content">
+            <span>${escapeHtml(option.type === "none" ? "Flexible" : `${option.hotel?.stars || ""} estrellas`)}</span>
+            <strong>${escapeHtml(option.label)}</strong>
+            <p>${escapeHtml(option.hotel?.summary || option.description)}</p>
+            ${option.type === "hotel" ? `
+              <div class="quote-hotel-room-box">
+                <b>${escapeHtml(room?.label || "Habitación")}</b>
+                <small>${escapeHtml(getRoomDescription(room))}</small>
+              </div>
+              <div class="quote-hotel-feature-list">
+                ${[...features, ...amenities].slice(0, 5).map((item) => `<small>${escapeHtml(item)}</small>`).join("")}
+              </div>
+            ` : ""}
+            <em>${option.priceUSD > 0 ? `${money(convert(option.priceUSD, "USD", state.currency))} · ${option.nights} noche(s)` : "Sin costo de hotel"}</em>
+          </div>
+          <span class="quote-choice-dot" aria-hidden="true"></span>
         </button>
       `;
     }).join("");
@@ -807,7 +988,10 @@
       if (allowedCodes.length && !allowedCodes.includes(train.code)) return false;
       if (allowedRoutes.length && !allowedRoutes.includes(train.route)) return false;
       if (allowedCompanies.length && !train.isLocalTrain && !allowedCompanies.includes(normalizeText(train.operatorKey || train.company))) return false;
-      if (sameCompanyRequired && !train.isLocalTrain && normalizeText(train.operatorKey || train.company) !== normalizeText(outboundOperator)) return false;
+      if (sameCompanyRequired) {
+        if (train.isLocalTrain) return false;
+        if (normalizeText(train.operatorKey || train.company) !== normalizeText(outboundOperator)) return false;
+      }
       if (!inTimeWindow(train, timeWindow)) return false;
       return true;
     });
@@ -854,13 +1038,17 @@
     if (!container) return;
     const label = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
     const price = train ? getTrainTotal(train) : 0;
+    const logo = train ? `<img class="quote-train-selected-logo" src="${escapeHtml(getTrainLogoPath(train))}" alt="${escapeHtml(train.companyName || train.company || "Tren")}">` : "";
     container.innerHTML = `
-      <div>
-        <span>${label}</span>
-        <strong>${escapeHtml(train ? `${train.companyName || train.company} · ${train.serviceName}` : "Sin selección")}</strong>
-        <p>${escapeHtml(train ? `${train.departureStation} ${train.departureTime} → ${train.arrivalStation} ${train.arrivalTime}` : "Elige una opción de tren para completar la cotización.")}</p>
-        ${train?.isLocalTrain ? `<small>Tren local referencial: requiere compra presencial con DNI.</small>` : ""}
-        ${train ? `<small>${money(price)}</small>` : ""}
+      <div class="quote-train-selected-content">
+        ${logo}
+        <div>
+          <span>${label}</span>
+          <strong>${escapeHtml(train ? `${train.companyName || train.company} · ${train.serviceName}` : "Sin selección")}</strong>
+          <p>${escapeHtml(train ? `${train.departureStation} ${train.departureTime} → ${train.arrivalStation} ${train.arrivalTime}` : "Elige una opción de tren para completar la cotización.")}</p>
+          ${train?.isLocalTrain ? `<small>Tren local referencial: requiere compra presencial con DNI.</small>` : ""}
+          ${train ? `<small>${money(price)}</small>` : ""}
+        </div>
       </div>
       <button type="button" class="btn quote-secondary-btn" data-train-direction="${direction}">
         <i class="fas fa-train"></i> ${train ? "Cambiar tren" : "Elegir tren"}
@@ -875,6 +1063,22 @@
     return convert(adult + child, "USD", state.currency);
   }
 
+
+  function getTrainLogoPath(train) {
+    const key = normalizeText(train?.operatorKey || train?.company || train?.companyName || "");
+    if (key.includes("inca")) return "./assets/img/trains/inca-rail.png";
+    if (key.includes("peru")) return "./assets/img/trains/perurail.png";
+    return "./assets/img/placeholder/experience.jpg";
+  }
+
+  function getTrainCompanyRuleNote(direction) {
+    if (direction !== "return") return "El retorno se filtrará según la empresa elegida en la ida.";
+    const outbound = state.selectedTrains.outbound;
+    if (!outbound) return "Primero puedes elegir ida para filtrar el retorno por empresa.";
+    if (outbound.isLocalTrain) return "Como elegiste tren local de ida, puedes seleccionar cualquier tren de retorno compatible.";
+    return `Como elegiste ${outbound.companyName || outbound.company}, el retorno se limita a la misma empresa.`;
+  }
+
   function openTrainModal(direction) {
     state.activeTrainDirection = getTrainDirection(direction);
     state.pendingTrainCode = state.selectedTrains[state.activeTrainDirection]?.code || null;
@@ -887,8 +1091,8 @@
     const label = state.activeTrainDirection === "outbound" ? "ida a Machu Picchu" : "retorno desde Machu Picchu";
     if (title) title.textContent = `Elige tren de ${label}`;
     if (intro) intro.textContent = state.nationality === "national"
-      ? "Mostramos trenes turísticos y tren local referencial para peruanos, sujeto a disponibilidad presencial."
-      : "Mostramos solo trenes turísticos compatibles con tu nacionalidad y ruta.";
+      ? `${getTrainCompanyRuleNote(state.activeTrainDirection)} También verás tren local referencial cuando aplique.`
+      : `${getTrainCompanyRuleNote(state.activeTrainDirection)} Mostramos solo trenes turísticos compatibles.`;
 
     const options = getTrainOptions(state.activeTrainDirection);
     if (!options.length) {
@@ -902,13 +1106,23 @@
       list.innerHTML = options.map((train) => {
         const selected = train.code === state.pendingTrainCode;
         const price = getTrainTotal(train);
+        const logo = getTrainLogoPath(train);
         return `
-          <button type="button" class="quote-modal-card ${selected ? "is-selected" : ""}" data-train-code="${escapeHtml(train.code)}">
-            <span>${escapeHtml(train.companyName || train.company || "Tren")}${train.isLocalTrain ? " · Local" : ""}</span>
-            <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
-            <p>${escapeHtml(`${train.departureStation} ${train.departureTime} → ${train.arrivalStation} ${train.arrivalTime}`)}</p>
-            <em>${train.isLocalTrain ? "Precio local referencial / por confirmar" : money(price)}</em>
-            ${train.notes ? `<small>${escapeHtml(train.notes)}</small>` : ""}
+          <button type="button" class="quote-modal-card quote-train-modal-card ${selected ? "is-selected" : ""} ${train.isLocalTrain ? "quote-train-modal-card--local" : ""}" data-train-code="${escapeHtml(train.code)}">
+            <span class="quote-choice-dot" aria-hidden="true"></span>
+            <div class="quote-train-modal-card__logo">
+              <img src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || "Tren")}" loading="lazy">
+            </div>
+            <div class="quote-train-modal-card__body">
+              <span>${escapeHtml(train.companyName || train.company || "Tren")}${train.isLocalTrain ? " · Local" : ""}</span>
+              <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
+              <div class="quote-train-schedule-row">
+                <div><small>Salida</small><b>${escapeHtml(train.departureStation)} · ${escapeHtml(train.departureTime)}</b></div>
+                <div><small>Llegada</small><b>${escapeHtml(train.arrivalStation)} · ${escapeHtml(train.arrivalTime)}</b></div>
+              </div>
+              <em>${train.isLocalTrain ? "Precio local referencial / por confirmar" : money(price)}</em>
+              ${train.notes ? `<small>${escapeHtml(train.notes)}</small>` : ""}
+            </div>
           </button>
         `;
       }).join("");
@@ -1193,11 +1407,15 @@
 
     const printItinerary = $("#printItinerary");
     if (printItinerary) {
-      printItinerary.innerHTML = buildItineraryItems(option).map((item) => `
+      printItinerary.innerHTML = buildItineraryItems(option).map((day) => `
         <div class="print-itinerary-item">
-          <strong>Día ${item.displayDay} · ${escapeHtml(formatDate(item.date))}</strong>
-          <h4>${escapeHtml(item.title)}</h4>
-          <p>${escapeHtml(item.description)}</p>
+          <strong>Día ${day.displayDay} · ${escapeHtml(formatDate(day.date))}</strong>
+          ${day.activities.map((activity) => {
+            const tour = activity.tour;
+            const title = tour?.title || activity.syntheticTitle || "Actividad";
+            const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
+            return `<h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>`;
+          }).join("")}
         </div>
       `).join("");
     }
