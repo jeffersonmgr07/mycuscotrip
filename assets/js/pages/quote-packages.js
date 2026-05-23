@@ -1279,6 +1279,7 @@
 
 
   function getTrainLogoPath(train) {
+    if (train?.isLocalTrain) return "./assets/img/trains/perurail.png";
     const key = normalizeText(train?.operatorKey || train?.company || train?.companyName || "");
     if (key.includes("inca")) return "./assets/img/trains/inca-rail.png";
     if (key.includes("peru")) return "./assets/img/trains/perurail.png";
@@ -1324,12 +1325,14 @@
         return `
           <button type="button" class="quote-modal-card quote-train-modal-card ${selected ? "is-selected" : ""} ${train.isLocalTrain ? "quote-train-modal-card--local" : ""}" data-train-code="${escapeHtml(train.code)}">
             <span class="quote-choice-dot" aria-hidden="true"></span>
-            <div class="quote-train-modal-card__logo">
-              <img src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || "Tren")}" loading="lazy">
-            </div>
             <div class="quote-train-modal-card__body">
-              <span>${escapeHtml(train.companyName || train.company || "Tren")}${train.isLocalTrain ? " · Local" : ""}</span>
-              <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
+              <div class="quote-train-title-row">
+                <img class="quote-train-inline-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || "Tren")}" loading="lazy">
+                <div>
+                  <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
+                  ${train.isLocalTrain ? `<span>Tren local · PeruRail</span>` : ""}
+                </div>
+              </div>
               <div class="quote-train-schedule-row">
                 <div><small>Salida</small><b>${escapeHtml(train.departureStation)} · ${escapeHtml(train.departureTime)}</b></div>
                 <div><small>Llegada</small><b>${escapeHtml(train.arrivalStation)} · ${escapeHtml(train.arrivalTime)}</b></div>
@@ -1599,39 +1602,63 @@
     setText("#printCouponCode", state.manualDiscount?.code || "MCT-XXXX");
     setText("#printCouponDiscount", state.manualDiscount?.type === "percent" ? `${state.manualDiscount.value}%` : money(convert(state.manualDiscount?.value || 0, state.manualDiscount?.currency || state.currency, state.currency)));
 
+    const selectedExtras = getAvailableExtras().filter((extra) => state.selectedExtras.has(extra.code));
+    const trainItems = [state.selectedTrains.outbound, state.selectedTrains.return].filter(Boolean);
+    const itineraryTours = buildItineraryItems(option)
+      .flatMap((day) => day.activities.map((activity) => getActivityDisplayTitle(activity, day)))
+      .filter(Boolean);
+    const uniqueTours = [...new Set(itineraryTours)];
+
+    const trainSummary = (train) => {
+      if (!train) return "Por seleccionar";
+      const company = train.isLocalTrain ? "PeruRail" : (train.companyName || train.company || "Tren");
+      const service = train.serviceName || train.category || train.code;
+      return `${company} · ${service} · ${train.departureTime || "--:--"} ${train.departureStation || ""} → ${train.arrivalTime || "--:--"} ${train.arrivalStation || ""}`;
+    };
+
     const services = $("#printSelectedServices");
     if (services) {
-      const trainItems = [state.selectedTrains.outbound, state.selectedTrains.return].filter(Boolean);
-      const itineraryTours = buildItineraryItems(option)
-        .flatMap((day) => day.activities.map((activity) => getActivityDisplayTitle(activity, day)))
-        .filter(Boolean);
-      const uniqueTours = [...new Set(itineraryTours)];
+      const rows = [
+        ["Itinerario seleccionado", option?.rawCard?.recommendedTitle || option?.title || "Itinerario por confirmar"],
+        ["Tren de ida", trainSummary(state.selectedTrains.outbound)],
+        ["Tren de retorno", trainSummary(state.selectedTrains.return)],
+        ["Tours incluidos", uniqueTours.length ? uniqueTours.join(" · ") : "Por confirmar"],
+        ["Extras seleccionados", selectedExtras.length ? selectedExtras.map((extra) => extra.label || "Extra").join(" · ") : "Sin extras seleccionados"],
+        ["Asistencia incluida", "Recojo del aeropuerto o terminal, coordinación local y soporte durante el viaje"]
+      ];
       services.innerHTML = `
-        <div class="print-service-list print-service-list--clean">
-          <p><strong>Incluye:</strong> recojo del aeropuerto o terminal, asistencia local durante el viaje y coordinación operativa de la reserva.</p>
-          ${uniqueTours.length ? `<p><strong>Tours incluidos:</strong> ${escapeHtml(uniqueTours.join(" · "))}</p>` : ""}
-          ${trainItems.length ? `<p><strong>Tickets de tren:</strong> ${escapeHtml(trainItems.map((train) => `${train.companyName || train.company} ${train.serviceName || ""} (${train.departureTime} ${train.departureStation} → ${train.arrivalTime} ${train.arrivalStation})`).join(" · "))}</p>` : ""}
-          <p><strong>Importante:</strong> ingresos, tickets y horarios quedan sujetos a disponibilidad al momento de confirmar la reserva.</p>
+        <div class="print-services-list print-services-list--compact">
+          ${rows.map(([label, value]) => `
+            <div class="print-service-row">
+              <strong>${escapeHtml(label)}</strong>
+              <span>${escapeHtml(value)}</span>
+            </div>
+          `).join("")}
         </div>
       `;
     }
 
     const hotelImages = $("#printHotelImages");
+    const hotelSection = hotelImages?.closest(".print-section--hotels");
     if (hotelImages) {
       const hotelItems = Object.values(state.selectedHotels).filter((item) => item?.type === "hotel");
+      if (hotelSection) hotelSection.hidden = !hotelItems.length;
       hotelImages.innerHTML = hotelItems.length ? `
-        <div class="print-lodging-title">Alojamientos incluidos</div>
-        <div class="print-lodging-grid">
+        <div class="print-hotel-strip-list">
           ${hotelItems.map((item) => {
-            const image = getHotelGalleryImages(item.hotel)[0];
+            const images = getHotelGalleryImages(item.hotel).slice(0, 4);
+            const destinationLabel = getAccommodationPlan().find((plan) => plan.destination === item.destination)?.label || item.hotel?.location || "Alojamiento";
             return `
-              <figure class="print-hotel-image-card">
-                ${image ? `<img src="${escapeHtml(resolveAssetPath(image))}" alt="${escapeHtml(item.label || "Hotel")}">` : ""}
-                <figcaption>
+              <div class="print-hotel-row print-hotel-row--strip">
+                <div class="print-hotel-info">
                   <strong>${escapeHtml(item.label || "Hotel seleccionado")}</strong>
-                  <span>${escapeHtml(item.roomsSummary || "Habitación seleccionada")} · ${Number(item.nights || 0)} noche(s)</span>
-                </figcaption>
-              </figure>
+                  <span>${escapeHtml(destinationLabel)} · ${Number(item.nights || 0)} noche(s)</span>
+                  <span>${escapeHtml(item.roomsSummary || "Habitación seleccionada")}</span>
+                </div>
+                <div class="print-hotel-gallery">
+                  ${images.map((image) => `<img src="${escapeHtml(resolveAssetPath(image))}" alt="${escapeHtml(item.label || "Hotel")}">`).join("")}
+                </div>
+              </div>
             `;
           }).join("")}
         </div>
@@ -1640,13 +1667,30 @@
 
     const paymentTarget = $("#printPaymentDetails");
     if (paymentTarget) {
+      const bases = getBaseTotals();
+      const hotelTotal = getHotelTotal();
+      const trainTotal = getTrainsTotal();
+      const extrasTotal = getExtrasTotal();
+      const rows = [
+        [`Adultos x${state.adults}`, money(bases.adult)],
+        ...(state.children > 0 ? [[`Niños x${state.children}`, money(bases.child)]] : []),
+        ["Alojamiento", money(hotelTotal)],
+        ["Trenes", trainTotal > 0 ? money(trainTotal) : "Tren local seleccionado · sin adicional"],
+        ...(extrasTotal > 0 ? [["Extras", money(extrasTotal)]] : []),
+        ...(payment.manualDiscount > 0 ? [[`Cupón ${state.manualDiscount?.code || "aplicado"}`, `- ${money(payment.manualDiscount)}`]] : []),
+        ...(payment.fullDiscount > 0 ? [["Descuento pago total 5%", `- ${money(payment.fullDiscount)}`]] : []),
+        ["Total cotizado", money(payment.total)],
+        [getPaymentMode() === "partial" ? "Pagarás ahora" : "Pago 100%", money(payment.advance)],
+        ...(payment.balance > 0 ? [["Saldo pendiente", money(payment.balance)]] : [])
+      ];
       paymentTarget.innerHTML = `
-        <div class="print-payment-grid">
-          <p><strong>Subtotal:</strong> ${money(payment.subtotal)}</p>
-          <p><strong>Descuento:</strong> - ${money(payment.discount)}</p>
-          <p><strong>Total:</strong> ${money(payment.total)}</p>
-          <p><strong>Pagarás ahora:</strong> ${money(payment.advance)}</p>
-          ${payment.balance > 0 ? `<p><strong>Saldo pendiente:</strong> ${money(payment.balance)}</p>` : ""}
+        <div class="print-payment-list print-payment-list--quote">
+          ${rows.map(([label, value], index) => `
+            <div class="print-payment-row ${index >= rows.length - (payment.balance > 0 ? 3 : 2) ? "print-payment-row--strong" : ""}">
+              <strong>${escapeHtml(label)}</strong>
+              <span>${escapeHtml(value)}</span>
+            </div>
+          `).join("")}
         </div>
       `;
     }
