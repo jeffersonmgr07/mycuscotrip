@@ -4856,3 +4856,209 @@ body.is-generating-pdf .print-booking-offer__content {
     max-width: 58px !important;
   }
 }
+
+/* === V23: ajustes finales visibles para cotizador === */
+.quote-package-options:not([data-expanded="true"]) > .quote-package-option:nth-of-type(n+5) {
+  display: none !important;
+}
+.quote-package-options[data-expanded="true"] > .quote-package-option {
+  display: grid !important;
+}
+.quote-show-more-itineraries {
+  grid-column: 1 / -1;
+}
+
+.quote-itinerary-item.quote-itinerary-item--media {
+  grid-template-columns: 188px minmax(0, 1fr) !important;
+  align-items: stretch !important;
+}
+.quote-itinerary-item__media {
+  width: 100% !important;
+  height: 165px !important;
+  min-height: 165px !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  background: #edf2ef !important;
+}
+.quote-itinerary-item__media img {
+  width: 100% !important;
+  height: 165px !important;
+  min-height: 165px !important;
+  max-height: 165px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 18px !important;
+}
+.quote-day-badge {
+  min-width: 88px !important;
+  justify-content: center !important;
+  padding: 6px 18px !important;
+  line-height: 1 !important;
+  font-size: 0.78rem !important;
+  border-radius: 999px !important;
+}
+.quote-itinerary-activity,
+.quote-itinerary-item--media .quote-itinerary-activity {
+  position: relative !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+.quote-itinerary-activity::before,
+.quote-itinerary-item--media .quote-itinerary-activity::before {
+  content: none !important;
+  display: none !important;
+}
+.quote-itinerary-activity h4 {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+#trainSelectionModal .quote-modal__dialog {
+  max-width: min(880px, calc(100vw - 32px)) !important;
+}
+#trainSelectionModal .quote-modal-card.quote-train-modal-card,
+#trainSelectionModal .quote-train-modal-card {
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+  min-height: 0 !important;
+  padding: 14px 16px !important;
+}
+#trainSelectionModal .quote-choice-dot {
+  position: static !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 18px !important;
+  height: 18px !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+#trainSelectionModal .quote-train-modal-card__logo {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  width: 42px !important;
+  height: 30px !important;
+  min-width: 42px !important;
+  min-height: 30px !important;
+  max-width: 42px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#trainSelectionModal .quote-train-modal-card__logo img,
+#trainSelectionModal .quote-train-modal-card img {
+  width: auto !important;
+  height: auto !important;
+  max-width: 42px !important;
+  max-height: 28px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+#trainSelectionModal .quote-train-modal-card__body {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  min-width: 0 !important;
+}
+
+#hotelModal .quote-modal__dialog {
+  max-width: min(1260px, calc(100vw - 32px)) !important;
+  width: 100% !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+#hotelModal .quote-modal__header {
+  margin: 0 !important;
+  padding: 24px 28px !important;
+  background: #062803 !important;
+  color: #f5f8f2 !important;
+}
+#hotelModal .quote-modal__header h2,
+#hotelModal .quote-modal__header p,
+#hotelModal .quote-modal__eyebrow {
+  color: #f5f8f2 !important;
+}
+#hotelModal .quote-modal__body {
+  padding: 22px !important;
+  max-height: min(76vh, 760px) !important;
+  overflow: auto !important;
+}
+#hotelModal .quote-hotel-modal-list--wide {
+  display: grid !important;
+  gap: 18px !important;
+}
+#hotelModal .quote-hotel-group-card--wide {
+  display: grid !important;
+  grid-template-columns: minmax(380px, 1.06fr) minmax(360px, 0.94fr) !important;
+  gap: 30px !important;
+  padding: 24px !important;
+  border-radius: 28px !important;
+  background: #fff !important;
+  border: 1px solid rgba(6, 40, 3, 0.10) !important;
+  box-shadow: 0 20px 45px rgba(6, 40, 3, 0.08) !important;
+}
+#hotelModal .quote-hotel-gallery,
+#hotelModal .quote-hotel-gallery img,
+#hotelModal .quote-hotel-gallery__empty {
+  height: 300px !important;
+  min-height: 300px !important;
+  max-height: 300px !important;
+}
+#hotelModal .quote-hotel-gallery img {
+  width: 100% !important;
+  object-fit: cover !important;
+  border-radius: 24px !important;
+}
+#hotelModal .quote-hotel-group-card__right {
+  align-content: center !important;
+}
+#hotelModal .quote-room-combo-list {
+  display: grid !important;
+  gap: 12px !important;
+}
+#hotelModal .quote-hotel-group-card--wide .quote-room-combo {
+  min-height: 78px !important;
+  display: grid !important;
+  grid-template-columns: 28px minmax(0, 1fr) !important;
+  align-items: center !important;
+  padding: 16px 18px !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+}
+#hotelModal .quote-hotel-group-card--wide .quote-choice-dot {
+  position: static !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+#hotelModal .quote-hotel-choice-card--none {
+  border-radius: 22px !important;
+}
+
+@media (max-width: 860px) {
+  .quote-itinerary-item.quote-itinerary-item--media {
+    grid-template-columns: 1fr !important;
+  }
+  .quote-itinerary-item__media,
+  .quote-itinerary-item__media img {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+  }
+  #hotelModal .quote-hotel-group-card--wide {
+    grid-template-columns: 1fr !important;
+  }
+  #hotelModal .quote-hotel-gallery,
+  #hotelModal .quote-hotel-gallery img,
+  #hotelModal .quote-hotel-gallery__empty {
+    height: 230px !important;
+    min-height: 230px !important;
+    max-height: 230px !important;
+  }
+}
