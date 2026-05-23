@@ -4229,3 +4229,167 @@ body.is-generating-pdf .print-booking-offer__content {
     grid-template-columns: 1fr;
   }
 }
+
+/* =============================================
+   Corrección v20 - modal de hoteles agrupado
+   ============================================= */
+.quote-hotel-modal-list {
+  display: grid;
+  gap: 16px;
+}
+
+.quote-hotel-choice-card,
+.quote-hotel-group-card {
+  border: 1px solid rgba(6, 40, 3, 0.12);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(6, 40, 3, 0.06);
+}
+
+.quote-hotel-choice-card {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quote-hotel-choice-card strong,
+.quote-hotel-group-card strong {
+  color: #062803;
+}
+
+.quote-hotel-choice-card p,
+.quote-hotel-group-card p {
+  margin: 6px 0 0;
+  color: #5d6a64;
+  line-height: 1.5;
+}
+
+.quote-hotel-choice-card em,
+.quote-room-combo em {
+  color: #0a3a26;
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.quote-hotel-choice-card.is-selected,
+.quote-hotel-group-card.is-selected {
+  border-color: #0a3a26;
+  box-shadow: 0 16px 34px rgba(6, 40, 3, 0.12);
+}
+
+.quote-hotel-group-card {
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+}
+
+.quote-hotel-group-card__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 230px;
+  object-fit: cover;
+  display: block;
+  background: #edf2ef;
+}
+
+.quote-hotel-group-card__content {
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.quote-hotel-group-card__head span {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf5ef;
+  color: #0a3a26;
+  font-size: 0.76rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.quote-room-combo-list {
+  display: grid;
+  gap: 8px;
+}
+
+.quote-room-combo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(6, 40, 3, 0.10);
+  background: #f9fcfb;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quote-room-combo:hover,
+.quote-hotel-choice-card:hover {
+  border-color: rgba(10, 58, 38, 0.45);
+  background: #f5faf7;
+}
+
+.quote-room-combo.is-selected {
+  border-color: #0a3a26;
+  background: #edf6ef;
+}
+
+.quote-room-combo strong {
+  display: block;
+  font-size: 0.93rem;
+  margin-bottom: 3px;
+}
+
+.quote-room-combo small {
+  color: #65726d;
+  line-height: 1.4;
+}
+
+.quote-choice-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(10, 58, 38, 0.45);
+  background: #fff;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.is-selected > .quote-choice-dot,
+.quote-room-combo.is-selected .quote-choice-dot,
+.quote-hotel-choice-card.is-selected .quote-choice-dot {
+  border-color: #0a3a26;
+  box-shadow: inset 0 0 0 4px #fff;
+  background: #0a3a26;
+}
+
+@media (max-width: 760px) {
+  .quote-hotel-group-card {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-hotel-group-card__media img {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  .quote-room-combo {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .quote-room-combo em {
+    grid-column: 2;
+    white-space: normal;
+  }
+}
