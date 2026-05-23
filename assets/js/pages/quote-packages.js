@@ -165,13 +165,18 @@
 
     const title = normalizeText(activity?.syntheticTitle || activity?.note || "");
     const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
+    const isLastDay = day?.day === totalDays;
+
+    if (isLastDay || title.includes("traslado de salida") || title.includes("traslado final")) {
+      return "./assets/img/quote/fallbacks/cusco.jpg";
+    }
 
     if (title.includes("recojo") || title.includes("aeropuerto") || title.includes("terminal")) {
       return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
     }
 
-    if (title.includes("traslado") || day?.day === totalDays) {
-      return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
+    if (title.includes("traslado")) {
+      return "./assets/img/quote/fallbacks/cusco.jpg";
     }
 
     return "./assets/img/quote/fallbacks/cusco.jpg";
@@ -827,52 +832,44 @@
 
     const days = buildItineraryItems(option);
     target.innerHTML = days.map((day) => {
-      const mediaHtml = day.activities.map((activity, index) => {
-        const title = getActivityDisplayTitle(activity, day);
-        const image = getActivityImage(activity, day);
-        return `
-          <figure class="quote-itinerary-activity-media">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">
-            ${day.activities.length > 1 ? `<figcaption>${escapeHtml(title)}</figcaption>` : ""}
-          </figure>
-        `;
-      }).join("");
-
-      const activityHtml = day.activities.map((activity, index) => {
+      const activityRows = day.activities.map((activity, index) => {
         const tour = activity.tour;
         const title = getActivityDisplayTitle(activity, day);
         const time = getActivityDisplayTime(activity, day, index);
         const description = getActivityDisplayDescription(activity, day);
         const places = getActivityPlacesText(activity, day);
         const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
+        const image = getActivityImage(activity, day);
+
         return `
-          <div class="quote-itinerary-activity">
-            ${time ? `<span class="quote-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
-            <h4>${escapeHtml(title)}</h4>
-            <p>${escapeHtml(description)}</p>
-            ${places ? `<p class="quote-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
-            ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+          <div class="quote-itinerary-activity-row">
+            <figure class="quote-itinerary-activity-row__image">
+              <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">
+            </figure>
+            <div class="quote-itinerary-activity">
+              ${time ? `<span class="quote-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
+              <h4>${escapeHtml(title)}</h4>
+              <p>${escapeHtml(description)}</p>
+              ${places ? `<p class="quote-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
+              ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+            </div>
           </div>
         `;
       }).join("");
 
       return `
-        <div class="quote-itinerary-item quote-itinerary-item--media">
-          <div class="quote-itinerary-item__media quote-itinerary-item__media--stack">
-            ${mediaHtml}
+        <div class="quote-itinerary-item quote-itinerary-item--activity-list">
+          <div class="quote-itinerary-item__dayline quote-itinerary-item__dayline--screen">
+            <span class="quote-day-badge">Día ${day.displayDay}</span>
+            <strong class="quote-itinerary-date-label">${escapeHtml(formatDate(day.date))}</strong>
           </div>
-          <div class="quote-itinerary-item__body">
-            <div class="quote-itinerary-item__dayline">
-              <span class="quote-day-badge">Día ${day.displayDay}</span>
-              <strong class="quote-itinerary-date-label">${escapeHtml(formatDate(day.date))}</strong>
-            </div>
-            ${activityHtml}
+          <div class="quote-itinerary-day-activities">
+            ${activityRows}
           </div>
         </div>
       `;
     }).join("");
   }
-
   function getAccommodationPlan(option = getSelectedOption()) {
     if (!option || !state.dates.nights) return [];
     const requiresAguas = Boolean(option.requiresOvernight || option.connectionMode || getMachuTour(option)?.trainSelection?.allowedRoutes?.outbound?.includes("OLLA_MAPI"));
@@ -1800,7 +1797,10 @@
     if (printItinerary) {
       printItinerary.innerHTML = buildItineraryItems(option).map((day) => `
         <div class="print-itinerary-item print-itinerary-item--activity-images">
-          <strong>Día ${day.displayDay} · <span class="print-itinerary-date-label">${escapeHtml(formatDate(day.date))}</span></strong>
+          <div class="print-itinerary-dayline">
+            <span class="print-day-badge">Día ${day.displayDay}</span>
+            <span class="print-itinerary-date-label">${escapeHtml(formatDate(day.date))}</span>
+          </div>
           ${day.activities.map((activity, index) => {
             const tour = activity.tour;
             const title = getActivityDisplayTitle(activity, day);
