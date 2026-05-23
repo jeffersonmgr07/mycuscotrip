@@ -5922,3 +5922,167 @@ body.is-generating-pdf .print-itinerary-activity-block--with-image img {
   display: block !important;
   border-radius: 2mm !important;
 }
+
+
+/* === V29: corrección puntual solicitada ===
+   1) Las imágenes del itinerario en HTML no deben crecer.
+   2) En impresión, el texto bajo el logo debe ocupar 3 líneas.
+   3) En impresión, cada imagen de actividad debe quedar alineada con su texto.
+   No modifica reglas, hoteles, trenes ni estructura del cotizador.
+*/
+
+/* HTML: controla estrictamente las imágenes del itinerario, incluso cuando un día tiene varias actividades */
+.quote-itinerary-item.quote-itinerary-item--media {
+  grid-template-columns: 190px minmax(0, 1fr) !important;
+  align-items: start !important;
+}
+
+.quote-itinerary-item__media,
+.quote-itinerary-item__media--stack {
+  width: 190px !important;
+  max-width: 190px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: grid !important;
+  gap: 8px !important;
+  overflow: visible !important;
+  align-self: start !important;
+}
+
+.quote-itinerary-activity-media,
+.quote-itinerary-item__media figure {
+  width: 190px !important;
+  height: 118px !important;
+  min-height: 118px !important;
+  max-height: 118px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  background: #edf4ef !important;
+}
+
+.quote-itinerary-activity-media img,
+.quote-itinerary-item__media figure img,
+.quote-itinerary-item__media img {
+  width: 190px !important;
+  max-width: 190px !important;
+  height: 118px !important;
+  min-height: 118px !important;
+  max-height: 118px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 16px !important;
+}
+
+.quote-itinerary-activity-media figcaption {
+  font-size: 0.68rem !important;
+  padding: 4px 7px !important;
+  bottom: 6px !important;
+}
+
+@media (max-width: 860px) {
+  .quote-itinerary-item.quote-itinerary-item--media {
+    grid-template-columns: 1fr !important;
+  }
+  .quote-itinerary-item__media,
+  .quote-itinerary-item__media--stack,
+  .quote-itinerary-activity-media,
+  .quote-itinerary-item__media figure,
+  .quote-itinerary-activity-media img,
+  .quote-itinerary-item__media figure img,
+  .quote-itinerary-item__media img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .quote-itinerary-activity-media,
+  .quote-itinerary-item__media figure,
+  .quote-itinerary-activity-media img,
+  .quote-itinerary-item__media figure img,
+  .quote-itinerary-item__media img {
+    height: 155px !important;
+    min-height: 155px !important;
+    max-height: 155px !important;
+  }
+}
+
+/* Impresión/PDF: cabecera con 3 líneas bajo el logo */
+@media print {
+  #printQuotation .print-header,
+  .print-header,
+  body.is-generating-pdf .print-header {
+    grid-template-columns: 72mm minmax(0, 1fr) !important;
+    gap: 14mm !important;
+  }
+
+  #printQuotation .print-company,
+  .print-company,
+  body.is-generating-pdf .print-company {
+    width: 72mm !important;
+    max-width: 72mm !important;
+    text-align: left !important;
+  }
+
+  #printQuotation .print-logo,
+  .print-logo,
+  body.is-generating-pdf .print-logo {
+    width: 54mm !important;
+    max-width: 54mm !important;
+    margin: 0 0 3mm !important;
+  }
+
+  #printQuotation .print-company p,
+  .print-company p,
+  body.is-generating-pdf .print-company p {
+    width: 72mm !important;
+    max-width: 72mm !important;
+    margin: 0 0 1mm !important;
+    font-size: 8.8pt !important;
+    line-height: 1.18 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+  }
+
+  /* Impresión/PDF: cada imagen de actividad alineada con el texto correspondiente */
+  #printQuotation .print-itinerary-activity-block--with-image,
+  body.is-generating-pdf .print-itinerary-activity-block--with-image {
+    display: grid !important;
+    grid-template-columns: 26mm minmax(0, 1fr) !important;
+    gap: 2.4mm !important;
+    align-items: start !important;
+    margin-top: 1.6mm !important;
+  }
+
+  #printQuotation .print-itinerary-activity-block--with-image img,
+  body.is-generating-pdf .print-itinerary-activity-block--with-image img {
+    width: 26mm !important;
+    max-width: 26mm !important;
+    height: 18mm !important;
+    max-height: 18mm !important;
+    object-fit: cover !important;
+    align-self: start !important;
+  }
+
+  #printQuotation .print-itinerary-activity-block--with-image > div,
+  body.is-generating-pdf .print-itinerary-activity-block--with-image > div {
+    min-width: 0 !important;
+    align-self: start !important;
+  }
+}
+
+/* La generación con html2pdf usa esta clase fuera de @media print */
+body.is-generating-pdf .print-header {
+  grid-template-columns: 72mm minmax(0, 1fr) !important;
+  gap: 14mm !important;
+}
+body.is-generating-pdf .print-company,
+body.is-generating-pdf .print-company p {
+  width: 72mm !important;
+  max-width: 72mm !important;
+  text-align: left !important;
+}
+body.is-generating-pdf .print-company p {
+  white-space: nowrap !important;
+  font-size: 8.8pt !important;
+  line-height: 1.18 !important;
+}
