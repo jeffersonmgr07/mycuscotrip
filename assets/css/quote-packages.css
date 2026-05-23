@@ -4393,3 +4393,317 @@ body.is-generating-pdf .print-booking-offer__content {
     white-space: normal;
   }
 }
+
+/* =============================================
+   Corrección v21 - hotel modal tipo paquetes, trenes, itinerario y print
+   ============================================= */
+.quote-package-options {
+  align-items: stretch;
+}
+
+.quote-show-more-itineraries {
+  width: 100%;
+  border: 1.5px dashed rgba(10, 58, 38, 0.35);
+  background: #f5faf7;
+  color: #0a3a26;
+  border-radius: 18px;
+  padding: 13px 16px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+.quote-show-more-itineraries:hover {
+  background: #edf7ef;
+  border-color: #0a3a26;
+}
+
+.quote-day-badge {
+  min-width: 92px;
+  justify-content: center;
+  padding: 5px 16px;
+  border-radius: 12px;
+  line-height: 1.1;
+}
+
+.quote-itinerary-item.quote-itinerary-item--media {
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.quote-itinerary-item__media {
+  min-height: 154px;
+}
+
+.quote-itinerary-item__media img {
+  height: 154px;
+  min-height: 154px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.quote-itinerary-activity {
+  position: relative;
+  padding-left: 0 !important;
+}
+
+.quote-itinerary-activity::before {
+  display: none !important;
+  content: none !important;
+}
+
+.quote-itinerary-activity h4 {
+  margin: 0 0 6px !important;
+  padding-left: 0 !important;
+  color: #062803;
+  line-height: 1.28;
+}
+
+.quote-itinerary-activity p {
+  margin: 0;
+}
+
+.quote-modal__dialog:has(.quote-hotel-modal-list--wide) {
+  max-width: min(1180px, calc(100vw - 32px));
+}
+
+.quote-hotel-modal-list--wide {
+  gap: 18px;
+}
+
+.quote-hotel-group-card--wide {
+  display: grid;
+  grid-template-columns: minmax(360px, 1.1fr) minmax(320px, 0.9fr);
+  gap: 28px;
+  padding: 22px;
+  border-radius: 28px;
+  box-shadow: 0 18px 42px rgba(6, 40, 3, 0.08);
+}
+
+.quote-hotel-group-card__left,
+.quote-hotel-group-card__right {
+  min-width: 0;
+}
+
+.quote-hotel-group-card__head--top {
+  margin-bottom: 16px;
+}
+
+.quote-hotel-group-card__head--top strong {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: #062803;
+}
+
+.quote-hotel-group-card__head--top p {
+  margin: 7px 0 0;
+  font-size: 0.98rem;
+}
+
+.quote-hotel-gallery {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #edf2ef;
+}
+
+.quote-hotel-gallery img,
+.quote-hotel-gallery__empty {
+  display: block;
+  width: 100%;
+  height: 285px;
+  object-fit: cover;
+}
+
+.quote-hotel-gallery__empty {
+  display: grid;
+  place-items: center;
+  color: #0a3a26;
+  font-size: 2rem;
+}
+
+.quote-hotel-gallery__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.94);
+  color: #0a3a26;
+  font-size: 2rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+}
+
+.quote-hotel-gallery__nav--prev { left: 14px; }
+.quote-hotel-gallery__nav--next { right: 14px; }
+
+.quote-hotel-feature-list--pills {
+  margin-top: 18px;
+}
+
+.quote-hotel-feature-list--pills small {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #edf7ef;
+  color: #0a3a26;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.quote-hotel-group-card__right {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  position: relative;
+}
+
+.quote-hotel-price-pill {
+  justify-self: end;
+  width: fit-content;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: #edf7ef;
+  color: #0a3a26;
+  font-weight: 900;
+  font-size: 0.96rem;
+}
+
+.quote-hotel-group-card__right h3 {
+  margin: 0;
+  color: #1f6d2e;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.quote-hotel-group-card--wide .quote-room-combo {
+  grid-template-columns: auto minmax(0, 1fr);
+  border-radius: 20px;
+  padding: 17px 18px;
+  background: #fff;
+  border: 1.5px solid rgba(6, 40, 3, 0.18);
+}
+
+.quote-hotel-group-card--wide .quote-room-combo:hover,
+.quote-hotel-group-card--wide .quote-room-combo.is-selected {
+  border-color: #0a3a26;
+  background: #f4fbf5;
+}
+
+.quote-hotel-group-card--wide .quote-room-combo strong {
+  font-size: 1rem;
+}
+
+.quote-hotel-group-card--wide .quote-room-combo small {
+  font-size: 0.9rem;
+}
+
+.quote-train-modal-card {
+  grid-template-columns: 98px minmax(0, 1fr) 24px !important;
+  align-items: center;
+}
+
+.quote-train-modal-card__logo {
+  min-height: 68px !important;
+  height: 68px !important;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.quote-train-modal-card__logo img {
+  width: 100% !important;
+  max-width: 74px;
+  height: 44px !important;
+  max-height: 44px !important;
+  object-fit: contain !important;
+}
+
+.print-service-list--clean p strong {
+  color: #0a3a26;
+}
+
+.print-hotel-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.print-hotel-image-card {
+  margin: 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-hotel-image-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.print-hotel-image-card figcaption {
+  margin-top: 5px;
+  font-size: 0.78rem;
+  color: #44524c;
+}
+
+.print-itinerary-item--media {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 12px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-itinerary-item--media img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+@media (max-width: 760px) {
+  .quote-itinerary-item.quote-itinerary-item--media {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-itinerary-item__media img {
+    width: 100%;
+    height: 190px;
+  }
+
+  .quote-hotel-group-card--wide {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .quote-hotel-gallery img,
+  .quote-hotel-gallery__empty {
+    height: 220px;
+  }
+
+  .quote-hotel-price-pill {
+    justify-self: start;
+  }
+
+  .quote-train-modal-card {
+    grid-template-columns: 78px minmax(0, 1fr) !important;
+  }
+
+  .quote-train-modal-card .quote-choice-dot {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
