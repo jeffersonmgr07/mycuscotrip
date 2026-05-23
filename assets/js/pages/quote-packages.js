@@ -693,11 +693,20 @@
     });
 
     return days.map((day) => {
-      const activities = day.activities.length ? day.activities : [{
+      let activities = day.activities.length ? [...day.activities] : [{
         tour: null,
         note: day.day === 1 ? "Llegada, traslado al hotel y aclimatación ligera." : day.day === totalDays ? "Traslado de salida y asistencia final." : "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.",
-        syntheticTitle: day.day === 1 ? "Llegada a Cusco · Recojo y asistencia" : day.day === totalDays ? "Traslado de salida" : "Día flexible"
+        syntheticTitle: day.day === 1 ? "Recojo aeropuerto · Recepción en Cusco" : day.day === totalDays ? "Traslado de salida" : "Día flexible"
       }];
+
+      if (day.day === 1 && !activities.some((item) => !item.tour && normalizeText(item.syntheticTitle || "").includes("recojo"))) {
+        activities = [{
+          tour: null,
+          startTime: state.arrivalTime || "--:--",
+          note: "Recepción en Cusco y traslado inicial.",
+          syntheticTitle: "Recojo aeropuerto · Recepción en Cusco"
+        }, ...activities];
+      }
 
       return {
         day: day.day,
@@ -716,6 +725,69 @@
       return "Tour panorámico Cusco";
     }
     return rawTitle;
+  }
+
+  function getActivityDisplayTime(activity, day, index = 0) {
+    if (!activity) return "";
+    if (activity.startTime) return activity.startTime;
+    const note = String(activity.note || "");
+    const match = note.match(/(\d{1,2}:\d{2})/);
+    if (match) return match[1].padStart(5, "0");
+    if (!activity.tour) {
+      if (day?.day === 1) return state.arrivalTime || "--:--";
+      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return state.departureTime ? addMinutesToTime(state.departureTime, -120) : "--:--";
+      return "09:00";
+    }
+    const tour = activity.tour;
+    if (day?.day === 1 && index === 0 && activity.syntheticTitle) return state.arrivalTime || "--:--";
+    if (isCityTour(tour)) return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "13:00";
+    if (isWelcomeTour(tour)) {
+      const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
+      if (day?.day === totalDays) return getFirstAvailableStartTime(tour, "09:00") || "09:00";
+      return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "09:00";
+    }
+    if (isSacredValleyTour(tour)) return "08:00";
+    if (isMachuPicchuTour(tour)) {
+      const title = normalizeText(tour.title || "");
+      if (title.includes("overnight")) return "08:00";
+      return "04:00";
+    }
+    if (isFullDayLikeTour(tour)) return "04:00";
+    const starts = toArray(tour?.operationalSchedule?.startTimes);
+    return starts[0] || tour?.operationalSchedule?.startTime || "09:00";
+  }
+
+  function getActivityDisplayDescription(activity, day) {
+    const tour = activity?.tour;
+    const title = normalizeText(getActivityDisplayTitle(activity, day));
+    if (!tour) {
+      if (day?.day === 1) return "Recepción en aeropuerto o terminal terrestre, asistencia inicial y traslado hacia el hotel o punto coordinado en Cusco.";
+      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return "Recojo desde el hotel o punto coordinado y traslado al aeropuerto o terminal terrestre según el horario real de salida.";
+      return activity?.note || "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.";
+    }
+    if (isCityTour(tour)) return "Visita guiada por los principales atractivos de Cusco: Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, con retorno coordinado a la ciudad.";
+    if (isWelcomeTour(tour) && title.includes("panoramico")) return "Recorrido panorámico por Cusco con enfoque cultural, vistas de la ciudad, ceremonia andina simbólica y paradas fotográficas antes del traslado final.";
+    if (isWelcomeTour(tour)) return "Experiencia cultural de bienvenida en Cusco con ceremonia andina simbólica, vistas panorámicas y tiempo de adaptación suave antes de continuar con el itinerario.";
+    if (isSacredValleyConnectionTour(tour)) return "Ruta por el Valle Sagrado visitando puntos destacados como Pisac, Urubamba y Ollantaytambo, finalizando con conexión hacia Aguas Calientes para dormir cerca de Machu Picchu.";
+    if (isSacredValleyTour(tour)) return "Excursión de día completo por el Valle Sagrado de los Incas con visitas culturales, paisajes andinos y retorno coordinado a Cusco.";
+    if (isMachuPicchuTour(tour)) return "Visita a Machu Picchu con coordinación de traslados, bus de subida, ingreso oficial según disponibilidad, guiado profesional y retorno según la modalidad seleccionada.";
+    if (title.includes("montana de colores") || title.includes("montaña de colores")) return "Salida de madrugada hacia Vinicunca, desayuno, caminata asistida hasta la Montaña de Colores, tiempo para fotografías, almuerzo y retorno aproximado por la tarde.";
+    return tour?.description || tour?.shortDescription || activity?.note || "Servicio coordinado según tus horarios y disponibilidad operativa.";
+  }
+
+  function getActivityPlacesText(activity, day) {
+    const tour = activity?.tour;
+    if (!tour) {
+      if (day?.day === 1) return "Aeropuerto/terminal · hotel en Cusco";
+      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return "Hotel en Cusco · aeropuerto/terminal";
+      return "Cusco";
+    }
+    const places = toArray(tour?.places || tour?.highlights || tour?.mainPlaces).map((item) => typeof item === "string" ? item : item?.name).filter(Boolean);
+    if (places.length) return places.slice(0, 5).join(" · ");
+    if (isCityTour(tour)) return "Qoricancha · Sacsayhuamán · Qenqo · Puca Pucara · Tambomachay";
+    if (isSacredValleyConnectionTour(tour)) return "Pisac · Urubamba · Ollantaytambo · conexión a Machu Picchu";
+    if (isMachuPicchuTour(tour)) return "Aguas Calientes · bus turístico · ciudadela de Machu Picchu";
+    return "Cusco y alrededores";
   }
 
   function renderItineraryPreview() {
@@ -740,15 +812,19 @@
     target.innerHTML = days.map((day) => {
       const firstTour = day.activities.find((item) => item.tour)?.tour;
       const image = getImageFromTour(firstTour);
-      const activityHtml = day.activities.map((activity) => {
+      const activityHtml = day.activities.map((activity, index) => {
         const tour = activity.tour;
         const title = getActivityDisplayTitle(activity, day);
-        const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
+        const time = getActivityDisplayTime(activity, day, index);
+        const description = getActivityDisplayDescription(activity, day);
+        const places = getActivityPlacesText(activity, day);
         const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
         return `
           <div class="quote-itinerary-activity">
+            ${time ? `<span class="quote-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
             <h4>${escapeHtml(title)}</h4>
             <p>${escapeHtml(description)}</p>
+            ${places ? `<p class="quote-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
             ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
           </div>
         `;
@@ -762,7 +838,7 @@
           <div class="quote-itinerary-item__body">
             <div class="quote-itinerary-item__dayline">
               <span class="quote-day-badge">Día ${day.displayDay}</span>
-              <strong>${escapeHtml(formatDate(day.date))}</strong>
+              <strong class="quote-itinerary-date-label">${escapeHtml(formatDate(day.date))}</strong>
             </div>
             ${activityHtml}
           </div>
@@ -1704,13 +1780,15 @@
           <div class="print-itinerary-item print-itinerary-item--media">
             <img src="${escapeHtml(image)}" alt="${escapeHtml(firstTour?.title || `Día ${day.displayDay}`)}">
             <div>
-              <strong>Día ${day.displayDay} · ${escapeHtml(formatDate(day.date))}</strong>
-              ${day.activities.map((activity) => {
+              <strong>Día ${day.displayDay} · <span class="print-itinerary-date-label">${escapeHtml(formatDate(day.date))}</span></strong>
+              ${day.activities.map((activity, index) => {
                 const tour = activity.tour;
                 const title = getActivityDisplayTitle(activity, day);
-                const description = tour?.shortDescription || tour?.description || activity.note || "Servicio coordinado según tus horarios.";
+                const time = getActivityDisplayTime(activity, day, index);
+                const description = getActivityDisplayDescription(activity, day);
+                const places = getActivityPlacesText(activity, day);
                 const note = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "";
-                return `<div class="print-itinerary-activity-block"><h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}</div>`;
+                return `<div class="print-itinerary-activity-block">${time ? `<span class="print-itinerary-start-time">${escapeHtml(time)}</span>` : ""}<h4>${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p>${places ? `<p class="print-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}</div>`;
               }).join("")}
             </div>
           </div>
