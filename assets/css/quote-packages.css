@@ -5856,3 +5856,69 @@ body.is-generating-pdf .print-header__right p strong {
   color: #333333 !important;
   font-weight: 900 !important;
 }
+
+
+/* === V28: corrección puntual de tamaño de imágenes del itinerario ===
+   No cambia estructura, textos ni otros estilos: solo limita miniaturas de itinerario
+   en pantalla, impresión y generación PDF. */
+.quote-itinerary-item__media,
+.quote-itinerary-activity-media,
+#printQuotation .print-itinerary-thumb,
+#printQuotation .print-itinerary-item--media,
+#printQuotation .print-itinerary-item--activity-images,
+body.is-generating-pdf .print-itinerary-thumb,
+body.is-generating-pdf .print-itinerary-item--media,
+body.is-generating-pdf .print-itinerary-item--activity-images {
+  overflow: hidden !important;
+}
+
+.quote-itinerary-item__media img,
+.quote-itinerary-activity-media img {
+  width: 100% !important;
+  height: 180px !important;
+  max-height: 180px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 18px !important;
+}
+
+#printQuotation .print-itinerary-thumb img,
+body.is-generating-pdf .print-itinerary-thumb img {
+  width: 32mm !important;
+  max-width: 32mm !important;
+  height: 24mm !important;
+  max-height: 24mm !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 2mm !important;
+}
+
+#printQuotation .print-itinerary-item--media > img,
+body.is-generating-pdf .print-itinerary-item--media > img {
+  width: 32mm !important;
+  max-width: 32mm !important;
+  height: 24mm !important;
+  max-height: 24mm !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 2mm !important;
+}
+
+#printQuotation .print-itinerary-activity-block--with-image,
+body.is-generating-pdf .print-itinerary-activity-block--with-image {
+  display: grid !important;
+  grid-template-columns: 25mm minmax(0, 1fr) !important;
+  gap: 2mm !important;
+  align-items: start !important;
+}
+
+#printQuotation .print-itinerary-activity-block--with-image img,
+body.is-generating-pdf .print-itinerary-activity-block--with-image img {
+  width: 25mm !important;
+  max-width: 25mm !important;
+  height: 18mm !important;
+  max-height: 18mm !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 2mm !important;
+}
