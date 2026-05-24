@@ -166,11 +166,11 @@
     const title = normalizeText(activity?.syntheticTitle || activity?.note || "");
     const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
 
-    if (title.includes("recojo") || title.includes("aeropuerto") || title.includes("terminal")) {
-      return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
+    if ((title.includes("traslado") && day?.day === totalDays) || day?.day === totalDays) {
+      return "./assets/img/quote/fallbacks/cusco.jpg";
     }
 
-    if (title.includes("traslado") || day?.day === totalDays) {
+    if (title.includes("recojo") || title.includes("aeropuerto") || title.includes("terminal")) {
       return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
     }
 
@@ -827,17 +827,6 @@
 
     const days = buildItineraryItems(option);
     target.innerHTML = days.map((day) => {
-      const mediaHtml = day.activities.map((activity, index) => {
-        const title = getActivityDisplayTitle(activity, day);
-        const image = getActivityImage(activity, day);
-        return `
-          <figure class="quote-itinerary-activity-media">
-            <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">
-            ${day.activities.length > 1 ? `<figcaption>${escapeHtml(title)}</figcaption>` : ""}
-          </figure>
-        `;
-      }).join("");
-
       const activityHtml = day.activities.map((activity, index) => {
         const tour = activity.tour;
         const title = getActivityDisplayTitle(activity, day);
@@ -845,22 +834,25 @@
         const description = getActivityDisplayDescription(activity, day);
         const places = getActivityPlacesText(activity, day);
         const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
+        const image = getActivityImage(activity, day);
         return `
-          <div class="quote-itinerary-activity">
-            ${time ? `<span class="quote-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
-            <h4>${escapeHtml(title)}</h4>
-            <p>${escapeHtml(description)}</p>
-            ${places ? `<p class="quote-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
-            ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+          <div class="quote-itinerary-activity quote-itinerary-activity--with-image">
+            <figure class="quote-itinerary-activity-media">
+              <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">
+            </figure>
+            <div class="quote-itinerary-activity__content">
+              ${time ? `<span class="quote-itinerary-start-time">${escapeHtml(time)}</span>` : ""}
+              <h4>${escapeHtml(title)}</h4>
+              <p>${escapeHtml(description)}</p>
+              ${places ? `<p class="quote-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
+              ${meta ? `<small>${escapeHtml(meta)}</small>` : ""}
+            </div>
           </div>
         `;
       }).join("");
 
       return `
-        <div class="quote-itinerary-item quote-itinerary-item--media">
-          <div class="quote-itinerary-item__media quote-itinerary-item__media--stack">
-            ${mediaHtml}
-          </div>
+        <div class="quote-itinerary-item quote-itinerary-item--activity-list">
           <div class="quote-itinerary-item__body">
             <div class="quote-itinerary-item__dayline">
               <span class="quote-day-badge">Día ${day.displayDay}</span>
