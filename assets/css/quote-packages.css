@@ -6086,3 +6086,107 @@ body.is-generating-pdf .print-company p {
   font-size: 8.8pt !important;
   line-height: 1.18 !important;
 }
+
+
+/* === V30: corrección puntual solicitada ===
+   Solo corrige: imágenes gigantes del itinerario en HTML y badges de día en impresión.
+*/
+
+/* HTML visible: las imágenes del itinerario nunca deben crecer fuera de su tarjeta */
+.quote-page #itineraryPreview .quote-itinerary-item.quote-itinerary-item--media {
+  display: grid !important;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr) !important;
+  gap: 18px !important;
+  align-items: start !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-item__media,
+.quote-page #itineraryPreview .quote-itinerary-item__media--stack {
+  width: 190px !important;
+  max-width: 190px !important;
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 8px !important;
+  align-self: start !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity-media,
+.quote-page #itineraryPreview .quote-itinerary-item__media figure {
+  width: 190px !important;
+  max-width: 190px !important;
+  height: 118px !important;
+  max-height: 118px !important;
+  min-height: 118px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity-media img,
+.quote-page #itineraryPreview .quote-itinerary-item__media img,
+.quote-page #itineraryPreview .quote-itinerary-item__media figure img {
+  width: 190px !important;
+  max-width: 190px !important;
+  height: 118px !important;
+  max-height: 118px !important;
+  min-height: 118px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 16px !important;
+}
+
+@media (max-width: 860px) {
+  .quote-page #itineraryPreview .quote-itinerary-item.quote-itinerary-item--media {
+    grid-template-columns: 1fr !important;
+  }
+  .quote-page #itineraryPreview .quote-itinerary-item__media,
+  .quote-page #itineraryPreview .quote-itinerary-item__media--stack,
+  .quote-page #itineraryPreview .quote-itinerary-activity-media,
+  .quote-page #itineraryPreview .quote-itinerary-item__media figure,
+  .quote-page #itineraryPreview .quote-itinerary-activity-media img,
+  .quote-page #itineraryPreview .quote-itinerary-item__media img,
+  .quote-page #itineraryPreview .quote-itinerary-item__media figure img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .quote-page #itineraryPreview .quote-itinerary-activity-media,
+  .quote-page #itineraryPreview .quote-itinerary-item__media figure,
+  .quote-page #itineraryPreview .quote-itinerary-activity-media img,
+  .quote-page #itineraryPreview .quote-itinerary-item__media img,
+  .quote-page #itineraryPreview .quote-itinerary-item__media figure img {
+    height: 155px !important;
+    max-height: 155px !important;
+    min-height: 155px !important;
+  }
+}
+
+/* Impresión/PDF: vuelve a mostrar los días como badges */
+#printQuotation .print-itinerary-dayline,
+body.is-generating-pdf .print-itinerary-dayline {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2.5mm !important;
+  margin: 0 0 2mm !important;
+}
+
+#printQuotation .print-itinerary-day-badge,
+body.is-generating-pdf .print-itinerary-day-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #064224 !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  padding: 1.2mm 4.5mm !important;
+  font-size: 9pt !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+#printQuotation .print-itinerary-date-label,
+body.is-generating-pdf .print-itinerary-date-label {
+  color: #b58547 !important;
+  font-weight: 800 !important;
+  font-size: 9.5pt !important;
+}
