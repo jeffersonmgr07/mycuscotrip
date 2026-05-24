@@ -6190,3 +6190,73 @@ body.is-generating-pdf .print-itinerary-date-label {
   font-weight: 800 !important;
   font-size: 9.5pt !important;
 }
+
+/* === V31: itinerario HTML - imagen alineada con cada actividad === */
+.quote-page #itineraryPreview .quote-itinerary-item.quote-itinerary-item--activity-list {
+  display: block !important;
+  padding: 18px !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-item--activity-list .quote-itinerary-item__body {
+  width: 100% !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity--with-image,
+.quote-page #itineraryPreview .quote-itinerary-item--activity-list .quote-itinerary-activity--with-image {
+  display: grid !important;
+  grid-template-columns: 220px minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: start !important;
+  padding: 14px 0 !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(6, 40, 3, 0.08) !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity--with-image:last-child {
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity--with-image .quote-itinerary-activity-media {
+  width: 220px !important;
+  max-width: 220px !important;
+  height: 148px !important;
+  min-height: 148px !important;
+  max-height: 148px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  background: #edf4ef !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity--with-image .quote-itinerary-activity-media img {
+  width: 220px !important;
+  max-width: 220px !important;
+  height: 148px !important;
+  min-height: 148px !important;
+  max-height: 148px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 16px !important;
+}
+
+.quote-page #itineraryPreview .quote-itinerary-activity__content {
+  min-width: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .quote-page #itineraryPreview .quote-itinerary-activity--with-image,
+  .quote-page #itineraryPreview .quote-itinerary-item--activity-list .quote-itinerary-activity--with-image {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .quote-page #itineraryPreview .quote-itinerary-activity--with-image .quote-itinerary-activity-media,
+  .quote-page #itineraryPreview .quote-itinerary-activity--with-image .quote-itinerary-activity-media img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 170px !important;
+    min-height: 170px !important;
+    max-height: 170px !important;
+  }
+}
