@@ -1,7 +1,7 @@
 (() => {
   const AGENCIES = 'mct_registered_agencies';
   const SESSION = 'mct_agency_session';
-  const CONFIG = { googleScriptUrl: '' }; // Pega aquí la URL de Google Apps Script si quieres enviar registros a Google Sheets.
+  const CONFIG = { googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec' }; // Pega aquí la URL de Google Apps Script si quieres enviar registros a Google Sheets.
   const TAX_LABELS = { PE: 'RUC', MX: 'RFC', CL: 'RUT', BR: 'CNPJ', CO: 'NIT', AR: 'CUIT', BO: 'NIT', EC: 'RUC', US: 'EIN / Tax ID', OTHER: 'Identificación fiscal' };
   const $ = (selector) => document.querySelector(selector);
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
