@@ -1,1 +1,59 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ingreso de agencias | My Cusco Trip</title><meta name="robots" content="noindex,nofollow"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="../assets/css/main.css" rel="stylesheet"><link href="../assets/css/header.css" rel="stylesheet"><link href="../assets/css/footer.css" rel="stylesheet"><link href="./assets/css/agencias-portal.css" rel="stylesheet"></head><body><div id="header-container"></div><main class="agency-page"><section class="agency-hero-card"><span class="agency-tag">Acceso de agencias</span><h1>Ingresa a tu portal de reservas</h1><p>Accede a las experiencias disponibles, registra servicios y genera órdenes de reserva.</p></section><section class="dialog-panel" style="max-width:520px;margin:24px auto"><h2>Iniciar sesión</h2><form id="loginForm" class="dialog-grid"><label class="dialog-full"><span>Correo de agencia</span><input id="email" type="email" required></label><label class="dialog-full"><span>Contraseña</span><input id="password" type="password" required></label><button class="primary-btn dialog-full" type="submit">Ingresar</button><a class="ghost-btn dialog-full" href="./registro.html">Registrar nueva agencia</a></form><p class="fee-note">Versión inicial: el acceso se guarda localmente. Con Google Apps Script puedes validar el correo contra la hoja de agencias.</p></section></main><div id="footer-container"></div><script src="../assets/js/components/header.js"></script><script>async function c(n,t){try{let r=await fetch('../components/'+n+'.html');document.getElementById(t).innerHTML=await r.text();if(n==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100)}catch(e){}}c('header','header-container');c('footer','footer-container');document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();const email=document.getElementById('email').value;localStorage.setItem('mct_agency_session',JSON.stringify({email,agencyName:email.split('@')[0]}));location.href='./index.html';});</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Acceso de agencias | My Cusco Trip</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <link href="../assets/css/header.css" rel="stylesheet">
+  <link href="../assets/css/footer.css" rel="stylesheet">
+  <link href="./assets/css/agencias-portal.css" rel="stylesheet">
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="agency-page auth-page">
+    <section class="auth-card login-card">
+      <span class="agency-tag light-tag">Acceso privado</span>
+      <h1>Acceso para agencias afiliadas</h1>
+      <p class="auth-subtitle">Ingresa con el correo y contraseña aprobados para registrar reservas y generar órdenes.</p>
+      <form id="loginForm" class="dialog-grid auth-form">
+        <label class="dialog-full"><span>Correo de agencia</span><input id="email" type="email" autocomplete="email" required></label>
+        <label class="dialog-full"><span>Contraseña</span><input id="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary-btn dialog-full" id="loginBtn" type="submit">Ingresar</button>
+        <a class="ghost-btn dialog-full" href="./registro.html">Registrar mi agencia</a>
+      </form>
+      <div id="loginResult" class="order-result error-result" hidden></div>
+    </section>
+  </main>
+  <div id="footer-container"></div>
+  <script src="../assets/js/components/header.js"></script>
+  <script>
+    const APPS_SCRIPT_URL = 'PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT';
+    async function loadComponent(componentName, targetId){
+      try{ const r=await fetch('../components/'+componentName+'.html'); document.getElementById(targetId).innerHTML=await r.text(); if(componentName==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100); }catch(e){ console.warn(e); }
+    }
+    loadComponent('header','header-container'); loadComponent('footer','footer-container');
+    document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const result = document.getElementById('loginResult');
+      const btn = document.getElementById('loginBtn');
+      result.hidden = true;
+      if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGAR_AQUI')){
+        result.hidden=false; result.innerHTML='Conecta primero la URL de Google Apps Script en este archivo para activar el acceso real.'; return;
+      }
+      const payload = { action:'loginAgency', email:email.value.trim(), password:password.value };
+      btn.disabled = true; btn.textContent = 'Validando...';
+      try{
+        const r = await fetch(APPS_SCRIPT_URL,{ method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) });
+        const data = await r.json();
+        if(!data.ok) throw new Error(data.error || 'No se pudo iniciar sesión.');
+        localStorage.setItem('mct_agency_session', JSON.stringify({ agencyName:data.agencyName, commercialName:data.agencyName, email:data.email, country:data.country || '', loginAt:new Date().toISOString() }));
+        location.href = './index.html';
+      }catch(err){ result.hidden=false; result.innerHTML = err.message || 'No se pudo validar el acceso.'; }
+      finally{ btn.disabled=false; btn.textContent='Ingresar'; }
+    });
+  </script>
+</body>
+</html>

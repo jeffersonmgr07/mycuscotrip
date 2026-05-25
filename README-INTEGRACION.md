@@ -1,80 +1,163 @@
-# Módulo agencias - My Cusco Trip
+# Módulo `/agencias` — acceso real con Google Sheets
 
-## Instalación
+Esta versión usa Google Sheets + Google Apps Script para:
 
-1. Copia la carpeta `agencias` en la raíz del proyecto.
-2. Sube el proyecto a tu hosting.
-3. Abre:
-   - `/agencias/login.html`
-   - `/agencias/registro.html`
-   - `/agencias/index.html`
+- registrar agencias,
+- aprobar manualmente agencias,
+- validar login real con correo y contraseña,
+- guardar órdenes de reserva.
 
-## Experiencias
+No necesitas Supabase para esta primera etapa.
 
-Las experiencias cargan desde:
+---
 
-`agencias/assets/data/experiencias-diarias.json`
+## 1. Archivos incluidos
 
-También hay respaldo interno en JavaScript para evitar el error de “no cargan experiencias” si el JSON falla.
+- `index.html` — portal de experiencias y reservas.
+- `login.html` — acceso real de agencias afiliadas.
+- `registro.html` — registro de agencias o agentes de viajes.
+- `assets/css/agencias-portal.css` — estilos del portal, login y registro.
+- `assets/js/agencias-portal.js` — lógica de experiencias, carrito y órdenes.
+- `assets/data/experiencias-diarias.json` — catálogo de servicios.
+- `backend/google-apps-script-agencias.gs` — backend simple para Google Sheets.
 
-## Imágenes
+---
 
-Las imágenes apuntan a rutas reales del proyecto, por ejemplo:
+## 2. Crear la base en Google Sheets
 
-`../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg`
+1. Crea una hoja nueva en Google Sheets.
+2. Copia el ID de la hoja. Está en la URL:
 
-## Tipo de cambio
+```text
+https://docs.google.com/spreadsheets/d/ESTE_ES_EL_ID/edit
+```
+
+3. Abre `Extensiones > Apps Script`.
+4. Pega el contenido de:
+
+```text
+agencias/backend/google-apps-script-agencias.gs
+```
+
+5. Reemplaza:
+
+```js
+const SPREADSHEET_ID = 'PEGAR_AQUI_ID_DE_GOOGLE_SHEET';
+```
+
+por el ID real de tu hoja.
+
+6. Ejecuta una vez la función:
+
+```js
+setupSheets()
+```
+
+Autoriza los permisos.
+
+---
+
+## 3. Publicar Apps Script como Web App
+
+1. En Apps Script, entra a `Implementar > Nueva implementación`.
+2. Tipo: `Aplicación web`.
+3. Ejecutar como: `Yo`.
+4. Quién tiene acceso: `Cualquier usuario con el enlace`.
+5. Copia la URL generada del Web App.
+
+---
+
+## 4. Pegar la URL en los archivos del portal
+
+Busca esta línea en estos tres archivos:
+
+```js
+PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT
+```
+
+y reemplázala por la URL del Web App:
+
+- `agencias/login.html`
+- `agencias/registro.html`
+- `agencias/assets/js/agencias-portal.js`
+
+---
+
+## 5. Flujo de acceso
+
+1. La agencia entra a:
+
+```text
+/agencias/registro.html
+```
+
+2. Completa sus datos y crea su contraseña.
+3. En Google Sheets, la agencia queda con estado:
+
+```text
+Pendiente
+```
+
+4. Tú revisas la agencia y cambias manualmente el estado a:
+
+```text
+Aprobado
+```
+
+5. La agencia ya puede ingresar desde:
+
+```text
+/agencias/login.html
+```
+
+con el correo y contraseña registrados.
+
+---
+
+## 6. Seguridad
+
+Esta solución ya valida login contra Google Sheets usando contraseña con hash SHA-256 + salt en Apps Script. No guarda la contraseña en texto plano.
+
+Para una operación grande con muchos usuarios, recuperación de contraseñas, roles, historial avanzado y permisos granulares, Supabase sería mejor. Para iniciar rápido y guardar registros/órdenes, Google Sheets es suficiente.
+
+---
+
+## 7. Órdenes de reserva
+
+Cuando una agencia genera una orden, se guarda en la hoja:
+
+```text
+Ordenes
+```
+
+La orden queda como:
+
+```text
+Pendiente de pago
+```
+
+Puedes actualizar manualmente el estado a:
+
+```text
+Pagado
+Confirmado
+Cancelado
+```
+
+---
+
+## 8. Tipo de cambio
 
 El tipo de cambio inicial está en:
 
-`agencias/assets/data/experiencias-diarias.json`
+```js
+const CONFIG = { exchangeRate: 3.38 }
+```
 
-Campo:
+Archivo:
 
-`exchangeRate: 3.38`
+```text
+agencias/assets/js/agencias-portal.js
+```
 
-También puede cambiarse manualmente desde la página.
-
-## Google Sheets
-
-1. Crea una hoja de cálculo en Google Sheets.
-2. Copia el ID de la hoja desde la URL.
-3. Abre Extensiones > Apps Script.
-4. Pega el contenido de:
-
-`agencias/backend/google-apps-script-agencias.gs`
-
-5. Cambia:
-
-`SPREADSHEET_ID = 'PEGAR_AQUI_ID_DE_GOOGLE_SHEET'`
-
-6. Implementar > Nueva implementación > Aplicación web.
-7. Ejecutar como: tú.
-8. Acceso: cualquier usuario con el enlace.
-9. Copia la URL del Web App.
-10. Pégala en:
-
-`agencias/assets/js/agencias-portal.js`
-
-línea:
-
-`appsScriptUrl: 'PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT'`
-
-Y en `agencias/registro.html`:
-
-`APPS_SCRIPT_URL='PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT'`
-
-## Flujo
-
-- La agencia ingresa al portal.
-- Selecciona una experiencia.
-- Elige fecha, horario, pasajeros, titular, documentos y recojo.
-- Puede agregar varios servicios en una misma orden.
-- Genera una orden con código.
-- El total incluye comisión PayPal + banco usando:
-
-`neto / (1 - 0.054 - 0.015)`
-
-## Seguridad
-
-Esta versión usa login básico con `localStorage`. Para una validación más real, usa la función `loginAgency` del Apps Script y aprueba agencias en la hoja cambiando su estado a “Aprobada”.
+También puede editarse desde la pantalla del portal.

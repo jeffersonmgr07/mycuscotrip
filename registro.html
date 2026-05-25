@@ -1,1 +1,64 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Registro de agencias | My Cusco Trip</title><meta name="robots" content="noindex,nofollow"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="../assets/css/main.css" rel="stylesheet"><link href="../assets/css/header.css" rel="stylesheet"><link href="../assets/css/footer.css" rel="stylesheet"><link href="./assets/css/agencias-portal.css" rel="stylesheet"></head><body><div id="header-container"></div><main class="agency-page"><section class="agency-hero-card"><span class="agency-tag">Registro</span><h1>Registro de agencia afiliada</h1><p>Completa los datos de tu empresa para solicitar acceso al portal de reservas.</p></section><section class="dialog-panel" style="max-width:820px;margin:24px auto"><h2>Datos de la agencia</h2><form id="agencyRegisterForm" class="dialog-grid"><label><span>País</span><select id="country" required><option value="Perú">Perú</option><option value="México">México</option><option value="Chile">Chile</option><option value="Brasil">Brasil</option><option value="Colombia">Colombia</option><option value="Argentina">Argentina</option><option value="Estados Unidos">Estados Unidos</option><option value="Otro">Otro</option></select></label><label><span id="taxLabel">RUC</span><input id="taxNumber" required></label><label><span>Razón social / nombre legal</span><input id="legalName" required></label><label><span>Nombre comercial</span><input id="commercialName" required></label><label><span>Nombres del representante</span><input id="repNames" required></label><label><span>Apellidos del representante</span><input id="repLastnames" required></label><label><span>Tipo de documento</span><select id="docType"><option>DNI</option><option>Pasaporte</option><option>Cédula</option><option>Otro</option></select></label><label><span>Número de documento</span><input id="docNumber" required></label><label><span>Celular / WhatsApp</span><input id="phone" required></label><label><span>Correo de contacto</span><input id="email" type="email" required></label><label class="dialog-full"><span>Página web</span><input id="website" placeholder="https://"></label><button class="primary-btn dialog-full" type="submit">Enviar registro</button></form><div id="registerResult" class="order-result" hidden></div></section></main><div id="footer-container"></div><script src="../assets/js/components/header.js"></script><script>const APPS_SCRIPT_URL='PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT';const labels={'Perú':'RUC','México':'RFC','Chile':'RUT','Brasil':'CNPJ','Colombia':'NIT','Argentina':'CUIT','Estados Unidos':'EIN','Otro':'Registro fiscal'};async function c(n,t){try{let r=await fetch('../components/'+n+'.html');document.getElementById(t).innerHTML=await r.text();if(n==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100)}catch(e){}}c('header','header-container');c('footer','footer-container');country.addEventListener('change',()=>taxLabel.textContent=labels[country.value]||'Registro fiscal');agencyRegisterForm.addEventListener('submit',async e=>{e.preventDefault();const data={action:'registerAgency',country:country.value,taxLabel:taxLabel.textContent,taxNumber:taxNumber.value,legalName:legalName.value,commercialName:commercialName.value,repNames:repNames.value,repLastnames:repLastnames.value,docType:docType.value,docNumber:docNumber.value,phone:phone.value,email:email.value,website:website.value,createdAt:new Date().toISOString(),status:'Pendiente'};localStorage.setItem('mct_agency_session',JSON.stringify({agencyName:data.commercialName,email:data.email}));if(APPS_SCRIPT_URL&&!APPS_SCRIPT_URL.includes('PEGAR_AQUI')){try{await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});}catch(err){console.warn(err);}}registerResult.hidden=false;registerResult.innerHTML='<strong>Registro enviado.</strong><br>Tu solicitud quedó lista para revisión. Si ya tienes acceso, puedes ingresar al portal.';});</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Registro de agencias | My Cusco Trip</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <link href="../assets/css/header.css" rel="stylesheet">
+  <link href="../assets/css/footer.css" rel="stylesheet">
+  <link href="./assets/css/agencias-portal.css" rel="stylesheet">
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="agency-page auth-page">
+    <section class="agency-hero-card register-hero-card">
+      <span class="agency-tag">Registro</span>
+      <h1>Registro de agencias o agentes de viajes</h1>
+      <p>Completa los datos de tu empresa para solicitar acceso al portal de reservas.</p>
+    </section>
+    <section class="dialog-panel auth-wide-panel">
+      <h2>Datos de la agencia</h2>
+      <form id="agencyRegisterForm" class="dialog-grid">
+        <label><span>País</span><select id="country" required><option value="Perú">Perú</option><option value="México">México</option><option value="Chile">Chile</option><option value="Brasil">Brasil</option><option value="Colombia">Colombia</option><option value="Argentina">Argentina</option><option value="Estados Unidos">Estados Unidos</option><option value="Otro">Otro</option></select></label>
+        <label><span id="taxLabel">RUC</span><input id="taxNumber" required></label>
+        <label><span>Razón social / nombre legal</span><input id="legalName" required></label>
+        <label><span>Nombre comercial</span><input id="commercialName" required></label>
+        <label><span>Nombres del representante</span><input id="repNames" required></label>
+        <label><span>Apellidos del representante</span><input id="repLastnames" required></label>
+        <label><span>Tipo de documento</span><select id="docType"><option>DNI</option><option>Pasaporte</option><option>Cédula</option><option>Otro</option></select></label>
+        <label><span>Número de documento</span><input id="docNumber" required></label>
+        <label><span>Celular / WhatsApp</span><input id="phone" required></label>
+        <label><span>Correo de acceso</span><input id="email" type="email" autocomplete="email" required></label>
+        <label><span>Crear contraseña</span><input id="password" type="password" autocomplete="new-password" minlength="8" required></label>
+        <label><span>Confirmar contraseña</span><input id="password2" type="password" autocomplete="new-password" minlength="8" required></label>
+        <label class="dialog-full"><span>Página web</span><input id="website" placeholder="https://"></label>
+        <button class="primary-btn dialog-full" id="registerBtn" type="submit">Registrar mi agencia</button>
+      </form>
+      <div id="registerResult" class="order-result" hidden></div>
+    </section>
+  </main>
+  <div id="footer-container"></div>
+  <script src="../assets/js/components/header.js"></script>
+  <script>
+    const APPS_SCRIPT_URL='PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT';
+    const labels={'Perú':'RUC','México':'RFC','Chile':'RUT','Brasil':'CNPJ','Colombia':'NIT','Argentina':'CUIT','Estados Unidos':'EIN','Otro':'Registro fiscal'};
+    async function loadComponent(componentName,targetId){try{const r=await fetch('../components/'+componentName+'.html');document.getElementById(targetId).innerHTML=await r.text();if(componentName==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100)}catch(e){console.warn(e)}}
+    loadComponent('header','header-container'); loadComponent('footer','footer-container');
+    country.addEventListener('change',()=>taxLabel.textContent=labels[country.value]||'Registro fiscal');
+    agencyRegisterForm.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const result=document.getElementById('registerResult'); const btn=document.getElementById('registerBtn'); result.hidden=true;
+      if(password.value !== password2.value){ result.hidden=false; result.innerHTML='Las contraseñas no coinciden.'; return; }
+      if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGAR_AQUI')){ result.hidden=false; result.innerHTML='Conecta primero la URL de Google Apps Script en este archivo para guardar registros reales.'; return; }
+      const data={action:'registerAgency',country:country.value,taxLabel:taxLabel.textContent,taxNumber:taxNumber.value.trim(),legalName:legalName.value.trim(),commercialName:commercialName.value.trim(),repNames:repNames.value.trim(),repLastnames:repLastnames.value.trim(),docType:docType.value,docNumber:docNumber.value.trim(),phone:phone.value.trim(),email:email.value.trim(),password:password.value,website:website.value.trim(),createdAt:new Date().toISOString(),status:'Pendiente'};
+      btn.disabled=true; btn.textContent='Enviando registro...';
+      try{ const r=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}); const resp=await r.json(); if(!resp.ok) throw new Error(resp.error || 'No se pudo guardar el registro.'); result.hidden=false; result.innerHTML='<strong>Registro enviado.</strong><br>Tu solicitud quedó pendiente de aprobación. Cuando sea aprobada, podrás ingresar con tu correo y contraseña.'; agencyRegisterForm.reset(); taxLabel.textContent='RUC'; }
+      catch(err){ result.hidden=false; result.innerHTML=err.message || 'No se pudo enviar el registro.'; }
+      finally{ btn.disabled=false; btn.textContent='Registrar mi agencia'; }
+    });
+  </script>
+</body>
+</html>
