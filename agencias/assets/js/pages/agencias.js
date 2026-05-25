@@ -7,7 +7,7 @@
 
   const CONFIG = {
     catalogUrl: './assets/data/agencias-tours.json',
-    googleScriptUrl: '', // Pega aquí la URL de despliegue de Google Apps Script.
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec', // Pega aquí la URL de despliegue de Google Apps Script.
     paypalRate: 0.054,
     bankRate: 0.015,
     defaultExchangeRate: 3.38
