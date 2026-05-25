@@ -3,68 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro de Agencia | My Cusco Trip</title>
+  <title>Crear acceso | Reservas My Cusco Trip</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" href="./public/favicon.ico" />
-  <link rel="stylesheet" href="./assets/css/agencias.css" />
+  <link rel="icon" href="../public/favicon.ico" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <link href="../assets/css/components.css" rel="stylesheet" />
+  <link href="../assets/css/header.css" rel="stylesheet" />
+  <link href="../assets/css/footer.css" rel="stylesheet" />
+  <link href="../assets/css/responsive.css" rel="stylesheet" />
+  <link href="./assets/css/agencias.css" rel="stylesheet" />
 </head>
-<body class="auth-page auth-page--wide">
-  <main class="auth-shell auth-shell--wide">
-    <section class="auth-card auth-card--wide">
-      <a class="auth-brand" href="../index.html"><img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip"><span>Tour operador</span></a>
-      <p class="eyebrow">Solicitud de acceso</p>
-      <h1>Registro de Agencia</h1>
-      <p class="auth-lead">Completa los datos de la empresa y del contacto autorizado para crear el acceso al portal.</p>
+<body class="agency-page">
+  <div id="header-container"></div>
+  <main class="agency-main agency-main--narrow">
+    <section class="agency-hero">
+      <div class="agency-hero__grid">
+        <div>
+          <p class="eyebrow">Crear cuenta</p>
+          <h1>Registro para reservar experiencias</h1>
+          <p>Completa los datos de la empresa o contacto autorizado. Al finalizar podrás ingresar y generar órdenes de reserva.</p>
+        </div>
+      </div>
+    </section>
 
+    <section class="auth-card">
       <form id="agencyRegisterForm" class="register-form">
         <section class="form-block">
           <h2>Datos de la empresa</h2>
-          <div class="dialog-grid">
-            <label><span>Razón social</span><input id="companyName" required></label>
-            <label><span>RUC</span><input id="companyTaxId" required inputmode="numeric"></label>
-            <label><span>Correo principal</span><input id="companyEmail" type="email" required></label>
-            <label><span>Celular / WhatsApp</span><input id="companyPhone" required></label>
-            <label class="dialog-grid__full"><span>Dirección fiscal</span><input id="companyAddress" required></label>
-            <label class="dialog-grid__full"><span>Página web o red social</span><input id="companyWebsite" placeholder="https://..."></label>
+          <div class="form-grid">
+            <label class="field"><span>País</span><select id="companyCountry" required><option value="PE">Perú</option><option value="MX">México</option><option value="CL">Chile</option><option value="BR">Brasil</option><option value="CO">Colombia</option><option value="AR">Argentina</option><option value="BO">Bolivia</option><option value="EC">Ecuador</option><option value="US">Estados Unidos</option><option value="OTHER">Otro país</option></select></label>
+            <label class="field"><span id="taxLabel">RUC</span><input id="companyTaxId" required /></label>
+            <label class="field"><span>Razón social / nombre legal</span><input id="companyName" required /></label>
+            <label class="field"><span>Nombre comercial</span><input id="tradeName" required /></label>
+            <label class="field"><span>Correo de contacto</span><input id="companyEmail" type="email" required /></label>
+            <label class="field"><span>Celular / WhatsApp</span><input id="companyPhone" required /></label>
+            <label class="field full"><span>Página web o red social</span><input id="companyWebsite" placeholder="https://..." /></label>
           </div>
         </section>
 
         <section class="form-block">
-          <h2>Representante legal</h2>
-          <div class="dialog-grid">
-            <label><span>Nombres</span><input id="legalFirstName" required></label>
-            <label><span>Apellidos</span><input id="legalLastName" required></label>
-            <label><span>Tipo de documento</span><select id="legalDocType"><option>DNI</option><option>Carnet de extranjería</option><option>Pasaporte</option></select></label>
-            <label><span>Número de documento</span><input id="legalDocNumber" required></label>
-            <label class="dialog-grid__full"><span>Documento adjunto</span><input id="legalDocumentFile" type="file" accept="image/*,.pdf"></label>
+          <h2>Representante o contacto autorizado</h2>
+          <div class="form-grid">
+            <label class="field"><span>Nombres</span><input id="legalFirstName" required /></label>
+            <label class="field"><span>Apellidos</span><input id="legalLastName" required /></label>
+            <label class="field"><span>Tipo de documento</span><select id="legalDocType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Documento nacional</option><option>Otro</option></select></label>
+            <label class="field"><span>Número de documento</span><input id="legalDocNumber" required /></label>
           </div>
         </section>
 
         <section class="form-block">
-          <h2>Contacto comercial y acceso</h2>
-          <label class="check-row"><input id="sameContact" type="checkbox" checked><span>Usar el correo principal de la agencia como correo de acceso.</span></label>
-          <div id="commercialContactFields" class="dialog-grid" hidden>
-            <label><span>Nombres</span><input id="commercialFirstName"></label>
-            <label><span>Apellidos</span><input id="commercialLastName"></label>
-            <label><span>Tipo de documento</span><select id="commercialDocType"><option>DNI</option><option>Carnet de extranjería</option><option>Pasaporte</option></select></label>
-            <label><span>Número de documento</span><input id="commercialDocNumber"></label>
-            <label><span>Correo de acceso</span><input id="commercialEmail" type="email"></label>
-            <label><span>Celular</span><input id="commercialPhone"></label>
-          </div>
-          <div class="dialog-grid">
-            <label><span>Crear contraseña</span><input id="registerPassword" type="password" minlength="6" required></label>
-            <label><span>Confirmar contraseña</span><input id="registerPasswordConfirm" type="password" minlength="6" required></label>
+          <h2>Acceso</h2>
+          <div class="form-grid">
+            <label class="field"><span>Correo de acceso</span><input id="accessEmail" type="email" required /></label>
+            <label class="field"><span>Celular de acceso</span><input id="accessPhone" required /></label>
+            <label class="field"><span>Crear contraseña</span><input id="registerPassword" type="password" minlength="6" required /></label>
+            <label class="field"><span>Confirmar contraseña</span><input id="registerPasswordConfirm" type="password" minlength="6" required /></label>
           </div>
         </section>
 
         <p id="registerMessage" class="form-message" role="alert" hidden></p>
         <div class="dialog-actions">
           <a class="agency-button agency-button--ghost" href="./login.html">Ya tengo acceso</a>
-          <button type="submit" class="agency-button agency-button--primary">Registrar agencia</button>
+          <button type="submit" class="agency-button agency-button--primary">Crear acceso</button>
         </div>
       </form>
     </section>
   </main>
+  <div id="footer-container"></div>
+  <script src="../assets/js/components/header.js"></script>
+  <script src="../assets/js/components/footer.js"></script>
   <script src="./assets/js/pages/registro-agencias.js" defer></script>
+  <script>
+    async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }
+    document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header','header-container'); loadAgencyComponent('footer','footer-container'); });
+  </script>
 </body>
 </html>

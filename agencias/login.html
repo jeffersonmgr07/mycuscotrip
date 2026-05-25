@@ -3,27 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ingreso para Agencias | My Cusco Trip</title>
+  <title>Ingresar | Reservas My Cusco Trip</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" href="./public/favicon.ico" />
-  <link rel="stylesheet" href="./assets/css/agencias.css" />
+  <link rel="icon" href="../public/favicon.ico" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <link href="../assets/css/components.css" rel="stylesheet" />
+  <link href="../assets/css/header.css" rel="stylesheet" />
+  <link href="../assets/css/footer.css" rel="stylesheet" />
+  <link href="../assets/css/responsive.css" rel="stylesheet" />
+  <link href="./assets/css/agencias.css" rel="stylesheet" />
 </head>
-<body class="auth-page">
-  <main class="auth-shell">
+<body class="agency-page">
+  <div id="header-container"></div>
+  <main class="agency-main agency-main--narrow">
+    <section class="agency-hero">
+      <div class="agency-hero__grid">
+        <div>
+          <p class="eyebrow">Acceso de reservas</p>
+          <h1>Ingresa para reservar experiencias</h1>
+          <p>Consulta experiencias disponibles, agrega pasajeros y genera una orden de reserva para Cusco y Machu Picchu.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="auth-card">
-      <a class="auth-brand" href="../index.html"><img src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip"><span>Tour operador</span></a>
-      <p class="eyebrow">Agencias autorizadas</p>
-      <h1>Ingresar al portal</h1>
-      <p class="auth-lead">Accede con el correo registrado para consultar tarifas y registrar reservas.</p>
+      <p class="eyebrow">Iniciar sesión</p>
+      <h1>Acceso a reservas</h1>
+      <p class="auth-lead">Usa el correo y la contraseña creados durante el registro.</p>
       <form id="loginForm" class="auth-form">
-        <label><span>Correo de acceso</span><input id="loginEmail" type="email" autocomplete="email" required placeholder="reservas@agencia.com"></label>
-        <label><span>Contraseña</span><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Tu contraseña"></label>
+        <label class="field"><span>Correo de acceso</span><input id="loginEmail" type="email" autocomplete="email" required placeholder="correo@empresa.com" /></label>
+        <label class="field"><span>Contraseña</span><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Tu contraseña" /></label>
         <p id="loginMessage" class="form-message" role="alert" hidden></p>
-        <button type="submit" class="agency-button agency-button--primary">Ingresar</button>
+        <div class="dialog-actions">
+          <a href="./registro.html" class="agency-button agency-button--ghost">Crear acceso</a>
+          <button type="submit" class="agency-button agency-button--primary">Ingresar</button>
+        </div>
       </form>
-      <div class="auth-actions"><span>¿Aún no tienes acceso?</span><a href="./registro.html">Registrar agencia</a></div>
     </section>
   </main>
+  <div id="footer-container"></div>
+  <script src="../assets/js/components/header.js"></script>
+  <script src="../assets/js/components/footer.js"></script>
   <script src="./assets/js/pages/acceso-agencias.js" defer></script>
+  <script>
+    async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }
+    document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header','header-container'); loadAgencyComponent('footer','footer-container'); });
+  </script>
 </body>
 </html>
