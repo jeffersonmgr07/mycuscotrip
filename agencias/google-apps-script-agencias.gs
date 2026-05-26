@@ -28,7 +28,7 @@ const AGENCY_HEADERS = [
 
 const ORDER_HEADERS = [
   'codigoOrden','fechaOrden','agenciaId','agenciaNombre','correoAgencia','estadoPago','moneda','tipoCambio',
-  'subtotalNeto','montoComisionado','comisionPaypalBanco','serviciosJson','titularJson','pasajerosJson','observaciones'
+  'subtotalNeto','montoComisionado','comisionPaypalBanco','fechaVencimientoPago','serviciosJson','titularJson','pasajerosJson','observaciones'
 ];
 
 function doPost(e) {
@@ -38,6 +38,7 @@ function doPost(e) {
     if (action === 'registerAgency') return registerAgency_(body.payload || body.agency || body);
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
     if (action === 'createOrder') return createOrder_(body.payload || body.order || body);
+    if (action === 'listOrders') return listOrders_(body.email || body.correo || '', body.agencyId || '');
     return json_({ ok:false, message:'Acción no reconocida: ' + action });
   } catch (err) {
     return json_({ ok:false, message: err && err.message ? err.message : String(err) });
@@ -179,70 +180,86 @@ function createOrder_(order) {
     subtotalNeto: order.subtotal || '',
     montoComisionado: order.total || '',
     comisionPaypalBanco: order.fee || '',
+    fechaVencimientoPago: order.paymentDueAt || '',
     serviciosJson: JSON.stringify(items),
     titularJson: JSON.stringify(firstLead),
     pasajerosJson: JSON.stringify(passengers),
     observaciones: order.observations || ''
   });
-  if (account.email) sendOrderEmail_(account.email, order);
+  if (account.email) sendOrderEmail_(order);
   return json_({ ok:true, message:'Orden guardada y enviada por correo', code: order.code || '' });
 }
 
-function sendOrderEmail_(email, order) {
-  const subject = 'Orden de reserva ' + (order.code || '') + ' - My Cusco Trip';
+function listOrders_(email, agencyId) {
+  validateConfig_();
+  const sheet = getSheet_(SHEET_ORDERS, ORDER_HEADERS);
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return json_({ ok:true, orders:[] });
+  const headers = values[0].map(String);
+  const emailIndex = headers.indexOf('correoAgencia');
+  const agencyIndex = headers.indexOf('agenciaId');
+  const normalizedEmail = String(email || '').trim().toLowerCase();
+  const normalizedAgency = String(agencyId || '').trim();
+  const orders = [];
+  for (let i = 1; i < values.length; i++) {
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
+      const obj = {};
+      headers.forEach(function(h, idx){ obj[h] = values[i][idx]; });
+      orders.unshift(obj);
+    }
+  }
+  return json_({ ok:true, orders:orders });
+}
+
+function sendOrderEmail_(order) {
+  const account = order.account || {};
+  const email = String(account.email || '').trim();
+  if (!email) return;
   const items = order.items || [];
-  const rows = items.map(function(item){
-    const lead = item.lead || {};
-    const passengers = (item.passengers || []).map(function(p, idx){
-      return '<li>Pasajero ' + (idx + 2) + ': ' + escapeHtml_(p.firstName || '') + ' ' + escapeHtml_(p.lastName || '') + ' · ' + escapeHtml_(p.docType || '') + ' ' + escapeHtml_(p.docNumber || '') + '</li>';
-    }).join('') || '<li>Datos de pasajeros adicionales pendientes.</li>';
-    return '' +
-      '<div style="border:1px solid #dce8df;border-radius:16px;padding:14px;margin:12px 0;background:#ffffff">' +
-      '<h3 style="margin:0 0 8px;color:#063f2a;font-size:18px">' + escapeHtml_(item.serviceName || '') + '</h3>' +
-      '<p style="margin:4px 0;color:#40544a"><strong>Fecha:</strong> ' + escapeHtml_(formatDateForEmail_(item.travelDate || '')) + ' · <strong>Pasajeros:</strong> ' + escapeHtml_(item.pax || '') + '</p>' +
-      '<p style="margin:4px 0;color:#40544a"><strong>Titular:</strong> ' + escapeHtml_(lead.firstName || '') + ' ' + escapeHtml_(lead.lastName || '') + ' · ' + escapeHtml_(lead.docType || '') + ' ' + escapeHtml_(lead.docNumber || '') + '</p>' +
-      '<p style="margin:4px 0;color:#40544a"><strong>Celular:</strong> ' + escapeHtml_(lead.phone || '') + '</p>' +
-      '<p style="margin:4px 0;color:#40544a"><strong>Recojo:</strong> ' + escapeHtml_(item.pickupPoint || '') + '</p>' +
-      (item.notes ? '<p style="margin:4px 0;color:#40544a"><strong>Observaciones:</strong> ' + escapeHtml_(item.notes || '') + '</p>' : '') +
-      '<ul style="margin:10px 0 0;color:#40544a;padding-left:18px">' + passengers + '</ul>' +
-      '</div>';
+  const subject = 'Orden de reserva ' + (order.code || '') + ' - My Cusco Trip';
+  const rows = items.map(function(item, index){
+    return '<tr>' +
+      '<td style="padding:10px;border-bottom:1px solid #dce8df;vertical-align:top">' + (index + 1) + '</td>' +
+      '<td style="padding:10px;border-bottom:1px solid #dce8df;vertical-align:top"><strong>' + escapeHtml_(item.serviceName || '') + '</strong><br><span style="color:#64756b;font-size:12px">Fecha: ' + escapeHtml_(formatDateEmail_(item.travelDate)) + ' · Hora: ' + escapeHtml_(item.serviceTime || 'Por confirmar') + '</span><br><span style="color:#64756b;font-size:12px">Recojo: ' + escapeHtml_(item.pickupPoint || '') + '</span></td>' +
+      '<td style="padding:10px;border-bottom:1px solid #dce8df;vertical-align:top;text-align:center">' + escapeHtml_(item.pax || '') + '</td>' +
+      '</tr>';
   }).join('');
-  const deadline = order.expiresAt ? formatDateTimeForEmail_(order.expiresAt) : '3 horas desde la emisión';
-  const htmlBody = '' +
-    '<div style="margin:0;padding:0;background:#edf3ef;font-family:Arial,Helvetica,sans-serif;color:#20352b">' +
-    '<div style="max-width:720px;margin:0 auto;padding:24px 12px">' +
-    '<div style="background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 14px 38px rgba(10,58,38,.14)">' +
-    '<div style="background:linear-gradient(135deg,#063f2a,#07543a);padding:26px;color:#fff">' +
-    '<p style="margin:0 0 8px;color:#f8edd4;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:bold">Orden de reserva</p>' +
-    '<h1 style="margin:0;color:#fff;font-size:28px">' + escapeHtml_(order.code || '') + '</h1>' +
-    '<p style="margin:10px 0 0;color:#eff8f1">Agencia: <strong>' + escapeHtml_(order.account?.companyName || order.account?.email || '') + '</strong></p>' +
+  const htmlBody = '<div style="margin:0;padding:0;background:#edf3ef;font-family:Arial,Helvetica,sans-serif;color:#20352b">' +
+    '<div style="max-width:760px;margin:0 auto;padding:24px 12px">' +
+    '<div style="background:#fff;border-radius:22px;overflow:hidden;border:1px solid #dce8df">' +
+    '<div style="background:linear-gradient(135deg,#062803,#053220);color:#fff;padding:24px">' +
+    '<div style="color:#f2d99d;font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:bold">Orden de reserva</div>' +
+    '<h1 style="margin:8px 0 6px;font-size:28px;color:#fff">' + escapeHtml_(order.code || '') + '</h1>' +
+    '<p style="margin:0;color:#eff8f1">Agencia: <strong>' + escapeHtml_(account.companyName || '') + '</strong></p>' +
     '</div>' +
-    '<div style="padding:24px">' +
-    '<div style="background:#fff8eb;border:1px solid #eadfc9;border-radius:16px;padding:14px;margin-bottom:16px;color:#604719"><strong>Plazo de pago:</strong> ' + escapeHtml_(deadline) + '. La orden queda sujeta a disponibilidad hasta validar el pago.</div>' +
-    rows +
-    '<div style="border-top:2px solid #dce8df;margin-top:16px;padding-top:12px">' +
-    '<p style="display:flex;justify-content:space-between;margin:8px 0"><span>Subtotal neto</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.subtotal, order.currency)) + '</strong></p>' +
-    '<p style="display:flex;justify-content:space-between;margin:8px 0"><span>Comisiones PayPal + banco</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.fee, order.currency)) + '</strong></p>' +
-    '<p style="display:flex;justify-content:space-between;margin:12px 0 0;font-size:20px;color:#063f2a"><span>Total a pagar</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.total, order.currency)) + '</strong></p>' +
+    '<div style="padding:22px">' +
+    '<div style="background:#fffaf2;border:1px solid #eadfc9;border-radius:16px;padding:14px;margin-bottom:18px"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Vencimiento: ' + escapeHtml_(formatDateTimeEmail_(order.paymentDueAt)) + '.</div>' +
+    '<table style="width:100%;border-collapse:collapse;border:1px solid #dce8df;border-radius:14px;overflow:hidden"><thead><tr><th style="background:#f4faf6;color:#062803;padding:10px;text-align:left">#</th><th style="background:#f4faf6;color:#062803;padding:10px;text-align:left">Servicio</th><th style="background:#f4faf6;color:#062803;padding:10px;text-align:center">Pax</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    '<div style="margin:18px 0 0 auto;max-width:360px;border:1px solid #dce8df;border-radius:16px;overflow:hidden">' +
+    '<div style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #dce8df"><span>Subtotal</span><strong>' + escapeHtml_(moneyEmail_(order.subtotal, order.currency)) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #dce8df"><span>Comisiones</span><strong>' + escapeHtml_(moneyEmail_(order.fee, order.currency)) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;padding:12px;background:#f4faf6;color:#062803"><span>Total a pagar</span><strong>' + escapeHtml_(moneyEmail_(order.total, order.currency)) + '</strong></div>' +
     '</div>' +
-    '<p style="font-size:12.5px;color:#63766a;margin-top:18px">Indica este código al enviar el comprobante de pago. Estado inicial: pendiente de pago.</p>' +
+    '<p style="color:#64756b;font-size:13px;margin-top:18px">Indica este código al realizar el pago o enviar el comprobante.</p>' +
     '</div></div></div></div>';
   MailApp.sendEmail({ to: email, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
 }
 
-function formatMoneyForEmail_(amount, currency) {
-  const n = Number(amount || 0).toFixed(2);
-  return currency === 'USD' ? 'USD ' + n : 'S/ ' + n;
-}
-function formatDateForEmail_(iso) {
+function formatDateEmail_(iso) {
   if (!iso) return '';
   const parts = String(iso).slice(0,10).split('-');
-  return parts.length === 3 ? parts[2] + '/' + parts[1] + '/' + parts[0] : iso;
+  if (parts.length !== 3) return iso;
+  return parts[2] + '/' + parts[1] + '/' + parts[0];
 }
-function formatDateTimeForEmail_(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return '';
-  return d.toLocaleString('es-PE', { dateStyle:'short', timeStyle:'short' });
+function formatDateTimeEmail_(iso) {
+  if (!iso) return '';
+  return Utilities.formatDate(new Date(iso), Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
+}
+function moneyEmail_(amount, currency) {
+  const n = Number(amount || 0).toFixed(2);
+  return currency === 'USD' ? 'USD ' + n : 'S/ ' + n;
 }
 
 function sendVerificationEmail_(email, agencyName, token) {
@@ -278,13 +295,11 @@ function parseBody_(e) {
 }
 
 function getSpreadsheet_() {
-  if (SPREADSHEET_ID && String(SPREADSHEET_ID).trim() !== '') {
+  if (SPREADSHEET_ID && String(SPREADSHEET_ID).trim() !== '' && SPREADSHEET_ID !== 'PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET') {
     return SpreadsheetApp.openById(SPREADSHEET_ID);
   }
-
   const active = SpreadsheetApp.getActiveSpreadsheet();
   if (active) return active;
-
   throw new Error('No se encontró la hoja de cálculo. Pega el ID real en SPREADSHEET_ID.');
 }
 

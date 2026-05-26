@@ -24,13 +24,16 @@
   <main class="agency-main" id="inicio">
     <section class="agency-intro-bar" aria-label="Panel de agencia">
       <div>
-        <p class="eyebrow">Tarifas confidenciales para operaciones diarias en Cusco</p>
-        <h1>Bienvenido al portal de agencias</h1>
-        <p id="sessionWelcome" class="agency-name-line">Agencia afiliada</p>
+        <p class="eyebrow">Bienvenido al portal de agencias</p>
+        <h1 id="agencyNameHeading">Agencia afiliada</h1>
+        <p id="sessionWelcome">Tarifas confidenciales para operaciones diarias en Cusco y Machu Picchu</p>
       </div>
       <div class="agency-controls">
         <label><span>Moneda</span><select id="currencySelect"><option value="PEN">Soles (S/)</option><option value="USD">Dólares (USD)</option></select></label>
         <input id="exchangeRateInput" type="hidden" value="3.38" />
+        <input id="searchInput" type="hidden" value="" />
+        <span class="toolbar-total agency-total-mini"><span id="toolbarCount">0</span> servicios · <span id="toolbarTotal">S/ 0.00</span></span>
+        <a class="agency-button agency-button--ghost" href="./ordenes.html">Ver mis órdenes</a>
       </div>
     </section>
 
@@ -43,7 +46,7 @@
         <div class="section-title section-title--simple">
           <div>
             <h2>Experiencias disponibles</h2>
-            <p>Agrega uno o más servicios a tu orden. Puedes reservar varios tours en una sola orden.</p>
+            <p>Agrega uno o más servicios a tu orden. Puedes reservar para los mismos pasajeros o para grupos diferentes.</p>
           </div>
         </div>
         <div id="experienceGrid" class="experience-grid"></div>
@@ -66,13 +69,7 @@
       </aside>
     </div>
 
-    <section class="section-title" id="historial">
-      <div>
-        <h2>Órdenes generadas</h2>
-        <p>Podrás revisar aquí las últimas órdenes generadas desde este navegador.</p>
-      </div>
-    </section>
-    <div id="ordersList" class="requests-list"></div>
+    <div id="ordersList" class="requests-list" hidden></div>
   </main>
 
   <div id="reserveModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
@@ -86,20 +83,22 @@
         <p class="dialog-help">Completa los datos principales del titular. Los datos de los demás pasajeros son opcionales, pero ayudan a agilizar la confirmación.</p>
         <div class="form-grid">
           <label class="field"><span>Fecha del tour</span><input id="serviceDate" type="date" required /></label>
+          <label class="field"><span>Hora de inicio</span><select id="serviceTime" required></select></label>
           <label class="field"><span>Cantidad de pasajeros</span><input id="paxCount" type="number" min="1" max="50" value="2" required /></label>
-          <div class="field full form-subtitle"><strong>Datos del titular de reserva</strong></div>
+          <div class="form-subtitle full">Datos del titular de reserva</div>
           <label class="field"><span>Nombre</span><input id="leadFirstName" required /></label>
           <label class="field"><span>Apellido</span><input id="leadLastName" required /></label>
           <label class="field"><span>Tipo de documento</span><select id="leadDocType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
           <label class="field"><span>Número de documento</span><input id="leadDocNumber" required /></label>
           <label class="field"><span>Código de país</span><select id="leadPhoneCountry" required><option value="+51">Perú +51</option><option value="+52">México +52</option><option value="+56">Chile +56</option><option value="+55">Brasil +55</option><option value="+57">Colombia +57</option><option value="+54">Argentina +54</option><option value="+591">Bolivia +591</option><option value="+593">Ecuador +593</option><option value="+1">Estados Unidos / Canadá +1</option><option value="+34">España +34</option><option value="+44">Reino Unido +44</option><option value="+33">Francia +33</option><option value="+49">Alemania +49</option><option value="+39">Italia +39</option><option value="+81">Japón +81</option><option value="+82">Corea del Sur +82</option><option value="+86">China +86</option></select></label>
           <label class="field"><span>Celular / WhatsApp</span><input id="leadPhone" inputmode="tel" required placeholder="900 000 000" /></label>
+          <input type="hidden" id="groupMode" value="new" />
           <label class="field full"><span>Lugar de recojo</span><textarea id="pickupPoint" rows="2" required placeholder="Nombre del hotel y dirección completa"></textarea></label>
           <label class="field full"><span>Observaciones</span><textarea id="bookingNotes" rows="2" placeholder="Horario preferido, referencia del hotel, restricciones alimentarias, etc."></textarea></label>
         </div>
-        <details class="tourists-box tourists-details" id="additionalPassengersDetails">
+        <details class="tourists-box" id="passengersDetails">
           <summary>Datos opcionales de pasajeros adicionales</summary>
-          <p class="dialog-help">Puedes completar esta información ahora o enviarla después.</p>
+          <p class="dialog-help">Puedes desplegar esta sección para agregar datos de los pasajeros 2 en adelante.</p>
           <div id="additionalPassengers"></div>
         </details>
         <div class="dialog-actions">
@@ -117,6 +116,16 @@
         <button type="button" class="close" data-close-modal aria-label="Cerrar">×</button>
       </div>
       <div id="itineraryBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="orderModal" class="modal-backdrop order-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <div class="modal modal--order">
+      <div class="modal-header">
+        <h2 id="orderModalTitle">Orden de reserva generada</h2>
+        <button type="button" class="close" data-close-modal aria-label="Cerrar">×</button>
+      </div>
+      <div id="orderModalBody" class="modal-body"></div>
     </div>
   </div>
 

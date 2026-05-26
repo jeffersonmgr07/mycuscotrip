@@ -27,7 +27,9 @@
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
   function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
   const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
-  const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+  const isoPlusDays = (days = 0) => { const d = new Date(); d.setDate(d.getDate() + days); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+  const todayISO = () => isoPlusDays(0);
+  const tomorrowISO = () => isoPlusDays(1);
 
   function money(amount, currency = state.currency) {
     const n = Number(amount || 0);
@@ -66,11 +68,12 @@
     const session = requireSession();
     if (!session) return;
 
-    $('#sessionWelcome').textContent = session.companyName || session.contactName || 'Agencia afiliada';
+    $('#agencyNameHeading').textContent = session.companyName || session.contactName || 'Agencia afiliada';
+    $('#sessionWelcome').textContent = 'Tarifas confidenciales para operaciones diarias en Cusco y Machu Picchu';
     $('#currencySelect').value = state.currency;
     if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
-    $('#serviceDate').min = todayISO();
-    $('#serviceDate').value = todayISO();
+    $('#serviceDate').min = tomorrowISO();
+    $('#serviceDate').value = tomorrowISO();
 
     bindEvents();
     await loadCatalog();
@@ -107,10 +110,8 @@
       localStorage.setItem('mct_exchange_rate', state.exchangeRate);
       renderExperiences(); renderCart();
     });
-    $('#printButton')?.addEventListener('click', () => window.print());
     $('#paxCount').addEventListener('input', renderAdditionalPassengers);
     $('#reserveForm').addEventListener('submit', addToCart);
-    $('#paypalFeeToggle')?.addEventListener('change', renderCart);
     $('#clearCartButton').addEventListener('click', clearCart);
     $('#generateOrderButton').addEventListener('click', generateOrder);
     $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
@@ -118,7 +119,7 @@
   }
 
   function renderExperiences() {
-    const q = $('#searchInput')?.value.trim().toLowerCase() || '';
+    const q = ($('#searchInput')?.value || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
@@ -164,11 +165,21 @@
     $('#selectedServiceId').value = id;
     $('#reserveTitle').textContent = `Reservar · ${service.name}`;
     $('#reserveForm').reset();
-    $('#serviceDate').min = todayISO();
-    $('#serviceDate').value = todayISO();
+    $('#serviceDate').min = tomorrowISO();
+    $('#serviceDate').value = tomorrowISO();
     $('#paxCount').value = 2;
+    renderScheduleOptions(service);
     renderAdditionalPassengers();
     $('#reserveModal').classList.add('show');
+  }
+
+  function renderScheduleOptions(service) {
+    const select = $('#serviceTime');
+    if (!select) return;
+    const schedules = Array.isArray(service.schedules) && service.schedules.length
+      ? service.schedules
+      : (service.startLabel ? [service.startLabel] : ['Por confirmar']);
+    select.innerHTML = schedules.map((time) => `<option value="${escapeHtml(time)}">${escapeHtml(time)}</option>`).join('');
   }
 
   function renderAdditionalPassengers() {
@@ -209,6 +220,7 @@
       serviceId: service.id,
       serviceName: service.name,
       travelDate: $('#serviceDate').value,
+      serviceTime: $('#serviceTime')?.value || '',
       pax,
       unitPricePEN: Number(service.pricePEN || 0),
       unitPriceUSD: service.priceUSD != null ? Number(service.priceUSD) : null,
@@ -221,7 +233,7 @@
         docNumber: $('#leadDocNumber').value.trim(),
         phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
-      groupMode: $('#groupMode')?.value || 'new',
+      groupMode: $('#groupMode').value,
       pickupPoint: $('#pickupPoint').value.trim(),
       notes: $('#bookingNotes').value.trim(),
       passengers
@@ -253,6 +265,7 @@
         <article class="cart-item">
           <strong>${escapeHtml(item.serviceName)}</strong>
           <div class="cart-row"><span>Fecha</span><span>${formatDate(item.travelDate)}</span></div>
+          <div class="cart-row"><span>Hora</span><span>${escapeHtml(item.serviceTime || 'Por confirmar')}</span></div>
           <div class="cart-row"><span>Pasajeros</span><span>${item.pax}</span></div>
           <div class="cart-row"><span>Titular</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
           <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
@@ -266,8 +279,8 @@
     $('#subtotalAmount').textContent = money(subtotal);
     $('#feeAmount').textContent = money(fee);
     $('#grandTotal').textContent = money(total);
-    if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
-    if ($('#toolbarTotal')) $('#toolbarTotal').textContent = money(total);
+    $('#toolbarCount').textContent = state.cart.length;
+    $('#toolbarTotal').textContent = money(total);
   }
 
   function removeItem(index) {
@@ -288,11 +301,9 @@
     if (!state.cart.length) { alert('Agrega al menos un servicio a tu orden.'); return; }
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
     const { total, fee } = feeGross(subtotal);
-    const expiresAt = new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString();
     const order = {
       code: makeCode(),
       createdAt: new Date().toISOString(),
-      expiresAt,
       status: 'Pendiente de pago',
       currency: state.currency,
       exchangeRate: state.exchangeRate,
@@ -300,83 +311,100 @@
       fee: Number(fee.toFixed(2)),
       total: Number(total.toFixed(2)),
       paypalBankFeeApplied: true,
+      paymentDueAt: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       account: state.session,
       items: state.cart
     };
     state.orders.unshift(order);
     writeJSON(STORAGE.ORDERS, state.orders);
     const result = await sendToSheet('createOrder', order);
+    showOrderModal(order, result);
     $('#orderBox').classList.add('show');
-    $('#orderBox').innerHTML = orderHtml(order, result);
+    $('#orderBox').innerHTML = `
+      <h3>Orden generada</h3>
+      <div class="order-code">${escapeHtml(order.code)}</div>
+      <p><strong>Total:</strong> ${money(order.total)}</p>
+      <button type="button" class="agency-button agency-button--primary" id="viewLastOrderButton">Ver / imprimir orden</button>
+    `;
+    $('#viewLastOrderButton')?.addEventListener('click', () => showOrderModal(order));
     state.cart = [];
     writeJSON(STORAGE.CART, state.cart);
     renderCart();
     renderOrders();
-    $('#orderBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function orderHtml(order, result = {}) {
-    const rows = order.items.map((item) => {
-      const itemTotal = convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
-      const passengers = item.passengers?.length ? item.passengers.map((p, index) => `
-        <li>Pasajero ${index + 2}: ${escapeHtml(p.firstName || '')} ${escapeHtml(p.lastName || '')} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}</li>
-      `).join('') : '<li>Datos de pasajeros adicionales pendientes.</li>';
+  function orderItemsRows(order) {
+    return order.items.map((item, index) => {
+      const amount = convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
+      const passengers = item.passengers?.length
+        ? item.passengers.map((p, i) => `<li>Pasajero ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}</li>`).join('')
+        : '<li>Datos adicionales pendientes.</li>';
       return `
-        <article class="order-service">
-          <h4>${escapeHtml(item.serviceName)}</h4>
-          <div class="order-grid">
-            <span>Fecha</span><strong>${formatDate(item.travelDate)}</strong>
-            <span>Pasajeros</span><strong>${item.pax}</strong>
-            <span>Titular</span><strong>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</strong>
-            <span>Documento</span><strong>${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}</strong>
-            <span>Celular</span><strong>${escapeHtml(item.lead.phone)}</strong>
-            <span>Recojo</span><strong>${escapeHtml(item.pickupPoint)}</strong>
-            ${item.notes ? `<span>Observaciones</span><strong>${escapeHtml(item.notes)}</strong>` : ''}
-            <span>Subtotal servicio</span><strong>${money(itemTotal, order.currency)}</strong>
-          </div>
-          <details class="order-passengers"><summary>Pasajeros adicionales</summary><ul>${passengers}</ul></details>
-        </article>
+        <tr>
+          <td>${index + 1}</td>
+          <td><strong>${escapeHtml(item.serviceName)}</strong><br><small>Fecha: ${formatDate(item.travelDate)} · Hora: ${escapeHtml(item.serviceTime || 'Por confirmar')}</small><br><small>Recojo: ${escapeHtml(item.pickupPoint || '')}</small></td>
+          <td>${item.pax}</td>
+          <td>${money(convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD))}</td>
+          <td><strong>${money(amount)}</strong></td>
+        </tr>
+        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>Titular:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)} · ${escapeHtml(item.lead.phone)}<br><strong>Pasajeros adicionales:</strong><ul>${passengers}</ul>${item.notes ? `<strong>Observaciones:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
       `;
     }).join('');
-    const savedNote = result?.ok === false ? `<p class="order-warning">La orden se generó localmente, pero no se pudo enviar a Google Sheets: ${escapeHtml(result.message || '')}</p>` : '';
+  }
+
+  function orderHTML(order, result = null) {
     return `
-      <div class="printable-order" id="printableOrder">
-        <div class="order-header">
+      <div id="orderPrintArea" class="order-print-area">
+        <div class="print-order-head">
           <div>
-            <span class="order-label">Orden de reserva</span>
-            <h3>${escapeHtml(order.code)}</h3>
-            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || order.account?.email || 'Agencia afiliada')}</strong></p>
+            <p class="eyebrow">Orden de reserva</p>
+            <h2>${escapeHtml(order.code)}</h2>
+            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
           </div>
-          <div class="order-status">${escapeHtml(order.status)}</div>
+          <div class="print-order-status">
+            <span>${escapeHtml(order.status)}</span>
+            <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+          </div>
         </div>
-        <div class="order-deadline">Plazo de pago: hasta ${formatDateTime(order.expiresAt)}. La orden queda sujeta a disponibilidad hasta validar el pago.</div>
-        ${rows}
+        <div class="info-note"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.</div>
+        <div class="order-table-wrap">
+          <table class="order-table">
+            <thead><tr><th>#</th><th>Servicio</th><th>Pax</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
+            <tbody>${orderItemsRows(order)}</tbody>
+          </table>
+        </div>
         <div class="order-totals">
-          <div><span>Subtotal neto</span><strong>${money(order.subtotal, order.currency)}</strong></div>
-          <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee, order.currency)}</strong></div>
-          <div class="grand"><span>Total a pagar</span><strong>${money(order.total, order.currency)}</strong></div>
+          <div><span>Subtotal neto</span><strong>${money(order.subtotal)}</strong></div>
+          <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee)}</strong></div>
+          <div class="grand"><span>Total a pagar</span><strong>${money(order.total)}</strong></div>
         </div>
-        ${savedNote}
-        <div class="order-actions no-print">
-          <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
-        </div>
+        <p class="small-print-note">Indicar el código de referencia al realizar el pago o enviar el comprobante. ${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p>
+      </div>
+      <div class="dialog-actions order-modal-actions">
+        <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
+        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
     `;
   }
 
-  function formatDateTime(iso) {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return '';
-    return d.toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+  function showOrderModal(order, result = null) {
+    $('#orderModalBody').innerHTML = orderHTML(order, result);
+    $('#orderModal').classList.add('show');
+    $('#printOrderButton')?.addEventListener('click', printOrder);
+    $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
   }
 
-  document.addEventListener('click', (event) => {
-    if (event.target?.id === 'printOrderButton') {
-      document.body.classList.add('printing-order');
-      window.print();
-      setTimeout(() => document.body.classList.remove('printing-order'), 600);
-    }
-  });
+  function printOrder() {
+    document.body.classList.add('printing-order');
+    window.print();
+    setTimeout(() => document.body.classList.remove('printing-order'), 600);
+  }
+
+  function formatDateTime(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+  }
 
   async function sendToSheet(action, payload) {
     if (!CONFIG.googleScriptUrl || CONFIG.googleScriptUrl.includes('PEGA_AQUI')) return { ok:false, message:'Falta configurar Google Apps Script.' };
