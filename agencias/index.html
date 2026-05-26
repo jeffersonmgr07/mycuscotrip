@@ -22,28 +22,21 @@
   <div id="header-container"></div>
 
   <main class="agency-main" id="inicio">
-    <section class="agency-hero" aria-labelledby="pageTitle">
-      <div class="agency-hero__grid">
-        <div>
-          <p class="eyebrow">Experiencias en Cusco y Machu Picchu</p>
-          <h1 id="pageTitle">Reserva tours y salidas diarias</h1>
-          <p>Elige una experiencia, selecciona fecha y pasajeros, agrega los datos principales y genera tu orden de reserva en pocos pasos.</p>
-          <div class="hero-actions">
-            <a href="#experiencias" class="agency-button agency-button--white">Ver experiencias</a>
-            <a href="./registro.html" class="agency-button agency-button--ghost">Crear acceso</a>
-          </div>
-        </div>
-        <aside class="hero-panel" aria-label="Información de reserva">
-          <strong id="sessionWelcome">Bienvenido</strong>
-          <small>Las reservas quedan sujetas a disponibilidad de cupos, horarios, condiciones climáticas y confirmación del equipo de operaciones.</small>
-        </aside>
+    <section class="agency-intro-bar" aria-label="Panel de agencia">
+      <div>
+        <p class="eyebrow">Tarifas confidenciales para operaciones diarias en Cusco</p>
+        <h1>Experiencias diarias</h1>
+        <p id="sessionWelcome">Bienvenido</p>
+      </div>
+      <div class="agency-controls">
+        <label><span>Moneda</span><select id="currencySelect"><option value="PEN">Soles (S/)</option><option value="USD">Dólares (USD)</option></select></label>
+        <input id="exchangeRateInput" type="hidden" value="3.38" />
+        <button type="button" class="agency-button agency-button--ghost" id="printButton">Imprimir / Guardar</button>
       </div>
     </section>
 
-    <section class="toolbar" aria-label="Filtros y moneda">
+    <section class="toolbar compact-toolbar" aria-label="Filtros">
       <label><span>Buscar experiencia</span><input id="searchInput" type="search" placeholder="Machu Picchu, Valle, Humantay..." /></label>
-      <label><span>Moneda</span><select id="currencySelect"><option value="PEN">Soles (S/)</option><option value="USD">Dólares (USD)</option></select></label>
-      <label><span>Tipo de cambio</span><input id="exchangeRateInput" type="number" min="1" step="0.01" value="3.38" /></label>
       <div class="toolbar-total"><span id="toolbarCount">0</span> servicios · <span id="toolbarTotal">S/ 0.00</span></div>
     </section>
 
@@ -53,12 +46,11 @@
 
     <div class="portal-layout">
       <section id="experiencias">
-        <div class="section-title">
+        <div class="section-title section-title--simple">
           <div>
             <h2>Experiencias disponibles</h2>
             <p>Agrega uno o más servicios a tu orden. Puedes reservar para los mismos pasajeros o para grupos diferentes.</p>
           </div>
-          <button type="button" class="agency-button agency-button--ghost" id="printButton">Imprimir / Guardar</button>
         </div>
         <div id="experienceGrid" class="experience-grid"></div>
         <p id="emptyExperiences" class="empty-state" hidden>No encontramos experiencias con ese filtro.</p>

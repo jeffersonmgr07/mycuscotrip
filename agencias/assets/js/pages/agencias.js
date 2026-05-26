@@ -25,7 +25,7 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
-  const readJSON = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
+  function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
   const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
 
@@ -66,9 +66,9 @@
     const session = requireSession();
     if (!session) return;
 
-    $('#sessionWelcome').textContent = session.companyName || session.contactName || 'Bienvenido';
+    $('#sessionWelcome').textContent = `Bienvenido, ${session.companyName || session.contactName || 'agencia afiliada'}`;
     $('#currencySelect').value = state.currency;
-    $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
+    if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
     $('#serviceDate').min = todayISO();
     $('#serviceDate').value = todayISO();
 
@@ -87,7 +87,7 @@
       state.services = Array.isArray(data.services) ? data.services : [];
       if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
         state.exchangeRate = Number(data.exchangeRate);
-        $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
+        if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
     } catch (error) {
       $('#emptyExperiences').hidden = false;
@@ -102,7 +102,7 @@
       localStorage.setItem('mct_visible_currency', state.currency);
       renderExperiences(); renderCart();
     });
-    $('#exchangeRateInput').addEventListener('input', (event) => {
+    $('#exchangeRateInput')?.addEventListener('input', (event) => {
       state.exchangeRate = Number(event.target.value || CONFIG.defaultExchangeRate);
       localStorage.setItem('mct_exchange_rate', state.exchangeRate);
       renderExperiences(); renderCart();

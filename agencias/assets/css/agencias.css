@@ -13,3 +13,33 @@
 @media(max-width:1020px){.agency-main{padding-top:96px}.agency-hero__grid,.portal-layout{grid-template-columns:1fr}.checkout{position:static;max-height:none}.toolbar{grid-template-columns:1fr 1fr}.toolbar-total{grid-column:1/-1}.experience-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.agency-main{padding:88px 12px 30px}.agency-hero{border-radius:24px;padding:22px}.agency-hero h1{font-size:2rem}.hero-panel{display:none}.toolbar{position:static;grid-template-columns:1fr;padding:12px}.section-title{display:block}.experience-grid{grid-template-columns:1fr}.experience-cover{height:170px}.experience-card h3{font-size:1.18rem}.experience-desc,.mini-table{font-size:.86rem}.card-actions{grid-template-columns:1fr}.modal-body{padding:16px}.modal-header h2{font-size:1.25rem}.form-grid{grid-template-columns:1fr}.include-list{columns:1}.dialog-actions{justify-content:stretch}.dialog-actions .agency-button{width:100%}}
 @media print{#header-container,#footer-container,.toolbar,.card-actions,.checkout,.modal-backdrop,.hero-actions{display:none!important}.agency-main{max-width:none;padding:0}.agency-hero,.experience-card,.info-note,.auth-card,.order-box{break-inside:avoid;page-break-inside:avoid;box-shadow:none}.portal-layout{display:block}body{background:#fff}.experience-grid{grid-template-columns:1fr 1fr}.agency-hero{color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* Ajustes finales portal agencias */
+.agency-intro-bar{
+  background:#ffffff;
+  border:1px solid #e3ece6;
+  border-radius:24px;
+  box-shadow:0 16px 35px rgba(7,61,42,.08);
+  padding:22px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:28px 0 18px;
+}
+.agency-intro-bar .eyebrow{margin:0 0 6px;color:#8a661e;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px}
+.agency-intro-bar h1{margin:0;color:#073d2a;font-family:Montserrat,Arial,sans-serif;font-size:30px;line-height:1.12;font-weight:900;letter-spacing:-.6px}
+.agency-intro-bar p#sessionWelcome{margin:8px 0 0;color:#496356;font-weight:700;font-size:14px}
+.agency-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.agency-controls label,.compact-toolbar label{display:grid;gap:6px;color:#607468;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.35px}
+.agency-controls select,.compact-toolbar input{min-height:43px;border:1px solid #dbe6df;border-radius:14px;padding:10px 12px;background:#fff;color:#17382a;font:600 14px/1.2 Open Sans,Arial,sans-serif}
+.compact-toolbar{margin-bottom:16px}
+.section-title--simple{margin-top:0!important}
+#exchangeRateInput{display:none!important}
+@media (max-width:760px){
+  .agency-intro-bar{display:block;padding:18px;margin-top:18px;border-radius:20px}
+  .agency-intro-bar h1{font-size:24px}
+  .agency-controls{justify-content:stretch;margin-top:16px}
+  .agency-controls label{flex:1;min-width:150px}
+  .agency-controls .agency-button{flex:1;min-width:150px}
+}

@@ -1,7 +1,7 @@
 (() => {
   const AGENCIES = 'mct_registered_agencies';
   const SESSION = 'mct_agency_session';
-  const CONFIG = { googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec' }; // Pega aquí la URL de Google Apps Script si quieres enviar registros a Google Sheets.
+  const CONFIG = { googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec' };
   const TAX_LABELS = { PE: 'RUC', MX: 'RFC', CL: 'RUT', BR: 'CNPJ', CO: 'NIT', AR: 'CUIT', BO: 'NIT', EC: 'RUC', US: 'EIN / Tax ID', OTHER: 'Identificación fiscal' };
   const $ = (selector) => document.querySelector(selector);
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
@@ -18,11 +18,17 @@
   }
 
   async function sendToSheet(action, payload) {
-    if (!CONFIG.googleScriptUrl) return;
-    try {
-      await fetch(CONFIG.googleScriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, payload }) });
-    } catch (error) { console.warn('No se pudo enviar a Google Sheets', error); }
+    if (!CONFIG.googleScriptUrl || CONFIG.googleScriptUrl.includes('PEGA_AQUI')) {
+      throw new Error('Falta configurar la URL de Google Apps Script.');
+    }
+    const response = await fetch(CONFIG.googleScriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action, payload })
+    });
+    return await response.json();
   }
+
 
   $('#companyCountry')?.addEventListener('change', syncCountry);
   $('#companyEmail')?.addEventListener('input', () => { if (!$('#accessEmail').value.trim()) $('#accessEmail').value = $('#companyEmail').value.trim(); });
@@ -35,29 +41,45 @@
     const password = $('#registerPassword').value;
     const confirm = $('#registerPasswordConfirm').value;
     if (password !== confirm) { show('Las contraseñas no coinciden.'); return; }
-    const accessEmail = value('#accessEmail').toLowerCase();
-    const agencies = read(AGENCIES, []);
-    if (agencies.some((item) => item.accessEmail === accessEmail)) { show('Ya existe un acceso registrado con ese correo.'); return; }
-    const salt = createSalt();
-    const passwordHash = await hashPassword(password, salt);
+    const button = event.submitter;
+    const originalText = button?.textContent || 'Registrar mi agencia';
+    if (button) { button.disabled = true; button.textContent = 'Enviando registro...'; }
     const agency = {
-      id: `account_${Date.now()}`,
-      status: 'Activo',
-      createdAt: new Date().toISOString(),
-      accessEmail,
+      id: `AG-${Date.now()}`,
+      status: 'Pendiente',
+      password,
+      accessEmail: value('#accessEmail').toLowerCase(),
       accessPhone: value('#accessPhone'),
-      passwordSalt: salt,
-      passwordHash,
-      authMode: 'browser_hash_demo',
-      company: { country: value('#companyCountry'), taxLabel: $('#taxLabel').textContent, taxId: value('#companyTaxId'), legalName: value('#companyName'), tradeName: value('#tradeName'), email: value('#companyEmail').toLowerCase(), phone: value('#companyPhone'), website: value('#companyWebsite') },
-      legalRepresentative: { firstName: value('#legalFirstName'), lastName: value('#legalLastName'), docType: value('#legalDocType'), docNumber: value('#legalDocNumber') }
+      company: {
+        country: value('#companyCountry'),
+        taxLabel: $('#taxLabel').textContent,
+        taxId: value('#companyTaxId'),
+        legalName: value('#companyName'),
+        tradeName: value('#tradeName'),
+        email: value('#companyEmail').toLowerCase(),
+        phone: value('#companyPhone'),
+        website: value('#companyWebsite')
+      },
+      legalRepresentative: {
+        firstName: value('#legalFirstName'),
+        lastName: value('#legalLastName'),
+        docType: value('#legalDocType'),
+        docNumber: value('#legalDocNumber')
+      }
     };
-    agencies.unshift(agency); write(AGENCIES, agencies);
-    write(SESSION, { email: agency.accessEmail, companyName: agency.company.tradeName || agency.company.legalName, contactName: agency.legalRepresentative.firstName, loggedAt: new Date().toISOString(), localSession: true });
-    await sendToSheet('registerAgency', agency);
-    show('Acceso creado correctamente. Serás redirigido al portal de reservas.', 'is-success');
-    setTimeout(() => { window.location.href = './index.html'; }, 900);
+    try {
+      const result = await sendToSheet('registerAgency', agency);
+      if (!result.ok) { show(result.message || 'No se pudo registrar la agencia.'); return; }
+      show('Registro recibido correctamente. Activaremos tu acceso después de validar los datos.', 'is-success');
+      setTimeout(() => { window.location.href = './login.html'; }, 1200);
+    } catch (error) {
+      console.error(error);
+      show('No se pudo conectar con Google Apps Script. Revisa la URL y la implementación.');
+    } finally {
+      if (button) { button.disabled = false; button.textContent = originalText; }
+    }
   });
+
 
   syncCountry();
 })();
