@@ -17,6 +17,7 @@ const SHEET_AGENCIES = 'Agencias';
 const SHEET_ORDERS = 'Ordenes';
 const BRAND_NAME = 'My Cusco Trip';
 const SUPPORT_EMAIL = 'reservas@mycuscotrip.com';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
 
 const AGENCY_HEADERS = [
   'id','fechaRegistro','estado','emailVerificado','verificationToken','fechaVerificacion',
@@ -183,12 +184,69 @@ function createOrder_(order) {
     pasajerosJson: JSON.stringify(passengers),
     observaciones: order.observations || ''
   });
-  return json_({ ok:true, message:'Orden guardada', code: order.code || '' });
+  if (account.email) sendOrderEmail_(account.email, order);
+  return json_({ ok:true, message:'Orden guardada y enviada por correo', code: order.code || '' });
+}
+
+function sendOrderEmail_(email, order) {
+  const subject = 'Orden de reserva ' + (order.code || '') + ' - My Cusco Trip';
+  const items = order.items || [];
+  const rows = items.map(function(item){
+    const lead = item.lead || {};
+    const passengers = (item.passengers || []).map(function(p, idx){
+      return '<li>Pasajero ' + (idx + 2) + ': ' + escapeHtml_(p.firstName || '') + ' ' + escapeHtml_(p.lastName || '') + ' · ' + escapeHtml_(p.docType || '') + ' ' + escapeHtml_(p.docNumber || '') + '</li>';
+    }).join('') || '<li>Datos de pasajeros adicionales pendientes.</li>';
+    return '' +
+      '<div style="border:1px solid #dce8df;border-radius:16px;padding:14px;margin:12px 0;background:#ffffff">' +
+      '<h3 style="margin:0 0 8px;color:#063f2a;font-size:18px">' + escapeHtml_(item.serviceName || '') + '</h3>' +
+      '<p style="margin:4px 0;color:#40544a"><strong>Fecha:</strong> ' + escapeHtml_(formatDateForEmail_(item.travelDate || '')) + ' · <strong>Pasajeros:</strong> ' + escapeHtml_(item.pax || '') + '</p>' +
+      '<p style="margin:4px 0;color:#40544a"><strong>Titular:</strong> ' + escapeHtml_(lead.firstName || '') + ' ' + escapeHtml_(lead.lastName || '') + ' · ' + escapeHtml_(lead.docType || '') + ' ' + escapeHtml_(lead.docNumber || '') + '</p>' +
+      '<p style="margin:4px 0;color:#40544a"><strong>Celular:</strong> ' + escapeHtml_(lead.phone || '') + '</p>' +
+      '<p style="margin:4px 0;color:#40544a"><strong>Recojo:</strong> ' + escapeHtml_(item.pickupPoint || '') + '</p>' +
+      (item.notes ? '<p style="margin:4px 0;color:#40544a"><strong>Observaciones:</strong> ' + escapeHtml_(item.notes || '') + '</p>' : '') +
+      '<ul style="margin:10px 0 0;color:#40544a;padding-left:18px">' + passengers + '</ul>' +
+      '</div>';
+  }).join('');
+  const deadline = order.expiresAt ? formatDateTimeForEmail_(order.expiresAt) : '3 horas desde la emisión';
+  const htmlBody = '' +
+    '<div style="margin:0;padding:0;background:#edf3ef;font-family:Arial,Helvetica,sans-serif;color:#20352b">' +
+    '<div style="max-width:720px;margin:0 auto;padding:24px 12px">' +
+    '<div style="background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 14px 38px rgba(10,58,38,.14)">' +
+    '<div style="background:linear-gradient(135deg,#063f2a,#07543a);padding:26px;color:#fff">' +
+    '<p style="margin:0 0 8px;color:#f8edd4;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:bold">Orden de reserva</p>' +
+    '<h1 style="margin:0;color:#fff;font-size:28px">' + escapeHtml_(order.code || '') + '</h1>' +
+    '<p style="margin:10px 0 0;color:#eff8f1">Agencia: <strong>' + escapeHtml_(order.account?.companyName || order.account?.email || '') + '</strong></p>' +
+    '</div>' +
+    '<div style="padding:24px">' +
+    '<div style="background:#fff8eb;border:1px solid #eadfc9;border-radius:16px;padding:14px;margin-bottom:16px;color:#604719"><strong>Plazo de pago:</strong> ' + escapeHtml_(deadline) + '. La orden queda sujeta a disponibilidad hasta validar el pago.</div>' +
+    rows +
+    '<div style="border-top:2px solid #dce8df;margin-top:16px;padding-top:12px">' +
+    '<p style="display:flex;justify-content:space-between;margin:8px 0"><span>Subtotal neto</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.subtotal, order.currency)) + '</strong></p>' +
+    '<p style="display:flex;justify-content:space-between;margin:8px 0"><span>Comisiones PayPal + banco</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.fee, order.currency)) + '</strong></p>' +
+    '<p style="display:flex;justify-content:space-between;margin:12px 0 0;font-size:20px;color:#063f2a"><span>Total a pagar</span><strong>' + escapeHtml_(formatMoneyForEmail_(order.total, order.currency)) + '</strong></p>' +
+    '</div>' +
+    '<p style="font-size:12.5px;color:#63766a;margin-top:18px">Indica este código al enviar el comprobante de pago. Estado inicial: pendiente de pago.</p>' +
+    '</div></div></div></div>';
+  MailApp.sendEmail({ to: email, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
+}
+
+function formatMoneyForEmail_(amount, currency) {
+  const n = Number(amount || 0).toFixed(2);
+  return currency === 'USD' ? 'USD ' + n : 'S/ ' + n;
+}
+function formatDateForEmail_(iso) {
+  if (!iso) return '';
+  const parts = String(iso).slice(0,10).split('-');
+  return parts.length === 3 ? parts[2] + '/' + parts[1] + '/' + parts[0] : iso;
+}
+function formatDateTimeForEmail_(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleString('es-PE', { dateStyle:'short', timeStyle:'short' });
 }
 
 function sendVerificationEmail_(email, agencyName, token) {
-  const baseUrl = ScriptApp.getService().getUrl();
-  const verifyUrl = baseUrl + '?action=verifyEmail&token=' + encodeURIComponent(token);
+  const verifyUrl = WEB_APP_URL + '?action=verifyEmail&token=' + encodeURIComponent(token);
   const subject = 'Verifica tu correo - Portal de agencias My Cusco Trip';
   const htmlBody = '' +
     '<div style="font-family:Arial,sans-serif;color:#20352b;line-height:1.55;max-width:560px;margin:auto;padding:20px">' +
@@ -220,14 +278,14 @@ function parseBody_(e) {
 }
 
 function getSpreadsheet_() {
-  if (SPREADSHEET_ID && SPREADSHEET_ID !== '106y_7HTjHpLknivNSeAj1Z6AEBhLvw5hsFqa1GgrGaE') {
+  if (SPREADSHEET_ID && String(SPREADSHEET_ID).trim() !== '') {
     return SpreadsheetApp.openById(SPREADSHEET_ID);
   }
 
   const active = SpreadsheetApp.getActiveSpreadsheet();
   if (active) return active;
 
-  throw new Error('No se encontró la hoja de cálculo. Crea el Apps Script desde tu Google Sheet con Extensiones > Apps Script, o pega el ID real en SPREADSHEET_ID.');
+  throw new Error('No se encontró la hoja de cálculo. Pega el ID real en SPREADSHEET_ID.');
 }
 
 function getSheet_(name, headers) {

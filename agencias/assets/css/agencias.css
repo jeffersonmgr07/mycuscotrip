@@ -44,3 +44,23 @@
   .agency-controls .agency-button{flex:1;min-width:150px}
 }
 .field-help{margin:0;color:#607468;font-size:.84rem;line-height:1.45;background:#f8fbf9;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+
+
+/* Ajustes portal agencias */
+.agency-name-line{font-size:clamp(18px,2.2vw,28px);font-weight:800;color:#fff;margin:.25rem 0 0;opacity:.95}
+.agency-intro-bar .agency-controls{align-self:start}
+.modal-header{background:linear-gradient(135deg,#063f2a,#07543a);color:#fff;border-bottom:0}
+.modal-header h2{color:#fff!important}
+.modal-header .close{background:rgba(255,255,255,.16);color:#fff}
+.form-subtitle{background:#f7faf8;border:1px solid var(--line);border-radius:16px;padding:12px 14px;color:var(--primary)}
+.tourists-details{display:block}
+.tourists-details summary{cursor:pointer;font-weight:800;color:var(--primary);list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tourists-details summary::after{content:'Desplegar';font-size:12px;font-weight:800;background:#eef7f1;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--primary)}
+.tourists-details[open] summary::after{content:'Replegar'}
+.order-service{border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0;background:#fff}
+.order-service h4{margin:0 0 10px;color:var(--primary);font-size:18px}
+.order-grid{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;font-size:14px}.order-grid span{color:var(--muted)}
+.order-passengers{margin-top:10px;background:#f8fbf9;border-radius:14px;padding:10px}.order-passengers summary{cursor:pointer;font-weight:800;color:var(--primary)}
+.order-header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;background:linear-gradient(135deg,#063f2a,#07543a);color:#fff;border-radius:20px;padding:18px;margin-bottom:14px}.order-header h3{color:#fff;margin:4px 0;font-size:26px}.order-label{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:800;color:#f8edd4}.order-status{background:#fff;color:#063f2a;border-radius:999px;padding:8px 12px;font-weight:800;white-space:nowrap}.order-deadline{background:#fff8eb;border:1px solid #eadfc9;border-radius:16px;padding:12px 14px;margin:12px 0;color:#604719;font-weight:700}.order-totals{margin-top:14px;border-top:2px solid var(--line);padding-top:12px}.order-totals div{display:flex;justify-content:space-between;gap:12px;padding:6px 0}.order-totals .grand{font-size:20px;color:var(--primary)}.order-warning{background:#fff4ed;color:#9a3412;border:1px solid #fed7aa;border-radius:14px;padding:10px 12px}.order-actions{margin-top:16px;text-align:right}
+@media print{body.printing-order header,body.printing-order #header-container,body.printing-order .agency-intro-bar,body.printing-order .info-note,body.printing-order #experiencias,body.printing-order .checkout>h2,body.printing-order .checkout>.cart-items,body.printing-order .checkout>.cart-total,body.printing-order .checkout>.checkout-actions,body.printing-order #historial,body.printing-order #ordersList,body.printing-order #footer-container,body.printing-order .no-print{display:none!important}body.printing-order .agency-main{padding:0!important;max-width:none!important}body.printing-order .portal-layout{display:block!important}body.printing-order .checkout{position:static!important;box-shadow:none!important;border:0!important;padding:0!important;max-width:none!important}body.printing-order #orderBox{display:block!important;box-shadow:none!important;border:0!important;padding:0!important}.order-service,.order-header,.order-deadline{break-inside:avoid;page-break-inside:avoid}.order-header{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(max-width:680px){.order-grid{grid-template-columns:1fr}.order-header{display:block}.order-status{display:inline-block;margin-top:10px}}

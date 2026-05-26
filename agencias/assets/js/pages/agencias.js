@@ -7,7 +7,7 @@
 
   const CONFIG = {
     catalogUrl: './assets/data/agencias-tours.json',
-    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec', // Pega aquí la URL de despliegue de Google Apps Script.
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec', // Pega aquí la URL de despliegue de Google Apps Script.
     paypalRate: 0.054,
     bankRate: 0.015,
     defaultExchangeRate: 3.38
@@ -66,7 +66,7 @@
     const session = requireSession();
     if (!session) return;
 
-    $('#sessionWelcome').textContent = `Bienvenido, ${session.companyName || session.contactName || 'agencia afiliada'}`;
+    $('#sessionWelcome').textContent = session.companyName || session.contactName || 'Agencia afiliada';
     $('#currencySelect').value = state.currency;
     if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
     $('#serviceDate').min = todayISO();
@@ -96,7 +96,7 @@
   }
 
   function bindEvents() {
-    $('#searchInput').addEventListener('input', renderExperiences);
+    $('#searchInput')?.addEventListener('input', renderExperiences);
     $('#currencySelect').addEventListener('change', (event) => {
       state.currency = event.target.value;
       localStorage.setItem('mct_visible_currency', state.currency);
@@ -107,10 +107,10 @@
       localStorage.setItem('mct_exchange_rate', state.exchangeRate);
       renderExperiences(); renderCart();
     });
-    $('#printButton').addEventListener('click', () => window.print());
+    $('#printButton')?.addEventListener('click', () => window.print());
     $('#paxCount').addEventListener('input', renderAdditionalPassengers);
     $('#reserveForm').addEventListener('submit', addToCart);
-    $('#paypalFeeToggle').addEventListener('change', renderCart);
+    $('#paypalFeeToggle')?.addEventListener('change', renderCart);
     $('#clearCartButton').addEventListener('click', clearCart);
     $('#generateOrderButton').addEventListener('click', generateOrder);
     $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
@@ -118,7 +118,7 @@
   }
 
   function renderExperiences() {
-    const q = $('#searchInput').value.trim().toLowerCase();
+    const q = $('#searchInput')?.value.trim().toLowerCase() || '';
     const filtered = state.services.filter((service) => {
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
@@ -221,7 +221,7 @@
         docNumber: $('#leadDocNumber').value.trim(),
         phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
-      groupMode: $('#groupMode').value,
+      groupMode: $('#groupMode')?.value || 'new',
       pickupPoint: $('#pickupPoint').value.trim(),
       notes: $('#bookingNotes').value.trim(),
       passengers
@@ -239,7 +239,7 @@
   }
 
   function feeGross(subtotal) {
-    if (!$('#paypalFeeToggle').checked || subtotal <= 0) return { total: subtotal, fee: 0 };
+    if (subtotal <= 0) return { total: subtotal, fee: 0 };
     const total = subtotal / (1 - CONFIG.paypalRate - CONFIG.bankRate);
     return { total, fee: total - subtotal };
   }
@@ -266,8 +266,8 @@
     $('#subtotalAmount').textContent = money(subtotal);
     $('#feeAmount').textContent = money(fee);
     $('#grandTotal').textContent = money(total);
-    $('#toolbarCount').textContent = state.cart.length;
-    $('#toolbarTotal').textContent = money(total);
+    if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
+    if ($('#toolbarTotal')) $('#toolbarTotal').textContent = money(total);
   }
 
   function removeItem(index) {
@@ -288,36 +288,95 @@
     if (!state.cart.length) { alert('Agrega al menos un servicio a tu orden.'); return; }
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
     const { total, fee } = feeGross(subtotal);
+    const expiresAt = new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString();
     const order = {
       code: makeCode(),
       createdAt: new Date().toISOString(),
+      expiresAt,
       status: 'Pendiente de pago',
       currency: state.currency,
       exchangeRate: state.exchangeRate,
       subtotal: Number(subtotal.toFixed(2)),
       fee: Number(fee.toFixed(2)),
       total: Number(total.toFixed(2)),
-      paypalBankFeeApplied: $('#paypalFeeToggle').checked,
+      paypalBankFeeApplied: true,
       account: state.session,
       items: state.cart
     };
     state.orders.unshift(order);
     writeJSON(STORAGE.ORDERS, state.orders);
-    await sendToSheet('createOrder', order);
+    const result = await sendToSheet('createOrder', order);
     $('#orderBox').classList.add('show');
-    $('#orderBox').innerHTML = `
-      <h3>Orden generada</h3>
-      <p>Código de referencia:</p>
-      <div class="order-code">${escapeHtml(order.code)}</div>
-      <p>Usa este código al coordinar el pago o enviar el comprobante.</p>
-      <p><strong>Total:</strong> ${money(order.total)}</p>
-      <button type="button" class="agency-button agency-button--primary" onclick="window.print()">Imprimir orden</button>
-    `;
+    $('#orderBox').innerHTML = orderHtml(order, result);
     state.cart = [];
     writeJSON(STORAGE.CART, state.cart);
     renderCart();
     renderOrders();
+    $('#orderBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  function orderHtml(order, result = {}) {
+    const rows = order.items.map((item) => {
+      const itemTotal = convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
+      const passengers = item.passengers?.length ? item.passengers.map((p, index) => `
+        <li>Pasajero ${index + 2}: ${escapeHtml(p.firstName || '')} ${escapeHtml(p.lastName || '')} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}</li>
+      `).join('') : '<li>Datos de pasajeros adicionales pendientes.</li>';
+      return `
+        <article class="order-service">
+          <h4>${escapeHtml(item.serviceName)}</h4>
+          <div class="order-grid">
+            <span>Fecha</span><strong>${formatDate(item.travelDate)}</strong>
+            <span>Pasajeros</span><strong>${item.pax}</strong>
+            <span>Titular</span><strong>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</strong>
+            <span>Documento</span><strong>${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}</strong>
+            <span>Celular</span><strong>${escapeHtml(item.lead.phone)}</strong>
+            <span>Recojo</span><strong>${escapeHtml(item.pickupPoint)}</strong>
+            ${item.notes ? `<span>Observaciones</span><strong>${escapeHtml(item.notes)}</strong>` : ''}
+            <span>Subtotal servicio</span><strong>${money(itemTotal, order.currency)}</strong>
+          </div>
+          <details class="order-passengers"><summary>Pasajeros adicionales</summary><ul>${passengers}</ul></details>
+        </article>
+      `;
+    }).join('');
+    const savedNote = result?.ok === false ? `<p class="order-warning">La orden se generó localmente, pero no se pudo enviar a Google Sheets: ${escapeHtml(result.message || '')}</p>` : '';
+    return `
+      <div class="printable-order" id="printableOrder">
+        <div class="order-header">
+          <div>
+            <span class="order-label">Orden de reserva</span>
+            <h3>${escapeHtml(order.code)}</h3>
+            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || order.account?.email || 'Agencia afiliada')}</strong></p>
+          </div>
+          <div class="order-status">${escapeHtml(order.status)}</div>
+        </div>
+        <div class="order-deadline">Plazo de pago: hasta ${formatDateTime(order.expiresAt)}. La orden queda sujeta a disponibilidad hasta validar el pago.</div>
+        ${rows}
+        <div class="order-totals">
+          <div><span>Subtotal neto</span><strong>${money(order.subtotal, order.currency)}</strong></div>
+          <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee, order.currency)}</strong></div>
+          <div class="grand"><span>Total a pagar</span><strong>${money(order.total, order.currency)}</strong></div>
+        </div>
+        ${savedNote}
+        <div class="order-actions no-print">
+          <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function formatDateTime(iso) {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (event.target?.id === 'printOrderButton') {
+      document.body.classList.add('printing-order');
+      window.print();
+      setTimeout(() => document.body.classList.remove('printing-order'), 600);
+    }
+  });
 
   async function sendToSheet(action, payload) {
     if (!CONFIG.googleScriptUrl || CONFIG.googleScriptUrl.includes('PEGA_AQUI')) return { ok:false, message:'Falta configurar Google Apps Script.' };
