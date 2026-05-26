@@ -1,6 +1,6 @@
 (() => {
   const CONFIG = {
-    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec'
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec'
   };
 
   const TAX_LABELS = {
@@ -50,7 +50,7 @@
 
     const response = await fetch(CONFIG.googleScriptUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      // Sin headers para evitar preflight/CORS con Google Apps Script.
       body: JSON.stringify({ action, payload })
     });
 
@@ -58,7 +58,8 @@
     try {
       return JSON.parse(text);
     } catch (error) {
-      throw new Error('Google Apps Script no devolvió una respuesta JSON válida. Revisa la implementación publicada.');
+      console.error('Respuesta no JSON de Apps Script:', text);
+      throw new Error('Google Apps Script no devolvió una respuesta JSON válida. Revisa que la URL termine en /exec y que la implementación esté publicada para “Cualquier persona”.');
     }
   }
 
