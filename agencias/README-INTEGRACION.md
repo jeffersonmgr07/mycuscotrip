@@ -106,7 +106,7 @@ googleScriptUrl: ''
 y pega tu URL:
 
 ```js
-googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec'
+googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0'
 ```
 
 Con eso, los registros y órdenes se enviarán a Google Sheets.
@@ -170,7 +170,7 @@ La primera vez que el script envíe correos, Google pedirá autorización para u
 La URL ya quedó pegada en los archivos JavaScript del portal:
 
 ```txt
-https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec
+https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0
 ```
 
 Archivos actualizados:
@@ -217,6 +217,6 @@ Después de pegar el nuevo `google-apps-script-agencias.gs`, guarda y publica co
 
 Para verificar que la versión correcta quedó activa, abre esta URL en el navegador:
 
-https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec?action=debugActions
+https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0?action=debugActions
 
 Debe mostrar una respuesta JSON con `version: paypal-actions-2026-05-26-v4` y debe incluir `createPayPalOrder` y `capturePayPalOrder` dentro de `actions`.

@@ -18,7 +18,7 @@ const SHEET_ORDERS = 'Ordenes';
 const SHEET_PAYMENTS = 'Pagos';
 const BRAND_NAME = 'My Cusco Trip';
 const SUPPORT_EMAIL = 'reservas@mycuscotrip.com';
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0';
 
 // PayPal: coloca estos valores en Propiedades del script, no directamente aquí.
 // PAYPAL_MODE = sandbox o live
@@ -585,7 +585,7 @@ function moneyEmail_(amount, currency) {
 }
 
 function sendVerificationEmail_(email, agencyName, token) {
-  const verifyUrl = WEB_APP_URL + '?action=verifyEmail&token=' + encodeURIComponent(token);
+  const verifyUrl = WEB_APP_URL + '&action=verifyEmail&token=' + encodeURIComponent(token);
   const subject = 'Verifica tu correo - Portal de agencias My Cusco Trip';
   const htmlBody = '' +
     '<div style="font-family:Arial,sans-serif;color:#20352b;line-height:1.55;max-width:560px;margin:auto;padding:20px">' +
