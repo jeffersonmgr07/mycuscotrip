@@ -26,6 +26,7 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQj
 // PAYPAL_CLIENT_SECRET = secret de PayPal
 // PAYPAL_WEBHOOK_ID = id del webhook, solo si usas un backend que permita verificar headers
 const PORTAL_BASE_URL = 'https://mycuscotrip.com/agencias';
+const APP_VERSION = 'paypal-actions-2026-05-26-v4';
 
 
 const AGENCY_HEADERS = [
@@ -47,7 +48,7 @@ const PAYMENT_HEADERS = [
 function doPost(e) {
   try {
     const body = parseBody_(e);
-    const action = body.action || '';
+    const action = String(body.action || '').trim();
     if (!action && body.event_type) return paypalWebhook_(body);
     if (action === 'registerAgency') return registerAgency_(body.payload || body.agency || body);
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
@@ -70,7 +71,8 @@ function doGet(e) {
   try {
     const action = e && e.parameter ? e.parameter.action : '';
     if (action === 'verifyEmail') return verifyEmail_(e.parameter.token || '');
-    return html_('<h2>Endpoint activo</h2><p>Portal de agencias My Cusco Trip.</p>');
+    if (action === 'debugActions') return json_({ ok:true, version:APP_VERSION, actions:['registerAgency','verifyEmail','loginAgency','createOrder','listOrders','getAgencyProfile','updateAgencyProfile','changePassword','registerPayment','createPayPalOrder','capturePayPalOrder','paypalWebhook'], paypalConfigured: !!(PropertiesService.getScriptProperties().getProperty('PAYPAL_CLIENT_ID') && PropertiesService.getScriptProperties().getProperty('PAYPAL_CLIENT_SECRET')) });
+    return html_('<h2>Endpoint activo</h2><p>Portal de agencias My Cusco Trip.</p><p><strong>Versión:</strong> ' + escapeHtml_(APP_VERSION) + '</p>');
   } catch (err) {
     return html_('<h2>No se pudo completar la solicitud</h2><p>' + escapeHtml_(err.message || String(err)) + '</p>');
   }

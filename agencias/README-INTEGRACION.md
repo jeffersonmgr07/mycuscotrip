@@ -106,7 +106,7 @@ googleScriptUrl: ''
 y pega tu URL:
 
 ```js
-googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec'
+googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec'
 ```
 
 Con eso, los registros y órdenes se enviarán a Google Sheets.
@@ -170,7 +170,7 @@ La primera vez que el script envíe correos, Google pedirá autorización para u
 La URL ya quedó pegada en los archivos JavaScript del portal:
 
 ```txt
-https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec
+https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec
 ```
 
 Archivos actualizados:
@@ -207,3 +207,16 @@ El script usa:
 `https://mycuscotrip.com/agencias/paypal-retorno.html`
 
 Si pruebas en otro dominio, cambia la constante `PORTAL_BASE_URL` en `google-apps-script-agencias.gs`.
+
+
+## Diagnóstico PayPal
+
+Si al hacer clic en **Pagar con PayPal** aparece `Acción no reconocida: createPayPalOrder`, no es un problema del Client ID ni del Secret. Significa que la URL publicada de Apps Script todavía está ejecutando una versión antigua del código.
+
+Después de pegar el nuevo `google-apps-script-agencias.gs`, guarda y publica con: **Implementar → Gestionar implementaciones → Editar → Nueva versión → Implementar**.
+
+Para verificar que la versión correcta quedó activa, abre esta URL en el navegador:
+
+https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec?action=debugActions
+
+Debe mostrar una respuesta JSON con `version: paypal-actions-2026-05-26-v4` y debe incluir `createPayPalOrder` y `capturePayPalOrder` dentro de `actions`.

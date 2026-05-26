@@ -244,7 +244,7 @@
             <h2>${escapeHtml(code)}</h2>
             <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
           </div>
-          <div class="print-order-status">
+          <div class="print-order-status is-${normalizeStatus(order)}">
             <span>${escapeHtml(status)}</span>
             <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
           </div>
@@ -266,7 +266,6 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
         <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">Pagar con PayPal</button>
-        <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir detalle</button>
       </div>`;
   }
