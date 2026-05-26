@@ -63,6 +63,42 @@
     }
   }
 
+
+
+  function passwordRules(password, confirm) {
+    return {
+      length: password.length >= 8,
+      letter: /[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(password),
+      number: /\d/.test(password),
+      special: /[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9]/.test(password),
+      match: Boolean(password) && password === confirm
+    };
+  }
+
+  function updatePasswordChecklist() {
+    const password = $('#registerPassword')?.value || '';
+    const confirm = $('#registerPasswordConfirm')?.value || '';
+    const rules = passwordRules(password, confirm);
+    Object.entries(rules).forEach(([key, ok]) => {
+      const el = document.querySelector(`#passwordChecklist [data-rule="${key}"]`);
+      if (el) el.classList.toggle('is-ok', ok);
+    });
+  }
+
+  function bindPasswordToggles() {
+    document.querySelectorAll('[data-toggle-password]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const input = document.getElementById(button.dataset.togglePassword);
+        if (!input) return;
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        button.textContent = show ? 'Ocultar' : 'Ver';
+      });
+    });
+    $('#registerPassword')?.addEventListener('input', updatePasswordChecklist);
+    $('#registerPasswordConfirm')?.addEventListener('input', updatePasswordChecklist);
+  }
+
   $('#companyCountry')?.addEventListener('change', syncCountry);
   $('#companyEmail')?.addEventListener('input', () => {
     const access = $('#accessEmail');
@@ -128,5 +164,7 @@
     }
   });
 
+  bindPasswordToggles();
+  updatePasswordChecklist();
   syncCountry();
 })();

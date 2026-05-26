@@ -10,7 +10,8 @@
     googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec', // Pega aquí la URL de despliegue de Google Apps Script.
     paypalRate: 0.054,
     bankRate: 0.015,
-    defaultExchangeRate: 3.38
+    defaultExchangeRate: 3.38,
+    paypalEnabled: true
   };
 
   const state = {
@@ -18,7 +19,7 @@
     services: [],
     cart: readJSON(STORAGE.CART, []),
     orders: readJSON(STORAGE.ORDERS, []),
-    currency: localStorage.getItem('mct_visible_currency') || 'PEN',
+    currency: localStorage.getItem('mct_visible_currency') || '',
     exchangeRate: Number(localStorage.getItem('mct_exchange_rate') || CONFIG.defaultExchangeRate)
   };
 
@@ -54,6 +55,14 @@
     return state.currency === 'USD' ? Number(service.priceAltPEN) / state.exchangeRate : Number(service.priceAltPEN);
   }
 
+
+  function greetingFor(name = '') {
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Buenos días' : (hour < 18 ? 'Buenas tardes' : 'Buenas noches');
+    const clean = String(name || '').trim().split(/\s+/)[0] || 'bienvenido';
+    return `${greeting}, ${clean}!`;
+  }
+
   function requireSession() {
     const session = readJSON(STORAGE.SESSION, null);
     if (!session?.email) {
@@ -69,7 +78,12 @@
     if (!session) return;
 
     $('#agencyNameHeading').textContent = session.companyName || session.contactName || 'Agencia afiliada';
-    $('#sessionWelcome').textContent = 'Tarifas confidenciales para operaciones diarias en Cusco y Machu Picchu';
+    $('#sessionWelcome').textContent = greetingFor(session.contactName || session.representanteNombres || session.companyName || '');
+    if (!state.currency) {
+      const country = String(session.country || session.pais || '').trim().toUpperCase();
+      state.currency = country === 'PE' || country === 'PERU' || country === 'PERÚ' ? 'PEN' : 'USD';
+      localStorage.setItem('mct_visible_currency', state.currency);
+    }
     $('#currencySelect').value = state.currency;
     if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
     $('#serviceDate').min = tomorrowISO();
@@ -379,10 +393,11 @@
           <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>Total a pagar</span><strong>${money(order.total)}</strong></div>
         </div>
-        <p class="small-print-note">Indicar el código de referencia al realizar el pago o enviar el comprobante. ${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p>
+        <p class="small-print-note">Indicar el código de referencia al realizar el pago o enviar el comprobante. ${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note"><strong>Pago online:</strong> el botón PayPal confirma la orden automáticamente solo cuando PayPal devuelve una captura aprobada. Si la agencia cierra la ventana sin pagar, la orden seguirá pendiente.</div>
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
+        <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">Pagar con PayPal</button>
         <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(order.code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
@@ -393,7 +408,33 @@
     $('#orderModalBody').innerHTML = orderHTML(order, result);
     $('#orderModal').classList.add('show');
     $('#printOrderButton')?.addEventListener('click', printOrder);
+    $('#payWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
     $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
+  }
+
+
+
+  async function startPayPalPayment(order) {
+    const button = $('#payWithPayPalButton');
+    if (button) { button.disabled = true; button.textContent = 'Conectando con PayPal...'; }
+    try {
+      const result = await sendToSheet('createPayPalOrder', {
+        code: order.code,
+        currency: order.currency,
+        total: order.total,
+        account: order.account
+      });
+      if (!result.ok || !result.approvalUrl) {
+        alert(result.message || 'No se pudo crear el pago en PayPal. Revisa la configuración de credenciales en Apps Script.');
+        return;
+      }
+      window.location.href = result.approvalUrl;
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo conectar con PayPal.');
+    } finally {
+      if (button) { button.disabled = false; button.textContent = 'Pagar con PayPal'; }
+    }
   }
 
   function printOrder() {

@@ -20,6 +20,14 @@ const BRAND_NAME = 'My Cusco Trip';
 const SUPPORT_EMAIL = 'reservas@mycuscotrip.com';
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
 
+// PayPal: coloca estos valores en Propiedades del script, no directamente aquí.
+// PAYPAL_MODE = sandbox o live
+// PAYPAL_CLIENT_ID = client id de PayPal
+// PAYPAL_CLIENT_SECRET = secret de PayPal
+// PAYPAL_WEBHOOK_ID = id del webhook, solo si usas un backend que permita verificar headers
+const PORTAL_BASE_URL = 'https://mycuscotrip.com/agencias';
+
+
 const AGENCY_HEADERS = [
   'id','fechaRegistro','estado','emailVerificado','verificationToken','fechaVerificacion',
   'pais','tipoFiscal','numeroFiscal','razonSocial','nombreComercial',
@@ -29,7 +37,7 @@ const AGENCY_HEADERS = [
 
 const ORDER_HEADERS = [
   'codigoOrden','fechaOrden','agenciaId','agenciaNombre','correoAgencia','estadoPago','moneda','tipoCambio',
-  'subtotalNeto','montoComisionado','comisionPaypalBanco','fechaVencimientoPago','serviciosJson','titularJson','pasajerosJson','observaciones'
+  'subtotalNeto','montoComisionado','comisionPaypalBanco','fechaVencimientoPago','paypalOrderId','paypalCaptureId','paypalStatus','fechaPagoPaypal','serviciosJson','titularJson','pasajerosJson','observaciones'
 ];
 
 const PAYMENT_HEADERS = [
@@ -40,6 +48,7 @@ function doPost(e) {
   try {
     const body = parseBody_(e);
     const action = body.action || '';
+    if (!action && body.event_type) return paypalWebhook_(body);
     if (action === 'registerAgency') return registerAgency_(body.payload || body.agency || body);
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
     if (action === 'createOrder') return createOrder_(body.payload || body.order || body);
@@ -48,6 +57,9 @@ function doPost(e) {
     if (action === 'updateAgencyProfile') return updateAgencyProfile_(body.payload || body.profile || body);
     if (action === 'changePassword') return changePassword_(body.payload || body);
     if (action === 'registerPayment') return registerPayment_(body.payload || body.payment || body);
+    if (action === 'createPayPalOrder') return createPayPalOrder_(body.payload || body);
+    if (action === 'capturePayPalOrder') return capturePayPalOrder_(body.payload || body);
+    if (action === 'paypalWebhook') return paypalWebhook_(body);
     return json_({ ok:false, message:'Acción no reconocida: ' + action });
   } catch (err) {
     return json_({ ok:false, message: err && err.message ? err.message : String(err) });
@@ -166,7 +178,8 @@ function loginAgency_(email, password) {
     correo:data.correo,
     razonSocial:data.razonSocial,
     nombreComercial:data.nombreComercial,
-    representanteNombres:data.representanteNombres
+    representanteNombres:data.representanteNombres,
+    pais:data.pais
   }});
 }
 
@@ -190,6 +203,10 @@ function createOrder_(order) {
     montoComisionado: order.total || '',
     comisionPaypalBanco: order.fee || '',
     fechaVencimientoPago: order.paymentDueAt || '',
+    paypalOrderId: order.paypalOrderId || '',
+    paypalCaptureId: order.paypalCaptureId || '',
+    paypalStatus: order.paypalStatus || '',
+    fechaPagoPaypal: order.fechaPagoPaypal || '',
     serviciosJson: JSON.stringify(items),
     titularJson: JSON.stringify(firstLead),
     pasajerosJson: JSON.stringify(passengers),
@@ -216,6 +233,14 @@ function listOrders_(email, agencyId) {
     if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
       const obj = {};
       headers.forEach(function(h, idx){ obj[h] = values[i][idx]; });
+      const statusIndex = headers.indexOf('estadoPago');
+      const dueIndex = headers.indexOf('fechaVencimientoPago');
+      const rawStatus = String(obj.estadoPago || '').trim().toLowerCase();
+      const dueTime = obj.fechaVencimientoPago ? new Date(obj.fechaVencimientoPago).getTime() : 0;
+      if (statusIndex >= 0 && dueTime && dueTime < Date.now() && rawStatus !== 'pagado' && rawStatus !== 'vencido') {
+        sheet.getRange(i + 1, statusIndex + 1).setValue('Vencido');
+        obj.estadoPago = 'Vencido';
+      }
       orders.unshift(obj);
     }
   }
@@ -310,6 +335,161 @@ function registerPayment_(payment) {
   });
   sendPaymentEmail_(payment, fileUrl, fileName);
   return json_({ ok:true, message:'Comprobante recibido. Validaremos el pago en máximo 60 minutos.' });
+}
+
+
+
+function paypalConfig_() {
+  const props = PropertiesService.getScriptProperties();
+  const mode = props.getProperty('PAYPAL_MODE') || 'sandbox';
+  const clientId = props.getProperty('PAYPAL_CLIENT_ID') || '';
+  const secret = props.getProperty('PAYPAL_CLIENT_SECRET') || '';
+  const apiBase = mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
+  if (!clientId || !secret) throw new Error('Faltan credenciales PayPal. Configura PAYPAL_CLIENT_ID y PAYPAL_CLIENT_SECRET en Propiedades del script.');
+  return { mode: mode, clientId: clientId, secret: secret, apiBase: apiBase };
+}
+
+function paypalAccessToken_() {
+  const cfg = paypalConfig_();
+  const basic = Utilities.base64Encode(cfg.clientId + ':' + cfg.secret);
+  const res = UrlFetchApp.fetch(cfg.apiBase + '/v1/oauth2/token', {
+    method: 'post',
+    headers: { Authorization: 'Basic ' + basic, Accept: 'application/json' },
+    payload: 'grant_type=client_credentials',
+    muteHttpExceptions: true
+  });
+  const data = JSON.parse(res.getContentText() || '{}');
+  if (res.getResponseCode() >= 300 || !data.access_token) throw new Error('No se pudo obtener token PayPal: ' + res.getContentText());
+  return { token: data.access_token, apiBase: cfg.apiBase };
+}
+
+function createPayPalOrder_(payload) {
+  validateConfig_();
+  const code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
+  if (!code) return json_({ ok:false, message:'Código de orden requerido.' });
+  const order = findOrderByCode_(code);
+  if (!order) return json_({ ok:false, message:'No encontramos la orden en Google Sheets.' });
+  const status = String(order.data.estadoPago || '').trim().toLowerCase();
+  if (status === 'pagado') return json_({ ok:false, message:'Esta orden ya figura como pagada.' });
+  const currency = String(order.data.moneda || payload.currency || 'USD').toUpperCase();
+  if (currency !== 'USD') return json_({ ok:false, message:'PayPal debe procesarse en USD. Cambia la moneda visible a dólares y genera la orden nuevamente.' });
+  const amount = Number(order.data.montoComisionado || payload.total || 0);
+  if (!amount || amount <= 0) return json_({ ok:false, message:'El monto de la orden no es válido.' });
+
+  const auth = paypalAccessToken_();
+  const returnUrl = PORTAL_BASE_URL + '/paypal-retorno.html?code=' + encodeURIComponent(code);
+  const cancelUrl = PORTAL_BASE_URL + '/ordenes.html?paypal=cancelado&orden=' + encodeURIComponent(code);
+  const body = {
+    intent: 'CAPTURE',
+    purchase_units: [{
+      reference_id: code,
+      custom_id: code,
+      invoice_id: code,
+      amount: { currency_code: 'USD', value: amount.toFixed(2) },
+      description: 'Orden de reserva My Cusco Trip ' + code
+    }],
+    application_context: {
+      brand_name: BRAND_NAME,
+      landing_page: 'LOGIN',
+      user_action: 'PAY_NOW',
+      return_url: returnUrl,
+      cancel_url: cancelUrl
+    }
+  };
+  const res = UrlFetchApp.fetch(auth.apiBase + '/v2/checkout/orders', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + auth.token },
+    payload: JSON.stringify(body),
+    muteHttpExceptions: true
+  });
+  const data = JSON.parse(res.getContentText() || '{}');
+  if (res.getResponseCode() >= 300 || !data.id) return json_({ ok:false, message:'PayPal no creó la orden: ' + res.getContentText() });
+  const approval = (data.links || []).find(function(l){ return l.rel === 'approve'; });
+  const headers = order.headers;
+  setCellByHeader_(order.sheet, order.row, headers, 'paypalOrderId', data.id);
+  setCellByHeader_(order.sheet, order.row, headers, 'paypalStatus', data.status || 'CREATED');
+  return json_({ ok:true, paypalOrderId:data.id, approvalUrl: approval ? approval.href : '', status:data.status || '' });
+}
+
+function capturePayPalOrder_(payload) {
+  validateConfig_();
+  const code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
+  const paypalOrderId = String(payload.paypalOrderId || payload.orderID || '').trim();
+  if (!code || !paypalOrderId) return json_({ ok:false, message:'Faltan datos para capturar el pago.' });
+  const order = findOrderByCode_(code);
+  if (!order) return json_({ ok:false, message:'No encontramos la orden en Google Sheets.' });
+  const savedPayPalId = String(order.data.paypalOrderId || '').trim();
+  if (savedPayPalId && savedPayPalId !== paypalOrderId) return json_({ ok:false, message:'La orden PayPal no coincide con el código interno.' });
+  const auth = paypalAccessToken_();
+  const res = UrlFetchApp.fetch(auth.apiBase + '/v2/checkout/orders/' + encodeURIComponent(paypalOrderId) + '/capture', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + auth.token },
+    payload: '{}',
+    muteHttpExceptions: true
+  });
+  const data = JSON.parse(res.getContentText() || '{}');
+  if (res.getResponseCode() >= 300) return json_({ ok:false, message:'PayPal no pudo capturar el pago: ' + res.getContentText() });
+  const capture = (((data.purchase_units || [])[0] || {}).payments || {}).captures || [];
+  const captureId = capture[0] ? capture[0].id : '';
+  const status = String(data.status || '').toUpperCase();
+  if (status === 'COMPLETED') {
+    markOrderPaid_(code, paypalOrderId, captureId, status);
+    sendPayPalPaidEmail_(order.data, paypalOrderId, captureId);
+    return json_({ ok:true, message:'Pago confirmado correctamente. La orden fue marcada como Pagada.', status:status, captureId:captureId });
+  }
+  updateOrderPayPalStatus_(code, paypalOrderId, captureId, status);
+  return json_({ ok:false, message:'El pago no quedó completado. Estado PayPal: ' + status, status:status });
+}
+
+function paypalWebhook_(event) {
+  // Apps Script no expone los headers HTTP del webhook, por eso no se puede verificar la firma de PayPal aquí.
+  // No uses esta función para marcar pagos como pagados en producción. Se deja solo como registro informativo.
+  const code = event && event.resource ? (event.resource.custom_id || event.resource.invoice_id || event.resource.supplementary_data?.related_ids?.order_id || '') : '';
+  return json_({ ok:true, message:'Webhook recibido. Para seguridad, verifica webhooks en Vercel/Cloud Run/Supabase Edge Function antes de actualizar pagos.', code:code });
+}
+
+function findOrderByCode_(code) {
+  const sheet = getSheet_(SHEET_ORDERS, ORDER_HEADERS);
+  const values = sheet.getDataRange().getValues();
+  const headers = values[0].map(String);
+  const codeIndex = headers.indexOf('codigoOrden');
+  if (codeIndex < 0) return null;
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][codeIndex] || '').replace(/[^A-Za-z0-9]/g, '') === code) {
+      const data = {};
+      headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
+      return { sheet:sheet, row:i + 1, headers:headers, data:data };
+    }
+  }
+  return null;
+}
+
+function markOrderPaid_(code, paypalOrderId, captureId, status) {
+  const order = findOrderByCode_(code);
+  if (!order) return;
+  setCellByHeader_(order.sheet, order.row, order.headers, 'estadoPago', 'Pagado');
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalOrderId', paypalOrderId);
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalCaptureId', captureId);
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalStatus', status || 'COMPLETED');
+  setCellByHeader_(order.sheet, order.row, order.headers, 'fechaPagoPaypal', new Date());
+}
+
+function updateOrderPayPalStatus_(code, paypalOrderId, captureId, status) {
+  const order = findOrderByCode_(code);
+  if (!order) return;
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalOrderId', paypalOrderId);
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalCaptureId', captureId);
+  setCellByHeader_(order.sheet, order.row, order.headers, 'paypalStatus', status || '');
+}
+
+function sendPayPalPaidEmail_(orderData, paypalOrderId, captureId) {
+  const email = String(orderData.correoAgencia || '').trim();
+  if (!email) return;
+  const code = orderData.codigoOrden || '';
+  const htmlBody = '<div style="font-family:Arial,sans-serif;background:#edf3ef;color:#20352b;padding:20px"><div style="max-width:620px;margin:auto;background:#fff;border-radius:18px;padding:22px;border:1px solid #dce8df"><h2 style="color:#062803;margin-top:0">Pago confirmado</h2><p>Tu orden <strong>' + escapeHtml_(code) + '</strong> fue marcada como <strong>Pagada</strong>.</p><p><strong>PayPal Order ID:</strong> ' + escapeHtml_(paypalOrderId) + '</p><p><strong>Capture ID:</strong> ' + escapeHtml_(captureId) + '</p><p>Gracias por reservar con My Cusco Trip.</p></div></div>';
+  MailApp.sendEmail({ to: email, subject: 'Pago confirmado - Orden ' + code, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
 }
 
 function sendPaymentEmail_(payment, fileUrl, fileName) {

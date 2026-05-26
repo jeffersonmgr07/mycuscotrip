@@ -182,3 +182,28 @@ agencias/assets/js/pages/registro-agencias.js
 ```
 
 Nota importante: esa URL es la URL del Web App de Apps Script, no el ID de Google Sheets. En esta versión el Apps Script puede funcionar sin ID si fue creado desde la hoja de cálculo mediante **Extensiones > Apps Script**. Si el Apps Script fue creado como proyecto independiente, debes pegar el ID real de Google Sheets en `SPREADSHEET_ID`.
+
+
+## PayPal automático con Apps Script
+
+Esta versión incluye una integración inicial automática con PayPal usando Apps Script como backend ligero.
+
+### Seguridad del flujo
+- Si la agencia abre PayPal y cierra la ventana sin pagar, la orden NO se marca como pagada.
+- La orden solo se marca como Pagada cuando Apps Script ejecuta la captura de PayPal y PayPal responde `COMPLETED`.
+- Los webhooks de PayPal requieren verificar firma con headers HTTP. Google Apps Script Web Apps no exponen esos headers de forma suficiente, por eso esta versión no marca pagos desde webhook en Apps Script. Para webhooks verificados se recomienda Vercel Functions, Cloud Run, Supabase Edge Functions o un backend propio.
+
+### Configurar credenciales PayPal
+En Apps Script ve a **Configuración del proyecto > Propiedades del script** y agrega:
+
+- `PAYPAL_MODE` = `sandbox` o `live`
+- `PAYPAL_CLIENT_ID` = tu Client ID
+- `PAYPAL_CLIENT_SECRET` = tu Secret
+
+Luego actualiza la implementación existente como **Nueva versión**.
+
+### URL de retorno PayPal
+El script usa:
+`https://mycuscotrip.com/agencias/paypal-retorno.html`
+
+Si pruebas en otro dominio, cambia la constante `PORTAL_BASE_URL` en `google-apps-script-agencias.gs`.

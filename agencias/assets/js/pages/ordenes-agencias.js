@@ -92,9 +92,27 @@
     }).join('');
   }
 
-  function itemUnitPrice(item, currency) {
-    if (item.unitPricePEN !== undefined && currency === 'PEN') return Number(item.unitPricePEN || 0);
-    if (item.unitPriceUSD !== undefined && currency === 'USD') return Number(item.unitPriceUSD || 0);
+  function orderExchangeRate(order) {
+    const rate = Number(order.tipoCambio || order.exchangeRate || 3.38);
+    return rate > 0 ? rate : 3.38;
+  }
+
+  function itemUnitPrice(item, currency, order = {}) {
+    const rate = orderExchangeRate(order);
+    const pen = Number(item.unitPricePEN ?? item.pricePEN ?? 0);
+    const usdRaw = item.unitPriceUSD ?? item.priceUSD;
+    const usd = usdRaw !== null && usdRaw !== undefined && usdRaw !== '' ? Number(usdRaw) : null;
+
+    if (currency === 'PEN') {
+      if (pen) return pen;
+      if (usd !== null) return usd * rate;
+    }
+
+    if (currency === 'USD') {
+      if (usd !== null && usd) return usd;
+      if (pen) return pen / rate;
+    }
+
     if (item.price && typeof item.price === 'object') return Number(item.price.amount || 0);
     return Number(item.unitPrice || item.price || 0);
   }
@@ -183,7 +201,7 @@
       const lead = normalizeItemLead(item, order);
       const passengers = normalizeItemPassengers(item);
       const pax = Number(item.pax || item.passengersCount || 1);
-      const unit = itemUnitPrice(item, currency);
+      const unit = itemUnitPrice(item, currency, order);
       const amount = Number(item.subtotal || (unit * pax) || 0);
       const pickup = item.pickupPoint || item.pickup || item.hotel || '';
       const notes = item.notes || item.observations || '';
@@ -247,6 +265,7 @@
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
+        <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">Pagar con PayPal</button>
         <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir detalle</button>
       </div>`;
@@ -259,10 +278,50 @@
     $('#orderDetailModal').classList.add('show');
     $('[data-close-order-detail]')?.addEventListener('click', closeOrderDetail);
     $('#printOrderDetailButton')?.addEventListener('click', printOrderDetail);
+    $('#payOrderWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
   }
 
   function closeOrderDetail() {
     $('#orderDetailModal').classList.remove('show');
+  }
+
+
+
+  async function startPayPalPayment(order) {
+    const status = normalizeStatus(order);
+    if (status === 'pagado') { alert('Esta orden ya figura como pagada.'); return; }
+    if (status === 'vencido') { alert('Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.'); return; }
+    const button = $('#payOrderWithPayPalButton');
+    if (button) { button.disabled = true; button.textContent = 'Conectando con PayPal...'; }
+    try {
+      const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
+      const result = await sendToSheet('createPayPalOrder', {
+        code,
+        currency: order.moneda || order.currency || 'USD',
+        total: Number(order.montoComisionado || order.total || 0),
+        account: readJSON(SESSION_KEY, {})
+      });
+      if (!result.ok || !result.approvalUrl) {
+        alert(result.message || 'No se pudo crear el pago en PayPal.');
+        return;
+      }
+      window.location.href = result.approvalUrl;
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo conectar con PayPal.');
+    } finally {
+      if (button) { button.disabled = false; button.textContent = 'Pagar con PayPal'; }
+    }
+  }
+
+  async function sendToSheet(action, payload) {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action, payload })
+    });
+    const text = await response.text();
+    try { return JSON.parse(text); } catch { return { ok:false, message:'Respuesta no válida de Apps Script.' }; }
   }
 
   function printOrderDetail() {

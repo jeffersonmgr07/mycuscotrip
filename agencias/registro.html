@@ -23,8 +23,7 @@
     <section class="agency-hero">
       <div class="agency-hero__grid">
         <div>
-          <p class="eyebrow">Registro de acceso</p>
-          <h1>Registro de agencias o agentes de viajes</h1>
+          <h1>Registro de agencias o agentes de viaje</h1>
           <p>Completa los datos de la empresa o contacto autorizado para solicitar acceso al portal de reservas.</p>
         </div>
       </div>
@@ -40,8 +39,8 @@
             <label class="field"><span>Razón social / nombre legal</span><input id="companyName" required /></label>
             <label class="field"><span>Nombre comercial</span><input id="tradeName" required /></label>
             <label class="field"><span>Correo de contacto</span><input id="companyEmail" type="email" required /></label>
-            <label class="field"><span>Código de país</span><select id="companyPhoneCountry" required><option value="+51">Perú +51</option><option value="+52">México +52</option><option value="+56">Chile +56</option><option value="+55">Brasil +55</option><option value="+57">Colombia +57</option><option value="+54">Argentina +54</option><option value="+591">Bolivia +591</option><option value="+593">Ecuador +593</option><option value="+1">Estados Unidos / Canadá +1</option><option value="+34">España +34</option><option value="+44">Reino Unido +44</option><option value="+33">Francia +33</option><option value="+49">Alemania +49</option><option value="+39">Italia +39</option><option value="+81">Japón +81</option><option value="+82">Corea del Sur +82</option><option value="+86">China +86</option></select></label>
-            <label class="field"><span>Celular / WhatsApp</span><input id="companyPhone" inputmode="tel" autocomplete="tel-national" required placeholder="900 000 000" /></label>
+            <label class="field phone-code-field"><span>Código de país</span><select id="companyPhoneCountry" required><option value="+51">Perú +51</option><option value="+52">México +52</option><option value="+56">Chile +56</option><option value="+55">Brasil +55</option><option value="+57">Colombia +57</option><option value="+54">Argentina +54</option><option value="+591">Bolivia +591</option><option value="+593">Ecuador +593</option><option value="+1">Estados Unidos / Canadá +1</option><option value="+34">España +34</option><option value="+44">Reino Unido +44</option><option value="+33">Francia +33</option><option value="+49">Alemania +49</option><option value="+39">Italia +39</option><option value="+81">Japón +81</option><option value="+82">Corea del Sur +82</option><option value="+86">China +86</option></select></label>
+            <label class="field phone-number-field"><span>Celular / WhatsApp</span><input id="companyPhone" inputmode="tel" autocomplete="tel-national" required placeholder="900 000 000" /></label>
             <label class="field full"><span>Página web o red social</span><input id="companyWebsite" placeholder="https://..." /></label>
           </div>
         </section>
@@ -57,12 +56,18 @@
         </section>
 
         <section class="form-block">
-          <h2>Acceso</h2>
+          <h2>Información de acceso</h2>
           <div class="form-grid">
             <label class="field"><span>Correo de inicio de sesión</span><input id="accessEmail" type="email" required /></label>
-            <label class="field"><span>Crear contraseña</span><input id="registerPassword" type="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" required title="Mínimo 8 caracteres, incluyendo letras, números y un carácter especial." /></label>
-            <label class="field"><span>Confirmar contraseña</span><input id="registerPasswordConfirm" type="password" minlength="8" required /></label>
-            <p class="field-help full">La contraseña debe tener mínimo 8 caracteres e incluir letras, números y un carácter especial.</p>
+            <label class="field full password-field"><span>Crear contraseña</span><div class="password-input-wrap"><input id="registerPassword" type="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" required title="Mínimo 8 caracteres, incluyendo letras, números y un carácter especial." /><button type="button" class="password-toggle" data-toggle-password="registerPassword">Ver</button></div></label>
+            <label class="field full password-field"><span>Confirmar contraseña</span><div class="password-input-wrap"><input id="registerPasswordConfirm" type="password" minlength="8" required /><button type="button" class="password-toggle" data-toggle-password="registerPasswordConfirm">Ver</button></div></label>
+            <div class="password-checklist full" id="passwordChecklist" aria-live="polite">
+              <div data-rule="length">Mínimo 8 caracteres</div>
+              <div data-rule="letter">Incluye una letra</div>
+              <div data-rule="number">Incluye un número</div>
+              <div data-rule="special">Incluye un carácter especial</div>
+              <div data-rule="match">Las contraseñas coinciden</div>
+            </div>
           </div>
         </section>
 

@@ -81,6 +81,8 @@
         email: agency.correo || agency.email || email,
         companyName: agency.nombreComercial || agency.razonSocial || agency.companyName || 'Agencia registrada',
         contactName: agency.representanteNombres || agency.contactName || '',
+        country: agency.pais || agency.country || '',
+        representanteNombres: agency.representanteNombres || agency.contactName || '',
         status: agency.estado || agency.status || 'Aprobado',
         loggedAt: new Date().toISOString(),
         source: 'google-sheets'
