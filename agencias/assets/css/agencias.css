@@ -76,3 +76,52 @@
 .orders-table th,.orders-table td{white-space:nowrap}.orders-table .order-services-cell{white-space:normal;min-width:210px}.service-line{display:block;line-height:1.45}.service-line small{color:var(--muted);font-weight:800}.order-total-cell strong,.order-date-cell,.order-code-cell strong{white-space:nowrap}.order-detail-button{white-space:nowrap}.status-pill.is-vencido,.status-pill.is-vencida{background:#fff1e8;color:#9a3412}.status-pill.is-pagado,.status-pill.is-pagada{background:#effaf1;color:#126b2f}.status-pill.is-pendiente{background:#fff7df;color:#6d4b00}.print-order-status span{text-transform:capitalize}
 .profile-card,.payment-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:22px;margin-top:18px}.profile-card h2,.payment-card h2{font-family:Montserrat,Arial,sans-serif;color:var(--primary);margin:0 0 12px}.form-message{padding:12px 14px;border-radius:14px;margin:12px 0;font-weight:800}.form-message.is-success{background:#effaf1;color:#126b2f}.form-message.is-error{background:#fff1f0;color:#b42318}.file-note{font-size:.85rem;color:var(--muted);margin-top:6px}
 @media(max-width:920px){.orders-table th,.orders-table td{white-space:normal}.order-total-cell strong,.order-date-cell,.order-code-cell strong,.order-detail-button{white-space:nowrap}}
+
+
+/* Ajustes solicitados: cabecera, controles y espaciado */
+.agency-controls{align-items:center!important;gap:10px!important;}
+.agency-controls .agency-button{min-height:43px;}
+.agency-controls label.currency-control{margin:0;align-self:center;}
+.agency-controls label.currency-control select{min-height:43px;}
+.info-note{margin:14px 0 8px!important;}
+.info-note + .portal-layout{margin-top:8px!important;}
+#experiencias .section-title,.section-title--simple{margin-top:0!important;margin-bottom:12px!important;}
+.portal-layout{gap:20px!important;}
+@media(max-width:760px){.agency-controls{align-items:stretch!important}.agency-controls label.currency-control{width:100%}}
+
+
+/* Registro de agencias - mejoras visuales */
+.agency-main--narrow .agency-hero{
+  position:relative;
+  background:
+    linear-gradient(135deg,rgba(6,40,3,.86),rgba(5,50,32,.88)),
+    url('../img/registro-agencias-bg.jpg'),
+    url('../../../assets/img/tours/valle-sagrado/cover.jpg');
+  background-size:cover;
+  background-position:center;
+}
+.agency-main--narrow .agency-hero h1,
+.agency-main--narrow .agency-hero p{color:#fff!important;}
+.agency-main--narrow .agency-hero .eyebrow{display:none!important;}
+.form-block h2{
+  background:linear-gradient(135deg,#062803,#053220);
+  color:#fff!important;
+  border-radius:16px;
+  padding:12px 16px;
+  margin:0 0 16px!important;
+  font-size:1rem!important;
+  letter-spacing:.02em;
+}
+.form-grid .phone-code-field{grid-column:span 1;}
+.form-grid .phone-number-field{grid-column:span 1;}
+.password-input-wrap{position:relative;display:flex;align-items:center;}
+.password-input-wrap input{padding-right:72px!important;}
+.password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;border-radius:999px;background:#eef7f1;color:var(--primary);font-weight:900;padding:7px 11px;cursor:pointer;font-size:.78rem;}
+.password-checklist{background:#f8fbf9;border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;color:var(--muted);font-size:.88rem;font-weight:700;}
+.password-checklist div::before{content:'○';display:inline-block;margin-right:7px;color:#9aa9a0;font-weight:900;}
+.password-checklist div.is-ok{color:#126b2f;}
+.password-checklist div.is-ok::before{content:'✓';color:#126b2f;}
+.paypal-button{background:#ffc439!important;color:#111!important;border:0!important;}
+.paypal-button:hover{filter:brightness(.98);}
+.payment-method-note{background:#eef7f1;border:1px solid var(--line);border-radius:16px;padding:12px 14px;color:#40544a;font-size:.9rem;margin-top:12px;}
+@media(max-width:760px){.password-checklist{grid-template-columns:1fr}.form-grid .phone-code-field,.form-grid .phone-number-field{grid-column:span 1;}}
