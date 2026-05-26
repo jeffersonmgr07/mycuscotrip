@@ -1,442 +1,417 @@
 (() => {
-  const PEN = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' });
-  const STORAGE_KEY = 'myCuscoTripAgencyRequests';
+  const STORAGE = {
+    SESSION: 'mct_agency_session',
+    CART: 'mct_reservation_cart',
+    ORDERS: 'mct_reservation_orders'
+  };
+
+  const CONFIG = {
+    catalogUrl: './assets/data/agencias-tours.json',
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec', // Pega aquí la URL de despliegue de Google Apps Script.
+    paypalRate: 0.054,
+    bankRate: 0.015,
+    defaultExchangeRate: 3.38
+  };
 
   const state = {
-    catalog: [],
-    rows: [],
-    filteredRows: [],
-    selectedRow: null,
-    lastReservation: null
+    session: null,
+    services: [],
+    cart: readJSON(STORAGE.CART, []),
+    orders: readJSON(STORAGE.ORDERS, []),
+    currency: localStorage.getItem('mct_visible_currency') || 'PEN',
+    exchangeRate: Number(localStorage.getItem('mct_exchange_rate') || CONFIG.defaultExchangeRate)
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+  function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
+  const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+  const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
 
-  const serviceIcons = ['◎', '▦', '✺', '▱', '△', '◒', '◉', '◇', '⛰', '●', '☼'];
+  function money(amount, currency = state.currency) {
+    const n = Number(amount || 0);
+    return currency === 'USD' ? `USD ${n.toFixed(2)}` : `S/ ${n.toFixed(2)}`;
+  }
 
-  document.addEventListener('DOMContentLoaded', init);
+  function convert(amountPEN, serviceCurrency = 'PEN', serviceUSD = null) {
+    if (state.currency === 'PEN') {
+      if (serviceCurrency === 'USD' && serviceUSD != null) return Number(serviceUSD) * state.exchangeRate;
+      return Number(amountPEN || 0);
+    }
+    if (serviceCurrency === 'USD' && serviceUSD != null) return Number(serviceUSD);
+    return Number(amountPEN || 0) / state.exchangeRate;
+  }
+
+  function servicePrice(service) {
+    return convert(service.pricePEN, service.currency, service.priceUSD);
+  }
+
+  function serviceAltPrice(service) {
+    if (!service.priceAltPEN) return null;
+    return state.currency === 'USD' ? Number(service.priceAltPEN) / state.exchangeRate : Number(service.priceAltPEN);
+  }
+
+  function requireSession() {
+    const session = readJSON(STORAGE.SESSION, null);
+    if (!session?.email) {
+      window.location.href = './login.html';
+      return null;
+    }
+    state.session = session;
+    return session;
+  }
 
   async function init() {
-    setDefaultDate();
-    bindUi();
+    const session = requireSession();
+    if (!session) return;
+
+    $('#sessionWelcome').textContent = `Bienvenido, ${session.companyName || session.contactName || 'agencia afiliada'}`;
+    $('#currencySelect').value = state.currency;
+    if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
+    $('#serviceDate').min = todayISO();
+    $('#serviceDate').value = todayISO();
+
+    bindEvents();
     await loadCatalog();
-    renderServiceNavigation();
-    renderServiceSelect();
-    buildRows();
-    applyFilters();
-    renderRequests();
+    renderExperiences();
+    renderCart();
+    renderOrders();
   }
 
   async function loadCatalog() {
     try {
-      const response = await fetch('./assets/data/agencias-tours.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error(`No se pudo cargar el catálogo de tours (${response.status})`);
+      const response = await fetch(CONFIG.catalogUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error('catalog');
       const data = await response.json();
-      state.catalog = Array.isArray(data.services) ? data.services : [];
-    } catch (error) {
-      console.error(error);
-      $('#emptyResults').hidden = false;
-      $('#emptyResults').textContent = 'Por el momento no pudimos cargar el catálogo de tours. Inténtalo nuevamente o comunícate con tu ejecutivo de reservas.';
-    }
-  }
-
-  function bindUi() {
-    $('#searchForm').addEventListener('submit', (event) => {
-      event.preventDefault();
-      applyFilters();
-    });
-
-    ['serviceSelect', 'travelDate', 'adultCount', 'childCount', 'guideCount', 'languageSelect'].forEach((id) => {
-      $(`#${id}`).addEventListener('change', () => {
-        buildRows();
-        applyFilters();
-        if (state.selectedRow) updateSelectionFromCurrentFilters();
-      });
-    });
-
-    $('#quickFilter').addEventListener('input', applyFilters);
-    $('#clearSelection').addEventListener('click', clearSelection);
-    $('#reserveButton').addEventListener('click', openReserveDialog);
-    $('#paymentButton').addEventListener('click', openPaymentDialog);
-    $('#reserveForm').addEventListener('submit', saveReservation);
-    $('#paymentForm').addEventListener('submit', savePayment);
-    $('#exportRequests').addEventListener('click', exportRequestsCsv);
-
-    $$('[data-close-dialog]').forEach((button) => {
-      button.addEventListener('click', () => button.closest('dialog')?.close());
-    });
-  }
-
-  function setDefaultDate() {
-    const input = $('#travelDate');
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    input.value = tomorrow.toISOString().slice(0, 10);
-  }
-
-  function renderServiceNavigation() {
-    const menu = $('#serviceMenu');
-    const buttons = state.catalog.map((service, index) => `
-      <button type="button" data-service="${escapeHtml(service.slug)}">
-        <span class="service-icon" aria-hidden="true">${serviceIcons[(index + 1) % serviceIcons.length]}</span>
-        <span>${escapeHtml(service.shortName || service.name)}</span>
-        <small>Desde ${formatMoney(service.agentNetRate?.adult || 0)} neto</small>
-      </button>
-    `).join('');
-    menu.insertAdjacentHTML('beforeend', buttons);
-
-    menu.addEventListener('click', (event) => {
-      const button = event.target.closest('button[data-service]');
-      if (!button) return;
-      const value = button.dataset.service || 'all';
-      $('#serviceSelect').value = value;
-      $$('#serviceMenu button').forEach((item) => item.classList.toggle('is-active', item === button));
-      buildRows();
-      applyFilters();
-      clearSelection(false);
-    });
-  }
-
-  function renderServiceSelect() {
-    const select = $('#serviceSelect');
-    state.catalog.forEach((service) => {
-      const option = document.createElement('option');
-      option.value = service.slug;
-      option.textContent = service.shortName || service.name;
-      select.appendChild(option);
-    });
-  }
-
-  function buildRows() {
-    const date = $('#travelDate').value;
-    const language = $('#languageSelect').value;
-    const passengers = getPassengers();
-    state.rows = state.catalog.flatMap((service) => {
-      return (service.schedules || []).map((schedule, index) => {
-        const rates = service.agentNetRate || {};
-        const subtotal = (passengers.adult * Number(rates.adult || 0)) +
-          (passengers.child * Number(rates.child || rates.adult || 0)) +
-          (passengers.guide * Number(rates.guide || 0));
-
-        return {
-          uid: `${service.slug}__${schedule.time}__${index}`,
-          serviceSlug: service.slug,
-          serviceName: service.shortName || service.name,
-          fullName: service.name,
-          date,
-          language,
-          passengers,
-          schedule,
-          rates,
-          subtotal,
-          includes: service.includes || [],
-          importantNotes: service.importantNotes || []
-        };
-      });
-    });
-  }
-
-  function applyFilters() {
-    const selectedService = $('#serviceSelect').value;
-    const term = normalize($('#quickFilter').value);
-
-    state.filteredRows = state.rows.filter((row) => {
-      const matchesService = selectedService === 'all' || row.serviceSlug === selectedService;
-      const haystack = normalize(`${row.serviceName} ${row.fullName} ${row.schedule.time} ${row.schedule.pickup} ${row.schedule.duration}`);
-      const matchesTerm = !term || haystack.includes(term);
-      return matchesService && matchesTerm;
-    });
-
-    renderRows();
-    renderKpis();
-    syncSidebarActive(selectedService);
-  }
-
-  function renderRows() {
-    const tbody = $('#resultsBody');
-    const empty = $('#emptyResults');
-
-    if (!state.filteredRows.length) {
-      tbody.innerHTML = '';
-      empty.hidden = false;
-      return;
-    }
-
-    empty.hidden = true;
-    tbody.innerHTML = state.filteredRows.map((row) => {
-      const selected = state.selectedRow?.uid === row.uid;
-      return `
-        <tr class="${selected ? 'is-selected' : ''}" data-row-id="${escapeHtml(row.uid)}">
-          <td class="radio-cell">
-            <input type="radio" name="tourRow" ${selected ? 'checked' : ''} aria-label="Elegir ${escapeHtml(row.serviceName)} ${escapeHtml(row.schedule.time)}" />
-          </td>
-          <td>
-            <span class="service-name">
-              <strong>${escapeHtml(row.serviceName)}</strong>
-              <small>Frecuencia diaria · Cupos ${escapeHtml(String(row.schedule.capacity || ''))}</small>
-            </span>
-          </td>
-          <td>${formatDate(row.date)}</td>
-          <td><strong>${escapeHtml(row.schedule.time)}</strong></td>
-          <td>${escapeHtml(row.schedule.duration)}</td>
-          <td>${escapeHtml(row.schedule.pickup)}</td>
-          <td>${escapeHtml(row.language)}</td>
-          <td class="price-cell"><strong>${formatMoney(row.rates.adult || 0)}</strong><small>por adulto</small></td>
-          <td><strong>${formatMoney(row.subtotal)}</strong></td>
-          <td class="status-available">${escapeHtml(row.schedule.status || 'Disponible')}</td>
-        </tr>
-      `;
-    }).join('');
-
-    $$('tr[data-row-id]', tbody).forEach((rowElement) => {
-      rowElement.addEventListener('click', () => {
-        const row = state.filteredRows.find((item) => item.uid === rowElement.dataset.rowId);
-        if (row) selectRow(row);
-      });
-    });
-  }
-
-  function renderKpis() {
-    const services = new Set(state.filteredRows.map((row) => row.serviceSlug));
-    const prices = state.filteredRows.map((row) => Number(row.rates.adult || 0)).filter(Boolean);
-    $('#kpiServices').textContent = services.size;
-    $('#kpiSchedules').textContent = state.filteredRows.length;
-    $('#kpiFrom').textContent = prices.length ? formatMoney(Math.min(...prices)) : formatMoney(0);
-  }
-
-  function selectRow(row) {
-    state.selectedRow = { ...row, passengers: getPassengers() };
-    renderRows();
-    renderSummary();
-    $('#reserveButton').disabled = false;
-    $('#paymentButton').disabled = !state.lastReservation;
-  }
-
-  function clearSelection(render = true) {
-    state.selectedRow = null;
-    state.lastReservation = null;
-    $('#selectedSummary').className = 'summary-empty';
-    $('#selectedSummary').textContent = 'Selecciona un horario para ver el resumen de la reserva.';
-    $('#summaryStatus').textContent = 'Sin selección';
-    $('#summaryStatus').className = 'agency-chip';
-    $('#totalAmount').textContent = formatMoney(0);
-    $('#reserveButton').disabled = true;
-    $('#paymentButton').disabled = true;
-    if (render) renderRows();
-  }
-
-  function updateSelectionFromCurrentFilters() {
-    const next = state.rows.find((row) => row.uid === state.selectedRow.uid);
-    if (next) selectRow(next);
-  }
-
-  function renderSummary() {
-    const row = state.selectedRow;
-    if (!row) return;
-    const passengers = getPassengers();
-    const totalPeople = passengers.adult + passengers.child + passengers.guide;
-    const summary = $('#selectedSummary');
-    summary.className = 'summary-detail';
-    summary.innerHTML = `
-      <div class="summary-row"><span>Servicio</span><strong>${escapeHtml(row.serviceName)}</strong></div>
-      <div class="summary-row"><span>Fecha y hora</span><strong>${formatDate(row.date)} · ${escapeHtml(row.schedule.time)}</strong></div>
-      <div class="summary-row"><span>Pasajeros</span><strong>${passengers.adult} adulto(s), ${passengers.child} niño(s), ${passengers.guide} guía(s)</strong></div>
-      <div class="summary-row"><span>Idioma</span><strong>${escapeHtml(row.language)}</strong></div>
-      <div class="summary-row"><span>Recojo</span><strong>${escapeHtml(row.schedule.pickup)}</strong></div>
-      <div class="summary-row"><span>Tarifa neta</span><strong>${formatMoney(row.rates.adult || 0)} adulto · ${formatMoney(row.rates.child || row.rates.adult || 0)} niño</strong></div>
-      <div class="summary-row"><span>Total personas</span><strong>${totalPeople}</strong></div>
-    `;
-    $('#summaryStatus').textContent = 'Listo para reservar';
-    $('#summaryStatus').className = 'agency-chip is-paid';
-    $('#totalAmount').textContent = formatMoney(calculateCurrentTotal());
-  }
-
-  function openReserveDialog() {
-    if (!state.selectedRow) return;
-    $('#reserveDialog').showModal();
-  }
-
-  function openPaymentDialog() {
-    if (!state.lastReservation) return;
-    $('#paymentReservationCode').value = state.lastReservation.code;
-    $('#paymentAmount').value = state.lastReservation.total.toFixed(2);
-    $('#paymentDialog').showModal();
-  }
-
-  function saveReservation(event) {
-    event.preventDefault();
-    if (!state.selectedRow) return;
-    const code = createReservationCode();
-    const reservation = {
-      code,
-      createdAt: new Date().toISOString(),
-      status: 'Reserva pendiente',
-      paymentStatus: 'Pago no registrado',
-      agency: $('#agencyName').value.trim(),
-      contact: $('#agencyContact').value.trim(),
-      email: $('#agencyEmail').value.trim(),
-      phone: $('#agencyPhone').value.trim(),
-      leadPassenger: $('#leadPassenger').value.trim(),
-      notes: $('#bookingNotes').value.trim(),
-      service: state.selectedRow.serviceName,
-      serviceSlug: state.selectedRow.serviceSlug,
-      date: state.selectedRow.date,
-      time: state.selectedRow.schedule.time,
-      pickup: state.selectedRow.schedule.pickup,
-      language: state.selectedRow.language,
-      passengers: getPassengers(),
-      total: calculateCurrentTotal(),
-      currency: 'PEN',
-      proof: null
-    };
-    state.lastReservation = reservation;
-    const requests = getStoredRequests();
-    requests.unshift(reservation);
-    saveStoredRequests(requests);
-    $('#reserveDialog').close();
-    $('#reserveForm').reset();
-    $('#paymentButton').disabled = false;
-    $('#summaryStatus').textContent = 'Reserva pendiente';
-    $('#summaryStatus').className = 'agency-chip is-pending';
-    renderRequests();
-  }
-
-  function savePayment(event) {
-    event.preventDefault();
-    const code = $('#paymentReservationCode').value;
-    const file = $('#paymentProof').files?.[0];
-    const requests = getStoredRequests();
-    const index = requests.findIndex((item) => item.code === code);
-    if (index === -1) return;
-
-    requests[index] = {
-      ...requests[index],
-      paymentStatus: 'Pago pendiente de aprobación',
-      payment: {
-        amount: Number($('#paymentAmount').value || 0),
-        method: $('#paymentMethod').value,
-        operation: $('#paymentOperation').value.trim(),
-        notes: $('#paymentNotes').value.trim(),
-        proofName: file?.name || '',
-        proofType: file?.type || '',
-        registeredAt: new Date().toISOString()
+      state.services = Array.isArray(data.services) ? data.services : [];
+      if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
+        state.exchangeRate = Number(data.exchangeRate);
+        if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
-    };
-    state.lastReservation = requests[index];
-    saveStoredRequests(requests);
-    $('#paymentDialog').close();
-    $('#paymentForm').reset();
-    renderRequests();
+    } catch (error) {
+      $('#emptyExperiences').hidden = false;
+      $('#emptyExperiences').textContent = 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.';
+    }
   }
 
-  function renderRequests() {
-    const list = $('#requestsList');
-    const requests = getStoredRequests();
-    if (!requests.length) {
-      list.innerHTML = '<p class="agency-empty">Aún no hay reservas registradas en este navegador.</p>';
+  function bindEvents() {
+    $('#searchInput').addEventListener('input', renderExperiences);
+    $('#currencySelect').addEventListener('change', (event) => {
+      state.currency = event.target.value;
+      localStorage.setItem('mct_visible_currency', state.currency);
+      renderExperiences(); renderCart();
+    });
+    $('#exchangeRateInput')?.addEventListener('input', (event) => {
+      state.exchangeRate = Number(event.target.value || CONFIG.defaultExchangeRate);
+      localStorage.setItem('mct_exchange_rate', state.exchangeRate);
+      renderExperiences(); renderCart();
+    });
+    $('#printButton').addEventListener('click', () => window.print());
+    $('#paxCount').addEventListener('input', renderAdditionalPassengers);
+    $('#reserveForm').addEventListener('submit', addToCart);
+    $('#paypalFeeToggle').addEventListener('change', renderCart);
+    $('#clearCartButton').addEventListener('click', clearCart);
+    $('#generateOrderButton').addEventListener('click', generateOrder);
+    $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
+    $$('.modal-backdrop').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal) closeModals(); }));
+  }
+
+  function renderExperiences() {
+    const q = $('#searchInput').value.trim().toLowerCase();
+    const filtered = state.services.filter((service) => {
+      const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
+      return !q || text.includes(q);
+    });
+    $('#emptyExperiences').hidden = filtered.length > 0;
+    $('#experienceGrid').innerHTML = filtered.map(serviceCard).join('');
+    $$('[data-reserve]').forEach((button) => button.addEventListener('click', () => openReserve(button.dataset.reserve)));
+    $$('[data-itinerary]').forEach((button) => button.addEventListener('click', () => openItinerary(button.dataset.itinerary)));
+  }
+
+  function serviceCard(service) {
+    const price = servicePrice(service);
+    const alt = serviceAltPrice(service);
+    const unit = service.priceUnit || 'por persona';
+    const altHtml = alt ? `<small>${money(alt)} ${escapeHtml(service.priceAltLabel || '')}</small>` : '';
+    return `
+      <article class="experience-card">
+        <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
+        <div class="experience-body">
+          <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || 'Salida diaria')}</span></div>
+          <h3>${escapeHtml(service.name)}</h3>
+          <p class="experience-desc">${escapeHtml(service.description || '')}</p>
+          <table class="mini-table">
+            <tr><td>Horario</td><td>${escapeHtml(service.startLabel || '')}</td></tr>
+            <tr><td>Duración</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
+            <tr><td>Precio</td><td><span class="price">${money(price)}<small>${escapeHtml(unit)}</small>${altHtml}</span></td></tr>
+            <tr><td>Entradas</td><td>${escapeHtml(service.notIncluded || 'Consultar según experiencia.')}</td></tr>
+          </table>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="agency-button agency-button--primary" data-reserve="${escapeHtml(service.id)}">Reservar</button>
+          <button type="button" class="agency-button agency-button--ghost" data-itinerary="${escapeHtml(service.id)}">Ver itinerario</button>
+        </div>
+      </article>
+    `;
+  }
+
+  function findService(id) { return state.services.find((service) => service.id === id); }
+
+  function openReserve(id) {
+    const service = findService(id);
+    if (!service) return;
+    $('#selectedServiceId').value = id;
+    $('#reserveTitle').textContent = `Reservar · ${service.name}`;
+    $('#reserveForm').reset();
+    $('#serviceDate').min = todayISO();
+    $('#serviceDate').value = todayISO();
+    $('#paxCount').value = 2;
+    renderAdditionalPassengers();
+    $('#reserveModal').classList.add('show');
+  }
+
+  function renderAdditionalPassengers() {
+    const pax = Math.max(1, Number($('#paxCount').value || 1));
+    const box = $('#additionalPassengers');
+    box.innerHTML = '';
+    for (let i = 2; i <= pax; i++) {
+      box.insertAdjacentHTML('beforeend', `
+        <div class="passenger-extra" data-passenger-extra>
+          <strong>Pasajero ${i}</strong>
+          <div class="form-grid">
+            <label class="field"><span>Nombres</span><input data-pax="firstName" /></label>
+            <label class="field"><span>Apellidos</span><input data-pax="lastName" /></label>
+            <label class="field"><span>Tipo de documento</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
+            <label class="field"><span>Número de documento</span><input data-pax="docNumber" /></label>
+          </div>
+        </div>
+      `);
+    }
+  }
+
+  function addToCart(event) {
+    event.preventDefault();
+    const form = $('#reserveForm');
+    if (!form.reportValidity()) return;
+    const service = findService($('#selectedServiceId').value);
+    if (!service) return;
+    const pax = Math.max(1, Number($('#paxCount').value || 1));
+    const passengers = $$('[data-passenger-extra]').map((card) => ({
+      firstName: $('[data-pax="firstName"]', card).value.trim(),
+      lastName: $('[data-pax="lastName"]', card).value.trim(),
+      docType: $('[data-pax="docType"]', card).value,
+      docNumber: $('[data-pax="docNumber"]', card).value.trim()
+    })).filter((p) => p.firstName || p.lastName || p.docNumber);
+
+    const item = {
+      id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      serviceId: service.id,
+      serviceName: service.name,
+      travelDate: $('#serviceDate').value,
+      pax,
+      unitPricePEN: Number(service.pricePEN || 0),
+      unitPriceUSD: service.priceUSD != null ? Number(service.priceUSD) : null,
+      serviceCurrency: service.currency || 'PEN',
+      priceUnit: service.priceUnit || 'por persona',
+      lead: {
+        firstName: $('#leadFirstName').value.trim(),
+        lastName: $('#leadLastName').value.trim(),
+        docType: $('#leadDocType').value,
+        docNumber: $('#leadDocNumber').value.trim(),
+        phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
+      },
+      groupMode: $('#groupMode').value,
+      pickupPoint: $('#pickupPoint').value.trim(),
+      notes: $('#bookingNotes').value.trim(),
+      passengers
+    };
+    state.cart.push(item);
+    writeJSON(STORAGE.CART, state.cart);
+    closeModals();
+    renderCart();
+    $('#checkout').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function itemSubtotal(item) {
+    const service = findService(item.serviceId) || {};
+    return convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
+  }
+
+  function feeGross(subtotal) {
+    if (!$('#paypalFeeToggle').checked || subtotal <= 0) return { total: subtotal, fee: 0 };
+    const total = subtotal / (1 - CONFIG.paypalRate - CONFIG.bankRate);
+    return { total, fee: total - subtotal };
+  }
+
+  function renderCart() {
+    const wrap = $('#cartItems');
+    if (!state.cart.length) {
+      wrap.innerHTML = '<p class="cart-empty">Todavía no agregaste servicios.</p>';
+    } else {
+      wrap.innerHTML = state.cart.map((item, index) => `
+        <article class="cart-item">
+          <strong>${escapeHtml(item.serviceName)}</strong>
+          <div class="cart-row"><span>Fecha</span><span>${formatDate(item.travelDate)}</span></div>
+          <div class="cart-row"><span>Pasajeros</span><span>${item.pax}</span></div>
+          <div class="cart-row"><span>Titular</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
+          <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
+          <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">Quitar</button>
+        </article>
+      `).join('');
+    }
+    $$('[data-remove]').forEach((button) => button.addEventListener('click', () => removeItem(Number(button.dataset.remove))));
+    const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
+    const { total, fee } = feeGross(subtotal);
+    $('#subtotalAmount').textContent = money(subtotal);
+    $('#feeAmount').textContent = money(fee);
+    $('#grandTotal').textContent = money(total);
+    $('#toolbarCount').textContent = state.cart.length;
+    $('#toolbarTotal').textContent = money(total);
+  }
+
+  function removeItem(index) {
+    state.cart.splice(index, 1);
+    writeJSON(STORAGE.CART, state.cart);
+    renderCart();
+  }
+
+  function clearCart() {
+    state.cart = [];
+    writeJSON(STORAGE.CART, state.cart);
+    $('#orderBox').classList.remove('show');
+    $('#orderBox').innerHTML = '';
+    renderCart();
+  }
+
+  async function generateOrder() {
+    if (!state.cart.length) { alert('Agrega al menos un servicio a tu orden.'); return; }
+    const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
+    const { total, fee } = feeGross(subtotal);
+    const order = {
+      code: makeCode(),
+      createdAt: new Date().toISOString(),
+      status: 'Pendiente de pago',
+      currency: state.currency,
+      exchangeRate: state.exchangeRate,
+      subtotal: Number(subtotal.toFixed(2)),
+      fee: Number(fee.toFixed(2)),
+      total: Number(total.toFixed(2)),
+      paypalBankFeeApplied: $('#paypalFeeToggle').checked,
+      account: state.session,
+      items: state.cart
+    };
+    state.orders.unshift(order);
+    writeJSON(STORAGE.ORDERS, state.orders);
+    await sendToSheet('createOrder', order);
+    $('#orderBox').classList.add('show');
+    $('#orderBox').innerHTML = `
+      <h3>Orden generada</h3>
+      <p>Código de referencia:</p>
+      <div class="order-code">${escapeHtml(order.code)}</div>
+      <p>Usa este código al coordinar el pago o enviar el comprobante.</p>
+      <p><strong>Total:</strong> ${money(order.total)}</p>
+      <button type="button" class="agency-button agency-button--primary" onclick="window.print()">Imprimir orden</button>
+    `;
+    state.cart = [];
+    writeJSON(STORAGE.CART, state.cart);
+    renderCart();
+    renderOrders();
+  }
+
+  async function sendToSheet(action, payload) {
+    if (!CONFIG.googleScriptUrl || CONFIG.googleScriptUrl.includes('PEGA_AQUI')) return { ok:false, message:'Falta configurar Google Apps Script.' };
+    try {
+      const response = await fetch(CONFIG.googleScriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action, payload })
+      });
+      const text = await response.text();
+      try { return JSON.parse(text); } catch { return { ok:true, message:'Solicitud enviada' }; }
+    } catch (error) {
+      console.warn('No se pudo enviar a Google Sheets', error);
+      return { ok:false, message:error.message };
+    }
+  }
+
+  function renderOrders() {
+    const list = $('#ordersList');
+    if (!state.orders.length) {
+      list.innerHTML = '<p class="empty-state">Todavía no se generaron órdenes en este navegador.</p>';
       return;
     }
-    const template = $('#requestTemplate');
-    list.innerHTML = '';
-    requests.slice(0, 12).forEach((request) => {
-      const node = template.content.cloneNode(true);
-      $('[data-field="code"]', node).textContent = request.code;
-      $('[data-field="title"]', node).textContent = request.service;
-      $('[data-field="meta"]', node).textContent = `${formatDate(request.date)} · ${request.time} · ${request.agency || 'Agencia'} · ${request.leadPassenger || 'Pasajero líder pendiente'}`;
-      $('[data-field="amount"]', node).textContent = formatMoney(request.total || 0);
-      const status = $('[data-field="status"]', node);
-      status.textContent = request.paymentStatus || request.status;
-      status.classList.toggle('is-pending', true);
-      list.appendChild(node);
-    });
+    list.innerHTML = state.orders.slice(0, 12).map((order) => `
+      <article class="request-card">
+        <strong>${escapeHtml(order.code)}</strong>
+        <p>${formatDate(order.createdAt.slice(0, 10))} · ${order.items.length} servicio(s) · ${money(order.total, order.currency)}</p>
+        <span class="agency-chip">${escapeHtml(order.status)}</span>
+      </article>
+    `).join('');
   }
 
-  function exportRequestsCsv() {
-    const requests = getStoredRequests();
-    if (!requests.length) return;
-    const headers = ['codigo','fecha_creacion','agencia','contacto','servicio','fecha_viaje','hora','adultos','ninos','guias','total_pen','estado_reserva','estado_pago','operacion','comprobante'];
-    const rows = requests.map((r) => [
-      r.code, r.createdAt, r.agency, r.contact, r.service, r.date, r.time,
-      r.passengers?.adult, r.passengers?.child, r.passengers?.guide, r.total,
-      r.status, r.paymentStatus, r.payment?.operation || '', r.payment?.proofName || ''
-    ]);
-    const csv = [headers, ...rows].map((row) => row.map(csvCell).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `reservas-agencias-${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+  async function openItinerary(id) {
+    const service = findService(id);
+    if (!service) return;
+    $('#itineraryTitle').textContent = service.name;
+    $('#itineraryBody').innerHTML = '<p class="dialog-help">Cargando itinerario detallado...</p>';
+    $('#itineraryModal').classList.add('show');
+
+    const item = await findItineraryItem(service);
+    const includes = item?.includes || service.includes || [];
+    const itinerary = item?.itinerary || item?.timeline || [];
+    const description = item?.description || item?.shortDescription || service.description || '';
+    $('#itineraryBody').innerHTML = `
+      <p class="experience-desc">${escapeHtml(description)}</p>
+      ${includes.length ? `<h3>Incluye</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
+      ${itinerary.length ? `<h3>Itinerario</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : `<div class="info-note"><strong>Detalle:</strong> ${escapeHtml(service.description || '')}</div>`}
+      <div class="dialog-actions"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">Reservar esta experiencia</button></div>
+    `;
+    $('[data-reserve-from-itinerary]')?.addEventListener('click', () => { closeModals(); openReserve(service.id); });
   }
 
-  function syncSidebarActive(value) {
-    $$('#serviceMenu button').forEach((button) => {
-      button.classList.toggle('is-active', (button.dataset.service || 'all') === value);
-    });
+  function itineraryStep(step, index) {
+    if (typeof step === 'string') return `<div class="itinerary-step"><strong>Paso ${index + 1}</strong><p>${escapeHtml(step)}</p></div>`;
+    return `<div class="itinerary-step"><strong>${escapeHtml(step.title || `Paso ${index + 1}`)}</strong><p>${escapeHtml(step.description || step.text || '')}</p></div>`;
   }
 
-  function calculateCurrentTotal() {
-    if (!state.selectedRow) return 0;
-    const rates = state.selectedRow.rates || {};
-    const p = getPassengers();
-    return (p.adult * Number(rates.adult || 0)) +
-      (p.child * Number(rates.child || rates.adult || 0)) +
-      (p.guide * Number(rates.guide || 0));
+  async function findItineraryItem(service) {
+    const sources = Array.isArray(service.jsonSources) ? service.jsonSources : ['../assets/data/agencias-tours.json'];
+    for (const source of sources) {
+      try {
+        const response = await fetch(source, { cache: 'no-store' });
+        if (!response.ok) continue;
+        const data = await response.json();
+        const list = normalizeList(data);
+        const item = list.find((x) => [x.id, x.slug, x.internalCode].includes(service.id) || [x.id, x.slug, x.internalCode].includes(service.slug));
+        if (item) return item;
+      } catch (error) { /* continue */ }
+    }
+    return null;
   }
 
-  function getPassengers() {
-    return {
-      adult: clampInt($('#adultCount').value, 1, 60),
-      child: clampInt($('#childCount').value, 0, 60),
-      guide: clampInt($('#guideCount').value, 0, 10)
-    };
+  function normalizeList(data) {
+    if (Array.isArray(data)) return data;
+    if (!data || typeof data !== 'object') return [];
+    for (const key of ['services', 'tours', 'items', 'experiences', 'packages']) {
+      if (Array.isArray(data[key])) return data[key];
+    }
+    return Object.values(data).flatMap((value) => Array.isArray(value) ? value : []);
   }
 
-  function getStoredRequests() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch { return []; }
+  function closeModals() { $$('.modal-backdrop').forEach((modal) => modal.classList.remove('show')); }
+
+  function makeCode() {
+    const d = new Date();
+    const date = d.toISOString().slice(2, 10).replace(/-/g, '');
+    return `MCT-${date}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
   }
 
-  function saveStoredRequests(requests) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
+  function formatDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.slice(0, 10).split('-');
+    return `${d}/${m}/${y}`;
   }
 
-  function createReservationCode() {
-    const date = new Date();
-    const ymd = date.toISOString().slice(2,10).replaceAll('-', '');
-    const random = Math.random().toString(36).slice(2, 6).toUpperCase();
-    return `AG-${ymd}-${random}`;
-  }
-
-  function clampInt(value, min, max) {
-    const number = Number.parseInt(value, 10);
-    if (Number.isNaN(number)) return min;
-    return Math.max(min, Math.min(max, number));
-  }
-
-  function normalize(value) {
-    return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-  }
-
-  function formatMoney(value) { return PEN.format(Number(value || 0)); }
-
-  function formatDate(value) {
-    if (!value) return '';
-    const [year, month, day] = value.split('-').map(Number);
-    return new Intl.DateTimeFormat('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(year, month - 1, day));
-  }
-
-  function escapeHtml(value) {
-    return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-    }[char]));
-  }
-
-  function csvCell(value) {
-    return `"${String(value ?? '').replaceAll('"', '""')}"`;
-  }
+  init();
 })();

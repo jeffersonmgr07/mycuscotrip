@@ -1,59 +1,47 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Acceso de agencias | My Cusco Trip</title>
-  <meta name="robots" content="noindex,nofollow">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="../assets/css/main.css" rel="stylesheet">
-  <link href="../assets/css/header.css" rel="stylesheet">
-  <link href="../assets/css/footer.css" rel="stylesheet">
-  <link href="./assets/css/agencias-portal.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ingresar | Reservas My Cusco Trip</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="../public/favicon.ico" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <link href="../assets/css/components.css" rel="stylesheet" />
+  <link href="../assets/css/header.css" rel="stylesheet" />
+  <link href="../assets/css/footer.css" rel="stylesheet" />
+  <link href="../assets/css/responsive.css" rel="stylesheet" />
+  <link href="./assets/css/agencias.css" rel="stylesheet" />
 </head>
-<body>
+<body class="agency-page">
   <div id="header-container"></div>
-  <main class="agency-page auth-page">
-    <section class="auth-card login-card">
-      <span class="agency-tag light-tag">Acceso privado</span>
+  <main class="agency-main agency-main--narrow">
+    <section class="auth-card">
+      <p class="eyebrow">Portal privado</p>
       <h1>Acceso para agencias afiliadas</h1>
-      <p class="auth-subtitle">Ingresa con el correo y contraseña aprobados para registrar reservas y generar órdenes.</p>
-      <form id="loginForm" class="dialog-grid auth-form">
-        <label class="dialog-full"><span>Correo de agencia</span><input id="email" type="email" autocomplete="email" required></label>
-        <label class="dialog-full"><span>Contraseña</span><input id="password" type="password" autocomplete="current-password" required></label>
-        <button class="primary-btn dialog-full" id="loginBtn" type="submit">Ingresar</button>
-        <a class="ghost-btn dialog-full" href="./registro.html">Registrar mi agencia</a>
+      <p class="auth-lead">Usa el correo y la contraseña creados durante el registro.</p>
+      <form id="loginForm" class="auth-form">
+        <label class="field"><span>Correo de acceso</span><input id="loginEmail" type="email" autocomplete="email" required placeholder="correo@empresa.com" /></label>
+        <label class="field"><span>Contraseña</span><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Tu contraseña" /></label>
+        <p id="loginMessage" class="form-message" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <a href="./registro.html" class="agency-button agency-button--ghost">Registrar mi agencia</a>
+          <button type="submit" class="agency-button agency-button--primary">Ingresar</button>
+        </div>
       </form>
-      <div id="loginResult" class="order-result error-result" hidden></div>
     </section>
   </main>
   <div id="footer-container"></div>
   <script src="../assets/js/components/header.js"></script>
+  <script src="../assets/js/components/footer.js"></script>
+  <script src="./assets/js/pages/acceso-agencias.js" defer></script>
   <script>
-    const APPS_SCRIPT_URL = 'PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT';
-    async function loadComponent(componentName, targetId){
-      try{ const r=await fetch('../components/'+componentName+'.html'); document.getElementById(targetId).innerHTML=await r.text(); if(componentName==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100); }catch(e){ console.warn(e); }
-    }
-    loadComponent('header','header-container'); loadComponent('footer','footer-container');
-    document.getElementById('loginForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const result = document.getElementById('loginResult');
-      const btn = document.getElementById('loginBtn');
-      result.hidden = true;
-      if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGAR_AQUI')){
-        result.hidden=false; result.innerHTML='Conecta primero la URL de Google Apps Script en este archivo para activar el acceso real.'; return;
-      }
-      const payload = { action:'loginAgency', email:email.value.trim(), password:password.value };
-      btn.disabled = true; btn.textContent = 'Validando...';
-      try{
-        const r = await fetch(APPS_SCRIPT_URL,{ method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) });
-        const data = await r.json();
-        if(!data.ok) throw new Error(data.error || 'No se pudo iniciar sesión.');
-        localStorage.setItem('mct_agency_session', JSON.stringify({ agencyName:data.agencyName, commercialName:data.agencyName, email:data.email, country:data.country || '', loginAt:new Date().toISOString() }));
-        location.href = './index.html';
-      }catch(err){ result.hidden=false; result.innerHTML = err.message || 'No se pudo validar el acceso.'; }
-      finally{ btn.disabled=false; btn.textContent='Ingresar'; }
-    });
+    async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }
+    document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header','header-container'); loadAgencyComponent('footer','footer-container'); });
   </script>
 </body>
 </html>

@@ -1,64 +1,86 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Registro de agencias | My Cusco Trip</title>
-  <meta name="robots" content="noindex,nofollow">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="../assets/css/main.css" rel="stylesheet">
-  <link href="../assets/css/header.css" rel="stylesheet">
-  <link href="../assets/css/footer.css" rel="stylesheet">
-  <link href="./assets/css/agencias-portal.css" rel="stylesheet">
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="../public/favicon.ico" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <link href="../assets/css/components.css" rel="stylesheet" />
+  <link href="../assets/css/header.css" rel="stylesheet" />
+  <link href="../assets/css/footer.css" rel="stylesheet" />
+  <link href="../assets/css/responsive.css" rel="stylesheet" />
+  <link href="./assets/css/agencias.css" rel="stylesheet" />
 </head>
-<body>
+<body class="agency-page">
   <div id="header-container"></div>
-  <main class="agency-page auth-page">
-    <section class="agency-hero-card register-hero-card">
-      <span class="agency-tag">Registro</span>
-      <h1>Registro de agencias o agentes de viajes</h1>
-      <p>Completa los datos de tu empresa para solicitar acceso al portal de reservas.</p>
+  <main class="agency-main agency-main--narrow">
+    <section class="agency-hero">
+      <div class="agency-hero__grid">
+        <div>
+          <p class="eyebrow">Registro de acceso</p>
+          <h1>Registro de agencias o agentes de viajes</h1>
+          <p>Completa los datos de la empresa o contacto autorizado para solicitar acceso al portal de reservas.</p>
+        </div>
+      </div>
     </section>
-    <section class="dialog-panel auth-wide-panel">
-      <h2>Datos de la agencia</h2>
-      <form id="agencyRegisterForm" class="dialog-grid">
-        <label><span>País</span><select id="country" required><option value="Perú">Perú</option><option value="México">México</option><option value="Chile">Chile</option><option value="Brasil">Brasil</option><option value="Colombia">Colombia</option><option value="Argentina">Argentina</option><option value="Estados Unidos">Estados Unidos</option><option value="Otro">Otro</option></select></label>
-        <label><span id="taxLabel">RUC</span><input id="taxNumber" required></label>
-        <label><span>Razón social / nombre legal</span><input id="legalName" required></label>
-        <label><span>Nombre comercial</span><input id="commercialName" required></label>
-        <label><span>Nombres del representante</span><input id="repNames" required></label>
-        <label><span>Apellidos del representante</span><input id="repLastnames" required></label>
-        <label><span>Tipo de documento</span><select id="docType"><option>DNI</option><option>Pasaporte</option><option>Cédula</option><option>Otro</option></select></label>
-        <label><span>Número de documento</span><input id="docNumber" required></label>
-        <label><span>Celular / WhatsApp</span><input id="phone" required></label>
-        <label><span>Correo de acceso</span><input id="email" type="email" autocomplete="email" required></label>
-        <label><span>Crear contraseña</span><input id="password" type="password" autocomplete="new-password" minlength="8" required></label>
-        <label><span>Confirmar contraseña</span><input id="password2" type="password" autocomplete="new-password" minlength="8" required></label>
-        <label class="dialog-full"><span>Página web</span><input id="website" placeholder="https://"></label>
-        <button class="primary-btn dialog-full" id="registerBtn" type="submit">Registrar mi agencia</button>
+
+    <section class="auth-card">
+      <form id="agencyRegisterForm" class="register-form">
+        <section class="form-block">
+          <h2>Datos de la empresa</h2>
+          <div class="form-grid">
+            <label class="field"><span>País</span><select id="companyCountry" required><option value="PE">Perú</option><option value="MX">México</option><option value="CL">Chile</option><option value="BR">Brasil</option><option value="CO">Colombia</option><option value="AR">Argentina</option><option value="BO">Bolivia</option><option value="EC">Ecuador</option><option value="US">Estados Unidos</option><option value="OTHER">Otro país</option></select></label>
+            <label class="field"><span id="taxLabel">RUC</span><input id="companyTaxId" required /></label>
+            <label class="field"><span>Razón social / nombre legal</span><input id="companyName" required /></label>
+            <label class="field"><span>Nombre comercial</span><input id="tradeName" required /></label>
+            <label class="field"><span>Correo de contacto</span><input id="companyEmail" type="email" required /></label>
+            <label class="field"><span>Código de país</span><select id="companyPhoneCountry" required><option value="+51">Perú +51</option><option value="+52">México +52</option><option value="+56">Chile +56</option><option value="+55">Brasil +55</option><option value="+57">Colombia +57</option><option value="+54">Argentina +54</option><option value="+591">Bolivia +591</option><option value="+593">Ecuador +593</option><option value="+1">Estados Unidos / Canadá +1</option><option value="+34">España +34</option><option value="+44">Reino Unido +44</option><option value="+33">Francia +33</option><option value="+49">Alemania +49</option><option value="+39">Italia +39</option><option value="+81">Japón +81</option><option value="+82">Corea del Sur +82</option><option value="+86">China +86</option></select></label>
+            <label class="field"><span>Celular / WhatsApp</span><input id="companyPhone" inputmode="tel" autocomplete="tel-national" required placeholder="900 000 000" /></label>
+            <label class="field full"><span>Página web o red social</span><input id="companyWebsite" placeholder="https://..." /></label>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <h2>Representante o contacto autorizado</h2>
+          <div class="form-grid">
+            <label class="field"><span>Nombres</span><input id="legalFirstName" required /></label>
+            <label class="field"><span>Apellidos</span><input id="legalLastName" required /></label>
+            <label class="field"><span>Tipo de documento</span><select id="legalDocType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Documento nacional</option><option>Otro</option></select></label>
+            <label class="field"><span>Número de documento</span><input id="legalDocNumber" required /></label>
+          </div>
+        </section>
+
+        <section class="form-block">
+          <h2>Acceso</h2>
+          <div class="form-grid">
+            <label class="field"><span>Correo de inicio de sesión</span><input id="accessEmail" type="email" required /></label>
+            <label class="field"><span>Crear contraseña</span><input id="registerPassword" type="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" required title="Mínimo 8 caracteres, incluyendo letras, números y un carácter especial." /></label>
+            <label class="field"><span>Confirmar contraseña</span><input id="registerPasswordConfirm" type="password" minlength="8" required /></label>
+            <p class="field-help full">La contraseña debe tener mínimo 8 caracteres e incluir letras, números y un carácter especial.</p>
+          </div>
+        </section>
+
+        <p id="registerMessage" class="form-message" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <a class="agency-button agency-button--ghost" href="./login.html">Ya tengo acceso</a>
+          <button type="submit" class="agency-button agency-button--primary">Registrar mi agencia</button>
+        </div>
       </form>
-      <div id="registerResult" class="order-result" hidden></div>
     </section>
   </main>
   <div id="footer-container"></div>
   <script src="../assets/js/components/header.js"></script>
+  <script src="../assets/js/components/footer.js"></script>
+  <script src="./assets/js/pages/registro-agencias.js" defer></script>
   <script>
-    const APPS_SCRIPT_URL='PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT';
-    const labels={'Perú':'RUC','México':'RFC','Chile':'RUT','Brasil':'CNPJ','Colombia':'NIT','Argentina':'CUIT','Estados Unidos':'EIN','Otro':'Registro fiscal'};
-    async function loadComponent(componentName,targetId){try{const r=await fetch('../components/'+componentName+'.html');document.getElementById(targetId).innerHTML=await r.text();if(componentName==='header'&&typeof MyCuscoTripHeader==='function')setTimeout(()=>new MyCuscoTripHeader(),100)}catch(e){console.warn(e)}}
-    loadComponent('header','header-container'); loadComponent('footer','footer-container');
-    country.addEventListener('change',()=>taxLabel.textContent=labels[country.value]||'Registro fiscal');
-    agencyRegisterForm.addEventListener('submit',async e=>{
-      e.preventDefault();
-      const result=document.getElementById('registerResult'); const btn=document.getElementById('registerBtn'); result.hidden=true;
-      if(password.value !== password2.value){ result.hidden=false; result.innerHTML='Las contraseñas no coinciden.'; return; }
-      if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGAR_AQUI')){ result.hidden=false; result.innerHTML='Conecta primero la URL de Google Apps Script en este archivo para guardar registros reales.'; return; }
-      const data={action:'registerAgency',country:country.value,taxLabel:taxLabel.textContent,taxNumber:taxNumber.value.trim(),legalName:legalName.value.trim(),commercialName:commercialName.value.trim(),repNames:repNames.value.trim(),repLastnames:repLastnames.value.trim(),docType:docType.value,docNumber:docNumber.value.trim(),phone:phone.value.trim(),email:email.value.trim(),password:password.value,website:website.value.trim(),createdAt:new Date().toISOString(),status:'Pendiente'};
-      btn.disabled=true; btn.textContent='Enviando registro...';
-      try{ const r=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}); const resp=await r.json(); if(!resp.ok) throw new Error(resp.error || 'No se pudo guardar el registro.'); result.hidden=false; result.innerHTML='<strong>Registro enviado.</strong><br>Tu solicitud quedó pendiente de aprobación. Cuando sea aprobada, podrás ingresar con tu correo y contraseña.'; agencyRegisterForm.reset(); taxLabel.textContent='RUC'; }
-      catch(err){ result.hidden=false; result.innerHTML=err.message || 'No se pudo enviar el registro.'; }
-      finally{ btn.disabled=false; btn.textContent='Registrar mi agencia'; }
-    });
+    async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }
+    document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header','header-container'); loadAgencyComponent('footer','footer-container'); });
   </script>
 </body>
 </html>

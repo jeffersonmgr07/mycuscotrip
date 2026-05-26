@@ -1,555 +1,498 @@
 {
-  "version": "2026-05-13",
-  "description": "Catálogo de tours para agencias autorizadas, con tarifas netas en soles y pagos por transferencia sujetos a validación.",
+  "version": "3.0",
+  "description": "Catálogo público de experiencias reservables. Tarifas visibles con selector de moneda.",
   "currency": "PEN",
-  "paymentPolicy": {
-    "paymentGatewayEnabled": false,
-    "acceptedMethods": [
-      "Transferencia bancaria",
-      "Depósito en cuenta",
-      "Yape / Plin corporativo si aplica"
-    ],
-    "approvalFlow": [
-      "Agencia registra la reserva",
-      "Agencia registra el pago y sube comprobante",
-      "Operaciones revisa y aprueba",
-      "Se emite voucher / confirmación"
-    ]
-  },
+  "exchangeRate": 3.38,
   "services": [
     {
-      "id": "exp_001",
+      "id": "bienvenida-ancestral-cusco",
       "slug": "bienvenida-ancestral-cusco",
       "name": "Bienvenida Ancestral Cusco",
-      "shortName": "Bienvenida Ancestral Cusco",
-      "category": "cusco",
+      "shortName": "Bienvenida Ancestral",
+      "category": "Cusco",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 40,
-        "child": 40,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 11.9,
-        "adultPENApprox": 45
-      },
+      "pricePEN": 25,
       "durationLabel": "2 h 30 min",
-      "languages": [
-        "Español",
-        "Inglés"
+      "startLabel": "09:00 a 16:00",
+      "frequency": "Salidas diarias cada hora",
+      "image": "../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Recorrido panorámico por los principales puntos de Cusco, con una parada especial en la parte alta de la ciudad para vivir una bienvenida ancestral y pedir buenos augurios durante tu visita.",
       "includes": [
         "Bus panorámico",
         "Guía bilingüe",
-        "Ceremonia andina",
-        "Visita textil",
-        "Mirador"
+        "Ceremonia andina de bienvenida",
+        "Visita al Mirador del Cristo Blanco",
+        "Retorno al centro de Cusco"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No requiere ticket de ingreso.",
       "schedules": [
-        {
-          "time": "09:00",
-          "duration": "2 h 30 min",
-          "pickup": "Plaza Regocijo",
-          "capacity": 28,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "15:00",
-          "duration": "2 h 30 min",
-          "pickup": "Plaza Regocijo",
-          "capacity": 28,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00"
       ]
     },
     {
-      "id": "exp_002",
+      "id": "city-tour-cusco",
       "slug": "city-tour-cusco",
-      "name": "City Tour Cusco",
+      "name": "City Tour Cusco y centros arqueológicos",
       "shortName": "City Tour Cusco",
-      "category": "cusco",
+      "category": "Cusco",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 30,
-        "child": 30,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 9.9,
-        "adultPENApprox": 40
-      },
+      "pricePEN": 20,
       "durationLabel": "Medio día",
-      "languages": [
-        "Español",
-        "Inglés"
+      "startLabel": "09:00, 10:00, 13:00 y 14:00",
+      "frequency": "Salidas diarias",
+      "image": "../assets/img/tours/city-tour/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Visita guiada por el templo del Coricancha y los centros arqueológicos más importantes alrededor de Cusco: Saqsaywaman, Qenqo, Puca Pucara y Tambomachay.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional",
+        "Visita a Coricancha y centros arqueológicos"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye ingresos: Coricancha S/ 15 y boleto turístico parcial según nacionalidad.",
       "schedules": [
-        {
-          "time": "08:30",
-          "duration": "Medio día",
-          "pickup": "Centro Histórico",
-          "capacity": 20,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "10:30",
-          "duration": "Medio día",
-          "pickup": "Plaza Regocijo",
-          "capacity": 20,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "13:00",
-          "duration": "Medio día",
-          "pickup": "Hotel céntrico",
-          "capacity": 20,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "15:30",
-          "duration": "Medio día",
-          "pickup": "Centro Histórico",
-          "capacity": 20,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "09:00",
+        "10:00",
+        "13:00",
+        "14:00"
       ]
     },
     {
-      "id": "exp_003_fd",
+      "id": "valle-sagrado-full-day",
       "slug": "valle-sagrado-full-day",
-      "name": "Valle Sagrado - Full Day",
+      "name": "Valle Sagrado Full Day",
       "shortName": "Valle Sagrado",
-      "category": "cusco",
+      "category": "Valle Sagrado",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 100,
-        "child": 100,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 29.9,
-        "adultPENApprox": 115
-      },
-      "durationLabel": "Full Day",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 40,
+      "priceAltPEN": 65,
+      "priceAltLabel": "con almuerzo",
+      "durationLabel": "08:00 a 20:00",
+      "startLabel": "08:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Ruta clásica por el Valle Sagrado visitando Pisac, mercado artesanal, centro arqueológico, Urubamba, Ollantaytambo y Chinchero en modalidad full day.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
         "Guía profesional",
-        "Retorno a Cusco al finalizar el tour"
+        "Visitas según ruta",
+        "Retorno a Cusco en full day"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye boleto turístico parcial circuito 2: S/ 40 nacional o S/ 70 extranjero.",
       "schedules": [
-        {
-          "time": "07:00",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "08:00"
       ]
     },
     {
-      "id": "exp_003_con",
+      "id": "valle-sagrado-conexion-machu-picchu",
       "slug": "valle-sagrado-conexion-machu-picchu",
-      "name": "Valle Sagrado con conexión a Machu Picchu",
-      "shortName": "Valle Sagrado con conexión a Machu Picchu",
-      "category": "cusco",
+      "name": "Valle Sagrado conexión a Machu Picchu",
+      "shortName": "Valle Conexión",
+      "category": "Valle Sagrado",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 100,
-        "child": 100,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 29.9,
-        "adultPENApprox": 115
-      },
-      "durationLabel": "Full Day con conexión",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 40,
+      "priceAltPEN": 65,
+      "priceAltLabel": "con almuerzo",
+      "durationLabel": "08:00 a 15:30",
+      "startLabel": "08:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Visita Pisac, mercado artesanal, centro arqueológico, Urubamba y Ollantaytambo. Ideal para conectar con tren hacia Machu Picchu desde Ollantaytambo.",
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico por el Valle Sagrado",
+        "Transporte turístico",
         "Guía profesional",
-        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+        "Finalización en Ollantaytambo"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye boleto turístico parcial circuito 2: S/ 40 nacional o S/ 70 extranjero.",
       "schedules": [
-        {
-          "time": "07:00",
-          "duration": "Full Day con conexión",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "08:00"
       ]
     },
     {
-      "id": "exp_003_vip",
+      "id": "valle-sagrado-vip-full-day",
       "slug": "valle-sagrado-vip-full-day",
-      "name": "Valle Sagrado VIP - Full Day",
-      "shortName": "Valle Sagrado VIP",
-      "category": "cusco",
+      "name": "Valle Sagrado VIP Full Day",
+      "shortName": "Valle VIP",
+      "category": "Valle Sagrado",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 100,
-        "child": 100,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 29.9,
-        "adultPENApprox": 115
-      },
-      "durationLabel": "Full Day VIP",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 40,
+      "priceAltPEN": 65,
+      "priceAltLabel": "con almuerzo",
+      "durationLabel": "07:00 a 20:00",
+      "startLabel": "07:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Ruta ampliada por Chinchero, Maras, Moray, Urubamba, Ollantaytambo, Pisac centro arqueológico y mercado artesanal.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
         "Guía profesional",
-        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
-        "Retorno a Cusco al finalizar el tour"
+        "Ruta Valle VIP completa",
+        "Retorno a Cusco en full day"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye boleto turístico parcial ni ingreso a Maras: S/ 15 nacional o S/ 20 extranjero.",
       "schedules": [
-        {
-          "time": "06:40",
-          "duration": "Full Day VIP",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "07:00"
       ]
     },
     {
-      "id": "exp_004",
-      "slug": "maras-y-moray",
+      "id": "valle-sagrado-vip-conexion",
+      "slug": "valle-sagrado-vip-conexion",
+      "name": "Valle Sagrado VIP conexión a Machu Picchu",
+      "shortName": "Valle VIP Conexión",
+      "category": "Valle Sagrado",
+      "currency": "PEN",
+      "pricePEN": 40,
+      "priceAltPEN": 65,
+      "priceAltLabel": "con almuerzo",
+      "durationLabel": "07:00 a 15:30",
+      "startLabel": "07:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
+      ],
+      "description": "Inicia por Chinchero, continúa por Maras, Moray y Urubamba, finalizando en Ollantaytambo para conectar con tren a Machu Picchu.",
+      "includes": [
+        "Transporte turístico",
+        "Guía profesional",
+        "Finalización en Ollantaytambo"
+      ],
+      "notIncluded": "No incluye boleto turístico parcial ni ingreso a Maras: S/ 15 nacional o S/ 20 extranjero.",
+      "schedules": [
+        "07:00"
+      ]
+    },
+    {
+      "id": "maras-moray",
+      "slug": "maras-moray",
       "name": "Maras y Moray",
-      "shortName": "Maras y Moray",
-      "category": "cusco",
+      "shortName": "Maras & Moray",
+      "category": "Cusco",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 70,
-        "child": 70,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 20.9,
-        "adultPENApprox": 80
-      },
-      "durationLabel": "Medio día",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 40,
+      "durationLabel": "08:30 a 15:00",
+      "startLabel": "08:30",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/maras-moray/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Excursión de medio día hacia Moray y las salineras de Maras, dos paisajes emblemáticos del Valle Sagrado.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional",
+        "Visita a Moray y Maras"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye ingreso a Maras ni boleto turístico para Moray.",
       "schedules": [
-        {
-          "time": "08:00",
-          "duration": "Medio día",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "14:30",
-          "duration": "Medio día",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "08:30"
       ]
     },
     {
-      "id": "exp_005",
-      "slug": "valle-sur",
-      "name": "Valle Sur",
+      "id": "valle-sur-cusco",
+      "slug": "valle-sur-cusco",
+      "name": "Valle Sur Cusco",
       "shortName": "Valle Sur",
-      "category": "cusco",
+      "category": "Cusco",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 70,
-        "child": 70,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 20.9,
-        "adultPENApprox": 80
-      },
-      "durationLabel": "Medio día",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 40,
+      "durationLabel": "09:00 a 15:00",
+      "startLabel": "09:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/valle-sur/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Visita Tipón, Piquillacta y los atractivos principales del Valle Sur de Cusco en una ruta cómoda de medio día.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
-        "Guía profesional"
+        "Guía profesional",
+        "Visita a Tipón y Piquillacta"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye boletos de ingreso.",
       "schedules": [
-        {
-          "time": "08:30",
-          "duration": "Medio día",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "09:00"
       ]
     },
     {
-      "id": "exp_006",
+      "id": "montana-colores",
+      "slug": "montana-colores",
+      "name": "Montaña de Colores",
+      "shortName": "Montaña de Colores",
+      "category": "Aventura",
+      "currency": "PEN",
+      "pricePEN": 60,
+      "durationLabel": "04:30 a 17:00",
+      "startLabel": "04:30",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/montana-colores/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
+      ],
+      "description": "Tour de aventura hacia Vinicunca, una de las rutas naturales más famosas de Cusco, con caminata de altura y paisajes andinos.",
+      "includes": [
+        "Transporte turístico",
+        "Guía profesional",
+        "Desayuno y almuerzo básico según operación"
+      ],
+      "notIncluded": "No incluye ingreso: S/ 20 nacional o S/ 25 extranjero.",
+      "schedules": [
+        "04:30"
+      ]
+    },
+    {
+      "id": "laguna-humantay",
       "slug": "laguna-humantay",
       "name": "Laguna Humantay",
       "shortName": "Laguna Humantay",
-      "category": "cusco",
+      "category": "Aventura",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 110,
-        "child": 110,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 31.9,
-        "adultPENApprox": 120
-      },
-      "durationLabel": "Full Day",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 65,
+      "durationLabel": "04:30 a 17:00",
+      "startLabel": "04:30",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/laguna-humantay/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Caminata hacia la laguna Humantay, rodeada de montañas y paisajes altoandinos, ideal para viajeros que buscan naturaleza y aventura.",
       "includes": [
-        "Recojo en Cusco",
         "Transporte turístico",
         "Guía profesional",
-        "Desayuno",
-        "Almuerzo"
+        "Desayuno y almuerzo básico según operación"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "No incluye ingreso: S/ 20 nacional o S/ 25 extranjero.",
       "schedules": [
-        {
-          "time": "04:30",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "05:00",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "04:30"
       ]
     },
     {
-      "id": "exp_007",
-      "slug": "montana-de-colores",
-      "name": "Montaña de Colores (Vinicunca)",
-      "shortName": "Montaña de Colores",
-      "category": "cusco",
-      "currency": "PEN",
-      "agentNetRate": {
-        "adult": 100,
-        "child": 100,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 29.9,
-        "adultPENApprox": 115
-      },
-      "durationLabel": "Full Day",
-      "languages": [
-        "Español",
-        "Inglés"
-      ],
-      "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico",
-        "Guía profesional"
-      ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
-      "schedules": [
-        {
-          "time": "04:30",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        },
-        {
-          "time": "05:00",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
-      ]
-    },
-    {
-      "id": "exp_008",
-      "slug": "montana-palcoyo",
-      "name": "Montaña Palcoyo",
-      "shortName": "Montaña Palcoyo",
-      "category": "cusco",
-      "currency": "PEN",
-      "agentNetRate": {
-        "adult": 160,
-        "child": 160,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 46.9,
-        "adultPENApprox": 180
-      },
-      "durationLabel": "Full Day",
-      "languages": [
-        "Español",
-        "Inglés"
-      ],
-      "includes": [
-        "Recojo de su hotel en Cusco",
-        "Transporte turístico",
-        "1 desayuno",
-        "1 almuerzo buffet",
-        "Ingreso a la Cordillera Palcoyo",
-        "Guía profesional Inglés – Español",
-        "Botiquín de primeros auxilios",
-        "Balón de oxígeno"
-      ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
-      "schedules": [
-        {
-          "time": "04:30",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
-      ]
-    },
-    {
-      "id": "exp_009",
+      "id": "siete-lagunas-ausangate",
       "slug": "siete-lagunas-ausangate",
-      "name": "Siete Lagunas del Ausangate",
-      "shortName": "Siete Lagunas del Ausangate",
-      "category": "cusco",
+      "name": "Siete Lagunas de Ausangate",
+      "shortName": "Siete Lagunas",
+      "category": "Aventura",
       "currency": "PEN",
-      "agentNetRate": {
-        "adult": 300,
-        "child": 300,
-        "guide": 0
-      },
-      "publishedReference": {
-        "adultUSD": 86.9,
-        "adultPENApprox": 330
-      },
-      "durationLabel": "Full Day",
-      "languages": [
-        "Español",
-        "Inglés"
+      "pricePEN": 120,
+      "durationLabel": "04:00 a 18:00",
+      "startLabel": "04:00",
+      "frequency": "Salida diaria",
+      "image": "../assets/img/tours/siete-lagunas-ausangate/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json",
+        "../assets/data/tours-cusco.json"
       ],
+      "description": "Ruta de trekking por el entorno del Ausangate y sus lagunas altoandinas. Recomendada para viajeros con buena condición física.",
       "includes": [
-        "Recojo en Cusco",
-        "Transporte turístico ida y vuelta",
+        "Transporte turístico",
         "Guía profesional",
-        "Desayuno",
-        "Almuerzo",
-        "Botiquín de primeros auxilios",
-        "Balón de oxígeno"
+        "Desayuno y almuerzo básico según operación"
       ],
-      "importantNotes": [
-        "Tarifa neta para agencias autorizadas",
-        "Pago por transferencia bancaria o depósito",
-        "Reserva sujeta a confirmación operativa"
-      ],
+      "notIncluded": "Ticket de ingreso por confirmar.",
       "schedules": [
-        {
-          "time": "04:00",
-          "duration": "Full Day",
-          "pickup": "Hotel en centro histórico",
-          "capacity": 18,
-          "status": "Disponible",
-          "frequency": "Diario"
-        }
+        "04:00"
+      ]
+    },
+    {
+      "id": "guiado-machu-picchu-circuito-2",
+      "slug": "guiado-machu-picchu-circuito-2",
+      "name": "Guiado Machu Picchu Circuito 2",
+      "shortName": "Guiado Circuito 2",
+      "category": "Machu Picchu",
+      "currency": "PEN",
+      "pricePEN": 35,
+      "durationLabel": "2 h 30 min aprox.",
+      "startLabel": "09:00, 10:00 y 11:00",
+      "frequency": "Horarios diarios sujetos a disponibilidad",
+      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json",
+        "../assets/data/agencias-tours.json"
+      ],
+      "description": "Servicio guiado en grupo para recorrer Machu Picchu por el Circuito 2, una de las rutas más completas para conocer la ciudadela.",
+      "includes": [
+        "Guía profesional en Machu Picchu",
+        "Recorrido por Circuito 2",
+        "Asistencia en punto de encuentro"
+      ],
+      "notIncluded": "No incluye entrada a Machu Picchu, tren ni bus Consettur.",
+      "schedules": [
+        "09:00",
+        "10:00",
+        "11:00"
+      ]
+    },
+    {
+      "id": "guiado-machu-picchu-privado",
+      "slug": "guiado-machu-picchu-privado",
+      "name": "Guiado privado Machu Picchu Circuitos 1 o 3",
+      "shortName": "Guiado privado MP",
+      "category": "Machu Picchu",
+      "currency": "PEN",
+      "pricePEN": 170,
+      "priceUnit": "por grupo",
+      "groupMax": 10,
+      "durationLabel": "2 h 30 min aprox.",
+      "startLabel": "A coordinar",
+      "frequency": "Solo privado",
+      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json",
+        "../assets/data/agencias-tours.json"
+      ],
+      "description": "Servicio guiado privado para Circuito 1 o Circuito 3. Ideal para grupos pequeños que desean mayor flexibilidad dentro del horario confirmado.",
+      "includes": [
+        "Guía privado en Machu Picchu",
+        "Circuito 1 o 3 según ticket",
+        "Grupo de 1 a 10 personas"
+      ],
+      "notIncluded": "No incluye entrada a Machu Picchu, tren ni bus Consettur.",
+      "schedules": [
+        "A coordinar"
+      ]
+    },
+    {
+      "id": "machu-picchu-full-day-extranjero",
+      "slug": "machu-picchu-full-day-clasico",
+      "name": "Machu Picchu Full Day para extranjeros",
+      "shortName": "Full Day Machu Picchu",
+      "category": "Machu Picchu",
+      "currency": "USD",
+      "priceUSD": 230,
+      "pricePEN": 777.4,
+      "durationLabel": "Full Day",
+      "startLabel": "Según tren confirmado",
+      "frequency": "Salida diaria sujeta a tickets",
+      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json"
+      ],
+      "description": "Experiencia de un día a Machu Picchu para pasajeros extranjeros, incluyendo traslados, tren Inca Rail, bus Consettur, ingreso oficial y guía.",
+      "includes": [
+        "Traslado ida y retorno a la estación",
+        "Ticket de tren Inca Rail ida y vuelta",
+        "Bus Consettur subida y bajada",
+        "Ingreso a Machu Picchu",
+        "Guía profesional en Machu Picchu"
+      ],
+      "notIncluded": "No incluye alimentación ni servicios no mencionados.",
+      "schedules": [
+        "Según tren confirmado"
+      ]
+    },
+    {
+      "id": "machu-picchu-overnight-extranjero",
+      "slug": "machu-picchu-overnight-clasico",
+      "name": "Machu Picchu Overnight para extranjeros",
+      "shortName": "Machu Picchu Overnight",
+      "category": "Machu Picchu",
+      "currency": "USD",
+      "priceUSD": 260,
+      "pricePEN": 878.8,
+      "durationLabel": "2 días / 1 noche",
+      "startLabel": "Según tren confirmado",
+      "frequency": "Salida diaria sujeta a tickets",
+      "image": "../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json"
+      ],
+      "description": "Programa de 2 días y 1 noche con tren, bus, ingreso, hotel 3 estrellas, desayuno del hotel y guía en Machu Picchu.",
+      "includes": [
+        "Ticket de tren Inca Rail ida y vuelta",
+        "Bus Consettur subida y bajada",
+        "Ingreso a Machu Picchu",
+        "Hotel 3 estrellas en habitación doble",
+        "Desayuno del hotel",
+        "Guía profesional en Machu Picchu"
+      ],
+      "notIncluded": "Tarifa calculada en base a habitación doble, mínimo 2 personas. Si viaja 1 persona, consultar suplemento.",
+      "schedules": [
+        "Según tren confirmado"
+      ]
+    },
+    {
+      "id": "machu-picchu-full-day-peruano",
+      "slug": "machu-picchu-full-day-clasico",
+      "name": "Machu Picchu Full Day para peruanos",
+      "shortName": "Full Day peruano",
+      "category": "Machu Picchu",
+      "currency": "PEN",
+      "pricePEN": 200,
+      "durationLabel": "Full Day",
+      "startLabel": "Según tren confirmado",
+      "frequency": "Salida diaria sujeta a tickets",
+      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json"
+      ],
+      "description": "Full Day Machu Picchu para pasajeros peruanos. Incluye todo el servicio excepto el ticket de tren, que se cotiza aparte como tren turístico o tren local.",
+      "includes": [
+        "Traslado ida y retorno a la estación",
+        "Bus Consettur subida y bajada",
+        "Ingreso a Machu Picchu",
+        "Guía profesional en Machu Picchu"
+      ],
+      "notIncluded": "No incluye ticket de tren. Tren turístico o tren local se cotiza aparte.",
+      "schedules": [
+        "Según tren confirmado"
+      ]
+    },
+    {
+      "id": "machu-picchu-overnight-peruano",
+      "slug": "machu-picchu-overnight-clasico",
+      "name": "Machu Picchu Overnight para peruanos",
+      "shortName": "Overnight peruano",
+      "category": "Machu Picchu",
+      "currency": "PEN",
+      "pricePEN": 265,
+      "durationLabel": "2 días / 1 noche",
+      "startLabel": "Según tren confirmado",
+      "frequency": "Salida diaria sujeta a tickets",
+      "image": "../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/tours-machu-picchu.json"
+      ],
+      "description": "Programa de 2 días y 1 noche para pasajeros peruanos, incluyendo ingreso, bus, hotel 3 estrellas, desayuno del hotel y guía. No incluye tren.",
+      "includes": [
+        "Bus Consettur subida y bajada",
+        "Ingreso a Machu Picchu",
+        "Hotel 3 estrellas en habitación doble",
+        "Desayuno del hotel",
+        "Guía profesional en Machu Picchu"
+      ],
+      "notIncluded": "No incluye ticket de tren. Tarifa calculada en base a habitación doble, mínimo 2 personas. Si viaja 1 persona, consultar suplemento.",
+      "schedules": [
+        "Según tren confirmado"
       ]
     }
   ]
