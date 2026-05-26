@@ -1,11 +1,14 @@
 (() => {
   const SESSION = 'mct_agency_session';
 
-  // URL vigente de tu Web App de Google Apps Script
+  // URL actual de tu Web App de Google Apps Script
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
 
   const $ = (selector) => document.querySelector(selector);
-  const write = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
+  const write = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+  };
 
   const show = (message, type = 'is-error') => {
     const el = $('#loginMessage');
@@ -18,7 +21,6 @@
   async function loginAgency(email, password) {
     const response = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         action: 'loginAgency',
         email,
@@ -34,7 +36,7 @@
       console.error('Respuesta no JSON de Apps Script:', text);
       return {
         ok: false,
-        message: 'Google Apps Script respondió algo inesperado. Revisa la implementación y las ejecuciones del script.'
+        message: 'Apps Script respondió algo inesperado. Revisa la consola del navegador y las ejecuciones del script.'
       };
     }
   }
@@ -65,6 +67,7 @@
 
     try {
       const result = await loginAgency(email, password);
+      console.log('Respuesta login Apps Script:', result);
 
       if (!result.ok) {
         show(result.message || 'No encontramos un acceso activo con esos datos.');
@@ -87,7 +90,7 @@
 
     } catch (error) {
       console.error(error);
-      show('No se pudo conectar con Google Apps Script. Revisa que la URL publicada termine en /exec y tenga acceso para cualquier persona.');
+      show('No se pudo conectar con Google Apps Script. Revisa la URL publicada con acceso para cualquier persona.');
     } finally {
       if (button) {
         button.disabled = false;
