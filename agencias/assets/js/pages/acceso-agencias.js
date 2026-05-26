@@ -1,8 +1,12 @@
 (() => {
   const SESSION = 'mct_agency_session';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec';
+
+  // URL vigente de tu Web App de Google Apps Script
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
+
   const $ = (selector) => document.querySelector(selector);
   const write = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
   const show = (message, type = 'is-error') => {
     const el = $('#loginMessage');
     if (!el) return;
@@ -15,24 +19,60 @@
     const response = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'loginAgency', email, password })
+      body: JSON.stringify({
+        action: 'loginAgency',
+        email,
+        password
+      })
     });
-    return await response.json();
+
+    const text = await response.text();
+
+    try {
+      return JSON.parse(text);
+    } catch (error) {
+      console.error('Respuesta no JSON de Apps Script:', text);
+      return {
+        ok: false,
+        message: 'Google Apps Script respondió algo inesperado. Revisa la implementación y las ejecuciones del script.'
+      };
+    }
   }
 
   $('#loginForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
+
     const email = $('#loginEmail')?.value.trim().toLowerCase();
     const password = $('#loginPassword')?.value;
-    if (!email || !password) { show('Ingresa tu correo y contraseña.'); return; }
-    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) { show('Falta configurar la URL de Google Apps Script.'); return; }
+
+    if (!email || !password) {
+      show('Ingresa tu correo y contraseña.');
+      return;
+    }
+
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) {
+      show('Falta configurar la URL de Google Apps Script.');
+      return;
+    }
+
     const button = event.submitter;
     const originalText = button?.textContent || 'Ingresar';
-    if (button) { button.disabled = true; button.textContent = 'Ingresando...'; }
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Ingresando...';
+    }
+
     try {
       const result = await loginAgency(email, password);
-      if (!result.ok) { show(result.message || 'No encontramos un acceso activo con esos datos.'); return; }
+
+      if (!result.ok) {
+        show(result.message || 'No encontramos un acceso activo con esos datos.');
+        return;
+      }
+
       const agency = result.agency || {};
+
       write(SESSION, {
         agencyId: agency.id || agency.agencyId || '',
         email: agency.correo || agency.email || email,
@@ -42,12 +82,17 @@
         loggedAt: new Date().toISOString(),
         source: 'google-sheets'
       });
+
       window.location.href = './index.html';
+
     } catch (error) {
       console.error(error);
-      show('No se pudo conectar con Google Apps Script. Revisa la URL publicada con acceso para cualquier persona.');
+      show('No se pudo conectar con Google Apps Script. Revisa que la URL publicada termine en /exec y tenga acceso para cualquier persona.');
     } finally {
-      if (button) { button.disabled = false; button.textContent = originalText; }
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
     }
   });
 })();
