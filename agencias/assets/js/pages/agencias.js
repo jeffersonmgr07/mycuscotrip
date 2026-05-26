@@ -219,6 +219,7 @@
       id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       serviceId: service.id,
       serviceName: service.name,
+      serviceShortName: service.shortName || service.name,
       travelDate: $('#serviceDate').value,
       serviceTime: $('#serviceTime')?.value || '',
       pax,
@@ -279,8 +280,8 @@
     $('#subtotalAmount').textContent = money(subtotal);
     $('#feeAmount').textContent = money(fee);
     $('#grandTotal').textContent = money(total);
-    $('#toolbarCount').textContent = state.cart.length;
-    $('#toolbarTotal').textContent = money(total);
+    if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
+    if ($('#toolbarTotal')) $('#toolbarTotal').textContent = money(total);
   }
 
   function removeItem(index) {
@@ -304,7 +305,7 @@
     const order = {
       code: makeCode(),
       createdAt: new Date().toISOString(),
-      status: 'Pendiente de pago',
+      status: 'Pendiente',
       currency: state.currency,
       exchangeRate: state.exchangeRate,
       subtotal: Number(subtotal.toFixed(2)),
@@ -382,6 +383,7 @@
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
+        <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(order.code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
     `;
@@ -490,8 +492,8 @@
 
   function makeCode() {
     const d = new Date();
-    const date = d.toISOString().slice(2, 10).replace(/-/g, '');
-    return `MCT-${date}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    const date = d.toISOString().slice(0, 10).replace(/-/g, '');
+    return `${date}${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
   }
 
   function formatDate(iso) {

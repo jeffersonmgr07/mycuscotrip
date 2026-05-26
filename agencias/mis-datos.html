@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mis datos | Portal de agencias My Cusco Trip</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="../public/favicon.ico" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <link href="../assets/css/components.css" rel="stylesheet" />
+  <link href="../assets/css/header.css" rel="stylesheet" />
+  <link href="../assets/css/footer.css" rel="stylesheet" />
+  <link href="../assets/css/responsive.css" rel="stylesheet" />
+  <link href="./assets/css/agencias.css" rel="stylesheet" />
+</head>
+<body class="agency-page">
+  <div id="header-container"></div>
+  <main class="agency-main" id="mis-datos">
+    <section class="agency-intro-bar" aria-label="Mis datos">
+      <div>
+        <p class="eyebrow">Portal de agencias</p>
+        <h1>Mis datos</h1>
+        <p>Actualiza tus datos de contacto o cambia tu contraseña.</p>
+      </div>
+      <div class="agency-controls">
+        <a class="agency-button agency-button--ghost" href="./index.html">Nueva reserva</a>
+        <a class="agency-button agency-button--ghost" href="./ordenes.html">Ver mis órdenes</a>
+      </div>
+    </section>
+
+    <section class="profile-card">
+      <h2>Datos de contacto</h2>
+      <p class="dialog-help">El correo de acceso no se puede modificar desde esta sección. Para cambiarlo, contáctanos.</p>
+      <form id="profileForm" class="form-grid">
+        <label class="field"><span>Agencia</span><input id="profileCompany" disabled /></label>
+        <label class="field"><span>Correo de acceso</span><input id="profileEmail" disabled /></label>
+        <label class="field"><span>Celular / WhatsApp</span><input id="profilePhone" /></label>
+        <label class="field"><span>Página web</span><input id="profileWeb" /></label>
+        <div class="full dialog-actions"><button type="submit" class="agency-button agency-button--primary">Guardar cambios</button></div>
+      </form>
+      <div id="profileMessage" class="form-message" hidden></div>
+    </section>
+
+    <section class="profile-card">
+      <h2>Cambiar contraseña</h2>
+      <form id="passwordForm" class="form-grid">
+        <label class="field"><span>Contraseña actual</span><input id="currentPassword" type="password" required /></label>
+        <label class="field"><span>Nueva contraseña</span><input id="newPassword" type="password" required minlength="8" /></label>
+        <label class="field full"><span>Confirmar nueva contraseña</span><input id="confirmPassword" type="password" required minlength="8" /></label>
+        <p class="dialog-help full">La contraseña debe tener mínimo 8 caracteres, una letra, un número y un carácter especial.</p>
+        <div class="full dialog-actions"><button type="submit" class="agency-button agency-button--primary">Actualizar contraseña</button></div>
+      </form>
+      <div id="passwordMessage" class="form-message" hidden></div>
+    </section>
+  </main>
+  <div id="footer-container"></div>
+  <script src="../assets/js/components/header.js"></script>
+  <script src="../assets/js/components/footer.js"></script>
+  <script src="./assets/js/pages/mis-datos.js" defer></script>
+  <script>
+    async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); if (!res.ok) throw new Error(name); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch (error) { console.warn('No se pudo cargar componente', name, error); } }
+    document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header', 'header-container'); loadAgencyComponent('footer', 'footer-container'); });
+  </script>
+</body>
+</html>

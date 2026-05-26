@@ -38,12 +38,24 @@
   }
 
   function normalizeStatus(order) {
-    const raw = String(order.estadoPago || order.status || 'Pendiente de pago').toLowerCase();
-    if (raw.includes('pag')) return 'pagada';
+    const raw = String(order.estadoPago || order.status || 'Pendiente').toLowerCase();
+    if (raw.includes('pag')) return 'pagado';
+    if (raw.includes('venc')) return 'vencido';
     const due = order.fechaVencimientoPago || order.paymentDueAt || '';
-    if (due && new Date(due).getTime() < Date.now() && !raw.includes('pag')) return 'vencida';
-    if (raw.includes('venc')) return 'vencida';
+    if (due && new Date(due).getTime() < Date.now()) return 'vencido';
     return 'pendiente';
+  }
+
+  function statusLabel(status) {
+    return { pendiente: 'Pendiente', vencido: 'Vencido', pagado: 'Pagado' }[status] || 'Pendiente';
+  }
+
+  function isExpiredMoreThanTwoDays(order) {
+    const status = normalizeStatus(order);
+    if (status === 'pagado') return false;
+    const due = order.fechaVencimientoPago || order.paymentDueAt || '';
+    const dueTime = due ? new Date(due).getTime() : 0;
+    return dueTime && dueTime < Date.now() - (48 * 60 * 60 * 1000);
   }
 
   function parseJsonSafe(value, fallback) {
@@ -66,10 +78,18 @@
     return lead && typeof lead === 'object' && !Array.isArray(lead) ? lead : {};
   }
 
+  function compactServiceName(name = '') {
+    const clean = String(name || 'Servicio').replace(/\s+/g, ' ').trim();
+    return clean.split(' + ')[0].split(' - ')[0] || clean;
+  }
+
   function servicesText(order) {
     const items = getOrderItems(order);
-    if (!items.length) return 'Sin detalle visible';
-    return items.map((item) => `${item.serviceName || item.title || item.name || 'Servicio'} (${item.pax || 1} pax)`).join(', ');
+    if (!items.length) return '<span>Sin detalle visible</span>';
+    return items.map((item) => {
+      const name = item.serviceShortName || compactServiceName(item.serviceName || item.title || item.name || 'Servicio');
+      return `<span class="service-line">${escapeHtml(name)} <small>(${Number(item.pax || 1)} PAXS)</small></span>`;
+    }).join('');
   }
 
   function itemUnitPrice(item, currency) {
@@ -107,7 +127,8 @@
 
   function renderOrders() {
     const filter = $('#statusFilter').value;
-    const filtered = orders.filter((order) => !filter || normalizeStatus(order) === filter || normalizeStatus(order).includes(filter));
+    const visibleOrders = orders.filter((order) => !isExpiredMoreThanTwoDays(order));
+    const filtered = visibleOrders.filter((order) => !filter || normalizeStatus(order) === filter || normalizeStatus(order).includes(filter));
     $('#ordersCount').textContent = filtered.length;
     if (!filtered.length) {
       $('#ordersMessage').hidden = false;
@@ -122,16 +143,16 @@
       const status = normalizeStatus(order);
       const total = order.montoComisionado || order.total || 0;
       const currency = order.moneda || order.currency || 'PEN';
-      const code = order.codigoOrden || order.code || '';
+      const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
       return `
         <tr>
-          <td><strong>${escapeHtml(code)}</strong></td>
-          <td>${formatDateTime(order.fechaOrden || order.createdAt)}</td>
-          <td><span class="status-pill is-${status}">${status}</span></td>
-          <td><strong>${money(total, currency)}</strong></td>
-          <td>${escapeHtml(servicesText(order))}</td>
-          <td>
-            <button type="button" class="agency-button agency-button--primary agency-button--small" data-order-detail="${index}">Ver detalles</button>
+          <td class="order-code-cell"><strong>${escapeHtml(code)}</strong></td>
+          <td class="order-date-cell">${formatDateTime(order.fechaOrden || order.createdAt)}</td>
+          <td><span class="status-pill is-${status}">${statusLabel(status)}</span></td>
+          <td class="order-services-cell">${servicesText(order)}</td>
+          <td class="order-total-cell"><strong>${money(total, currency)}</strong></td>
+          <td class="order-action-cell">
+            <button type="button" class="agency-button agency-button--primary agency-button--small order-detail-button" data-order-detail="${index}">Ver detalles</button>
           </td>
         </tr>`;
     }).join('');
@@ -194,8 +215,8 @@
 
   function orderDetailHTML(order) {
     const currency = order.moneda || order.currency || 'PEN';
-    const code = order.codigoOrden || order.code || '';
-    const status = order.estadoPago || order.status || 'Pendiente de pago';
+    const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
+    const status = statusLabel(normalizeStatus(order));
     const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || 'Agencia afiliada';
     return `
       <div id="orderPrintArea" class="order-print-area">
@@ -226,6 +247,7 @@
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
+        <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir detalle</button>
       </div>`;
   }

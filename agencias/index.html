@@ -32,8 +32,9 @@
         <label><span>Moneda</span><select id="currencySelect"><option value="PEN">Soles (S/)</option><option value="USD">Dólares (USD)</option></select></label>
         <input id="exchangeRateInput" type="hidden" value="3.38" />
         <input id="searchInput" type="hidden" value="" />
-        <span class="toolbar-total agency-total-mini"><span id="toolbarCount">0</span> servicios · <span id="toolbarTotal">S/ 0.00</span></span>
         <a class="agency-button agency-button--ghost" href="./ordenes.html">Ver mis órdenes</a>
+        <a class="agency-button agency-button--ghost" href="./registrar-pago.html">Registrar pago</a>
+        <a class="agency-button agency-button--ghost" href="./mis-datos.html">Mis datos</a>
       </div>
     </section>
 
@@ -97,8 +98,8 @@
           <label class="field full"><span>Observaciones</span><textarea id="bookingNotes" rows="2" placeholder="Horario preferido, referencia del hotel, restricciones alimentarias, etc."></textarea></label>
         </div>
         <details class="tourists-box" id="passengersDetails">
-          <summary>Datos opcionales de pasajeros adicionales</summary>
-          <p class="dialog-help">Puedes desplegar esta sección para agregar datos de los pasajeros 2 en adelante.</p>
+          <summary>Datos de los demás pasajeros <span>(opcional)</span></summary>
+          <p class="dialog-help">Puedes abrir esta sección para agregar datos de los pasajeros 2 en adelante.</p>
           <div id="additionalPassengers"></div>
         </details>
         <div class="dialog-actions">

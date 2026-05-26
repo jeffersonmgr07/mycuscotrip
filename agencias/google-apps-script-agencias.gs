@@ -15,6 +15,7 @@
 const SPREADSHEET_ID = '106y_7HTjHpLknivNSeAj1Z6AEBhLvw5hsFqa1GgrGaE';
 const SHEET_AGENCIES = 'Agencias';
 const SHEET_ORDERS = 'Ordenes';
+const SHEET_PAYMENTS = 'Pagos';
 const BRAND_NAME = 'My Cusco Trip';
 const SUPPORT_EMAIL = 'reservas@mycuscotrip.com';
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
@@ -31,6 +32,10 @@ const ORDER_HEADERS = [
   'subtotalNeto','montoComisionado','comisionPaypalBanco','fechaVencimientoPago','serviciosJson','titularJson','pasajerosJson','observaciones'
 ];
 
+const PAYMENT_HEADERS = [
+  'fechaRegistro','codigoOrden','agenciaId','agenciaNombre','correoAgencia','monto','moneda','mensaje','voucherNombre','voucherUrl','estado'
+];
+
 function doPost(e) {
   try {
     const body = parseBody_(e);
@@ -39,6 +44,10 @@ function doPost(e) {
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
     if (action === 'createOrder') return createOrder_(body.payload || body.order || body);
     if (action === 'listOrders') return listOrders_(body.email || body.correo || '', body.agencyId || '');
+    if (action === 'getAgencyProfile') return getAgencyProfile_(body.email || body.correo || '', body.agencyId || '');
+    if (action === 'updateAgencyProfile') return updateAgencyProfile_(body.payload || body.profile || body);
+    if (action === 'changePassword') return changePassword_(body.payload || body);
+    if (action === 'registerPayment') return registerPayment_(body.payload || body.payment || body);
     return json_({ ok:false, message:'Acción no reconocida: ' + action });
   } catch (err) {
     return json_({ ok:false, message: err && err.message ? err.message : String(err) });
@@ -174,7 +183,7 @@ function createOrder_(order) {
     agenciaId: account.agencyId || '',
     agenciaNombre: account.companyName || '',
     correoAgencia: account.email || '',
-    estadoPago: order.status || 'Pendiente de pago',
+    estadoPago: order.status || 'Pendiente',
     moneda: order.currency || '',
     tipoCambio: order.exchangeRate || '',
     subtotalNeto: order.subtotal || '',
@@ -211,6 +220,137 @@ function listOrders_(email, agencyId) {
     }
   }
   return json_({ ok:true, orders:orders });
+}
+
+function getAgencyProfile_(email, agencyId) {
+  validateConfig_();
+  const sheet = getSheet_(SHEET_AGENCIES, AGENCY_HEADERS);
+  const found = findAgencyRow_(sheet, email, agencyId);
+  if (found.row < 1) return json_({ ok:false, message:'No encontramos la agencia.' });
+  const data = found.data;
+  return json_({ ok:true, profile:{
+    id:data.id,
+    estado:data.estado,
+    pais:data.pais,
+    tipoFiscal:data.tipoFiscal,
+    numeroFiscal:data.numeroFiscal,
+    razonSocial:data.razonSocial,
+    nombreComercial:data.nombreComercial,
+    representanteNombres:data.representanteNombres,
+    representanteApellidos:data.representanteApellidos,
+    tipoDocumento:data.tipoDocumento,
+    numeroDocumento:data.numeroDocumento,
+    celular:data.celular,
+    correo:data.correo,
+    web:data.web
+  }});
+}
+
+function updateAgencyProfile_(payload) {
+  validateConfig_();
+  const sheet = getSheet_(SHEET_AGENCIES, AGENCY_HEADERS);
+  const account = payload.account || {};
+  const found = findAgencyRow_(sheet, account.email || payload.email || '', account.agencyId || payload.agencyId || '');
+  if (found.row < 1) return json_({ ok:false, message:'No encontramos la agencia.' });
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+  setCellByHeader_(sheet, found.row, headers, 'celular', payload.celular || '');
+  setCellByHeader_(sheet, found.row, headers, 'web', payload.web || '');
+  return json_({ ok:true, message:'Datos actualizados correctamente.' });
+}
+
+function changePassword_(payload) {
+  validateConfig_();
+  const sheet = getSheet_(SHEET_AGENCIES, AGENCY_HEADERS);
+  const account = payload.account || {};
+  const found = findAgencyRow_(sheet, account.email || payload.email || '', account.agencyId || payload.agencyId || '');
+  if (found.row < 1) return json_({ ok:false, message:'No encontramos la agencia.' });
+  const data = found.data;
+  const currentPassword = String(payload.currentPassword || '');
+  const newPassword = String(payload.newPassword || '');
+  const incoming = sha256_(String(data.passwordSalt || '') + ':' + currentPassword);
+  if (incoming !== String(data.passwordHash || '')) return json_({ ok:false, message:'La contraseña actual no es correcta.' });
+  const passwordError = validatePassword_(newPassword);
+  if (passwordError) return json_({ ok:false, message: passwordError });
+  const salt = Utilities.getUuid();
+  const hash = sha256_(salt + ':' + newPassword);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+  setCellByHeader_(sheet, found.row, headers, 'passwordSalt', salt);
+  setCellByHeader_(sheet, found.row, headers, 'passwordHash', hash);
+  return json_({ ok:true, message:'Contraseña actualizada correctamente.' });
+}
+
+function registerPayment_(payment) {
+  validateConfig_();
+  const sheet = getSheet_(SHEET_PAYMENTS, PAYMENT_HEADERS);
+  const account = payment.account || {};
+  const code = String(payment.code || '').trim();
+  if (!code) return json_({ ok:false, message:'Código de orden requerido.' });
+  let fileUrl = '';
+  let fileName = '';
+  if (payment.voucher && payment.voucher.base64) {
+    fileName = String(payment.voucher.name || ('voucher-' + code + '.jpg')).replace(/[\\/:*?"<>|]/g, '-');
+    const bytes = Utilities.base64Decode(String(payment.voucher.base64).split(',').pop());
+    const blob = Utilities.newBlob(bytes, payment.voucher.mimeType || 'application/octet-stream', fileName);
+    const file = DriveApp.createFile(blob);
+    file.setSharing(DriveApp.Access.PRIVATE, DriveApp.Permission.VIEW);
+    fileUrl = file.getUrl();
+  }
+  appendObjectRow_(sheet, {
+    fechaRegistro: new Date(),
+    codigoOrden: code,
+    agenciaId: account.agencyId || '',
+    agenciaNombre: account.companyName || '',
+    correoAgencia: account.email || '',
+    monto: payment.amount || '',
+    moneda: payment.currency || '',
+    mensaje: payment.message || '',
+    voucherNombre: fileName,
+    voucherUrl: fileUrl,
+    estado: 'Recibido'
+  });
+  sendPaymentEmail_(payment, fileUrl, fileName);
+  return json_({ ok:true, message:'Comprobante recibido. Validaremos el pago en máximo 60 minutos.' });
+}
+
+function sendPaymentEmail_(payment, fileUrl, fileName) {
+  const account = payment.account || {};
+  const subject = 'Comprobante de pago ' + (payment.code || '') + ' - ' + (account.companyName || 'Agencia');
+  const htmlBody = '<div style="font-family:Arial,sans-serif;color:#20352b;line-height:1.55;max-width:620px;margin:auto;padding:20px;background:#edf3ef">' +
+    '<div style="background:#fff;border-radius:18px;padding:22px;border:1px solid #dce8df">' +
+    '<h2 style="color:#062803;margin-top:0">Comprobante de pago recibido</h2>' +
+    '<p><strong>Orden:</strong> ' + escapeHtml_(payment.code || '') + '</p>' +
+    '<p><strong>Agencia:</strong> ' + escapeHtml_(account.companyName || '') + '</p>' +
+    '<p><strong>Correo:</strong> ' + escapeHtml_(account.email || '') + '</p>' +
+    '<p><strong>Monto declarado:</strong> ' + escapeHtml_(moneyEmail_(payment.amount || 0, payment.currency || 'PEN')) + '</p>' +
+    '<p><strong>Mensaje:</strong> ' + escapeHtml_(payment.message || '') + '</p>' +
+    (fileUrl ? '<p><strong>Voucher:</strong> <a href="' + fileUrl + '">' + escapeHtml_(fileName || 'Ver archivo') + '</a></p>' : '') +
+    '</div></div>';
+  MailApp.sendEmail({ to: SUPPORT_EMAIL, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: account.email || SUPPORT_EMAIL });
+}
+
+function findAgencyRow_(sheet, email, agencyId) {
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return { row:-1, data:null };
+  const headers = values[0].map(String);
+  const emailIndex = headers.indexOf('correo');
+  const agencyIndex = headers.indexOf('id');
+  const normalizedEmail = String(email || '').trim().toLowerCase();
+  const normalizedAgency = String(agencyId || '').trim();
+  for (let i=1; i<values.length; i++) {
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
+      const data = {};
+      headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
+      return { row:i+1, data:data };
+    }
+  }
+  return { row:-1, data:null };
+}
+
+function setCellByHeader_(sheet, row, headers, headerName, value) {
+  const idx = headers.indexOf(headerName);
+  if (idx >= 0) sheet.getRange(row, idx + 1).setValue(value);
 }
 
 function sendOrderEmail_(order) {
