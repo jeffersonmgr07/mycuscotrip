@@ -219,7 +219,7 @@
         lastName: $('#leadLastName').value.trim(),
         docType: $('#leadDocType').value,
         docNumber: $('#leadDocNumber').value.trim(),
-        phone: $('#leadPhone').value.trim()
+        phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
       groupMode: $('#groupMode').value,
       pickupPoint: $('#pickupPoint').value.trim(),
@@ -320,16 +320,18 @@
   }
 
   async function sendToSheet(action, payload) {
-    if (!CONFIG.googleScriptUrl) return;
+    if (!CONFIG.googleScriptUrl || CONFIG.googleScriptUrl.includes('PEGA_AQUI')) return { ok:false, message:'Falta configurar Google Apps Script.' };
     try {
-      await fetch(CONFIG.googleScriptUrl, {
+      const response = await fetch(CONFIG.googleScriptUrl, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action, payload })
       });
+      const text = await response.text();
+      try { return JSON.parse(text); } catch { return { ok:true, message:'Solicitud enviada' }; }
     } catch (error) {
       console.warn('No se pudo enviar a Google Sheets', error);
+      return { ok:false, message:error.message };
     }
   }
 

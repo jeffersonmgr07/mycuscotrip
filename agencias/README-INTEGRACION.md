@@ -72,7 +72,7 @@ En tu Google Sheet:
 3. Cambia:
 
 ```js
-const SPREADSHEET_ID = 'PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET';
+const SPREADSHEET_ID = '106y_7HTjHpLknivNSeAj1Z6AEBhLvw5hsFqa1GgrGaE'; // vacío si el script está creado desde la hoja con Extensiones > Apps Script
 ```
 
 por el ID real de tu hoja.
@@ -106,7 +106,7 @@ googleScriptUrl: ''
 y pega tu URL:
 
 ```js
-googleScriptUrl: 'https://script.google.com/macros/s/XXXXX/exec'
+googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec'
 ```
 
 Con eso, los registros y órdenes se enviarán a Google Sheets.
@@ -133,3 +133,52 @@ Campos útiles:
 - `notIncluded`: entradas o pagos no incluidos.
 - `image`: imagen cover.
 - `jsonSources`: archivos JSON desde donde se intentará cargar el itinerario detallado.
+
+
+## Verificación de correo para agencias
+
+Esta versión envía automáticamente un correo de verificación cuando una agencia se registra.
+
+Flujo:
+1. La agencia completa `/agencias/registro.html`.
+2. Google Apps Script guarda la agencia en la hoja `Agencias` con `estado = Pendiente` y `emailVerificado = No`.
+3. Apps Script envía un correo al email de acceso con un botón para verificar.
+4. Al hacer clic, la columna `emailVerificado` cambia a `Sí`.
+5. Tú revisas la agencia y cambias manualmente `estado` a `Aprobado`.
+6. Recién entonces podrá ingresar en `/agencias/login.html`.
+
+Columnas adicionales necesarias en `Agencias`:
+
+```txt
+emailVerificado
+verificationToken
+fechaVerificacion
+```
+
+No necesitas agregarlas manualmente si usas el Apps Script incluido: el script las crea automáticamente si no existen.
+
+### Importante
+Después de pegar el nuevo Apps Script, debes ir a:
+
+**Implementar → Gestionar implementaciones → Editar → Nueva versión → Implementar**
+
+La primera vez que el script envíe correos, Google pedirá autorización para usar `MailApp`.
+
+
+## URL de Apps Script configurada
+
+La URL ya quedó pegada en los archivos JavaScript del portal:
+
+```txt
+https://script.google.com/macros/s/AKfycbwu0pXSr_rnfeG_L6oc2lzdgj3iJ_HrgeifVJ7WyRLFUWG_UW548oMM2UpDgNlq5pD7/exec
+```
+
+Archivos actualizados:
+
+```txt
+agencias/assets/js/pages/agencias.js
+agencias/assets/js/pages/acceso-agencias.js
+agencias/assets/js/pages/registro-agencias.js
+```
+
+Nota importante: esa URL es la URL del Web App de Apps Script, no el ID de Google Sheets. En esta versión el Apps Script puede funcionar sin ID si fue creado desde la hoja de cálculo mediante **Extensiones > Apps Script**. Si el Apps Script fue creado como proyecto independiente, debes pegar el ID real de Google Sheets en `SPREADSHEET_ID`.
