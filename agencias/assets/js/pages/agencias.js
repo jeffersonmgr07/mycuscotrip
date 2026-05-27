@@ -23,6 +23,24 @@
     exchangeRate: Number(localStorage.getItem('mct_exchange_rate') || CONFIG.defaultExchangeRate)
   };
 
+
+
+  const COUNTRIES = [
+    'Afganistán','Albania','Alemania','Andorra','Angola','Antigua y Barbuda','Arabia Saudita','Argelia','Argentina','Armenia','Australia','Austria','Azerbaiyán','Bahamas','Bangladés','Barbados','Baréin','Bélgica','Belice','Benín','Bielorrusia','Birmania / Myanmar','Bolivia','Bosnia y Herzegovina','Botsuana','Brasil','Brunéi','Bulgaria','Burkina Faso','Burundi','Bután','Cabo Verde','Camboya','Camerún','Canadá','Catar','Chad','Chile','China','Chipre','Colombia','Comoras','Corea del Norte','Corea del Sur','Costa de Marfil','Costa Rica','Croacia','Cuba','Dinamarca','Dominica','Ecuador','Egipto','El Salvador','Emiratos Árabes Unidos','Eritrea','Eslovaquia','Eslovenia','España','Estados Unidos','Estonia','Esuatini','Etiopía','Filipinas','Finlandia','Fiyi','Francia','Gabón','Gambia','Georgia','Ghana','Granada','Grecia','Guatemala','Guinea','Guinea-Bisáu','Guinea Ecuatorial','Guyana','Haití','Honduras','Hungría','India','Indonesia','Irak','Irán','Irlanda','Islandia','Islas Marshall','Islas Salomón','Israel','Italia','Jamaica','Japón','Jordania','Kazajistán','Kenia','Kirguistán','Kiribati','Kuwait','Laos','Lesoto','Letonia','Líbano','Liberia','Libia','Liechtenstein','Lituania','Luxemburgo','Macedonia del Norte','Madagascar','Malasia','Malaui','Maldivas','Malí','Malta','Marruecos','Mauricio','Mauritania','México','Micronesia','Moldavia','Mónaco','Mongolia','Montenegro','Mozambique','Namibia','Nauru','Nepal','Nicaragua','Níger','Nigeria','Noruega','Nueva Zelanda','Omán','Países Bajos','Pakistán','Palaos','Palestina','Panamá','Papúa Nueva Guinea','Paraguay','Perú','Polonia','Portugal','Reino Unido','República Centroafricana','República Checa','República del Congo','República Democrática del Congo','República Dominicana','Ruanda','Rumanía','Rusia','Samoa','San Cristóbal y Nieves','San Marino','San Vicente y las Granadinas','Santa Lucía','Santo Tomé y Príncipe','Senegal','Serbia','Seychelles','Sierra Leona','Singapur','Siria','Somalia','Sri Lanka','Sudáfrica','Sudán','Sudán del Sur','Suecia','Suiza','Surinam','Tailandia','Tanzania','Tayikistán','Timor Oriental','Togo','Tonga','Trinidad y Tobago','Túnez','Turkmenistán','Turquía','Tuvalu','Ucrania','Uganda','Uruguay','Uzbekistán','Vanuatu','Vaticano','Venezuela','Vietnam','Yemen','Yibuti','Zambia','Zimbabue'
+  ];
+
+  function countryOptions(selected = '') {
+    const cleanSelected = String(selected || '').trim();
+    return '<option value="">Selecciona país</option>' + COUNTRIES.map((country) => `<option value="${escapeHtml(country)}" ${country === cleanSelected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
+  }
+
+  function hydrateCountrySelects(root = document) {
+    $$('[data-country-select]', root).forEach((select) => {
+      const current = select.value;
+      select.innerHTML = countryOptions(current);
+    });
+  }
+
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
@@ -98,6 +116,7 @@
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
 
+    hydrateCountrySelects();
     bindEvents();
     await loadCatalog();
     renderExperiences();
@@ -196,6 +215,7 @@
     renderScheduleOptions(service);
     renderEntryTickets(service);
     renderAdditionalPassengers();
+    hydrateCountrySelects($('#reserveModal'));
     $('#reserveModal').classList.add('show');
   }
 
@@ -253,17 +273,18 @@
     for (let i = 2; i <= pax; i++) {
       box.insertAdjacentHTML('beforeend', `
         <div class="passenger-extra" data-passenger-extra>
-          <strong>Pasajero ${i}</strong>
+          <div class="passenger-extra__title">Pasajero ${i}</div>
           <div class="form-grid">
             <label class="field"><span>Nombres</span><input data-pax="firstName" /></label>
             <label class="field"><span>Apellidos</span><input data-pax="lastName" /></label>
             <label class="field"><span>Tipo de documento</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
             <label class="field"><span>Número de documento</span><input data-pax="docNumber" /></label>
-            <label class="field full"><span>Nacionalidad</span><input data-pax="nationality" placeholder="Ej. Perú, México, Brasil" /></label>
+            <label class="field full"><span>Nacionalidad</span><select data-pax="nationality" data-country-select></select></label>
           </div>
         </div>
       `);
     }
+    hydrateCountrySelects(box);
   }
 
   function addToCart(event) {
@@ -439,14 +460,19 @@
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div>
-            <p class="eyebrow">Orden de reserva</p>
-            <h2>${escapeHtml(order.code)}</h2>
-            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
+          <div class="print-order-logo-row print-only">
+            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
           </div>
-          <div class="print-order-status">
-            <span>${escapeHtml(order.status)}</span>
-            <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+          <div class="print-order-title-row">
+            <div>
+              <p class="eyebrow">Orden de reserva</p>
+              <h2>${escapeHtml(order.code)}</h2>
+              <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
+            </div>
+            <div class="print-order-status is-pendiente">
+              <span>${escapeHtml(order.status)}</span>
+              <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+            </div>
           </div>
         </div>
         <div class="info-note"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.</div>

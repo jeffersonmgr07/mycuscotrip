@@ -56,6 +56,12 @@
     return { pendiente: 'Pendiente', vencido: 'Vencido', pagado: 'Pagado' }[status] || 'Pendiente';
   }
 
+  function statusDateText(order, status) {
+    if (status === 'vencido') return 'Venció: ' + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
+    if (status === 'pagado') return order.fechaPagoPaypal ? ('Pagado: ' + formatDateTime(order.fechaPagoPaypal)) : 'Pago confirmado';
+    return 'Vence: ' + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
+  }
+
   function isExpiredMoreThanTwoDays(order) {
     const status = normalizeStatus(order);
     if (status === 'pagado') return false;
@@ -240,19 +246,25 @@
   function orderDetailHTML(order) {
     const currency = order.moneda || order.currency || 'PEN';
     const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
-    const status = statusLabel(normalizeStatus(order));
+    const statusKey = normalizeStatus(order);
+    const status = statusLabel(statusKey);
     const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || 'Agencia afiliada';
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div>
-            <p class="eyebrow">Detalle de orden</p>
-            <h2>${escapeHtml(code)}</h2>
-            <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
+          <div class="print-order-logo-row print-only">
+            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
           </div>
-          <div class="print-order-status">
-            <span>${escapeHtml(status)}</span>
-            <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
+          <div class="print-order-title-row">
+            <div>
+              <p class="eyebrow">Código de orden</p>
+              <h2>${escapeHtml(code)}</h2>
+              <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
+            </div>
+            <div class="print-order-status is-${statusKey}">
+              <span>${escapeHtml(status)}</span>
+              <small>${escapeHtml(statusDateText(order, statusKey))}</small>
+            </div>
           </div>
         </div>
         <div class="info-note"><strong>Importante:</strong> revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.</div>
@@ -272,7 +284,7 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
         <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir detalle</button>
+        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir orden</button>
       </div>`;
   }
 

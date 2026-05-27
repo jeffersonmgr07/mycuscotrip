@@ -160,3 +160,165 @@
 #reserveForm .field select,#reserveForm .field input,#reserveForm .field textarea{min-height:45px;}
 #leadPhoneCountry,#leadPhone{font:inherit!important;border-radius:14px!important;}
 @media(max-width:760px){.entry-tickets-box__head{display:block}.entry-tickets-box__head small{display:block;text-align:left;margin-top:6px}.dialog-actions .agency-button{width:100%;}}
+
+/* Correcciones puntuales solicitadas: no modificar funcionalidad */
+/* Restaurar fondo del login */
+.agency-login-page{
+  background:
+    linear-gradient(180deg,rgba(245,250,246,.84),rgba(255,255,255,.92)),
+    url('../../../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg'),
+    url('../../../assets/img/tours/machu-picchu-full-day/cover.jpg')!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-attachment:fixed!important;
+}
+.agency-login-page .auth-card{
+  background:rgba(255,255,255,.86)!important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-color:rgba(255,255,255,.55)!important;
+}
+.agency-login-page .agency-main--narrow{min-height:calc(100vh - 180px);display:grid;align-items:center;}
+
+/* Restaurar estilo oscuro de cabeceras del portal */
+.agency-intro-bar{
+  background:linear-gradient(135deg,#062803,#053220)!important;
+  color:#fff!important;
+  border-color:rgba(255,255,255,.16)!important;
+  box-shadow:0 20px 42px rgba(6,40,3,.18)!important;
+}
+.agency-intro-bar .eyebrow{color:#f2d99d!important;}
+.agency-intro-bar h1,
+.agency-intro-bar h1#agencyNameHeading{color:#fff!important;}
+.agency-intro-bar p,
+.agency-intro-bar p#sessionWelcome,
+.agency-intro-bar #ordersAgencyName{color:rgba(255,255,255,.86)!important;}
+.agency-intro-bar .agency-button--ghost,
+.agency-intro-bar .currency-control select{
+  background:rgba(255,255,255,.94)!important;
+  color:#062803!important;
+  border-color:rgba(255,255,255,.5)!important;
+}
+.agency-controls__row--buttons .agency-button{
+  font-size:.9rem!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
+
+/* Quitar aire entre aviso y título; alinear la orden con las cards */
+.info-note{margin-bottom:8px!important;}
+.info-note + .portal-layout{margin-top:0!important;}
+#experiencias{margin-top:0!important;padding-top:0!important;}
+#experiencias .section-title,.section-title--simple{margin-top:0!important;margin-bottom:12px!important;}
+@media(min-width:1021px){.checkout{margin-top:88px!important;}}
+@media(max-width:1020px){.checkout{margin-top:0!important;}}
+
+/* Primera fila del modal de reserva: fecha, hora y pasajeros en una sola línea en PC */
+.reserve-main-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px;
+  grid-column:1/-1;
+}
+@media(max-width:760px){.reserve-main-row{grid-template-columns:1fr;}}
+
+/* Subtítulos internos del modal */
+.form-subtitle{
+  display:block!important;
+  width:100%!important;
+  background:linear-gradient(135deg,#0b6b49,#0f7b55)!important;
+  color:#fff!important;
+  border-radius:14px!important;
+  padding:12px 14px!important;
+  font-weight:800!important;
+  font-size:1rem!important;
+  margin-top:6px!important;
+  border:0!important;
+}
+
+/* Datos de los demás pasajeros */
+.tourists-box summary{
+  justify-content:flex-start!important;
+  gap:6px!important;
+}
+.tourists-box summary span{
+  margin-left:0!important;
+}
+.tourists-box summary::after{margin-left:auto!important;}
+.passenger-extra__title{
+  display:block;
+  width:100%;
+  background:linear-gradient(135deg,#062803,#053220);
+  color:#fff;
+  border-radius:12px;
+  padding:9px 12px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+/* Estados de orden en modal y formato de impresión */
+.print-order-logo-row{display:none!important;}
+.print-order-head{
+  background:linear-gradient(135deg,#062803,#053220)!important;
+  color:#fff!important;
+  border-radius:18px!important;
+  padding:16px 18px!important;
+  margin-bottom:16px!important;
+  display:block!important;
+}
+.print-order-title-row{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:flex-start!important;
+  gap:18px!important;
+}
+.print-order-title-row h2{margin:0 0 5px!important;color:#fff!important;}
+.print-order-title-row p{margin:0;color:rgba(255,255,255,.88)!important;}
+.print-order-status{
+  width:max-content!important;
+  min-width:0!important;
+  max-width:280px!important;
+  margin-left:auto!important;
+  border-radius:14px!important;
+  padding:10px 14px!important;
+  text-align:center!important;
+  align-self:flex-start!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.12)!important;
+}
+.print-order-status span{
+  display:block!important;
+  font-weight:950!important;
+  text-transform:capitalize!important;
+  line-height:1.05!important;
+  font-size:1rem!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+}
+.print-order-status small{
+  display:block!important;
+  margin-top:4px!important;
+  font-size:.78rem!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+}
+.print-order-status.is-pendiente{background:#ffd43b!important;border:1px solid #e7b900!important;color:#111!important;}
+.print-order-status.is-pendiente span,.print-order-status.is-pendiente small{color:#111!important;}
+.print-order-status.is-vencido,.print-order-status.is-vencida{background:#ffe8dc!important;border:1px solid #f1b69d!important;}
+.print-order-status.is-vencido span,.print-order-status.is-vencida span{color:#b42318!important;}
+.print-order-status.is-vencido small,.print-order-status.is-vencida small{color:#7c2d12!important;}
+.print-order-status.is-pagado,.print-order-status.is-pagada{background:#e6f7ec!important;border:1px solid #b7dfc2!important;}
+.print-order-status.is-pagado span,.print-order-status.is-pagada span{color:#126b2f!important;}
+.print-order-status.is-pagado small,.print-order-status.is-pagada small{color:#126b2f!important;}
+@media print{
+  body.printing-order .print-order-logo-row{display:flex!important;margin-bottom:8px!important;}
+  body.printing-order .print-order-logo{max-width:135px!important;height:auto!important;display:block!important;}
+  body.printing-order .print-order-title-row{display:flex!important;align-items:flex-start!important;}
+  body.printing-order .print-order-status{align-self:flex-start!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+}
+@media(max-width:760px){
+  .agency-login-page{background-attachment:scroll!important;}
+  .agency-login-page .agency-main--narrow{display:block;}
+  .print-order-title-row{display:block!important;}
+  .print-order-status{margin:12px 0 0 0!important;}
+}
