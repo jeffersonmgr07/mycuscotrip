@@ -172,9 +172,17 @@
     $$('.modal-backdrop').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal) closeModals(); }));
   }
 
+  function canSeeService(service) {
+    const allowed = Array.isArray(service.visibleForEmails) ? service.visibleForEmails.map((email) => String(email || '').trim().toLowerCase()).filter(Boolean) : [];
+    if (!allowed.length) return true;
+    const sessionEmail = String(state.session?.email || state.session?.correo || '').trim().toLowerCase();
+    return allowed.includes(sessionEmail);
+  }
+
   function renderExperiences() {
     const q = ($('#searchInput')?.value || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
+      if (!canSeeService(service)) return false;
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
