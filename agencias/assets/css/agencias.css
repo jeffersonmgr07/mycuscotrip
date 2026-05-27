@@ -327,3 +327,51 @@
   .print-order-status{margin:12px 0 0 0!important;}
   .profile-card h2,.payment-card h2,.form-block h2{font-size:.9rem!important;}
 }
+
+
+/* Correcciones visuales finales: espacio, barras de sección y perfil */
+/* Elimina el aire extra antes del título de experiencias */
+.info-note{margin-bottom:10px!important;}
+.portal-layout{align-items:start!important;}
+#experiencias{padding-top:0!important;margin-top:0!important;}
+#experiencias .section-title,.section-title--simple{margin-top:0!important;margin-bottom:10px!important;}
+#experiencias .section-title p{margin-top:4px!important;}
+
+/* Barras de título a todo el ancho en registro, mis datos y pagos */
+.form-block h2,.profile-card h2,.payment-card h2{
+  display:block!important;
+  width:100%!important;
+  background:linear-gradient(135deg,#062803,#053220)!important;
+  color:#fff!important;
+  border-radius:14px!important;
+  padding:11px 14px!important;
+  font-size:1rem!important;
+  line-height:1.15!important;
+  font-family:Montserrat,Arial,sans-serif!important;
+  font-weight:900!important;
+  letter-spacing:-.01em!important;
+  margin:0 0 14px!important;
+}
+.profile-card h2,.payment-card h2{font-size:.98rem!important;}
+
+/* Teléfono con código de país + número en una sola fila */
+.profile-phone-row{display:grid;grid-template-columns:minmax(140px,.45fr) minmax(0,1fr);gap:13px;grid-column:1/-1;}
+.profile-phone-row .field{min-width:0;}
+
+/* UX contraseña en Mis datos */
+.password-input-wrap{display:flex;gap:8px;align-items:center;}
+.password-input-wrap input{flex:1;min-width:0;}
+.password-toggle{border:1px solid var(--line);background:#f2f8f4;color:var(--primary);font-weight:900;border-radius:12px;padding:10px 12px;cursor:pointer;white-space:nowrap;}
+.password-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:2px;}
+.password-checklist div{border:1px solid var(--line);background:#fbfdfb;border-radius:12px;padding:8px 10px;font-size:.82rem;color:var(--muted);font-weight:800;}
+.password-checklist div::before{content:'○';margin-right:7px;color:#9ba8a0;}
+.password-checklist div.is-ok{background:#effaf1;color:#126b2f;border-color:#bfe6c8;}
+.password-checklist div.is-ok::before{content:'✓';color:#126b2f;font-weight:950;}
+
+/* Evita que imágenes rotas o placeholders generen bloques extraños antes del listado */
+.experience-cover{background:#dbe8df!important;}
+@media(max-width:760px){
+  .profile-phone-row{grid-template-columns:1fr;}
+  .password-checklist{grid-template-columns:1fr;}
+  .form-block h2,.profile-card h2,.payment-card h2{font-size:.94rem!important;padding:10px 12px!important;}
+}

@@ -52,7 +52,7 @@
   }
 
   function normalizePhone() {
-    const countryCode = value('#companyPhoneCountry');
+    const countryCode = value('#companyPhoneCountry').replace(/\D+/g, '').trim();
     const phone = value('#companyPhone').replace(/\D+/g, '').trim();
     return `${countryCode} ${phone}`.trim();
   }

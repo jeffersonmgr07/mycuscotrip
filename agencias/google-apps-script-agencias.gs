@@ -110,7 +110,7 @@ function registerAgency_(agency) {
     representanteApellidos: agency.legalRepresentative?.lastName || agency.representanteApellidos || '',
     tipoDocumento: agency.legalRepresentative?.docType || agency.tipoDocumento || '',
     numeroDocumento: agency.legalRepresentative?.docNumber || agency.numeroDocumento || '',
-    celular: agency.accessPhone || agency.celular || agency.company?.phone || '',
+    celular: phoneForSheet_(agency.accessPhone || agency.celular || agency.company?.phone || ''),
     correo: email,
     web: agency.company?.website || agency.web || '',
     passwordSalt: salt,
@@ -280,7 +280,7 @@ function updateAgencyProfile_(payload) {
   const found = findAgencyRow_(sheet, account.email || payload.email || '', account.agencyId || payload.agencyId || '');
   if (found.row < 1) return json_({ ok:false, message:'No encontramos la agencia.' });
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
-  setCellByHeader_(sheet, found.row, headers, 'celular', payload.celular || '');
+  setCellByHeader_(sheet, found.row, headers, 'celular', phoneForSheet_(payload.celular || ''));
   setCellByHeader_(sheet, found.row, headers, 'web', payload.web || '');
   return json_({ ok:true, message:'Datos actualizados correctamente.' });
 }
@@ -614,6 +614,11 @@ function sendVerificationEmail_(email, agencyName, token) {
     '<p style="font-size:12px;color:#63766a">Si no solicitaste este registro, puedes ignorar este mensaje.</p>' +
     '</div>';
   MailApp.sendEmail({ to: email, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
+}
+
+function phoneForSheet_(value) {
+  const clean = String(value || '').replace(/^'+/, '').replace(/^\+/, '').trim();
+  return clean ? "'" + clean : '';
 }
 
 function validateConfig_() {
