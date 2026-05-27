@@ -217,6 +217,6 @@ Después de pegar el nuevo `google-apps-script-agencias.gs`, guarda y publica co
 
 Para verificar que la versión correcta quedó activa, abre esta URL en el navegador:
 
-https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0?action=debugActions
+https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0&action=debugActions
 
 Debe mostrar una respuesta JSON con `version: paypal-actions-2026-05-26-v4` y debe incluir `createPayPalOrder` y `capturePayPalOrder` dentro de `actions`.

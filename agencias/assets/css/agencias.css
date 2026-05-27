@@ -231,3 +231,51 @@
   .print-order-title-row h2{font-size:1.4rem!important;}
   .print-order-status{min-width:170px!important;padding:9px 12px!important;}
 }
+
+
+/* Ajustes de prueba PayPal y estilos solicitados */
+.agency-login-page{
+  background:
+    linear-gradient(180deg,rgba(245,250,246,.84),rgba(255,255,255,.92)),
+    url('../../../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg'),
+    url('../../../assets/img/tours/machu-picchu-full-day/cover.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+.agency-login-page .auth-card{
+  background:rgba(255,255,255,.86)!important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-color:rgba(255,255,255,.55)!important;
+}
+.agency-login-page .agency-main--narrow{min-height:calc(100vh - 180px);display:grid;align-items:center;}
+.agency-intro-bar{
+  background:linear-gradient(135deg,#062803,#053220)!important;
+  color:#fff!important;
+  border-color:rgba(255,255,255,.16)!important;
+  box-shadow:0 20px 42px rgba(6,40,3,.18)!important;
+}
+.agency-intro-bar .eyebrow{color:#f2d99d!important;}
+.agency-intro-bar h1,
+.agency-intro-bar h1#agencyNameHeading{color:#fff!important;}
+.agency-intro-bar p,
+.agency-intro-bar p#sessionWelcome,
+.agency-intro-bar #ordersAgencyName{color:rgba(255,255,255,.86)!important;}
+.agency-intro-bar .agency-button--ghost,
+.agency-intro-bar .currency-control select{
+  background:rgba(255,255,255,.94)!important;
+  color:#062803!important;
+  border-color:rgba(255,255,255,.5)!important;
+}
+.agency-intro-bar .agency-button--primary{background:#fff!important;color:#062803!important;}
+.orders-table th{background:#062803!important;color:#fff!important;}
+.orders-table tbody tr:nth-child(even) td{background:#f3faf6;}
+.orders-table tbody tr:nth-child(odd) td{background:#fff;}
+.orders-table tbody tr:hover td{background:#eef7f1;}
+.order-detail-button{white-space:nowrap!important;}
+.experience-card[data-private-test], .experience-card:has([data-reserve="paypal-test-product-1usd"]){border-color:#f0cf62!important;box-shadow:0 16px 34px rgba(152,106,8,.13)!important;}
+@media(max-width:760px){
+  .agency-login-page{background-attachment:scroll;}
+  .agency-login-page .agency-main--narrow{display:block;}
+}

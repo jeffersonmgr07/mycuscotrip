@@ -330,6 +330,7 @@
   }
 
   async function init() {
+    bindLogout();
     const session = requireSession();
     if (!session) return;
     orders = await fetchOrders(session);

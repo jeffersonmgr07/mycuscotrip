@@ -130,11 +130,21 @@
     $('#generateOrderButton').addEventListener('click', generateOrder);
     $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
     $$('.modal-backdrop').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal) closeModals(); }));
+    $('#logoutButton')?.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE.SESSION);
+      localStorage.removeItem(STORAGE.CART);
+      window.location.href = './login.html';
+    });
   }
 
   function renderExperiences() {
     const q = ($('#searchInput')?.value || '').trim().toLowerCase();
+    const sessionEmail = String(state.session?.email || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
+      if (Array.isArray(service.visibleForEmails) && service.visibleForEmails.length) {
+        const allowed = service.visibleForEmails.map((email) => String(email).trim().toLowerCase());
+        if (!allowed.includes(sessionEmail)) return false;
+      }
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
@@ -150,7 +160,7 @@
     const unit = service.priceUnit || 'por persona';
     const altHtml = alt ? `<small>${money(alt)} ${escapeHtml(service.priceAltLabel || '')}</small>` : '';
     return `
-      <article class="experience-card">
+      <article class="experience-card" ${service.visibleForEmails?.length ? 'data-private-test="true"' : ''}>
         <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
         <div class="experience-body">
           <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || 'Salida diaria')}</span></div>
