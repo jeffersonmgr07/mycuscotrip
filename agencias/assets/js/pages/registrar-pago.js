@@ -1,6 +1,6 @@
 (() => {
   const SESSION_KEY = 'mct_agency_session';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycmduYce7cpGoMSqR3iqubsC46DiIox7qaNJXFFW8abQpr0s1SYCnYfyA2w95_vGYQ/exec?authuser=0';
   const $ = (selector, root = document) => root.querySelector(selector);
   const readJSON = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
   const show = (message, type = 'is-error') => { const el = $('#paymentMessageBox'); el.textContent = message; el.className = `form-message ${type}`; el.hidden = false; };

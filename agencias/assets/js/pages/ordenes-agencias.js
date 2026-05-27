@@ -24,6 +24,15 @@
     return country === 'PE' || country === 'PERU' || country === 'PERÚ';
   }
 
+  function paymentMethodFor(order) {
+    const currency = String(order?.moneda || order?.currency || '').toUpperCase();
+    return currency === 'USD' ? 'paypal' : 'mercadopago';
+  }
+
+  function paymentButtonLabel(order) {
+    return paymentMethodFor(order) === 'paypal' ? 'Pagar con PayPal' : 'Pagar reserva';
+  }
+
   function money(amount, currency = 'PEN') {
     const n = Number(amount || 0);
     return currency === 'USD' ? `USD ${n.toFixed(2)}` : `S/ ${n.toFixed(2)}`;
@@ -283,7 +292,7 @@
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
-        <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'}</button>
+        <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${paymentButtonLabel(order)}</button>
         <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir orden</button>
       </div>`;
   }
@@ -305,33 +314,34 @@
 
 
   async function startPayPalPayment(order) {
-    if (isPeruvianAgency()) {
-      alert('La pasarela de pago para agencias nacionales se habilitará próximamente. Por ahora, puedes coordinar el pago con nuestro equipo de reservas.');
-      return;
-    }
     const status = normalizeStatus(order);
     if (status === 'pagado') { alert('Esta orden ya figura como pagada.'); return; }
     if (status === 'vencido') { alert('Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.'); return; }
+
+    const method = paymentMethodFor(order);
     const button = $('#payOrderWithPayPalButton');
-    if (button) { button.disabled = true; button.textContent = 'Conectando con PayPal...'; }
+    const loadingText = method === 'paypal' ? 'Conectando con PayPal...' : 'Conectando con Mercado Pago...';
+    if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
-      const result = await sendToSheet('createPayPalOrder', {
+      const action = method === 'paypal' ? 'createPayPalOrder' : 'createMercadoPagoPreference';
+      const result = await sendToSheet(action, {
         code,
-        currency: order.moneda || order.currency || 'USD',
+        currency: order.moneda || order.currency || (method === 'paypal' ? 'USD' : 'PEN'),
         total: Number(order.montoComisionado || order.total || 0),
         account: readJSON(SESSION_KEY, {})
       });
-      if (!result.ok || !result.approvalUrl) {
-        alert(result.message || 'No se pudo crear el pago en PayPal.');
+      const redirectUrl = method === 'paypal' ? result.approvalUrl : result.initPoint;
+      if (!result.ok || !redirectUrl) {
+        alert(result.message || (method === 'paypal' ? 'No se pudo crear el pago en PayPal.' : 'No se pudo crear el pago en Mercado Pago.'));
         return;
       }
-      window.location.href = result.approvalUrl;
+      window.location.href = redirectUrl;
     } catch (error) {
       console.error(error);
-      alert('No se pudo conectar con PayPal.');
+      alert(method === 'paypal' ? 'No se pudo conectar con PayPal.' : 'No se pudo conectar con Mercado Pago.');
     } finally {
-      if (button) { button.disabled = false; button.textContent = isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'; }
+      if (button) { button.disabled = false; button.textContent = paymentButtonLabel(order); }
     }
   }
 
