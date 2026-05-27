@@ -10,6 +10,28 @@
 
   const $ = (selector) => document.querySelector(selector);
   const value = (selector) => $(selector)?.value.trim() || '';
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const TAX_RE = /^[A-Za-z0-9.\-\s]{4,24}$/;
+
+  function onlyDigits(input) {
+    if (!input) return;
+    input.value = input.value.replace(/\D+/g, '');
+  }
+
+  function validateEmailField(selector, label) {
+    const email = value(selector).toLowerCase();
+    if (!EMAIL_RE.test(email)) return `${label} debe ser un correo válido, por ejemplo nombre@dominio.com.`;
+    return '';
+  }
+
+  function validateFiscalId() {
+    const taxId = value('#companyTaxId');
+    if (!TAX_RE.test(taxId)) {
+      return 'El número de identificación fiscal debe contener solo letras, números, punto o guion.';
+    }
+    return '';
+  }
+
 
   function show(message, type = 'is-error') {
     const el = $('#registerMessage');
@@ -31,7 +53,7 @@
 
   function normalizePhone() {
     const countryCode = value('#companyPhoneCountry');
-    const phone = value('#companyPhone').replace(/^\+/, '').trim();
+    const phone = value('#companyPhone').replace(/\D+/g, '').trim();
     return `${countryCode} ${phone}`.trim();
   }
 
@@ -100,6 +122,8 @@
   }
 
   $('#companyCountry')?.addEventListener('change', syncCountry);
+  $('#companyPhone')?.addEventListener('input', (event) => onlyDigits(event.target));
+  $('#companyTaxId')?.addEventListener('input', (event) => { event.target.value = event.target.value.replace(/[^A-Za-z0-9.\-\s]/g, '').toUpperCase(); });
   $('#companyEmail')?.addEventListener('input', () => {
     const access = $('#accessEmail');
     if (access && !access.value.trim()) access.value = $('#companyEmail').value.trim();
@@ -116,6 +140,15 @@
     if (passwordError) { show(passwordError); return; }
     if (password !== confirm) { show('Las contraseñas no coinciden.'); return; }
 
+    const fiscalError = validateFiscalId();
+    if (fiscalError) { show(fiscalError); return; }
+    const phoneDigits = value('#companyPhone').replace(/\D+/g, '');
+    if (!/^\d{6,15}$/.test(phoneDigits)) { show('El número de WhatsApp debe contener solo números, entre 6 y 15 dígitos.'); return; }
+    const contactEmailError = validateEmailField('#companyEmail', 'El correo de contacto');
+    if (contactEmailError) { show(contactEmailError); return; }
+    const accessEmailError = validateEmailField('#accessEmail', 'El correo de inicio de sesión');
+    if (accessEmailError) { show(accessEmailError); return; }
+
     const button = event.submitter;
     const originalText = button?.textContent || 'Registrar mi agencia';
     if (button) { button.disabled = true; button.textContent = 'Enviando registro...'; }
@@ -123,7 +156,7 @@
     const phone = normalizePhone();
     const agency = {
       id: `AG-${Date.now()}`,
-      status: 'Pendiente',
+      status: 'Aprobado',
       password,
       accessEmail: value('#accessEmail').toLowerCase(),
       company: {
@@ -152,7 +185,7 @@
         show(result.message || 'No se pudo registrar la agencia.');
         return;
       }
-      show(result.message || 'Registro recibido correctamente. Revisa tu correo para verificar el email. Después validaremos tu acceso.', 'is-success');
+      show(result.message || 'Registro recibido correctamente. Revisa tu correo para verificar el email. Luego podrás ingresar al portal.', 'is-success');
       form.reset();
       syncCountry();
       setTimeout(() => { window.location.href = './login.html'; }, 2600);

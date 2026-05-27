@@ -97,7 +97,7 @@ function registerAgency_(agency) {
   appendObjectRow_(sheet, {
     id: id,
     fechaRegistro: new Date(),
-    estado: agency.estado || agency.status || 'Pendiente',
+    estado: 'Aprobado',
     emailVerificado: 'No',
     verificationToken: token,
     fechaVerificacion: '',
@@ -118,7 +118,7 @@ function registerAgency_(agency) {
   });
 
   sendVerificationEmail_(email, agency.company?.tradeName || agency.company?.legalName || agency.nombreComercial || 'agencia', token);
-  return json_({ ok:true, message:'Registro recibido. Te enviamos un correo para verificar tu email. Después de verificarlo, tu acceso quedará pendiente de aprobación.' });
+  return json_({ ok:true, message:'Registro recibido. Te enviamos un correo para verificar tu email. Después de verificarlo, podrás ingresar al portal con tu correo y contraseña.' });
 }
 
 function verifyEmail_(token) {
@@ -143,7 +143,7 @@ function verifyEmail_(token) {
       return html_(
         '<h2>Correo verificado correctamente</h2>' +
         '<p>Gracias. El correo de <strong>' + escapeHtml_(name) + '</strong> fue verificado.</p>' +
-        '<p>Ahora tu solicitud queda pendiente de aprobación por nuestro equipo. Cuando sea aprobada podrás ingresar al portal.</p>'
+        '<p>Tu correo ya fue verificado. Si tus datos son correctos, ya puedes ingresar al portal con tu correo y contraseña.</p>'
       );
     }
   }
@@ -230,8 +230,8 @@ function listOrders_(email, agencyId) {
   const normalizedAgency = String(agencyId || '').trim();
   const orders = [];
   for (let i = 1; i < values.length; i++) {
-    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
-    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').replace(/^'/,'').trim() : '';
     if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
       const obj = {};
       headers.forEach(function(h, idx){ obj[h] = values[i][idx]; });
@@ -519,8 +519,8 @@ function findAgencyRow_(sheet, email, agencyId) {
   const normalizedEmail = String(email || '').trim().toLowerCase();
   const normalizedAgency = String(agencyId || '').trim();
   for (let i=1; i<values.length; i++) {
-    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
-    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').replace(/^'/,'').trim() : '';
     if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
       const data = {};
       headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
@@ -530,9 +530,26 @@ function findAgencyRow_(sheet, email, agencyId) {
   return { row:-1, data:null };
 }
 
+function sheetSafeValue_(headerName, value) {
+  if (value === null || value === undefined) return '';
+  const textHeaders = ['celular','numeroFiscal','numeroDocumento','correo','web'];
+  if (textHeaders.indexOf(headerName) >= 0) {
+    const raw = String(value).trim();
+    // Evita que Google Sheets interprete teléfonos con + como fórmulas y muestre #ERROR!.
+    // Solo se antepone apóstrofe cuando el valor empieza con un carácter de fórmula.
+    if (/^[+=@-]/.test(raw)) return "'" + raw;
+    return raw;
+  }
+  return value;
+}
+
 function setCellByHeader_(sheet, row, headers, headerName, value) {
   const idx = headers.indexOf(headerName);
-  if (idx >= 0) sheet.getRange(row, idx + 1).setValue(value);
+  if (idx >= 0) {
+    const range = sheet.getRange(row, idx + 1);
+    if (['celular','numeroFiscal','numeroDocumento','correo','web'].indexOf(headerName) >= 0) range.setNumberFormat('@');
+    range.setValue(sheetSafeValue_(headerName, value));
+  }
 }
 
 function sendOrderEmail_(order) {
@@ -593,7 +610,7 @@ function sendVerificationEmail_(email, agencyName, token) {
     '<p>Hola, recibimos la solicitud de registro de <strong>' + escapeHtml_(agencyName) + '</strong> para acceder al portal de agencias de My Cusco Trip.</p>' +
     '<p>Para confirmar que este correo te pertenece, haz clic en el siguiente botón:</p>' +
     '<p><a href="' + verifyUrl + '" style="display:inline-block;background:#0b7a4e;color:#fff;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:bold">Verificar correo</a></p>' +
-    '<p>Después de verificar el correo, nuestro equipo revisará la solicitud y activará el acceso si corresponde.</p>' +
+    '<p>Después de verificar el correo, podrás ingresar al portal con tu correo y contraseña.</p>' +
     '<p style="font-size:12px;color:#63766a">Si no solicitaste este registro, puedes ignorar este mensaje.</p>' +
     '</div>';
   MailApp.sendEmail({ to: email, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
@@ -647,7 +664,7 @@ function ensureHeaders_(sheet, requiredHeaders) {
 
 function appendObjectRow_(sheet, obj) {
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
-  const row = headers.map(function(h){ return obj[h] !== undefined ? obj[h] : ''; });
+  const row = headers.map(function(h){ return sheetSafeValue_(h, obj[h] !== undefined ? obj[h] : ''); });
   sheet.appendRow(row);
 }
 
@@ -658,7 +675,7 @@ function findRowByEmail_(sheet, email) {
   const emailIndex = headers.indexOf('correo');
   if (emailIndex < 0) return { row:-1, data:null };
   for (let i=1; i<values.length; i++) {
-    if (String(values[i][emailIndex] || '').trim().toLowerCase() === email) {
+    if (String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() === email) {
       const data = {};
       headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
       return { row:i+1, data:data };

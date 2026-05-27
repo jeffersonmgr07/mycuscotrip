@@ -279,19 +279,25 @@
   function orderDetailHTML(order) {
     const currency = order.moneda || order.currency || 'PEN';
     const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
-    const status = statusLabel(normalizeStatus(order));
+    const statusKey = normalizeStatus(order);
+    const status = statusLabel(statusKey);
     const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || 'Agencia afiliada';
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div>
-            <p class="eyebrow">Detalle de orden</p>
-            <h2>${escapeHtml(code)}</h2>
-            <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
+          <div class="print-order-logo-row print-only">
+            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
           </div>
-          <div class="print-order-status is-${normalizeStatus(order)}">
-            <span>${escapeHtml(status)}</span>
-            <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
+          <div class="print-order-title-row">
+            <div>
+              <p class="eyebrow">Detalle de orden</p>
+              <h2>${escapeHtml(code)}</h2>
+              <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
+            </div>
+            <div class="print-order-status is-${statusKey}">
+              <span>${escapeHtml(status)}</span>
+              <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
+            </div>
           </div>
         </div>
         <div class="info-note"><strong>Importante:</strong> revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.</div>
@@ -395,10 +401,18 @@
     bindLogout();
     const session = requireSession();
     if (!session) return;
-    orders = await fetchOrders(session);
-    renderOrders();
+    const localOrders = readJSON(LOCAL_ORDERS_KEY, []);
+    orders = mergeOrders([], localOrders);
+    if (orders.length) renderOrders();
+    else { $('#ordersMessage').hidden = false; $('#ordersMessage').textContent = 'Cargando órdenes...'; }
+    fetchOrders(session).then((loaded) => { orders = loaded; renderOrders(); });
     $('#statusFilter').addEventListener('change', renderOrders);
-    $('#refreshOrdersButton').addEventListener('click', async () => { orders = await fetchOrders(session); renderOrders(); });
+    $('#refreshOrdersButton').addEventListener('click', async () => {
+      $('#ordersMessage').hidden = false;
+      $('#ordersMessage').textContent = 'Actualizando órdenes...';
+      orders = await fetchOrders(session);
+      renderOrders();
+    });
     $('#orderDetailModal')?.addEventListener('click', (event) => { if (event.target.id === 'orderDetailModal') closeOrderDetail(); });
     $$('[data-close-order-detail-static]').forEach((button) => button.addEventListener('click', closeOrderDetail));
   }

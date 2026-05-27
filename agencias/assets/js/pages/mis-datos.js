@@ -36,7 +36,7 @@
       const result = await callApps('getAgencyProfile', { account: session });
       if (result.ok && result.profile) {
         $('#profileCompany').value = result.profile.nombreComercial || result.profile.razonSocial || session.companyName || '';
-        $('#profilePhone').value = result.profile.celular || '';
+        $('#profilePhone').value = String(result.profile.celular || '').includes('#ERROR') ? '' : (result.profile.celular || '');
         $('#profileWeb').value = result.profile.web || '';
       }
     } catch (error) { console.warn(error); }
@@ -79,5 +79,10 @@
       }
     });
   }
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    init();
+    $('#profilePhone')?.addEventListener('input', (event) => {
+      event.target.value = event.target.value.replace(/[^0-9+\s]/g, '');
+    });
+  });
 })();
