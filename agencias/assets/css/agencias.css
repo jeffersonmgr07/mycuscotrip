@@ -345,14 +345,17 @@
   color:#fff!important;
   border-radius:14px!important;
   padding:11px 14px!important;
-  font-size:1rem!important;
+  font-size:1.12rem!important;
   line-height:1.15!important;
   font-family:Montserrat,Arial,sans-serif!important;
-  font-weight:900!important;
+  font-weight:400!important;
   letter-spacing:-.01em!important;
   margin:0 0 14px!important;
 }
-.profile-card h2,.payment-card h2{font-size:.98rem!important;}
+.profile-card h2,.payment-card h2{
+  font-size:1.08rem!important;
+  font-weight:400!important;
+}
 
 /* Teléfono con código de país + número en una sola fila */
 .profile-phone-row{display:grid;grid-template-columns:minmax(140px,.45fr) minmax(0,1fr);gap:13px;grid-column:1/-1;}
@@ -373,5 +376,9 @@
 @media(max-width:760px){
   .profile-phone-row{grid-template-columns:1fr;}
   .password-checklist{grid-template-columns:1fr;}
-  .form-block h2,.profile-card h2,.payment-card h2{font-size:.94rem!important;padding:10px 12px!important;}
+  .form-block h2,.profile-card h2,.payment-card h2{
+    font-size:1.02rem!important;
+    font-weight:400!important;
+    padding:10px 12px!important;
+  }
 }
