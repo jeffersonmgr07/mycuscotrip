@@ -7,7 +7,7 @@
 
   const CONFIG = {
     catalogUrl: './assets/data/agencias-tours.json',
-    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec', // Pega aquí la URL de despliegue de Google Apps Script.
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0', // Pega aquí la URL de despliegue de Google Apps Script.
     paypalRate: 0.054,
     bankRate: 0.015,
     defaultExchangeRate: 3.38,
@@ -130,11 +130,21 @@
     $('#generateOrderButton').addEventListener('click', generateOrder);
     $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
     $$('.modal-backdrop').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal) closeModals(); }));
+    $('#logoutButton')?.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE.SESSION);
+      localStorage.removeItem(STORAGE.CART);
+      window.location.href = './login.html';
+    });
   }
 
   function renderExperiences() {
     const q = ($('#searchInput')?.value || '').trim().toLowerCase();
+    const sessionEmail = String(state.session?.email || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
+      if (Array.isArray(service.visibleForEmails) && service.visibleForEmails.length) {
+        const allowed = service.visibleForEmails.map((email) => String(email).trim().toLowerCase());
+        if (!allowed.includes(sessionEmail)) return false;
+      }
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
@@ -150,7 +160,7 @@
     const unit = service.priceUnit || 'por persona';
     const altHtml = alt ? `<small>${money(alt)} ${escapeHtml(service.priceAltLabel || '')}</small>` : '';
     return `
-      <article class="experience-card">
+      <article class="experience-card" ${service.visibleForEmails?.length ? 'data-private-test="true"' : ''}>
         <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
         <div class="experience-body">
           <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || 'Salida diaria')}</span></div>
@@ -367,18 +377,30 @@
     }).join('');
   }
 
+  function statusClass(value) {
+    const raw = String(value || 'Pendiente').toLowerCase();
+    if (raw.includes('pag')) return 'is-pagado';
+    if (raw.includes('venc')) return 'is-vencido';
+    return 'is-pendiente';
+  }
+
   function orderHTML(order, result = null) {
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div>
-            <p class="eyebrow">Orden de reserva</p>
-            <h2>${escapeHtml(order.code)}</h2>
-            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
+          <div class="print-order-logo-row">
+            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
           </div>
-          <div class="print-order-status">
-            <span>${escapeHtml(order.status)}</span>
-            <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+          <div class="print-order-title-row">
+            <div>
+              <p class="eyebrow">Orden de reserva</p>
+              <h2>${escapeHtml(order.code)}</h2>
+              <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
+            </div>
+            <div class="print-order-status ${statusClass(order.status)}">
+              <span>${escapeHtml(order.status)}</span>
+              <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+            </div>
           </div>
         </div>
         <div class="info-note"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.</div>
@@ -393,12 +415,12 @@
           <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>Total a pagar</span><strong>${money(order.total)}</strong></div>
         </div>
-        <p class="small-print-note">Indicar el código de referencia al realizar el pago o enviar el comprobante. ${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note"><strong>Pago online:</strong> el botón PayPal confirma la orden automáticamente solo cuando PayPal devuelve una captura aprobada. Si la agencia cierra la ventana sin pagar, la orden seguirá pendiente.</div>
+        ${result?.ok === false ? '<p class="small-print-note">Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.</p>' : ''}
+        <div class="payment-method-note"><strong>Confirmación:</strong> toda orden será confirmada posterior al pago validado y estará siempre sujeta a disponibilidad operativa vigente.</div>
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
         <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">Pagar con PayPal</button>
-        <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(order.code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
     `;

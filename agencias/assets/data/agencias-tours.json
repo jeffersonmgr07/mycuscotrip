@@ -5,6 +5,36 @@
   "exchangeRate": 3.38,
   "services": [
     {
+      "id": "paypal-test-product-1usd",
+      "slug": "paypal-test-product-1usd",
+      "name": "Producto de prueba PayPal",
+      "shortName": "Producto de prueba",
+      "category": "Prueba",
+      "currency": "USD",
+      "priceUSD": 1,
+      "pricePEN": 3.38,
+      "priceUnit": "por prueba",
+      "durationLabel": "Producto de prueba",
+      "startLabel": "Pago de prueba",
+      "frequency": "Solo pruebas internas",
+      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
+      "jsonSources": [
+        "../assets/data/agencias-tours.json"
+      ],
+      "description": "Producto de prueba para validar el flujo de pago con PayPal. Visible solo para la agencia autorizada.",
+      "includes": [
+        "Prueba de generación de orden",
+        "Prueba de pago PayPal"
+      ],
+      "notIncluded": "No corresponde a un servicio turístico real.",
+      "schedules": [
+        "Prueba"
+      ],
+      "visibleForEmails": [
+        "bougertraveler@gmail.com"
+      ]
+    },
+    {
       "id": "bienvenida-ancestral-cusco",
       "slug": "bienvenida-ancestral-cusco",
       "name": "Bienvenida Ancestral Cusco",

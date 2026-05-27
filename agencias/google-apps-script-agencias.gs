@@ -18,7 +18,7 @@ const SHEET_ORDERS = 'Ordenes';
 const SHEET_PAYMENTS = 'Pagos';
 const BRAND_NAME = 'My Cusco Trip';
 const SUPPORT_EMAIL = 'reservas@mycuscotrip.com';
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0';
 
 // PayPal: coloca estos valores en Propiedades del script, no directamente aquí.
 // PAYPAL_MODE = sandbox o live
@@ -26,6 +26,7 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQj
 // PAYPAL_CLIENT_SECRET = secret de PayPal
 // PAYPAL_WEBHOOK_ID = id del webhook, solo si usas un backend que permita verificar headers
 const PORTAL_BASE_URL = 'https://mycuscotrip.com/agencias';
+const APP_VERSION = 'paypal-actions-2026-05-26-v4';
 
 
 const AGENCY_HEADERS = [
@@ -47,7 +48,7 @@ const PAYMENT_HEADERS = [
 function doPost(e) {
   try {
     const body = parseBody_(e);
-    const action = body.action || '';
+    const action = String(body.action || '').trim();
     if (!action && body.event_type) return paypalWebhook_(body);
     if (action === 'registerAgency') return registerAgency_(body.payload || body.agency || body);
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
@@ -70,7 +71,8 @@ function doGet(e) {
   try {
     const action = e && e.parameter ? e.parameter.action : '';
     if (action === 'verifyEmail') return verifyEmail_(e.parameter.token || '');
-    return html_('<h2>Endpoint activo</h2><p>Portal de agencias My Cusco Trip.</p>');
+    if (action === 'debugActions') return json_({ ok:true, version:APP_VERSION, actions:['registerAgency','verifyEmail','loginAgency','createOrder','listOrders','getAgencyProfile','updateAgencyProfile','changePassword','registerPayment','createPayPalOrder','capturePayPalOrder','paypalWebhook'], paypalConfigured: !!(PropertiesService.getScriptProperties().getProperty('PAYPAL_CLIENT_ID') && PropertiesService.getScriptProperties().getProperty('PAYPAL_CLIENT_SECRET')) });
+    return html_('<h2>Endpoint activo</h2><p>Portal de agencias My Cusco Trip.</p><p><strong>Versión:</strong> ' + escapeHtml_(APP_VERSION) + '</p>');
   } catch (err) {
     return html_('<h2>No se pudo completar la solicitud</h2><p>' + escapeHtml_(err.message || String(err)) + '</p>');
   }
@@ -95,7 +97,7 @@ function registerAgency_(agency) {
   appendObjectRow_(sheet, {
     id: id,
     fechaRegistro: new Date(),
-    estado: agency.estado || agency.status || 'Pendiente',
+    estado: 'Aprobado',
     emailVerificado: 'No',
     verificationToken: token,
     fechaVerificacion: '',
@@ -108,7 +110,7 @@ function registerAgency_(agency) {
     representanteApellidos: agency.legalRepresentative?.lastName || agency.representanteApellidos || '',
     tipoDocumento: agency.legalRepresentative?.docType || agency.tipoDocumento || '',
     numeroDocumento: agency.legalRepresentative?.docNumber || agency.numeroDocumento || '',
-    celular: agency.accessPhone || agency.celular || agency.company?.phone || '',
+    celular: phoneForSheet_(agency.accessPhone || agency.celular || agency.company?.phone || ''),
     correo: email,
     web: agency.company?.website || agency.web || '',
     passwordSalt: salt,
@@ -116,7 +118,7 @@ function registerAgency_(agency) {
   });
 
   sendVerificationEmail_(email, agency.company?.tradeName || agency.company?.legalName || agency.nombreComercial || 'agencia', token);
-  return json_({ ok:true, message:'Registro recibido. Te enviamos un correo para verificar tu email. Después de verificarlo, tu acceso quedará pendiente de aprobación.' });
+  return json_({ ok:true, message:'Registro recibido. Te enviamos un correo para verificar tu email. Después de verificarlo, podrás ingresar al portal con tu correo y contraseña.' });
 }
 
 function verifyEmail_(token) {
@@ -141,7 +143,7 @@ function verifyEmail_(token) {
       return html_(
         '<h2>Correo verificado correctamente</h2>' +
         '<p>Gracias. El correo de <strong>' + escapeHtml_(name) + '</strong> fue verificado.</p>' +
-        '<p>Ahora tu solicitud queda pendiente de aprobación por nuestro equipo. Cuando sea aprobada podrás ingresar al portal.</p>'
+        '<p>Tu correo ya fue verificado. Si tus datos son correctos, ya puedes ingresar al portal con tu correo y contraseña.</p>'
       );
     }
   }
@@ -228,8 +230,8 @@ function listOrders_(email, agencyId) {
   const normalizedAgency = String(agencyId || '').trim();
   const orders = [];
   for (let i = 1; i < values.length; i++) {
-    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
-    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').replace(/^'/,'').trim() : '';
     if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
       const obj = {};
       headers.forEach(function(h, idx){ obj[h] = values[i][idx]; });
@@ -278,7 +280,7 @@ function updateAgencyProfile_(payload) {
   const found = findAgencyRow_(sheet, account.email || payload.email || '', account.agencyId || payload.agencyId || '');
   if (found.row < 1) return json_({ ok:false, message:'No encontramos la agencia.' });
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
-  setCellByHeader_(sheet, found.row, headers, 'celular', payload.celular || '');
+  setCellByHeader_(sheet, found.row, headers, 'celular', phoneForSheet_(payload.celular || ''));
   setCellByHeader_(sheet, found.row, headers, 'web', payload.web || '');
   return json_({ ok:true, message:'Datos actualizados correctamente.' });
 }
@@ -517,8 +519,8 @@ function findAgencyRow_(sheet, email, agencyId) {
   const normalizedEmail = String(email || '').trim().toLowerCase();
   const normalizedAgency = String(agencyId || '').trim();
   for (let i=1; i<values.length; i++) {
-    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').trim().toLowerCase() : '';
-    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').trim() : '';
+    const rowEmail = emailIndex >= 0 ? String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() : '';
+    const rowAgency = agencyIndex >= 0 ? String(values[i][agencyIndex] || '').replace(/^'/,'').trim() : '';
     if ((normalizedEmail && rowEmail === normalizedEmail) || (normalizedAgency && rowAgency === normalizedAgency)) {
       const data = {};
       headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
@@ -528,9 +530,26 @@ function findAgencyRow_(sheet, email, agencyId) {
   return { row:-1, data:null };
 }
 
+function sheetSafeValue_(headerName, value) {
+  if (value === null || value === undefined) return '';
+  const textHeaders = ['celular','numeroFiscal','numeroDocumento','correo','web'];
+  if (textHeaders.indexOf(headerName) >= 0) {
+    const raw = String(value).trim();
+    // Evita que Google Sheets interprete teléfonos con + como fórmulas y muestre #ERROR!.
+    // Solo se antepone apóstrofe cuando el valor empieza con un carácter de fórmula.
+    if (/^[+=@-]/.test(raw)) return "'" + raw;
+    return raw;
+  }
+  return value;
+}
+
 function setCellByHeader_(sheet, row, headers, headerName, value) {
   const idx = headers.indexOf(headerName);
-  if (idx >= 0) sheet.getRange(row, idx + 1).setValue(value);
+  if (idx >= 0) {
+    const range = sheet.getRange(row, idx + 1);
+    if (['celular','numeroFiscal','numeroDocumento','correo','web'].indexOf(headerName) >= 0) range.setNumberFormat('@');
+    range.setValue(sheetSafeValue_(headerName, value));
+  }
 }
 
 function sendOrderEmail_(order) {
@@ -583,7 +602,7 @@ function moneyEmail_(amount, currency) {
 }
 
 function sendVerificationEmail_(email, agencyName, token) {
-  const verifyUrl = WEB_APP_URL + '?action=verifyEmail&token=' + encodeURIComponent(token);
+  const verifyUrl = WEB_APP_URL + '&action=verifyEmail&token=' + encodeURIComponent(token);
   const subject = 'Verifica tu correo - Portal de agencias My Cusco Trip';
   const htmlBody = '' +
     '<div style="font-family:Arial,sans-serif;color:#20352b;line-height:1.55;max-width:560px;margin:auto;padding:20px">' +
@@ -591,10 +610,15 @@ function sendVerificationEmail_(email, agencyName, token) {
     '<p>Hola, recibimos la solicitud de registro de <strong>' + escapeHtml_(agencyName) + '</strong> para acceder al portal de agencias de My Cusco Trip.</p>' +
     '<p>Para confirmar que este correo te pertenece, haz clic en el siguiente botón:</p>' +
     '<p><a href="' + verifyUrl + '" style="display:inline-block;background:#0b7a4e;color:#fff;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:bold">Verificar correo</a></p>' +
-    '<p>Después de verificar el correo, nuestro equipo revisará la solicitud y activará el acceso si corresponde.</p>' +
+    '<p>Después de verificar el correo, podrás ingresar al portal con tu correo y contraseña.</p>' +
     '<p style="font-size:12px;color:#63766a">Si no solicitaste este registro, puedes ignorar este mensaje.</p>' +
     '</div>';
   MailApp.sendEmail({ to: email, subject: subject, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
+}
+
+function phoneForSheet_(value) {
+  const clean = String(value || '').replace(/^'+/, '').replace(/^\+/, '').trim();
+  return clean ? "'" + clean : '';
 }
 
 function validateConfig_() {
@@ -645,7 +669,7 @@ function ensureHeaders_(sheet, requiredHeaders) {
 
 function appendObjectRow_(sheet, obj) {
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
-  const row = headers.map(function(h){ return obj[h] !== undefined ? obj[h] : ''; });
+  const row = headers.map(function(h){ return sheetSafeValue_(h, obj[h] !== undefined ? obj[h] : ''); });
   sheet.appendRow(row);
 }
 
@@ -656,7 +680,7 @@ function findRowByEmail_(sheet, email) {
   const emailIndex = headers.indexOf('correo');
   if (emailIndex < 0) return { row:-1, data:null };
   for (let i=1; i<values.length; i++) {
-    if (String(values[i][emailIndex] || '').trim().toLowerCase() === email) {
+    if (String(values[i][emailIndex] || '').replace(/^'/,'').trim().toLowerCase() === email) {
       const data = {};
       headers.forEach(function(h, idx){ data[h] = values[i][idx]; });
       return { row:i+1, data:data };
