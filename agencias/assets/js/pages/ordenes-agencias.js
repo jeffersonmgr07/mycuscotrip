@@ -127,20 +127,65 @@
     return [];
   }
 
+  function normalizeOrderCode(order) {
+    return String(order?.codigoOrden || order?.code || '').replace(/[^A-Za-z0-9]/g, '');
+  }
+
+  function normalizeLocalOrder(order) {
+    if (!order || typeof order !== 'object') return order;
+    return {
+      ...order,
+      codigoOrden: order.codigoOrden || order.code || '',
+      fechaOrden: order.fechaOrden || order.createdAt || order.date || '',
+      estadoPago: order.estadoPago || order.status || 'Pendiente',
+      moneda: order.moneda || order.currency || 'PEN',
+      tipoCambio: order.tipoCambio || order.exchangeRate || '',
+      subtotalNeto: order.subtotalNeto ?? order.subtotal ?? '',
+      montoComisionado: order.montoComisionado ?? order.total ?? '',
+      comisionPaypalBanco: order.comisionPaypalBanco ?? order.fee ?? '',
+      fechaVencimientoPago: order.fechaVencimientoPago || order.paymentDueAt || '',
+      serviciosJson: order.serviciosJson || JSON.stringify(order.items || []),
+      titularJson: order.titularJson || JSON.stringify((order.items || [])[0]?.lead || order.lead || {}),
+      pasajerosJson: order.pasajerosJson || JSON.stringify((order.items || []).flatMap((item) => item.passengers || [])),
+      observaciones: order.observaciones || order.observations || ''
+    };
+  }
+
+  function mergeOrders(remoteOrders, localOrders) {
+    const map = new Map();
+    [...localOrders.map(normalizeLocalOrder), ...remoteOrders.map(normalizeLocalOrder)].forEach((order) => {
+      const code = normalizeOrderCode(order) || `local-${Math.random().toString(36).slice(2)}`;
+      map.set(code, order);
+    });
+    return [...map.values()].sort((a, b) => {
+      const da = new Date(a.fechaOrden || a.createdAt || 0).getTime() || 0;
+      const db = new Date(b.fechaOrden || b.createdAt || 0).getTime() || 0;
+      return db - da;
+    });
+  }
+
   async function fetchOrders(session) {
     const local = readJSON(LOCAL_ORDERS_KEY, []);
+    let remote = [];
     try {
       const response = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'listOrders', email: session.email, agencyId: session.agencyId })
       });
-      const result = await response.json();
-      if (result.ok && Array.isArray(result.orders)) return result.orders;
+      const text = await response.text();
+      let result = null;
+      try { result = JSON.parse(text); } catch (parseError) {
+        console.warn('Respuesta no JSON al cargar órdenes:', text);
+      }
+      if (result?.ok && Array.isArray(result.orders)) {
+        remote = result.orders;
+      } else if (result && result.message) {
+        console.warn('Apps Script no devolvió órdenes:', result.message);
+      }
     } catch (error) {
       console.warn('No se pudieron cargar órdenes desde Google Sheets', error);
     }
-    return local;
+    return mergeOrders(remote, local);
   }
 
   function renderOrders() {
