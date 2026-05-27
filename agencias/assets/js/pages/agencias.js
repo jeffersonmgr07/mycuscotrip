@@ -83,6 +83,16 @@
   }
 
 
+  function paymentMethodFor(order) {
+    const currency = String(order?.currency || order?.moneda || state.currency || '').toUpperCase();
+    return currency === 'USD' ? 'paypal' : 'mercadopago';
+  }
+
+  function paymentButtonLabel(order) {
+    return paymentMethodFor(order) === 'paypal' ? 'Pagar con PayPal' : 'Pagar reserva';
+  }
+
+
   function greetingFor(name = '') {
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Buenos días' : (hour < 18 ? 'Buenas tardes' : 'Buenas noches');
@@ -491,7 +501,7 @@
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
-        <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'}</button>
+        <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${paymentButtonLabel(order)}</button>
         <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
     `;
@@ -508,29 +518,29 @@
 
 
   async function startPayPalPayment(order) {
-    if (isPeruvianAgency()) {
-      alert('La pasarela de pago para agencias nacionales se habilitará próximamente. Por ahora, puedes coordinar el pago con nuestro equipo de reservas.');
-      return;
-    }
+    const method = paymentMethodFor(order);
     const button = $('#payWithPayPalButton');
-    if (button) { button.disabled = true; button.textContent = 'Conectando con PayPal...'; }
+    const loadingText = method === 'paypal' ? 'Conectando con PayPal...' : 'Conectando con Mercado Pago...';
+    if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
-      const result = await sendToSheet('createPayPalOrder', {
+      const action = method === 'paypal' ? 'createPayPalOrder' : 'createMercadoPagoPreference';
+      const result = await sendToSheet(action, {
         code: order.code,
         currency: order.currency,
         total: order.total,
         account: order.account
       });
-      if (!result.ok || !result.approvalUrl) {
-        alert(result.message || 'No se pudo crear el pago en PayPal. Revisa la configuración de credenciales en Apps Script.');
+      const redirectUrl = method === 'paypal' ? result.approvalUrl : result.initPoint;
+      if (!result.ok || !redirectUrl) {
+        alert(result.message || (method === 'paypal' ? 'No se pudo crear el pago en PayPal.' : 'No se pudo crear el pago en Mercado Pago.'));
         return;
       }
-      window.location.href = result.approvalUrl;
+      window.location.href = redirectUrl;
     } catch (error) {
       console.error(error);
-      alert('No se pudo conectar con PayPal.');
+      alert(method === 'paypal' ? 'No se pudo conectar con PayPal.' : 'No se pudo conectar con Mercado Pago.');
     } finally {
-      if (button) { button.disabled = false; button.textContent = isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'; }
+      if (button) { button.disabled = false; button.textContent = paymentButtonLabel(order); }
     }
   }
 
