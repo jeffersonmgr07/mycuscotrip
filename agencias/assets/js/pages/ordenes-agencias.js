@@ -329,6 +329,23 @@
     setTimeout(() => document.body.classList.remove('printing-order'), 600);
   }
 
+
+
+  function bindLogout() {
+    const logoutButtons = [
+      document.getElementById('logoutButton'),
+      document.getElementById('logoutBtn'),
+      document.querySelector('[data-logout]')
+    ].filter(Boolean);
+    logoutButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        localStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem('mctAgencySession');
+        window.location.href = './login.html';
+      });
+    });
+  }
+
   async function init() {
     bindLogout();
     const session = requireSession();
