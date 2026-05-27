@@ -126,259 +126,37 @@
 .payment-method-note{background:#eef7f1;border:1px solid var(--line);border-radius:16px;padding:12px 14px;color:#40544a;font-size:.9rem;margin-top:12px;}
 @media(max-width:760px){.password-checklist{grid-template-columns:1fr}.form-grid .phone-code-field,.form-grid .phone-number-field{grid-column:span 1;}}
 
+/* Ajustes visuales solicitados - portal agencias */
+.agency-controls--stacked{display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:10px!important;}
+.agency-controls__row{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;width:100%;}
+.agency-controls__row--buttons .agency-button{font-size:.88rem!important;font-weight:800!important;min-height:43px!important;min-width:132px!important;padding:12px 16px!important;}
+.agency-controls__row--currency{justify-content:flex-end;}
+.currency-control--no-label{display:block!important;margin:0!important;}
+.currency-control--no-label select{min-width:176px!important;font-size:.88rem!important;font-weight:800!important;}
+@media(min-width:1021px){.checkout{margin-top:90px!important;}}
+@media(max-width:1020px){.checkout{margin-top:0!important}.agency-controls--stacked{align-items:stretch!important}.agency-controls__row{justify-content:stretch}.agency-controls__row--buttons .agency-button,.currency-control--no-label select{flex:1;min-width:150px!important;width:100%;}}
 
-/* Ajustes PayPal / orden generada */
-.print-order-status{
-  min-width:160px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center!important;
-  gap:4px;
-}
-.print-order-status span{
-  display:inline-flex!important;
-  align-items:center;
-  justify-content:center;
-  padding:8px 14px;
-  border-radius:999px;
-  font-weight:900;
-  text-transform:capitalize;
-  line-height:1;
-}
-.print-order-status.is-pendiente span{
-  background:#fff7df;
-  color:#6d4b00;
-  border:1px solid #ead9a5;
-}
-.print-order-status.is-vencido span,
-.print-order-status.is-vencida span{
-  background:#fff1e8;
-  color:#9a3412;
-  border:1px solid #f1c7b5;
-}
-.print-order-status.is-pagado span,
-.print-order-status.is-pagada span{
-  background:#effaf1;
-  color:#126b2f;
-  border:1px solid #bfe6c8;
-}
-.order-modal-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-@media(max-width:760px){
-  .print-order-status{min-width:0;align-items:flex-start;text-align:left!important}
-  .order-modal-actions .agency-button{flex:1;min-width:150px}
-}
+/* Login: mostrar/ocultar contraseña */
+.auth-form .password-input-wrap{position:relative;display:flex;align-items:center;width:100%;}
+.auth-form .password-input-wrap input{width:100%;padding-right:86px!important;}
+.auth-form .password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);min-width:64px;border:1px solid var(--line);background:#eef7f1;color:var(--primary);font-weight:800;border-radius:999px;padding:7px 11px;cursor:pointer;font-size:.8rem;}
 
-
-/* Ajustes finales PayPal / impresión / moneda */
-.currency-control{display:flex;align-items:center;margin:0!important;}
-.currency-control select{min-height:43px;min-width:150px;}
-.print-order-head{
-  background:linear-gradient(135deg,#062803,#053220)!important;
-  color:#fff!important;
-  border-radius:18px!important;
-  padding:16px 18px!important;
-  margin-bottom:16px!important;
-  display:block!important;
-}
-.print-order-logo-row{display:flex;align-items:center;margin-bottom:10px;}
-.print-order-logo{max-width:150px;height:auto;display:block;}
-.print-order-title-row{display:flex;justify-content:space-between;gap:18px;align-items:center;}
-.print-order-title-row h2{font-size:1.7rem!important;margin:0 0 5px!important;color:#fff!important;}
-.print-order-title-row p{margin:0;color:rgba(255,255,255,.88)!important;}
-.print-order-status{
-  min-width:190px!important;
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  justify-content:center!important;
-  text-align:center!important;
-  gap:6px!important;
-  background:#fff3bf!important;
-  border:1px solid #f0cf62!important;
-  border-radius:16px!important;
-  padding:12px 14px!important;
-  color:#111!important;
-}
-.print-order-status span{
-  display:block!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-  color:#111!important;
-  font-weight:950!important;
-  text-transform:capitalize!important;
-  line-height:1.1!important;
-  font-size:1rem!important;
-}
-.print-order-status small{display:block!important;color:#111!important;margin:0!important;font-weight:700!important;}
-.print-order-status.is-vencido,.print-order-status.is-vencida{background:#ffe7dc!important;border-color:#f0b7a0!important;}
-.print-order-status.is-pagado,.print-order-status.is-pagada{background:#e5f8e9!important;border-color:#bfe6c8!important;}
-.payment-method-note{background:#f8fbf9!important;border:1px solid var(--line)!important;color:#40544a!important;}
-@media(max-width:760px){
-  .print-order-title-row{display:block!important;}
-  .print-order-status{margin-top:12px!important;align-items:flex-start!important;text-align:left!important;}
-}
-@media print{
-  .print-order-head{padding:12px 14px!important;border-radius:12px!important;}
-  .print-order-logo{max-width:130px!important;}
-  .print-order-title-row h2{font-size:1.4rem!important;}
-  .print-order-status{min-width:170px!important;padding:9px 12px!important;}
-}
-
-
-/* Ajustes de prueba PayPal y estilos solicitados */
-.agency-login-page{
-  background:
-    linear-gradient(180deg,rgba(245,250,246,.84),rgba(255,255,255,.92)),
-    url('../../../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg'),
-    url('../../../assets/img/tours/machu-picchu-full-day/cover.jpg');
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-}
-.agency-login-page .auth-card{
-  background:rgba(255,255,255,.86)!important;
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  border-color:rgba(255,255,255,.55)!important;
-}
-.agency-login-page .agency-main--narrow{min-height:calc(100vh - 180px);display:grid;align-items:center;}
-.agency-intro-bar{
-  background:linear-gradient(135deg,#062803,#053220)!important;
-  color:#fff!important;
-  border-color:rgba(255,255,255,.16)!important;
-  box-shadow:0 20px 42px rgba(6,40,3,.18)!important;
-}
-.agency-intro-bar .eyebrow{color:#f2d99d!important;}
-.agency-intro-bar h1,
-.agency-intro-bar h1#agencyNameHeading{color:#fff!important;}
-.agency-intro-bar p,
-.agency-intro-bar p#sessionWelcome,
-.agency-intro-bar #ordersAgencyName{color:rgba(255,255,255,.86)!important;}
-.agency-intro-bar .agency-button--ghost,
-.agency-intro-bar .currency-control select{
-  background:rgba(255,255,255,.94)!important;
-  color:#062803!important;
-  border-color:rgba(255,255,255,.5)!important;
-}
-.agency-intro-bar .agency-button--primary{background:#fff!important;color:#062803!important;}
-.orders-table th{background:#062803!important;color:#fff!important;}
-.orders-table tbody tr:nth-child(even) td{background:#f3faf6;}
-.orders-table tbody tr:nth-child(odd) td{background:#fff;}
-.orders-table tbody tr:hover td{background:#eef7f1;}
-.order-detail-button{white-space:nowrap!important;}
-.experience-card[data-private-test], .experience-card:has([data-reserve="paypal-test-product-1usd"]){border-color:#f0cf62!important;box-shadow:0 16px 34px rgba(152,106,8,.13)!important;}
-@media(max-width:760px){
-  .agency-login-page{background-attachment:scroll;}
-  .agency-login-page .agency-main--narrow{display:block;}
-}
-
-/* Ajustes finales solicitados: estado, impresión, mis datos y formularios */
-.print-order-logo-row{display:none!important;}
-.print-order-title-row{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:18px!important;}
-.print-order-status{
-  width:max-content!important;
-  min-width:0!important;
-  max-width:260px!important;
-  margin-left:auto!important;
-  background:#ffd43b!important;
-  border:1px solid #e7b900!important;
-  color:#111!important;
-  border-radius:14px!important;
-  padding:9px 13px!important;
-  box-shadow:0 8px 18px rgba(82,63,0,.16)!important;
-}
-.print-order-status span,.print-order-status small{color:#111!important;}
-.print-order-status span{font-size:.95rem!important;font-weight:950!important;line-height:1.05!important;}
-.print-order-status small{font-size:.78rem!important;font-weight:800!important;white-space:nowrap!important;}
-.print-order-status.is-vencido,.print-order-status.is-vencida{background:#ffd8c7!important;border-color:#eea98e!important;}
-.print-order-status.is-pagado,.print-order-status.is-pagada{background:#dff7e4!important;border-color:#adddbc!important;}
-.profile-card h2,.payment-card h2,.form-block h2{
-  display:inline-flex!important;
-  align-items:center!important;
-  width:fit-content!important;
-  background:#062803!important;
-  color:#fff!important;
-  border-radius:12px!important;
-  padding:8px 12px!important;
-  font-size:.96rem!important;
-  line-height:1.1!important;
-  letter-spacing:-.01em!important;
-  margin:0 0 10px!important;
-}
-.field input:invalid,.field select:invalid{border-color:rgba(180,35,24,.35);}
-@media print{
-  body.printing-order .print-order-logo-row{display:flex!important;margin-bottom:8px!important;}
-  body.printing-order .print-order-logo{max-width:135px!important;height:auto!important;}
-  body.printing-order .print-order-head{padding:10px 12px!important;border-radius:12px!important;margin-bottom:12px!important;}
-  body.printing-order .print-order-title-row{display:flex!important;align-items:center!important;}
-  body.printing-order .print-order-status{background:#ffd43b!important;border-color:#e7b900!important;color:#111!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  body.printing-order .print-order-status span,body.printing-order .print-order-status small{color:#111!important;}
-}
-@media(max-width:760px){
-  .print-order-title-row{display:block!important;}
-  .print-order-status{margin:12px 0 0 0!important;}
-  .profile-card h2,.payment-card h2,.form-block h2{font-size:.9rem!important;}
-}
-
-
-/* Correcciones visuales finales: espacio, barras de sección y perfil */
-/* Elimina el aire extra antes del título de experiencias */
-.info-note{margin-bottom:10px!important;}
-.portal-layout{align-items:start!important;}
-#experiencias{padding-top:0!important;margin-top:0!important;}
-#experiencias .section-title,.section-title--simple{margin-top:0!important;margin-bottom:10px!important;}
-#experiencias .section-title p{margin-top:4px!important;}
-
-/* Barras de título a todo el ancho en registro, mis datos y pagos */
-.form-block h2,.profile-card h2,.payment-card h2{
-  display:block!important;
-  width:100%!important;
-  background:linear-gradient(135deg,#062803,#053220)!important;
-  color:#fff!important;
-  border-radius:14px!important;
-  padding:11px 14px!important;
-  font-size:1.12rem!important;
-  line-height:1.15!important;
-  font-family:Montserrat,Arial,sans-serif!important;
-  font-weight:400!important;
-  letter-spacing:-.01em!important;
-  margin:0 0 14px!important;
-}
-.profile-card h2,.payment-card h2{
-  font-size:1.08rem!important;
-  font-weight:400!important;
-}
-
-/* Teléfono con código de país + número en una sola fila */
-.profile-phone-row{display:grid;grid-template-columns:minmax(140px,.45fr) minmax(0,1fr);gap:13px;grid-column:1/-1;}
-.profile-phone-row .field{min-width:0;}
-
-/* UX contraseña en Mis datos */
-.password-input-wrap{display:flex;gap:8px;align-items:center;}
-.password-input-wrap input{flex:1;min-width:0;}
-.password-toggle{border:1px solid var(--line);background:#f2f8f4;color:var(--primary);font-weight:900;border-radius:12px;padding:10px 12px;cursor:pointer;white-space:nowrap;}
-.password-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:2px;}
-.password-checklist div{border:1px solid var(--line);background:#fbfdfb;border-radius:12px;padding:8px 10px;font-size:.82rem;color:var(--muted);font-weight:800;}
-.password-checklist div::before{content:'○';margin-right:7px;color:#9ba8a0;}
-.password-checklist div.is-ok{background:#effaf1;color:#126b2f;border-color:#bfe6c8;}
-.password-checklist div.is-ok::before{content:'✓';color:#126b2f;font-weight:950;}
-
-/* Evita que imágenes rotas o placeholders generen bloques extraños antes del listado */
-.experience-cover{background:#dbe8df!important;}
-@media(max-width:760px){
-  .profile-phone-row{grid-template-columns:1fr;}
-  .password-checklist{grid-template-columns:1fr;}
-  .form-block h2,.profile-card h2,.payment-card h2{
-    font-size:1.02rem!important;
-    font-weight:400!important;
-    padding:10px 12px!important;
-  }
-}
+/* Modal de reserva: secciones, tickets y botones */
+.form-subtitle{display:block!important;width:100%;background:#c6a15b!important;color:#1d1606!important;border-radius:14px!important;padding:12px 14px!important;font-weight:800!important;font-size:1rem!important;margin-top:6px!important;border:0!important;}
+.entry-tickets-box{background:#fffaf2;border:1px solid #eadfc9;border-radius:18px;padding:14px;margin:4px 0 6px;}
+.entry-tickets-box__head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.entry-master-check{display:flex;align-items:center;gap:9px;color:var(--primary);font-weight:900;}
+.entry-master-check input,.entry-ticket-option input{accent-color:var(--primary);}
+.entry-tickets-box__head small{color:#6d4b00;font-size:.82rem;line-height:1.35;text-align:right;}
+.entry-ticket-options{display:grid;gap:9px;}
+.entry-ticket-option{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #eadfc9;border-radius:14px;padding:10px 12px;}
+.entry-ticket-option.is-disabled{opacity:.62;}
+.entry-ticket-option strong{display:block;color:var(--primary);font-size:.9rem;}
+.entry-ticket-option small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px;line-height:1.35;}
+.tourists-box .dialog-help{margin-top:10px!important;}
+.order-ticket-row td{background:#fffaf2!important;color:#564625;font-size:.88rem;}
+.dialog-actions{margin-top:22px!important;gap:12px!important;}
+.dialog-actions .agency-button{font-size:.98rem!important;padding:14px 20px!important;}
+#reserveForm .field select,#reserveForm .field input,#reserveForm .field textarea{min-height:45px;}
+#leadPhoneCountry,#leadPhone{font:inherit!important;border-radius:14px!important;}
+@media(max-width:760px){.entry-tickets-box__head{display:block}.entry-tickets-box__head small{display:block;text-align:left;margin-top:6px}.dialog-actions .agency-button{width:100%;}}

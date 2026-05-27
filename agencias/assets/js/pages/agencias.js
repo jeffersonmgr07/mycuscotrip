@@ -7,7 +7,7 @@
 
   const CONFIG = {
     catalogUrl: './assets/data/agencias-tours.json',
-    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0', // Pega aquí la URL de despliegue de Google Apps Script.
+    googleScriptUrl: 'https://script.google.com/macros/s/AKfycbycmduYce7cpGoMSqR3iqubsC46DiIox7qaNJXFFW8abQpr0s1SYCnYfyA2w95_vGYQ/exec?authuser=0', // Pega aquí la URL de despliegue de Google Apps Script.
     paypalRate: 0.054,
     bankRate: 0.015,
     defaultExchangeRate: 3.38,
@@ -53,6 +53,15 @@
   function serviceAltPrice(service) {
     if (!service.priceAltPEN) return null;
     return state.currency === 'USD' ? Number(service.priceAltPEN) / state.exchangeRate : Number(service.priceAltPEN);
+  }
+
+  function ticketPrice(ticket) {
+    return convert(Number(ticket.pricePEN || 0), ticket.currency || 'PEN', ticket.priceUSD != null ? Number(ticket.priceUSD) : null);
+  }
+
+  function isPeruvianAgency() {
+    const country = String(state.session?.country || state.session?.pais || '').trim().toUpperCase();
+    return country === 'PE' || country === 'PERU' || country === 'PERÚ';
   }
 
 
@@ -124,27 +133,19 @@
       localStorage.setItem('mct_exchange_rate', state.exchangeRate);
       renderExperiences(); renderCart();
     });
-    $('#paxCount').addEventListener('input', renderAdditionalPassengers);
+    $('#paxCount').addEventListener('input', () => { renderAdditionalPassengers(); renderEntryTickets(findService($('#selectedServiceId').value)); });
+    $('#includeTicketsToggle')?.addEventListener('change', () => renderEntryTickets(findService($('#selectedServiceId').value)));
+    $('#logoutButton')?.addEventListener('click', logout);
     $('#reserveForm').addEventListener('submit', addToCart);
     $('#clearCartButton').addEventListener('click', clearCart);
     $('#generateOrderButton').addEventListener('click', generateOrder);
     $$('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModals));
     $$('.modal-backdrop').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal) closeModals(); }));
-    $('#logoutButton')?.addEventListener('click', () => {
-      localStorage.removeItem(STORAGE.SESSION);
-      localStorage.removeItem(STORAGE.CART);
-      window.location.href = './login.html';
-    });
   }
 
   function renderExperiences() {
     const q = ($('#searchInput')?.value || '').trim().toLowerCase();
-    const sessionEmail = String(state.session?.email || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
-      if (Array.isArray(service.visibleForEmails) && service.visibleForEmails.length) {
-        const allowed = service.visibleForEmails.map((email) => String(email).trim().toLowerCase());
-        if (!allowed.includes(sessionEmail)) return false;
-      }
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
@@ -160,7 +161,7 @@
     const unit = service.priceUnit || 'por persona';
     const altHtml = alt ? `<small>${money(alt)} ${escapeHtml(service.priceAltLabel || '')}</small>` : '';
     return `
-      <article class="experience-card" ${service.visibleForEmails?.length ? 'data-private-test="true"' : ''}>
+      <article class="experience-card">
         <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
         <div class="experience-body">
           <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || 'Salida diaria')}</span></div>
@@ -193,6 +194,7 @@
     $('#serviceDate').value = tomorrowISO();
     $('#paxCount').value = 2;
     renderScheduleOptions(service);
+    renderEntryTickets(service);
     renderAdditionalPassengers();
     $('#reserveModal').classList.add('show');
   }
@@ -204,6 +206,44 @@
       ? service.schedules
       : (service.startLabel ? [service.startLabel] : ['Por confirmar']);
     select.innerHTML = schedules.map((time) => `<option value="${escapeHtml(time)}">${escapeHtml(time)}</option>`).join('');
+  }
+
+  function renderEntryTickets(service) {
+    const box = $('#entryTicketsBox');
+    const options = $('#entryTicketOptions');
+    const toggle = $('#includeTicketsToggle');
+    if (!box || !options || !toggle) return;
+    const tickets = Array.isArray(service?.entryTickets) ? service.entryTickets : [];
+    if (!tickets.length) {
+      box.hidden = true;
+      options.innerHTML = '';
+      toggle.checked = false;
+      return;
+    }
+    box.hidden = false;
+    options.innerHTML = tickets.map((ticket) => `
+      <label class="entry-ticket-option ${toggle.checked ? '' : 'is-disabled'}">
+        <input type="checkbox" data-entry-ticket="${escapeHtml(ticket.id)}" ${toggle.checked ? '' : 'disabled'} />
+        <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} por pasajero${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
+      </label>
+    `).join('');
+  }
+
+  function selectedEntryTickets(service, pax) {
+    const tickets = Array.isArray(service?.entryTickets) ? service.entryTickets : [];
+    if (!tickets.length || !$('#includeTicketsToggle')?.checked) return [];
+    const selectedIds = $$('[data-entry-ticket]:checked').map((input) => input.dataset.entryTicket);
+    return tickets.filter((ticket) => selectedIds.includes(ticket.id)).map((ticket) => ({
+      id: ticket.id,
+      name: ticket.name,
+      pricePEN: Number(ticket.pricePEN || 0),
+      priceUSD: ticket.priceUSD != null ? Number(ticket.priceUSD) : null,
+      currency: ticket.currency || 'PEN',
+      note: ticket.note || '',
+      pax,
+      totalPEN: Number(ticket.pricePEN || 0) * pax,
+      totalUSD: ticket.priceUSD != null ? Number(ticket.priceUSD) * pax : null
+    }));
   }
 
   function renderAdditionalPassengers() {
@@ -219,6 +259,7 @@
             <label class="field"><span>Apellidos</span><input data-pax="lastName" /></label>
             <label class="field"><span>Tipo de documento</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
             <label class="field"><span>Número de documento</span><input data-pax="docNumber" /></label>
+            <label class="field full"><span>Nacionalidad</span><input data-pax="nationality" placeholder="Ej. Perú, México, Brasil" /></label>
           </div>
         </div>
       `);
@@ -236,8 +277,9 @@
       firstName: $('[data-pax="firstName"]', card).value.trim(),
       lastName: $('[data-pax="lastName"]', card).value.trim(),
       docType: $('[data-pax="docType"]', card).value,
-      docNumber: $('[data-pax="docNumber"]', card).value.trim()
-    })).filter((p) => p.firstName || p.lastName || p.docNumber);
+      docNumber: $('[data-pax="docNumber"]', card).value.trim(),
+      nationality: $('[data-pax="nationality"]', card)?.value.trim() || ''
+    })).filter((p) => p.firstName || p.lastName || p.docNumber || p.nationality);
 
     const item = {
       id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -256,8 +298,11 @@
         lastName: $('#leadLastName').value.trim(),
         docType: $('#leadDocType').value,
         docNumber: $('#leadDocNumber').value.trim(),
+        nationality: $('#leadNationality')?.value.trim() || '',
+        language: $('#leadLanguage')?.value || '',
         phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
+      entryTickets: selectedEntryTickets(service, pax),
       groupMode: $('#groupMode').value,
       pickupPoint: $('#pickupPoint').value.trim(),
       notes: $('#bookingNotes').value.trim(),
@@ -270,9 +315,16 @@
     $('#checkout').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function itemSubtotal(item) {
-    const service = findService(item.serviceId) || {};
+  function itemServiceSubtotal(item) {
     return convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
+  }
+
+  function itemTicketsSubtotal(item) {
+    return (item.entryTickets || []).reduce((sum, ticket) => sum + convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD) * (ticket.pax || item.pax || 1), 0);
+  }
+
+  function itemSubtotal(item) {
+    return itemServiceSubtotal(item) + itemTicketsSubtotal(item);
   }
 
   function feeGross(subtotal) {
@@ -293,6 +345,7 @@
           <div class="cart-row"><span>Hora</span><span>${escapeHtml(item.serviceTime || 'Por confirmar')}</span></div>
           <div class="cart-row"><span>Pasajeros</span><span>${item.pax}</span></div>
           <div class="cart-row"><span>Titular</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
+          ${item.entryTickets?.length ? `<div class="cart-row"><span>Tickets</span><span>${item.entryTickets.map((ticket) => escapeHtml(ticket.name)).join('<br>')}</span></div>` : ''}
           <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
           <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">Quitar</button>
         </article>
@@ -360,9 +413,13 @@
 
   function orderItemsRows(order) {
     return order.items.map((item, index) => {
-      const amount = convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
+      const serviceAmount = itemServiceSubtotal(item);
+      const ticketRows = (item.entryTickets || []).map((ticket) => {
+        const ticketAmount = convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD) * (ticket.pax || item.pax || 1);
+        return `<tr class="order-ticket-row"><td></td><td>Ticket: ${escapeHtml(ticket.name)}${ticket.note ? `<br><small>${escapeHtml(ticket.note)}</small>` : ''}</td><td>${ticket.pax || item.pax}</td><td>${money(convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD))}</td><td><strong>${money(ticketAmount)}</strong></td></tr>`;
+      }).join('');
       const passengers = item.passengers?.length
-        ? item.passengers.map((p, i) => `<li>Pasajero ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}</li>`).join('')
+        ? item.passengers.map((p, i) => `<li>Pasajero ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}${p.nationality ? ` · Nacionalidad: ${escapeHtml(p.nationality)}` : ''}</li>`).join('')
         : '<li>Datos adicionales pendientes.</li>';
       return `
         <tr>
@@ -370,37 +427,26 @@
           <td><strong>${escapeHtml(item.serviceName)}</strong><br><small>Fecha: ${formatDate(item.travelDate)} · Hora: ${escapeHtml(item.serviceTime || 'Por confirmar')}</small><br><small>Recojo: ${escapeHtml(item.pickupPoint || '')}</small></td>
           <td>${item.pax}</td>
           <td>${money(convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD))}</td>
-          <td><strong>${money(amount)}</strong></td>
+          <td><strong>${money(serviceAmount)}</strong></td>
         </tr>
-        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>Titular:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)} · ${escapeHtml(item.lead.phone)}<br><strong>Pasajeros adicionales:</strong><ul>${passengers}</ul>${item.notes ? `<strong>Observaciones:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
+        ${ticketRows}
+        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>Titular:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}${item.lead.nationality ? ` · Nacionalidad: ${escapeHtml(item.lead.nationality)}` : ''}${item.lead.language ? ` · Idioma: ${escapeHtml(item.lead.language)}` : ''} · ${escapeHtml(item.lead.phone)}<br><strong>Pasajeros adicionales:</strong><ul>${passengers}</ul>${item.notes ? `<strong>Observaciones:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
       `;
     }).join('');
-  }
-
-  function statusClass(value) {
-    const raw = String(value || 'Pendiente').toLowerCase();
-    if (raw.includes('pag')) return 'is-pagado';
-    if (raw.includes('venc')) return 'is-vencido';
-    return 'is-pendiente';
   }
 
   function orderHTML(order, result = null) {
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div class="print-order-logo-row">
-            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
+          <div>
+            <p class="eyebrow">Orden de reserva</p>
+            <h2>${escapeHtml(order.code)}</h2>
+            <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
           </div>
-          <div class="print-order-title-row">
-            <div>
-              <p class="eyebrow">Orden de reserva</p>
-              <h2>${escapeHtml(order.code)}</h2>
-              <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
-            </div>
-            <div class="print-order-status ${statusClass(order.status)}">
-              <span>${escapeHtml(order.status)}</span>
-              <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
-            </div>
+          <div class="print-order-status">
+            <span>${escapeHtml(order.status)}</span>
+            <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
           </div>
         </div>
         <div class="info-note"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.</div>
@@ -411,16 +457,15 @@
           </table>
         </div>
         <div class="order-totals">
-          <div><span>Subtotal neto</span><strong>${money(order.subtotal)}</strong></div>
+          <div><span>Servicios + tickets de ingreso</span><strong>${money(order.subtotal)}</strong></div>
           <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>Total a pagar</span><strong>${money(order.total)}</strong></div>
         </div>
-        ${result?.ok === false ? '<p class="small-print-note">Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.</p>' : ''}
-        <div class="payment-method-note"><strong>Confirmación:</strong> toda orden será confirmada posterior al pago validado y estará siempre sujeta a disponibilidad operativa vigente.</div>
+        <p class="small-print-note">${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note"><strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.</div>
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
-        <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">Pagar con PayPal</button>
+        <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'}</button>
         <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
       </div>
     `;
@@ -437,6 +482,10 @@
 
 
   async function startPayPalPayment(order) {
+    if (isPeruvianAgency()) {
+      alert('La pasarela de pago para agencias nacionales se habilitará próximamente. Por ahora, puedes coordinar el pago con nuestro equipo de reservas.');
+      return;
+    }
     const button = $('#payWithPayPalButton');
     if (button) { button.disabled = true; button.textContent = 'Conectando con PayPal...'; }
     try {
@@ -455,7 +504,7 @@
       console.error(error);
       alert('No se pudo conectar con PayPal.');
     } finally {
-      if (button) { button.disabled = false; button.textContent = 'Pagar con PayPal'; }
+      if (button) { button.disabled = false; button.textContent = isPeruvianAgency() ? 'Pagar reserva' : 'Pagar con PayPal'; }
     }
   }
 
@@ -552,6 +601,12 @@
   }
 
   function closeModals() { $$('.modal-backdrop').forEach((modal) => modal.classList.remove('show')); }
+
+  function logout() {
+    localStorage.removeItem(STORAGE.SESSION);
+    localStorage.removeItem(STORAGE.CART);
+    window.location.href = './login.html';
+  }
 
   function makeCode() {
     const d = new Date();

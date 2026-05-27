@@ -5,36 +5,6 @@
   "exchangeRate": 3.38,
   "services": [
     {
-      "id": "paypal-test-product-1usd",
-      "slug": "paypal-test-product-1usd",
-      "name": "Producto de prueba PayPal",
-      "shortName": "Producto de prueba",
-      "category": "Prueba",
-      "currency": "USD",
-      "priceUSD": 1,
-      "pricePEN": 3.38,
-      "priceUnit": "por prueba",
-      "durationLabel": "Producto de prueba",
-      "startLabel": "Pago de prueba",
-      "frequency": "Solo pruebas internas",
-      "image": "../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg",
-      "jsonSources": [
-        "../assets/data/agencias-tours.json"
-      ],
-      "description": "Producto de prueba para validar el flujo de pago con PayPal. Visible solo para la agencia autorizada.",
-      "includes": [
-        "Prueba de generación de orden",
-        "Prueba de pago PayPal"
-      ],
-      "notIncluded": "No corresponde a un servicio turístico real.",
-      "schedules": [
-        "Prueba"
-      ],
-      "visibleForEmails": [
-        "bougertraveler@gmail.com"
-      ]
-    },
-    {
       "id": "bienvenida-ancestral-cusco",
       "slug": "bienvenida-ancestral-cusco",
       "name": "Bienvenida Ancestral Cusco",
@@ -98,6 +68,20 @@
         "10:00",
         "13:00",
         "14:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "boleto-turistico-parcial-city",
+          "name": "Boleto turístico parcial",
+          "pricePEN": 70,
+          "note": "Circuito centros arqueológicos. Referencia extranjero; peruano S/ 40."
+        },
+        {
+          "id": "coricancha",
+          "name": "Ingreso al Coricancha",
+          "pricePEN": 15,
+          "note": "Tarifa por adulto."
+        }
       ]
     },
     {
@@ -128,6 +112,14 @@
       "notIncluded": "No incluye boleto turístico parcial circuito 2: S/ 40 nacional o S/ 70 extranjero.",
       "schedules": [
         "08:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "boleto-turistico-parcial-c2",
+          "name": "Boleto turístico parcial circuito 2",
+          "pricePEN": 70,
+          "note": "Referencia extranjero; peruano S/ 40."
+        }
       ]
     },
     {
@@ -143,7 +135,7 @@
       "durationLabel": "08:00 a 15:30",
       "startLabel": "08:00",
       "frequency": "Salida diaria",
-      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "image": "../assets/img/tours/valle-sagrado/cover2.jpg",
       "jsonSources": [
         "../assets/data/agencias-tours.json",
         "../assets/data/tours-cusco.json"
@@ -157,6 +149,14 @@
       "notIncluded": "No incluye boleto turístico parcial circuito 2: S/ 40 nacional o S/ 70 extranjero.",
       "schedules": [
         "08:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "boleto-turistico-parcial-c2",
+          "name": "Boleto turístico parcial circuito 2",
+          "pricePEN": 70,
+          "note": "Referencia extranjero; peruano S/ 40."
+        }
       ]
     },
     {
@@ -172,7 +172,7 @@
       "durationLabel": "07:00 a 20:00",
       "startLabel": "07:00",
       "frequency": "Salida diaria",
-      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "image": "../assets/img/tours/valle-sagrado/cover3.jpg",
       "jsonSources": [
         "../assets/data/agencias-tours.json",
         "../assets/data/tours-cusco.json"
@@ -187,6 +187,20 @@
       "notIncluded": "No incluye boleto turístico parcial ni ingreso a Maras: S/ 15 nacional o S/ 20 extranjero.",
       "schedules": [
         "07:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "boleto-turistico-parcial-c2",
+          "name": "Boleto turístico parcial circuito 2",
+          "pricePEN": 70,
+          "note": "Referencia extranjero; peruano S/ 40."
+        },
+        {
+          "id": "maras",
+          "name": "Ingreso a Salineras de Maras",
+          "pricePEN": 20,
+          "note": "Referencia extranjero; peruano S/ 15."
+        }
       ]
     },
     {
@@ -202,7 +216,7 @@
       "durationLabel": "07:00 a 15:30",
       "startLabel": "07:00",
       "frequency": "Salida diaria",
-      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "image": "../assets/img/tours/valle-sagrado/cover4.jpg",
       "jsonSources": [
         "../assets/data/agencias-tours.json",
         "../assets/data/tours-cusco.json"
@@ -216,6 +230,20 @@
       "notIncluded": "No incluye boleto turístico parcial ni ingreso a Maras: S/ 15 nacional o S/ 20 extranjero.",
       "schedules": [
         "07:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "boleto-turistico-parcial-c2",
+          "name": "Boleto turístico parcial circuito 2",
+          "pricePEN": 70,
+          "note": "Referencia extranjero; peruano S/ 40."
+        },
+        {
+          "id": "maras",
+          "name": "Ingreso a Salineras de Maras",
+          "pricePEN": 20,
+          "note": "Referencia extranjero; peruano S/ 15."
+        }
       ]
     },
     {
@@ -243,6 +271,20 @@
       "notIncluded": "No incluye ingreso a Maras ni boleto turístico para Moray.",
       "schedules": [
         "08:30"
+      ],
+      "entryTickets": [
+        {
+          "id": "maras",
+          "name": "Ingreso a Salineras de Maras",
+          "pricePEN": 20,
+          "note": "Referencia extranjero; peruano S/ 15."
+        },
+        {
+          "id": "moray-boleto",
+          "name": "Boleto turístico para Moray",
+          "pricePEN": 70,
+          "note": "Según boleto turístico aplicable."
+        }
       ]
     },
     {
@@ -270,6 +312,14 @@
       "notIncluded": "No incluye boletos de ingreso.",
       "schedules": [
         "09:00"
+      ],
+      "entryTickets": [
+        {
+          "id": "valle-sur-ticket",
+          "name": "Boleto turístico Valle Sur",
+          "pricePEN": 70,
+          "note": "Consultar tarifa según nacionalidad."
+        }
       ]
     },
     {
@@ -297,6 +347,14 @@
       "notIncluded": "No incluye ingreso: S/ 20 nacional o S/ 25 extranjero.",
       "schedules": [
         "04:30"
+      ],
+      "entryTickets": [
+        {
+          "id": "ingreso-vinicunca",
+          "name": "Ingreso a Montaña de Colores",
+          "pricePEN": 25,
+          "note": "Referencia extranjero; peruano S/ 20."
+        }
       ]
     },
     {
@@ -324,6 +382,14 @@
       "notIncluded": "No incluye ingreso: S/ 20 nacional o S/ 25 extranjero.",
       "schedules": [
         "04:30"
+      ],
+      "entryTickets": [
+        {
+          "id": "ingreso-humantay",
+          "name": "Ingreso a Laguna Humantay",
+          "pricePEN": 25,
+          "note": "Referencia extranjero; peruano S/ 20."
+        }
       ]
     },
     {
