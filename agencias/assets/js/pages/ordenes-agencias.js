@@ -1,7 +1,7 @@
 (() => {
   const SESSION_KEY = 'mct_agency_session';
   const LOCAL_ORDERS_KEY = 'mct_reservation_orders';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwf5cwaC5VsT48XvXh480Jh4ZCVKuBo55AQ9sqon449Tg1ic8rLrHHicuYiMrfneDsA/exec?authuser=0';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz38yAU-vEt5Joe8NQjDRFsEIOqgDIv-w99YHI5sLbO03rKCt-dwAH10j0A92pyOAEx/exec';
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
@@ -127,65 +127,20 @@
     return [];
   }
 
-  function normalizeOrderCode(order) {
-    return String(order?.codigoOrden || order?.code || '').replace(/[^A-Za-z0-9]/g, '');
-  }
-
-  function normalizeLocalOrder(order) {
-    if (!order || typeof order !== 'object') return order;
-    return {
-      ...order,
-      codigoOrden: order.codigoOrden || order.code || '',
-      fechaOrden: order.fechaOrden || order.createdAt || order.date || '',
-      estadoPago: order.estadoPago || order.status || 'Pendiente',
-      moneda: order.moneda || order.currency || 'PEN',
-      tipoCambio: order.tipoCambio || order.exchangeRate || '',
-      subtotalNeto: order.subtotalNeto ?? order.subtotal ?? '',
-      montoComisionado: order.montoComisionado ?? order.total ?? '',
-      comisionPaypalBanco: order.comisionPaypalBanco ?? order.fee ?? '',
-      fechaVencimientoPago: order.fechaVencimientoPago || order.paymentDueAt || '',
-      serviciosJson: order.serviciosJson || JSON.stringify(order.items || []),
-      titularJson: order.titularJson || JSON.stringify((order.items || [])[0]?.lead || order.lead || {}),
-      pasajerosJson: order.pasajerosJson || JSON.stringify((order.items || []).flatMap((item) => item.passengers || [])),
-      observaciones: order.observaciones || order.observations || ''
-    };
-  }
-
-  function mergeOrders(remoteOrders, localOrders) {
-    const map = new Map();
-    [...localOrders.map(normalizeLocalOrder), ...remoteOrders.map(normalizeLocalOrder)].forEach((order) => {
-      const code = normalizeOrderCode(order) || `local-${Math.random().toString(36).slice(2)}`;
-      map.set(code, order);
-    });
-    return [...map.values()].sort((a, b) => {
-      const da = new Date(a.fechaOrden || a.createdAt || 0).getTime() || 0;
-      const db = new Date(b.fechaOrden || b.createdAt || 0).getTime() || 0;
-      return db - da;
-    });
-  }
-
   async function fetchOrders(session) {
     const local = readJSON(LOCAL_ORDERS_KEY, []);
-    let remote = [];
     try {
       const response = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'listOrders', email: session.email, agencyId: session.agencyId })
       });
-      const text = await response.text();
-      let result = null;
-      try { result = JSON.parse(text); } catch (parseError) {
-        console.warn('Respuesta no JSON al cargar órdenes:', text);
-      }
-      if (result?.ok && Array.isArray(result.orders)) {
-        remote = result.orders;
-      } else if (result && result.message) {
-        console.warn('Apps Script no devolvió órdenes:', result.message);
-      }
+      const result = await response.json();
+      if (result.ok && Array.isArray(result.orders)) return result.orders;
     } catch (error) {
       console.warn('No se pudieron cargar órdenes desde Google Sheets', error);
     }
-    return mergeOrders(remote, local);
+    return local;
   }
 
   function renderOrders() {
@@ -279,25 +234,19 @@
   function orderDetailHTML(order) {
     const currency = order.moneda || order.currency || 'PEN';
     const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
-    const statusKey = normalizeStatus(order);
-    const status = statusLabel(statusKey);
+    const status = statusLabel(normalizeStatus(order));
     const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || 'Agencia afiliada';
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
-          <div class="print-order-logo-row print-only">
-            <img src="../assets/img/logos/Logo1.png" alt="My Cusco Trip" class="print-order-logo" onerror="this.style.display='none'">
+          <div>
+            <p class="eyebrow">Detalle de orden</p>
+            <h2>${escapeHtml(code)}</h2>
+            <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
           </div>
-          <div class="print-order-title-row">
-            <div>
-              <p class="eyebrow">Detalle de orden</p>
-              <h2>${escapeHtml(code)}</h2>
-              <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
-            </div>
-            <div class="print-order-status is-${statusKey}">
-              <span>${escapeHtml(status)}</span>
-              <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
-            </div>
+          <div class="print-order-status">
+            <span>${escapeHtml(status)}</span>
+            <small>Vence: ${formatDateTime(order.fechaVencimientoPago || order.paymentDueAt)}</small>
           </div>
         </div>
         <div class="info-note"><strong>Importante:</strong> revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.</div>
@@ -317,6 +266,7 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
         <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">Pagar con PayPal</button>
+        <a class="agency-button agency-button--ghost" href="./registrar-pago.html?orden=${encodeURIComponent(code)}">Registrar pago</a>
         <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir detalle</button>
       </div>`;
   }
@@ -380,39 +330,13 @@
     setTimeout(() => document.body.classList.remove('printing-order'), 600);
   }
 
-
-
-  function bindLogout() {
-    const logoutButtons = [
-      document.getElementById('logoutButton'),
-      document.getElementById('logoutBtn'),
-      document.querySelector('[data-logout]')
-    ].filter(Boolean);
-    logoutButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        localStorage.removeItem(SESSION_KEY);
-        localStorage.removeItem('mctAgencySession');
-        window.location.href = './login.html';
-      });
-    });
-  }
-
   async function init() {
-    bindLogout();
     const session = requireSession();
     if (!session) return;
-    const localOrders = readJSON(LOCAL_ORDERS_KEY, []);
-    orders = mergeOrders([], localOrders);
-    if (orders.length) renderOrders();
-    else { $('#ordersMessage').hidden = false; $('#ordersMessage').textContent = 'Cargando órdenes...'; }
-    fetchOrders(session).then((loaded) => { orders = loaded; renderOrders(); });
+    orders = await fetchOrders(session);
+    renderOrders();
     $('#statusFilter').addEventListener('change', renderOrders);
-    $('#refreshOrdersButton').addEventListener('click', async () => {
-      $('#ordersMessage').hidden = false;
-      $('#ordersMessage').textContent = 'Actualizando órdenes...';
-      orders = await fetchOrders(session);
-      renderOrders();
-    });
+    $('#refreshOrdersButton').addEventListener('click', async () => { orders = await fetchOrders(session); renderOrders(); });
     $('#orderDetailModal')?.addEventListener('click', (event) => { if (event.target.id === 'orderDetailModal') closeOrderDetail(); });
     $$('[data-close-order-detail-static]').forEach((button) => button.addEventListener('click', closeOrderDetail));
   }
