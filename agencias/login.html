@@ -53,7 +53,7 @@
       button.addEventListener('click', () => {
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        button.textContent = show ? 'Ocultar' : 'Ver';
+        button.textContent = show ? (window.MCTAgenciesI18n?.t ? window.MCTAgenciesI18n.t('login.hide') : 'Ocultar') : (window.MCTAgenciesI18n?.t ? window.MCTAgenciesI18n.t('login.show') : 'Ver');
       });
     });
   </script>

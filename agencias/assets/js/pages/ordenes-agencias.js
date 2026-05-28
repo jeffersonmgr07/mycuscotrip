@@ -176,6 +176,8 @@
     const visibleOrders = orders.filter((order) => !isExpiredMoreThanTwoDays(order));
     const filtered = visibleOrders.filter((order) => !filter || normalizeStatus(order) === filter || normalizeStatus(order).includes(filter));
     $('#ordersCount').textContent = filtered.length;
+    const total = document.querySelector('.toolbar-total');
+    if (currentLocale() === 'en' && total) total.innerHTML = `<span id="ordersCount">${filtered.length}</span> ${filtered.length === 1 ? t('orders.orderSingular', 'order') : t('orders.orderPlural', 'orders')}`;
     if (!filtered.length) {
       $('#ordersMessage').hidden = false;
       $('#ordersMessage').textContent = t('orders.noOrders', 'No hay órdenes para mostrar con este filtro.');
@@ -208,7 +210,7 @@
   }
 
   function passengersList(passengers) {
-    if (!passengers.length) return '<li>Datos adicionales pendientes.</li>';
+    if (!passengers.length) return `<li>${t('agency.noAdditionalData', 'Datos adicionales pendientes.')}</li>`;
     return passengers.map((p, index) => {
       const name = [p.firstName || p.first || p.nombres, p.lastName || p.last || p.apellidos].filter(Boolean).join(' ');
       const doc = [p.docType || p.tipoDocumento, p.docNumber || p.doc || p.numeroDocumento].filter(Boolean).join(' ');
@@ -222,7 +224,7 @@
     if (!items.length) {
       const lead = getOrderLead(order);
       const allPassengers = getOrderPassengers(order);
-      return `<tr><td colspan="5">No se encontró detalle de servicios en esta orden.</td></tr>
+      return `<tr><td colspan="5">${t('orders.noServiceDetail', 'No se encontró detalle de servicios en esta orden.')}</td></tr>
         <tr class="order-passenger-row"><td></td><td colspan="4"><strong>${t('agency.lead', 'Titular')}:</strong> ${escapeHtml([lead.firstName || lead.first, lead.lastName || lead.last].filter(Boolean).join(' ') || t('orders.pending', 'Pendiente'))}<br><strong>${t('agency.additionalPassengers', 'Pasajeros')}:</strong><ul>${passengersList(allPassengers)}</ul></td></tr>`;
     }
     return items.map((item, index) => {
@@ -286,7 +288,7 @@
         <div class="info-note"><strong>${t('orders.important', 'Importante')}:</strong> ${t('orders.importantText', 'revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.')}</div>
         <div class="order-table-wrap">
           <table class="order-table">
-            <thead><tr><th>#</th><th>${t('orders.servicePickup', 'Servicio / recojo')}</th><th>Pax</th><th>${t('agency.price', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
+            <thead><tr><th>#</th><th>${t('orders.servicePickup', 'Servicio / recojo')}</th><th>Pax</th><th>${t('agency.rate', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
             <tbody>${orderItemsRows(order)}</tbody>
           </table>
         </div>

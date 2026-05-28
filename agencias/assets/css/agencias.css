@@ -322,3 +322,8 @@
   .print-order-title-row{display:block!important;}
   .print-order-status{margin:12px 0 0 0!important;}
 }
+
+
+/* English labels for collapsible passenger section */
+html[lang="en"] .tourists-box summary::after{content:'Show more  ▾'!important;}
+html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!important;}

@@ -5,6 +5,8 @@
   const readJSON = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
   const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const show = (id, message, type = 'is-error') => { const el = $(id); el.textContent = message; el.className = `form-message ${type}`; el.hidden = false; };
+  const I18N = window.MCTAgenciesI18n || null;
+  const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
 
   function requireSession() {
     const session = readJSON(SESSION_KEY, null);
@@ -64,7 +66,7 @@
         if (!input) return;
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        button.textContent = show ? 'Ocultar' : 'Ver';
+        button.textContent = show ? t('login.hide', 'Ocultar') : t('login.show', 'Ver');
       });
     });
     $('#newPassword')?.addEventListener('input', updatePasswordChecklist);
@@ -92,7 +94,7 @@
       event.preventDefault();
       const button = event.submitter;
       button.disabled = true;
-      button.textContent = 'Guardando...';
+      button.textContent = t('profile.saving', 'Guardando...');
       try {
         const result = await callApps('updateAgencyProfile', { account: session, celular: fullPhone(), web: $('#profileWeb').value.trim() });
         if (!result.ok) { show('#profileMessage', result.message || 'No se pudo actualizar.'); return; }
@@ -101,7 +103,7 @@
         show('#profileMessage', result.message || 'Datos actualizados correctamente.', 'is-success');
       } finally {
         button.disabled = false;
-        button.textContent = 'Guardar cambios';
+        button.textContent = t('profile.saveChanges', 'Guardar cambios');
       }
     });
 
@@ -114,7 +116,7 @@
       if (!validPassword(newPassword)) { show('#passwordMessage', 'La nueva contraseña debe tener mínimo 8 caracteres, una letra, un número y un carácter especial.'); return; }
       const button = event.submitter;
       button.disabled = true;
-      button.textContent = 'Actualizando...';
+      button.textContent = t('profile.updating', 'Actualizando...');
       try {
         const result = await callApps('changePassword', { account: session, currentPassword, newPassword });
         if (!result.ok) { show('#passwordMessage', result.message || 'No se pudo cambiar la contraseña.'); return; }
@@ -123,7 +125,7 @@
         updatePasswordChecklist();
       } finally {
         button.disabled = false;
-        button.textContent = 'Actualizar contraseña';
+        button.textContent = t('profile.updatePassword', 'Actualizar contraseña');
       }
     });
   }

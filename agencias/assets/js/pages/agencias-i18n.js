@@ -61,6 +61,8 @@
       'agency.perPerson': 'per person',
       'agency.dailyDeparture': 'Daily departure',
       'agency.confirm': 'To be confirmed',
+      'agency.addOneService': 'Add at least one service to your order.',
+      'register.sending': 'Sending registration...',
       'agency.perPassenger': 'per passenger',
       'agency.tickets': 'Tickets',
       'agency.generatedOrder': 'Generated order',
@@ -134,7 +136,69 @@
       'verify.loading': 'We are verifying your email...',
       'verify.success': 'Email verified successfully.',
       'verify.error': 'We could not verify your email.',
-      'verify.login': 'Go to agency access'
+      'verify.login': 'Go to agency access',
+      'login.privatePortal': 'Private portal',
+      'login.accessEmail': 'Access email',
+      'login.emailPlaceholder': 'email@company.com',
+      'login.passwordPlaceholder': 'Your password',
+      'register.hasAccess': 'I already have access',
+      'register.passwordLength': 'Minimum 8 characters',
+      'register.passwordLetter': 'Includes one letter',
+      'register.passwordNumber': 'Includes one number',
+      'register.passwordSpecial': 'Includes one special character',
+      'register.passwordMatch': 'Passwords match',
+      'register.validEmailTitle': 'Enter a valid email address, for example name@domain.com',
+      'register.validTaxTitle': 'Use only letters, numbers, dots or hyphens.',
+      'profile.title': 'My details',
+      'profile.subtitle': 'Update your contact details or change your password.',
+      'profile.accessEmailNote': 'The access email cannot be changed from this section. To update it, please contact us.',
+      'profile.company': 'Agency',
+      'profile.website': 'Website',
+      'profile.saveChanges': 'Save changes',
+      'profile.currentPassword': 'Current password',
+      'profile.newPassword': 'New password',
+      'profile.confirmPassword': 'Confirm new password',
+      'profile.updatePassword': 'Update password',
+      'profile.saving': 'Saving...',
+      'profile.updating': 'Updating...',
+      'orders.newBooking': 'New booking',
+      'orders.orderSingular': 'order',
+      'orders.orderPlural': 'orders',
+      'orders.filterByStatus': 'Filter by status',
+      'orders.detailTitle': 'Order details',
+      'orders.orderCode': 'Order code',
+      'orders.servicePickup': 'Service / pick-up',
+      'orders.important': 'Important',
+      'orders.pageImportantHtml': '<strong>Important:</strong> pending orders must be paid within the indicated period. Paid or expired orders can be updated manually from the control sheet.',
+      'orders.importantText': 'review holder, passenger and pick-up details before making the payment. Pending orders are confirmed with payment validated within the indicated period.',
+      'orders.generalNotes': 'General notes',
+      'orders.noServiceDetail': 'No service details were found for this order.',
+      'orders.alreadyPaid': 'This order is already marked as paid.',
+      'orders.expiredAlert': 'This order has expired. Please generate a new order or check availability.',
+      'orders.paypalCreateError': 'The PayPal payment could not be created.',
+      'orders.mpCreateError': 'The Mercado Pago payment could not be created.',
+      'orders.paypalConnectError': 'Could not connect to PayPal.',
+      'orders.mpConnectError': 'Could not connect to Mercado Pago.',
+      'orders.invalidResponse': 'Invalid Apps Script response.',
+      'agency.selectCountry': 'Select country',
+      'agency.passenger': 'Passenger',
+      'agency.service': 'Service',
+      'agency.servicesLower': 'service(s)',
+      'agency.cartDate': 'Date',
+      'agency.cartTime': 'Time',
+      'agency.cartPassengers': 'Passengers',
+      'agency.holder': 'Holder',
+      'agency.remove': 'Remove',
+      'agency.viewPrintOrder': 'View / print order',
+      'agency.ticket': 'Ticket',
+      'agency.rate': 'Rate',
+      'agency.orderTableService': 'Service',
+      'agency.noAdditionalData': 'Additional details pending.',
+      'agency.due': 'Due',
+      'agency.noteSheetError': 'Note: delivery to Google Sheets was not confirmed. Please check the connection.',
+      'agency.addOneService': 'Add at least one service to your order.',
+      'register.sending': 'Sending registration...',
+      'agency.perPassenger': 'per passenger'
     }
   };
 
@@ -150,13 +214,31 @@
     return translated !== undefined && translated !== null && translated !== '' ? translated : obj[name];
   }
 
+  function localizeSteps(list) {
+    if (!Array.isArray(list)) return list;
+    return list.map((step) => {
+      if (typeof step === 'string') return step;
+      return {
+        ...step,
+        title: step.title_en || step.title,
+        description: step.description_en || step.text_en || step.description || step.text,
+        text: step.text_en || step.description_en || step.text
+      };
+    });
+  }
+
   function localizeService(service) {
     if (!service || lang === 'es') return service;
     const copy = { ...service };
-    ['name','shortName','category','priceUnit','durationLabel','startLabel','frequency','description','notIncluded','priceAltLabel'].forEach((key) => {
+    ['name','shortName','category','priceUnit','durationLabel','startLabel','frequency','description','shortDescription','notIncluded','priceAltLabel','title'].forEach((key) => {
       if (copy[`${key}_en`] !== undefined) copy[key] = copy[`${key}_en`];
     });
     if (Array.isArray(copy.includes_en)) copy.includes = copy.includes_en;
+    if (Array.isArray(copy.excludes_en)) copy.excludes = copy.excludes_en;
+    if (Array.isArray(copy.itinerary_en)) copy.itinerary = copy.itinerary_en;
+    if (Array.isArray(copy.timeline_en)) copy.timeline = copy.timeline_en;
+    copy.itinerary = localizeSteps(copy.itinerary);
+    copy.timeline = localizeSteps(copy.timeline);
     if (Array.isArray(copy.entryTickets)) {
       copy.entryTickets = copy.entryTickets.map((ticket) => ({
         ...ticket,
@@ -201,7 +283,7 @@
     setText('a[href="./ordenes.html"]', 'agency.orders');
     setText('a[href="./mis-datos.html"]', 'agency.myData');
     setText('#logoutButton', 'agency.logout');
-    setHtml('.info-note', 'agency.beforeReserveHtml');
+    if (window.location.pathname.endsWith('/agencias/') || window.location.pathname.endsWith('/agencias/index.html') || window.location.pathname.includes('/agencias/index')) setHtml('.info-note', 'agency.beforeReserveHtml');
     setText('#experiencias .section-title h2', 'agency.availableExperiences');
     setText('#experiencias .section-title p', 'agency.availableHelp');
     setText('#checkoutTitle', 'agency.yourOrder');
@@ -226,10 +308,12 @@
         'Tipo de documento': 'agency.docType', 'Número de documento': 'agency.docNumber', 'Nacionalidad': 'agency.nationality',
         'Idioma': 'agency.language', 'Código de país': 'agency.countryCode', 'Celular / WhatsApp': 'agency.phone',
         'Lugar de recojo': 'agency.pickup', 'Observaciones': 'agency.observations',
-        'Correo de inicio de sesión': 'login.email', 'Crear contraseña': 'register.createPassword', 'Confirmar contraseña': 'register.confirmPassword',
+        'Correo de inicio de sesión': 'login.email', 'Correo de acceso': 'login.accessEmail', 'Crear contraseña': 'register.createPassword', 'Confirmar contraseña': 'register.confirmPassword',
         'País': 'register.country', 'Tipo de identificación fiscal': 'register.taxType', 'Número de identificación fiscal': 'register.taxNumber',
-        'Razón social': 'register.legalName', 'Nombre comercial': 'register.tradeName', 'Correo de contacto': 'register.contactEmail',
-        'Página web o red social': 'register.website', 'Contraseña': 'login.password'
+        'Razón social': 'register.legalName', 'Razón social / nombre legal': 'register.legalName', 'Nombre comercial': 'register.tradeName', 'Correo de contacto': 'register.contactEmail',
+        'Página web o red social': 'register.website', 'Página web': 'profile.website', 'Contraseña': 'login.password',
+        'Agencia': 'profile.company', 'Contraseña actual': 'profile.currentPassword', 'Nueva contraseña': 'profile.newPassword', 'Confirmar nueva contraseña': 'profile.confirmPassword',
+        'Filtrar por estado': 'orders.filterByStatus'
       };
       const key = map[span.textContent.trim()];
       if (key) span.textContent = t(key);
@@ -263,6 +347,84 @@
     setText('#verifyTitle', 'verify.title');
     setText('#verifyMessage', 'verify.loading');
     setText('a[href="./login.html"].agency-button', 'verify.login');
+
+    const path = window.location.pathname;
+    if (path.includes('/login')) {
+      setText('.auth-card .eyebrow', 'login.privatePortal');
+      setText('label[for="loginEmail"] span, label.field span', 'login.accessEmail');
+      const emailLabel = document.querySelector('#loginEmail')?.closest('label')?.querySelector('span');
+      if (emailLabel) emailLabel.textContent = t('login.accessEmail');
+      const passLabel = document.querySelector('#loginPassword')?.closest('label')?.querySelector('span');
+      if (passLabel) passLabel.textContent = t('login.password');
+      setPlaceholder('#loginEmail', 'login.emailPlaceholder');
+      setPlaceholder('#loginPassword', 'login.passwordPlaceholder');
+    }
+
+    if (path.includes('/registro')) {
+      setText('.agency-hero h1', 'register.title');
+      setText('.agency-hero p', 'register.lead');
+      setText('a[href="./login.html"].agency-button', 'register.hasAccess');
+      setText('#passwordChecklist [data-rule="length"]', 'register.passwordLength');
+      setText('#passwordChecklist [data-rule="letter"]', 'register.passwordLetter');
+      setText('#passwordChecklist [data-rule="number"]', 'register.passwordNumber');
+      setText('#passwordChecklist [data-rule="special"]', 'register.passwordSpecial');
+      setText('#passwordChecklist [data-rule="match"]', 'register.passwordMatch');
+      document.querySelectorAll('.password-toggle').forEach((btn) => { if (btn.textContent.trim() === 'Ver') btn.textContent = t('login.show'); });
+    }
+
+    if (path.includes('/mis-datos')) {
+      setText('.agency-intro-bar .eyebrow', 'agency.portalWelcome');
+      setText('.agency-intro-bar h1', 'profile.title');
+      const subtitle = document.querySelector('.agency-intro-bar p:not(.eyebrow)');
+      if (subtitle) subtitle.textContent = t('profile.subtitle');
+      setText('a[href="./index.html"].agency-button', 'orders.newBooking');
+      setText('a[href="./ordenes.html"].agency-button', 'agency.orders');
+      setText('.profile-card .dialog-help', 'profile.accessEmailNote');
+      const saveBtn = document.querySelector('#profileForm button[type="submit"]');
+      if (saveBtn) saveBtn.textContent = t('profile.saveChanges');
+      const updateBtn = document.querySelector('#passwordForm button[type="submit"]');
+      if (updateBtn) updateBtn.textContent = t('profile.updatePassword');
+      setText('#profilePasswordChecklist [data-check="length"]', 'register.passwordLength');
+      setText('#profilePasswordChecklist [data-check="letter"]', 'register.passwordLetter');
+      setText('#profilePasswordChecklist [data-check="number"]', 'register.passwordNumber');
+      setText('#profilePasswordChecklist [data-check="special"]', 'register.passwordSpecial');
+      document.querySelectorAll('.password-toggle').forEach((btn) => { if (btn.textContent.trim() === 'Ver') btn.textContent = t('login.show'); });
+    }
+
+    if (path.includes('/ordenes')) {
+      setText('.agency-intro-bar .eyebrow', 'agency.portalWelcome');
+      setText('.agency-intro-bar h1', 'orders.title');
+      setText('#ordersAgencyName', 'orders.subtitle');
+      setText('a[href="./index.html"].agency-button', 'orders.newBooking');
+      setText('#logoutButton', 'agency.logout');
+      const total = document.querySelector('.toolbar-total');
+      const count = document.querySelector('#ordersCount')?.textContent || '0';
+      if (total) total.innerHTML = `<span id="ordersCount">${count}</span> ${Number(count) === 1 ? t('orders.orderSingular') : t('orders.orderPlural')}`;
+      const label = document.querySelector('label[for="statusFilter"] span, #statusFilter')?.closest('label')?.querySelector('span');
+      if (label) label.textContent = t('orders.filterByStatus');
+      const options = document.querySelectorAll('#statusFilter option');
+      if (options[0]) options[0].textContent = t('orders.all');
+      if (options[1]) options[1].textContent = t('orders.pending');
+      if (options[2]) options[2].textContent = t('orders.paid');
+      if (options[3]) options[3].textContent = t('orders.expired');
+      setText('#orderDetailTitle', 'orders.detailTitle');
+      const ordersInfo = document.querySelector('main > .info-note');
+      if (ordersInfo) ordersInfo.innerHTML = t('orders.pageImportantHtml');
+      const loading = document.querySelector('#ordersMessage');
+      if (loading && loading.textContent.trim().startsWith('Cargando')) loading.textContent = 'Loading orders...';
+    }
+
+    const cartRows = document.querySelectorAll('.cart-total .cart-row span:first-child');
+    if (cartRows[0]) cartRows[0].textContent = t('agency.subtotalLabel');
+    if (cartRows[1]) cartRows[1].textContent = t('agency.feesLabel');
+    if (cartRows[2]) cartRows[2].textContent = t('agency.totalLabel');
+
+    document.querySelectorAll('.password-toggle').forEach((btn) => {
+      const text = btn.textContent.trim().toLowerCase();
+      if (text === 'ver') btn.textContent = t('login.show');
+      if (text === 'ocultar') btn.textContent = t('login.hide');
+    });
+    setPlaceholder('#accessEmail', 'login.emailPlaceholder');
     patchHeaderLanguageLinks();
   }
 

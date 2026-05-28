@@ -12,6 +12,8 @@
   const value = (selector) => $(selector)?.value.trim() || '';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const TAX_RE = /^[A-Za-z0-9.\-\s]{4,24}$/;
+  const I18N = window.MCTAgenciesI18n || null;
+  const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
 
   function onlyDigits(input) {
     if (!input) return;
@@ -114,7 +116,7 @@
         if (!input) return;
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        button.textContent = show ? 'Ocultar' : 'Ver';
+        button.textContent = show ? t('login.hide', 'Ocultar') : t('login.show', 'Ver');
       });
     });
     $('#registerPassword')?.addEventListener('input', updatePasswordChecklist);
@@ -150,8 +152,8 @@
     if (accessEmailError) { show(accessEmailError); return; }
 
     const button = event.submitter;
-    const originalText = button?.textContent || 'Registrar mi agencia';
-    if (button) { button.disabled = true; button.textContent = 'Enviando registro...'; }
+    const originalText = button?.textContent || t('register.submit', 'Registrar mi agencia');
+    if (button) { button.disabled = true; button.textContent = t('register.sending', 'Enviando registro...'); }
 
     const phone = normalizePhone();
     const agency = {

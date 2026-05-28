@@ -28,10 +28,12 @@
   const COUNTRIES = [
     'Afganistán','Albania','Alemania','Andorra','Angola','Antigua y Barbuda','Arabia Saudita','Argelia','Argentina','Armenia','Australia','Austria','Azerbaiyán','Bahamas','Bangladés','Barbados','Baréin','Bélgica','Belice','Benín','Bielorrusia','Birmania / Myanmar','Bolivia','Bosnia y Herzegovina','Botsuana','Brasil','Brunéi','Bulgaria','Burkina Faso','Burundi','Bután','Cabo Verde','Camboya','Camerún','Canadá','Catar','Chad','Chile','China','Chipre','Colombia','Comoras','Corea del Norte','Corea del Sur','Costa de Marfil','Costa Rica','Croacia','Cuba','Dinamarca','Dominica','Ecuador','Egipto','El Salvador','Emiratos Árabes Unidos','Eritrea','Eslovaquia','Eslovenia','España','Estados Unidos','Estonia','Esuatini','Etiopía','Filipinas','Finlandia','Fiyi','Francia','Gabón','Gambia','Georgia','Ghana','Granada','Grecia','Guatemala','Guinea','Guinea-Bisáu','Guinea Ecuatorial','Guyana','Haití','Honduras','Hungría','India','Indonesia','Irak','Irán','Irlanda','Islandia','Islas Marshall','Islas Salomón','Israel','Italia','Jamaica','Japón','Jordania','Kazajistán','Kenia','Kirguistán','Kiribati','Kuwait','Laos','Lesoto','Letonia','Líbano','Liberia','Libia','Liechtenstein','Lituania','Luxemburgo','Macedonia del Norte','Madagascar','Malasia','Malaui','Maldivas','Malí','Malta','Marruecos','Mauricio','Mauritania','México','Micronesia','Moldavia','Mónaco','Mongolia','Montenegro','Mozambique','Namibia','Nauru','Nepal','Nicaragua','Níger','Nigeria','Noruega','Nueva Zelanda','Omán','Países Bajos','Pakistán','Palaos','Palestina','Panamá','Papúa Nueva Guinea','Paraguay','Perú','Polonia','Portugal','Reino Unido','República Centroafricana','República Checa','República del Congo','República Democrática del Congo','República Dominicana','Ruanda','Rumanía','Rusia','Samoa','San Cristóbal y Nieves','San Marino','San Vicente y las Granadinas','Santa Lucía','Santo Tomé y Príncipe','Senegal','Serbia','Seychelles','Sierra Leona','Singapur','Siria','Somalia','Sri Lanka','Sudáfrica','Sudán','Sudán del Sur','Suecia','Suiza','Surinam','Tailandia','Tanzania','Tayikistán','Timor Oriental','Togo','Tonga','Trinidad y Tobago','Túnez','Turkmenistán','Turquía','Tuvalu','Ucrania','Uganda','Uruguay','Uzbekistán','Vanuatu','Vaticano','Venezuela','Vietnam','Yemen','Yibuti','Zambia','Zimbabue'
   ];
+  const COUNTRIES_EN = ['Afghanistan','Albania','Germany','Andorra','Angola','Antigua and Barbuda','Saudi Arabia','Algeria','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bangladesh','Barbados','Bahrain','Belgium','Belize','Benin','Belarus','Myanmar','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Bhutan','Cape Verde','Cambodia','Cameroon','Canada','Qatar','Chad','Chile','China','Cyprus','Colombia','Comoros','North Korea','South Korea','Ivory Coast','Costa Rica','Croatia','Cuba','Denmark','Dominica','Ecuador','Egypt','El Salvador','United Arab Emirates','Eritrea','Slovakia','Slovenia','Spain','United States','Estonia','Eswatini','Ethiopia','Philippines','Finland','Fiji','France','Gabon','Gambia','Georgia','Ghana','Grenada','Greece','Guatemala','Guinea','Guinea-Bissau','Equatorial Guinea','Guyana','Haiti','Honduras','Hungary','India','Indonesia','Iraq','Iran','Ireland','Iceland','Marshall Islands','Solomon Islands','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kyrgyzstan','Kiribati','Kuwait','Laos','Lesotho','Latvia','Lebanon','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','North Macedonia','Madagascar','Malaysia','Malawi','Maldives','Mali','Malta','Morocco','Mauritius','Mauritania','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Mozambique','Namibia','Nauru','Nepal','Nicaragua','Niger','Nigeria','Norway','New Zealand','Oman','Netherlands','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Poland','Portugal','United Kingdom','Central African Republic','Czech Republic','Republic of the Congo','Democratic Republic of the Congo','Dominican Republic','Rwanda','Romania','Russia','Samoa','Saint Kitts and Nevis','San Marino','Saint Vincent and the Grenadines','Saint Lucia','São Tomé and Príncipe','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Syria','Somalia','Sri Lanka','South Africa','Sudan','South Sudan','Sweden','Switzerland','Suriname','Thailand','Tanzania','Tajikistan','East Timor','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkmenistan','Turkey','Tuvalu','Ukraine','Uganda','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Djibouti','Zambia','Zimbabwe'];
 
   function countryOptions(selected = '') {
     const cleanSelected = String(selected || '').trim();
-    return `<option value="">${t('agency.selectCountry', 'Selecciona país')}</option>` + COUNTRIES.map((country) => `<option value="${escapeHtml(country)}" ${country === cleanSelected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
+    const countryList = currentLocale() === 'en' ? COUNTRIES_EN : COUNTRIES;
+    return `<option value="">${t('agency.selectCountry', 'Selecciona país')}</option>` + countryList.map((country) => `<option value="${escapeHtml(country)}" ${country === cleanSelected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
   }
 
   function hydrateCountrySelects(root = document) {
@@ -394,13 +396,13 @@
       wrap.innerHTML = state.cart.map((item, index) => `
         <article class="cart-item">
           <strong>${escapeHtml(item.serviceName)}</strong>
-          <div class="cart-row"><span>Fecha</span><span>${formatDate(item.travelDate)}</span></div>
-          <div class="cart-row"><span>Hora</span><span>${escapeHtml(item.serviceTime || 'Por confirmar')}</span></div>
-          <div class="cart-row"><span>Pasajeros</span><span>${item.pax}</span></div>
-          <div class="cart-row"><span>Titular</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
+          <div class="cart-row"><span>${t('agency.cartDate', 'Fecha')}</span><span>${formatDate(item.travelDate)}</span></div>
+          <div class="cart-row"><span>${t('agency.cartTime', 'Hora')}</span><span>${escapeHtml(item.serviceTime || t('agency.confirm', 'Por confirmar'))}</span></div>
+          <div class="cart-row"><span>${t('agency.cartPassengers', 'Pasajeros')}</span><span>${item.pax}</span></div>
+          <div class="cart-row"><span>${t('agency.holder', 'Titular')}</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
           ${item.entryTickets?.length ? `<div class="cart-row"><span>${t('agency.tickets', 'Tickets')}</span><span>${item.entryTickets.map((ticket) => escapeHtml(ticket.name)).join('<br>')}</span></div>` : ''}
           <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
-          <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">Quitar</button>
+          <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">${t('agency.remove', 'Quitar')}</button>
         </article>
       `).join('');
     }
@@ -429,7 +431,7 @@
   }
 
   async function generateOrder() {
-    if (!state.cart.length) { alert('Agrega al menos un servicio a tu orden.'); return; }
+    if (!state.cart.length) { alert(t('agency.addOneService', 'Agrega al menos un servicio a tu orden.')); return; }
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
     const { total, fee } = feeGross(subtotal);
     const order = {
@@ -454,8 +456,8 @@
     $('#orderBox').innerHTML = `
       <h3>${t('agency.generatedOrder', 'Orden generada')}</h3>
       <div class="order-code">${escapeHtml(order.code)}</div>
-      <p><strong>Total:</strong> ${money(order.total)}</p>
-      <button type="button" class="agency-button agency-button--primary" id="viewLastOrderButton">Ver / imprimir orden</button>
+      <p><strong>${t('agency.totalLabel', 'Total a pagar')}:</strong> ${money(order.total)}</p>
+      <button type="button" class="agency-button agency-button--primary" id="viewLastOrderButton">${t('agency.viewPrintOrder', 'Ver / imprimir orden')}</button>
     `;
     $('#viewLastOrderButton')?.addEventListener('click', () => showOrderModal(order));
     state.cart = [];
@@ -469,21 +471,21 @@
       const serviceAmount = itemServiceSubtotal(item);
       const ticketRows = (item.entryTickets || []).map((ticket) => {
         const ticketAmount = convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD) * (ticket.pax || item.pax || 1);
-        return `<tr class="order-ticket-row"><td></td><td>Ticket: ${escapeHtml(ticket.name)}${ticket.note ? `<br><small>${escapeHtml(ticket.note)}</small>` : ''}</td><td>${ticket.pax || item.pax}</td><td>${money(convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD))}</td><td><strong>${money(ticketAmount)}</strong></td></tr>`;
+        return `<tr class="order-ticket-row"><td></td><td>${t('agency.ticket', 'Ticket')}: ${escapeHtml(ticket.name)}${ticket.note ? `<br><small>${escapeHtml(ticket.note)}</small>` : ''}</td><td>${ticket.pax || item.pax}</td><td>${money(convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD))}</td><td><strong>${money(ticketAmount)}</strong></td></tr>`;
       }).join('');
       const passengers = item.passengers?.length
-        ? item.passengers.map((p, i) => `<li>Pasajero ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}${p.nationality ? ` · Nacionalidad: ${escapeHtml(p.nationality)}` : ''}</li>`).join('')
-        : '<li>Datos adicionales pendientes.</li>';
+        ? item.passengers.map((p, i) => `<li>${t('agency.passenger', 'Pasajero')} ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}${p.nationality ? ` · ${t('agency.nationality', 'Nacionalidad')}: ${escapeHtml(p.nationality)}` : ''}</li>`).join('')
+        : `<li>${t('agency.noAdditionalData', 'Datos adicionales pendientes.')}</li>`;
       return `
         <tr>
           <td>${index + 1}</td>
-          <td><strong>${escapeHtml(item.serviceName)}</strong><br><small>Fecha: ${formatDate(item.travelDate)} · Hora: ${escapeHtml(item.serviceTime || 'Por confirmar')}</small><br><small>Recojo: ${escapeHtml(item.pickupPoint || '')}</small></td>
+          <td><strong>${escapeHtml(item.serviceName)}</strong><br><small>${t('agency.date', 'Fecha')}: ${formatDate(item.travelDate)} · ${t('agency.time', 'Hora')}: ${escapeHtml(item.serviceTime || t('agency.confirm', 'Por confirmar'))}</small><br><small>${t('agency.pickup', 'Recojo')}: ${escapeHtml(item.pickupPoint || '')}</small></td>
           <td>${item.pax}</td>
           <td>${money(convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD))}</td>
           <td><strong>${money(serviceAmount)}</strong></td>
         </tr>
         ${ticketRows}
-        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>Titular:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}${item.lead.nationality ? ` · Nacionalidad: ${escapeHtml(item.lead.nationality)}` : ''}${item.lead.language ? ` · Idioma: ${escapeHtml(item.lead.language)}` : ''} · ${escapeHtml(item.lead.phone)}<br><strong>Pasajeros adicionales:</strong><ul>${passengers}</ul>${item.notes ? `<strong>Observaciones:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
+        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>${t('agency.lead', 'Titular')}:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}${item.lead.nationality ? ` · ${t('agency.nationality', 'Nacionalidad')}: ${escapeHtml(item.lead.nationality)}` : ''}${item.lead.language ? ` · ${t('agency.language', 'Idioma')}: ${escapeHtml(item.lead.language)}` : ''} · ${escapeHtml(item.lead.phone)}<br><strong>${t('agency.additionalPassengers', 'Pasajeros adicionales')}:</strong><ul>${passengers}</ul>${item.notes ? `<strong>${t('agency.observations', 'Observaciones')}:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
       `;
     }).join('');
   }
@@ -503,14 +505,14 @@
             </div>
             <div class="print-order-status is-pendiente">
               <span>${escapeHtml(order.status)}</span>
-              <small>Vence: ${formatDateTime(order.paymentDueAt)}</small>
+              <small>${t('agency.due', 'Vence')}: ${formatDateTime(order.paymentDueAt)}</small>
             </div>
           </div>
         </div>
         <div class="info-note"><strong>${t('agency.paymentTime', 'Tiempo de pago')}:</strong> ${t('agency.paymentTimeNote', 'esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.')}</div>
         <div class="order-table-wrap">
           <table class="order-table">
-            <thead><tr><th>#</th><th>Servicio</th><th>Pax</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
+            <thead><tr><th>#</th><th>${t('agency.orderTableService', 'Servicio')}</th><th>Pax</th><th>${t('agency.rate', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
             <tbody>${orderItemsRows(order)}</tbody>
           </table>
         </div>
@@ -519,7 +521,7 @@
           <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total)}</strong></div>
         </div>
-        <p class="small-print-note">${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
+        <p class="small-print-note">${result?.ok === false ? t('agency.noteSheetError', 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.') : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>${t('agency.close', 'Cerrar')}</button>
@@ -617,10 +619,11 @@
     $('#itineraryBody').innerHTML = `<p class="dialog-help">${t('agency.loadingItinerary', 'Cargando itinerario detallado...')}</p>`;
     $('#itineraryModal').classList.add('show');
 
-    const item = await findItineraryItem(service);
-    const includes = item?.includes || service.includes || [];
+    const rawItem = await findItineraryItem(service);
+    const item = rawItem && I18N?.localizeService ? I18N.localizeService(rawItem) : rawItem;
+    const includes = (item?.includes && currentLocale() === 'en' && item?.includes_en === undefined && !rawItem?.includes_en) ? (service.includes || item.includes) : (item?.includes || service.includes || []);
     const itinerary = item?.itinerary || item?.timeline || [];
-    const description = item?.description || item?.shortDescription || service.description || '';
+    const description = (item?.description && currentLocale() === 'en' && item?.description_en === undefined && !rawItem?.description_en) ? (service.description || item.description) : (item?.description || item?.shortDescription || service.description || '');
     $('#itineraryBody').innerHTML = `
       <p class="experience-desc">${escapeHtml(description)}</p>
       ${includes.length ? `<h3>${t('agency.includes', 'Incluye')}</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
