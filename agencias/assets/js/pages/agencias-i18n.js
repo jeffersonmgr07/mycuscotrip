@@ -294,12 +294,12 @@
     setText('#reserveForm > .dialog-help', 'agency.reserveHelp');
     setText('label[for="statusFilter"], .requests-toolbar label span', 'orders.status');
     setText('#refreshOrdersButton', 'orders.refresh');
-    setText('#ordersTable th:nth-child(1)', 'orders.code');
-    setText('#ordersTable th:nth-child(2)', 'orders.date');
-    setText('#ordersTable th:nth-child(3)', 'orders.status');
-    setText('#ordersTable th:nth-child(4)', 'orders.services');
-    setText('#ordersTable th:nth-child(5)', 'orders.total');
-    setText('#ordersTable th:nth-child(6)', 'orders.action');
+    setText('.orders-table th:nth-child(1)', 'orders.code');
+    setText('.orders-table th:nth-child(2)', 'orders.date');
+    setText('.orders-table th:nth-child(3)', 'orders.status');
+    setText('.orders-table th:nth-child(4)', 'orders.services');
+    setText('.orders-table th:nth-child(5)', 'orders.total');
+    setText('.orders-table th:nth-child(6)', 'orders.action');
 
     document.querySelectorAll('label.field span, .field span').forEach((span) => {
       const map = {
@@ -341,7 +341,7 @@
       const map = {'Datos de la empresa':'register.companyData','Representante o contacto autorizado':'register.representative','Información de acceso':'register.accessInfo','Datos de contacto':'profile.contactData','Cambiar contraseña':'profile.changePassword'};
       const key = map[h2.textContent.trim()]; if (key) h2.textContent = t(key);
     });
-    setText('#registerForm button[type="submit"]', 'register.submit');
+    setText('#registerForm button[type="submit"], #agencyRegisterForm button[type="submit"]', 'register.submit');
     setText('#ordersPageTitle, .orders-title', 'orders.title');
     setText('#ordersPageSubtitle, .orders-subtitle', 'orders.subtitle');
     setText('#verifyTitle', 'verify.title');

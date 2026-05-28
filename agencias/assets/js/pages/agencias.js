@@ -598,18 +598,12 @@
   }
 
   function renderOrders() {
+    // El listado de órdenes se muestra únicamente en ordenes.html.
+    // En el index se mantiene oculto para no duplicar información debajo de las experiencias.
     const list = $('#ordersList');
-    if (!state.orders.length) {
-      list.innerHTML = `<p class="empty-state">${t('agency.noLocalOrders', 'Todavía no se generaron órdenes en este navegador.')}</p>`;
-      return;
-    }
-    list.innerHTML = state.orders.slice(0, 12).map((order) => `
-      <article class="request-card">
-        <strong>${escapeHtml(order.code)}</strong>
-        <p>${formatDate(order.createdAt.slice(0, 10))} · ${order.items.length} ${t('agency.servicesLower', 'servicio(s)')} · ${money(order.total, order.currency)}</p>
-        <span class="agency-chip">${escapeHtml(order.status)}</span>
-      </article>
-    `).join('');
+    if (!list) return;
+    list.hidden = true;
+    list.innerHTML = '';
   }
 
   async function openItinerary(id) {
