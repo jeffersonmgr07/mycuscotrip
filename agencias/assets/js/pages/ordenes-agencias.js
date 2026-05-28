@@ -5,6 +5,9 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+  const I18N = window.MCTAgenciesI18n || null;
+  const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
+  const currentLocale = () => I18N?.lang || 'es';
   const readJSON = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
   let orders = [];
 
@@ -14,7 +17,7 @@
       window.location.href = './login.html';
       return null;
     }
-    $('#ordersAgencyName').textContent = session.companyName || session.contactName || session.email || 'Agencia afiliada';
+    $('#ordersAgencyName').textContent = session.companyName || session.contactName || session.email || t('agency.affiliateDefault', 'Agencia afiliada');
     return session;
   }
 
@@ -34,7 +37,7 @@
   }
 
   function paymentButtonLabel(order) {
-    return paymentMethodFor(order) === 'paypal' ? 'Pagar con PayPal' : 'Pagar reserva';
+    return paymentMethodFor(order) === 'paypal' ? t('agency.payWithPayPal', 'Pagar con PayPal') : t('agency.payBooking', 'Pagar reserva');
   }
 
   function money(amount, currency = 'PEN') {
@@ -46,18 +49,18 @@
     if (!value) return '';
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return escapeHtml(value);
-    return d.toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+    return d.toLocaleString(currentLocale() === 'en' ? 'en-US' : 'es-PE', { dateStyle: 'short', timeStyle: 'short' });
   }
 
   function formatDate(value) {
     if (!value) return '';
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return escapeHtml(value);
-    return d.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return d.toLocaleDateString(currentLocale() === 'en' ? 'en-US' : 'es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   function normalizeStatus(order) {
-    const raw = String(order.estadoPago || order.status || 'Pendiente').toLowerCase();
+    const raw = String(order.estadoPago || order.status || t('orders.pending', 'Pendiente')).toLowerCase();
     if (raw.includes('pag')) return 'pagado';
     if (raw.includes('venc')) return 'vencido';
     const due = order.fechaVencimientoPago || order.paymentDueAt || '';
@@ -66,13 +69,13 @@
   }
 
   function statusLabel(status) {
-    return { pendiente: 'Pendiente', vencido: 'Vencido', pagado: 'Pagado' }[status] || 'Pendiente';
+    return { pendiente: t('orders.pending', t('orders.pending', 'Pendiente')), vencido: t('orders.expired', 'Vencido'), pagado: t('orders.paid', 'Pagado') }[status] || t('orders.pending', t('orders.pending', 'Pendiente'));
   }
 
   function statusDateText(order, status) {
-    if (status === 'vencido') return 'Venció: ' + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
-    if (status === 'pagado') return order.fechaPagoPaypal ? ('Pagado: ' + formatDateTime(order.fechaPagoPaypal)) : 'Pago confirmado';
-    return 'Vence: ' + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
+    if (status === 'vencido') return (currentLocale() === 'en' ? 'Expired: ' : 'Venció: ') + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
+    if (status === 'pagado') return order.fechaPagoPaypal ? ((currentLocale() === 'en' ? 'Paid: ' : 'Pagado: ') + formatDateTime(order.fechaPagoPaypal)) : (currentLocale() === 'en' ? 'Payment confirmed' : 'Pago confirmado');
+    return (currentLocale() === 'en' ? 'Due: ' : 'Vence: ') + formatDateTime(order.fechaVencimientoPago || order.paymentDueAt);
   }
 
   function isExpiredMoreThanTwoDays(order) {
@@ -104,15 +107,15 @@
   }
 
   function compactServiceName(name = '') {
-    const clean = String(name || 'Servicio').replace(/\s+/g, ' ').trim();
+    const clean = String(name || t('agency.service', 'Servicio')).replace(/\s+/g, ' ').trim();
     return clean.split(' + ')[0].split(' - ')[0] || clean;
   }
 
   function servicesText(order) {
     const items = getOrderItems(order);
-    if (!items.length) return '<span>Sin detalle visible</span>';
+    if (!items.length) return `<span>${t('orders.noVisibleDetail', 'Sin detalle visible')}</span>`;
     return items.map((item) => {
-      const name = item.serviceShortName || compactServiceName(item.serviceName || item.title || item.name || 'Servicio');
+      const name = item.serviceShortName || compactServiceName(item.serviceName || item.title || item.name || t('agency.service', 'Servicio'));
       return `<span class="service-line">${escapeHtml(name)} <small>(${Number(item.pax || 1)} PAXS)</small></span>`;
     }).join('');
   }
@@ -175,7 +178,7 @@
     $('#ordersCount').textContent = filtered.length;
     if (!filtered.length) {
       $('#ordersMessage').hidden = false;
-      $('#ordersMessage').textContent = 'No hay órdenes para mostrar con este filtro.';
+      $('#ordersMessage').textContent = t('orders.noOrders', 'No hay órdenes para mostrar con este filtro.');
       $('#ordersTableWrap').hidden = true;
       return;
     }
@@ -195,7 +198,7 @@
           <td class="order-services-cell">${servicesText(order)}</td>
           <td class="order-total-cell"><strong>${money(total, currency)}</strong></td>
           <td class="order-action-cell">
-            <button type="button" class="agency-button agency-button--primary agency-button--small order-detail-button" data-order-detail="${index}">Ver detalles</button>
+            <button type="button" class="agency-button agency-button--primary agency-button--small order-detail-button" data-order-detail="${index}">${t('orders.viewDetails', 'Ver detalles')}</button>
           </td>
         </tr>`;
     }).join('');
@@ -209,7 +212,7 @@
     return passengers.map((p, index) => {
       const name = [p.firstName || p.first || p.nombres, p.lastName || p.last || p.apellidos].filter(Boolean).join(' ');
       const doc = [p.docType || p.tipoDocumento, p.docNumber || p.doc || p.numeroDocumento].filter(Boolean).join(' ');
-      return `<li>Pasajero ${index + 2}: ${escapeHtml(name || 'Nombre pendiente')}${doc ? ` · ${escapeHtml(doc)}` : ''}</li>`;
+      return `<li>${t('agency.passenger', 'Pasajero')} ${index + 2}: ${escapeHtml(name || t('agency.namePending', 'Nombre pendiente'))}${doc ? ` · ${escapeHtml(doc)}` : ''}</li>`;
     }).join('');
   }
 
@@ -220,7 +223,7 @@
       const lead = getOrderLead(order);
       const allPassengers = getOrderPassengers(order);
       return `<tr><td colspan="5">No se encontró detalle de servicios en esta orden.</td></tr>
-        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>Titular:</strong> ${escapeHtml([lead.firstName || lead.first, lead.lastName || lead.last].filter(Boolean).join(' ') || 'Pendiente')}<br><strong>Pasajeros:</strong><ul>${passengersList(allPassengers)}</ul></td></tr>`;
+        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>${t('agency.lead', 'Titular')}:</strong> ${escapeHtml([lead.firstName || lead.first, lead.lastName || lead.last].filter(Boolean).join(' ') || t('orders.pending', 'Pendiente'))}<br><strong>${t('agency.additionalPassengers', 'Pasajeros')}:</strong><ul>${passengersList(allPassengers)}</ul></td></tr>`;
     }
     return items.map((item, index) => {
       const lead = normalizeItemLead(item, order);
@@ -236,9 +239,9 @@
         <tr>
           <td>${index + 1}</td>
           <td>
-            <strong>${escapeHtml(item.serviceName || item.title || item.name || 'Servicio')}</strong><br>
-            <small>Fecha: ${formatDate(item.travelDate || item.date || '')} · Hora: ${escapeHtml(item.serviceTime || item.time || 'Por confirmar')}</small><br>
-            <small>Recojo: ${escapeHtml(pickup || 'Por confirmar')}</small>
+            <strong>${escapeHtml(item.serviceName || item.title || item.name || t('agency.service', 'Servicio'))}</strong><br>
+            <small>${t('agency.date', 'Fecha')}: ${formatDate(item.travelDate || item.date || '')} · ${t('agency.time', 'Hora')}: ${escapeHtml(item.serviceTime || item.time || t('agency.confirm', 'Por confirmar'))}</small><br>
+            <small>${t('agency.pickup', 'Recojo')}: ${escapeHtml(pickup || t('agency.confirm', 'Por confirmar'))}</small>
           </td>
           <td>${pax}</td>
           <td>${money(unit, currency)}</td>
@@ -247,10 +250,10 @@
         <tr class="order-passenger-row">
           <td></td>
           <td colspan="4">
-            <strong>Datos del titular:</strong> ${escapeHtml(leadName || 'Pendiente')} ${leadDoc ? `· ${escapeHtml(leadDoc)}` : ''} ${lead.phone ? `· ${escapeHtml(lead.phone)}` : ''}<br>
-            <strong>Lugar de recojo:</strong> ${escapeHtml(pickup || 'Por confirmar')}<br>
-            <strong>Pasajeros adicionales:</strong><ul>${passengersList(passengers)}</ul>
-            ${notes ? `<strong>Observaciones:</strong> ${escapeHtml(notes)}` : ''}
+            <strong>${t('agency.leadData', 'Datos del titular')}:</strong> ${escapeHtml(leadName || t('orders.pending', 'Pendiente'))} ${leadDoc ? `· ${escapeHtml(leadDoc)}` : ''} ${lead.phone ? `· ${escapeHtml(lead.phone)}` : ''}<br>
+            <strong>${t('agency.pickup', 'Lugar de recojo')}:</strong> ${escapeHtml(pickup || t('agency.confirm', 'Por confirmar'))}<br>
+            <strong>${t('agency.additionalPassengers', 'Pasajeros adicionales')}:</strong><ul>${passengersList(passengers)}</ul>
+            ${notes ? `<strong>${t('agency.observations', 'Observaciones')}:</strong> ${escapeHtml(notes)}` : ''}
           </td>
         </tr>`;
     }).join('');
@@ -261,7 +264,7 @@
     const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
     const statusKey = normalizeStatus(order);
     const status = statusLabel(statusKey);
-    const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || 'Agencia afiliada';
+    const agencyName = order.agenciaNombre || order.account?.companyName || $('#ordersAgencyName')?.textContent || t('agency.affiliateDefault', 'Agencia afiliada');
     return `
       <div id="orderPrintArea" class="order-print-area">
         <div class="print-order-head">
@@ -270,9 +273,9 @@
           </div>
           <div class="print-order-title-row">
             <div>
-              <p class="eyebrow">Código de orden</p>
+              <p class="eyebrow">${t('orders.orderCode', 'Código de orden')}</p>
               <h2>${escapeHtml(code)}</h2>
-              <p>Agencia: <strong>${escapeHtml(agencyName)}</strong></p>
+              <p>${t('agency.agency', 'Agencia')}: <strong>${escapeHtml(agencyName)}</strong></p>
             </div>
             <div class="print-order-status is-${statusKey}">
               <span>${escapeHtml(status)}</span>
@@ -280,24 +283,24 @@
             </div>
           </div>
         </div>
-        <div class="info-note"><strong>Importante:</strong> revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.</div>
+        <div class="info-note"><strong>${t('orders.important', 'Importante')}:</strong> ${t('orders.importantText', 'revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.')}</div>
         <div class="order-table-wrap">
           <table class="order-table">
-            <thead><tr><th>#</th><th>Servicio / recojo</th><th>Pax</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
+            <thead><tr><th>#</th><th>${t('orders.servicePickup', 'Servicio / recojo')}</th><th>Pax</th><th>${t('agency.price', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
             <tbody>${orderItemsRows(order)}</tbody>
           </table>
         </div>
         <div class="order-totals">
-          <div><span>Servicios + tickets de ingreso</span><strong>${money(order.subtotalNeto || order.subtotal || 0, currency)}</strong></div>
-          <div><span>Comisiones PayPal + banco</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
-          <div class="grand"><span>Total a pagar</span><strong>${money(order.montoComisionado || order.total || 0, currency)}</strong></div>
+          <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotalNeto || order.subtotal || 0, currency)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
+          <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.montoComisionado || order.total || 0, currency)}</strong></div>
         </div>
-        ${order.observaciones || order.observations ? `<p class="small-print-note"><strong>Observaciones generales:</strong> ${escapeHtml(order.observaciones || order.observations)}</p>` : ''}
+        ${order.observaciones || order.observations ? `<p class="small-print-note"><strong>${t('orders.generalNotes', 'Observaciones generales')}:</strong> ${escapeHtml(order.observaciones || order.observations)}</p>` : ''}
       </div>
       <div class="dialog-actions order-modal-actions">
-        <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>Cerrar</button>
+        <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">Imprimir orden</button>
+        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>`;
   }
 
@@ -319,12 +322,12 @@
 
   async function startPayPalPayment(order) {
     const status = normalizeStatus(order);
-    if (status === 'pagado') { alert('Esta orden ya figura como pagada.'); return; }
-    if (status === 'vencido') { alert('Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.'); return; }
+    if (status === 'pagado') { alert(t('orders.alreadyPaid', 'Esta orden ya figura como pagada.')); return; }
+    if (status === 'vencido') { alert(t('orders.expiredAlert', 'Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.')); return; }
 
     const method = paymentMethodFor(order);
     const button = $('#payOrderWithPayPalButton');
-    const loadingText = method === 'paypal' ? 'Conectando con PayPal...' : 'Conectando con Mercado Pago...';
+    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
     if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
@@ -338,13 +341,13 @@
       });
       const redirectUrl = method === 'paypal' ? result.approvalUrl : result.initPoint;
       if (!result.ok || !redirectUrl) {
-        alert(result.message || (method === 'paypal' ? 'No se pudo crear el pago en PayPal.' : 'No se pudo crear el pago en Mercado Pago.'));
+        alert(result.message || (method === 'paypal' ? t('orders.paypalCreateError', 'No se pudo crear el pago en PayPal.') : t('orders.mpCreateError', 'No se pudo crear el pago en Mercado Pago.')));
         return;
       }
       window.location.href = redirectUrl;
     } catch (error) {
       console.error(error);
-      alert(method === 'paypal' ? 'No se pudo conectar con PayPal.' : 'No se pudo conectar con Mercado Pago.');
+      alert(method === 'paypal' ? t('orders.paypalConnectError', 'No se pudo conectar con PayPal.') : t('orders.mpConnectError', 'No se pudo conectar con Mercado Pago.'));
     } finally {
       if (button) { button.disabled = false; button.textContent = paymentButtonLabel(order); }
     }
@@ -357,7 +360,7 @@
       body: JSON.stringify({ action, payload })
     });
     const text = await response.text();
-    try { return JSON.parse(text); } catch { return { ok:false, message:'Respuesta no válida de Apps Script.' }; }
+    try { return JSON.parse(text); } catch { return { ok:false, message:t('orders.invalidResponse', 'Respuesta no válida de Apps Script.') }; }
   }
 
   function printOrderDetail() {
@@ -371,6 +374,7 @@
     if (!session) return;
     orders = await fetchOrders(session);
     renderOrders();
+    I18N?.apply?.();
     $('#statusFilter').addEventListener('change', renderOrders);
     $('#refreshOrdersButton').addEventListener('click', async () => { orders = await fetchOrders(session); renderOrders(); });
     $('#orderDetailModal')?.addEventListener('click', (event) => { if (event.target.id === 'orderDetailModal') closeOrderDetail(); });

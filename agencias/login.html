@@ -38,6 +38,7 @@
   <div id="footer-container"></div>
   <script src="../assets/js/components/header.js"></script>
   <script src="../assets/js/components/footer.js"></script>
+  <script src="./assets/js/pages/agencias-i18n.js"></script>
   <script src="./assets/js/pages/acceso-agencias.js" defer></script>
   <script>
     async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }

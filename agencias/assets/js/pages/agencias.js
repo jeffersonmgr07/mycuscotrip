@@ -31,7 +31,7 @@
 
   function countryOptions(selected = '') {
     const cleanSelected = String(selected || '').trim();
-    return '<option value="">Selecciona país</option>' + COUNTRIES.map((country) => `<option value="${escapeHtml(country)}" ${country === cleanSelected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
+    return `<option value="">${t('agency.selectCountry', 'Selecciona país')}</option>` + COUNTRIES.map((country) => `<option value="${escapeHtml(country)}" ${country === cleanSelected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
   }
 
   function hydrateCountrySelects(root = document) {
@@ -44,6 +44,9 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+  const I18N = window.MCTAgenciesI18n || null;
+  const t = (key, fallback = key, vars = null) => I18N?.t ? I18N.t(key, vars) : fallback;
+  const currentLocale = () => I18N?.lang || 'es';
   function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
   const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const isoPlusDays = (days = 0) => { const d = new Date(); d.setDate(d.getDate() + days); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
@@ -89,7 +92,7 @@
   }
 
   function paymentButtonLabel(order) {
-    return paymentMethodFor(order) === 'paypal' ? 'Pagar con PayPal' : 'Pagar reserva';
+    return paymentMethodFor(order) === 'paypal' ? t('agency.payWithPayPal', 'Pagar con PayPal') : t('agency.payBooking', 'Pagar reserva');
   }
 
 
@@ -100,6 +103,11 @@
 
   function greetingFor(name = '') {
     const hour = new Date().getHours();
+    if (currentLocale() === 'en') {
+      const greeting = hour < 12 ? 'Good morning' : (hour < 18 ? 'Good afternoon' : 'Good evening');
+      const clean = String(name || '').trim().split(/\s+/)[0] || 'welcome';
+      return `${greeting}, ${clean}!`;
+    }
     const greeting = hour < 12 ? 'Buenos días' : (hour < 18 ? 'Buenas tardes' : 'Buenas noches');
     const clean = String(name || '').trim().split(/\s+/)[0] || 'bienvenido';
     return `${greeting}, ${clean}!`;
@@ -119,7 +127,7 @@
     const session = requireSession();
     if (!session) return;
 
-    $('#agencyNameHeading').textContent = session.companyName || session.contactName || 'Agencia afiliada';
+    $('#agencyNameHeading').textContent = session.companyName || session.contactName || t('agency.affiliateDefault', 'Agencia afiliada');
     $('#sessionWelcome').textContent = greetingFor(session.contactName || session.representanteNombres || session.companyName || '');
     if (!state.currency) {
       const country = String(session.country || session.pais || '').trim().toUpperCase();
@@ -137,6 +145,7 @@
     renderExperiences();
     renderCart();
     renderOrders();
+    I18N?.apply?.();
   }
 
   async function loadCatalog() {
@@ -144,14 +153,14 @@
       const response = await fetch(CONFIG.catalogUrl, { cache: 'no-store' });
       if (!response.ok) throw new Error('catalog');
       const data = await response.json();
-      state.services = Array.isArray(data.services) ? data.services : [];
+      state.services = Array.isArray(data.services) ? data.services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service) : [];
       if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
         state.exchangeRate = Number(data.exchangeRate);
         if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
     } catch (error) {
       $('#emptyExperiences').hidden = false;
-      $('#emptyExperiences').textContent = 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.';
+      $('#emptyExperiences').textContent = t('agency.catalogError', 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.');
     }
   }
 
@@ -200,25 +209,25 @@
   function serviceCard(service) {
     const price = servicePrice(service);
     const alt = serviceAltPrice(service);
-    const unit = service.priceUnit || 'por persona';
+    const unit = service.priceUnit || t('agency.perPerson', 'por persona');
     const altHtml = alt ? `<small>${money(alt)} ${escapeHtml(service.priceAltLabel || '')}</small>` : '';
     return `
       <article class="experience-card">
         <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
         <div class="experience-body">
-          <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || 'Salida diaria')}</span></div>
+          <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || t('agency.dailyDeparture', 'Salida diaria'))}</span></div>
           <h3>${escapeHtml(service.name)}</h3>
           <p class="experience-desc">${escapeHtml(service.description || '')}</p>
           <table class="mini-table">
-            <tr><td>Horario</td><td>${escapeHtml(service.startLabel || '')}</td></tr>
-            <tr><td>Duración</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
-            <tr><td>Precio</td><td><span class="price">${money(price)}<small>${escapeHtml(unit)}</small>${altHtml}</span></td></tr>
-            <tr><td>Entradas</td><td>${escapeHtml(service.notIncluded || 'Consultar según experiencia.')}</td></tr>
+            <tr><td>${t('agency.schedule', 'Horario')}</td><td>${escapeHtml(service.startLabel || '')}</td></tr>
+            <tr><td>${t('agency.duration', 'Duración')}</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
+            <tr><td>${t('agency.price', 'Precio')}</td><td><span class="price">${money(price)}<small>${escapeHtml(unit)}</small>${altHtml}</span></td></tr>
+            <tr><td>${t('agency.entrances', 'Entradas')}</td><td>${escapeHtml(service.notIncluded || t('agency.confirm', 'Consultar según experiencia.'))}</td></tr>
           </table>
         </div>
         <div class="card-actions">
-          <button type="button" class="agency-button agency-button--primary" data-reserve="${escapeHtml(service.id)}">Reservar</button>
-          <button type="button" class="agency-button agency-button--ghost" data-itinerary="${escapeHtml(service.id)}">Ver itinerario</button>
+          <button type="button" class="agency-button agency-button--primary" data-reserve="${escapeHtml(service.id)}">${t('agency.book', 'Reservar')}</button>
+          <button type="button" class="agency-button agency-button--ghost" data-itinerary="${escapeHtml(service.id)}">${t('agency.viewItinerary', 'Ver itinerario')}</button>
         </div>
       </article>
     `;
@@ -230,7 +239,7 @@
     const service = findService(id);
     if (!service) return;
     $('#selectedServiceId').value = id;
-    $('#reserveTitle').textContent = `Reservar · ${service.name}`;
+    $('#reserveTitle').textContent = `${t('agency.book', 'Reservar')} · ${service.name}`;
     $('#reserveForm').reset();
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
@@ -247,7 +256,7 @@
     if (!select) return;
     const schedules = Array.isArray(service.schedules) && service.schedules.length
       ? service.schedules
-      : (service.startLabel ? [service.startLabel] : ['Por confirmar']);
+      : (service.startLabel ? [service.startLabel] : [t('agency.confirm', 'Por confirmar')]);
     select.innerHTML = schedules.map((time) => `<option value="${escapeHtml(time)}">${escapeHtml(time)}</option>`).join('');
   }
 
@@ -267,7 +276,7 @@
     options.innerHTML = tickets.map((ticket) => `
       <label class="entry-ticket-option ${toggle.checked ? '' : 'is-disabled'}">
         <input type="checkbox" data-entry-ticket="${escapeHtml(ticket.id)}" ${toggle.checked ? '' : 'disabled'} />
-        <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} por pasajero${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
+        <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} ${t('agency.perPassenger', 'por pasajero')}${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
       </label>
     `).join('');
   }
@@ -296,13 +305,13 @@
     for (let i = 2; i <= pax; i++) {
       box.insertAdjacentHTML('beforeend', `
         <div class="passenger-extra" data-passenger-extra>
-          <div class="passenger-extra__title">Pasajero ${i}</div>
+          <div class="passenger-extra__title">${t('agency.passenger', 'Pasajero')} ${i}</div>
           <div class="form-grid">
-            <label class="field"><span>Nombres</span><input data-pax="firstName" /></label>
-            <label class="field"><span>Apellidos</span><input data-pax="lastName" /></label>
-            <label class="field"><span>Tipo de documento</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
-            <label class="field"><span>Número de documento</span><input data-pax="docNumber" /></label>
-            <label class="field full"><span>Nacionalidad</span><select data-pax="nationality" data-country-select></select></label>
+            <label class="field"><span>${t('agency.firstName', 'Nombres')}</span><input data-pax="firstName" /></label>
+            <label class="field"><span>${t('agency.lastName', 'Apellidos')}</span><input data-pax="lastName" /></label>
+            <label class="field"><span>${t('agency.docType', 'Tipo de documento')}</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
+            <label class="field"><span>${t('agency.docNumber', 'Número de documento')}</span><input data-pax="docNumber" /></label>
+            <label class="field full"><span>${t('agency.nationality', 'Nacionalidad')}</span><select data-pax="nationality" data-country-select></select></label>
           </div>
         </div>
       `);
@@ -336,7 +345,7 @@
       unitPricePEN: Number(service.pricePEN || 0),
       unitPriceUSD: service.priceUSD != null ? Number(service.priceUSD) : null,
       serviceCurrency: service.currency || 'PEN',
-      priceUnit: service.priceUnit || 'por persona',
+      priceUnit: service.priceUnit || t('agency.perPerson', 'por persona'),
       lead: {
         firstName: $('#leadFirstName').value.trim(),
         lastName: $('#leadLastName').value.trim(),
@@ -380,7 +389,7 @@
   function renderCart() {
     const wrap = $('#cartItems');
     if (!state.cart.length) {
-      wrap.innerHTML = '<p class="cart-empty">Todavía no agregaste servicios.</p>';
+      wrap.innerHTML = `<p class="cart-empty">${t('agency.emptyCart', 'Todavía no agregaste servicios.')}</p>`;
     } else {
       wrap.innerHTML = state.cart.map((item, index) => `
         <article class="cart-item">
@@ -389,7 +398,7 @@
           <div class="cart-row"><span>Hora</span><span>${escapeHtml(item.serviceTime || 'Por confirmar')}</span></div>
           <div class="cart-row"><span>Pasajeros</span><span>${item.pax}</span></div>
           <div class="cart-row"><span>Titular</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
-          ${item.entryTickets?.length ? `<div class="cart-row"><span>Tickets</span><span>${item.entryTickets.map((ticket) => escapeHtml(ticket.name)).join('<br>')}</span></div>` : ''}
+          ${item.entryTickets?.length ? `<div class="cart-row"><span>${t('agency.tickets', 'Tickets')}</span><span>${item.entryTickets.map((ticket) => escapeHtml(ticket.name)).join('<br>')}</span></div>` : ''}
           <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
           <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">Quitar</button>
         </article>
@@ -443,7 +452,7 @@
     showOrderModal(order, result);
     $('#orderBox').classList.add('show');
     $('#orderBox').innerHTML = `
-      <h3>Orden generada</h3>
+      <h3>${t('agency.generatedOrder', 'Orden generada')}</h3>
       <div class="order-code">${escapeHtml(order.code)}</div>
       <p><strong>Total:</strong> ${money(order.total)}</p>
       <button type="button" class="agency-button agency-button--primary" id="viewLastOrderButton">Ver / imprimir orden</button>
@@ -488,9 +497,9 @@
           </div>
           <div class="print-order-title-row">
             <div>
-              <p class="eyebrow">Orden de reserva</p>
+              <p class="eyebrow">${t('agency.bookingOrder', 'Orden de reserva')}</p>
               <h2>${escapeHtml(order.code)}</h2>
-              <p>Agencia: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
+              <p>${t('agency.agency', 'Agencia')}: <strong>${escapeHtml(order.account?.companyName || 'Agencia afiliada')}</strong></p>
             </div>
             <div class="print-order-status is-pendiente">
               <span>${escapeHtml(order.status)}</span>
@@ -498,7 +507,7 @@
             </div>
           </div>
         </div>
-        <div class="info-note"><strong>Tiempo de pago:</strong> esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.</div>
+        <div class="info-note"><strong>${t('agency.paymentTime', 'Tiempo de pago')}:</strong> ${t('agency.paymentTimeNote', 'esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.')}</div>
         <div class="order-table-wrap">
           <table class="order-table">
             <thead><tr><th>#</th><th>Servicio</th><th>Pax</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
@@ -506,16 +515,16 @@
           </table>
         </div>
         <div class="order-totals">
-          <div><span>Servicios + tickets de ingreso</span><strong>${money(order.subtotal)}</strong></div>
-          <div><span>Comisiones PayPal + banco</span><strong>${money(order.fee)}</strong></div>
-          <div class="grand"><span>Total a pagar</span><strong>${money(order.total)}</strong></div>
+          <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotal)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.fee)}</strong></div>
+          <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total)}</strong></div>
         </div>
-        <p class="small-print-note">${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note"><strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.</div>
+        <p class="small-print-note">${result?.ok === false ? 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.' : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
       </div>
       <div class="dialog-actions order-modal-actions">
-        <button type="button" class="agency-button agency-button--ghost" data-close-modal>Cerrar</button>
+        <button type="button" class="agency-button agency-button--ghost" data-close-modal>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">Imprimir orden</button>
+        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>
     `;
   }
@@ -533,7 +542,7 @@
   async function startPayPalPayment(order) {
     const method = paymentMethodFor(order);
     const button = $('#payWithPayPalButton');
-    const loadingText = method === 'paypal' ? 'Conectando con PayPal...' : 'Conectando con Mercado Pago...';
+    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
     if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const action = method === 'paypal' ? 'createPayPalOrder' : 'createMercadoPagoPreference';
@@ -567,7 +576,7 @@
   function formatDateTime(iso) {
     if (!iso) return '';
     const d = new Date(iso);
-    return d.toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+    return d.toLocaleString(currentLocale() === 'en' ? 'en-US' : 'es-PE', { dateStyle: 'short', timeStyle: 'short' });
   }
 
   async function sendToSheet(action, payload) {
@@ -589,13 +598,13 @@
   function renderOrders() {
     const list = $('#ordersList');
     if (!state.orders.length) {
-      list.innerHTML = '<p class="empty-state">Todavía no se generaron órdenes en este navegador.</p>';
+      list.innerHTML = `<p class="empty-state">${t('agency.noLocalOrders', 'Todavía no se generaron órdenes en este navegador.')}</p>`;
       return;
     }
     list.innerHTML = state.orders.slice(0, 12).map((order) => `
       <article class="request-card">
         <strong>${escapeHtml(order.code)}</strong>
-        <p>${formatDate(order.createdAt.slice(0, 10))} · ${order.items.length} servicio(s) · ${money(order.total, order.currency)}</p>
+        <p>${formatDate(order.createdAt.slice(0, 10))} · ${order.items.length} ${t('agency.servicesLower', 'servicio(s)')} · ${money(order.total, order.currency)}</p>
         <span class="agency-chip">${escapeHtml(order.status)}</span>
       </article>
     `).join('');
@@ -605,7 +614,7 @@
     const service = findService(id);
     if (!service) return;
     $('#itineraryTitle').textContent = service.name;
-    $('#itineraryBody').innerHTML = '<p class="dialog-help">Cargando itinerario detallado...</p>';
+    $('#itineraryBody').innerHTML = `<p class="dialog-help">${t('agency.loadingItinerary', 'Cargando itinerario detallado...')}</p>`;
     $('#itineraryModal').classList.add('show');
 
     const item = await findItineraryItem(service);
@@ -614,16 +623,16 @@
     const description = item?.description || item?.shortDescription || service.description || '';
     $('#itineraryBody').innerHTML = `
       <p class="experience-desc">${escapeHtml(description)}</p>
-      ${includes.length ? `<h3>Incluye</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
-      ${itinerary.length ? `<h3>Itinerario</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : `<div class="info-note"><strong>Detalle:</strong> ${escapeHtml(service.description || '')}</div>`}
-      <div class="dialog-actions"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">Reservar esta experiencia</button></div>
+      ${includes.length ? `<h3>${t('agency.includes', 'Incluye')}</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
+      ${itinerary.length ? `<h3>${t('agency.itinerary', 'Itinerario')}</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : `<div class="info-note"><strong>${t('agency.detail', 'Detalle')}:</strong> ${escapeHtml(service.description || '')}</div>`}
+      <div class="dialog-actions"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">${t('agency.reserveThisExperience', 'Reservar esta experiencia')}</button></div>
     `;
     $('[data-reserve-from-itinerary]')?.addEventListener('click', () => { closeModals(); openReserve(service.id); });
   }
 
   function itineraryStep(step, index) {
-    if (typeof step === 'string') return `<div class="itinerary-step"><strong>Paso ${index + 1}</strong><p>${escapeHtml(step)}</p></div>`;
-    return `<div class="itinerary-step"><strong>${escapeHtml(step.title || `Paso ${index + 1}`)}</strong><p>${escapeHtml(step.description || step.text || '')}</p></div>`;
+    if (typeof step === 'string') return `<div class="itinerary-step"><strong>${t('agency.step', 'Paso')} ${index + 1}</strong><p>${escapeHtml(step)}</p></div>`;
+    return `<div class="itinerary-step"><strong>${escapeHtml(step.title || `${t('agency.step', 'Paso')} ${index + 1}`)}</strong><p>${escapeHtml(step.description || step.text || '')}</p></div>`;
   }
 
   async function findItineraryItem(service) {
