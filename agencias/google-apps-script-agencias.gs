@@ -42,7 +42,7 @@ const ORDER_HEADERS = [
   'codigoOrden','fechaOrden','agenciaId','agenciaNombre','correoAgencia','estadoPago','moneda','tipoCambio',
   'subtotalNeto','montoComisionado','comisionPaypalBanco','fechaVencimientoPago',
   'paypalOrderId','paypalCaptureId','paypalStatus','fechaPagoPaypal',
-  'mercadoPagoPreferenceId','mercadoPagoPaymentId','mercadoPagoStatus','fechaPagoMercadoPago',
+  'mercadoPagoPreferenceId','mercadoPagoPaymentId','mercadoPagoStatus','mercadoPagoDeviceId','fechaPagoMercadoPago',
   'serviciosJson','titularJson','pasajerosJson','observaciones'
 ];
 
@@ -582,6 +582,7 @@ function mercadoPagoConfig_() {
 function createMercadoPagoPreference_(payload) {
   validateConfig_();
   const code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
+  const deviceId = String(payload.deviceId || payload.device_session_id || '').trim();
   if (!code) return json_({ ok:false, message:'Código de orden requerido.' });
 
   const order = findOrderByCode_(code);
@@ -599,35 +600,65 @@ function createMercadoPagoPreference_(payload) {
 
   const cfg = mercadoPagoConfig_();
   const returnBase = PORTAL_BASE_URL + '/mercadopago-retorno.html?code=' + encodeURIComponent(code);
+  const lead = parseJsonSafe_(order.data.titularJson, {});
+  const services = parseJsonSafe_(order.data.serviciosJson, []);
+  const cleanPhone = String(lead.phone || '').replace(/\D/g, '');
+  const payer = {
+    email: String(order.data.correoAgencia || payload.account?.email || '').trim()
+  };
+
+  if (lead.firstName) payer.name = String(lead.firstName).trim();
+  if (lead.lastName) payer.surname = String(lead.lastName).trim();
+  if (cleanPhone) payer.phone = { number: cleanPhone };
+  if (lead.docType && lead.docNumber) {
+    payer.identification = {
+      type: String(lead.docType).trim(),
+      number: String(lead.docNumber).replace(/\D/g, '').trim() || String(lead.docNumber).trim()
+    };
+  }
+
+  const serviceDescription = Array.isArray(services) && services.length
+    ? services.map(function(item){ return String(item.serviceName || item.serviceShortName || '').trim(); }).filter(Boolean).slice(0, 3).join(' / ')
+    : 'Servicios turísticos My Cusco Trip';
+
   const preference = {
     items: [{
       id: code,
       title: 'Orden de reserva My Cusco Trip ' + code,
-      description: 'Servicios turísticos My Cusco Trip',
+      description: serviceDescription || 'Servicios turísticos My Cusco Trip',
       quantity: 1,
       currency_id: 'PEN',
       unit_price: Number(amount.toFixed(2))
     }],
     external_reference: code,
-    payer: {
-      email: String(order.data.correoAgencia || payload.account?.email || '').trim()
-    },
+    payer: payer,
     back_urls: {
       success: returnBase + '&result=success',
       failure: returnBase + '&result=failure',
       pending: returnBase + '&result=pending'
     },
     auto_return: 'approved',
+    statement_descriptor: 'MYCUSCOTRIP',
     metadata: {
       codigo_orden: code,
-      agencia_id: String(order.data.agenciaId || '')
+      agencia_id: String(order.data.agenciaId || ''),
+      agencia_nombre: String(order.data.agenciaNombre || ''),
+      correo_agencia: String(order.data.correoAgencia || '')
     }
   };
 
+  const headers = {
+    Authorization: 'Bearer ' + cfg.accessToken,
+    'Content-Type': 'application/json'
+  };
+
+  if (deviceId) {
+    headers['X-meli-session-id'] = deviceId;
+  }
+
   const res = UrlFetchApp.fetch(cfg.apiBase + '/checkout/preferences', {
     method: 'post',
-    contentType: 'application/json',
-    headers: { Authorization: 'Bearer ' + cfg.accessToken },
+    headers: headers,
     payload: JSON.stringify(preference),
     muteHttpExceptions: true
   });
@@ -638,6 +669,7 @@ function createMercadoPagoPreference_(payload) {
 
   setCellByHeader_(order.sheet, order.row, order.headers, 'mercadoPagoPreferenceId', data.id);
   setCellByHeader_(order.sheet, order.row, order.headers, 'mercadoPagoStatus', 'preference_created');
+  if (deviceId) setCellByHeader_(order.sheet, order.row, order.headers, 'mercadoPagoDeviceId', deviceId);
 
   return json_({
     ok:true,
@@ -715,6 +747,17 @@ function sendMercadoPagoPaidEmail_(orderData, paymentId, status) {
   MailApp.sendEmail({ to: email, subject: 'Pago confirmado - Orden ' + code, htmlBody: htmlBody, name: BRAND_NAME, replyTo: SUPPORT_EMAIL });
 }
 
+
+
+function parseJsonSafe_(value, fallback) {
+  try {
+    if (value === null || value === undefined || value === '') return fallback;
+    if (typeof value === 'object') return value;
+    return JSON.parse(String(value));
+  } catch (err) {
+    return fallback;
+  }
+}
 
 function findAgencyRow_(sheet, email, agencyId) {
   const values = sheet.getDataRange().getValues();
