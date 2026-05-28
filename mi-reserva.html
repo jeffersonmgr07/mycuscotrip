@@ -265,7 +265,7 @@
 <form id="reservaForm">
 <div class="reserva-field">
 <label for="codigo">Código de reserva</label>
-<input id="codigo" name="codigo" placeholder="Ej. CUS12345" required="" type="text"/>
+<input id="codigo" name="codigo" placeholder="Ej. CUZ12345" required="" type="text"/>
 </div>
 <div class="reserva-field">
 <label for="apellido">Apellido</label>
@@ -405,6 +405,7 @@
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
 <script src="./assets/js/lib/utils.js"></script>
+<script src="./assets/js/core/api-client.js"></script>
 <script>
     const form = document.getElementById("reservaForm");
     const errorMessage = document.getElementById("errorMessage");
@@ -484,6 +485,18 @@
       return reservas;
     }
 
+    async function consultarReservaBackend(codigo, apellido) {
+      if (!window.MyCuscoTripApiClient?.lookupReservation) return null;
+      try {
+        const result = await window.MyCuscoTripApiClient.lookupReservation({ code: codigo, lastName: apellido });
+        if (result?.found && result.voucher) return result.voucher;
+        return null;
+      } catch (error) {
+        console.warn("No se pudo consultar el backend de reservas. Se usará respaldo estático.", error);
+        return null;
+      }
+    }
+
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -504,6 +517,14 @@
       }
 
       try {
+        const reservaBackend = await consultarReservaBackend(codigo, apellido);
+        if (reservaBackend) {
+          localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaBackend));
+          const codigoUrl = encodeURIComponent(reservaBackend.codigo || String(codigo).trim());
+          window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
+          return;
+        }
+
         const reservas = await cargarReservas();
         const reservaPorCodigo = reservas.find((reserva) => codigoCoincideExacto(reserva, codigo));
 
@@ -526,7 +547,7 @@
         window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
       } catch (error) {
         console.error("Error consultando reserva:", error);
-        errorMessage.textContent = "No se pudo consultar el archivo de reservas. Verifica que data/reservas.json exista en el servidor.";
+        errorMessage.textContent = "No se pudo consultar la reserva. Verifica el código y apellido, o contacta a tu asesor.";
         errorMessage.style.display = "block";
       } finally {
         buscarBtn.disabled = false;

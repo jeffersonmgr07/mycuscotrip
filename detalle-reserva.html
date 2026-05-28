@@ -3745,6 +3745,18 @@
 
       if (!codigoUrl) return null;
 
+      if (window.MyCuscoTripApiClient?.lookupReservation) {
+        try {
+          const result = await window.MyCuscoTripApiClient.lookupReservation({ code: codigoUrl });
+          if (result?.found && result.voucher) {
+            localStorage.setItem("reservaSeleccionada", JSON.stringify(result.voucher));
+            return result.voucher;
+          }
+        } catch (error) {
+          console.warn("No se pudo consultar voucher en backend. Se usará respaldo estático.", error);
+        }
+      }
+
       const response = await fetch("./data/reservas.json", { cache: "no-store" });
       if (!response.ok) throw new Error("No se pudo cargar data/reservas.json");
       const reservas = await response.json();
@@ -3827,5 +3839,6 @@
 <script src="./assets/js/i18n.js"></script>
 <script src="./assets/js/components/header.js"></script>
 <script src="./assets/js/lib/utils.js"></script>
+<script src="./assets/js/core/api-client.js"></script>
 </body>
 </html>
