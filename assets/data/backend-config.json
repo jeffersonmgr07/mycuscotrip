@@ -2,7 +2,7 @@
   "version": "1.2.0",
   "updatedAt": "2026-05-28",
   "mode": "apps_script",
-  "apiBaseUrl": "PEGAR_AQUI_URL_DE_APPS_SCRIPT_WEB_APP_EXEC",
+  "apiBaseUrl": "https://script.google.com/macros/s/AKfycbxhBchwmQvPghrQvacpbvnQkd-rNFCZUJjFzDeTYTvnRfUu13pG7k0Eds_4-mzYFmZ0/exec",
   "notes": "Backend Google Apps Script para cupones, reservas, pasajeros, PayPal en USD y Mercado Pago en PEN. Reemplazar apiBaseUrl por la URL /exec publicada.",
   "endpoints": {
     "quotes": "/api/quotes",
