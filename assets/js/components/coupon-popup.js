@@ -263,10 +263,25 @@
       this.setMessage(this.t("coupon.submitting", "Registrando tus datos..."), false);
 
       try {
-        await this.submitCouponLead(payload);
-        this.setStoredState({ registered: true, registeredAt: Date.now(), couponCode: this.options.couponCode });
+        const result = await this.submitCouponLead(payload);
+        const generatedCode = result?.couponCode || result?.code || payload.couponCode || this.options.couponCode;
+        const discountPercent = result?.discountPercent || result?.percent || "";
+
+        this.options.couponCode = generatedCode;
+        payload.couponCode = generatedCode;
+
+        const codeTarget = this.popup?.querySelector("[data-coupon-code]");
+        if (codeTarget) codeTarget.textContent = generatedCode;
+
+        this.setStoredState({
+          registered: true,
+          registeredAt: Date.now(),
+          couponCode: generatedCode,
+          discountPercent,
+          expiresAt: result?.expiresAt || ""
+        });
         this.trackEvent("coupon_form_submit", {
-          coupon_code: payload.couponCode,
+          coupon_code: generatedCode,
           requested_coupon_label: payload.requestedCouponLabel,
           lead_source: "coupon_popup",
           contact_channel: "form",
@@ -274,10 +289,13 @@
         }, { metaEventName: "Lead" });
         this.trackEvent("generate_lead", {
           lead_source: "coupon_popup",
-          coupon_code: payload.couponCode
+          coupon_code: generatedCode
         }, { metaEventName: "Lead" });
-        this.setMessage(this.t("coupon.success", "Listo. Recibimos tus datos y te enviaremos el cupón real de hasta 15%."), false);
-        window.setTimeout(() => this.hide(), 1800);
+        const successMessage = result?.mock
+          ? this.formatMessage("coupon.successMock", "Modo prueba: cupón {code} generado localmente. Configura el backend para enviar correos reales.", { code: generatedCode })
+          : this.formatMessage("coupon.successWithCode", "Listo. Tu cupón {code} fue enviado a tu correo y vence en 24 horas.", { code: generatedCode });
+        this.setMessage(successMessage, false);
+        window.setTimeout(() => this.hide(), 2600);
       } catch (error) {
         console.error("No se pudo registrar el cupón:", error);
         this.setMessage(this.t("coupon.error", "No pudimos registrar tus datos. Inténtalo nuevamente."), true);
@@ -310,22 +328,36 @@
     }
 
     async submitCouponLead(payload) {
-      if (!this.options.endpoint) {
-        console.info("Lead de cupón capturado localmente:", payload);
-        return { ok: true, simulated: true };
+      const finalPayload = {
+        ...payload,
+        action: "createCouponLead",
+        source: "coupon_popup",
+        locale: document.documentElement.lang || window.MyCuscoTripI18n?.getCurrentLocale?.() || "es"
+      };
+
+      if (window.MyCuscoTripApiClient?.createCouponLead) {
+        return window.MyCuscoTripApiClient.createCouponLead(finalPayload);
       }
 
+      if (!this.options.endpoint) {
+        console.info("Lead de cupón capturado localmente:", finalPayload);
+        return { ok: true, simulated: true, couponCode: finalPayload.couponCode };
+      }
+
+      const isAppsScript = String(this.options.endpoint).includes("script.google.com/macros/");
       const response = await fetch(this.options.endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": isAppsScript ? "text/plain;charset=utf-8" : "application/json" },
+        body: JSON.stringify(isAppsScript ? { action: "createCouponLead", payload: finalPayload } : finalPayload),
+        credentials: "omit",
+        redirect: "follow"
       });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      return response.json().catch(() => ({ ok: true }));
+      return response.json().catch(() => ({ ok: true, couponCode: finalPayload.couponCode }));
     }
 
     setMessage(message, isError = false) {

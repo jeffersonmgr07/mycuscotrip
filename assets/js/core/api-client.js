@@ -11,11 +11,16 @@
     apiBaseUrl: "",
     endpoints: {
       quotes: "/api/quotes",
+      couponLeads: "/api/coupons/leads",
+      validateCoupon: "/api/coupons/validate",
       preReservations: "/api/pre-reservations",
+      reservationsLookup: "/api/reservations/lookup",
       bookings: "/api/bookings",
       passengers: "/api/passengers",
       paypalCreateOrder: "/api/payments/paypal/orders",
-      paypalCaptureOrder: "/api/payments/paypal/orders/{orderId}/capture"
+      paypalCaptureOrder: "/api/payments/paypal/orders/{orderId}/capture",
+      mercadoPagoCreatePreference: "/api/payments/mercadopago/preferences",
+      mercadoPagoCapturePayment: "/api/payments/mercadopago/payments/{paymentId}/sync"
     },
     paypal: {
       enabled: false,
@@ -115,7 +120,9 @@
 
     async isBackendEnabled() {
       const config = await this.loadConfig();
-      return Boolean(config.apiBaseUrl && config.mode !== "mock");
+      const base = String(config.apiBaseUrl || "").trim();
+      if (!base || /PEGAR_AQUI|PASTE_HERE|YOUR_/i.test(base)) return false;
+      return Boolean(base && config.mode !== "mock");
     }
 
     buildUrl(endpoint) {
@@ -163,6 +170,55 @@
       };
     }
 
+    isAppsScriptBackend() {
+      const mode = String(this.config?.mode || "").toLowerCase();
+      const base = String(this.config?.apiBaseUrl || "").toLowerCase();
+      return mode === "apps_script" || base.includes("script.google.com/macros/");
+    }
+
+    async postAction(action, payload = {}) {
+      await this.loadConfig();
+      if (!(await this.isBackendEnabled())) {
+        if (action === "createPreReservation") return this.saveMockDraft("pre_reservation", payload);
+        if (action === "createQuote") return this.saveMockDraft("quote", payload);
+        return {
+          ok: false,
+          mock: true,
+          status: "backend_disabled",
+          message: "Backend no configurado."
+        };
+      }
+
+      if (this.isAppsScriptBackend()) {
+        const response = await fetch(this.config.apiBaseUrl, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action, payload, ...payload }),
+          credentials: "omit",
+          redirect: "follow"
+        });
+
+        const text = await response.text();
+        let body;
+        try {
+          body = text ? JSON.parse(text) : {};
+        } catch (error) {
+          body = { ok: response.ok, raw: text };
+        }
+
+        if (!response.ok || body?.ok === false) {
+          const apiError = new Error(body?.error || body?.message || `HTTP ${response.status}`);
+          apiError.status = response.status;
+          apiError.body = body;
+          throw apiError;
+        }
+
+        return body;
+      }
+
+      return this.request(this.config.endpoints[action] || `/${action}`, { method: "POST", body: payload });
+    }
+
     async request(endpoint, options = {}) {
       await this.loadConfig();
       if (!(await this.isBackendEnabled())) {
@@ -200,13 +256,43 @@
     async createQuote(payload) {
       await this.loadConfig();
       if (!(await this.isBackendEnabled())) return this.saveMockDraft("quote", payload);
+      if (this.isAppsScriptBackend()) return this.postAction("createQuote", payload);
       return this.request(this.config.endpoints.quotes, { method: "POST", body: payload });
+    }
+
+    async createCouponLead(payload) {
+      await this.loadConfig();
+      if (!(await this.isBackendEnabled())) {
+        return { ok: true, mock: true, couponCode: payload?.couponCode || "MCTMOCK", message: "Lead guardado localmente en modo mock." };
+      }
+      if (this.isAppsScriptBackend()) return this.postAction("createCouponLead", payload);
+      return this.request(this.config.endpoints.couponLeads, { method: "POST", body: payload });
+    }
+
+    async validateCoupon(couponCode) {
+      await this.loadConfig();
+      const payload = typeof couponCode === "object" ? couponCode : { couponCode };
+      if (!(await this.isBackendEnabled())) {
+        return { ok: true, mock: true, valid: false, reason: "backend_disabled", message: "Backend no configurado para validar cupones." };
+      }
+      if (this.isAppsScriptBackend()) return this.postAction("validateCoupon", payload);
+      return this.request(this.config.endpoints.validateCoupon, { method: "POST", body: payload });
     }
 
     async createPreReservation(payload) {
       await this.loadConfig();
       if (!(await this.isBackendEnabled())) return this.saveMockDraft("pre_reservation", payload);
+      if (this.isAppsScriptBackend()) return this.postAction("createPreReservation", payload);
       return this.request(this.config.endpoints.preReservations, { method: "POST", body: payload });
+    }
+
+    async lookupReservation(payload) {
+      await this.loadConfig();
+      if (!(await this.isBackendEnabled())) {
+        return { ok: false, mock: true, found: false, message: "Backend no configurado." };
+      }
+      if (this.isAppsScriptBackend()) return this.postAction("lookupReservation", payload);
+      return this.request(this.config.endpoints.reservationsLookup, { method: "POST", body: payload });
     }
 
     async createPayPalOrder(payload) {
@@ -219,11 +305,13 @@
           message: "PayPal necesita backend para crear una orden segura y validar el monto."
         };
       }
+      if (this.isAppsScriptBackend()) return this.postAction("createPayPalOrder", payload);
       return this.request(this.config.endpoints.paypalCreateOrder, { method: "POST", body: payload });
     }
 
     async capturePayPalOrder(orderId, payload = {}) {
       await this.loadConfig();
+      const finalPayload = { ...payload, orderID: orderId };
       const endpoint = normalizeEndpoint(this.config.endpoints.paypalCaptureOrder, { orderId });
       if (!(await this.isBackendEnabled())) {
         return {
@@ -233,7 +321,39 @@
           message: "PayPal necesita backend para capturar y verificar el pago."
         };
       }
-      return this.request(endpoint, { method: "POST", body: payload });
+      if (this.isAppsScriptBackend()) return this.postAction("capturePayPalOrder", finalPayload);
+      return this.request(endpoint, { method: "POST", body: finalPayload });
+    }
+
+
+    async createMercadoPagoPreference(payload) {
+      await this.loadConfig();
+      if (!(await this.isBackendEnabled())) {
+        return {
+          ok: false,
+          mock: true,
+          status: "mercadopago_backend_required",
+          message: "Mercado Pago necesita backend para crear una preferencia segura y validar el monto."
+        };
+      }
+      if (this.isAppsScriptBackend()) return this.postAction("createMercadoPagoPreference", payload);
+      return this.request(this.config.endpoints.mercadoPagoCreatePreference, { method: "POST", body: payload });
+    }
+
+    async captureMercadoPagoPayment(paymentId, payload = {}) {
+      await this.loadConfig();
+      const finalPayload = { ...payload, payment_id: paymentId };
+      const endpoint = normalizeEndpoint(this.config.endpoints.mercadoPagoCapturePayment, { paymentId });
+      if (!(await this.isBackendEnabled())) {
+        return {
+          ok: false,
+          mock: true,
+          status: "mercadopago_backend_required",
+          message: "Mercado Pago necesita backend para verificar el pago."
+        };
+      }
+      if (this.isAppsScriptBackend()) return this.postAction("captureMercadoPagoPayment", finalPayload);
+      return this.request(endpoint, { method: "POST", body: finalPayload });
     }
   }
 

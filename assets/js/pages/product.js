@@ -46,6 +46,7 @@ class MyCuscoTripProductPage {
 
     this.activeHotelModalDestination = null;
     this.currentPreReservation = null;
+    this.appliedCoupon = null;
 
     this.init();
   }
@@ -515,6 +516,17 @@ class MyCuscoTripProductPage {
     serviceModeSelect?.addEventListener("change", () => {
       this.serviceMode = serviceModeSelect.value;
       this.updatePricing();
+    });
+
+    document.getElementById("applyDiscountBtn")?.addEventListener("click", () => {
+      this.handleApplyDiscountCode();
+    });
+
+    document.getElementById("discountCode")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.handleApplyDiscountCode();
+      }
     });
 
     document.getElementById("paypalButton")?.addEventListener("click", () => {
@@ -2026,6 +2038,77 @@ class MyCuscoTripProductPage {
     return score;
   }
 
+  getAppliedCouponPercent() {
+    return Number(this.appliedCoupon?.discountPercent || this.appliedCoupon?.percent || 0) || 0;
+  }
+
+  getDiscountInfo(serviceTotal, fullDiscountPercent = 0) {
+    const couponPercent = this.getAppliedCouponPercent();
+    const fullPercent = this.paymentMode === "full" ? Number(fullDiscountPercent || 0) : 0;
+    const percent = Math.max(couponPercent, fullPercent, 0);
+    const source = percent > 0 && couponPercent >= fullPercent ? "coupon" : (percent > 0 ? "full_payment" : "none");
+    return {
+      percent,
+      source,
+      discount: Number(serviceTotal || 0) * (percent / 100)
+    };
+  }
+
+  getDiscountInfoText(discountInfo, fallbackText = "") {
+    if (discountInfo?.source === "coupon") {
+      return this.t("product.couponDiscountApplied", "Coupon {code} applied: {percent}% discount.", {
+        code: this.appliedCoupon?.couponCode || "",
+        percent: discountInfo.percent
+      });
+    }
+    return fallbackText;
+  }
+
+  setDiscountMessage(message = "", isError = false) {
+    const target = document.getElementById("discountMessage");
+    if (!target) return;
+    target.textContent = message;
+    target.classList.toggle("is-error", Boolean(isError));
+  }
+
+  async handleApplyDiscountCode() {
+    const input = document.getElementById("discountCode");
+    const code = String(input?.value || "").trim().toUpperCase();
+
+    if (!code) {
+      this.appliedCoupon = null;
+      this.setDiscountMessage(this.t("product.enterDiscountCode", "Enter a discount code."), true);
+      this.updatePricing();
+      return;
+    }
+
+    this.setDiscountMessage(this.t("product.validatingDiscount", "Validating discount code..."), false);
+
+    try {
+      const result = await window.MyCuscoTripApiClient?.validateCoupon?.(code);
+      if (!result?.valid) {
+        this.appliedCoupon = null;
+        this.setDiscountMessage(result?.message || this.t("product.invalidDiscountCode", "Invalid or expired discount code."), true);
+        this.updatePricing();
+        return;
+      }
+
+      this.appliedCoupon = {
+        couponCode: result.couponCode || code,
+        discountPercent: Number(result.discountPercent || 0),
+        expiresAt: result.expiresAt || ""
+      };
+      if (input) input.value = this.appliedCoupon.couponCode;
+      this.setDiscountMessage(this.t("product.discountApplied", "Discount code applied successfully."), false);
+      this.updatePricing();
+    } catch (error) {
+      console.error("No se pudo validar el cupón:", error);
+      this.appliedCoupon = null;
+      this.setDiscountMessage(error?.message || this.t("product.discountValidationError", "We could not validate this code right now."), true);
+      this.updatePricing();
+    }
+  }
+
   updatePassengersUI() {
     this.setText("adultsCount", String(this.adults));
     this.setText("childrenCount", String(this.children));
@@ -2081,21 +2164,29 @@ class MyCuscoTripProductPage {
     let payLater = 0;
     let infoText = "";
 
+    const discountInfo = this.getDiscountInfo(serviceTotal, fullDiscountPercent);
+    discount = discountInfo.discount;
+    const discountedTotal = Math.max(serviceTotal - discount, 0);
+
     if (this.paymentMode === "full") {
-      discount = serviceTotal * (fullDiscountPercent / 100);
-      payNow = serviceTotal - discount;
+      payNow = discountedTotal;
       payLater = 0;
-      infoText = this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent });
+      infoText = this.getDiscountInfoText(
+        discountInfo,
+        this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent })
+      );
     } else {
       const totalPassengers = this.getTotalPassengers();
-      payNow = totalPassengers * partialPerPerson;
-      payLater = serviceTotal - payNow;
+      payNow = Math.min(totalPassengers * partialPerPerson, discountedTotal);
+      payLater = discountedTotal - payNow;
 
       if (payLater < 0) payLater = 0;
 
-      infoText =
+      infoText = this.getDiscountInfoText(
+        discountInfo,
         this.product.paymentOptions?.partialPaymentLabel ||
-        this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) });
+          this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) })
+      );
     }
 
     this.setText("adultsTotal", `${currency} ${this.formatMoney(adultsTotal)}`);
@@ -2191,7 +2282,7 @@ class MyCuscoTripProductPage {
     const discountRow = document.getElementById("discountRow");
 
     if (discountRow) {
-      const showDiscount = this.paymentMode === "full" && discount > 0;
+      const showDiscount = discount > 0;
       discountRow.hidden = !showDiscount;
 
       const discountLabel = discountRow.querySelector("span");
@@ -2281,21 +2372,29 @@ class MyCuscoTripProductPage {
     let payLater = 0;
     let infoText = "";
 
+    const discountInfo = this.getDiscountInfo(serviceTotal, fullDiscountPercent);
+    discount = discountInfo.discount;
+    const discountedTotal = Math.max(serviceTotal - discount, 0);
+
     if (this.paymentMode === "full") {
-      discount = serviceTotal * (fullDiscountPercent / 100);
-      payNow = serviceTotal - discount;
+      payNow = discountedTotal;
       payLater = 0;
-      infoText = this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent });
+      infoText = this.getDiscountInfoText(
+        discountInfo,
+        this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent })
+      );
     } else {
       const totalPassengers = this.getTotalPassengers();
-      payNow = totalPassengers * partialPerPerson;
-      payLater = serviceTotal - payNow;
+      payNow = Math.min(totalPassengers * partialPerPerson, discountedTotal);
+      payLater = discountedTotal - payNow;
 
       if (payLater < 0) payLater = 0;
 
-      infoText =
+      infoText = this.getDiscountInfoText(
+        discountInfo,
         this.product.paymentOptions?.partialPaymentLabel ||
-        this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) });
+          this.t("product.depositPaymentText", "Reserve with {currency} {amount} per person and pay the remaining balance before the trip.", { currency, amount: this.formatMoney(partialPerPerson) })
+      );
     }
 
     this.dynamicQuote = {
@@ -2389,7 +2488,7 @@ class MyCuscoTripProductPage {
     const discountRow = document.getElementById("discountRow");
 
     if (discountRow) {
-      discountRow.hidden = !(this.paymentMode === "full" && discount > 0);
+      discountRow.hidden = !(discount > 0);
 
       const discountLabel = discountRow.querySelector("span");
 
@@ -2506,7 +2605,9 @@ class MyCuscoTripProductPage {
         rawServiceTotal: Number(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0),
         rawPayNow: Number(this.dynamicQuote.payNow || 0),
         rawPayLater: Number(this.dynamicQuote.payLater || 0),
-        paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit")
+        paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit"),
+        couponCode: this.appliedCoupon?.couponCode || "",
+        couponDiscountPercent: this.getAppliedCouponPercent()
       };
     }
 
@@ -2527,13 +2628,16 @@ class MyCuscoTripProductPage {
     let payNow = serviceTotal;
     let payLater = 0;
 
+    const discountInfo = this.getDiscountInfo(serviceTotal, fullDiscountPercent);
+    const discountedTotal = Math.max(serviceTotal - discountInfo.discount, 0);
+
     if (this.paymentMode === "full") {
-      payNow = serviceTotal - (serviceTotal * (fullDiscountPercent / 100));
+      payNow = discountedTotal;
       payLater = 0;
     } else {
       const totalPassengers = this.getTotalPassengers();
-      payNow = totalPassengers * partialPerPerson;
-      payLater = serviceTotal - payNow;
+      payNow = Math.min(totalPassengers * partialPerPerson, discountedTotal);
+      payLater = discountedTotal - payNow;
 
       if (payLater < 0) payLater = 0;
     }
@@ -2572,7 +2676,9 @@ class MyCuscoTripProductPage {
       rawServiceTotal: Number(serviceTotal || 0),
       rawPayNow: Number(payNow || 0),
       rawPayLater: Number(payLater || 0),
-      paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit")
+      paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit"),
+      couponCode: this.appliedCoupon?.couponCode || "",
+      couponDiscountPercent: this.getAppliedCouponPercent()
     };
   }
 
@@ -2594,6 +2700,7 @@ class MyCuscoTripProductPage {
     this.syncPassengerHolderState();
     this.renderAdditionalPassengerFields();
     this.populateCountrySelects();
+    this.syncHolderLanguageWarning();
 
     modal.hidden = false;
     document.body.classList.add("passenger-modal-open");
@@ -2638,6 +2745,15 @@ class MyCuscoTripProductPage {
     }
   }
 
+  syncHolderLanguageWarning() {
+    const select = document.getElementById("holderLanguageSelect");
+    const warning = document.getElementById("holderLanguageWarning");
+    if (!select || !warning) return;
+    const value = String(select.value || "").toLowerCase();
+    const requiresNotice = value && !["es", "en", "spanish", "english", "español", "ingles", "inglés"].includes(value);
+    warning.hidden = !requiresNotice;
+  }
+
   bindPassengerReservationModalEvents() {
     if (this.passengerModalEventsBound) return;
     this.passengerModalEventsBound = true;
@@ -2655,6 +2771,10 @@ class MyCuscoTripProductPage {
       this.renderAdditionalPassengerFields();
     });
 
+    document.getElementById("holderLanguageSelect")?.addEventListener("change", () => {
+      this.syncHolderLanguageWarning();
+    });
+
     document.getElementById("passengerDetailsToggle")?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       const snapshot = document.getElementById("passengerPaymentSnapshot");
@@ -2669,6 +2789,19 @@ class MyCuscoTripProductPage {
     });
   }
 
+  generateReservationHex(seed = "") {
+    try {
+      const buffer = new Uint32Array(1);
+      window.crypto?.getRandomValues?.(buffer);
+      if (buffer[0]) return buffer[0].toString(16).toUpperCase().padStart(6, "0").slice(-6);
+    } catch (error) {
+      // Fallback below.
+    }
+    const randomPart = Math.floor(Math.random() * 0xffffff);
+    const seedPart = Number(String(seed).replace(/\D/g, "").slice(-8)) || Date.now();
+    return ((randomPart + seedPart) % 0xffffff).toString(16).toUpperCase().padStart(6, "0").slice(-6);
+  }
+
   generatePreReservation() {
     const now = new Date();
     const timestampSeed = [
@@ -2680,17 +2813,17 @@ class MyCuscoTripProductPage {
       String(now.getSeconds()).padStart(2, "0")
     ].join("");
 
-    const hex = (Number(timestampSeed) % 0xffffff).toString(16).toUpperCase().padStart(6, "0").slice(-6);
+    const hex = this.generateReservationHex(timestampSeed);
     const summary = this.getBookingSummary();
 
     return {
       code: `CUZ${hex}`,
       createdAt: now.toISOString(),
-      createdAtLabel: now.toLocaleString(this.locale === "en" ? "en-US" : "es-PE", {
+      createdAtLabel: now.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "medium"
       }),
-      createdAtDisplayLabel: now.toLocaleString(this.locale === "en" ? "en-US" : "es-PE", {
+      createdAtDisplayLabel: now.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "short"
       }),
@@ -2709,6 +2842,8 @@ class MyCuscoTripProductPage {
       serviceTotalValue: Number(summary.rawServiceTotal || 0),
       payNowValue: Number(summary.rawPayNow || 0),
       payLaterValue: Number(summary.rawPayLater || 0),
+      couponCode: this.appliedCoupon?.couponCode || summary.couponCode || "",
+      appliedCoupon: this.appliedCoupon || null,
       status: "pre_reservation",
       paymentStatus: "pending",
       summary
@@ -2716,16 +2851,17 @@ class MyCuscoTripProductPage {
   }
 
   renderPassengerPaymentSnapshot(preReservation) {
-    const target = document.getElementById("passengerPaymentSnapshot");
-    if (!target) return;
+    const amountTarget = document.getElementById("passengerPayNowAmount");
+    if (amountTarget) amountTarget.textContent = preReservation.payNow || "";
 
-    target.innerHTML = `
-      <div><span>Producto</span><strong>${this.escapeHtml(preReservation.productTitle)}</strong></div>
-      <div><span>Fecha de viaje</span><strong>${this.escapeHtml(preReservation.date)}</strong></div>
-      <div><span>${this.escapeHtml(this.t("product.totalService", "Total service"))}</span><strong>${this.escapeHtml(preReservation.serviceTotal)}</strong></div>
-      <div><span>${this.escapeHtml(this.t("product.amountToPayNow", "Amount to pay now"))}</span><strong>${this.escapeHtml(preReservation.payNow)}</strong></div>
-      <div><span>Saldo pendiente</span><strong>${this.escapeHtml(preReservation.payLater)}</strong></div>
-    `;
+    const target = document.getElementById("passengerPaymentSnapshot");
+    if (target) {
+      target.innerHTML = "";
+      target.hidden = true;
+    }
+
+    const toggle = document.getElementById("passengerDetailsToggle");
+    if (toggle) toggle.hidden = true;
   }
 
 
@@ -2806,7 +2942,7 @@ class MyCuscoTripProductPage {
             </label>
             <label>
               <span>Nacionalidad</span>
-              <input type="text" name="passenger_${passengerNumber}_nationality" autocomplete="country-name" />
+              <select name="passenger_${passengerNumber}_nationality" autocomplete="country-name" data-country-select></select>
             </label>
             <label>
               <span>Fecha de nacimiento</span>
@@ -2861,6 +2997,7 @@ class MyCuscoTripProductPage {
       birthdate: String(data.get("holderBirthdate") || "").trim(),
       whatsapp: String(data.get("holderWhatsapp") || "").trim(),
       email: String(data.get("holderEmail") || "").trim(),
+      language: String(data.get("holderLanguage") || "").trim() || (this.isEnglishLocale() ? "English" : "Español"),
       travels: holderTravels
     };
 
@@ -2878,7 +3015,8 @@ class MyCuscoTripProductPage {
         nationality: holder.nationality,
         birthdate: holder.birthdate,
         whatsapp: holder.whatsapp,
-        email: holder.email
+        email: holder.email,
+        language: holder.language
       });
     }
 
@@ -2906,6 +3044,8 @@ class MyCuscoTripProductPage {
       holder,
       passengers,
       passengerDataPolicy: "additional_passengers_can_be_completed_15_to_30_days_before_travel",
+      couponCode: this.appliedCoupon?.couponCode || this.currentPreReservation?.summary?.couponCode || "",
+      appliedCoupon: this.appliedCoupon || null,
       paymentGatewayReady: false,
       paymentGatewayProvider: "paypal_prepared",
       checkoutPayload: {
@@ -2917,6 +3057,7 @@ class MyCuscoTripProductPage {
         pendingBalanceValue: Number(this.currentPreReservation?.payLaterValue || 0),
         productId: this.currentPreReservation?.productId,
         productTitle: this.currentPreReservation?.productTitle,
+        couponCode: this.appliedCoupon?.couponCode || "",
         provider: "paypal",
         backendRequired: true
       }
@@ -2947,6 +3088,24 @@ class MyCuscoTripProductPage {
         holder_is_passenger: Boolean(payload.holderIsPassenger),
         persistence_mode: apiResult?.mock ? "mock" : "backend"
       }, { metaEventName: "CompleteRegistration" });
+
+      if (message) {
+        message.textContent = apiResult?.mock
+          ? `Reserva ${payload.code} creada como borrador local. Configura el backend para redirigir a PayPal.`
+          : this.t("product.connectingToPaypal", "Connecting to PayPal...");
+        message.classList.remove("is-error");
+      }
+
+      if (apiResult?.mock) return;
+
+      const paypalResult = await window.MyCuscoTripApiClient.createPayPalOrder({
+        reservationCode: payload.code,
+        currency: payload.currency || "USD",
+        amountToPayNowValue: Number(payload.payNowValue || 0),
+        productId: payload.productId,
+        productTitle: payload.productTitle
+      });
+
       this.trackEvent("begin_payment", {
         reservation_code: payload.code,
         product_id: payload.productId,
@@ -2956,12 +3115,24 @@ class MyCuscoTripProductPage {
         payment_status: "pending",
         payment_provider: "paypal"
       }, { metaEventName: "InitiateCheckout" });
-      if (message) {
-        message.textContent = apiResult?.mock
-          ? `Reserva ${payload.code} creada como borrador seguro. Cuando conectes el backend, se enviará a PayPal para pago real.`
-          : `Reserva ${payload.code} registrada. Continúa con el pago seguro por PayPal.`;
-        message.classList.remove("is-error");
+
+      const pendingRecord = {
+        reservationCode: payload.code,
+        lastName: holder.lastName,
+        holderEmail: holder.email,
+        createdAt: new Date().toISOString(),
+        payload
+      };
+      try {
+        sessionStorage.setItem(`mct_pending_payment_${payload.code}`, JSON.stringify(pendingRecord));
+      } catch (storageError) {}
+
+      if (paypalResult?.approvalUrl) {
+        window.location.assign(paypalResult.approvalUrl);
+        return;
       }
+
+      throw new Error(paypalResult?.message || paypalResult?.error || "PayPal no devolvió enlace de pago.");
     } catch (error) {
       console.error("No se pudo guardar la pre-reserva:", error);
       if (message) {
