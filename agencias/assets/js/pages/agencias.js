@@ -93,6 +93,11 @@
   }
 
 
+  function getMercadoPagoDeviceId() {
+    return String(window.MP_DEVICE_SESSION_ID || window.MP_DEVICE_SESSION_ID_PUBLIC || '').trim();
+  }
+
+
   function greetingFor(name = '') {
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Buenos días' : (hour < 18 ? 'Buenas tardes' : 'Buenas noches');
@@ -536,7 +541,8 @@
         code: order.code,
         currency: order.currency,
         total: order.total,
-        account: order.account
+        account: order.account,
+        deviceId: method === 'mercadopago' ? getMercadoPagoDeviceId() : ''
       });
       const redirectUrl = method === 'paypal' ? result.approvalUrl : result.initPoint;
       if (!result.ok || !redirectUrl) {

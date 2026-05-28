@@ -29,6 +29,10 @@
     return currency === 'USD' ? 'paypal' : 'mercadopago';
   }
 
+  function getMercadoPagoDeviceId() {
+    return String(window.MP_DEVICE_SESSION_ID || window.MP_DEVICE_SESSION_ID_PUBLIC || '').trim();
+  }
+
   function paymentButtonLabel(order) {
     return paymentMethodFor(order) === 'paypal' ? 'Pagar con PayPal' : 'Pagar reserva';
   }
@@ -329,7 +333,8 @@
         code,
         currency: order.moneda || order.currency || (method === 'paypal' ? 'USD' : 'PEN'),
         total: Number(order.montoComisionado || order.total || 0),
-        account: readJSON(SESSION_KEY, {})
+        account: readJSON(SESSION_KEY, {}),
+        deviceId: method === 'mercadopago' ? getMercadoPagoDeviceId() : ''
       });
       const redirectUrl = method === 'paypal' ? result.approvalUrl : result.initPoint;
       if (!result.ok || !redirectUrl) {
