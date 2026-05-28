@@ -360,12 +360,21 @@
 <i class="fas fa-xmark"></i>
 </button>
 <div class="passenger-modal__header">
-<h2 id="passengerModalTitle" data-i18n="product.passengerRegistration">Registro de viajeros</h2>
-<div aria-label="Código de reserva" class="passenger-modal__code-card">
-<p class="passenger-modal__code" id="passengerReservationCode">CUZ000000</p>
+<div class="passenger-modal__titlebar">
+<h2 id="passengerModalTitle" data-i18n="product.passengerRegistration">Traveler registration</h2>
+</div>
+<div class="passenger-modal__meta-row">
+<div aria-label="Reservation code" class="passenger-modal__code-card">
+<span class="passenger-modal__inline-label">Reservation code:</span>
+<p class="passenger-modal__code" id="passengerReservationCode">CUS000000</p>
+</div>
+<div class="passenger-modal__paynow-card" aria-live="polite">
+<span>Amount to pay now:</span>
+<strong id="passengerPayNowAmount">USD 0.00</strong>
+</div>
 </div>
 <p class="passenger-modal__subtitle" id="passengerReservationTimestamp"></p>
-<p class="passenger-modal__warning">Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
+<p class="passenger-modal__warning">Enter first names, last names and document details exactly as they appear on official documents. This information will be used to issue tickets, transport passes, train tickets and Machu Picchu entry tickets; incorrect details could prevent the use of itinerary services.</p>
 </div>
 <div class="passenger-modal__body">
 <button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
@@ -417,6 +426,20 @@
 <span>Correo</span>
 <input autocomplete="email" name="holderEmail" required="" type="email"/>
 </label>
+<label>
+<span>Requested language</span>
+<select id="holderLanguageSelect" name="holderLanguage" required="">
+<option value="Spanish">Spanish</option>
+<option value="English" selected="">English</option>
+<option value="Portuguese">Portuguese</option>
+<option value="Italian">Italian</option>
+<option value="French">French</option>
+<option value="German">German</option>
+<option value="Japanese">Japanese</option>
+<option value="Mandarin Chinese">Mandarin Chinese</option>
+</select>
+</label>
+<p class="passenger-modal__language-warning" id="holderLanguageWarning" hidden="">This language may generate an additional cost and is not confirmed automatically. Tours are confirmed in Spanish or English for now. A travel advisor will contact you as soon as possible to confirm availability and any extra charge.</p>
 </div>
 <label class="passenger-modal__check">
 <input checked="" id="holderTravelsCheckbox" name="holderTravels" type="checkbox"/>
@@ -518,7 +541,7 @@
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
 <script src="../assets/js/components/header.js"></script>
-<script src="../assets/js/pages/product.js?v=20"></script>
+<script src="../assets/js/pages/product.js?v=21"></script>
 <script src="../assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
