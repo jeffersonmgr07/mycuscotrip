@@ -407,5 +407,8 @@
   "product.hotelModalIntro": "Compare categories, photos, rooms and additional rates.",
   "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate",
   "product.notAvailable": "This experience is not publicly available.",
-  "product.savingReservation": "Saving reservation..."
+  "product.savingReservation": "Saving reservation...",
+  "coupon.successWithCode": "Done. Your coupon {code} was sent to your email and expires in 24 hours.",
+  "product.connectingToPaypal": "Connecting to PayPal...",
+  "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails."
 }
