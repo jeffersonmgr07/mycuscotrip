@@ -523,6 +523,23 @@
     return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
   }
 
+  function getDayOneArrivalRule() {
+    const arrival = timeToMinutes(state.arrivalTime || "09:00");
+    if (arrival < timeToMinutes("09:00")) return "welcome-city";
+    if (arrival < timeToMinutes("12:00")) return "city-only";
+    if (arrival < timeToMinutes("15:00")) return "welcome-only";
+    return "pickup-only";
+  }
+
+  function canPlaceTourOnDayOne(tour) {
+    const rule = getDayOneArrivalRule();
+    if (rule === "pickup-only") return false;
+    if (rule === "welcome-city") return isWelcomeTour(tour) || isCityTour(tour);
+    if (rule === "city-only") return isCityTour(tour);
+    if (rule === "welcome-only") return isWelcomeTour(tour);
+    return false;
+  }
+
   function getOptionCommercialBadge(option, index) {
     if (index === 0) return "Recomendado";
     if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return "Más vendido";
@@ -649,41 +666,22 @@
     }
 
     const availableFrom = getAvailableStartTime(state.arrivalTime);
-    const arrivalMinutes = timeToMinutes(state.arrivalTime || "09:00");
+    const dayOneRule = getDayOneArrivalRule();
     const welcome = take(isWelcomeTour);
     const city = take(isCityTour);
-
-    function canPlaceOnFirstDayByArrivalRule(tour) {
-      if (!tour) return false;
-      if (arrivalMinutes >= timeToMinutes("15:00")) return false;
-      if (isWelcomeTour(tour)) {
-        return arrivalMinutes < timeToMinutes("09:00") || (arrivalMinutes >= timeToMinutes("12:00") && arrivalMinutes < timeToMinutes("15:00"));
-      }
-      if (isCityTour(tour)) {
-        return arrivalMinutes < timeToMinutes("12:00");
-      }
-      return false;
-    }
 
     if (welcome || city) {
       let placedWelcome = false;
       let placedCity = false;
 
-      // Regla operativa Día 1 según hora de llegada:
-      // antes de 09:00 = bienvenida + city tour;
-      // 09:00 a 11:59 = solo city tour;
-      // 12:00 a 14:59 = solo bienvenida;
-      // desde 15:00 = solo recojo/traslado, sin tours.
-      if (arrivalMinutes < timeToMinutes("09:00")) {
-        const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) : null;
-        const cityStart = city ? getFirstAvailableStartTime(city, welcomeStart ? addMinutesToTime(welcomeStart, getTourDurationMinutes(welcome) + 30) : availableFrom) : null;
-        if (welcome && welcomeStart) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
-        if (city && (cityStart || getFirstAvailableStartTime(city, availableFrom))) placedCity = put(1, city, `Salida sugerida ${cityStart || "13:00"}.`);
-      } else if (arrivalMinutes < timeToMinutes("12:00")) {
-        const cityStart = city ? getFirstAvailableStartTime(city, availableFrom) || "13:00" : null;
-        if (city) placedCity = put(1, city, `Salida sugerida ${cityStart}.`);
-      } else if (arrivalMinutes < timeToMinutes("15:00")) {
-        const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) || availableFrom : null;
+      if (dayOneRule === "welcome-city") {
+        const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || "09:00") : null;
+        if (welcome) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+        if (city) placedCity = put(1, city, "Salida sugerida 13:00.");
+      } else if (dayOneRule === "city-only") {
+        if (city) placedCity = put(1, city, "Salida sugerida 13:00.");
+      } else if (dayOneRule === "welcome-only") {
+        const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || availableFrom) : null;
         if (welcome) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
       }
 
@@ -720,14 +718,16 @@
 
     remaining.forEach((tour) => {
       let targetDay = days.find((day) => {
+        if (day.day === 1 && !canPlaceTourOnDayOne(tour)) return false;
         if (day.day === totalDays && !canUseTourOnLastDay(tour)) return false;
-        if (day.day === 1 && (isWelcomeTour(tour) || isCityTour(tour)) && !canPlaceOnFirstDayByArrivalRule(tour)) return false;
         const hasExclusive = day.activities.some((item) => isFullDayLikeTour(item.tour) || isMachuPicchuTour(item.tour) || isSacredValleyTour(item.tour));
         if (isWelcomeTour(tour) || isCityTour(tour)) return day.activities.length < 2 && !hasExclusive;
         return day.activities.length === 0;
       });
-      if (!targetDay) targetDay = days.find((day) => day.activities.length === 0) || days[days.length - 1];
-      put(targetDay.day, tour);
+      if (!targetDay) {
+        targetDay = days.find((day) => day.day !== 1 && day.activities.length === 0) || days.find((day) => day.day !== 1) || days[days.length - 1];
+      }
+      if (targetDay.day !== 1 || canPlaceTourOnDayOne(tour)) put(targetDay.day, tour);
     });
 
     return days.map((day) => {
@@ -1277,16 +1277,17 @@
 
   function timeToMinutes(value) {
     const raw = String(value || "00:00").trim().toLowerCase();
-    const ampmMatch = raw.match(/(am|pm|a\.m\.|p\.m\.)/i);
+    const isPm = /\bpm\b|p\.?\s*m\.?/.test(raw);
+    const isAm = /\bam\b|a\.?\s*m\.?/.test(raw);
     const match = raw.match(/(\d{1,2})(?::(\d{2}))?/);
     if (!match) return 0;
+
     let h = Number(match[1]) || 0;
     const m = Number(match[2]) || 0;
-    if (ampmMatch) {
-      const marker = ampmMatch[1].replace(/\./g, "");
-      if (marker === "pm" && h < 12) h += 12;
-      if (marker === "am" && h === 12) h = 0;
-    }
+
+    if (isPm && h < 12) h += 12;
+    if (isAm && h === 12) h = 0;
+
     return h * 60 + m;
   }
 
