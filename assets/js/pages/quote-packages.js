@@ -653,35 +653,38 @@
     const welcome = take(isWelcomeTour);
     const city = take(isCityTour);
 
+    function canPlaceOnFirstDayByArrivalRule(tour) {
+      if (!tour) return false;
+      if (arrivalMinutes >= timeToMinutes("15:00")) return false;
+      if (isWelcomeTour(tour)) {
+        return arrivalMinutes < timeToMinutes("09:00") || (arrivalMinutes >= timeToMinutes("12:00") && arrivalMinutes < timeToMinutes("15:00"));
+      }
+      if (isCityTour(tour)) {
+        return arrivalMinutes < timeToMinutes("12:00");
+      }
+      return false;
+    }
+
     if (welcome || city) {
-      const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) : null;
-      const cityStart = city ? getFirstAvailableStartTime(city, availableFrom) : null;
       let placedWelcome = false;
       let placedCity = false;
 
-      // Regla operativa del Día 1:
-      // - Antes de 09:00: puede hacer Bienvenida Ancestral + City Tour si existen en la ruta.
-      // - De 09:00 a 11:59: solo City Tour + centros arqueológicos.
-      // - De 12:00 a 14:59: solo Bienvenida Ancestral.
-      // - Desde 15:00: no se programa ningún tour; solo recojo/traslado y acomodación.
+      // Regla operativa Día 1 según hora de llegada:
+      // antes de 09:00 = bienvenida + city tour;
+      // 09:00 a 11:59 = solo city tour;
+      // 12:00 a 14:59 = solo bienvenida;
+      // desde 15:00 = solo recojo/traslado, sin tours.
       if (arrivalMinutes < timeToMinutes("09:00")) {
-        if (welcome) {
-          const suggestedWelcomeStart = welcomeStart || getFirstAvailableStartTime(welcome, "09:00") || "09:00";
-          placedWelcome = put(1, welcome, `Salida sugerida ${suggestedWelcomeStart}.`);
-        }
-        if (city) {
-          placedCity = put(1, city, "Salida sugerida 13:00.");
-        }
+        const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) : null;
+        const cityStart = city ? getFirstAvailableStartTime(city, welcomeStart ? addMinutesToTime(welcomeStart, getTourDurationMinutes(welcome) + 30) : availableFrom) : null;
+        if (welcome && welcomeStart) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+        if (city && (cityStart || getFirstAvailableStartTime(city, availableFrom))) placedCity = put(1, city, `Salida sugerida ${cityStart || "13:00"}.`);
       } else if (arrivalMinutes < timeToMinutes("12:00")) {
-        if (city) {
-          const suggestedCityStart = cityStart || getFirstAvailableStartTime(city, "13:00") || "13:00";
-          placedCity = put(1, city, `Salida sugerida ${suggestedCityStart}.`);
-        }
+        const cityStart = city ? getFirstAvailableStartTime(city, availableFrom) || "13:00" : null;
+        if (city) placedCity = put(1, city, `Salida sugerida ${cityStart}.`);
       } else if (arrivalMinutes < timeToMinutes("15:00")) {
-        if (welcome) {
-          const suggestedWelcomeStart = welcomeStart || getFirstAvailableStartTime(welcome, availableFrom) || availableFrom || "15:00";
-          placedWelcome = put(1, welcome, `Salida sugerida ${suggestedWelcomeStart}.`);
-        }
+        const welcomeStart = welcome ? getFirstAvailableStartTime(welcome, availableFrom) || availableFrom : null;
+        if (welcome) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
       }
 
       if (welcome && !placedWelcome) remaining.unshift(welcome);
@@ -718,6 +721,7 @@
     remaining.forEach((tour) => {
       let targetDay = days.find((day) => {
         if (day.day === totalDays && !canUseTourOnLastDay(tour)) return false;
+        if (day.day === 1 && (isWelcomeTour(tour) || isCityTour(tour)) && !canPlaceOnFirstDayByArrivalRule(tour)) return false;
         const hasExclusive = day.activities.some((item) => isFullDayLikeTour(item.tour) || isMachuPicchuTour(item.tour) || isSacredValleyTour(item.tour));
         if (isWelcomeTour(tour) || isCityTour(tour)) return day.activities.length < 2 && !hasExclusive;
         return day.activities.length === 0;
@@ -1272,8 +1276,18 @@
   }
 
   function timeToMinutes(value) {
-    const [h, m] = String(value || "00:00").split(":").map(Number);
-    return (Number(h) || 0) * 60 + (Number(m) || 0);
+    const raw = String(value || "00:00").trim().toLowerCase();
+    const ampmMatch = raw.match(/(am|pm|a\.m\.|p\.m\.)/i);
+    const match = raw.match(/(\d{1,2})(?::(\d{2}))?/);
+    if (!match) return 0;
+    let h = Number(match[1]) || 0;
+    const m = Number(match[2]) || 0;
+    if (ampmMatch) {
+      const marker = ampmMatch[1].replace(/\./g, "");
+      if (marker === "pm" && h < 12) h += 12;
+      if (marker === "am" && h === 12) h = 0;
+    }
+    return h * 60 + m;
   }
 
   function inTimeWindow(train, windowConfig) {
