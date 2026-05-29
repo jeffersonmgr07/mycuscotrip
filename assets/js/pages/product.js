@@ -3075,6 +3075,8 @@ class MyCuscoTripProductPage {
         ? await window.MyCuscoTripApiClient.createPreReservation(payload)
         : null;
 
+      const finalReservationCode = apiResult?.reservationCode || apiResult?.code || payload.code;
+
       this.trackEvent("pre_reservation_created", {
         reservation_code: finalReservationCode,
         product_id: payload.productId,
@@ -3098,7 +3100,6 @@ class MyCuscoTripProductPage {
 
       if (apiResult?.mock) return;
 
-      const finalReservationCode = apiResult?.reservationCode || apiResult?.code || payload.code;
       const paypalResult = await window.MyCuscoTripApiClient.createPayPalOrder({
         reservationCode: finalReservationCode,
         currency: payload.currency || "USD",
