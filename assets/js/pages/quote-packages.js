@@ -645,11 +645,16 @@
     const remaining = [...tours];
     const startDate = state.dates.start;
     const totalDays = Math.max(Number(state.dates.days || option.days || 1), 1);
+    const lastDayNumber = totalDays;
     const days = Array.from({ length: totalDays }, (_, index) => ({
       day: index + 1,
       date: startDate ? addDays(startDate, index) : null,
       activities: []
     }));
+
+    function dayByNumber(dayNumber) {
+      return days[Math.max(0, Math.min(totalDays - 1, dayNumber - 1))];
+    }
 
     function take(predicate) {
       const idx = remaining.findIndex(predicate);
@@ -657,37 +662,106 @@
       return remaining.splice(idx, 1)[0];
     }
 
+    function takeBest(predicate, sorter) {
+      const matches = remaining
+        .map((tour, index) => ({ tour, index }))
+        .filter((item) => predicate(item.tour));
+      if (!matches.length) return null;
+      if (typeof sorter === "function") matches.sort((a, b) => sorter(a.tour, b.tour));
+      const selected = matches[0];
+      remaining.splice(selected.index, 1);
+      return selected.tour;
+    }
+
     function put(dayNumber, tour, note = "") {
       if (!tour) return false;
-      const day = days[Math.max(0, Math.min(totalDays - 1, dayNumber - 1))];
+      const day = dayByNumber(dayNumber);
       if (day.activities.some((item) => getTourCode(item.tour) === getTourCode(tour))) return false;
       day.activities.push({ tour, note });
       return true;
     }
 
+    function putSynthetic(dayNumber, syntheticTitle, note = "", startTime = "") {
+      const day = dayByNumber(dayNumber);
+      if (day.activities.some((item) => !item.tour && normalizeText(item.syntheticTitle || "") === normalizeText(syntheticTitle))) return false;
+      day.activities.push({ tour: null, syntheticTitle, note, startTime });
+      return true;
+    }
+
+    function isMiddleDay(dayNumber) {
+      return dayNumber > 1 && dayNumber < lastDayNumber;
+    }
+
+    function dayHasMajorActivity(dayNumber) {
+      return dayByNumber(dayNumber).activities.some((item) => item.tour && (
+        isFullDayLikeTour(item.tour) ||
+        isMachuPicchuTour(item.tour) ||
+        isSacredValleyTour(item.tour)
+      ));
+    }
+
+    function isMarasMorayOrValleSur(tour) {
+      return hasTourWord(tour, ["maras", "moray", "valle sur"]);
+    }
+
+    function isTrekkingTour(tour) {
+      return hasTourWord(tour, ["humantay", "montana de colores", "montaña de colores", "vinicunca", "palcoyo", "7 lagunas", "siete lagunas"]);
+    }
+
+    function middlePriority(a, b) {
+      const score = (tour) => {
+        if (isTrekkingTour(tour)) return 10;
+        if (isMarasMorayOrValleSur(tour)) return 20;
+        if (isFullDayLikeTour(tour)) return 30;
+        return 50;
+      };
+      return score(a) - score(b);
+    }
+
+    function canUseTourOnSpecificLastDay(tour) {
+      const departure = timeToMinutes(state.departureTime || "12:00");
+      if (departure < timeToMinutes("13:00")) return false;
+      if (departure < timeToMinutes("15:00")) return isWelcomeTour(tour);
+      if (departure < timeToMinutes("17:00")) return isCityTour(tour);
+      if (departure < timeToMinutes("19:00")) return isMarasMorayOrValleSur(tour);
+      if (departure < timeToMinutes("20:00")) return isTrekkingTour(tour) || isFullDayLikeTour(tour);
+      return isTrekkingTour(tour) || isFullDayLikeTour(tour) || isMarasMorayOrValleSur(tour) || isWelcomeTour(tour) || isCityTour(tour);
+    }
+
+    function lastDayPriority(a, b) {
+      const departure = timeToMinutes(state.departureTime || "12:00");
+      const score = (tour) => {
+        if (departure >= timeToMinutes("19:00") && (isTrekkingTour(tour) || isFullDayLikeTour(tour))) return 10;
+        if (departure >= timeToMinutes("17:00") && isMarasMorayOrValleSur(tour)) return 20;
+        if (departure >= timeToMinutes("15:00") && isCityTour(tour)) return 30;
+        if (departure >= timeToMinutes("13:00") && isWelcomeTour(tour)) return 40;
+        return 90;
+      };
+      return score(a) - score(b);
+    }
+
+    // Día 1: siempre inicia con recojo/recepción. Las actividades permitidas dependen estrictamente de la hora de llegada.
+    putSynthetic(1, "Recojo aeropuerto · Recepción en Cusco", "Recepción en Cusco y traslado inicial.", state.arrivalTime || "--:--");
+
     const availableFrom = getAvailableStartTime(state.arrivalTime);
     const dayOneRule = getDayOneArrivalRule();
     const welcome = take(isWelcomeTour);
     const city = take(isCityTour);
+    let usedWelcome = false;
+    let usedCity = false;
 
-    if (welcome || city) {
-      let placedWelcome = false;
-      let placedCity = false;
-
-      if (dayOneRule === "welcome-city") {
-        const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || "09:00") : null;
-        if (welcome) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
-        if (city) placedCity = put(1, city, "Salida sugerida 13:00.");
-      } else if (dayOneRule === "city-only") {
-        if (city) placedCity = put(1, city, "Salida sugerida 13:00.");
-      } else if (dayOneRule === "welcome-only") {
-        const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || availableFrom) : null;
-        if (welcome) placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
-      }
-
-      if (welcome && !placedWelcome) remaining.unshift(welcome);
-      if (city && !placedCity) remaining.unshift(city);
+    if (dayOneRule === "welcome-city") {
+      const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || "09:00") : null;
+      if (welcome) usedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+      if (city) usedCity = put(1, city, "Salida sugerida 13:00.");
+    } else if (dayOneRule === "city-only") {
+      if (city) usedCity = put(1, city, "Salida sugerida 13:00.");
+    } else if (dayOneRule === "welcome-only") {
+      const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || availableFrom) : null;
+      if (welcome) usedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
     }
+    // Si llega desde las 15:00, no se agrega ningún tour el primer día.
+    // Bienvenida/City no se reubican en días intermedios; solo podrán intentarse el último día si no se usaron.
 
     const valleyConnection = take(isSacredValleyConnectionTour);
     const valleyFullDay = !valleyConnection ? take((tour) => isSacredValleyTour(tour)) : null;
@@ -703,51 +777,85 @@
       if (valleyFullDay) put(totalDays >= 4 ? 3 : Math.min(2, totalDays), valleyFullDay, "Valle Sagrado en versión Full Day, sin noche previa en Aguas Calientes.");
     }
 
+    // Llenar días intermedios solo con excursiones que realmente ocupan el día.
+    // No se colocan Bienvenida ni City Tour en días centrales para no desaprovecharlos.
+    for (let dayNumber = 2; dayNumber < lastDayNumber; dayNumber += 1) {
+      if (dayByNumber(dayNumber).activities.length) continue;
+      const tour = takeBest((candidate) => {
+        if (isWelcomeTour(candidate) || isCityTour(candidate)) return false;
+        if (isMachuPicchuTour(candidate) || isSacredValleyTour(candidate)) return false;
+        return isFullDayLikeTour(candidate) || isMarasMorayOrValleSur(candidate);
+      }, middlePriority);
+      if (tour) put(dayNumber, tour, "Día completo disponible para aprovechar la ruta.");
+    }
+
+    // Forzados al último día solo si encajan con la regla de salida.
     const forcedLastDayCodes = toArray(hints.forceLastDayTourCodes);
     forcedLastDayCodes.forEach((code) => {
       const idx = remaining.findIndex((tour) => getTourCode(tour) === code);
-      if (idx >= 0 && canUseTourOnLastDay(remaining[idx])) {
-        put(totalDays, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida." );
+      if (idx >= 0 && canUseTourOnSpecificLastDay(remaining[idx])) {
+        put(lastDayNumber, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida.");
       }
     });
 
-    if (!days[totalDays - 1].activities.length) {
-      const idx = remaining.findIndex((tour) => canUseTourOnLastDay(tour) && !isMachuPicchuTour(tour));
-      if (idx >= 0) put(totalDays, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida.");
+    // Último día: elegir la mejor actividad posible según hora de salida, priorizando la de mayor aprovechamiento.
+    if (!dayByNumber(lastDayNumber).activities.length) {
+      const lastTour = takeBest((tour) => {
+        if (isMachuPicchuTour(tour) || isSacredValleyTour(tour)) return false;
+        return canUseTourOnSpecificLastDay(tour);
+      }, lastDayPriority);
+      if (lastTour) put(lastDayNumber, lastTour, "Compatible con tu horario de salida.");
     }
 
+    // Si la salida es desde las 20:00 y quedaron Bienvenida + City sin usar, puede ser una combinación válida del último día.
+    // Solo se usa esta combinación cuando el último día no fue ocupado por una excursión larga.
+    const lastDayHasTour = () => dayByNumber(lastDayNumber).activities.some((item) => item.tour);
+    if (timeToMinutes(state.departureTime || "00:00") >= timeToMinutes("20:00") && !lastDayHasTour()) {
+      if (!usedWelcome && welcome && !dayByNumber(lastDayNumber).activities.some((item) => isWelcomeTour(item.tour)) && canUseTourOnSpecificLastDay(welcome)) {
+        put(lastDayNumber, welcome, "Versión panorámica compatible con salida nocturna.");
+        usedWelcome = true;
+      }
+      if (!usedCity && city && !dayByNumber(lastDayNumber).activities.some((item) => isCityTour(item.tour)) && canUseTourOnSpecificLastDay(city)) {
+        put(lastDayNumber, city, "City Tour en horario de mañana compatible con salida nocturna.");
+        usedCity = true;
+      }
+    } else {
+      if (!usedWelcome && welcome && !dayByNumber(lastDayNumber).activities.length && canUseTourOnSpecificLastDay(welcome)) {
+        put(lastDayNumber, welcome, "Versión panorámica compatible con tu horario de salida.");
+        usedWelcome = true;
+      }
+      if (!usedCity && city && !dayByNumber(lastDayNumber).activities.length && canUseTourOnSpecificLastDay(city)) {
+        put(lastDayNumber, city, "City Tour en horario de mañana compatible con tu horario de salida.");
+        usedCity = true;
+      }
+    }
+
+    // Cualquier tour restante solo se coloca en días intermedios vacíos, nunca encima de Valle/Machu/full day.
     remaining.forEach((tour) => {
-      let targetDay = days.find((day) => {
-        if (day.day === 1 && !canPlaceTourOnDayOne(tour)) return false;
-        if (day.day === totalDays && !canUseTourOnLastDay(tour)) return false;
-        const hasExclusive = day.activities.some((item) => isFullDayLikeTour(item.tour) || isMachuPicchuTour(item.tour) || isSacredValleyTour(item.tour));
-        if (isWelcomeTour(tour) || isCityTour(tour)) return day.activities.length < 2 && !hasExclusive;
-        return day.activities.length === 0;
+      if (isWelcomeTour(tour) || isCityTour(tour)) return;
+      const targetDay = days.find((day) => {
+        if (!isMiddleDay(day.day)) return false;
+        if (day.activities.length) return false;
+        if (dayHasMajorActivity(day.day)) return false;
+        return true;
       });
-      if (!targetDay) {
-        targetDay = days.find((day) => day.day !== 1 && day.activities.length === 0) || days.find((day) => day.day !== 1) || days[days.length - 1];
-      }
-      if (targetDay.day !== 1 || canPlaceTourOnDayOne(tour)) put(targetDay.day, tour);
+      if (targetDay) put(targetDay.day, tour, "Día disponible para esta excursión.");
     });
-
-    if (getDayOneArrivalRule() === "pickup-only") {
-      days[0].activities = [];
-    }
 
     return days.map((day) => {
       let activities = day.activities.length ? [...day.activities] : [{
         tour: null,
-        note: day.day === 1 ? "Llegada, traslado al hotel y aclimatación ligera." : day.day === totalDays ? "Traslado de salida y asistencia final." : "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.",
-        syntheticTitle: day.day === 1 ? "Recojo aeropuerto · Recepción en Cusco" : day.day === totalDays ? "Traslado de salida" : "Día flexible"
+        note: day.day === 1 ? "Llegada, traslado al hotel y aclimatación ligera." : day.day === lastDayNumber ? "Traslado de salida y asistencia final." : "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.",
+        syntheticTitle: day.day === 1 ? "Recojo aeropuerto · Recepción en Cusco" : day.day === lastDayNumber ? "Traslado de salida" : "Día flexible"
       }];
 
-      if (day.day === 1 && !activities.some((item) => !item.tour && normalizeText(item.syntheticTitle || "").includes("recojo"))) {
-        activities = [{
+      if (day.day === lastDayNumber && !activities.some((item) => !item.tour && normalizeText(item.syntheticTitle || "").includes("traslado"))) {
+        activities = [...activities, {
           tour: null,
-          startTime: state.arrivalTime || "--:--",
-          note: "Recepción en Cusco y traslado inicial.",
-          syntheticTitle: "Recojo aeropuerto · Recepción en Cusco"
-        }, ...activities];
+          startTime: state.departureTime ? addMinutesToTime(state.departureTime, -120) : "--:--",
+          note: "Traslado final según horario de salida.",
+          syntheticTitle: "Traslado de salida"
+        }];
       }
 
       return {
@@ -782,11 +890,17 @@
     }
     const tour = activity.tour;
     if (day?.day === 1 && index === 0 && activity.syntheticTitle) return state.arrivalTime || "--:--";
-    if (isCityTour(tour)) return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "13:00";
+    if (isCityTour(tour)) {
+      const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
+      if (day?.day === totalDays) return getFirstAvailableStartTime(tour, "09:00") || "09:00";
+      if (day?.day === 1) return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "13:00";
+      return getFirstAvailableStartTime(tour, "09:00") || "09:00";
+    }
     if (isWelcomeTour(tour)) {
       const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
       if (day?.day === totalDays) return getFirstAvailableStartTime(tour, "09:00") || "09:00";
-      return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "09:00";
+      if (day?.day === 1) return getFirstAvailableStartTime(tour, getAvailableStartTime(state.arrivalTime)) || "09:00";
+      return getFirstAvailableStartTime(tour, "09:00") || "09:00";
     }
     if (isSacredValleyTour(tour)) return "08:00";
     if (isMachuPicchuTour(tour)) {
