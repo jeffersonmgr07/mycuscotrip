@@ -1426,16 +1426,50 @@
     return only.includes(state.nationality);
   }
 
+  function isOvernightTrainSelectionConfig(config = getTrainSelectionConfig()) {
+    const option = getSelectedOption();
+    const outboundRoutes = toArray(config?.allowedRoutes?.outbound);
+    const outboundMin = timeToMinutes(config?.timeWindows?.outbound?.min || "00:00");
+    return Boolean(
+      option?.requiresOvernight ||
+      option?.connectionMode ||
+      option?.sacredValleyMode === "connection" ||
+      (outboundRoutes.includes("OLLA_MAPI") && outboundMin >= 12 * 60)
+    );
+  }
+
+  function getDynamicTrainTimeWindow(normalizedDirection, config) {
+    const overnightMode = isOvernightTrainSelectionConfig(config);
+
+    if (normalizedDirection === "return") {
+      return { min: "14:00", max: "22:30" };
+    }
+
+    if (overnightMode) {
+      return { min: "15:00", max: "22:00" };
+    }
+
+    return { min: "04:00", max: "12:00" };
+  }
+
+  function shouldIgnoreConfiguredTrainShortlist(normalizedDirection, config) {
+    const mode = normalizeText(config?.mode || "");
+    if (["fixed", "fixed_default_only"].includes(mode)) return false;
+    if (normalizedDirection === "return") return true;
+    return isOvernightTrainSelectionConfig(config) || mode.includes("flexible") || mode.includes("alternatives");
+  }
+
   function getTrainOptions(direction) {
     const config = getTrainSelectionConfig();
     if (!config) return [];
     const normalizedDirection = getTrainDirection(direction);
     const trains = toArray(state.data.trains?.trains);
-    const allowedCodes = toArray(config.allowedTrainCodes?.[normalizedDirection]);
+    const useConfiguredShortlist = !shouldIgnoreConfiguredTrainShortlist(normalizedDirection, config);
+    const allowedCodes = useConfiguredShortlist ? toArray(config.allowedTrainCodes?.[normalizedDirection]) : [];
     const allowedRoutes = toArray(config.allowedRoutes?.[normalizedDirection]);
     const allowedCompanies = toArray(config.allowedCompanies).map(normalizeText);
     const defaultCode = config.defaultTrainCodes?.[normalizedDirection];
-    const timeWindow = config.timeWindows?.[normalizedDirection];
+    const timeWindow = getDynamicTrainTimeWindow(normalizedDirection, config);
     const outboundTrain = state.selectedTrains.outbound;
     const outboundOperator = outboundTrain?.operatorKey || outboundTrain?.company;
     const sameCompanyRequired = normalizedDirection === "return" && outboundTrain && !outboundTrain.isLocalTrain && outboundOperator;
@@ -1467,7 +1501,7 @@
         const defaultB = b.code === defaultCode ? -500 : 0;
         return (localA + defaultA + timeToMinutes(a.departureTime)) - (localB + defaultB + timeToMinutes(b.departureTime));
       })
-      .slice(0, 10);
+      .slice(0, 30);
   }
 
   function getTrainPriceUSD(train, passengerType = "adult") {
