@@ -649,6 +649,7 @@
     }
 
     const availableFrom = getAvailableStartTime(state.arrivalTime);
+    const arrivalMinutes = timeToMinutes(state.arrivalTime || "09:00");
     const welcome = take(isWelcomeTour);
     const city = take(isCityTour);
 
@@ -658,13 +659,29 @@
       let placedWelcome = false;
       let placedCity = false;
 
-      if (welcome && welcomeStart && timeToMinutes(welcomeStart) <= timeToMinutes("10:00") && city && getFirstAvailableStartTime(city, addMinutesToTime(welcomeStart, getTourDurationMinutes(welcome) + 30))) {
-        placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
-        placedCity = put(1, city, "Salida sugerida 13:00.");
-      } else if (city && cityStart && timeToMinutes(cityStart) <= timeToMinutes("14:00")) {
-        placedCity = put(1, city, `Salida sugerida ${cityStart}.`);
-      } else if (welcome && welcomeStart) {
-        placedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+      // Regla operativa del Día 1:
+      // - Antes de 09:00: puede hacer Bienvenida Ancestral + City Tour si existen en la ruta.
+      // - De 09:00 a 11:59: solo City Tour + centros arqueológicos.
+      // - De 12:00 a 14:59: solo Bienvenida Ancestral.
+      // - Desde 15:00: no se programa ningún tour; solo recojo/traslado y acomodación.
+      if (arrivalMinutes < timeToMinutes("09:00")) {
+        if (welcome) {
+          const suggestedWelcomeStart = welcomeStart || getFirstAvailableStartTime(welcome, "09:00") || "09:00";
+          placedWelcome = put(1, welcome, `Salida sugerida ${suggestedWelcomeStart}.`);
+        }
+        if (city) {
+          placedCity = put(1, city, "Salida sugerida 13:00.");
+        }
+      } else if (arrivalMinutes < timeToMinutes("12:00")) {
+        if (city) {
+          const suggestedCityStart = cityStart || getFirstAvailableStartTime(city, "13:00") || "13:00";
+          placedCity = put(1, city, `Salida sugerida ${suggestedCityStart}.`);
+        }
+      } else if (arrivalMinutes < timeToMinutes("15:00")) {
+        if (welcome) {
+          const suggestedWelcomeStart = welcomeStart || getFirstAvailableStartTime(welcome, availableFrom) || availableFrom || "15:00";
+          placedWelcome = put(1, welcome, `Salida sugerida ${suggestedWelcomeStart}.`);
+        }
       }
 
       if (welcome && !placedWelcome) remaining.unshift(welcome);
@@ -1636,7 +1653,7 @@
     if (el) el.hidden = !visible;
   }
 
-  async function applyManualDiscountCode() {
+  function applyManualDiscountCode() {
     const input = $("#discountCodeInput");
     const message = $("#discountCodeMessage");
     const code = String(input?.value || "").trim().toUpperCase();
@@ -1647,49 +1664,10 @@
       updatePrintableTemplate();
       return;
     }
-
-    if (message) message.textContent = "Validando código...";
-
-    try {
-      if (window.MyCuscoTripApiClient?.validateCoupon) {
-        const validation = await window.MyCuscoTripApiClient.validateCoupon({
-          couponCode: code,
-          source: "quote_packages",
-          quoteReference: $("#quoteReference")?.textContent || ""
-        });
-
-        if (validation?.valid) {
-          state.manualDiscount = {
-            code: validation.couponCode || code,
-            active: true,
-            type: "percent",
-            value: Number(validation.discountPercent || 0),
-            label: `Cupón ${validation.couponCode || code} aplicado (${Number(validation.discountPercent || 0)}%)`,
-            expiresAt: validation.expiresAt || "",
-            source: "backend"
-          };
-          if (message) message.textContent = state.manualDiscount.label;
-          updateSummary();
-          updatePrintableTemplate();
-          return;
-        }
-
-        if (validation && validation.reason !== "backend_disabled") {
-          state.manualDiscount = null;
-          if (message) message.textContent = validation.message || "Código no válido o expirado.";
-          updateSummary();
-          updatePrintableTemplate();
-          return;
-        }
-      }
-    } catch (error) {
-      console.warn("No se pudo validar cupón en backend. Se intentará validación local.", error);
-    }
-
     const found = toArray(state.data.discounts).find((item) => String(item.code || "").toUpperCase() === code);
     if (!found || !found.active) {
       state.manualDiscount = null;
-      if (message) message.textContent = "Código no válido, inactivo o expirado.";
+      if (message) message.textContent = "Código no válido o inactivo.";
       updateSummary();
       updatePrintableTemplate();
       return;
@@ -1890,219 +1868,6 @@
     state.pendingTrainCode = null;
   }
 
-  function showPaymentMessage(text, isError = false) {
-    const info = $("#paymentInfoText");
-    if (info) {
-      info.textContent = text;
-      info.closest("#paymentInfo")?.classList.toggle("is-error", Boolean(isError));
-    }
-  }
-
-  function splitClientFullName(value) {
-    const parts = String(value || "").trim().replace(/\s+/g, " ").split(" ").filter(Boolean);
-    if (!parts.length) return { firstName: "", lastName: "" };
-    if (parts.length === 1) return { firstName: parts[0], lastName: parts[0] };
-    return {
-      firstName: parts.slice(0, -1).join(" "),
-      lastName: parts.slice(-1).join(" ")
-    };
-  }
-
-  function generateReservationHex(seed = "") {
-    try {
-      const buffer = new Uint32Array(1);
-      window.crypto?.getRandomValues?.(buffer);
-      if (buffer[0]) return buffer[0].toString(16).toUpperCase().padStart(6, "0").slice(-6);
-    } catch (_) {}
-    const randomPart = Math.floor(Math.random() * 0xffffff);
-    const seedPart = Number(String(seed).replace(/\D/g, "").slice(-8)) || Date.now();
-    return ((randomPart + seedPart) % 0xffffff).toString(16).toUpperCase().padStart(6, "0").slice(-6);
-  }
-
-  function generateReservationCode() {
-    const now = new Date();
-    const seed = `${now.getFullYear()}${now.getMonth() + 1}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
-    return `CUZ${generateReservationHex(seed)}`;
-  }
-
-  function getSelectedHotelSummary() {
-    return Object.entries(state.selectedHotels).map(([destination, option]) => ({
-      destination,
-      type: option?.type || "none",
-      hotelId: option?.hotel?.id || option?.hotelId || "",
-      hotelName: option?.hotel?.name || option?.name || (option?.type === "none" ? "Sin hotel" : "Hotel seleccionado"),
-      roomName: option?.room?.name || option?.roomName || "",
-      price: Number(option?.priceUSD || 0),
-      currency: "USD"
-    }));
-  }
-
-  function getSelectedTrainSummary() {
-    return [
-      ["outbound", state.selectedTrains.outbound],
-      ["return", state.selectedTrains.return]
-    ].filter(([, train]) => Boolean(train)).map(([direction, train]) => ({
-      direction,
-      code: train.code || "",
-      company: train.companyName || train.company || "",
-      service: train.serviceName || train.name || "",
-      route: train.route || "",
-      departureStation: train.departureStation || "",
-      departureTime: train.departureTime || "",
-      arrivalStation: train.arrivalStation || "",
-      arrivalTime: train.arrivalTime || "",
-      price: Number(train.priceUSD || train.foreignAdultPriceUSD || 0),
-      currency: "USD"
-    }));
-  }
-
-  function getSelectedExtrasSummary() {
-    return getAvailableExtras()
-      .filter((extra) => state.selectedExtras.has(extra.code))
-      .map((extra) => ({
-        code: extra.code || "",
-        label: extra.label || "Extra",
-        tourTitle: extra.tourTitle || "",
-        amount: getExtraTotal(extra),
-        currency: state.currency
-      }));
-  }
-
-  function getSelectedItinerarySummary(option) {
-    try {
-      return buildItineraryItems(option).map((day) => ({
-        day: day.displayDay || day.day,
-        date: day.date ? day.date.toISOString?.().slice(0, 10) || String(day.date) : "",
-        activities: toArray(day.activities).map((activity, index) => ({
-          title: getActivityDisplayTitle(activity, day),
-          time: getActivityDisplayTime(activity, day, index),
-          places: getActivityPlacesText(activity, day)
-        }))
-      }));
-    } catch (error) {
-      return [];
-    }
-  }
-
-  function buildQuoteReservationPayload() {
-    ensureQuoteReference();
-    const option = getSelectedOption();
-    const payment = getPaymentBreakdown();
-    const quoteReference = $("#quoteReference")?.textContent || "";
-    const fullName = String($("#clientName")?.value || "").trim();
-    const nameParts = splitClientFullName(fullName);
-    const email = String($("#clientEmail")?.value || "").trim().toLowerCase();
-    const whatsapp = String($("#clientPhone")?.value || "").trim();
-    const documentNumber = String($("#clientDocument")?.value || "").trim();
-    const notes = String($("#clientNotes")?.value || "").trim();
-    const paymentProvider = state.currency === "PEN" ? "mercadopago" : "paypal";
-    const reservationCode = generateReservationCode();
-    const optionTitle = option?.rawCard?.recommendedTitle || option?.title || `Paquete ${state.dates.days || ""} días`;
-
-    return {
-      code: reservationCode,
-      reservationCode,
-      quoteReference,
-      origin: "quote_packages",
-      productId: option?.id || option?.code || quoteReference || "quote-package",
-      productTitle: optionTitle,
-      date: getTravelRangeLabel(),
-      duration: state.dates.days ? `${state.dates.days} días / ${state.dates.nights} noches` : "Por completar",
-      adults: state.adults,
-      children: state.children,
-      totalPassengers: getPassengerCount(),
-      currency: state.currency,
-      paymentMode: getPaymentMode(),
-      paymentProvider,
-      serviceTotalValue: Number(payment.total || 0),
-      payNowValue: Number(payment.advance || 0),
-      payLaterValue: Number(payment.balance || 0),
-      couponCode: state.manualDiscount?.source === "backend" ? (state.manualDiscount.code || "") : "",
-      appliedCoupon: state.manualDiscount || null,
-      holder: {
-        firstName: nameParts.firstName,
-        lastName: nameParts.lastName,
-        documentType: documentNumber ? "document" : "",
-        documentNumber,
-        nationality: getNationalityLabel(),
-        birthdate: "",
-        whatsapp,
-        email,
-        language: "Español",
-        travels: true
-      },
-      passengers: [{
-        passengerNumber: 1,
-        role: "holder_quote_client",
-        completionStatus: "pending_traveler_details",
-        firstName: nameParts.firstName,
-        lastName: nameParts.lastName,
-        documentType: documentNumber ? "document" : "",
-        documentNumber,
-        nationality: getNationalityLabel(),
-        birthdate: "",
-        whatsapp,
-        email
-      }],
-      passengerDataPolicy: "traveler_details_can_be_completed_after_payment_or_by_agent",
-      summary: {
-        source: "quote_packages",
-        title: optionTitle,
-        quoteReference,
-        travelRange: getTravelRangeLabel(),
-        duration: state.dates.days ? `${state.dates.days} días / ${state.dates.nights} noches` : "Por completar",
-        arrivalTime: state.arrivalTime,
-        departureTime: state.departureTime,
-        nationality: getNationalityLabel(),
-        currency: state.currency,
-        exchangeRate: state.exchangeRate,
-        passengers: { adults: state.adults, children: state.children, total: getPassengerCount() },
-        hotels: getSelectedHotelSummary(),
-        trains: getSelectedTrainSummary(),
-        extras: getSelectedExtrasSummary(),
-        itinerary: getSelectedItinerarySummary(option),
-        notes,
-        payment: {
-          subtotal: Number(payment.subtotal || 0),
-          discount: Number(payment.discount || 0),
-          manualDiscount: Number(payment.manualDiscount || 0),
-          fullDiscount: Number(payment.fullDiscount || 0),
-          total: Number(payment.total || 0),
-          advance: Number(payment.advance || 0),
-          balance: Number(payment.balance || 0),
-          mode: getPaymentMode(),
-          provider: paymentProvider
-        }
-      },
-      checkoutPayload: {
-        reservationCode,
-        quoteReference,
-        currency: state.currency,
-        amountToPayNowValue: Number(payment.advance || 0),
-        pendingBalanceValue: Number(payment.balance || 0),
-        productTitle: optionTitle,
-        provider: paymentProvider,
-        backendRequired: true
-      }
-    };
-  }
-
-  function canStartPayment() {
-    const option = getSelectedOption();
-    const payment = getPaymentBreakdown();
-    const fullName = String($("#clientName")?.value || "").trim();
-    const email = String($("#clientEmail")?.value || "").trim();
-    const phone = String($("#clientPhone")?.value || "").trim();
-
-    if (!option) return "Selecciona un itinerario para continuar con el pago.";
-    if (getTrainSelectionConfig() && (!state.selectedTrains.outbound || !state.selectedTrains.return)) return "Elige tren de ida y retorno para cerrar la cotización.";
-    if (!payment.advance || payment.advance <= 0) return "El monto a pagar ahora debe ser mayor a cero.";
-    if (fullName.length < 3) return "Ingresa el nombre completo del titular de la reserva.";
-    if (!/^\S+@\S+\.\S+$/.test(email)) return "Ingresa un correo válido para enviar la confirmación.";
-    if (phone.replace(/\D/g, "").length < 8) return "Ingresa un WhatsApp válido para coordinar la reserva.";
-    return "";
-  }
-
   function buildWhatsAppText() {
     const option = getSelectedOption();
     const payment = getPaymentBreakdown();
@@ -2118,83 +1883,9 @@
     return `https://wa.me/51900608980?text=${encodeURIComponent(lines.join("\n"))}`;
   }
 
-  async function continuePayment() {
+  function continuePayment() {
     updatePrintableTemplate();
-    const validationMessage = canStartPayment();
-    if (validationMessage) {
-      showPaymentMessage(validationMessage, true);
-      return;
-    }
-
-    const button = $("#continuePaymentBtn");
-    const originalText = button?.innerHTML || "";
-    if (button) {
-      button.disabled = true;
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Generando orden...</span>';
-    }
-
-    const payload = buildQuoteReservationPayload();
-    const providerLabel = payload.paymentProvider === "mercadopago" ? "Mercado Pago" : "PayPal";
-
-    try {
-      showPaymentMessage(`Creando reserva ${payload.code} y conectando con ${providerLabel}...`);
-
-      const apiResult = await window.MyCuscoTripApiClient?.createPreReservation?.(payload);
-      if (apiResult?.mock) {
-        showPaymentMessage(`Reserva ${payload.code} creada como borrador local. Configura el backend para activar el pago online.`);
-        window.open(buildWhatsAppText(), "_blank", "noopener");
-        return;
-      }
-
-      const finalCode = apiResult?.reservationCode || apiResult?.code || payload.code;
-      const pendingRecord = {
-        reservationCode: finalCode,
-        quoteReference: payload.quoteReference,
-        lastName: payload.holder.lastName,
-        holderEmail: payload.holder.email,
-        provider: payload.paymentProvider,
-        createdAt: new Date().toISOString(),
-        payload: { ...payload, code: finalCode, reservationCode: finalCode }
-      };
-      try {
-        sessionStorage.setItem(`mct_pending_payment_${finalCode}`, JSON.stringify(pendingRecord));
-      } catch (_) {}
-
-      if (payload.paymentProvider === "mercadopago") {
-        const mpResult = await window.MyCuscoTripApiClient.createMercadoPagoPreference({
-          reservationCode: finalCode,
-          quoteReference: payload.quoteReference,
-          currency: "PEN",
-          amountToPayNowValue: Number(payload.payNowValue || 0),
-          productTitle: payload.productTitle
-        });
-        if (mpResult?.approvalUrl) {
-          window.location.assign(mpResult.approvalUrl);
-          return;
-        }
-        throw new Error(mpResult?.message || mpResult?.error || "Mercado Pago no devolvió enlace de pago.");
-      }
-
-      const paypalResult = await window.MyCuscoTripApiClient.createPayPalOrder({
-        reservationCode: finalCode,
-        currency: "USD",
-        amountToPayNowValue: Number(payload.payNowValue || 0),
-        productTitle: payload.productTitle
-      });
-      if (paypalResult?.approvalUrl) {
-        window.location.assign(paypalResult.approvalUrl);
-        return;
-      }
-      throw new Error(paypalResult?.message || paypalResult?.error || "PayPal no devolvió enlace de pago.");
-    } catch (error) {
-      console.error("No se pudo iniciar el pago de la cotización:", error);
-      showPaymentMessage(error.message || "No se pudo generar la orden de pago. Intenta nuevamente o contáctanos por WhatsApp.", true);
-    } finally {
-      if (button) {
-        button.disabled = false;
-        button.innerHTML = originalText;
-      }
-    }
+    window.open(buildWhatsAppText(), "_blank", "noopener");
   }
 
   function printQuote() {
