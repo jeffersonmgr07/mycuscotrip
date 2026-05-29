@@ -730,6 +730,10 @@
       if (targetDay.day !== 1 || canPlaceTourOnDayOne(tour)) put(targetDay.day, tour);
     });
 
+    if (getDayOneArrivalRule() === "pickup-only") {
+      days[0].activities = [];
+    }
+
     return days.map((day) => {
       let activities = day.activities.length ? [...day.activities] : [{
         tour: null,
