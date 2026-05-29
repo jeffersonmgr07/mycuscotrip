@@ -3076,7 +3076,7 @@ class MyCuscoTripProductPage {
         : null;
 
       this.trackEvent("pre_reservation_created", {
-        reservation_code: payload.code,
+        reservation_code: finalReservationCode,
         product_id: payload.productId,
         product_name: payload.productTitle,
         travel_date: payload.date,
@@ -3098,8 +3098,9 @@ class MyCuscoTripProductPage {
 
       if (apiResult?.mock) return;
 
+      const finalReservationCode = apiResult?.reservationCode || apiResult?.code || payload.code;
       const paypalResult = await window.MyCuscoTripApiClient.createPayPalOrder({
-        reservationCode: payload.code,
+        reservationCode: finalReservationCode,
         currency: payload.currency || "USD",
         amountToPayNowValue: Number(payload.payNowValue || 0),
         productId: payload.productId,
@@ -3107,7 +3108,7 @@ class MyCuscoTripProductPage {
       });
 
       this.trackEvent("begin_payment", {
-        reservation_code: payload.code,
+        reservation_code: finalReservationCode,
         product_id: payload.productId,
         product_name: payload.productTitle,
         currency: payload.currency || "USD",
@@ -3117,14 +3118,14 @@ class MyCuscoTripProductPage {
       }, { metaEventName: "InitiateCheckout" });
 
       const pendingRecord = {
-        reservationCode: payload.code,
+        reservationCode: finalReservationCode,
         lastName: holder.lastName,
         holderEmail: holder.email,
         createdAt: new Date().toISOString(),
         payload
       };
       try {
-        sessionStorage.setItem(`mct_pending_payment_${payload.code}`, JSON.stringify(pendingRecord));
+        sessionStorage.setItem(`mct_pending_payment_${finalReservationCode}`, JSON.stringify(pendingRecord));
       } catch (storageError) {}
 
       if (paypalResult?.approvalUrl) {
@@ -3136,7 +3137,8 @@ class MyCuscoTripProductPage {
     } catch (error) {
       console.error("No se pudo guardar la pre-reserva:", error);
       if (message) {
-        message.textContent = "No se pudo registrar la reserva. Revisa la conexión o la configuración del backend.";
+        const backendMessage = error?.body?.error || error?.body?.message || error?.message || "No se pudo registrar la reserva. Revisa la conexión o la configuración del backend.";
+        message.textContent = backendMessage;
         message.classList.add("is-error");
       }
     } finally {
