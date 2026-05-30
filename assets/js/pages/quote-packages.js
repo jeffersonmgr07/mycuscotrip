@@ -1506,7 +1506,22 @@
 
   function getTrainPriceUSD(train, passengerType = "adult") {
     if (!train) return 0;
-    const amount = Number(train.price?.[passengerType] ?? train.price?.adult ?? train.pricePerPerson ?? 0);
+    const adultAmount = Number(train.price?.adult ?? train.pricePerPerson ?? 0);
+    let amount;
+
+    if (passengerType === "child") {
+      const rawChild = train.price?.child;
+      amount = rawChild === undefined || rawChild === null || rawChild === ""
+        ? adultAmount * 0.8
+        : Number(rawChild);
+    } else {
+      const rawAmount = train.price?.[passengerType];
+      amount = rawAmount === undefined || rawAmount === null || rawAmount === ""
+        ? adultAmount
+        : Number(rawAmount);
+    }
+
+    if (Number.isNaN(amount)) amount = passengerType === "child" ? adultAmount * 0.8 : adultAmount;
     return convert(amount, train.currency || "USD", "USD");
   }
 
