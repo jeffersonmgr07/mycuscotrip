@@ -53,7 +53,6 @@
     outboundDate: '',
     returnDate: '',
     selected: { outbound: null, return: null },
-    currentStep: 'outbound',
     extras: {
       guideCircuit: 'none',
       consetur: 'none',
@@ -107,23 +106,7 @@
     const op = getTrainOperator(train);
     if (op.includes('inca')) return '../assets/img/trains/inca-rail.png';
     if (op.includes('peru')) return '../assets/img/trains/perurail.png';
-    return '../assets/img/machu-picchu/machu-picchu-hero.jpg';
-  }
-
-  function getTrainImage(train) {
-    const category = normalize(train?.category || train?.serviceName || '');
-    const op = getTrainOperator(train);
-    if (op.includes('inca')) {
-      if (category.includes('prime')) return '../assets/img/trenes/trains/inca-prime.jpg';
-      if (category.includes('360')) return '../assets/img/trenes/trains/inca-360.jpg';
-      return '../assets/img/trenes/trains/inca-voyager.jpg';
-    }
-    if (op.includes('peru')) {
-      if (category.includes('vistadome')) return '../assets/img/trenes/trains/perurail-vistadome.jpg';
-      if (category.includes('hiringham') || category.includes('hiram')) return '../assets/img/trenes/trains/perurail-hiram-bingham.jpg';
-      return '../assets/img/trenes/trains/perurail-expedition.jpg';
-    }
-    return '../assets/img/machu-picchu/machu-picchu-hero.jpg';
+    return '../assets/img/placeholder/experience.jpg';
   }
 
   function getTrainPrice(train, type = 'adult') {
@@ -171,8 +154,10 @@
     $('#paxLabel').textContent = paxLabel;
     $('#adultCount').textContent = state.adults;
     $('#childCount').textContent = state.children;
-    const tripSelect = $('#tripTypeSelect');
-    if (tripSelect) tripSelect.value = state.tripType;
+    $$('.trip-tab').forEach((tab) => {
+      const input = $('input', tab);
+      tab.classList.toggle('is-active', input?.checked);
+    });
 
     $$('.return-field').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
     $('#returnBlock').hidden = state.tripType !== 'roundtrip';
@@ -204,54 +189,10 @@
 
   function renderResults() {
     renderSearchState();
-    renderFlowState();
     renderTrainList('outbound', $('#outboundResults'));
     if (state.tripType === 'roundtrip') renderTrainList('return', $('#returnResults'));
-    renderSelectedChoiceBoxes();
     renderExtrasVisibility();
     renderSummary();
-  }
-
-  function renderFlowState() {
-    const outboundResults = $('#outboundResults');
-    const returnResults = $('#returnResults');
-    const returnBlock = $('#returnBlock');
-    const outboundBox = $('#outboundSelectedBox');
-    const returnBox = $('#returnSelectedBox');
-
-    outboundResults.hidden = state.currentStep !== 'outbound';
-    outboundBox.hidden = !state.selected.outbound || state.currentStep === 'outbound';
-
-    if (state.tripType !== 'roundtrip') {
-      returnBlock.hidden = true;
-      returnResults.hidden = true;
-      returnBox.hidden = true;
-      return;
-    }
-
-    returnBlock.hidden = !state.selected.outbound && state.currentStep !== 'return';
-    returnResults.hidden = state.currentStep !== 'return';
-    returnBox.hidden = !state.selected.return || state.currentStep === 'return';
-  }
-
-  function renderSelectedChoiceBoxes() {
-    const outboundBox = $('#outboundSelectedBox');
-    const returnBox = $('#returnSelectedBox');
-    outboundBox.innerHTML = state.selected.outbound ? selectedChoiceHtml('Tren de ida seleccionado', state.selected.outbound, 'outbound') : '';
-    returnBox.innerHTML = state.selected.return ? selectedChoiceHtml('Tren de retorno seleccionado', state.selected.return, 'return') : '';
-  }
-
-  function selectedChoiceHtml(title, train, direction) {
-    return `<article class="selected-choice-card">
-      <img src="${escapeHtml(getTrainImage(train))}" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="${escapeHtml(train.serviceName || 'Tren')}" loading="lazy">
-      <div>
-        <span>${escapeHtml(title)}</span>
-        <h3>${escapeHtml(train.companyName || train.company)} · ${escapeHtml(train.serviceName || train.category || 'Tren')}</h3>
-        <p>${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</p>
-      </div>
-      <strong>${money(getTrainTotal(train))}</strong>
-      <button type="button" class="secondary-button" data-modify-train="${direction}">Modificar ${direction === 'outbound' ? 'ida' : 'retorno'}</button>
-    </article>`;
   }
 
   function renderTrainList(direction, container) {
@@ -268,16 +209,12 @@
       const child = getTrainPrice(train, 'child');
       const total = getTrainTotal(train);
       const logo = getCompanyLogo(train);
-      const image = getTrainImage(train);
       const category = train.category ? train.category.replace(/_/g, ' ') : 'tren turístico';
       return `
         <article class="train-card ${selected ? 'is-selected' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}">
-          <div class="train-media">
-            <img class="train-photo" src="${escapeHtml(image)}" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="${escapeHtml(train.serviceName || 'Tren a Machu Picchu')}" loading="lazy">
-            <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
-          </div>
           <div class="train-card-body">
             <div class="train-company">
+              <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
               <b>${escapeHtml(train.serviceName || train.category || 'Tren')}</b>
               <span class="badge ${category.includes('vistadome') || category.includes('prime') || category.includes('hiram') ? 'gold' : ''}">${escapeHtml(category)}</span>
             </div>
@@ -292,9 +229,7 @@
               <em>Total para ${getPaxTotal()} pasajero${getPaxTotal() === 1 ? '' : 's'}</em>
             </div>
           </div>
-          <div class="train-action-row">
-            <button type="button" class="train-select-button ${selected ? 'is-selected' : ''}" data-select-train="${escapeHtml(train.code)}" data-direction="${direction}">${selected ? 'Seleccionar este tren' : 'Ver y seleccionar'}</button>
-          </div>
+          <button type="button" class="train-select-button ${selected ? 'is-selected' : ''}" data-select-train="${escapeHtml(train.code)}" data-direction="${direction}">${selected ? 'Seleccionado' : 'Elegir'}</button>
         </article>`;
     }).join('');
   }
@@ -353,7 +288,7 @@
       const amount = EXTRAS.lunch * pax;
       lines.push({ label: 'Almuerzo Power Peruano', detail: 'Pollo a la brasa + chaufa + papas + Inca Kola', amount }); total += amount;
     }
-    lines.push({ label: 'Asistencia personalizada My Cusco Trip', detail: 'Incluida sin costo', amount: 0, system: true });
+    lines.push({ label: 'Asistencia personalizada My Cusco Trip', detail: 'Incluida sin costo', amount: 0 });
     return { total, lines };
   }
 
@@ -385,7 +320,6 @@
     }
 
     totals.extras.lines.forEach((line) => {
-      if (line.system) return;
       lines.push(summaryItem('Extra', line.label, line.detail, line.amount));
     });
 
@@ -395,8 +329,7 @@
   }
 
   function summaryItem(kicker, title, detail, amount) {
-    const logo = title.toLowerCase().includes('inca rail') ? '../assets/img/trains/inca-rail.png' : (title.toLowerCase().includes('perurail') || title.toLowerCase().includes('peru rail') ? '../assets/img/trains/perurail.png' : '');
-    return `<div class="summary-item">${logo ? `<img src="${logo}" alt="Empresa ferroviaria" loading="lazy">` : ''}<strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small>${money(amount)}</small></div>`;
+    return `<div class="summary-item"><strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small>${money(amount)}</small></div>`;
   }
 
   function canCheckout() {
@@ -414,26 +347,7 @@
       const retOp = getTrainOperator(state.selected.return);
       if (outOp !== retOp) state.selected.return = null;
     }
-    if (direction === 'outbound') {
-      state.currentStep = state.tripType === 'roundtrip' ? 'return' : 'summary';
-      setTimeout(() => $('#returnBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
-    }
-    if (direction === 'return') {
-      state.currentStep = 'summary';
-      setTimeout(() => $('#extrasBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
-    }
     renderResults();
-  }
-
-  function modifyTrain(direction) {
-    state.currentStep = direction === 'return' ? 'return' : 'outbound';
-    if (direction === 'outbound') {
-      state.selected.outbound = null;
-      state.selected.return = null;
-    }
-    if (direction === 'return') state.selected.return = null;
-    renderResults();
-    setTimeout(() => (direction === 'return' ? $('#returnBlock') : $('.results-layout'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
   }
 
   function buildPassengerForms() {
@@ -594,14 +508,12 @@
     state.returnTo = $('#returnTo').value;
     state.selected.outbound = null;
     state.selected.return = null;
-    state.currentStep = 'outbound';
     renderResults();
   }
 
   function handleTripTypeChange() {
-    state.tripType = $('#tripTypeSelect')?.value || 'roundtrip';
+    state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
     if (state.tripType === 'oneway') state.selected.return = null;
-    state.currentStep = state.selected.outbound ? (state.tripType === 'roundtrip' ? 'return' : 'summary') : 'outbound';
     renderResults();
   }
 
@@ -613,7 +525,7 @@
       renderResults();
       $('.results-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-    $('#tripTypeSelect')?.addEventListener('change', handleTripTypeChange);
+    $$('input[name="tripType"]').forEach((input) => input.addEventListener('change', handleTripTypeChange));
     $('#outboundFrom').addEventListener('change', handleRouteChange);
     $('#returnTo').addEventListener('change', handleRouteChange);
     $('#outboundDate').addEventListener('change', (e) => { state.outboundDate = e.target.value; });
@@ -635,12 +547,7 @@
       }
       const btn = event.target.closest('[data-select-train]');
       if (btn) selectTrain(btn.dataset.direction, btn.dataset.selectTrain);
-      const modify = event.target.closest('[data-modify-train]');
-      if (modify) modifyTrain(modify.dataset.modifyTrain);
-      const detail = event.target.closest('[data-extra-detail]');
-      if (detail) openExtraDetail(detail.dataset.extraDetail);
       if (event.target.matches('[data-close-modal]')) closeModal();
-      if (event.target.matches('[data-close-extra-modal]')) closeExtraDetailModal();
     });
     document.addEventListener('change', (event) => {
       if (event.target.matches('[data-child-age]')) {
@@ -659,32 +566,6 @@
       $('#passengerModal').hidden = false;
     });
     $('#passengerForm').addEventListener('submit', handlePassengerSubmit);
-  }
-
-  function openExtraDetail(kind) {
-    const data = {
-      breakfast: {
-        title: 'Desayuno Power Peruano',
-        image: '../assets/img/trenes/extras/desayuno-power.jpg',
-        text: 'Un desayuno contundente y práctico para salir con energía hacia Machu Picchu: Inca Kola más pan con chicharrón o pan con pollo. Ideal para viajes temprano y para no perder tiempo antes del ingreso.'
-      },
-      lunch: {
-        title: 'Almuerzo Power Peruano',
-        image: '../assets/img/trenes/extras/almuerzo-power.jpg',
-        text: 'Almuerzo peruano en Aguas Calientes: ¼ de pollo a la brasa, arroz chaufa, papas fritas e Inca Kola de 500 ml. Una opción completa, rápida y sabrosa para recargar energías después de la visita.'
-      }
-    }[kind];
-    if (!data) return;
-    $('#extraDetailTitle').textContent = data.title;
-    $('#extraDetailText').textContent = data.text;
-    const img = $('#extraDetailImage');
-    img.src = data.image;
-    img.onerror = () => { img.src = '../assets/img/machu-picchu/machu-picchu-hero.jpg'; };
-    $('#extraDetailModal').hidden = false;
-  }
-
-  function closeExtraDetailModal() {
-    $('#extraDetailModal').hidden = true;
   }
 
   function closeModal() {
