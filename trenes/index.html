@@ -30,11 +30,12 @@
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <span class="eyebrow">PeruRail + Inca Rail</span>
-        <h1>Compra tu tren a Machu Picchu con asistencia personalizada</h1>
-        <p>Elige horarios oficiales, paga online y agrega beneficios peruanos exclusivos de My Cusco Trip para disfrutar mejor tu visita.</p>
+        <h1>Adquiere tu tren a Machu Picchu con beneficios especiales</h1>
+        <div class="hero-free-badge">Obtén guiado gratis a cargo de un guía profesional en Machu Picchu</div>
+        <p>Por la compra de cualquier ticket de tren ida y vuelta o round trip, obtén gratis un tour guiado a Machu Picchu en el Circuito 2, a cargo de un guía profesional y certificado de nuestra agencia.</p>
         <div class="hero-badges">
           <span>Precios cargados desde tarifa oficial</span>
-          <span>Guía gratis con Circuito 2 en ida y vuelta</span>
+          <span>Beneficio exclusivo My Cusco Trip</span>
           <span>Soporte por WhatsApp</span>
         </div>
       </div>
@@ -42,29 +43,24 @@
 
     <section class="search-shell" aria-label="Buscador de trenes">
       <form id="trainSearchForm" class="train-search-card">
-        <div class="trip-tabs" role="radiogroup" aria-label="Tipo de viaje">
-          <label class="trip-tab is-active">
-            <input type="radio" name="tripType" value="roundtrip" checked>
-            <span>Ida y vuelta</span>
-            <small>Beneficio guía</small>
+        <div class="search-grid compact-search-grid">
+          <label class="field-card trip-type-field">
+            <small>Tipo de viaje</small>
+            <select id="tripTypeSelect" name="tripType">
+              <option value="roundtrip" selected>Ida y vuelta</option>
+              <option value="oneway">Solo ida</option>
+            </select>
+            <b>Ida y retorno con beneficios</b>
           </label>
-          <label class="trip-tab">
-            <input type="radio" name="tripType" value="oneway">
-            <span>Solo ida</span>
-            <small>Flexible</small>
-          </label>
-        </div>
-
-        <div class="search-grid">
           <label class="field-card">
-            <small>Ruta de ida</small>
+            <small>Salida desde</small>
             <select id="outboundFrom" name="outboundFrom">
               <option value="ollantaytambo" selected>Ollantaytambo</option>
               <option value="cusco">Cusco / Wanchaq / Poroy / Av. El Sol</option>
               <option value="urubamba">Urubamba</option>
               <option value="hidroelectrica">Hidroeléctrica</option>
             </select>
-            <b>hacia Machu Picchu</b>
+            <b>Hacia Machu Picchu</b>
           </label>
 
           <label class="field-card">
@@ -74,14 +70,14 @@
           </label>
 
           <label class="field-card return-field">
-            <small>Retorno</small>
+            <small>Retorno hacia</small>
             <select id="returnTo" name="returnTo">
               <option value="ollantaytambo" selected>Ollantaytambo</option>
               <option value="cusco">Cusco / Wanchaq / Poroy / Av. El Sol</option>
               <option value="urubamba">Urubamba</option>
               <option value="hidroelectrica">Hidroeléctrica</option>
             </select>
-            <b>desde Machu Picchu</b>
+            <b>Desde Machu Picchu</b>
           </label>
 
           <label class="field-card return-field">
@@ -137,6 +133,7 @@
           <h2>Elige tu tren de ida</h2>
           <p id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         </div>
+        <div id="outboundSelectedBox" class="selected-choice-box" hidden></div>
         <div id="outboundResults" class="train-results"></div>
 
         <div id="returnBlock" class="return-block">
@@ -146,6 +143,7 @@
             <p id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
             <small id="companyRuleNote">El retorno se filtrará por la misma empresa del tren de ida.</small>
           </div>
+          <div id="returnSelectedBox" class="selected-choice-box" hidden></div>
           <div id="returnResults" class="train-results"></div>
         </div>
 
@@ -163,10 +161,28 @@
                 <h3>Elige tu circuito</h3>
                 <p>Aplica solo si ya cuentas con tu boleto de ingreso a Machu Picchu. El boleto de ingreso no está incluido.</p>
               </div>
-              <label><input type="radio" name="guideCircuit" value="none" checked> No agregar guiado</label>
-              <label><input type="radio" name="guideCircuit" value="circuit2"> Circuito 2 · Gratis con ida y vuelta</label>
-              <label><input type="radio" name="guideCircuit" value="circuit1"> Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p</label>
-              <label><input type="radio" name="guideCircuit" value="circuit3"> Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p</label>
+              <div class="circuit-options">
+                <label class="circuit-option">
+                  <input type="radio" name="guideCircuit" value="none" checked>
+                  <img src="../assets/img/machu-picchu/machu-picchu-hero.jpg" alt="Sin guiado" loading="lazy">
+                  <span><b>No agregar guiado</b><small>Continuar solo con tickets de tren.</small></span>
+                </label>
+                <label class="circuit-option">
+                  <input type="radio" name="guideCircuit" value="circuit2">
+                  <img src="../assets/img/trenes/circuitos/circuito-2.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 2 Machu Picchu" loading="lazy">
+                  <span><b>Circuito 2 · Gratis ida y vuelta</b><small>Guiado profesional y certificado.</small></span>
+                </label>
+                <label class="circuit-option">
+                  <input type="radio" name="guideCircuit" value="circuit1">
+                  <img src="../assets/img/trenes/circuitos/circuito-1.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 1 Machu Picchu" loading="lazy">
+                  <span><b>Circuito 1 · USD 15.90 p/p</b><small>Grupo reducido de 4 a 6 pasajeros.</small></span>
+                </label>
+                <label class="circuit-option">
+                  <input type="radio" name="guideCircuit" value="circuit3">
+                  <img src="../assets/img/trenes/circuitos/circuito-3.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 3 Machu Picchu" loading="lazy">
+                  <span><b>Circuito 3 · USD 15.90 p/p</b><small>Grupo reducido de 4 a 6 pasajeros.</small></span>
+                </label>
+              </div>
             </article>
 
             <article class="extra-card">
@@ -186,14 +202,14 @@
             <article class="extra-card checkbox-card">
               <label>
                 <input type="checkbox" id="breakfastExtra">
-                <span><b>Desayuno Power Peruano</b><small>Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p</small></span>
+                <span><b>Desayuno Power Peruano</b><small>Un desayuno contundente para iniciar el tour con energías · USD 8.90 p/p</small><button type="button" class="detail-link" data-extra-detail="breakfast">Ver más detalles</button></span>
               </label>
             </article>
 
             <article class="extra-card checkbox-card">
               <label>
                 <input type="checkbox" id="lunchExtra">
-                <span><b>Almuerzo Power Peruano</b><small>¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 14.90 p/p</small></span>
+                <span><b>Almuerzo Power Peruano</b><small>Plato peruano completo para recargar energías en Aguas Calientes · USD 14.90 p/p</small><button type="button" class="detail-link" data-extra-detail="lunch">Ver más detalles</button></span>
               </label>
             </article>
           </div>
@@ -235,6 +251,18 @@
           <button type="submit" class="checkout-button">Crear orden y pagar con PayPal</button>
         </div>
       </form>
+    </section>
+  </div>
+
+  <div id="extraDetailModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-extra-modal></div>
+    <section class="modal-panel extra-detail-panel" role="dialog" aria-modal="true" aria-labelledby="extraDetailTitle">
+      <button class="modal-close" type="button" data-close-extra-modal>×</button>
+      <img id="extraDetailImage" class="extra-detail-image" src="../assets/img/machu-picchu/machu-picchu-hero.jpg" alt="Detalle del extra" loading="lazy">
+      <span class="summary-step">Extra opcional</span>
+      <h2 id="extraDetailTitle">Detalle del extra</h2>
+      <p id="extraDetailText"></p>
+      <button type="button" class="checkout-button" data-close-extra-modal>Cerrar</button>
     </section>
   </div>
 
