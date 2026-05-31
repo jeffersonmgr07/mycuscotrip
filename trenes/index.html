@@ -6,228 +6,162 @@
   <title>Compra tickets de tren a Machu Picchu | My Cusco Trip</title>
   <meta name="description" content="Busca y compra trenes de PeruRail e Inca Rail hacia Machu Picchu. Agrega asistencia personalizada, guiado y extras peruanos para tu visita." />
   <meta name="robots" content="index, follow" />
-  <link rel="icon" href="../public/favicon.ico" />
+  <link rel="icon" href="/public/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/trenes.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="/assets/css/main.css" rel="stylesheet"/>
+  <link href="/assets/css/components.css" rel="stylesheet"/>
+  <link href="/assets/css/header.css" rel="stylesheet"/>
+  <link href="/assets/css/footer.css" rel="stylesheet"/>
+  <link href="/assets/css/responsive.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/trenes/assets/css/trenes.css" />
 </head>
-<body>
-  <header class="train-topbar">
-    <a class="brand" href="../index.html" aria-label="My Cusco Trip inicio">
-      <span class="brand-mark">MCT</span>
-      <span>My Cusco Trip</span>
-    </a>
-    <nav class="train-nav" aria-label="Navegación principal">
-      <a href="../index.html">Tours</a>
-      <a href="../quote-packages.html">Cotizador</a>
-      <a href="../pages/contact.html">Ayuda</a>
-    </nav>
-  </header>
+<body class="mct-trains-page">
+  <div id="header-container"></div>
 
   <main>
     <section class="train-hero">
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="eyebrow">PeruRail + Inca Rail</span>
-        <h1>Adquiere tu tren a Machu Picchu con beneficios especiales</h1>
-        <div class="hero-free-badge">Obtén guiado gratis a cargo de un guía profesional en Machu Picchu</div>
-        <p>Por la compra de cualquier ticket de tren ida y vuelta o round trip, obtén gratis un tour guiado a Machu Picchu en el Circuito 2, a cargo de un guía profesional y certificado de nuestra agencia.</p>
-        <div class="hero-badges">
-          <span>Precios cargados desde tarifa oficial</span>
-          <span>Beneficio exclusivo My Cusco Trip</span>
-          <span>Soporte por WhatsApp</span>
-        </div>
+        <span class="eyebrow" data-train-i18n="hero.kicker">PeruRail + Inca Rail</span>
+        <h1 data-train-i18n="hero.title">Compra tu tren a Machu Picchu con asistencia personalizada</h1>
+        <p data-train-i18n="hero.subtitle">Elige horarios oficiales, paga online y agrega servicios útiles para disfrutar mejor tu visita.</p>
       </div>
     </section>
 
     <section class="search-shell" aria-label="Buscador de trenes">
       <form id="trainSearchForm" class="train-search-card">
-        <div class="search-grid compact-search-grid">
-          <label class="field-card trip-type-field">
-            <small>Tipo de viaje</small>
-            <select id="tripTypeSelect" name="tripType">
-              <option value="roundtrip" selected>Ida y vuelta</option>
-              <option value="oneway">Solo ida</option>
-            </select>
-            <b>Ida y retorno con beneficios</b>
+        <div class="trip-tabs" role="radiogroup" aria-label="Tipo de viaje">
+          <label class="trip-tab is-active">
+            <input type="radio" name="tripType" value="roundtrip" checked>
+            <span data-train-i18n="search.roundtrip">Ida y vuelta</span>
+            <small data-train-i18n="search.bestOption">Mejor opción</small>
           </label>
-          <label class="field-card">
-            <small>Salida desde</small>
-            <select id="outboundFrom" name="outboundFrom">
-              <option value="ollantaytambo" selected>Ollantaytambo</option>
-              <option value="cusco">Cusco / Wanchaq / Poroy / Av. El Sol</option>
-              <option value="urubamba">Urubamba</option>
-              <option value="hidroelectrica">Hidroeléctrica</option>
-            </select>
-            <b>Hacia Machu Picchu</b>
+          <label class="trip-tab">
+            <input type="radio" name="tripType" value="oneway">
+            <span data-train-i18n="search.oneway">Solo ida</span>
           </label>
+        </div>
 
+        <div class="search-grid">
           <label class="field-card">
-            <small>Fecha de ida</small>
+            <small data-train-i18n="search.outboundDate">Fecha de viaje</small>
             <input id="outboundDate" name="outboundDate" type="date" required>
-            <b>Salida a Machu Picchu</b>
           </label>
 
           <label class="field-card return-field">
-            <small>Retorno hacia</small>
-            <select id="returnTo" name="returnTo">
-              <option value="ollantaytambo" selected>Ollantaytambo</option>
-              <option value="cusco">Cusco / Wanchaq / Poroy / Av. El Sol</option>
-              <option value="urubamba">Urubamba</option>
-              <option value="hidroelectrica">Hidroeléctrica</option>
-            </select>
-            <b>Desde Machu Picchu</b>
-          </label>
-
-          <label class="field-card return-field">
-            <small>Fecha de retorno</small>
+            <small data-train-i18n="search.returnDate">Fecha de retorno</small>
             <input id="returnDate" name="returnDate" type="date">
-            <b>Vuelta desde Machu Picchu</b>
           </label>
 
           <div class="field-card pax-field">
-            <small>Pasajeros</small>
-            <button type="button" id="paxToggle" class="pax-toggle">
+            <small data-train-i18n="search.passengers">Pasajeros</small>
+            <button type="button" id="paxToggle" class="pax-toggle" aria-expanded="false">
               <span id="paxLabel">1 adulto</span>
-              <b>Adultos y niños</b>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div id="paxPanel" class="pax-panel" hidden>
               <div class="pax-row">
-                <div><b>Adultos</b><small>12 años o más</small></div>
+                <div><b data-train-i18n="search.adults">Adultos</b><small data-train-i18n="search.adultAge">12 años o más</small></div>
                 <div class="stepper"><button type="button" data-pax="adults" data-delta="-1">−</button><span id="adultCount">1</span><button type="button" data-pax="adults" data-delta="1">+</button></div>
               </div>
               <div class="pax-row">
-                <div><b>Niños</b><small>3 a 11 años</small></div>
+                <div><b data-train-i18n="search.children">Niños</b><small data-train-i18n="search.childAge">3 a 11 años</small></div>
                 <div class="stepper"><button type="button" data-pax="children" data-delta="-1">−</button><span id="childCount">0</span><button type="button" data-pax="children" data-delta="1">+</button></div>
               </div>
               <div id="childAges" class="child-ages"></div>
-              <p class="microcopy">La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.</p>
+              <p class="microcopy" data-train-i18n="search.childFareNote">La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.</p>
             </div>
           </div>
 
-          <button class="search-button" type="submit">Buscar trenes</button>
+          <label class="field-card coupon-field">
+            <small data-train-i18n="search.coupon">Cupón</small>
+            <input id="couponCode" name="couponCode" type="text" placeholder="Opcional" data-train-placeholder="search.couponPlaceholder">
+          </label>
+
+          <button class="search-button" type="submit" data-train-i18n="search.button">Buscar</button>
         </div>
       </form>
     </section>
 
-    <section class="benefit-strip">
-      <article>
-        <strong>Gratis con ida y vuelta</strong>
-        <span>Tour guiado a Machu Picchu Circuito 2 en grupo reducido.</span>
-      </article>
-      <article>
-        <strong>Extras peruanos</strong>
-        <span>Desayuno power, almuerzo peruano y bus Consetur.</span>
-      </article>
-      <article>
-        <strong>Asistencia MCT</strong>
-        <span>Acompañamiento antes de la compra y seguimiento de tu reserva.</span>
-      </article>
+    <section class="route-selector" aria-label="Selecciona una ruta">
+      <div class="route-block">
+        <p class="route-label" data-train-i18n="routes.outboundFrom">Salida desde</p>
+        <div class="route-pills" id="outboundStationPills"></div>
+      </div>
+      <div class="route-block return-route-block">
+        <p class="route-label" data-train-i18n="routes.returnTo">Retorno hacia</p>
+        <div class="route-pills" id="returnStationPills"></div>
+      </div>
     </section>
 
     <section class="results-layout">
       <div class="results-main">
         <div class="section-heading">
-          <span>Paso 1</span>
-          <h2>Elige tu tren de ida</h2>
+          <h2 data-train-i18n="results.outboundTitle">Elige tu tren de ida</h2>
           <p id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         </div>
-        <div id="outboundSelectedBox" class="selected-choice-box" hidden></div>
         <div id="outboundResults" class="train-results"></div>
 
-        <div id="returnBlock" class="return-block">
+        <div id="returnBlock" class="return-block" hidden>
           <div class="section-heading">
-            <span>Paso 2</span>
-            <h2>Elige tu tren de retorno</h2>
+            <h2 data-train-i18n="results.returnTitle">Elige tu tren de retorno</h2>
             <p id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
-            <small id="companyRuleNote">El retorno se filtrará por la misma empresa del tren de ida.</small>
+            <small id="companyRuleNote" data-train-i18n="results.companyNote">El retorno se filtrará por la misma empresa del tren de ida.</small>
           </div>
-          <div id="returnSelectedBox" class="selected-choice-box" hidden></div>
           <div id="returnResults" class="train-results"></div>
-        </div>
-
-        <div id="extrasBlock" class="extras-block" hidden>
-          <div class="section-heading">
-            <span>Paso 3</span>
-            <h2>Agrega beneficios para tu visita</h2>
-            <p>Estos servicios son opcionales y se calculan por pasajero.</p>
-          </div>
-
-          <div class="extras-grid">
-            <article class="extra-card guide-card">
-              <div>
-                <span class="extra-kicker">Guiado Machu Picchu</span>
-                <h3>Elige tu circuito</h3>
-                <p>Aplica solo si ya cuentas con tu boleto de ingreso a Machu Picchu. El boleto de ingreso no está incluido.</p>
-              </div>
-              <div class="circuit-options">
-                <label class="circuit-option">
-                  <input type="radio" name="guideCircuit" value="none" checked>
-                  <img src="../assets/img/machu-picchu/machu-picchu-hero.jpg" alt="Sin guiado" loading="lazy">
-                  <span><b>No agregar guiado</b><small>Continuar solo con tickets de tren.</small></span>
-                </label>
-                <label class="circuit-option">
-                  <input type="radio" name="guideCircuit" value="circuit2">
-                  <img src="../assets/img/trenes/circuitos/circuito-2.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 2 Machu Picchu" loading="lazy">
-                  <span><b>Circuito 2 · Gratis ida y vuelta</b><small>Guiado profesional y certificado.</small></span>
-                </label>
-                <label class="circuit-option">
-                  <input type="radio" name="guideCircuit" value="circuit1">
-                  <img src="../assets/img/trenes/circuitos/circuito-1.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 1 Machu Picchu" loading="lazy">
-                  <span><b>Circuito 1 · USD 15.90 p/p</b><small>Grupo reducido de 4 a 6 pasajeros.</small></span>
-                </label>
-                <label class="circuit-option">
-                  <input type="radio" name="guideCircuit" value="circuit3">
-                  <img src="../assets/img/trenes/circuitos/circuito-3.jpg" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="Circuito 3 Machu Picchu" loading="lazy">
-                  <span><b>Circuito 3 · USD 15.90 p/p</b><small>Grupo reducido de 4 a 6 pasajeros.</small></span>
-                </label>
-              </div>
-            </article>
-
-            <article class="extra-card">
-              <div>
-                <span class="extra-kicker">Consetur</span>
-                <h3>Bus a Machu Picchu</h3>
-                <p>Elige solo subida, solo bajada o ida y vuelta.</p>
-              </div>
-              <select id="conseturOption">
-                <option value="none">No agregar</option>
-                <option value="up">Subida · USD 12.00 p/p</option>
-                <option value="down">Bajada · USD 12.00 p/p</option>
-                <option value="roundtrip">Subida y bajada · USD 24.00 p/p</option>
-              </select>
-            </article>
-
-            <article class="extra-card checkbox-card">
-              <label>
-                <input type="checkbox" id="breakfastExtra">
-                <span><b>Desayuno Power Peruano</b><small>Un desayuno contundente para iniciar el tour con energías · USD 8.90 p/p</small><button type="button" class="detail-link" data-extra-detail="breakfast">Ver más detalles</button></span>
-              </label>
-            </article>
-
-            <article class="extra-card checkbox-card">
-              <label>
-                <input type="checkbox" id="lunchExtra">
-                <span><b>Almuerzo Power Peruano</b><small>Plato peruano completo para recargar energías en Aguas Calientes · USD 14.90 p/p</small><button type="button" class="detail-link" data-extra-detail="lunch">Ver más detalles</button></span>
-              </label>
-            </article>
-          </div>
         </div>
       </div>
 
       <aside class="summary-card" aria-label="Resumen de compra">
-        <span class="summary-step">Resumen</span>
-        <h2>Tu selección</h2>
+        <div class="summary-titlebar" data-train-i18n="summary.title">Tu selección</div>
         <div id="summaryContent" class="summary-content">
-          <p>Busca trenes y selecciona ida para empezar.</p>
+          <p data-train-i18n="summary.empty">Busca trenes y selecciona ida para empezar.</p>
         </div>
+
+        <div id="summaryExtras" class="summary-extras" hidden>
+          <h3 data-train-i18n="extras.title">Servicios extras</h3>
+
+          <article class="summary-extra-row guide-extra">
+            <img src="/assets/img/reserva/machu-picchu-card.jpg" alt="Guiado Machu Picchu" loading="lazy">
+            <div class="summary-extra-body">
+              <label for="guideCircuit" data-train-i18n="extras.guideTitle">Guiado Machu Picchu</label>
+              <select id="guideCircuit" name="guideCircuit">
+                <option value="none" data-train-i18n="extras.guideNone">No agregar guiado</option>
+                <option value="circuit2" data-train-i18n="extras.circuit2">Circuito 2 · Gratis</option>
+                <option value="circuit1" data-train-i18n="extras.circuit1">Circuito 1 · Grupo reducido · USD 15.90 p/p</option>
+                <option value="circuit3" data-train-i18n="extras.circuit3">Circuito 3 · Grupo reducido · USD 15.90 p/p</option>
+              </select>
+            </div>
+          </article>
+
+          <label class="summary-extra-check">
+            <img src="/assets/img/noticias/machu-picchu-boletos.jpg" alt="Bus Consetur Machu Picchu" loading="lazy">
+            <input type="checkbox" id="conseturBusExtra">
+            <span><b data-train-i18n="extras.busTitle">Bus Consetur Machu Picchu</b><small data-train-i18n="extras.busDesc">Subida y bajada · USD 24.00 p/p</small></span>
+          </label>
+
+          <label class="summary-extra-check">
+            <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Desayuno peruano" loading="lazy">
+            <input type="checkbox" id="breakfastExtra">
+            <span><b data-train-i18n="extras.breakfastTitle">Desayuno Power Peruano</b><small data-train-i18n="extras.breakfastDesc">Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p</small></span>
+          </label>
+
+          <label class="summary-extra-check">
+            <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Almuerzo peruano" loading="lazy">
+            <input type="checkbox" id="lunchExtra">
+            <span><b data-train-i18n="extras.lunchTitle">Almuerzo Power Peruano</b><small data-train-i18n="extras.lunchDesc">¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p</small></span>
+          </label>
+        </div>
+
         <div class="summary-total">
-          <span>Total</span>
+          <span data-train-i18n="summary.total">Total</span>
           <strong id="summaryTotal">USD 0.00</strong>
         </div>
-        <p class="summary-note">La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.</p>
-        <button id="checkoutButton" type="button" class="checkout-button" disabled>Continuar con datos y PayPal</button>
+        <p class="summary-note" data-train-i18n="summary.note">La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.</p>
+        <button id="checkoutButton" type="button" class="checkout-button" disabled data-train-i18n="summary.reserveButton">Iniciar reserva</button>
       </aside>
     </section>
   </main>
@@ -236,41 +170,58 @@
     <div class="modal-backdrop" data-close-modal></div>
     <section class="modal-panel passenger-modal" role="dialog" aria-modal="true" aria-labelledby="passengerModalTitle">
       <button class="modal-close" type="button" data-close-modal>×</button>
-      <span class="summary-step">Último paso</span>
-      <h2 id="passengerModalTitle">Datos de pasajeros</h2>
-      <p>El pasajero 1 será el titular de la reserva. WhatsApp y correo son obligatorios solo para el titular.</p>
+      <div class="modal-titlebar" id="passengerModalTitle" data-train-i18n="modal.title">Datos de los pasajeros</div>
+      <p class="modal-subtitle" data-train-i18n="modal.subtitle">El pasajero 1 será el titular de la reserva.</p>
       <form id="passengerForm">
         <div id="passengerForms" class="passenger-forms"></div>
         <label class="terms-line">
           <input type="checkbox" id="termsCheck" required>
-          <span>Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.</span>
+          <span data-train-i18n="modal.terms">Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.</span>
         </label>
         <div id="paymentMessage" class="payment-message" hidden></div>
         <div class="modal-actions">
-          <button type="button" class="secondary-button" data-close-modal>Volver</button>
-          <button type="submit" class="checkout-button">Crear orden y pagar con PayPal</button>
+          <button type="button" class="secondary-button" data-close-modal data-train-i18n="modal.cancel">Cancelar</button>
+          <button type="submit" class="checkout-button" data-train-i18n="modal.pay">Pagar</button>
         </div>
       </form>
     </section>
   </div>
 
-  <div id="extraDetailModal" class="modal" hidden>
-    <div class="modal-backdrop" data-close-extra-modal></div>
-    <section class="modal-panel extra-detail-panel" role="dialog" aria-modal="true" aria-labelledby="extraDetailTitle">
-      <button class="modal-close" type="button" data-close-extra-modal>×</button>
-      <img id="extraDetailImage" class="extra-detail-image" src="../assets/img/machu-picchu/machu-picchu-hero.jpg" alt="Detalle del extra" loading="lazy">
-      <span class="summary-step">Extra opcional</span>
-      <h2 id="extraDetailTitle">Detalle del extra</h2>
-      <p id="extraDetailText"></p>
-      <button type="button" class="checkout-button" data-close-extra-modal>Cerrar</button>
-    </section>
-  </div>
+  <div id="footer-container"></div>
 
-  <template id="trainCardTemplate">
-    <article class="train-card"></article>
-  </template>
+  <script>
+    async function loadMctComponent(componentName, targetId) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      try {
+        const response = await fetch(`/components/${componentName}.html`, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`No se pudo cargar ${componentName}`);
+        target.innerHTML = await response.text();
+      } catch (error) {
+        console.warn(error.message);
+      }
+    }
 
-  <script src="./assets/js/config.js"></script>
-  <script src="./assets/js/trenes.js" defer></script>
+    async function initializeMctShell() {
+      await Promise.all([
+        loadMctComponent('header', 'header-container'),
+        loadMctComponent('footer', 'footer-container')
+      ]);
+      window.initMyCuscoTripHeader?.();
+      window.MyCuscoTripFooter?.initFooterAccordions?.();
+      window.MyCuscoTripI18n?.applyTranslations?.();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeMctShell);
+    } else {
+      initializeMctShell();
+    }
+  </script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/components/header.js"></script>
+  <script src="/assets/js/components/footer.js"></script>
+  <script src="/trenes/assets/js/config.js"></script>
+  <script src="/trenes/assets/js/trenes.js" defer></script>
 </body>
 </html>
