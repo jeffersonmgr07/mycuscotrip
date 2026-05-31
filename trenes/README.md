@@ -8,41 +8,10 @@ Carpeta creada para trabajar la venta de trenes sin alterar los estilos ni la l�
 - `paypal-retorno.html`: página de retorno para confirmar el pago PayPal.
 - `assets/css/trenes.css`: estilos propios del módulo.
 - `assets/js/config.js`: configuración editable del módulo.
-- `assets/js/trenes.js`: lógica del buscador, selección de trenes, extras, pasajeros y creación de orden.
+- `assets/js/trenes.js`: lógica del buscador, selección de trenes, extras y creación de orden.
 - `assets/js/paypal-retorno.js`: captura de pago PayPal al volver desde PayPal.
 - `backend/google-apps-script-trenes.gs`: backend completo para Google Sheets + PayPal.
 - `backend/google-sheet-template-trenes.xlsx`: plantilla referencial de hojas y columnas.
-
-## Integración visual
-
-El módulo carga el header y footer generales del proyecto desde:
-
-```txt
-/components/header.html
-/components/footer.html
-```
-
-También carga los estilos globales del sitio y luego aplica sus estilos propios desde:
-
-```txt
-/trenes/assets/css/trenes.css
-```
-
-## Idiomas
-
-La carpeta incluye copias para rutas de idioma:
-
-```txt
-/en/trenes/
-/pt/trenes/
-/fr/trenes/
-/de/trenes/
-/it/trenes/
-/ja/trenes/
-/zh/trenes/
-```
-
-El contenido del módulo está traducido en español e inglés. Para otros idiomas, la cabecera y el footer se traducen con el sistema general del sitio, y el contenido del módulo queda en español hasta que se agreguen más traducciones.
 
 ## Configuración del frontend
 
@@ -51,11 +20,11 @@ Edita `trenes/assets/js/config.js`:
 ```js
 window.MCT_TRAIN_CONFIG = {
   appsScriptUrl: 'PEGAR_AQUI_URL_DE_GOOGLE_APPS_SCRIPT',
-  trainsJsonPath: '/assets/data/trains.json',
+  trainsJsonPath: '../assets/data/trains.json',
   paypalReturnPath: '/trenes/paypal-retorno.html',
   exchangeRate: 3.38,
   currency: 'USD',
-  supportWhatsApp: '+51900608980',
+  supportWhatsApp: '+51999999999',
   bookingPrefix: 'CUZ-T'
 };
 ```
@@ -63,7 +32,7 @@ window.MCT_TRAIN_CONFIG = {
 El módulo lee el JSON desde:
 
 ```txt
-/assets/data/trains.json
+../assets/data/trains.json
 ```
 
 Por eso no duplica el catálogo de trenes.
@@ -99,22 +68,20 @@ PAYPAL_CLIENT_SECRET = tu secret
 ## Reglas implementadas
 
 - Por defecto busca `Ollantaytambo → Machu Picchu`.
-- El buscador superior queda minimalista: tipo de viaje, fechas, pasajeros, cupón y buscar.
-- Las estaciones se eligen debajo del buscador con botones de ruta.
 - Permite ida desde Cusco, Ollantaytambo, Urubamba o Hidroeléctrica.
 - Permite retorno hacia Cusco, Ollantaytambo, Urubamba o Hidroeléctrica.
-- En ida y vuelta, el retorno se muestra después de elegir ida y se filtra por la misma empresa.
+- En ida y vuelta, el retorno se filtra por la misma empresa elegida en ida.
 - Se puede combinar categoría, pero no empresa.
 - No se muestran trenes locales en esta página porque su compra es personal/presencial.
 - El precio de niño se lee desde el JSON; si faltara, usa adulto × 0.80.
-- El modal solicita nacionalidad desplegable, tipo/número de documento, fecha de nacimiento, WhatsApp con código de país y correo.
-- Solo el titular necesita WhatsApp y correo obligatorios.
 - Extras:
   - Circuito 2 gratis en ida y vuelta.
-  - Circuito 1 o 3: USD 15.90 por persona en grupo reducido de 4 a 6 pax.
-  - Consetur subida y bajada: USD 24.00 por persona.
+  - Circuito 1 o 3: USD 15.90 por persona.
+  - Consetur subida: USD 12 por persona.
+  - Consetur bajada: USD 12 por persona.
+  - Consetur ida y vuelta: USD 24 por persona.
   - Desayuno Power Peruano: USD 8.90 por persona.
-  - Almuerzo Power Peruano: USD 15.90 por persona.
+  - Almuerzo Power Peruano: USD 14.90 por persona.
 - Código de reserva: `CUZ-T-HEX-RANDOM`.
 
 ## Nota operativa

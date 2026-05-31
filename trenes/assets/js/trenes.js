@@ -3,7 +3,7 @@
 
   const CONFIG = Object.assign({
     appsScriptUrl: '',
-    trainsJsonPath: '/assets/data/trains.json',
+    trainsJsonPath: '../assets/data/trains.json',
     exchangeRate: 3.38,
     currency: 'USD',
     bookingPrefix: 'CUZ-T'
@@ -24,60 +24,26 @@
     }
   };
 
-  const STATION_OPTIONS = ['ollantaytambo', 'cusco', 'urubamba', 'hidroelectrica'];
+  const STATION_LABELS = {
+    cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol',
+    ollantaytambo: 'Ollantaytambo',
+    urubamba: 'Urubamba',
+    hidroelectrica: 'Hidroeléctrica',
+    machuPicchu: 'Machu Picchu'
+  };
 
   const EXTRAS = {
     guideCircuit1: 15.90,
     guideCircuit3: 15.90,
+    conseturUp: 12,
+    conseturDown: 12,
     conseturRoundtrip: 24,
     breakfast: 8.90,
-    lunch: 15.90
-  };
-
-  const COUNTRY_CODES = [
-    'AF','AL','DZ','AS','AD','AO','AI','AQ','AG','AR','AM','AW','AU','AT','AZ','BS','BH','BD','BB','BY','BE','BZ','BJ','BM','BT','BO','BQ','BA','BW','BV','BR','IO','BN','BG','BF','BI','KH','CM','CA','CV','KY','CF','TD','CL','CN','CX','CC','CO','KM','CG','CD','CK','CR','CI','HR','CU','CW','CY','CZ','DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','SZ','ET','FK','FO','FJ','FI','FR','GF','PF','TF','GA','GM','GE','DE','GH','GI','GR','GL','GD','GP','GU','GT','GG','GN','GW','GY','HT','HM','VA','HN','HK','HU','IS','IN','ID','IR','IQ','IE','IM','IL','IT','JM','JP','JE','JO','KZ','KE','KI','KP','KR','KW','KG','LA','LV','LB','LS','LR','LY','LI','LT','LU','MO','MG','MW','MY','MV','ML','MT','MH','MQ','MR','MU','YT','MX','FM','MD','MC','MN','ME','MS','MA','MZ','MM','NA','NR','NP','NL','NC','NZ','NI','NE','NG','NU','NF','MK','MP','NO','OM','PK','PW','PS','PA','PG','PY','PE','PH','PN','PL','PT','PR','QA','RE','RO','RU','RW','BL','SH','KN','LC','MF','PM','VC','WS','SM','ST','SA','SN','RS','SC','SL','SG','SX','SK','SI','SB','SO','ZA','GS','SS','ES','LK','SD','SR','SJ','SE','CH','SY','TW','TJ','TZ','TH','TL','TG','TK','TO','TT','TN','TR','TM','TC','TV','UG','UA','AE','GB','US','UM','UY','UZ','VU','VE','VN','VG','VI','WF','EH','YE','ZM','ZW'
-  ];
-
-  const PHONE_CODES = [
-    ['PE', '+51'], ['US', '+1'], ['CA', '+1'], ['MX', '+52'], ['AR', '+54'], ['BO', '+591'], ['BR', '+55'], ['CL', '+56'], ['CO', '+57'], ['EC', '+593'], ['PY', '+595'], ['UY', '+598'], ['VE', '+58'], ['ES', '+34'], ['FR', '+33'], ['DE', '+49'], ['IT', '+39'], ['GB', '+44'], ['PT', '+351'], ['NL', '+31'], ['BE', '+32'], ['CH', '+41'], ['JP', '+81'], ['CN', '+86'], ['KR', '+82'], ['AU', '+61'], ['NZ', '+64']
-  ];
-
-  const DICTIONARY = {
-    es: {
-      hero: {
-        kicker: 'PeruRail + Inca Rail',
-        title: 'Compra tu tren a Machu Picchu con asistencia personalizada',
-        subtitle: 'Elige horarios oficiales, paga online y agrega servicios útiles para disfrutar mejor tu visita.'
-      },
-      search: {
-        roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
-      },
-      routes: { outboundFrom: 'Salida desde', returnTo: 'Retorno hacia' },
-      stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
-      stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
-      results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
-      summary: { title: 'Tu selección', empty: 'Busca trenes y selecciona ida para empezar.', outbound: 'Tren de ida', return: 'Tren de retorno', selectOutbound: 'Selecciona un tren de ida para continuar.', selectReturn: 'Selecciona un tren de retorno de la misma empresa.', extra: 'Extra', included: 'Incluido', total: 'Total', note: 'La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.', reserveButton: 'Iniciar reserva' },
-      extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada My Cusco Trip', assistanceDetail: 'Incluida sin costo' },
-      modal: { title: 'Datos de los pasajeros', subtitle: 'El pasajero 1 será el titular de la reserva.', terms: 'Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.', cancel: 'Cancelar', pay: 'Pagar', passenger: 'Pasajero', adult: 'Adulto', child: 'Niño', lead: 'Titular', firstName: 'Nombres', lastName: 'Apellidos', nationality: 'Nacionalidad', docType: 'Tipo de documento', docNumber: 'Número de documento', birthDate: 'Fecha de nacimiento', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp opcional', phoneCode: 'Código', phoneNumber: 'Número', email: 'Correo', emailOptional: 'Correo opcional', dni: 'DNI', passport: 'Pasaporte', ce: 'Carné de extranjería', other: 'Otro', creating: 'Creando orden de reserva...', connecting: 'Conectando con PayPal...', missingAppsScript: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.', invalidResponse: 'Apps Script devolvió una respuesta no válida.', orderError: 'No se pudo crear la orden.', paypalError: 'PayPal no devolvió enlace de aprobación.' },
-      pax: { adult: 'adulto', adults: 'adultos', child: 'niño', children: 'niños', ageChild: 'Edad niño' }
-    },
-    en: {
-      hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu with personalized assistance', subtitle: 'Choose official schedules, pay online, and add useful services to enjoy your visit with more confidence.' },
-      search: { roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
-      routes: { outboundFrom: 'Departure from', returnTo: 'Return to' },
-      stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
-      stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
-      results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
-      summary: { title: 'Your selection', empty: 'Search trains and choose your outbound option to start.', outbound: 'Outbound train', return: 'Return train', selectOutbound: 'Choose an outbound train to continue.', selectReturn: 'Choose a return train from the same company.', extra: 'Extra', included: 'Included', total: 'Total', note: 'The purchase is subject to final availability from the railway company. We will contact you if your selected schedule needs adjustment.', reserveButton: 'Start booking' },
-      extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: 'Personalized assistance by My Cusco Trip', assistanceDetail: 'Included at no cost' },
-      modal: { title: 'Passenger details', subtitle: 'Passenger 1 will be the booking holder.', terms: 'I accept that the booking is subject to final availability, document validation, and operational confirmation by My Cusco Trip.', cancel: 'Cancel', pay: 'Pay', passenger: 'Passenger', adult: 'Adult', child: 'Child', lead: 'Booking holder', firstName: 'First name', lastName: 'Last name', nationality: 'Nationality', docType: 'Document type', docNumber: 'Document number', birthDate: 'Date of birth', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp optional', phoneCode: 'Code', phoneNumber: 'Number', email: 'Email', emailOptional: 'Email optional', dni: 'National ID', passport: 'Passport', ce: 'Foreigner ID card', other: 'Other', creating: 'Creating booking order...', connecting: 'Connecting to PayPal...', missingAppsScript: 'Missing APPS_SCRIPT_URL configuration in trenes/assets/js/config.js.', invalidResponse: 'Apps Script returned an invalid response.', orderError: 'The order could not be created.', paypalError: 'PayPal did not return an approval link.' },
-      pax: { adult: 'adult', adults: 'adults', child: 'child', children: 'children', ageChild: 'Child age' }
-    }
+    lunch: 14.90
   };
 
   const state = {
     data: { trains: [] },
-    locale: getLocale(),
     tripType: 'roundtrip',
     adults: 1,
     children: 0,
@@ -87,9 +53,10 @@
     outboundDate: '',
     returnDate: '',
     selected: { outbound: null, return: null },
+    currentStep: 'outbound',
     extras: {
       guideCircuit: 'none',
-      conseturBus: false,
+      consetur: 'none',
       breakfast: false,
       lunch: false
     }
@@ -97,40 +64,14 @@
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const money = (value) => `USD ${Number(value || 0).toFixed(2)}`;
   const clean = (value) => String(value || '').trim();
   const normalize = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '');
-  const round = (value) => Math.round((Number(value) || 0) * 100) / 100;
-  const money = (value) => `USD ${Number(value || 0).toFixed(2)}`;
-
-  function getLocale() {
-    const fromI18n = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || window.MyCuscoTripI18n?.locale;
-    if (fromI18n && DICTIONARY[fromI18n]) return fromI18n;
-    const pathLocale = window.location.pathname.split('/').filter(Boolean)[0];
-    if (DICTIONARY[pathLocale]) return pathLocale;
-    return 'es';
-  }
-
-  function t(key, fallback = '') {
-    const dict = DICTIONARY[state.locale] || DICTIONARY.es;
-    const value = String(key).split('.').reduce((acc, part) => acc && acc[part], dict);
-    return value || fallback || key;
-  }
 
   function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
     }[char]));
-  }
-
-  function applyTrainTranslations(root = document) {
-    state.locale = getLocale();
-    root.querySelectorAll?.('[data-train-i18n]').forEach((node) => {
-      node.textContent = t(node.dataset.trainI18n, node.textContent || '');
-    });
-    root.querySelectorAll?.('[data-train-placeholder]').forEach((node) => {
-      node.setAttribute('placeholder', t(node.dataset.trainPlaceholder, node.getAttribute('placeholder') || ''));
-    });
-    document.documentElement.setAttribute('lang', state.locale);
   }
 
   function todayISO(offsetDays = 0) {
@@ -158,19 +99,31 @@
     return `${h} h ${String(m).padStart(2, '0')} min`;
   }
 
-  function stationLabel(key, long = false) {
-    return t(`${long ? 'stationLong' : 'stations'}.${key}`, key);
-  }
-
   function getTrainOperator(train) {
     return normalize(train?.operatorKey || train?.company || train?.companyName || '');
   }
 
   function getCompanyLogo(train) {
     const op = getTrainOperator(train);
-    if (op.includes('inca')) return '/assets/img/trains/inca-rail.png';
-    if (op.includes('peru')) return '/assets/img/trains/perurail.png';
-    return '/assets/img/placeholder/experience.jpg';
+    if (op.includes('inca')) return '../assets/img/trains/inca-rail.png';
+    if (op.includes('peru')) return '../assets/img/trains/perurail.png';
+    return '../assets/img/machu-picchu/machu-picchu-hero.jpg';
+  }
+
+  function getTrainImage(train) {
+    const category = normalize(train?.category || train?.serviceName || '');
+    const op = getTrainOperator(train);
+    if (op.includes('inca')) {
+      if (category.includes('prime')) return '../assets/img/trenes/trains/inca-prime.jpg';
+      if (category.includes('360')) return '../assets/img/trenes/trains/inca-360.jpg';
+      return '../assets/img/trenes/trains/inca-voyager.jpg';
+    }
+    if (op.includes('peru')) {
+      if (category.includes('vistadome')) return '../assets/img/trenes/trains/perurail-vistadome.jpg';
+      if (category.includes('hiringham') || category.includes('hiram')) return '../assets/img/trenes/trains/perurail-hiram-bingham.jpg';
+      return '../assets/img/trenes/trains/perurail-expedition.jpg';
+    }
+    return '../assets/img/machu-picchu/machu-picchu-hero.jpg';
   }
 
   function getTrainPrice(train, type = 'adult') {
@@ -179,16 +132,16 @@
     if (type === 'child') {
       const rawChild = train.price?.child;
       const child = rawChild === undefined || rawChild === null || rawChild === '' ? adult * 0.8 : Number(rawChild);
-      return round(Number.isFinite(child) ? child : adult * 0.8);
+      return Number.isFinite(child) ? child : adult * 0.8;
     }
     const raw = train.price?.[type];
     const amount = raw === undefined || raw === null || raw === '' ? adult : Number(raw);
-    return round(Number.isFinite(amount) ? amount : adult);
+    return Number.isFinite(amount) ? amount : adult;
   }
 
   function getTrainTotal(train) {
     if (!train) return 0;
-    return round((getTrainPrice(train, 'adult') * state.adults) + (getTrainPrice(train, 'child') * state.children));
+    return getTrainPrice(train, 'adult') * state.adults + getTrainPrice(train, 'child') * state.children;
   }
 
   function getRoute(direction) {
@@ -213,84 +166,99 @@
       .sort((a, b) => timeToMinutes(a.departureTime) - timeToMinutes(b.departureTime) || getTrainOperator(a).localeCompare(getTrainOperator(b)));
   }
 
-  function renderStationPills() {
-    const outWrap = $('#outboundStationPills');
-    const retWrap = $('#returnStationPills');
-    if (outWrap) {
-      outWrap.innerHTML = STATION_OPTIONS.map((station) => `
-        <button type="button" class="route-pill ${station === state.outboundFrom ? 'is-active' : ''}" data-outbound-from="${station}">${escapeHtml(stationLabel(station))} - ${escapeHtml(stationLabel('machuPicchu'))}</button>
-      `).join('');
-    }
-    if (retWrap) {
-      retWrap.innerHTML = STATION_OPTIONS.map((station) => `
-        <button type="button" class="route-pill ${station === state.returnTo ? 'is-active' : ''}" data-return-to="${station}">${escapeHtml(stationLabel('machuPicchu'))} - ${escapeHtml(stationLabel(station))}</button>
-      `).join('');
-    }
-  }
-
   function renderSearchState() {
-    state.locale = getLocale();
-    const paxParts = [`${state.adults} ${state.adults === 1 ? t('pax.adult') : t('pax.adults')}`];
-    if (state.children) paxParts.push(`${state.children} ${state.children === 1 ? t('pax.child') : t('pax.children')}`);
-    $('#paxLabel').textContent = paxParts.join(', ');
+    const paxLabel = `${state.adults} adulto${state.adults === 1 ? '' : 's'}${state.children ? `, ${state.children} niño${state.children === 1 ? '' : 's'}` : ''}`;
+    $('#paxLabel').textContent = paxLabel;
     $('#adultCount').textContent = state.adults;
     $('#childCount').textContent = state.children;
-    $('#paxToggle').setAttribute('aria-expanded', String(!$('#paxPanel').hidden));
-
-    $$('.trip-tab').forEach((tab) => {
-      const input = $('input', tab);
-      tab.classList.toggle('is-active', input?.checked);
-    });
+    const tripSelect = $('#tripTypeSelect');
+    if (tripSelect) tripSelect.value = state.tripType;
 
     $$('.return-field').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
-    $$('.return-route-block').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
+    $('#returnBlock').hidden = state.tripType !== 'roundtrip';
     $('#returnDate').required = state.tripType === 'roundtrip';
-    $('#outboundRouteLabel').textContent = `${stationLabel(state.outboundFrom, true)} → ${stationLabel('machuPicchu')}`;
-    $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}`;
+    $('#outboundRouteLabel').textContent = `${STATION_LABELS[state.outboundFrom]} → Machu Picchu`;
+    $('#returnRouteLabel').textContent = `Machu Picchu → ${STATION_LABELS[state.returnTo]}`;
 
     const companyRule = $('#companyRuleNote');
-    if (companyRule) {
-      if (state.selected.outbound) {
-        const company = state.selected.outbound.companyName || state.selected.outbound.company || '';
-        companyRule.textContent = t('results.sameCompany').replace('{company}', company);
-      } else {
-        companyRule.textContent = t('results.companyNote');
-      }
+    if (state.selected.outbound) {
+      companyRule.textContent = `Como elegiste ${state.selected.outbound.companyName || state.selected.outbound.company}, el retorno mostrará solo trenes de la misma empresa.`;
+    } else {
+      companyRule.textContent = 'Primero elige el tren de ida para filtrar el retorno por la misma empresa.';
     }
 
     renderChildAges();
-    renderStationPills();
-    applyTrainTranslations();
   }
 
   function renderChildAges() {
     const wrapper = $('#childAges');
-    if (!wrapper) return;
     wrapper.innerHTML = '';
     state.childAges = state.childAges.slice(0, state.children);
     while (state.childAges.length < state.children) state.childAges.push(6);
     state.childAges.forEach((age, index) => {
       const label = document.createElement('label');
-      label.innerHTML = `<span>${escapeHtml(t('pax.ageChild'))} ${index + 1}</span><select data-child-age="${index}">${Array.from({ length: 9 }, (_, i) => i + 3).map((n) => `<option value="${n}" ${n === Number(age) ? 'selected' : ''}>${n}</option>`).join('')}</select>`;
+      label.innerHTML = `<span>Edad niño ${index + 1}</span><select data-child-age="${index}">${Array.from({ length: 9 }, (_, i) => i + 3).map((n) => `<option value="${n}" ${n === Number(age) ? 'selected' : ''}>${n} años</option>`).join('')}</select>`;
       wrapper.appendChild(label);
     });
   }
 
   function renderResults() {
     renderSearchState();
+    renderFlowState();
     renderTrainList('outbound', $('#outboundResults'));
-    const shouldShowReturn = state.tripType === 'roundtrip' && Boolean(state.selected.outbound);
-    $('#returnBlock').hidden = !shouldShowReturn;
-    if (shouldShowReturn) renderTrainList('return', $('#returnResults'));
-    renderExtrasState();
+    if (state.tripType === 'roundtrip') renderTrainList('return', $('#returnResults'));
+    renderSelectedChoiceBoxes();
+    renderExtrasVisibility();
     renderSummary();
+  }
+
+  function renderFlowState() {
+    const outboundResults = $('#outboundResults');
+    const returnResults = $('#returnResults');
+    const returnBlock = $('#returnBlock');
+    const outboundBox = $('#outboundSelectedBox');
+    const returnBox = $('#returnSelectedBox');
+
+    outboundResults.hidden = state.currentStep !== 'outbound';
+    outboundBox.hidden = !state.selected.outbound || state.currentStep === 'outbound';
+
+    if (state.tripType !== 'roundtrip') {
+      returnBlock.hidden = true;
+      returnResults.hidden = true;
+      returnBox.hidden = true;
+      return;
+    }
+
+    returnBlock.hidden = !state.selected.outbound && state.currentStep !== 'return';
+    returnResults.hidden = state.currentStep !== 'return';
+    returnBox.hidden = !state.selected.return || state.currentStep === 'return';
+  }
+
+  function renderSelectedChoiceBoxes() {
+    const outboundBox = $('#outboundSelectedBox');
+    const returnBox = $('#returnSelectedBox');
+    outboundBox.innerHTML = state.selected.outbound ? selectedChoiceHtml('Tren de ida seleccionado', state.selected.outbound, 'outbound') : '';
+    returnBox.innerHTML = state.selected.return ? selectedChoiceHtml('Tren de retorno seleccionado', state.selected.return, 'return') : '';
+  }
+
+  function selectedChoiceHtml(title, train, direction) {
+    return `<article class="selected-choice-card">
+      <img src="${escapeHtml(getTrainImage(train))}" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="${escapeHtml(train.serviceName || 'Tren')}" loading="lazy">
+      <div>
+        <span>${escapeHtml(title)}</span>
+        <h3>${escapeHtml(train.companyName || train.company)} · ${escapeHtml(train.serviceName || train.category || 'Tren')}</h3>
+        <p>${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</p>
+      </div>
+      <strong>${money(getTrainTotal(train))}</strong>
+      <button type="button" class="secondary-button" data-modify-train="${direction}">Modificar ${direction === 'outbound' ? 'ida' : 'retorno'}</button>
+    </article>`;
   }
 
   function renderTrainList(direction, container) {
     const trains = getFilteredTrains(direction);
     const selectedCode = state.selected[direction]?.code;
     if (!trains.length) {
-      container.innerHTML = `<div class="empty-state"><strong>${escapeHtml(t('results.noTrainsTitle'))}</strong><span>${escapeHtml(t('results.noTrainsText'))}</span></div>`;
+      container.innerHTML = `<div class="empty-state"><strong>No encontramos horarios para esta ruta.</strong><span>Prueba otra estación o consúltanos para revisar disponibilidad manual.</span></div>`;
       return;
     }
 
@@ -298,56 +266,50 @@
       const selected = train.code === selectedCode;
       const adult = getTrainPrice(train, 'adult');
       const child = getTrainPrice(train, 'child');
+      const total = getTrainTotal(train);
       const logo = getCompanyLogo(train);
-      const service = train.serviceName || train.category || t('results.train');
-      const category = train.category ? train.category.replace(/_/g, ' ') : '';
+      const image = getTrainImage(train);
+      const category = train.category ? train.category.replace(/_/g, ' ') : 'tren turístico';
       return `
-        <article class="train-card ${selected ? 'is-selected' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${selected ? 'true' : 'false'}">
-          <div class="select-rail"><span class="select-dot" aria-hidden="true"></span></div>
+        <article class="train-card ${selected ? 'is-selected' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}">
+          <div class="train-media">
+            <img class="train-photo" src="${escapeHtml(image)}" onerror="this.src='../assets/img/machu-picchu/machu-picchu-hero.jpg'" alt="${escapeHtml(train.serviceName || 'Tren a Machu Picchu')}" loading="lazy">
+            <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
+          </div>
           <div class="train-card-body">
             <div class="train-company">
-              <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
-              <div class="train-company-text">
-                <b>${escapeHtml(service)}</b>
-                <small>${escapeHtml(train.companyName || train.company || category)}</small>
-              </div>
+              <b>${escapeHtml(train.serviceName || train.category || 'Tren')}</b>
+              <span class="badge ${category.includes('vistadome') || category.includes('prime') || category.includes('hiram') ? 'gold' : ''}">${escapeHtml(category)}</span>
             </div>
             <div class="schedule-line">
-              <div class="time-box"><small>${escapeHtml(t('results.departure'))}</small><strong>${escapeHtml(train.departureTime)}</strong><span>${escapeHtml(train.departureStation)}</span></div>
+              <div class="time-box"><small>Salida</small><strong>${escapeHtml(train.departureTime)}</strong><span>${escapeHtml(train.departureStation)}</span></div>
               <span class="duration">${escapeHtml(durationText(train.departureTime, train.arrivalTime))}</span>
-              <div class="time-box"><small>${escapeHtml(t('results.arrival'))}</small><strong>${escapeHtml(train.arrivalTime)}</strong><span>${escapeHtml(train.arrivalStation)}</span></div>
+              <div class="time-box"><small>Llegada</small><strong>${escapeHtml(train.arrivalTime)}</strong><span>${escapeHtml(train.arrivalStation)}</span></div>
             </div>
             <div class="price-box">
-              <div class="fare-line"><small>${escapeHtml(t('results.adult'))}</small><strong>${money(adult)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>
-              ${state.children ? `<div class="fare-line child-fare"><small>${escapeHtml(t('results.child'))}</small><strong>${money(child)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>` : ''}
+              <small>Adulto ${money(adult)}${state.children ? ` · Niño ${money(child)}` : ''}</small>
+              <strong>${money(total)}</strong>
+              <em>Total para ${getPaxTotal()} pasajero${getPaxTotal() === 1 ? '' : 's'}</em>
             </div>
+          </div>
+          <div class="train-action-row">
+            <button type="button" class="train-select-button ${selected ? 'is-selected' : ''}" data-select-train="${escapeHtml(train.code)}" data-direction="${direction}">${selected ? 'Seleccionar este tren' : 'Ver y seleccionar'}</button>
           </div>
         </article>`;
     }).join('');
   }
 
-  function renderExtrasState() {
-    const canShowExtras = canCheckout();
-    $('#summaryExtras').hidden = !canShowExtras;
-    const guideSelect = $('#guideCircuit');
-    if (guideSelect) {
-      const circuit2 = guideSelect.querySelector('option[value="circuit2"]');
-      if (circuit2) {
-        circuit2.disabled = state.tripType !== 'roundtrip';
-        circuit2.textContent = state.tripType === 'roundtrip' ? t('extras.circuit2') : t('extras.circuit2Disabled');
-        if (state.tripType !== 'roundtrip' && state.extras.guideCircuit === 'circuit2') {
-          state.extras.guideCircuit = 'none';
-          guideSelect.value = 'none';
-        }
+  function renderExtrasVisibility() {
+    const hasRequired = state.tripType === 'oneway' ? Boolean(state.selected.outbound) : Boolean(state.selected.outbound && state.selected.return);
+    $('#extrasBlock').hidden = !hasRequired;
+    const circuit2 = $('input[name="guideCircuit"][value="circuit2"]');
+    if (circuit2) {
+      circuit2.disabled = state.tripType !== 'roundtrip';
+      if (state.tripType !== 'roundtrip' && circuit2.checked) {
+        state.extras.guideCircuit = 'none';
+        $('input[name="guideCircuit"][value="none"]').checked = true;
       }
-      guideSelect.value = state.extras.guideCircuit;
     }
-    const consetur = $('#conseturBusExtra');
-    const breakfast = $('#breakfastExtra');
-    const lunch = $('#lunchExtra');
-    if (consetur) consetur.checked = state.extras.conseturBus;
-    if (breakfast) breakfast.checked = state.extras.breakfast;
-    if (lunch) lunch.checked = state.extras.lunch;
   }
 
   function calculateExtras() {
@@ -356,35 +318,43 @@
     let total = 0;
 
     if (state.extras.guideCircuit === 'circuit2') {
-      lines.push({ label: t('extras.guideCircuit2Line'), detail: t('extras.freeRoundtrip'), amount: 0 });
+      const price = state.tripType === 'roundtrip' ? 0 : 15.90 * pax;
+      lines.push({ label: 'Guiado Machu Picchu Circuito 2', detail: state.tripType === 'roundtrip' ? 'Gratis por compra ida y vuelta' : 'Grupo reducido', amount: price });
+      total += price;
     }
     if (state.extras.guideCircuit === 'circuit1') {
       const amount = EXTRAS.guideCircuit1 * pax;
-      lines.push({ label: t('extras.guideCircuit1Line'), detail: t('extras.reducedGroup'), amount });
+      lines.push({ label: 'Guiado Machu Picchu Circuito 1', detail: 'Grupo reducido 4 a 6 pax', amount });
       total += amount;
     }
     if (state.extras.guideCircuit === 'circuit3') {
       const amount = EXTRAS.guideCircuit3 * pax;
-      lines.push({ label: t('extras.guideCircuit3Line'), detail: t('extras.reducedGroup'), amount });
+      lines.push({ label: 'Guiado Machu Picchu Circuito 3', detail: 'Grupo reducido 4 a 6 pax', amount });
       total += amount;
     }
-    if (state.extras.conseturBus) {
+
+    if (state.extras.consetur === 'up') {
+      const amount = EXTRAS.conseturUp * pax;
+      lines.push({ label: 'Bus Consetur subida', detail: 'USD 12.00 p/p', amount }); total += amount;
+    }
+    if (state.extras.consetur === 'down') {
+      const amount = EXTRAS.conseturDown * pax;
+      lines.push({ label: 'Bus Consetur bajada', detail: 'USD 12.00 p/p', amount }); total += amount;
+    }
+    if (state.extras.consetur === 'roundtrip') {
       const amount = EXTRAS.conseturRoundtrip * pax;
-      lines.push({ label: t('extras.conseturLine'), detail: 'USD 24.00 p/p', amount });
-      total += amount;
+      lines.push({ label: 'Bus Consetur subida y bajada', detail: 'USD 24.00 p/p', amount }); total += amount;
     }
     if (state.extras.breakfast) {
       const amount = EXTRAS.breakfast * pax;
-      lines.push({ label: t('extras.breakfastLine'), detail: t('extras.breakfastDesc'), amount });
-      total += amount;
+      lines.push({ label: 'Desayuno Power Peruano', detail: 'Inca Kola + pan con chicharrón o pollo', amount }); total += amount;
     }
     if (state.extras.lunch) {
       const amount = EXTRAS.lunch * pax;
-      lines.push({ label: t('extras.lunchLine'), detail: t('extras.lunchDesc'), amount });
-      total += amount;
+      lines.push({ label: 'Almuerzo Power Peruano', detail: 'Pollo a la brasa + chaufa + papas + Inca Kola', amount }); total += amount;
     }
-    lines.push({ label: t('extras.assistance'), detail: t('extras.assistanceDetail'), amount: 0 });
-    return { total: round(total), lines };
+    lines.push({ label: 'Asistencia personalizada My Cusco Trip', detail: 'Incluida sin costo', amount: 0, system: true });
+    return { total, lines };
   }
 
   function calculateTotals() {
@@ -392,7 +362,7 @@
     const returned = state.tripType === 'roundtrip' ? getTrainTotal(state.selected.return) : 0;
     const extras = calculateExtras();
     const subtotal = outbound + returned + extras.total;
-    return { outbound, returned, extras, total: round(subtotal) };
+    return { outbound, returned, extras, total: subtotal };
   }
 
   function renderSummary() {
@@ -401,24 +371,23 @@
     const lines = [];
 
     if (state.selected.outbound) {
-      lines.push(summaryItem(t('summary.outbound'), `${state.selected.outbound.companyName || state.selected.outbound.company} · ${state.selected.outbound.serviceName}`, `${state.selected.outbound.departureStation} ${state.selected.outbound.departureTime} → ${state.selected.outbound.arrivalStation} ${state.selected.outbound.arrivalTime}`, totals.outbound));
+      lines.push(summaryItem('Tren de ida', `${state.selected.outbound.companyName || state.selected.outbound.company} · ${state.selected.outbound.serviceName}`, `${state.selected.outbound.departureStation} ${state.selected.outbound.departureTime} → ${state.selected.outbound.arrivalStation} ${state.selected.outbound.arrivalTime}`, totals.outbound));
     } else {
-      lines.push(`<p>${escapeHtml(t('summary.selectOutbound'))}</p>`);
+      lines.push('<p>Selecciona un tren de ida para continuar.</p>');
     }
 
     if (state.tripType === 'roundtrip') {
       if (state.selected.return) {
-        lines.push(summaryItem(t('summary.return'), `${state.selected.return.companyName || state.selected.return.company} · ${state.selected.return.serviceName}`, `${state.selected.return.departureStation} ${state.selected.return.departureTime} → ${state.selected.return.arrivalStation} ${state.selected.return.arrivalTime}`, totals.returned));
-      } else if (state.selected.outbound) {
-        lines.push(`<p>${escapeHtml(t('summary.selectReturn'))}</p>`);
+        lines.push(summaryItem('Tren de retorno', `${state.selected.return.companyName || state.selected.return.company} · ${state.selected.return.serviceName}`, `${state.selected.return.departureStation} ${state.selected.return.departureTime} → ${state.selected.return.arrivalStation} ${state.selected.return.arrivalTime}`, totals.returned));
+      } else {
+        lines.push('<p>Selecciona un tren de retorno de la misma empresa.</p>');
       }
     }
 
-    if (canCheckout()) {
-      totals.extras.lines.forEach((line) => {
-        lines.push(summaryItem(t('summary.extra'), line.label, line.detail, line.amount));
-      });
-    }
+    totals.extras.lines.forEach((line) => {
+      if (line.system) return;
+      lines.push(summaryItem('Extra', line.label, line.detail, line.amount));
+    });
 
     content.innerHTML = lines.join('');
     $('#summaryTotal').textContent = money(totals.total);
@@ -426,8 +395,8 @@
   }
 
   function summaryItem(kicker, title, detail, amount) {
-    const amountText = amount === 0 ? t('summary.included') : money(amount);
-    return `<div class="summary-item"><strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small class="summary-amount">${escapeHtml(amountText)}</small></div>`;
+    const logo = title.toLowerCase().includes('inca rail') ? '../assets/img/trains/inca-rail.png' : (title.toLowerCase().includes('perurail') || title.toLowerCase().includes('peru rail') ? '../assets/img/trains/perurail.png' : '');
+    return `<div class="summary-item">${logo ? `<img src="${logo}" alt="Empresa ferroviaria" loading="lazy">` : ''}<strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small>${money(amount)}</small></div>`;
   }
 
   function canCheckout() {
@@ -440,38 +409,31 @@
     const train = state.data.trains.find((item) => item.code === code);
     if (!train) return;
     state.selected[direction] = train;
+    if (direction === 'outbound' && state.selected.return) {
+      const outOp = getTrainOperator(train);
+      const retOp = getTrainOperator(state.selected.return);
+      if (outOp !== retOp) state.selected.return = null;
+    }
     if (direction === 'outbound') {
-      if (state.selected.return) {
-        const outOp = getTrainOperator(train);
-        const retOp = getTrainOperator(state.selected.return);
-        if (outOp !== retOp) state.selected.return = null;
-      }
-      if (state.tripType === 'roundtrip') {
-        setTimeout(() => $('#returnBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
-      }
+      state.currentStep = state.tripType === 'roundtrip' ? 'return' : 'summary';
+      setTimeout(() => $('#returnBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+    }
+    if (direction === 'return') {
+      state.currentStep = 'summary';
+      setTimeout(() => $('#extrasBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
     }
     renderResults();
   }
 
-  function getRegionName(code) {
-    try {
-      const display = new Intl.DisplayNames([state.locale === 'en' ? 'en' : 'es'], { type: 'region' });
-      return display.of(code) || code;
-    } catch (error) {
-      return code === 'PE' ? (state.locale === 'en' ? 'Peru' : 'Perú') : code;
+  function modifyTrain(direction) {
+    state.currentStep = direction === 'return' ? 'return' : 'outbound';
+    if (direction === 'outbound') {
+      state.selected.outbound = null;
+      state.selected.return = null;
     }
-  }
-
-  function countryOptions(selected = 'PE') {
-    return COUNTRY_CODES
-      .map((code) => ({ code, name: getRegionName(code) }))
-      .sort((a, b) => a.name.localeCompare(b.name, state.locale === 'en' ? 'en' : 'es'))
-      .map(({ code, name }) => `<option value="${escapeHtml(name)}" data-country-code="${code}" ${code === selected ? 'selected' : ''}>${escapeHtml(name)}</option>`)
-      .join('');
-  }
-
-  function phoneCodeOptions(selected = '+51') {
-    return PHONE_CODES.map(([country, code]) => `<option value="${escapeHtml(code)}" ${code === selected ? 'selected' : ''}>${escapeHtml(code)} · ${escapeHtml(country)}</option>`).join('');
+    if (direction === 'return') state.selected.return = null;
+    renderResults();
+    setTimeout(() => (direction === 'return' ? $('#returnBlock') : $('.results-layout'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
   }
 
   function buildPassengerForms() {
@@ -479,21 +441,19 @@
     const total = getPaxTotal();
     wrapper.innerHTML = Array.from({ length: total }, (_, i) => {
       const isLead = i === 0;
-      const type = i < state.adults ? t('modal.adult') : t('modal.child');
-      const whatsappLabel = isLead ? `${t('modal.whatsapp')} *` : t('modal.whatsappOptional');
-      const emailLabel = isLead ? `${t('modal.email')} *` : t('modal.emailOptional');
+      const type = i < state.adults ? 'Adulto' : 'Niño';
       return `
         <section class="passenger-box" data-passenger-index="${i}">
-          <h3>${escapeHtml(t('modal.passenger'))} ${i + 1} · ${escapeHtml(type)}${isLead ? ` · ${escapeHtml(t('modal.lead'))}` : ''}</h3>
+          <h3>Pasajero ${i + 1} · ${type}${isLead ? ' · Titular' : ''}</h3>
           <div class="passenger-grid">
-            <label><span>${escapeHtml(t('modal.firstName'))} *</span><input name="firstName_${i}" required autocomplete="given-name"></label>
-            <label><span>${escapeHtml(t('modal.lastName'))} *</span><input name="lastName_${i}" required autocomplete="family-name"></label>
-            <label><span>${escapeHtml(t('modal.nationality'))} *</span><select name="nationality_${i}" required>${countryOptions('PE')}</select></label>
-            <label><span>${escapeHtml(t('modal.docType'))} *</span><select name="docType_${i}" required><option value="DNI">${escapeHtml(t('modal.dni'))}</option><option value="PASSPORT">${escapeHtml(t('modal.passport'))}</option><option value="CE">${escapeHtml(t('modal.ce'))}</option><option value="OTHER">${escapeHtml(t('modal.other'))}</option></select></label>
-            <label><span>${escapeHtml(t('modal.docNumber'))} *</span><input name="docNumber_${i}" required></label>
-            <label><span>${escapeHtml(t('modal.birthDate'))} *</span><input name="birthDate_${i}" type="date" required></label>
-            <label class="phone-field"><span>${escapeHtml(whatsappLabel)}</span><div class="phone-group"><select name="whatsappCode_${i}" ${isLead ? 'required' : ''} aria-label="${escapeHtml(t('modal.phoneCode'))}">${phoneCodeOptions('+51')}</select><input name="whatsappNumber_${i}" ${isLead ? 'required' : ''} autocomplete="tel" placeholder="${escapeHtml(t('modal.phoneNumber'))}"></div></label>
-            <label><span>${escapeHtml(emailLabel)}</span><input name="email_${i}" type="email" ${isLead ? 'required' : ''} autocomplete="email"></label>
+            <label><span>Nombres</span><input name="firstName_${i}" required autocomplete="given-name"></label>
+            <label><span>Apellidos</span><input name="lastName_${i}" required autocomplete="family-name"></label>
+            <label><span>Nacionalidad</span><input name="nationality_${i}" required value="Perú"></label>
+            <label><span>Tipo documento</span><select name="docType_${i}" required><option value="DNI">DNI</option><option value="PASSPORT">Pasaporte</option><option value="CE">Carné de Extranjería</option><option value="OTHER">Otro</option></select></label>
+            <label><span>Número documento</span><input name="docNumber_${i}" required></label>
+            <label><span>Edad / tipo</span><input name="passengerType_${i}" readonly value="${type}${type === 'Niño' ? ` · ${state.childAges[i - state.adults] || ''} años` : ''}"></label>
+            <label><span>WhatsApp ${isLead ? '*' : '(opcional)'}</span><input name="whatsapp_${i}" ${isLead ? 'required' : ''} autocomplete="tel"></label>
+            <label><span>Correo ${isLead ? '*' : '(opcional)'}</span><input name="email_${i}" type="email" ${isLead ? 'required' : ''} autocomplete="email"></label>
           </div>
         </section>`;
     }).join('');
@@ -501,25 +461,18 @@
 
   function collectPassengers(form) {
     const total = getPaxTotal();
-    return Array.from({ length: total }, (_, i) => {
-      const whatsappCode = clean(form[`whatsappCode_${i}`]?.value);
-      const whatsappNumber = clean(form[`whatsappNumber_${i}`]?.value);
-      return {
-        index: i + 1,
-        type: i < state.adults ? 'adult' : 'child',
-        firstName: clean(form[`firstName_${i}`]?.value),
-        lastName: clean(form[`lastName_${i}`]?.value),
-        nationality: clean(form[`nationality_${i}`]?.value),
-        docType: clean(form[`docType_${i}`]?.value),
-        docNumber: clean(form[`docNumber_${i}`]?.value),
-        birthDate: clean(form[`birthDate_${i}`]?.value),
-        age: i < state.adults ? null : Number(state.childAges[i - state.adults] || 0),
-        whatsappCode,
-        whatsappNumber,
-        whatsapp: clean(`${whatsappCode} ${whatsappNumber}`),
-        email: clean(form[`email_${i}`]?.value)
-      };
-    });
+    return Array.from({ length: total }, (_, i) => ({
+      index: i + 1,
+      type: i < state.adults ? 'adult' : 'child',
+      firstName: clean(form[`firstName_${i}`]?.value),
+      lastName: clean(form[`lastName_${i}`]?.value),
+      nationality: clean(form[`nationality_${i}`]?.value),
+      docType: clean(form[`docType_${i}`]?.value),
+      docNumber: clean(form[`docNumber_${i}`]?.value),
+      age: i < state.adults ? null : Number(state.childAges[i - state.adults] || 0),
+      whatsapp: clean(form[`whatsapp_${i}`]?.value),
+      email: clean(form[`email_${i}`]?.value)
+    }));
   }
 
   function buildOrderPayload(passengers) {
@@ -589,9 +542,11 @@
     return `${CONFIG.bookingPrefix || 'CUZ-T'}-${hexTime}-${random}`;
   }
 
+  function round(value) { return Math.round((Number(value) || 0) * 100) / 100; }
+
   async function sendToAppsScript(action, payload) {
     if (!CONFIG.appsScriptUrl || CONFIG.appsScriptUrl.includes('PEGAR_AQUI')) {
-      return { ok: false, message: t('modal.missingAppsScript') };
+      return { ok: false, message: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.' };
     }
     const res = await fetch(CONFIG.appsScriptUrl, {
       method: 'POST',
@@ -599,7 +554,7 @@
       body: JSON.stringify({ action, payload })
     });
     const text = await res.text();
-    try { return JSON.parse(text); } catch (err) { return { ok: false, message: t('modal.invalidResponse'), raw: text }; }
+    try { return JSON.parse(text); } catch (err) { return { ok: false, message: 'Apps Script devolvió una respuesta no válida.', raw: text }; }
   }
 
   function showPaymentMessage(message, type = 'info') {
@@ -615,34 +570,38 @@
     if (!form.reportValidity()) return;
     const passengers = collectPassengers(form.elements);
     const payload = buildOrderPayload(passengers);
-    showPaymentMessage(t('modal.creating'), 'info');
+    showPaymentMessage('Creando orden de reserva...', 'info');
     localStorage.setItem('mct_train_pending_order', JSON.stringify(payload));
 
     const orderResult = await sendToAppsScript('createTrainOrder', payload);
     if (!orderResult.ok) {
-      showPaymentMessage(orderResult.message || t('modal.orderError'), 'error');
+      showPaymentMessage(orderResult.message || 'No se pudo crear la orden.', 'error');
       return;
     }
 
-    showPaymentMessage(t('modal.connecting'), 'info');
+    showPaymentMessage('Conectando con PayPal...', 'info');
     const paypalResult = await sendToAppsScript('createPayPalTrainOrder', { code: payload.code, total: payload.amounts.totalUsd, currency: 'USD' });
     if (paypalResult.ok && paypalResult.approvalUrl) {
       localStorage.setItem('mct_train_last_code', payload.code);
       window.location.assign(paypalResult.approvalUrl);
       return;
     }
-    showPaymentMessage(paypalResult.message || t('modal.paypalError'), 'error');
+    showPaymentMessage(paypalResult.message || 'PayPal no devolvió enlace de aprobación.', 'error');
   }
 
   function handleRouteChange() {
+    state.outboundFrom = $('#outboundFrom').value;
+    state.returnTo = $('#returnTo').value;
     state.selected.outbound = null;
     state.selected.return = null;
+    state.currentStep = 'outbound';
     renderResults();
   }
 
   function handleTripTypeChange() {
-    state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
+    state.tripType = $('#tripTypeSelect')?.value || 'roundtrip';
     if (state.tripType === 'oneway') state.selected.return = null;
+    state.currentStep = state.selected.outbound ? (state.tripType === 'roundtrip' ? 'return' : 'summary') : 'outbound';
     renderResults();
   }
 
@@ -654,37 +613,17 @@
       renderResults();
       $('.results-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-
-    $$('input[name="tripType"]').forEach((input) => input.addEventListener('change', handleTripTypeChange));
+    $('#tripTypeSelect')?.addEventListener('change', handleTripTypeChange);
+    $('#outboundFrom').addEventListener('change', handleRouteChange);
+    $('#returnTo').addEventListener('change', handleRouteChange);
     $('#outboundDate').addEventListener('change', (e) => { state.outboundDate = e.target.value; });
     $('#returnDate').addEventListener('change', (e) => { state.returnDate = e.target.value; });
 
-    $('#paxToggle').addEventListener('click', () => {
-      $('#paxPanel').hidden = !$('#paxPanel').hidden;
-      $('#paxToggle').setAttribute('aria-expanded', String(!$('#paxPanel').hidden));
-    });
-
+    $('#paxToggle').addEventListener('click', () => { $('#paxPanel').hidden = !$('#paxPanel').hidden; });
     document.addEventListener('click', (event) => {
-      if (!event.target.closest('.pax-field')) {
-        $('#paxPanel').hidden = true;
-        $('#paxToggle')?.setAttribute('aria-expanded', 'false');
-      }
-
-      const outbound = event.target.closest('[data-outbound-from]');
-      if (outbound) {
-        state.outboundFrom = outbound.dataset.outboundFrom;
-        handleRouteChange();
-        return;
-      }
-
-      const returned = event.target.closest('[data-return-to]');
-      if (returned) {
-        state.returnTo = returned.dataset.returnTo;
-        state.selected.return = null;
-        renderResults();
-        return;
-      }
-
+      if (!event.target.closest('.pax-field')) $('#paxPanel').hidden = true;
+    });
+    document.addEventListener('click', (event) => {
       const step = event.target.closest('[data-pax]');
       if (step) {
         const target = step.dataset.pax;
@@ -694,38 +633,25 @@
         renderResults();
         return;
       }
-
-      const card = event.target.closest('.train-card[data-train-code]');
-      if (card) {
-        selectTrain(card.dataset.direction, card.dataset.trainCode);
-        return;
-      }
-
+      const btn = event.target.closest('[data-select-train]');
+      if (btn) selectTrain(btn.dataset.direction, btn.dataset.selectTrain);
+      const modify = event.target.closest('[data-modify-train]');
+      if (modify) modifyTrain(modify.dataset.modifyTrain);
+      const detail = event.target.closest('[data-extra-detail]');
+      if (detail) openExtraDetail(detail.dataset.extraDetail);
       if (event.target.matches('[data-close-modal]')) closeModal();
+      if (event.target.matches('[data-close-extra-modal]')) closeExtraDetailModal();
     });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        const card = event.target.closest?.('.train-card[data-train-code]');
-        if (card) {
-          event.preventDefault();
-          selectTrain(card.dataset.direction, card.dataset.trainCode);
-        }
-      }
-      if (event.key === 'Escape' && !$('#passengerModal').hidden) closeModal();
-    });
-
     document.addEventListener('change', (event) => {
       if (event.target.matches('[data-child-age]')) {
         state.childAges[Number(event.target.dataset.childAge)] = Number(event.target.value);
         return;
       }
-      if (event.target.id === 'guideCircuit') { state.extras.guideCircuit = event.target.value; renderSummary(); }
-      if (event.target.id === 'conseturBusExtra') { state.extras.conseturBus = event.target.checked; renderSummary(); }
+      if (event.target.matches('input[name="guideCircuit"]')) { state.extras.guideCircuit = event.target.value; renderSummary(); }
+      if (event.target.id === 'conseturOption') { state.extras.consetur = event.target.value; renderSummary(); }
       if (event.target.id === 'breakfastExtra') { state.extras.breakfast = event.target.checked; renderSummary(); }
       if (event.target.id === 'lunchExtra') { state.extras.lunch = event.target.checked; renderSummary(); }
     });
-
     $('#checkoutButton').addEventListener('click', () => {
       if (!canCheckout()) return;
       buildPassengerForms();
@@ -733,12 +659,32 @@
       $('#passengerModal').hidden = false;
     });
     $('#passengerForm').addEventListener('submit', handlePassengerSubmit);
+  }
 
-    window.addEventListener('mct:i18n-ready', () => {
-      state.locale = getLocale();
-      applyTrainTranslations();
-      renderResults();
-    });
+  function openExtraDetail(kind) {
+    const data = {
+      breakfast: {
+        title: 'Desayuno Power Peruano',
+        image: '../assets/img/trenes/extras/desayuno-power.jpg',
+        text: 'Un desayuno contundente y práctico para salir con energía hacia Machu Picchu: Inca Kola más pan con chicharrón o pan con pollo. Ideal para viajes temprano y para no perder tiempo antes del ingreso.'
+      },
+      lunch: {
+        title: 'Almuerzo Power Peruano',
+        image: '../assets/img/trenes/extras/almuerzo-power.jpg',
+        text: 'Almuerzo peruano en Aguas Calientes: ¼ de pollo a la brasa, arroz chaufa, papas fritas e Inca Kola de 500 ml. Una opción completa, rápida y sabrosa para recargar energías después de la visita.'
+      }
+    }[kind];
+    if (!data) return;
+    $('#extraDetailTitle').textContent = data.title;
+    $('#extraDetailText').textContent = data.text;
+    const img = $('#extraDetailImage');
+    img.src = data.image;
+    img.onerror = () => { img.src = '../assets/img/machu-picchu/machu-picchu-hero.jpg'; };
+    $('#extraDetailModal').hidden = false;
+  }
+
+  function closeExtraDetailModal() {
+    $('#extraDetailModal').hidden = true;
   }
 
   function closeModal() {
@@ -761,7 +707,6 @@
     $('#returnDate').value = retDate;
     state.outboundDate = outDate;
     state.returnDate = retDate;
-    applyTrainTranslations();
 
     try {
       await loadTrains();
