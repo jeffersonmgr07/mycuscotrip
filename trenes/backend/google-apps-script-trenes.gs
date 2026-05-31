@@ -38,7 +38,7 @@ const ORDER_HEADERS = [
 ];
 
 const PASSENGER_HEADERS = [
-  'fechaRegistro','codigoReserva','indice','tipo','nombres','apellidos','nacionalidad','tipoDocumento','numeroDocumento','edad','whatsapp','correo'
+  'fechaRegistro','codigoReserva','indice','tipo','nombres','apellidos','nacionalidad','tipoDocumento','numeroDocumento','fechaNacimiento','edad','whatsapp','correo'
 ];
 
 const PAYMENT_HEADERS = [
@@ -149,6 +149,7 @@ function createTrainOrder_(order) {
       nacionalidad: p.nationality || '',
       tipoDocumento: p.docType || '',
       numeroDocumento: p.docNumber || '',
+      fechaNacimiento: p.birthDate || '',
       edad: p.age || '',
       whatsapp: p.whatsapp || '',
       correo: p.email || ''
