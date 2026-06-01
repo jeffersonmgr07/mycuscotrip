@@ -47,7 +47,7 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
   const I18N = window.MCTAgenciesI18n || null;
-  const t = (key, fallback = key, vars = null) => I18N?.t ? I18N.t(key, vars) : fallback;
+  const t = (key, fallback = key, vars = null) => { const value = I18N?.t ? I18N.t(key, vars) : ''; return value && value !== key ? value : fallback; };
   const currentLocale = () => I18N?.lang || 'es';
   function readJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
   const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));

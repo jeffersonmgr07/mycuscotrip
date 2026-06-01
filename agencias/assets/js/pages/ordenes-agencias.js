@@ -6,7 +6,7 @@
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
   const I18N = window.MCTAgenciesI18n || null;
-  const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
+  const t = (key, fallback = key, vars = null) => { const value = I18N?.t ? I18N.t(key, vars) : ''; return value && value !== key ? value : fallback; };
   const currentLocale = () => I18N?.lang || 'es';
   const readJSON = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
   let orders = [];
