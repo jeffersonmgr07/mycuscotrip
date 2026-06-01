@@ -53,7 +53,7 @@
         subtitle: 'Por la compra de tus trenes ida y vuelta, accede a beneficios exclusivos, reserva y paga online con asistencia personalizada para disfrutar mejor tu visita.'
       },
       search: {
-        roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
+        roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', returnOnly: 'Solo retorno', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
       },
       routes: { outboundFrom: 'Salida desde', returnTo: 'Retorno hacia' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
@@ -66,7 +66,7 @@
     },
     en: {
       hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Free guided tour inside Machu Picchu', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'When you buy your round-trip train tickets, access exclusive benefits, book and pay online, and enjoy your visit with personalized assistance.' },
-      search: { roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
+      search: { roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', returnOnly: 'Return only', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
       routes: { outboundFrom: 'Departure from', returnTo: 'Return to' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
@@ -265,11 +265,13 @@
       tab.classList.toggle('is-active', input?.checked);
     });
 
-    $$('.return-field').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
-    const shouldShowReturnFilters = state.tripType === 'roundtrip' && Boolean(state.selected.outbound) && !state.selected.return;
+    $$('.return-field').forEach((el) => { el.style.display = (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? '' : 'none'; });
+    const shouldShowOutboundFilters = state.tripType !== 'returnonly' && !state.selected.outbound;
+    const shouldShowReturnFilters = (state.tripType === 'returnonly') || (state.tripType === 'roundtrip' && Boolean(state.selected.outbound) && !state.selected.return);
+    $$('.outbound-route-block').forEach((el) => { el.style.display = shouldShowOutboundFilters ? '' : 'none'; });
     $$('.return-route-block').forEach((el) => { el.style.display = shouldShowReturnFilters ? '' : 'none'; });
-    $$('.outbound-route-block').forEach((el) => { el.style.display = state.selected.outbound ? 'none' : ''; });
-    $('#returnDate').required = state.tripType === 'roundtrip';
+    $('#returnDate').required = state.tripType === 'roundtrip' || state.tripType === 'returnonly';
+    $('#outboundDate').required = state.tripType !== 'returnonly';
     $('#outboundRouteLabel').textContent = `${stationLabel(state.outboundFrom, true)} → ${stationLabel('machuPicchu')}`;
     $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}`;
 
@@ -303,10 +305,21 @@
 
   function renderResults() {
     renderSearchState();
-    renderTrainList('outbound', $('#outboundResults'));
-    const shouldShowReturn = state.tripType === 'roundtrip' && Boolean(state.selected.outbound);
-    $('#returnBlock').hidden = !shouldShowReturn;
-    if (shouldShowReturn) renderTrainList('return', $('#returnResults'));
+    const showOutbound = state.tripType !== 'returnonly';
+    const showReturn = state.tripType === 'returnonly' || (state.tripType === 'roundtrip' && Boolean(state.selected.outbound));
+
+    const outboundHeading = $('#outboundResults')?.previousElementSibling;
+    if (outboundHeading) outboundHeading.hidden = !showOutbound;
+    if ($('#outboundResults')) {
+      $('#outboundResults').hidden = !showOutbound;
+      $('#outboundResults').innerHTML = '';
+    }
+    if (showOutbound) renderTrainList('outbound', $('#outboundResults'));
+
+    $('#returnBlock').hidden = !showReturn;
+    if ($('#returnResults')) $('#returnResults').innerHTML = '';
+    if (showReturn) renderTrainList('return', $('#returnResults'));
+
     renderExtrasState();
     renderSummary();
     renderInlineCheckout();
@@ -374,7 +387,8 @@
             <div>
               <strong>${escapeHtml(title)} · ${escapeHtml(train.companyName || train.company || '')} ${escapeHtml(train.serviceName || '')}</strong>
               <small class="selected-train-date">${escapeHtml(formatDateLong(getTravelDate(direction)))}</small>
-              <small>${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</small>
+              <small class="selected-train-route">${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</small>
+              <small class="selected-train-price">${escapeHtml(money(getTrainTotal(train)))}</small>
             </div>
           </div>
         </div>
@@ -444,8 +458,8 @@
   }
 
   function calculateTotals() {
-    const outbound = getTrainTotal(state.selected.outbound);
-    const returned = state.tripType === 'roundtrip' ? getTrainTotal(state.selected.return) : 0;
+    const outbound = state.tripType === 'returnonly' ? 0 : getTrainTotal(state.selected.outbound);
+    const returned = (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? getTrainTotal(state.selected.return) : 0;
     const extras = calculateExtras();
     const subtotal = outbound + returned + extras.total;
     return { outbound, returned, extras, total: round(subtotal) };
@@ -495,6 +509,7 @@
   }
 
   function canCheckout() {
+    if (state.tripType === 'returnonly') return Boolean(state.selected.return);
     if (!state.selected.outbound) return false;
     if (state.tripType === 'roundtrip' && !state.selected.return) return false;
     return true;
@@ -515,9 +530,9 @@
       wrap.id = 'inlineCheckoutWrap';
       wrap.className = 'inline-checkout-wrap';
       wrap.innerHTML = `<button id="inlineCheckoutButton" type="button" class="checkout-button inline-checkout-button">${escapeHtml(t('summary.reserveButton'))}</button>`;
-      const returnBlock = $('#returnBlock');
-      returnBlock?.insertAdjacentElement('afterend', wrap);
     }
+    const anchor = state.tripType === 'oneway' ? $('#outboundResults') : $('#returnBlock');
+    anchor?.insertAdjacentElement('afterend', wrap);
     const button = $('#inlineCheckoutButton');
     if (button) button.textContent = t('summary.reserveButton');
     wrap.hidden = !canCheckout();
@@ -685,19 +700,19 @@
       currency: 'USD',
       exchangeRate: CONFIG.exchangeRate,
       tripType: state.tripType,
-      dates: { outbound: state.outboundDate, return: state.tripType === 'roundtrip' ? state.returnDate : '' },
+      dates: { outbound: state.tripType === 'returnonly' ? '' : state.outboundDate, return: (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? state.returnDate : '' },
       route: {
         outboundFrom: state.outboundFrom,
         outboundRoute: getRoute('outbound'),
-        returnTo: state.tripType === 'roundtrip' ? state.returnTo : '',
-        returnRoute: state.tripType === 'roundtrip' ? getRoute('return') : ''
+        returnTo: (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? state.returnTo : '',
+        returnRoute: (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? getRoute('return') : ''
       },
       passengers,
       lead,
       pax: { adults: state.adults, children: state.children, childAges: state.childAges },
       trains: {
-        outbound: serializeTrain(state.selected.outbound),
-        return: state.tripType === 'roundtrip' ? serializeTrain(state.selected.return) : null
+        outbound: state.tripType === 'returnonly' ? null : serializeTrain(state.selected.outbound),
+        return: (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? serializeTrain(state.selected.return) : null
       },
       extras: {
         selected: Object.assign({}, state.extras),
@@ -799,12 +814,17 @@
       state.selected.return = null;
       state.pending.return = null;
     }
+    if (state.tripType === 'returnonly') {
+      state.selected.outbound = null;
+      state.pending.outbound = null;
+    }
     renderResults();
   }
 
   function bindEvents() {
     $('#trainSearchForm').addEventListener('submit', (event) => {
       event.preventDefault();
+      state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
       state.outboundDate = $('#outboundDate').value;
       state.returnDate = $('#returnDate').value;
       state.selected.outbound = null;

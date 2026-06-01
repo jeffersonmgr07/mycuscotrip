@@ -794,3 +794,108 @@ body.mct-trains-page .train-company-text b{
     margin-bottom:2px!important;
   }
 }
+
+/* === AJUSTE SOLO TRENES 20260601-v6 === */
+/* Recupera el hero completo: no se recorta el título principal ni la imagen. */
+body.mct-trains-page .train-hero{
+  min-height:320px!important;
+  height:auto!important;
+  padding:58px clamp(18px,7vw,110px) 112px!important;
+  overflow:visible!important;
+  background-position:center center!important;
+}
+body.mct-trains-page .hero-content h1{
+  display:block!important;
+  font-size:clamp(1.9rem,4vw,3.35rem)!important;
+  line-height:1.03!important;
+  margin:14px 0 12px!important;
+}
+body.mct-trains-page .hero-content p{
+  display:block!important;
+  font-size:1rem!important;
+  line-height:1.5!important;
+}
+body.mct-trains-page .hero-benefits{margin:0 0 12px!important;}
+body.mct-trains-page .hero-benefits span{font-size:.78rem!important;padding:7px 12px!important;}
+
+/* Compactación real del espacio marcado: buscador, filtros y resultados quedan pegados. */
+body.mct-trains-page .search-shell{
+  margin:-76px auto 0!important;
+  padding:0!important;
+}
+body.mct-trains-page .train-search-card{
+  margin:0!important;
+}
+body.mct-trains-page .route-selector{
+  margin:-10px auto -4px!important;
+  padding:0!important;
+  gap:3px!important;
+}
+body.mct-trains-page .route-block{gap:3px!important;margin:0!important;padding:0!important;}
+body.mct-trains-page .route-label{margin:0!important;padding:0!important;line-height:1!important;}
+body.mct-trains-page .route-pills{gap:7px!important;margin:0!important;padding:0!important;}
+body.mct-trains-page .route-pill{min-height:34px!important;padding:0 15px!important;}
+body.mct-trains-page .results-layout{
+  margin:0 auto 64px!important;
+  padding-top:0!important;
+}
+body.mct-trains-page .results-main{gap:10px!important;}
+body.mct-trains-page .section-heading{margin:0!important;padding:0!important;}
+body.mct-trains-page .section-heading h2{margin:0 0 2px!important;}
+body.mct-trains-page .section-heading p{margin:0!important;}
+
+/* Tres opciones de viaje en una sola línea. */
+body.mct-trains-page .trip-tabs{grid-template-columns:repeat(3,1fr)!important;}
+body.mct-trains-page .trip-tab{white-space:nowrap!important;padding:8px 10px!important;}
+body.mct-trains-page .trip-tab span{white-space:nowrap!important;}
+
+/* Más aire a la derecha del precio y del botón. */
+body.mct-trains-page .train-card-body{padding-right:26px!important;}
+body.mct-trains-page .price-box{padding-right:12px!important;margin-right:6px!important;}
+body.mct-trains-page .train-card-action{padding-right:12px!important;}
+body.mct-trains-page .select-train-button{margin-right:4px!important;}
+
+/* En el tren seleccionado: fecha, ruta y precio en líneas separadas. */
+body.mct-trains-page .selected-train-date,
+body.mct-trains-page .selected-train-route,
+body.mct-trains-page .selected-train-price{
+  display:block!important;
+}
+body.mct-trains-page .selected-train-date{
+  color:#3f5748!important;
+  font-weight:900!important;
+  margin-top:4px!important;
+}
+body.mct-trains-page .selected-train-route{
+  color:var(--train-muted)!important;
+  font-weight:700!important;
+  margin-top:2px!important;
+}
+body.mct-trains-page .selected-train-price{
+  color:var(--train-green)!important;
+  font-weight:900!important;
+  margin-top:3px!important;
+}
+
+/* Amarillo más llamativo para Gratis / Free. */
+body.mct-trains-page .free-extra-badge{
+  background:#fff200!important;
+  color:#062803!important;
+  border:1px solid #ffcc00!important;
+  box-shadow:0 5px 14px rgba(255,204,0,.48)!important;
+}
+
+@media (max-width:760px){
+  body.mct-trains-page .train-hero{
+    min-height:330px!important;
+    height:auto!important;
+    padding:46px 18px 112px!important;
+  }
+  body.mct-trains-page .hero-content p{display:block!important;font-size:.9rem!important;}
+  body.mct-trains-page .search-shell{margin:-70px auto 0!important;}
+  body.mct-trains-page .route-selector{margin:-4px auto -2px!important;}
+  body.mct-trains-page .trip-tabs{grid-template-columns:1fr!important;}
+  body.mct-trains-page .train-card-body{padding-right:14px!important;}
+  body.mct-trains-page .price-box,
+  body.mct-trains-page .train-card-action{padding-right:0!important;margin-right:0!important;}
+}
