@@ -457,14 +457,14 @@
     const lines = [];
 
     if (state.selected.outbound) {
-      lines.push(summaryItem(t('summary.outbound'), `${state.selected.outbound.companyName || state.selected.outbound.company} · ${state.selected.outbound.serviceName}`, `${formatDateLong(state.outboundDate)} · ${state.selected.outbound.departureStation} ${state.selected.outbound.departureTime} → ${state.selected.outbound.arrivalStation} ${state.selected.outbound.arrivalTime}`, totals.outbound));
+      lines.push(summaryItem(t('summary.outbound'), `${state.selected.outbound.companyName || state.selected.outbound.company} · ${state.selected.outbound.serviceName}`, `${formatDateLong(state.outboundDate)}\n${state.selected.outbound.departureStation} ${state.selected.outbound.departureTime} → ${state.selected.outbound.arrivalStation} ${state.selected.outbound.arrivalTime}`, totals.outbound));
     } else {
       lines.push(`<p>${escapeHtml(t('summary.selectOutbound'))}</p>`);
     }
 
     if (state.tripType === 'roundtrip') {
       if (state.selected.return) {
-        lines.push(summaryItem(t('summary.return'), `${state.selected.return.companyName || state.selected.return.company} · ${state.selected.return.serviceName}`, `${formatDateLong(state.returnDate)} · ${state.selected.return.departureStation} ${state.selected.return.departureTime} → ${state.selected.return.arrivalStation} ${state.selected.return.arrivalTime}`, totals.returned));
+        lines.push(summaryItem(t('summary.return'), `${state.selected.return.companyName || state.selected.return.company} · ${state.selected.return.serviceName}`, `${formatDateLong(state.returnDate)}\n${state.selected.return.departureStation} ${state.selected.return.departureTime} → ${state.selected.return.arrivalStation} ${state.selected.return.arrivalTime}`, totals.returned));
       } else if (state.selected.outbound) {
         lines.push(`<p>${escapeHtml(t('summary.selectReturn'))}</p>`);
       }
@@ -487,7 +487,11 @@
 
   function summaryItem(kicker, title, detail, amount) {
     const amountText = amount === 0 ? t('summary.included') : money(amount);
-    return `<div class="summary-item"><strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small class="summary-amount">${escapeHtml(amountText)}</small></div>`;
+    const detailParts = String(detail || '').split('\n').filter(Boolean);
+    const detailHtml = detailParts.length
+      ? detailParts.map((part, index) => `<small class="${index === 0 ? 'summary-date-line' : 'summary-route-line'}">${escapeHtml(part)}</small>`).join('')
+      : '';
+    return `<div class="summary-item"><strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong>${detailHtml}<small class="summary-amount">${escapeHtml(amountText)}</small></div>`;
   }
 
   function canCheckout() {
