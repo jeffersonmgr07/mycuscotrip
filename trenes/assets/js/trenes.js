@@ -46,8 +46,11 @@
     es: {
       hero: {
         kicker: 'PeruRail + Inca Rail',
-        title: 'Compra tu tren a Machu Picchu con asistencia personalizada',
-        subtitle: 'Elige horarios oficiales, paga online y agrega servicios útiles para disfrutar mejor tu visita.'
+        title: 'Compra tu tren a Machu Picchu y obtén los mejores beneficios',
+        badgeGuide: 'Tour guiado gratuito dentro de Machu Picchu',
+        badgeAssist: 'Asistencia 24/7',
+        badgeBenefits: 'Beneficios exclusivos por tu compra',
+        subtitle: 'Por la compra de tus trenes ida y vuelta, accede a beneficios exclusivos, reserva y paga online con asistencia personalizada para disfrutar mejor tu visita.'
       },
       search: {
         roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
@@ -55,21 +58,21 @@
       routes: { outboundFrom: 'Salida desde', returnTo: 'Retorno hacia' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
-      results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
+      results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', selectThisTrain: 'Seleccionar este tren', modifyOutbound: 'Modificar tren de ida', modifyReturn: 'Modificar tren de retorno', selectedTrain: 'Tren seleccionado', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
       summary: { title: 'Tu selección', empty: 'Busca trenes y selecciona ida para empezar.', outbound: 'Tren de ida', return: 'Tren de retorno', selectOutbound: 'Selecciona un tren de ida para continuar.', selectReturn: 'Selecciona un tren de retorno de la misma empresa.', extra: 'Extra', included: 'Incluido', total: 'Total', note: 'La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.', reserveButton: 'Iniciar reserva' },
-      extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada My Cusco Trip', assistanceDetail: 'Incluida sin costo' },
+      extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada 24/7 incluida sin costo', assistanceDetail: 'Incluida sin costo' },
       modal: { title: 'Datos de los pasajeros', subtitle: 'El pasajero 1 será el titular de la reserva.', terms: 'Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.', cancel: 'Cancelar', pay: 'Pagar', passenger: 'Pasajero', adult: 'Adulto', child: 'Niño', lead: 'Titular', firstName: 'Nombres', lastName: 'Apellidos', nationality: 'Nacionalidad', docType: 'Tipo de documento', docNumber: 'Número de documento', birthDate: 'Fecha de nacimiento', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp opcional', phoneCode: 'Código', phoneNumber: 'Número', email: 'Correo', emailOptional: 'Correo opcional', dni: 'DNI', passport: 'Pasaporte', ce: 'Carné de extranjería', other: 'Otro', creating: 'Creando orden de reserva...', connecting: 'Conectando con PayPal...', missingAppsScript: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.', invalidResponse: 'Apps Script devolvió una respuesta no válida.', orderError: 'No se pudo crear la orden.', paypalError: 'PayPal no devolvió enlace de aprobación.' },
       pax: { adult: 'adulto', adults: 'adultos', child: 'niño', children: 'niños', ageChild: 'Edad niño' }
     },
     en: {
-      hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu with personalized assistance', subtitle: 'Choose official schedules, pay online, and add useful services to enjoy your visit with more confidence.' },
+      hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Free guided tour inside Machu Picchu', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'When you buy your round-trip train tickets, access exclusive benefits, book and pay online, and enjoy your visit with personalized assistance.' },
       search: { roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
       routes: { outboundFrom: 'Departure from', returnTo: 'Return to' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
-      results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
+      results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', selectThisTrain: 'Select this train', modifyOutbound: 'Change outbound train', modifyReturn: 'Change return train', selectedTrain: 'Selected train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
       summary: { title: 'Your selection', empty: 'Search trains and choose your outbound option to start.', outbound: 'Outbound train', return: 'Return train', selectOutbound: 'Choose an outbound train to continue.', selectReturn: 'Choose a return train from the same company.', extra: 'Extra', included: 'Included', total: 'Total', note: 'The purchase is subject to final availability from the railway company. We will contact you if your selected schedule needs adjustment.', reserveButton: 'Start booking' },
-      extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: 'Personalized assistance by My Cusco Trip', assistanceDetail: 'Included at no cost' },
+      extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: '24/7 personalized assistance included at no extra cost', assistanceDetail: 'Included at no cost' },
       modal: { title: 'Passenger details', subtitle: 'Passenger 1 will be the booking holder.', terms: 'I accept that the booking is subject to final availability, document validation, and operational confirmation by My Cusco Trip.', cancel: 'Cancel', pay: 'Pay', passenger: 'Passenger', adult: 'Adult', child: 'Child', lead: 'Booking holder', firstName: 'First name', lastName: 'Last name', nationality: 'Nationality', docType: 'Document type', docNumber: 'Document number', birthDate: 'Date of birth', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp optional', phoneCode: 'Code', phoneNumber: 'Number', email: 'Email', emailOptional: 'Email optional', dni: 'National ID', passport: 'Passport', ce: 'Foreigner ID card', other: 'Other', creating: 'Creating booking order...', connecting: 'Connecting to PayPal...', missingAppsScript: 'Missing APPS_SCRIPT_URL configuration in trenes/assets/js/config.js.', invalidResponse: 'Apps Script returned an invalid response.', orderError: 'The order could not be created.', paypalError: 'PayPal did not return an approval link.' },
       pax: { adult: 'adult', adults: 'adults', child: 'child', children: 'children', ageChild: 'Child age' }
     }
@@ -87,6 +90,7 @@
     outboundDate: '',
     returnDate: '',
     selected: { outbound: null, return: null },
+    pending: { outbound: null, return: null },
     extras: {
       guideCircuit: 'none',
       conseturBus: false,
@@ -287,22 +291,28 @@
   }
 
   function renderTrainList(direction, container) {
+    const confirmed = state.selected[direction];
+    if (confirmed) {
+      container.innerHTML = selectedTrainHTML(direction, confirmed);
+      return;
+    }
+
     const trains = getFilteredTrains(direction);
-    const selectedCode = state.selected[direction]?.code;
+    const pendingCode = state.pending[direction]?.code;
     if (!trains.length) {
       container.innerHTML = `<div class="empty-state"><strong>${escapeHtml(t('results.noTrainsTitle'))}</strong><span>${escapeHtml(t('results.noTrainsText'))}</span></div>`;
       return;
     }
 
     container.innerHTML = trains.map((train) => {
-      const selected = train.code === selectedCode;
+      const pending = train.code === pendingCode;
       const adult = getTrainPrice(train, 'adult');
       const child = getTrainPrice(train, 'child');
       const logo = getCompanyLogo(train);
       const service = train.serviceName || train.category || t('results.train');
       const category = train.category ? train.category.replace(/_/g, ' ') : '';
       return `
-        <article class="train-card ${selected ? 'is-selected' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${selected ? 'true' : 'false'}">
+        <article class="train-card ${pending ? 'is-pending' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${pending ? 'true' : 'false'}">
           <div class="select-rail"><span class="select-dot" aria-hidden="true"></span></div>
           <div class="train-card-body">
             <div class="train-company">
@@ -321,9 +331,32 @@
               <div class="fare-line"><small>${escapeHtml(t('results.adult'))}</small><strong>${money(adult)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>
               ${state.children ? `<div class="fare-line child-fare"><small>${escapeHtml(t('results.child'))}</small><strong>${money(child)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>` : ''}
             </div>
+            <div class="train-card-action">
+              ${pending ? `<button type="button" class="select-train-button" data-confirm-train="${direction}" data-train-code="${escapeHtml(train.code)}">${escapeHtml(t('results.selectThisTrain'))}</button>` : ''}
+            </div>
           </div>
         </article>`;
     }).join('');
+  }
+
+  function selectedTrainHTML(direction, train) {
+    const logo = getCompanyLogo(train);
+    const title = direction === 'outbound' ? t('summary.outbound') : t('summary.return');
+    const modifyText = direction === 'outbound' ? t('results.modifyOutbound') : t('results.modifyReturn');
+    return `
+      <article class="selected-train-box" data-selected-direction="${direction}">
+        <div class="selected-train-box__main">
+          <span class="selected-train-box__label">${escapeHtml(t('results.selectedTrain'))}</span>
+          <div class="selected-train-box__content">
+            <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
+            <div>
+              <strong>${escapeHtml(title)} · ${escapeHtml(train.companyName || train.company || '')} ${escapeHtml(train.serviceName || '')}</strong>
+              <small>${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</small>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="secondary-button modify-train-button" data-modify-train="${direction}">${escapeHtml(modifyText)}</button>
+      </article>`;
   }
 
   function renderExtrasState() {
@@ -383,7 +416,7 @@
       lines.push({ label: t('extras.lunchLine'), detail: t('extras.lunchDesc'), amount });
       total += amount;
     }
-    lines.push({ label: t('extras.assistance'), detail: t('extras.assistanceDetail'), amount: 0 });
+    lines.push({ label: t('extras.assistance'), detail: '', amount: 0, type: 'assistance' });
     return { total: round(total), lines };
   }
 
@@ -416,7 +449,11 @@
 
     if (canCheckout()) {
       totals.extras.lines.forEach((line) => {
-        lines.push(summaryItem(t('summary.extra'), line.label, line.detail, line.amount));
+        if (line.type === 'assistance') {
+          lines.push(`<p class="summary-assistance-note">${escapeHtml(line.label)}</p>`);
+        } else {
+          lines.push(summaryItem(t('summary.extra'), line.label, line.detail, line.amount));
+        }
       });
     }
 
@@ -436,11 +473,21 @@
     return true;
   }
 
-  function selectTrain(direction, code) {
+  function markTrain(direction, code) {
+    if (state.selected[direction]) return;
     const train = state.data.trains.find((item) => item.code === code);
     if (!train) return;
+    state.pending[direction] = train;
+    renderResults();
+  }
+
+  function confirmTrain(direction, code) {
+    const train = state.data.trains.find((item) => item.code === code) || state.pending[direction];
+    if (!train) return;
     state.selected[direction] = train;
+    state.pending[direction] = null;
     if (direction === 'outbound') {
+      state.pending.return = null;
       if (state.selected.return) {
         const outOp = getTrainOperator(train);
         const retOp = getTrainOperator(state.selected.return);
@@ -449,6 +496,17 @@
       if (state.tripType === 'roundtrip') {
         setTimeout(() => $('#returnBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
       }
+    }
+    renderResults();
+  }
+
+  function modifyTrain(direction) {
+    if (!state.selected[direction]) return;
+    state.pending[direction] = state.selected[direction];
+    state.selected[direction] = null;
+    if (direction === 'outbound') {
+      state.selected.return = null;
+      state.pending.return = null;
     }
     renderResults();
   }
@@ -637,12 +695,17 @@
   function handleRouteChange() {
     state.selected.outbound = null;
     state.selected.return = null;
+    state.pending.outbound = null;
+    state.pending.return = null;
     renderResults();
   }
 
   function handleTripTypeChange() {
     state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
-    if (state.tripType === 'oneway') state.selected.return = null;
+    if (state.tripType === 'oneway') {
+      state.selected.return = null;
+      state.pending.return = null;
+    }
     renderResults();
   }
 
@@ -681,6 +744,7 @@
       if (returned) {
         state.returnTo = returned.dataset.returnTo;
         state.selected.return = null;
+        state.pending.return = null;
         renderResults();
         return;
       }
@@ -695,9 +759,21 @@
         return;
       }
 
+      const confirm = event.target.closest('[data-confirm-train]');
+      if (confirm) {
+        confirmTrain(confirm.dataset.confirmTrain, confirm.dataset.trainCode);
+        return;
+      }
+
+      const modify = event.target.closest('[data-modify-train]');
+      if (modify) {
+        modifyTrain(modify.dataset.modifyTrain);
+        return;
+      }
+
       const card = event.target.closest('.train-card[data-train-code]');
       if (card) {
-        selectTrain(card.dataset.direction, card.dataset.trainCode);
+        markTrain(card.dataset.direction, card.dataset.trainCode);
         return;
       }
 
@@ -706,10 +782,11 @@
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
+        if (event.target.closest?.('[data-confirm-train], [data-modify-train]')) return;
         const card = event.target.closest?.('.train-card[data-train-code]');
         if (card) {
           event.preventDefault();
-          selectTrain(card.dataset.direction, card.dataset.trainCode);
+          markTrain(card.dataset.direction, card.dataset.trainCode);
         }
       }
       if (event.key === 'Escape' && !$('#passengerModal').hidden) closeModal();
