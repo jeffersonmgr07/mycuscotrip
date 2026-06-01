@@ -60,7 +60,7 @@
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
       results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', selectThisTrain: 'Seleccionar este tren', modifyOutbound: 'Modificar tren de ida', modifyReturn: 'Modificar tren de retorno', selectedTrain: 'Tren seleccionado', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
       summary: { title: 'Tu selección', empty: 'Busca trenes y selecciona ida para empezar.', outbound: 'Tren de ida', return: 'Tren de retorno', selectOutbound: 'Selecciona un tren de ida para continuar.', selectReturn: 'Selecciona un tren de retorno de la misma empresa.', extra: 'Extra', included: 'Incluido', total: 'Total', note: 'La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.', reserveButton: 'Iniciar reserva' },
-      extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada 24/7 incluida sin costo', assistanceDetail: 'Incluida sin costo' },
+      extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada 24/7 incluida sin costo', assistanceDetail: 'Incluida sin costo', detailsButton: 'Ver detalles', detailClose: 'Cerrar', detailGuideTitle: 'Guiado en Machu Picchu', detailGuideText: 'Acompañamiento profesional dentro de Machu Picchu según el circuito seleccionado. Ideal para entender la historia, los templos, los miradores y aprovechar mejor tu tiempo dentro de la ciudadela. El Circuito 2 puede estar incluido sin costo en compra ida y vuelta, sujeto a disponibilidad operativa. Los Circuitos 1 y 3 se ofrecen en grupo reducido de 4 a 6 pasajeros.', detailBusTitle: 'Bus Consetur Machu Picchu', detailBusText: 'Ticket de bus turístico entre Aguas Calientes y el ingreso de Machu Picchu. Incluye subida y bajada. Es recomendable para ahorrar energía, evitar la caminata en pendiente y llegar con mayor comodidad al horario de ingreso.', detailBreakfastTitle: 'Desayuno Power Peruano', detailBreakfastText: 'Opción práctica para iniciar temprano tu visita: bebida Inca Kola y pan con chicharrón o pan con pollo. Pensado para viajeros que salen muy temprano hacia la estación o hacia Machu Picchu.', detailLunchTitle: 'Almuerzo Power Peruano', detailLunchText: 'Almuerzo contundente después de la visita: ¼ pollo a la brasa, arroz chaufa, papas fritas e Inca Kola de 500 ml. Ideal para recuperar energía antes del retorno en tren.' },
       modal: { title: 'Datos de los pasajeros', subtitle: 'El pasajero 1 será el titular de la reserva.', terms: 'Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.', cancel: 'Cancelar', pay: 'Pagar', passenger: 'Pasajero', adult: 'Adulto', child: 'Niño', lead: 'Titular', firstName: 'Nombres', lastName: 'Apellidos', nationality: 'Nacionalidad', docType: 'Tipo de documento', docNumber: 'Número de documento', birthDate: 'Fecha de nacimiento', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp opcional', phoneCode: 'Código', phoneNumber: 'Número', email: 'Correo', emailOptional: 'Correo opcional', dni: 'DNI', passport: 'Pasaporte', ce: 'Carné de extranjería', other: 'Otro', creating: 'Creando orden de reserva...', connecting: 'Conectando con PayPal...', missingAppsScript: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.', invalidResponse: 'Apps Script devolvió una respuesta no válida.', orderError: 'No se pudo crear la orden.', paypalError: 'PayPal no devolvió enlace de aprobación.' },
       pax: { adult: 'adulto', adults: 'adultos', child: 'niño', children: 'niños', ageChild: 'Edad niño' }
     },
@@ -72,7 +72,7 @@
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', selectThisTrain: 'Select this train', modifyOutbound: 'Change outbound train', modifyReturn: 'Change return train', selectedTrain: 'Selected train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
       summary: { title: 'Your selection', empty: 'Search trains and choose your outbound option to start.', outbound: 'Outbound train', return: 'Return train', selectOutbound: 'Choose an outbound train to continue.', selectReturn: 'Choose a return train from the same company.', extra: 'Extra', included: 'Included', total: 'Total', note: 'The purchase is subject to final availability from the railway company. We will contact you if your selected schedule needs adjustment.', reserveButton: 'Start booking' },
-      extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: '24/7 personalized assistance included at no extra cost', assistanceDetail: 'Included at no cost' },
+      extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: '24/7 personalized assistance included at no extra cost', assistanceDetail: 'Included at no cost', detailsButton: 'View details', detailClose: 'Close', detailGuideTitle: 'Guided tour in Machu Picchu', detailGuideText: 'Professional guidance inside Machu Picchu according to the selected circuit. Ideal to understand the history, temples, viewpoints and make better use of your time inside the citadel. Circuit 2 may be included at no extra cost with a round-trip purchase, subject to operational availability. Circuits 1 and 3 are offered in small groups of 4 to 6 travelers.', detailBusTitle: 'Consetur Bus to Machu Picchu', detailBusText: 'Tourist bus ticket between Aguas Calientes and the entrance to Machu Picchu. Includes uphill and downhill rides. Recommended to save energy, avoid the steep walk and arrive more comfortably for your entry time.', detailBreakfastTitle: 'Peruvian Power Breakfast', detailBreakfastText: 'A practical option for early departures: Inca Kola and a pork or chicken sandwich. Designed for travelers leaving very early for the train station or Machu Picchu.', detailLunchTitle: 'Peruvian Power Lunch', detailLunchText: 'A filling lunch after your visit: ¼ rotisserie chicken, chaufa rice, fries and a 500 ml Inca Kola. Ideal to recover energy before the return train.' },
       modal: { title: 'Passenger details', subtitle: 'Passenger 1 will be the booking holder.', terms: 'I accept that the booking is subject to final availability, document validation, and operational confirmation by My Cusco Trip.', cancel: 'Cancel', pay: 'Pay', passenger: 'Passenger', adult: 'Adult', child: 'Child', lead: 'Booking holder', firstName: 'First name', lastName: 'Last name', nationality: 'Nationality', docType: 'Document type', docNumber: 'Document number', birthDate: 'Date of birth', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp optional', phoneCode: 'Code', phoneNumber: 'Number', email: 'Email', emailOptional: 'Email optional', dni: 'National ID', passport: 'Passport', ce: 'Foreigner ID card', other: 'Other', creating: 'Creating booking order...', connecting: 'Connecting to PayPal...', missingAppsScript: 'Missing APPS_SCRIPT_URL configuration in trenes/assets/js/config.js.', invalidResponse: 'Apps Script returned an invalid response.', orderError: 'The order could not be created.', paypalError: 'PayPal did not return an approval link.' },
       pax: { adult: 'adult', adults: 'adults', child: 'child', children: 'children', ageChild: 'Child age' }
     }
@@ -247,7 +247,9 @@
     });
 
     $$('.return-field').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
-    $$('.return-route-block').forEach((el) => { el.style.display = state.tripType === 'roundtrip' ? '' : 'none'; });
+    const shouldShowReturnFilters = state.tripType === 'roundtrip' && Boolean(state.selected.outbound) && !state.selected.return;
+    $$('.return-route-block').forEach((el) => { el.style.display = shouldShowReturnFilters ? '' : 'none'; });
+    $$('.outbound-route-block').forEach((el) => { el.style.display = state.selected.outbound ? 'none' : ''; });
     $('#returnDate').required = state.tripType === 'roundtrip';
     $('#outboundRouteLabel').textContent = `${stationLabel(state.outboundFrom, true)} → ${stationLabel('machuPicchu')}`;
     $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}`;
@@ -288,6 +290,7 @@
     if (shouldShowReturn) renderTrainList('return', $('#returnResults'));
     renderExtrasState();
     renderSummary();
+    renderInlineCheckout();
   }
 
   function renderTrainList(direction, container) {
@@ -471,6 +474,72 @@
     if (!state.selected.outbound) return false;
     if (state.tripType === 'roundtrip' && !state.selected.return) return false;
     return true;
+  }
+
+
+  function openCheckoutModal() {
+    if (!canCheckout()) return;
+    buildPassengerForms();
+    $('#paymentMessage').hidden = true;
+    $('#passengerModal').hidden = false;
+  }
+
+  function renderInlineCheckout() {
+    let wrap = $('#inlineCheckoutWrap');
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.id = 'inlineCheckoutWrap';
+      wrap.className = 'inline-checkout-wrap';
+      wrap.innerHTML = `<button id="inlineCheckoutButton" type="button" class="checkout-button inline-checkout-button">${escapeHtml(t('summary.reserveButton'))}</button>`;
+      const returnBlock = $('#returnBlock');
+      returnBlock?.insertAdjacentElement('afterend', wrap);
+    }
+    const button = $('#inlineCheckoutButton');
+    if (button) button.textContent = t('summary.reserveButton');
+    wrap.hidden = !canCheckout();
+  }
+
+  const EXTRA_DETAILS = {
+    guide: { title: 'extras.detailGuideTitle', text: 'extras.detailGuideText', image: '/assets/img/reserva/machu-picchu-card.jpg' },
+    bus: { title: 'extras.detailBusTitle', text: 'extras.detailBusText', image: '/assets/img/noticias/machu-picchu-boletos.jpg' },
+    breakfast: { title: 'extras.detailBreakfastTitle', text: 'extras.detailBreakfastText', image: '/assets/img/reserva/banner-restaurantes.jpg' },
+    lunch: { title: 'extras.detailLunchTitle', text: 'extras.detailLunchText', image: '/assets/img/reserva/banner-restaurantes.jpg' }
+  };
+
+  function showExtraDetail(key) {
+    const detail = EXTRA_DETAILS[key];
+    if (!detail) return;
+    let modal = $('#extraDetailModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'extraDetailModal';
+      modal.className = 'modal extra-detail-modal';
+      modal.hidden = true;
+      modal.innerHTML = `
+        <div class="modal-backdrop" data-close-extra-detail></div>
+        <section class="modal-panel extra-detail-panel" role="dialog" aria-modal="true" aria-labelledby="extraDetailTitle">
+          <button class="modal-close" type="button" data-close-extra-detail>×</button>
+          <img id="extraDetailImage" class="extra-detail-image" src="" alt="" loading="lazy">
+          <div class="extra-detail-content">
+            <div class="modal-titlebar" id="extraDetailTitle"></div>
+            <p id="extraDetailText"></p>
+            <button type="button" class="secondary-button" data-close-extra-detail>${escapeHtml(t('extras.detailClose'))}</button>
+          </div>
+        </section>`;
+      document.body.appendChild(modal);
+    }
+    $('#extraDetailImage', modal).src = detail.image;
+    $('#extraDetailImage', modal).alt = t(detail.title);
+    $('#extraDetailTitle', modal).textContent = t(detail.title);
+    $('#extraDetailText', modal).textContent = t(detail.text);
+    const closeBtn = modal.querySelector('.secondary-button');
+    if (closeBtn) closeBtn.textContent = t('extras.detailClose');
+    modal.hidden = false;
+  }
+
+  function closeExtraDetail() {
+    const modal = $('#extraDetailModal');
+    if (modal) modal.hidden = true;
   }
 
   function markTrain(direction, code) {
@@ -790,6 +859,7 @@
         }
       }
       if (event.key === 'Escape' && !$('#passengerModal').hidden) closeModal();
+      if (event.key === 'Escape' && $('#extraDetailModal') && !$('#extraDetailModal').hidden) closeExtraDetail();
     });
 
     document.addEventListener('change', (event) => {
@@ -803,11 +873,11 @@
       if (event.target.id === 'lunchExtra') { state.extras.lunch = event.target.checked; renderSummary(); }
     });
 
-    $('#checkoutButton').addEventListener('click', () => {
-      if (!canCheckout()) return;
-      buildPassengerForms();
-      $('#paymentMessage').hidden = true;
-      $('#passengerModal').hidden = false;
+    $('#checkoutButton').addEventListener('click', openCheckoutModal);
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('#inlineCheckoutButton')) openCheckoutModal();
+      if (event.target.closest('[data-extra-detail]')) showExtraDetail(event.target.closest('[data-extra-detail]').dataset.extraDetail);
+      if (event.target.closest('[data-close-extra-detail]')) closeExtraDetail();
     });
     $('#passengerForm').addEventListener('submit', handlePassengerSubmit);
 

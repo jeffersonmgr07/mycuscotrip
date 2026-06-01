@@ -272,3 +272,185 @@ body.mct-trains-page .summary-assistance-note{
     width:76px;
   }
 }
+
+
+/* === AJUSTE SOLO TRENES 20260601-v3 === */
+body.mct-trains-page .train-hero{
+  min-height:275px;
+  padding-bottom:82px;
+}
+body.mct-trains-page .search-shell{
+  margin:-48px auto 6px!important;
+}
+body.mct-trains-page .route-selector{
+  margin:0 auto 8px!important;
+  gap:6px!important;
+}
+body.mct-trains-page .route-block{
+  gap:6px!important;
+}
+body.mct-trains-page .route-label{
+  margin:0!important;
+  font-size:.94rem!important;
+  line-height:1.15!important;
+}
+body.mct-trains-page .route-pills{
+  gap:8px!important;
+}
+body.mct-trains-page .route-pill{
+  min-height:36px!important;
+  padding:0 16px!important;
+  border-radius:14px!important;
+  box-shadow:0 5px 14px rgba(6,40,3,.045)!important;
+}
+body.mct-trains-page .results-layout{
+  margin-top:4px!important;
+}
+body.mct-trains-page .section-heading{
+  margin-top:0!important;
+}
+body.mct-trains-page .section-heading h2{
+  margin:0 0 3px!important;
+}
+body.mct-trains-page .section-heading p{
+  margin:0!important;
+}
+
+/* Botón de confirmación del tren debajo de la card, no al costado */
+body.mct-trains-page .train-card.is-pending .train-card-body{
+  grid-template-columns:170px minmax(320px,1fr) 160px!important;
+}
+body.mct-trains-page .train-card-action{
+  grid-column:1 / -1!important;
+  justify-content:flex-end!important;
+  padding-top:4px!important;
+}
+body.mct-trains-page .select-train-button{
+  min-width:205px;
+  text-align:center;
+}
+
+/* Botón duplicado de iniciar reserva debajo del último tren elegido */
+body.mct-trains-page .inline-checkout-wrap{
+  display:flex;
+  justify-content:flex-end;
+  margin:4px 0 10px;
+}
+body.mct-trains-page .inline-checkout-wrap[hidden]{
+  display:none!important;
+}
+body.mct-trains-page .inline-checkout-button{
+  min-height:52px;
+  min-width:230px;
+  border-radius:15px;
+}
+
+/* Modal de pasajeros más compacto: título pegado al borde del recuadro */
+body.mct-trains-page .passenger-forms{
+  gap:12px!important;
+  padding:8px 24px 0!important;
+}
+body.mct-trains-page .passenger-box{
+  overflow:hidden!important;
+}
+body.mct-trains-page .passenger-box h3{
+  padding:10px 16px!important;
+  margin:0!important;
+  line-height:1.15!important;
+}
+body.mct-trains-page .passenger-grid{
+  padding:13px 16px 15px!important;
+}
+
+/* Botones pequeños “Ver detalles” en extras */
+body.mct-trains-page .extra-detail-badge{
+  width:max-content;
+  border:1px solid rgba(6,40,3,.14);
+  background:#fff;
+  color:var(--train-green);
+  border-radius:999px;
+  padding:4px 9px;
+  font-size:.68rem;
+  line-height:1;
+  font-weight:900;
+  cursor:pointer;
+}
+body.mct-trains-page .extra-detail-badge:hover{
+  background:#eff6ef;
+  transform:translateY(-1px);
+}
+body.mct-trains-page .guide-extra .summary-extra-body{
+  grid-template-columns:1fr auto;
+  align-items:center;
+}
+body.mct-trains-page .guide-extra .summary-extra-body select{
+  grid-column:1 / -1;
+}
+body.mct-trains-page .summary-extra-check span .extra-detail-badge{
+  margin-top:3px;
+}
+
+/* Modal de detalle de extras */
+body.mct-trains-page .extra-detail-panel{
+  width:min(620px,94vw);
+  overflow:hidden;
+}
+body.mct-trains-page .extra-detail-image{
+  width:100%;
+  height:245px;
+  object-fit:cover;
+  display:block;
+}
+body.mct-trains-page .extra-detail-content{
+  display:grid;
+  gap:14px;
+  padding-bottom:20px;
+}
+body.mct-trains-page .extra-detail-content .modal-titlebar{
+  border-radius:0;
+  padding:15px 20px;
+}
+body.mct-trains-page .extra-detail-content p{
+  margin:0;
+  padding:0 20px;
+  color:#3e4d44;
+  line-height:1.62;
+  font-size:.95rem;
+}
+body.mct-trains-page .extra-detail-content .secondary-button{
+  justify-self:end;
+  margin-right:20px;
+}
+
+@media (max-width:1180px){
+  body.mct-trains-page .train-card.is-pending .train-card-body{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .train-card-action{
+    justify-content:flex-start!important;
+  }
+  body.mct-trains-page .inline-checkout-wrap{
+    justify-content:stretch;
+  }
+  body.mct-trains-page .inline-checkout-button{
+    width:100%;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .train-hero{
+    min-height:305px;
+    padding-bottom:92px;
+  }
+  body.mct-trains-page .search-shell{
+    margin-top:-54px!important;
+  }
+  body.mct-trains-page .route-selector{
+    margin-bottom:6px!important;
+  }
+  body.mct-trains-page .passenger-forms{
+    padding:8px 14px 0!important;
+  }
+  body.mct-trains-page .extra-detail-image{
+    height:190px;
+  }
+}
