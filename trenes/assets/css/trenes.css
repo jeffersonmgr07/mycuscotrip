@@ -454,3 +454,186 @@ body.mct-trains-page .extra-detail-content .secondary-button{
     height:190px;
   }
 }
+
+/* === AJUSTE SOLO TRENES 20260601-v4 === */
+/* Hero con ruta propia para que puedas reemplazar la imagen sin depender de imágenes existentes. */
+body.mct-trains-page .train-hero{
+  min-height:165px!important;
+  padding:28px clamp(18px,7vw,110px) 54px!important;
+  background:linear-gradient(90deg,rgba(6,40,3,.86),rgba(6,40,3,.55),rgba(6,40,3,.18)),url('/assets/img/trenes/hero-trenes-machu-picchu.jpg') center/cover no-repeat!important;
+}
+
+/* Eliminar el aire marcado: el bloque del buscador ya no deja una franja grande antes de las rutas. */
+body.mct-trains-page .search-shell{
+  margin:-34px auto 0!important;
+}
+body.mct-trains-page .train-search-card{
+  margin-bottom:0!important;
+}
+body.mct-trains-page .route-selector{
+  margin:-2px auto 4px!important;
+  gap:4px!important;
+}
+body.mct-trains-page .route-block{
+  gap:4px!important;
+}
+body.mct-trains-page .route-pills{
+  gap:7px!important;
+}
+body.mct-trains-page .results-layout{
+  margin-top:0!important;
+}
+body.mct-trains-page .results-main{
+  gap:12px!important;
+}
+body.mct-trains-page .section-heading{
+  margin-top:0!important;
+}
+body.mct-trains-page .section-heading h2{
+  margin:0 0 2px!important;
+}
+body.mct-trains-page .section-heading p{
+  margin:0!important;
+}
+
+/* Botón “Seleccionar este tren” debajo de la card, centrado hacia la derecha. */
+body.mct-trains-page .train-card.is-pending .train-card-body{
+  grid-template-columns:190px minmax(360px,1fr) 150px!important;
+}
+body.mct-trains-page .train-card-action{
+  grid-column:1 / -1!important;
+  justify-content:flex-end!important;
+  padding-top:8px!important;
+}
+body.mct-trains-page .select-train-button{
+  min-width:220px!important;
+  text-align:center!important;
+}
+
+/* Logo de empresa: la imagen ocupa todo el recuadro, sin área blanca interna. */
+body.mct-trains-page .company-logo{
+  width:96px!important;
+  height:48px!important;
+  padding:0!important;
+  object-fit:cover!important;
+  background:transparent!important;
+  border-radius:12px!important;
+}
+body.mct-trains-page .selected-train-box__content .company-logo{
+  width:90px!important;
+  height:46px!important;
+}
+
+/* Nombres completos de trenes: más ancho y sin puntos suspensivos. */
+body.mct-trains-page .train-company{
+  align-items:center!important;
+}
+body.mct-trains-page .train-company-text{
+  min-width:0!important;
+}
+body.mct-trains-page .train-company b{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  line-height:1.15!important;
+  font-size:.91rem!important;
+}
+body.mct-trains-page .train-company small{
+  white-space:normal!important;
+  line-height:1.15!important;
+}
+@media (min-width:1181px){
+  body.mct-trains-page .train-card-body{
+    grid-template-columns:260px minmax(310px,1fr) 145px!important;
+  }
+  body.mct-trains-page .train-card.is-pending .train-card-body{
+    grid-template-columns:260px minmax(310px,1fr) 145px!important;
+  }
+}
+
+/* Fecha visible dentro de la selección y el resumen. */
+body.mct-trains-page .selected-train-date{
+  color:#3f5748!important;
+  font-weight:900!important;
+  margin-top:3px!important;
+}
+
+/* Extras: Guiado en una línea, badge Gratis al costado y Ver detalles debajo del desplegable. */
+body.mct-trains-page .guide-extra .summary-extra-body{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:6px!important;
+}
+body.mct-trains-page .guide-extra-title{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-width:0!important;
+}
+body.mct-trains-page .guide-extra-title label{
+  white-space:nowrap!important;
+  font-size:.82rem!important;
+}
+body.mct-trains-page .free-extra-badge{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:999px!important;
+  padding:3px 8px!important;
+  background:#b87900!important;
+  color:#fff!important;
+  font-size:.62rem!important;
+  font-weight:900!important;
+  text-transform:uppercase!important;
+  letter-spacing:.045em!important;
+  flex:0 0 auto!important;
+}
+body.mct-trains-page .guide-detail-button{
+  margin-top:2px!important;
+  justify-self:start!important;
+}
+
+/* Modal de pasajeros: eliminar el espacio inferior marcado dentro de cada recuadro. */
+body.mct-trains-page .passenger-forms{
+  padding-top:6px!important;
+}
+body.mct-trains-page .passenger-grid{
+  padding:10px 16px 8px!important;
+  gap:10px 12px!important;
+}
+body.mct-trains-page .passenger-grid label:last-child{
+  grid-column:span 2!important;
+}
+body.mct-trains-page .passenger-box h3{
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+}
+
+@media (max-width:1180px){
+  body.mct-trains-page .train-card.is-pending .train-card-body,
+  body.mct-trains-page .train-card-body{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .train-card-action{
+    justify-content:center!important;
+  }
+  body.mct-trains-page .passenger-grid label:last-child{
+    grid-column:auto!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .train-hero{
+    min-height:210px!important;
+    padding-bottom:62px!important;
+  }
+  body.mct-trains-page .search-shell{
+    margin:-42px auto 0!important;
+  }
+  body.mct-trains-page .route-selector{
+    margin-top:0!important;
+  }
+  body.mct-trains-page .guide-extra-title label{
+    white-space:normal!important;
+  }
+}

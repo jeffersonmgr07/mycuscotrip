@@ -16,7 +16,7 @@
   <link href="/assets/css/header.css" rel="stylesheet"/>
   <link href="/assets/css/footer.css" rel="stylesheet"/>
   <link href="/assets/css/responsive.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260601-trenes-v3" />
+  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260601-trenes-v4" />
 </head>
 <body class="mct-trains-page">
   <div id="header-container"></div>
@@ -129,33 +129,36 @@
           <h3 data-train-i18n="extras.title">Servicios extras</h3>
 
           <article class="summary-extra-row guide-extra">
-            <img src="/assets/img/reserva/machu-picchu-card.jpg" alt="Guiado Machu Picchu" loading="lazy">
+            <img src="/assets/img/trenes/extras/guiado-machu-picchu.jpg" alt="Guiado Machu Picchu" loading="lazy">
             <div class="summary-extra-body">
-              <label for="guideCircuit" data-train-i18n="extras.guideTitle">Guiado Machu Picchu</label>
-              <button type="button" class="extra-detail-badge" data-extra-detail="guide" data-train-i18n="extras.detailsButton">Ver detalles</button>
+              <div class="guide-extra-title">
+                <label for="guideCircuit" data-train-i18n="extras.guideTitle">Guiado Machu Picchu</label>
+                <span class="free-extra-badge" data-train-i18n="extras.freeBadge">Gratis</span>
+              </div>
               <select id="guideCircuit" name="guideCircuit">
                 <option value="none" data-train-i18n="extras.guideNone">No agregar guiado</option>
                 <option value="circuit2" data-train-i18n="extras.circuit2">Circuito 2 · Gratis</option>
                 <option value="circuit1" data-train-i18n="extras.circuit1">Circuito 1 · Grupo reducido · USD 15.90 p/p</option>
                 <option value="circuit3" data-train-i18n="extras.circuit3">Circuito 3 · Grupo reducido · USD 15.90 p/p</option>
               </select>
+              <button type="button" class="extra-detail-badge guide-detail-button" data-extra-detail="guide" data-train-i18n="extras.detailsButton">Ver detalles</button>
             </div>
           </article>
 
           <label class="summary-extra-check">
-            <img src="/assets/img/noticias/machu-picchu-boletos.jpg" alt="Bus Consetur Machu Picchu" loading="lazy">
+            <img src="/assets/img/trenes/extras/bus-consetur.jpg" alt="Bus Consetur Machu Picchu" loading="lazy">
             <input type="checkbox" id="conseturBusExtra">
             <span><b data-train-i18n="extras.busTitle">Bus Consetur Machu Picchu</b><small data-train-i18n="extras.busDesc">Subida y bajada · USD 24.00 p/p</small><button type="button" class="extra-detail-badge" data-extra-detail="bus" data-train-i18n="extras.detailsButton">Ver detalles</button></span>
           </label>
 
           <label class="summary-extra-check">
-            <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Desayuno peruano" loading="lazy">
+            <img src="/assets/img/trenes/extras/desayuno-power-peruano.jpg" alt="Desayuno peruano" loading="lazy">
             <input type="checkbox" id="breakfastExtra">
             <span><b data-train-i18n="extras.breakfastTitle">Desayuno Power Peruano</b><small data-train-i18n="extras.breakfastDesc">Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p</small><button type="button" class="extra-detail-badge" data-extra-detail="breakfast" data-train-i18n="extras.detailsButton">Ver detalles</button></span>
           </label>
 
           <label class="summary-extra-check">
-            <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Almuerzo peruano" loading="lazy">
+            <img src="/assets/img/trenes/extras/almuerzo-power-peruano.jpg" alt="Almuerzo peruano" loading="lazy">
             <input type="checkbox" id="lunchExtra">
             <span><b data-train-i18n="extras.lunchTitle">Almuerzo Power Peruano</b><small data-train-i18n="extras.lunchDesc">¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p</small><button type="button" class="extra-detail-badge" data-extra-detail="lunch" data-train-i18n="extras.detailsButton">Ver detalles</button></span>
           </label>
@@ -227,6 +230,6 @@
   <script src="/assets/js/components/header.js"></script>
   <script src="/assets/js/components/footer.js"></script>
   <script src="/trenes/assets/js/config.js"></script>
-  <script src="/trenes/assets/js/trenes.js?v=20260601-trenes-v3" defer></script>
+  <script src="/trenes/assets/js/trenes.js?v=20260601-trenes-v4" defer></script>
 </body>
 </html>
