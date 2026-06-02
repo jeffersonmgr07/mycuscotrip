@@ -61,7 +61,7 @@
       results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', selectThisTrain: 'Seleccionar este tren', modifyOutbound: 'Modificar tren de ida', modifyReturn: 'Modificar tren de retorno', selectedTrain: 'Tren seleccionado', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
       summary: { title: 'Tu selección', empty: 'Busca trenes y selecciona ida para empezar.', outbound: 'Tren de ida', return: 'Tren de retorno', selectOutbound: 'Selecciona un tren de ida para continuar.', selectReturn: 'Selecciona un tren de retorno de la misma empresa.', extra: 'Extra', included: 'Incluido', total: 'Total', note: 'La compra queda sujeta a disponibilidad final de la empresa ferroviaria. Te contactaremos si el horario elegido requiere ajuste.', reserveButton: 'Iniciar reserva' },
       extras: { title: 'Servicios extras', guideTitle: 'Guiado Machu Picchu', guideNone: 'No agregar guiado', circuit2: 'Circuito 2 · Gratis', circuit2Disabled: 'Circuito 2 · Gratis solo con ida y vuelta', circuit1: 'Circuito 1 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', circuit3: 'Circuito 3 · Grupo reducido 4 a 6 pax · USD 15.90 p/p', busTitle: 'Bus Consetur Machu Picchu', busDesc: 'Subida y bajada · USD 24.00 p/p', breakfastTitle: 'Desayuno Power Peruano', breakfastDesc: 'Inca Kola + pan con chicharrón o pan con pollo · USD 8.90 p/p', lunchTitle: 'Almuerzo Power Peruano', lunchDesc: '¼ pollo a la brasa + arroz chaufa + papas fritas + Inca Kola 500 ml · USD 15.90 p/p', guideCircuit2Line: 'Guiado Machu Picchu Circuito 2', guideCircuit1Line: 'Guiado Machu Picchu Circuito 1', guideCircuit3Line: 'Guiado Machu Picchu Circuito 3', reducedGroup: 'Grupo reducido 4 a 6 pax', freeRoundtrip: 'Gratis por compra ida y vuelta', conseturLine: 'Bus Consetur subida y bajada', breakfastLine: 'Desayuno Power Peruano', lunchLine: 'Almuerzo Power Peruano', assistance: 'Asistencia personalizada 24/7 incluida sin costo', assistanceDetail: 'Incluida sin costo', detailsButton: 'Ver detalles', freeBadge: 'Gratis', detailClose: 'Cerrar', detailGuideTitle: 'Guiado en Machu Picchu', detailGuideText: 'Acompañamiento profesional dentro de Machu Picchu según el circuito seleccionado. Ideal para entender la historia, los templos, los miradores y aprovechar mejor tu tiempo dentro de la ciudadela. El Circuito 2 puede estar incluido sin costo en compra ida y vuelta, sujeto a disponibilidad operativa. Los Circuitos 1 y 3 se ofrecen en grupo reducido de 4 a 6 pasajeros.', detailBusTitle: 'Bus Consetur Machu Picchu', detailBusText: 'Ticket de bus turístico entre Aguas Calientes y el ingreso de Machu Picchu. Incluye subida y bajada. Es recomendable para ahorrar energía, evitar la caminata en pendiente y llegar con mayor comodidad al horario de ingreso.', detailBreakfastTitle: 'Desayuno Power Peruano', detailBreakfastText: 'Opción práctica para iniciar temprano tu visita: bebida Inca Kola y pan con chicharrón o pan con pollo. Pensado para viajeros que salen muy temprano hacia la estación o hacia Machu Picchu.', detailLunchTitle: 'Almuerzo Power Peruano', detailLunchText: 'Almuerzo contundente después de la visita: ¼ pollo a la brasa, arroz chaufa, papas fritas e Inca Kola de 500 ml. Ideal para recuperar energía antes del retorno en tren.' },
-      modal: { title: 'Datos de los pasajeros', subtitle: 'El pasajero 1 será el titular de la reserva.', terms: 'Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.', cancel: 'Cancelar', pay: 'Pagar', passenger: 'Pasajero', adult: 'Adulto', child: 'Niño', lead: 'Titular', firstName: 'Nombres', lastName: 'Apellidos', nationality: 'Nacionalidad', docType: 'Tipo de documento', docNumber: 'Número de documento', birthDate: 'Fecha de nacimiento', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp opcional', phoneCode: 'Código', phoneNumber: 'Número', email: 'Correo', emailOptional: 'Correo opcional', dni: 'DNI', passport: 'Pasaporte', ce: 'Carné de extranjería', other: 'Otro', creating: 'Creando orden de reserva...', connecting: 'Conectando con PayPal...', missingAppsScript: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.', invalidResponse: 'Apps Script devolvió una respuesta no válida.', orderError: 'No se pudo crear la orden.', paypalError: 'PayPal no devolvió enlace de aprobación.' },
+      modal: { title: 'Datos de los pasajeros', subtitle: 'El pasajero 1 será el titular de la reserva.', terms: 'Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.', cancel: 'Cancelar', pay: 'Continuar a pagar', passenger: 'Pasajero', adult: 'Adulto', child: 'Niño', lead: 'Titular', firstName: 'Nombres', lastName: 'Apellidos', nationality: 'Nacionalidad', docType: 'Tipo de documento', docNumber: 'Número de documento', birthDate: 'Fecha de nacimiento', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp opcional', phoneCode: 'Código', phoneNumber: 'Número', email: 'Correo', emailOptional: 'Correo opcional', dni: 'DNI', passport: 'Pasaporte', ce: 'Carné de extranjería', other: 'Otro', creating: 'Creando orden de reserva...', connecting: 'Conectando con PayPal...', missingAppsScript: 'Falta configurar APPS_SCRIPT_URL en trenes/assets/js/config.js.', invalidResponse: 'Apps Script devolvió una respuesta no válida.', orderError: 'No se pudo crear la orden.', paypalError: 'PayPal no devolvió enlace de aprobación.' },
       pax: { adult: 'adulto', adults: 'adultos', child: 'niño', children: 'niños', ageChild: 'Edad niño' }
     },
     en: {
@@ -73,7 +73,7 @@
       results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', selectThisTrain: 'Select this train', modifyOutbound: 'Change outbound train', modifyReturn: 'Change return train', selectedTrain: 'Selected train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
       summary: { title: 'Your selection', empty: 'Search trains and choose your outbound option to start.', outbound: 'Outbound train', return: 'Return train', selectOutbound: 'Choose an outbound train to continue.', selectReturn: 'Choose a return train from the same company.', extra: 'Extra', included: 'Included', total: 'Total', note: 'The purchase is subject to final availability from the railway company. We will contact you if your selected schedule needs adjustment.', reserveButton: 'Start booking' },
       extras: { title: 'Extra services', guideTitle: 'Machu Picchu guided tour', guideNone: 'Do not add guide', circuit2: 'Circuit 2 · Free', circuit2Disabled: 'Circuit 2 · Free only with round trip', circuit1: 'Circuit 1 · Small group 4 to 6 pax · USD 15.90 p/p', circuit3: 'Circuit 3 · Small group 4 to 6 pax · USD 15.90 p/p', busTitle: 'Consetur bus to Machu Picchu', busDesc: 'Up and down · USD 24.00 p/p', breakfastTitle: 'Peruvian Power Breakfast', breakfastDesc: 'Inca Kola + pork sandwich or chicken sandwich · USD 8.90 p/p', lunchTitle: 'Peruvian Power Lunch', lunchDesc: '¼ rotisserie chicken + chaufa rice + fries + 500 ml Inca Kola · USD 15.90 p/p', guideCircuit2Line: 'Machu Picchu guided tour Circuit 2', guideCircuit1Line: 'Machu Picchu guided tour Circuit 1', guideCircuit3Line: 'Machu Picchu guided tour Circuit 3', reducedGroup: 'Small group of 4 to 6 travelers', freeRoundtrip: 'Free with round-trip train purchase', conseturLine: 'Consetur bus up and down', breakfastLine: 'Peruvian Power Breakfast', lunchLine: 'Peruvian Power Lunch', assistance: '24/7 personalized assistance included at no extra cost', assistanceDetail: 'Included at no cost', detailsButton: 'View details', freeBadge: 'Free', detailClose: 'Close', detailGuideTitle: 'Guided tour in Machu Picchu', detailGuideText: 'Professional guidance inside Machu Picchu according to the selected circuit. Ideal to understand the history, temples, viewpoints and make better use of your time inside the citadel. Circuit 2 may be included at no extra cost with a round-trip purchase, subject to operational availability. Circuits 1 and 3 are offered in small groups of 4 to 6 travelers.', detailBusTitle: 'Consetur Bus to Machu Picchu', detailBusText: 'Tourist bus ticket between Aguas Calientes and the entrance to Machu Picchu. Includes uphill and downhill rides. Recommended to save energy, avoid the steep walk and arrive more comfortably for your entry time.', detailBreakfastTitle: 'Peruvian Power Breakfast', detailBreakfastText: 'A practical option for early departures: Inca Kola and a pork or chicken sandwich. Designed for travelers leaving very early for the train station or Machu Picchu.', detailLunchTitle: 'Peruvian Power Lunch', detailLunchText: 'A filling lunch after your visit: ¼ rotisserie chicken, chaufa rice, fries and a 500 ml Inca Kola. Ideal to recover energy before the return train.' },
-      modal: { title: 'Passenger details', subtitle: 'Passenger 1 will be the booking holder.', terms: 'I accept that the booking is subject to final availability, document validation, and operational confirmation by My Cusco Trip.', cancel: 'Cancel', pay: 'Pay', passenger: 'Passenger', adult: 'Adult', child: 'Child', lead: 'Booking holder', firstName: 'First name', lastName: 'Last name', nationality: 'Nationality', docType: 'Document type', docNumber: 'Document number', birthDate: 'Date of birth', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp optional', phoneCode: 'Code', phoneNumber: 'Number', email: 'Email', emailOptional: 'Email optional', dni: 'National ID', passport: 'Passport', ce: 'Foreigner ID card', other: 'Other', creating: 'Creating booking order...', connecting: 'Connecting to PayPal...', missingAppsScript: 'Missing APPS_SCRIPT_URL configuration in trenes/assets/js/config.js.', invalidResponse: 'Apps Script returned an invalid response.', orderError: 'The order could not be created.', paypalError: 'PayPal did not return an approval link.' },
+      modal: { title: 'Passenger details', subtitle: 'Passenger 1 will be the booking holder.', terms: 'I accept that the booking is subject to final availability, document validation, and operational confirmation by My Cusco Trip.', cancel: 'Cancel', pay: 'Continue to pay', passenger: 'Passenger', adult: 'Adult', child: 'Child', lead: 'Booking holder', firstName: 'First name', lastName: 'Last name', nationality: 'Nationality', docType: 'Document type', docNumber: 'Document number', birthDate: 'Date of birth', whatsapp: 'WhatsApp', whatsappOptional: 'WhatsApp optional', phoneCode: 'Code', phoneNumber: 'Number', email: 'Email', emailOptional: 'Email optional', dni: 'National ID', passport: 'Passport', ce: 'Foreigner ID card', other: 'Other', creating: 'Creating booking order...', connecting: 'Connecting to PayPal...', missingAppsScript: 'Missing APPS_SCRIPT_URL configuration in trenes/assets/js/config.js.', invalidResponse: 'Apps Script returned an invalid response.', orderError: 'The order could not be created.', paypalError: 'PayPal did not return an approval link.' },
       pax: { adult: 'adult', adults: 'adults', child: 'child', children: 'children', ageChild: 'Child age' }
     }
   };
@@ -517,9 +517,66 @@
   }
 
 
+  function modalLegHtml(direction, train, date, amount) {
+    if (!train) return '';
+    const label = direction === 'outbound' ? 'Ida' : 'Retorno';
+    const arrow = direction === 'outbound' ? '→' : '←';
+    const route = `${train.departureStation} - ${train.arrivalStation}`;
+    const service = `${train.serviceName || t('results.train')} ${train.serviceClass ? `| ${train.serviceClass}` : ''}`;
+    return `
+      <div class="modal-trip-leg modal-trip-leg-${direction}">
+        <div class="modal-trip-leg-head">
+          <span>${escapeHtml(label)} <b>${escapeHtml(arrow)}</b></span>
+          <strong>${escapeHtml(formatDateLong(date))} | ${escapeHtml(route)}</strong>
+        </div>
+        <div class="modal-trip-timeline">
+          <div class="modal-trip-time">
+            <b>${escapeHtml(train.departureTime)}</b>
+            <span>${escapeHtml(train.departureStation)}</span>
+          </div>
+          <div class="modal-trip-line" aria-hidden="true"></div>
+          <div class="modal-trip-time">
+            <b>${escapeHtml(train.arrivalTime)}</b>
+            <span>${escapeHtml(train.arrivalStation)}</span>
+          </div>
+        </div>
+        <div class="modal-trip-service">${escapeHtml(service)}</div>
+        <div class="modal-trip-price">${escapeHtml(money(amount))}</div>
+      </div>`;
+  }
+
+  function renderModalTripSummary() {
+    const target = $('#modalTripSummary');
+    if (!target) return;
+    const totals = calculateTotals();
+    const paxText = `${getPaxTotal()} ${getPaxTotal() === 1 ? (state.locale === 'en' ? 'Passenger' : 'Pasajero') : (state.locale === 'en' ? 'Passengers' : 'Pasajeros')}`;
+    const legs = [];
+    if (state.selected.outbound) legs.push(modalLegHtml('outbound', state.selected.outbound, state.outboundDate, totals.outbound));
+    if ((state.tripType === 'roundtrip' || state.tripType === 'returnonly') && state.selected.return) legs.push(modalLegHtml('return', state.selected.return, state.returnDate, totals.returned));
+    const extras = totals.extras.lines.filter((line) => line.type !== 'assistance');
+    const extrasHtml = extras.length ? `
+      <div class="modal-trip-included">
+        <strong>Servicios adicionales</strong>
+        ${extras.map((line) => `<p><span>${escapeHtml(line.label)}</span><b>${escapeHtml(line.amount === 0 ? t('summary.included') : money(line.amount))}</b></p>`).join('')}
+      </div>` : `<div class="modal-trip-included"><strong>Servicios incluidos</strong><p><span>${escapeHtml(t('extras.assistance'))}</span><b>${escapeHtml(t('summary.included'))}</b></p></div>`;
+    target.innerHTML = `
+      <h3>Ver resumen de viaje</h3>
+      <div class="modal-trip-divider"></div>
+      <p class="modal-trip-pax">Tu itinerario: <strong>${escapeHtml(paxText)}</strong></p>
+      ${legs.join('')}
+      ${extrasHtml}
+      <div class="modal-trip-total">
+        <span>Sub total</span><b>${escapeHtml(money(totals.total))}</b>
+      </div>
+      <div class="modal-trip-grand-total">
+        <span>${escapeHtml(t('summary.total'))}</span><b>${escapeHtml(money(totals.total))}</b>
+      </div>`;
+  }
+
   function openCheckoutModal() {
     if (!canCheckout()) return;
     buildPassengerForms();
+    renderModalTripSummary();
     $('#paymentMessage').hidden = true;
     $('#passengerModal').hidden = false;
   }
@@ -653,14 +710,14 @@
         <section class="passenger-box" data-passenger-index="${i}">
           <h3>${escapeHtml(t('modal.passenger'))} ${i + 1} · ${escapeHtml(type)}${isLead ? ` · ${escapeHtml(t('modal.lead'))}` : ''}</h3>
           <div class="passenger-grid">
-            <label><span>${escapeHtml(t('modal.firstName'))} *</span><input name="firstName_${i}" required autocomplete="given-name"></label>
-            <label><span>${escapeHtml(t('modal.lastName'))} *</span><input name="lastName_${i}" required autocomplete="family-name"></label>
+            <label><span>${escapeHtml(t('modal.firstName'))} *</span><input name="firstName_${i}" required autocomplete="given-name" placeholder="${escapeHtml(t('modal.firstName'))}"></label>
+            <label><span>${escapeHtml(t('modal.lastName'))} *</span><input name="lastName_${i}" required autocomplete="family-name" placeholder="${escapeHtml(t('modal.lastName'))}"></label>
             <label><span>${escapeHtml(t('modal.nationality'))} *</span><select name="nationality_${i}" required>${countryOptions('PE')}</select></label>
             <label><span>${escapeHtml(t('modal.docType'))} *</span><select name="docType_${i}" required><option value="DNI">${escapeHtml(t('modal.dni'))}</option><option value="PASSPORT">${escapeHtml(t('modal.passport'))}</option><option value="CE">${escapeHtml(t('modal.ce'))}</option><option value="OTHER">${escapeHtml(t('modal.other'))}</option></select></label>
-            <label><span>${escapeHtml(t('modal.docNumber'))} *</span><input name="docNumber_${i}" required></label>
+            <label><span>${escapeHtml(t('modal.docNumber'))} *</span><input name="docNumber_${i}" required placeholder="${escapeHtml(t('modal.docNumber'))}"></label>
             <label><span>${escapeHtml(t('modal.birthDate'))} *</span><input name="birthDate_${i}" type="date" required></label>
             <label class="phone-field"><span>${escapeHtml(whatsappLabel)}</span><div class="phone-group"><select name="whatsappCode_${i}" ${isLead ? 'required' : ''} aria-label="${escapeHtml(t('modal.phoneCode'))}">${phoneCodeOptions('+51')}</select><input name="whatsappNumber_${i}" ${isLead ? 'required' : ''} autocomplete="tel" placeholder="${escapeHtml(t('modal.phoneNumber'))}"></div></label>
-            <label><span>${escapeHtml(emailLabel)}</span><input name="email_${i}" type="email" ${isLead ? 'required' : ''} autocomplete="email"></label>
+            <label><span>${escapeHtml(emailLabel)}</span><input name="email_${i}" type="email" ${isLead ? 'required' : ''} autocomplete="email" placeholder="${escapeHtml(t('modal.email'))}"></label>
           </div>
         </section>`;
     }).join('');

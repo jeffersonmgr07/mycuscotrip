@@ -1067,3 +1067,410 @@ body.mct-trains-page .free-extra-badge{
     text-align:left!important;
   }
 }
+
+
+/* === TRENES V8: modal de pasajeros estilo checkout + SEO inferior === */
+body.mct-trains-page .summary-card{
+  border-radius:26px!important;
+  border:1px solid rgba(6,40,3,.10)!important;
+  box-shadow:0 18px 45px rgba(6,40,3,.10)!important;
+  background:#fff!important;
+}
+body.mct-trains-page .summary-titlebar{
+  background:var(--train-green)!important;
+  padding:18px 22px!important;
+  font-size:1.22rem!important;
+}
+body.mct-trains-page .summary-content{
+  padding:20px 22px 4px!important;
+}
+body.mct-trains-page .summary-item{
+  padding:0 0 14px!important;
+  border-bottom:1px solid #e8eee9!important;
+}
+body.mct-trains-page .summary-item strong{
+  font-family:Montserrat,sans-serif!important;
+  color:var(--train-green)!important;
+}
+body.mct-trains-page .summary-total{
+  background:#f3f7f4!important;
+  border:1px solid #e3ece4!important;
+}
+
+body.mct-trains-page .passenger-modal-v8{
+  width:min(1180px,96vw)!important;
+  max-height:92vh!important;
+  background:#edf2f0!important;
+  border-radius:0!important;
+  overflow:auto!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-close{
+  top:14px!important;
+  right:14px!important;
+  background:#fff!important;
+  color:var(--train-green)!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.12)!important;
+}
+body.mct-trains-page .passenger-modal-layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.25fr) 420px!important;
+  gap:42px!important;
+  padding:36px 40px!important;
+  align-items:start!important;
+}
+body.mct-trains-page .passenger-modal-left{
+  min-width:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-titlebar{
+  background:transparent!important;
+  color:#252c29!important;
+  border-radius:0!important;
+  padding:0 0 18px!important;
+  border-bottom:1px solid #d6dfda!important;
+  font-size:clamp(1.6rem,2.8vw,2.35rem)!important;
+  line-height:1.1!important;
+  letter-spacing:-.03em!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-subtitle{
+  margin:20px 0 20px!important;
+  color:#2f3934!important;
+  font-size:1rem!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-forms{
+  padding:0!important;
+  gap:16px!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-box{
+  border:0!important;
+  border-top:1px solid #d6dfda!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  padding:20px 0 26px!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-box h3{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:0 42px 18px 44px!important;
+  margin:0!important;
+  background:transparent!important;
+  color:#0e1712!important;
+  font-family:Montserrat,sans-serif!important;
+  font-size:1.08rem!important;
+  font-weight:900!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-box h3::before{
+  content:"\f007";
+  font-family:"Font Awesome 6 Free";
+  font-weight:400;
+  position:absolute;
+  left:0;
+  top:-4px;
+  width:32px;
+  height:32px;
+  border:1.5px solid #7c8781;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#64706a;
+  font-size:.95rem;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-box h3::after{
+  content:"\f077";
+  font-family:"Font Awesome 6 Free";
+  font-weight:900;
+  position:absolute;
+  right:0;
+  top:1px;
+  color:var(--train-green);
+  font-size:1rem;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px 26px!important;
+  padding:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-grid label{
+  gap:0!important;
+  font-size:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-grid label span{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  overflow:hidden!important;
+  clip:rect(0 0 0 0)!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-grid input,
+body.mct-trains-page .passenger-modal-v8 .passenger-grid select{
+  min-height:56px!important;
+  border:1px solid #cfd9d4!important;
+  border-radius:7px!important;
+  background:#fff!important;
+  padding:14px 16px!important;
+  font-size:.98rem!important;
+  font-weight:600!important;
+  color:#111b16!important;
+}
+body.mct-trains-page .passenger-modal-v8 .passenger-grid input::placeholder{
+  color:#8b9691!important;
+}
+body.mct-trains-page .passenger-modal-v8 .phone-field{
+  grid-column:auto!important;
+}
+body.mct-trains-page .passenger-modal-v8 .phone-group{
+  grid-template-columns:116px 1fr!important;
+  gap:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .phone-group select{
+  border-radius:7px 0 0 7px!important;
+  border-right:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .phone-group input{
+  border-radius:0 7px 7px 0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .terms-line{
+  margin:22px 0 0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  font-size:1rem!important;
+  color:#18221d!important;
+}
+body.mct-trains-page .passenger-modal-v8 .terms-line input{
+  width:22px!important;
+  height:22px!important;
+  margin:0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .payment-message{
+  margin:18px 0 0!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-actions{
+  padding:26px 0 0!important;
+  justify-content:flex-end!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-actions .secondary-button{
+  min-height:56px!important;
+  border-radius:8px!important;
+  padding:0 26px!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-actions .checkout-button{
+  min-width:260px!important;
+  min-height:64px!important;
+  border-radius:8px!important;
+  font-size:1.05rem!important;
+}
+
+body.mct-trains-page .modal-trip-summary{
+  background:#fff!important;
+  border-radius:0!important;
+  padding:0 0 24px!important;
+  color:#111b16!important;
+  position:sticky!important;
+  top:0!important;
+}
+body.mct-trains-page #modalTripSummary{
+  padding:0!important;
+}
+body.mct-trains-page .modal-trip-summary h3{
+  margin:0!important;
+  font-family:Montserrat,sans-serif!important;
+  font-size:1.65rem!important;
+  line-height:1.15!important;
+  letter-spacing:-.02em!important;
+  color:#252c29!important;
+}
+body.mct-trains-page .modal-trip-divider{
+  height:1px!important;
+  background:#d9dfdc!important;
+  margin:22px 0 18px!important;
+}
+body.mct-trains-page .modal-trip-pax{
+  margin:0 0 18px!important;
+  color:#6d7671!important;
+  font-size:1rem!important;
+}
+body.mct-trains-page .modal-trip-pax strong{
+  color:var(--train-green)!important;
+}
+body.mct-trains-page .modal-trip-leg{
+  padding:0 0 22px!important;
+  margin:0 0 22px!important;
+  border-bottom:1px dashed #d7dfdb!important;
+}
+body.mct-trains-page .modal-trip-leg-head{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0 0 14px!important;
+}
+body.mct-trains-page .modal-trip-leg-head span{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:92px!important;
+  justify-content:center!important;
+  border-radius:9px!important;
+  background:#cfe3d9!important;
+  color:var(--train-green)!important;
+  padding:6px 12px!important;
+  font-weight:900!important;
+}
+body.mct-trains-page .modal-trip-leg-return .modal-trip-leg-head span{
+  background:#75979a!important;
+  color:#fff!important;
+}
+body.mct-trains-page .modal-trip-leg-head strong{
+  color:var(--train-green)!important;
+  font-size:.98rem!important;
+  line-height:1.25!important;
+}
+body.mct-trains-page .modal-trip-timeline{
+  display:grid!important;
+  grid-template-columns:72px 24px 1fr!important;
+  gap:12px!important;
+  align-items:center!important;
+}
+body.mct-trains-page .modal-trip-time{
+  display:grid!important;
+  gap:4px!important;
+}
+body.mct-trains-page .modal-trip-time b{
+  font-size:1.18rem!important;
+  color:#0f1713!important;
+}
+body.mct-trains-page .modal-trip-time span{
+  color:#111b16!important;
+  font-weight:700!important;
+}
+body.mct-trains-page .modal-trip-line{
+  width:2px!important;
+  height:80px!important;
+  background:#d8dfdb!important;
+  border-radius:999px!important;
+  justify-self:center!important;
+  position:relative!important;
+}
+body.mct-trains-page .modal-trip-line::before,
+body.mct-trains-page .modal-trip-line::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:8px;
+  height:8px;
+  background:#d8dfdb;
+  border-radius:50%;
+}
+body.mct-trains-page .modal-trip-line::before{top:0;}
+body.mct-trains-page .modal-trip-line::after{bottom:0;}
+body.mct-trains-page .modal-trip-service{
+  display:inline-flex!important;
+  border:1px solid #cbd3cf!important;
+  border-radius:4px!important;
+  padding:8px 12px!important;
+  margin:10px 0 0 108px!important;
+  font-weight:800!important;
+  color:#111b16!important;
+}
+body.mct-trains-page .modal-trip-price{
+  margin:8px 0 0 108px!important;
+  color:var(--train-green)!important;
+  font-weight:900!important;
+}
+body.mct-trains-page .modal-trip-included{
+  border-bottom:1px solid #d9dfdc!important;
+  padding:0 0 20px!important;
+  margin:0 0 20px!important;
+}
+body.mct-trains-page .modal-trip-included strong{
+  display:block!important;
+  color:var(--train-green)!important;
+  font-size:1rem!important;
+  margin-bottom:10px!important;
+}
+body.mct-trains-page .modal-trip-included p,
+body.mct-trains-page .modal-trip-total,
+body.mct-trains-page .modal-trip-grand-total{
+  display:flex!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  margin:8px 0!important;
+}
+body.mct-trains-page .modal-trip-grand-total span,
+body.mct-trains-page .modal-trip-grand-total b{
+  color:var(--train-green)!important;
+  font-family:Montserrat,sans-serif!important;
+  font-size:1.45rem!important;
+  font-weight:900!important;
+}
+
+body.mct-trains-page .trains-seo-content{
+  width:min(1040px,92vw)!important;
+  margin:44px auto 72px!important;
+  padding:34px 36px!important;
+  background:#fff!important;
+  border:1px solid rgba(6,40,3,.09)!important;
+  border-radius:24px!important;
+  box-shadow:0 14px 34px rgba(6,40,3,.07)!important;
+}
+body.mct-trains-page .trains-seo-content h2{
+  margin:0 0 14px!important;
+  color:var(--train-green)!important;
+  font-family:Montserrat,sans-serif!important;
+  font-size:clamp(1.45rem,2.6vw,2rem)!important;
+  letter-spacing:-.02em!important;
+}
+body.mct-trains-page .trains-seo-content p{
+  margin:0 0 12px!important;
+  color:#44544a!important;
+  line-height:1.72!important;
+  font-size:.98rem!important;
+}
+body.mct-trains-page .trains-seo-content p:last-child{margin-bottom:0!important;}
+
+@media (max-width:1040px){
+  body.mct-trains-page .passenger-modal-layout{
+    grid-template-columns:1fr!important;
+    gap:26px!important;
+    padding:30px 24px!important;
+  }
+  body.mct-trains-page .modal-trip-summary{
+    position:relative!important;
+    padding:24px!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .passenger-modal-v8{
+    width:100vw!important;
+    max-height:100vh!important;
+  }
+  body.mct-trains-page .passenger-modal-layout{
+    padding:26px 18px!important;
+  }
+  body.mct-trains-page .passenger-modal-v8 .passenger-grid{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .passenger-modal-v8 .modal-actions{
+    flex-direction:column-reverse!important;
+  }
+  body.mct-trains-page .passenger-modal-v8 .modal-actions button{
+    width:100%!important;
+  }
+  body.mct-trains-page .modal-trip-leg-head{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+  }
+  body.mct-trains-page .modal-trip-service,
+  body.mct-trains-page .modal-trip-price{
+    margin-left:0!important;
+  }
+  body.mct-trains-page .trains-seo-content{
+    padding:24px 20px!important;
+    margin:34px auto 54px!important;
+  }
+}
