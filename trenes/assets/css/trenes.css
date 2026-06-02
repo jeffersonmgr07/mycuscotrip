@@ -1679,3 +1679,67 @@ body.mct-trains-page .modal-trip-total{
     margin-left:100px!important;
   }
 }
+
+/* === TRENES V10: ajustes finos del resumen en modal de pasajeros === */
+body.mct-trains-page .modal-trip-summary{
+  padding:28px 30px 30px!important;
+  border:1px solid #dfe6e2!important;
+  border-radius:22px!important;
+  box-shadow:0 16px 42px rgba(6,40,3,.07)!important;
+  overflow:hidden!important;
+}
+body.mct-trains-page #modalTripSummary{
+  padding:0!important;
+}
+body.mct-trains-page .modal-trip-summary h3{
+  margin:0 0 18px!important;
+  font-size:1.72rem!important;
+  line-height:1.15!important;
+}
+body.mct-trains-page .modal-trip-divider{
+  margin:0 0 18px!important;
+}
+body.mct-trains-page .modal-trip-leg{
+  padding:0 0 24px!important;
+  margin:0 0 24px!important;
+}
+body.mct-trains-page .modal-trip-head-text strong,
+body.mct-trains-page .modal-trip-head-text small{
+  font-weight:500!important;
+  font-size:.92rem!important;
+  line-height:1.22!important;
+  letter-spacing:0!important;
+}
+body.mct-trains-page .modal-trip-head-text small{
+  font-size:.9rem!important;
+}
+body.mct-trains-page .modal-trip-price{
+  margin:12px 0 0 122px!important;
+  color:#063f20!important;
+  font-weight:900!important;
+  font-size:1rem!important;
+  line-height:1.2!important;
+}
+body.mct-trains-page .modal-trip-grand-total span,
+body.mct-trains-page .modal-trip-grand-total b{
+  color:#063f20!important;
+}
+
+@media (max-width:1040px){
+  body.mct-trains-page .modal-trip-summary{
+    padding:24px!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .modal-trip-summary{
+    padding:22px 18px!important;
+    border-radius:18px!important;
+  }
+  body.mct-trains-page .modal-trip-price{
+    margin-left:100px!important;
+  }
+  body.mct-trains-page .modal-trip-head-text strong,
+  body.mct-trains-page .modal-trip-head-text small{
+    font-size:.9rem!important;
+  }
+}
