@@ -158,6 +158,28 @@
     }
   }
 
+  function formatDateSummary(isoDate) {
+    if (!isoDate) return '';
+    const [year, month, day] = String(isoDate).split('-').map(Number);
+    if (!year || !month || !day) return isoDate;
+    try {
+      const locale = state.locale === 'en' ? 'en-US' : 'es-PE';
+      const d = new Date(year, month - 1, day);
+      const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d).replace('.', '').toUpperCase();
+      const rest = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'long', year: 'numeric' }).format(d);
+      return `${weekday}, ${rest}`;
+    } catch (error) {
+      return isoDate;
+    }
+  }
+
+  function formatDateShort(isoDate) {
+    if (!isoDate) return '';
+    const [year, month, day] = String(isoDate).split('-').map(Number);
+    if (!year || !month || !day) return '';
+    return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}`;
+  }
+
   function getTravelDate(direction) {
     return direction === 'return' ? state.returnDate : state.outboundDate;
   }
@@ -219,6 +241,14 @@
     return ROUTES.inbound[state.returnTo];
   }
 
+  function getStayMinutes(returnTrain) {
+    if (!state.selected.outbound || !returnTrain || state.tripType !== 'roundtrip') return null;
+    if (!state.outboundDate || !state.returnDate || state.outboundDate !== state.returnDate) return null;
+    const arrival = timeToMinutes(state.selected.outbound.arrivalTime);
+    const departure = timeToMinutes(returnTrain.departureTime);
+    return departure - arrival;
+  }
+
   function getFilteredTrains(direction) {
     const route = getRoute(direction);
     const outboundOperator = getTrainOperator(state.selected.outbound);
@@ -232,6 +262,11 @@
       .filter((train) => {
         if (direction !== 'return' || state.tripType !== 'roundtrip' || !outboundOperator) return true;
         return getTrainOperator(train) === outboundOperator;
+      })
+      .filter((train) => {
+        if (direction !== 'return') return true;
+        const stay = getStayMinutes(train);
+        return stay === null || stay >= 45;
       })
       .sort((a, b) => timeToMinutes(a.departureTime) - timeToMinutes(b.departureTime) || getTrainOperator(a).localeCompare(getTrainOperator(b)));
   }
@@ -275,8 +310,8 @@
     $$('.return-route-block').forEach((el) => { el.style.display = shouldShowReturnFilters ? '' : 'none'; });
     $('#returnDate').required = state.tripType === 'roundtrip' || state.tripType === 'returnonly';
     $('#outboundDate').required = state.tripType !== 'returnonly';
-    $('#outboundRouteLabel').textContent = `${stationLabel(state.outboundFrom, true)} → ${stationLabel('machuPicchu')}`;
-    $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}`;
+    $('#outboundRouteLabel').textContent = `${stationLabel(state.outboundFrom, true)} → ${stationLabel('machuPicchu')}${state.outboundDate ? ` · ${formatDateShort(state.outboundDate)}` : ''}`;
+    $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}${state.returnDate ? ` · ${formatDateShort(state.returnDate)}` : ''}`;
 
     const companyRule = $('#companyRuleNote');
     if (companyRule) companyRule.hidden = true;
@@ -347,6 +382,8 @@
       const logo = getCompanyLogo(train);
       const service = train.serviceName || train.category || t('results.train');
       const category = train.category ? train.category.replace(/_/g, ' ') : '';
+      const stay = direction === 'return' ? getStayMinutes(train) : null;
+      const stayWarning = stay !== null && stay >= 45 && stay < 240;
       return `
         <article class="train-card ${pending ? 'is-pending' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${pending ? 'true' : 'false'}">
           <div class="select-rail"><span class="select-dot" aria-hidden="true"></span></div>
@@ -367,6 +404,7 @@
               <div class="fare-line"><small>${escapeHtml(t('results.adult'))}</small><strong>${money(adult)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>
               ${state.children ? `<div class="fare-line child-fare"><small>${escapeHtml(t('results.child'))}</small><strong>${money(child)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>` : ''}
             </div>
+            ${stayWarning ? `<div class="stay-warning">Tiempo corto en Machu Picchu. Revisa bien tus fechas y horarios antes de reservar.</div>` : ''}
             <div class="train-card-action">
               ${pending ? `<button type="button" class="select-train-button" data-confirm-train="${direction}" data-train-code="${escapeHtml(train.code)}">${escapeHtml(t('results.selectThisTrain'))}</button>` : ''}
             </div>
@@ -519,28 +557,32 @@
 
   function modalLegHtml(direction, train, date, amount) {
     if (!train) return '';
-    const label = direction === 'outbound' ? 'Ida' : 'Retorno';
-    const arrow = direction === 'outbound' ? '→' : '←';
+    const isOutbound = direction === 'outbound';
+    const label = isOutbound ? 'Ida' : 'Retorno';
+    const arrow = isOutbound ? '→' : '←';
     const route = `${train.departureStation} - ${train.arrivalStation}`;
-    const service = `${train.serviceName || t('results.train')} ${train.serviceClass ? `| ${train.serviceClass}` : ''}`;
+    const service = `${train.serviceName || t('results.train')}${train.serviceClass ? ` | ${train.serviceClass}` : ''}`;
     return `
       <div class="modal-trip-leg modal-trip-leg-${direction}">
         <div class="modal-trip-leg-head">
           <span>${escapeHtml(label)} <b>${escapeHtml(arrow)}</b></span>
-          <strong>${escapeHtml(formatDateLong(date))} | ${escapeHtml(route)}</strong>
+          <div class="modal-trip-head-text">
+            <strong>${escapeHtml(formatDateSummary(date))}</strong>
+            <small>${escapeHtml(route)}</small>
+          </div>
         </div>
         <div class="modal-trip-timeline">
-          <div class="modal-trip-time">
+          <div class="modal-trip-timecol">
             <b>${escapeHtml(train.departureTime)}</b>
-            <span>${escapeHtml(train.departureStation)}</span>
+            <b>${escapeHtml(train.arrivalTime)}</b>
           </div>
           <div class="modal-trip-line" aria-hidden="true"></div>
-          <div class="modal-trip-time">
-            <b>${escapeHtml(train.arrivalTime)}</b>
-            <span>${escapeHtml(train.arrivalStation)}</span>
+          <div class="modal-trip-stationcol">
+            <strong>${escapeHtml(train.departureStation)}</strong>
+            <span class="modal-trip-service">${escapeHtml(service)}</span>
+            <strong>${escapeHtml(train.arrivalStation)}</strong>
           </div>
         </div>
-        <div class="modal-trip-service">${escapeHtml(service)}</div>
         <div class="modal-trip-price">${escapeHtml(money(amount))}</div>
       </div>`;
   }
@@ -558,9 +600,9 @@
       <div class="modal-trip-included">
         <strong>Servicios adicionales</strong>
         ${extras.map((line) => `<p><span>${escapeHtml(line.label)}</span><b>${escapeHtml(line.amount === 0 ? t('summary.included') : money(line.amount))}</b></p>`).join('')}
-      </div>` : `<div class="modal-trip-included"><strong>Servicios incluidos</strong><p><span>${escapeHtml(t('extras.assistance'))}</span><b>${escapeHtml(t('summary.included'))}</b></p></div>`;
+      </div>` : '';
     target.innerHTML = `
-      <h3>Ver resumen de viaje</h3>
+      <h3>Detalles de tu viaje</h3>
       <div class="modal-trip-divider"></div>
       <p class="modal-trip-pax">Tu itinerario: <strong>${escapeHtml(paxText)}</strong></p>
       ${legs.join('')}
@@ -686,8 +728,9 @@
     }
   }
 
-  function countryOptions(selected = 'PE') {
-    return COUNTRY_CODES
+  function countryOptions(selected = '') {
+    const placeholder = `<option value="" ${selected ? '' : 'selected'} disabled>${escapeHtml(t('modal.nationality'))}</option>`;
+    return placeholder + COUNTRY_CODES
       .map((code) => ({ code, name: getRegionName(code) }))
       .sort((a, b) => a.name.localeCompare(b.name, state.locale === 'en' ? 'en' : 'es'))
       .map(({ code, name }) => `<option value="${escapeHtml(name)}" data-country-code="${code}" ${code === selected ? 'selected' : ''}>${escapeHtml(name)}</option>`)
@@ -707,13 +750,15 @@
       const whatsappLabel = isLead ? `${t('modal.whatsapp')} *` : t('modal.whatsappOptional');
       const emailLabel = isLead ? `${t('modal.email')} *` : t('modal.emailOptional');
       return `
-        <section class="passenger-box" data-passenger-index="${i}">
-          <h3>${escapeHtml(t('modal.passenger'))} ${i + 1} · ${escapeHtml(type)}${isLead ? ` · ${escapeHtml(t('modal.lead'))}` : ''}</h3>
+        <section class="passenger-box ${isLead ? 'is-open' : ''}" data-passenger-index="${i}">
+          <button type="button" class="passenger-toggle" data-passenger-toggle="${i}" aria-expanded="${isLead ? 'true' : 'false'}">
+            <span>${escapeHtml(t('modal.passenger'))} ${i + 1} · ${escapeHtml(type)}${isLead ? ` · ${escapeHtml(t('modal.lead'))}` : ''}</span>
+          </button>
           <div class="passenger-grid">
             <label><span>${escapeHtml(t('modal.firstName'))} *</span><input name="firstName_${i}" required autocomplete="given-name" placeholder="${escapeHtml(t('modal.firstName'))}"></label>
             <label><span>${escapeHtml(t('modal.lastName'))} *</span><input name="lastName_${i}" required autocomplete="family-name" placeholder="${escapeHtml(t('modal.lastName'))}"></label>
-            <label><span>${escapeHtml(t('modal.nationality'))} *</span><select name="nationality_${i}" required>${countryOptions('PE')}</select></label>
-            <label><span>${escapeHtml(t('modal.docType'))} *</span><select name="docType_${i}" required><option value="DNI">${escapeHtml(t('modal.dni'))}</option><option value="PASSPORT">${escapeHtml(t('modal.passport'))}</option><option value="CE">${escapeHtml(t('modal.ce'))}</option><option value="OTHER">${escapeHtml(t('modal.other'))}</option></select></label>
+            <label><span>${escapeHtml(t('modal.nationality'))} *</span><select name="nationality_${i}" required>${countryOptions('')}</select></label>
+            <label><span>${escapeHtml(t('modal.docType'))} *</span><select name="docType_${i}" required><option value="" selected disabled>${escapeHtml(t('modal.docType'))}</option><option value="DNI">${escapeHtml(t('modal.dni'))}</option><option value="PASSPORT">${escapeHtml(t('modal.passport'))}</option><option value="CE">${escapeHtml(t('modal.ce'))}</option><option value="OTHER">${escapeHtml(t('modal.other'))}</option></select></label>
             <label><span>${escapeHtml(t('modal.docNumber'))} *</span><input name="docNumber_${i}" required placeholder="${escapeHtml(t('modal.docNumber'))}"></label>
             <label><span>${escapeHtml(t('modal.birthDate'))} *</span><input name="birthDate_${i}" type="date" required></label>
             <label class="phone-field"><span>${escapeHtml(whatsappLabel)}</span><div class="phone-group"><select name="whatsappCode_${i}" ${isLead ? 'required' : ''} aria-label="${escapeHtml(t('modal.phoneCode'))}">${phoneCodeOptions('+51')}</select><input name="whatsappNumber_${i}" ${isLead ? 'required' : ''} autocomplete="tel" placeholder="${escapeHtml(t('modal.phoneNumber'))}"></div></label>
@@ -836,6 +881,10 @@
   async function handlePassengerSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
+    $$('.passenger-box', form).forEach((box) => {
+      box.classList.add('is-open');
+      box.querySelector('.passenger-toggle')?.setAttribute('aria-expanded', 'true');
+    });
     if (!form.reportValidity()) return;
     const passengers = collectPassengers(form.elements);
     const payload = buildOrderPayload(passengers);
@@ -950,6 +999,15 @@
       const card = event.target.closest('.train-card[data-train-code]');
       if (card) {
         markTrain(card.dataset.direction, card.dataset.trainCode);
+        return;
+      }
+
+      const togglePassenger = event.target.closest('[data-passenger-toggle]');
+      if (togglePassenger) {
+        const box = togglePassenger.closest('.passenger-box');
+        const open = !box.classList.contains('is-open');
+        box.classList.toggle('is-open', open);
+        togglePassenger.setAttribute('aria-expanded', String(open));
         return;
       }
 
