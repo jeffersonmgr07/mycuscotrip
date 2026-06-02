@@ -899,3 +899,171 @@ body.mct-trains-page .free-extra-badge{
   body.mct-trains-page .price-box,
   body.mct-trains-page .train-card-action{padding-right:0!important;margin-right:0!important;}
 }
+
+/* === TRENES V7: buscador con selector, orden correcto y aire visual controlado === */
+body.mct-trains-page .train-hero{
+  min-height:430px!important;
+  padding:72px clamp(18px,7vw,110px) 150px!important;
+  align-items:center!important;
+  background:linear-gradient(90deg,rgba(6,40,3,.86),rgba(6,40,3,.56),rgba(6,40,3,.20)),url('/assets/img/trenes/hero-trenes-machu-picchu.jpg') center/cover no-repeat!important;
+}
+body.mct-trains-page .train-hero .hero-content{
+  transform:none!important;
+  margin-top:0!important;
+}
+body.mct-trains-page .search-shell{
+  width:min(1280px,92vw)!important;
+  margin:-72px auto 34px!important;
+  z-index:20!important;
+}
+body.mct-trains-page .train-search-card{
+  display:grid!important;
+  grid-template-columns:230px minmax(0,1fr)!important;
+  gap:12px!important;
+  align-items:stretch!important;
+  padding:12px!important;
+}
+body.mct-trains-page .trip-type-field{
+  min-height:64px!important;
+  background:#eef4ef!important;
+  border-color:transparent!important;
+  border-radius:20px!important;
+}
+body.mct-trains-page .trip-type-field select{
+  appearance:auto!important;
+  cursor:pointer!important;
+  font-size:1.02rem!important;
+  font-weight:900!important;
+  color:var(--train-green)!important;
+}
+body.mct-trains-page .search-grid{
+  grid-template-columns:1fr 1fr 1.15fr 1fr 150px!important;
+  gap:10px!important;
+}
+body.mct-trains-page .results-layout{
+  margin-top:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 360px!important;
+  gap:24px!important;
+}
+body.mct-trains-page .results-main{
+  gap:12px!important;
+}
+body.mct-trains-page .section-heading{
+  margin:0!important;
+}
+body.mct-trains-page .section-heading h2{
+  margin:0!important;
+  line-height:1.05!important;
+}
+body.mct-trains-page .route-block{
+  margin:0 0 2px!important;
+  gap:7px!important;
+}
+body.mct-trains-page .route-label{
+  margin:0!important;
+  font-size:.92rem!important;
+  line-height:1.1!important;
+}
+body.mct-trains-page .route-pills{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+}
+body.mct-trains-page .route-pill{
+  min-height:38px!important;
+  padding:0 14px!important;
+  border-radius:14px!important;
+  font-size:.88rem!important;
+  line-height:1.05!important;
+  box-shadow:0 6px 16px rgba(6,40,3,.05)!important;
+}
+body.mct-trains-page .current-route-label{
+  margin:0 0 10px!important;
+  color:var(--train-muted)!important;
+  font-size:.98rem!important;
+  font-weight:700!important;
+}
+body.mct-trains-page .train-results{
+  gap:10px!important;
+}
+body.mct-trains-page .return-block{
+  gap:12px!important;
+  margin-top:14px!important;
+}
+body.mct-trains-page #companyRuleNote{
+  display:none!important;
+}
+body.mct-trains-page .schedule-line{
+  grid-template-columns:minmax(130px,1fr) 118px minmax(130px,1fr)!important;
+  align-items:center!important;
+  gap:16px!important;
+}
+body.mct-trains-page .duration{
+  justify-self:center!important;
+  text-align:center!important;
+  width:max-content!important;
+}
+body.mct-trains-page .price-box{
+  padding-right:18px!important;
+  text-align:right!important;
+}
+body.mct-trains-page .train-card-action{
+  padding-right:16px!important;
+  padding-bottom:2px!important;
+}
+body.mct-trains-page .select-train-button{
+  margin-right:0!important;
+  padding:11px 18px!important;
+}
+body.mct-trains-page .free-extra-badge{
+  background:#ffea00!important;
+  color:#062803!important;
+  border:1px solid #f7d600!important;
+  box-shadow:0 6px 14px rgba(255,234,0,.35)!important;
+}
+
+@media (max-width:1180px){
+  body.mct-trains-page .train-search-card{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .search-grid{
+    grid-template-columns:repeat(2,1fr)!important;
+  }
+  body.mct-trains-page .search-button{
+    grid-column:1/-1!important;
+  }
+  body.mct-trains-page .results-layout{
+    grid-template-columns:1fr!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .train-hero{
+    min-height:390px!important;
+    padding:50px 18px 128px!important;
+  }
+  body.mct-trains-page .search-shell{
+    width:94vw!important;
+    margin:-62px auto 26px!important;
+  }
+  body.mct-trains-page .search-grid{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .route-pills{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .route-pill{
+    width:100%!important;
+    justify-content:center!important;
+  }
+  body.mct-trains-page .schedule-line{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  body.mct-trains-page .price-box,
+  body.mct-trains-page .train-card-action{
+    padding-right:0!important;
+    text-align:left!important;
+  }
+}

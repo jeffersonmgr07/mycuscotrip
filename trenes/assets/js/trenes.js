@@ -66,7 +66,7 @@
     },
     en: {
       hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Free guided tour inside Machu Picchu', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'When you buy your round-trip train tickets, access exclusive benefits, book and pay online, and enjoy your visit with personalized assistance.' },
-      search: { roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', returnOnly: 'Return only', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
+      search: { tripType: 'Trip type', roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', returnOnly: 'Return only', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
       routes: { outboundFrom: 'Departure from', returnTo: 'Return to' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
@@ -260,11 +260,14 @@
     $('#childCount').textContent = state.children;
     $('#paxToggle').setAttribute('aria-expanded', String(!$('#paxPanel').hidden));
 
+    const tripSelect = $('#tripTypeSelect');
+    if (tripSelect) tripSelect.value = state.tripType;
     $$('.trip-tab').forEach((tab) => {
       const input = $('input', tab);
       tab.classList.toggle('is-active', input?.checked);
     });
 
+    $$('.outbound-field').forEach((el) => { el.style.display = state.tripType === 'returnonly' ? 'none' : ''; });
     $$('.return-field').forEach((el) => { el.style.display = (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? '' : 'none'; });
     const shouldShowOutboundFilters = state.tripType !== 'returnonly' && !state.selected.outbound;
     const shouldShowReturnFilters = (state.tripType === 'returnonly') || (state.tripType === 'roundtrip' && Boolean(state.selected.outbound) && !state.selected.return);
@@ -276,18 +279,17 @@
     $('#returnRouteLabel').textContent = `${stationLabel('machuPicchu')} → ${stationLabel(state.returnTo, true)}`;
 
     const companyRule = $('#companyRuleNote');
-    if (companyRule) {
-      if (state.selected.outbound) {
-        const company = state.selected.outbound.companyName || state.selected.outbound.company || '';
-        companyRule.textContent = t('results.sameCompany').replace('{company}', company);
-      } else {
-        companyRule.textContent = t('results.companyNote');
-      }
-    }
+    if (companyRule) companyRule.hidden = true;
 
     renderChildAges();
     renderStationPills();
     applyTrainTranslations();
+  }
+
+  function getTripTypeValue() {
+    const select = $('#tripTypeSelect');
+    if (select) return select.value || 'roundtrip';
+    return document.querySelector('input[name=\"tripType\"]:checked')?.value || 'roundtrip';
   }
 
   function renderChildAges() {
@@ -308,8 +310,7 @@
     const showOutbound = state.tripType !== 'returnonly';
     const showReturn = state.tripType === 'returnonly' || (state.tripType === 'roundtrip' && Boolean(state.selected.outbound));
 
-    const outboundHeading = $('#outboundResults')?.previousElementSibling;
-    if (outboundHeading) outboundHeading.hidden = !showOutbound;
+    $$('.outbound-heading, #outboundRouteLabel').forEach((el) => { el.hidden = !showOutbound; });
     if ($('#outboundResults')) {
       $('#outboundResults').hidden = !showOutbound;
       $('#outboundResults').innerHTML = '';
@@ -809,7 +810,7 @@
   }
 
   function handleTripTypeChange() {
-    state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
+    state.tripType = getTripTypeValue();
     if (state.tripType === 'oneway') {
       state.selected.return = null;
       state.pending.return = null;
@@ -824,7 +825,7 @@
   function bindEvents() {
     $('#trainSearchForm').addEventListener('submit', (event) => {
       event.preventDefault();
-      state.tripType = $('input[name="tripType"]:checked')?.value || 'roundtrip';
+      state.tripType = getTripTypeValue();
       state.outboundDate = $('#outboundDate').value;
       state.returnDate = $('#returnDate').value;
       state.selected.outbound = null;
@@ -832,10 +833,11 @@
       state.pending.outbound = null;
       state.pending.return = null;
       renderResults();
-      $('.route-selector')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('.results-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     $$('input[name="tripType"]').forEach((input) => input.addEventListener('change', handleTripTypeChange));
+    $('#tripTypeSelect')?.addEventListener('change', handleTripTypeChange);
     $('#outboundDate').addEventListener('change', (e) => { state.outboundDate = e.target.value; });
     $('#returnDate').addEventListener('change', (e) => { state.returnDate = e.target.value; });
 

@@ -16,7 +16,7 @@
   <link href="/assets/css/header.css" rel="stylesheet"/>
   <link href="/assets/css/footer.css" rel="stylesheet"/>
   <link href="/assets/css/responsive.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260601-trenes-v6" />
+  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260601-trenes-v7" />
 </head>
 <body class="mct-trains-page">
   <div id="header-container"></div>
@@ -38,23 +38,17 @@
 
     <section class="search-shell" aria-label="Buscador de trenes">
       <form id="trainSearchForm" class="train-search-card">
-        <div class="trip-tabs" role="radiogroup" aria-label="Tipo de viaje">
-          <label class="trip-tab is-active">
-            <input type="radio" name="tripType" value="roundtrip" checked>
-            <span data-train-i18n="search.roundtrip">Ida y vuelta</span>
-          </label>
-          <label class="trip-tab">
-            <input type="radio" name="tripType" value="oneway">
-            <span data-train-i18n="search.oneway">Solo ida</span>
-          </label>
-          <label class="trip-tab">
-            <input type="radio" name="tripType" value="returnonly">
-            <span data-train-i18n="search.returnOnly">Solo retorno</span>
-          </label>
-        </div>
+        <label class="field-card trip-type-field">
+          <small data-train-i18n="search.tripType">Tipo de viaje</small>
+          <select id="tripTypeSelect" name="tripType" aria-label="Tipo de viaje">
+            <option value="roundtrip" data-train-i18n="search.roundtrip" selected>Ida y vuelta</option>
+            <option value="oneway" data-train-i18n="search.oneway">Solo ida</option>
+            <option value="returnonly" data-train-i18n="search.returnOnly">Solo retorno</option>
+          </select>
+        </label>
 
         <div class="search-grid">
-          <label class="field-card">
+          <label class="field-card outbound-field">
             <small data-train-i18n="search.outboundDate">Fecha de viaje</small>
             <input id="outboundDate" name="outboundDate" type="date" required>
           </label>
@@ -94,31 +88,27 @@
       </form>
     </section>
 
-    <section class="route-selector" aria-label="Selecciona una ruta">
-      <div class="route-block outbound-route-block">
-        <p class="route-label" data-train-i18n="routes.outboundFrom">Salida desde</p>
-        <div class="route-pills" id="outboundStationPills"></div>
-      </div>
-      <div class="route-block return-route-block">
-        <p class="route-label" data-train-i18n="routes.returnTo">Retorno hacia</p>
-        <div class="route-pills" id="returnStationPills"></div>
-      </div>
-    </section>
-
     <section class="results-layout">
       <div class="results-main">
-        <div class="section-heading">
+        <div class="section-heading outbound-heading">
           <h2 data-train-i18n="results.outboundTitle">Elige tu tren de ida</h2>
-          <p id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         </div>
+        <div class="route-block outbound-route-block">
+          <p class="route-label" data-train-i18n="routes.outboundFrom">Salida desde</p>
+          <div class="route-pills" id="outboundStationPills"></div>
+        </div>
+        <p class="current-route-label" id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         <div id="outboundResults" class="train-results"></div>
 
         <div id="returnBlock" class="return-block" hidden>
-          <div class="section-heading">
+          <div class="section-heading return-heading">
             <h2 data-train-i18n="results.returnTitle">Elige tu tren de retorno</h2>
-            <p id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
-            <small id="companyRuleNote" data-train-i18n="results.companyNote">El retorno se filtrará por la misma empresa del tren de ida.</small>
           </div>
+          <div class="route-block return-route-block">
+            <p class="route-label" data-train-i18n="routes.returnTo">Retorno hacia</p>
+            <div class="route-pills" id="returnStationPills"></div>
+          </div>
+          <p class="current-route-label" id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
           <div id="returnResults" class="train-results"></div>
         </div>
       </div>
@@ -234,6 +224,6 @@
   <script src="/assets/js/components/header.js"></script>
   <script src="/assets/js/components/footer.js"></script>
   <script src="/trenes/assets/js/config.js"></script>
-  <script src="/trenes/assets/js/trenes.js?v=20260601-trenes-v6" defer></script>
+  <script src="/trenes/assets/js/trenes.js?v=20260601-trenes-v7" defer></script>
 </body>
 </html>
