@@ -2164,3 +2164,80 @@ body.mct-trains-page .modal-trip-grand-total b{
 @media (min-width:761px){
   body.mct-trains-page .route-more-toggle{display:none!important;}
 }
+
+
+/* === TRENES V14: ajustes finales de slider, hero y SEO FAQ === */
+body.mct-trains-page .train-hero .eyebrow{
+  display:none!important;
+}
+@media (min-width:761px){
+  body.mct-trains-page .train-service-preview{
+    grid-template-columns:minmax(220px,330px) minmax(0,1fr)!important;
+  }
+  body.mct-trains-page .train-service-slider{
+    height:194px!important;
+  }
+  body.mct-trains-page .train-service-slider img{
+    object-fit:contain!important;
+    background:#e9f0ec!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .hero-benefits span:nth-child(1){order:1!important;}
+  body.mct-trains-page .hero-benefits span:nth-child(2){order:3!important;}
+  body.mct-trains-page .hero-benefits span:nth-child(3){order:2!important;}
+}
+body.mct-trains-page .trains-seo-content .seo-intro{
+  margin-bottom:20px!important;
+}
+body.mct-trains-page .trains-faq-list{
+  display:grid!important;
+  gap:10px!important;
+  margin-top:18px!important;
+}
+body.mct-trains-page .trains-faq-list details{
+  border:1px solid #dfe7e1!important;
+  border-radius:16px!important;
+  background:#fbfdfb!important;
+  overflow:hidden!important;
+}
+body.mct-trains-page .trains-faq-list summary{
+  list-style:none!important;
+  cursor:pointer!important;
+  padding:16px 18px!important;
+  color:var(--train-green)!important;
+  font-family:Montserrat,sans-serif!important;
+  font-weight:800!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+}
+body.mct-trains-page .trains-faq-list summary::-webkit-details-marker{display:none!important;}
+body.mct-trains-page .trains-faq-list summary::after{
+  content:"\f078";
+  font-family:"Font Awesome 6 Free";
+  font-weight:900;
+  font-size:.82rem;
+  color:var(--train-green);
+  transition:transform .2s ease;
+}
+body.mct-trains-page .trains-faq-list details[open] summary::after{
+  transform:rotate(180deg);
+}
+body.mct-trains-page .trains-faq-list details p{
+  padding:0 18px 16px!important;
+  margin:0!important;
+  font-size:.94rem!important;
+  line-height:1.68!important;
+}
+@media (max-width:760px){
+  body.mct-trains-page .trains-faq-list summary{
+    padding:14px 15px!important;
+    font-size:.92rem!important;
+  }
+  body.mct-trains-page .trains-faq-list details p{
+    padding:0 15px 14px!important;
+    font-size:.88rem!important;
+  }
+}

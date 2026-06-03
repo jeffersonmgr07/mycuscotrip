@@ -1244,8 +1244,12 @@
         const preview = slideControl.closest('.train-service-preview');
         const slider = preview?.querySelector('[data-service-slider]');
         if (slider) {
+          const slides = Array.from(slider.querySelectorAll('img')).filter((img) => img.style.display !== 'none');
+          const totalSlides = Math.max(1, slides.length);
+          const currentIndex = Math.round(slider.scrollLeft / Math.max(1, slider.clientWidth));
           const direction = slideControl.dataset.serviceSlide === 'next' ? 1 : -1;
-          slider.scrollBy({ left: direction * slider.clientWidth, behavior: 'smooth' });
+          const nextIndex = (currentIndex + direction + totalSlides) % totalSlides;
+          slider.scrollTo({ left: nextIndex * slider.clientWidth, behavior: 'smooth' });
         }
         return;
       }
