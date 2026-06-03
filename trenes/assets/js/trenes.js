@@ -263,11 +263,6 @@
         if (direction !== 'return' || state.tripType !== 'roundtrip' || !outboundOperator) return true;
         return getTrainOperator(train) === outboundOperator;
       })
-      .filter((train) => {
-        if (direction !== 'return') return true;
-        const stay = getStayMinutes(train);
-        return stay === null || stay >= 45;
-      })
       .sort((a, b) => timeToMinutes(a.departureTime) - timeToMinutes(b.departureTime) || getTrainOperator(a).localeCompare(getTrainOperator(b)));
   }
 
@@ -383,9 +378,9 @@
       const service = train.serviceName || train.category || t('results.train');
       const category = train.category ? train.category.replace(/_/g, ' ') : '';
       const stay = direction === 'return' ? getStayMinutes(train) : null;
-      const stayWarning = stay !== null && stay >= 45 && stay < 240;
+      const isImpossibleReturn = pending && stay !== null && stay < 45;
       return `
-        <article class="train-card ${pending ? 'is-pending' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${pending ? 'true' : 'false'}">
+        <article class="train-card ${pending ? 'is-pending' : ''} ${isImpossibleReturn ? 'has-time-conflict' : ''}" data-train-code="${escapeHtml(train.code)}" data-direction="${direction}" tabindex="0" role="button" aria-pressed="${pending ? 'true' : 'false'}">
           <div class="select-rail"><span class="select-dot" aria-hidden="true"></span></div>
           <div class="train-card-body">
             <div class="train-company">
@@ -404,9 +399,10 @@
               <div class="fare-line"><small>${escapeHtml(t('results.adult'))}</small><strong>${money(adult)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>
               ${state.children ? `<div class="fare-line child-fare"><small>${escapeHtml(t('results.child'))}</small><strong>${money(child)}</strong><em>${escapeHtml(t('results.perPassenger'))}</em></div>` : ''}
             </div>
-            ${stayWarning ? `<div class="stay-warning">Tiempo corto en Machu Picchu. Revisa bien tus fechas y horarios antes de reservar.</div>` : ''}
+            ${direction === 'return' ? returnAlertHtml(train, pending) : ''}
+            ${pending ? trainServiceDetailsHtml(train) : ''}
             <div class="train-card-action">
-              ${pending ? `<button type="button" class="select-train-button" data-confirm-train="${direction}" data-train-code="${escapeHtml(train.code)}">${escapeHtml(t('results.selectThisTrain'))}</button>` : ''}
+              ${pending ? `<button type="button" class="select-train-button" data-confirm-train="${direction}" data-train-code="${escapeHtml(train.code)}" ${isImpossibleReturn ? 'disabled aria-disabled="true"' : ''}>${escapeHtml(t('results.selectThisTrain'))}</button>` : ''}
             </div>
           </div>
         </article>`;
@@ -645,6 +641,161 @@
     lunch: { title: 'extras.detailLunchTitle', text: 'extras.detailLunchText', image: '/assets/img/trenes/extras/almuerzo-power-peruano.jpg' }
   };
 
+
+
+  const TRAIN_SERVICE_DETAILS = {
+    voyager: {
+      base: '/trenes/assets/img/',
+      files: ['Voyager1.jpg', 'Voyager2.jpg', 'Voyager3.jpg', 'Voyager4.jpg'],
+      title: 'The Voyager — Inca Rail',
+      bullets: [
+        'Asientos cómodos y ergonómicos para un viaje agradable.',
+        'Venta de snacks y bebidas elaborados con ingredientes locales.',
+        'Experiencia cultural con la puesta en escena del drama Ollantay.',
+        'Servicio práctico, cómodo y turístico hacia Machu Picchu.',
+        'Ideal para quienes buscan una opción funcional con valor cultural.'
+      ]
+    },
+    prime: {
+      base: '/trenes/assets/img/',
+      files: ['Prime1.jpg', 'Prime2.jpg', 'Prime3.jpg', 'Prime4.jpg'],
+      title: 'The Prime — Inca Rail',
+      bullets: [
+        'Asientos amplios y ambiente de mayor confort.',
+        'Snack andino de cortesía durante el viaje.',
+        'Música andina en vivo interpretada por artistas locales.',
+        'Puesta en escena del drama Ollantay en la ruta de ida.',
+        'Una experiencia más premium, cómoda y cultural.'
+      ]
+    },
+    '360': {
+      base: '/trenes/assets/img/',
+      files: ['The-3601.jpg', 'The-3602.jpg', 'The-3603.jpg', 'The-3604.jpg'],
+      title: 'The 360° — Inca Rail',
+      bullets: [
+        'Vagón observatorio al aire libre para disfrutar los Andes.',
+        'Vistas panorámicas ideales para fotografías.',
+        'Entretenimiento digital con información de la ruta.',
+        'Wi-Fi disponible para mensajería, según disponibilidad.',
+        'Música andina en vivo en la ruta de regreso.',
+        'Ideal para viajeros que buscan paisajes y experiencia visual.'
+      ]
+    },
+    first_class: {
+      base: '/trenes/assets/img/',
+      files: ['First-Class1.jpg', 'First-Class2.jpg', 'First-Class3.jpg', 'First-Class4.jpg'],
+      title: 'The First Class — Inca Rail',
+      bullets: [
+        'Vagón lounge/bar con ambiente elegante.',
+        'Balcón al aire libre para contemplar el paisaje.',
+        'Menú gourmet de 3 tiempos a bordo.',
+        'Vinos, cócteles y sabores locales durante el trayecto.',
+        'Música andina en vivo y experiencia mística.',
+        'Incluye traslado premium privado hacia la estación.'
+      ]
+    },
+    expedition: {
+      base: '/trenes/assets/img/',
+      files: ['Expedición 1.jpg', 'Expedición 2.jpg', 'Expedición 3.jpg', 'Expedición 4.jpg'],
+      title: 'Expedition — PeruRail',
+      bullets: [
+        'Asientos cómodos para un viaje seguro y agradable.',
+        'Música ambiental durante el recorrido.',
+        'Venta de alimentos y bebidas a bordo.',
+        'Equipaje de mano permitido: 8 kg / 115 cm lineales.',
+        'Acceso a sala de espera en Ollantaytambo, según disponibilidad.',
+        'Opción ideal para un viaje práctico hacia Machu Picchu.'
+      ]
+    },
+    vistadome: {
+      base: '/trenes/assets/img/',
+      files: ['Vistadome1.jpg', 'Vistadome2.jpg', 'Vistadome3.jpg', 'Vistadome4.jpg'],
+      title: 'Vistadome — PeruRail',
+      bullets: [
+        'Ventanas panorámicas para disfrutar el paisaje andino.',
+        'Asientos cómodos con mesas.',
+        'Snack y bebida de cortesía.',
+        'Representación cultural en vivo, según ruta.',
+        'Desfile de prendas de baby alpaca.',
+        'Audio turístico y música ambiental a bordo.'
+      ]
+    },
+    vistadome_observatory: {
+      base: '/trenes/assets/img/',
+      files: ['Vistadome-Observatory1.jpg', 'Vistadome-Observatory2.jpg', 'Vistadome-Observatory3.jpg', 'Vistadome-Observatory4.jpg'],
+      title: 'Vistadome Observatory — PeruRail',
+      bullets: [
+        'Coche observatorio con balcón abierto.',
+        'Ventanas panorámicas para mejores vistas.',
+        'Coche bar con bebidas y show a bordo.',
+        'Snack y bebida de cortesía.',
+        'Danza y música típica en vivo.',
+        'Desfile de prendas de baby alpaca.',
+        'Ideal para quienes desean una experiencia más escénica.'
+      ]
+    },
+    hiram_bingham: {
+      base: '/trenes/assets/img/',
+      files: ['Hiram-Bingham1.jpg', 'Hiram-Bingham2.jpg', 'Hiram-Bingham3.jpg', 'Hiram-Bingham4.jpg'],
+      title: 'Hiram Bingham — PeruRail',
+      bullets: [
+        'Tren de lujo con servicio exclusivo.',
+        'Sala VIP con show en vivo antes del embarque.',
+        'Coche observatorio con balcón abierto.',
+        'Coche bar con bebidas y cócteles seleccionados.',
+        'Servicio gourmet a bordo con almuerzo y cena.',
+        'Incluye ingreso, bus y guía a Machu Picchu, según tramo contratado.'
+      ]
+    }
+  };
+
+  function getTrainServiceKey(train) {
+    const raw = `${train.category || ''} ${train.serviceName || ''}`.toLowerCase();
+    if (raw.includes('hiram')) return 'hiram_bingham';
+    if (raw.includes('observatory')) return 'vistadome_observatory';
+    if (raw.includes('vistadome')) return 'vistadome';
+    if (raw.includes('expedition')) return 'expedition';
+    if (raw.includes('first')) return 'first_class';
+    if (raw.includes('360')) return '360';
+    if (raw.includes('prime')) return 'prime';
+    if (raw.includes('voyager')) return 'voyager';
+    return '';
+  }
+
+  function trainServiceDetailsHtml(train) {
+    const key = getTrainServiceKey(train);
+    const detail = TRAIN_SERVICE_DETAILS[key];
+    if (!detail) return '';
+    const images = detail.files.map((file) => `${detail.base}${file}`);
+    return `
+      <div class="train-service-preview" data-train-service-preview>
+        <div class="train-service-slider-wrap">
+          <button type="button" class="train-service-nav train-service-prev" data-service-slide="prev" aria-label="Imagen anterior">‹</button>
+          <div class="train-service-slider" data-service-slider>
+            ${images.map((src, index) => `<img src="${escapeHtml(encodeURI(src))}" alt="${escapeHtml(detail.title)} ${index + 1}" loading="lazy">`).join('')}
+          </div>
+          <button type="button" class="train-service-nav train-service-next" data-service-slide="next" aria-label="Imagen siguiente">›</button>
+        </div>
+        <div class="train-service-copy">
+          <strong>${escapeHtml(detail.title)}</strong>
+          <ul>${detail.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+        </div>
+      </div>`;
+  }
+
+  function returnAlertHtml(train, isPending) {
+    if (!isPending) return '';
+    const stay = getStayMinutes(train);
+    if (stay === null) return '';
+    if (stay < 45) {
+      return `<div class="train-time-alert train-time-alert-danger">No es posible seleccionar este tren porque se cruza con el horario de llegada del tren de ida.</div>`;
+    }
+    if (stay < 240) {
+      return `<div class="train-time-alert train-time-alert-warning">Tiempo de estadía corto en Machu Picchu. Revisa bien tus fechas y horarios antes de reservar.</div>`;
+    }
+    return '';
+  }
+
   function showExtraDetail(key) {
     const detail = EXTRA_DETAILS[key];
     if (!detail) return;
@@ -692,6 +843,14 @@
   function confirmTrain(direction, code) {
     const train = state.data.trains.find((item) => item.code === code) || state.pending[direction];
     if (!train) return;
+    if (direction === 'return' && state.tripType === 'roundtrip') {
+      const stay = getStayMinutes(train);
+      if (stay !== null && stay < 45) {
+        state.pending[direction] = train;
+        renderResults();
+        return;
+      }
+    }
     state.selected[direction] = train;
     state.pending[direction] = null;
     if (direction === 'outbound') {
@@ -981,6 +1140,17 @@
         if (target === 'adults') state.adults = Math.max(1, Math.min(30, state.adults + delta));
         if (target === 'children') state.children = Math.max(0, Math.min(20, state.children + delta));
         renderResults();
+        return;
+      }
+
+      const slideControl = event.target.closest('[data-service-slide]');
+      if (slideControl) {
+        const preview = slideControl.closest('.train-service-preview');
+        const slider = preview?.querySelector('[data-service-slider]');
+        if (slider) {
+          const direction = slideControl.dataset.serviceSlide === 'next' ? 1 : -1;
+          slider.scrollBy({ left: direction * slider.clientWidth, behavior: 'smooth' });
+        }
         return;
       }
 

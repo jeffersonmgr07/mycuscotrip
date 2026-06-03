@@ -1743,3 +1743,292 @@ body.mct-trains-page .modal-trip-grand-total b{
     font-size:.9rem!important;
   }
 }
+
+/* === TRENES V11: preview de servicio, alertas de horario y optimización móvil === */
+body.mct-trains-page .train-service-preview{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:minmax(260px,380px) minmax(0,1fr);
+  gap:18px;
+  align-items:stretch;
+  margin-top:8px;
+  padding:14px;
+  border:1px solid #e2ebe5;
+  border-radius:18px;
+  background:#f8fbf8;
+}
+body.mct-trains-page .train-service-slider-wrap{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border-radius:16px;
+  background:#e9f0ec;
+}
+body.mct-trains-page .train-service-slider{
+  display:flex;
+  width:100%;
+  height:210px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+}
+body.mct-trains-page .train-service-slider::-webkit-scrollbar{display:none;}
+body.mct-trains-page .train-service-slider img{
+  flex:0 0 100%;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  scroll-snap-align:start;
+}
+body.mct-trains-page .train-service-nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:2;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:50%;
+  background:rgba(6,40,3,.72);
+  color:#fff;
+  font-size:1.6rem;
+  line-height:1;
+  display:grid;
+  place-items:center;
+  box-shadow:0 8px 18px rgba(0,0,0,.16);
+}
+body.mct-trains-page .train-service-prev{left:10px;}
+body.mct-trains-page .train-service-next{right:10px;}
+body.mct-trains-page .train-service-copy{
+  min-width:0;
+  padding:4px 2px;
+}
+body.mct-trains-page .train-service-copy strong{
+  display:block;
+  color:var(--train-green);
+  font-family:Montserrat,sans-serif;
+  font-size:1.02rem;
+  margin-bottom:8px;
+}
+body.mct-trains-page .train-service-copy ul{
+  margin:0;
+  padding-left:18px;
+  color:#39483f;
+  line-height:1.42;
+  font-size:.9rem;
+}
+body.mct-trains-page .train-service-copy li{margin:4px 0;}
+body.mct-trains-page .train-time-alert{
+  grid-column:1/-1;
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:.86rem;
+  line-height:1.35;
+  font-weight:800;
+}
+body.mct-trains-page .train-time-alert-warning{
+  background:#fff7db;
+  color:#745000;
+  border:1px solid #ffd66b;
+}
+body.mct-trains-page .train-time-alert-danger{
+  background:#ffe8e8;
+  color:#9b1c1c;
+  border:1px solid #ff9f9f;
+}
+body.mct-trains-page .train-card.has-time-conflict{
+  border-color:#e54b4b!important;
+  box-shadow:0 16px 36px rgba(155,28,28,.13)!important;
+}
+body.mct-trains-page .select-train-button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none!important;
+  box-shadow:none;
+}
+
+@media (max-width:760px){
+  body.mct-trains-page .train-search-card{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:14px!important;
+    padding:18px 16px 20px!important;
+    border-radius:26px!important;
+  }
+  body.mct-trains-page .trip-type-field{
+    min-height:62px!important;
+    border-radius:18px!important;
+    padding:12px 14px!important;
+  }
+  body.mct-trains-page .search-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:14px!important;
+  }
+  body.mct-trains-page .search-grid .pax-field,
+  body.mct-trains-page .search-grid .coupon-field{
+    grid-column:auto!important;
+  }
+  body.mct-trains-page .search-button{
+    grid-column:1/-1!important;
+    border-radius:999px!important;
+    min-height:62px!important;
+    font-size:1.05rem!important;
+  }
+  body.mct-trains-page .field-card{
+    min-height:58px!important;
+    padding:10px 12px!important;
+    border-radius:16px!important;
+  }
+  body.mct-trains-page .field-card small{
+    font-size:.64rem!important;
+  }
+  body.mct-trains-page .field-card input,
+  body.mct-trains-page .field-card select,
+  body.mct-trains-page .pax-toggle{
+    font-size:.92rem!important;
+  }
+  body.mct-trains-page .route-selector{
+    width:92vw!important;
+    margin:10px auto 14px!important;
+  }
+  body.mct-trains-page .route-label{
+    font-size:.86rem!important;
+  }
+  body.mct-trains-page .route-pills{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+  body.mct-trains-page .route-pill{
+    min-height:52px!important;
+    border-radius:18px!important;
+    font-size:.95rem!important;
+    justify-content:center!important;
+  }
+  body.mct-trains-page .results-layout{
+    width:92vw!important;
+    display:block!important;
+    margin-bottom:42px!important;
+  }
+  body.mct-trains-page .results-main{
+    gap:16px!important;
+  }
+  body.mct-trains-page .section-heading h2{
+    font-size:clamp(1.85rem,8vw,2.5rem)!important;
+    line-height:1.02!important;
+  }
+  body.mct-trains-page .section-heading p{
+    font-size:.95rem!important;
+  }
+  body.mct-trains-page .train-card{
+    display:block!important;
+    border-radius:22px!important;
+    box-shadow:0 10px 28px rgba(6,40,3,.09)!important;
+  }
+  body.mct-trains-page .select-rail{
+    display:none!important;
+  }
+  body.mct-trains-page .train-card-body,
+  body.mct-trains-page .train-card.is-pending .train-card-body{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+    padding:18px 18px 20px!important;
+  }
+  body.mct-trains-page .train-company{
+    align-items:flex-start!important;
+  }
+  body.mct-trains-page .train-company .company-logo{
+    display:none!important;
+  }
+  body.mct-trains-page .train-company b{
+    font-size:1.04rem!important;
+    font-style:italic!important;
+  }
+  body.mct-trains-page .train-company small{
+    font-size:.76rem!important;
+  }
+  body.mct-trains-page .schedule-line{
+    display:grid!important;
+    grid-template-columns:minmax(82px,1fr) auto minmax(82px,1fr)!important;
+    gap:8px!important;
+    align-items:center!important;
+    padding:4px 0 10px!important;
+    border-bottom:1px solid #edf1ed!important;
+  }
+  body.mct-trains-page .time-box:first-child{text-align:left!important;}
+  body.mct-trains-page .time-box:last-child{text-align:right!important;}
+  body.mct-trains-page .time-box small{
+    display:none!important;
+  }
+  body.mct-trains-page .time-box strong{
+    font-size:1.55rem!important;
+    line-height:1!important;
+  }
+  body.mct-trains-page .time-box span{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    font-size:.86rem!important;
+    line-height:1.18!important;
+    margin-top:6px!important;
+  }
+  body.mct-trains-page .duration{
+    align-self:center!important;
+    justify-self:center!important;
+    font-size:.78rem!important;
+    padding:6px 10px!important;
+  }
+  body.mct-trains-page .price-box{
+    text-align:right!important;
+    justify-self:end!important;
+    width:auto!important;
+    padding:0!important;
+    margin:0!important;
+  }
+  body.mct-trains-page .fare-line strong{
+    font-size:1.55rem!important;
+  }
+  body.mct-trains-page .train-card-action{
+    justify-content:stretch!important;
+    padding:2px 0 0!important;
+  }
+  body.mct-trains-page .select-train-button{
+    width:100%!important;
+    min-width:0!important;
+    border-radius:16px!important;
+    min-height:50px!important;
+    margin:0!important;
+  }
+  body.mct-trains-page .train-service-preview{
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+    padding:12px!important;
+    border-radius:18px!important;
+    margin-top:2px!important;
+  }
+  body.mct-trains-page .train-service-slider{
+    height:190px!important;
+  }
+  body.mct-trains-page .train-service-copy strong{
+    font-size:1rem!important;
+  }
+  body.mct-trains-page .train-service-copy ul{
+    font-size:.85rem!important;
+    line-height:1.38!important;
+  }
+  body.mct-trains-page .train-time-alert{
+    font-size:.82rem!important;
+  }
+}
+
+@media (max-width:430px){
+  body.mct-trains-page .search-grid{
+    grid-template-columns:1fr!important;
+  }
+  body.mct-trains-page .search-grid .pax-field,
+  body.mct-trains-page .search-grid .coupon-field{
+    grid-column:1/-1!important;
+  }
+}
