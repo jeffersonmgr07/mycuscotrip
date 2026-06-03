@@ -2241,3 +2241,46 @@ body.mct-trains-page .trains-faq-list details p{
     font-size:.88rem!important;
   }
 }
+
+
+/* === TRENES V15: imagen slider PC, selector pasajeros y pequeños ajustes === */
+@media (min-width:761px){
+  body.mct-trains-page .train-service-preview{
+    grid-template-columns:minmax(210px,320px) minmax(0,1fr)!important;
+  }
+  body.mct-trains-page .train-service-slider{
+    height:190px!important;
+  }
+  body.mct-trains-page .train-service-slider img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+    background:transparent!important;
+  }
+}
+body.mct-trains-page .pax-panel .microcopy{
+  display:none!important;
+}
+body.mct-trains-page .pax-done-button{
+  width:100%!important;
+  min-height:42px!important;
+  margin-top:12px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:var(--train-green)!important;
+  color:#fff!important;
+  font-weight:900!important;
+  font-family:Montserrat,sans-serif!important;
+}
+body.mct-trains-page .hero-content{
+  transform:translateY(18px)!important;
+}
+@media (max-width:760px){
+  body.mct-trains-page .hero-content{
+    transform:translateY(12px)!important;
+  }
+  body.mct-trains-page .summary-card{
+    margin-top:18px!important;
+  }
+}

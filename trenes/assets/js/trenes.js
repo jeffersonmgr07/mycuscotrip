@@ -1205,6 +1205,13 @@
         $('#paxToggle')?.setAttribute('aria-expanded', 'false');
       }
 
+      const paxDone = event.target.closest('[data-pax-done]');
+      if (paxDone) {
+        $('#paxPanel').hidden = true;
+        $('#paxToggle')?.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
       const routeMore = event.target.closest('[data-route-more]');
       if (routeMore) {
         const key = routeMore.dataset.routeMore === 'return' ? 'return' : 'outbound';
