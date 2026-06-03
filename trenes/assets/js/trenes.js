@@ -227,12 +227,18 @@
   }
 
   function scrollAfterTrainConfirm(direction) {
-    if (!isMobileView()) return;
-    let target = $('.summary-card') || $('.results-layout') || $('.route-selector');
+    let target = $('.summary-card') || $('#inlineCheckoutButton') || $('.results-layout') || $('.route-selector');
+    let block = 'center';
+
     if (direction === 'outbound' && state.tripType === 'roundtrip') {
-      target = $('#returnBlock') || $('#returnStationPills') || target;
+      target = $('#returnBlock .section-heading') || $('#returnBlock') || $('#returnStationPills') || target;
+      block = 'start';
+    } else if (direction === 'return' || state.tripType === 'oneway' || state.tripType === 'returnonly') {
+      target = $('#inlineCheckoutButton') || $('.summary-card') || target;
+      block = 'center';
     }
-    setTimeout(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 140);
+
+    setTimeout(() => target?.scrollIntoView({ behavior: 'smooth', block }), 170);
   }
 
   function getPaxTotal() {
@@ -482,7 +488,8 @@
           <div class="selected-train-box__content">
             <img class="company-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || 'Tren')}" loading="lazy">
             <div>
-              <strong>${escapeHtml(title)} · ${escapeHtml(train.companyName || train.company || '')} ${escapeHtml(train.serviceName || '')}</strong>
+              <strong>${escapeHtml(title)}</strong>
+              <small class="selected-train-service">${escapeHtml(train.companyName || train.company || '')} ${escapeHtml(train.serviceName || '')}</small>
               <small class="selected-train-date">${escapeHtml(formatDateLong(getTravelDate(direction)))}</small>
               <small class="selected-train-route">${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</small>
               <small class="selected-train-price">${escapeHtml(money(getTrainTotal(train)))}</small>
@@ -602,7 +609,7 @@
     const detailHtml = detailParts.length
       ? detailParts.map((part, index) => `<small class="${index === 0 ? 'summary-date-line' : 'summary-route-line'}">${escapeHtml(part)}</small>`).join('')
       : '';
-    return `<div class="summary-item"><strong>${escapeHtml(kicker)} · ${escapeHtml(title)}</strong>${detailHtml}<small class="summary-amount">${escapeHtml(amountText)}</small></div>`;
+    return `<div class="summary-item"><strong class="summary-kicker">${escapeHtml(kicker)}</strong><b class="summary-item-title">${escapeHtml(title)}</b>${detailHtml}<small class="summary-amount">${escapeHtml(amountText)}</small></div>`;
   }
 
   function canCheckout() {

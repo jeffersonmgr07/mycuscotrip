@@ -2284,3 +2284,55 @@ body.mct-trains-page .hero-content{
     margin-top:18px!important;
   }
 }
+
+
+/* === TRENES V16: scroll guiado, hero centrado y resumen estructurado === */
+body.mct-trains-page .train-hero{
+  align-items:center!important;
+  padding-top:86px!important;
+  padding-bottom:86px!important;
+}
+body.mct-trains-page .hero-content{
+  transform:none!important;
+}
+body.mct-trains-page .summary-item strong.summary-kicker{
+  display:block!important;
+  color:var(--train-green)!important;
+  font-family:Montserrat,sans-serif!important;
+  font-size:.86rem!important;
+  font-weight:900!important;
+  margin-bottom:3px!important;
+}
+body.mct-trains-page .summary-item .summary-item-title{
+  display:block!important;
+  color:var(--train-ink)!important;
+  font-size:.9rem!important;
+  line-height:1.28!important;
+  font-weight:800!important;
+  margin-bottom:4px!important;
+}
+body.mct-trains-page .selected-train-box__content .selected-train-service{
+  color:var(--train-green)!important;
+  font-weight:900!important;
+  font-size:.88rem!important;
+  line-height:1.25!important;
+}
+body.mct-trains-page .selected-train-box__content strong{
+  margin-bottom:2px!important;
+}
+@media (max-width:760px){
+  body.mct-trains-page .train-hero{
+    min-height:340px!important;
+    padding-top:72px!important;
+    padding-bottom:72px!important;
+  }
+  body.mct-trains-page .hero-content{
+    transform:none!important;
+  }
+  body.mct-trains-page .summary-item strong.summary-kicker{
+    font-size:.84rem!important;
+  }
+  body.mct-trains-page .summary-item .summary-item-title{
+    font-size:.88rem!important;
+  }
+}
