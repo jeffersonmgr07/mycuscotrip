@@ -2032,3 +2032,29 @@ body.mct-trains-page .select-train-button:disabled{
     grid-column:1/-1!important;
   }
 }
+
+
+/* v12: mobile compact search after submit, without changing desktop layout */
+@media (max-width:760px){
+  body.mct-trains-page .train-search-card.is-collapsed{
+    display:block!important;
+    padding:12px 16px!important;
+    border-radius:22px!important;
+    cursor:pointer;
+  }
+  body.mct-trains-page .train-search-card.is-collapsed::before{
+    content:attr(data-summary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    color:var(--train-green);
+    font-weight:800;
+    font-size:.98rem;
+    text-align:center;
+  }
+  body.mct-trains-page .train-search-card.is-collapsed .trip-type-field,
+  body.mct-trains-page .train-search-card.is-collapsed .search-grid{
+    display:none!important;
+  }
+}

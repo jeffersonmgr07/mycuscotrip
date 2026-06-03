@@ -184,6 +184,52 @@
     return direction === 'return' ? state.returnDate : state.outboundDate;
   }
 
+  function isMobileView() {
+    return window.matchMedia?.('(max-width: 760px)').matches || window.innerWidth <= 760;
+  }
+
+  function syncDateLimits() {
+    const minOutbound = todayISO(2);
+    const outboundInput = $('#outboundDate');
+    const returnInput = $('#returnDate');
+    if (outboundInput) {
+      outboundInput.min = minOutbound;
+      if (outboundInput.value && outboundInput.value < minOutbound) outboundInput.value = minOutbound;
+    }
+    const outboundValue = outboundInput?.value || state.outboundDate || minOutbound;
+    if (returnInput) {
+      returnInput.min = outboundValue;
+      if (returnInput.value && returnInput.value < outboundValue) returnInput.value = outboundValue;
+    }
+  }
+
+  function updateSearchCollapsedSummary() {
+    const form = $('#trainSearchForm');
+    if (!form) return;
+    const out = state.tripType === 'returnonly' ? '' : formatDateShort(state.outboundDate || $('#outboundDate')?.value);
+    const ret = (state.tripType === 'roundtrip' || state.tripType === 'returnonly') ? formatDateShort(state.returnDate || $('#returnDate')?.value) : '';
+    const label = state.tripType === 'oneway' ? t('search.oneway') : state.tripType === 'returnonly' ? t('search.returnOnly') : t('search.roundtrip');
+    const dates = state.tripType === 'roundtrip' ? `${out} → ${ret}` : (ret || out);
+    form.dataset.summary = `${label} · ${dates}`;
+  }
+
+  function collapseSearchOnMobile() {
+    const form = $('#trainSearchForm');
+    if (!form) return;
+    updateSearchCollapsedSummary();
+    form.classList.toggle('is-collapsed', isMobileView());
+  }
+
+  function expandSearch() {
+    $('#trainSearchForm')?.classList.remove('is-collapsed');
+  }
+
+  function scrollToSelectionTop() {
+    if (!isMobileView()) return;
+    const target = $('.summary-card') || $('.results-layout') || $('.route-selector');
+    setTimeout(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+  }
+
   function getPaxTotal() {
     return state.adults + state.children;
   }
@@ -646,7 +692,7 @@
   const TRAIN_SERVICE_DETAILS = {
     voyager: {
       base: '/trenes/assets/img/',
-      files: ['Voyager1.jpg', 'Voyager2.jpg', 'Voyager3.jpg', 'Voyager4.jpg'],
+      files: ['the-voyager1.jpg', 'the-voyager2.jpg', 'the-voyager3.jpg', 'the-voyager4.jpg'],
       title: 'The Voyager — Inca Rail',
       bullets: [
         'Asientos cómodos y ergonómicos para un viaje agradable.',
@@ -658,7 +704,7 @@
     },
     prime: {
       base: '/trenes/assets/img/',
-      files: ['Prime1.jpg', 'Prime2.jpg', 'Prime3.jpg', 'Prime4.jpg'],
+      files: ['the-prime1.jpg', 'the-prime2.jpg', 'the-prime3.jpg', 'the-prime4.jpg'],
       title: 'The Prime — Inca Rail',
       bullets: [
         'Asientos amplios y ambiente de mayor confort.',
@@ -670,7 +716,7 @@
     },
     '360': {
       base: '/trenes/assets/img/',
-      files: ['The-3601.jpg', 'The-3602.jpg', 'The-3603.jpg', 'The-3604.jpg'],
+      files: ['the-3601.jpg', 'the-3602.jpg', 'the-3603.jpg', 'the-3604.jpg'],
       title: 'The 360° — Inca Rail',
       bullets: [
         'Vagón observatorio al aire libre para disfrutar los Andes.',
@@ -683,7 +729,7 @@
     },
     first_class: {
       base: '/trenes/assets/img/',
-      files: ['First-Class1.jpg', 'First-Class2.jpg', 'First-Class3.jpg', 'First-Class4.jpg'],
+      files: ['the-first-class1.jpg', 'the-first-class2.jpg', 'the-first-class3.jpg', 'the-first-class4.jpg'],
       title: 'The First Class — Inca Rail',
       bullets: [
         'Vagón lounge/bar con ambiente elegante.',
@@ -696,7 +742,7 @@
     },
     expedition: {
       base: '/trenes/assets/img/',
-      files: ['Expedición 1.jpg', 'Expedición 2.jpg', 'Expedición 3.jpg', 'Expedición 4.jpg'],
+      files: ['expedition1.jpg', 'expedition2.jpg', 'expedition3.jpg', 'expedition4.jpg'],
       title: 'Expedition — PeruRail',
       bullets: [
         'Asientos cómodos para un viaje seguro y agradable.',
@@ -709,7 +755,7 @@
     },
     vistadome: {
       base: '/trenes/assets/img/',
-      files: ['Vistadome1.jpg', 'Vistadome2.jpg', 'Vistadome3.jpg', 'Vistadome4.jpg'],
+      files: ['vistadome1.jpg', 'vistadome2.jpg', 'vistadome3.jpg', 'vistadome4.jpg'],
       title: 'Vistadome — PeruRail',
       bullets: [
         'Ventanas panorámicas para disfrutar el paisaje andino.',
@@ -722,7 +768,7 @@
     },
     vistadome_observatory: {
       base: '/trenes/assets/img/',
-      files: ['Vistadome-Observatory1.jpg', 'Vistadome-Observatory2.jpg', 'Vistadome-Observatory3.jpg', 'Vistadome-Observatory4.jpg'],
+      files: ['vistadome-observatory1.jpg', 'vistadome-observatory2.jpg', 'vistadome-observatory3.jpg', 'vistadome-observatory4.jpg'],
       title: 'Vistadome Observatory — PeruRail',
       bullets: [
         'Coche observatorio con balcón abierto.',
@@ -736,7 +782,7 @@
     },
     hiram_bingham: {
       base: '/trenes/assets/img/',
-      files: ['Hiram-Bingham1.jpg', 'Hiram-Bingham2.jpg', 'Hiram-Bingham3.jpg', 'Hiram-Bingham4.jpg'],
+      files: ['hiram-bingham1.jpg', 'hiram-bingham2.jpg', 'hiram-bingham3.jpg', 'hiram-bingham4.jpg'],
       title: 'Hiram Bingham — PeruRail',
       bullets: [
         'Tren de lujo con servicio exclusivo.',
@@ -772,7 +818,7 @@
         <div class="train-service-slider-wrap">
           <button type="button" class="train-service-nav train-service-prev" data-service-slide="prev" aria-label="Imagen anterior">‹</button>
           <div class="train-service-slider" data-service-slider>
-            ${images.map((src, index) => `<img src="${escapeHtml(encodeURI(src))}" alt="${escapeHtml(detail.title)} ${index + 1}" loading="lazy">`).join('')}
+            ${images.map((src, index) => `<img src="${escapeHtml(encodeURI(src))}" alt="${escapeHtml(detail.title)} ${index + 1}" loading="lazy" onerror="this.style.display='none'">`).join('')}
           </div>
           <button type="button" class="train-service-nav train-service-next" data-service-slide="next" aria-label="Imagen siguiente">›</button>
         </div>
@@ -861,10 +907,11 @@
         if (outOp !== retOp) state.selected.return = null;
       }
       if (state.tripType === 'roundtrip') {
-        setTimeout(() => $('#returnBlock')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+        // En móvil volvemos al inicio del flujo para que se vea el panel de selección.
       }
     }
     renderResults();
+    scrollToSelectionTop();
   }
 
   function modifyTrain(direction) {
@@ -1084,6 +1131,8 @@
       state.selected.outbound = null;
       state.pending.outbound = null;
     }
+    syncDateLimits();
+    updateSearchCollapsedSummary();
     renderResults();
   }
 
@@ -1091,20 +1140,35 @@
     $('#trainSearchForm').addEventListener('submit', (event) => {
       event.preventDefault();
       state.tripType = getTripTypeValue();
+      syncDateLimits();
       state.outboundDate = $('#outboundDate').value;
       state.returnDate = $('#returnDate').value;
+      if (state.tripType === 'roundtrip' && state.returnDate < state.outboundDate) {
+        state.returnDate = state.outboundDate;
+        $('#returnDate').value = state.returnDate;
+      }
       state.selected.outbound = null;
       state.selected.return = null;
       state.pending.outbound = null;
       state.pending.return = null;
       renderResults();
+      collapseSearchOnMobile();
       $('.results-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     $$('input[name="tripType"]').forEach((input) => input.addEventListener('change', handleTripTypeChange));
     $('#tripTypeSelect')?.addEventListener('change', handleTripTypeChange);
-    $('#outboundDate').addEventListener('change', (e) => { state.outboundDate = e.target.value; });
-    $('#returnDate').addEventListener('change', (e) => { state.returnDate = e.target.value; });
+    $('#outboundDate').addEventListener('change', (e) => {
+      state.outboundDate = e.target.value;
+      syncDateLimits();
+      state.returnDate = $('#returnDate').value;
+      updateSearchCollapsedSummary();
+    });
+    $('#returnDate').addEventListener('change', (e) => {
+      syncDateLimits();
+      state.returnDate = $('#returnDate').value || e.target.value;
+      updateSearchCollapsedSummary();
+    });
 
     $('#paxToggle').addEventListener('click', () => {
       $('#paxPanel').hidden = !$('#paxPanel').hidden;
@@ -1112,6 +1176,12 @@
     });
 
     document.addEventListener('click', (event) => {
+      const collapsedSearch = event.target.closest('#trainSearchForm.is-collapsed');
+      if (collapsedSearch) {
+        expandSearch();
+        return;
+      }
+
       if (!event.target.closest('.pax-field')) {
         $('#paxPanel').hidden = true;
         $('#paxToggle')?.setAttribute('aria-expanded', 'false');
@@ -1235,14 +1305,14 @@
   }
 
   async function init() {
-    const outDate = todayISO(1);
-    const retDate = todayISO(2);
-    $('#outboundDate').min = todayISO(0);
-    $('#returnDate').min = todayISO(0);
+    const outDate = todayISO(2);
+    const retDate = outDate;
     $('#outboundDate').value = outDate;
     $('#returnDate').value = retDate;
     state.outboundDate = outDate;
     state.returnDate = retDate;
+    syncDateLimits();
+    updateSearchCollapsedSummary();
     applyTrainTranslations();
 
     try {
