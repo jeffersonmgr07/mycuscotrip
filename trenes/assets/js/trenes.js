@@ -55,7 +55,7 @@
       search: {
         roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', returnOnly: 'Solo retorno', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
       },
-      routes: { outboundFrom: 'Salida desde', returnTo: 'Retorno hacia' },
+      routes: { outboundFrom: 'Salida desde', returnTo: 'Retorno hacia', seeMore: 'Ver más', seeLess: 'Ver menos' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hidroeléctrica', machuPicchu: 'Machu Picchu' },
       results: { outboundTitle: 'Elige tu tren de ida', returnTitle: 'Elige tu tren de retorno', selectThisTrain: 'Seleccionar este tren', modifyOutbound: 'Modificar tren de ida', modifyReturn: 'Modificar tren de retorno', selectedTrain: 'Tren seleccionado', companyNote: 'El retorno se filtrará por la misma empresa del tren de ida.', noTrainsTitle: 'No encontramos horarios para esta ruta.', noTrainsText: 'Prueba otra estación o consúltanos para revisar disponibilidad manual.', selectOutboundFirst: 'Primero selecciona tu tren de ida. Luego verás los retornos disponibles con la misma empresa.', sameCompany: 'Como elegiste {company}, el retorno mostrará solo trenes de la misma empresa.', departure: 'Salida', arrival: 'Llegada', adult: 'Adulto', child: 'Niño', perPassenger: 'por pasajero', train: 'Tren turístico' },
@@ -67,7 +67,7 @@
     en: {
       hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Free guided tour inside Machu Picchu', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'When you buy your round-trip train tickets, access exclusive benefits, book and pay online, and enjoy your visit with personalized assistance.' },
       search: { tripType: 'Trip type', roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', returnOnly: 'Return only', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
-      routes: { outboundFrom: 'Departure from', returnTo: 'Return to' },
+      routes: { outboundFrom: 'Departure from', returnTo: 'Return to', seeMore: 'See more', seeLess: 'See less' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       stationLong: { cusco: 'Cusco / Wanchaq / Poroy / Av. El Sol', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },
       results: { outboundTitle: 'Choose your outbound train', returnTitle: 'Choose your return train', selectThisTrain: 'Select this train', modifyOutbound: 'Change outbound train', modifyReturn: 'Change return train', selectedTrain: 'Selected train', companyNote: 'The return train will be filtered by the same company as your outbound train.', noTrainsTitle: 'No schedules found for this route.', noTrainsText: 'Try another station or contact us to check availability manually.', selectOutboundFirst: 'First choose your outbound train. Then you will see return options with the same company.', sameCompany: 'Since you chose {company}, return options will show only the same company.', departure: 'Departure', arrival: 'Arrival', adult: 'Adult', child: 'Child', perPassenger: 'per passenger', train: 'Tourist train' },
@@ -96,7 +96,8 @@
       conseturBus: false,
       breakfast: false,
       lunch: false
-    }
+    },
+    routeMore: { outbound: false, return: false }
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -165,7 +166,8 @@
     try {
       const locale = state.locale === 'en' ? 'en-US' : 'es-PE';
       const d = new Date(year, month - 1, day);
-      const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d).replace('.', '').toUpperCase();
+      const weekdayRaw = new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d).replace('.', '');
+      const weekday = weekdayRaw.charAt(0).toUpperCase() + weekdayRaw.slice(1).toLowerCase();
       const rest = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'long', year: 'numeric' }).format(d);
       return `${weekday}, ${rest}`;
     } catch (error) {
@@ -224,10 +226,13 @@
     $('#trainSearchForm')?.classList.remove('is-collapsed');
   }
 
-  function scrollToSelectionTop() {
+  function scrollAfterTrainConfirm(direction) {
     if (!isMobileView()) return;
-    const target = $('.summary-card') || $('.results-layout') || $('.route-selector');
-    setTimeout(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    let target = $('.summary-card') || $('.results-layout') || $('.route-selector');
+    if (direction === 'outbound' && state.tripType === 'roundtrip') {
+      target = $('#returnBlock') || $('#returnStationPills') || target;
+    }
+    setTimeout(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 140);
   }
 
   function getPaxTotal() {
@@ -312,18 +317,29 @@
       .sort((a, b) => timeToMinutes(a.departureTime) - timeToMinutes(b.departureTime) || getTrainOperator(a).localeCompare(getTrainOperator(b)));
   }
 
+  function routePillHtml(direction, station, index) {
+    const isOutbound = direction === 'outbound';
+    const active = isOutbound ? station === state.outboundFrom : station === state.returnTo;
+    const attr = isOutbound ? 'data-outbound-from' : 'data-return-to';
+    const hiddenClass = index > 1 ? ' route-pill-extra' : '';
+    const label = isOutbound
+      ? `${stationLabel(station)} - ${stationLabel('machuPicchu')}`
+      : `${stationLabel('machuPicchu')} - ${stationLabel(station)}`;
+    return `<button type="button" class="route-pill ${active ? 'is-active' : ''}${hiddenClass}" ${attr}="${station}">${escapeHtml(label)}</button>`;
+  }
+
   function renderStationPills() {
     const outWrap = $('#outboundStationPills');
     const retWrap = $('#returnStationPills');
     if (outWrap) {
-      outWrap.innerHTML = STATION_OPTIONS.map((station) => `
-        <button type="button" class="route-pill ${station === state.outboundFrom ? 'is-active' : ''}" data-outbound-from="${station}">${escapeHtml(stationLabel(station))} - ${escapeHtml(stationLabel('machuPicchu'))}</button>
-      `).join('');
+      outWrap.classList.toggle('show-all-routes', Boolean(state.routeMore.outbound));
+      outWrap.innerHTML = STATION_OPTIONS.map((station, index) => routePillHtml('outbound', station, index)).join('') +
+        `<button type="button" class="route-more-toggle" data-route-more="outbound">${escapeHtml(state.routeMore.outbound ? t('routes.seeLess') : t('routes.seeMore'))}</button>`;
     }
     if (retWrap) {
-      retWrap.innerHTML = STATION_OPTIONS.map((station) => `
-        <button type="button" class="route-pill ${station === state.returnTo ? 'is-active' : ''}" data-return-to="${station}">${escapeHtml(stationLabel('machuPicchu'))} - ${escapeHtml(stationLabel(station))}</button>
-      `).join('');
+      retWrap.classList.toggle('show-all-routes', Boolean(state.routeMore.return));
+      retWrap.innerHTML = STATION_OPTIONS.map((station, index) => routePillHtml('return', station, index)).join('') +
+        `<button type="button" class="route-more-toggle" data-route-more="return">${escapeHtml(state.routeMore.return ? t('routes.seeLess') : t('routes.seeMore'))}</button>`;
     }
   }
 
@@ -911,7 +927,7 @@
       }
     }
     renderResults();
-    scrollToSelectionTop();
+    scrollAfterTrainConfirm(direction);
   }
 
   function modifyTrain(direction) {
@@ -1151,6 +1167,8 @@
       state.selected.return = null;
       state.pending.outbound = null;
       state.pending.return = null;
+      state.routeMore.outbound = false;
+      state.routeMore.return = false;
       renderResults();
       collapseSearchOnMobile();
       $('.results-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1185,6 +1203,14 @@
       if (!event.target.closest('.pax-field')) {
         $('#paxPanel').hidden = true;
         $('#paxToggle')?.setAttribute('aria-expanded', 'false');
+      }
+
+      const routeMore = event.target.closest('[data-route-more]');
+      if (routeMore) {
+        const key = routeMore.dataset.routeMore === 'return' ? 'return' : 'outbound';
+        state.routeMore[key] = !state.routeMore[key];
+        renderStationPills();
+        return;
       }
 
       const outbound = event.target.closest('[data-outbound-from]');

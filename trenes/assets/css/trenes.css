@@ -2058,3 +2058,109 @@ body.mct-trains-page .select-train-button:disabled{
     display:none!important;
   }
 }
+
+/* === TRENES V13: retoques finales PC/móvil sin cambiar estructura === */
+body.mct-trains-page .passenger-modal-v8{
+  border-radius:28px!important;
+  overflow:auto!important;
+}
+body.mct-trains-page .passenger-modal-v8 .modal-actions .checkout-button,
+body.mct-trains-page .passenger-modal-v8 .modal-actions .secondary-button{
+  min-height:56px!important;
+  height:56px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+}
+body.mct-trains-page .modal-trip-summary,
+body.mct-trains-page .modal-trip-summary *{
+  font-size:.88rem!important;
+}
+body.mct-trains-page .modal-trip-summary h3{
+  font-size:1.5rem!important;
+}
+body.mct-trains-page .modal-trip-head-text strong,
+body.mct-trains-page .modal-trip-head-text small{
+  font-size:.84rem!important;
+  font-weight:500!important;
+}
+body.mct-trains-page .modal-trip-timecol b,
+body.mct-trains-page .modal-trip-stationcol strong{
+  font-size:1rem!important;
+}
+body.mct-trains-page .modal-trip-grand-total span,
+body.mct-trains-page .modal-trip-grand-total b{
+  font-size:1.25rem!important;
+}
+@media (min-width:761px){
+  body.mct-trains-page .train-service-slider{
+    height:168px!important;
+  }
+  body.mct-trains-page .train-service-copy strong{
+    font-size:.9rem!important;
+  }
+  body.mct-trains-page .train-service-copy ul{
+    font-size:.78rem!important;
+    line-height:1.36!important;
+  }
+}
+@media (max-width:760px){
+  body.mct-trains-page .route-pill-extra{display:none!important;}
+  body.mct-trains-page .route-pills.show-all-routes .route-pill-extra{display:flex!important;}
+  body.mct-trains-page .route-more-toggle{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:42px!important;
+    border:0!important;
+    background:transparent!important;
+    color:var(--train-green)!important;
+    font-weight:900!important;
+    text-decoration:underline!important;
+    font-family:Montserrat,sans-serif!important;
+  }
+  body.mct-trains-page .train-company b{
+    font-style:normal!important;
+  }
+  body.mct-trains-page .train-service-copy strong{
+    font-size:.92rem!important;
+  }
+  body.mct-trains-page .train-service-copy ul{
+    font-size:.8rem!important;
+    line-height:1.34!important;
+  }
+  body.mct-trains-page .modal{
+    padding:10px!important;
+    place-items:center!important;
+  }
+  body.mct-trains-page .passenger-modal-v8{
+    width:calc(100vw - 20px)!important;
+    max-width:calc(100vw - 20px)!important;
+    max-height:calc(100dvh - 24px)!important;
+    border-radius:22px!important;
+  }
+  body.mct-trains-page .passenger-modal-layout{
+    padding:24px 16px!important;
+  }
+  body.mct-trains-page .modal-trip-summary,
+  body.mct-trains-page .modal-trip-summary *{
+    font-size:.82rem!important;
+  }
+  body.mct-trains-page .modal-trip-summary h3{
+    font-size:1.35rem!important;
+  }
+  body.mct-trains-page .modal-trip-head-text strong,
+  body.mct-trains-page .modal-trip-head-text small{
+    font-size:.8rem!important;
+  }
+  body.mct-trains-page .modal-trip-timecol b,
+  body.mct-trains-page .modal-trip-stationcol strong{
+    font-size:.96rem!important;
+  }
+  body.mct-trains-page .modal-trip-grand-total span,
+  body.mct-trains-page .modal-trip-grand-total b{
+    font-size:1.16rem!important;
+  }
+}
+@media (min-width:761px){
+  body.mct-trains-page .route-more-toggle{display:none!important;}
+}

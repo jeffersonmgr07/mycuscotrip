@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Compra tickets de tren a Machu Picchu | My Cusco Trip</title>
-  <meta name="description" content="Busca y compra trenes de PeruRail e Inca Rail hacia Machu Picchu. Agrega asistencia personalizada, guiado y extras peruanos para tu visita." />
+  <title>Buy train tickets to Machu Picchu | My Cusco Trip</title>
+  <meta name="description" content="Search and buy PeruRail and Inca Rail trains to Machu Picchu. Add personalized assistance, guided tours and useful extras for your visit." />
   <meta name="robots" content="index, follow" />
   <link rel="icon" href="/public/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
   <link href="/assets/css/header.css" rel="stylesheet"/>
   <link href="/assets/css/footer.css" rel="stylesheet"/>
   <link href="/assets/css/responsive.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260602-trenes-v12" />
+  <link rel="stylesheet" href="/trenes/assets/css/trenes.css?v=20260603-trenes-v13" />
 </head>
 <body class="mct-trains-page">
   <div id="header-container"></div>
@@ -38,23 +38,17 @@
 
     <section class="search-shell" aria-label="Buscador de trenes">
       <form id="trainSearchForm" class="train-search-card">
-        <div class="trip-tabs" role="radiogroup" aria-label="Tipo de viaje">
-          <label class="trip-tab is-active">
-            <input type="radio" name="tripType" value="roundtrip" checked>
-            <span data-train-i18n="search.roundtrip">Ida y vuelta</span>
-          </label>
-          <label class="trip-tab">
-            <input type="radio" name="tripType" value="oneway">
-            <span data-train-i18n="search.oneway">Solo ida</span>
-          </label>
-          <label class="trip-tab">
-            <input type="radio" name="tripType" value="returnonly">
-            <span data-train-i18n="search.returnOnly">Solo retorno</span>
-          </label>
-        </div>
+        <label class="field-card trip-type-field">
+          <small data-train-i18n="search.tripType">Tipo de viaje</small>
+          <select id="tripTypeSelect" name="tripType" aria-label="Tipo de viaje">
+            <option value="roundtrip" data-train-i18n="search.roundtrip" selected>Ida y vuelta</option>
+            <option value="oneway" data-train-i18n="search.oneway">Solo ida</option>
+            <option value="returnonly" data-train-i18n="search.returnOnly">Solo retorno</option>
+          </select>
+        </label>
 
         <div class="search-grid">
-          <label class="field-card">
+          <label class="field-card outbound-field">
             <small data-train-i18n="search.outboundDate">Fecha de viaje</small>
             <input id="outboundDate" name="outboundDate" type="date" required>
           </label>
@@ -94,31 +88,27 @@
       </form>
     </section>
 
-    <section class="route-selector" aria-label="Selecciona una ruta">
-      <div class="route-block outbound-route-block">
-        <p class="route-label" data-train-i18n="routes.outboundFrom">Salida desde</p>
-        <div class="route-pills" id="outboundStationPills"></div>
-      </div>
-      <div class="route-block return-route-block">
-        <p class="route-label" data-train-i18n="routes.returnTo">Retorno hacia</p>
-        <div class="route-pills" id="returnStationPills"></div>
-      </div>
-    </section>
-
     <section class="results-layout">
       <div class="results-main">
-        <div class="section-heading">
+        <div class="section-heading outbound-heading">
           <h2 data-train-i18n="results.outboundTitle">Elige tu tren de ida</h2>
-          <p id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         </div>
+        <div class="route-block outbound-route-block">
+          <p class="route-label" data-train-i18n="routes.outboundFrom">Salida desde</p>
+          <div class="route-pills" id="outboundStationPills"></div>
+        </div>
+        <p class="current-route-label" id="outboundRouteLabel">Ollantaytambo → Machu Picchu</p>
         <div id="outboundResults" class="train-results"></div>
 
         <div id="returnBlock" class="return-block" hidden>
-          <div class="section-heading">
+          <div class="section-heading return-heading">
             <h2 data-train-i18n="results.returnTitle">Elige tu tren de retorno</h2>
-            <p id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
-            <small id="companyRuleNote" data-train-i18n="results.companyNote">El retorno se filtrará por la misma empresa del tren de ida.</small>
           </div>
+          <div class="route-block return-route-block">
+            <p class="route-label" data-train-i18n="routes.returnTo">Retorno hacia</p>
+            <div class="route-pills" id="returnStationPills"></div>
+          </div>
+          <p class="current-route-label" id="returnRouteLabel">Machu Picchu → Ollantaytambo</p>
           <div id="returnResults" class="train-results"></div>
         </div>
       </div>
@@ -176,26 +166,40 @@
         <button id="checkoutButton" type="button" class="checkout-button" disabled data-train-i18n="summary.reserveButton">Iniciar reserva</button>
       </aside>
     </section>
+
+    <section class="trains-seo-content" aria-label="Información sobre trenes a Machu Picchu">
+      <h2>Compra tickets de tren a Machu Picchu con asistencia personalizada</h2>
+      <p>En My Cusco Trip puedes buscar y reservar trenes turísticos a Machu Picchu operados por PeruRail e Inca Rail, con salidas desde Ollantaytambo, Cusco, Urubamba e Hidroeléctrica, según disponibilidad de rutas y horarios cargados en nuestro sistema.</p>
+      <p>Te ayudamos a elegir la mejor combinación de ida, retorno o solo retorno para tu visita a Machu Picchu. También puedes agregar servicios útiles como guiado dentro de Machu Picchu, bus Consetur, desayuno peruano o almuerzo, para que tu experiencia sea más cómoda y organizada.</p>
+      <p>La compra de tickets de tren queda sujeta a disponibilidad final de la empresa ferroviaria, validación de datos de pasajeros y confirmación operativa. Nuestro equipo te acompaña durante el proceso para que puedas viajar con mayor seguridad y claridad.</p>
+    </section>
   </main>
 
   <div id="passengerModal" class="modal" hidden>
     <div class="modal-backdrop" data-close-modal></div>
-    <section class="modal-panel passenger-modal" role="dialog" aria-modal="true" aria-labelledby="passengerModalTitle">
+    <section class="modal-panel passenger-modal passenger-modal-v8" role="dialog" aria-modal="true" aria-labelledby="passengerModalTitle">
       <button class="modal-close" type="button" data-close-modal>×</button>
-      <div class="modal-titlebar" id="passengerModalTitle" data-train-i18n="modal.title">Datos de los pasajeros</div>
-      <p class="modal-subtitle" data-train-i18n="modal.subtitle">El pasajero 1 será el titular de la reserva.</p>
-      <form id="passengerForm">
-        <div id="passengerForms" class="passenger-forms"></div>
-        <label class="terms-line">
-          <input type="checkbox" id="termsCheck" required>
-          <span data-train-i18n="modal.terms">Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.</span>
-        </label>
-        <div id="paymentMessage" class="payment-message" hidden></div>
-        <div class="modal-actions">
-          <button type="button" class="secondary-button" data-close-modal data-train-i18n="modal.cancel">Cancelar</button>
-          <button type="submit" class="checkout-button" data-train-i18n="modal.pay">Pagar</button>
+      <div class="passenger-modal-layout">
+        <div class="passenger-modal-left">
+          <div class="modal-titlebar" id="passengerModalTitle" data-train-i18n="modal.title">Datos de los pasajeros</div>
+          <p class="modal-subtitle" data-train-i18n="modal.subtitle">El pasajero 1 será el titular de la reserva.</p>
+          <form id="passengerForm">
+            <div id="passengerForms" class="passenger-forms"></div>
+            <label class="terms-line">
+              <input type="checkbox" id="termsCheck" required>
+              <span data-train-i18n="modal.terms">Acepto que la reserva queda sujeta a disponibilidad final, validación de documentos y confirmación operativa de My Cusco Trip.</span>
+            </label>
+            <div id="paymentMessage" class="payment-message" hidden></div>
+            <div class="modal-actions">
+              <button type="button" class="secondary-button" data-close-modal data-train-i18n="modal.cancel">Cancelar</button>
+              <button type="submit" class="checkout-button" data-train-i18n="modal.pay">Pagar</button>
+            </div>
+          </form>
         </div>
-      </form>
+        <aside class="modal-trip-summary" aria-label="Resumen del viaje">
+          <div id="modalTripSummary"></div>
+        </aside>
+      </div>
     </section>
   </div>
 
@@ -234,6 +238,6 @@
   <script src="/assets/js/components/header.js"></script>
   <script src="/assets/js/components/footer.js"></script>
   <script src="/trenes/assets/js/config.js"></script>
-  <script src="/trenes/assets/js/trenes.js?v=20260602-trenes-v12" defer></script>
+  <script src="/trenes/assets/js/trenes.js?v=20260603-trenes-v13" defer></script>
 </body>
 </html>
