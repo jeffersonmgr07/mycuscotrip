@@ -483,3 +483,40 @@
     min-width: 250px;
   }
 }
+
+/* V35 navegación: Experiencias/Trekking como menús y enlaces directos compactos */
+.nav-dropdown--experiences {
+  min-width: 280px;
+}
+
+.nav-item--dropdown.is-dropdown-open .nav-dropdown,
+.nav-item--dropdown.is-open .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-item--dropdown.is-dropdown-open .nav-dropdown-toggle i,
+.nav-item--dropdown.is-open .nav-dropdown-toggle i {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 992px) {
+  .nav-dropdown {
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-item--dropdown.is-open .nav-dropdown,
+  .nav-item--dropdown.is-dropdown-open .nav-dropdown {
+    display: block;
+  }
+
+  .nav-item--dropdown.is-open .nav-dropdown-toggle,
+  .nav-item--dropdown.is-dropdown-open .nav-dropdown-toggle {
+    color: #fff !important;
+  }
+}

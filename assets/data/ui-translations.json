@@ -6,7 +6,7 @@
     "nav.explorePeru": "Explora Perú",
     "nav.trekkings": "Trekkings",
     "nav.incaTrail": "Camino Inca",
-    "nav.routesMachuPicchu": "Rutas a Machu Picchu",
+    "nav.routesMachuPicchu": "Ruta Machu Picchu",
     "nav.incaJungle": "Inca Jungle",
     "nav.myReservation": "Mi Reserva",
     "from": "Desde",
@@ -382,7 +382,14 @@
     "product.savingReservation": "Guardando reserva...",
     "coupon.successWithCode": "Listo. Tu cupón {code} fue enviado a tu correo y vence en 24 horas.",
     "product.connectingToPaypal": "Conectando con PayPal...",
-    "coupon.successMock": "Modo prueba: cupón {code} generado localmente. Configura el backend para enviar correos reales."
+    "coupon.successMock": "Modo prueba: cupón {code} generado localmente. Configura el backend para enviar correos reales.",
+    "nav.experiences": "Experiencias",
+    "nav.cuscoPackages": "Paquetes completos Cusco",
+    "nav.peruPackages": "Paquetes completos Perú",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Restaurantes",
+    "nav.hotels": "Hoteles",
+    "nav.trains": "Trenes"
   },
   "en": {
     "nav.machuPicchuTours": "Machu Picchu Tours",
@@ -796,7 +803,14 @@
     "product.savingReservation": "Saving reservation...",
     "coupon.successWithCode": "Done. Your coupon {code} was sent to your email and expires in 24 hours.",
     "product.connectingToPaypal": "Connecting to PayPal...",
-    "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails."
+    "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails.",
+    "nav.experiences": "Experiences",
+    "nav.cuscoPackages": "Complete Cusco Packages",
+    "nav.peruPackages": "Complete Peru Packages",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Restaurants",
+    "nav.hotels": "Hotels",
+    "nav.trains": "Trains"
   },
   "pt": {
     "nav.machuPicchuTours": "Machu Picchu Tours",
@@ -1178,7 +1192,14 @@
     "coupon.error": "Não conseguimos registrar seus dados. Tente novamente.",
     "coupon.validationName": "Digite seu nome.",
     "coupon.validationWhatsApp": "Digite um WhatsApp válido com código do país ou da cidade.",
-    "coupon.validationEmail": "Digite um e-mail válido."
+    "coupon.validationEmail": "Digite um e-mail válido.",
+    "nav.experiences": "Experiências",
+    "nav.cuscoPackages": "Pacotes completos Cusco",
+    "nav.peruPackages": "Pacotes completos Peru",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Restaurantes",
+    "nav.hotels": "Hotéis",
+    "nav.trains": "Trens"
   },
   "fr": {
     "nav.machuPicchuTours": "Tours à Machu Picchu",
@@ -1560,7 +1581,14 @@
     "coupon.error": "Nous n’avons pas pu enregistrer vos données. Réessayez.",
     "coupon.validationName": "Saisissez votre nom.",
     "coupon.validationWhatsApp": "Saisissez un WhatsApp valide avec indicatif pays ou ville.",
-    "coupon.validationEmail": "Saisissez un e-mail valide."
+    "coupon.validationEmail": "Saisissez un e-mail valide.",
+    "nav.experiences": "Expériences",
+    "nav.cuscoPackages": "Forfaits complets Cusco",
+    "nav.peruPackages": "Forfaits complets Pérou",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Restaurants",
+    "nav.hotels": "Hôtels",
+    "nav.trains": "Trains"
   },
   "de": {
     "nav.machuPicchuTours": "Machu-Picchu-Touren",
@@ -1942,7 +1970,14 @@
     "coupon.error": "Ihre Daten konnten nicht registriert werden. Bitte versuchen Sie es erneut.",
     "coupon.validationName": "Geben Sie Ihren Namen ein.",
     "coupon.validationWhatsApp": "Geben Sie eine gültige WhatsApp-Nummer mit Länder- oder Ortsvorwahl ein.",
-    "coupon.validationEmail": "Geben Sie eine gültige E-Mail-Adresse ein."
+    "coupon.validationEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "nav.experiences": "Erlebnisse",
+    "nav.cuscoPackages": "Komplette Cusco-Pakete",
+    "nav.peruPackages": "Komplette Peru-Pakete",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Restaurants",
+    "nav.hotels": "Hotels",
+    "nav.trains": "Züge"
   },
   "it": {
     "nav.machuPicchuTours": "Tour a Machu Picchu",
@@ -2324,7 +2359,14 @@
     "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
     "product.select": "Seleziona",
     "product.selectCountry": "Seleziona paese",
-    "product.reviewsCount": "(24 reviews)"
+    "product.reviewsCount": "(24 reviews)",
+    "nav.experiences": "Esperienze",
+    "nav.cuscoPackages": "Pacchetti completi Cusco",
+    "nav.peruPackages": "Pacchetti completi Perù",
+    "nav.trekking": "Trekking",
+    "nav.restaurants": "Ristoranti",
+    "nav.hotels": "Hotel",
+    "nav.trains": "Treni"
   },
   "zh": {
     "nav.machuPicchuTours": "马丘比丘旅游",
@@ -2706,7 +2748,14 @@
     "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
     "product.select": "选择",
     "product.selectCountry": "选择国家",
-    "product.reviewsCount": "(24 reviews)"
+    "product.reviewsCount": "(24 reviews)",
+    "nav.experiences": "体验",
+    "nav.cuscoPackages": "库斯科完整套餐",
+    "nav.peruPackages": "秘鲁完整套餐",
+    "nav.trekking": "徒步",
+    "nav.restaurants": "餐厅",
+    "nav.hotels": "酒店",
+    "nav.trains": "火车"
   },
   "ja": {
     "nav.machuPicchuTours": "マチュピチュツアー",
@@ -3088,6 +3137,13 @@
     "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
     "product.select": "選択",
     "product.selectCountry": "国を選択",
-    "product.reviewsCount": "(24 reviews)"
+    "product.reviewsCount": "(24 reviews)",
+    "nav.experiences": "体験",
+    "nav.cuscoPackages": "クスコ旅行パッケージ",
+    "nav.peruPackages": "ペルー旅行パッケージ",
+    "nav.trekking": "トレッキング",
+    "nav.restaurants": "レストラン",
+    "nav.hotels": "ホテル",
+    "nav.trains": "列車"
   }
 }

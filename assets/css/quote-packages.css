@@ -6706,3 +6706,166 @@ body.quote-reservation-open {
     touch-action: manipulation !important;
   }
 }
+
+/* V35: ajustes pedidos para Quote Package móvil, hoteles y trenes */
+.quote-payment-btn {
+  background: #13824f !important;
+  color: #fff !important;
+  border-color: #13824f !important;
+}
+
+.quote-payment-btn:hover {
+  background: #0f7044 !important;
+  border-color: #0f7044 !important;
+}
+
+.quote-secondary-btn#printQuoteBtn,
+#printQuoteBtn.quote-secondary-btn {
+  background: #f3f6f4 !important;
+  color: #0a3a26 !important;
+  border: 1.5px solid #0a3a26 !important;
+}
+
+.quote-train-selected-logo,
+.quote-train-selector-card img {
+  object-fit: cover !important;
+  padding: 0 !important;
+  background: #fff !important;
+}
+
+.quote-train-selected-logo {
+  width: 82px;
+  height: 52px;
+  border-radius: 12px;
+}
+
+.quote-hotel-choice-card--none {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.quote-hotel-choice-card--none > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.quote-hotel-choice-card--none strong {
+  font-size: 0.96rem;
+}
+
+.quote-hotel-choice-card--none em {
+  font-size: 0.94rem;
+}
+
+.quote-hotel-feature-list--pills {
+  gap: 5px !important;
+  margin-top: 8px !important;
+}
+
+.quote-hotel-feature-list--pills small {
+  padding: 5px 8px !important;
+  font-size: 0.72rem !important;
+  line-height: 1.12 !important;
+}
+
+@media (max-width: 768px) {
+  .quote-payment-btn {
+    min-width: 92px !important;
+    padding: 9px 12px !important;
+    font-size: 0.86rem !important;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions {
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr) !important;
+    align-items: stretch;
+  }
+
+  .quote-summary-panel.is-expanded .quote-actions__secondary {
+    display: block !important;
+    order: 1;
+  }
+
+  .quote-summary-panel.is-expanded #printQuoteBtn {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 0.84rem;
+  }
+
+  .quote-summary-panel.is-expanded .quote-payment-btn {
+    order: 2;
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .quote-hotel-modal-list--wide {
+    gap: 10px !important;
+  }
+
+  .quote-hotel-group-card--wide {
+    border-radius: 18px !important;
+  }
+
+  .quote-hotel-group-card__head--top {
+    padding-bottom: 4px !important;
+  }
+
+  .quote-hotel-group-card__head--top strong {
+    font-size: 1rem !important;
+  }
+
+  .quote-hotel-group-card__head--top p {
+    font-size: 0.78rem !important;
+    line-height: 1.25 !important;
+    margin-top: 3px !important;
+  }
+
+  .quote-hotel-gallery {
+    min-height: 145px !important;
+    max-height: 165px !important;
+  }
+
+  .quote-hotel-gallery img {
+    height: 155px !important;
+  }
+
+  .quote-hotel-feature-list--pills small {
+    font-size: 0.68rem !important;
+    padding: 4px 7px !important;
+  }
+
+  .quote-hotel-group-card__right {
+    padding-top: 10px !important;
+  }
+
+  .quote-hotel-group-card__right h3 {
+    font-size: 0.9rem !important;
+  }
+
+  .quote-room-combo {
+    padding: 9px 10px !important;
+    border-radius: 13px !important;
+  }
+
+  .quote-room-combo strong {
+    font-size: 0.84rem !important;
+  }
+
+  .quote-room-combo small {
+    font-size: 0.72rem !important;
+  }
+
+  .quote-train-selected-content {
+    gap: 9px;
+  }
+
+  .quote-train-selected-logo {
+    width: 74px;
+    height: 54px;
+  }
+}

@@ -147,6 +147,26 @@ class MyCuscoTripHeader {
     const href = link.getAttribute("href") || "";
     const isDropdownToggle = link.classList.contains("nav-dropdown-toggle");
 
+    if (window.innerWidth < 992 && isDropdownToggle) {
+      event.preventDefault();
+      const parent = link.closest(".nav-item--dropdown");
+      const isOpen = parent?.classList.contains("is-open") || parent?.classList.contains("is-dropdown-open");
+      this.dropdownItems.forEach((item) => {
+        if (item !== parent) this.closeDropdown(item);
+        item.classList.remove("is-open");
+      });
+      if (parent) {
+        if (isOpen) {
+          this.closeDropdown(parent);
+          parent.classList.remove("is-open");
+        } else {
+          this.openDropdown(parent);
+          parent.classList.add("is-open");
+        }
+      }
+      return;
+    }
+
     this.setActiveLink(link);
 
     if (window.innerWidth < 992 && !isDropdownToggle) {
@@ -192,15 +212,34 @@ class MyCuscoTripHeader {
     const currentSearch = window.location.search;
 
     const aliases = {
+      "all-experiences.html": ["all-experiences.html"],
       "machu-picchu-tours.html": ["machu-picchu-tours.html"],
       "cusco-tours.html": ["cusco-tours.html"],
       "paquetes-cusco.html": ["paquetes-cusco.html"],
       "explora-peru.html": ["explora-peru.html"],
       "trekkings.html": ["trekkings.html"],
+      "hoteles.html": ["hoteles.html"],
       "mi-reserva.html": ["mi-reserva.html"]
     };
 
     let activeLink = null;
+
+
+    const cleanPathForSection = currentPath.replace(/\/+$/, "/");
+    if (cleanPathForSection.includes("/restaurantes/")) {
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && href.includes("/restaurantes/")) activeLink = link;
+      });
+    }
+    if (cleanPathForSection.includes("/trenes/")) {
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && href.includes("/trenes/")) activeLink = link;
+      });
+    }
 
     if (currentFile === "trekkings.html" && currentSearch) {
       const currentUrlPart = `trekkings.html${currentSearch}`;

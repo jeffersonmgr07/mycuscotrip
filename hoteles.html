@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoteles en Perú | My Cusco Trip</title>
+  <meta name="description" content="Vitrina de hoteles recomendados en Cusco, Lima, Arequipa, Puno y otros destinos de Perú. Revisa habitaciones, fechas y solicita tu reserva." />
+  <link rel="icon" href="./assets/img/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=35" />
+  <link rel="stylesheet" href="./assets/css/footer.css" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=35" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="hotels-page">
+    <section class="hotels-hero">
+      <div class="container hotels-hero__grid">
+        <div>
+          <span class="hotels-kicker"><i class="fa-solid fa-hotel"></i> Hoteles recomendados</span>
+          <h1>Elige hoteles para tu viaje por Perú</h1>
+          <p>Selecciona destino, revisa habitaciones, fechas y solicita una reserva asistida con nuestro equipo.</p>
+          <div class="hotels-search-box">
+            <label>
+              <span>Destino</span>
+              <select id="hotelDestinationFilter">
+                <option value="all">Todos los destinos</option>
+              </select>
+            </label>
+            <label>
+              <span>Buscar hotel</span>
+              <input id="hotelSearchInput" type="search" placeholder="Ej. Cusco Boutique, Miraflores..." />
+            </label>
+          </div>
+        </div>
+        <div class="hotels-hero__card">
+          <strong>Reserva tipo vitrina</strong>
+          <p>El cliente revisa el hotel, elige fechas y habitación. Luego envía la solicitud para confirmar disponibilidad y pago.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="hotels-section">
+      <div class="container">
+        <div class="hotels-section__head">
+          <div>
+            <span class="hotels-kicker hotels-kicker--dark">Catálogo</span>
+            <h2>Hoteles disponibles</h2>
+          </div>
+          <p id="hotelCountLabel">Cargando hoteles...</p>
+        </div>
+        <div id="hotelsGrid" class="hotels-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="hotelDetailModal" class="hotel-detail-modal" hidden>
+    <div class="hotel-detail-modal__backdrop" data-close-hotel-modal></div>
+    <article class="hotel-detail-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="hotelDetailTitle">
+      <button type="button" class="hotel-detail-modal__close" data-close-hotel-modal aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      <div id="hotelDetailContent"></div>
+    </article>
+  </div>
+
+  <div id="footer-container"></div>
+
+
+  <script>
+    const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
+    const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
+    async function loadComponent(componentName, targetId) {
+      try {
+        const response = await fetch(`${BASE_PATH}components/${componentName}.html`);
+        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+        const html = await response.text();
+        const target = document.getElementById(targetId);
+        if (target) target.innerHTML = html;
+      } catch (error) {
+        console.error(`Error cargando ${componentName}:`, error);
+      }
+    }
+    async function initializeLayout() {
+      await Promise.all([loadComponent('header', 'header-container'), loadComponent('footer', 'footer-container')]);
+      if (window.MyCuscoTripHeader) window.initMyCuscoTripHeader?.();
+      window.MyCuscoTripI18n?.applyTranslations?.();
+    }
+    document.addEventListener('DOMContentLoaded', initializeLayout);
+  </script>
+  <script src="./assets/js/i18n.js"></script>
+  <script src="./assets/js/components/header.js?v=35"></script>
+  <script src="./assets/js/pages/hoteles.js?v=35"></script>
+</body>
+</html>

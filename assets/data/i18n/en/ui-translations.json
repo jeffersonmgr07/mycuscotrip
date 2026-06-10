@@ -410,5 +410,12 @@
   "product.savingReservation": "Saving reservation...",
   "coupon.successWithCode": "Done. Your coupon {code} was sent to your email and expires in 24 hours.",
   "product.connectingToPaypal": "Connecting to PayPal...",
-  "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails."
+  "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails.",
+  "nav.experiences": "Experiences",
+  "nav.cuscoPackages": "Complete Cusco Packages",
+  "nav.peruPackages": "Complete Peru Packages",
+  "nav.trekking": "Trekking",
+  "nav.restaurants": "Restaurants",
+  "nav.hotels": "Hotels",
+  "nav.trains": "Trains"
 }

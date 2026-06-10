@@ -378,5 +378,12 @@
   "coupon.error": "Ihre Daten konnten nicht registriert werden. Bitte versuchen Sie es erneut.",
   "coupon.validationName": "Geben Sie Ihren Namen ein.",
   "coupon.validationWhatsApp": "Geben Sie eine gültige WhatsApp-Nummer mit Länder- oder Ortsvorwahl ein.",
-  "coupon.validationEmail": "Geben Sie eine gültige E-Mail-Adresse ein."
+  "coupon.validationEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+  "nav.experiences": "Erlebnisse",
+  "nav.cuscoPackages": "Komplette Cusco-Pakete",
+  "nav.peruPackages": "Komplette Peru-Pakete",
+  "nav.trekking": "Trekking",
+  "nav.restaurants": "Restaurants",
+  "nav.hotels": "Hotels",
+  "nav.trains": "Züge"
 }

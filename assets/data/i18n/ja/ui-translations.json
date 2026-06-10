@@ -378,5 +378,12 @@
   "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
   "product.select": "選択",
   "product.selectCountry": "国を選択",
-  "product.reviewsCount": "(24 reviews)"
+  "product.reviewsCount": "(24 reviews)",
+  "nav.experiences": "体験",
+  "nav.cuscoPackages": "クスコ旅行パッケージ",
+  "nav.peruPackages": "ペルー旅行パッケージ",
+  "nav.trekking": "トレッキング",
+  "nav.restaurants": "レストラン",
+  "nav.hotels": "ホテル",
+  "nav.trains": "列車"
 }

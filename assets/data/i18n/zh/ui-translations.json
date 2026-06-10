@@ -378,5 +378,12 @@
   "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
   "product.select": "选择",
   "product.selectCountry": "选择国家",
-  "product.reviewsCount": "(24 reviews)"
+  "product.reviewsCount": "(24 reviews)",
+  "nav.experiences": "体验",
+  "nav.cuscoPackages": "库斯科完整套餐",
+  "nav.peruPackages": "秘鲁完整套餐",
+  "nav.trekking": "徒步",
+  "nav.restaurants": "餐厅",
+  "nav.hotels": "酒店",
+  "nav.trains": "火车"
 }

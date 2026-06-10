@@ -1299,9 +1299,8 @@
       <button type="button" class="quote-hotel-choice-card quote-hotel-choice-card--none ${noneSelected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(noneOption.key)}">
         <span class="quote-choice-dot" aria-hidden="true"></span>
         <div>
-          <strong>Sin hotel / solo tours</strong>
-          <p>No se suma alojamiento para este destino. Puedes reservarlo por tu cuenta.</p>
-          <em>Sin costo de hotel</em>
+          <strong>Opción sin hotel</strong>
+          <em>${escapeHtml(money(0))}</em>
         </div>
       </button>
     ` : "";
@@ -1311,7 +1310,7 @@
       const images = getHotelGalleryImages(hotel);
       const firstImage = images[0];
       const features = [
-        hotel?.amenities?.breakfast ? `Desayuno: ${hotel.amenities.breakfast}` : "",
+        hotel?.amenities?.breakfast ? String(hotel.amenities.breakfast).replace(/^Desayuno:\s*/i, "") : "",
         ...toArray(hotel?.features),
         ...toArray(hotel?.amenities).filter((item) => typeof item === "string")
       ].filter(Boolean).slice(0, 7);
@@ -1612,15 +1611,13 @@
                 <img class="quote-train-inline-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || "Tren")}" loading="lazy">
                 <div>
                   <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
-                  ${train.isLocalTrain ? `<span>Tren local · PeruRail</span>` : ""}
-                </div>
+                  </div>
               </div>
               <div class="quote-train-schedule-row">
                 <div><small>Salida</small><b>${escapeHtml(train.departureStation)} · ${escapeHtml(train.departureTime)}</b></div>
                 <div><small>Llegada</small><b>${escapeHtml(train.arrivalStation)} · ${escapeHtml(train.arrivalTime)}</b></div>
               </div>
-              <em>${train.isLocalTrain ? "Precio local referencial / por confirmar" : money(price)}</em>
-              ${train.notes ? `<small>${escapeHtml(train.notes)}</small>` : ""}
+              <em>${train.isLocalTrain ? "S/ 0.00" : money(price)}</em>
             </div>
           </button>
         `;

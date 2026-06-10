@@ -378,5 +378,12 @@
   "coupon.error": "Nous n’avons pas pu enregistrer vos données. Réessayez.",
   "coupon.validationName": "Saisissez votre nom.",
   "coupon.validationWhatsApp": "Saisissez un WhatsApp valide avec indicatif pays ou ville.",
-  "coupon.validationEmail": "Saisissez un e-mail valide."
+  "coupon.validationEmail": "Saisissez un e-mail valide.",
+  "nav.experiences": "Expériences",
+  "nav.cuscoPackages": "Forfaits complets Cusco",
+  "nav.peruPackages": "Forfaits complets Pérou",
+  "nav.trekking": "Trekking",
+  "nav.restaurants": "Restaurants",
+  "nav.hotels": "Hôtels",
+  "nav.trains": "Trains"
 }

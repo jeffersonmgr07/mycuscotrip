@@ -378,5 +378,12 @@
   "product.customQuoteText": "Our team can prepare the final route according to your dates, hotels, internal flights and travel preferences.",
   "product.select": "Seleziona",
   "product.selectCountry": "Seleziona paese",
-  "product.reviewsCount": "(24 reviews)"
+  "product.reviewsCount": "(24 reviews)",
+  "nav.experiences": "Esperienze",
+  "nav.cuscoPackages": "Pacchetti completi Cusco",
+  "nav.peruPackages": "Pacchetti completi Perù",
+  "nav.trekking": "Trekking",
+  "nav.restaurants": "Ristoranti",
+  "nav.hotels": "Hotel",
+  "nav.trains": "Treni"
 }
