@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=32" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=34" />
   <link rel="stylesheet" href="./assets/css/coupon-popup.css?v=7">
 </head>
 <body>
@@ -574,7 +574,12 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <!-- PayPal sandbox: reemplaza client-id=sb por tu Client ID real de My Cusco Trip al pasar a producción -->
+  <script>
+    // Opcional: pega aquí la URL /exec de tu Apps Script si quieres guardar estas reservas en Google Sheets.
+    // Sin Apps Script, el modal y PayPal pueden funcionar, pero la orden no quedará registrada automáticamente en Sheets.
+    window.MCT_QUOTE_APPS_SCRIPT_URL = window.MCT_QUOTE_APPS_SCRIPT_URL || "";
+  </script>
+  <!-- PayPal sandbox: reemplaza client-id=sb por tu Client ID público real de My Cusco Trip al pasar a producción -->
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&components=buttons&intent=capture"></script>
 
   <script src="./assets/js/config/tracking-config.js"></script>
@@ -627,7 +632,24 @@
 
   <script src="./assets/js/core/package-generator.js"></script>
   <script src="./assets/js/core/api-client.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=33"></script>
-<script src="./assets/js/components/coupon-popup.js"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=34"></script>
+  <script>
+    // Respaldo mínimo: si el navegador carga un JS antiguo por caché, este botón móvil igual abre/cierra el resumen.
+    document.addEventListener('click', function(event) {
+      const btn = event.target.closest && event.target.closest('#toggleMobileSummaryBtn');
+      if (!btn || window.MCTQuotePackages) return;
+      const panel = document.getElementById('quoteSummaryPanel');
+      if (!panel) return;
+      const expanded = !panel.classList.contains('is-expanded');
+      panel.classList.toggle('is-expanded', expanded);
+      document.body.classList.toggle('quote-summary-expanded', expanded);
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      const label = btn.querySelector('span');
+      const icon = btn.querySelector('i');
+      if (label) label.textContent = expanded ? 'Ver menos' : 'Ver más';
+      if (icon) icon.className = 'fas fa-chevron-' + (expanded ? 'down' : 'up');
+    });
+  </script>
+  <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>

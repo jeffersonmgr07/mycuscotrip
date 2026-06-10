@@ -2350,7 +2350,7 @@
     ensureQuoteReference();
     const modal = $("#quoteReservationModal");
     if (!modal) {
-      window.open(buildWhatsAppText(false), "_blank", "noopener");
+      alert("No se encontró el modal de reserva en quote-packages.html. Revisa que el HTML actualizado esté publicado.");
       return;
     }
     setText("#quoteReservationCodeLabel", `Código de cotización: ${getQuoteReferenceValue()}`);
@@ -2479,7 +2479,9 @@
     return `https://wa.me/51900608980?text=${encodeURIComponent(lines.join("\n"))}`;
   }
 
-  function continuePayment() {
+  function continuePayment(event) {
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
     openReservationModal();
   }
 
@@ -2512,6 +2514,7 @@
     document.addEventListener("click", (event) => {
       const mobileToggle = event.target.closest("#toggleMobileSummaryBtn");
       if (mobileToggle) {
+        event.preventDefault();
         const panel = $("#quoteSummaryPanel");
         setMobileSummaryExpanded(!panel?.classList.contains("is-expanded"));
         return;
@@ -2567,10 +2570,27 @@
     $("#confirmHotelSelectionBtn")?.addEventListener("click", confirmHotelSelection);
     $("#confirmTrainSelectionBtn")?.addEventListener("click", confirmTrainSelection);
     $("#applyDiscountCodeBtn")?.addEventListener("click", applyManualDiscountCode);
-    $("#printQuoteBtn")?.addEventListener("click", printQuote);
+    const mobileSummaryButton = $("#toggleMobileSummaryBtn");
+    mobileSummaryButton?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const panel = $("#quoteSummaryPanel");
+      setMobileSummaryExpanded(!panel?.classList.contains("is-expanded"));
+    });
+
+    $("#printQuoteBtn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      printQuote();
+    });
     $("#continuePaymentBtn")?.addEventListener("click", continuePayment);
-    $("#quoteModalPrintBtn")?.addEventListener("click", printQuote);
-    $("#quoteModalWhatsappBtn")?.addEventListener("click", sendReservationWhatsApp);
+    $("#quoteModalPrintBtn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      printQuote();
+    });
+    $("#quoteModalWhatsappBtn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      sendReservationWhatsApp();
+    });
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeModals();
@@ -2632,6 +2652,14 @@
       $(selector)?.addEventListener("input", updatePrintableTemplate);
     });
   }
+
+  window.MCTQuotePackages = {
+    openReservationModal,
+    closeModals,
+    setMobileSummaryExpanded,
+    printQuote,
+    getState: () => state
+  };
 
   async function init() {
     ensureQuoteReference();
