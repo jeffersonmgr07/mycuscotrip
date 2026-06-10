@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hoteles en Perú | My Cusco Trip</title>
-  <meta name="description" content="Vitrina de hoteles recomendados en Cusco, Lima, Arequipa, Puno y otros destinos de Perú. Revisa habitaciones, fechas y solicita tu reserva." />
+  <title>Hoteles en Cusco, Machu Picchu y Perú | My Cusco Trip</title>
+  <meta name="description" content="Selección de hoteles recomendados para viajes por Cusco, Machu Picchu, Lima, Arequipa, Puno, Paracas, Ica y Uyuni." />
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
   <link rel="stylesheet" href="./assets/css/header.css?v=35" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=35" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=36" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -21,7 +21,7 @@
         <div>
           <span class="hotels-kicker"><i class="fa-solid fa-hotel"></i> Hoteles recomendados</span>
           <h1>Elige hoteles para tu viaje por Perú</h1>
-          <p>Selecciona destino, revisa habitaciones, fechas y solicita una reserva asistida con nuestro equipo.</p>
+          <p>Tenemos la mejor selección de hoteles de todas las categorías para tu viaje por Cusco y Machu Picchu.</p>
           <div class="hotels-search-box">
             <label>
               <span>Destino</span>
@@ -35,10 +35,6 @@
             </label>
           </div>
         </div>
-        <div class="hotels-hero__card">
-          <strong>Reserva tipo vitrina</strong>
-          <p>El cliente revisa el hotel, elige fechas y habitación. Luego envía la solicitud para confirmar disponibilidad y pago.</p>
-        </div>
       </div>
     </section>
 
@@ -46,7 +42,6 @@
       <div class="container">
         <div class="hotels-section__head">
           <div>
-            <span class="hotels-kicker hotels-kicker--dark">Catálogo</span>
             <h2>Hoteles disponibles</h2>
           </div>
           <p id="hotelCountLabel">Cargando hoteles...</p>
@@ -90,6 +85,11 @@
   </script>
   <script src="./assets/js/i18n.js"></script>
   <script src="./assets/js/components/header.js?v=35"></script>
-  <script src="./assets/js/pages/hoteles.js?v=35"></script>
+  <script>
+    window.MCT_HOTEL_APPS_SCRIPT_URL = "";
+    window.MCT_HOTEL_PAYPAL_CLIENT_ID = "sb";
+  </script>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+  <script src="./assets/js/pages/hoteles.js?v=36"></script>
 </body>
 </html>
