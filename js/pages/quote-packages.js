@@ -39,7 +39,10 @@
     activeHotelDestination: null,
     pendingHotelKey: null,
     activeTrainDirection: null,
-    pendingTrainCode: null
+    pendingTrainCode: null,
+    paypalRenderedKey: "",
+    paypalRendering: false,
+    paypalTimer: null
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -1802,6 +1805,12 @@
     setText("#balanceSummaryTotal", money(payment.balance));
     toggleRow("#balanceSummaryRow", payment.balance > 0);
 
+    const actions = $(".quote-actions");
+    if (actions) actions.dataset.mobileTotal = `Total ${money(payment.total)}`;
+
+    renderReservationSummary();
+    schedulePayPalRender();
+
     const info = $("#paymentInfoText");
     if (info) {
       if (!getSelectedOption()) info.textContent = "Selecciona fechas e itinerario para generar la cotización.";
@@ -2028,16 +2037,432 @@
   }
 
   function closeModals() {
-    $$(".quote-modal").forEach((modal) => { modal.hidden = true; });
+    $$(".quote-modal").forEach((modal) => {
+      modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
+    });
+    document.body.classList.remove("quote-reservation-open");
     state.activeHotelDestination = null;
     state.pendingHotelKey = null;
     state.activeTrainDirection = null;
     state.pendingTrainCode = null;
   }
 
-  function buildWhatsAppText() {
+
+  function setMobileSummaryExpanded(expanded) {
+    const panel = $("#quoteSummaryPanel");
+    const toggle = $("#toggleMobileSummaryBtn");
+    if (!panel || !toggle) return;
+    panel.classList.toggle("is-expanded", Boolean(expanded));
+    document.body.classList.toggle("quote-summary-expanded", Boolean(expanded));
+    toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    const label = toggle.querySelector("span");
+    const icon = toggle.querySelector("i");
+    if (label) label.textContent = expanded ? "Ver menos" : "Ver más";
+    if (icon) icon.className = `fas fa-chevron-${expanded ? "down" : "up"}`;
+  }
+
+  function getQuoteReferenceValue() {
+    ensureQuoteReference();
+    return $("#quoteReference")?.textContent?.trim() || generateQuoteReference();
+  }
+
+  function getPaymentAmountForPayPalUSD(payment = getPaymentBreakdown()) {
+    const amount = convert(Number(payment.advance || payment.total || 0), state.currency, "USD");
+    return Math.max(1, amount).toFixed(2);
+  }
+
+  function getSelectedHotelSummaryRows() {
+    return Object.values(state.selectedHotels)
+      .filter(Boolean)
+      .map((item) => {
+        const label = item.type === "none" ? `${item.destination}: sin hotel` : `${item.label} · ${item.roomsSummary || item.description || "Habitación"}`;
+        return { label, amount: convert(item.priceUSD || 0, "USD", state.currency) };
+      });
+  }
+
+  function renderReservationSummary() {
+    const target = $("#quoteReservationSummary");
+    if (!target) return;
     const option = getSelectedOption();
     const payment = getPaymentBreakdown();
+    const hotelRows = getSelectedHotelSummaryRows();
+    const trainRows = [
+      state.selectedTrains.outbound ? { label: `Tren ida · ${state.selectedTrains.outbound.companyName || state.selectedTrains.outbound.company || "Tren"}`, amount: getTrainTotal(state.selectedTrains.outbound) } : null,
+      state.selectedTrains.return ? { label: `Tren retorno · ${state.selectedTrains.return.companyName || state.selectedTrains.return.company || "Tren"}`, amount: getTrainTotal(state.selectedTrains.return) } : null
+    ].filter(Boolean);
+    const paypalUSD = getPaymentAmountForPayPalUSD(payment);
+
+    target.innerHTML = `
+      <div><span>Código</span><strong>${escapeHtml(getQuoteReferenceValue())}</strong></div>
+      <div><span>Itinerario</span><strong>${escapeHtml(option?.rawCard?.recommendedTitle || option?.title || "Por definir")}</strong></div>
+      <div><span>Fechas</span><strong>${escapeHtml(getTravelRangeLabel())}</strong></div>
+      <div><span>Pasajeros</span><strong>${state.adults} adulto(s), ${state.children} niño(s)</strong></div>
+      ${hotelRows.length ? hotelRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>Alojamiento</span><strong>Sin alojamiento seleccionado</strong></div>`}
+      ${trainRows.length ? trainRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>Trenes</span><strong>Por elegir / no aplica</strong></div>`}
+      ${payment.discount > 0 ? `<div><span>Descuento</span><strong>- ${escapeHtml(money(payment.discount))}</strong></div>` : ""}
+      <div class="quote-reservation-summary__total"><span>Total cotizado</span><strong>${escapeHtml(money(payment.total))}</strong></div>
+      <div><span>${payment.balance > 0 ? "Anticipo a pagar ahora" : "Pago a realizar ahora"}</span><strong>${escapeHtml(money(payment.advance))}</strong></div>
+      ${payment.balance > 0 ? `<div><span>Saldo pendiente</span><strong>${escapeHtml(money(payment.balance))}</strong></div>` : ""}
+      <div><span>Monto PayPal</span><strong>USD ${paypalUSD}</strong></div>
+    `;
+  }
+
+  function splitClientName() {
+    const raw = String($("#clientName")?.value || "").trim();
+    if (!raw) return { names: "", lastnames: "" };
+    const parts = raw.split(/\s+/).filter(Boolean);
+    if (parts.length <= 1) return { names: raw, lastnames: "" };
+    return { names: parts.slice(0, -1).join(" "), lastnames: parts.slice(-1).join(" ") };
+  }
+
+  function renderPassengerForms() {
+    const target = $("#quotePassengerForms");
+    if (!target) return;
+    const total = getPassengerCount();
+    const prefillName = splitClientName();
+    const cards = [];
+
+    for (let i = 1; i <= total; i += 1) {
+      const isAdult = i <= state.adults;
+      const collapsed = i > 1;
+      const required = i === 1 ? " required" : "";
+      const names = i === 1 ? prefillName.names : "";
+      const lastnames = i === 1 ? prefillName.lastnames : "";
+      const documentNumber = i === 1 ? String($("#clientDocument")?.value || "") : "";
+      const email = i === 1 ? String($("#clientEmail")?.value || "") : "";
+      const phone = i === 1 ? String($("#clientPhone")?.value || "") : "";
+      cards.push(`
+        <article class="quote-passenger-card${collapsed ? " is-collapsed" : ""}" data-passenger-card="${i}">
+          <div class="quote-passenger-card__head">
+            <h4>Pasajero ${i} <small>${isAdult ? "Adulto" : "Niño"}</small></h4>
+            <button type="button" class="quote-passenger-toggle" data-passenger-toggle aria-expanded="${collapsed ? "false" : "true"}" aria-label="Desplegar pasajero ${i}">
+              <i class="fas fa-chevron-${collapsed ? "down" : "up"}"></i>
+            </button>
+          </div>
+          <div class="quote-passenger-card__body">
+            <div class="quote-passenger-grid">
+              <label>Nombre(s)<input type="text" name="passenger_${i}_name" value="${escapeHtml(names)}" placeholder="Nombre completo"${required}></label>
+              <label>Apellido(s)<input type="text" name="passenger_${i}_lastname" value="${escapeHtml(lastnames)}" placeholder="Apellidos"${required}></label>
+              <label>Tipo de documento
+                <select name="passenger_${i}_doctype"${required}>
+                  <option value="">Seleccionar</option>
+                  <option value="DNI">DNI</option>
+                  <option value="PASSPORT">Pasaporte</option>
+                  <option value="CE">Carné de extranjería</option>
+                </select>
+              </label>
+              <label>Número de documento<input type="text" name="passenger_${i}_doc" value="${escapeHtml(documentNumber)}" placeholder="Documento"${required}></label>
+              <label>Nacionalidad<input type="text" name="passenger_${i}_nationality" value="${state.nationality === "national" ? "Perú" : ""}" placeholder="País"${required}></label>
+              <label>Fecha de nacimiento<input type="date" name="passenger_${i}_birthdate"${required}></label>
+              <label>Género
+                <select name="passenger_${i}_gender"${required}>
+                  <option value="">Seleccionar</option>
+                  <option value="female">Femenino</option>
+                  <option value="male">Masculino</option>
+                  <option value="other">Otro / prefiero no indicar</option>
+                </select>
+              </label>
+              <label>Idioma
+                <select name="passenger_${i}_language"${required}>
+                  <option value="">Seleccionar</option>
+                  <option value="es">Español</option>
+                  <option value="en">English</option>
+                </select>
+              </label>
+              ${i === 1 ? `
+                <label>Email de contacto<input type="email" name="contact_email" value="${escapeHtml(email)}" placeholder="correo@ejemplo.com" required></label>
+                <label>WhatsApp de contacto<input type="tel" name="contact_phone" value="${escapeHtml(phone)}" placeholder="+51 999 999 999" required></label>
+              ` : ""}
+            </div>
+          </div>
+        </article>
+      `);
+    }
+
+    target.innerHTML = cards.join("");
+    bindPassengerCardToggles();
+    bindPassengerValidationWatcher();
+  }
+
+  function bindPassengerCardToggles() {
+    $$("#quotePassengerForms [data-passenger-toggle]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest(".quote-passenger-card");
+        const collapsed = card?.classList.toggle("is-collapsed");
+        button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        const icon = button.querySelector("i");
+        if (icon) icon.className = `fas fa-chevron-${collapsed ? "down" : "up"}`;
+      });
+    });
+  }
+
+  function bindPassengerValidationWatcher() {
+    const target = $("#quotePassengerForms");
+    if (!target) return;
+    const clearIfValid = () => {
+      if (validatePrimaryPassengerData(false)) setText("#quotePaypalStatus", "");
+    };
+    target.oninput = clearIfValid;
+    target.onchange = clearIfValid;
+  }
+
+  function getPrimaryPassengerRequiredFields() {
+    const root = $("#quotePassengerForms");
+    if (!root) return [];
+    return [
+      { label: "nombre(s)", el: root.querySelector("input[name='passenger_1_name']") },
+      { label: "apellido(s)", el: root.querySelector("input[name='passenger_1_lastname']") },
+      { label: "tipo de documento", el: root.querySelector("select[name='passenger_1_doctype']") },
+      { label: "número de documento", el: root.querySelector("input[name='passenger_1_doc']") },
+      { label: "nacionalidad", el: root.querySelector("input[name='passenger_1_nationality']") },
+      { label: "fecha de nacimiento", el: root.querySelector("input[name='passenger_1_birthdate']") },
+      { label: "género", el: root.querySelector("select[name='passenger_1_gender']") },
+      { label: "idioma", el: root.querySelector("select[name='passenger_1_language']") },
+      { label: "email de contacto", el: root.querySelector("input[name='contact_email']") },
+      { label: "WhatsApp de contacto", el: root.querySelector("input[name='contact_phone']") }
+    ];
+  }
+
+  function validatePrimaryPassengerData(showMessage = true) {
+    const fields = getPrimaryPassengerRequiredFields();
+    const missing = fields.filter((field) => !String(field.el?.value || "").trim());
+    const email = $("#quotePassengerForms input[name='contact_email']");
+    const emailValue = String(email?.value || "").trim();
+    const invalidEmail = emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+
+    fields.forEach((field) => field.el?.classList.remove("quote-field-error"));
+    email?.classList.remove("quote-field-error");
+
+    if (!missing.length && !invalidEmail) return true;
+
+    if (showMessage) {
+      missing.forEach((field) => field.el?.classList.add("quote-field-error"));
+      if (invalidEmail) email?.classList.add("quote-field-error");
+      const first = missing[0]?.el || email;
+      const card = first?.closest(".quote-passenger-card");
+      if (card?.classList.contains("is-collapsed")) card.querySelector("[data-passenger-toggle]")?.click();
+      first?.focus({ preventScroll: false });
+      const message = invalidEmail
+        ? "Revisa el email de contacto antes de continuar al pago."
+        : `Completa los datos obligatorios del pasajero 1: ${missing.map((field) => field.label).join(", ")}.`;
+      setText("#quotePaypalStatus", message);
+    }
+
+    return false;
+  }
+
+  function collectPassengerData() {
+    const data = [];
+    $$("#quotePassengerForms .quote-passenger-card").forEach((card, index) => {
+      data.push({
+        passenger: index + 1,
+        type: index < state.adults ? "adult" : "child",
+        name: card.querySelector("input[name$='_name']")?.value || "",
+        lastname: card.querySelector("input[name$='_lastname']")?.value || "",
+        documentType: card.querySelector("select[name$='_doctype']")?.value || "",
+        documentNumber: card.querySelector("input[name$='_doc']")?.value || "",
+        nationality: card.querySelector("input[name$='_nationality']")?.value || "",
+        birthdate: card.querySelector("input[name$='_birthdate']")?.value || "",
+        gender: card.querySelector("select[name$='_gender']")?.value || "",
+        language: card.querySelector("select[name$='_language']")?.value || ""
+      });
+    });
+    return data;
+  }
+
+  function getReservationContactData() {
+    return {
+      email: $("#quotePassengerForms input[name='contact_email']")?.value || $("#clientEmail")?.value || "",
+      phone: $("#quotePassengerForms input[name='contact_phone']")?.value || $("#clientPhone")?.value || ""
+    };
+  }
+
+  function buildQuoteReservationPayload(extra = {}) {
+    const option = getSelectedOption();
+    const payment = getPaymentBreakdown();
+    return {
+      code: getQuoteReferenceValue(),
+      createdAt: new Date().toISOString(),
+      product: "quote-package",
+      itineraryTitle: option?.rawCard?.recommendedTitle || option?.title || "",
+      travelDates: getTravelRangeLabel(),
+      days: state.dates.days,
+      nights: state.dates.nights,
+      arrivalTime: state.arrivalTime,
+      departureTime: state.departureTime,
+      adults: state.adults,
+      children: state.children,
+      nationality: state.nationality,
+      currency: state.currency,
+      total: Number(payment.total || 0),
+      advance: Number(payment.advance || 0),
+      balance: Number(payment.balance || 0),
+      paypalAmountUSD: Number(getPaymentAmountForPayPalUSD(payment)),
+      hotels: Object.values(state.selectedHotels).filter(Boolean).map((item) => ({
+        destination: item.destination,
+        hotel: item.type === "none" ? "Sin hotel" : item.label,
+        rooms: item.roomsSummary || "",
+        nights: item.nights || 0,
+        priceUSD: item.priceUSD || 0
+      })),
+      trains: {
+        outbound: state.selectedTrains.outbound ? `${state.selectedTrains.outbound.companyName || state.selectedTrains.outbound.company} · ${state.selectedTrains.outbound.serviceName || ""}` : "",
+        return: state.selectedTrains.return ? `${state.selectedTrains.return.companyName || state.selectedTrains.return.company} · ${state.selectedTrains.return.serviceName || ""}` : ""
+      },
+      contact: getReservationContactData(),
+      passengers: collectPassengerData(),
+      ...extra
+    };
+  }
+
+  async function saveQuoteReservation(extra = {}) {
+    const endpoint = window.MCT_QUOTE_APPS_SCRIPT_URL || window.MCT_APPS_SCRIPT_URL || "";
+    if (!endpoint) return;
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "saveQuoteReservation", reservation: buildQuoteReservationPayload(extra) })
+      });
+    } catch (error) {
+      console.warn("[quote-packages] No se pudo guardar la reserva de cotización.", error);
+    }
+  }
+
+  function canOpenReservationModal(showMessage = true) {
+    if (!getSelectedOption()) {
+      if (showMessage) alert("Selecciona primero un itinerario compatible para iniciar la reserva.");
+      return false;
+    }
+    const trainConfig = getTrainSelectionConfig();
+    if (trainConfig && (!state.selectedTrains.outbound || !state.selectedTrains.return)) {
+      if (showMessage) alert("Selecciona tren de ida y retorno antes de iniciar la reserva.");
+      return false;
+    }
+    return true;
+  }
+
+  function openReservationModal() {
+    if (!canOpenReservationModal(true)) return;
+    updatePrintableTemplate();
+    ensureQuoteReference();
+    const modal = $("#quoteReservationModal");
+    if (!modal) {
+      window.open(buildWhatsAppText(false), "_blank", "noopener");
+      return;
+    }
+    setText("#quoteReservationCodeLabel", `Código de cotización: ${getQuoteReferenceValue()}`);
+    renderPassengerForms();
+    renderReservationSummary();
+    setMobileSummaryExpanded(false);
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("quote-reservation-open");
+    schedulePayPalRender(true);
+  }
+
+  function schedulePayPalRender(force = false) {
+    const modal = $("#quoteReservationModal");
+    const target = $("#quotePaypalButtons");
+    if (!modal || modal.hidden || !target) return;
+    const payment = getPaymentBreakdown();
+    const key = `${getQuoteReferenceValue()}|${payment.advance}|${payment.total}|${state.adults}|${state.children}|${state.currency}`;
+    if (!force && key === state.paypalRenderedKey) return;
+    state.paypalRenderedKey = key;
+    window.clearTimeout(state.paypalTimer);
+    state.paypalTimer = window.setTimeout(() => renderPayPalButtons(payment), 220);
+  }
+
+  function renderPayPalButtons(payment = getPaymentBreakdown()) {
+    const target = $("#quotePaypalButtons");
+    if (!target) return;
+    target.innerHTML = "";
+
+    if (!window.paypal || !window.paypal.Buttons) {
+      setText("#quotePaypalStatus", "PayPal no cargó todavía. Revisa la conexión o reemplaza el Client ID sandbox por el Client ID de producción.");
+      return;
+    }
+
+    if (state.paypalRendering) return;
+    state.paypalRendering = true;
+    setText("#quotePaypalStatus", "");
+
+    const amountUSD = getPaymentAmountForPayPalUSD(payment);
+    const endpoint = window.MCT_QUOTE_APPS_SCRIPT_URL || window.MCT_APPS_SCRIPT_URL || "";
+    const buttons = window.paypal.Buttons({
+      style: { layout: "vertical", shape: "pill", label: "pay" },
+      onClick: (_data, actions) => {
+        if (!validatePrimaryPassengerData(true)) return actions.reject();
+        return actions.resolve();
+      },
+      createOrder: async (_data, actions) => {
+        if (!validatePrimaryPassengerData(true)) throw new Error("Completa los datos obligatorios del pasajero 1 antes de pagar.");
+        if (endpoint) {
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify({ action: "createPayPalOrder", reservation: buildQuoteReservationPayload({ paymentStatus: "created" }) })
+            });
+            const json = await response.json();
+            if (json?.ok && (json.orderID || json.id)) return json.orderID || json.id;
+          } catch (error) {
+            console.warn("[quote-packages] Backend PayPal no disponible; se usará creación en navegador.", error);
+          }
+        }
+        return actions.order.create({
+          purchase_units: [{
+            reference_id: getQuoteReferenceValue(),
+            description: `Reserva My Cusco Trip ${getQuoteReferenceValue()}`.slice(0, 120),
+            amount: { currency_code: "USD", value: amountUSD }
+          }]
+        });
+      },
+      onApprove: async (data, actions) => {
+        let details = null;
+        if (endpoint && data?.orderID) {
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify({ action: "capturePayPalOrder", orderID: data.orderID, reservation: buildQuoteReservationPayload({ paymentStatus: "paid", paypalId: data.orderID }) })
+            });
+            details = await response.json();
+          } catch (error) {
+            console.warn("[quote-packages] No se pudo capturar con backend; se intentará captura en navegador.", error);
+          }
+        }
+        if (!details?.ok && actions?.order) details = await actions.order.capture();
+        const paypalId = details?.id || details?.orderID || data?.orderID || "confirmado";
+        setText("#quotePaypalStatus", `Pago aprobado. ID: ${paypalId}`);
+        saveQuoteReservation({ paymentStatus: "paid", paypalId });
+      },
+      onCancel: () => setText("#quotePaypalStatus", "Pago cancelado. Puedes intentarlo nuevamente o continuar por WhatsApp."),
+      onError: () => setText("#quotePaypalStatus", "No se pudo procesar PayPal. Verifica el Client ID o intenta nuevamente.")
+    });
+
+    try {
+      const result = buttons.render(target);
+      if (result && typeof result.finally === "function") result.finally(() => { state.paypalRendering = false; });
+      window.setTimeout(() => { state.paypalRendering = false; }, 1300);
+    } catch (error) {
+      state.paypalRendering = false;
+      setText("#quotePaypalStatus", "No se pudieron dibujar los botones de PayPal. Revisa la configuración del SDK.");
+    }
+  }
+
+  function sendReservationWhatsApp() {
+    if (!validatePrimaryPassengerData(true)) return;
+    saveQuoteReservation({ paymentStatus: "pending", paypalId: "" });
+    window.open(buildWhatsAppText(true), "_blank", "noopener");
+  }
+
+  function buildWhatsAppText(fromModal = false) {
+    const option = getSelectedOption();
+    const payment = getPaymentBreakdown();
+    const contact = getReservationContactData();
     const lines = [
       "Hola My Cusco Trip, quiero continuar con esta cotización:",
       `Código: ${$("#quoteReference")?.textContent || "COT-PE---"}`,
@@ -2045,14 +2470,17 @@
       `Duración: ${state.dates.days || "--"}D/${state.dates.nights || "--"}N`,
       `Pasajeros: ${state.adults} adulto(s), ${state.children} niño(s)`,
       `Itinerario: ${option?.rawCard?.recommendedTitle || option?.title || "Por definir"}`,
-      `Total referencial: ${money(payment.total)}`
-    ];
+      `Total referencial: ${money(payment.total)}`,
+      payment.balance > 0 ? `Anticipo: ${money(payment.advance)} | Saldo: ${money(payment.balance)}` : `Pago: ${money(payment.advance)}`,
+      contact.email ? `Email: ${contact.email}` : null,
+      contact.phone ? `WhatsApp: ${contact.phone}` : null,
+      fromModal ? "Ya completé los datos principales de pasajeros en el modal de reserva." : null
+    ].filter(Boolean);
     return `https://wa.me/51900608980?text=${encodeURIComponent(lines.join("\n"))}`;
   }
 
   function continuePayment() {
-    updatePrintableTemplate();
-    window.open(buildWhatsAppText(), "_blank", "noopener");
+    openReservationModal();
   }
 
   function printQuote() {
@@ -2082,6 +2510,13 @@
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
+      const mobileToggle = event.target.closest("#toggleMobileSummaryBtn");
+      if (mobileToggle) {
+        const panel = $("#quoteSummaryPanel");
+        setMobileSummaryExpanded(!panel?.classList.contains("is-expanded"));
+        return;
+      }
+
       const showMoreBtn = event.target.closest("[data-show-more-itineraries]");
       if (showMoreBtn) {
         state.showAllItineraryOptions = true;
@@ -2133,8 +2568,13 @@
     $("#confirmTrainSelectionBtn")?.addEventListener("click", confirmTrainSelection);
     $("#applyDiscountCodeBtn")?.addEventListener("click", applyManualDiscountCode);
     $("#printQuoteBtn")?.addEventListener("click", printQuote);
-    $("#savePdfBtn")?.addEventListener("click", savePdf);
     $("#continuePaymentBtn")?.addEventListener("click", continuePayment);
+    $("#quoteModalPrintBtn")?.addEventListener("click", printQuote);
+    $("#quoteModalWhatsappBtn")?.addEventListener("click", sendReservationWhatsApp);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModals();
+    });
 
     $("#nationality")?.addEventListener("change", (event) => {
       state.nationality = event.target.value || "national";

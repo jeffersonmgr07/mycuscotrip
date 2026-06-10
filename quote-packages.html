@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=31" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=32" />
   <link rel="stylesheet" href="./assets/css/coupon-popup.css?v=7">
 </head>
 <body>
@@ -248,6 +248,11 @@
           <div class="quote-summary-panel quote-summary-panel--page-flow" id="quoteSummaryPanel" data-scroll-mode="page">
             <h2 class="quote-detail-title">Detalles de cotización</h2>
 
+            <button type="button" id="toggleMobileSummaryBtn" class="quote-mobile-summary-toggle" aria-expanded="false">
+              <i class="fas fa-chevron-up" aria-hidden="true"></i>
+              <span>Ver más</span>
+            </button>
+
             <div class="quote-summary-panel__top">
               <span>Cotización estimada</span>
               <strong id="quoteReference">COT-PE---</strong>
@@ -324,19 +329,14 @@
             <div class="quote-actions">
               <button type="button" id="continuePaymentBtn" class="btn quote-payment-btn">
                 <i class="fas fa-credit-card"></i>
-                <span class="quote-payment-btn__desktop">Pagar</span>
-                <span class="quote-payment-btn__mobile">Pagar</span>
+                <span class="quote-payment-btn__desktop">Iniciar reserva</span>
+                <span class="quote-payment-btn__mobile">Reservar</span>
               </button>
 
               <div class="quote-actions__secondary">
                 <button type="button" id="printQuoteBtn" class="btn quote-secondary-btn">
                   <i class="fas fa-print"></i>
                   <span>Imprimir</span>
-                </button>
-
-                <button type="button" id="savePdfBtn" class="btn quote-secondary-btn quote-pdf-btn">
-                  <i class="fas fa-download"></i>
-                  <span>Descargar PDF</span>
                 </button>
               </div>
             </div>
@@ -515,6 +515,58 @@
         </div>
       </div>
     </div>
+
+    <div id="quoteReservationModal" class="quote-modal quote-reservation-modal" hidden aria-hidden="true">
+      <div class="quote-modal__backdrop" data-close-modal></div>
+
+      <div class="quote-modal__dialog quote-reservation-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="quoteReservationModalTitle">
+        <button type="button" class="quote-modal__close" data-close-modal aria-label="Cerrar reserva">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="quote-modal__header">
+          <p class="quote-modal__eyebrow">Reserva My Cusco Trip</p>
+          <h2 id="quoteReservationModalTitle">Datos para iniciar tu reserva</h2>
+          <p id="quoteReservationCodeLabel">Código de cotización: por generar</p>
+        </div>
+
+        <div class="quote-modal__body quote-reservation-modal__body">
+          <section class="quote-reservation-block">
+            <div class="quote-reservation-block__title">
+              <span><i class="fas fa-users"></i></span>
+              <div>
+                <h3>Datos de pasajeros</h3>
+                <p>Completa al menos los datos del pasajero 1 para habilitar el pago con PayPal.</p>
+              </div>
+            </div>
+            <div id="quotePassengerForms" class="quote-passenger-forms"></div>
+          </section>
+
+          <aside class="quote-reservation-summary">
+            <div class="quote-reservation-summary__title">Resumen de pago</div>
+            <div id="quoteReservationSummary" class="quote-reservation-summary__box"></div>
+
+            <div class="quote-paypal-box">
+              <h3>Pago con PayPal</h3>
+              <p>El pago se procesa en USD. Si la cotización está en soles, se convierte usando el tipo de cambio referencial del cotizador.</p>
+              <div id="quotePaypalButtons" class="quote-paypal-buttons"></div>
+              <p id="quotePaypalStatus" class="quote-paypal-status"></p>
+            </div>
+
+            <div class="quote-reservation-actions">
+              <button type="button" id="quoteModalPrintBtn" class="btn quote-secondary-btn">
+                <i class="fas fa-print"></i>
+                <span>Imprimir cotización</span>
+              </button>
+              <button type="button" id="quoteModalWhatsappBtn" class="btn quote-secondary-btn">
+                <i class="fab fa-whatsapp"></i>
+                <span>Enviar por WhatsApp</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
   </main>
 
   <div id="footer-container"></div>
@@ -522,6 +574,8 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- PayPal sandbox: reemplaza client-id=sb por tu Client ID real de My Cusco Trip al pasar a producción -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&components=buttons&intent=capture"></script>
 
   <script src="./assets/js/config/tracking-config.js"></script>
   <script src="./assets/js/components/tracking.js"></script>
@@ -573,7 +627,7 @@
 
   <script src="./assets/js/core/package-generator.js"></script>
   <script src="./assets/js/core/api-client.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=32"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=33"></script>
 <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>
