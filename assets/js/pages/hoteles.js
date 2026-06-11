@@ -33,6 +33,13 @@
   const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 
+  const COUNTRIES = ['Perú','Argentina','Bolivia','Brasil','Canadá','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Estados Unidos','Francia','Alemania','Italia','México','Países Bajos','Panamá','Paraguay','Reino Unido','Uruguay','Venezuela','Afganistán','Albania','Andorra','Angola','Antigua y Barbuda','Arabia Saudita','Argelia','Armenia','Australia','Austria','Azerbaiyán','Bahamas','Bangladés','Barbados','Bélgica','Belice','Benín','Bielorrusia','Bosnia y Herzegovina','Botsuana','Brunéi','Bulgaria','Burkina Faso','Burundi','Bután','Cabo Verde','Camboya','Camerún','Catar','Chad','China','Chipre','Ciudad del Vaticano','Comoras','Congo','Corea del Norte','Corea del Sur','Costa de Marfil','Croacia','Dinamarca','Dominica','Egipto','Emiratos Árabes Unidos','Eslovaquia','Eslovenia','Estonia','Etiopía','Filipinas','Finlandia','Fiyi','Gabón','Gambia','Georgia','Ghana','Granada','Grecia','Guatemala','Guinea','Guinea-Bisáu','Guinea Ecuatorial','Guyana','Haití','Honduras','Hungría','India','Indonesia','Irak','Irán','Irlanda','Islandia','Israel','Jamaica','Japón','Jordania','Kazajistán','Kenia','Kirguistán','Kiribati','Kuwait','Laos','Lesoto','Letonia','Líbano','Liberia','Libia','Liechtenstein','Lituania','Luxemburgo','Macedonia del Norte','Madagascar','Malasia','Malaui','Maldivas','Malí','Malta','Marruecos','Mauricio','Mauritania','Micronesia','Moldavia','Mónaco','Mongolia','Montenegro','Mozambique','Myanmar','Namibia','Nauru','Nepal','Nicaragua','Níger','Nigeria','Noruega','Nueva Zelanda','Omán','Pakistán','Palaos','Palestina','Papúa Nueva Guinea','Polonia','Portugal','República Centroafricana','República Checa','República Democrática del Congo','República Dominicana','Ruanda','Rumanía','Rusia','Samoa','San Cristóbal y Nieves','San Marino','San Vicente y las Granadinas','Santa Lucía','Santo Tomé y Príncipe','Senegal','Serbia','Seychelles','Sierra Leona','Singapur','Siria','Somalia','Sri Lanka','Suazilandia','Sudáfrica','Sudán','Sudán del Sur','Suecia','Suiza','Surinam','Tailandia','Tanzania','Tayikistán','Timor Oriental','Togo','Tonga','Trinidad y Tobago','Túnez','Turkmenistán','Turquía','Tuvalu','Ucrania','Uganda','Uzbekistán','Vanuatu','Vietnam','Yemen','Yibuti','Zambia','Zimbabue'];
+  const PHONE_CODES = [
+    ['+51','PE'], ['+1','US/CA'], ['+54','AR'], ['+591','BO'], ['+55','BR'], ['+56','CL'], ['+57','CO'], ['+506','CR'], ['+593','EC'], ['+503','SV'], ['+34','ES'], ['+52','MX'], ['+507','PA'], ['+595','PY'], ['+44','UK'], ['+598','UY'], ['+58','VE'], ['+33','FR'], ['+49','DE'], ['+39','IT'], ['+31','NL'], ['+81','JP'], ['+86','CN'], ['+61','AU']
+  ];
+  const countryOptions = (selected = 'Perú') => COUNTRIES.map((country) => `<option value="${escapeHtml(country)}" ${country === selected ? 'selected' : ''}>${escapeHtml(country)}</option>`).join('');
+  const phoneOptions = (selected = '+51') => PHONE_CODES.map(([code, label]) => `<option value="${escapeHtml(code)}" ${code === selected ? 'selected' : ''}>${escapeHtml(code)} · ${escapeHtml(label)}</option>`).join('');
+
   function localNoon(value) { return value ? new Date(`${value}T12:00:00`) : new Date(); }
   function isoDate(date) {
     const y = date.getFullYear();
@@ -191,15 +198,17 @@
     state.calendarMonth = month;
 
     content.innerHTML = `
-      <section class="hotel-detail">
-        <div id="hotelGalleryMount" class="hotel-detail__gallery"></div>
-        <div class="hotel-detail__info">
+      <section class="hotel-detail hotel-detail--balanced">
+        <div class="hotel-detail__left">
+          <div id="hotelGalleryMount" class="hotel-detail__gallery"></div>
           <div class="hotel-title-block">
             <h2 id="hotelDetailTitle">${escapeHtml(hotel.hotelName)}</h2>
             <div class="hotel-detail__meta">${hotel.stars ? '★'.repeat(Number(hotel.stars)) : 'Hotel'} · ${escapeHtml(hotel.address || hotel.location || '')}</div>
           </div>
-          <p>${escapeHtml(hotel.summary || '')}</p>
+          <p class="hotel-detail__summary">${escapeHtml(hotel.summary || '')}</p>
           <div class="hotel-detail__features">${features.map((item) => `<span>${escapeHtml(String(item).replace(/^Desayuno:\s*/i, ''))}</span>`).join('')}</div>
+        </div>
+        <div class="hotel-detail__right">
           <div class="hotel-reservation-box">
             <h3>Detalles de tu reserva</h3>
             <input id="hotelCheckin" type="hidden" value="${tomorrow}">
@@ -428,25 +437,36 @@
         ${currency !== 'USD' ? '<small>Esta habitación está publicada en otra moneda. Para PayPal en producción conviene manejar el monto final en USD.</small>' : ''}
       </div>
       <div class="hotel-booking-holder">
-        <div class="hotel-holder-grid">
-          <label>Nombres <input id="hotelGuestNames" type="text" autocomplete="given-name" required></label>
-          <label>Apellidos <input id="hotelGuestLastnames" type="text" autocomplete="family-name" required></label>
+        <div class="hotel-holder-section-title">Datos del titular de reserva</div>
+        <div class="hotel-holder-grid hotel-holder-grid--premium">
+          <label>Nombres <input id="hotelGuestNames" type="text" placeholder="Nombres" autocomplete="given-name" required></label>
+          <label>Apellidos <input id="hotelGuestLastnames" type="text" placeholder="Apellidos" autocomplete="family-name" required></label>
+          <label>Nacionalidad
+            <select id="hotelGuestNationality" required>
+              <option value="">Seleccionar nacionalidad</option>
+              ${countryOptions('Perú')}
+            </select>
+          </label>
           <label>Tipo de documento
             <select id="hotelGuestDocType" required>
-              <option value="">Seleccionar</option>
+              <option value="">Tipo de documento</option>
               <option value="DNI">DNI</option>
               <option value="Pasaporte">Pasaporte</option>
               <option value="Carnet de extranjería">Carnet de extranjería</option>
               <option value="Otro">Otro</option>
             </select>
           </label>
-          <label>Número de documento <input id="hotelGuestDocNumber" type="text" required></label>
-          <label>Nacionalidad <input id="hotelGuestNationality" type="text" required></label>
-          <label>Celular / WhatsApp <input id="hotelGuestPhone" type="tel" required></label>
-          <label>Correo <input id="hotelGuestEmail" type="email" required></label>
+          <label>Número de documento <input id="hotelGuestDocNumber" type="text" placeholder="Número de documento" required></label>
+          <label class="hotel-phone-field">Celular / WhatsApp
+            <span>
+              <select id="hotelGuestPhoneCode" required>${phoneOptions('+51')}</select>
+              <input id="hotelGuestPhone" type="tel" placeholder="Número" autocomplete="tel" required>
+            </span>
+          </label>
+          <label class="hotel-email-field">Correo <input id="hotelGuestEmail" type="email" placeholder="Correo" autocomplete="email" required></label>
         </div>
       </div>
-      <div class="hotel-paypal-lock" id="hotelPaypalLock"><i class="fa-solid fa-lock"></i> Completa los datos del titular para activar PayPal o tarjeta.</div>
+      <div class="hotel-paypal-lock" id="hotelPaypalLock"><i class="fa-solid fa-lock"></i> Completa los datos del titular de reserva para continuar al pago.</div>
       <div id="hotelPaypalButtons" class="hotel-paypal-buttons" hidden></div>`;
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     updatePaypalState();
@@ -458,7 +478,8 @@
       lastnames: $('#hotelGuestLastnames')?.value.trim(),
       documentType: $('#hotelGuestDocType')?.value,
       documentNumber: $('#hotelGuestDocNumber')?.value.trim(),
-      nationality: $('#hotelGuestNationality')?.value.trim(),
+      nationality: $('#hotelGuestNationality')?.value,
+      phoneCode: $('#hotelGuestPhoneCode')?.value,
       phone: $('#hotelGuestPhone')?.value.trim(),
       email: $('#hotelGuestEmail')?.value.trim(),
     };
