@@ -6,6 +6,8 @@
     activeHotel: null,
     activeSearch: null,
     activeRoom: null,
+    activeGuest: null,
+    galleryIndex: 0,
     paypalRenderedFor: null,
   };
 
@@ -68,6 +70,13 @@
       const capacity = Number(room.capacity || maxAdults + maxChildren || 99);
       return Number(adults || 1) <= maxAdults && Number(children || 0) <= maxChildren && total <= capacity;
     });
+  }
+
+  function getHotelGallery(hotel) {
+    const images = [];
+    if (hotel?.images?.cover) images.push(hotel.images.cover);
+    if (Array.isArray(hotel?.images?.gallery)) images.push(...hotel.images.gallery);
+    return [...new Set(images.filter(Boolean))];
   }
 
   async function init() {
@@ -144,19 +153,45 @@
       </article>`;
   }
 
+  function renderGallery() {
+    const hotel = state.activeHotel;
+    const mount = $('#hotelGalleryMount');
+    if (!hotel || !mount) return;
+    const gallery = getHotelGallery(hotel);
+    const safeIndex = Math.max(0, Math.min(state.galleryIndex, gallery.length - 1));
+    state.galleryIndex = safeIndex;
+    const current = asset(gallery[safeIndex] || hotel.images?.cover);
+    mount.innerHTML = `
+      <img src="${escapeHtml(current)}" alt="${escapeHtml(hotel.hotelName)}">
+      ${gallery.length > 1 ? `
+        <button type="button" class="hotel-gallery-btn hotel-gallery-btn--prev" data-hotel-gallery="prev" aria-label="Imagen anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <button type="button" class="hotel-gallery-btn hotel-gallery-btn--next" data-hotel-gallery="next" aria-label="Imagen siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+        <span class="hotel-gallery-counter">${safeIndex + 1} / ${gallery.length}</span>` : ''}`;
+  }
+
+  function moveGallery(direction) {
+    const gallery = getHotelGallery(state.activeHotel);
+    if (!gallery.length) return;
+    state.galleryIndex = direction === 'next'
+      ? (state.galleryIndex + 1) % gallery.length
+      : (state.galleryIndex - 1 + gallery.length) % gallery.length;
+    renderGallery();
+  }
+
   function openHotel(hotelCode) {
     const hotel = state.hotels.find((item) => item.hotelCode === hotelCode);
     if (!hotel) return;
     state.activeHotel = hotel;
     state.activeSearch = null;
     state.activeRoom = null;
+    state.activeGuest = null;
+    state.galleryIndex = 0;
     state.paypalRenderedFor = null;
 
     const modal = $('#hotelDetailModal');
     const content = $('#hotelDetailContent');
     if (!modal || !content) return;
 
-    const cover = asset(hotel.images?.cover || hotel.images?.gallery?.[0]);
     const features = [hotel.amenities?.breakfast, hotel.amenities?.checkin, hotel.amenities?.checkout, ...(hotel.features || [])]
       .filter(Boolean).slice(0, 9);
     const tomorrow = addDays('', 1);
@@ -164,15 +199,12 @@
 
     content.innerHTML = `
       <section class="hotel-detail">
-        <div class="hotel-detail__gallery"><img src="${escapeHtml(cover)}" alt="${escapeHtml(hotel.hotelName)}"></div>
+        <div id="hotelGalleryMount" class="hotel-detail__gallery"></div>
         <div class="hotel-detail__info">
-          <div class="hotel-modal-titlebar">
-            <div>
-              <span>Detalles de la reserva de hotel</span>
-              <h2 id="hotelDetailTitle">${escapeHtml(hotel.hotelName)}</h2>
-            </div>
+          <div class="hotel-title-block">
+            <h2 id="hotelDetailTitle">${escapeHtml(hotel.hotelName)}</h2>
+            <div class="hotel-detail__meta">${hotel.stars ? '★'.repeat(Number(hotel.stars)) : 'Hotel'} · ${escapeHtml(hotel.address || hotel.location || '')}</div>
           </div>
-          <div class="hotel-detail__meta">${hotel.stars ? '★'.repeat(Number(hotel.stars)) : 'Hotel'} · ${escapeHtml(hotel.address || hotel.location || '')}</div>
           <p>${escapeHtml(hotel.summary || '')}</p>
           <div class="hotel-detail__features">${features.map((item) => `<span>${escapeHtml(String(item).replace(/^Desayuno:\s*/i, ''))}</span>`).join('')}</div>
           <div class="hotel-reservation-box">
@@ -193,6 +225,7 @@
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
     bindDateRules();
+    renderGallery();
   }
 
   function bindDateRules() {
@@ -229,6 +262,7 @@
     const rooms = compatibleRooms(hotel, adults, children);
     state.activeSearch = { checkin, checkout, adults, children, nights };
     state.activeRoom = null;
+    state.activeGuest = null;
     state.paypalRenderedFor = null;
     if (payment) {
       payment.hidden = true;
@@ -274,6 +308,8 @@
     const panel = $('#hotelPaymentPanel');
     if (!hotel || !search || !room || !panel) return;
     state.activeRoom = room;
+    state.activeGuest = null;
+    state.paypalRenderedFor = null;
     const price = getRoomPrice(room);
     const total = Number(price.amount || 0) * Number(search.nights || 1);
     const currency = price.currency || 'USD';
@@ -281,27 +317,75 @@
     panel.hidden = false;
     panel.innerHTML = `
       <div class="hotel-payment-summary">
-        <strong>Confirmar pago de reserva</strong>
+        <strong>Confirmar datos del titular</strong>
         <span>${escapeHtml(hotel.hotelName)} · ${escapeHtml(room.label || room.roomType)}</span>
         <b>${money(total, currency)} por ${search.nights} noche(s)</b>
-        ${currency !== 'USD' ? '<small>PayPal procesa el cobro en USD. Ajusta el precio publicado a USD antes de activar producción.</small>' : ''}
+        ${currency !== 'USD' ? '<small>PayPal procesa pagos en USD. Conviene publicar esta habitación en USD antes de producción.</small>' : ''}
       </div>
-      <div id="hotelPaypalButtons" class="hotel-paypal-buttons"></div>
-      <p class="hotel-payment-note">Para guardar la orden automáticamente en Google Sheet, configura la URL de Apps Script en <code>MCT_HOTEL_APPS_SCRIPT_URL</code>.</p>`;
+      <div class="hotel-booking-holder">
+        <h4>Datos del titular de la reserva</h4>
+        <div class="hotel-holder-grid">
+          <label>Nombres <input id="hotelGuestNames" type="text" autocomplete="given-name" required></label>
+          <label>Apellidos <input id="hotelGuestLastnames" type="text" autocomplete="family-name" required></label>
+          <label>Tipo de documento
+            <select id="hotelGuestDocType" required>
+              <option value="">Seleccionar</option>
+              <option value="DNI">DNI</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Carnet de extranjería">Carnet de extranjería</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </label>
+          <label>Número de documento <input id="hotelGuestDocNumber" type="text" required></label>
+          <label>Nacionalidad <input id="hotelGuestNationality" type="text" required></label>
+          <label>Celular / WhatsApp <input id="hotelGuestPhone" type="tel" required></label>
+          <label>Correo <input id="hotelGuestEmail" type="email" required></label>
+        </div>
+        <button type="button" class="hotel-continue-pay-btn" id="hotelContinueToPayBtn">Continuar con PayPal</button>
+      </div>
+      <div id="hotelPaypalButtons" class="hotel-paypal-buttons" hidden></div>`;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
-    setTimeout(() => renderPayPalButtons(total, currency), 50);
+  function readGuestData() {
+    const fields = {
+      names: $('#hotelGuestNames')?.value.trim(),
+      lastnames: $('#hotelGuestLastnames')?.value.trim(),
+      documentType: $('#hotelGuestDocType')?.value,
+      documentNumber: $('#hotelGuestDocNumber')?.value.trim(),
+      nationality: $('#hotelGuestNationality')?.value.trim(),
+      phone: $('#hotelGuestPhone')?.value.trim(),
+      email: $('#hotelGuestEmail')?.value.trim(),
+    };
+    const missing = Object.entries(fields).filter(([, value]) => !value).map(([key]) => key);
+    if (missing.length) return null;
+    return fields;
+  }
+
+  function continueToPay() {
+    const guest = readGuestData();
+    const container = $('#hotelPaypalButtons');
+    if (!guest) {
+      alert('Completa los datos del titular de la reserva antes de continuar con PayPal.');
+      return;
+    }
+    state.activeGuest = guest;
+    if (container) container.hidden = false;
+    const price = getRoomPrice(state.activeRoom);
+    const total = Number(price.amount || 0) * Number(state.activeSearch?.nights || 1);
+    renderPayPalButtons(total, price.currency || 'USD');
   }
 
   function renderPayPalButtons(total, currency) {
     const container = $('#hotelPaypalButtons');
     if (!container) return;
-    const orderKey = `${state.activeHotel?.hotelCode}-${state.activeRoom?.roomType}-${state.activeSearch?.checkin}-${state.activeSearch?.checkout}`;
+    const orderKey = `${state.activeHotel?.hotelCode}-${state.activeRoom?.roomType}-${state.activeSearch?.checkin}-${state.activeSearch?.checkout}-${state.activeGuest?.email || ''}`;
     if (state.paypalRenderedFor === orderKey) return;
     container.innerHTML = '';
     state.paypalRenderedFor = orderKey;
 
     if (!window.paypal || currency !== 'USD') {
-      const amount = currency === 'USD' ? Number(total || 0).toFixed(2) : Number(total || 0).toFixed(2);
+      const amount = Number(total || 0).toFixed(2);
       container.innerHTML = `<button type="button" class="hotel-paypal-fallback" id="hotelManualPaymentBtn">Continuar con pago ${money(amount, currency)}</button>`;
       return;
     }
@@ -328,7 +412,6 @@
 
   async function saveHotelOrder(paypalDetails = null) {
     const url = window.MCT_HOTEL_APPS_SCRIPT_URL || '';
-    if (!url) return;
     const price = getRoomPrice(state.activeRoom);
     const payload = {
       type: 'hotel_reservation',
@@ -343,16 +426,20 @@
       nights: state.activeSearch?.nights,
       adults: state.activeSearch?.adults,
       children: state.activeSearch?.children,
+      guest: state.activeGuest || {},
       currency: price.currency,
       amount: Number(price.amount || 0) * Number(state.activeSearch?.nights || 1),
       paypalOrderId: paypalDetails?.id || '',
       paypalStatus: paypalDetails?.status || '',
+      rawPayPal: paypalDetails || null,
     };
+    if (!url) return payload;
     try {
       await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
     } catch (error) {
       console.warn('No se pudo guardar la orden de hotel en Apps Script:', error);
     }
+    return payload;
   }
 
   function closeHotel() {
@@ -362,6 +449,7 @@
     state.activeHotel = null;
     state.activeSearch = null;
     state.activeRoom = null;
+    state.activeGuest = null;
   }
 
   function bindEvents() {
@@ -370,9 +458,12 @@
     document.addEventListener('click', (event) => {
       const hotelBtn = event.target.closest('[data-view-hotel]');
       if (hotelBtn) openHotel(hotelBtn.dataset.viewHotel);
+      const galleryBtn = event.target.closest('[data-hotel-gallery]');
+      if (galleryBtn) moveGallery(galleryBtn.dataset.hotelGallery);
       if (event.target.closest('[data-close-hotel-modal]')) closeHotel();
       if (event.target.closest('#hotelSearchAvailabilityBtn')) showAvailability();
       if (event.target.closest('#hotelStartBookingBtn')) startBooking();
+      if (event.target.closest('#hotelContinueToPayBtn')) continueToPay();
       if (event.target.closest('#hotelManualPaymentBtn')) saveHotelOrder({ id: 'manual_pending', status: 'PENDING_PAYMENT' });
     });
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeHotel(); });

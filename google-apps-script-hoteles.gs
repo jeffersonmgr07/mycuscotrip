@@ -8,6 +8,7 @@ const HOTEL_SHEET_NAME = 'Hotel Orders';
 function doPost(e) {
   try {
     const payload = JSON.parse(e.postData && e.postData.contents ? e.postData.contents : '{}');
+    const guest = payload.guest || {};
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getOrCreateHotelSheet_(ss);
     sheet.appendRow([
@@ -23,6 +24,13 @@ function doPost(e) {
       payload.nights || '',
       payload.adults || '',
       payload.children || '',
+      guest.names || '',
+      guest.lastnames || '',
+      guest.documentType || '',
+      guest.documentNumber || '',
+      guest.nationality || '',
+      guest.phone || '',
+      guest.email || '',
       payload.currency || '',
       payload.amount || '',
       payload.paypalOrderId || '',
@@ -45,8 +53,9 @@ function getOrCreateHotelSheet_(ss) {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow([
       'Created At', 'Type', 'Hotel Code', 'Hotel Name', 'Destination', 'Room Type', 'Room Label',
-      'Check-in', 'Check-out', 'Nights', 'Adults', 'Children', 'Currency', 'Amount',
-      'PayPal Order ID', 'PayPal Status', 'Raw JSON'
+      'Check-in', 'Check-out', 'Nights', 'Adults', 'Children',
+      'Guest Names', 'Guest Lastnames', 'Document Type', 'Document Number', 'Nationality', 'Phone', 'Email',
+      'Currency', 'Amount', 'PayPal Order ID', 'PayPal Status', 'Raw JSON'
     ]);
   }
   return sheet;

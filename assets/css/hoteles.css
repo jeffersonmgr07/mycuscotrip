@@ -1,6 +1,7 @@
 :root {
-  --hotel-green: #0a3a26;
-  --hotel-green-2: #13824f;
+  --hotel-green: #062803;
+  --hotel-green-rgb: 6, 40, 3;
+  --hotel-green-2: #1f7a45;
   --hotel-gold: #ddb04f;
   --hotel-soft: #f4faf6;
   --hotel-border: rgba(10, 58, 38, 0.12);
@@ -14,7 +15,7 @@
 
 .hotels-hero {
   padding: 138px 0 60px;
-  background: linear-gradient(135deg, rgba(10, 58, 38, 0.95), rgba(19, 130, 79, 0.88)), url('./../img/quote/fallbacks/valle-sagrado.jpg') center/cover;
+  background: linear-gradient(rgba(6, 40, 3, 0.78), rgba(6, 40, 3, 0.78)), url('./../img/quote/fallbacks/valle-sagrado.jpg') center/cover;
   color: #fff;
 }
 
@@ -340,5 +341,175 @@
   }
   .hotel-room-option em {
     text-align: left;
+  }
+}
+
+
+/* V37 hotel detail modal refinements */
+.hotel-detail-modal__dialog {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hotel-detail-modal__head {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 22px;
+  background: var(--hotel-green);
+  color: #fff;
+}
+.hotel-detail-modal__head h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 950;
+  letter-spacing: .01em;
+}
+.hotel-detail-modal__close {
+  position: static;
+  float: none;
+  flex: 0 0 auto;
+  margin: 0;
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  box-shadow: none;
+  border: 1px solid rgba(255,255,255,.22);
+}
+#hotelDetailContent {
+  overflow: auto;
+}
+.hotel-detail__gallery {
+  position: relative;
+  min-height: auto;
+  height: 520px;
+  overflow: hidden;
+}
+.hotel-detail__gallery img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+}
+.hotel-gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.88);
+  color: var(--hotel-green);
+  box-shadow: 0 10px 26px rgba(0,0,0,.2);
+  cursor: pointer;
+}
+.hotel-gallery-btn--prev { left: 12px; }
+.hotel-gallery-btn--next { right: 12px; }
+.hotel-gallery-counter {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(6,40,3,.78);
+  color: #fff;
+  font-weight: 900;
+  font-size: .74rem;
+}
+.hotel-title-block {
+  padding: 2px 0 0;
+  background: #fff;
+}
+.hotel-title-block h2 {
+  color: var(--hotel-green);
+  margin: 0 0 4px;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  line-height: 1.08;
+}
+.hotel-detail__meta {
+  margin-top: 0;
+  line-height: 1.3;
+}
+.hotel-booking-holder {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--hotel-border);
+}
+.hotel-booking-holder h4 {
+  margin: 0;
+  color: var(--hotel-green);
+  font-size: .96rem;
+}
+.hotel-holder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+}
+.hotel-booking-holder label {
+  display: grid;
+  gap: 5px;
+  font-size: .78rem;
+  color: var(--hotel-muted);
+  font-weight: 900;
+}
+.hotel-booking-holder input,
+.hotel-booking-holder select {
+  min-height: 42px;
+  border: 1px solid var(--hotel-border);
+  border-radius: 12px;
+  padding: 0 12px;
+  color: var(--hotel-green);
+  font-weight: 850;
+  background: #fff;
+}
+.hotel-continue-pay-btn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  background: var(--hotel-green-2);
+  color: #fff;
+  font-weight: 950;
+  cursor: pointer;
+}
+.hotel-payment-note { display: none !important; }
+.hotel-card button,
+.hotel-book-btn,
+.hotel-search-availability-btn,
+.hotel-paypal-fallback,
+.hotel-continue-pay-btn {
+  background: var(--hotel-green-2);
+}
+@media (max-width: 900px) {
+  .hotel-detail__gallery {
+    height: 320px;
+  }
+  .hotel-detail__gallery img {
+    min-height: 0;
+    max-height: none;
+  }
+}
+@media (max-width: 620px) {
+  .hotel-detail-modal__head {
+    padding: 13px 16px;
+  }
+  .hotel-detail__gallery {
+    height: 245px;
+  }
+  .hotel-holder-grid {
+    grid-template-columns: 1fr;
   }
 }
