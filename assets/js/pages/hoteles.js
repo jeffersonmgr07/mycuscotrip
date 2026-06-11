@@ -266,7 +266,8 @@
       const inRange = checkin && checkout && iso > checkin && iso < checkout;
       const isStart = iso === checkin;
       const isEnd = iso === checkout;
-      cells.push(`<button type="button" data-hotel-date="${iso}" class="hotel-calendar-day ${inRange ? 'is-in-range' : ''} ${isStart ? 'is-start' : ''} ${isEnd ? 'is-end' : ''}" ${disabled ? 'disabled' : ''}>${day}</button>`);
+      const isPendingStart = isStart && !checkout;
+      cells.push(`<button type="button" data-hotel-date="${iso}" class="hotel-calendar-day ${inRange ? 'is-in-range' : ''} ${isStart ? 'is-start' : ''} ${isEnd ? 'is-end' : ''} ${isPendingStart ? 'is-pending-start' : ''}" ${disabled ? 'disabled' : ''}>${day}</button>`);
     }
     mount.innerHTML = `
       <div class="hotel-calendar-head">
@@ -295,6 +296,7 @@
     if (!checkinInput || !checkoutInput) return;
     const currentIn = checkinInput.value;
     const currentOut = checkoutInput.value;
+    // UX: el primer clic de un nuevo rango debe marcarse inmediatamente como entrada activa.
     if (!currentIn || (currentIn && currentOut) || dateIso <= currentIn) {
       checkinInput.value = dateIso;
       checkoutInput.value = '';
@@ -316,6 +318,14 @@
     const pay = $('#hotelPaymentPanel');
     if (rooms) { rooms.hidden = true; rooms.innerHTML = ''; }
     if (pay) { pay.hidden = true; pay.innerHTML = ''; }
+  }
+
+  function scrollHotelPanelIntoView(selector, block = 'start') {
+    const target = typeof selector === 'string' ? document.querySelector(selector) : selector;
+    if (!target) return;
+    window.setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block });
+    }, 80);
   }
 
   function buildAccommodationOptions(hotel, adults, children) {
@@ -375,6 +385,7 @@
     if (!checkin || !checkout || checkout <= checkin) {
       panel.hidden = false;
       panel.innerHTML = '<p class="hotel-inline-alert">Selecciona entrada y salida en el calendario. La salida debe ser posterior a la entrada.</p>';
+      scrollHotelPanelIntoView(panel);
       return;
     }
 
@@ -390,6 +401,7 @@
     panel.hidden = false;
     if (!options.length) {
       panel.innerHTML = '<p class="hotel-inline-alert">No hay acomodaciones exactas para esta cantidad de pasajeros. Ajusta adultos/niños o solicita una configuración manual.</p>';
+      scrollHotelPanelIntoView(panel);
       return;
     }
 
@@ -399,6 +411,7 @@
         <small>${nights} noche${nights === 1 ? '' : 's'} · ${adults} adulto${adults === 1 ? '' : 's'}${children ? ` · ${children} niño${children === 1 ? '' : 's'}` : ''}</small>
       </div>
       <div class="hotel-room-list">${options.map((option, idx) => renderRoomOption(option, idx, nights)).join('')}</div>`;
+    scrollHotelPanelIntoView(panel);
   }
 
   function renderRoomOption(option, idx, nights) {
@@ -441,13 +454,7 @@
         <div class="hotel-holder-grid hotel-holder-grid--premium">
           <label>Nombres <input id="hotelGuestNames" type="text" placeholder="Nombres" autocomplete="given-name" required></label>
           <label>Apellidos <input id="hotelGuestLastnames" type="text" placeholder="Apellidos" autocomplete="family-name" required></label>
-          <label>Nacionalidad
-            <select id="hotelGuestNationality" required>
-              <option value="">Seleccionar nacionalidad</option>
-              ${countryOptions('Perú')}
-            </select>
-          </label>
-          <label>Tipo de documento
+          <label class="hotel-doc-type-field">Tipo de documento
             <select id="hotelGuestDocType" required>
               <option value="">Tipo de documento</option>
               <option value="DNI">DNI</option>
@@ -456,7 +463,13 @@
               <option value="Otro">Otro</option>
             </select>
           </label>
-          <label>Número de documento <input id="hotelGuestDocNumber" type="text" placeholder="Número de documento" required></label>
+          <label class="hotel-doc-number-field">Número de documento <input id="hotelGuestDocNumber" type="text" placeholder="Número de documento" required></label>
+          <label class="hotel-nationality-field">Nacionalidad
+            <select id="hotelGuestNationality" required>
+              <option value="">Seleccionar nacionalidad</option>
+              ${countryOptions('Perú')}
+            </select>
+          </label>
           <label class="hotel-phone-field">Celular / WhatsApp
             <span>
               <select id="hotelGuestPhoneCode" required>${phoneOptions('+51')}</select>
@@ -468,7 +481,7 @@
       </div>
       <div class="hotel-paypal-lock" id="hotelPaypalLock"><i class="fa-solid fa-lock"></i> Completa los datos del titular de reserva para continuar al pago.</div>
       <div id="hotelPaypalButtons" class="hotel-paypal-buttons" hidden></div>`;
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    scrollHotelPanelIntoView(panel);
     updatePaypalState();
   }
 
