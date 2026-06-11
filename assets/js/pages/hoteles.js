@@ -7,11 +7,14 @@
     activeSearch: null,
     activeRoom: null,
     activeGuest: null,
+    accommodations: [],
     galleryIndex: 0,
+    calendarMonth: null,
     paypalRenderedFor: null,
   };
 
   const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => Array.from(document.querySelectorAll(selector));
   const money = (amount, currency = 'USD') => `${currency === 'PEN' ? 'S/' : '$'} ${Number(amount || 0).toFixed(2)}`;
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
   const asset = (path) => String(path || './assets/img/placeholder/experience.jpg').replace(/^\.\//, './');
@@ -27,25 +30,30 @@
     { value: 'uyuni', label: 'Uyuni', keys: ['uyuni'] },
   ];
 
+  const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+
+  function localNoon(value) { return value ? new Date(`${value}T12:00:00`) : new Date(); }
   function isoDate(date) {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
   }
-
   function addDays(value, days) {
-    const date = value ? new Date(`${value}T12:00:00`) : new Date();
+    const date = value ? localNoon(value) : new Date();
     date.setDate(date.getDate() + days);
     return isoDate(date);
   }
-
   function nightsBetween(checkin, checkout) {
-    if (!checkin || !checkout) return 1;
-    const start = new Date(`${checkin}T12:00:00`);
-    const end = new Date(`${checkout}T12:00:00`);
-    const diff = Math.round((end - start) / 86400000);
-    return Math.max(1, diff || 1);
+    if (!checkin || !checkout) return 0;
+    const diff = Math.round((localNoon(checkout) - localNoon(checkin)) / 86400000);
+    return Math.max(0, diff || 0);
+  }
+  function formatHumanDate(value) {
+    if (!value) return 'Seleccionar';
+    const date = localNoon(value);
+    return date.toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
   }
 
   function getRoomPrice(room) {
@@ -56,22 +64,9 @@
       room.netCost ||
       { currency: 'USD', amount: 0 };
   }
-
   function getLowestRoom(hotel) {
-    return [...(hotel.rooms || [])]
-      .sort((a, b) => Number(getRoomPrice(a).amount || 0) - Number(getRoomPrice(b).amount || 0))[0];
+    return [...(hotel.rooms || [])].sort((a, b) => Number(getRoomPrice(a).amount || 0) - Number(getRoomPrice(b).amount || 0))[0];
   }
-
-  function compatibleRooms(hotel, adults, children) {
-    const total = Number(adults || 1) + Number(children || 0);
-    return (hotel.rooms || []).filter((room) => {
-      const maxAdults = Number(room.maxAdults || room.capacity || 99);
-      const maxChildren = Number(room.maxChildren ?? 99);
-      const capacity = Number(room.capacity || maxAdults + maxChildren || 99);
-      return Number(adults || 1) <= maxAdults && Number(children || 0) <= maxChildren && total <= capacity;
-    });
-  }
-
   function getHotelGallery(hotel) {
     const images = [];
     if (hotel?.images?.cover) images.push(hotel.images.cover);
@@ -106,7 +101,6 @@
     if (!select) return;
     select.innerHTML = VISIBLE_DESTINATIONS.map((item) => `<option value="${escapeHtml(item.value)}">${escapeHtml(item.label)}</option>`).join('');
   }
-
   function getFilteredHotels() {
     const dest = $('#hotelDestinationFilter')?.value || 'all';
     const selected = VISIBLE_DESTINATIONS.find((item) => item.value === dest);
@@ -120,7 +114,6 @@
         .filter(Boolean).join(' ').toLowerCase().includes(query);
     });
   }
-
   function renderHotels() {
     const grid = $('#hotelsGrid');
     const count = $('#hotelCountLabel');
@@ -129,7 +122,6 @@
     if (count) count.textContent = `${hotels.length} hotel(es) encontrados`;
     grid.innerHTML = hotels.map(renderHotelCard).join('') || '<div class="hotel-card"><div class="hotel-card__body"><h3>No hay hoteles para este filtro</h3><p>Prueba con otro destino o búsqueda.</p></div></div>';
   }
-
   function renderHotelCard(hotel) {
     const cover = asset(hotel.images?.cover || hotel.images?.gallery?.[0]);
     const room = getLowestRoom(hotel);
@@ -168,13 +160,10 @@
         <button type="button" class="hotel-gallery-btn hotel-gallery-btn--next" data-hotel-gallery="next" aria-label="Imagen siguiente"><i class="fa-solid fa-chevron-right"></i></button>
         <span class="hotel-gallery-counter">${safeIndex + 1} / ${gallery.length}</span>` : ''}`;
   }
-
   function moveGallery(direction) {
     const gallery = getHotelGallery(state.activeHotel);
     if (!gallery.length) return;
-    state.galleryIndex = direction === 'next'
-      ? (state.galleryIndex + 1) % gallery.length
-      : (state.galleryIndex - 1 + gallery.length) % gallery.length;
+    state.galleryIndex = direction === 'next' ? (state.galleryIndex + 1) % gallery.length : (state.galleryIndex - 1 + gallery.length) % gallery.length;
     renderGallery();
   }
 
@@ -185,6 +174,7 @@
     state.activeSearch = null;
     state.activeRoom = null;
     state.activeGuest = null;
+    state.accommodations = [];
     state.galleryIndex = 0;
     state.paypalRenderedFor = null;
 
@@ -196,6 +186,9 @@
       .filter(Boolean).slice(0, 9);
     const tomorrow = addDays('', 1);
     const dayAfter = addDays(tomorrow, 1);
+    const month = localNoon(tomorrow);
+    month.setDate(1);
+    state.calendarMonth = month;
 
     content.innerHTML = `
       <section class="hotel-detail">
@@ -209,11 +202,13 @@
           <div class="hotel-detail__features">${features.map((item) => `<span>${escapeHtml(String(item).replace(/^Desayuno:\s*/i, ''))}</span>`).join('')}</div>
           <div class="hotel-reservation-box">
             <h3>Detalles de tu reserva</h3>
-            <div class="hotel-reservation-grid">
-              <label>Entrada <input id="hotelCheckin" type="date" min="${tomorrow}" value="${tomorrow}"></label>
-              <label>Salida <input id="hotelCheckout" type="date" min="${dayAfter}" value="${dayAfter}"></label>
-              <label>Adultos <input id="hotelAdults" type="number" min="1" value="2"></label>
-              <label>Niños <input id="hotelChildren" type="number" min="0" value="0"></label>
+            <input id="hotelCheckin" type="hidden" value="${tomorrow}">
+            <input id="hotelCheckout" type="hidden" value="${dayAfter}">
+            <div class="hotel-date-summary" id="hotelDateSummary"></div>
+            <div id="hotelRangeCalendar" class="hotel-range-calendar"></div>
+            <div class="hotel-reservation-grid hotel-passenger-grid">
+              <label>Adultos <input id="hotelAdults" type="number" min="1" max="12" value="2"></label>
+              <label>Niños <input id="hotelChildren" type="number" min="0" max="8" value="0"></label>
             </div>
             <button type="button" class="hotel-search-availability-btn" id="hotelSearchAvailabilityBtn"><i class="fa-solid fa-magnifying-glass"></i> Ver disponibilidad</button>
             <div id="hotelRoomsPanel" class="hotel-rooms-panel" hidden></div>
@@ -224,21 +219,137 @@
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
-    bindDateRules();
+    renderDateSummary();
+    renderHotelCalendar();
     renderGallery();
   }
 
-  function bindDateRules() {
-    const checkin = $('#hotelCheckin');
-    const checkout = $('#hotelCheckout');
-    if (!checkin || !checkout) return;
-    const syncCheckout = () => {
-      const minCheckout = addDays(checkin.value, 1);
-      checkout.min = minCheckout;
-      if (!checkout.value || checkout.value <= checkin.value) checkout.value = minCheckout;
-    };
-    checkin.addEventListener('change', syncCheckout);
-    syncCheckout();
+  function renderDateSummary() {
+    const checkin = $('#hotelCheckin')?.value;
+    const checkout = $('#hotelCheckout')?.value;
+    const nights = nightsBetween(checkin, checkout);
+    const mount = $('#hotelDateSummary');
+    if (!mount) return;
+    mount.innerHTML = `
+      <div><span>Entrada</span><strong>${formatHumanDate(checkin)}</strong></div>
+      <div><span>Salida</span><strong>${formatHumanDate(checkout)}</strong></div>
+      <div class="hotel-night-count"><span>Estadía</span><strong>${nights} noche${nights === 1 ? '' : 's'} de alojamiento</strong></div>`;
+  }
+
+  function renderHotelCalendar() {
+    const mount = $('#hotelRangeCalendar');
+    if (!mount || !state.calendarMonth) return;
+    const checkin = $('#hotelCheckin')?.value;
+    const checkout = $('#hotelCheckout')?.value;
+    const todayMin = addDays('', 1);
+    const month = new Date(state.calendarMonth.getTime());
+    const year = month.getFullYear();
+    const monthIndex = month.getMonth();
+    const first = new Date(year, monthIndex, 1, 12);
+    const last = new Date(year, monthIndex + 1, 0, 12);
+    const firstWeekday = (first.getDay() + 6) % 7;
+    const cells = [];
+    for (let i = 0; i < firstWeekday; i++) cells.push('<span class="hotel-calendar-empty"></span>');
+    for (let day = 1; day <= last.getDate(); day++) {
+      const date = new Date(year, monthIndex, day, 12);
+      const iso = isoDate(date);
+      const disabled = iso < todayMin;
+      const inRange = checkin && checkout && iso > checkin && iso < checkout;
+      const isStart = iso === checkin;
+      const isEnd = iso === checkout;
+      cells.push(`<button type="button" data-hotel-date="${iso}" class="hotel-calendar-day ${inRange ? 'is-in-range' : ''} ${isStart ? 'is-start' : ''} ${isEnd ? 'is-end' : ''}" ${disabled ? 'disabled' : ''}>${day}</button>`);
+    }
+    mount.innerHTML = `
+      <div class="hotel-calendar-head">
+        <button type="button" data-calendar-nav="prev" aria-label="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <strong>${MONTHS[monthIndex]} ${year}</strong>
+        <button type="button" data-calendar-nav="next" aria-label="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="hotel-calendar-weekdays">${WEEKDAYS.map((d) => `<span>${d}</span>`).join('')}</div>
+      <div class="hotel-calendar-grid">${cells.join('')}</div>
+      <small class="hotel-calendar-help">Elige primero la entrada y luego la salida en el mismo calendario.</small>`;
+  }
+
+  function moveCalendar(direction) {
+    if (!state.calendarMonth) return;
+    state.calendarMonth.setMonth(state.calendarMonth.getMonth() + (direction === 'next' ? 1 : -1));
+    const currentMonthMin = new Date();
+    currentMonthMin.setDate(1);
+    currentMonthMin.setHours(12,0,0,0);
+    if (state.calendarMonth < currentMonthMin) state.calendarMonth = currentMonthMin;
+    renderHotelCalendar();
+  }
+
+  function selectCalendarDate(dateIso) {
+    const checkinInput = $('#hotelCheckin');
+    const checkoutInput = $('#hotelCheckout');
+    if (!checkinInput || !checkoutInput) return;
+    const currentIn = checkinInput.value;
+    const currentOut = checkoutInput.value;
+    if (!currentIn || (currentIn && currentOut) || dateIso <= currentIn) {
+      checkinInput.value = dateIso;
+      checkoutInput.value = '';
+    } else {
+      checkoutInput.value = dateIso;
+    }
+    resetAvailabilityPanels();
+    renderDateSummary();
+    renderHotelCalendar();
+  }
+
+  function resetAvailabilityPanels() {
+    state.activeSearch = null;
+    state.activeRoom = null;
+    state.activeGuest = null;
+    state.accommodations = [];
+    state.paypalRenderedFor = null;
+    const rooms = $('#hotelRoomsPanel');
+    const pay = $('#hotelPaymentPanel');
+    if (rooms) { rooms.hidden = true; rooms.innerHTML = ''; }
+    if (pay) { pay.hidden = true; pay.innerHTML = ''; }
+  }
+
+  function buildAccommodationOptions(hotel, adults, children) {
+    const totalGuests = Math.max(1, Number(adults || 1) + Number(children || 0));
+    const rooms = (hotel.rooms || [])
+      .filter((room) => Number(room.capacity || 0) > 0 && Number(room.capacity || 0) <= totalGuests)
+      .sort((a, b) => Number(a.capacity || 0) - Number(b.capacity || 0) || Number(getRoomPrice(a).amount || 0) - Number(getRoomPrice(b).amount || 0));
+    const results = [];
+    const seen = new Set();
+    const maxRooms = Math.min(totalGuests, 5);
+
+    function addCombo(combo) {
+      const capacity = combo.reduce((sum, room) => sum + Number(room.capacity || 0), 0);
+      if (capacity !== totalGuests) return;
+      const key = combo.map((room) => room.roomType || room.label).sort().join('|');
+      if (seen.has(key)) return;
+      seen.add(key);
+      const currency = getRoomPrice(combo[0]).currency || 'USD';
+      const amount = combo.reduce((sum, room) => sum + Number(getRoomPrice(room).amount || 0), 0);
+      const labelCounts = combo.reduce((acc, room) => {
+        const label = room.label || room.roomType || 'Habitación';
+        acc[label] = (acc[label] || 0) + 1;
+        return acc;
+      }, {});
+      const label = Object.entries(labelCounts).map(([label, qty]) => qty > 1 ? `${qty} × ${label}` : label).join(' + ');
+      const bedType = combo.map((room) => room.bedType).filter(Boolean).join(' · ');
+      results.push({ id: `acc-${results.length}`, rooms: combo, roomType: key, label, bedType, capacity, publishedPricing: { currency, amount } });
+    }
+
+    function search(startIndex, remainingCapacity, combo) {
+      if (remainingCapacity === 0) { addCombo(combo); return; }
+      if (combo.length >= maxRooms) return;
+      for (let i = startIndex; i < rooms.length; i++) {
+        const room = rooms[i];
+        const cap = Number(room.capacity || 0);
+        if (cap <= remainingCapacity) search(i, remainingCapacity - cap, [...combo, room]);
+      }
+    }
+
+    search(0, totalGuests, []);
+    return results
+      .sort((a, b) => a.rooms.length - b.rooms.length || Number(getRoomPrice(a).amount || 0) - Number(getRoomPrice(b).amount || 0))
+      .slice(0, 10);
   }
 
   function showAvailability() {
@@ -246,84 +357,77 @@
     if (!hotel) return;
     const checkin = $('#hotelCheckin')?.value;
     const checkout = $('#hotelCheckout')?.value;
-    const adults = Number($('#hotelAdults')?.value || 1);
-    const children = Number($('#hotelChildren')?.value || 0);
+    const adults = Math.max(1, Number($('#hotelAdults')?.value || 1));
+    const children = Math.max(0, Number($('#hotelChildren')?.value || 0));
     const panel = $('#hotelRoomsPanel');
     const payment = $('#hotelPaymentPanel');
     if (!panel) return;
 
     if (!checkin || !checkout || checkout <= checkin) {
       panel.hidden = false;
-      panel.innerHTML = '<p class="hotel-inline-alert">Selecciona una fecha de salida posterior a la fecha de entrada.</p>';
+      panel.innerHTML = '<p class="hotel-inline-alert">Selecciona entrada y salida en el calendario. La salida debe ser posterior a la entrada.</p>';
       return;
     }
 
     const nights = nightsBetween(checkin, checkout);
-    const rooms = compatibleRooms(hotel, adults, children);
+    const options = buildAccommodationOptions(hotel, adults, children);
     state.activeSearch = { checkin, checkout, adults, children, nights };
     state.activeRoom = null;
     state.activeGuest = null;
+    state.accommodations = options;
     state.paypalRenderedFor = null;
-    if (payment) {
-      payment.hidden = true;
-      payment.innerHTML = '';
-    }
+    if (payment) { payment.hidden = true; payment.innerHTML = ''; }
 
     panel.hidden = false;
-    if (!rooms.length) {
-      panel.innerHTML = '<p class="hotel-inline-alert">No hay acomodaciones compatibles con esta cantidad de pasajeros. Ajusta adultos/niños o solicita ayuda a un asesor.</p>';
+    if (!options.length) {
+      panel.innerHTML = '<p class="hotel-inline-alert">No hay acomodaciones exactas para esta cantidad de pasajeros. Ajusta adultos/niños o solicita una configuración manual.</p>';
       return;
     }
 
     panel.innerHTML = `
       <div class="hotel-rooms-panel__head">
-        <strong>Acomodaciones disponibles</strong>
-        <small>${nights} noche(s) · ${adults} adulto(s)${children ? ` · ${children} niño(s)` : ''}</small>
+        <strong>Elige tu acomodación</strong>
+        <small>${nights} noche${nights === 1 ? '' : 's'} · ${adults} adulto${adults === 1 ? '' : 's'}${children ? ` · ${children} niño${children === 1 ? '' : 's'}` : ''}</small>
       </div>
-      <div class="hotel-room-list">${rooms.map((room, idx) => renderRoomOption(room, idx, nights)).join('')}</div>
-      <button type="button" class="hotel-book-btn" id="hotelStartBookingBtn">Reservar</button>`;
+      <div class="hotel-room-list">${options.map((option, idx) => renderRoomOption(option, idx, nights)).join('')}</div>`;
   }
 
-  function renderRoomOption(room, idx, nights) {
-    const price = getRoomPrice(room);
+  function renderRoomOption(option, idx, nights) {
+    const price = getRoomPrice(option);
     const total = Number(price.amount || 0) * Number(nights || 1);
     return `<label class="hotel-room-option">
-      <input type="radio" name="hotelRoom" value="${escapeHtml(room.roomType || room.label || String(idx))}" ${idx === 0 ? 'checked' : ''}>
-      <span><strong>${escapeHtml(room.label || room.roomType)}</strong><small>${escapeHtml(room.bedType || '')} · Capacidad ${escapeHtml(room.capacity || '')}</small></span>
+      <input type="radio" name="hotelRoom" value="${escapeHtml(option.id)}">
+      <span><strong>${escapeHtml(option.label)}</strong><small>${escapeHtml(option.bedType || '')} · Capacidad ${escapeHtml(option.capacity || '')}</small></span>
       <em>${money(total, price.currency)}<small>${money(price.amount, price.currency)} / noche</small></em>
     </label>`;
   }
 
   function getSelectedRoom() {
-    const hotel = state.activeHotel;
     const selected = document.querySelector('input[name="hotelRoom"]:checked')?.value;
-    if (!hotel || !selected) return null;
-    return (hotel.rooms || []).find((room) => String(room.roomType || room.label) === selected) || (hotel.rooms || [])[0];
+    if (!selected) return null;
+    return state.accommodations.find((item) => item.id === selected) || null;
   }
 
-  function startBooking() {
-    const hotel = state.activeHotel;
-    const search = state.activeSearch;
+  function selectAccommodation() {
     const room = getSelectedRoom();
     const panel = $('#hotelPaymentPanel');
-    if (!hotel || !search || !room || !panel) return;
+    if (!room || !panel || !state.activeSearch || !state.activeHotel) return;
     state.activeRoom = room;
     state.activeGuest = null;
     state.paypalRenderedFor = null;
     const price = getRoomPrice(room);
-    const total = Number(price.amount || 0) * Number(search.nights || 1);
+    const total = Number(price.amount || 0) * Number(state.activeSearch.nights || 1);
     const currency = price.currency || 'USD';
 
     panel.hidden = false;
     panel.innerHTML = `
       <div class="hotel-payment-summary">
-        <strong>Confirmar datos del titular</strong>
-        <span>${escapeHtml(hotel.hotelName)} · ${escapeHtml(room.label || room.roomType)}</span>
-        <b>${money(total, currency)} por ${search.nights} noche(s)</b>
-        ${currency !== 'USD' ? '<small>PayPal procesa pagos en USD. Conviene publicar esta habitación en USD antes de producción.</small>' : ''}
+        <strong>Datos del titular de la reserva</strong>
+        <span>${escapeHtml(state.activeHotel.hotelName)} · ${escapeHtml(room.label)}</span>
+        <b>${money(total, currency)} por ${state.activeSearch.nights} noche${state.activeSearch.nights === 1 ? '' : 's'}</b>
+        ${currency !== 'USD' ? '<small>Esta habitación está publicada en otra moneda. Para PayPal en producción conviene manejar el monto final en USD.</small>' : ''}
       </div>
       <div class="hotel-booking-holder">
-        <h4>Datos del titular de la reserva</h4>
         <div class="hotel-holder-grid">
           <label>Nombres <input id="hotelGuestNames" type="text" autocomplete="given-name" required></label>
           <label>Apellidos <input id="hotelGuestLastnames" type="text" autocomplete="family-name" required></label>
@@ -341,10 +445,11 @@
           <label>Celular / WhatsApp <input id="hotelGuestPhone" type="tel" required></label>
           <label>Correo <input id="hotelGuestEmail" type="email" required></label>
         </div>
-        <button type="button" class="hotel-continue-pay-btn" id="hotelContinueToPayBtn">Continuar con PayPal</button>
       </div>
+      <div class="hotel-paypal-lock" id="hotelPaypalLock"><i class="fa-solid fa-lock"></i> Completa los datos del titular para activar PayPal o tarjeta.</div>
       <div id="hotelPaypalButtons" class="hotel-paypal-buttons" hidden></div>`;
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    updatePaypalState();
   }
 
   function readGuestData() {
@@ -357,20 +462,28 @@
       phone: $('#hotelGuestPhone')?.value.trim(),
       email: $('#hotelGuestEmail')?.value.trim(),
     };
+    if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return null;
     const missing = Object.entries(fields).filter(([, value]) => !value).map(([key]) => key);
     if (missing.length) return null;
     return fields;
   }
 
-  function continueToPay() {
+  function updatePaypalState() {
     const guest = readGuestData();
+    const lock = $('#hotelPaypalLock');
     const container = $('#hotelPaypalButtons');
+    if (!container) return;
     if (!guest) {
-      alert('Completa los datos del titular de la reserva antes de continuar con PayPal.');
+      state.activeGuest = null;
+      state.paypalRenderedFor = null;
+      container.hidden = true;
+      container.innerHTML = '';
+      if (lock) lock.hidden = false;
       return;
     }
     state.activeGuest = guest;
-    if (container) container.hidden = false;
+    if (lock) lock.hidden = true;
+    container.hidden = false;
     const price = getRoomPrice(state.activeRoom);
     const total = Number(price.amount || 0) * Number(state.activeSearch?.nights || 1);
     renderPayPalButtons(total, price.currency || 'USD');
@@ -379,14 +492,14 @@
   function renderPayPalButtons(total, currency) {
     const container = $('#hotelPaypalButtons');
     if (!container) return;
-    const orderKey = `${state.activeHotel?.hotelCode}-${state.activeRoom?.roomType}-${state.activeSearch?.checkin}-${state.activeSearch?.checkout}-${state.activeGuest?.email || ''}`;
+    const orderKey = `${state.activeHotel?.hotelCode}-${state.activeRoom?.id || state.activeRoom?.roomType}-${state.activeSearch?.checkin}-${state.activeSearch?.checkout}-${state.activeGuest?.email || ''}`;
     if (state.paypalRenderedFor === orderKey) return;
     container.innerHTML = '';
     state.paypalRenderedFor = orderKey;
 
     if (!window.paypal || currency !== 'USD') {
       const amount = Number(total || 0).toFixed(2);
-      container.innerHTML = `<button type="button" class="hotel-paypal-fallback" id="hotelManualPaymentBtn">Continuar con pago ${money(amount, currency)}</button>`;
+      container.innerHTML = `<button type="button" class="hotel-paypal-fallback" id="hotelManualPaymentBtn">Registrar solicitud de pago ${money(amount, currency)}</button>`;
       return;
     }
 
@@ -421,6 +534,7 @@
       destination: state.activeHotel?.destinationLabel,
       roomType: state.activeRoom?.roomType,
       roomLabel: state.activeRoom?.label,
+      accommodationRooms: state.activeRoom?.rooms || [],
       checkin: state.activeSearch?.checkin,
       checkout: state.activeSearch?.checkout,
       nights: state.activeSearch?.nights,
@@ -450,20 +564,32 @@
     state.activeSearch = null;
     state.activeRoom = null;
     state.activeGuest = null;
+    state.accommodations = [];
   }
 
   function bindEvents() {
     $('#hotelDestinationFilter')?.addEventListener('change', renderHotels);
     $('#hotelSearchInput')?.addEventListener('input', renderHotels);
+    document.addEventListener('change', (event) => {
+      if (event.target.matches('#hotelAdults, #hotelChildren')) resetAvailabilityPanels();
+      if (event.target.matches('input[name="hotelRoom"]')) selectAccommodation();
+      if (event.target.closest('.hotel-holder-grid')) updatePaypalState();
+    });
+    document.addEventListener('input', (event) => {
+      if (event.target.matches('#hotelAdults, #hotelChildren')) resetAvailabilityPanels();
+      if (event.target.closest('.hotel-holder-grid')) updatePaypalState();
+    });
     document.addEventListener('click', (event) => {
       const hotelBtn = event.target.closest('[data-view-hotel]');
       if (hotelBtn) openHotel(hotelBtn.dataset.viewHotel);
       const galleryBtn = event.target.closest('[data-hotel-gallery]');
       if (galleryBtn) moveGallery(galleryBtn.dataset.hotelGallery);
+      const navBtn = event.target.closest('[data-calendar-nav]');
+      if (navBtn) moveCalendar(navBtn.dataset.calendarNav);
+      const dayBtn = event.target.closest('[data-hotel-date]');
+      if (dayBtn) selectCalendarDate(dayBtn.dataset.hotelDate);
       if (event.target.closest('[data-close-hotel-modal]')) closeHotel();
       if (event.target.closest('#hotelSearchAvailabilityBtn')) showAvailability();
-      if (event.target.closest('#hotelStartBookingBtn')) startBooking();
-      if (event.target.closest('#hotelContinueToPayBtn')) continueToPay();
       if (event.target.closest('#hotelManualPaymentBtn')) saveHotelOrder({ id: 'manual_pending', status: 'PENDING_PAYMENT' });
     });
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeHotel(); });
