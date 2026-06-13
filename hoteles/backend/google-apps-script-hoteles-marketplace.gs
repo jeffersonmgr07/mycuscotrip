@@ -58,8 +58,8 @@ function uuid_(prefix) { return prefix + '-' + Utilities.getUuid().slice(0, 8).t
 
 function setupHotelMarketplaceSheets() {
   sheet_(HOTEL_SHEETS.USERS, ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','createdAt','updatedAt']);
-  sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','stars','status','confirmationMode','description','cover','galleryJson','createdAt','updatedAt']);
-  sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','currency','status','description','createdAt','updatedAt']);
+  sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
+  sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt']);
   sheet_(HOTEL_SHEETS.AVAILABILITY, ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt']);
   sheet_(HOTEL_SHEETS.ORDERS, ['orderId','source','createdAt','propertyId','roomId','assignedRoomId','checkin','checkout','nights','adults','children','guestName','guestEmail','guestPhone','amount','currency','confirmationMode','reservationStatus','paymentStatus','paypalOrderId','paypalAuthorizationId','rawJson']);
   sheet_(HOTEL_SHEETS.PAYMENTS, ['paymentId','orderId','provider','intent','providerOrderId','authorizationId','captureId','status','amount','currency','createdAt','rawJson']);
@@ -100,21 +100,21 @@ function updateHotelOwner_(payload) {
 }
 
 function createProperty_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','stars','status','confirmationMode','description','cover','galleryJson','createdAt','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
   const propertyId = uuid_('HPR');
   sh.appendRow([
-    propertyId, payload.ownerUserId || '', payload.type || 'hotel', payload.name || '', payload.destination || '', payload.address || '', payload.stars || '',
-    'draft', payload.confirmationMode || 'manual', payload.description || '', payload.cover || '', payload.galleryJson || '[]', new Date(), new Date()
+    propertyId, payload.ownerUserId || '', payload.type || 'hotel', payload.name || '', payload.destination || '', payload.address || '', payload.mapUrl || '', payload.stars || '',
+    'draft', payload.confirmationMode || 'instant', payload.commissionRate || '15', payload.description || '', payload.website || '', payload.galleryJson || '[]', payload.photoCount || '', new Date(), new Date()
   ]);
   return { ok: true, propertyId: propertyId, status: 'draft' };
 }
 
 function createRoom_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','currency','status','description','createdAt','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt']);
   const roomId = uuid_('HRM');
   sh.appendRow([
-    roomId, payload.propertyId || '', payload.roomName || '', payload.roomType || '', payload.capacity || 1, payload.basePriceUsd || 0, payload.currency || 'USD',
-    'active', payload.description || '', new Date(), new Date()
+    roomId, payload.propertyId || '', payload.roomName || '', payload.roomType || '', payload.capacity || 1, payload.basePriceUsd || 0, payload.stock || 1, payload.currency || 'USD',
+    'active', payload.description || '', payload.roomGalleryJson || '[]', payload.roomPhotoCount || '', new Date(), new Date()
   ]);
   return { ok: true, roomId: roomId };
 }
@@ -145,7 +145,7 @@ function createHotelOrder_(payload) {
 }
 
 function updateConfirmationMode_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','stars','status','confirmationMode','description','cover','galleryJson','createdAt','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
   const values = sh.getDataRange().getValues();
   const headers = values[0] || [];
   const idCol = headers.indexOf('propertyId');

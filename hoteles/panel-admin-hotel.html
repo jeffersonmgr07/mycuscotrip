@@ -7,9 +7,9 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=45" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=46" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=45" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=46" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -81,21 +81,20 @@
 
         <section class="hotel-panel-section" data-hotel-panel-section="confirmation">
           <div class="hotel-panel-section-title"><h2>Modo de confirmación</h2></div>
-          <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="confirmation">
-            <label>Alojamiento
-              <select name="propertyId" required>
-                <option value="demo-property">Hotel demo</option>
-              </select>
-            </label>
-            <label>Confirmación de reserva
-              <select name="confirmationMode">
-                <option value="instant">Instantánea</option>
-                <option value="manual">Manual por anfitrión</option>
-              </select>
-            </label>
-            <p class="full hotel-inline-alert">Instantánea: se captura el pago al reservar. Manual: se autoriza el pago y se captura solo cuando el alojamiento confirma.</p>
-            <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar modo</button></div>
-          </form>
+          <div class="hotel-confirmation-summary-list">
+            <article class="hotel-confirmation-card">
+              <div>
+                <span>Alojamiento</span>
+                <strong>Hotel demo</strong>
+              </div>
+              <div>
+                <span>Modo actual</span>
+                <strong class="hotel-pill-mode">Instantánea</strong>
+              </div>
+              <button type="button" class="hotel-admin-btn hotel-admin-btn--small" data-open-market-modal="confirmationModal"><i class="fa-solid fa-pen"></i> Editar modo</button>
+            </article>
+          </div>
+          <p class="hotel-inline-alert">Puedes manejar confirmación instantánea o manual por alojamiento. En modo manual, el cliente autoriza la reserva y el cobro se confirma cuando el administrador aprueba la solicitud.</p>
         </section>
         <p id="hotelPanelMsg" class="hotel-inline-alert" hidden></p>
       </section>
@@ -104,9 +103,10 @@
 
   <div class="hotel-market-modal" id="propertyModal" hidden>
     <div class="hotel-market-modal__backdrop" data-close-market-modal></div>
-    <article class="hotel-market-modal__dialog">
+    <article class="hotel-market-modal__dialog hotel-market-modal__dialog--wide">
       <header><h2>Crear alojamiento</h2><button type="button" data-close-market-modal><i class="fa-solid fa-xmark"></i></button></header>
       <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="property">
+        <div class="full hotel-modal-subtitle">Datos principales del alojamiento</div>
         <label>Tipo
           <select name="type" data-property-type required>
             <option value="hotel">Hotel</option>
@@ -115,21 +115,48 @@
           </select>
         </label>
         <label>Nombre del alojamiento <input name="name" required placeholder="Ej. Hotel Cusco Boutique"></label>
-        <label>Destino <input name="destination" required placeholder="Cusco, Aguas Calientes, Lima..."></label>
+        <label>Destino
+          <select name="destination" required data-destination-select></select>
+        </label>
         <label>Categoría
           <select name="stars">
             <option value="">Sin categoría</option>
+            <option value="2">2 estrellas</option>
             <option value="3">3 estrellas</option>
             <option value="4">4 estrellas</option>
             <option value="5">5 estrellas</option>
           </select>
         </label>
         <label class="full">Dirección <input name="address" placeholder="Dirección visible para el cliente"></label>
-        <label class="full">Descripción <textarea name="description" placeholder="Describe tu alojamiento"></textarea></label>
-        <label>URL de portada <input name="cover" placeholder="https://..."></label>
-        <label>Fotos del alojamiento <input name="photoFiles" type="file" accept="image/*" multiple></label>
-        <label class="full">URLs de galería <textarea name="galleryUrls" placeholder="Una URL por línea. Útil si alojas imágenes en Google Drive, Cloudinary o tu CDN."></textarea></label>
-        <div class="full hotel-inline-alert">Las fotos no se guardan directamente en GitHub. Para el MVP, se pueden subir a Google Drive vía Apps Script o guardar URLs públicas.</div>
+        <label class="full">Ubicación en Google Maps <input name="mapUrl" placeholder="Pega aquí el enlace de Google Maps del alojamiento"></label>
+        <label class="full">Descripción <textarea name="description" placeholder="Describe tu alojamiento, ubicación, estilo y beneficios principales"></textarea></label>
+        <label class="full">Página web del alojamiento <input name="website" placeholder="https://... / Instagram / Facebook"></label>
+
+        <div class="full hotel-modal-subtitle">Fotos del alojamiento</div>
+        <label class="full">Fotos del alojamiento <input name="photoFiles" type="file" accept="image/*" multiple data-min-files="5"></label>
+        <p class="full hotel-form-help">Sube mínimo 5 fotos generales del alojamiento. Para el MVP, se pueden guardar en Google Drive vía Apps Script o usar URLs públicas.</p>
+        <label class="full">URLs de galería <textarea name="galleryUrls" placeholder="Una URL por línea. Útil si ya tienes fotos publicadas en Google Drive, Cloudinary, tu web o un CDN."></textarea></label>
+
+        <div class="full hotel-modal-subtitle">Confirmación y comisión</div>
+        <div class="full hotel-choice-row">
+          <label class="hotel-choice-card">
+            <input type="radio" name="confirmationMode" value="instant" checked>
+            <span><strong>Confirmación instantánea</strong><small>Recomendada. El cliente reserva y el pago se confirma sin esperar aprobación manual.</small></span>
+          </label>
+          <label class="hotel-choice-card">
+            <input type="radio" name="confirmationMode" value="manual">
+            <span><strong>Confirmación manual</strong><small>El cliente solicita la reserva y espera tu confirmación. En ese tiempo podría elegir otro alojamiento.</small></span>
+          </label>
+        </div>
+        <label class="full">Comisión para My Cusco Trip
+          <select name="commissionRate" required>
+            <option value="10">10%</option>
+            <option value="15" selected>15%</option>
+            <option value="20">20%</option>
+            <option value="30">30%</option>
+          </select>
+        </label>
+        <p class="full hotel-form-help">Mientras más competitiva sea la comisión, My Cusco Trip puede crear mejores ofertas, paquetes, campañas y promociones para atraer más clientes hacia tu alojamiento.</p>
         <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar alojamiento</button></div>
       </form>
     </article>
@@ -137,11 +164,12 @@
 
   <div class="hotel-market-modal" id="roomModal" hidden>
     <div class="hotel-market-modal__backdrop" data-close-market-modal></div>
-    <article class="hotel-market-modal__dialog">
+    <article class="hotel-market-modal__dialog hotel-market-modal__dialog--wide">
       <header><h2>Crear habitación</h2><button type="button" data-close-market-modal><i class="fa-solid fa-xmark"></i></button></header>
       <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="room">
+        <div class="full hotel-modal-subtitle">Datos de la habitación</div>
         <label>Alojamiento
-          <select name="propertyId" required>
+          <select name="propertyId" required data-property-select>
             <option value="demo-property">Hotel demo</option>
           </select>
         </label>
@@ -149,7 +177,11 @@
         <label>Tipo de habitación <input name="roomType" required placeholder="Habitación Matrimonial"></label>
         <label>Capacidad <input name="capacity" type="number" min="1" max="8" value="2"></label>
         <label>Precio por noche USD <input name="basePriceUsd" type="number" min="0" step="0.01" value="0"></label>
-        <label class="full">Descripción <textarea name="description" placeholder="Camas, vista, beneficios..."></textarea></label>
+        <label>Cantidad disponible <input name="stock" type="number" min="1" max="50" value="1"></label>
+        <label class="full">Descripción <textarea name="description" placeholder="Camas, vista, beneficios, baño privado, desayuno..."></textarea></label>
+        <div class="full hotel-modal-subtitle">Fotos de la habitación</div>
+        <label class="full">Fotos de la habitación <input name="roomPhotoFiles" type="file" accept="image/*" multiple></label>
+        <label class="full">URLs de fotos de la habitación <textarea name="roomGalleryUrls" placeholder="Una URL por línea, si ya tienes imágenes publicadas."></textarea></label>
         <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar habitación</button></div>
       </form>
     </article>
@@ -176,6 +208,28 @@
     </article>
   </div>
 
+  <div class="hotel-market-modal" id="confirmationModal" hidden>
+    <div class="hotel-market-modal__backdrop" data-close-market-modal></div>
+    <article class="hotel-market-modal__dialog">
+      <header><h2>Editar modo de confirmación</h2><button type="button" data-close-market-modal><i class="fa-solid fa-xmark"></i></button></header>
+      <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="confirmation">
+        <label class="full">Alojamiento
+          <select name="propertyId" required>
+            <option value="demo-property">Hotel demo</option>
+          </select>
+        </label>
+        <label class="full">Confirmación de reserva
+          <select name="confirmationMode">
+            <option value="instant">Confirmación instantánea</option>
+            <option value="manual">Confirmación manual por anfitrión</option>
+          </select>
+        </label>
+        <p class="full hotel-inline-alert">Instantánea: se captura el pago al reservar. Manual: se autoriza el pago y se captura solo cuando el alojamiento confirma.</p>
+        <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar modo</button></div>
+      </form>
+    </article>
+  </div>
+
   <div id="footer-container"></div>
   <script>
     async function loadComponent(componentName, targetId) {
@@ -184,7 +238,7 @@
     document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); window.MCTHotelMarketplace?.init?.(); });
     window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
   </script>
-  <script src="./assets/js/components/header.js?v=45"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=45"></script>
+  <script src="./assets/js/components/header.js?v=46"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=46"></script>
 </body>
 </html>
