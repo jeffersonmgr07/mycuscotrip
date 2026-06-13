@@ -7,11 +7,11 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=47" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=48" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=47" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=48" />
 </head>
-<body>
+<body class="hotel-panel-admin-body">
   <div id="header-container"></div>
   <main class="hotel-marketplace-page hotel-panel-page">
     <div class="hotel-marketplace-shell hotel-marketplace-grid hotel-admin-dashboard">
@@ -23,6 +23,7 @@
           <button type="button" data-hotel-panel-tab="properties"><i class="fa-solid fa-hotel"></i> Alojamientos</button>
           <button type="button" data-hotel-panel-tab="availability"><i class="fa-solid fa-calendar-xmark"></i> Bloquear fechas</button>
           <button type="button" data-hotel-panel-tab="confirmation"><i class="fa-solid fa-bolt"></i> Confirmación</button>
+          <button type="button" class="hotel-admin-logout" data-hotel-logout><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
         </nav>
       </aside>
       <section class="hotel-marketplace-panel hotel-admin-panel-content">
@@ -52,10 +53,11 @@
             <button type="button" class="hotel-admin-btn" data-open-market-modal="propertyModal"><i class="fa-solid fa-plus"></i> Crear alojamiento</button>
             <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost" data-open-market-modal="roomModal"><i class="fa-solid fa-bed"></i> Crear habitación</button>
           </div>
-          <div class="hotel-admin-empty-state">
+          <div id="hotelOwnerPropertiesList" class="hotel-owner-properties-list"></div>
+          <div id="hotelOwnerPropertiesEmpty" class="hotel-admin-empty-state">
             <i class="fa-solid fa-hotel"></i>
-            <strong>Aún no hay alojamientos conectados.</strong>
-            <span>Cuando conectes Google Sheet, aquí se listarán los hoteles, apartamentos o habitaciones creadas por este usuario.</span>
+            <strong>Aún no hay alojamientos registrados.</strong>
+            <span>Crea tu primer alojamiento para que aparezca en este panel.</span>
           </div>
         </section>
 
@@ -296,9 +298,24 @@
       try { const response = await fetch(`./components/${componentName}.html`); document.getElementById(targetId).innerHTML = await response.text(); } catch(error) { console.error(error); }
     }
     document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); window.MCTHotelMarketplace?.init?.(); });
-    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec";
+    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
   </script>
-  <script src="./assets/js/components/header.js?v=47"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=47"></script>
+  <script src="./assets/js/components/header.js?v=48"></script>
+  <script>
+    function hotelPasswordToggleFallback(event) {
+      const button = event.target.closest('[data-toggle-password]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      const input = document.getElementById(button.dataset.togglePassword);
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      const icon = button.querySelector('i');
+      if (icon) icon.className = input.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    }
+    document.addEventListener('click', hotelPasswordToggleFallback, true);
+  </script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=48"></script>
 </body>
 </html>

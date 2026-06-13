@@ -7,9 +7,9 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=46" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=48" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=46" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=48" />
 </head>
 <body class="hotel-admin-auth-body hotel-auth-machu">
   <div id="header-container"></div>
@@ -98,9 +98,24 @@
       try { const response = await fetch(`./components/${componentName}.html`); document.getElementById(targetId).innerHTML = await response.text(); } catch(error) { console.error(error); }
     }
     document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); window.MCTHotelMarketplace?.init?.(); });
-    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec";
+    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
   </script>
-  <script src="./assets/js/components/header.js?v=46"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=46"></script>
+  <script src="./assets/js/components/header.js?v=48"></script>
+  <script>
+    function hotelPasswordToggleFallback(event) {
+      const button = event.target.closest('[data-toggle-password]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      const input = document.getElementById(button.dataset.togglePassword);
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      const icon = button.querySelector('i');
+      if (icon) icon.className = input.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    }
+    document.addEventListener('click', hotelPasswordToggleFallback, true);
+  </script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=48"></script>
 </body>
 </html>

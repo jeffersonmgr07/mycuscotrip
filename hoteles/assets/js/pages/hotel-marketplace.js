@@ -22,8 +22,13 @@
 
   async function post(action, payload) {
     if (!API) return { ok: true, localOnly: true, message: 'Demo local: configura Apps Script para guardar en Google Sheets.' };
-    const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...payload }) });
-    return res.json();
+    try {
+      const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...payload }) });
+      return await res.json();
+    } catch (error) {
+      console.error('Hotel marketplace API error', error);
+      return { ok: false, error: 'No se pudo conectar con Google Sheet. Revisa la URL del Apps Script.' };
+    }
   }
   function showMsg(selector, text, ok = true) {
     const el = $(selector);
@@ -73,14 +78,19 @@
     return checks.length && checks.upper && checks.number && checks.special;
   }
 
-  function togglePassword(button) {
+  function togglePassword(button, event) {
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
     const id = button?.dataset?.togglePassword;
     const input = id ? document.getElementById(id) : null;
-    if (!input) return;
+    if (!input) return false;
     const show = input.type === 'password';
     input.type = show ? 'text' : 'password';
+    button.setAttribute('aria-pressed', show ? 'true' : 'false');
     const icon = button.querySelector('i');
     if (icon) icon.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+    input.focus({ preventScroll: true });
+    return false;
   }
 
   function updateRegistrationType() {
@@ -182,28 +192,153 @@
     }, { enableHighAccuracy: true, timeout: 10000 });
   }
 
+
+  const SESSION_KEY = 'mctHotelOwnerSession';
+
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch (_) { return null; }
+  }
+  function setSession(data) {
+    if (!data) return;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(data));
+    if (data.email) localStorage.setItem('mctHotelOwnerEmail', data.email);
+  }
+  function clearSession() {
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem('mctHotelOwnerEmail');
+  }
+  function statusIsAllowed(status = '') {
+    const value = String(status).toLowerCase();
+    return ['approved','aprobado','active','activo','verified','verificado','provider','proveedor','hotel_provider'].includes(value);
+  }
+  function setAccountValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || '—';
+  }
+  function ownerDisplayType(owner) {
+    return owner?.registrationType === 'company' ? 'Empresa' : 'Persona natural';
+  }
+  function updateAccountView(owner) {
+    if (!document.body.classList.contains('hotel-panel-admin-body') && !document.querySelector('[data-hotel-panel-section="account"]')) return;
+    const current = owner || getSession() || {};
+    setAccountValue('accountType', ownerDisplayType(current));
+    setAccountValue('accountFirstName', current.firstName || current.nombres || '—');
+    setAccountValue('accountLastName', current.lastName || current.apellidos || '—');
+    const doc = current.registrationType === 'company'
+      ? 'Empresa'
+      : [current.docType || current.tipoDocumento, current.docNumber || current.numeroDocumento].filter(Boolean).join(' · ');
+    setAccountValue('accountDocument', doc || '—');
+    setAccountValue('accountNationality', current.nationality || current.nacionalidad || (current.registrationType === 'company' ? '—' : 'Perú'));
+    setAccountValue('accountPhone', [current.phoneCode || '+51', current.phone || current.whatsapp].filter(Boolean).join(' '));
+    setAccountValue('accountEmail', current.email || localStorage.getItem('mctHotelOwnerEmail') || '—');
+    setAccountValue('accountWebsite', current.website || current.web || '—');
+    setAccountValue('accountBusiness', current.businessName || current.razonSocial || (current.registrationType === 'company' ? 'Pendiente de completar' : 'No aplica'));
+    setAccountValue('accountTaxId', current.taxId || current.ruc || (current.registrationType === 'company' ? '—' : 'No aplica'));
+    document.querySelectorAll('[data-company-account]').forEach(el => {
+      el.hidden = current.registrationType !== 'company' && !current.businessName && !current.taxId;
+    });
+    document.querySelectorAll('[data-owner-email]').forEach(el => { el.value = current.email || ''; });
+    document.querySelectorAll('[data-owner-user-id]').forEach(el => { el.value = current.userId || ''; });
+  }
+
+  function renderProperties(properties = []) {
+    const list = document.getElementById('hotelOwnerPropertiesList');
+    const empty = document.getElementById('hotelOwnerPropertiesEmpty');
+    if (!list) return;
+    list.innerHTML = '';
+    if (!properties.length) {
+      if (empty) empty.hidden = false;
+      renderPropertyOptions([]);
+      return;
+    }
+    if (empty) empty.hidden = true;
+    list.innerHTML = properties.map(item => `
+      <article class="hotel-owner-property-card">
+        <div>
+          <span>${escapeHtml(item.destination || 'Destino pendiente')}</span>
+          <strong>${escapeHtml(item.name || 'Alojamiento sin nombre')}</strong>
+          <small>${escapeHtml(item.type || 'hotel')} · ${escapeHtml(item.confirmationMode === 'manual' ? 'Confirmación manual' : 'Confirmación instantánea')}</small>
+        </div>
+        <em>${escapeHtml(item.status || 'draft')}</em>
+      </article>
+    `).join('');
+    renderPropertyOptions(properties);
+  }
+
+  function renderPropertyOptions(properties = []) {
+    const fallback = '<option value="">Selecciona alojamiento</option>';
+    const options = properties.length
+      ? properties.map(item => `<option value="${escapeHtml(item.propertyId || item.id || item.name)}">${escapeHtml(item.name || item.propertyId || 'Alojamiento')}</option>`).join('')
+      : fallback;
+    document.querySelectorAll('[data-property-select]').forEach(select => {
+      const current = select.value;
+      select.innerHTML = options;
+      if (current && Array.from(select.options).some(o => o.value === current)) select.value = current;
+    });
+  }
+
+  async function loadPanelData() {
+    const panel = document.querySelector('.hotel-admin-dashboard');
+    if (!panel) return;
+    const session = getSession();
+    if (!session && API) {
+      window.location.href = './login-admin-hotel.html';
+      return;
+    }
+    updateAccountView(session || { registrationType: 'natural', email: localStorage.getItem('mctHotelOwnerEmail') || '' });
+    if (!API || !session?.email) {
+      renderProperties([]);
+      return;
+    }
+    const ownerResult = await post('get_owner', { email: session.email, sessionToken: session.sessionToken || '' });
+    if (ownerResult?.ok && ownerResult.owner) {
+      setSession({ ...session, ...ownerResult.owner, sessionToken: ownerResult.sessionToken || session.sessionToken });
+      updateAccountView({ ...session, ...ownerResult.owner });
+    }
+    const propertiesResult = await post('get_properties', { ownerUserId: (ownerResult.owner || session).userId, email: session.email });
+    if (propertiesResult?.ok) renderProperties(propertiesResult.properties || []);
+  }
+
+  function appendOwnerPayload(payload = {}) {
+    const session = getSession() || {};
+    if (!payload.ownerUserId) payload.ownerUserId = session.userId || '';
+    if (!payload.ownerEmail) payload.ownerEmail = session.email || localStorage.getItem('mctHotelOwnerEmail') || '';
+    return payload;
+  }
+
   function init() {
+    if (window.__MCT_HOTEL_MARKETPLACE_INIT__) return;
+    window.__MCT_HOTEL_MARKETPLACE_INIT__ = true;
     fillSelects();
     updateRegistrationType();
     $('#hotelRegistrationType')?.addEventListener('change', updateRegistrationType);
     $('#hotelOwnerPassword')?.addEventListener('input', updatePasswordRules);
     $('#hotelOwnerConfirmPassword')?.addEventListener('input', updatePasswordRules);
     updatePasswordRules();
+    loadPanelData();
     document.addEventListener('input', e => sanitizeInput(e.target));
     document.addEventListener('change', e => sanitizeInput(e.target));
     document.addEventListener('click', e => {
+      const passwordToggle = e.target.closest('[data-toggle-password]');
+      if (passwordToggle) return togglePassword(passwordToggle, e);
+      const logout = e.target.closest('[data-hotel-logout]');
+      if (logout) {
+        e.preventDefault();
+        clearSession();
+        window.location.href = './login-admin-hotel.html';
+        return;
+      }
       const tab = e.target.closest('[data-hotel-panel-tab]');
       if (tab) switchPanelTab(tab.dataset.hotelPanelTab);
       const opener = e.target.closest('[data-open-market-modal]');
       if (opener) openModal(opener.dataset.openMarketModal);
-      const passwordToggle = e.target.closest('[data-toggle-password]');
-      if (passwordToggle) togglePassword(passwordToggle);
       const currentLocation = e.target.closest('[data-use-current-location]');
       if (currentLocation) useCurrentLocation(currentLocation);
       if (e.target.closest('[data-close-market-modal]')) closeModal();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   }
+
 
   document.addEventListener('submit', async (event) => {
     const register = event.target.closest('#hotelOwnerRegisterForm');
@@ -214,21 +349,34 @@
       if (!validateForm(register)) { showMsg('#hotelOwnerRegisterMsg', 'Revisa los campos marcados antes de enviar el registro.', false); return; }
       const payload = serialize(register);
       const result = await post('register_owner', payload);
-      showMsg('#hotelOwnerRegisterMsg', result.localOnly ? result.message : 'Registro enviado correctamente. Tu cuenta quedará pendiente de aprobación.');
+      if (!result.ok) { showMsg('#hotelOwnerRegisterMsg', result.error || 'No se pudo enviar el registro.', false); return; }
+      showMsg('#hotelOwnerRegisterMsg', result.localOnly ? result.message : 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
     }
     if (login) {
       event.preventDefault();
       if (!validateForm(login)) { showMsg('#hotelOwnerLoginMsg', 'Ingresa un correo válido y tu contraseña.', false); return; }
       const payload = serialize(login);
-      localStorage.setItem('mctHotelOwnerEmail', payload.email || '');
-      showMsg('#hotelOwnerLoginMsg', 'Acceso demo correcto. Redirigiendo al panel...');
+      const result = await post('login_owner', payload);
+      if (result.localOnly) {
+        setSession({ email: payload.email, registrationType: 'natural', status: 'demo' });
+        showMsg('#hotelOwnerLoginMsg', 'Acceso demo correcto. Redirigiendo al panel...');
+        setTimeout(() => { window.location.href = './panel-admin-hotel.html'; }, 500);
+        return;
+      }
+      if (!result.ok) { showMsg('#hotelOwnerLoginMsg', result.error || 'No se pudo iniciar sesión.', false); return; }
+      if (result.owner && !statusIsAllowed(result.owner.status)) {
+        showMsg('#hotelOwnerLoginMsg', 'Tu cuenta aún no está activa. Revisa el correo de verificación o espera la aprobación.', false);
+        return;
+      }
+      setSession({ ...(result.owner || {}), sessionToken: result.sessionToken || '' });
+      showMsg('#hotelOwnerLoginMsg', 'Acceso correcto. Redirigiendo al panel...');
       setTimeout(() => { window.location.href = './panel-admin-hotel.html'; }, 500);
     }
     if (marketForm) {
       event.preventDefault();
       if (!validateForm(marketForm)) { showMsg('#hotelPanelMsg', 'Revisa los campos obligatorios antes de guardar.', false); return; }
       const type = marketForm.dataset.marketplaceForm;
-      const payload = serialize(marketForm);
+      const payload = appendOwnerPayload(serialize(marketForm));
       let action = type === 'property' ? 'create_property' : type === 'room' ? 'create_room' : type === 'availability' ? 'block_dates' : type === 'account' ? 'update_owner' : type === 'password' ? 'change_password' : 'update_confirmation_mode';
       if (type === 'availability') payload.dates = dateRange(payload.from, payload.to);
       if (type === 'property') {
@@ -248,11 +396,19 @@
         payload.roomPhotoCount = marketForm.elements.roomPhotoFiles?.files?.length || 0;
       }
       const result = await post(action, payload);
+      if (!result.ok) { showMsg('#hotelPanelMsg', result.error || 'No se pudo guardar.', false); return; }
       showMsg('#hotelPanelMsg', result.localOnly ? result.message : 'Cambios guardados correctamente.');
       closeModal();
+      if (type === 'account') {
+        const current = getSession() || {};
+        setSession({ ...current, ...payload });
+        updateAccountView({ ...current, ...payload });
+      }
+      if (['property','room','confirmation'].includes(type)) loadPanelData();
     }
   });
 
-  window.MCTHotelMarketplace = { init };
+
+  window.MCTHotelMarketplace = { init, togglePassword };
   document.addEventListener('DOMContentLoaded', init);
 })();

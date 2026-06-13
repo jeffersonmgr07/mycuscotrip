@@ -1640,3 +1640,62 @@
     width: 100%;
   }
 }
+
+/* V48 - sesión real, logout y listado de alojamientos */
+.hotel-admin-logout {
+  margin-top: 12px;
+  border-color: rgba(165, 42, 42, .24) !important;
+  color: #8b1f1f !important;
+  background: #fff7f7 !important;
+}
+.hotel-admin-logout:hover {
+  background: #ffecec !important;
+}
+.hotel-owner-properties-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.hotel-owner-property-card {
+  border: 1px solid rgba(6,40,3,.12);
+  border-radius: 18px;
+  background: #fbfdfb;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+.hotel-owner-property-card span {
+  display: block;
+  color: #6d776f;
+  font-size: .82rem;
+  font-weight: 850;
+}
+.hotel-owner-property-card strong {
+  display: block;
+  color: var(--hotel-green);
+  font-weight: 950;
+  margin: 2px 0;
+}
+.hotel-owner-property-card small {
+  color: #69756d;
+  font-weight: 800;
+}
+.hotel-owner-property-card em {
+  font-style: normal;
+  color: var(--hotel-green);
+  background: rgba(6,40,3,.1);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-weight: 900;
+  font-size: .8rem;
+}
+.hotel-password-field button {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 760px) {
+  .hotel-owner-property-card { grid-template-columns: 1fr; }
+}

@@ -1,14 +1,16 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script)
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V48
  *
- * Hojas recomendadas:
- * - Hotel_Users: usuarios/administradores de alojamientos.
- * - Properties: hoteles, apartamentos o habitaciones publicables.
- * - Rooms: habitaciones/unidades vendibles dentro de cada alojamiento.
- * - Availability: bloqueos, reservas confirmadas, mantenimiento y cupos por fecha.
- * - Hotel_Orders: órdenes creadas desde hoteles/, paquetes o quote-packages.
- * - Payments: pagos/autorizaciones/capturas PayPal.
- * - Photo_Assets: URLs de fotos alojadas en Drive/CDN.
+ * Funciones principales:
+ * - Registro de administradores hoteleros con correo de verificación.
+ * - Login validado contra Google Sheet.
+ * - Panel hotelero con datos reales del usuario logueado.
+ * - Alojamientos, habitaciones, disponibilidad, órdenes, pagos y fotos.
+ *
+ * Importante:
+ * - Despliega como Web App con acceso "Cualquier usuario".
+ * - Ejecuta setupHotelMarketplaceSheets() una vez después de pegar este script.
+ * - El Secret ID de PayPal nunca debe ir en el HTML.
  */
 
 const HOTEL_SHEETS = {
@@ -21,17 +23,31 @@ const HOTEL_SHEETS = {
   PHOTOS: 'Photo_Assets'
 };
 
+const HOTEL_HEADERS = {
+  Hotel_Users: ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','verificationToken','verifiedAt','sessionToken','lastLoginAt','createdAt','updatedAt'],
+  Properties: ['propertyId','ownerUserId','ownerEmail','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt'],
+  Rooms: ['roomId','propertyId','ownerUserId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt'],
+  Availability: ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt'],
+  Hotel_Orders: ['orderId','source','createdAt','propertyId','roomId','assignedRoomId','checkin','checkout','nights','adults','children','guestName','guestEmail','guestPhone','amount','currency','confirmationMode','reservationStatus','paymentStatus','paypalOrderId','paypalAuthorizationId','rawJson'],
+  Payments: ['paymentId','orderId','provider','intent','providerOrderId','authorizationId','captureId','status','amount','currency','createdAt','rawJson'],
+  Photo_Assets: ['photoId','ownerUserId','propertyId','roomId','fileName','driveFileId','publicUrl','createdAt']
+};
+
 function doGet(e) {
-  const action = String(e.parameter.action || 'catalog');
+  const action = String((e && e.parameter && e.parameter.action) || 'catalog');
+  if (action === 'verify_owner') return verifyHotelOwner_(e.parameter.token || '');
   if (action === 'catalog') return jsonResponse(getHotelCatalog_());
-  if (action === 'availability') return jsonResponse(getAvailability_(e.parameter));
+  if (action === 'availability') return jsonResponse(getAvailability_(e.parameter || {}));
   return jsonResponse({ ok: false, error: 'Acción no válida' });
 }
 
 function doPost(e) {
-  const payload = JSON.parse(e.postData.contents || '{}');
+  const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
   const action = payload.action || '';
   if (action === 'register_owner') return jsonResponse(registerHotelOwner_(payload));
+  if (action === 'login_owner') return jsonResponse(loginHotelOwner_(payload));
+  if (action === 'get_owner') return jsonResponse(getHotelOwner_(payload));
+  if (action === 'get_properties') return jsonResponse(getProperties_(payload));
   if (action === 'update_owner') return jsonResponse(updateHotelOwner_(payload));
   if (action === 'change_password') return jsonResponse(changeHotelOwnerPassword_(payload));
   if (action === 'create_property') return jsonResponse(createProperty_(payload));
@@ -46,107 +62,285 @@ function jsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
 }
 function ss_() { return SpreadsheetApp.getActiveSpreadsheet(); }
+function uuid_(prefix) { return prefix + '-' + Utilities.getUuid().slice(0, 8).toUpperCase(); }
+function now_() { return new Date(); }
+function scriptUrl_() { return ScriptApp.getService().getUrl(); }
+function hash_(value) {
+  return Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value || '')));
+}
+function headerMap_(headers) {
+  const map = {};
+  headers.forEach(function(h, i) { map[String(h)] = i; });
+  return map;
+}
 function sheet_(name, headers) {
   const ss = ss_();
   let sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
-    if (headers && headers.length) sh.appendRow(headers);
+    sh.appendRow(headers || HOTEL_HEADERS[name] || []);
+    return sh;
   }
+  ensureHeaders_(sh, headers || HOTEL_HEADERS[name] || []);
   return sh;
 }
-function uuid_(prefix) { return prefix + '-' + Utilities.getUuid().slice(0, 8).toUpperCase(); }
+function ensureHeaders_(sh, expected) {
+  if (!expected || !expected.length) return;
+  const lastCol = Math.max(sh.getLastColumn(), 1);
+  let current = sh.getRange(1, 1, 1, lastCol).getValues()[0].filter(String);
+  if (!current.length) {
+    sh.getRange(1, 1, 1, expected.length).setValues([expected]);
+    return;
+  }
+  const missing = expected.filter(function(h) { return current.indexOf(h) === -1; });
+  if (missing.length) {
+    sh.getRange(1, current.length + 1, 1, missing.length).setValues([missing]);
+  }
+}
+function getRows_(sheetName) {
+  const sh = sheet_(sheetName, HOTEL_HEADERS[sheetName]);
+  const values = sh.getDataRange().getValues();
+  const headers = values.shift() || [];
+  return { sh: sh, headers: headers, map: headerMap_(headers), rows: values };
+}
+function rowToObject_(headers, row) {
+  const obj = {};
+  headers.forEach(function(h, i) { obj[h] = row[i]; });
+  return obj;
+}
+function findRowBy_(sheetName, colName, value) {
+  const data = getRows_(sheetName);
+  const col = data.map[colName];
+  if (col === undefined) return null;
+  for (var i = 0; i < data.rows.length; i++) {
+    if (String(data.rows[i][col]).toLowerCase() === String(value).toLowerCase()) {
+      return { sh: data.sh, headers: data.headers, map: data.map, row: data.rows[i], rowIndex: i + 2, object: rowToObject_(data.headers, data.rows[i]) };
+    }
+  }
+  return null;
+}
+function setCellByHeader_(found, header, value) {
+  const col = found.map[header];
+  if (col !== undefined) found.sh.getRange(found.rowIndex, col + 1).setValue(value);
+}
+function publicOwner_(obj) {
+  if (!obj) return null;
+  return {
+    userId: obj.userId || '', registrationType: obj.registrationType || 'natural', email: obj.email || '',
+    firstName: obj.firstName || '', lastName: obj.lastName || '', docType: obj.docType || '', docNumber: obj.docNumber || '',
+    nationality: obj.nationality || '', phoneCode: obj.phoneCode || '', phone: obj.phone || '',
+    businessName: obj.businessName || '', taxId: obj.taxId || '', website: obj.website || '',
+    role: obj.role || 'hotel_provider', status: obj.status || ''
+  };
+}
+function allowedStatus_(status) {
+  const value = String(status || '').toLowerCase();
+  return ['approved','aprobado','active','activo','verified','verificado','provider','proveedor','hotel_provider'].indexOf(value) >= 0;
+}
 
 function setupHotelMarketplaceSheets() {
-  sheet_(HOTEL_SHEETS.USERS, ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','createdAt','updatedAt']);
-  sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
-  sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt']);
-  sheet_(HOTEL_SHEETS.AVAILABILITY, ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt']);
-  sheet_(HOTEL_SHEETS.ORDERS, ['orderId','source','createdAt','propertyId','roomId','assignedRoomId','checkin','checkout','nights','adults','children','guestName','guestEmail','guestPhone','amount','currency','confirmationMode','reservationStatus','paymentStatus','paypalOrderId','paypalAuthorizationId','rawJson']);
-  sheet_(HOTEL_SHEETS.PAYMENTS, ['paymentId','orderId','provider','intent','providerOrderId','authorizationId','captureId','status','amount','currency','createdAt','rawJson']);
-  sheet_(HOTEL_SHEETS.PHOTOS, ['photoId','ownerUserId','propertyId','roomId','fileName','driveFileId','publicUrl','createdAt']);
-  return { ok: true };
+  Object.keys(HOTEL_HEADERS).forEach(function(name) { sheet_(name, HOTEL_HEADERS[name]); });
+  return { ok: true, message: 'Hojas del marketplace hotelero preparadas/actualizadas.' };
 }
 
 function getHotelCatalog_() {
   return { ok: true, message: 'Catálogo marketplace preparado. En el MVP el frontend puede seguir usando hotels.json mientras Properties/Rooms se conectan gradualmente.' };
 }
-
 function getAvailability_(params) {
-  // Regla MVP:
-  // Un alojamiento/habitación está disponible cuando NO existe una fila en Availability
-  // con el mismo propertyId/roomId y una fecha dentro del rango checkin <= date < checkout
-  // con status special_block, confirmed_reservation o scheduled_maintenance.
   return { ok: true, available: true, params: params };
 }
 
 function registerHotelOwner_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.USERS, ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','createdAt','updatedAt']);
+  setupHotelMarketplaceSheets();
+  const email = String(payload.email || '').trim().toLowerCase();
+  if (!email) return { ok: false, error: 'Correo requerido.' };
+  if (findRowBy_(HOTEL_SHEETS.USERS, 'email', email)) return { ok: false, error: 'Este correo ya está registrado.' };
+  const token = Utilities.getUuid();
   const userId = uuid_('HUSR');
-  sh.appendRow([
-    userId,
-    payload.registrationType || 'natural',
-    payload.email || '',
-    payload.password ? Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, payload.password)) : '',
-    payload.firstName || '', payload.lastName || '', payload.docType || '', payload.docNumber || '', payload.nationality || '',
-    payload.phoneCode || '', payload.phone || '', payload.businessName || '', payload.taxId || '', payload.website || '',
-    'hotel_owner', 'pending_review', 3, new Date(), new Date()
-  ]);
-  return { ok: true, userId: userId, status: 'pending_review' };
+  const sh = sheet_(HOTEL_SHEETS.USERS, HOTEL_HEADERS.Hotel_Users);
+  const rowObj = {
+    userId: userId,
+    registrationType: payload.registrationType || 'natural',
+    email: email,
+    passwordHash: hash_(payload.password || ''),
+    firstName: payload.firstName || '',
+    lastName: payload.lastName || '',
+    docType: payload.docType || '',
+    docNumber: payload.docNumber || '',
+    nationality: payload.nationality || '',
+    phoneCode: payload.phoneCode || '',
+    phone: payload.phone || '',
+    businessName: payload.businessName || '',
+    taxId: payload.taxId || '',
+    website: payload.website || '',
+    role: 'hotel_provider',
+    status: 'pending_email_verification',
+    propertyLimit: 3,
+    verificationToken: token,
+    verifiedAt: '',
+    sessionToken: '',
+    lastLoginAt: '',
+    createdAt: now_(),
+    updatedAt: now_()
+  };
+  sh.appendRow(HOTEL_HEADERS.Hotel_Users.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
+  sendVerificationEmail_(rowObj, token);
+  return { ok: true, userId: userId, status: 'pending_email_verification', message: 'verification_email_sent' };
+}
+
+function sendVerificationEmail_(owner, token) {
+  const verifyUrl = scriptUrl_() + '?action=verify_owner&token=' + encodeURIComponent(token);
+  const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
+  const html = `
+    <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
+      <div style="max-width:640px;margin:0 auto;padding:28px 16px;">
+        <div style="background:#062803;border-radius:22px 22px 0 0;padding:22px;color:white;">
+          <h1 style="margin:0;font-size:22px;">Verifica tu cuenta hotelera</h1>
+          <p style="margin:8px 0 0;color:#dceadc;">My Cusco Trip · Marketplace de alojamientos</p>
+        </div>
+        <div style="background:white;border-radius:0 0 22px 22px;padding:24px;border:1px solid #dfe8df;">
+          <p>Hola <strong>${escapeHtml_(fullName)}</strong>,</p>
+          <p>Recibimos tu registro como administrador de alojamientos. Para activar tu cuenta, confirma tu correo haciendo clic en el botón:</p>
+          <p style="text-align:center;margin:28px 0;"><a href="${verifyUrl}" style="background:#062803;color:white;text-decoration:none;padding:14px 22px;border-radius:999px;font-weight:bold;display:inline-block;">Verificar mi cuenta</a></p>
+          <p style="font-size:13px;color:#5f6b62;">Si el botón no abre, copia y pega este enlace en tu navegador:<br>${verifyUrl}</p>
+        </div>
+      </div>
+    </div>`;
+  MailApp.sendEmail({ to: owner.email, subject: 'Verifica tu cuenta hotelera | My Cusco Trip', htmlBody: html, name: 'My Cusco Trip' });
+}
+function escapeHtml_(text) {
+  return String(text || '').replace(/[&<>"]/g, function(c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]); });
+}
+
+function verifyHotelOwner_(token) {
+  if (!token) return HtmlService.createHtmlOutput('<h2>Token inválido</h2>');
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'verificationToken', token);
+  if (!found) return HtmlService.createHtmlOutput('<h2>Enlace no válido o ya usado.</h2>');
+  setCellByHeader_(found, 'status', 'approved');
+  setCellByHeader_(found, 'role', 'hotel_provider');
+  setCellByHeader_(found, 'verifiedAt', now_());
+  setCellByHeader_(found, 'updatedAt', now_());
+  const loginUrl = scriptUrl_().replace('/exec','') ? '' : '';
+  return HtmlService.createHtmlOutput(`
+    <div style="min-height:100vh;display:grid;place-items:center;background:#f4f8f4;font-family:Arial,sans-serif;">
+      <div style="max-width:560px;background:white;border:1px solid #dfe8df;border-radius:24px;padding:32px;text-align:center;color:#17301b;">
+        <h1 style="color:#062803;margin-top:0;">Cuenta verificada</h1>
+        <p>Tu correo fue verificado correctamente. Ya puedes ingresar al panel de administración de hoteles.</p>
+        <p style="color:#67746b;font-size:14px;">Vuelve a la página de My Cusco Trip e inicia sesión con tu correo y contraseña.</p>
+      </div>
+    </div>`);
+}
+
+function loginHotelOwner_(payload) {
+  const email = String(payload.email || '').trim().toLowerCase();
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  if (!found) return { ok: false, error: 'No encontramos una cuenta con ese correo.' };
+  const owner = found.object;
+  if (String(owner.passwordHash || '') !== hash_(payload.password || '')) return { ok: false, error: 'Contraseña incorrecta.' };
+  if (!allowedStatus_(owner.status)) {
+    return { ok: false, error: 'Tu cuenta aún no está activa. Verifica tu correo o revisa el estado de aprobación.' };
+  }
+  const sessionToken = Utilities.getUuid();
+  setCellByHeader_(found, 'sessionToken', sessionToken);
+  setCellByHeader_(found, 'lastLoginAt', now_());
+  setCellByHeader_(found, 'updatedAt', now_());
+  const fresh = findRowBy_(HOTEL_SHEETS.USERS, 'email', email).object;
+  return { ok: true, owner: publicOwner_(fresh), sessionToken: sessionToken };
+}
+
+function getHotelOwner_(payload) {
+  const email = String(payload.email || '').trim().toLowerCase();
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  if (!found) return { ok: false, error: 'Usuario no encontrado.' };
+  return { ok: true, owner: publicOwner_(found.object), sessionToken: found.object.sessionToken || '' };
+}
+
+function getProperties_(payload) {
+  const ownerUserId = String(payload.ownerUserId || '').trim();
+  const ownerEmail = String(payload.email || payload.ownerEmail || '').trim().toLowerCase();
+  const data = getRows_(HOTEL_SHEETS.PROPERTIES);
+  const properties = data.rows.map(function(row) { return rowToObject_(data.headers, row); }).filter(function(item) {
+    return (ownerUserId && String(item.ownerUserId) === ownerUserId) || (ownerEmail && String(item.ownerEmail).toLowerCase() === ownerEmail);
+  });
+  return { ok: true, properties: properties };
 }
 
 function updateHotelOwner_(payload) {
-  // MVP: registrar la actualización como evento simple. En siguiente etapa se busca userId y se actualiza fila.
-  return { ok: true, message: 'Actualización recibida', payload: payload };
+  const email = String(payload.ownerEmail || payload.email || '').trim().toLowerCase();
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  if (!found) return { ok: false, error: 'Usuario no encontrado.' };
+  ['firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website'].forEach(function(key) {
+    if (payload[key] !== undefined) setCellByHeader_(found, key, payload[key]);
+  });
+  setCellByHeader_(found, 'updatedAt', now_());
+  return { ok: true, owner: publicOwner_(findRowBy_(HOTEL_SHEETS.USERS, 'email', email).object) };
 }
 
-
 function changeHotelOwnerPassword_(payload) {
-  // MVP: en producción se debe buscar el usuario autenticado, validar contraseña actual
-  // y guardar solo hash. Nunca guardar contraseñas en texto plano.
-  if (!payload.newPassword) return { ok: false, error: 'Nueva contraseña requerida' };
-  return { ok: true, message: 'Solicitud de cambio de contraseña recibida' };
+  const email = String(payload.ownerEmail || payload.email || '').trim().toLowerCase();
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  if (!found) return { ok: false, error: 'Usuario no encontrado.' };
+  if (String(found.object.passwordHash || '') !== hash_(payload.currentPassword || '')) return { ok: false, error: 'La contraseña actual no es correcta.' };
+  if (!payload.newPassword) return { ok: false, error: 'Nueva contraseña requerida.' };
+  setCellByHeader_(found, 'passwordHash', hash_(payload.newPassword));
+  setCellByHeader_(found, 'updatedAt', now_());
+  return { ok: true, message: 'Contraseña actualizada.' };
 }
 
 function createProperty_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, HOTEL_HEADERS.Properties);
   const propertyId = uuid_('HPR');
-  sh.appendRow([
-    propertyId, payload.ownerUserId || '', payload.type || 'hotel', payload.name || '', payload.destination || '', payload.address || '', payload.mapUrl || '', payload.stars || '',
-    'draft', payload.confirmationMode || 'instant', payload.commissionRate || '15', payload.description || '', payload.website || '', payload.galleryJson || '[]', payload.photoCount || '', new Date(), new Date()
-  ]);
+  const rowObj = {
+    propertyId: propertyId,
+    ownerUserId: payload.ownerUserId || '',
+    ownerEmail: payload.ownerEmail || '',
+    type: payload.type || 'hotel',
+    name: payload.name || '',
+    destination: payload.destination || '',
+    address: payload.address || '',
+    mapUrl: payload.mapUrl || '',
+    stars: payload.stars || '',
+    status: 'draft',
+    confirmationMode: payload.confirmationMode || 'instant',
+    commissionRate: payload.commissionRate || '15',
+    description: payload.description || '',
+    website: payload.website || '',
+    galleryJson: payload.galleryJson || '[]',
+    photoCount: payload.photoCount || '',
+    createdAt: now_(),
+    updatedAt: now_()
+  };
+  sh.appendRow(HOTEL_HEADERS.Properties.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
   return { ok: true, propertyId: propertyId, status: 'draft' };
 }
 
 function createRoom_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.ROOMS, ['roomId','propertyId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.ROOMS, HOTEL_HEADERS.Rooms);
   const roomId = uuid_('HRM');
-  sh.appendRow([
-    roomId, payload.propertyId || '', payload.roomName || '', payload.roomType || '', payload.capacity || 1, payload.basePriceUsd || 0, payload.stock || 1, payload.currency || 'USD',
-    'active', payload.description || '', payload.roomGalleryJson || '[]', payload.roomPhotoCount || '', new Date(), new Date()
-  ]);
+  const rowObj = {
+    roomId: roomId, propertyId: payload.propertyId || '', ownerUserId: payload.ownerUserId || '', roomName: payload.roomName || '', roomType: payload.roomType || '',
+    capacity: payload.capacity || 1, basePriceUsd: payload.basePriceUsd || 0, stock: payload.stock || 1, currency: payload.currency || 'USD', status: 'active',
+    description: payload.description || '', roomGalleryJson: payload.roomGalleryJson || '[]', roomPhotoCount: payload.roomPhotoCount || '', createdAt: now_(), updatedAt: now_()
+  };
+  sh.appendRow(HOTEL_HEADERS.Rooms.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
   return { ok: true, roomId: roomId };
 }
 
 function blockDates_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.AVAILABILITY, ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt']);
+  const sh = sheet_(HOTEL_SHEETS.AVAILABILITY, HOTEL_HEADERS.Availability);
   const dates = payload.dates || [];
   dates.forEach(function(date) {
-    sh.appendRow([
-      uuid_('AVL'), payload.propertyId || '', payload.roomId || '', date,
-      payload.status || 'special_block', payload.availableUnits || 0, payload.priceUsd || '', payload.source || 'owner', payload.orderId || '', payload.notes || '', new Date()
-    ]);
+    const rowObj = { availabilityId: uuid_('AVL'), propertyId: payload.propertyId || '', roomId: payload.roomId || '', date: date, status: payload.status || 'special_block', availableUnits: payload.availableUnits || 0, priceUsd: payload.priceUsd || '', source: payload.source || 'owner', orderId: payload.orderId || '', notes: payload.notes || '', updatedAt: now_() };
+    sh.appendRow(HOTEL_HEADERS.Availability.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
   });
   return { ok: true, blocked: dates.length };
 }
 
 function createHotelOrder_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.ORDERS, ['orderId','source','createdAt','propertyId','roomId','assignedRoomId','checkin','checkout','nights','adults','children','guestName','guestEmail','guestPhone','amount','currency','confirmationMode','reservationStatus','paymentStatus','paypalOrderId','paypalAuthorizationId','rawJson']);
+  const sh = sheet_(HOTEL_SHEETS.ORDERS, HOTEL_HEADERS.Hotel_Orders);
   const orderId = uuid_('HOT');
-  sh.appendRow([
-    orderId, payload.source || 'hoteles', new Date(), payload.propertyId || '', payload.roomId || '', payload.assignedRoomId || '', payload.checkin || '', payload.checkout || '', payload.nights || '', payload.adults || '', payload.children || '',
-    payload.guestName || '', payload.guestEmail || '', payload.guestPhone || '', payload.amount || '', payload.currency || 'USD', payload.confirmationMode || 'instant', payload.reservationStatus || 'pending', payload.paymentStatus || 'PENDING', payload.paypalOrderId || '', payload.paypalAuthorizationId || '', JSON.stringify(payload)
-  ]);
+  const rowObj = { orderId: orderId, source: payload.source || 'hoteles', createdAt: now_(), propertyId: payload.propertyId || '', roomId: payload.roomId || '', assignedRoomId: payload.assignedRoomId || '', checkin: payload.checkin || '', checkout: payload.checkout || '', nights: payload.nights || '', adults: payload.adults || '', children: payload.children || '', guestName: payload.guestName || '', guestEmail: payload.guestEmail || '', guestPhone: payload.guestPhone || '', amount: payload.amount || '', currency: payload.currency || 'USD', confirmationMode: payload.confirmationMode || 'instant', reservationStatus: payload.reservationStatus || 'pending', paymentStatus: payload.paymentStatus || 'PENDING', paypalOrderId: payload.paypalOrderId || '', paypalAuthorizationId: payload.paypalAuthorizationId || '', rawJson: JSON.stringify(payload) };
+  sh.appendRow(HOTEL_HEADERS.Hotel_Orders.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
   if (payload.autoBlockDates && payload.checkin && payload.checkout) {
     blockDates_({ propertyId: payload.propertyId, roomId: payload.assignedRoomId || payload.roomId || '', dates: makeDateRange_(payload.checkin, payload.checkout), status: 'confirmed_reservation', source: payload.source || 'hoteles', orderId: orderId });
   }
@@ -154,20 +348,11 @@ function createHotelOrder_(payload) {
 }
 
 function updateConfirmationMode_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, ['propertyId','ownerUserId','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt']);
-  const values = sh.getDataRange().getValues();
-  const headers = values[0] || [];
-  const idCol = headers.indexOf('propertyId');
-  const modeCol = headers.indexOf('confirmationMode');
-  const updatedCol = headers.indexOf('updatedAt');
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][idCol] === payload.propertyId) {
-      sh.getRange(i + 1, modeCol + 1).setValue(payload.confirmationMode || 'manual');
-      if (updatedCol >= 0) sh.getRange(i + 1, updatedCol + 1).setValue(new Date());
-      return { ok: true, propertyId: payload.propertyId, confirmationMode: payload.confirmationMode || 'manual' };
-    }
-  }
-  return { ok: false, error: 'Alojamiento no encontrado' };
+  const found = findRowBy_(HOTEL_SHEETS.PROPERTIES, 'propertyId', payload.propertyId);
+  if (!found) return { ok: false, error: 'Alojamiento no encontrado' };
+  setCellByHeader_(found, 'confirmationMode', payload.confirmationMode || 'manual');
+  setCellByHeader_(found, 'updatedAt', now_());
+  return { ok: true, propertyId: payload.propertyId, confirmationMode: payload.confirmationMode || 'manual' };
 }
 
 function makeDateRange_(from, to) {
