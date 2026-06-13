@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V48
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V52
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -24,7 +24,7 @@ const HOTEL_SHEETS = {
 };
 
 const HOTEL_HEADERS = {
-  Hotel_Users: ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','verificationToken','verifiedAt','sessionToken','lastLoginAt','createdAt','updatedAt'],
+  Hotel_Users: ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','verificationToken','verifiedAt','verificationEmailSentAt','verificationEmailError','sessionToken','lastLoginAt','createdAt','updatedAt'],
   Properties: ['propertyId','ownerUserId','ownerEmail','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt'],
   Rooms: ['roomId','propertyId','ownerUserId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt'],
   Availability: ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt'],
@@ -34,32 +34,58 @@ const HOTEL_HEADERS = {
 };
 
 function doGet(e) {
-  const action = String((e && e.parameter && e.parameter.action) || 'catalog');
-  if (action === 'verify_owner') return verifyHotelOwner_(e.parameter.token || '');
-  if (action === 'catalog') return jsonResponse(getHotelCatalog_());
-  if (action === 'availability') return jsonResponse(getAvailability_(e.parameter || {}));
-  return jsonResponse({ ok: false, error: 'Acción no válida' });
+  const params = (e && e.parameter) || {};
+  const callback = String(params.callback || '').trim();
+  let payload = {};
+  if (params.payload) {
+    try { payload = JSON.parse(decodeURIComponent(params.payload)); }
+    catch (err) { payload = { action: params.action || '', parseError: String(err) }; }
+  }
+  const action = String(payload.action || params.action || 'catalog');
+
+  if (action === 'verify_owner') return verifyHotelOwner_(params.token || payload.token || '');
+
+  const result = dispatchHotelAction_(action, payload && Object.keys(payload).length ? payload : params);
+  if (callback) return jsonpResponse_(callback, result);
+  return jsonResponse(result);
 }
 
 function doPost(e) {
-  const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-  const action = payload.action || '';
-  if (action === 'register_owner') return jsonResponse(registerHotelOwner_(payload));
-  if (action === 'login_owner') return jsonResponse(loginHotelOwner_(payload));
-  if (action === 'get_owner') return jsonResponse(getHotelOwner_(payload));
-  if (action === 'get_properties') return jsonResponse(getProperties_(payload));
-  if (action === 'update_owner') return jsonResponse(updateHotelOwner_(payload));
-  if (action === 'change_password') return jsonResponse(changeHotelOwnerPassword_(payload));
-  if (action === 'create_property') return jsonResponse(createProperty_(payload));
-  if (action === 'create_room') return jsonResponse(createRoom_(payload));
-  if (action === 'update_confirmation_mode') return jsonResponse(updateConfirmationMode_(payload));
-  if (action === 'create_order') return jsonResponse(createHotelOrder_(payload));
-  if (action === 'block_dates') return jsonResponse(blockDates_(payload));
-  return jsonResponse({ ok: false, error: 'Acción no válida' });
+  let payload = {};
+  try { payload = JSON.parse((e && e.postData && e.postData.contents) || '{}'); }
+  catch (err) { return jsonResponse({ ok: false, error: 'JSON inválido: ' + err.message }); }
+  return jsonResponse(dispatchHotelAction_(payload.action || '', payload));
+}
+
+function dispatchHotelAction_(action, payload) {
+  try {
+    if (action === 'register_owner') return registerHotelOwner_(payload);
+    if (action === 'login_owner') return loginHotelOwner_(payload);
+    if (action === 'get_owner') return getHotelOwner_(payload);
+    if (action === 'get_properties') return getProperties_(payload);
+    if (action === 'update_owner') return updateHotelOwner_(payload);
+    if (action === 'change_password') return changeHotelOwnerPassword_(payload);
+    if (action === 'create_property') return createProperty_(payload);
+    if (action === 'create_room') return createRoom_(payload);
+    if (action === 'update_confirmation_mode') return updateConfirmationMode_(payload);
+    if (action === 'create_order') return createHotelOrder_(payload);
+    if (action === 'block_dates') return blockDates_(payload);
+    if (action === 'catalog') return getHotelCatalog_();
+    if (action === 'availability') return getAvailability_(payload);
+    if (action === 'resend_verification') return resendVerification_(payload);
+    return { ok: false, error: 'Acción no válida: ' + action };
+  } catch (err) {
+    return { ok: false, error: err && err.message ? err.message : String(err) };
+  }
 }
 
 function jsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+function jsonpResponse_(callback, data) {
+  const safeCallback = String(callback || '').replace(/[^a-zA-Z0-9_.$]/g, '');
+  const body = safeCallback + '(' + JSON.stringify(data || {}) + ');';
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 function ss_() { return SpreadsheetApp.getActiveSpreadsheet(); }
 function uuid_(prefix) { return prefix + '-' + Utilities.getUuid().slice(0, 8).toUpperCase(); }
@@ -178,14 +204,26 @@ function registerHotelOwner_(payload) {
     propertyLimit: 3,
     verificationToken: token,
     verifiedAt: '',
+    verificationEmailSentAt: '',
+    verificationEmailError: '',
     sessionToken: '',
     lastLoginAt: '',
     createdAt: now_(),
     updatedAt: now_()
   };
   sh.appendRow(HOTEL_HEADERS.Hotel_Users.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
-  sendVerificationEmail_(rowObj, token);
-  return { ok: true, userId: userId, status: 'pending_email_verification', message: 'verification_email_sent' };
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  try {
+    sendVerificationEmail_(rowObj, token);
+    if (found) {
+      setCellByHeader_(found, 'verificationEmailSentAt', now_());
+      setCellByHeader_(found, 'verificationEmailError', '');
+    }
+    return { ok: true, userId: userId, status: 'pending_email_verification', message: 'verification_email_sent' };
+  } catch (err) {
+    if (found) setCellByHeader_(found, 'verificationEmailError', err && err.message ? err.message : String(err));
+    return { ok: true, userId: userId, status: 'pending_email_verification', emailWarning: true, error: 'Registro guardado, pero no se pudo enviar el correo: ' + (err && err.message ? err.message : String(err)) };
+  }
 }
 
 function sendVerificationEmail_(owner, token) {
@@ -210,6 +248,37 @@ function sendVerificationEmail_(owner, token) {
 }
 function escapeHtml_(text) {
   return String(text || '').replace(/[&<>"]/g, function(c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]); });
+}
+
+function resendVerification_(payload) {
+  const email = String(payload.email || payload.ownerEmail || '').trim().toLowerCase();
+  if (!email) return { ok: false, error: 'Correo requerido.' };
+  const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
+  if (!found) return { ok: false, error: 'Usuario no encontrado.' };
+  const owner = found.object;
+  let token = owner.verificationToken || Utilities.getUuid();
+  if (!owner.verificationToken) setCellByHeader_(found, 'verificationToken', token);
+  try {
+    sendVerificationEmail_(owner, token);
+    setCellByHeader_(found, 'verificationEmailSentAt', now_());
+    setCellByHeader_(found, 'verificationEmailError', '');
+    return { ok: true, message: 'verification_email_sent' };
+  } catch (err) {
+    setCellByHeader_(found, 'verificationEmailError', err && err.message ? err.message : String(err));
+    return { ok: false, error: 'No se pudo enviar el correo: ' + (err && err.message ? err.message : String(err)) };
+  }
+}
+
+function testHotelVerificationEmail() {
+  // Ejecuta esta función una vez desde Apps Script para autorizar MailApp.
+  const email = Session.getActiveUser().getEmail();
+  MailApp.sendEmail({
+    to: email,
+    subject: 'Prueba de correo My Cusco Trip Hoteles',
+    htmlBody: '<p>MailApp está autorizado correctamente para el marketplace hotelero.</p>',
+    name: 'My Cusco Trip'
+  });
+  return { ok: true, sentTo: email };
 }
 
 function verifyHotelOwner_(token) {

@@ -28,12 +28,41 @@
     match: !!value && value === confirm
   });
 
-  async function post(action, payload) {
+  function jsonpRequest(action, payload = {}) {
     const API = getApiUrl();
-    if (!API) return { ok: false, configMissing: true, error: 'No se encontró la URL del Apps Script. Revisa hoteles/assets/js/config.js o la variable inline del HTML.' };
+    if (!API) return Promise.resolve({ ok: false, configMissing: true, error: 'No se encontró la URL del Apps Script. Revisa hoteles/assets/js/config.js o la variable inline del HTML.' });
+    return new Promise((resolve) => {
+      const callbackName = `mctHotelJsonp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement('script');
+      const timer = setTimeout(() => {
+        cleanup();
+        resolve({ ok: false, error: 'No se recibió respuesta del Apps Script. Revisa que el despliegue sea Web App y tenga acceso para cualquier usuario.' });
+      }, 20000);
+      function cleanup() {
+        clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      }
+      window[callbackName] = (data) => {
+        cleanup();
+        resolve(data || { ok: false, error: 'Respuesta vacía del Apps Script.' });
+      };
+      const data = encodeURIComponent(JSON.stringify({ action, ...payload }));
+      const sep = API.includes('?') ? '&' : '?';
+      script.src = `${API}${sep}action=${encodeURIComponent(action)}&payload=${data}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+      script.onerror = () => {
+        cleanup();
+        resolve({ ok: false, error: 'No se pudo cargar el Apps Script. Revisa la URL /exec y los permisos de implementación.' });
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  async function post(action, payload) {
+    // Usamos JSONP porque Google Apps Script puede guardar datos pero bloquear la lectura por CORS desde GitHub Pages.
+    // Con JSONP recibimos una respuesta real y evitamos falsos errores de conexión.
     try {
-      const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...payload }) });
-      return await res.json();
+      return await jsonpRequest(action, payload || {});
     } catch (error) {
       console.error('Hotel marketplace API error', error);
       return { ok: false, error: 'No se pudo conectar con Google Sheet. Revisa la URL del Apps Script.' };
@@ -360,6 +389,10 @@
       const payload = serialize(register);
       const result = await post('register_owner', payload);
       if (!result.ok) { showMsg('#hotelOwnerRegisterMsg', result.error || 'No se pudo enviar el registro.', false); return; }
+      if (result.emailWarning) {
+        showMsg('#hotelOwnerRegisterMsg', 'Tu registro fue guardado, pero no se pudo enviar el correo de verificación. Revisa la autorización de MailApp en Apps Script y vuelve a enviar la verificación.', false);
+        return;
+      }
       showMsg('#hotelOwnerRegisterMsg', 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
     }
     if (login) {
