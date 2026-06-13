@@ -7,9 +7,9 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=46" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=47" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=46" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=47" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -28,14 +28,22 @@
       <section class="hotel-marketplace-panel hotel-admin-panel-content">
         <section class="hotel-panel-section is-active" data-hotel-panel-section="account">
           <div class="hotel-panel-section-title"><h2>Mi cuenta</h2></div>
-          <div class="hotel-account-summary">
-            <div><span>Nombres</span><strong id="accountName">Demo Hotelero</strong></div>
+          <div class="hotel-account-summary hotel-account-summary--complete">
+            <div><span>Tipo de cuenta</span><strong id="accountType">Persona natural</strong></div>
+            <div><span>Nombres del representante</span><strong id="accountFirstName">Demo</strong></div>
+            <div><span>Apellidos del representante</span><strong id="accountLastName">Hotelero</strong></div>
+            <div><span>Tipo y número de documento</span><strong id="accountDocument">DNI · 00000000</strong></div>
+            <div><span>Nacionalidad</span><strong id="accountNationality">Perú</strong></div>
+            <div><span>Celular / WhatsApp</span><strong id="accountPhone">+51 000000000</strong></div>
             <div><span>Correo</span><strong id="accountEmail">hotel@demo.com</strong></div>
-            <div><span>Razón social</span><strong id="accountBusiness">Pendiente de completar</strong></div>
-            <div><span>Celular</span><strong id="accountPhone">+51 000000000</strong></div>
             <div><span>Página web</span><strong id="accountWebsite">—</strong></div>
+            <div data-company-account><span>Razón social</span><strong id="accountBusiness">Pendiente de completar</strong></div>
+            <div data-company-account><span>RUC</span><strong id="accountTaxId">—</strong></div>
           </div>
-          <button type="button" class="hotel-admin-btn" data-open-market-modal="accountModal"><i class="fa-solid fa-pen"></i> Editar mi información</button>
+          <div class="hotel-panel-toolbar">
+            <button type="button" class="hotel-admin-btn" data-open-market-modal="accountModal"><i class="fa-solid fa-pen"></i> Editar mi información</button>
+            <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost" data-open-market-modal="passwordModal"><i class="fa-solid fa-key"></i> Cambiar contraseña</button>
+          </div>
         </section>
 
         <section class="hotel-panel-section" data-hotel-panel-section="properties">
@@ -94,7 +102,9 @@
               <button type="button" class="hotel-admin-btn hotel-admin-btn--small" data-open-market-modal="confirmationModal"><i class="fa-solid fa-pen"></i> Editar modo</button>
             </article>
           </div>
-          <p class="hotel-inline-alert">Puedes manejar confirmación instantánea o manual por alojamiento. En modo manual, el cliente autoriza la reserva y el cobro se confirma cuando el administrador aprueba la solicitud.</p>
+          <div class="hotel-confirmation-note hotel-inline-alert">
+            <strong>Recomendación:</strong> usa confirmación instantánea siempre que tu disponibilidad esté actualizada. La confirmación manual permite revisar cada solicitud antes de aprobarla, pero durante ese tiempo el cliente podría elegir otro alojamiento.
+          </div>
         </section>
         <p id="hotelPanelMsg" class="hotel-inline-alert" hidden></p>
       </section>
@@ -128,13 +138,20 @@
           </select>
         </label>
         <label class="full">Dirección <input name="address" placeholder="Dirección visible para el cliente"></label>
-        <label class="full">Ubicación en Google Maps <input name="mapUrl" placeholder="Pega aquí el enlace de Google Maps del alojamiento"></label>
+        <div class="full hotel-map-field">
+          <label>Ubicación en Google Maps <input name="mapUrl" placeholder="Pega aquí el enlace de Google Maps del alojamiento"></label>
+          <div class="hotel-map-actions">
+            <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost hotel-admin-btn--small" data-use-current-location><i class="fa-solid fa-location-crosshairs"></i> Usar mi ubicación</button>
+            <a class="hotel-admin-btn hotel-admin-btn--ghost hotel-admin-btn--small" href="https://www.google.com/maps" target="_blank" rel="noopener"><i class="fa-solid fa-map-location-dot"></i> Abrir Google Maps</a>
+          </div>
+          <p class="hotel-form-help">Para el MVP puedes pegar el enlace de Google Maps. Más adelante podemos integrar un mapa interactivo con Google Maps Platform/Places API para elegir el punto dentro del formulario.</p>
+        </div>
         <label class="full">Descripción <textarea name="description" placeholder="Describe tu alojamiento, ubicación, estilo y beneficios principales"></textarea></label>
         <label class="full">Página web del alojamiento <input name="website" placeholder="https://... / Instagram / Facebook"></label>
 
         <div class="full hotel-modal-subtitle">Fotos del alojamiento</div>
         <label class="full">Fotos del alojamiento <input name="photoFiles" type="file" accept="image/*" multiple data-min-files="5"></label>
-        <p class="full hotel-form-help">Sube mínimo 5 fotos generales del alojamiento. Para el MVP, se pueden guardar en Google Drive vía Apps Script o usar URLs públicas.</p>
+        <p class="full hotel-form-help"><strong>Sube mínimo 5 fotos generales del alojamiento.</strong> Para el MVP, se pueden guardar en Google Drive vía Apps Script o usar URLs públicas.</p>
         <label class="full">URLs de galería <textarea name="galleryUrls" placeholder="Una URL por línea. Útil si ya tienes fotos publicadas en Google Drive, Cloudinary, tu web o un CDN."></textarea></label>
 
         <div class="full hotel-modal-subtitle">Confirmación y comisión</div>
@@ -194,16 +211,57 @@
       <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="account">
         <label>Nombres <input name="firstName" data-letters-only placeholder="Nombres"></label>
         <label>Apellidos <input name="lastName" data-letters-only placeholder="Apellidos"></label>
-        <label>Razón social <input name="businessName" placeholder="Razón social"></label>
+        <label>Tipo de documento
+          <select name="docType">
+            <option value="DNI">DNI</option>
+            <option value="PASSPORT">Pasaporte</option>
+            <option value="CE">Carnet de extranjería</option>
+            <option value="OTHER">Otro</option>
+          </select>
+        </label>
+        <label>Número de documento <input name="docNumber" data-document-input placeholder="Documento"></label>
+        <label class="full">Nacionalidad <select name="nationality" data-country-select></select></label>
+        <label>Razón social <input name="businessName" placeholder="Razón social, si aplica"></label>
+        <label>RUC <input name="taxId" data-ruc-only inputmode="numeric" maxlength="11" placeholder="11 dígitos, si aplica"></label>
         <label>Correo <input name="email" type="email" placeholder="correo@hotel.com"></label>
+        <label>Página web <input name="website" placeholder="https://..."></label>
         <label class="full">Celular / WhatsApp
           <div class="hotel-phone-combo">
             <select name="phoneCode" data-phone-code-select></select>
             <input name="phone" data-phone-only inputmode="numeric" placeholder="Número">
           </div>
         </label>
-        <label class="full">Página web <input name="website" placeholder="https://..."></label>
         <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar información</button></div>
+      </form>
+    </article>
+  </div>
+
+
+  <div class="hotel-market-modal" id="passwordModal" hidden>
+    <div class="hotel-market-modal__backdrop" data-close-market-modal></div>
+    <article class="hotel-market-modal__dialog">
+      <header><h2>Cambiar contraseña</h2><button type="button" data-close-market-modal><i class="fa-solid fa-xmark"></i></button></header>
+      <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="password">
+        <label class="full">Contraseña actual
+          <div class="hotel-password-field">
+            <input name="currentPassword" id="hotelCurrentPassword" type="password" required placeholder="Contraseña actual" autocomplete="current-password">
+            <button type="button" data-toggle-password="hotelCurrentPassword" aria-label="Ver contraseña"><i class="fa-regular fa-eye"></i></button>
+          </div>
+        </label>
+        <label>Nueva contraseña
+          <div class="hotel-password-field">
+            <input name="newPassword" id="hotelPanelNewPassword" type="password" required minlength="8" placeholder="Nueva contraseña" autocomplete="new-password">
+            <button type="button" data-toggle-password="hotelPanelNewPassword" aria-label="Ver contraseña"><i class="fa-regular fa-eye"></i></button>
+          </div>
+        </label>
+        <label>Confirmar nueva contraseña
+          <div class="hotel-password-field">
+            <input name="confirmPassword" id="hotelPanelConfirmPassword" type="password" required minlength="8" placeholder="Repite la contraseña" autocomplete="new-password">
+            <button type="button" data-toggle-password="hotelPanelConfirmPassword" aria-label="Ver contraseña"><i class="fa-regular fa-eye"></i></button>
+          </div>
+        </label>
+        <p class="full hotel-form-help">Debe tener mínimo 8 caracteres, una mayúscula, un número y un carácter especial.</p>
+        <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Actualizar contraseña</button></div>
       </form>
     </article>
   </div>
@@ -224,7 +282,9 @@
             <option value="manual">Confirmación manual por anfitrión</option>
           </select>
         </label>
-        <p class="full hotel-inline-alert">Instantánea: se captura el pago al reservar. Manual: se autoriza el pago y se captura solo cuando el alojamiento confirma.</p>
+        <div class="full hotel-confirmation-note hotel-inline-alert">
+          <strong>Recomendación:</strong> la confirmación instantánea ayuda a cerrar más reservas porque el cliente recibe respuesta inmediata. La confirmación manual es útil si necesitas revisar disponibilidad caso por caso, pero el cliente podría cambiar de decisión mientras espera tu aprobación.
+        </div>
         <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar modo</button></div>
       </form>
     </article>
@@ -238,7 +298,7 @@
     document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); window.MCTHotelMarketplace?.init?.(); });
     window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
   </script>
-  <script src="./assets/js/components/header.js?v=46"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=46"></script>
+  <script src="./assets/js/components/header.js?v=47"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=47"></script>
 </body>
 </html>

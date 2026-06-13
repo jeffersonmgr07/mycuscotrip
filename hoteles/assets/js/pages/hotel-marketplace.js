@@ -96,8 +96,8 @@
     if (target.matches('[data-letters-only]')) target.value = sanitizeLetters(target.value);
     if (target.matches('[data-phone-only]')) target.value = sanitizeDigits(target.value).slice(0, 15);
     if (target.matches('[data-ruc-only]')) target.value = sanitizeDigits(target.value).slice(0, 11);
-    if (target.matches('[data-document-input]')) target.value = sanitizeDoc(target.value, $('#hotelOwnerDocType')?.value || '');
-    if (target.matches('#hotelOwnerDocType')) {
+    if (target.matches('[data-document-input]')) { const form = target.closest('form'); const docType = form?.querySelector('[name="docType"]')?.value || $('#hotelOwnerDocType')?.value || ''; target.value = sanitizeDoc(target.value, docType); }
+    if (target.matches('#hotelOwnerDocType, select[name="docType"]')) {
       const docInput = $('#hotelOwnerDocNumber');
       if (docInput) {
         docInput.value = sanitizeDoc(docInput.value, target.value);
@@ -119,7 +119,7 @@
       if (field.matches('[data-ruc-only]') && value && !/^\d{11}$/.test(value)) { ok = false; label?.classList.add('has-error'); }
       if (field.matches('[data-phone-only]') && value && !/^\d{6,15}$/.test(value)) { ok = false; label?.classList.add('has-error'); }
       if (field.matches('[data-document-input]')) {
-        const docType = $('#hotelOwnerDocType')?.value || '';
+        const docType = field.closest('form')?.querySelector('[name="docType"]')?.value || $('#hotelOwnerDocType')?.value || '';
         if (docType === 'DNI' && !/^\d{8}$/.test(value)) { ok = false; label?.classList.add('has-error'); }
       }
     });
@@ -139,6 +139,15 @@
         updatePasswordRules();
       }
     }
+    if (form.dataset.marketplaceForm === 'password') {
+      const pass = form.elements.newPassword?.value || '';
+      const confirm = form.elements.confirmPassword?.value || '';
+      if (!isStrongPassword(pass) || pass !== confirm) {
+        ok = false;
+        form.elements.newPassword?.closest('label')?.classList.add('has-error');
+        form.elements.confirmPassword?.closest('label')?.classList.add('has-error');
+      }
+    }
     return ok;
   }
 
@@ -147,6 +156,30 @@
   function switchPanelTab(tab) {
     $$('[data-hotel-panel-tab]').forEach(btn => btn.classList.toggle('is-active', btn.dataset.hotelPanelTab === tab));
     $$('[data-hotel-panel-section]').forEach(sec => sec.classList.toggle('is-active', sec.dataset.hotelPanelSection === tab));
+  }
+
+
+  function useCurrentLocation(button) {
+    if (!navigator.geolocation) {
+      alert('Tu navegador no permite obtener ubicación automáticamente. Puedes abrir Google Maps y pegar el enlace.');
+      return;
+    }
+    button.disabled = true;
+    const original = button.innerHTML;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Obteniendo...';
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      const form = button.closest('form');
+      const input = form?.querySelector('[name="mapUrl"]');
+      if (input) input.value = `https://www.google.com/maps?q=${lat},${lng}`;
+      button.disabled = false;
+      button.innerHTML = original;
+    }, () => {
+      button.disabled = false;
+      button.innerHTML = original;
+      alert('No se pudo obtener tu ubicación. Revisa permisos del navegador o pega el enlace de Google Maps manualmente.');
+    }, { enableHighAccuracy: true, timeout: 10000 });
   }
 
   function init() {
@@ -165,6 +198,8 @@
       if (opener) openModal(opener.dataset.openMarketModal);
       const passwordToggle = e.target.closest('[data-toggle-password]');
       if (passwordToggle) togglePassword(passwordToggle);
+      const currentLocation = e.target.closest('[data-use-current-location]');
+      if (currentLocation) useCurrentLocation(currentLocation);
       if (e.target.closest('[data-close-market-modal]')) closeModal();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
@@ -194,7 +229,7 @@
       if (!validateForm(marketForm)) { showMsg('#hotelPanelMsg', 'Revisa los campos obligatorios antes de guardar.', false); return; }
       const type = marketForm.dataset.marketplaceForm;
       const payload = serialize(marketForm);
-      let action = type === 'property' ? 'create_property' : type === 'room' ? 'create_room' : type === 'availability' ? 'block_dates' : type === 'account' ? 'update_owner' : 'update_confirmation_mode';
+      let action = type === 'property' ? 'create_property' : type === 'room' ? 'create_room' : type === 'availability' ? 'block_dates' : type === 'account' ? 'update_owner' : type === 'password' ? 'change_password' : 'update_confirmation_mode';
       if (type === 'availability') payload.dates = dateRange(payload.from, payload.to);
       if (type === 'property') {
         const galleryCount = String(payload.galleryUrls || '').split('\n').map(v => v.trim()).filter(Boolean).length;

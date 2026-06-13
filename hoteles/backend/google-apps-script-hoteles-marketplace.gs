@@ -33,6 +33,7 @@ function doPost(e) {
   const action = payload.action || '';
   if (action === 'register_owner') return jsonResponse(registerHotelOwner_(payload));
   if (action === 'update_owner') return jsonResponse(updateHotelOwner_(payload));
+  if (action === 'change_password') return jsonResponse(changeHotelOwnerPassword_(payload));
   if (action === 'create_property') return jsonResponse(createProperty_(payload));
   if (action === 'create_room') return jsonResponse(createRoom_(payload));
   if (action === 'update_confirmation_mode') return jsonResponse(updateConfirmationMode_(payload));
@@ -97,6 +98,14 @@ function registerHotelOwner_(payload) {
 function updateHotelOwner_(payload) {
   // MVP: registrar la actualización como evento simple. En siguiente etapa se busca userId y se actualiza fila.
   return { ok: true, message: 'Actualización recibida', payload: payload };
+}
+
+
+function changeHotelOwnerPassword_(payload) {
+  // MVP: en producción se debe buscar el usuario autenticado, validar contraseña actual
+  // y guardar solo hash. Nunca guardar contraseñas en texto plano.
+  if (!payload.newPassword) return { ok: false, error: 'Nueva contraseña requerida' };
+  return { ok: true, message: 'Solicitud de cambio de contraseña recibida' };
 }
 
 function createProperty_(payload) {
