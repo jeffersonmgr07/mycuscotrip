@@ -9,9 +9,9 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=44" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=45" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=44" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=45" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -37,20 +37,24 @@
             <div class="hotel-hero-date-wrap">
               <input id="hotelFilterCheckin" type="hidden" />
               <input id="hotelFilterCheckout" type="hidden" />
-              <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkin">
+              <label class="hotel-hero-date-field">
                 <span>Entrada</span>
-                <strong id="heroCheckinLabel">Seleccionar</strong>
-              </button>
-              <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkout">
+                <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkin">
+                  <strong id="heroCheckinLabel">Seleccionar</strong>
+                </button>
+              </label>
+              <label class="hotel-hero-date-field">
                 <span>Salida</span>
-                <strong id="heroCheckoutLabel">Seleccionar</strong>
-              </button>
+                <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkout">
+                  <strong id="heroCheckoutLabel">Seleccionar</strong>
+                </button>
+              </label>
               <div id="heroRangeCalendar" class="hotel-range-calendar hotel-range-calendar--hero" hidden></div>
             </div>
             <label>
               <span>Categoría</span>
               <select id="hotelCategoryFilter">
-                <option value="all">Todas las categorías</option>
+                <option value="all">Todas</option>
                 <option value="3">3 estrellas</option>
                 <option value="4">4 estrellas</option>
                 <option value="5">5 estrellas</option>
@@ -109,12 +113,12 @@
     document.addEventListener('DOMContentLoaded', initializeLayout);
   </script>
   <script src="./assets/js/i18n.js"></script>
-  <script src="./assets/js/components/header.js?v=44"></script>
+  <script src="./assets/js/components/header.js?v=45"></script>
   <script>
     window.MCT_HOTEL_APPS_SCRIPT_URL = "";
     window.MCT_HOTEL_PAYPAL_CLIENT_ID = "sb";
   </script>
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
-  <script src="./assets/js/pages/hoteles.js?v=44"></script>
+  <script src="./assets/js/pages/hoteles.js?v=45"></script>
 </body>
 </html>

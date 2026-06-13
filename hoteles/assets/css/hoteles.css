@@ -1250,3 +1250,201 @@
   .hotel-admin-form-grid { grid-template-columns: 1fr; }
   .hotel-marketplace-page { padding-top: 110px; }
 }
+
+/* V45 - Hero refinado + panel hotelero marketplace */
+.hotels-section,
+.hotels-grid,
+.hotel-card { position: relative; z-index: 1; }
+.hotels-search-box--marketplace {
+  grid-template-columns: 170px minmax(150px, .78fr) minmax(250px, .95fr) 145px 118px;
+  align-items: end;
+  overflow: visible;
+  z-index: 50;
+}
+.hotels-search-box--marketplace label > span,
+.hotel-hero-date-field > span {
+  padding-left: 20px;
+  line-height: 1;
+}
+.hotels-search-box__name input { min-width: 0; }
+.hotel-hero-date-wrap {
+  position: relative;
+  overflow: visible;
+  z-index: 70;
+}
+.hotel-hero-date-field {
+  display: grid;
+  gap: 6px;
+  font-weight: 800;
+  min-width: 0;
+}
+.hotel-hero-date-field > span {
+  font-size: .76rem;
+  color: rgba(255,255,255,.8);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.hotel-hero-date-pill {
+  min-height: 54px;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 17px;
+  background: #fff;
+  color: var(--hotel-green);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,.05);
+}
+.hotel-hero-date-pill strong { font-size: .9rem; white-space: nowrap; }
+.hotel-range-calendar--hero {
+  z-index: 9999 !important;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  isolation: isolate;
+}
+.hotel-hero-search-btn { min-height: 54px; }
+.hotel-admin-auth-body .hotel-marketplace-page {
+  background:
+    linear-gradient(rgba(6,40,3,.78), rgba(6,40,3,.78)),
+    url('../img/quote/coupon-bg.png') center/cover no-repeat fixed;
+}
+.hotel-auth-page { min-height: 100vh; display: flex; align-items: center; }
+.hotel-auth-shell { width: min(920px, calc(100% - 28px)); }
+.hotel-auth-card { padding: 0; overflow: hidden; }
+.hotel-register-card { max-width: 920px; margin: auto; }
+.hotel-admin-titlebar,
+.hotel-panel-section-title,
+.hotel-market-modal__dialog > header {
+  background: var(--hotel-green);
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hotel-admin-titlebar h1,
+.hotel-panel-section-title h2,
+.hotel-market-modal__dialog > header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.18rem;
+  line-height: 1.2;
+}
+.hotel-admin-titlebar--single { justify-content: center; text-align: center; }
+.hotel-admin-form-grid--premium { padding: 20px; }
+.hotel-phone-combo {
+  display: grid;
+  grid-template-columns: minmax(116px, 150px) minmax(0, 1fr);
+  gap: 8px;
+}
+.hotel-admin-actions { align-items: center; }
+.hotel-admin-btn,
+.hotel-admin-btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  gap: 8px;
+  text-decoration: none;
+}
+.hotel-admin-btn--center { min-width: 150px; }
+.hotel-admin-form-grid label.has-error input,
+.hotel-admin-form-grid label.has-error select,
+.hotel-admin-form-grid label.has-error textarea {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192,57,43,.08);
+}
+.hotel-panel-page { background: #f5f9f5; }
+.hotel-admin-dashboard { align-items: start; }
+.hotel-admin-sidebar h1 { margin: 0 0 2px; color: var(--hotel-green); font-size: 1.25rem; }
+.hotel-admin-sidebar p { margin: 0 0 16px; color: #6a746d; font-weight: 800; }
+.hotel-marketplace-nav button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.hotel-marketplace-nav button.is-active {
+  background: var(--hotel-green);
+  color: #fff;
+  border-color: var(--hotel-green);
+}
+.hotel-panel-section { display: none; }
+.hotel-panel-section.is-active { display: block; }
+.hotel-panel-section-title {
+  border-radius: 18px 18px 0 0;
+  margin: -18px -18px 18px;
+}
+.hotel-account-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.hotel-account-summary div {
+  border: 1px solid rgba(6,40,3,.1);
+  background: #f8fbf8;
+  border-radius: 15px;
+  padding: 13px;
+  display: grid;
+  gap: 3px;
+}
+.hotel-account-summary span { color: #6b756f; font-weight: 850; font-size: .78rem; }
+.hotel-account-summary strong { color: var(--hotel-green); font-size: .98rem; }
+.hotel-panel-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.hotel-admin-empty-state {
+  border: 1px dashed rgba(6,40,3,.22);
+  border-radius: 20px;
+  padding: 24px;
+  color: var(--hotel-green);
+  background: #fbfdfb;
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+.hotel-admin-empty-state i { font-size: 2rem; }
+.hotel-market-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.hotel-market-modal[hidden] { display: none; }
+.hotel-market-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.48); }
+.hotel-market-modal__dialog {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: min(86vh, 820px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.32);
+}
+.hotel-market-modal__dialog > header { justify-content: space-between; position: sticky; top: 0; z-index: 3; }
+.hotel-market-modal__dialog > header button {
+  border: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  cursor: pointer;
+}
+@media (max-width: 1120px) {
+  .hotels-search-box--marketplace { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hotel-hero-search-btn { width: 100%; }
+}
+@media (max-width: 760px) {
+  .hotels-search-box--marketplace { grid-template-columns: 1fr; }
+  .hotel-hero-date-wrap { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .hotel-range-calendar--hero { left: 0; right: 0; transform: none; width: 100%; }
+  .hotel-phone-combo { grid-template-columns: 118px minmax(0, 1fr); }
+  .hotel-account-summary { grid-template-columns: 1fr; }
+  .hotel-admin-titlebar h1 { font-size: 1rem; }
+}
+.hotels-hero { position: relative; z-index: 120; overflow: visible; }
+.hotels-page { overflow: visible; }
