@@ -1,5 +1,12 @@
 (() => {
-  const API = window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL || '';
+  function getApiUrl() {
+    return String(
+      window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL ||
+      window.MCT_HOTEL_MARKETPLACE_CONFIG?.appsScriptUrl ||
+      localStorage.getItem('mctHotelMarketplaceAppsScriptUrl') ||
+      ''
+    ).trim();
+  }
   const COUNTRIES = ['Perú','Argentina','Bolivia','Brasil','Canadá','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Estados Unidos','Francia','Alemania','Italia','México','Países Bajos','Panamá','Paraguay','Reino Unido','Uruguay','Venezuela','Afganistán','Albania','Andorra','Angola','Antigua y Barbuda','Arabia Saudita','Argelia','Armenia','Australia','Austria','Azerbaiyán','Bahamas','Bangladés','Barbados','Bélgica','Belice','Benín','Bielorrusia','Bosnia y Herzegovina','Botsuana','Brunéi','Bulgaria','Burkina Faso','Burundi','Bután','Cabo Verde','Camboya','Camerún','Catar','Chad','China','Chipre','Ciudad del Vaticano','Comoras','Congo','Corea del Norte','Corea del Sur','Costa de Marfil','Croacia','Dinamarca','Dominica','Egipto','Emiratos Árabes Unidos','Eslovaquia','Eslovenia','Estonia','Etiopía','Filipinas','Finlandia','Fiyi','Gabón','Gambia','Georgia','Ghana','Granada','Grecia','Guatemala','Guinea','Guinea-Bisáu','Guinea Ecuatorial','Guyana','Haití','Honduras','Hungría','India','Indonesia','Irak','Irán','Irlanda','Islandia','Israel','Jamaica','Japón','Jordania','Kazajistán','Kenia','Kirguistán','Kiribati','Kuwait','Laos','Lesoto','Letonia','Líbano','Liberia','Libia','Liechtenstein','Lituania','Luxemburgo','Macedonia del Norte','Madagascar','Malasia','Malaui','Maldivas','Malí','Malta','Marruecos','Mauricio','Mauritania','Micronesia','Moldavia','Mónaco','Mongolia','Montenegro','Mozambique','Myanmar','Namibia','Nauru','Nepal','Nicaragua','Níger','Nigeria','Noruega','Nueva Zelanda','Omán','Pakistán','Palaos','Palestina','Papúa Nueva Guinea','Polonia','Portugal','República Centroafricana','República Checa','República Democrática del Congo','República Dominicana','Ruanda','Rumanía','Rusia','Samoa','San Cristóbal y Nieves','San Marino','San Vicente y las Granadinas','Santa Lucía','Santo Tomé y Príncipe','Senegal','Serbia','Seychelles','Sierra Leona','Singapur','Siria','Somalia','Sri Lanka','Sudáfrica','Sudán','Sudán del Sur','Suecia','Suiza','Surinam','Tailandia','Tanzania','Tayikistán','Timor Oriental','Togo','Tonga','Trinidad y Tobago','Túnez','Turkmenistán','Turquía','Tuvalu','Ucrania','Uganda','Uzbekistán','Vanuatu','Vietnam','Yemen','Yibuti','Zambia','Zimbabue'];
   const PHONE_CODES = [['+51','PE'], ['+1','US/CA'], ['+54','AR'], ['+591','BO'], ['+55','BR'], ['+56','CL'], ['+57','CO'], ['+506','CR'], ['+593','EC'], ['+503','SV'], ['+34','ES'], ['+52','MX'], ['+507','PA'], ['+595','PY'], ['+44','UK'], ['+598','UY'], ['+58','VE'], ['+33','FR'], ['+49','DE'], ['+39','IT'], ['+31','NL']];
   const DESTINATIONS = ['Cusco','Aguas Calientes','Machu Picchu','Valle Sagrado','Ollantaytambo','Urubamba','Pisac','Lima','Paracas / Ica','Arequipa','Puno','Uyuni'];
@@ -21,7 +28,8 @@
   });
 
   async function post(action, payload) {
-    if (!API) return { ok: true, localOnly: true, message: 'Demo local: configura Apps Script para guardar en Google Sheets.' };
+    const API = getApiUrl();
+    if (!API) return { ok: false, configMissing: true, error: 'Falta configurar la URL del Apps Script en hoteles/assets/js/config.js.' };
     try {
       const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...payload }) });
       return await res.json();
@@ -281,7 +289,8 @@
     const panel = document.querySelector('.hotel-admin-dashboard');
     if (!panel) return;
     const session = getSession();
-    if (!session && API) {
+    const API = getApiUrl();
+    if (!session && getApiUrl()) {
       window.location.href = './login-admin-hotel.html';
       return;
     }
@@ -350,19 +359,13 @@
       const payload = serialize(register);
       const result = await post('register_owner', payload);
       if (!result.ok) { showMsg('#hotelOwnerRegisterMsg', result.error || 'No se pudo enviar el registro.', false); return; }
-      showMsg('#hotelOwnerRegisterMsg', result.localOnly ? result.message : 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
+      showMsg('#hotelOwnerRegisterMsg', 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
     }
     if (login) {
       event.preventDefault();
       if (!validateForm(login)) { showMsg('#hotelOwnerLoginMsg', 'Ingresa un correo válido y tu contraseña.', false); return; }
       const payload = serialize(login);
       const result = await post('login_owner', payload);
-      if (result.localOnly) {
-        setSession({ email: payload.email, registrationType: 'natural', status: 'demo' });
-        showMsg('#hotelOwnerLoginMsg', 'Acceso demo correcto. Redirigiendo al panel...');
-        setTimeout(() => { window.location.href = './panel-admin-hotel.html'; }, 500);
-        return;
-      }
       if (!result.ok) { showMsg('#hotelOwnerLoginMsg', result.error || 'No se pudo iniciar sesión.', false); return; }
       if (result.owner && !statusIsAllowed(result.owner.status)) {
         showMsg('#hotelOwnerLoginMsg', 'Tu cuenta aún no está activa. Revisa el correo de verificación o espera la aprobación.', false);
@@ -397,7 +400,7 @@
       }
       const result = await post(action, payload);
       if (!result.ok) { showMsg('#hotelPanelMsg', result.error || 'No se pudo guardar.', false); return; }
-      showMsg('#hotelPanelMsg', result.localOnly ? result.message : 'Cambios guardados correctamente.');
+      showMsg('#hotelPanelMsg', 'Cambios guardados correctamente.');
       closeModal();
       if (type === 'account') {
         const current = getSession() || {};
