@@ -214,7 +214,7 @@
             <input id="hotelCheckin" type="hidden" value="${tomorrow}">
             <input id="hotelCheckout" type="hidden" value="${dayAfter}">
             <div class="hotel-date-summary" id="hotelDateSummary"></div>
-            <div id="hotelRangeCalendar" class="hotel-range-calendar"></div>
+            <div id="hotelRangeCalendar" class="hotel-range-calendar hotel-range-calendar--popover" hidden></div>
             <div class="hotel-reservation-grid hotel-passenger-grid">
               <label>Adultos <input id="hotelAdults" type="number" min="1" max="12" value="2"></label>
               <label>Niños <input id="hotelChildren" type="number" min="0" max="8" value="0"></label>
@@ -240,8 +240,8 @@
     const mount = $('#hotelDateSummary');
     if (!mount) return;
     mount.innerHTML = `
-      <div><span>Entrada</span><strong>${formatHumanDate(checkin)}</strong></div>
-      <div><span>Salida</span><strong>${formatHumanDate(checkout)}</strong></div>
+      <button type="button" class="hotel-date-pill" data-open-hotel-calendar="checkin"><span>Entrada</span><strong>${formatHumanDate(checkin)}</strong></button>
+      <button type="button" class="hotel-date-pill" data-open-hotel-calendar="checkout"><span>Salida</span><strong>${formatHumanDate(checkout)}</strong></button>
       <div class="hotel-night-count"><span>Estadía</span><strong>${nights} noche${nights === 1 ? '' : 's'} de alojamiento</strong></div>`;
   }
 
@@ -277,7 +277,28 @@
       </div>
       <div class="hotel-calendar-weekdays">${WEEKDAYS.map((d) => `<span>${d}</span>`).join('')}</div>
       <div class="hotel-calendar-grid">${cells.join('')}</div>
-      <small class="hotel-calendar-help">Elige primero la entrada y luego la salida en el mismo calendario.</small>`;
+      <small class="hotel-calendar-help">Elige primero la entrada y luego la salida en el mismo calendario.</small>
+      <div class="hotel-calendar-actions">
+        <button type="button" class="hotel-calendar-apply" data-calendar-apply ${checkin && checkout ? '' : 'disabled'}>OK</button>
+      </div>`;
+  }
+
+
+  function openHotelCalendar() {
+    const calendar = $('#hotelRangeCalendar');
+    if (!calendar) return;
+    calendar.hidden = false;
+    calendar.classList.add('is-open');
+    window.setTimeout(() => {
+      calendar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 40);
+  }
+
+  function closeHotelCalendar() {
+    const calendar = $('#hotelRangeCalendar');
+    if (!calendar) return;
+    calendar.hidden = true;
+    calendar.classList.remove('is-open');
   }
 
   function moveCalendar(direction) {
@@ -618,10 +639,13 @@
       if (hotelBtn) openHotel(hotelBtn.dataset.viewHotel);
       const galleryBtn = event.target.closest('[data-hotel-gallery]');
       if (galleryBtn) moveGallery(galleryBtn.dataset.hotelGallery);
+      const openCalBtn = event.target.closest('[data-open-hotel-calendar]');
+      if (openCalBtn) openHotelCalendar();
       const navBtn = event.target.closest('[data-calendar-nav]');
       if (navBtn) moveCalendar(navBtn.dataset.calendarNav);
       const dayBtn = event.target.closest('[data-hotel-date]');
       if (dayBtn) selectCalendarDate(dayBtn.dataset.hotelDate);
+      if (event.target.closest('[data-calendar-apply]')) closeHotelCalendar();
       if (event.target.closest('[data-close-hotel-modal]')) closeHotel();
       if (event.target.closest('#hotelSearchAvailabilityBtn')) showAvailability();
       if (event.target.closest('#hotelManualPaymentBtn')) saveHotelOrder({ id: 'manual_pending', status: 'PENDING_PAYMENT' });

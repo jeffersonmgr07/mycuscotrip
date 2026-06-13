@@ -983,3 +983,89 @@
     grid-column: 2;
   }
 }
+
+
+/* V41 compact hotel date picker */
+.hotel-date-summary > button,
+.hotel-date-pill {
+  appearance: none;
+  border: 1px solid var(--hotel-border);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 15px;
+  display: grid;
+  gap: 2px;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.hotel-date-pill:hover {
+  border-color: rgba(6,40,3,.32);
+  box-shadow: 0 8px 18px rgba(6,40,3,.08);
+  transform: translateY(-1px);
+}
+.hotel-date-summary > button span,
+.hotel-date-pill span {
+  color: var(--hotel-muted);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: .68rem;
+}
+.hotel-date-summary > button strong,
+.hotel-date-pill strong {
+  color: var(--hotel-green);
+  font-size: .9rem;
+}
+.hotel-range-calendar[hidden] {
+  display: none !important;
+}
+.hotel-range-calendar--popover {
+  animation: hotelCalendarOpen .18s ease both;
+}
+@keyframes hotelCalendarOpen {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hotel-calendar-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.hotel-calendar-apply {
+  border: 0;
+  border-radius: 999px;
+  background: var(--hotel-cta-green);
+  color: #fff;
+  min-height: 38px;
+  padding: 0 22px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(6,40,3,.16);
+}
+.hotel-calendar-apply:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+@media (max-width: 620px) {
+  .hotel-date-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px;
+  }
+  .hotel-date-summary .hotel-night-count {
+    grid-column: 1 / -1;
+  }
+  .hotel-date-pill,
+  .hotel-date-summary > div {
+    min-height: 62px;
+    padding: 9px 10px;
+  }
+  .hotel-date-pill strong,
+  .hotel-date-summary strong {
+    font-size: .84rem;
+  }
+  .hotel-range-calendar {
+    margin-top: 2px;
+  }
+}
