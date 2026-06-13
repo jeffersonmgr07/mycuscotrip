@@ -4,6 +4,7 @@
       window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL ||
       window.MCT_HOTEL_MARKETPLACE_CONFIG?.appsScriptUrl ||
       localStorage.getItem('mctHotelMarketplaceAppsScriptUrl') ||
+      'https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec' ||
       ''
     ).trim();
   }
@@ -29,7 +30,7 @@
 
   async function post(action, payload) {
     const API = getApiUrl();
-    if (!API) return { ok: false, configMissing: true, error: 'Falta configurar la URL del Apps Script en hoteles/assets/js/config.js.' };
+    if (!API) return { ok: false, configMissing: true, error: 'No se encontró la URL del Apps Script. Revisa hoteles/assets/js/config.js o la variable inline del HTML.' };
     try {
       const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...payload }) });
       return await res.json();

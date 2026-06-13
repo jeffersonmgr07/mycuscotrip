@@ -299,7 +299,7 @@
     }
     document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); window.MCTHotelMarketplace?.init?.(); });
   </script>
-  <script src="./assets/js/components/header.js?v=49"></script>
+  <script src="./assets/js/components/header.js?v=51"></script>
   <script>
     function hotelPasswordToggleFallback(event) {
       const button = event.target.closest('[data-toggle-password]');
@@ -315,7 +315,12 @@
     }
     document.addEventListener('click', hotelPasswordToggleFallback, true);
   </script>
-  <script src="./assets/js/config.js?v=50"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=50"></script>
+  <script>
+    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec';
+    window.MCT_HOTEL_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec';
+    window.MCT_HOTEL_PAYPAL_CLIENT_ID = 'AUdRf58xVpVo-Iv_L_Je8UgE6ukF79cLynwRXUk3wU9WA4bfremVO0yRpkS3kFTUOE7O5ZOfoWMw8TlJ';
+  </script>
+  <script src="./assets/js/config.js?v=51"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=51"></script>
 </body>
 </html>
