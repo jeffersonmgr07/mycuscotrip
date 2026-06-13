@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de hoteleros | My Cusco Trip</title>
+  <link rel="icon" href="./assets/img/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=44" />
+  <link rel="stylesheet" href="./assets/css/footer.css" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=44" />
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="hotel-marketplace-page">
+    <div class="hotel-marketplace-shell">
+      <section class="hotel-marketplace-card">
+        <span class="hotels-kicker hotels-kicker--dark"><i class="fa-solid fa-user-tie"></i> Marketplace hotelero</span>
+        <h1>Registra tu alojamiento</h1>
+        <p>Empieza creando tu usuario hotelero. En esta primera etapa el registro queda preparado para enviarse a Google Sheets mediante Apps Script.</p>
+        <form id="hotelOwnerRegisterForm" class="hotel-admin-form-grid" autocomplete="on">
+          <label>Nombres <input name="firstName" required placeholder="Tus nombres"></label>
+          <label>Apellidos <input name="lastName" required placeholder="Tus apellidos"></label>
+          <label>Tipo de documento
+            <select name="docType" required>
+              <option value="DNI">DNI</option>
+              <option value="PASSPORT">Pasaporte</option>
+              <option value="CE">Carnet de extranjería</option>
+              <option value="OTHER">Otro</option>
+            </select>
+          </label>
+          <label>Número de documento <input name="docNumber" required placeholder="Número de documento"></label>
+          <label>Nacionalidad <input name="nationality" required value="Perú"></label>
+          <label>Correo <input name="email" type="email" required placeholder="correo@hotel.com"></label>
+          <label>Celular / WhatsApp <input name="phone" inputmode="numeric" required placeholder="Ej. 999888777"></label>
+          <label>Tipo de registro
+            <select name="accountType" required>
+              <option value="PERSON">Persona natural</option>
+              <option value="COMPANY">Empresa</option>
+            </select>
+          </label>
+          <label class="company-field">Razón social <input name="businessName" placeholder="Opcional si eres empresa"></label>
+          <label class="company-field">RUC <input name="taxId" inputmode="numeric" placeholder="Opcional"></label>
+          <div class="full hotel-admin-actions">
+            <button type="submit" class="hotel-admin-btn"><i class="fa-solid fa-paper-plane"></i> Enviar registro</button>
+            <a href="./login-hotelero.html" class="hotel-admin-btn hotel-admin-btn--ghost">Ya tengo cuenta</a>
+          </div>
+          <p id="hotelOwnerRegisterMsg" class="full hotel-inline-alert" hidden></p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div id="footer-container"></div>
+  <script>
+    async function loadComponent(componentName, targetId) {
+      try {
+        const response = await fetch(`./components/${componentName}.html`);
+        const html = await response.text();
+        const target = document.getElementById(targetId);
+        if (target) target.innerHTML = html;
+      } catch (error) { console.error(error); }
+    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      await Promise.all([loadComponent('header', 'header-container'), loadComponent('footer', 'footer-container')]);
+      window.initMyCuscoTripHeader?.();
+    });
+    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
+  </script>
+  <script src="./assets/js/components/header.js?v=44"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=44"></script>
+</body>
+</html>

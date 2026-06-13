@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel hotelero | My Cusco Trip</title>
+  <link rel="icon" href="./assets/img/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=44" />
+  <link rel="stylesheet" href="./assets/css/footer.css" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=44" />
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="hotel-marketplace-page">
+    <div class="hotel-marketplace-shell hotel-marketplace-grid">
+      <aside class="hotel-marketplace-sidebar">
+        <span class="hotels-kicker hotels-kicker--dark"><i class="fa-solid fa-hotel"></i> Panel hotelero</span>
+        <h2>Mi cuenta</h2>
+        <nav class="hotel-marketplace-nav">
+          <a href="#propertyForm">Crear alojamiento</a>
+          <a href="#roomForm">Crear habitación</a>
+          <a href="#availabilityForm">Bloquear fechas</a>
+          <a href="#bookingModeForm">Modo de confirmación</a>
+        </nav>
+      </aside>
+      <section class="hotel-marketplace-panel">
+        <h1>Administrar alojamientos</h1>
+        <p>Este panel es el primer esqueleto del marketplace. Por ahora guarda estructuras listas para conectar con Google Sheets.</p>
+
+        <h2 id="propertyForm">Crear alojamiento</h2>
+        <form class="hotel-admin-form-grid" data-marketplace-form="property">
+          <label>Tipo
+            <select name="type" required>
+              <option value="hotel">Hotel</option>
+              <option value="apartment">Apartamento</option>
+              <option value="room">Habitación</option>
+            </select>
+          </label>
+          <label>Nombre del alojamiento <input name="name" required placeholder="Ej. Hotel Cusco Boutique"></label>
+          <label>Destino <input name="destination" required placeholder="Cusco, Aguas Calientes, Lima..."></label>
+          <label>Categoría
+            <select name="stars">
+              <option value="3">3 estrellas</option>
+              <option value="4">4 estrellas</option>
+              <option value="5">5 estrellas</option>
+            </select>
+          </label>
+          <label class="full">Dirección <input name="address" placeholder="Dirección visible para el cliente"></label>
+          <label class="full">Descripción <textarea name="description" placeholder="Describe tu alojamiento"></textarea></label>
+          <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar alojamiento</button></div>
+        </form>
+
+        <h2 id="roomForm">Crear habitación</h2>
+        <form class="hotel-admin-form-grid" data-marketplace-form="room">
+          <label>Alojamiento <input name="propertyId" required placeholder="ID del alojamiento"></label>
+          <label>Tipo de habitación <input name="roomType" required placeholder="Habitación Matrimonial"></label>
+          <label>Capacidad <input name="capacity" type="number" min="1" max="8" value="2"></label>
+          <label>Precio por noche USD <input name="basePriceUsd" type="number" min="0" step="0.01" value="0"></label>
+          <label class="full">Descripción <textarea name="description" placeholder="Camas, vista, beneficios..."></textarea></label>
+          <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar habitación</button></div>
+        </form>
+
+        <h2 id="availabilityForm">Bloquear fechas</h2>
+        <form class="hotel-admin-form-grid" data-marketplace-form="availability">
+          <label>Alojamiento <input name="propertyId" required placeholder="ID del alojamiento"></label>
+          <label>Habitación <input name="roomId" placeholder="Opcional"></label>
+          <label>Desde <input name="from" type="date" required></label>
+          <label>Hasta <input name="to" type="date" required></label>
+          <label>Motivo
+            <select name="status">
+              <option value="blocked">Bloqueado por hotelero</option>
+              <option value="reserved">Reservado</option>
+              <option value="maintenance">Mantenimiento</option>
+            </select>
+          </label>
+          <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Bloquear rango</button></div>
+        </form>
+
+        <h2 id="bookingModeForm">Modo de confirmación</h2>
+        <form class="hotel-admin-form-grid" data-marketplace-form="confirmation">
+          <label>Alojamiento <input name="propertyId" required placeholder="ID del alojamiento"></label>
+          <label>Confirmación de reserva
+            <select name="confirmationMode">
+              <option value="instant">Instantánea</option>
+              <option value="manual">Manual por anfitrión</option>
+            </select>
+          </label>
+          <p class="full hotel-inline-alert">Instantánea: se cobra al aprobar PayPal. Manual: se autoriza el pago y se captura solo cuando el hotel confirma.</p>
+          <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar modo</button></div>
+        </form>
+        <p id="hotelPanelMsg" class="hotel-inline-alert" hidden></p>
+      </section>
+    </div>
+  </main>
+  <div id="footer-container"></div>
+  <script>
+    async function loadComponent(componentName, targetId) {
+      try { const response = await fetch(`./components/${componentName}.html`); document.getElementById(targetId).innerHTML = await response.text(); } catch(error) { console.error(error); }
+    }
+    document.addEventListener('DOMContentLoaded', async () => { await Promise.all([loadComponent('header','header-container'),loadComponent('footer','footer-container')]); window.initMyCuscoTripHeader?.(); });
+    window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL = "";
+  </script>
+  <script src="./assets/js/components/header.js?v=44"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=44"></script>
+</body>
+</html>

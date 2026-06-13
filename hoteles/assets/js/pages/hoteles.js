@@ -10,6 +10,7 @@
     accommodations: [],
     galleryIndex: 0,
     calendarMonth: null,
+    heroCalendarMonth: null,
     paypalRenderedFor: null,
   };
 
@@ -142,11 +143,19 @@
   }
 
   function setHeroDateLimits() {
-    const inEl = $('#hotelFilterCheckin');
-    const outEl = $('#hotelFilterCheckout');
     const tomorrow = addDays(null, 1);
-    if (inEl) inEl.min = tomorrow;
-    if (outEl) outEl.min = addDays(tomorrow, 1);
+    const month = localNoon(tomorrow);
+    month.setDate(1);
+    state.heroCalendarMonth = month;
+    renderHeroDateSummary();
+    renderHeroCalendar();
+  }
+
+  function getHeroDateRange() {
+    const checkin = $('#hotelFilterCheckin')?.value || '';
+    const checkout = $('#hotelFilterCheckout')?.value || '';
+    if (!checkin || !checkout || checkout <= checkin) return { checkin: '', checkout: '', nights: 0 };
+    return { checkin, checkout, nights: nightsBetween(checkin, checkout) };
   }
 
   function syncHeroDatesAndRender() {
@@ -156,9 +165,107 @@
     if (inEl && inEl.value && inEl.value < tomorrow) inEl.value = tomorrow;
     if (inEl && outEl && inEl.value) {
       const minCheckout = addDays(inEl.value, 1);
-      outEl.min = minCheckout;
       if (outEl.value && outEl.value < minCheckout) outEl.value = minCheckout;
     }
+    renderHeroDateSummary();
+    renderHeroCalendar();
+    renderHotels();
+  }
+
+  function renderHeroDateSummary() {
+    const checkin = $('#hotelFilterCheckin')?.value || '';
+    const checkout = $('#hotelFilterCheckout')?.value || '';
+    const inLabel = $('#heroCheckinLabel');
+    const outLabel = $('#heroCheckoutLabel');
+    if (inLabel) inLabel.textContent = formatHumanDate(checkin);
+    if (outLabel) outLabel.textContent = formatHumanDate(checkout);
+  }
+
+  function renderHeroCalendar() {
+    const mount = $('#heroRangeCalendar');
+    if (!mount || !state.heroCalendarMonth) return;
+    const checkin = $('#hotelFilterCheckin')?.value || '';
+    const checkout = $('#hotelFilterCheckout')?.value || '';
+    const todayMin = addDays('', 1);
+    const month = new Date(state.heroCalendarMonth.getTime());
+    const year = month.getFullYear();
+    const monthIndex = month.getMonth();
+    const first = new Date(year, monthIndex, 1, 12);
+    const last = new Date(year, monthIndex + 1, 0, 12);
+    const firstWeekday = (first.getDay() + 6) % 7;
+    const cells = [];
+    for (let i = 0; i < firstWeekday; i++) cells.push('<span class="hotel-calendar-empty"></span>');
+    for (let day = 1; day <= last.getDate(); day++) {
+      const date = new Date(year, monthIndex, day, 12);
+      const iso = isoDate(date);
+      const disabled = iso < todayMin;
+      const inRange = checkin && checkout && iso > checkin && iso < checkout;
+      const isStart = iso === checkin;
+      const isEnd = iso === checkout;
+      const isPendingStart = isStart && !checkout;
+      cells.push(`<button type="button" data-hero-date="${iso}" class="hotel-calendar-day ${inRange ? 'is-in-range' : ''} ${isStart ? 'is-start' : ''} ${isEnd ? 'is-end' : ''} ${isPendingStart ? 'is-pending-start' : ''}" ${disabled ? 'disabled' : ''}>${day}</button>`);
+    }
+    mount.innerHTML = `
+      <div class="hotel-calendar-head">
+        <button type="button" data-hero-calendar-nav="prev" aria-label="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <strong>${MONTHS[monthIndex]} ${year}</strong>
+        <button type="button" data-hero-calendar-nav="next" aria-label="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="hotel-calendar-weekdays">${WEEKDAYS.map((d) => `<span>${d}</span>`).join('')}</div>
+      <div class="hotel-calendar-grid">${cells.join('')}</div>
+      <div class="hotel-calendar-actions">
+        <button type="button" class="hotel-calendar-clear" data-hero-calendar-clear>Limpiar</button>
+        <button type="button" class="hotel-calendar-apply" data-hero-calendar-apply ${checkin && checkout ? '' : 'disabled'}>OK</button>
+      </div>`;
+  }
+
+  function openHeroCalendar() {
+    const calendar = $('#heroRangeCalendar');
+    if (!calendar) return;
+    calendar.hidden = false;
+    calendar.classList.add('is-open');
+  }
+
+  function closeHeroCalendar() {
+    const calendar = $('#heroRangeCalendar');
+    if (!calendar) return;
+    calendar.hidden = true;
+    calendar.classList.remove('is-open');
+  }
+
+  function moveHeroCalendar(direction) {
+    if (!state.heroCalendarMonth) return;
+    state.heroCalendarMonth.setMonth(state.heroCalendarMonth.getMonth() + (direction === 'next' ? 1 : -1));
+    const currentMonthMin = new Date();
+    currentMonthMin.setDate(1);
+    currentMonthMin.setHours(12,0,0,0);
+    if (state.heroCalendarMonth < currentMonthMin) state.heroCalendarMonth = currentMonthMin;
+    renderHeroCalendar();
+  }
+
+  function selectHeroCalendarDate(dateIso) {
+    const checkinInput = $('#hotelFilterCheckin');
+    const checkoutInput = $('#hotelFilterCheckout');
+    if (!checkinInput || !checkoutInput) return;
+    const currentIn = checkinInput.value;
+    const currentOut = checkoutInput.value;
+    if (!currentIn || (currentIn && currentOut) || dateIso <= currentIn) {
+      checkinInput.value = dateIso;
+      checkoutInput.value = '';
+    } else {
+      checkoutInput.value = dateIso;
+    }
+    renderHeroDateSummary();
+    renderHeroCalendar();
+  }
+
+  function clearHeroCalendar() {
+    const checkinInput = $('#hotelFilterCheckin');
+    const checkoutInput = $('#hotelFilterCheckout');
+    if (checkinInput) checkinInput.value = '';
+    if (checkoutInput) checkoutInput.value = '';
+    renderHeroDateSummary();
+    renderHeroCalendar();
     renderHotels();
   }
 
@@ -250,8 +357,9 @@
 
     const features = [hotel.amenities?.breakfast, hotel.amenities?.checkin, hotel.amenities?.checkout, ...(hotel.features || [])]
       .filter(Boolean).slice(0, 9);
-    const tomorrow = addDays('', 1);
-    const dayAfter = addDays(tomorrow, 1);
+    const heroRange = getHeroDateRange();
+    const tomorrow = heroRange.checkin || addDays('', 1);
+    const dayAfter = heroRange.checkout || addDays(tomorrow, 1);
     const month = localNoon(tomorrow);
     month.setDate(1);
     state.calendarMonth = month;
@@ -714,8 +822,7 @@
     $('#hotelDestinationFilter')?.addEventListener('change', renderHotels);
     $('#hotelSearchInput')?.addEventListener('input', renderHotels);
     $('#hotelCategoryFilter')?.addEventListener('change', renderHotels);
-    $('#hotelFilterCheckin')?.addEventListener('change', syncHeroDatesAndRender);
-    $('#hotelFilterCheckout')?.addEventListener('change', syncHeroDatesAndRender);
+    $('#hotelHeroSearchBtn')?.addEventListener('click', () => { renderHotels(); document.getElementById('hotelsGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     document.addEventListener('change', (event) => {
       if (event.target.matches('#hotelAdults, #hotelChildren')) resetAvailabilityPanels();
       if (event.target.matches('input[name="hotelRoom"]')) selectAccommodation();
@@ -730,6 +837,14 @@
       if (hotelBtn) openHotel(hotelBtn.dataset.viewHotel);
       const galleryBtn = event.target.closest('[data-hotel-gallery]');
       if (galleryBtn) moveGallery(galleryBtn.dataset.hotelGallery);
+      const openHeroCalBtn = event.target.closest('[data-open-hero-calendar]');
+      if (openHeroCalBtn) openHeroCalendar();
+      const heroNavBtn = event.target.closest('[data-hero-calendar-nav]');
+      if (heroNavBtn) moveHeroCalendar(heroNavBtn.dataset.heroCalendarNav);
+      const heroDayBtn = event.target.closest('[data-hero-date]');
+      if (heroDayBtn) selectHeroCalendarDate(heroDayBtn.dataset.heroDate);
+      if (event.target.closest('[data-hero-calendar-apply]')) { closeHeroCalendar(); syncHeroDatesAndRender(); }
+      if (event.target.closest('[data-hero-calendar-clear]')) clearHeroCalendar();
       const openCalBtn = event.target.closest('[data-open-hotel-calendar]');
       if (openCalBtn) openHotelCalendar();
       const navBtn = event.target.closest('[data-calendar-nav]');

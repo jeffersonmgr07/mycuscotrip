@@ -9,9 +9,9 @@
   <link rel="icon" href="./assets/img/favicon.ico" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
-  <link rel="stylesheet" href="./assets/css/header.css?v=43" />
+  <link rel="stylesheet" href="./assets/css/header.css?v=44" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=43" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=44" />
 </head>
 <body>
   <div id="header-container"></div>
@@ -30,18 +30,23 @@
                 <option value="all">Todos los destinos</option>
               </select>
             </label>
-            <label>
+            <label class="hotels-search-box__name">
               <span>Buscar hotel</span>
-              <input id="hotelSearchInput" type="search" placeholder="Ej. Cusco Boutique, Miraflores..." />
+              <input id="hotelSearchInput" type="search" placeholder="Nombre del hotel" />
             </label>
-            <label>
-              <span>Entrada</span>
-              <input id="hotelFilterCheckin" type="date" />
-            </label>
-            <label>
-              <span>Salida</span>
-              <input id="hotelFilterCheckout" type="date" />
-            </label>
+            <div class="hotel-hero-date-wrap">
+              <input id="hotelFilterCheckin" type="hidden" />
+              <input id="hotelFilterCheckout" type="hidden" />
+              <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkin">
+                <span>Entrada</span>
+                <strong id="heroCheckinLabel">Seleccionar</strong>
+              </button>
+              <button type="button" class="hotel-hero-date-pill" data-open-hero-calendar="checkout">
+                <span>Salida</span>
+                <strong id="heroCheckoutLabel">Seleccionar</strong>
+              </button>
+              <div id="heroRangeCalendar" class="hotel-range-calendar hotel-range-calendar--hero" hidden></div>
+            </div>
             <label>
               <span>Categoría</span>
               <select id="hotelCategoryFilter">
@@ -51,6 +56,7 @@
                 <option value="5">5 estrellas</option>
               </select>
             </label>
+            <button type="button" class="hotel-hero-search-btn" id="hotelHeroSearchBtn"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
           </div>
         </div>
       </div>
@@ -103,12 +109,12 @@
     document.addEventListener('DOMContentLoaded', initializeLayout);
   </script>
   <script src="./assets/js/i18n.js"></script>
-  <script src="./assets/js/components/header.js?v=43"></script>
+  <script src="./assets/js/components/header.js?v=44"></script>
   <script>
     window.MCT_HOTEL_APPS_SCRIPT_URL = "";
     window.MCT_HOTEL_PAYPAL_CLIENT_ID = "sb";
   </script>
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
-  <script src="./assets/js/pages/hoteles.js?v=43"></script>
+  <script src="./assets/js/pages/hoteles.js?v=44"></script>
 </body>
 </html>
