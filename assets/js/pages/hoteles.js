@@ -18,6 +18,18 @@
   const money = (amount, currency = 'USD') => `${currency === 'PEN' ? 'S/' : '$'} ${Number(amount || 0).toFixed(2)}`;
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
   const asset = (path) => String(path || './assets/img/placeholder/experience.jpg').replace(/^\.\//, './');
+  const toTitleCase = (value = '') => String(value)
+    .toLocaleLowerCase('es-PE')
+    .replace(/(^|[\s/\-])([\p{L}])/gu, (match, sep, letter) => `${sep}${letter.toLocaleUpperCase('es-PE')}`);
+  const lettersOnlyRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s'´-]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const alphanumericDocRegex = /^[A-Za-z0-9ÁÉÍÓÚÜÑáéíóúüñ\-_.]+$/;
+  const sanitizeLetters = (value = '') => String(value).replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s'´-]/g, '').replace(/\s{2,}/g, ' ');
+  const sanitizeDigits = (value = '') => String(value).replace(/\D/g, '');
+  const sanitizeDoc = (value = '', type = '') => type === 'DNI'
+    ? sanitizeDigits(value).slice(0, 8)
+    : String(value).replace(/[^A-Za-z0-9ÁÉÍÓÚÜÑáéíóúüñ\-_.]/g, '').slice(0, 24);
+
 
   const VISIBLE_DESTINATIONS = [
     { value: 'all', label: 'Todos los destinos', keys: null },
@@ -277,7 +289,6 @@
       </div>
       <div class="hotel-calendar-weekdays">${WEEKDAYS.map((d) => `<span>${d}</span>`).join('')}</div>
       <div class="hotel-calendar-grid">${cells.join('')}</div>
-      <small class="hotel-calendar-help">Elige primero la entrada y luego la salida en el mismo calendario.</small>
       <div class="hotel-calendar-actions">
         <button type="button" class="hotel-calendar-apply" data-calendar-apply ${checkin && checkout ? '' : 'disabled'}>OK</button>
       </div>`;
@@ -371,8 +382,8 @@
         acc[label] = (acc[label] || 0) + 1;
         return acc;
       }, {});
-      const label = Object.entries(labelCounts).map(([label, qty]) => qty > 1 ? `${qty} × ${label}` : label).join(' + ');
-      const bedType = combo.map((room) => room.bedType).filter(Boolean).join(' · ');
+      const label = Object.entries(labelCounts).map(([label, qty]) => qty > 1 ? `${qty} × ${toTitleCase(label)}` : toTitleCase(label)).join(' + ');
+      const bedType = combo.map((room) => room.bedType ? toTitleCase(room.bedType) : '').filter(Boolean).join(' · ');
       results.push({ id: `acc-${results.length}`, rooms: combo, roomType: key, label, bedType, capacity, publishedPricing: { currency, amount } });
     }
 
@@ -473,8 +484,8 @@
       <div class="hotel-booking-holder">
         <div class="hotel-holder-section-title">Datos del titular de reserva</div>
         <div class="hotel-holder-grid hotel-holder-grid--premium">
-          <label>Nombres <input id="hotelGuestNames" type="text" placeholder="Nombres" autocomplete="given-name" required></label>
-          <label>Apellidos <input id="hotelGuestLastnames" type="text" placeholder="Apellidos" autocomplete="family-name" required></label>
+          <label>Nombres <input id="hotelGuestNames" type="text" placeholder="Nombres" autocomplete="given-name" inputmode="text" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s\\'´-]+" required></label>
+          <label>Apellidos <input id="hotelGuestLastnames" type="text" placeholder="Apellidos" autocomplete="family-name" inputmode="text" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s\\'´-]+" required></label>
           <label class="hotel-doc-type-field">Tipo de documento
             <select id="hotelGuestDocType" required>
               <option value="">Tipo de documento</option>
@@ -484,7 +495,7 @@
               <option value="Otro">Otro</option>
             </select>
           </label>
-          <label class="hotel-doc-number-field">Número de documento <input id="hotelGuestDocNumber" type="text" placeholder="Número de documento" required></label>
+          <label class="hotel-doc-number-field">Número de documento <input id="hotelGuestDocNumber" type="text" placeholder="Número de documento" autocomplete="off" required></label>
           <label class="hotel-nationality-field">Nacionalidad
             <select id="hotelGuestNationality" required>
               <option value="">Seleccionar nacionalidad</option>
@@ -494,7 +505,7 @@
           <label class="hotel-phone-field">Celular / WhatsApp
             <span>
               <select id="hotelGuestPhoneCode" required>${phoneOptions('+51')}</select>
-              <input id="hotelGuestPhone" type="tel" placeholder="Número" autocomplete="tel" required>
+              <input id="hotelGuestPhone" type="tel" inputmode="numeric" pattern="[0-9]+" placeholder="Número" autocomplete="tel" required>
             </span>
           </label>
           <label class="hotel-email-field">Correo <input id="hotelGuestEmail" type="email" placeholder="Correo" autocomplete="email" required></label>
@@ -517,10 +528,40 @@
       phone: $('#hotelGuestPhone')?.value.trim(),
       email: $('#hotelGuestEmail')?.value.trim(),
     };
-    if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return null;
     const missing = Object.entries(fields).filter(([, value]) => !value).map(([key]) => key);
     if (missing.length) return null;
+    if (!lettersOnlyRegex.test(fields.names) || !lettersOnlyRegex.test(fields.lastnames)) return null;
+    if (fields.documentType === 'DNI') {
+      if (!/^\d{8}$/.test(fields.documentNumber)) return null;
+    } else if (!alphanumericDocRegex.test(fields.documentNumber)) {
+      return null;
+    }
+    if (!/^\d{6,15}$/.test(fields.phone)) return null;
+    if (!emailRegex.test(fields.email)) return null;
     return fields;
+  }
+
+  function sanitizeHolderField(target) {
+    if (!target) return;
+    const docType = $('#hotelGuestDocType')?.value;
+    if (target.matches('#hotelGuestNames, #hotelGuestLastnames')) {
+      target.value = sanitizeLetters(target.value);
+    }
+    if (target.matches('#hotelGuestPhone')) {
+      target.value = sanitizeDigits(target.value).slice(0, 15);
+    }
+    if (target.matches('#hotelGuestDocNumber')) {
+      target.value = sanitizeDoc(target.value, docType);
+    }
+    if (target.matches('#hotelGuestDocType')) {
+      const docInput = $('#hotelGuestDocNumber');
+      if (docInput) {
+        docInput.value = sanitizeDoc(docInput.value, target.value);
+        docInput.setAttribute('inputmode', target.value === 'DNI' ? 'numeric' : 'text');
+        docInput.setAttribute('maxlength', target.value === 'DNI' ? '8' : '24');
+        docInput.placeholder = target.value === 'DNI' ? '8 dígitos' : 'Número de documento';
+      }
+    }
   }
 
   function updatePaypalState() {
@@ -628,11 +669,11 @@
     document.addEventListener('change', (event) => {
       if (event.target.matches('#hotelAdults, #hotelChildren')) resetAvailabilityPanels();
       if (event.target.matches('input[name="hotelRoom"]')) selectAccommodation();
-      if (event.target.closest('.hotel-holder-grid')) updatePaypalState();
+      if (event.target.closest('.hotel-holder-grid')) { sanitizeHolderField(event.target); updatePaypalState(); }
     });
     document.addEventListener('input', (event) => {
       if (event.target.matches('#hotelAdults, #hotelChildren')) resetAvailabilityPanels();
-      if (event.target.closest('.hotel-holder-grid')) updatePaypalState();
+      if (event.target.closest('.hotel-holder-grid')) { sanitizeHolderField(event.target); updatePaypalState(); }
     });
     document.addEventListener('click', (event) => {
       const hotelBtn = event.target.closest('[data-view-hotel]');
