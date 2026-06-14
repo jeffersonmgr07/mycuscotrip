@@ -1699,3 +1699,22 @@
 @media (max-width: 760px) {
   .hotel-owner-property-card { grid-template-columns: 1fr; }
 }
+
+
+.hotel-register-success-panel{
+  margin-top:22px;
+  padding:30px 24px;
+  border:1px solid rgba(6,40,3,.14);
+  border-radius:24px;
+  background:linear-gradient(180deg,#ffffff,#f5faf5);
+  text-align:center;
+  box-shadow:0 18px 45px rgba(6,40,3,.10);
+}
+.hotel-register-success-icon{
+  width:70px;height:70px;border-radius:999px;
+  display:grid;place-items:center;margin:0 auto 14px;
+  background:#edf7ef;color:#062803;font-size:34px;
+}
+.hotel-register-success-panel h2{margin:0 0 10px;color:#062803;font-size:clamp(22px,3vw,30px)}
+.hotel-register-success-panel p{margin:0 auto 20px;max-width:520px;color:#516051;line-height:1.6}
+.hotel-register-success-actions{justify-content:center;gap:12px;flex-wrap:wrap}

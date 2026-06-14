@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V55
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V56
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.

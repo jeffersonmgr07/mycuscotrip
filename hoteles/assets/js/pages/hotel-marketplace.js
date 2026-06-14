@@ -78,6 +78,37 @@
     el.style.background = ok ? '#f2faf3' : '#fff2f2';
   }
 
+  function showRegisterSuccess(form, message) {
+    forceHideLoading();
+    if (!form) return;
+    const section = form.closest('.hotel-marketplace-card') || form.parentElement;
+    form.reset();
+    fillSelects();
+    updateRegistrationType();
+    updatePasswordRules();
+    form.hidden = true;
+    let success = section.querySelector('[data-register-success-panel]');
+    if (!success) {
+      success = document.createElement('div');
+      success.className = 'hotel-register-success-panel';
+      success.setAttribute('data-register-success-panel', '');
+      success.innerHTML = `
+        <div class="hotel-register-success-icon"><i class="fa-solid fa-envelope-circle-check"></i></div>
+        <h2>Revisa tu correo y verifica tu cuenta</h2>
+        <p data-register-success-text></p>
+        <div class="hotel-admin-actions hotel-register-success-actions">
+          <a class="hotel-admin-btn" href="./login-admin-hotel.html">Ir al acceso</a>
+          <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost" data-register-again>Registrar otra cuenta</button>
+        </div>
+      `;
+      section.appendChild(success);
+    }
+    const text = success.querySelector('[data-register-success-text]');
+    if (text) text.textContent = message || 'Hemos enviado un correo de verificación a tu bandeja. Abre el enlace para activar tu cuenta.';
+    success.hidden = false;
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   function ensureLoadingBox() {
     let box = document.getElementById('mctHotelLoadingBox');
     if (box) return box;
@@ -454,6 +485,22 @@
       const currentLocation = e.target.closest('[data-use-current-location]');
       if (currentLocation) useCurrentLocation(currentLocation);
       if (e.target.closest('[data-close-market-modal]')) closeModal();
+      const registerAgain = e.target.closest('[data-register-again]');
+      if (registerAgain) {
+        e.preventDefault();
+        const success = registerAgain.closest('[data-register-success-panel]');
+        const card = success?.closest('.hotel-marketplace-card');
+        const form = card?.querySelector('#hotelOwnerRegisterForm');
+        if (success) success.hidden = true;
+        if (form) {
+          form.hidden = false;
+          form.reset();
+          fillSelects();
+          updateRegistrationType();
+          updatePasswordRules();
+          form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   }
@@ -473,7 +520,7 @@
         showMsg('#hotelOwnerRegisterMsg', 'Tu registro fue guardado, pero no se pudo enviar el correo de verificación. Revisa la autorización de MailApp en Apps Script y vuelve a enviar la verificación.', false);
         return;
       }
-      showMsg('#hotelOwnerRegisterMsg', 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
+      showRegisterSuccess(register, 'Hemos enviado un correo de verificación a tu bandeja. Revisa ese correo para activar tu cuenta.');
     }
     if (login) {
       event.preventDefault();

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <script src="./assets/js/config.js?v=55"></script>
+  <script src="./assets/js/config.js?v=56"></script>
   <style>
     :root{--mct-green:#062803;--mct-soft:#f4f8f4;--mct-border:#dfe8df}
     *{box-sizing:border-box}
@@ -47,19 +47,18 @@
       `;
     }
 
-    function verifyViaIframe(token){
+    function verifyViaJsonp(token){
       const API = getApiUrl();
       return new Promise(resolve => {
         if(!API) return resolve({ok:false,error:'No se encontró la URL del Apps Script.'});
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.setAttribute('aria-hidden','true');
+        const callbackName = `mctHotelVerify_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement('script');
         let done = false;
         const timer = setTimeout(() => finish({ok:false,error:'No se recibió respuesta del servicio de verificación. Intenta nuevamente.'}), 25000);
         function cleanup(){
           clearTimeout(timer);
-          window.removeEventListener('message', onMessage);
-          iframe.remove();
+          try { delete window[callbackName]; } catch(_) { window[callbackName] = undefined; }
+          script.remove();
         }
         function finish(data){
           if(done) return;
@@ -67,21 +66,18 @@
           cleanup();
           resolve(data || {ok:false,error:'Respuesta vacía del servicio de verificación.'});
         }
-        function onMessage(event){
-          const data = event.data || {};
-          if(data && data.mctHotelVerify) finish(data);
-        }
-        window.addEventListener('message', onMessage);
+        window[callbackName] = finish;
         const sep = API.includes('?') ? '&' : '?';
-        iframe.src = `${API}${sep}action=verify_owner&token=${encodeURIComponent(token)}&embed=1&_=${Date.now()}`;
-        document.body.appendChild(iframe);
+        script.src = `${API}${sep}action=verify_owner&token=${encodeURIComponent(token)}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+        script.onerror = () => finish({ok:false,error:'No se pudo conectar con el servicio de verificación.'});
+        document.body.appendChild(script);
       });
     }
 
     (async function(){
       const token = new URLSearchParams(location.search).get('token') || '';
       if(!token) return render(false, 'El enlace no contiene un token de verificación.');
-      const result = await verifyViaIframe(token);
+      const result = await verifyViaJsonp(token);
       render(!!result.ok, result.message || result.error);
     })();
   </script>
