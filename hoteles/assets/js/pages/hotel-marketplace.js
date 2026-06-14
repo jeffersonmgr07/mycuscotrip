@@ -75,6 +75,54 @@
     el.textContent = text;
     el.style.background = ok ? '#f2faf3' : '#fff2f2';
   }
+
+  function ensureLoadingBox() {
+    let box = document.getElementById('mctHotelLoadingBox');
+    if (box) return box;
+    const style = document.createElement('style');
+    style.textContent = `
+      .mct-hotel-loading-backdrop{position:fixed;inset:0;background:rgba(6,40,3,.18);display:grid;place-items:center;z-index:99999;backdrop-filter:blur(2px)}
+      .mct-hotel-loading-card{background:#fff;border:1px solid rgba(6,40,3,.18);box-shadow:0 22px 60px rgba(0,0,0,.18);border-radius:22px;padding:22px 26px;display:flex;align-items:center;gap:14px;color:#062803;font-weight:800;min-width:240px;justify-content:center}
+      .mct-hotel-loading-spinner{width:24px;height:24px;border:3px solid #dfe8df;border-top-color:#062803;border-radius:999px;animation:mctHotelSpin .8s linear infinite}
+      @keyframes mctHotelSpin{to{transform:rotate(360deg)}}
+    `;
+    document.head.appendChild(style);
+    box = document.createElement('div');
+    box.id = 'mctHotelLoadingBox';
+    box.className = 'mct-hotel-loading-backdrop';
+    box.hidden = true;
+    box.innerHTML = '<div class="mct-hotel-loading-card"><span class="mct-hotel-loading-spinner" aria-hidden="true"></span><span data-loading-text>Un momento, por favor...</span></div>';
+    document.body.appendChild(box);
+    return box;
+  }
+
+  function setLoading(active, text = 'Un momento, por favor...') {
+    const box = ensureLoadingBox();
+    const label = box.querySelector('[data-loading-text]');
+    if (label) label.textContent = text;
+    box.hidden = !active;
+    document.body.classList.toggle('is-hotel-loading', !!active);
+  }
+
+  async function withUserLoading(text, submitter, task) {
+    const btn = submitter && submitter.matches ? submitter : null;
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.loading = '1';
+    }
+    setLoading(true, text);
+    try {
+      return await task();
+    } finally {
+      setLoading(false);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        delete btn.dataset.loading;
+      }
+    }
+  }
   function dateRange(from, to) {
     const dates = [];
     if (!from || !to) return dates;
@@ -233,6 +281,16 @@
 
   const SESSION_KEY = 'mctHotelOwnerSession';
 
+  function hotelPublicBaseUrl() {
+    const path = window.location.pathname || '/hoteles/';
+    if (window.location.origin && !window.location.origin.includes('script.google.com')) {
+      const basePath = path.includes('/hoteles/') ? path.slice(0, path.indexOf('/hoteles/') + '/hoteles'.length) : '/hoteles';
+      return `${window.location.origin}${basePath}`.replace(/\/$/, '');
+    }
+    const configBase = window.MCT_HOTEL_MARKETPLACE_CONFIG?.publicBaseUrl || 'https://www.mycuscotrip.com/hoteles';
+    return String(configBase).replace(/\/$/, '');
+  }
+
   function getSession() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch (_) { return null; }
   }
@@ -386,8 +444,8 @@
     if (register) {
       event.preventDefault();
       if (!validateForm(register)) { showMsg('#hotelOwnerRegisterMsg', 'Revisa los campos marcados antes de enviar el registro.', false); return; }
-      const payload = serialize(register);
-      const result = await post('register_owner', payload);
+      const payload = { ...serialize(register), publicBaseUrl: hotelPublicBaseUrl() };
+      const result = await withUserLoading('Enviando registro...', event.submitter, () => post('register_owner', payload));
       if (!result.ok) { showMsg('#hotelOwnerRegisterMsg', result.error || 'No se pudo enviar el registro.', false); return; }
       if (result.emailWarning) {
         showMsg('#hotelOwnerRegisterMsg', 'Tu registro fue guardado, pero no se pudo enviar el correo de verificación. Revisa la autorización de MailApp en Apps Script y vuelve a enviar la verificación.', false);
@@ -399,7 +457,7 @@
       event.preventDefault();
       if (!validateForm(login)) { showMsg('#hotelOwnerLoginMsg', 'Ingresa un correo válido y tu contraseña.', false); return; }
       const payload = serialize(login);
-      const result = await post('login_owner', payload);
+      const result = await withUserLoading('Validando acceso...', event.submitter, () => post('login_owner', payload));
       if (!result.ok) { showMsg('#hotelOwnerLoginMsg', result.error || 'No se pudo iniciar sesión.', false); return; }
       if (result.owner && !statusIsAllowed(result.owner.status)) {
         showMsg('#hotelOwnerLoginMsg', 'Tu cuenta aún no está activa. Revisa el correo de verificación o espera la aprobación.', false);
@@ -432,7 +490,7 @@
         payload.roomGalleryJson = JSON.stringify(urls);
         payload.roomPhotoCount = marketForm.elements.roomPhotoFiles?.files?.length || 0;
       }
-      const result = await post(action, payload);
+      const result = await withUserLoading('Guardando cambios...', event.submitter, () => post(action, payload));
       if (!result.ok) { showMsg('#hotelPanelMsg', result.error || 'No se pudo guardar.', false); return; }
       showMsg('#hotelPanelMsg', 'Cambios guardados correctamente.');
       closeModal();

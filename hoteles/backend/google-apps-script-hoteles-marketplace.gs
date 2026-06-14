@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V52
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V53
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -12,6 +12,8 @@
  * - Ejecuta setupHotelMarketplaceSheets() una vez después de pegar este script.
  * - El Secret ID de PayPal nunca debe ir en el HTML.
  */
+
+const HOTEL_PUBLIC_HOTELES_URL = 'https://www.mycuscotrip.com/hoteles';
 
 const HOTEL_SHEETS = {
   USERS: 'Hotel_Users',
@@ -43,7 +45,11 @@ function doGet(e) {
   }
   const action = String(payload.action || params.action || 'catalog');
 
-  if (action === 'verify_owner') return verifyHotelOwner_(params.token || payload.token || '');
+  if (action === 'verify_owner') {
+    const data = verifyHotelOwnerData_(params.token || payload.token || '');
+    if (callback) return jsonpResponse_(callback, data);
+    return verifyHotelOwnerHtml_(data);
+  }
 
   const result = dispatchHotelAction_(action, payload && Object.keys(payload).length ? payload : params);
   if (callback) return jsonpResponse_(callback, result);
@@ -209,7 +215,8 @@ function registerHotelOwner_(payload) {
     sessionToken: '',
     lastLoginAt: '',
     createdAt: now_(),
-    updatedAt: now_()
+    updatedAt: now_(),
+    publicBaseUrl: payload.publicBaseUrl || HOTEL_PUBLIC_HOTELES_URL
   };
   sh.appendRow(HOTEL_HEADERS.Hotel_Users.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
   const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
@@ -227,13 +234,14 @@ function registerHotelOwner_(payload) {
 }
 
 function sendVerificationEmail_(owner, token) {
-  const verifyUrl = scriptUrl_() + '?action=verify_owner&token=' + encodeURIComponent(token);
+  const baseUrl = String(owner.publicBaseUrl || HOTEL_PUBLIC_HOTELES_URL || '').replace(/\/$/, '');
+  const verifyUrl = baseUrl + '/verify-owner.html?token=' + encodeURIComponent(token);
   const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
   const html = `
     <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
       <div style="max-width:640px;margin:0 auto;padding:28px 16px;">
         <div style="background:#062803;border-radius:22px 22px 0 0;padding:22px;color:white;">
-          <h1 style="margin:0;font-size:22px;">Verifica tu cuenta hotelera</h1>
+          <h1 style="margin:0;font-size:22px;">Verifica tu cuenta para administración de alojamientos</h1>
           <p style="margin:8px 0 0;color:#dceadc;">My Cusco Trip · Marketplace de alojamientos</p>
         </div>
         <div style="background:white;border-radius:0 0 22px 22px;padding:24px;border:1px solid #dfe8df;">
@@ -244,7 +252,7 @@ function sendVerificationEmail_(owner, token) {
         </div>
       </div>
     </div>`;
-  MailApp.sendEmail({ to: owner.email, subject: 'Verifica tu cuenta hotelera | My Cusco Trip', htmlBody: html, name: 'My Cusco Trip' });
+  MailApp.sendEmail({ to: owner.email, subject: 'Verifica tu cuenta para administración de alojamientos | My Cusco Trip', htmlBody: html, name: 'My Cusco Trip' });
 }
 function escapeHtml_(text) {
   return String(text || '').replace(/[&<>"]/g, function(c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]); });
@@ -281,20 +289,26 @@ function testHotelVerificationEmail() {
   return { ok: true, sentTo: email };
 }
 
-function verifyHotelOwner_(token) {
-  if (!token) return HtmlService.createHtmlOutput('<h2>Token inválido</h2>');
+function verifyHotelOwnerData_(token) {
+  if (!token) return { ok: false, error: 'Token inválido.' };
   const found = findRowBy_(HOTEL_SHEETS.USERS, 'verificationToken', token);
-  if (!found) return HtmlService.createHtmlOutput('<h2>Enlace no válido o ya usado.</h2>');
+  if (!found) return { ok: false, error: 'Enlace no válido o ya usado.' };
   setCellByHeader_(found, 'status', 'approved');
   setCellByHeader_(found, 'role', 'hotel_provider');
   setCellByHeader_(found, 'verifiedAt', now_());
   setCellByHeader_(found, 'updatedAt', now_());
-  const loginUrl = scriptUrl_().replace('/exec','') ? '' : '';
+  return { ok: true, message: 'Cuenta verificada correctamente.' };
+}
+
+function verifyHotelOwnerHtml_(data) {
+  const ok = data && data.ok;
+  const title = ok ? 'Cuenta verificada' : 'No se pudo verificar';
+  const message = ok ? 'Tu correo fue verificado correctamente. Ya puedes ingresar al panel de administración de hoteles.' : (data && data.error ? data.error : 'El enlace no es válido o ya fue utilizado.');
   return HtmlService.createHtmlOutput(`
     <div style="min-height:100vh;display:grid;place-items:center;background:#f4f8f4;font-family:Arial,sans-serif;">
       <div style="max-width:560px;background:white;border:1px solid #dfe8df;border-radius:24px;padding:32px;text-align:center;color:#17301b;">
-        <h1 style="color:#062803;margin-top:0;">Cuenta verificada</h1>
-        <p>Tu correo fue verificado correctamente. Ya puedes ingresar al panel de administración de hoteles.</p>
+        <h1 style="color:#062803;margin-top:0;">${escapeHtml_(title)}</h1>
+        <p>${escapeHtml_(message)}</p>
         <p style="color:#67746b;font-size:14px;">Vuelve a la página de My Cusco Trip e inicia sesión con tu correo y contraseña.</p>
       </div>
     </div>`);
