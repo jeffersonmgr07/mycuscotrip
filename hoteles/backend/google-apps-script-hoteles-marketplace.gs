@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V56
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V57
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -52,6 +52,11 @@ function doGet(e) {
     const data = verifyHotelOwnerData_(params.token || payload.token || '');
     if (callback) return jsonpResponse_(callback, data);
     return verifyHotelOwnerHtml_(data);
+  }
+
+  if (action === 'verify_owner_redirect') {
+    const data = verifyHotelOwnerData_(params.token || payload.token || '');
+    return verifyHotelOwnerRedirect_(data);
   }
 
   const result = dispatchHotelAction_(action, payload && Object.keys(payload).length ? payload : params);
@@ -239,7 +244,7 @@ function registerHotelOwner_(payload) {
 function sendVerificationEmail_(owner, token) {
   // IMPORTANTE: el enlace debe ir a la web pública de MyCuscoTrip.
   // No usamos ScriptApp.getService().getUrl() porque eso abre el Apps Script directamente.
-  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token);
+  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token) + '&v=57';
   const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
   const html = `
     <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
@@ -302,6 +307,29 @@ function verifyHotelOwnerData_(token) {
   setCellByHeader_(found, 'verifiedAt', now_());
   setCellByHeader_(found, 'updatedAt', now_());
   return { ok: true, message: 'Cuenta verificada correctamente.' };
+}
+
+
+function verifyHotelOwnerRedirect_(data) {
+  const ok = data && data.ok;
+  const message = ok
+    ? 'Tu correo fue verificado correctamente. Ya puedes ingresar al panel.'
+    : (data && data.error ? data.error : 'El enlace no es válido o ya fue utilizado.');
+  const status = ok ? 'success' : 'error';
+  const target = HOTEL_VERIFY_OWNER_URL + '?status=' + encodeURIComponent(status) + '&message=' + encodeURIComponent(message);
+  return HtmlService.createHtmlOutput(`
+    <!doctype html><html><head><base target="_top"><meta charset="utf-8">
+    <meta http-equiv="refresh" content="0;url=${escapeHtml_(target)}">
+    <style>body{font-family:Arial,sans-serif;background:#f4f8f4;display:grid;place-items:center;min-height:100vh;margin:0;color:#17301b}.box{background:white;border:1px solid #dfe8df;border-radius:20px;padding:28px;text-align:center;max-width:520px}a{color:#062803;font-weight:bold}</style>
+    </head><body>
+      <div class="box">
+        <h1>Redirigiendo...</h1>
+        <p>Estamos regresando a My Cusco Trip.</p>
+        <p><a href="${escapeHtml_(target)}">Continuar</a></p>
+      </div>
+      <script>window.top.location.replace(${JSON.stringify(target)});</script>
+    </body></html>
+  `).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function verifyHotelOwnerHtml_(data) {

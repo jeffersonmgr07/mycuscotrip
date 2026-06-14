@@ -1,4 +1,4 @@
-/* My Cusco Trip · Hoteles Marketplace Config V55 */
+/* My Cusco Trip · Hoteles Marketplace Config V57 */
 window.MCT_HOTEL_MARKETPLACE_CONFIG = {
   appsScriptUrl: 'https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec',
   paypalClientId: 'AUdRf58xVpVo-Iv_L_Je8UgE6ukF79cLynwRXUk3wU9WA4bfremVO0yRpkS3kFTUOE7O5ZOfoWMw8TlJ',
