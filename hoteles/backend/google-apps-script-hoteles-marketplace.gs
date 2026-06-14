@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V57
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V58
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -51,12 +51,13 @@ function doGet(e) {
   if (action === 'verify_owner') {
     const data = verifyHotelOwnerData_(params.token || payload.token || '');
     if (callback) return jsonpResponse_(callback, data);
-    return verifyHotelOwnerHtml_(data);
+    return jsonResponse(data);
   }
 
   if (action === 'verify_owner_redirect') {
     const data = verifyHotelOwnerData_(params.token || payload.token || '');
-    return verifyHotelOwnerRedirect_(data);
+    if (callback) return jsonpResponse_(callback, data);
+    return jsonResponse(data);
   }
 
   const result = dispatchHotelAction_(action, payload && Object.keys(payload).length ? payload : params);
@@ -244,7 +245,7 @@ function registerHotelOwner_(payload) {
 function sendVerificationEmail_(owner, token) {
   // IMPORTANTE: el enlace debe ir a la web pública de MyCuscoTrip.
   // No usamos ScriptApp.getService().getUrl() porque eso abre el Apps Script directamente.
-  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token) + '&v=57';
+  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token) + '&v=58';
   const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
   const html = `
     <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
