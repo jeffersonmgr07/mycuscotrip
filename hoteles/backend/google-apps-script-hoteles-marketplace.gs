@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V59
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V61
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -30,8 +30,8 @@ const HOTEL_SHEETS = {
 
 const HOTEL_HEADERS = {
   Hotel_Users: ['userId','registrationType','email','passwordHash','firstName','lastName','docType','docNumber','nationality','phoneCode','phone','businessName','taxId','website','role','status','propertyLimit','verificationToken','verifiedAt','verificationEmailSentAt','verificationEmailError','sessionToken','lastLoginAt','createdAt','updatedAt'],
-  Properties: ['propertyId','ownerUserId','ownerEmail','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','createdAt','updatedAt'],
-  Rooms: ['roomId','propertyId','ownerUserId','roomName','roomType','capacity','basePriceUsd','stock','currency','status','description','roomGalleryJson','roomPhotoCount','createdAt','updatedAt'],
+  Properties: ['propertyId','ownerUserId','ownerEmail','type','name','destination','address','mapUrl','stars','status','confirmationMode','commissionRate','description','website','galleryJson','photoCount','photoNamesJson','createdAt','updatedAt'],
+  Rooms: ['roomId','propertyId','ownerUserId','roomName','roomType','capacity','capacityAdults','capacityChildren','basePriceUsd','stock','currency','status','description','amenitiesJson','roomGalleryJson','roomPhotoCount','roomPhotoNamesJson','createdAt','updatedAt'],
   Availability: ['availabilityId','propertyId','roomId','date','status','availableUnits','priceUsd','source','orderId','notes','updatedAt'],
   Hotel_Orders: ['orderId','source','createdAt','propertyId','roomId','assignedRoomId','checkin','checkout','nights','adults','children','guestName','guestEmail','guestPhone','amount','currency','confirmationMode','reservationStatus','paymentStatus','paypalOrderId','paypalAuthorizationId','rawJson'],
   Payments: ['paymentId','orderId','provider','intent','providerOrderId','authorizationId','captureId','status','amount','currency','createdAt','rawJson'],
@@ -87,6 +87,7 @@ function dispatchHotelAction_(action, payload) {
     if (action === 'update_owner') return updateHotelOwner_(payload);
     if (action === 'change_password') return changeHotelOwnerPassword_(payload);
     if (action === 'create_property') return createProperty_(payload);
+    if (action === 'update_property') return updateProperty_(payload);
     if (action === 'create_room') return createRoom_(payload);
     if (action === 'update_confirmation_mode') return updateConfirmationMode_(payload);
     if (action === 'create_order') return createHotelOrder_(payload);
@@ -94,6 +95,7 @@ function dispatchHotelAction_(action, payload) {
     if (action === 'catalog') return getHotelCatalog_();
     if (action === 'availability') return getAvailability_(payload);
     if (action === 'resend_verification') return resendVerification_(payload);
+    if (action === 'debug_owner') return debugHotelOwner_(payload);
     return { ok: false, error: 'Acción no válida: ' + action };
   } catch (err) {
     return { ok: false, error: err && err.message ? err.message : String(err) };
@@ -170,6 +172,20 @@ function setCellByHeader_(found, header, value) {
   const col = found.map[header];
   if (col !== undefined) found.sh.getRange(found.rowIndex, col + 1).setValue(value);
 }
+
+function appendObjectToSheet_(sheetName, rowObj) {
+  // IMPORTANTE:
+  // No usamos HOTEL_HEADERS[sheetName].map(...) directamente para appendRow,
+  // porque una hoja creada en versiones anteriores puede tener columnas agregadas al final
+  // o en un orden diferente. Si insertamos por orden fijo, el token puede caer en otra columna
+  // y luego la verificación responde "Enlace no válido".
+  const sh = sheet_(sheetName, HOTEL_HEADERS[sheetName]);
+  const lastCol = Math.max(sh.getLastColumn(), 1);
+  const headers = sh.getRange(1, 1, 1, lastCol).getValues()[0].map(function(h){ return String(h || '').trim(); });
+  const row = headers.map(function(h){ return rowObj[h] !== undefined ? rowObj[h] : ''; });
+  sh.appendRow(row);
+  return sh;
+}
 function publicOwner_(obj) {
   if (!obj) return null;
   return {
@@ -201,10 +217,13 @@ function registerHotelOwner_(payload) {
   setupHotelMarketplaceSheets();
   const email = String(payload.email || '').trim().toLowerCase();
   if (!email) return { ok: false, error: 'Correo requerido.' };
-  if (findRowBy_(HOTEL_SHEETS.USERS, 'email', email)) return { ok: false, error: 'Este correo ya está registrado.' };
+  if (findRowBy_(HOTEL_SHEETS.USERS, 'email', email)) return { ok: false, error: 'Ya existe un registro con este correo.' };
+  const docNumber = String(payload.docNumber || '').trim();
+  const taxId = String(payload.taxId || '').trim();
+  if (docNumber && findRowBy_(HOTEL_SHEETS.USERS, 'docNumber', docNumber)) return { ok: false, error: 'Ya existe un registro con este número de documento.' };
+  if (taxId && findRowBy_(HOTEL_SHEETS.USERS, 'taxId', taxId)) return { ok: false, error: 'Ya existe un registro con este RUC.' };
   const token = Utilities.getUuid();
   const userId = uuid_('HUSR');
-  const sh = sheet_(HOTEL_SHEETS.USERS, HOTEL_HEADERS.Hotel_Users);
   const rowObj = {
     userId: userId,
     registrationType: payload.registrationType || 'natural',
@@ -233,7 +252,7 @@ function registerHotelOwner_(payload) {
     updatedAt: now_(),
     publicBaseUrl: payload.publicBaseUrl || HOTEL_PUBLIC_HOTELES_URL
   };
-  sh.appendRow(HOTEL_HEADERS.Hotel_Users.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
+  appendObjectToSheet_(HOTEL_SHEETS.USERS, rowObj);
   const found = findRowBy_(HOTEL_SHEETS.USERS, 'email', email);
   try {
     sendVerificationEmail_(rowObj, token);
@@ -251,7 +270,7 @@ function registerHotelOwner_(payload) {
 function sendVerificationEmail_(owner, token) {
   // IMPORTANTE: el enlace debe ir a la web pública de MyCuscoTrip.
   // No usamos ScriptApp.getService().getUrl() porque eso abre el Apps Script directamente.
-  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token) + '&v=58';
+  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token) + '&v=60';
   const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
   const html = `
     <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
@@ -308,7 +327,7 @@ function testHotelVerificationEmail() {
 function verifyHotelOwnerData_(token) {
   if (!token) return { ok: false, error: 'Token inválido.' };
   const found = findRowBy_(HOTEL_SHEETS.USERS, 'verificationToken', token);
-  if (!found) return { ok: false, error: 'Enlace no válido o ya usado.' };
+  if (!found) return { ok: false, error: 'Enlace no válido o ya usado. Solicita un nuevo correo de verificación o regístrate nuevamente.' };
   setCellByHeader_(found, 'status', 'approved');
   setCellByHeader_(found, 'role', 'hotel_provider');
   setCellByHeader_(found, 'verifiedAt', now_());
@@ -363,6 +382,23 @@ function verifyHotelOwnerHtml_(data) {
       <\/script>
     </body></html>`)
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+
+function debugHotelOwner_(payload) {
+  const email = String(payload.email || payload.ownerEmail || '').trim().toLowerCase();
+  const token = String(payload.token || '').trim();
+  let byEmail = email ? findRowBy_(HOTEL_SHEETS.USERS, 'email', email) : null;
+  let byToken = token ? findRowBy_(HOTEL_SHEETS.USERS, 'verificationToken', token) : null;
+  return {
+    ok: true,
+    emailFound: !!byEmail,
+    tokenFound: !!byToken,
+    emailStatus: byEmail ? byEmail.object.status : '',
+    emailTokenPresent: byEmail ? !!byEmail.object.verificationToken : false,
+    tokenEmail: byToken ? byToken.object.email : '',
+    note: 'Diagnóstico: si tokenFound=false pero emailFound=true, el enlace no coincide con la columna verificationToken de esa fila. Reenvía verificación o registra nuevamente con V60.'
+  };
 }
 
 function loginHotelOwner_(payload) {
@@ -422,7 +458,6 @@ function changeHotelOwnerPassword_(payload) {
 }
 
 function createProperty_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.PROPERTIES, HOTEL_HEADERS.Properties);
   const propertyId = uuid_('HPR');
   const rowObj = {
     propertyId: propertyId,
@@ -441,22 +476,52 @@ function createProperty_(payload) {
     website: payload.website || '',
     galleryJson: payload.galleryJson || '[]',
     photoCount: payload.photoCount || '',
+    photoNamesJson: payload.photoNamesJson || '[]',
     createdAt: now_(),
     updatedAt: now_()
   };
-  sh.appendRow(HOTEL_HEADERS.Properties.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
+  appendObjectToSheet_(HOTEL_SHEETS.PROPERTIES, rowObj);
   return { ok: true, propertyId: propertyId, status: 'draft' };
 }
 
+function updateProperty_(payload) {
+  const propertyId = String(payload.propertyId || '').trim();
+  if (!propertyId) return { ok: false, error: 'Alojamiento no encontrado.' };
+  const found = findRowBy_(HOTEL_SHEETS.PROPERTIES, 'propertyId', propertyId);
+  if (!found) return { ok: false, error: 'Alojamiento no encontrado.' };
+  ['type','name','destination','address','mapUrl','stars','confirmationMode','commissionRate','description','website','galleryJson','photoCount','photoNamesJson'].forEach(function(key) {
+    if (payload[key] !== undefined && payload[key] !== '') setCellByHeader_(found, key, payload[key]);
+  });
+  setCellByHeader_(found, 'updatedAt', now_());
+  return { ok: true, propertyId: propertyId, status: found.object.status || 'draft' };
+}
+
 function createRoom_(payload) {
-  const sh = sheet_(HOTEL_SHEETS.ROOMS, HOTEL_HEADERS.Rooms);
   const roomId = uuid_('HRM');
+  const adults = Number(payload.capacityAdults || 0);
+  const children = Number(payload.capacityChildren || 0);
   const rowObj = {
-    roomId: roomId, propertyId: payload.propertyId || '', ownerUserId: payload.ownerUserId || '', roomName: payload.roomName || '', roomType: payload.roomType || '',
-    capacity: payload.capacity || 1, basePriceUsd: payload.basePriceUsd || 0, stock: payload.stock || 1, currency: payload.currency || 'USD', status: 'active',
-    description: payload.description || '', roomGalleryJson: payload.roomGalleryJson || '[]', roomPhotoCount: payload.roomPhotoCount || '', createdAt: now_(), updatedAt: now_()
+    roomId: roomId,
+    propertyId: payload.propertyId || '',
+    ownerUserId: payload.ownerUserId || '',
+    roomName: payload.roomName || '',
+    roomType: payload.roomType || '',
+    capacity: payload.capacity || (adults + children) || 1,
+    capacityAdults: payload.capacityAdults || adults || 1,
+    capacityChildren: payload.capacityChildren || children || 0,
+    basePriceUsd: payload.basePriceUsd || 0,
+    stock: payload.stock || 1,
+    currency: payload.currency || 'USD',
+    status: 'active',
+    description: payload.description || '',
+    amenitiesJson: payload.amenitiesJson || '[]',
+    roomGalleryJson: payload.roomGalleryJson || '[]',
+    roomPhotoCount: payload.roomPhotoCount || '',
+    roomPhotoNamesJson: payload.roomPhotoNamesJson || '[]',
+    createdAt: now_(),
+    updatedAt: now_()
   };
-  sh.appendRow(HOTEL_HEADERS.Rooms.map(function(h) { return rowObj[h] !== undefined ? rowObj[h] : ''; }));
+  appendObjectToSheet_(HOTEL_SHEETS.ROOMS, rowObj);
   return { ok: true, roomId: roomId };
 }
 

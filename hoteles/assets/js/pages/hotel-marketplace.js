@@ -14,7 +14,23 @@
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
   const escapeHtml = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const serialize = (form) => Object.fromEntries(new FormData(form).entries());
+  
+  const serialize = (form) => {
+    const data = new FormData(form);
+    const obj = {};
+    for (const [key, value] of data.entries()) {
+      if (obj[key] !== undefined) {
+        if (!Array.isArray(obj[key])) obj[key] = [obj[key]];
+        obj[key].push(value);
+      } else {
+        obj[key] = value;
+      }
+    }
+    return obj;
+  };
+  let ownerPropertiesCache = [];
+  let activePropertyForRoom = null;
+
   const lettersOnlyRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s'´-]+$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const sanitizeLetters = (value = '') => String(value).replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s'´-]/g, '').replace(/\s{2,}/g, ' ');
@@ -279,8 +295,9 @@
     $$('[data-min-files]', form).forEach(field => {
       const label = field.closest('label');
       const min = Number(field.dataset.minFiles || 0);
+      const isPropertyEdit = form.dataset.marketplaceForm === 'property' && form.dataset.mode === 'edit';
       label?.classList.remove('has-error');
-      if (min && field.files && field.files.length && field.files.length < min) { ok = false; label?.classList.add('has-error'); }
+      if (!isPropertyEdit && min && field.files && field.files.length < min) { ok = false; label?.classList.add('has-error'); }
     });
     if (form.id === 'hotelOwnerRegisterForm') {
       const pass = form.elements.password?.value || '';
@@ -304,7 +321,74 @@
     return ok;
   }
 
-  function openModal(id) { const el = document.getElementById(id); if (el) { el.hidden = false; document.body.style.overflow = 'hidden'; } }
+  
+  function resetPhotoPreview(form) {
+    if (!form) return;
+    $$('[data-preview-target]', form).forEach(input => {
+      const target = document.getElementById(input.dataset.previewTarget);
+      if (target) target.innerHTML = '';
+    });
+  }
+  function resetPropertyFormForCreate() {
+    const modal = document.getElementById('propertyModal');
+    const form = modal?.querySelector('[data-marketplace-form="property"]');
+    if (!form) return;
+    form.reset();
+    form.dataset.mode = 'create';
+    delete form.dataset.propertyId;
+    const title = modal.querySelector('header h2');
+    if (title) title.textContent = 'Crear alojamiento';
+    const button = form.querySelector('[type="submit"]');
+    if (button) button.textContent = 'Guardar alojamiento';
+    fillSelects();
+    resetPhotoPreview(form);
+    updateMapPreview(form);
+  }
+  function fillPropertyFormForEdit(propertyId) {
+    const item = ownerPropertiesCache.find(p => String(p.propertyId || p.id || '') === String(propertyId));
+    const modal = document.getElementById('propertyModal');
+    const form = modal?.querySelector('[data-marketplace-form="property"]');
+    if (!item || !form) return;
+    form.reset();
+    form.dataset.mode = 'edit';
+    form.dataset.propertyId = item.propertyId || item.id || '';
+    ['type','name','destination','stars','address','mapUrl','description','website','confirmationMode','commissionRate'].forEach(key => {
+      const field = form.elements[key];
+      if (!field) return;
+      if (field instanceof RadioNodeList) {
+        Array.from(field).forEach(r => { r.checked = String(r.value) === String(item[key] || ''); });
+      } else field.value = item[key] || '';
+    });
+    const title = modal.querySelector('header h2');
+    if (title) title.textContent = 'Editar alojamiento';
+    const button = form.querySelector('[type="submit"]');
+    if (button) button.textContent = 'Guardar cambios';
+    resetPhotoPreview(form);
+    updateMapPreview(form);
+  }
+  function prepareRoomForm(propertyId) {
+    const item = ownerPropertiesCache.find(p => String(p.propertyId || p.id || '') === String(propertyId));
+    const modal = document.getElementById('roomModal');
+    const form = modal?.querySelector('[data-marketplace-form="room"]');
+    if (!form) return;
+    form.reset();
+    activePropertyForRoom = item || { propertyId };
+    const idField = form.querySelector('[data-room-property-id]');
+    if (idField) idField.value = propertyId || '';
+    const title = modal.querySelector('header h2');
+    if (title) title.textContent = `Crear habitación - ${item?.name || 'Alojamiento'}`;
+    resetPhotoPreview(form);
+  }
+  function openModal(id, options = {}) {
+    if (id === 'propertyModal') {
+      if (options.mode === 'edit') fillPropertyFormForEdit(options.propertyId);
+      else resetPropertyFormForCreate();
+    }
+    if (id === 'roomModal') prepareRoomForm(options.propertyId || activePropertyForRoom?.propertyId || '');
+    const el = document.getElementById(id);
+    if (el) { el.hidden = false; document.body.style.overflow = 'hidden'; }
+  }
+
   function closeModal() { $$('.hotel-market-modal').forEach(el => el.hidden = true); document.body.style.overflow = ''; }
   function switchPanelTab(tab) {
     $$('[data-hotel-panel-tab]').forEach(btn => btn.classList.toggle('is-active', btn.dataset.hotelPanelTab === tab));
@@ -326,6 +410,7 @@
       const form = button.closest('form');
       const input = form?.querySelector('[name="mapUrl"]');
       if (input) input.value = `https://www.google.com/maps?q=${lat},${lng}`;
+      updateMapPreview(form);
       button.disabled = false;
       button.innerHTML = original;
     }, () => {
@@ -333,6 +418,56 @@
       button.innerHTML = original;
       alert('No se pudo obtener tu ubicación. Revisa permisos del navegador o pega el enlace de Google Maps manualmente.');
     }, { enableHighAccuracy: true, timeout: 10000 });
+  }
+
+
+  function googleMapsEmbedUrl(value = '') {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const qMatch = raw.match(/[?&]q=([^&]+)/i);
+    const atMatch = raw.match(/@(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)/);
+    const coordMatch = raw.match(/(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)/);
+    let q = '';
+    if (qMatch) q = decodeURIComponent(qMatch[1]);
+    else if (atMatch) q = `${atMatch[1]},${atMatch[2]}`;
+    else if (coordMatch) q = `${coordMatch[1]},${coordMatch[2]}`;
+    else q = raw;
+    return `https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=16&output=embed`;
+  }
+  function updateMapPreview(formOrInput) {
+    const form = formOrInput?.tagName === 'FORM' ? formOrInput : formOrInput?.closest?.('form');
+    if (!form) return;
+    const input = form.querySelector('[data-map-url-input]');
+    const wrap = form.querySelector('[data-map-preview]');
+    const iframe = wrap?.querySelector('iframe');
+    if (!input || !wrap || !iframe) return;
+    const url = googleMapsEmbedUrl(input.value);
+    if (!url) { wrap.hidden = true; iframe.removeAttribute('src'); return; }
+    iframe.src = url;
+    wrap.hidden = false;
+  }
+  function renderImagePreviews(input) {
+    const target = input?.dataset?.previewTarget ? document.getElementById(input.dataset.previewTarget) : null;
+    if (!target) return;
+    target.innerHTML = '';
+    const files = Array.from(input.files || []).filter(file => file.type.startsWith('image/'));
+    if (!files.length) {
+      target.innerHTML = '<small class="hotel-photo-preview-empty">Aún no seleccionaste imágenes.</small>';
+      return;
+    }
+    files.forEach(file => {
+      const card = document.createElement('figure');
+      card.className = 'hotel-photo-preview-card';
+      const img = document.createElement('img');
+      img.alt = file.name;
+      img.src = URL.createObjectURL(file);
+      img.onload = () => URL.revokeObjectURL(img.src);
+      const caption = document.createElement('figcaption');
+      caption.textContent = file.name;
+      card.appendChild(img);
+      card.appendChild(caption);
+      target.appendChild(card);
+    });
   }
 
 
@@ -394,28 +529,40 @@
     document.querySelectorAll('[data-owner-user-id]').forEach(el => { el.value = current.userId || ''; });
   }
 
+  function propertyTypeLabel(type = '') {
+    return ({ hotel: 'Hotel', apartment: 'Apartamento', room: 'Habitación', lodge: 'Lodge' }[String(type).toLowerCase()] || type || 'Alojamiento');
+  }
   function renderProperties(properties = []) {
+    ownerPropertiesCache = Array.isArray(properties) ? properties : [];
     const list = document.getElementById('hotelOwnerPropertiesList');
     const empty = document.getElementById('hotelOwnerPropertiesEmpty');
     if (!list) return;
     list.innerHTML = '';
-    if (!properties.length) {
+    if (!ownerPropertiesCache.length) {
       if (empty) empty.hidden = false;
       renderPropertyOptions([]);
       return;
     }
     if (empty) empty.hidden = true;
-    list.innerHTML = properties.map(item => `
-      <article class="hotel-owner-property-card">
-        <div>
-          <span>${escapeHtml(item.destination || 'Destino pendiente')}</span>
-          <strong>${escapeHtml(item.name || 'Alojamiento sin nombre')}</strong>
-          <small>${escapeHtml(item.type || 'hotel')} · ${escapeHtml(item.confirmationMode === 'manual' ? 'Confirmación manual' : 'Confirmación instantánea')}</small>
+    list.innerHTML = ownerPropertiesCache.map(item => {
+      const id = item.propertyId || item.id || '';
+      const stars = item.stars ? `${escapeHtml(item.stars)} estrellas` : 'Sin categoría';
+      const mode = item.confirmationMode === 'manual' ? 'Confirmación manual' : 'Confirmación instantánea';
+      return `
+      <article class="hotel-owner-property-card" data-property-card="${escapeHtml(id)}">
+        <div class="hotel-owner-property-main">
+          <span class="hotel-owner-property-kicker">${escapeHtml(item.destination || 'Destino pendiente')}</span>
+          <strong class="hotel-owner-property-title">${escapeHtml(item.name || 'Alojamiento sin nombre')}</strong>
+          <small class="hotel-owner-property-meta">${escapeHtml(propertyTypeLabel(item.type))} · ${stars} · ${escapeHtml(mode)}</small>
         </div>
-        <em>${escapeHtml(item.status || 'draft')}</em>
-      </article>
-    `).join('');
-    renderPropertyOptions(properties);
+        <div class="hotel-owner-property-actions">
+          <em>${escapeHtml(item.status || 'draft')}</em>
+          <button type="button" class="hotel-admin-btn hotel-admin-btn--small hotel-admin-btn--ghost" data-edit-property="${escapeHtml(id)}"><i class="fa-solid fa-pen"></i> Editar alojamiento</button>
+          <button type="button" class="hotel-admin-btn hotel-admin-btn--small" data-create-room-for="${escapeHtml(id)}"><i class="fa-solid fa-bed"></i> Crear habitación</button>
+        </div>
+      </article>`;
+    }).join('');
+    renderPropertyOptions(ownerPropertiesCache);
   }
 
   function renderPropertyOptions(properties = []) {
@@ -469,9 +616,15 @@
     $('#hotelOwnerPassword')?.addEventListener('input', updatePasswordRules);
     $('#hotelOwnerConfirmPassword')?.addEventListener('input', updatePasswordRules);
     updatePasswordRules();
+    if (document.querySelector('[data-hotel-panel-section="properties"]')) switchPanelTab('properties');
     loadPanelData();
     document.addEventListener('input', e => sanitizeInput(e.target));
-    document.addEventListener('change', e => sanitizeInput(e.target));
+    document.addEventListener('change', e => {
+      sanitizeInput(e.target);
+      if (e.target.matches('[data-preview-target]')) renderImagePreviews(e.target);
+      if (e.target.matches('[data-map-url-input]')) updateMapPreview(e.target);
+    });
+    document.addEventListener('input', e => { if (e.target.matches('[data-map-url-input]')) updateMapPreview(e.target); });
     document.addEventListener('click', e => {
       const passwordToggle = e.target.closest('[data-toggle-password]');
       if (passwordToggle) return togglePassword(passwordToggle, e);
@@ -486,6 +639,18 @@
       if (tab) switchPanelTab(tab.dataset.hotelPanelTab);
       const opener = e.target.closest('[data-open-market-modal]');
       if (opener) openModal(opener.dataset.openMarketModal);
+      const editProperty = e.target.closest('[data-edit-property]');
+      if (editProperty) {
+        e.preventDefault();
+        openModal('propertyModal', { mode: 'edit', propertyId: editProperty.dataset.editProperty });
+        return;
+      }
+      const createRoomFor = e.target.closest('[data-create-room-for]');
+      if (createRoomFor) {
+        e.preventDefault();
+        openModal('roomModal', { propertyId: createRoomFor.dataset.createRoomFor });
+        return;
+      }
       const currentLocation = e.target.closest('[data-use-current-location]');
       if (currentLocation) useCurrentLocation(currentLocation);
       if (e.target.closest('[data-close-market-modal]')) closeModal();
@@ -545,7 +710,7 @@
       if (!validateForm(marketForm)) { showMsg('#hotelPanelMsg', 'Revisa los campos obligatorios antes de guardar.', false); return; }
       const type = marketForm.dataset.marketplaceForm;
       const payload = appendOwnerPayload(serialize(marketForm));
-      let action = type === 'property' ? 'create_property' : type === 'room' ? 'create_room' : type === 'availability' ? 'block_dates' : type === 'account' ? 'update_owner' : type === 'password' ? 'change_password' : 'update_confirmation_mode';
+      let action = type === 'property' ? (marketForm.dataset.mode === 'edit' ? 'update_property' : 'create_property') : type === 'room' ? 'create_room' : type === 'availability' ? 'block_dates' : type === 'account' ? 'update_owner' : type === 'password' ? 'change_password' : 'update_confirmation_mode';
       if (type === 'availability') payload.dates = dateRange(payload.from, payload.to);
       if (type === 'property') {
         const galleryCount = String(payload.galleryUrls || '').split('\n').map(v => v.trim()).filter(Boolean).length;
@@ -566,6 +731,11 @@
       const result = await withUserLoading('Guardando cambios...', event.submitter, () => post(action, payload));
       if (!result.ok) { showMsg('#hotelPanelMsg', result.error || 'No se pudo guardar.', false); return; }
       showMsg('#hotelPanelMsg', 'Cambios guardados correctamente.');
+      if (type === 'property' || type === 'room') {
+        marketForm.reset();
+        resetPhotoPreview(marketForm);
+        if (type === 'property') updateMapPreview(marketForm);
+      }
       closeModal();
       if (type === 'account') {
         const current = getSession() || {};

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="./assets/css/main.css" />
   <link rel="stylesheet" href="./assets/css/header.css?v=49" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
-  <link rel="stylesheet" href="./assets/css/hoteles.css?v=59" />
+  <link rel="stylesheet" href="./assets/css/hoteles.css?v=61" />
 </head>
 <body class="hotel-panel-admin-body">
   <div id="header-container"></div>
@@ -19,15 +19,15 @@
         <h1>Panel de administración</h1>
         <p>Alojamientos</p>
         <nav class="hotel-marketplace-nav" aria-label="Secciones del panel hotelero">
-          <button type="button" class="is-active" data-hotel-panel-tab="account"><i class="fa-solid fa-user"></i> Mi cuenta</button>
-          <button type="button" data-hotel-panel-tab="properties"><i class="fa-solid fa-hotel"></i> Alojamientos</button>
+          <button type="button" data-hotel-panel-tab="account"><i class="fa-solid fa-user"></i> Mi cuenta</button>
+          <button type="button" class="is-active" data-hotel-panel-tab="properties"><i class="fa-solid fa-hotel"></i> Alojamientos</button>
           <button type="button" data-hotel-panel-tab="availability"><i class="fa-solid fa-calendar-xmark"></i> Bloquear fechas</button>
           <button type="button" data-hotel-panel-tab="confirmation"><i class="fa-solid fa-bolt"></i> Confirmación</button>
           <button type="button" class="hotel-admin-logout" data-hotel-logout><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
         </nav>
       </aside>
       <section class="hotel-marketplace-panel hotel-admin-panel-content">
-        <section class="hotel-panel-section is-active" data-hotel-panel-section="account">
+        <section class="hotel-panel-section" data-hotel-panel-section="account">
           <div class="hotel-panel-section-title"><h2>Mi cuenta</h2></div>
           <div class="hotel-account-summary hotel-account-summary--complete">
             <div><span>Tipo de cuenta</span><strong id="accountType">Persona natural</strong></div>
@@ -47,11 +47,10 @@
           </div>
         </section>
 
-        <section class="hotel-panel-section" data-hotel-panel-section="properties">
+        <section class="hotel-panel-section is-active" data-hotel-panel-section="properties">
           <div class="hotel-panel-section-title"><h2>Administrar alojamientos</h2></div>
           <div class="hotel-panel-toolbar">
             <button type="button" class="hotel-admin-btn" data-open-market-modal="propertyModal"><i class="fa-solid fa-plus"></i> Crear alojamiento</button>
-            <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost" data-open-market-modal="roomModal"><i class="fa-solid fa-bed"></i> Crear habitación</button>
           </div>
           <div id="hotelOwnerPropertiesList" class="hotel-owner-properties-list"></div>
           <div id="hotelOwnerPropertiesEmpty" class="hotel-admin-empty-state">
@@ -141,20 +140,22 @@
         </label>
         <label class="full">Dirección <input name="address" placeholder="Dirección visible para el cliente"></label>
         <div class="full hotel-map-field">
-          <label>Ubicación en Google Maps <input name="mapUrl" placeholder="Pega aquí el enlace de Google Maps del alojamiento"></label>
+          <label>Ubicación en Google Maps <input name="mapUrl" data-map-url-input placeholder="Pega el enlace de Google Maps o usa tu ubicación actual"></label>
           <div class="hotel-map-actions">
-            <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost hotel-admin-btn--small" data-use-current-location><i class="fa-solid fa-location-crosshairs"></i> Usar mi ubicación</button>
-            <a class="hotel-admin-btn hotel-admin-btn--ghost hotel-admin-btn--small" href="https://www.google.com/maps" target="_blank" rel="noopener"><i class="fa-solid fa-map-location-dot"></i> Abrir Google Maps</a>
+            <button type="button" class="hotel-admin-btn hotel-admin-btn--ghost hotel-admin-btn--small" data-use-current-location><i class="fa-solid fa-location-crosshairs"></i> Usar mi ubicación actual</button>
           </div>
-          <p class="hotel-form-help">Para el MVP puedes pegar el enlace de Google Maps. Más adelante podemos integrar un mapa interactivo con Google Maps Platform/Places API para elegir el punto dentro del formulario.</p>
+          <div class="hotel-map-preview" data-map-preview hidden>
+            <iframe title="Vista previa de ubicación" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <p class="hotel-form-help">La ubicación se mostrará como vista previa. Para elegir un punto exacto dentro del mapa sin pegar enlace se requiere Google Maps Platform/Places API; por ahora puedes usar tu ubicación actual o pegar el enlace.</p>
         </div>
         <label class="full">Descripción <textarea name="description" placeholder="Describe tu alojamiento, ubicación, estilo y beneficios principales"></textarea></label>
         <label class="full">Página web del alojamiento <input name="website" placeholder="https://... / Instagram / Facebook"></label>
 
         <div class="full hotel-modal-subtitle">Fotos del alojamiento</div>
-        <label class="full">Fotos del alojamiento <input name="photoFiles" type="file" accept="image/*" multiple data-min-files="5"></label>
-        <p class="full hotel-form-help"><strong>Sube mínimo 5 fotos generales del alojamiento.</strong> Para el MVP, se pueden guardar en Google Drive vía Apps Script o usar URLs públicas.</p>
-        <label class="full">URLs de galería <textarea name="galleryUrls" placeholder="Una URL por línea. Útil si ya tienes fotos publicadas en Google Drive, Cloudinary, tu web o un CDN."></textarea></label>
+        <label class="full">Fotos del alojamiento <input name="photoFiles" type="file" accept="image/*" multiple data-min-files="1" data-preview-target="propertyPhotoPreview"></label>
+        <div id="propertyPhotoPreview" class="hotel-photo-preview-grid full" aria-live="polite"></div>
+        <p class="full hotel-form-help">Te recomendamos agregar 5 fotos de tu alojamiento: exteriores, recepción, áreas comunes y espacios principales. Las fotos de habitación se agregarán al crear habitaciones, aunque también puedes incluirlas aquí.</p>
 
         <div class="full hotel-modal-subtitle">Confirmación y comisión</div>
         <div class="full hotel-choice-row">
@@ -186,21 +187,40 @@
     <article class="hotel-market-modal__dialog hotel-market-modal__dialog--wide">
       <header><h2>Crear habitación</h2><button type="button" data-close-market-modal><i class="fa-solid fa-xmark"></i></button></header>
       <form class="hotel-admin-form-grid hotel-admin-form-grid--premium" data-marketplace-form="room">
+        <input type="hidden" name="propertyId" data-room-property-id>
         <div class="full hotel-modal-subtitle">Datos de la habitación</div>
-        <label>Alojamiento
-          <select name="propertyId" required data-property-select>
-            <option value="demo-property">Hotel demo</option>
+        <label>Nombre o número de habitación <input name="roomName" required placeholder="Ej. 101, Matrimonial Deluxe"></label>
+        <label>Tipo de habitación
+          <select name="roomType" required>
+            <option value="Habitación simple / single">Habitación simple / single</option>
+            <option value="Habitación matrimonial">Habitación matrimonial</option>
+            <option value="Habitación doble twin">Habitación doble twin</option>
+            <option value="Habitación triple">Habitación triple</option>
+            <option value="Habitación familiar">Habitación familiar</option>
+            <option value="Suite">Suite</option>
           </select>
         </label>
-        <label>Nombre o número de habitación <input name="roomName" required placeholder="Ej. 101, Matrimonial Deluxe"></label>
-        <label>Tipo de habitación <input name="roomType" required placeholder="Habitación Matrimonial"></label>
-        <label>Capacidad <input name="capacity" type="number" min="1" max="8" value="2"></label>
+        <label>Capacidad adultos <input name="capacityAdults" type="number" min="1" max="8" value="2"></label>
+        <label>Capacidad niños <input name="capacityChildren" type="number" min="0" max="6" value="0"></label>
         <label>Precio por noche USD <input name="basePriceUsd" type="number" min="0" step="0.01" value="0"></label>
         <label>Cantidad disponible <input name="stock" type="number" min="1" max="50" value="1"></label>
         <label class="full">Descripción <textarea name="description" placeholder="Camas, vista, beneficios, baño privado, desayuno..."></textarea></label>
+        <div class="full hotel-modal-subtitle">Servicios incluidos</div>
+        <div class="full hotel-amenities-grid">
+          <label><input type="checkbox" name="amenities" value="Baño privado"> Baño privado</label>
+          <label><input type="checkbox" name="amenities" value="Agua caliente"> Agua caliente</label>
+          <label><input type="checkbox" name="amenities" value="Wi-Fi"> Wi-Fi</label>
+          <label><input type="checkbox" name="amenities" value="Televisor"> Televisor</label>
+          <label><input type="checkbox" name="amenities" value="TV cable"> TV cable</label>
+          <label><input type="checkbox" name="amenities" value="Calefacción"> Calefacción</label>
+          <label><input type="checkbox" name="amenities" value="Aire acondicionado"> Aire acondicionado</label>
+          <label><input type="checkbox" name="amenities" value="Desayuno"> Desayuno</label>
+          <label><input type="checkbox" name="amenities" value="Caja fuerte"> Caja fuerte</label>
+          <label><input type="checkbox" name="amenities" value="Secadora de cabello"> Secadora de cabello</label>
+        </div>
         <div class="full hotel-modal-subtitle">Fotos de la habitación</div>
-        <label class="full">Fotos de la habitación <input name="roomPhotoFiles" type="file" accept="image/*" multiple></label>
-        <label class="full">URLs de fotos de la habitación <textarea name="roomGalleryUrls" placeholder="Una URL por línea, si ya tienes imágenes publicadas."></textarea></label>
+        <label class="full">Fotos de la habitación <input name="roomPhotoFiles" type="file" accept="image/*" multiple data-preview-target="roomPhotoPreview"></label>
+        <div id="roomPhotoPreview" class="hotel-photo-preview-grid full" aria-live="polite"></div>
         <div class="full hotel-admin-actions"><button class="hotel-admin-btn" type="submit">Guardar habitación</button></div>
       </form>
     </article>
@@ -320,7 +340,7 @@
     window.MCT_HOTEL_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7zclo0SnYqT0NMP6Uph3oB9XbTGeIIoWj6hWZ7lx2s3ftWMmIpshJ-XtgjEuijsLN/exec';
     window.MCT_HOTEL_PAYPAL_CLIENT_ID = 'AUdRf58xVpVo-Iv_L_Je8UgE6ukF79cLynwRXUk3wU9WA4bfremVO0yRpkS3kFTUOE7O5ZOfoWMw8TlJ';
   </script>
-  <script src="./assets/js/config.js?v=59"></script>
-  <script src="./assets/js/pages/hotel-marketplace.js?v=59"></script>
+  <script src="./assets/js/config.js?v=61"></script>
+  <script src="./assets/js/pages/hotel-marketplace.js?v=61"></script>
 </body>
 </html>

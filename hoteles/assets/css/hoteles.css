@@ -1718,3 +1718,30 @@
 .hotel-register-success-panel h2{margin:0 0 10px;color:#062803;font-size:clamp(22px,3vw,30px)}
 .hotel-register-success-panel p{margin:0 auto 20px;max-width:520px;color:#516051;line-height:1.6}
 .hotel-register-success-actions{justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* V61 - Afinación panel de alojamientos */
+.hotel-owner-property-card{
+  align-items:flex-start;
+  gap:18px;
+}
+.hotel-owner-property-main{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.hotel-owner-property-kicker{font-size:.8rem;font-weight:800;color:#5f7464;text-transform:uppercase;letter-spacing:.04em;}
+.hotel-owner-property-title{font-size:1.2rem!important;color:#062803!important;line-height:1.2;font-weight:900;}
+.hotel-owner-property-meta{color:#667466;font-weight:700;font-size:.88rem;}
+.hotel-owner-property-actions{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;}
+.hotel-owner-property-actions em{font-style:normal;border-radius:999px;background:#eef8ef;color:#1c6b3a;font-size:.78rem;font-weight:900;padding:6px 10px;text-transform:uppercase;}
+.hotel-map-preview{margin-top:12px;border:1px solid #dfe8df;border-radius:18px;overflow:hidden;background:#f5f8f5;box-shadow:inset 0 0 0 1px rgba(6,40,3,.04);}
+.hotel-map-preview iframe{display:block;width:100%;height:250px;border:0;}
+.hotel-photo-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:-4px;}
+.hotel-photo-preview-card{margin:0;border:1px solid #dfe8df;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 8px 22px rgba(6,40,3,.08);}
+.hotel-photo-preview-card img{width:100%;height:86px;object-fit:cover;display:block;}
+.hotel-photo-preview-card figcaption{font-size:.72rem;line-height:1.2;padding:7px;color:#526052;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hotel-photo-preview-empty{color:#6a746c;font-weight:700;}
+.hotel-amenities-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.hotel-amenities-grid label{display:flex!important;align-items:center;gap:8px;padding:10px 12px;border:1px solid #dfe8df;border-radius:14px;background:#fbfdfb;font-weight:800;color:#17301b;}
+.hotel-amenities-grid input{width:auto!important;accent-color:#062803;}
+@media (max-width:720px){
+  .hotel-owner-property-actions{width:100%;justify-content:flex-start;margin-left:0;}
+  .hotel-owner-property-actions .hotel-admin-btn{flex:1 1 100%;justify-content:center;}
+  .hotel-map-preview iframe{height:210px;}
+}
