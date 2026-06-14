@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V53
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V55
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -13,7 +13,10 @@
  * - El Secret ID de PayPal nunca debe ir en el HTML.
  */
 
+// URL pública donde está alojada la página verify-owner.html.
+// El correo de verificación SIEMPRE debe abrir esta página, no el Apps Script.
 const HOTEL_PUBLIC_HOTELES_URL = 'https://www.mycuscotrip.com/hoteles';
+const HOTEL_VERIFY_OWNER_URL = HOTEL_PUBLIC_HOTELES_URL.replace(/\/$/, '') + '/verify-owner.html';
 
 const HOTEL_SHEETS = {
   USERS: 'Hotel_Users',
@@ -234,8 +237,9 @@ function registerHotelOwner_(payload) {
 }
 
 function sendVerificationEmail_(owner, token) {
-  const baseUrl = String(owner.publicBaseUrl || HOTEL_PUBLIC_HOTELES_URL || '').replace(/\/$/, '');
-  const verifyUrl = baseUrl + '/verify-owner.html?token=' + encodeURIComponent(token);
+  // IMPORTANTE: el enlace debe ir a la web pública de MyCuscoTrip.
+  // No usamos ScriptApp.getService().getUrl() porque eso abre el Apps Script directamente.
+  const verifyUrl = HOTEL_VERIFY_OWNER_URL + '?token=' + encodeURIComponent(token);
   const fullName = String((owner.firstName || '') + ' ' + (owner.lastName || '')).trim() || 'Administrador de alojamientos';
   const html = `
     <div style="margin:0;padding:0;background:#f4f8f4;font-family:Arial,sans-serif;color:#17301b;">
@@ -247,7 +251,7 @@ function sendVerificationEmail_(owner, token) {
         <div style="background:white;border-radius:0 0 22px 22px;padding:24px;border:1px solid #dfe8df;">
           <p>Hola <strong>${escapeHtml_(fullName)}</strong>,</p>
           <p>Recibimos tu registro como administrador de alojamientos. Para activar tu cuenta, confirma tu correo haciendo clic en el botón:</p>
-          <p style="text-align:center;margin:28px 0;"><a href="${verifyUrl}" style="background:#062803;color:white;text-decoration:none;padding:14px 22px;border-radius:999px;font-weight:bold;display:inline-block;">Verificar mi cuenta</a></p>
+          <p style="text-align:center;margin:28px 0;"><a href="${verifyUrl}" target="_blank" rel="noopener" style="background:#062803;color:white;text-decoration:none;padding:14px 22px;border-radius:999px;font-weight:bold;display:inline-block;">Verificar mi cuenta</a></p>
           <p style="font-size:13px;color:#5f6b62;">Si el botón no abre, copia y pega este enlace en tu navegador:<br>${verifyUrl}</p>
         </div>
       </div>
@@ -283,7 +287,7 @@ function testHotelVerificationEmail() {
   MailApp.sendEmail({
     to: email,
     subject: 'Prueba de correo My Cusco Trip Hoteles',
-    htmlBody: '<p>MailApp está autorizado correctamente para el marketplace hotelero.</p>',
+    htmlBody: '<p>MailApp está autorizado correctamente para el marketplace hotelero.</p><p>La verificación abrirá: ' + HOTEL_VERIFY_OWNER_URL + '</p>',
     name: 'My Cusco Trip'
   });
   return { ok: true, sentTo: email };
@@ -304,14 +308,26 @@ function verifyHotelOwnerHtml_(data) {
   const ok = data && data.ok;
   const title = ok ? 'Cuenta verificada' : 'No se pudo verificar';
   const message = ok ? 'Tu correo fue verificado correctamente. Ya puedes ingresar al panel de administración de hoteles.' : (data && data.error ? data.error : 'El enlace no es válido o ya fue utilizado.');
+  const payload = JSON.stringify({ mctHotelVerify: true, ok: !!ok, message: message });
   return HtmlService.createHtmlOutput(`
-    <div style="min-height:100vh;display:grid;place-items:center;background:#f4f8f4;font-family:Arial,sans-serif;">
-      <div style="max-width:560px;background:white;border:1px solid #dfe8df;border-radius:24px;padding:32px;text-align:center;color:#17301b;">
-        <h1 style="color:#062803;margin-top:0;">${escapeHtml_(title)}</h1>
-        <p>${escapeHtml_(message)}</p>
-        <p style="color:#67746b;font-size:14px;">Vuelve a la página de My Cusco Trip e inicia sesión con tu correo y contraseña.</p>
+    <!doctype html><html><head><base target="_top"><meta charset="utf-8"></head>
+    <body style="margin:0;">
+      <div style="min-height:100vh;display:grid;place-items:center;background:#f4f8f4;font-family:Arial,sans-serif;">
+        <div style="max-width:560px;background:white;border:1px solid #dfe8df;border-radius:24px;padding:32px;text-align:center;color:#17301b;">
+          <h1 style="color:#062803;margin-top:0;">${escapeHtml_(title)}</h1>
+          <p>${escapeHtml_(message)}</p>
+          <p style="color:#67746b;font-size:14px;">Puedes volver a My Cusco Trip e iniciar sesión con tu correo y contraseña.</p>
+        </div>
       </div>
-    </div>`);
+      <script>
+        (function(){
+          var data = ${payload};
+          try { parent.postMessage(data, '*'); } catch(e) {}
+          try { window.top.postMessage(data, '*'); } catch(e) {}
+        })();
+      <\/script>
+    </body></html>`)
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function loginHotelOwner_(payload) {

@@ -69,6 +69,8 @@
     }
   }
   function showMsg(selector, text, ok = true) {
+    // Si ya estamos mostrando un resultado al usuario, el loader debe desaparecer sí o sí.
+    forceHideLoading();
     const el = $(selector);
     if (!el) return;
     el.hidden = false;
@@ -92,16 +94,36 @@
     box.className = 'mct-hotel-loading-backdrop';
     box.hidden = true;
     box.innerHTML = '<div class="mct-hotel-loading-card"><span class="mct-hotel-loading-spinner" aria-hidden="true"></span><span data-loading-text>Un momento, por favor...</span></div>';
+    box.style.display = 'none';
     document.body.appendChild(box);
     return box;
+  }
+
+  let hotelLoadingWatchdog = null;
+  function forceHideLoading() {
+    if (hotelLoadingWatchdog) { clearTimeout(hotelLoadingWatchdog); hotelLoadingWatchdog = null; }
+    document.body.classList.remove('is-hotel-loading');
+    document.querySelectorAll('#mctHotelLoadingBox, .mct-hotel-loading-backdrop').forEach(box => {
+      box.hidden = true;
+      box.style.display = 'none';
+    });
   }
 
   function setLoading(active, text = 'Un momento, por favor...') {
     const box = ensureLoadingBox();
     const label = box.querySelector('[data-loading-text]');
     if (label) label.textContent = text;
-    box.hidden = !active;
-    document.body.classList.toggle('is-hotel-loading', !!active);
+    if (!active) {
+      forceHideLoading();
+      return;
+    }
+    if (hotelLoadingWatchdog) clearTimeout(hotelLoadingWatchdog);
+    box.hidden = false;
+    box.style.display = 'grid';
+    document.body.classList.add('is-hotel-loading');
+    // Seguro visual: aunque el Apps Script tarde o el navegador pierda el callback,
+    // el bloqueo no queda pegado indefinidamente.
+    hotelLoadingWatchdog = setTimeout(forceHideLoading, 30000);
   }
 
   async function withUserLoading(text, submitter, task) {

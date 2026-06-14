@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <script src="./assets/js/config.js?v=53"></script>
+  <script src="./assets/js/config.js?v=55"></script>
   <style>
     :root{--mct-green:#062803;--mct-soft:#f4f8f4;--mct-border:#dfe8df}
     *{box-sizing:border-box}
@@ -32,22 +32,6 @@
     function getApiUrl(){
       return String(window.MCT_HOTEL_MARKETPLACE_APPS_SCRIPT_URL || window.MCT_HOTEL_MARKETPLACE_CONFIG?.appsScriptUrl || '').trim();
     }
-    function jsonpRequest(action, payload){
-      const API = getApiUrl();
-      return new Promise(resolve => {
-        if(!API) return resolve({ok:false,error:'No se encontró la URL del Apps Script.'});
-        const cb = 'mctVerify_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-        const script = document.createElement('script');
-        const timer = setTimeout(() => { cleanup(); resolve({ok:false,error:'No se recibió respuesta. Intenta nuevamente.'}); }, 20000);
-        function cleanup(){ clearTimeout(timer); try{ delete window[cb]; }catch(_){ window[cb]=undefined; } script.remove(); }
-        window[cb] = data => { cleanup(); resolve(data || {ok:false,error:'Respuesta vacía.'}); };
-        const data = encodeURIComponent(JSON.stringify({action, ...payload}));
-        const sep = API.includes('?') ? '&' : '?';
-        script.src = `${API}${sep}action=${encodeURIComponent(action)}&payload=${data}&callback=${encodeURIComponent(cb)}&_=${Date.now()}`;
-        script.onerror = () => { cleanup(); resolve({ok:false,error:'No se pudo conectar con el servicio de verificación.'}); };
-        document.head.appendChild(script);
-      });
-    }
     function render(ok, message){
       const card = document.getElementById('verifyCard');
       card.innerHTML = ok ? `
@@ -62,10 +46,42 @@
         <a href="./login-admin-hotel.html">Volver al acceso</a>
       `;
     }
+
+    function verifyViaIframe(token){
+      const API = getApiUrl();
+      return new Promise(resolve => {
+        if(!API) return resolve({ok:false,error:'No se encontró la URL del Apps Script.'});
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.setAttribute('aria-hidden','true');
+        let done = false;
+        const timer = setTimeout(() => finish({ok:false,error:'No se recibió respuesta del servicio de verificación. Intenta nuevamente.'}), 25000);
+        function cleanup(){
+          clearTimeout(timer);
+          window.removeEventListener('message', onMessage);
+          iframe.remove();
+        }
+        function finish(data){
+          if(done) return;
+          done = true;
+          cleanup();
+          resolve(data || {ok:false,error:'Respuesta vacía del servicio de verificación.'});
+        }
+        function onMessage(event){
+          const data = event.data || {};
+          if(data && data.mctHotelVerify) finish(data);
+        }
+        window.addEventListener('message', onMessage);
+        const sep = API.includes('?') ? '&' : '?';
+        iframe.src = `${API}${sep}action=verify_owner&token=${encodeURIComponent(token)}&embed=1&_=${Date.now()}`;
+        document.body.appendChild(iframe);
+      });
+    }
+
     (async function(){
       const token = new URLSearchParams(location.search).get('token') || '';
       if(!token) return render(false, 'El enlace no contiene un token de verificación.');
-      const result = await jsonpRequest('verify_owner', { token });
+      const result = await verifyViaIframe(token);
       render(!!result.ok, result.message || result.error);
     })();
   </script>
