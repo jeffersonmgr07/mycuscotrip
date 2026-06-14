@@ -1,5 +1,5 @@
 /**
- * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V58
+ * My Cusco Trip - Hoteles Marketplace MVP (Google Apps Script) V59
  *
  * Funciones principales:
  * - Registro de administradores hoteleros con correo de verificación.
@@ -43,8 +43,14 @@ function doGet(e) {
   const callback = String(params.callback || '').trim();
   let payload = {};
   if (params.payload) {
-    try { payload = JSON.parse(decodeURIComponent(params.payload)); }
-    catch (err) { payload = { action: params.action || '', parseError: String(err) }; }
+    try {
+      // Apps Script ya entrega e.parameter.payload decodificado.
+      // No usamos decodeURIComponent primero porque una contraseña con % u otro carácter especial puede romper la lectura.
+      payload = JSON.parse(params.payload);
+    } catch (err1) {
+      try { payload = JSON.parse(decodeURIComponent(params.payload)); }
+      catch (err2) { payload = { action: params.action || '', parseError: String(err2) }; }
+    }
   }
   const action = String(payload.action || params.action || 'catalog');
 

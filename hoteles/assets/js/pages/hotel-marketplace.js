@@ -47,12 +47,16 @@
         cleanup();
         resolve(data || { ok: false, error: 'Respuesta vacía del Apps Script.' });
       };
-      const data = encodeURIComponent(JSON.stringify({ action, ...payload }));
       const sep = API.includes('?') ? '&' : '?';
-      script.src = `${API}${sep}action=${encodeURIComponent(action)}&payload=${data}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+      const params = new URLSearchParams();
+      params.set('action', action);
+      params.set('payload', JSON.stringify({ action, ...payload }));
+      params.set('callback', callbackName);
+      params.set('_', String(Date.now()));
+      script.src = `${API}${sep}${params.toString()}`;
       script.onerror = () => {
         cleanup();
-        resolve({ ok: false, error: 'No se pudo cargar el Apps Script. Revisa la URL /exec y los permisos de implementación.' });
+        resolve({ ok: false, error: 'No se pudo cargar el Apps Script. Revisa la URL /exec, el despliegue y vuelve a probar en incógnito.' });
       };
       document.head.appendChild(script);
     });
