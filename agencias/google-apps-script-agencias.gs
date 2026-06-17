@@ -28,7 +28,7 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbycmduYce7cpGoMSqR3
 // Mercado Pago Checkout Pro:
 // MERCADOPAGO_ACCESS_TOKEN = access token de Mercado Pago
 const PORTAL_BASE_URL = 'https://mycuscotrip.com/agencias';
-const APP_VERSION = 'paypal-mp-actions-2026-05-27-v6';
+const APP_VERSION = 'paypal-mp-actions-2026-06-17-v7-mp-checkout-pro';
 
 
 const AGENCY_HEADERS = [
@@ -53,8 +53,9 @@ const PAYMENT_HEADERS = [
 function doPost(e) {
   try {
     const body = parseBody_(e);
-    const action = String(body.action || '').trim();
+    const action = String(body.action || (e && e.parameter && e.parameter.action) || '').trim();
     if (!action && body.event_type) return paypalWebhook_(body);
+    if (!action && (body.type === 'payment' || body.topic === 'payment' || body.data || body.resource)) return mercadoPagoWebhook_(body);
     if (action === 'registerAgency') return registerAgency_(body.payload || body.agency || body);
     if (action === 'verifyEmailJson') return verifyEmailJson_(body.token || (body.payload && body.payload.token) || '');
     if (action === 'loginAgency') return loginAgency_(body.email, body.password);
@@ -579,6 +580,22 @@ function mercadoPagoConfig_() {
   return { accessToken: accessToken, apiBase: 'https://api.mercadopago.com' };
 }
 
+function mercadoPagoCheckoutUrl_(data, accessToken) {
+  const isTestToken = String(accessToken || '').indexOf('TEST-') === 0;
+  if (isTestToken && data.sandbox_init_point) return data.sandbox_init_point;
+  if (data.init_point) return data.init_point;
+  return data.sandbox_init_point || '';
+}
+
+function mercadoPagoPaymentIdFromEvent_(event) {
+  if (!event) return '';
+  if (event.data && event.data.id) return String(event.data.id);
+  if (event.resource && String(event.resource).match(/\/v1\/payments\//)) {
+    return String(event.resource).split('/').pop();
+  }
+  return String(event.id || event.payment_id || event.collection_id || '').trim();
+}
+
 function createMercadoPagoPreference_(payload) {
   validateConfig_();
   const code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
@@ -638,6 +655,10 @@ function createMercadoPagoPreference_(payload) {
       pending: returnBase + '&result=pending'
     },
     auto_return: 'approved',
+    notification_url: WEB_APP_URL + '&action=mercadoPagoWebhook',
+    expires: true,
+    expiration_date_from: new Date().toISOString(),
+    expiration_date_to: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
     statement_descriptor: 'MYCUSCOTRIP',
     metadata: {
       codigo_orden: code,
@@ -671,25 +692,24 @@ function createMercadoPagoPreference_(payload) {
   setCellByHeader_(order.sheet, order.row, order.headers, 'mercadoPagoStatus', 'preference_created');
   if (deviceId) setCellByHeader_(order.sheet, order.row, order.headers, 'mercadoPagoDeviceId', deviceId);
 
+  const checkoutUrl = mercadoPagoCheckoutUrl_(data, cfg.accessToken);
   return json_({
     ok:true,
     mercadoPagoPreferenceId:data.id,
-    initPoint:data.init_point || data.sandbox_init_point || '',
+    initPoint:checkoutUrl,
+    sandboxInitPoint:data.sandbox_init_point || '',
+    productionInitPoint:data.init_point || '',
     status:'preference_created'
   });
 }
 
 function confirmMercadoPagoPayment_(payload) {
   validateConfig_();
-  const code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
+  let code = String(payload.code || '').replace(/[^A-Za-z0-9]/g, '');
   const paymentId = String(payload.paymentId || payload.payment_id || payload.collection_id || '').trim();
-  if (!code) return json_({ ok:false, message:'Código de orden requerido.' });
   if (!paymentId || paymentId === 'null' || paymentId === 'undefined') {
     return json_({ ok:false, message:'No encontramos el ID de pago de Mercado Pago para confirmar la orden.' });
   }
-
-  const order = findOrderByCode_(code);
-  if (!order) return json_({ ok:false, message:'No encontramos la orden en Google Sheets.' });
 
   const cfg = mercadoPagoConfig_();
   const res = UrlFetchApp.fetch(cfg.apiBase + '/v1/payments/' + encodeURIComponent(paymentId), {
@@ -704,6 +724,12 @@ function confirmMercadoPagoPayment_(payload) {
 
   const status = String(data.status || '').toLowerCase();
   const externalReference = String(data.external_reference || '').replace(/[^A-Za-z0-9]/g, '');
+  if (!code && externalReference) code = externalReference;
+  if (!code) return json_({ ok:false, message:'No encontramos el código interno de la orden en Mercado Pago.' });
+
+  const order = findOrderByCode_(code);
+  if (!order) return json_({ ok:false, message:'No encontramos la orden en Google Sheets.' });
+
   if (externalReference && externalReference !== code) {
     return json_({ ok:false, message:'El pago de Mercado Pago no coincide con el código interno de la orden.' });
   }
@@ -711,16 +737,19 @@ function confirmMercadoPagoPayment_(payload) {
   if (status === 'approved') {
     markOrderPaidMercadoPago_(code, paymentId, data.status || 'approved');
     sendMercadoPagoPaidEmail_(order.data, paymentId, data.status || 'approved');
-    return json_({ ok:true, message:'Pago confirmado correctamente. La orden fue marcada como Pagada.', status:data.status || 'approved', paymentId:paymentId });
+    return json_({ ok:true, message:'Pago confirmado correctamente. La orden fue marcada como Pagada.', status:data.status || 'approved', paymentId:paymentId, code:code });
   }
 
   updateOrderMercadoPagoStatus_(code, paymentId, data.status || status);
-  return json_({ ok:false, message:'El pago no quedó aprobado. Estado Mercado Pago: ' + (data.status || status), status:data.status || status });
+  return json_({ ok:false, message:'El pago no quedó aprobado. Estado Mercado Pago: ' + (data.status || status), status:data.status || status, paymentId:paymentId, code:code });
 }
 
 function mercadoPagoWebhook_(event) {
-  // Apps Script no es ideal para validar headers de webhooks. Se deja como registro informativo.
-  return json_({ ok:true, message:'Webhook Mercado Pago recibido. Usa confirmMercadoPagoPayment para confirmar pagos desde el retorno.', topic:event && event.type ? event.type : '' });
+  const paymentId = mercadoPagoPaymentIdFromEvent_(event);
+  if (!paymentId) {
+    return json_({ ok:true, message:'Webhook Mercado Pago recibido sin payment ID.', topic:event && event.type ? event.type : '' });
+  }
+  return confirmMercadoPagoPayment_({ paymentId: paymentId });
 }
 
 function markOrderPaidMercadoPago_(code, paymentId, status) {

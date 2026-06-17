@@ -327,3 +327,42 @@
 /* English labels for collapsible passenger section */
 html[lang="en"] .tourists-box summary::after{content:'Show more  ▾'!important;}
 html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!important;}
+
+
+/* Registro de agencias - fondo Machu Picchu con capa verde clara */
+.agency-register-page{
+  background:
+    linear-gradient(180deg,rgba(239,248,241,.86),rgba(255,255,255,.94)),
+    url('../../../assets/img/machu-picchu/machu-picchu-hero.jpg'),
+    url('../../../assets/img/tours/machu-picchu-full-day-clasico/cover.jpg')!important;
+  background-size:cover!important;
+  background-position:center top!important;
+  background-attachment:fixed!important;
+}
+.agency-register-page .agency-main--narrow{
+  min-height:calc(100vh - 180px);
+}
+.agency-register-page .agency-hero{
+  background:
+    radial-gradient(circle at 86% 18%,rgba(242,217,157,.42),transparent 34%),
+    linear-gradient(135deg,rgba(6,40,3,.88),rgba(8,78,47,.78)),
+    url('../../../assets/img/machu-picchu/machu-picchu-hero.jpg')!important;
+  background-size:cover!important;
+  background-position:center!important;
+  border:1px solid rgba(255,255,255,.24)!important;
+}
+.agency-register-page .auth-card{
+  background:rgba(255,255,255,.9)!important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-color:rgba(255,255,255,.62)!important;
+}
+.agency-register-page .form-block{
+  background:rgba(255,255,255,.94)!important;
+}
+@media(max-width:760px){
+  .agency-register-page{
+    background-attachment:scroll!important;
+    background-position:center top!important;
+  }
+}
