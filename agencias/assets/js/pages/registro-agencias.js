@@ -5,13 +5,14 @@
 
   const TAX_LABELS = {
     PE: 'RUC', MX: 'RFC', CL: 'RUT', BR: 'CNPJ', CO: 'NIT', AR: 'CUIT',
-    BO: 'NIT', EC: 'RUC', US: 'EIN / Tax ID', OTHER: 'Identificación fiscal'
+    BO: 'NIT', EC: 'RUC', US: 'EIN / Tax ID', ES: 'NIF / CIF', OTHER: 'Identificación fiscal'
   };
 
   const $ = (selector) => document.querySelector(selector);
   const value = (selector) => $(selector)?.value.trim() || '';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const TAX_RE = /^[A-Za-z0-9.\-\s]{4,24}$/;
+  const LETTERS_RE = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s.'-]+$/;
   const I18N = window.MCTAgenciesI18n || null;
   const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
 
@@ -27,11 +28,31 @@
   }
 
   function validateFiscalId() {
+    if (value('#registrationType') !== 'company') return '';
     const taxId = value('#companyTaxId');
     if (!TAX_RE.test(taxId)) {
       return 'El número de identificación fiscal debe contener solo letras, números, punto o guion.';
     }
     return '';
+  }
+
+  function syncRegistrationType() {
+    const type = value('#registrationType') || 'natural';
+    const isCompany = type === 'company';
+    document.querySelectorAll('[data-company-field]').forEach((field) => {
+      field.hidden = !isCompany;
+      field.querySelectorAll('input, select, textarea').forEach((control) => {
+        control.required = isCompany;
+        if (!isCompany) control.value = '';
+      });
+    });
+    const companyName = $('#companyName');
+    const tradeName = $('#tradeName');
+    if (!isCompany) {
+      const fullName = `${value('#legalFirstName')} ${value('#legalLastName')}`.trim();
+      if (companyName) companyName.value = fullName ? `Persona natural - ${fullName}` : 'Persona natural';
+      if (tradeName) tradeName.value = fullName || 'Agente de viajes independiente';
+    }
   }
 
 
@@ -61,7 +82,7 @@
 
   function validatePassword(password) {
     if (password.length < 8) return 'La contraseña debe tener mínimo 8 caracteres.';
-    if (!/[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(password)) return 'La contraseña debe incluir al menos una letra.';
+    if (!/[A-ZÁÉÍÓÚÜÑ]/.test(password)) return 'La contraseña debe incluir al menos una mayúscula.';
     if (!/\d/.test(password)) return 'La contraseña debe incluir al menos un número.';
     if (!/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9]/.test(password)) return 'La contraseña debe incluir al menos un carácter especial, por ejemplo @, #, $, %, &, * o !.';
     return '';
@@ -92,7 +113,7 @@
   function passwordRules(password, confirm) {
     return {
       length: password.length >= 8,
-      letter: /[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(password),
+      upper: /[A-ZÁÉÍÓÚÜÑ]/.test(password),
       number: /\d/.test(password),
       special: /[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9]/.test(password),
       match: Boolean(password) && password === confirm
@@ -105,7 +126,11 @@
     const rules = passwordRules(password, confirm);
     Object.entries(rules).forEach(([key, ok]) => {
       const el = document.querySelector(`#passwordChecklist [data-rule="${key}"]`);
-      if (el) el.classList.toggle('is-ok', ok);
+      if (el) {
+        el.classList.toggle('is-ok', ok);
+        const icon = el.querySelector('i');
+        if (icon) icon.className = ok ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+      }
     });
   }
 
@@ -116,20 +141,24 @@
         if (!input) return;
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        button.textContent = show ? t('login.hide', 'Ocultar') : t('login.show', 'Ver');
+        const icon = button.querySelector('i');
+        if (icon) icon.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+        else button.textContent = show ? t('login.hide', 'Ocultar') : t('login.show', 'Ver');
       });
     });
     $('#registerPassword')?.addEventListener('input', updatePasswordChecklist);
     $('#registerPasswordConfirm')?.addEventListener('input', updatePasswordChecklist);
   }
 
+  $('#registrationType')?.addEventListener('change', syncRegistrationType);
   $('#companyCountry')?.addEventListener('change', syncCountry);
   $('#companyPhone')?.addEventListener('input', (event) => onlyDigits(event.target));
   $('#companyTaxId')?.addEventListener('input', (event) => { event.target.value = event.target.value.replace(/[^A-Za-z0-9.\-\s]/g, '').toUpperCase(); });
-  $('#companyEmail')?.addEventListener('input', () => {
-    const access = $('#accessEmail');
-    if (access && !access.value.trim()) access.value = $('#companyEmail').value.trim();
+  document.querySelectorAll('[data-letters-only]').forEach((input) => {
+    input.addEventListener('input', (event) => { event.target.value = event.target.value.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s.'-]/g, ''); syncRegistrationType(); });
   });
+  $('#legalFirstName')?.addEventListener('input', syncRegistrationType);
+  $('#legalLastName')?.addEventListener('input', syncRegistrationType);
 
   $('#agencyRegisterForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -142,12 +171,11 @@
     if (passwordError) { show(passwordError); return; }
     if (password !== confirm) { show('Las contraseñas no coinciden.'); return; }
 
+    if (!LETTERS_RE.test(value('#legalFirstName')) || !LETTERS_RE.test(value('#legalLastName'))) { show('Los nombres y apellidos solo deben contener letras.'); return; }
     const fiscalError = validateFiscalId();
     if (fiscalError) { show(fiscalError); return; }
     const phoneDigits = value('#companyPhone').replace(/\D+/g, '');
     if (!/^\d{6,15}$/.test(phoneDigits)) { show('El número de WhatsApp debe contener solo números, entre 6 y 15 dígitos.'); return; }
-    const contactEmailError = validateEmailField('#companyEmail', 'El correo de contacto');
-    if (contactEmailError) { show(contactEmailError); return; }
     const accessEmailError = validateEmailField('#accessEmail', 'El correo de inicio de sesión');
     if (accessEmailError) { show(accessEmailError); return; }
 
@@ -155,19 +183,38 @@
     const originalText = button?.textContent || t('register.submit', 'Registrar mi agencia');
     if (button) { button.disabled = true; button.textContent = t('register.sending', 'Enviando registro...'); }
 
+    syncRegistrationType();
     const phone = normalizePhone();
+    const registrationType = value('#registrationType') || 'natural';
+    const representativeName = `${value('#legalFirstName')} ${value('#legalLastName')}`.trim();
+    const accessEmail = value('#accessEmail').toLowerCase();
+    const legalName = registrationType === 'company' ? value('#companyName') : `Persona natural - ${representativeName}`;
+    const tradeName = registrationType === 'company' ? value('#tradeName') : representativeName;
     const agency = {
       id: `AG-${Date.now()}`,
       status: 'Aprobado',
+      registrationType,
       password,
-      accessEmail: value('#accessEmail').toLowerCase(),
+      accessEmail,
+      email: accessEmail,
+      country: value('#companyCountry'),
+      taxLabel: registrationType === 'company' ? ($('#taxLabel')?.textContent || '') : '',
+      taxNumber: registrationType === 'company' ? value('#companyTaxId') : '',
+      legalName,
+      commercialName: tradeName,
+      repNames: value('#legalFirstName'),
+      repLastnames: value('#legalLastName'),
+      docType: value('#legalDocType'),
+      docNumber: value('#legalDocNumber'),
+      phone,
+      website: value('#companyWebsite'),
       company: {
         country: value('#companyCountry'),
-        taxLabel: $('#taxLabel')?.textContent || '',
-        taxId: value('#companyTaxId'),
-        legalName: value('#companyName'),
-        tradeName: value('#tradeName'),
-        email: value('#companyEmail').toLowerCase(),
+        taxLabel: registrationType === 'company' ? ($('#taxLabel')?.textContent || '') : '',
+        taxId: registrationType === 'company' ? value('#companyTaxId') : '',
+        legalName,
+        tradeName,
+        email: accessEmail,
         phone,
         phoneCountry: value('#companyPhoneCountry'),
         phoneNumber: value('#companyPhone'),
@@ -190,6 +237,7 @@
       show(result.message || 'Registro recibido correctamente. Revisa tu correo para verificar el email. Luego podrás ingresar al portal.', 'is-success');
       form.reset();
       syncCountry();
+      syncRegistrationType();
       setTimeout(() => { window.location.href = './login.html'; }, 2600);
     } catch (error) {
       console.error(error);
@@ -202,4 +250,5 @@
   bindPasswordToggles();
   updatePasswordChecklist();
   syncCountry();
+  syncRegistrationType();
 })();

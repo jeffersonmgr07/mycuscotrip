@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="../../" />
-  <title>Extranet agencias / agentes | My Cusco Trip</title>
-  <meta name="description" content="Acceso futuro para agencias, agentes y socios comerciales." />
-
+  <title>Portal de proveedores | My Cusco Trip</title>
+  <meta name="description" content="Elige el portal que corresponde a tu tipo de servicio para administrar reservas, datos comerciales y futuras oportunidades dentro de My Cusco Trip." />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
@@ -14,101 +13,69 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/static-page.css" />
+  <link rel="stylesheet" href="./assets/css/provider-portal.css" />
 </head>
-<body class="static-page">
+<body class="provider-gateway-page">
   <div id="header-container"></div>
-
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
-
   <main>
-    <section class="static-hero">
+    <section class="provider-gateway-hero">
       <div class="container">
-        <span class="static-hero__eyebrow">Empresas & socios</span>
-        <h1>Extranet agencias / agentes</h1>
-        <p>Acceso futuro para agencias, agentes y socios comerciales.</p>
+        <span class="provider-gateway-eyebrow"><i class="fa-solid fa-briefcase"></i> Acceso de proveedores</span>
+        <h1>Inicia sesión en tu portal de proveedor de servicios</h1>
+        <p>Elige el portal que corresponde a tu tipo de servicio para administrar reservas, datos comerciales y futuras oportunidades dentro de My Cusco Trip.</p>
       </div>
     </section>
-
-    <section class="static-content">
-      <div class="container static-layout">
-        <div>
-          <article class="static-card">
-            <h2>Información general</h2>
-            <p>Esta página queda preparada para conectar con una extranet o área privada para aliados comerciales.</p>
-            <ul>
-              <li>Acceso para agencias.</li>
-              <li>Tarifas y condiciones especiales.</li>
-              <li>Herramientas comerciales futuras.</li>
-            </ul>
-          </article>
-
-          <article class="static-card">
-            <h2>Nota importante</h2>
-            <p>Esta página forma parte de la estructura informativa de My Cusco Trip. El contenido puede ampliarse con información legal, operativa o comercial más específica según avance la implementación del sitio.</p>
-          </article>
-        </div>
-
-        <aside class="static-sidebar">
-          <div class="static-cta">
-            <h2>¿Necesitas ayuda?</h2>
-            <p>Un asesor puede orientarte por WhatsApp y ayudarte a elegir la mejor experiencia para tu viaje.</p>
-            <a class="static-btn" href="https://wa.me/51900608980" target="_blank" rel="noopener">
-              <i class="fab fa-whatsapp"></i>
-              Hablar con un asesor
+    <section class="provider-gateway-content">
+      <div class="container">
+        <p class="provider-gateway-intro">Selecciona una opción para continuar. El orden recomendado es agencias, hoteles, restaurantes y artesanos.</p>
+        <div class="provider-gateway-grid">
+            <a class="provider-card provider-card--agency " href="/agencias/login.html">
+              <span class="provider-card__icon"><i class="fa-solid fa-handshake"></i></span>
+              <h2>Agencias de viajes</h2>
+              <p>Accede al portal privado para reservar experiencias, revisar órdenes y gestionar pagos.</p>
+              <span class="provider-card__cta">Ingresar al portal <i class="fa-solid fa-arrow-right"></i></span>
             </a>
-          </div>
-
-          <article class="static-card">
-            <h2>Explora también</h2>
-            <ul class="static-link-list">
-              <li><a href="./all-experiences.html">Todas las experiencias</a></li>
-              <li><a href="./machu-picchu-tours.html">Tours a Machu Picchu</a></li>
-              <li><a href="./paquetes-cusco.html">Paquetes completos</a></li>
-              <li><a href="./explora-peru.html">Explora Perú</a></li>
-            </ul>
-          </article>
-        </aside>
+<a class="provider-card provider-card--hotel " href="/hoteles/login-admin-hotel.html">
+              <span class="provider-card__icon"><i class="fa-solid fa-hotel"></i></span>
+              <h2>Hoteles y alojamientos</h2>
+              <p>Administra alojamientos, habitaciones, fotos, disponibilidad y publicación en marketplace.</p>
+              <span class="provider-card__cta">Ingresar al portal <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+<a class="provider-card provider-card--restaurant provider-card--soon" href="/restaurantes/index.html">
+              <span class="provider-card__icon"><i class="fa-solid fa-utensils"></i></span>
+              <h2>Restaurantes</h2>
+              <p>Próximamente: publica experiencias gastronómicas, menús turísticos y alianzas comerciales.</p>
+              <span class="provider-card__cta">Ver módulo <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+<a class="provider-card provider-card--artisan provider-card--soon" href="/pages/socios/proveedores.html#artesanos">
+              <span class="provider-card__icon"><i class="fa-solid fa-palette"></i></span>
+              <h2>Artesanos</h2>
+              <p>Próximamente: registra productos artesanales para venta turística y catálogo digital.</p>
+              <span class="provider-card__cta">Próximamente <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+        </div>
+        <div class="provider-note"><i class="fa-solid fa-circle-info"></i> Los módulos de restaurantes y artesanos pueden activarse progresivamente sin afectar el portal actual de agencias ni el marketplace de hoteles.</div>
       </div>
     </section>
   </main>
-
   <div id="footer-container"></div>
-
   <script>
     const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
     const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "./";
-
     async function loadComponent(componentName, targetId) {
       try {
         const response = await fetch(`${BASE_PATH}components/${componentName}.html`);
         if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-        const html = await response.text();
         const target = document.getElementById(targetId);
-        if (target) target.innerHTML = html;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-      }
+        if (target) target.innerHTML = await response.text();
+      } catch (error) { console.error(`Error cargando ${componentName}:`, error); }
     }
-
     async function initializePage() {
-      await Promise.all([
-        loadComponent("header", "header-container"),
-        loadComponent("footer", "footer-container")
-      ]);
-
-      if (window.MyCuscoTripFooter?.initFooterAccordions) {
-        window.MyCuscoTripFooter.initFooterAccordions();
-      }
+      await Promise.all([loadComponent("header", "header-container"), loadComponent("footer", "footer-container")]);
+      window.MyCuscoTripFooter?.initFooterAccordions?.();
+      window.MyCuscoTripHeader ? new window.MyCuscoTripHeader() : window.initMyCuscoTripHeader?.();
     }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializePage);
-    } else {
-      initializePage();
-    }
+    document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", initializePage) : initializePage();
   </script>
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/footer.js"></script>
