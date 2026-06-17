@@ -1,33 +1,34 @@
-PARCHE - Proveedores + Registro agencias premium
+Parche: ajuste fino registro de agencias
 
 Archivos incluidos:
-1. components/footer.html
-   - Footer mantiene Conviértete en proveedor hacia /pages/socios/proveedores.html
-   - Extranet agencias / proveedores hacia /pages/socios/extranet-agencias.html
+- agencias/registro.html
+- agencias/assets/css/agencias.css
+- agencias/assets/js/pages/registro-agencias.js
 
-2. assets/css/provider-portal.css
-   - Estilos para las dos páginas selectoras de proveedores.
+Cambios:
+1. Registro de agencias más parecido al registro de hoteles:
+   - franja superior delgada,
+   - título compacto: Registro de agencias de viajes,
+   - se elimina el exceso de aire superior,
+   - card blanca con overlay/fondo Machu Picchu igual al registro hotelero.
 
-3. pages/socios/proveedores.html
-   - Nueva página selector: Registro de proveedores.
-   - Orden de cards: Agencias, Hoteles, Restaurantes, Artesanos.
+2. Tipo de registro funcional:
+   - Persona natural muestra Tipo de documento, Número de documento y Nacionalidad.
+   - Empresa muestra Razón social, número fiscal según país y Nombre comercial.
+   - El nombre comercial solo aparece en Empresa.
 
-4. pages/socios/extranet-agencias.html
-   - Nueva página selector: Login de proveedores.
-   - Orden de cards: Agencias, Hoteles, Restaurantes, Artesanos.
+3. Número fiscal dinámico por país:
+   - Perú: RUC
+   - México: RFC
+   - Chile: RUT
+   - Brasil: CNPJ
+   - Colombia/Bolivia: NIT
+   - Argentina: CUIT
+   - Ecuador: RUC
+   - Estados Unidos: EIN / Tax ID
+   - España: NIF / CIF
 
-5. agencias/registro.html
-   - Registro de agencias rediseñado con estética similar a hoteles.
-   - Tipo de registro: Persona natural / Empresa.
-   - Datos de representante, documento, país, WhatsApp, web y datos de acceso.
+4. No se toca PayPal, Mercado Pago, órdenes ni login.
 
-6. agencias/assets/css/agencias.css
-   - Nuevos estilos del registro premium con fondo Machu Picchu + overlay verde claro.
-
-7. agencias/assets/js/pages/registro-agencias.js
-   - Lógica para alternar Persona natural / Empresa.
-   - Etiqueta fiscal dinámica por país: RUC, CNPJ, RFC, RUT, NIT, etc.
-   - Validación de nombres, WhatsApp, correo y contraseña.
-   - Payload compatible con el Apps Script actual.
-
-No se modificó Mercado Pago ni PayPal en este parche.
+Instalación:
+Copiar estos archivos sobre la raíz del proyecto respetando las rutas.

@@ -21,14 +21,11 @@
   <div id="header-container"></div>
   <main class="agency-register-page">
     <section class="agency-register-card agency-register-card--wide">
-      <header class="agency-register-titlebar">
+      <header class="agency-register-titlebar agency-register-titlebar--compact">
         <i class="fa-solid fa-handshake"></i>
-        <div>
-          <span>Portal de agencias</span>
-          <h1>Registra tu agencia de viajes</h1>
-          <p>Completa los datos del representante y de la empresa para solicitar acceso al portal privado de reservas.</p>
-        </div>
+        <h1>Registro de agencias de viajes</h1>
       </header>
+      <p class="agency-register-intro">Completa los datos de tu agencia o actividad como asesor de viajes para solicitar acceso al portal privado de reservas.</p>
 
       <form id="agencyRegisterForm" class="agency-premium-form" autocomplete="on" novalidate>
         <label class="full">Tipo de registro
@@ -45,7 +42,7 @@
           <input id="legalLastName" name="legalLastName" data-letters-only required placeholder="Apellidos" autocomplete="family-name" />
         </label>
 
-        <label>Tipo de documento
+        <label data-natural-field>Tipo de documento
           <select id="legalDocType" name="legalDocType" required>
             <option value="DNI">DNI</option>
             <option value="PASSPORT">Pasaporte</option>
@@ -54,11 +51,11 @@
             <option value="OTHER">Otro</option>
           </select>
         </label>
-        <label>Número de documento
+        <label data-natural-field>Número de documento
           <input id="legalDocNumber" name="legalDocNumber" required placeholder="Número de documento" autocomplete="off" />
         </label>
 
-        <label class="full">País / nacionalidad
+        <label class="full"><span id="countryContextLabel">Nacionalidad</span>
           <select id="companyCountry" name="companyCountry" required>
             <option value="PE">Perú</option>
             <option value="MX">México</option>
