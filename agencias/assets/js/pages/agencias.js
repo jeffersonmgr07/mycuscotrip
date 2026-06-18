@@ -102,6 +102,25 @@
     return String(window.MP_DEVICE_SESSION_ID || window.MP_DEVICE_SESSION_ID_PUBLIC || '').trim();
   }
 
+  function updateCurrencyMenu() {
+    const button = $('#currencyMenuButton');
+    const select = $('#currencySelect');
+    if (select) select.value = state.currency;
+    if (button) button.textContent = state.currency === 'USD' ? 'USD' : 'PEN';
+    $$('[data-currency-option]').forEach((option) => {
+      option.classList.toggle('is-active', option.dataset.currencyOption === state.currency);
+      option.setAttribute('aria-selected', String(option.dataset.currencyOption === state.currency));
+    });
+  }
+
+  function setCurrency(currency) {
+    state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
+    localStorage.setItem('mct_visible_currency', state.currency);
+    updateCurrencyMenu();
+    renderExperiences();
+    renderCart();
+  }
+
 
   function greetingFor(name = '') {
     const hour = new Date().getHours();
@@ -136,7 +155,8 @@
       state.currency = country === 'PE' || country === 'PERU' || country === 'PERÚ' ? 'PEN' : 'USD';
       localStorage.setItem('mct_visible_currency', state.currency);
     }
-    $('#currencySelect').value = state.currency;
+    if ($('#currencySelect')) $('#currencySelect').value = state.currency;
+    updateCurrencyMenu();
     if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
@@ -168,10 +188,38 @@
 
   function bindEvents() {
     $('#searchInput')?.addEventListener('input', renderExperiences);
-    $('#currencySelect').addEventListener('change', (event) => {
-      state.currency = event.target.value;
-      localStorage.setItem('mct_visible_currency', state.currency);
-      renderExperiences(); renderCart();
+    $('#currencySelect')?.addEventListener('change', (event) => setCurrency(event.target.value));
+    $('#currencyMenuButton')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const list = $('#currencyMenuList');
+      const isOpen = list && !list.hidden;
+      if (list) list.hidden = isOpen;
+      $('#currencyMenuButton')?.setAttribute('aria-expanded', String(!isOpen));
+    });
+    $$('[data-currency-option]').forEach((button) => button.addEventListener('click', () => {
+      setCurrency(button.dataset.currencyOption);
+      const list = $('#currencyMenuList');
+      if (list) list.hidden = true;
+      $('#currencyMenuButton')?.setAttribute('aria-expanded', 'false');
+    }));
+    $('#moreOptionsButton')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const list = $('#agencyMoreMenuList');
+      const isOpen = list && !list.hidden;
+      if (list) list.hidden = isOpen;
+      $('#moreOptionsButton')?.setAttribute('aria-expanded', String(!isOpen));
+    });
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('#currencyMenu')) {
+        const list = $('#currencyMenuList');
+        if (list) list.hidden = true;
+        $('#currencyMenuButton')?.setAttribute('aria-expanded', 'false');
+      }
+      if (!event.target.closest('#agencyMoreMenu')) {
+        const list = $('#agencyMoreMenuList');
+        if (list) list.hidden = true;
+        $('#moreOptionsButton')?.setAttribute('aria-expanded', 'false');
+      }
     });
     $('#exchangeRateInput')?.addEventListener('input', (event) => {
       state.exchangeRate = Number(event.target.value || CONFIG.defaultExchangeRate);
@@ -179,6 +227,29 @@
       renderExperiences(); renderCart();
     });
     $('#paxCount').addEventListener('input', () => { renderAdditionalPassengers(); renderEntryTickets(findService($('#selectedServiceId').value)); });
+    $$('[data-pax-step]').forEach((button) => button.addEventListener('click', () => {
+      const input = $('#paxCount');
+      const current = Math.max(1, Number(input.value || 1));
+      const next = Math.min(50, Math.max(1, current + Number(button.dataset.paxStep || 0)));
+      input.value = next;
+      renderAdditionalPassengers();
+      renderEntryTickets(findService($('#selectedServiceId').value));
+    }));
+    $('#leadLanguage')?.addEventListener('change', syncLanguageNotice);
+    $('#leadDocType')?.addEventListener('change', syncLeadDocumentInput);
+    $('#leadNationality')?.addEventListener('change', syncLeadDocumentInput);
+    $('#leadDocNumber')?.addEventListener('input', syncLeadDocumentInput);
+    $('#additionalPassengers')?.addEventListener('input', (event) => {
+      if (!event.target.matches('[data-pax="docNumber"]')) return;
+      const card = event.target.closest('[data-passenger-extra]');
+      event.target.value = cleanDocByType(event.target.value, $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '');
+    });
+    $('#additionalPassengers')?.addEventListener('change', (event) => {
+      if (!event.target.matches('[data-pax="docType"], [data-pax="nationality"]')) return;
+      const card = event.target.closest('[data-passenger-extra]');
+      const input = $('[data-pax="docNumber"]', card);
+      if (input) input.value = cleanDocByType(input.value, $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '');
+    });
     $('#includeTicketsToggle')?.addEventListener('change', () => renderEntryTickets(findService($('#selectedServiceId').value)));
     $('#logoutButton')?.addEventListener('click', logout);
     $('#reserveForm').addEventListener('submit', addToCart);
@@ -246,10 +317,12 @@
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
     $('#paxCount').value = 2;
+    syncLanguageNotice();
     renderScheduleOptions(service);
     renderEntryTickets(service);
     renderAdditionalPassengers();
     hydrateCountrySelects($('#reserveModal'));
+    syncLeadDocumentInput();
     $('#reserveModal').classList.add('show');
   }
 
@@ -281,6 +354,13 @@
         <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} ${t('agency.perPassenger', 'por pasajero')}${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
       </label>
     `).join('');
+  }
+
+  function syncLanguageNotice() {
+    const notice = $('#languageNotice');
+    const lang = String($('#leadLanguage')?.value || '').toLowerCase();
+    if (!notice) return;
+    notice.hidden = !lang || lang === 'español' || lang === 'inglés' || lang === 'ingles';
   }
 
   function selectedEntryTickets(service, pax) {
@@ -328,6 +408,10 @@
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
+    const leadDocError = validateDocByType($('#leadDocNumber')?.value || '', $('#leadDocType')?.value || '', $('#leadNationality')?.value || '');
+    if (leadDocError) { alert(leadDocError); return; }
+    const extraDocError = $$('[data-passenger-extra]').map((card) => validateDocByType($('[data-pax="docNumber"]', card)?.value || '', $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '')).find(Boolean);
+    if (extraDocError) { alert(extraDocError); return; }
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
       lastName: $('[data-pax="lastName"]', card).value.trim(),
@@ -336,6 +420,8 @@
       nationality: $('[data-pax="nationality"]', card)?.value.trim() || ''
     })).filter((p) => p.firstName || p.lastName || p.docNumber || p.nationality);
 
+    const selectedLanguage = $('#leadLanguage')?.value || '';
+    const languageRequiresCoordination = !['Español', 'Inglés'].includes(selectedLanguage);
     const item = {
       id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       serviceId: service.id,
@@ -354,7 +440,8 @@
         docType: $('#leadDocType').value,
         docNumber: $('#leadDocNumber').value.trim(),
         nationality: $('#leadNationality')?.value.trim() || '',
-        language: $('#leadLanguage')?.value || '',
+        language: selectedLanguage,
+        languageRequiresCoordination,
         phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
       entryTickets: selectedEntryTickets(service, pax),

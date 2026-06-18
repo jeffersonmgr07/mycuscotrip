@@ -16,10 +16,69 @@
     PE: 'Razón social', MX: 'Razón social', CL: 'Razón social', CO: 'Razón social', AR: 'Razón social', BO: 'Razón social', EC: 'Razón social', UY: 'Razón social', PY: 'Razón social', VE: 'Razón social', BR: 'Razão social', US: 'Legal business name', CA: 'Legal business name', GB: 'Legal business name', ES: 'Razón social'
   };
 
+  const TAX_RULES = {
+    PE: { label: 'RUC', mode: 'numeric', min: 11, max: 11, message: 'El RUC de Perú debe tener 11 dígitos.' },
+    BR: { label: 'CNPJ', mode: 'alnum', min: 14, max: 14, message: 'El CNPJ debe tener 14 caracteres. Se aceptan números y letras para compatibilidad con el nuevo formato alfanumérico.' },
+    MX: { label: 'RFC', mode: 'alnum', min: 12, max: 12, message: 'El RFC de empresa en México debe tener 12 caracteres alfanuméricos.' },
+    CO: { label: 'NIT', mode: 'numeric', min: 9, max: 10, message: 'El NIT de Colombia debe tener entre 9 y 10 dígitos, incluyendo dígito de verificación cuando corresponda.' },
+    CL: { label: 'RUT', mode: 'rut', min: 7, max: 9, message: 'El RUT de Chile debe contener números y puede terminar en K.' },
+    AR: { label: 'CUIT', mode: 'numeric', min: 11, max: 11, message: 'El CUIT de Argentina debe tener 11 dígitos.' },
+    BO: { label: 'NIT', mode: 'numeric', min: 5, max: 15, message: 'El NIT debe contener solo números.' },
+    EC: { label: 'RUC', mode: 'numeric', min: 13, max: 13, message: 'El RUC de Ecuador debe tener 13 dígitos.' },
+    UY: { label: 'RUT', mode: 'numeric', min: 12, max: 12, message: 'El RUT de Uruguay debe tener 12 dígitos.' },
+    PY: { label: 'RUC', mode: 'alnum', min: 5, max: 15, message: 'El RUC debe contener solo letras, números o guion.' },
+    VE: { label: 'RIF', mode: 'alnum', min: 8, max: 12, message: 'El RIF debe contener solo letras y números.' },
+    US: { label: 'EIN / Tax ID', mode: 'numeric', min: 9, max: 9, message: 'El EIN de Estados Unidos debe tener 9 dígitos.' },
+    CA: { label: 'Business Number', mode: 'alnum', min: 9, max: 15, message: 'El Business Number debe contener entre 9 y 15 caracteres.' },
+    ES: { label: 'NIF / CIF', mode: 'alnum', min: 8, max: 9, message: 'El NIF/CIF debe contener entre 8 y 9 caracteres.' }
+  };
+
+  const DEFAULT_TAX_RULE = { label: 'Identificación fiscal', mode: 'alnum', min: 4, max: 24, message: 'La identificación fiscal debe contener entre 4 y 24 caracteres válidos.' };
+
+  const DOCUMENT_OPTIONS = {
+    PE: [
+      ['DNI', 'DNI'],
+      ['Carnet de extranjería', 'Carnet de extranjería'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ],
+    MX: [
+      ['INE / Documento de identidad', 'INE / Documento de identidad'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ],
+    CO: [
+      ['Cédula de ciudadanía', 'Cédula de ciudadanía'],
+      ['Cédula de extranjería', 'Cédula de extranjería'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ],
+    CL: [
+      ['Cédula de identidad', 'Cédula de identidad'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ],
+    BR: [
+      ['RG / Documento de identidad', 'RG / Documento de identidad'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ],
+    AR: [
+      ['DNI / Documento de identidad', 'DNI / Documento de identidad'],
+      ['Pasaporte', 'Pasaporte'],
+      ['Otro', 'Otro']
+    ]
+  };
+
+  const DEFAULT_DOCUMENT_OPTIONS = [
+    ['Documento nacional de identidad', 'Documento nacional de identidad'],
+    ['Pasaporte', 'Pasaporte'],
+    ['Otro', 'Otro']
+  ];
+
   const $ = (selector) => document.querySelector(selector);
   const value = (selector) => $(selector)?.value.trim() || '';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const TAX_RE = /^[A-Za-z0-9.\-\s]{4,24}$/;
   const I18N = window.MCTAgenciesI18n || null;
   const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
 
@@ -48,6 +107,58 @@
   function onlyDigits(input) { if (input) input.value = input.value.replace(/\D+/g, ''); }
   function validateEmail(email, label) { return EMAIL_RE.test(email) ? '' : `${label} debe ser un correo válido, por ejemplo nombre@dominio.com.`; }
   function currentRegistrationType() { return document.querySelector('input[name="registrationType"]:checked')?.value || 'natural'; }
+
+  function ruleForTaxCountry(country) {
+    return TAX_RULES[country] || DEFAULT_TAX_RULE;
+  }
+
+  function cleanByMode(value, mode) {
+    const raw = String(value || '').toUpperCase();
+    if (mode === 'numeric') return raw.replace(/\D+/g, '');
+    if (mode === 'rut') return raw.replace(/[^0-9K]/g, '');
+    return raw.replace(/[^A-Z0-9]/g, '');
+  }
+
+  function formatLengthHint(rule) {
+    return rule.min === rule.max ? `${rule.min} caracteres` : `entre ${rule.min} y ${rule.max} caracteres`;
+  }
+
+  function validateValueByRule(rawValue, rule) {
+    const clean = cleanByMode(rawValue, rule.mode);
+    if (!clean) return rule.message || 'Completa este dato.';
+    if (clean.length < rule.min || clean.length > rule.max) return rule.message || `Debe tener ${formatLengthHint(rule)}.`;
+    if (rule.mode === 'numeric' && !/^\d+$/.test(clean)) return rule.message || 'Debe contener solo números.';
+    if (rule.mode === 'rut' && !/^\d{6,8}[0-9K]$/.test(clean)) return rule.message || 'Debe contener números y puede terminar en K.';
+    if (rule.mode === 'alnum' && !/^[A-Z0-9]+$/.test(clean)) return rule.message || 'Debe contener solo letras y números.';
+    return '';
+  }
+
+  function documentOptionsForCountry(country) {
+    return DOCUMENT_OPTIONS[country] || DEFAULT_DOCUMENT_OPTIONS;
+  }
+
+  function documentRule(country, docType) {
+    const type = String(docType || '').toLowerCase();
+    if (country === 'PE' && type === 'dni') return { mode: 'numeric', min: 8, max: 8, message: 'El DNI peruano debe tener 8 dígitos.' };
+    if (country === 'PE' && type.includes('extranjería')) return { mode: 'alnum', min: 6, max: 12, message: 'El carné de extranjería debe tener entre 6 y 12 caracteres.' };
+    if (type.includes('pasaporte')) return { mode: 'alnum', min: 5, max: 15, message: 'El pasaporte debe tener entre 5 y 15 caracteres.' };
+    if (country === 'MX' && type.includes('ine')) return { mode: 'alnum', min: 6, max: 18, message: 'El documento de identidad debe tener entre 6 y 18 caracteres.' };
+    if (country === 'CO' && type.includes('cédula')) return { mode: 'numeric', min: 6, max: 12, message: 'La cédula colombiana debe contener solo números.' };
+    if (country === 'CL' && type.includes('cédula')) return { mode: 'rut', min: 7, max: 9, message: 'La cédula/RUT chileno debe contener números y puede terminar en K.' };
+    if (country === 'BR' && type.includes('rg')) return { mode: 'alnum', min: 5, max: 14, message: 'El documento brasileño debe tener entre 5 y 14 caracteres.' };
+    if (type.includes('documento') || type.includes('dni')) return { mode: 'alnum', min: 5, max: 18, message: 'El documento de identidad debe tener entre 5 y 18 caracteres.' };
+    return { mode: 'alnum', min: 4, max: 24, message: 'El documento debe tener entre 4 y 24 caracteres.' };
+  }
+
+  function applyInputRule(input, rule) {
+    if (!input) return;
+    input.value = cleanByMode(input.value, rule.mode);
+    input.maxLength = rule.max || 24;
+    input.inputMode = rule.mode === 'numeric' ? 'numeric' : 'text';
+    input.title = rule.message || `Debe tener ${formatLengthHint(rule)}.`;
+    if (rule.mode === 'numeric') input.pattern = `\\d{${rule.min},${rule.max}}`;
+    else input.pattern = `[A-Za-z0-9]{${rule.min},${rule.max}}`;
+  }
 
   function show(message, type = 'is-error') {
     const el = $('#registerMessage');
@@ -97,14 +208,39 @@
     syncCountry();
   }
 
+  function syncDocumentOptions() {
+    const country = $('#legalNationality')?.value || 'PE';
+    const select = $('#legalDocType');
+    if (!select) return;
+    const current = select.value;
+    const options = documentOptionsForCountry(country);
+    select.innerHTML = options.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+    select.value = options.some(([value]) => value === current) ? current : options[0][0];
+    syncDocumentRule();
+  }
+
+  function syncDocumentRule() {
+    const country = $('#legalNationality')?.value || 'PE';
+    const input = $('#legalDocNumber');
+    const rule = documentRule(country, $('#legalDocType')?.value || '');
+    applyInputRule(input, rule);
+  }
+
   function syncCountry() {
-    const country = $('#companyCountry')?.value || $('#legalNationality')?.value || 'PE';
+    const registrationType = currentRegistrationType();
+    const fiscalCountry = $('#companyCountry')?.value || 'PE';
+    const personCountry = $('#legalNationality')?.value || 'PE';
+    const country = registrationType === 'company' ? fiscalCountry : personCountry;
+    const rule = ruleForTaxCountry(fiscalCountry);
     const taxLabel = $('#taxLabel');
     const legalNameLabel = $('#legalNameLabel');
-    if (taxLabel) taxLabel.textContent = TAX_LABELS[country] || 'Identificación fiscal';
-    if (legalNameLabel) legalNameLabel.textContent = LEGAL_NAME_LABELS[country] || 'Nombre fiscal / legal';
+    if (taxLabel) taxLabel.textContent = rule.label || TAX_LABELS[fiscalCountry] || 'Identificación fiscal';
+    if (legalNameLabel) legalNameLabel.textContent = LEGAL_NAME_LABELS[fiscalCountry] || 'Nombre fiscal / legal';
+    const taxInput = $('#companyTaxId');
+    if (taxInput) applyInputRule(taxInput, rule);
     const phoneCountry = $('#companyPhoneCountry');
     if (phoneCountry) phoneCountry.value = countryPhone(country);
+    syncDocumentOptions();
   }
 
   function normalizePhone() {
@@ -162,10 +298,11 @@
     fillPhoneSelect($('#companyPhoneCountry'), '+51');
     document.querySelectorAll('input[name="registrationType"]').forEach((input) => input.addEventListener('change', syncRegistrationType));
     $('#companyCountry')?.addEventListener('change', syncCountry);
-    $('#legalNationality')?.addEventListener('change', () => { if (currentRegistrationType() === 'natural') syncCountry(); });
+    $('#legalNationality')?.addEventListener('change', syncCountry);
+    $('#legalDocType')?.addEventListener('change', syncDocumentRule);
     $('#companyPhone')?.addEventListener('input', (event) => onlyDigits(event.target));
-    $('#companyTaxId')?.addEventListener('input', (event) => { event.target.value = event.target.value.replace(/[^A-Za-z0-9.\-\s]/g, '').toUpperCase(); });
-    $('#legalDocNumber')?.addEventListener('input', (event) => { event.target.value = event.target.value.replace(/[^A-Za-z0-9.\-\s]/g, '').toUpperCase(); });
+    $('#companyTaxId')?.addEventListener('input', () => syncCountry());
+    $('#legalDocNumber')?.addEventListener('input', syncDocumentRule);
 
     $('#agencyRegisterForm')?.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -180,7 +317,14 @@
       if (passwordError) { show(passwordError); return; }
       if (password !== confirm) { show('Las contraseñas no coinciden.'); return; }
 
-      if (isCompany && !TAX_RE.test(value('#companyTaxId'))) { show('El número de identificación fiscal debe contener solo letras, números, punto o guion.'); return; }
+      if (isCompany) {
+        const taxRule = ruleForTaxCountry(value('#companyCountry') || 'PE');
+        const taxError = validateValueByRule(value('#companyTaxId'), taxRule);
+        if (taxError) { show(taxError); return; }
+      }
+      const docRule = documentRule(value('#legalNationality') || 'PE', value('#legalDocType'));
+      const docError = validateValueByRule(value('#legalDocNumber'), docRule);
+      if (docError) { show(docError); return; }
       const phoneDigits = value('#companyPhone').replace(/\D+/g, '');
       if (!/^\d{6,15}$/.test(phoneDigits)) { show('El número de WhatsApp debe contener solo números, entre 6 y 15 dígitos.'); return; }
       const accessEmailError = validateEmail(value('#accessEmail').toLowerCase(), 'El correo de inicio de sesión');
