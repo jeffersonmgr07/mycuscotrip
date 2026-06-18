@@ -68,13 +68,17 @@
     const type = currentRegistrationType();
     const isCompany = type === 'company';
     $('#companyBlock').hidden = !isCompany;
-    $('#representativeTitle').textContent = isCompany ? 'Representante o contacto autorizado' : 'Datos de la persona natural';
+    $('#representativeTitle').textContent = isCompany ? 'Datos del representante de la empresa' : 'Datos de la persona natural';
     document.querySelectorAll('[data-registration-card]').forEach((card) => {
       card.classList.toggle('is-active', card.dataset.registrationCard === type);
     });
     ['#companyCountry','#companyTaxId','#companyName','#tradeName'].forEach((selector) => {
       const el = $(selector);
-      if (el) el.required = isCompany;
+      if (!el) return;
+      el.required = isCompany;
+      el.disabled = !isCompany;
+      const wrapper = el.closest('.field');
+      if (wrapper) wrapper.classList.toggle('is-disabled-by-type', !isCompany);
     });
     syncCountry();
   }

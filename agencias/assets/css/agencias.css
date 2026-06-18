@@ -363,3 +363,11 @@ html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!impo
 .agency-success-panel p{max-width:620px;margin:0;color:#40544a;}
 .agency-success-panel small{color:var(--muted);font-weight:800;}
 @media(max-width:760px){.registration-type-toggle{grid-template-columns:1fr}.profile-card__head{display:grid}.profile-card__head .agency-button{width:100%}.profile-locked-note{grid-template-columns:1fr}.profile-locked-note .agency-button{grid-row:auto;grid-column:auto;width:100%}.inline-readonly-group{grid-template-columns:1fr}.agency-hero--compact{padding:20px!important}}
+
+/* Ajuste v9 registro agencias: comportamiento persona natural / empresa */
+.field.is-disabled-by-type{display:none!important;}
+.agency-register-page #personBlock .form-grid .full{grid-column:1/-1;}
+@media(min-width:761px){
+  .agency-register-page #registerPassword,
+  .agency-register-page #registerPasswordConfirm{min-width:0;}
+}

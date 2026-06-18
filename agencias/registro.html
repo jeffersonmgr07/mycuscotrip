@@ -52,20 +52,20 @@
           <h2>Datos fiscales de la empresa</h2>
           <div class="form-grid">
             <label class="field"><span>País fiscal de la empresa</span><select id="companyCountry"></select></label>
+            <label class="field"><span>Nombre comercial</span><input id="tradeName" autocomplete="organization" /></label>
+            <label class="field"><span id="legalNameLabel">Razón social</span><input id="companyName" autocomplete="organization" /></label>
             <label class="field"><span id="taxLabel">RUC</span><input id="companyTaxId" pattern="[A-Za-z0-9.\-\s]{4,24}" title="Usa solo letras, números, punto o guion." autocomplete="off" /></label>
-            <label class="field"><span id="legalNameLabel">Razón social</span><input id="companyName" /></label>
-            <label class="field"><span>Nombre comercial</span><input id="tradeName" /></label>
           </div>
         </section>
 
-        <section class="form-block">
+        <section class="form-block" id="personBlock">
           <h2 id="representativeTitle">Datos de la persona natural</h2>
           <div class="form-grid">
-            <label class="field"><span>Nacionalidad</span><select id="legalNationality" required></select></label>
+            <label class="field"><span>Nombres</span><input id="legalFirstName" required autocomplete="given-name" /></label>
+            <label class="field"><span>Apellidos</span><input id="legalLastName" required autocomplete="family-name" /></label>
             <label class="field"><span>Tipo de documento</span><select id="legalDocType" required><option value="DNI">DNI</option><option value="Pasaporte">Pasaporte</option><option value="Carnet de extranjería">Carnet de extranjería</option><option value="Documento nacional">Documento nacional</option><option value="Otro">Otro</option></select></label>
-            <label class="field"><span>Nombres</span><input id="legalFirstName" required /></label>
-            <label class="field"><span>Apellidos</span><input id="legalLastName" required /></label>
-            <label class="field full"><span>Número de documento</span><input id="legalDocNumber" required autocomplete="off" /></label>
+            <label class="field"><span>Número de documento</span><input id="legalDocNumber" required autocomplete="off" /></label>
+            <label class="field full"><span>Nacionalidad</span><select id="legalNationality" required></select></label>
           </div>
         </section>
 
@@ -82,8 +82,8 @@
           <h2>Información de acceso</h2>
           <div class="form-grid">
             <label class="field full"><span>Correo de inicio de sesión</span><input id="accessEmail" type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}" title="Ingresa un correo válido, por ejemplo nombre@dominio.com" /></label>
-            <label class="field full password-field"><span>Crear contraseña</span><div class="password-input-wrap"><input id="registerPassword" type="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" required title="Mínimo 8 caracteres, incluyendo letras, números y un carácter especial." /><button type="button" class="password-toggle" data-toggle-password="registerPassword">Ver</button></div></label>
-            <label class="field full password-field"><span>Confirmar contraseña</span><div class="password-input-wrap"><input id="registerPasswordConfirm" type="password" minlength="8" required /><button type="button" class="password-toggle" data-toggle-password="registerPasswordConfirm">Ver</button></div></label>
+            <label class="field password-field"><span>Crear contraseña</span><div class="password-input-wrap"><input id="registerPassword" type="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" required title="Mínimo 8 caracteres, incluyendo letras, números y un carácter especial." /><button type="button" class="password-toggle" data-toggle-password="registerPassword">Ver</button></div></label>
+            <label class="field password-field"><span>Confirmar contraseña</span><div class="password-input-wrap"><input id="registerPasswordConfirm" type="password" minlength="8" required /><button type="button" class="password-toggle" data-toggle-password="registerPasswordConfirm">Ver</button></div></label>
             <div class="password-checklist full" id="passwordChecklist" aria-live="polite">
               <div data-rule="length">Mínimo 8 caracteres</div>
               <div data-rule="letter">Incluye una letra</div>
