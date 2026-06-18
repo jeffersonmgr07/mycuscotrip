@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="../../" />
   <title>Registro de proveedores | My Cusco Trip</title>
-  <meta name="description" content="Elige el tipo de proveedor que deseas registrar. Cada portal tendrá su propio proceso, panel y herramientas comerciales." />
+  <meta name="description" content="Regístrate como proveedor turístico de My Cusco Trip y conecta tus servicios con viajeros, agencias y nuevas oportunidades comerciales." />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
@@ -15,46 +15,62 @@
   <link rel="stylesheet" href="./assets/css/responsive.css" />
   <link rel="stylesheet" href="./assets/css/provider-portal.css" />
 </head>
-<body class="provider-gateway-page">
+<body class="provider-gateway-page provider-gateway-page--register">
   <div id="header-container"></div>
   <main>
-    <section class="provider-gateway-hero">
+    <section class="provider-gateway-hero provider-gateway-hero--compact">
       <div class="container">
-        <span class="provider-gateway-eyebrow"><i class="fa-solid fa-briefcase"></i> Registro de proveedores</span>
-        <h1>Registra tu proveedor de servicios turísticos con My Cusco Trip</h1>
-        <p>Elige el tipo de proveedor que deseas registrar. Cada portal tendrá su propio proceso, panel y herramientas comerciales.</p>
+        <span class="provider-gateway-eyebrow"><i class="fa-solid fa-briefcase"></i> Aliados comerciales</span>
+        <h1>Regístrate como proveedor de servicios con My Cusco Trip</h1>
+        <p>Conecta tu negocio con viajeros que buscan experiencias auténticas en Cusco y Perú.</p>
       </div>
     </section>
+
     <section class="provider-gateway-content">
       <div class="container">
-        <p class="provider-gateway-intro">Selecciona una opción para continuar. El orden recomendado es agencias, hoteles, restaurantes y artesanos.</p>
-        <div class="provider-gateway-grid">
-            <a class="provider-card provider-card--agency " href="/agencias/registro.html">
-              <span class="provider-card__icon"><i class="fa-solid fa-handshake"></i></span>
-              <h2>Agencias de viajes</h2>
-              <p>Accede al portal privado para reservar experiencias, revisar órdenes y gestionar pagos.</p>
-              <span class="provider-card__cta">Registrar agencia <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
-<a class="provider-card provider-card--hotel " href="/hoteles/register-manager-hotel.html">
-              <span class="provider-card__icon"><i class="fa-solid fa-hotel"></i></span>
-              <h2>Hoteles y alojamientos</h2>
-              <p>Administra alojamientos, habitaciones, fotos, disponibilidad y publicación en marketplace.</p>
-              <span class="provider-card__cta">Registrar alojamiento <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
-<a class="provider-card provider-card--restaurant provider-card--soon" href="/restaurantes/index.html">
-              <span class="provider-card__icon"><i class="fa-solid fa-utensils"></i></span>
-              <h2>Restaurantes</h2>
-              <p>Próximamente: publica experiencias gastronómicas, menús turísticos y alianzas comerciales.</p>
-              <span class="provider-card__cta">Ver módulo <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
-<a class="provider-card provider-card--artisan provider-card--soon" href="/pages/socios/proveedores.html#artesanos">
-              <span class="provider-card__icon"><i class="fa-solid fa-palette"></i></span>
-              <h2>Artesanos</h2>
-              <p>Próximamente: registra productos artesanales para venta turística y catálogo digital.</p>
-              <span class="provider-card__cta">Próximamente <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
+        <div class="provider-gateway-copy">
+          <h2>Haz crecer tus ventas junto a una plataforma turística en expansión</h2>
+          <p>Elige el tipo de negocio que operas y accede al portal correspondiente para afiliarte, mostrar tus servicios y crear nuevas oportunidades comerciales con My Cusco Trip.</p>
         </div>
-        <div class="provider-note"><i class="fa-solid fa-circle-info"></i> Los módulos de restaurantes y artesanos pueden activarse progresivamente sin afectar el portal actual de agencias ni el marketplace de hoteles.</div>
+
+        <div class="provider-gateway-grid">
+          <a class="provider-card provider-card--agency" href="/agencias/registro.html">
+            <span class="provider-card__media" style="--provider-card-image:url('./assets/img/tours/valle-sagrado/cover.jpg')"></span>
+            <span class="provider-card__icon"><i class="fa-solid fa-handshake"></i></span>
+            <h2>Agencias de viajes</h2>
+            <p>Accede a tarifas B2B, reserva experiencias para tus clientes y gestiona tus órdenes desde un portal privado.</p>
+            <span class="provider-card__cta provider-card__cta--button">Registrar mi agencia <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a class="provider-card provider-card--hotel" href="/hoteles/register-manager-hotel.html">
+            <span class="provider-card__media" style="--provider-card-image:url('./assets/img/hotels/luz-garden/cover.jpg')"></span>
+            <span class="provider-card__icon"><i class="fa-solid fa-hotel"></i></span>
+            <h2>Hoteles y alojamientos</h2>
+            <p>Publica tu alojamiento, administra habitaciones, fotos, disponibilidad y futuras reservas dentro del marketplace.</p>
+            <span class="provider-card__cta provider-card__cta--button">Registrar mi alojamiento <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a class="provider-card provider-card--restaurant" href="/restaurantes/index.html">
+            <span class="provider-card__media" style="--provider-card-image:url('./assets/img/reserva/banner-restaurantes.jpg')"></span>
+            <span class="provider-card__icon"><i class="fa-solid fa-utensils"></i></span>
+            <h2>Restaurantes</h2>
+            <p>Presenta menús turísticos, experiencias gastronómicas y propuestas especiales para viajeros y grupos.</p>
+            <span class="provider-card__cta provider-card__cta--button">Registrar mi restaurante <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a id="artesanos" class="provider-card provider-card--artisan" href="/pages/socios/proveedores.html#artesanos">
+            <span class="provider-card__media" style="--provider-card-image:url('./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg')"></span>
+            <span class="provider-card__icon"><i class="fa-solid fa-palette"></i></span>
+            <h2>Artesanos</h2>
+            <p>Vende souvenirs, textiles, cerámicas, piezas decorativas y productos artesanales a turistas interesados en cultura local.</p>
+            <span class="provider-card__cta provider-card__cta--button">Registrarme como artesano <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+        </div>
+
+        <div class="provider-note provider-note--commercial">
+          <i class="fa-solid fa-seedling"></i>
+          <span>Afíliate a My Cusco Trip y convierte tu servicio en una propuesta visible para viajeros, agencias y aliados que buscan proveedores confiables en Perú.</span>
+        </div>
       </div>
     </section>
   </main>

@@ -1,34 +1,18 @@
-Parche: ajuste fino registro de agencias
+Parche visual - páginas de proveedores My Cusco Trip
 
 Archivos incluidos:
-- agencias/registro.html
-- agencias/assets/css/agencias.css
-- agencias/assets/js/pages/registro-agencias.js
+- pages/socios/proveedores.html
+- pages/socios/extranet-proveedores.html
+- pages/socios/extranet-agencias.html  (compatibilidad con enlaces antiguos)
+- assets/css/provider-portal.css
+- components/footer.html
 
 Cambios:
-1. Registro de agencias más parecido al registro de hoteles:
-   - franja superior delgada,
-   - título compacto: Registro de agencias de viajes,
-   - se elimina el exceso de aire superior,
-   - card blanca con overlay/fondo Machu Picchu igual al registro hotelero.
+1. Hero más compacto y texto blanco.
+2. Textos comerciales B2B para registro y extranet.
+3. Cards con imagen superior + icono centrado.
+4. Botones más intuitivos: registrar mi agencia, registrar mi alojamiento, registrar mi restaurante, registrarme como artesano.
+5. Se eliminó el texto interno sobre activación progresiva de módulos.
+6. Footer apunta a /pages/socios/extranet-proveedores.html.
 
-2. Tipo de registro funcional:
-   - Persona natural muestra Tipo de documento, Número de documento y Nacionalidad.
-   - Empresa muestra Razón social, número fiscal según país y Nombre comercial.
-   - El nombre comercial solo aparece en Empresa.
-
-3. Número fiscal dinámico por país:
-   - Perú: RUC
-   - México: RFC
-   - Chile: RUT
-   - Brasil: CNPJ
-   - Colombia/Bolivia: NIT
-   - Argentina: CUIT
-   - Ecuador: RUC
-   - Estados Unidos: EIN / Tax ID
-   - España: NIF / CIF
-
-4. No se toca PayPal, Mercado Pago, órdenes ni login.
-
-Instalación:
-Copiar estos archivos sobre la raíz del proyecto respetando las rutas.
+No toca Apps Script, Mercado Pago, PayPal, registro de agencias ni backend.
