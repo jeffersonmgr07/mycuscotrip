@@ -67,19 +67,33 @@
   function syncRegistrationType() {
     const type = currentRegistrationType();
     const isCompany = type === 'company';
-    $('#companyBlock').hidden = !isCompany;
-    $('#representativeTitle').textContent = isCompany ? 'Datos del representante de la empresa' : 'Datos de la persona natural';
+    const companyBlock = $('#companyBlock');
+
+    // Importante: ocultar o mostrar la sección completa, no solo los campos.
+    // Esto evita que quede visible el título "Datos fiscales de la empresa" en Persona natural.
+    if (companyBlock) {
+      companyBlock.hidden = !isCompany;
+      companyBlock.classList.toggle('is-hidden-by-registration-type', !isCompany);
+      companyBlock.style.display = isCompany ? '' : 'none';
+      companyBlock.setAttribute('aria-hidden', String(!isCompany));
+    }
+
+    const representativeTitle = $('#representativeTitle');
+    if (representativeTitle) {
+      representativeTitle.textContent = isCompany ? 'Datos del representante de la empresa' : 'Datos de la persona natural';
+    }
+
     document.querySelectorAll('[data-registration-card]').forEach((card) => {
       card.classList.toggle('is-active', card.dataset.registrationCard === type);
     });
+
     ['#companyCountry','#companyTaxId','#companyName','#tradeName'].forEach((selector) => {
       const el = $(selector);
       if (!el) return;
       el.required = isCompany;
       el.disabled = !isCompany;
-      const wrapper = el.closest('.field');
-      if (wrapper) wrapper.classList.toggle('is-disabled-by-type', !isCompany);
     });
+
     syncCountry();
   }
 

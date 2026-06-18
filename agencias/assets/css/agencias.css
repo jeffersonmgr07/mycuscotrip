@@ -371,3 +371,55 @@ html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!impo
   .agency-register-page #registerPassword,
   .agency-register-page #registerPasswordConfirm{min-width:0;}
 }
+
+
+/* Ajuste v10 registro agencias: bloque empresa completo + fondo verde con imagen */
+.agency-register-page{
+  position:relative;
+  min-height:100vh;
+  background:
+    linear-gradient(135deg,rgba(237,247,241,.92),rgba(218,239,226,.88)),
+    url("../../../assets/img/reserva/machu-picchu-fondo.jpg") center/cover fixed no-repeat!important;
+}
+.agency-register-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 12%,rgba(255,255,255,.38),transparent 30%),
+    linear-gradient(135deg,rgba(6,40,3,.20),rgba(11,122,78,.12));
+  z-index:0;
+}
+.agency-register-page #header-container,
+.agency-register-page #footer-container,
+.agency-register-page .agency-main{
+  position:relative;
+  z-index:1;
+}
+.agency-register-page .agency-main--narrow{
+  padding-top:92px!important;
+}
+.agency-register-page .auth-card--hotel-style{
+  background:rgba(255,255,255,.94)!important;
+  border-color:rgba(255,255,255,.75)!important;
+  backdrop-filter:blur(8px);
+}
+.agency-register-page .agency-hero--compact{
+  background:
+    radial-gradient(circle at 92% 88%,rgba(198,161,91,.42),transparent 32%),
+    linear-gradient(135deg,rgba(6,40,3,.96),rgba(5,50,32,.92))!important;
+}
+.agency-register-page #companyBlock[hidden],
+.agency-register-page #companyBlock.is-hidden-by-registration-type,
+.agency-register-page .form-block[hidden]{
+  display:none!important;
+}
+@media(max-width:760px){
+  .agency-register-page{
+    background-attachment:scroll!important;
+  }
+  .agency-register-page .agency-main--narrow{
+    padding-top:84px!important;
+  }
+}
