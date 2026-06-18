@@ -513,3 +513,60 @@ html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!impo
   .agency-register-actions{justify-content:stretch!important;}
   .agency-register-btn{width:100%!important;}
 }
+
+
+/* Registro agencias: loader y pantalla de verificación tipo hoteles */
+.agency-register-success-panel{
+  padding:34px 26px 38px;
+  text-align:center;
+  display:grid;
+  gap:14px;
+  justify-items:center;
+  background:rgba(255,255,255,.94);
+}
+.agency-register-success-icon{
+  width:78px;
+  height:78px;
+  border-radius:28px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#eef7f1,#fffaf2);
+  color:#062803;
+  font-size:2.1rem;
+  box-shadow:0 18px 42px rgba(6,40,3,.12);
+  border:1px solid rgba(6,40,3,.12);
+}
+.agency-register-success-panel h2{
+  margin:4px 0 0;
+  font-family:Montserrat,Arial,sans-serif;
+  color:#062803;
+  font-size:clamp(1.45rem,3vw,2rem);
+  letter-spacing:-.035em;
+}
+.agency-register-success-panel p{
+  margin:0;
+  color:#40544a;
+  max-width:650px;
+  font-size:1rem;
+  line-height:1.6;
+}
+.agency-register-success-note{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  max-width:650px;
+  text-align:left;
+  background:#fffaf2;
+  border:1px solid #eadfc9;
+  color:#5d4820;
+  border-radius:18px;
+  padding:13px 15px;
+  font-weight:700;
+}
+.agency-register-success-note i{color:#c6a15b;margin-top:3px;}
+.agency-register-success-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+.agency-register-success-panel small{color:#64756b;font-weight:800;}
+@media(max-width:720px){
+  .agency-register-success-panel{padding:28px 18px 32px;}
+  .agency-register-success-icon{width:68px;height:68px;border-radius:24px;font-size:1.8rem;}
+}

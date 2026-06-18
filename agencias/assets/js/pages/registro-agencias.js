@@ -25,6 +25,100 @@
   const I18N = window.MCTAgenciesI18n || null;
   const t = (key, fallback = key) => I18N?.t ? I18N.t(key) : fallback;
 
+
+  function ensureAgencyLoadingBox() {
+    let box = document.getElementById('mctAgencyLoadingBox');
+    if (box) return box;
+    const style = document.createElement('style');
+    style.textContent = `
+      .mct-hotel-loading-backdrop{position:fixed;inset:0;background:rgba(6,40,3,.18);display:grid;place-items:center;z-index:99999;backdrop-filter:blur(2px)}
+      .mct-hotel-loading-card{background:#fff;border:1px solid rgba(6,40,3,.18);box-shadow:0 22px 60px rgba(0,0,0,.18);border-radius:22px;padding:22px 26px;display:flex;align-items:center;gap:14px;color:#062803;font-weight:800;min-width:240px;justify-content:center}
+      .mct-hotel-loading-spinner{width:24px;height:24px;border:3px solid #dfe8df;border-top-color:#062803;border-radius:999px;animation:mctHotelSpin .8s linear infinite}
+      @keyframes mctHotelSpin{to{transform:rotate(360deg)}}
+    `;
+    document.head.appendChild(style);
+    box = document.createElement('div');
+    box.id = 'mctAgencyLoadingBox';
+    box.className = 'mct-hotel-loading-backdrop';
+    box.hidden = true;
+    box.style.display = 'none';
+    box.innerHTML = '<div class="mct-hotel-loading-card"><span class="mct-hotel-loading-spinner" aria-hidden="true"></span><span data-loading-text>Un momento, por favor...</span></div>';
+    document.body.appendChild(box);
+    return box;
+  }
+
+  let agencyLoadingWatchdog = null;
+  function forceHideAgencyLoading() {
+    if (agencyLoadingWatchdog) { clearTimeout(agencyLoadingWatchdog); agencyLoadingWatchdog = null; }
+    document.querySelectorAll('#mctAgencyLoadingBox').forEach((box) => {
+      box.hidden = true;
+      box.style.display = 'none';
+    });
+  }
+
+  function setAgencyLoading(active, text = 'Un momento, por favor...') {
+    const box = ensureAgencyLoadingBox();
+    const label = box.querySelector('[data-loading-text]');
+    if (label) label.textContent = text;
+    if (!active) {
+      forceHideAgencyLoading();
+      return;
+    }
+    if (agencyLoadingWatchdog) clearTimeout(agencyLoadingWatchdog);
+    box.hidden = false;
+    box.style.display = 'grid';
+    agencyLoadingWatchdog = setTimeout(forceHideAgencyLoading, 30000);
+  }
+
+  async function withAgencyLoading(text, submitter, task) {
+    const btn = submitter && submitter.matches ? submitter : null;
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.loading = '1';
+    }
+    setAgencyLoading(true, text);
+    try {
+      return await task();
+    } finally {
+      setAgencyLoading(false);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        delete btn.dataset.loading;
+      }
+    }
+  }
+
+  function showRegisterSuccessPanel(form, message) {
+    const card = form?.closest('.agency-register-card') || form?.parentElement;
+    if (!card) return;
+    form.hidden = true;
+    const intro = card.querySelector('.agency-register-intro');
+    if (intro) intro.hidden = true;
+    let panel = card.querySelector('[data-agency-register-success-panel]');
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.className = 'agency-register-success-panel';
+      panel.setAttribute('data-agency-register-success-panel', '');
+      panel.innerHTML = `
+        <div class="agency-register-success-icon"><i class="fa-solid fa-envelope-circle-check"></i></div>
+        <h2>Revisa tu correo y verifica tu cuenta</h2>
+        <p data-agency-register-success-text>Hemos enviado un correo de verificación. Abre tu bandeja de entrada y confirma tu cuenta para poder ingresar al portal de agencias.</p>
+        <div class="agency-register-success-note"><i class="fa-solid fa-circle-info"></i><span>También revisa tu carpeta de spam o promociones si no lo encuentras en unos minutos.</span></div>
+        <div class="agency-register-success-actions">
+          <a class="agency-register-btn" href="./login.html"><i class="fa-solid fa-right-to-bracket"></i> Ir al acceso</a>
+        </div>
+        <small>Serás redirigido automáticamente al acceso en unos segundos...</small>
+      `;
+      card.appendChild(panel);
+    }
+    const text = panel.querySelector('[data-agency-register-success-text]');
+    if (text) text.textContent = message || 'Hemos enviado un correo de verificación. Abre tu bandeja de entrada y confirma tu cuenta para poder ingresar al portal de agencias.';
+    panel.hidden = false;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   function onlyDigits(input) {
     if (input) input.value = input.value.replace(/\D+/g, '');
   }
@@ -184,8 +278,6 @@
     if (accessEmailError) { show(accessEmailError); return; }
 
     const button = event.submitter;
-    const originalText = button?.textContent || t('register.submit', 'Enviar registro');
-    if (button) { button.disabled = true; button.textContent = t('register.sending', 'Enviando registro...'); }
 
     const phone = normalizePhone();
     const agency = {
@@ -216,18 +308,13 @@
     };
 
     try {
-      const result = await sendToSheet('registerAgency', agency);
+      const result = await withAgencyLoading('Enviando registro...', button, () => sendToSheet('registerAgency', agency));
       if (!result.ok) { show(result.message || 'No se pudo registrar la agencia.'); return; }
-      show(result.message || 'Registro recibido correctamente. Revisa tu correo para verificar el email. Luego podrás ingresar al portal.', 'is-success');
-      form.reset();
-      syncRegistrationType();
-      updatePasswordChecklist();
-      setTimeout(() => { window.location.href = './login.html'; }, 2600);
+      showRegisterSuccessPanel(form, 'Hemos enviado un correo de verificación. Revisa tu bandeja de entrada, confirma tu cuenta y luego podrás ingresar al portal de agencias.');
+      setTimeout(() => { window.location.href = './login.html'; }, 8000);
     } catch (error) {
       console.error(error);
       show(error.message || 'No se pudo conectar con Google Apps Script. Revisa la URL y la implementación.');
-    } finally {
-      if (button) { button.disabled = false; button.textContent = originalText; }
     }
   });
 

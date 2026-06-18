@@ -1,18 +1,30 @@
-Parche visual - páginas de proveedores My Cusco Trip
+Parche: loader y pantalla post-registro para agencias
 
 Archivos incluidos:
-- pages/socios/proveedores.html
-- pages/socios/extranet-proveedores.html
-- pages/socios/extranet-agencias.html  (compatibilidad con enlaces antiguos)
-- assets/css/provider-portal.css
-- components/footer.html
+- agencias/assets/js/pages/registro-agencias.js
+- agencias/assets/css/agencias.css
 
-Cambios:
-1. Hero más compacto y texto blanco.
-2. Textos comerciales B2B para registro y extranet.
-3. Cards con imagen superior + icono centrado.
-4. Botones más intuitivos: registrar mi agencia, registrar mi alojamiento, registrar mi restaurante, registrarme como artesano.
-5. Se eliminó el texto interno sobre activación progresiva de módulos.
-6. Footer apunta a /pages/socios/extranet-proveedores.html.
+Qué hace:
+1. Replica en agencias el loader visual usado en hoteles:
+   - fondo suave verde/transparente
+   - tarjeta blanca
+   - spinner circular
+   - texto: "Un momento, por favor..."
+   - durante el registro muestra: "Enviando registro..."
 
-No toca Apps Script, Mercado Pago, PayPal, registro de agencias ni backend.
+2. El loader solo aparece cuando el usuario envía el formulario.
+
+3. Después de un registro exitoso:
+   - oculta el formulario
+   - muestra una pantalla visual de éxito
+   - indica que se envió el correo de verificación
+   - recomienda revisar spam/promociones
+   - deja botón "Ir al acceso"
+   - redirige automáticamente a login.html después de 8 segundos
+
+No toca:
+- Apps Script
+- PayPal
+- Mercado Pago
+- login
+- órdenes
