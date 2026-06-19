@@ -102,6 +102,9 @@
     return String(window.MP_DEVICE_SESSION_ID || window.MP_DEVICE_SESSION_ID_PUBLIC || '').trim();
   }
 
+
+
+
   function updateCurrencyMenu() {
     const button = $('#currencyMenuButton');
     const select = $('#currencySelect');
@@ -121,6 +124,13 @@
     renderCart();
   }
 
+  function syncLanguageNotice() {
+    const select = $('#leadLanguage');
+    const notice = $('#languageNotice');
+    if (!select || !notice) return;
+    const value = String(select.value || '').trim().toLowerCase();
+    notice.hidden = !value || value === 'español' || value === 'ingles' || value === 'inglés';
+  }
 
   function greetingFor(name = '') {
     const hour = new Date().getHours();
@@ -171,43 +181,19 @@
   }
 
   async function loadCatalog() {
-    const urls = [
-      CONFIG.catalogUrl,
-      'assets/data/agencias-tours.json',
-      './assets/data/agencias-tours.json',
-      '/agencias/assets/data/agencias-tours.json'
-    ].filter((url, index, arr) => url && arr.indexOf(url) === index);
-
-    let lastError = null;
-    for (const url of urls) {
-      try {
-        const response = await fetch(url, { cache: 'no-store' });
-        if (!response.ok) throw new Error('catalog ' + response.status);
-        const data = await response.json();
-        const services = Array.isArray(data.services) ? data.services : [];
-        state.services = services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service);
-        if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
-          state.exchangeRate = Number(data.exchangeRate);
-          if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
-        }
-        const empty = $('#emptyExperiences');
-        if (empty) {
-          empty.hidden = state.services.length > 0;
-          empty.textContent = t('agency.noExperiences', 'No encontramos experiencias con ese filtro.');
-        }
-        return;
-      } catch (error) {
-        lastError = error;
+    try {
+      const response = await fetch(CONFIG.catalogUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error('catalog');
+      const data = await response.json();
+      state.services = Array.isArray(data.services) ? data.services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service) : [];
+      if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
+        state.exchangeRate = Number(data.exchangeRate);
+        if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
+    } catch (error) {
+      $('#emptyExperiences').hidden = false;
+      $('#emptyExperiences').textContent = t('agency.catalogError', 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.');
     }
-
-    state.services = [];
-    const empty = $('#emptyExperiences');
-    if (empty) {
-      empty.hidden = false;
-      empty.textContent = t('agency.catalogError', 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.');
-    }
-    console.warn('No se pudo cargar catálogo de agencias', lastError);
   }
 
   function bindEvents() {
@@ -250,9 +236,10 @@
       localStorage.setItem('mct_exchange_rate', state.exchangeRate);
       renderExperiences(); renderCart();
     });
-    $('#paxCount').addEventListener('input', () => { renderAdditionalPassengers(); renderEntryTickets(findService($('#selectedServiceId').value)); });
+    $('#paxCount')?.addEventListener('input', () => { renderAdditionalPassengers(); renderEntryTickets(findService($('#selectedServiceId').value)); });
     $$('[data-pax-step]').forEach((button) => button.addEventListener('click', () => {
       const input = $('#paxCount');
+      if (!input) return;
       const current = Math.max(1, Number(input.value || 1));
       const next = Math.min(50, Math.max(1, current + Number(button.dataset.paxStep || 0)));
       input.value = next;
@@ -260,20 +247,6 @@
       renderEntryTickets(findService($('#selectedServiceId').value));
     }));
     $('#leadLanguage')?.addEventListener('change', syncLanguageNotice);
-    $('#leadDocType')?.addEventListener('change', syncLeadDocumentInput);
-    $('#leadNationality')?.addEventListener('change', syncLeadDocumentInput);
-    $('#leadDocNumber')?.addEventListener('input', syncLeadDocumentInput);
-    $('#additionalPassengers')?.addEventListener('input', (event) => {
-      if (!event.target.matches('[data-pax="docNumber"]')) return;
-      const card = event.target.closest('[data-passenger-extra]');
-      event.target.value = cleanDocByType(event.target.value, $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '');
-    });
-    $('#additionalPassengers')?.addEventListener('change', (event) => {
-      if (!event.target.matches('[data-pax="docType"], [data-pax="nationality"]')) return;
-      const card = event.target.closest('[data-passenger-extra]');
-      const input = $('[data-pax="docNumber"]', card);
-      if (input) input.value = cleanDocByType(input.value, $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '');
-    });
     $('#includeTicketsToggle')?.addEventListener('change', () => renderEntryTickets(findService($('#selectedServiceId').value)));
     $('#logoutButton')?.addEventListener('click', logout);
     $('#reserveForm').addEventListener('submit', addToCart);
@@ -297,13 +270,8 @@
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
-    const empty = $('#emptyExperiences');
-    if (empty) {
-      empty.hidden = filtered.length > 0;
-      empty.textContent = state.services.length ? t('agency.noExperiences', 'No encontramos experiencias con ese filtro.') : t('agency.catalogLoading', 'Cargando experiencias...');
-    }
-    const grid = $('#experienceGrid');
-    if (grid) grid.innerHTML = filtered.map(serviceCard).join('');
+    $('#emptyExperiences').hidden = filtered.length > 0;
+    $('#experienceGrid').innerHTML = filtered.map(serviceCard).join('');
     $$('[data-reserve]').forEach((button) => button.addEventListener('click', () => openReserve(button.dataset.reserve)));
     $$('[data-itinerary]').forEach((button) => button.addEventListener('click', () => openItinerary(button.dataset.itinerary)));
   }
@@ -343,15 +311,14 @@
     $('#selectedServiceId').value = id;
     $('#reserveTitle').textContent = `${t('agency.book', 'Reservar')} · ${service.name}`;
     $('#reserveForm').reset();
+    syncLanguageNotice();
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
     $('#paxCount').value = 2;
-    syncLanguageNotice();
     renderScheduleOptions(service);
     renderEntryTickets(service);
     renderAdditionalPassengers();
     hydrateCountrySelects($('#reserveModal'));
-    syncLeadDocumentInput();
     $('#reserveModal').classList.add('show');
   }
 
@@ -383,13 +350,6 @@
         <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} ${t('agency.perPassenger', 'por pasajero')}${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
       </label>
     `).join('');
-  }
-
-  function syncLanguageNotice() {
-    const notice = $('#languageNotice');
-    const lang = String($('#leadLanguage')?.value || '').toLowerCase();
-    if (!notice) return;
-    notice.hidden = !lang || lang === 'español' || lang === 'inglés' || lang === 'ingles';
   }
 
   function selectedEntryTickets(service, pax) {
@@ -437,10 +397,6 @@
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
-    const leadDocError = validateDocByType($('#leadDocNumber')?.value || '', $('#leadDocType')?.value || '', $('#leadNationality')?.value || '');
-    if (leadDocError) { alert(leadDocError); return; }
-    const extraDocError = $$('[data-passenger-extra]').map((card) => validateDocByType($('[data-pax="docNumber"]', card)?.value || '', $('[data-pax="docType"]', card)?.value || '', $('[data-pax="nationality"]', card)?.value || '')).find(Boolean);
-    if (extraDocError) { alert(extraDocError); return; }
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
       lastName: $('[data-pax="lastName"]', card).value.trim(),
@@ -449,8 +405,6 @@
       nationality: $('[data-pax="nationality"]', card)?.value.trim() || ''
     })).filter((p) => p.firstName || p.lastName || p.docNumber || p.nationality);
 
-    const selectedLanguage = $('#leadLanguage')?.value || '';
-    const languageRequiresCoordination = !['Español', 'Inglés'].includes(selectedLanguage);
     const item = {
       id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       serviceId: service.id,
@@ -469,8 +423,7 @@
         docType: $('#leadDocType').value,
         docNumber: $('#leadDocNumber').value.trim(),
         nationality: $('#leadNationality')?.value.trim() || '',
-        language: selectedLanguage,
-        languageRequiresCoordination,
+        language: $('#leadLanguage')?.value || '',
         phone: `${$('#leadPhoneCountry')?.value || ''} ${$('#leadPhone').value.trim()}`.trim()
       },
       entryTickets: selectedEntryTickets(service, pax),

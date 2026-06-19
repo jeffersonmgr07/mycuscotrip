@@ -1,16 +1,11 @@
-Parche agencias v12 - hotfix catálogo, moneda y órdenes
+HOTFIX V13 - Restaurar experiencias agencias
 
-Archivos incluidos:
-- agencias/index.html
-- agencias/assets/js/pages/agencias.js
-- agencias/assets/css/agencias.css
-- agencias/ordenes.html
+Este parche restaura agencias/assets/js/pages/agencias.js desde la versión funcional previa,
+conservando soporte mínimo para:
+- menú de moneda con flecha,
+- menú Más opciones,
+- selector de pasajeros +/- si existe en el HTML,
+- aviso de idioma distinto a español/inglés.
 
-Cambios:
-1. Carga de experiencias más robusta: prueba varias rutas del catálogo para evitar que el panel muestre “no hay experiencias disponibles” por error de ruta o base path.
-2. Botón de moneda con flecha hacia abajo: PEN/ USD + icono.
-3. Botón “Más opciones” mantiene flecha.
-4. Botones del panel y órdenes con altura uniforme.
-5. En móvil, el botón Actualizar de Mis órdenes queda como icono circular.
-
-No toca Apps Script, pagos, catálogo JSON ni registro de agencias.
+También incluye agencias/assets/data/agencias-tours.json para asegurar que el catálogo exista.
+No toca Apps Script, PayPal ni Mercado Pago.
