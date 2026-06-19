@@ -106,7 +106,7 @@
     const button = $('#currencyMenuButton');
     const select = $('#currencySelect');
     if (select) select.value = state.currency;
-    if (button) button.textContent = state.currency === 'USD' ? 'USD' : 'PEN';
+    if (button) button.innerHTML = `${state.currency === 'USD' ? 'USD' : 'PEN'} <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>`;
     $$('[data-currency-option]').forEach((option) => {
       option.classList.toggle('is-active', option.dataset.currencyOption === state.currency);
       option.setAttribute('aria-selected', String(option.dataset.currencyOption === state.currency));
@@ -171,19 +171,43 @@
   }
 
   async function loadCatalog() {
-    try {
-      const response = await fetch(CONFIG.catalogUrl, { cache: 'no-store' });
-      if (!response.ok) throw new Error('catalog');
-      const data = await response.json();
-      state.services = Array.isArray(data.services) ? data.services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service) : [];
-      if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
-        state.exchangeRate = Number(data.exchangeRate);
-        if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
+    const urls = [
+      CONFIG.catalogUrl,
+      'assets/data/agencias-tours.json',
+      './assets/data/agencias-tours.json',
+      '/agencias/assets/data/agencias-tours.json'
+    ].filter((url, index, arr) => url && arr.indexOf(url) === index);
+
+    let lastError = null;
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error('catalog ' + response.status);
+        const data = await response.json();
+        const services = Array.isArray(data.services) ? data.services : [];
+        state.services = services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service);
+        if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
+          state.exchangeRate = Number(data.exchangeRate);
+          if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
+        }
+        const empty = $('#emptyExperiences');
+        if (empty) {
+          empty.hidden = state.services.length > 0;
+          empty.textContent = t('agency.noExperiences', 'No encontramos experiencias con ese filtro.');
+        }
+        return;
+      } catch (error) {
+        lastError = error;
       }
-    } catch (error) {
-      $('#emptyExperiences').hidden = false;
-      $('#emptyExperiences').textContent = t('agency.catalogError', 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.');
     }
+
+    state.services = [];
+    const empty = $('#emptyExperiences');
+    if (empty) {
+      empty.hidden = false;
+      empty.textContent = t('agency.catalogError', 'No se pudo cargar el catálogo de experiencias. Revisa la ruta agencias/assets/data/agencias-tours.json.');
+    }
+    console.warn('No se pudo cargar catálogo de agencias', lastError);
   }
 
   function bindEvents() {
@@ -273,8 +297,13 @@
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
-    $('#emptyExperiences').hidden = filtered.length > 0;
-    $('#experienceGrid').innerHTML = filtered.map(serviceCard).join('');
+    const empty = $('#emptyExperiences');
+    if (empty) {
+      empty.hidden = filtered.length > 0;
+      empty.textContent = state.services.length ? t('agency.noExperiences', 'No encontramos experiencias con ese filtro.') : t('agency.catalogLoading', 'Cargando experiencias...');
+    }
+    const grid = $('#experienceGrid');
+    if (grid) grid.innerHTML = filtered.map(serviceCard).join('');
     $$('[data-reserve]').forEach((button) => button.addEventListener('click', () => openReserve(button.dataset.reserve)));
     $$('[data-itinerary]').forEach((button) => button.addEventListener('click', () => openItinerary(button.dataset.itinerary)));
   }

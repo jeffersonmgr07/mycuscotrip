@@ -1,28 +1,16 @@
-Parche agencias v11 - ajustes estéticos y validaciones
+Parche agencias v12 - hotfix catálogo, moneda y órdenes
 
 Archivos incluidos:
-- agencias/registro.html
 - agencias/index.html
-- agencias/assets/js/pages/registro-agencias.js
 - agencias/assets/js/pages/agencias.js
 - agencias/assets/css/agencias.css
+- agencias/ordenes.html
 
-Cambios principales:
-1. Registro de agencias:
-   - más espacio superior en móvil para que el recuadro no quede pegado al header.
-   - validación por país para identificación fiscal: RUC, CNPJ, RFC, NIT, RUT, CUIT, EIN, etc.
-   - validación por tipo de documento: DNI numérico, pasaporte alfanumérico, carné/documentos según país.
-   - sanitiza el campo en tiempo real: si es numérico, no deja escribir letras.
+Cambios:
+1. Carga de experiencias más robusta: prueba varias rutas del catálogo para evitar que el panel muestre “no hay experiencias disponibles” por error de ruta o base path.
+2. Botón de moneda con flecha hacia abajo: PEN/ USD + icono.
+3. Botón “Más opciones” mantiene flecha.
+4. Botones del panel y órdenes con altura uniforme.
+5. En móvil, el botón Actualizar de Mis órdenes queda como icono circular.
 
-2. Panel de agencias:
-   - cabecera más limpia: Mis órdenes + botón de moneda + menú “Más opciones”.
-   - moneda muestra solo PEN/USD en botón; al desplegar muestra Soles (PEN) y Dólares (USD).
-   - “Mis datos” y “Cerrar sesión” pasan al menú “Más opciones”.
-
-3. Modal de reserva:
-   - evita desplazamiento lateral/tambaleo en móvil.
-   - cantidad de pasajeros ahora usa botones + / -.
-   - alerta visible si se elige idioma distinto de español o inglés.
-   - “Datos de los demás pasajeros” queda más compacto en móvil: título, opcional y botón Ver más/Ver menos.
-
-No incluye cambios en Apps Script, Mercado Pago ni PayPal.
+No toca Apps Script, pagos, catálogo JSON ni registro de agencias.

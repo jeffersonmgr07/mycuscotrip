@@ -507,3 +507,54 @@ html[lang="en"] .tourists-box[open] summary::after{content:'Show less  ▴'!impo
   .tourists-box summary small{grid-column:1;grid-row:2;}
   .tourists-box summary::after{grid-column:2;grid-row:1 / span 2;margin-left:0!important;}
 }
+
+/* Hotfix v12: controles de moneda/opciones y órdenes */
+.currency-menu__button i,
+.agency-more-menu__button i{
+  font-size:.78rem;
+  line-height:1;
+  opacity:.9;
+}
+.currency-menu__button{
+  gap:8px!important;
+}
+.agency-intro-bar .agency-controls--compact > .agency-button,
+.agency-intro-bar .currency-menu__button,
+.agency-intro-bar .agency-more-menu__button{
+  min-height:44px!important;
+  height:44px!important;
+  padding:0 16px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.orders-page .agency-intro-bar .agency-button,
+.orders-page .agency-controls .agency-button,
+.orders-refresh-button{
+  min-height:44px!important;
+  height:44px!important;
+  padding:0 16px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  white-space:nowrap!important;
+}
+.orders-refresh-button i{font-size:.95rem;}
+@media(max-width:760px){
+  .orders-refresh-button{
+    width:44px!important;
+    min-width:44px!important;
+    max-width:44px!important;
+    padding:0!important;
+    border-radius:999px!important;
+  }
+  .orders-refresh-button span{display:none!important;}
+  .orders-page .agency-controls{
+    display:flex!important;
+    gap:10px!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+  }
+}

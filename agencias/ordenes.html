@@ -17,7 +17,7 @@
   <link href="./assets/css/agencias.css" rel="stylesheet" />
   <script src="https://www.mercadopago.com/v2/security.js" view="checkout"></script>
 </head>
-<body class="agency-page">
+<body class="agency-page orders-page">
   <div id="header-container"></div>
   <main class="agency-main" id="ordenes">
     <section class="agency-intro-bar" aria-label="Órdenes de agencia">
@@ -28,7 +28,7 @@
       </div>
       <div class="agency-controls">
         <a class="agency-button agency-button--ghost" href="./index.html">Nueva reserva</a>
-        <button type="button" class="agency-button agency-button--primary" id="refreshOrdersButton">Actualizar</button>
+        <button type="button" class="agency-button agency-button--primary orders-refresh-button" id="refreshOrdersButton"><i class="fa-solid fa-rotate-right" aria-hidden="true"></i><span>Actualizar</span></button>
         <button type="button" class="agency-button agency-button--ghost" id="logoutButton">Cerrar sesión</button>
       </div>
     </section>
