@@ -6686,3 +6686,347 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV69, 800);
   }
 })();
+
+
+/* =========================================================
+   PATCH MCT V70 - Modal upgrade compacto, cards completas
+   ========================================================= */
+(function () {
+  function patchV70() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV70Applied) return true;
+
+    const proto = Object.getPrototypeOf(page) || page;
+    const esc = function (value) {
+      if (typeof page.escapeHtml === "function") return page.escapeHtml(value ?? "");
+      return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    };
+    const formatMoney = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const currency = () => page.product?.currency || "USD";
+
+    proto.formatTrainStationNameV70 = function (value, direction, endpoint) {
+      const raw = String(value || "").trim();
+      const normalized = raw.toUpperCase().replace(/\s+/g, "_");
+      const map = {
+        OLLA: "Ollantaytambo", OLLANTA: "Ollantaytambo", OLLANTAYTAMBO: "Ollantaytambo", OLLA_MAPI: "Ollantaytambo",
+        MAPI: "Machu Picchu", MACHU_PICCHU: "Machu Picchu", MACHUPICCHU: "Machu Picchu", MACHU: "Machu Picchu",
+        CUSCO: "Cusco", POROY: "Poroy", SAN_PEDRO: "San Pedro", URUBAMBA: "Urubamba", HIDROELECTRICA: "Hidroeléctrica", HIDROELÉCTRICA: "Hidroeléctrica"
+      };
+      if (map[normalized]) return map[normalized];
+      if (raw && !raw.includes("_") && !/^[A-Z0-9]{3,}$/i.test(raw)) return raw;
+      if (direction === "return") return endpoint === "from" ? "Machu Picchu" : "Ollantaytambo";
+      return endpoint === "from" ? "Ollantaytambo" : "Machu Picchu";
+    };
+
+    proto.getTrainEndpointsV70 = function (train, direction) {
+      const routeParts = String(train?.route || "").split("→").map((part) => part.trim()).filter(Boolean);
+      const from = train?.departureStation || train?.raw?.departureStation || train?.raw?.fromStation || routeParts[0] || "";
+      const to = train?.arrivalStation || train?.raw?.arrivalStation || train?.raw?.toStation || routeParts[1] || "";
+      return {
+        from: this.formatTrainStationNameV70(from, direction, "from"),
+        to: this.formatTrainStationNameV70(to, direction, "to")
+      };
+    };
+
+    proto.ensureTrainUpgradeModalV70 = function () {
+      const existing = document.getElementById("trainUpgradeModal");
+      if (existing) existing.remove();
+      document.body.insertAdjacentHTML("beforeend", `
+        <div class="train-upgrade-modal train-upgrade-modal--v69 train-upgrade-modal--v70" hidden id="trainUpgradeModal">
+          <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
+          <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
+            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+            <header class="train-upgrade-modal__header">
+              <p>Selección de trenes</p>
+              <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
+              <span>Elige primero la ida, confirma el tren y luego selecciona el retorno compatible.</span>
+            </header>
+            <div class="train-upgrade-modal__tools train-upgrade-modal__tools--v70">
+              <strong class="train-upgrade-modal__step-title" id="trainUpgradeCurrentStepTitle">Elige tu tren de ida</strong>
+              <div class="train-upgrade-modal__filter">
+                <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+                <select id="trainUpgradeSortFilter">
+                  <option value="early">Más temprano primero</option>
+                  <option value="late">Más tarde primero</option>
+                  <option value="cheap">Más barato primero</option>
+                  <option value="panoramic">Trenes panorámicos</option>
+                  <option value="economy">Económicos</option>
+                  <option value="nocharge">Sin cargo adicional</option>
+                </select>
+              </div>
+            </div>
+            <div class="train-upgrade-modal__body">
+              <section class="train-upgrade-section" id="trainUpgradeOutboundSection"></section>
+              <section class="train-upgrade-section" id="trainUpgradeReturnSection"></section>
+              <section class="train-upgrade-section" id="trainUpgradeFinalSummarySection"></section>
+            </div>
+            <footer class="train-upgrade-modal__footer">
+              <div id="trainUpgradeFooterSummary"></div>
+              <div class="train-upgrade-modal__footer-actions">
+                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
+                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-apply-train-upgrade>Aplicar selección</button>
+              </div>
+            </footer>
+          </div>
+        </div>
+      `);
+
+      const modal = document.getElementById("trainUpgradeModal");
+      const filter = document.getElementById("trainUpgradeSortFilter");
+      filter?.addEventListener("change", (event) => {
+        this.trainUpgradeFilter = event.target.value || "early";
+        this.renderTrainUpgradeListsV70();
+      });
+
+      modal?.addEventListener("click", (event) => {
+        if (event.target.closest("[data-close-train-upgrade]")) {
+          modal.hidden = true;
+          document.body.classList.remove("train-upgrade-modal-open");
+          return;
+        }
+
+        const modify = event.target.closest("[data-modify-train-upgrade]");
+        if (modify) {
+          const direction = modify.dataset.trainDirection;
+          if (direction === "outbound") {
+            this.trainUpgradeOutboundConfirmed = false;
+            this.trainUpgradeReturnConfirmed = false;
+            this.trainUpgradeDraftReturnId = this.selectedReturnTrainId || "";
+            this.expandedOutboundTrainId = this.trainUpgradeDraftOutboundId || this.selectedOutboundTrainId || "";
+          } else {
+            this.trainUpgradeReturnConfirmed = false;
+            this.expandedReturnTrainId = this.trainUpgradeDraftReturnId || this.selectedReturnTrainId || "";
+          }
+          this.renderTrainUpgradeListsV70();
+          return;
+        }
+
+        const confirm = event.target.closest("[data-confirm-train-upgrade]");
+        if (confirm) {
+          const direction = confirm.dataset.trainDirection;
+          const id = confirm.dataset.trainId || "";
+          if (direction === "outbound") {
+            this.trainUpgradeDraftOutboundId = id;
+            this.trainUpgradeOutboundConfirmed = true;
+            const outboundTrain = this.findTrainById?.(id, this.availableOutboundTrains) || null;
+            const compatible = this.getCompatibleReturnTrainsForDraft?.(outboundTrain) || [];
+            if (!compatible.some((train) => train.id === this.trainUpgradeDraftReturnId)) {
+              this.trainUpgradeDraftReturnId = compatible[0]?.id || "";
+            }
+            this.trainUpgradeReturnConfirmed = false;
+            this.expandedReturnTrainId = this.trainUpgradeDraftReturnId || "";
+            this.renderTrainUpgradeListsV70();
+            setTimeout(() => document.getElementById("trainUpgradeReturnSection")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+          } else {
+            this.trainUpgradeDraftReturnId = id;
+            this.trainUpgradeReturnConfirmed = true;
+            this.renderTrainUpgradeListsV70();
+            setTimeout(() => document.getElementById("trainUpgradeFinalSummarySection")?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 80);
+          }
+          return;
+        }
+
+        const card = event.target.closest("[data-train-upgrade-option]");
+        if (card) {
+          const direction = card.dataset.trainDirection;
+          const id = card.dataset.trainId || "";
+          if (direction === "outbound") this.expandedOutboundTrainId = this.expandedOutboundTrainId === id ? "" : id;
+          else this.expandedReturnTrainId = this.expandedReturnTrainId === id ? "" : id;
+          this.renderTrainUpgradeListsV70();
+          return;
+        }
+
+        const apply = event.target.closest("[data-apply-train-upgrade]");
+        if (apply) {
+          if (!this.trainUpgradeOutboundConfirmed || !this.trainUpgradeReturnConfirmed) return;
+          this.selectedOutboundTrainId = this.trainUpgradeDraftOutboundId || this.selectedOutboundTrainId;
+          this.selectedReturnTrainId = this.trainUpgradeDraftReturnId || this.selectedReturnTrainId;
+          this.updateTrainSelectionState?.(this.trainUpgradeSameCompanyOnly);
+          this.updatePricing?.();
+          modal.hidden = true;
+          document.body.classList.remove("train-upgrade-modal-open");
+        }
+      });
+    };
+
+    proto.openTrainUpgradeModalV70 = function () {
+      this.ensureTrainUpgradeModalV70();
+      this.trainUpgradeFilter = "early";
+      this.trainUpgradeDraftOutboundId = this.selectedOutboundTrainId || this.availableOutboundTrains?.[0]?.id || "";
+      const outboundTrain = this.findTrainById?.(this.trainUpgradeDraftOutboundId, this.availableOutboundTrains) || null;
+      const compatible = this.getCompatibleReturnTrainsForDraft?.(outboundTrain) || [];
+      this.trainUpgradeDraftReturnId = this.selectedReturnTrainId || compatible[0]?.id || "";
+      this.trainUpgradeOutboundConfirmed = false;
+      this.trainUpgradeReturnConfirmed = false;
+      this.expandedOutboundTrainId = this.trainUpgradeDraftOutboundId;
+      this.expandedReturnTrainId = this.trainUpgradeDraftReturnId;
+      const filter = document.getElementById("trainUpgradeSortFilter");
+      if (filter) filter.value = "early";
+      this.renderTrainUpgradeListsV70();
+      const modal = document.getElementById("trainUpgradeModal");
+      if (!modal) return;
+      modal.hidden = false;
+      document.body.classList.add("train-upgrade-modal-open");
+    };
+
+    proto.renderTrainUpgradeListsV70 = function () {
+      const outboundSection = document.getElementById("trainUpgradeOutboundSection");
+      const returnSection = document.getElementById("trainUpgradeReturnSection");
+      const finalSection = document.getElementById("trainUpgradeFinalSummarySection");
+      const stepTitle = document.getElementById("trainUpgradeCurrentStepTitle");
+      if (!outboundSection || !returnSection || !finalSection) return;
+
+      const outboundTrain = this.findTrainById?.(this.trainUpgradeDraftOutboundId, this.availableOutboundTrains) || null;
+      const returnTrain = this.findTrainById?.(this.trainUpgradeDraftReturnId, this.availableReturnTrains) || null;
+      const outboundList = typeof this.filterSortTrainListForModal === "function"
+        ? this.filterSortTrainListForModal(this.availableOutboundTrains || [], "outbound")
+        : [...(this.availableOutboundTrains || [])];
+      const compatibleReturns = this.getCompatibleReturnTrainsForDraft?.(outboundTrain) || [];
+
+      if (stepTitle) {
+        stepTitle.textContent = !this.trainUpgradeOutboundConfirmed
+          ? "Elige tu tren de ida"
+          : (!this.trainUpgradeReturnConfirmed ? "Elige tu tren de retorno" : "Resumen de trenes seleccionados");
+      }
+
+      if (this.trainUpgradeOutboundConfirmed) {
+        outboundSection.innerHTML = this.renderSelectedTrainSummaryV70(outboundTrain, "outbound");
+      } else {
+        outboundSection.innerHTML = `
+          <div class="train-upgrade-modal__list train-upgrade-modal__list--v69 train-upgrade-modal__list--v70">
+            ${outboundList.length ? outboundList.map((train) => this.renderTrainUpgradeCardV70(train, "outbound")).join("") : `<p class="train-upgrade-empty">No hay trenes de ida para este filtro.</p>`}
+          </div>
+        `;
+      }
+
+      if (!this.trainUpgradeOutboundConfirmed) {
+        returnSection.hidden = true;
+        finalSection.hidden = true;
+      } else {
+        returnSection.hidden = false;
+        if (this.trainUpgradeReturnConfirmed) {
+          returnSection.innerHTML = this.renderSelectedTrainSummaryV70(returnTrain, "return");
+        } else {
+          returnSection.innerHTML = `
+            <div class="train-upgrade-modal__list train-upgrade-modal__list--v69 train-upgrade-modal__list--v70">
+              ${compatibleReturns.length ? compatibleReturns.map((train) => this.renderTrainUpgradeCardV70(train, "return")).join("") : `<p class="train-upgrade-empty">No hay trenes de retorno compatibles para este filtro.</p>`}
+            </div>
+          `;
+        }
+        finalSection.hidden = !this.trainUpgradeReturnConfirmed;
+        if (this.trainUpgradeReturnConfirmed) {
+          const outboundDiff = this.getTrainPositiveDifferencePerPerson?.(outboundTrain, "outbound") || 0;
+          const returnDiff = this.getTrainPositiveDifferencePerPerson?.(returnTrain, "return") || 0;
+          const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
+          finalSection.innerHTML = `
+            <div class="train-upgrade-final-summary train-upgrade-final-summary--v70">
+              <strong>Resumen de trenes seleccionados</strong>
+              <span>Ida: ${esc(outboundTrain?.label || "-")} · ${esc(outboundTrain?.departureTime || "")} → ${esc(outboundTrain?.arrivalTime || "")}</span>
+              <span>Retorno: ${esc(returnTrain?.label || "-")} · ${esc(returnTrain?.departureTime || "")} → ${esc(returnTrain?.arrivalTime || "")}</span>
+              <b>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</b>
+            </div>
+          `;
+        }
+      }
+
+      const footer = document.getElementById("trainUpgradeFooterSummary");
+      const apply = document.querySelector("[data-apply-train-upgrade]");
+      if (footer) {
+        const outboundDiff = this.getTrainPositiveDifferencePerPerson?.(outboundTrain, "outbound") || 0;
+        const returnDiff = this.getTrainPositiveDifferencePerPerson?.(returnTrain, "return") || 0;
+        const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
+        footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${this.trainUpgradeReturnConfirmed ? "Listo para aplicar la selección." : "Confirma ida y retorno para aplicar el cambio."}</small>`;
+      }
+      if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
+    };
+
+    proto.renderTrainUpgradeCardV70 = function (train, direction) {
+      const expandedId = direction === "outbound" ? this.expandedOutboundTrainId : this.expandedReturnTrainId;
+      const selectedId = direction === "outbound" ? this.trainUpgradeDraftOutboundId : this.trainUpgradeDraftReturnId;
+      const expanded = expandedId === train.id;
+      const selected = selectedId === train.id;
+      const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido";
+      const logo = this.getTrainCompanyLogo?.(train.company) || "";
+      const image = this.getTrainImageForUpgrade?.(train) || "";
+      const features = this.getTrainFeatureListForUpgrade?.(train) || [];
+      const duration = this.formatTrainDurationForUpgrade?.(train) || "";
+      const directionLabel = direction === "outbound" ? "tren de ida" : "tren de retorno";
+      const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
+      return `
+        <article class="train-upgrade-card train-upgrade-card--v69 train-upgrade-card--v70 ${expanded ? "is-expanded" : ""} ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">
+          <div class="train-upgrade-card__main">
+            <span class="train-upgrade-card__radio" aria-hidden="true"></span>
+            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" />` : ""}</span>
+            <span class="train-upgrade-card__service"><strong>${esc(train.label || "Tren")}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
+            <span class="train-upgrade-card__station"><em>Salida</em><b>${esc(train.departureTime || "")}</b><small>${esc(endpoints.from)}</small></span>
+            <span class="train-upgrade-card__duration">${esc(duration)}</span>
+            <span class="train-upgrade-card__station"><em>Llegada</em><b>${esc(train.arrivalTime || "")}</b><small>${esc(endpoints.to)}</small></span>
+            <span class="train-upgrade-card__price"><em>Cargo adicional</em><b>${esc(diffText)}</b></span>
+          </div>
+          <div class="train-upgrade-card__details">
+            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || "Tren")}" loading="lazy" />` : ""}
+            <div>
+              <strong>${esc((train.label || "Tren") + " — " + (train.companyName || train.company || ""))}</strong>
+              <ul>${features.map((feature) => `<li>${esc(feature)}</li>`).join("")}</ul>
+              <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">Seleccionar este ${esc(directionLabel)}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    };
+
+    proto.renderSelectedTrainSummaryV70 = function (train, direction) {
+      if (!train) return "";
+      const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido / sin recargo";
+      const logo = this.getTrainCompanyLogo?.(train.company) || "";
+      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
+      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
+      const date = this.selectedDate ? this.formatDateForDisplay?.(this.selectedDate) || this.selectedDate : "Fecha de viaje";
+      const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: "", to: "" };
+      return `
+        <article class="train-upgrade-selected-summary train-upgrade-selected-summary--v70">
+          <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
+          <div class="train-upgrade-selected-summary__content">
+            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
+            <div>
+              <strong>${esc(title)}</strong>
+              <b>${esc(`${train.companyName || train.company || ""} ${train.label || ""}`.trim())}</b>
+              <small>${esc(date)}</small>
+              <span>${esc(`${endpoints.from} ${train.departureTime || ""} → ${endpoints.to} ${train.arrivalTime || ""}`)}</span>
+              <em>${esc(diffText)}</em>
+            </div>
+            <button type="button" data-modify-train-upgrade data-train-direction="${esc(direction)}">${esc(modifyText)}</button>
+          </div>
+        </article>
+      `;
+    };
+
+    proto.ensureTrainUpgradeModal = proto.ensureTrainUpgradeModalV70;
+    proto.openTrainUpgradeModalV69 = proto.openTrainUpgradeModalV70;
+    proto.openTrainUpgradeModalV66 = proto.openTrainUpgradeModalV70;
+    proto.openTrainUpgradeModalV64 = proto.openTrainUpgradeModalV70;
+    proto.renderTrainUpgradeLists = proto.renderTrainUpgradeListsV70;
+    proto.renderTrainUpgradeListsV69 = proto.renderTrainUpgradeListsV70;
+    proto.renderTrainUpgradeCard = proto.renderTrainUpgradeCardV70;
+    proto.renderTrainUpgradeCardV69 = proto.renderTrainUpgradeCardV70;
+    proto.renderSelectedTrainSummaryV69 = proto.renderSelectedTrainSummaryV70;
+
+    page.__mctV70Applied = true;
+    try {
+      page.updateTrainSelectionState?.(page.trainUpgradeSameCompanyOnly);
+    } catch (error) {
+      console.warn("MCT V70 post-apply warning:", error);
+    }
+    return true;
+  }
+
+  if (!patchV70()) {
+    document.addEventListener("DOMContentLoaded", patchV70);
+    setTimeout(patchV70, 300);
+    setTimeout(patchV70, 900);
+    setTimeout(patchV70, 1600);
+  }
+})();
