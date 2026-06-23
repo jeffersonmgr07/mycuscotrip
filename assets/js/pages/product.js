@@ -2807,7 +2807,7 @@ class MyCuscoTripProductPage {
         const review = document.getElementById("passengerCheckoutReview");
         if (review) { review.hidden = true; review.innerHTML = ""; }
         const submit = passengerForm.querySelector('button[type="submit"]');
-        if (submit) submit.textContent = this.t("product.reviewReservation", "Revisar reserva");
+        if (submit) submit.textContent = "Continuar";
       }
     });
   }
@@ -3099,12 +3099,12 @@ class MyCuscoTripProductPage {
       this.renderPaymentReviewStep?.(payload);
       form.dataset.paymentReviewConfirmed = "true";
       if (message) {
-        message.textContent = "Revisa el resumen de tu reserva. Si todo está correcto, confirma para ir a PayPal.";
+        message.textContent = "";
         message.classList.remove("is-error");
       }
       const reviewSubmitButton = form.querySelector('button[type="submit"]');
       if (reviewSubmitButton) {
-        reviewSubmitButton.textContent = "Pagar con PayPal";
+        reviewSubmitButton.textContent = "Pagar";
       }
       return;
     }
@@ -4932,3 +4932,354 @@ document.addEventListener("click", function (event) {
   modal.hidden = false;
   document.body.classList.add("train-upgrade-modal-open");
 });
+
+/* =========================================================
+   PATCH MCT V63 - SEO, UX modal trenes y checkout Machu Picchu
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripProductPage === "undefined") return;
+  const proto = MyCuscoTripProductPage.prototype;
+  const oldRenderProduct = proto.renderProduct;
+  const oldRenderServiceModes = proto.renderServiceModes;
+  const oldUpdatePricing = proto.updatePricing;
+  const oldUpdateTrainSelectionState = proto.updateTrainSelectionState;
+
+  function isClassicMachu(page) {
+    return String(page.product?.slug || page.product?.raw?.slug || page.slug || "") === "machu-picchu-full-day-clasico";
+  }
+
+  proto.setOrCreateMeta = function (selector, attr, value) {
+    if (!value) return;
+    let el = document.head.querySelector(selector);
+    if (!el) {
+      el = document.createElement("meta");
+      if (selector.includes("property=")) {
+        const match = selector.match(/property=[\"']([^\"']+)/);
+        if (match) el.setAttribute("property", match[1]);
+      } else if (selector.includes("name=")) {
+        const match = selector.match(/name=[\"']([^\"']+)/);
+        if (match) el.setAttribute("name", match[1]);
+      }
+      document.head.appendChild(el);
+    }
+    el.setAttribute(attr, value);
+  };
+
+  proto.updateSeoMetaForProduct = function (product) {
+    if (!product) return;
+    const title = product.title || "Machu Picchu Full Day Clásico";
+    const desc = product.seoDescription || product.description || product.shortDescription || "Tour a Machu Picchu desde Cusco con tren turístico, bus, ingreso oficial y guía profesional.";
+    const cleanDesc = String(desc).replace(/\s+/g, " ").slice(0, 170);
+    const slug = product.slug || this.slug || "machu-picchu-full-day-clasico";
+    const url = `https://mycuscotrip.com/product.html?slug=${encodeURIComponent(slug)}`;
+    const cover = product.images?.cover ? this.resolveAssetPath(product.images.cover) : "./public/machu-picchu-full-day-clasico-og.jpg";
+    const image = slug === "machu-picchu-full-day-clasico"
+      ? "https://mycuscotrip.com/public/machu-picchu-full-day-clasico-og.jpg"
+      : new URL(cover, "https://mycuscotrip.com/").href;
+
+    document.title = `${title} | My Cusco Trip`;
+    this.setOrCreateMeta('meta[name="description"]', "content", cleanDesc);
+    this.setOrCreateMeta('meta[property="og:url"]', "content", url);
+    this.setOrCreateMeta('meta[property="og:title"]', "content", `${title} | My Cusco Trip`);
+    this.setOrCreateMeta('meta[property="og:description"]', "content", cleanDesc);
+    this.setOrCreateMeta('meta[property="og:image"]', "content", image);
+    this.setOrCreateMeta('meta[property="og:image:secure_url"]', "content", image);
+    this.setOrCreateMeta('meta[property="og:image:alt"]', "content", `${title} - My Cusco Trip`);
+    this.setOrCreateMeta('meta[name="twitter:title"]', "content", `${title} | My Cusco Trip`);
+    this.setOrCreateMeta('meta[name="twitter:description"]', "content", cleanDesc);
+    this.setOrCreateMeta('meta[name="twitter:image"]', "content", image);
+
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.href = url;
+
+    let schema = document.getElementById("mct-product-schema");
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.type = "application/ld+json";
+      schema.id = "mct-product-schema";
+      document.head.appendChild(schema);
+    }
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "TouristTrip",
+      "name": title,
+      "description": cleanDesc,
+      "image": image,
+      "url": url,
+      "touristType": ["Cultural tourism", "Adventure tourism"],
+      "provider": { "@type": "TravelAgency", "name": "My Cusco Trip", "url": "https://mycuscotrip.com/" },
+      "itinerary": { "@type": "ItemList", "itemListElement": (product.itinerary || []).map((item, index) => ({ "@type": "ListItem", "position": index + 1, "name": item.title || `Paso ${index + 1}` })) }
+    });
+  };
+
+  proto.renderProduct = function (product) {
+    const result = oldRenderProduct.apply(this, arguments);
+    this.updateSeoMetaForProduct(product);
+    return result;
+  };
+
+  proto.renderServiceModes = function (product) {
+    if (String(product?.slug || "") === "machu-picchu-full-day-clasico") {
+      const section = document.getElementById("serviceModeSection");
+      const select = document.getElementById("serviceMode");
+      if (section) section.hidden = true;
+      if (select) select.value = "group";
+      this.serviceMode = "group";
+      return;
+    }
+    return oldRenderServiceModes.apply(this, arguments);
+  };
+
+  proto.renderExtras = function (extras) {
+    const section = document.getElementById("extrasSection");
+    const container = document.getElementById("extrasContainer");
+    if (!section || !container) return;
+    if (!Array.isArray(extras) || !extras.length) {
+      section.hidden = true;
+      container.innerHTML = "";
+      return;
+    }
+    section.hidden = false;
+    const label = section.querySelector("label");
+    if (label) label.textContent = isClassicMachu(this) ? "Extras: opciones de almuerzo" : "Extras";
+    const current = [...this.selectedExtras][0] || "";
+    container.innerHTML = `
+      <select class="booking-extra-select" id="tourExtraLunchSelect" aria-label="Extras: opciones de almuerzo">
+        <option value="">Sin almuerzo adicional</option>
+        ${extras.map((extra) => {
+          const amount = Number(extra.price || extra.publishedPriceUSD || extra.publishedPricing?.amount || 0);
+          const price = `${this.product.currency || "USD"} ${this.formatMoney(amount)}`;
+          return `<option value="${this.escapeHtml(extra.code)}" ${current === extra.code ? "selected" : ""}>${this.escapeHtml(extra.label)} · ${this.escapeHtml(price)} ${extra.perPerson ? "p/p" : ""}</option>`;
+        }).join("")}
+      </select>
+      <small class="booking-field-help">Puedes elegir solo una opción de almuerzo para esta reserva.</small>
+    `;
+    container.querySelector("#tourExtraLunchSelect")?.addEventListener("change", (event) => {
+      this.selectedExtras.clear();
+      if (event.target.value) this.selectedExtras.add(event.target.value);
+      this.updatePricing();
+    });
+  };
+
+  proto.updateTrainAdjustmentSummaryRow = function (amount, currency) {
+    let row = document.getElementById("trainAdjustmentTotalRow");
+    const serviceTotalRow = document.getElementById("serviceTotalRow");
+    const summary = serviceTotalRow?.parentNode;
+    if (!summary) return;
+    if (!row) {
+      row = document.createElement("div");
+      row.id = "trainAdjustmentTotalRow";
+      row.className = "booking-summary__line";
+      row.innerHTML = `<span>${this.escapeHtml(this.label("Upgrade de trenes", "Train upgrade"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
+      summary.insertBefore(row, serviceTotalRow);
+    }
+    row.hidden = false;
+    const label = row.querySelector("span");
+    if (label) label.textContent = this.label("Upgrade de trenes", "Train upgrade");
+    const value = document.getElementById("trainAdjustmentTotal");
+    if (value) value.textContent = `${currency} ${this.formatMoney(Math.max(0, Number(amount || 0)))}`;
+  };
+
+  proto.updatePricing = function () {
+    const result = oldUpdatePricing.apply(this, arguments);
+    const info = document.getElementById("paymentInfo");
+    if (info) {
+      const percent = Number(this.product?.paymentOptions?.fullPaymentDiscountPercent || 10);
+      const currency = this.product?.currency || "USD";
+      const partial = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 49.9);
+      info.textContent = this.paymentMode === "full"
+        ? `Pagando el total ahora estás obteniendo un ${percent}% de descuento.`
+        : `Reserva con anticipo de ${currency} ${this.formatMoney(partial)} por persona y completa el saldo días antes de tu viaje.`;
+    }
+    return result;
+  };
+
+  proto.ensureTrainUpgradeModal = function () {
+    if (document.getElementById("trainUpgradeModal")) return;
+    document.body.insertAdjacentHTML("beforeend", `
+      <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
+        <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
+        <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <header class="train-upgrade-modal__header">
+            <p>Selección de trenes</p>
+            <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
+            <span>Elige tu tren de ida. El retorno se filtrará automáticamente por la misma compañía.</span>
+          </header>
+          <div class="train-upgrade-modal__tools">
+            <label>Ordenar / filtrar</label>
+            <select id="trainUpgradeSortFilter">
+              <option value="early">Más temprano primero</option>
+              <option value="late">Más tarde primero</option>
+              <option value="cheap">Más barato primero</option>
+              <option value="panoramic">Trenes panorámicos</option>
+              <option value="economy">Económicos</option>
+              <option value="nocharge">Sin cargo adicional</option>
+            </select>
+          </div>
+          <div class="train-upgrade-modal__body">
+            <section>
+              <h3>Tren de ida</h3>
+              <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
+            </section>
+            <section>
+              <h3>Tren de retorno</h3>
+              <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
+            </section>
+          </div>
+          <footer class="train-upgrade-modal__footer">
+            <div id="trainUpgradeFooterSummary"></div>
+            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+          </footer>
+        </div>
+      </div>
+    `);
+    document.getElementById("trainUpgradeSortFilter")?.addEventListener("change", (event) => {
+      this.trainUpgradeFilter = event.target.value || "early";
+      this.renderTrainUpgradeLists();
+    });
+  };
+
+  proto.filterSortTrainListForModal = function (list, direction) {
+    const mode = this.trainUpgradeFilter || "early";
+    let out = [...(list || [])];
+    const isPanoramic = (train) => /360|vistadome|observatory/i.test(`${train.category} ${train.label}`);
+    const isEconomy = (train) => /voyager|expedition/i.test(`${train.category} ${train.label}`);
+    if (mode === "panoramic") out = out.filter(isPanoramic);
+    if (mode === "economy") out = out.filter(isEconomy);
+    if (mode === "nocharge") out = out.filter((train) => this.getTrainPositiveDifferencePerPerson(train, direction) <= 0);
+    const byTime = (a, b) => (this.timeToMinutes(a.departureTime) || 9999) - (this.timeToMinutes(b.departureTime) || 9999);
+    if (["early", "panoramic", "economy", "nocharge"].includes(mode)) out.sort(byTime);
+    if (mode === "late") out.sort((a, b) => byTime(b, a));
+    if (mode === "cheap") out.sort((a, b) => Number(a.price || 0) - Number(b.price || 0) || byTime(a, b));
+    return out;
+  };
+
+  proto.renderTrainUpgradeLists = function () {
+    const outboundList = document.getElementById("trainUpgradeOutboundList");
+    const returnList = document.getElementById("trainUpgradeReturnList");
+    if (!outboundList || !returnList) return;
+    const outbound = this.filterSortTrainListForModal(this.availableOutboundTrains, "outbound");
+    const compatibleReturns = this.filterSortTrainListForModal(this.getCompatibleReturnTrains(this.trainUpgradeSameCompanyOnly), "return");
+    outboundList.innerHTML = outbound.length ? outbound.map((train) => this.renderTrainUpgradeCard(train, "outbound")).join("") : `<p class="train-upgrade-empty">No hay trenes de ida para este filtro.</p>`;
+    returnList.innerHTML = compatibleReturns.length ? compatibleReturns.map((train) => this.renderTrainUpgradeCard(train, "return")).join("") : `<p class="train-upgrade-empty">No hay trenes de retorno para este filtro.</p>`;
+    const footer = document.getElementById("trainUpgradeFooterSummary");
+    if (footer) {
+      const total = this.calculateSelectedTrainAdjustmentTotal();
+      footer.innerHTML = total > 0
+        ? `<strong>Cargo adicional por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>Total calculado para ${this.getTotalPassengers()} viajero(s).</small>`
+        : `<strong>Sin cargo adicional</strong><small>Los trenes seleccionados no incrementan el precio base.</small>`;
+    }
+  };
+
+  proto.updateTrainSelectionState = function (sameCompanyOnly = this.trainUpgradeSameCompanyOnly) {
+    const result = oldUpdateTrainSelectionState.apply(this, arguments);
+    const summary = document.getElementById("trainSelectionSummary");
+    if (summary) {
+      summary.innerHTML = "";
+      summary.hidden = true;
+    }
+    this.refreshClassicMachuItineraryTimes?.();
+    return result;
+  };
+
+  proto.addMinutesToTime = function (time, delta) {
+    const mins = this.timeToMinutes(time);
+    if (!Number.isFinite(mins)) return "";
+    let total = (mins + delta) % 1440;
+    if (total < 0) total += 1440;
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  };
+
+  proto.formatApproxTime = function (time) {
+    if (!time) return "aprox.";
+    const mins = this.timeToMinutes(time);
+    if (!Number.isFinite(mins)) return `${time} aprox.`;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    const suffix = h >= 12 ? "p.m." : "a.m.";
+    const hour12 = ((h + 11) % 12) + 1;
+    return `${String(hour12).padStart(2, "0")}:${String(m).padStart(2, "0")} ${suffix} aprox.`;
+  };
+
+  proto.getClassicMachuDynamicItinerary = function () {
+    const outbound = this.getSelectedOutboundTrain?.();
+    const returning = this.getSelectedReturnTrain?.();
+    const pickup = this.addMinutesToTime(outbound?.departureTime || "06:40", -160) || "04:00";
+    const returnDepart = returning?.departureTime || "20:20";
+    const returnArrive = returning?.arrivalTime || "21:59";
+    const cuscoArrive = this.addMinutesToTime(returnArrive, 100) || "23:30";
+    return [
+      { time: this.formatApproxTime(pickup), title: "Recojo en el hotel y traslado a la estación", description: "Recojo desde tu hotel en Cusco o punto coordinado y traslado turístico hacia la estación correspondiente para abordar el tren hacia Machu Picchu Pueblo." },
+      { time: this.formatApproxTime(outbound?.departureTime || "06:40"), title: "Viaje en tren a Machu Picchu Pueblo", description: `Salida en ${outbound?.label || "tren turístico"} desde ${outbound?.departureStation || outbound?.raw?.departureStation || "Ollantaytambo"} hacia ${outbound?.arrivalStation || outbound?.raw?.arrivalStation || "Machu Picchu"}.` },
+      { time: "09:00 a.m. aprox.", title: "Bus Consettur e ingreso oficial a Machu Picchu", description: "Coordinación para subir en bus Consettur hasta la puerta de ingreso. El circuito se confirma según disponibilidad oficial de boletos." },
+      { time: "10:00 a.m. aprox.", title: "Tour guiado en Machu Picchu", description: "Recorrido guiado por la ciudadela inca junto a un guía profesional certificado. La ruta puede corresponder al circuito 1, 2 o 3 según disponibilidad." },
+      { time: "01:00 p.m. aprox.", title: "Fin del tour guiado y tiempo libre para almorzar", description: "Finaliza la visita guiada. Tendrás tiempo libre para almorzar en Aguas Calientes; puedes agregar almuerzo en la sección de extras." },
+      { time: "03:00 p.m. aprox.", title: "Bus de bajada hacia Aguas Calientes", description: "Descenso en bus Consettur desde Machu Picchu hacia Aguas Calientes para descansar, caminar por el pueblo o prepararte para el retorno." },
+      { time: this.formatApproxTime(returnDepart), title: "Tren de retorno hacia Ollantaytambo", description: `Viaje de retorno en ${returning?.label || "tren turístico"} desde ${returning?.departureStation || returning?.raw?.departureStation || "Machu Picchu"} hacia ${returning?.arrivalStation || returning?.raw?.arrivalStation || "Ollantaytambo"}.` },
+      { time: this.formatApproxTime(returnArrive), title: "Llegada a estación y traslado hacia Cusco", description: "Llegada estimada a la estación de Ollantaytambo y traslado terrestre hacia la ciudad de Cusco." },
+      { time: this.formatApproxTime(cuscoArrive), title: "Llegada a Cusco y fin de los servicios", description: "Desembarque cerca de la Plaza de Armas de Cusco o punto coordinado dentro de la zona operativa. Fin de los servicios." }
+    ];
+  };
+
+  proto.refreshClassicMachuItineraryTimes = function () {
+    if (!isClassicMachu(this)) return;
+    this.renderItinerary(this.getClassicMachuDynamicItinerary());
+  };
+
+  proto.renderPaymentReviewStep = function (payload) {
+    const review = document.getElementById("passengerCheckoutReview");
+    if (!review) return;
+    const passengerRows = (payload.passengers || []).map((p) => {
+      const name = [p.firstName, p.lastName].filter(Boolean).join(" ");
+      const status = p.completionStatus === "pending" || p.completeLater ? "Pendiente de datos" : (name || "Datos registrados");
+      const doc = [p.documentType, p.documentNumber].filter(Boolean).join(" · ");
+      return `<li><strong>Pasajero ${this.escapeHtml(p.passengerNumber || "")}</strong><span>${this.escapeHtml(status)}</span>${doc ? `<small>${this.escapeHtml(doc)}</small>` : ""}</li>`;
+    }).join("");
+    const rows = [
+      ["Experiencia", payload.productTitle],
+      ["Fecha", payload.date],
+      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
+      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
+      ["Total del servicio", payload.serviceTotal],
+      ["Pagar ahora", payload.payNow],
+      ["Saldo pendiente", payload.payLater]
+    ];
+    review.hidden = false;
+    review.innerHTML = `
+      <div class="passenger-review-card passenger-review-card--premium">
+        <div class="passenger-review-card__header">
+          <strong>Resumen de tu reserva</strong>
+          <span>Revisa el resumen de tu reserva antes de continuar al pago.</span>
+        </div>
+        <div class="passenger-review-grid">
+          ${rows.map(([label, value]) => `<div><span>${this.escapeHtml(label)}</span><strong>${this.escapeHtml(value || "-")}</strong></div>`).join("")}
+        </div>
+        <div class="passenger-review-passengers">
+          <strong>Datos de pasajeros</strong>
+          <ul class="passenger-review-list">${passengerRows}</ul>
+        </div>
+      </div>
+    `;
+    window.setTimeout(() => {
+      const message = document.querySelector("[data-passenger-message]");
+      if (message) message.textContent = "";
+      const btn = document.querySelector('#passengerReservationForm button[type="submit"]');
+      if (btn) btn.textContent = "Pagar";
+    }, 0);
+    review.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
+    if (submit) submit.textContent = "Continuar";
+  });
+})();
