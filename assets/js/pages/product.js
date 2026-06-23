@@ -6165,3 +6165,334 @@ document.addEventListener("click", function (event) {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
+
+
+/* =========================================================
+   PATCH MCT V68 - Ajustes review, WhatsApp y selector de trenes
+   ========================================================= */
+(() => {
+  const init = () => {
+    const Page = window.MyCuscoTripProductPage;
+    if (!Page?.prototype) return;
+    const proto = Page.prototype;
+    const esc = function (value) {
+      if (typeof this.escapeHtml === "function") return this.escapeHtml(value ?? "");
+      return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    };
+    const num = (value) => {
+      if (typeof value === "number") return value;
+      const n = Number(String(value || "").replace(/[^0-9.-]/g, ""));
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    proto.getPhoneCodeOptionsHtml = function (compact = false) {
+      const countries = [
+        ["Perú", "+51"], ["Estados Unidos / Canadá", "+1"], ["México", "+52"], ["Colombia", "+57"], ["Chile", "+56"], ["Argentina", "+54"], ["Brasil", "+55"], ["Bolivia", "+591"], ["Ecuador", "+593"], ["Uruguay", "+598"], ["Paraguay", "+595"], ["Venezuela", "+58"],
+        ["España", "+34"], ["Reino Unido", "+44"], ["Francia", "+33"], ["Alemania", "+49"], ["Italia", "+39"], ["Portugal", "+351"], ["Países Bajos", "+31"], ["Bélgica", "+32"], ["Suiza", "+41"], ["Austria", "+43"], ["Irlanda", "+353"], ["Noruega", "+47"], ["Suecia", "+46"], ["Dinamarca", "+45"], ["Finlandia", "+358"], ["Polonia", "+48"], ["República Checa", "+420"], ["Hungría", "+36"], ["Grecia", "+30"], ["Rumanía", "+40"], ["Turquía", "+90"], ["Rusia", "+7"], ["Ucrania", "+380"],
+        ["Australia", "+61"], ["Nueva Zelanda", "+64"], ["Japón", "+81"], ["China", "+86"], ["Hong Kong", "+852"], ["Taiwán", "+886"], ["Corea del Sur", "+82"], ["India", "+91"], ["Indonesia", "+62"], ["Tailandia", "+66"], ["Vietnam", "+84"], ["Filipinas", "+63"], ["Malasia", "+60"], ["Singapur", "+65"], ["Israel", "+972"], ["Emiratos Árabes Unidos", "+971"], ["Arabia Saudita", "+966"], ["Qatar", "+974"],
+        ["Sudáfrica", "+27"], ["Marruecos", "+212"], ["Egipto", "+20"], ["Kenia", "+254"], ["Tanzania", "+255"], ["Ghana", "+233"], ["Nigeria", "+234"],
+        ["Costa Rica", "+506"], ["Panamá", "+507"], ["Guatemala", "+502"], ["El Salvador", "+503"], ["Honduras", "+504"], ["Nicaragua", "+505"], ["República Dominicana", "+1"], ["Puerto Rico", "+1"], ["Cuba", "+53"], ["Jamaica", "+1"],
+        ["Afganistán", "+93"], ["Albania", "+355"], ["Argelia", "+213"], ["Andorra", "+376"], ["Angola", "+244"], ["Antigua y Barbuda", "+1"], ["Armenia", "+374"], ["Azerbaiyán", "+994"], ["Bahamas", "+1"], ["Bangladés", "+880"], ["Barbados", "+1"], ["Baréin", "+973"], ["Belice", "+501"], ["Benín", "+229"], ["Bielorrusia", "+375"], ["Bosnia y Herzegovina", "+387"], ["Botsuana", "+267"], ["Brunéi", "+673"], ["Bulgaria", "+359"], ["Burkina Faso", "+226"], ["Burundi", "+257"], ["Bután", "+975"], ["Cabo Verde", "+238"], ["Camboya", "+855"], ["Camerún", "+237"], ["Chad", "+235"], ["Chipre", "+357"], ["Comoras", "+269"], ["Congo", "+242"], ["Costa de Marfil", "+225"], ["Croacia", "+385"], ["Dominica", "+1"], ["Eritrea", "+291"], ["Eslovaquia", "+421"], ["Eslovenia", "+386"], ["Estonia", "+372"], ["Etiopía", "+251"], ["Fiyi", "+679"], ["Gabón", "+241"], ["Gambia", "+220"], ["Georgia", "+995"], ["Granada", "+1"], ["Guinea", "+224"], ["Guinea-Bisáu", "+245"], ["Guyana", "+592"], ["Haití", "+509"], ["Irán", "+98"], ["Irak", "+964"], ["Islandia", "+354"], ["Jordania", "+962"], ["Kazajistán", "+7"], ["Kirguistán", "+996"], ["Kuwait", "+965"], ["Laos", "+856"], ["Letonia", "+371"], ["Líbano", "+961"], ["Lituania", "+370"], ["Luxemburgo", "+352"], ["Madagascar", "+261"], ["Malaui", "+265"], ["Maldivas", "+960"], ["Malí", "+223"], ["Malta", "+356"], ["Mauricio", "+230"], ["Moldavia", "+373"], ["Mónaco", "+377"], ["Mongolia", "+976"], ["Montenegro", "+382"], ["Mozambique", "+258"], ["Myanmar", "+95"], ["Namibia", "+264"], ["Nepal", "+977"], ["Níger", "+227"], ["Omán", "+968"], ["Pakistán", "+92"], ["Palestina", "+970"], ["Papúa Nueva Guinea", "+675"], ["Ruanda", "+250"], ["Serbia", "+381"], ["Seychelles", "+248"], ["Sri Lanka", "+94"], ["Túnez", "+216"], ["Uganda", "+256"], ["Uzbekistán", "+998"], ["Zambia", "+260"], ["Zimbabue", "+263"]
+      ];
+      return countries.map(([country, code]) => {
+        const label = compact ? code : `${code} · ${country}`;
+        return `<option value="${esc.call(this, code)}" data-country="${esc.call(this, country)}" ${code === "+51" ? "selected" : ""}>${esc.call(this, label)}</option>`;
+      }).join("");
+    };
+
+    proto.setPhoneSelectDisplayMode = function (select, compact = true) {
+      if (!select) return;
+      const current = select.value || "+51";
+      select.innerHTML = this.getPhoneCodeOptionsHtml(compact);
+      select.value = current;
+      if (!select.value) select.value = "+51";
+      select.dataset.phoneDisplayMode = compact ? "compact" : "full";
+    };
+
+    proto.populatePhoneCodeSelects = function (scope = document) {
+      scope.querySelectorAll?.("select[data-phone-code-select]").forEach((select) => {
+        if (select.dataset.phoneCodesLoaded !== "true") {
+          this.setPhoneSelectDisplayMode(select, true);
+          select.dataset.phoneCodesLoaded = "true";
+          select.addEventListener("pointerdown", () => this.setPhoneSelectDisplayMode(select, false));
+          select.addEventListener("focus", () => this.setPhoneSelectDisplayMode(select, false));
+          select.addEventListener("change", () => window.setTimeout(() => this.setPhoneSelectDisplayMode(select, true), 0));
+          select.addEventListener("blur", () => this.setPhoneSelectDisplayMode(select, true));
+        } else {
+          this.setPhoneSelectDisplayMode(select, true);
+        }
+      });
+    };
+
+    proto.renderTrainMiniSummary = function (title, train, diff) {
+      if (!train) return "";
+      const currency = this.product?.currency || "USD";
+      const diffText = diff > 0 ? `+ ${currency} ${this.formatMoney(diff)}` : "Incluido";
+      const company = train.companyName || train.company || "";
+      const time = `${train.departureTime || ""} → ${train.arrivalTime || ""}`.trim();
+      return `
+        <button class="booking-train-mini booking-train-mini--v68" type="button" data-open-train-upgrade aria-label="Cambiar ${esc.call(this, title)}">
+          <span class="booking-train-mini__label">${esc.call(this, title)}</span>
+          <strong class="booking-train-mini__name">${esc.call(this, train.label || "Tren")}</strong>
+          <span class="booking-train-mini__company">${esc.call(this, company)}</span>
+          <small class="booking-train-mini__time">${esc.call(this, time)}</small>
+          <em class="booking-train-mini__badge">${esc.call(this, diffText)}</em>
+        </button>
+      `;
+    };
+
+    proto.ensureTrainUpgradeModal = function () {
+      const existing = document.getElementById("trainUpgradeModal");
+      if (existing) existing.remove();
+      document.body.insertAdjacentHTML("beforeend", `
+        <div class="train-upgrade-modal train-upgrade-modal--v68" hidden id="trainUpgradeModal">
+          <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
+          <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
+            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+            <header class="train-upgrade-modal__header">
+              <p>Selección de trenes</p>
+              <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
+              <span>Haz clic en una opción para ver detalles. Luego confirma con “Seleccionar este tren”.</span>
+            </header>
+            <div class="train-upgrade-modal__tools">
+              <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+              <select id="trainUpgradeSortFilter">
+                <option value="early">Más temprano primero</option>
+                <option value="late">Más tarde primero</option>
+                <option value="cheap">Más barato primero</option>
+                <option value="panoramic">Trenes panorámicos</option>
+                <option value="economy">Económicos</option>
+                <option value="nocharge">Sin cargo adicional</option>
+              </select>
+            </div>
+            <div class="train-upgrade-modal__body">
+              <section id="trainUpgradeOutboundSection" class="train-upgrade-section">
+                <div class="train-upgrade-section__heading">
+                  <span>1</span>
+                  <div><h3>Selecciona tu tren de ida</h3><p>Primero revisa los detalles del tren y luego presiona “Seleccionar este tren”.</p></div>
+                </div>
+                <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
+              </section>
+              <section id="trainUpgradeReturnSection" class="train-upgrade-section" hidden>
+                <div class="train-upgrade-section__heading">
+                  <span>2</span>
+                  <div><h3>Selecciona tu tren de retorno</h3><p>Mostramos solo retornos compatibles con la compañía elegida en la ida.</p></div>
+                </div>
+                <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
+              </section>
+              <section id="trainUpgradeChosenSummary" class="train-upgrade-chosen-summary" hidden></section>
+            </div>
+            <footer class="train-upgrade-modal__footer">
+              <div id="trainUpgradeFooterSummary"></div>
+              <div class="train-upgrade-modal__footer-actions">
+                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
+                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+              </div>
+            </footer>
+          </div>
+        </div>
+      `);
+      const modal = document.getElementById("trainUpgradeModal");
+      if (!modal) return;
+      document.getElementById("trainUpgradeSortFilter")?.addEventListener("change", (event) => {
+        this.trainUpgradeFilter = event.target.value || "early";
+        this.renderTrainUpgradeLists();
+      });
+      modal.addEventListener("click", (event) => {
+        if (event.target.closest("[data-close-train-upgrade]")) {
+          modal.hidden = true;
+          document.body.classList.remove("train-upgrade-modal-open");
+          return;
+        }
+        const selectButton = event.target.closest("[data-select-train-upgrade]");
+        if (selectButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          const direction = selectButton.dataset.trainDirection;
+          const id = selectButton.dataset.trainId || "";
+          if (direction === "outbound") {
+            this.selectedOutboundTrainId = id;
+            this.trainUpgradeOutboundConfirmed = true;
+            const compatible = this.getCompatibleReturnTrains(this.trainUpgradeSameCompanyOnly);
+            if (!compatible.some((train) => train.id === this.selectedReturnTrainId)) this.selectedReturnTrainId = compatible[0]?.id || "";
+            this.expandedReturnTrainId = "";
+            this.updateTrainSelectionState(this.trainUpgradeSameCompanyOnly);
+            this.updatePricing();
+            this.renderTrainUpgradeLists();
+            setTimeout(() => document.getElementById("trainUpgradeReturnSection")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+          } else {
+            this.selectedReturnTrainId = id;
+            this.trainUpgradeReturnConfirmed = true;
+            this.updateTrainSelectionState(this.trainUpgradeSameCompanyOnly);
+            this.updatePricing();
+            this.renderTrainUpgradeLists();
+            setTimeout(() => document.getElementById("trainUpgradeChosenSummary")?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 80);
+          }
+          return;
+        }
+        const card = event.target.closest("[data-train-upgrade-option]");
+        if (!card) return;
+        const direction = card.dataset.trainDirection;
+        const id = card.dataset.trainId || "";
+        if (direction === "outbound") this.expandedOutboundTrainId = this.expandedOutboundTrainId === id ? "" : id;
+        else this.expandedReturnTrainId = this.expandedReturnTrainId === id ? "" : id;
+        this.renderTrainUpgradeLists();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !modal.hidden) {
+          modal.hidden = true;
+          document.body.classList.remove("train-upgrade-modal-open");
+        }
+      }, { once: false });
+    };
+
+    proto.openTrainUpgradeModalV68 = function () {
+      this.ensureTrainUpgradeModal();
+      this.trainUpgradeFilter = "early";
+      this.trainUpgradeOutboundConfirmed = false;
+      this.trainUpgradeReturnConfirmed = false;
+      this.expandedOutboundTrainId = "";
+      this.expandedReturnTrainId = "";
+      const filter = document.getElementById("trainUpgradeSortFilter");
+      if (filter) filter.value = "early";
+      this.renderTrainUpgradeLists();
+      const modal = document.getElementById("trainUpgradeModal");
+      if (!modal) return;
+      modal.hidden = false;
+      document.body.classList.add("train-upgrade-modal-open");
+    };
+    proto.openTrainUpgradeModalV66 = proto.openTrainUpgradeModalV68;
+    proto.openTrainUpgradeModalV64 = proto.openTrainUpgradeModalV68;
+
+    proto.renderTrainUpgradeLists = function () {
+      const outboundList = document.getElementById("trainUpgradeOutboundList");
+      const returnList = document.getElementById("trainUpgradeReturnList");
+      if (!outboundList || !returnList) return;
+      const outbound = this.filterSortTrainListForModal(this.availableOutboundTrains || [], "outbound");
+      const compatibleReturns = this.filterSortTrainListForModal(this.getCompatibleReturnTrains(this.trainUpgradeSameCompanyOnly) || [], "return");
+      const returnSection = document.getElementById("trainUpgradeReturnSection");
+      if (returnSection) returnSection.hidden = !this.trainUpgradeOutboundConfirmed;
+      outboundList.innerHTML = outbound.length ? outbound.map((train) => this.renderTrainUpgradeCard(train, "outbound")).join("") : `<p class="train-upgrade-empty">No hay trenes de ida para este filtro.</p>`;
+      returnList.innerHTML = compatibleReturns.length ? compatibleReturns.map((train) => this.renderTrainUpgradeCard(train, "return")).join("") : `<p class="train-upgrade-empty">No hay trenes de retorno para este filtro.</p>`;
+      const chosen = document.getElementById("trainUpgradeChosenSummary");
+      const out = this.getSelectedOutboundTrain?.();
+      const ret = this.getSelectedReturnTrain?.();
+      if (chosen) {
+        const show = Boolean(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed && out && ret);
+        chosen.hidden = !show;
+        chosen.innerHTML = show ? `
+          <div class="train-upgrade-chosen-summary__card">
+            <strong>Resumen de trenes seleccionados</strong>
+            <p><b>Ida:</b> ${esc.call(this, out.label || "Tren")} · ${esc.call(this, out.companyName || out.company || "")} · ${esc.call(this, out.departureTime || "")} → ${esc.call(this, out.arrivalTime || "")}</p>
+            <p><b>Retorno:</b> ${esc.call(this, ret.label || "Tren")} · ${esc.call(this, ret.companyName || ret.company || "")} · ${esc.call(this, ret.departureTime || "")} → ${esc.call(this, ret.arrivalTime || "")}</p>
+          </div>` : "";
+      }
+      const footer = document.getElementById("trainUpgradeFooterSummary");
+      if (footer) {
+        const outboundTrain = this.getSelectedOutboundTrain?.();
+        const returnTrain = this.getSelectedReturnTrain?.();
+        const outboundDiff = this.getTrainPositiveDifferencePerPerson(outboundTrain, "outbound");
+        const returnDiff = this.getTrainPositiveDifferencePerPerson(returnTrain, "return");
+        const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
+        const hint = !this.trainUpgradeOutboundConfirmed ? "Abre una tarjeta y confirma el tren de ida." : (!this.trainUpgradeReturnConfirmed ? "Ahora confirma el tren de retorno." : "Puedes aplicar la selección.");
+        footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc.call(this, this.product?.currency || "USD")} ${esc.call(this, this.formatMoney(total))}</strong><small>${esc.call(this, hint)}</small>`;
+      }
+    };
+
+    proto.renderTrainUpgradeCard = function (train, direction) {
+      const selectedId = direction === "outbound" ? this.selectedOutboundTrainId : this.selectedReturnTrainId;
+      const expandedId = direction === "outbound" ? this.expandedOutboundTrainId : this.expandedReturnTrainId;
+      const confirmed = direction === "outbound" ? this.trainUpgradeOutboundConfirmed : this.trainUpgradeReturnConfirmed;
+      const selected = selectedId === train.id && confirmed;
+      const expanded = expandedId === train.id;
+      const diff = this.getTrainPositiveDifferencePerPerson(train, direction);
+      const currency = this.product?.currency || "USD";
+      const priceText = diff > 0 ? `+ ${currency} ${this.formatMoney(diff)}` : "Incluido / sin recargo";
+      const company = train.companyName || train.company || "";
+      const image = this.getTrainImageForUpgrade?.(train) || "trenes/assets/img/the-voyager1.jpg";
+      const features = this.getTrainFeatureListForUpgrade?.(train) || ["Servicio turístico", "Horario operativo", "Incluido en la experiencia"];
+      return `
+        <article class="train-upgrade-card ${selected ? "is-selected" : ""} ${expanded ? "is-expanded" : ""}" data-train-upgrade-option data-train-direction="${esc.call(this, direction)}" data-train-id="${esc.call(this, train.id)}">
+          <div class="train-upgrade-card__main">
+            <div class="train-upgrade-card__body">
+              <strong>${esc.call(this, train.label || "Tren")}</strong>
+              <small>${esc.call(this, company)}</small>
+              <span>${esc.call(this, train.departureTime || "")} → ${esc.call(this, train.arrivalTime || "")}</span>
+              <em>${esc.call(this, train.route || "")}</em>
+            </div>
+            <div class="train-upgrade-card__price">${esc.call(this, priceText)}</div>
+          </div>
+          <div class="train-upgrade-card__details">
+            <img src="${esc.call(this, image)}" alt="${esc.call(this, train.label || "Tren")}" loading="lazy" />
+            <div>
+              <strong>${selected ? "Tren seleccionado" : "Detalles del tren"}</strong>
+              <ul>${features.map((feature) => `<li>${esc.call(this, feature)}</li>`).join("")}</ul>
+              <button type="button" class="train-upgrade-select-btn" data-select-train-upgrade data-train-direction="${esc.call(this, direction)}" data-train-id="${esc.call(this, train.id)}">${selected ? "Seleccionado" : "Seleccionar este tren"}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    };
+
+    proto.renderPaymentReviewStep = function (payload) {
+      const review = document.getElementById("passengerCheckoutReview");
+      const modal = document.getElementById("passengerReservationModal");
+      const form = document.getElementById("passengerReservationForm");
+      if (!review) return;
+      const serviceTotalValue = Number(payload.serviceTotalValue || 0) || num(payload.serviceTotal);
+      const payNowValue = Number(payload.payNowValue || 0) || num(payload.payNow);
+      const payLaterValue = Number(payload.payLaterValue || 0) || num(payload.payLater);
+      const hasDiscount = serviceTotalValue > 0 && payNowValue > 0 && payNowValue < serviceTotalValue && payLaterValue <= 0.01;
+      const discountAmount = Math.max(0, serviceTotalValue - payNowValue);
+      const passengerRows = (payload.passengers || []).map((p) => {
+        const name = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
+        const pending = p.completionStatus === "pending" || p.completeLater || !name;
+        const status = pending ? "Pendiente de datos" : name;
+        const doc = [p.documentType, p.documentNumber].filter(Boolean).join(" · ");
+        return `<li class="passenger-review-passenger ${pending ? "is-pending" : "is-complete"}"><span>Pasajero ${esc.call(this, p.passengerNumber || "")}</span><strong>${esc.call(this, status)}</strong>${doc ? `<small>${esc.call(this, doc)}</small>` : `<small>${pending ? "Se podrá completar después" : "Datos registrados"}</small>`}</li>`;
+      }).join("");
+      const rows = [
+        ["Experiencia", payload.productTitle],
+        ["Fecha", payload.date],
+        ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
+        ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+        ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
+        ["Total del servicio", payload.serviceTotal]
+      ];
+      if (payLaterValue > 0.01) rows.push(["Saldo pendiente", payload.payLater]);
+      review.hidden = false;
+      review.innerHTML = `
+        <div class="passenger-review-card passenger-review-card--final passenger-review-card--v68">
+          <div class="passenger-review-card__header"><strong>Resumen de tu reserva</strong><span>Revisa los datos antes de continuar al pago.</span></div>
+          <div class="passenger-review-total">
+            <span>Monto a pagar ahora${hasDiscount ? " (descuento aplicado)" : ""}</span>
+            <strong>${esc.call(this, payload.payNow || "")}</strong>
+            ${hasDiscount ? `<small><del>${esc.call(this, payload.serviceTotal || "")}</del><b> Ahorras ${esc.call(this, payload.currency || this.product?.currency || "USD")} ${esc.call(this, this.formatMoney(discountAmount))}</b></small>` : ""}
+          </div>
+          <div class="passenger-review-grid passenger-review-grid--final">${rows.map(([label, value]) => `<div><span>${esc.call(this, label)}</span><strong>${esc.call(this, value || "-")}</strong></div>`).join("")}</div>
+          <div class="passenger-review-passengers"><strong>Datos de pasajeros</strong><ul class="passenger-review-list">${passengerRows}</ul></div>
+          <button class="passenger-review-edit-btn" type="button" data-edit-passenger-details>Editar datos de pasajeros</button>
+        </div>`;
+      if (modal) modal.classList.add("passenger-modal--review");
+      const title = document.getElementById("passengerModalTitle");
+      if (title) title.textContent = "Resumen de tu reserva";
+      const warning = document.querySelector(".passenger-modal__warning");
+      if (warning) warning.hidden = true;
+      const message = document.querySelector("[data-passenger-message]");
+      if (message) { message.textContent = ""; message.classList.remove("is-error"); }
+      const submit = form?.querySelector('button[type="submit"]');
+      if (submit) submit.textContent = "Pagar";
+      review.querySelector("[data-edit-passenger-details]")?.addEventListener("click", () => {
+        if (form) delete form.dataset.paymentReviewConfirmed;
+        if (modal) modal.classList.remove("passenger-modal--review");
+        review.hidden = true; review.innerHTML = "";
+        if (title) title.textContent = "Detalles de reserva";
+        if (warning) warning.hidden = false;
+        if (submit) submit.textContent = "Continuar";
+      });
+      review.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();

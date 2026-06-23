@@ -5843,3 +5843,155 @@ body.train-upgrade-modal-open {
     height: 150px !important;
   }
 }
+
+
+/* =========================================================
+   PATCH MCT V68 - Ajustes finales review, WhatsApp y trenes
+   ========================================================= */
+.passenger-modal--review .passenger-modal__paynow-card {
+  display: none !important;
+}
+.passenger-modal--review .passenger-modal__meta-row {
+  grid-template-columns: 1fr !important;
+}
+.passenger-modal__subtitle {
+  margin-top: -4px !important;
+}
+.passenger-modal__code-card {
+  margin-bottom: -2px !important;
+}
+.passenger-phone-field .passenger-phone-row {
+  grid-template-columns: 78px minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+.passenger-phone-row select[data-phone-code-select] {
+  width: 78px !important;
+  min-width: 78px !important;
+  max-width: 78px !important;
+  padding-left: 10px !important;
+  padding-right: 18px !important;
+  font-weight: 900 !important;
+}
+.booking-train-mini--v68 {
+  min-height: 148px !important;
+  grid-template-rows: auto auto auto auto auto !important;
+  align-content: start !important;
+}
+.booking-train-mini--v68 .booking-train-mini__company,
+.booking-train-mini--v68 .booking-train-mini__time {
+  display: block !important;
+  width: 100% !important;
+  grid-column: 1 / -1 !important;
+}
+.booking-train-mini--v68 .booking-train-mini__company {
+  margin-top: 2px !important;
+}
+.booking-train-mini--v68 .booking-train-mini__time {
+  margin-top: 0 !important;
+}
+.booking-train-mini--v68 .booking-train-mini__badge {
+  white-space: nowrap !important;
+  max-width: 100% !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-modal__dialog {
+  width: min(96vw, 1120px) !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-modal__body {
+  display: grid !important;
+  gap: 18px !important;
+  padding: 10px 28px 20px !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-section[hidden],
+.train-upgrade-modal--v68 .train-upgrade-chosen-summary[hidden] {
+  display: none !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-card.is-selected {
+  border-color: #0a3a26 !important;
+  box-shadow: 0 0 0 2px rgba(10,58,38,.10) !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-card.is-expanded {
+  border-color: rgba(10,58,38,.28) !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-card.is-expanded .train-upgrade-card__details {
+  display: grid !important;
+}
+.train-upgrade-chosen-summary__card {
+  display: grid !important;
+  gap: 8px !important;
+  padding: 16px 18px !important;
+  border-radius: 20px !important;
+  background: #eef8f1 !important;
+  border: 1px solid rgba(10,58,38,.12) !important;
+  color: #0a3a26 !important;
+}
+.train-upgrade-chosen-summary__card strong {
+  font-size: 1.05rem !important;
+}
+.train-upgrade-chosen-summary__card p {
+  margin: 0 !important;
+  color: #43524c !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-modal__footer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-modal__footer-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  min-width: 340px !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-cancel-btn,
+.train-upgrade-modal--v68 .train-upgrade-apply-btn {
+  min-height: 42px !important;
+  padding: 10px 20px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-cancel-btn {
+  flex: 0 0 130px !important;
+}
+.train-upgrade-modal--v68 .train-upgrade-apply-btn {
+  flex: 0 0 190px !important;
+}
+.passenger-review-card--v68 .passenger-review-grid--final {
+  margin-top: 0 !important;
+}
+.passenger-review-card--v68 .passenger-review-total span {
+  color: #0a3a26 !important;
+}
+.passenger-review-card--v68 .passenger-review-total small {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  color: #607069 !important;
+  font-weight: 850 !important;
+}
+.passenger-review-card--v68 .passenger-review-total del {
+  color: #7a8780 !important;
+  font-weight: 900 !important;
+}
+.passenger-review-card--v68 .passenger-review-total b {
+  color: #0a3a26 !important;
+  font-weight: 950 !important;
+}
+@media (max-width: 760px) {
+  .train-upgrade-modal--v68 .train-upgrade-modal__footer {
+    grid-template-columns: 1fr !important;
+  }
+  .train-upgrade-modal--v68 .train-upgrade-modal__footer-actions {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .train-upgrade-modal--v68 .train-upgrade-cancel-btn,
+  .train-upgrade-modal--v68 .train-upgrade-apply-btn {
+    flex: 1 1 0 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
