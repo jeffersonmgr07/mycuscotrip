@@ -5844,26 +5844,75 @@ body.train-upgrade-modal-open {
   }
 }
 
-
 /* =========================================================
-   PATCH MCT V68 - Ajustes finales review, WhatsApp y trenes
+   PATCH MCT V69 - Fix visual definitivo checkout/trenes
    ========================================================= */
+:root {
+  --mct-green-deep: #063b26;
+  --mct-green-military: #536b3f;
+  --mct-soft-mint: #eef6f1;
+}
+
+.passenger-modal__titlebar {
+  background: var(--mct-green-deep) !important;
+  color: #ffffff !important;
+  border-radius: 26px 26px 0 0 !important;
+  padding: 18px 28px !important;
+  margin: -1px -1px 0 !important;
+}
+
+.passenger-modal__titlebar h2,
+.passenger-modal__titlebar * {
+  color: #ffffff !important;
+}
+
+.passenger-modal__meta-row {
+  margin-top: 14px !important;
+  margin-bottom: 4px !important;
+  gap: 12px !important;
+}
+
+.passenger-modal__subtitle {
+  margin-top: 6px !important;
+  margin-bottom: 12px !important;
+}
+
 .passenger-modal--review .passenger-modal__paynow-card {
   display: none !important;
 }
+
 .passenger-modal--review .passenger-modal__meta-row {
-  grid-template-columns: 1fr !important;
+  justify-content: flex-start !important;
 }
-.passenger-modal__subtitle {
-  margin-top: -4px !important;
+
+.passenger-review-card--v69 .passenger-review-total span {
+  font-weight: 900 !important;
 }
-.passenger-modal__code-card {
-  margin-bottom: -2px !important;
+
+.passenger-review-card--v69 .passenger-review-total small {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  color: #596b62 !important;
+  font-weight: 850 !important;
 }
+
+.passenger-review-card--v69 .passenger-review-total del {
+  color: #718177 !important;
+  font-weight: 950 !important;
+}
+
+.passenger-review-card--v69 .passenger-review-total b {
+  color: var(--mct-green-deep) !important;
+  font-weight: 950 !important;
+}
+
 .passenger-phone-field .passenger-phone-row {
   grid-template-columns: 78px minmax(0, 1fr) !important;
   gap: 8px !important;
 }
+
 .passenger-phone-row select[data-phone-code-select] {
   width: 78px !important;
   min-width: 78px !important;
@@ -5871,127 +5920,505 @@ body.train-upgrade-modal-open {
   padding-left: 10px !important;
   padding-right: 18px !important;
   font-weight: 900 !important;
-}
-.booking-train-mini--v68 {
-  min-height: 148px !important;
-  grid-template-rows: auto auto auto auto auto !important;
-  align-content: start !important;
-}
-.booking-train-mini--v68 .booking-train-mini__company,
-.booking-train-mini--v68 .booking-train-mini__time {
-  display: block !important;
-  width: 100% !important;
-  grid-column: 1 / -1 !important;
-}
-.booking-train-mini--v68 .booking-train-mini__company {
-  margin-top: 2px !important;
-}
-.booking-train-mini--v68 .booking-train-mini__time {
-  margin-top: 0 !important;
-}
-.booking-train-mini--v68 .booking-train-mini__badge {
   white-space: nowrap !important;
-  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
 }
-.train-upgrade-modal--v68 .train-upgrade-modal__dialog {
-  width: min(96vw, 1120px) !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-modal__body {
+
+.booking-train-upgrade__summary {
   display: grid !important;
-  gap: 18px !important;
-  padding: 10px 28px 20px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
 }
-.train-upgrade-modal--v68 .train-upgrade-section[hidden],
-.train-upgrade-modal--v68 .train-upgrade-chosen-summary[hidden] {
+
+.booking-train-mini--v69,
+.booking-train-mini {
+  width: 100% !important;
+  min-height: 154px !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto auto auto auto auto !important;
+  align-items: start !important;
+  gap: 7px !important;
+  padding: 18px 16px !important;
+  border-radius: 24px !important;
+  text-align: left !important;
+}
+
+.booking-train-mini__label {
+  display: block !important;
+  white-space: nowrap !important;
+  color: #697770 !important;
+  font-size: 0.75rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+.booking-train-mini__name {
+  display: block !important;
+  color: var(--mct-green-deep) !important;
+  font-size: 1.02rem !important;
+  line-height: 1.1 !important;
+  white-space: normal !important;
+}
+
+.booking-train-mini__company {
+  display: block !important;
+  color: #53645b !important;
+  font-size: 0.9rem !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.booking-train-mini__time {
+  display: block !important;
+  color: #53645b !important;
+  font-size: 0.9rem !important;
+  font-weight: 850 !important;
+  line-height: 1.2 !important;
+}
+
+.booking-train-mini__badge {
+  justify-self: start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 28px !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  background: #e9f7ed !important;
+  color: var(--mct-green-deep) !important;
+  font-style: normal !important;
+  font-size: 0.86rem !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+.booking-main-btn,
+#paypalButton.booking-main-btn {
+  background: var(--mct-green-military) !important;
+  border-color: var(--mct-green-military) !important;
+  color: #ffffff !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__dialog {
+  width: min(94vw, 1180px) !important;
+  max-height: 92vh !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+  border-radius: 28px !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__header {
+  padding: 22px 28px 14px !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__header h2 {
+  font-size: clamp(2rem, 4vw, 3.35rem) !important;
+  margin: 0 !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__header span {
+  display: block !important;
+  margin-top: 6px !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__tools {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 8px 28px 12px !important;
+  border-top: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__tools select {
+  width: min(330px, 100%) !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__body {
+  display: grid !important;
+  gap: 26px !important;
+  padding: 8px 28px 24px !important;
+  overflow: auto !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-section {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-section[hidden] {
   display: none !important;
 }
-.train-upgrade-modal--v68 .train-upgrade-card.is-selected {
-  border-color: #0a3a26 !important;
-  box-shadow: 0 0 0 2px rgba(10,58,38,.10) !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-card.is-expanded {
-  border-color: rgba(10,58,38,.28) !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-card.is-expanded .train-upgrade-card__details {
-  display: grid !important;
-}
-.train-upgrade-chosen-summary__card {
-  display: grid !important;
-  gap: 8px !important;
-  padding: 16px 18px !important;
-  border-radius: 20px !important;
-  background: #eef8f1 !important;
-  border: 1px solid rgba(10,58,38,.12) !important;
-  color: #0a3a26 !important;
-}
-.train-upgrade-chosen-summary__card strong {
-  font-size: 1.05rem !important;
-}
-.train-upgrade-chosen-summary__card p {
+
+.train-upgrade-title {
   margin: 0 !important;
-  color: #43524c !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-modal__footer {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  gap: 14px !important;
-  align-items: center !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-modal__footer-actions {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 10px !important;
-  min-width: 340px !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-cancel-btn,
-.train-upgrade-modal--v68 .train-upgrade-apply-btn {
-  min-height: 42px !important;
-  padding: 10px 20px !important;
-  border-radius: 999px !important;
-  white-space: nowrap !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-cancel-btn {
-  flex: 0 0 130px !important;
-}
-.train-upgrade-modal--v68 .train-upgrade-apply-btn {
-  flex: 0 0 190px !important;
-}
-.passenger-review-card--v68 .passenger-review-grid--final {
-  margin-top: 0 !important;
-}
-.passenger-review-card--v68 .passenger-review-total span {
-  color: #0a3a26 !important;
-}
-.passenger-review-card--v68 .passenger-review-total small {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-  color: #607069 !important;
-  font-weight: 850 !important;
-}
-.passenger-review-card--v68 .passenger-review-total del {
-  color: #7a8780 !important;
-  font-weight: 900 !important;
-}
-.passenger-review-card--v68 .passenger-review-total b {
-  color: #0a3a26 !important;
+  color: var(--mct-green-deep) !important;
+  font-size: clamp(1.8rem, 3vw, 2.7rem) !important;
+  line-height: 1.05 !important;
   font-weight: 950 !important;
 }
+
+.train-upgrade-route-label {
+  margin: -6px 0 6px !important;
+  color: var(--mct-green-deep) !important;
+  font-size: 1.04rem !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-modal__list--v69 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+}
+
+.train-upgrade-card--v69 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(10, 58, 38, 0.10) !important;
+  border-radius: 26px !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 36px rgba(10, 58, 38, 0.05) !important;
+  cursor: pointer !important;
+}
+
+.train-upgrade-card--v69.is-expanded {
+  border-color: rgba(10, 58, 38, 0.35) !important;
+  box-shadow: 0 18px 46px rgba(10, 58, 38, 0.10) !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__main {
+  display: grid !important;
+  grid-template-columns: 42px 138px minmax(150px, 1.25fr) minmax(120px, 0.8fr) auto minmax(120px, 0.8fr) minmax(135px, 0.8fr) !important;
+  gap: 18px !important;
+  align-items: center !important;
+  padding: 22px 24px !important;
+}
+
+.train-upgrade-card__radio {
+  width: 28px !important;
+  height: 28px !important;
+  border: 3px solid var(--mct-green-deep) !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.train-upgrade-card--v69.is-selected .train-upgrade-card__radio::after,
+.train-upgrade-card--v69.is-expanded .train-upgrade-card__radio::after {
+  content: "" !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 999px !important;
+  background: var(--mct-green-deep) !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__logo {
+  width: 126px !important;
+  height: 64px !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  background: transparent !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__logo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.train-upgrade-card__service,
+.train-upgrade-card__station,
+.train-upgrade-card__price {
+  display: grid !important;
+  gap: 3px !important;
+  font-style: normal !important;
+}
+
+.train-upgrade-card__service strong,
+.train-upgrade-card__station b,
+.train-upgrade-card__price b {
+  color: #13251e !important;
+  font-size: 1.25rem !important;
+  line-height: 1.05 !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-card__service small,
+.train-upgrade-card__station small {
+  color: #63736a !important;
+  font-size: 0.92rem !important;
+  font-weight: 850 !important;
+}
+
+.train-upgrade-card__station em,
+.train-upgrade-card__price em {
+  color: #6b7a72 !important;
+  font-size: 0.72rem !important;
+  font-style: normal !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.train-upgrade-card__duration {
+  justify-self: center !important;
+  padding: 8px 14px !important;
+  border: 1px solid rgba(10, 58, 38, 0.10) !important;
+  border-radius: 999px !important;
+  color: #64746c !important;
+  font-size: 0.92rem !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+.train-upgrade-card__price {
+  justify-items: end !important;
+  text-align: right !important;
+}
+
+.train-upgrade-card__price b {
+  color: var(--mct-green-deep) !important;
+  white-space: nowrap !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details {
+  display: none !important;
+  grid-template-columns: 44% minmax(0, 1fr) !important;
+  gap: 22px !important;
+  margin: 0 24px 24px 84px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(10, 58, 38, 0.08) !important;
+  border-radius: 24px !important;
+  background: #f7fbf8 !important;
+}
+
+.train-upgrade-card--v69.is-expanded .train-upgrade-card__details {
+  display: grid !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details img {
+  width: 100% !important;
+  height: 210px !important;
+  object-fit: cover !important;
+  border-radius: 18px !important;
+  margin: 0 !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details > div {
+  display: grid !important;
+  align-content: start !important;
+  gap: 12px !important;
+  margin: 0 !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details > div > strong {
+  color: var(--mct-green-deep) !important;
+  font-size: 1.2rem !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details ul {
+  display: grid !important;
+  gap: 7px !important;
+  margin: 0 !important;
+  padding-left: 20px !important;
+  list-style: disc !important;
+}
+
+.train-upgrade-card--v69 .train-upgrade-card__details li {
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  color: #43534b !important;
+  font-size: 0.96rem !important;
+  font-weight: 700 !important;
+}
+
+.train-upgrade-select-btn {
+  justify-self: end !important;
+  min-height: 48px !important;
+  padding: 12px 24px !important;
+  border: 1px solid var(--mct-green-deep) !important;
+  border-radius: 14px !important;
+  background: var(--mct-green-deep) !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+}
+
+.train-upgrade-selected-summary,
+.train-upgrade-final-summary {
+  display: grid !important;
+  gap: 14px !important;
+  padding: 20px 22px !important;
+  border: 1px solid rgba(10, 58, 38, 0.10) !important;
+  border-radius: 26px !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 36px rgba(10, 58, 38, 0.05) !important;
+}
+
+.train-upgrade-selected-summary__badge {
+  justify-self: start !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  background: #eef8f1 !important;
+  color: var(--mct-green-deep) !important;
+  font-size: 0.76rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.train-upgrade-selected-summary__content {
+  display: grid !important;
+  grid-template-columns: 132px minmax(0, 1fr) auto !important;
+  gap: 18px !important;
+  align-items: center !important;
+}
+
+.train-upgrade-selected-summary__content img {
+  width: 126px !important;
+  height: 64px !important;
+  border-radius: 14px !important;
+  object-fit: cover !important;
+}
+
+.train-upgrade-selected-summary__content > div {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.train-upgrade-selected-summary__content strong,
+.train-upgrade-final-summary strong {
+  color: var(--mct-green-deep) !important;
+  font-size: 1.15rem !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-selected-summary__content b,
+.train-upgrade-selected-summary__content span,
+.train-upgrade-selected-summary__content small,
+.train-upgrade-selected-summary__content em,
+.train-upgrade-final-summary span,
+.train-upgrade-final-summary b {
+  color: #52645b !important;
+  font-style: normal !important;
+  font-weight: 850 !important;
+}
+
+.train-upgrade-selected-summary__content button {
+  min-height: 54px !important;
+  padding: 12px 22px !important;
+  border: 1px solid rgba(10, 58, 38, 0.15) !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  color: var(--mct-green-deep) !important;
+  font-size: 1rem !important;
+  font-weight: 850 !important;
+  cursor: pointer !important;
+}
+
+.train-upgrade-final-summary {
+  background: #eef8f1 !important;
+}
+
+.train-upgrade-final-summary b {
+  color: var(--mct-green-deep) !important;
+  font-size: 1.05rem !important;
+}
+
+.train-upgrade-modal--v69 .train-upgrade-modal__footer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 16px !important;
+  align-items: center !important;
+  padding: 16px 28px 22px !important;
+  border-top: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.train-upgrade-modal__footer-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.train-upgrade-cancel-btn,
+.train-upgrade-apply-btn {
+  min-width: 156px !important;
+  min-height: 46px !important;
+  padding: 10px 18px !important;
+  border-radius: 999px !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-cancel-btn {
+  background: transparent !important;
+  border: 1.5px solid var(--mct-green-deep) !important;
+  color: var(--mct-green-deep) !important;
+}
+
+.train-upgrade-apply-btn:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+
+@media (max-width: 900px) {
+  .train-upgrade-card--v69 .train-upgrade-card__main {
+    grid-template-columns: 32px 96px minmax(0, 1fr) !important;
+  }
+  .train-upgrade-card__station,
+  .train-upgrade-card__duration,
+  .train-upgrade-card__price {
+    grid-column: 3 !important;
+    justify-items: start !important;
+    text-align: left !important;
+  }
+  .train-upgrade-card--v69 .train-upgrade-card__details,
+  .train-upgrade-selected-summary__content {
+    grid-template-columns: 1fr !important;
+    margin-left: 16px !important;
+  }
+}
+
 @media (max-width: 760px) {
-  .train-upgrade-modal--v68 .train-upgrade-modal__footer {
+  .booking-train-upgrade__summary {
     grid-template-columns: 1fr !important;
   }
-  .train-upgrade-modal--v68 .train-upgrade-modal__footer-actions {
-    min-width: 0 !important;
+  .train-upgrade-modal--v69 .train-upgrade-modal__dialog {
     width: 100% !important;
+    height: 100% !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
   }
-  .train-upgrade-modal--v68 .train-upgrade-cancel-btn,
-  .train-upgrade-modal--v68 .train-upgrade-apply-btn {
+  .train-upgrade-modal--v69 .train-upgrade-modal__tools,
+  .train-upgrade-modal--v69 .train-upgrade-modal__footer,
+  .train-upgrade-modal__footer-actions {
+    grid-template-columns: 1fr !important;
+    flex-direction: row !important;
+  }
+  .train-upgrade-cancel-btn,
+  .train-upgrade-apply-btn {
+    min-width: 0 !important;
     flex: 1 1 0 !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+  }
+  .passenger-phone-field .passenger-phone-row {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
   }
 }
