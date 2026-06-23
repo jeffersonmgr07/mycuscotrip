@@ -31,7 +31,7 @@
 <link href="./assets/css/header.css" rel="stylesheet"/>
 <link href="./assets/css/footer.css" rel="stylesheet"/>
 <link href="./assets/css/responsive.css" rel="stylesheet"/>
-<link href="./assets/css/product-page.css?v=18" rel="stylesheet"/>
+<link href="./assets/css/product-page.css?v=19" rel="stylesheet"/>
 <link href="./assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <link href="https://mycuscotrip.com/product.html" rel="canonical"/></head>
 <body>
@@ -92,21 +92,21 @@
 <i class="fas fa-circle-check"></i>
 <div>
 <strong data-i18n="product.flexibleBooking">Reserva flexible</strong>
-<p data-i18n="product.flexibleBookingText">Separa tu cupo y completa el pago según la modalidad de la experiencia.</p>
+<p data-i18n="product.flexibleBookingText">Separa tu cupo con un anticipo y paga la diferencia al llegar al destino. También puedes elegir pago completo y obtener un descuento cuando esté disponible.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-bolt"></i>
 <div>
 <strong data-i18n="product.quickConfirmation">Confirmación rápida</strong>
-<p data-i18n="product.quickConfirmationText">Proceso pensado para continuar con pago online y confirmación posterior.</p>
+<p data-i18n="product.quickConfirmationText">La confirmación se realiza al momento del pago. Luego nos ponemos en contacto contigo para confirmar horarios de tren, circuito disponible y detalles finales de tu tour a Machu Picchu.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-shield-heart"></i>
 <div>
 <strong data-i18n="product.personalSupport">Atención personalizada</strong>
-<p data-i18n="product.personalSupportText">Operación local y acompañamiento en cada paso de tu reserva.</p>
+<p data-i18n="product.personalSupportText">Nos encargamos de toda la logística: recojo desde tu hotel, traslado a la estación, trenes, bus, ingreso oficial, guía certificado y coordinación del mejor horario posible. Tú solo llegas listo para disfrutar.</p>
 </div>
 </div>
 </div>
@@ -120,7 +120,7 @@
 <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
 <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
 <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
-<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Reserva online con cálculo automático</span></li>
+<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Reserva online y confirmación instantánea</span></li>
 </ul>
 </article>
 <article class="experience-card">
@@ -147,7 +147,7 @@
 <details class="experience-accordion">
 <summary data-i18n="product.importantInfo">Información importante</summary>
 <div class="experience-note-box">
-<p data-i18n="product.importantInfoText">Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
+<p data-i18n="product.importantInfoText">Se recomienda reservar con anticipación. Revisa el pronóstico del clima para elegir la vestimenta adecuada y considera que el recorrido se realiza caminando sobre terreno duro e irregular; usa zapatos de trekking o zapatillas cómodas y ropa ligera.</p>
 </div>
 </details>
 </article>
@@ -364,7 +364,7 @@
 </button>
 <div class="passenger-modal__header">
 <div class="passenger-modal__titlebar">
-<h2 id="passengerModalTitle" data-i18n="product.passengerRegistration">Registro de viajeros</h2>
+<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalles de reserva</h2>
 </div>
 <div class="passenger-modal__meta-row">
 <div aria-label="Código de reserva" class="passenger-modal__code-card">
@@ -421,9 +421,12 @@
 <span>Fecha de nacimiento</span>
 <input name="holderBirthdate" required="" type="date"/>
 </label>
-<label>
+<label class="passenger-phone-field">
 <span>WhatsApp</span>
-<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" required="" type="tel"/>
+<div class="passenger-phone-row">
+<select aria-label="Código de país" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
+<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="Número" required="" type="tel"/>
+</div>
 </label>
 <label>
 <span>Correo</span>
@@ -456,9 +459,10 @@
 </div>
 <div class="passenger-modal__additional" id="additionalPassengersContainer"></div>
 </section>
+<div class="passenger-modal__review" id="passengerCheckoutReview" hidden=""></div>
 <p aria-live="polite" class="passenger-modal__message" data-passenger-message=""></p>
 <div class="passenger-modal__actions">
-<button class="btn booking-main-btn" type="submit" data-i18n="product.continueToPayment">Continuar al pago</button>
+<button class="btn booking-main-btn" type="submit" data-i18n="product.reviewReservation">Revisar reserva</button>
 </div>
 </form>
 </div>
@@ -544,7 +548,7 @@
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
-<script src="./assets/js/pages/product.js?v=21"></script>
+<script src="./assets/js/pages/product.js?v=22"></script>
 <script src="./assets/js/components/coupon-popup.js"></script>
 </body>
 </html>

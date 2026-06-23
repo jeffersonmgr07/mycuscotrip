@@ -14,7 +14,7 @@
 <link href="../assets/css/header.css" rel="stylesheet"/>
 <link href="../assets/css/footer.css" rel="stylesheet"/>
 <link href="../assets/css/responsive.css" rel="stylesheet"/>
-<link href="../assets/css/product-page.css?v=18" rel="stylesheet"/>
+<link href="../assets/css/product-page.css?v=19" rel="stylesheet"/>
 <link href="../assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <meta content="en_US" property="og:locale"/><meta content="Tour Details and Secure Booking | My Cusco Trip" property="og:title"/><meta content="Review itinerary, inclusions, hotels, trains, pricing and booking options for your selected Peru travel experience." property="og:description"/><meta content="Tour Details and Secure Booking | My Cusco Trip" name="twitter:title"/><meta content="Review itinerary, inclusions, hotels, trains, pricing and booking options for your selected Peru travel experience." name="twitter:description"/><link href="https://mycuscotrip.com/en/product.html" rel="canonical"/><meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/><script>window.MCT_LOCALE="en"; window.MCT_IS_LOCALIZED_PAGE=true;</script>
 <!-- Social sharing fallback -->
@@ -144,7 +144,7 @@
 <details class="experience-accordion">
 <summary data-i18n="product.importantInfo">Important information</summary>
 <div class="experience-note-box">
-<p data-i18n="product.importantInfoText">Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
+<p data-i18n="product.importantInfoText">Se recomienda reservar con anticipación. Revisa el pronóstico del clima para elegir la vestimenta adecuada y considera que el recorrido se realiza caminando sobre terreno duro e irregular; usa zapatos de trekking o zapatillas cómodas y ropa ligera.</p>
 </div>
 </details>
 </article>
@@ -418,9 +418,12 @@
 <span>Date of birth</span>
 <input name="holderBirthdate" required="" type="date"/>
 </label>
-<label>
+<label class="passenger-phone-field">
 <span>WhatsApp</span>
-<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" required="" type="tel"/>
+<div class="passenger-phone-row">
+<select aria-label="Código de país" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
+<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="Número" required="" type="tel"/>
+</div>
 </label>
 <label>
 <span>Email</span>
@@ -453,9 +456,10 @@
 </div>
 <div class="passenger-modal__additional" id="additionalPassengersContainer"></div>
 </section>
+<div class="passenger-modal__review" id="passengerCheckoutReview" hidden=""></div>
 <p aria-live="polite" class="passenger-modal__message" data-passenger-message=""></p>
 <div class="passenger-modal__actions">
-<button class="btn booking-main-btn" type="submit" data-i18n="product.continueToPayment">Continuar al pago</button>
+<button class="btn booking-main-btn" type="submit" data-i18n="product.reviewReservation">Revisar reserva</button>
 </div>
 </form>
 </div>
@@ -541,7 +545,7 @@
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
 <script src="../assets/js/components/header.js"></script>
-<script src="../assets/js/pages/product.js?v=21"></script>
+<script src="../assets/js/pages/product.js?v=22"></script>
 <script src="../assets/js/components/coupon-popup.js"></script>
 </body>
 </html>

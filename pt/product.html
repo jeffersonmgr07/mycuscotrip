@@ -14,7 +14,7 @@
 <link href="../assets/css/header.css" rel="stylesheet"/>
 <link href="../assets/css/footer.css" rel="stylesheet"/>
 <link href="../assets/css/responsive.css" rel="stylesheet"/>
-<link href="../assets/css/product-page.css?v=18" rel="stylesheet"/>
+<link href="../assets/css/product-page.css?v=19" rel="stylesheet"/>
 <link href="../assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <meta content="pt_BR" property="og:locale"/><meta content="Detalhes do passeio e reserva segura | My Cusco Trip" property="og:title"/><meta content="Revise itinerário, inclusões, hotéis, trens, preços e opções de reserva para sua experiência no Peru." property="og:description"/><meta content="Detalhes do passeio e reserva segura | My Cusco Trip" name="twitter:title"/><meta content="Revise itinerário, inclusões, hotéis, trens, preços e opções de reserva para sua experiência no Peru." name="twitter:description"/><link href="https://mycuscotrip.com/pt/product.html" rel="canonical"/><meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/><script>window.MCT_LOCALE="pt"; window.MCT_IS_LOCALIZED_PAGE=true;</script>
 <!-- Social sharing fallback -->
@@ -89,21 +89,21 @@
 <i class="fas fa-circle-check"></i>
 <div>
 <strong data-i18n="product.flexibleBooking">Reserva flexible</strong>
-<p data-i18n="product.flexibleBookingText">Separa tu cupo y completa el pago según la modalidad de la experiencia.</p>
+<p data-i18n="product.flexibleBookingText">Separa tu cupo con un anticipo y paga la diferencia al llegar al destino. También puedes elegir pago completo y obtener un descuento cuando esté disponible.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-bolt"></i>
 <div>
 <strong data-i18n="product.quickConfirmation">Confirmación rápida</strong>
-<p data-i18n="product.quickConfirmationText">Proceso pensado para continuar con pago online y confirmación posterior.</p>
+<p data-i18n="product.quickConfirmationText">La confirmación se realiza al momento del pago. Luego nos ponemos en contacto contigo para confirmar horarios de tren, circuito disponible y detalles finales de tu tour a Machu Picchu.</p>
 </div>
 </div>
 <div class="benefit-item">
 <i class="fas fa-shield-heart"></i>
 <div>
 <strong data-i18n="product.personalSupport">Atención personalizada</strong>
-<p data-i18n="product.personalSupportText">Operación local y acompañamiento en cada paso de tu reserva.</p>
+<p data-i18n="product.personalSupportText">Nos encargamos de toda la logística: recojo desde tu hotel, traslado a la estación, trenes, bus, ingreso oficial, guía certificado y coordinación del mejor horario posible. Tú solo llegas listo para disfrutar.</p>
 </div>
 </div>
 </div>
@@ -117,7 +117,7 @@
 <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
 <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
 <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
-<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Reserva online con cálculo automático</span></li>
+<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Reserva online y confirmación instantánea</span></li>
 </ul>
 </article>
 <article class="experience-card">
@@ -144,7 +144,7 @@
 <details class="experience-accordion">
 <summary data-i18n="product.importantInfo">Información importante</summary>
 <div class="experience-note-box">
-<p data-i18n="product.importantInfoText">Te recomendamos revisar clima, altitud, restricciones del tour y documentos necesarios antes de completar tu pago.</p>
+<p data-i18n="product.importantInfoText">Se recomienda reservar con anticipación. Revisa el pronóstico del clima para elegir la vestimenta adecuada y considera que el recorrido se realiza caminando sobre terreno duro e irregular; usa zapatos de trekking o zapatillas cómodas y ropa ligera.</p>
 </div>
 </details>
 </article>
@@ -360,7 +360,7 @@
 <i class="fas fa-xmark"></i>
 </button>
 <div class="passenger-modal__header">
-<h2 id="passengerModalTitle" data-i18n="product.passengerRegistration">Registro de viajeros</h2>
+<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalles de reserva</h2>
 <div aria-label="Código de reserva" class="passenger-modal__code-card">
 <p class="passenger-modal__code" id="passengerReservationCode">CUZ000000</p>
 </div>
@@ -409,9 +409,12 @@
 <span>Fecha de nacimiento</span>
 <input name="holderBirthdate" required="" type="date"/>
 </label>
-<label>
+<label class="passenger-phone-field">
 <span>WhatsApp</span>
-<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" required="" type="tel"/>
+<div class="passenger-phone-row">
+<select aria-label="Código de país" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
+<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="Número" required="" type="tel"/>
+</div>
 </label>
 <label>
 <span>Correo</span>
@@ -430,6 +433,7 @@
 </div>
 <div class="passenger-modal__additional" id="additionalPassengersContainer"></div>
 </section>
+<div class="passenger-modal__review" id="passengerCheckoutReview" hidden=""></div>
 <p aria-live="polite" class="passenger-modal__message" data-passenger-message=""></p>
 <div class="passenger-modal__actions">
 <button class="btn booking-main-btn" type="submit">Continuar para pagamento</button>

@@ -2691,7 +2691,19 @@ class MyCuscoTripProductPage {
     if (!modal) return;
 
     const preReservation = this.generatePreReservation();
+    if (this.restoredPaymentPayload?.code && (!this.restoredPaymentPayload.productSlug || this.restoredPaymentPayload.productSlug === this.slug)) {
+      preReservation.code = this.restoredPaymentPayload.code;
+      preReservation.createdAt = this.restoredPaymentPayload.createdAt || preReservation.createdAt;
+      preReservation.createdAtLabel = this.restoredPaymentPayload.createdAtLabel || preReservation.createdAtLabel;
+      preReservation.createdAtDisplayLabel = this.restoredPaymentPayload.createdAtDisplayLabel || preReservation.createdAtDisplayLabel;
+    }
     this.currentPreReservation = preReservation;
+    this.persistLocalReservation?.(preReservation.code, preReservation);
+
+    const form = document.getElementById("passengerReservationForm");
+    if (form) delete form.dataset.paymentReviewConfirmed;
+    const review = document.getElementById("passengerCheckoutReview");
+    if (review) { review.hidden = true; review.innerHTML = ""; }
 
     this.setText("passengerReservationCode", preReservation.code);
     this.setText("passengerReservationTimestamp", this.t("product.bookingGenerated", "Reservation generated: {date}", { date: preReservation.createdAtDisplayLabel }));
@@ -2700,6 +2712,7 @@ class MyCuscoTripProductPage {
     this.syncPassengerHolderState();
     this.renderAdditionalPassengerFields();
     this.populateCountrySelects();
+    this.populatePhoneCodeSelects?.();
     this.syncHolderLanguageWarning();
 
     modal.hidden = false;
@@ -2784,8 +2797,18 @@ class MyCuscoTripProductPage {
       snapshot?.classList.toggle("is-open", !expanded);
     });
 
-    document.getElementById("passengerReservationForm")?.addEventListener("submit", (event) => {
+    const passengerForm = document.getElementById("passengerReservationForm");
+    passengerForm?.addEventListener("submit", (event) => {
       this.handlePassengerReservationSubmit(event);
+    });
+    passengerForm?.addEventListener("input", () => {
+      if (passengerForm.dataset.paymentReviewConfirmed === "true") {
+        delete passengerForm.dataset.paymentReviewConfirmed;
+        const review = document.getElementById("passengerCheckoutReview");
+        if (review) { review.hidden = true; review.innerHTML = ""; }
+        const submit = passengerForm.querySelector('button[type="submit"]');
+        if (submit) submit.textContent = this.t("product.reviewReservation", "Revisar reserva");
+      }
     });
   }
 
@@ -2836,6 +2859,11 @@ class MyCuscoTripProductPage {
       totalPassengers: this.getTotalPassengers(),
       currency: this.product?.currency || "USD",
       paymentMode: summary.paymentMode,
+      selectedTrainIds: {
+        outbound: this.selectedOutboundTrainId || "",
+        return: this.selectedReturnTrainId || ""
+      },
+      selectedExtraCodes: Array.from(this.selectedExtras || []),
       serviceTotal: summary.serviceTotal,
       payNow: summary.payNow,
       payLater: summary.payLater,
@@ -2995,6 +3023,7 @@ class MyCuscoTripProductPage {
       documentNumber: String(data.get("holderDocumentNumber") || "").trim(),
       nationality: String(data.get("holderNationality") || "").trim(),
       birthdate: String(data.get("holderBirthdate") || "").trim(),
+      whatsappCountryCode: String(data.get("holderWhatsappCountryCode") || "").trim(),
       whatsapp: String(data.get("holderWhatsapp") || "").trim(),
       email: String(data.get("holderEmail") || "").trim(),
       language: String(data.get("holderLanguage") || "").trim() || (this.isEnglishLocale() ? "English" : "Español"),
@@ -3014,7 +3043,8 @@ class MyCuscoTripProductPage {
         documentNumber: holder.documentNumber,
         nationality: holder.nationality,
         birthdate: holder.birthdate,
-        whatsapp: holder.whatsapp,
+        whatsappCountryCode: holder.whatsappCountryCode,
+        whatsapp: `${holder.whatsappCountryCode ? `${holder.whatsappCountryCode} ` : ""}${holder.whatsapp}`.trim(),
         email: holder.email,
         language: holder.language
       });
@@ -3063,6 +3093,22 @@ class MyCuscoTripProductPage {
       }
     };
 
+    this.persistLocalReservation?.(payload.code, payload);
+
+    if (form.dataset.paymentReviewConfirmed !== "true") {
+      this.renderPaymentReviewStep?.(payload);
+      form.dataset.paymentReviewConfirmed = "true";
+      if (message) {
+        message.textContent = "Revisa el resumen de tu reserva. Si todo está correcto, confirma para ir a PayPal.";
+        message.classList.remove("is-error");
+      }
+      const reviewSubmitButton = form.querySelector('button[type="submit"]');
+      if (reviewSubmitButton) {
+        reviewSubmitButton.textContent = "Pagar con PayPal";
+      }
+      return;
+    }
+
     const submitButton = form.querySelector('button[type="submit"]');
     if (submitButton) {
       submitButton.disabled = true;
@@ -3076,6 +3122,7 @@ class MyCuscoTripProductPage {
         : null;
 
       const finalReservationCode = apiResult?.reservationCode || apiResult?.code || payload.code;
+      this.persistLocalReservation?.(finalReservationCode, { ...payload, code: finalReservationCode, paymentStatus: "pending" });
 
       this.trackEvent("pre_reservation_created", {
         reservation_code: finalReservationCode,
@@ -3127,6 +3174,7 @@ class MyCuscoTripProductPage {
       };
       try {
         sessionStorage.setItem(`mct_pending_payment_${finalReservationCode}`, JSON.stringify(pendingRecord));
+        localStorage.setItem(`mct_pending_payment_${finalReservationCode}`, JSON.stringify(pendingRecord));
       } catch (storageError) {}
 
       if (paypalResult?.approvalUrl) {
@@ -4217,3 +4265,670 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   };
 })();
+
+/* =========================================================
+   PATCH MCT 2026-06-23 - Machu Picchu clásico: UX de trenes,
+   reserva recuperable y revisión previa al pago
+   ========================================================= */
+(function () {
+  if (typeof MyCuscoTripProductPage === "undefined") return;
+
+  const proto = MyCuscoTripProductPage.prototype;
+  const originalInit = proto.init;
+  const originalRenderProduct = proto.renderProduct;
+
+  proto.init = async function () {
+    const paymentState = String(this.params.get("payment") || "").toLowerCase();
+    const reservationCode = String(this.params.get("reservationCode") || "").trim();
+
+    if (!this.slug && reservationCode && paymentState.includes("cancel")) {
+      const record = this.getLocalReservation?.(reservationCode);
+      const payload = record?.payload || record;
+      const recoveredSlug = payload?.productSlug || payload?.summary?.productSlug || payload?.product?.slug || "";
+
+      if (recoveredSlug) {
+        this.slug = recoveredSlug;
+        this.params.set("slug", recoveredSlug);
+        this.restoredPaymentRecord = record;
+        this.restoredPaymentPayload = payload;
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("slug", recoveredSlug);
+          url.searchParams.set("payment", "cancelled");
+          url.searchParams.set("reservationCode", reservationCode);
+          window.history.replaceState({}, "", url.toString());
+        } catch (error) {}
+        const result = await originalInit.call(this);
+        this.applyRestoredReservationToPage?.(record);
+        this.showPaymentReturnNotice?.("cancelled", reservationCode, record);
+        return result;
+      }
+
+      this.renderNotFound(
+        `La reserva ${this.escapeHtml(reservationCode)} no pudo recuperarse en este navegador. Si el cliente cerró sesión, cambió de dispositivo o limpió datos del navegador, conviene buscar la reserva en el backend por código o correo.`
+      );
+      return;
+    }
+
+    const result = await originalInit.call(this);
+
+    if (reservationCode && paymentState.includes("cancel")) {
+      const record = this.getLocalReservation?.(reservationCode);
+      if (record) {
+        this.applyRestoredReservationToPage?.(record);
+      }
+      this.showPaymentReturnNotice?.("cancelled", reservationCode, record);
+    }
+
+    return result;
+  };
+
+  proto.renderProduct = function (product) {
+    originalRenderProduct.call(this, product);
+    this.applyProductCommercialTexts?.(product);
+  };
+
+  proto.applyProductCommercialTexts = function (product) {
+    const benefits = product?.commercialBenefits || product?.raw?.commercialBenefits || null;
+    if (benefits) {
+      const benefitItems = document.querySelectorAll(".experience-benefits .benefit-item p");
+      if (benefitItems[0] && benefits.flexibleBookingText) benefitItems[0].textContent = benefits.flexibleBookingText;
+      if (benefitItems[1] && benefits.quickConfirmationText) benefitItems[1].textContent = benefits.quickConfirmationText;
+      if (benefitItems[2] && benefits.personalSupportText) benefitItems[2].textContent = benefits.personalSupportText;
+    }
+
+    const pickupInfo = product?.pickupInfo || product?.raw?.pickupInfo || "";
+    const importantInfo = product?.importantInfo || product?.raw?.importantInfo || "";
+    const accordions = document.querySelectorAll(".experience-accordion-group .experience-accordion");
+    accordions.forEach((item) => {
+      const summaryText = String(item.querySelector("summary")?.textContent || "").toLowerCase();
+      const box = item.querySelector(".experience-note-box");
+      if (!box) return;
+      if (pickupInfo && (summaryText.includes("recojo") || summaryText.includes("pickup"))) {
+        box.innerHTML = `<p>${this.escapeHtml(pickupInfo)}</p>`;
+      }
+      if (importantInfo && (summaryText.includes("importante") || summaryText.includes("important"))) {
+        const list = Array.isArray(importantInfo) ? importantInfo : [importantInfo];
+        box.innerHTML = `<ul>${list.map((entry) => `<li>${this.escapeHtml(entry)}</li>`).join("")}</ul>`;
+      }
+    });
+  };
+
+  proto.renderHighlights = function (product) {
+    const target = document.getElementById("productHighlights");
+    const card = target?.closest(".experience-card");
+    if (!target) return;
+
+    if (product?.hideHighlights === true || product?.raw?.hideHighlights === true) {
+      target.innerHTML = "";
+      if (card) card.hidden = true;
+      return;
+    }
+
+    if (card) card.hidden = false;
+    const customHighlights = Array.isArray(product?.highlights) ? product.highlights : [];
+    const experienceType = Array.isArray(product?.experienceType) ? product.experienceType.join(" · ") : (product?.typeLabel || "");
+    const details = Array.isArray(product?.details) ? product.details : [];
+    const capacity = product?.capacity || product?.duration?.maxGroupSize || "";
+    const highlights = customHighlights.length
+      ? [
+          ...customHighlights,
+          experienceType ? `${this.t("product.travelStyle", "Travel style")}: ${experienceType}` : null,
+          product?.duration?.label ? `${this.t("product.duration", "Duration")}: ${product.duration.label}` : null,
+          capacity ? this.t("product.groupUpTo", "Group service for up to {count} travelers", { count: capacity }) : null,
+          ...details
+        ].filter(Boolean)
+      : [
+          product?.shortDescription,
+          product?.duration?.label ? `${this.t("product.duration", "Duration")}: ${product.duration.label}` : null,
+          experienceType ? `${this.t("product.travelStyle", "Travel style")}: ${experienceType}` : null,
+          product?.duration?.guideLanguages?.length ? `${this.t("product.languages", "Languages")}: ${this.formatGuideLanguages(product.duration.guideLanguages)}` : null
+        ].filter(Boolean);
+
+    target.innerHTML = highlights.map((item) => `<li>${this.escapeHtml(item)}</li>`).join("");
+  };
+
+  proto.renderItinerary = function (items) {
+    const target = document.getElementById("productItinerary");
+    const packageOptions = document.getElementById("packageOptions");
+
+    if (packageOptions && !this.isPackage(this.product)) {
+      packageOptions.hidden = true;
+      packageOptions.innerHTML = "";
+    }
+
+    if (!target) return;
+
+    if (!Array.isArray(items) || !items.length) {
+      target.innerHTML = `<p>${this.escapeHtml(this.t("product.itineraryPending", "Your detailed itinerary will be coordinated for your travel dates."))}</p>`;
+      return;
+    }
+
+    const isSingleDayTour =
+      !this.isPackage(this.product) &&
+      Number(this.product?.days || this.product?.raw?.days || 1) <= 1 &&
+      !items.some((item) => Number(item?.day || 1) > 1);
+
+    if (isSingleDayTour) {
+      const dayLabel = `${this.t("product.day", "Día")} 1`;
+      const dateLabel = this.getItineraryDateLabel(1);
+      target.innerHTML = `
+        <div class="experience-itinerary-item experience-itinerary-item--day" data-itinerary-day="1">
+          <div class="experience-itinerary-item__content">
+            <div class="experience-itinerary-day-meta">
+              <span class="experience-itinerary-day-pill">${this.escapeHtml(dayLabel)}</span>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="1" ${dateLabel ? "" : "hidden"}>${this.escapeHtml(dateLabel)}</span>
+            </div>
+            <h3 class="experience-itinerary-day-title">${this.escapeHtml(this.t("product.fullDayItinerary", "Itinerario detallado"))}</h3>
+            <div class="experience-itinerary-timeline">
+              ${items.map((item, index) => `
+                <article class="experience-itinerary-activity">
+                  <span class="experience-itinerary-time-pill">${this.escapeHtml(item.time || item.hour || `${this.t("product.step", "Paso")} ${index + 1}`)}</span>
+                  <div>
+                    <strong>${this.escapeHtml(item.title || `${this.t("product.step", "Paso")} ${index + 1}`)}</strong>
+                    ${item.description ? `<p>${this.escapeHtml(item.description)}</p>` : ""}
+                  </div>
+                </article>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    target.innerHTML = items.map((item, index) => {
+      const dayNumber = Number(item?.day || index + 1);
+      const dayLabel = `${this.t("product.day", "Día")} ${dayNumber}`;
+      const dateLabel = this.getItineraryDateLabel(dayNumber);
+      const title = item.title || `${this.t("product.step", "Paso")} ${index + 1}`;
+      const images = this.shouldShowTourItineraryImages()
+        ? this.collectItineraryItemImages(item).slice(0, 1)
+        : [];
+      return `
+        <div class="experience-itinerary-item ${images.length ? "experience-itinerary-item--visual" : ""}" data-itinerary-day="${this.escapeHtml(dayNumber)}">
+          <div class="experience-itinerary-item__content">
+            <div class="experience-itinerary-day-meta">
+              <span class="experience-itinerary-day-pill">${this.escapeHtml(dayLabel)}</span>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="${this.escapeHtml(dayNumber)}" ${dateLabel ? "" : "hidden"}>${this.escapeHtml(dateLabel)}</span>
+            </div>
+            <h3 class="experience-itinerary-day-title">${this.escapeHtml(title)}</h3>
+            ${item.time ? `<span class="experience-itinerary-time-pill">${this.escapeHtml(item.time)}</span>` : ""}
+            <p>${this.escapeHtml(item.description || "")}</p>
+          </div>
+          ${this.renderItineraryMedia(images, title)}
+        </div>
+      `;
+    }).join("");
+  };
+
+  proto.renderExtras = function (extras) {
+    const section = document.getElementById("extrasSection");
+    const container = document.getElementById("extrasContainer");
+    if (!section || !container) return;
+
+    if (!Array.isArray(extras) || !extras.length) {
+      section.hidden = true;
+      container.innerHTML = "";
+      return;
+    }
+
+    section.hidden = false;
+    const singleChoice = this.product?.extrasSelectionMode === "single" || this.product?.raw?.extrasSelectionMode === "single";
+    const inputType = singleChoice ? "radio" : "checkbox";
+    const inputName = singleChoice ? "tourExtraSingleChoice" : "tourExtra[]";
+
+    container.innerHTML = `${singleChoice ? `
+      <label class="booking-extra-item booking-extra-item--empty" for="extra-none">
+        <input type="radio" id="extra-none" name="${inputName}" data-extra-code="" ${this.selectedExtras.size ? "" : "checked"} />
+        <div class="booking-extra-text">
+          <strong>Sin almuerzo adicional</strong>
+          <small>Puedes elegir solo una opción de almuerzo.</small>
+        </div>
+      </label>
+    ` : ""}${extras.map((extra) => {
+      const amount = Number(extra.price || extra.publishedPriceUSD || extra.publishedPricing?.amount || 0);
+      const extraPrice = `${this.product.currency || "USD"} ${this.formatMoney(amount)}`;
+      const checked = this.selectedExtras.has(extra.code) ? "checked" : "";
+      return `
+        <label class="booking-extra-item" for="extra-${this.escapeHtml(extra.code)}">
+          <input type="${inputType}" name="${inputName}" id="extra-${this.escapeHtml(extra.code)}" data-extra-code="${this.escapeHtml(extra.code)}" ${checked} />
+          <div class="booking-extra-text">
+            <strong>${this.escapeHtml(extra.label)}</strong>
+            <small>${extra.perPerson ? this.t("product.pricePerPerson", "Precio por persona") : this.t("product.pricePerBooking", "Precio por reserva")} · ${extraPrice}</small>
+          </div>
+        </label>
+      `;
+    }).join("")}`;
+
+    container.querySelectorAll("input[data-extra-code]").forEach((input) => {
+      input.addEventListener("change", () => {
+        const code = input.dataset.extraCode || "";
+        if (singleChoice) {
+          this.selectedExtras.clear();
+          if (input.checked && code) this.selectedExtras.add(code);
+        } else if (input.checked) {
+          this.selectedExtras.add(code);
+        } else {
+          this.selectedExtras.delete(code);
+        }
+        this.updatePricing();
+      });
+    });
+  };
+
+  proto.renderTrainSelectionOptions = function (product) {
+    this.resetTrainSelectionState();
+    const section = this.ensureTrainSelectionSection();
+    const container = document.getElementById("trainSelectionContainer");
+    const help = document.getElementById("trainSelectionHelp");
+    const label = document.getElementById("trainSelectionLabel");
+
+    if (!section || !container) return;
+    section.hidden = true;
+    container.innerHTML = "";
+    if (help) help.textContent = "";
+    if (label) label.hidden = true;
+
+    if (!this.isTrainSelectionEnabled(product)) return;
+
+    const trainCatalog = this.getTrainCatalog();
+    const defaultSelection = this.getDefaultTrainSelection(product);
+    const trainConfig = this.getTrainConfig(product);
+    const sameCompanyOnly = this.shouldKeepSameTrainCompany(trainConfig);
+    this.trainUpgradeSameCompanyOnly = sameCompanyOnly;
+
+    this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId)
+      .filter((train) => this.isCommercialTrainForFullDay(train));
+    this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId)
+      .filter((train) => this.isCommercialTrainForFullDay(train));
+
+    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.label("Tren de ida incluido", "Included outbound train"));
+    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.label("Tren de retorno incluido", "Included return train"));
+    if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
+    if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
+    if (!this.availableOutboundTrains.length && !this.availableReturnTrains.length) return;
+
+    this.selectedOutboundTrainId = defaultSelection.outboundTrainId || this.availableOutboundTrains[0]?.id || "";
+    const compatibleReturns = this.getCompatibleReturnTrains(sameCompanyOnly);
+    this.selectedReturnTrainId = defaultSelection.returnTrainId || compatibleReturns[0]?.id || this.availableReturnTrains[0]?.id || "";
+
+    section.hidden = false;
+    section.classList.add("booking-field--train-upgrade");
+    container.innerHTML = `
+      <div class="booking-train-upgrade" data-train-selection>
+        <div class="booking-train-upgrade__summary" id="trainUpgradeSummaryCards"></div>
+        <button class="btn booking-secondary-btn booking-train-upgrade__button" id="openTrainUpgradeModal" type="button">
+          <i class="fas fa-train"></i> Upgrade de trenes
+        </button>
+        <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
+      </div>
+    `;
+
+    this.ensureTrainUpgradeModal();
+    this.bindTrainUpgradeEvents();
+    this.updateTrainSelectionState(sameCompanyOnly);
+  };
+
+  proto.isCommercialTrainForFullDay = function (train) {
+    const category = String(train?.category || "").toLowerCase();
+    if (!category || train?.isLocalTrain) return false;
+    return !["hiram_bingham", "hiram-bingham", "first_class", "first-class", "local"].includes(category);
+  };
+
+  proto.calculateSelectedTrainAdjustmentTotal = function () {
+    const outbound = this.getSelectedOutboundTrain();
+    const returning = this.getSelectedReturnTrain();
+    const outboundDiff = this.getTrainPositiveDifferencePerPerson(outbound, "outbound");
+    const returnDiff = this.getTrainPositiveDifferencePerPerson(returning, "return");
+    const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
+    this.selectedTrainAdjustmentTotal = total;
+    return total;
+  };
+
+  proto.getTrainPositiveDifferencePerPerson = function (train, direction) {
+    const defaultSelection = this.getDefaultTrainSelection(this.product);
+    const defaultId = direction === "outbound" ? defaultSelection.outboundTrainId : defaultSelection.returnTrainId;
+    const defaultList = direction === "outbound" ? this.availableOutboundTrains : this.availableReturnTrains;
+    const defaultTrain = this.findTrainById(defaultId, defaultList);
+    if (!train || !defaultTrain) return 0;
+    return Math.max(0, Number(train.price || 0) - Number(defaultTrain.price || 0));
+  };
+
+  proto.updateTrainSelectionState = function (sameCompanyOnly = this.trainUpgradeSameCompanyOnly) {
+    const outbound = this.getSelectedOutboundTrain();
+    let returning = this.getSelectedReturnTrain();
+    const compatibleReturns = this.getCompatibleReturnTrains(sameCompanyOnly);
+
+    if (compatibleReturns.length && !compatibleReturns.some((train) => train.id === this.selectedReturnTrainId)) {
+      this.selectedReturnTrainId = compatibleReturns[0].id;
+      returning = this.getSelectedReturnTrain();
+    }
+
+    const outboundDiff = this.getTrainPositiveDifferencePerPerson(outbound, "outbound");
+    const returnDiff = this.getTrainPositiveDifferencePerPerson(returning, "return");
+    this.selectedTrainAdjustmentTotal = (outboundDiff + returnDiff) * this.getTotalPassengers();
+
+    const summaryCards = document.getElementById("trainUpgradeSummaryCards");
+    if (summaryCards) {
+      summaryCards.innerHTML = `
+        ${this.renderTrainMiniSummary("Tren de ida", outbound, outboundDiff)}
+        ${this.renderTrainMiniSummary("Tren de retorno", returning, returnDiff)}
+      `;
+    }
+
+    const summary = document.getElementById("trainSelectionSummary");
+    if (summary) {
+      const adjustmentText = this.selectedTrainAdjustmentTotal > 0
+        ? `Excedente total: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
+        : "Sin excedente adicional frente a los trenes incluidos.";
+      summary.innerHTML = `<strong>${this.escapeHtml(adjustmentText)}</strong>${sameCompanyOnly ? `<small>${this.escapeHtml("La ida y el retorno se mantienen con la misma compañía de tren.")}</small>` : ""}`;
+    }
+
+    this.renderTrainUpgradeLists?.();
+  };
+
+  proto.renderTrainMiniSummary = function (title, train, diff) {
+    if (!train) return "";
+    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} p/p` : "Incluido";
+    return `
+      <button class="booking-train-mini" type="button" data-open-train-upgrade>
+        <span>${this.escapeHtml(title)}</span>
+        <strong>${this.escapeHtml(train.label || "Tren")}</strong>
+        <small>${this.escapeHtml(`${train.companyName || train.company || ""} · ${train.departureTime || ""} → ${train.arrivalTime || ""}`)}</small>
+        <em>${this.escapeHtml(diffText)}</em>
+      </button>
+    `;
+  };
+
+  proto.ensureTrainUpgradeModal = function () {
+    if (document.getElementById("trainUpgradeModal")) return;
+    document.body.insertAdjacentHTML("beforeend", `
+      <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
+        <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
+        <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <header class="train-upgrade-modal__header">
+            <p>Selección de trenes</p>
+            <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
+            <span>Elige primero el tren de ida. El retorno se filtrará automáticamente por la misma compañía.</span>
+          </header>
+          <div class="train-upgrade-modal__body">
+            <section>
+              <h3>1. Tren de ida</h3>
+              <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
+            </section>
+            <section>
+              <h3>2. Tren de retorno</h3>
+              <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
+            </section>
+          </div>
+          <footer class="train-upgrade-modal__footer">
+            <div id="trainUpgradeFooterSummary"></div>
+            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+          </footer>
+        </div>
+      </div>
+    `);
+  };
+
+  proto.bindTrainUpgradeEvents = function () {
+    const open = () => {
+      this.renderTrainUpgradeLists();
+      const modal = document.getElementById("trainUpgradeModal");
+      if (!modal) return;
+      modal.hidden = false;
+      document.body.classList.add("train-upgrade-modal-open");
+    };
+    document.getElementById("openTrainUpgradeModal")?.addEventListener("click", open);
+    document.querySelectorAll("[data-open-train-upgrade]").forEach((button) => button.addEventListener("click", open));
+
+    const modal = document.getElementById("trainUpgradeModal");
+    if (!modal || modal.dataset.bound === "true") return;
+    modal.dataset.bound = "true";
+
+    modal.addEventListener("click", (event) => {
+      const close = event.target.closest("[data-close-train-upgrade]");
+      if (close) {
+        modal.hidden = true;
+        document.body.classList.remove("train-upgrade-modal-open");
+        return;
+      }
+
+      const option = event.target.closest("[data-train-upgrade-option]");
+      if (!option) return;
+      const direction = option.dataset.trainDirection;
+      const id = option.dataset.trainId || "";
+      if (direction === "outbound") {
+        this.selectedOutboundTrainId = id;
+        const compatible = this.getCompatibleReturnTrains(this.trainUpgradeSameCompanyOnly);
+        if (!compatible.some((train) => train.id === this.selectedReturnTrainId)) {
+          this.selectedReturnTrainId = compatible[0]?.id || "";
+        }
+      } else {
+        this.selectedReturnTrainId = id;
+      }
+      this.updateTrainSelectionState(this.trainUpgradeSameCompanyOnly);
+      this.updatePricing();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal.hidden) {
+        modal.hidden = true;
+        document.body.classList.remove("train-upgrade-modal-open");
+      }
+    });
+  };
+
+  proto.renderTrainUpgradeLists = function () {
+    const outboundList = document.getElementById("trainUpgradeOutboundList");
+    const returnList = document.getElementById("trainUpgradeReturnList");
+    if (!outboundList || !returnList) return;
+
+    const compatibleReturns = this.getCompatibleReturnTrains(this.trainUpgradeSameCompanyOnly);
+    outboundList.innerHTML = this.availableOutboundTrains.map((train) => this.renderTrainUpgradeCard(train, "outbound")).join("");
+    returnList.innerHTML = compatibleReturns.map((train) => this.renderTrainUpgradeCard(train, "return")).join("");
+
+    const footer = document.getElementById("trainUpgradeFooterSummary");
+    if (footer) {
+      const total = this.calculateSelectedTrainAdjustmentTotal();
+      footer.innerHTML = total > 0
+        ? `<strong>Excedente por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>Total calculado para ${this.getTotalPassengers()} viajero(s).</small>`
+        : `<strong>Sin excedente adicional</strong><small>Los trenes seleccionados no incrementan el precio base.</small>`;
+    }
+  };
+
+  proto.renderTrainUpgradeCard = function (train, direction) {
+    const selectedId = direction === "outbound" ? this.selectedOutboundTrainId : this.selectedReturnTrainId;
+    const selected = selectedId === train.id;
+    const diff = this.getTrainPositiveDifferencePerPerson(train, direction);
+    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} por persona` : "Incluido / sin recargo";
+    const logo = this.getTrainCompanyLogo(train.company);
+    const departureStation = train.departureStation || train.raw?.departureStation || train.raw?.fromStation || "";
+    const arrivalStation = train.arrivalStation || train.raw?.arrivalStation || train.raw?.toStation || "";
+    const route = `${departureStation} → ${arrivalStation}`;
+    const time = `${train.departureTime || ""} → ${train.arrivalTime || ""}`;
+    return `
+      <button type="button" class="train-upgrade-card ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${this.escapeHtml(direction)}" data-train-id="${this.escapeHtml(train.id)}" aria-pressed="${selected ? "true" : "false"}">
+        <span class="train-upgrade-card__logo">${logo ? `<img src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(train.companyName || train.company || "Tren")}" />` : ""}</span>
+        <span class="train-upgrade-card__body">
+          <strong>${this.escapeHtml(train.label || "Tren turístico")}</strong>
+          <small>${this.escapeHtml(train.companyName || train.company || "")}</small>
+          <em>${this.escapeHtml(time)}</em>
+          <span>${this.escapeHtml(route)}</span>
+        </span>
+        <span class="train-upgrade-card__price">${this.escapeHtml(diffText)}</span>
+      </button>
+    `;
+  };
+
+  proto.getTrainCompanyLogo = function (company) {
+    const value = String(company || "").toLowerCase();
+    if (value.includes("inca")) return this.resolvePath("assets/img/trains/inca-rail.png");
+    if (value.includes("peru")) return this.resolvePath("assets/img/trains/perurail.png");
+    return "";
+  };
+
+  proto.getSelectedTrainSummaryLabel = function () {
+    const outbound = this.getSelectedOutboundTrain();
+    const returning = this.getSelectedReturnTrain();
+    if (!outbound && !returning) return this.label("No aplica", "Not applicable");
+    const parts = [];
+    if (outbound) parts.push(`Ida: ${outbound.label} ${outbound.departureTime || ""}`.trim());
+    if (returning) parts.push(`Retorno: ${returning.label} ${returning.departureTime || ""}`.trim());
+    return parts.join(" | ");
+  };
+
+  proto.persistLocalReservation = function (reservationCode, payload) {
+    if (!reservationCode || !payload) return;
+    const record = {
+      reservationCode,
+      productSlug: payload.productSlug || this.slug || "",
+      updatedAt: new Date().toISOString(),
+      payload: {
+        ...payload,
+        code: payload.code || reservationCode,
+        productSlug: payload.productSlug || this.slug || ""
+      }
+    };
+    try {
+      const value = JSON.stringify(record);
+      sessionStorage.setItem(`mct_pre_reservation_${reservationCode}`, value);
+      localStorage.setItem(`mct_pre_reservation_${reservationCode}`, value);
+      localStorage.setItem("mct_last_pre_reservation", value);
+    } catch (error) {}
+  };
+
+  proto.getLocalReservation = function (reservationCode) {
+    if (!reservationCode) return null;
+    const keys = [
+      `mct_pre_reservation_${reservationCode}`,
+      `mct_pending_payment_${reservationCode}`
+    ];
+    for (const storage of [sessionStorage, localStorage]) {
+      for (const key of keys) {
+        try {
+          const raw = storage.getItem(key);
+          if (!raw) continue;
+          return JSON.parse(raw);
+        } catch (error) {}
+      }
+    }
+    return null;
+  };
+
+  proto.applyRestoredReservationToPage = function (record) {
+    const payload = record?.payload || record;
+    if (!payload) return;
+
+    if (Number(payload.adults) > 0) this.adults = Number(payload.adults);
+    if (Number.isFinite(Number(payload.children))) this.children = Number(payload.children);
+    this.updatePassengersUI?.();
+
+    if (payload.selectedTrainIds?.outbound) this.selectedOutboundTrainId = payload.selectedTrainIds.outbound;
+    if (payload.selectedTrainIds?.return) this.selectedReturnTrainId = payload.selectedTrainIds.return;
+
+    if (Array.isArray(payload.selectedExtraCodes)) {
+      this.selectedExtras = new Set(payload.selectedExtraCodes);
+      document.querySelectorAll("[data-extra-code]").forEach((input) => {
+        input.checked = this.selectedExtras.has(input.dataset.extraCode || "") || (!input.dataset.extraCode && this.selectedExtras.size === 0);
+      });
+    }
+
+    if (payload.date && /^\d{4}-\d{2}-\d{2}$/.test(payload.date)) {
+      this.date = payload.date;
+      const input = document.getElementById("travelDate");
+      if (input?._flatpickr) input._flatpickr.setDate(payload.date, false);
+      else if (input) input.value = payload.date;
+      this.refreshItineraryDates?.();
+    }
+
+    this.updateTrainSelectionState?.(this.trainUpgradeSameCompanyOnly);
+    this.updatePricing?.();
+  };
+
+  proto.showPaymentReturnNotice = function (status, reservationCode, record) {
+    const panel = document.querySelector(".booking-panel");
+    if (!panel || document.getElementById("paymentReturnNotice")) return;
+    const hasRecord = Boolean(record);
+    const message = hasRecord
+      ? `PayPal fue cancelado, pero la reserva ${reservationCode} se mantiene guardada en este navegador. Puedes revisar los datos, ajustar extras o trenes y volver a intentar el pago.`
+      : `PayPal fue cancelado para la reserva ${reservationCode}. No se encontró una copia local completa; si esto ocurre en producción, el backend debe recuperar la reserva por código y correo.`;
+    panel.insertAdjacentHTML("afterbegin", `
+      <div class="payment-return-notice" id="paymentReturnNotice">
+        <strong>Pago no completado</strong>
+        <p>${this.escapeHtml(message)}</p>
+      </div>
+    `);
+  };
+
+  proto.getPhoneCodeOptionsHtml = function () {
+    const countries = [
+      ["Perú", "+51"], ["Estados Unidos / Canadá", "+1"], ["México", "+52"], ["Colombia", "+57"], ["Chile", "+56"], ["Argentina", "+54"], ["Brasil", "+55"], ["Bolivia", "+591"], ["Ecuador", "+593"], ["Uruguay", "+598"], ["Paraguay", "+595"], ["Venezuela", "+58"],
+      ["España", "+34"], ["Reino Unido", "+44"], ["Francia", "+33"], ["Alemania", "+49"], ["Italia", "+39"], ["Portugal", "+351"], ["Países Bajos", "+31"], ["Bélgica", "+32"], ["Suiza", "+41"], ["Austria", "+43"], ["Irlanda", "+353"], ["Noruega", "+47"], ["Suecia", "+46"], ["Dinamarca", "+45"], ["Finlandia", "+358"], ["Polonia", "+48"], ["República Checa", "+420"], ["Hungría", "+36"], ["Grecia", "+30"], ["Rumanía", "+40"], ["Turquía", "+90"], ["Rusia", "+7"], ["Ucrania", "+380"],
+      ["Australia", "+61"], ["Nueva Zelanda", "+64"], ["Japón", "+81"], ["China", "+86"], ["Hong Kong", "+852"], ["Taiwán", "+886"], ["Corea del Sur", "+82"], ["India", "+91"], ["Indonesia", "+62"], ["Tailandia", "+66"], ["Vietnam", "+84"], ["Filipinas", "+63"], ["Malasia", "+60"], ["Singapur", "+65"], ["Israel", "+972"], ["Emiratos Árabes Unidos", "+971"], ["Arabia Saudita", "+966"], ["Qatar", "+974"],
+      ["Sudáfrica", "+27"], ["Marruecos", "+212"], ["Egipto", "+20"], ["Kenia", "+254"], ["Tanzania", "+255"], ["Ghana", "+233"], ["Nigeria", "+234"],
+      ["Costa Rica", "+506"], ["Panamá", "+507"], ["Guatemala", "+502"], ["El Salvador", "+503"], ["Honduras", "+504"], ["Nicaragua", "+505"], ["República Dominicana", "+1"], ["Puerto Rico", "+1"], ["Cuba", "+53"], ["Jamaica", "+1"],
+      ["Afganistán", "+93"], ["Albania", "+355"], ["Argelia", "+213"], ["Andorra", "+376"], ["Angola", "+244"], ["Antigua y Barbuda", "+1"], ["Armenia", "+374"], ["Azerbaiyán", "+994"], ["Bahamas", "+1"], ["Bangladés", "+880"], ["Barbados", "+1"], ["Baréin", "+973"], ["Belice", "+501"], ["Benín", "+229"], ["Bielorrusia", "+375"], ["Bosnia y Herzegovina", "+387"], ["Botsuana", "+267"], ["Brunéi", "+673"], ["Bulgaria", "+359"], ["Burkina Faso", "+226"], ["Burundi", "+257"], ["Bután", "+975"], ["Cabo Verde", "+238"], ["Camboya", "+855"], ["Camerún", "+237"], ["Catar", "+974"], ["Chad", "+235"], ["Chipre", "+357"], ["Comoras", "+269"], ["Congo", "+242"], ["Costa de Marfil", "+225"], ["Croacia", "+385"], ["Dominica", "+1"], ["Eritrea", "+291"], ["Eslovaquia", "+421"], ["Eslovenia", "+386"], ["Estonia", "+372"], ["Etiopía", "+251"], ["Fiyi", "+679"], ["Gabón", "+241"], ["Gambia", "+220"], ["Georgia", "+995"], ["Granada", "+1"], ["Guinea", "+224"], ["Guinea-Bisáu", "+245"], ["Guyana", "+592"], ["Haití", "+509"], ["Irán", "+98"], ["Irak", "+964"], ["Islandia", "+354"], ["Jordania", "+962"], ["Kazajistán", "+7"], ["Kirguistán", "+996"], ["Kuwait", "+965"], ["Laos", "+856"], ["Letonia", "+371"], ["Líbano", "+961"], ["Lituania", "+370"], ["Luxemburgo", "+352"], ["Madagascar", "+261"], ["Malaui", "+265"], ["Maldivas", "+960"], ["Malí", "+223"], ["Malta", "+356"], ["Mauricio", "+230"], ["Moldavia", "+373"], ["Mónaco", "+377"], ["Mongolia", "+976"], ["Montenegro", "+382"], ["Mozambique", "+258"], ["Myanmar", "+95"], ["Namibia", "+264"], ["Nepal", "+977"], ["Níger", "+227"], ["Omán", "+968"], ["Pakistán", "+92"], ["Palestina", "+970"], ["Papúa Nueva Guinea", "+675"], ["Ruanda", "+250"], ["Serbia", "+381"], ["Seychelles", "+248"], ["Sri Lanka", "+94"], ["Túnez", "+216"], ["Uganda", "+256"], ["Uzbekistán", "+998"], ["Zambia", "+260"], ["Zimbabue", "+263"]
+    ];
+    return countries.map(([country, code]) => `<option value="${this.escapeHtml(code)}" ${code === "+51" ? "selected" : ""}>${this.escapeHtml(code)} · ${this.escapeHtml(country)}</option>`).join("");
+  };
+
+  proto.populatePhoneCodeSelects = function (scope = document) {
+    const options = this.getPhoneCodeOptionsHtml();
+    scope.querySelectorAll?.("select[data-phone-code-select]").forEach((select) => {
+      if (select.dataset.phoneCodesLoaded === "true") return;
+      const current = select.value;
+      select.innerHTML = options;
+      if (current) select.value = current;
+      select.dataset.phoneCodesLoaded = "true";
+    });
+  };
+
+  proto.renderPaymentReviewStep = function (payload) {
+    const review = document.getElementById("passengerCheckoutReview");
+    if (!review) return;
+    const pending = (payload.passengers || []).filter((p) => p.completionStatus === "pending");
+    const provided = (payload.passengers || []).filter((p) => p.completionStatus !== "pending");
+    const rows = [
+      ["Experiencia", payload.productTitle],
+      ["Fecha", payload.date],
+      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
+      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
+      ["Total del servicio", payload.serviceTotal],
+      ["Pagar ahora", payload.payNow],
+      ["Saldo pendiente", payload.payLater]
+    ];
+    review.hidden = false;
+    review.innerHTML = `
+      <div class="passenger-review-card">
+        <div class="passenger-review-card__header">
+          <strong>Resumen antes de pagar</strong>
+          <span>Confirma que todo esté correcto antes de ir a PayPal.</span>
+        </div>
+        <div class="passenger-review-grid">
+          ${rows.map(([label, value]) => `<div><span>${this.escapeHtml(label)}</span><strong>${this.escapeHtml(value || "-")}</strong></div>`).join("")}
+        </div>
+        <div class="passenger-review-passengers">
+          <strong>Datos de pasajeros</strong>
+          <p>${provided.length} pasajero(s) con datos registrados. ${pending.length ? `${pending.length} pasajero(s) pendiente(s) para completar hasta 15 a 30 días antes del viaje.` : "No hay pasajeros pendientes."}</p>
+        </div>
+      </div>
+    `;
+    review.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+})();
+
+/* Delegación para abrir el modal desde las tarjetas compactas que se re-renderizan dinámicamente. */
+document.addEventListener("click", function (event) {
+  const trigger = event.target.closest?.("[data-open-train-upgrade]");
+  if (!trigger) return;
+  const page = window.MyCuscoTripProductPage;
+  if (!page?.renderTrainUpgradeLists) return;
+  page.renderTrainUpgradeLists();
+  const modal = document.getElementById("trainUpgradeModal");
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.classList.add("train-upgrade-modal-open");
+});
