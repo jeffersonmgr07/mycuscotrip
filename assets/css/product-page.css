@@ -5595,3 +5595,251 @@ body.train-upgrade-modal-open {
     padding-right: 18px !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V67 - Ajustes finales checkout, summary y modal trenes
+   ========================================================= */
+.booking-train-mini__logo,
+.booking-train-mini__logo img {
+  display: none !important;
+}
+
+.booking-train-upgrade__summary {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.booking-train-mini {
+  min-height: 158px !important;
+  grid-template-rows: auto auto auto auto auto !important;
+  gap: 7px !important;
+  padding: 17px 16px !important;
+}
+
+.booking-train-mini__label {
+  white-space: nowrap !important;
+}
+
+.booking-train-mini__company {
+  display: block !important;
+  color: #56645f !important;
+  font-size: 0.88rem !important;
+  font-weight: 850 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.booking-train-mini__time {
+  font-size: 0.9rem !important;
+  font-weight: 850 !important;
+}
+
+.booking-train-mini__badge {
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+.passenger-phone-field .passenger-phone-row {
+  grid-template-columns: 92px minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+
+.passenger-phone-row select[data-phone-code-select] {
+  width: 92px !important;
+  min-width: 92px !important;
+  padding-left: 12px !important;
+  padding-right: 20px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+.passenger-review-card--v67 .passenger-review-total small {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  color: #607069 !important;
+  font-weight: 850 !important;
+}
+
+.passenger-review-card--v67 .passenger-review-total del {
+  color: #7a8780 !important;
+  font-weight: 900 !important;
+}
+
+.passenger-review-card--v67 .passenger-review-total b {
+  color: #0a3a26 !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-modal__dialog {
+  width: min(94vw, 980px) !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-modal__body {
+  display: grid !important;
+  gap: 18px !important;
+  padding: 10px 28px 20px !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-section {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-section[hidden] {
+  display: none !important;
+}
+
+.train-upgrade-section__heading {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+  padding: 14px 16px !important;
+  border-radius: 20px !important;
+  background: #eef6f1 !important;
+  border: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.train-upgrade-section__heading > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 999px !important;
+  background: #0a3a26 !important;
+  color: #ffffff !important;
+  font-weight: 950 !important;
+}
+
+.train-upgrade-section__heading h3,
+.train-upgrade-section__heading p {
+  margin: 0 !important;
+}
+
+.train-upgrade-section__heading h3 {
+  color: #0a3a26 !important;
+  font-size: 1.08rem !important;
+}
+
+.train-upgrade-section__heading p {
+  color: #5d6c65 !important;
+  font-size: 0.88rem !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-modal__list {
+  grid-template-columns: 1fr !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 20px !important;
+}
+
+.train-upgrade-card__main {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: center !important;
+  padding: 15px 16px !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card__body {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card__body strong {
+  color: #0a3a26 !important;
+  font-size: 1.08rem !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card__body small,
+.train-upgrade-modal--v67 .train-upgrade-card__body span,
+.train-upgrade-modal--v67 .train-upgrade-card__body em {
+  color: #5d6c65 !important;
+  font-style: normal !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card__details {
+  display: none !important;
+  grid-template-columns: 220px minmax(0, 1fr) !important;
+  gap: 16px !important;
+  padding: 0 16px 16px !important;
+  border-top: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.train-upgrade-modal--v67 .train-upgrade-card.is-expanded .train-upgrade-card__details {
+  display: grid !important;
+}
+
+.train-upgrade-card__details img {
+  width: 100% !important;
+  height: 132px !important;
+  object-fit: cover !important;
+  border-radius: 16px !important;
+  margin-top: 16px !important;
+}
+
+.train-upgrade-card__details > div {
+  display: grid !important;
+  gap: 10px !important;
+  align-content: start !important;
+  margin-top: 16px !important;
+}
+
+.train-upgrade-card__details ul {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.train-upgrade-card__details li {
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  background: #eef8f1 !important;
+  color: #0a3a26 !important;
+  font-weight: 850 !important;
+  font-size: 0.8rem !important;
+}
+
+.train-upgrade-select-btn {
+  justify-self: start !important;
+  min-height: 40px !important;
+  padding: 9px 16px !important;
+  border-radius: 999px !important;
+  border: 1px solid #0a3a26 !important;
+  background: #0a3a26 !important;
+  color: #ffffff !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+}
+
+.train-upgrade-card.is-selected .train-upgrade-select-btn {
+  background: #eef8f1 !important;
+  color: #0a3a26 !important;
+}
+
+@media (max-width: 760px) {
+  .booking-train-upgrade__summary {
+    grid-template-columns: 1fr !important;
+  }
+  .train-upgrade-card__main,
+  .train-upgrade-modal--v67 .train-upgrade-card__details,
+  .train-upgrade-section__heading {
+    grid-template-columns: 1fr !important;
+  }
+  .train-upgrade-card__details img {
+    height: 150px !important;
+  }
+}
