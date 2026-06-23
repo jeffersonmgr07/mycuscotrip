@@ -4504,3 +4504,577 @@ body.train-upgrade-modal-open {
   .train-upgrade-card__logo { width: 68px !important; height: 40px !important; min-height: 40px !important; }
   .train-upgrade-card__price { grid-column: 1 / -1 !important; justify-self: start !important; }
 }
+
+/* =========================================================
+   PATCH MCT V65 - Corrección layout summary trenes + modales
+   ========================================================= */
+
+/* Summary: los dos trenes vuelven a ocupar bien el ancho del panel */
+.booking-field--train-upgrade,
+.booking-field--train-upgrade #trainSelectionContainer,
+.booking-train-upgrade {
+  width: 100% !important;
+}
+
+.booking-train-upgrade {
+  display: grid !important;
+  justify-items: stretch !important;
+  gap: 14px !important;
+}
+
+.booking-train-upgrade__summary {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+.booking-train-mini {
+  width: 100% !important;
+  min-height: 132px !important;
+  padding: 16px 18px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(10, 58, 38, 0.14) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.booking-train-mini span {
+  font-size: 0.74rem !important;
+  letter-spacing: 0.055em !important;
+}
+
+.booking-train-mini strong {
+  font-size: 1.02rem !important;
+}
+
+.booking-train-mini small {
+  font-size: 0.84rem !important;
+}
+
+.booking-train-mini em {
+  margin-top: 3px !important;
+}
+
+#openTrainUpgradeModal,
+.booking-train-upgrade__button {
+  justify-self: center !important;
+  align-self: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 38px !important;
+  padding: 10px 22px !important;
+  border-radius: 999px !important;
+  background: #566b3f !important;
+  border-color: #566b3f !important;
+  color: #ffffff !important;
+  font-size: 0.78rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  box-shadow: 0 12px 22px rgba(86, 107, 63, 0.18) !important;
+}
+
+#openTrainUpgradeModal:hover,
+.booking-train-upgrade__button:hover {
+  background: #495b35 !important;
+  border-color: #495b35 !important;
+}
+
+#trainSelectionSummary.booking-train-selection__summary {
+  display: none !important;
+}
+
+/* Modal de trenes: sin bloque vacío, contenido alineado desde arriba */
+.train-upgrade-modal__dialog {
+  width: min(96vw, 1120px) !important;
+  max-height: min(92vh, 860px) !important;
+  overflow: auto !important;
+  border-radius: 28px !important;
+  background: #f7faf8 !important;
+}
+
+.train-upgrade-modal__header {
+  padding: 20px 72px 16px 28px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.train-upgrade-modal__header p {
+  margin: 0 0 4px !important;
+  color: #66736b !important;
+  font-size: 0.78rem !important;
+}
+
+.train-upgrade-modal__header h2 {
+  margin: 0 !important;
+  color: #0a3a26 !important;
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem) !important;
+  line-height: 1.05 !important;
+}
+
+.train-upgrade-modal__header span {
+  display: none !important;
+}
+
+.train-upgrade-modal__close {
+  top: 18px !important;
+  right: 18px !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: #edf4f0 !important;
+  color: #0a3a26 !important;
+  box-shadow: none !important;
+}
+
+.train-upgrade-modal__tools {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 14px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 16px 28px 10px !important;
+  background: #f7faf8 !important;
+  border: 0 !important;
+}
+
+.train-upgrade-modal__tools label {
+  margin: 0 !important;
+  color: #66736b !important;
+  font-size: 0.78rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.065em !important;
+}
+
+.train-upgrade-modal__tools select {
+  min-width: 260px !important;
+  min-height: 46px !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(10, 58, 38, 0.16) !important;
+  color: #0a3a26 !important;
+  box-shadow: none !important;
+}
+
+.train-upgrade-modal__body {
+  display: block !important;
+  padding: 4px 28px 18px !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+.train-upgrade-modal__body section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.train-upgrade-modal__body section[hidden] {
+  display: none !important;
+}
+
+.train-upgrade-modal__body h3 {
+  margin: 0 0 8px !important;
+  color: #0a3a26 !important;
+  font-size: 1.15rem !important;
+  line-height: 1.2 !important;
+}
+
+.train-upgrade-step-note {
+  margin: 0 0 14px !important;
+  max-width: 780px !important;
+  color: #5e6d65 !important;
+  font-size: 0.9rem !important;
+}
+
+.train-upgrade-modal__list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.train-upgrade-card {
+  grid-template-columns: 96px minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  min-height: 82px !important;
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(10, 58, 38, 0.12) !important;
+  background: #ffffff !important;
+}
+
+.train-upgrade-card__logo {
+  width: 96px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  box-shadow: inset 0 0 0 1px rgba(10, 58, 38, 0.06) !important;
+}
+
+.train-upgrade-card__logo img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: scale(1.03) !important;
+}
+
+.train-upgrade-card__body strong {
+  font-size: 1rem !important;
+}
+
+.train-upgrade-card__price {
+  justify-self: end !important;
+  align-self: center !important;
+  padding: 8px 12px !important;
+  border-radius: 999px !important;
+  background: #eef8f1 !important;
+  color: #0a3a26 !important;
+  white-space: nowrap !important;
+}
+
+.train-upgrade-modal__footer {
+  padding: 16px 28px 22px !important;
+  background: #ffffff !important;
+  border-top: 1px solid rgba(10, 58, 38, 0.09) !important;
+}
+
+.train-upgrade-modal__footer-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.train-upgrade-cancel-btn,
+.train-upgrade-apply-btn {
+  min-height: 42px !important;
+  border-radius: 999px !important;
+  padding-inline: 22px !important;
+  font-weight: 900 !important;
+}
+
+/* Modal de pasajeros: elimina la franja verde vacía y muestra el resumen lateral */
+.passenger-modal {
+  padding: 18px !important;
+}
+
+.passenger-modal__dialog {
+  width: min(96vw, 1180px) !important;
+  max-height: 92vh !important;
+  overflow: auto !important;
+  border-radius: 30px !important;
+  background: #f6faf8 !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28) !important;
+}
+
+.passenger-modal__header {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 26px 84px 20px 28px !important;
+  background: #ffffff !important;
+  color: #0a3a26 !important;
+  border-bottom: 1px solid rgba(10, 58, 38, 0.08) !important;
+}
+
+.passenger-modal__titlebar {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: #0a3a26 !important;
+  border-radius: 0 !important;
+}
+
+.passenger-modal__titlebar h2,
+.passenger-modal__header .passenger-modal__titlebar h2,
+#passengerModalTitle {
+  margin: 0 !important;
+  color: #0a3a26 !important;
+  font-size: clamp(1.55rem, 3vw, 2.25rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.passenger-modal__meta-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  align-items: center !important;
+}
+
+.passenger-modal__code-card,
+.passenger-modal__paynow-card {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 9px 14px !important;
+  border-radius: 999px !important;
+  background: #f4faf6 !important;
+  border: 1px solid rgba(10, 58, 38, 0.12) !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+.passenger-modal__paynow-card {
+  justify-self: end !important;
+  display: grid !important;
+  gap: 2px !important;
+  text-align: right !important;
+  border-radius: 18px !important;
+  padding: 10px 16px !important;
+}
+
+.passenger-modal__code {
+  margin: 0 !important;
+  color: #0a3a26 !important;
+  font-size: 1.02rem !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 950 !important;
+}
+
+.passenger-modal__subtitle {
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+  color: #66736b !important;
+  font-size: 0.9rem !important;
+}
+
+.passenger-modal__warning {
+  margin: 2px 0 0 !important;
+  padding: 14px 16px !important;
+  border-left: 4px solid #0a3a26 !important;
+  border-radius: 16px !important;
+  background: #f2f7f4 !important;
+  color: #33423b !important;
+  line-height: 1.5 !important;
+}
+
+.passenger-modal__body {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px) !important;
+  gap: 22px !important;
+  padding: 22px 28px 28px !important;
+  align-items: start !important;
+}
+
+.passenger-modal__details-toggle {
+  display: none !important;
+}
+
+#passengerPaymentSnapshot.passenger-modal__snapshot {
+  display: block !important;
+  grid-column: 2 !important;
+  grid-row: 1 / span 4 !important;
+  position: sticky !important;
+  top: 16px !important;
+  height: auto !important;
+  max-height: calc(92vh - 150px) !important;
+  overflow: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+#passengerPaymentSnapshot.passenger-modal__snapshot[hidden] {
+  display: none !important;
+}
+
+.passenger-modal__form {
+  grid-column: 1 !important;
+  display: grid !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+}
+
+.passenger-modal__section,
+.passenger-modal__optional-passenger {
+  background: #ffffff !important;
+  border: 1px solid rgba(10, 58, 38, 0.10) !important;
+  border-radius: 24px !important;
+  padding: 18px !important;
+  box-shadow: 0 12px 34px rgba(10, 58, 38, 0.05) !important;
+}
+
+.passenger-modal__section-title strong {
+  color: #0a3a26 !important;
+  font-size: 1.05rem !important;
+}
+
+.passenger-modal__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.passenger-modal__grid label span {
+  color: #33423b !important;
+  font-weight: 850 !important;
+}
+
+.passenger-modal__grid input,
+.passenger-modal__grid select,
+.passenger-phone-row input,
+.passenger-phone-row select {
+  min-height: 48px !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(10, 58, 38, 0.13) !important;
+  background: #ffffff !important;
+}
+
+.passenger-modal__actions {
+  position: static !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.passenger-modal__actions .booking-main-btn {
+  min-width: 210px !important;
+  min-height: 48px !important;
+  border-radius: 999px !important;
+  background: #0a3a26 !important;
+  border-color: #0a3a26 !important;
+  color: #ffffff !important;
+  box-shadow: 0 14px 30px rgba(10, 58, 38, 0.16) !important;
+}
+
+.passenger-summary-card {
+  display: grid !important;
+  gap: 14px !important;
+  padding: 22px !important;
+  border-radius: 26px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(10, 58, 38, 0.10) !important;
+  box-shadow: 0 18px 48px rgba(10, 58, 38, 0.10) !important;
+}
+
+.passenger-summary-card__title strong {
+  color: #0a3a26 !important;
+  font-size: 1.35rem !important;
+}
+
+.passenger-summary-card__row,
+.passenger-summary-card__total {
+  display: grid !important;
+  grid-template-columns: minmax(110px, auto) minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
+}
+
+.passenger-summary-card__row span {
+  color: #607069 !important;
+}
+
+.passenger-summary-card__row strong {
+  color: #20302a !important;
+  text-align: right !important;
+}
+
+.passenger-summary-card__total {
+  padding: 14px 16px !important;
+  border-radius: 18px !important;
+  background: #eef8f1 !important;
+}
+
+@media (max-width: 980px) {
+  .booking-train-upgrade__summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .booking-train-mini {
+    min-height: 0 !important;
+  }
+
+  .train-upgrade-modal__list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .train-upgrade-card {
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+  }
+
+  .train-upgrade-card__price {
+    grid-column: 2 !important;
+    justify-self: start !important;
+    white-space: normal !important;
+  }
+
+  .passenger-modal__body {
+    grid-template-columns: 1fr !important;
+  }
+
+  #passengerPaymentSnapshot.passenger-modal__snapshot {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    position: static !important;
+    max-height: none !important;
+    order: -1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .passenger-modal {
+    padding: 10px !important;
+  }
+
+  .passenger-modal__header,
+  .passenger-modal__body {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .passenger-modal__meta-row,
+  .passenger-modal__grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .passenger-modal__code-card,
+  .passenger-modal__paynow-card {
+    width: 100% !important;
+    justify-self: stretch !important;
+  }
+
+  .train-upgrade-modal__tools {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .train-upgrade-modal__tools select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .train-upgrade-card {
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+  }
+
+  .train-upgrade-card__logo {
+    width: 82px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .train-upgrade-modal__footer,
+  .train-upgrade-modal__footer-actions {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+}
