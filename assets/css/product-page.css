@@ -6912,3 +6912,193 @@ body.train-upgrade-modal-open {
     height: 170px !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V72 - Corrección real cabecera modal pasajeros y scroll
+   ========================================================= */
+body.passenger-modal-open {
+  overflow: hidden !important;
+}
+
+.passenger-modal {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 16px !important;
+}
+
+.passenger-modal__dialog {
+  width: min(96vw, 1080px) !important;
+  max-height: calc(100vh - 32px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  border-radius: 24px !important;
+  background: #f7faf8 !important;
+}
+
+.passenger-modal__header {
+  display: grid !important;
+  gap: 8px !important;
+  padding: 18px 76px 18px 28px !important;
+  background: #0a3a26 !important;
+  color: #ffffff !important;
+  border-bottom: 0 !important;
+}
+
+.passenger-modal__titlebar {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  color: inherit !important;
+}
+
+.passenger-modal__titlebar::before {
+  margin: 0 0 4px !important;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-size: 0.72rem !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.14em !important;
+}
+
+.passenger-modal__titlebar h2,
+#passengerModalTitle,
+.passenger-modal__header .passenger-modal__titlebar h2 {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(1.55rem, 3.2vw, 2.45rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.passenger-modal__meta-row {
+  display: block !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.passenger-modal__code-card {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 7px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.passenger-modal__inline-label {
+  color: rgba(255, 255, 255, 0.70) !important;
+  font-size: 0.84rem !important;
+  line-height: 1.2 !important;
+  font-weight: 850 !important;
+}
+
+.passenger-modal__code {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-size: 0.92rem !important;
+  line-height: 1.2 !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.passenger-modal__paynow-card {
+  display: none !important;
+}
+
+.passenger-modal__subtitle {
+  width: auto !important;
+  margin: -2px 0 0 !important;
+  padding: 0 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+}
+
+.passenger-modal__warning {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 6px 0 0 !important;
+  padding: 12px 14px 12px 16px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  border-left: 3px solid rgba(255, 255, 255, 0.56) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.45 !important;
+}
+
+.passenger-modal__body {
+  padding: 22px 28px 28px !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.passenger-modal__section,
+.passenger-modal__optional-passenger {
+  scroll-margin-top: 18px !important;
+}
+
+.passenger-modal__actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 4 !important;
+  margin-top: 4px !important;
+  padding: 14px 0 0 !important;
+}
+
+.passenger-modal__close {
+  top: 18px !important;
+  right: 18px !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #ffffff !important;
+}
+
+.passenger-modal--review .passenger-modal__header {
+  padding-bottom: 16px !important;
+}
+
+.passenger-modal--review .passenger-modal__warning {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .passenger-modal {
+    padding: 0 !important;
+  }
+  .passenger-modal__dialog {
+    width: 100% !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+  .passenger-modal__header {
+    padding: 16px 58px 16px 18px !important;
+  }
+  .passenger-modal__titlebar h2,
+  #passengerModalTitle,
+  .passenger-modal__header .passenger-modal__titlebar h2 {
+    font-size: clamp(1.35rem, 8vw, 2rem) !important;
+    line-height: 1.05 !important;
+  }
+  .passenger-modal__warning {
+    font-size: 0.84rem !important;
+    padding: 10px 12px !important;
+  }
+  .passenger-modal__body {
+    padding: 16px !important;
+  }
+}
