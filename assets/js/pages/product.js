@@ -7102,3 +7102,250 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV71, 900);
   }
 })();
+
+/* =========================================================
+   PATCH MCT V73 - Ajustes finales checkout, pasajeros y trenes
+   ========================================================= */
+(function () {
+  function patchV73() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV73Applied) return true;
+
+    const proto = Object.getPrototypeOf(page) || page;
+    const esc = function (value) {
+      if (typeof page.escapeHtml === "function") return page.escapeHtml(value ?? "");
+      return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    };
+    const formatMoney = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const currency = () => page.product?.currency || "USD";
+
+    function normalizeDocumentType(value) {
+      const key = String(value || "").trim().toLowerCase();
+      const map = {
+        dni: "DNI",
+        passport: "Pasaporte",
+        pasaporte: "Pasaporte",
+        id_card: "Documento de identidad",
+        document: "Documento",
+        other: "Otro",
+        otro: "Otro"
+      };
+      if (map[key]) return map[key];
+      if (!key) return "";
+      return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
+    }
+
+    function formatTravelDate(value) {
+      if (!value) return "-";
+      const raw = String(value).trim();
+      let date = null;
+      const iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (iso) date = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+      else {
+        const parsed = new Date(raw);
+        if (!Number.isNaN(parsed.getTime())) date = parsed;
+      }
+      if (date && !Number.isNaN(date.getTime())) {
+        return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/ de /g, " ");
+      }
+      return raw.replace(/\bde\s+/gi, "").replace(/,/g, "");
+    }
+
+    function formatTravelers(adults, children) {
+      const a = Number(adults || 0);
+      const c = Number(children || 0);
+      const parts = [];
+      parts.push(`${a} ${a === 1 ? "adulto" : "adultos"}`);
+      if (c > 0) parts.push(`${c} ${c === 1 ? "niño" : "niños"}`);
+      return parts.join(" · ");
+    }
+
+    function ensurePassengerActionButtons() {
+      const actions = document.querySelector(".passenger-modal__actions");
+      if (!actions) return;
+      let cancel = actions.querySelector(".passenger-modal__cancel-btn");
+      const submit = actions.querySelector('button[type="submit"]');
+      if (!cancel) {
+        cancel = document.createElement("button");
+        cancel.type = "button";
+        cancel.className = "btn passenger-modal__cancel-btn";
+        cancel.setAttribute("data-close-passenger-modal", "");
+        cancel.textContent = "Cancelar";
+        actions.insertBefore(cancel, submit || null);
+      }
+      cancel.onclick = () => page.closePassengerReservationModal?.();
+      if (submit && !submit.textContent.trim()) submit.textContent = "Continuar";
+    }
+
+    const oldOpenPassenger = proto.openPassengerReservationModal;
+    if (typeof oldOpenPassenger === "function") {
+      proto.openPassengerReservationModal = function () {
+        const result = oldOpenPassenger.apply(this, arguments);
+        window.setTimeout(() => {
+          ensurePassengerActionButtons();
+          const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
+          if (submit) submit.textContent = "Continuar";
+        }, 0);
+        return result;
+      };
+    }
+
+    proto.renderPaymentReviewStep = function (payload) {
+      const review = document.getElementById("passengerCheckoutReview");
+      const modal = document.getElementById("passengerReservationModal");
+      const form = document.getElementById("passengerReservationForm");
+      if (!review) return;
+
+      ensurePassengerActionButtons();
+
+      const serviceTotalValue = Number(payload.serviceTotalValue || 0);
+      const payNowValue = Number(payload.payNowValue || 0);
+      const payLaterValue = Number(payload.payLaterValue || 0);
+      const hasDiscount = serviceTotalValue > 0 && payNowValue > 0 && payNowValue < serviceTotalValue && payLaterValue <= 0.01;
+      const discountAmount = Math.max(0, serviceTotalValue - payNowValue);
+      const paymentLabel = hasDiscount ? "Monto a pagar ahora (descuento aplicado)" : "Monto a pagar ahora";
+
+      const passengerRows = (payload.passengers || []).map((p) => {
+        const name = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
+        const pending = p.completionStatus === "pending" || p.completeLater || !name;
+        const docType = normalizeDocumentType(p.documentType);
+        const doc = [docType, p.documentNumber].filter(Boolean).join(" · ");
+        return `<li class="passenger-review-passenger ${pending ? "is-pending" : "is-complete"}">
+          <span>Pasajero ${esc(p.passengerNumber || "")}</span>
+          <strong>${esc(pending ? "Pendiente de datos" : name)}</strong>
+          ${doc ? `<small>${esc(doc)}</small>` : `<small>${pending ? "Se podrá completar después" : "Datos registrados"}</small>`}
+        </li>`;
+      }).join("");
+
+      const rows = [
+        ["Experiencia", payload.productTitle],
+        ["Fecha", formatTravelDate(payload.date)],
+        ["Viajeros", formatTravelers(payload.adults, payload.children)],
+        ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+        ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"]
+      ];
+      if (payLaterValue > 0.01) {
+        rows.push(["Total del servicio", payload.serviceTotal]);
+        rows.push(["Saldo pendiente", payload.payLater]);
+      }
+
+      review.hidden = false;
+      review.innerHTML = `
+        <div class="passenger-review-card passenger-review-card--final passenger-review-card--v73">
+          <div class="passenger-review-card__header">
+            <strong>Resumen de tu reserva</strong>
+            <span>Revisa los datos antes de continuar al pago.</span>
+          </div>
+          <div class="passenger-review-total">
+            <span>${esc(paymentLabel)}</span>
+            <strong>${esc(payload.payNow || "")}</strong>
+            ${hasDiscount ? `<small><span>Antes:</span> <del>${esc(payload.serviceTotal || "")}</del> <b>Ahorras ${esc(payload.currency || currency())} ${esc(formatMoney(discountAmount))}</b></small>` : ""}
+          </div>
+          <div class="passenger-review-grid passenger-review-grid--final">
+            ${rows.map(([label, value]) => `<div><span>${esc(label)}</span><strong>${esc(value || "-")}</strong></div>`).join("")}
+          </div>
+          <div class="passenger-review-passengers">
+            <strong>Datos de pasajeros</strong>
+            <ul class="passenger-review-list">${passengerRows}</ul>
+          </div>
+          <button class="passenger-review-edit-btn" type="button" data-edit-passenger-details>Editar datos de pasajeros</button>
+        </div>
+      `;
+
+      if (modal) modal.classList.add("passenger-modal--review");
+      const title = document.getElementById("passengerModalTitle");
+      if (title) title.textContent = "Resumen de tu reserva";
+      const warning = document.querySelector(".passenger-modal__warning");
+      if (warning) warning.hidden = true;
+      const message = document.querySelector("[data-passenger-message]");
+      if (message) {
+        message.textContent = "";
+        message.classList.remove("is-error");
+      }
+      const submit = form?.querySelector('button[type="submit"]');
+      if (submit) submit.textContent = "Pagar";
+      review.querySelector("[data-edit-passenger-details]")?.addEventListener("click", () => {
+        if (form) delete form.dataset.paymentReviewConfirmed;
+        if (modal) modal.classList.remove("passenger-modal--review");
+        review.hidden = true;
+        review.innerHTML = "";
+        if (title) title.textContent = "Datos de los pasajeros";
+        if (warning) warning.hidden = false;
+        if (submit) submit.textContent = "Continuar";
+        ensurePassengerActionButtons();
+      });
+      review.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    proto.renderSelectedTrainSummaryV70 = function (train, direction) {
+      if (!train) return "";
+      const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido / sin recargo";
+      const logo = this.getTrainCompanyLogo?.(train.company) || "";
+      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
+      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
+      const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
+      return `
+        <article class="train-upgrade-selected-summary train-upgrade-selected-summary--v70 train-upgrade-selected-summary--v73">
+          <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
+          <div class="train-upgrade-selected-summary__content">
+            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
+            <div>
+              <strong>${esc(title)}</strong>
+              <b>${esc(`${train.companyName || train.company || ""} ${train.label || ""}`.trim())}</b>
+              <span>${esc(`${endpoints.from} ${train.departureTime || ""} → ${endpoints.to} ${train.arrivalTime || ""}`)}</span>
+              <em>${esc(diffText)}</em>
+            </div>
+            <button type="button" data-modify-train-upgrade data-train-direction="${esc(direction)}">${esc(modifyText)}</button>
+          </div>
+        </article>
+      `;
+    };
+    proto.renderSelectedTrainSummaryV69 = proto.renderSelectedTrainSummaryV70;
+
+    const oldRenderTrainLists = proto.renderTrainUpgradeListsV70 || proto.renderTrainUpgradeLists;
+    if (typeof oldRenderTrainLists === "function") {
+      proto.renderTrainUpgradeListsV70 = function () {
+        const result = oldRenderTrainLists.apply(this, arguments);
+        const finalSection = document.getElementById("trainUpgradeFinalSummarySection");
+        if (finalSection) finalSection.innerHTML = "";
+        const footer = document.getElementById("trainUpgradeFooterSummary");
+        const outboundTrain = this.findTrainById?.(this.trainUpgradeDraftOutboundId, this.availableOutboundTrains) || this.getSelectedOutboundTrain?.();
+        const returnTrain = this.findTrainById?.(this.trainUpgradeDraftReturnId, this.availableReturnTrains) || this.getSelectedReturnTrain?.();
+        const outboundDiff = this.getTrainPositiveDifferencePerPerson?.(outboundTrain, "outbound") || 0;
+        const returnDiff = this.getTrainPositiveDifferencePerPerson?.(returnTrain, "return") || 0;
+        const perPerson = outboundDiff + returnDiff;
+        const totalPassengers = this.getTotalPassengers?.() || 1;
+        const total = perPerson * totalPassengers;
+        if (footer) {
+          const note = this.trainUpgradeReturnConfirmed
+            ? `Cargo total para ${totalPassengers} ${totalPassengers === 1 ? "pasajero" : "pasajeros"}. Cargo por persona: ${currency()} ${formatMoney(perPerson)}.`
+            : "Confirma ida y retorno para aplicar el cambio.";
+          footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${esc(note)}</small>`;
+        }
+        const apply = document.querySelector("[data-apply-train-upgrade]");
+        if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
+        return result;
+      };
+      proto.renderTrainUpgradeLists = proto.renderTrainUpgradeListsV70;
+      proto.renderTrainUpgradeListsV69 = proto.renderTrainUpgradeListsV70;
+    }
+
+    page.__mctV73Applied = true;
+    try {
+      ensurePassengerActionButtons();
+      page.populatePhoneCodeSelects?.(document);
+    } catch (error) {
+      console.warn("MCT V73 post-apply warning:", error);
+    }
+    return true;
+  }
+
+  if (!patchV73()) {
+    document.addEventListener("DOMContentLoaded", patchV73);
+    setTimeout(patchV73, 250);
+    setTimeout(patchV73, 900);
+    setTimeout(patchV73, 1600);
+  }
+})();

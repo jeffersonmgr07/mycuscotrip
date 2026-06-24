@@ -7102,3 +7102,144 @@ body.passenger-modal-open {
     padding: 16px !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V73 - Botones no fijos, checkout y trenes compactos
+   ========================================================= */
+.passenger-modal__actions {
+  position: static !important;
+  bottom: auto !important;
+  z-index: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  margin-top: 18px !important;
+  padding: 8px 0 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.passenger-modal__actions .btn {
+  width: auto !important;
+  min-width: 148px !important;
+  max-width: none !important;
+  min-height: 48px !important;
+  padding: 13px 24px !important;
+  border-radius: 16px !important;
+  font-size: .94rem !important;
+  letter-spacing: .03em !important;
+  line-height: 1 !important;
+}
+
+.passenger-modal__cancel-btn {
+  border: 1px solid rgba(10, 58, 38, .34) !important;
+  background: #ffffff !important;
+  color: #0a3a26 !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+}
+
+.passenger-modal__actions .booking-main-btn {
+  background: #51683f !important;
+  border-color: #51683f !important;
+  color: #ffffff !important;
+  font-weight: 850 !important;
+  box-shadow: 0 12px 26px rgba(10, 58, 38, .18) !important;
+}
+
+.passenger-modal--review .passenger-modal__form > .passenger-modal__section,
+.passenger-modal--review .passenger-modal__form > .passenger-modal__message,
+.passenger-modal--review .passenger-modal__form > .passenger-modal__details-toggle,
+.passenger-modal--review .passenger-modal__form > .passenger-modal__snapshot {
+  display: none !important;
+}
+
+.passenger-review-total small {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  margin-top: 7px !important;
+  color: #637169 !important;
+  font-weight: 750 !important;
+}
+
+.passenger-review-total del {
+  color: #7b8780 !important;
+  text-decoration-thickness: 2px !important;
+}
+
+.passenger-review-list small {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content {
+  min-height: 92px !important;
+  padding: 18px 20px !important;
+  gap: 16px !important;
+}
+
+.train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content img {
+  width: 118px !important;
+  height: 58px !important;
+  object-fit: contain !important;
+}
+
+.train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div {
+  gap: 4px !important;
+}
+
+.train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content small {
+  display: none !important;
+}
+
+.train-upgrade-final-summary--v70 {
+  display: none !important;
+}
+
+.train-upgrade-modal__footer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+
+.train-upgrade-modal__footer-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.train-upgrade-modal__footer-actions .btn {
+  width: auto !important;
+  min-width: 170px !important;
+  max-width: none !important;
+  padding-inline: 24px !important;
+}
+
+.train-upgrade-apply-btn {
+  font-weight: 800 !important;
+  letter-spacing: .04em !important;
+}
+
+@media (max-width: 760px) {
+  .passenger-modal__actions,
+  .train-upgrade-modal__footer-actions {
+    justify-content: stretch !important;
+  }
+  .passenger-modal__actions .btn,
+  .train-upgrade-modal__footer-actions .btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+  .train-upgrade-modal__footer {
+    grid-template-columns: 1fr !important;
+  }
+}
