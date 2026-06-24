@@ -6676,3 +6676,239 @@ body.train-upgrade-modal-open {
     grid-template-columns: 1fr 1fr !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V71 - Afinación estética modales, extras y header
+   ========================================================= */
+
+/* Modal Upgrade de trenes: cabecera oscura y más compacta */
+.train-upgrade-modal--v70 .train-upgrade-modal__header,
+.train-upgrade-modal__header {
+  background: #0a3a26 !important;
+  color: #ffffff !important;
+  border-bottom: 0 !important;
+  padding: 16px 72px 14px 24px !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-modal__header p,
+.train-upgrade-modal__header p {
+  color: rgba(255,255,255,.72) !important;
+  font-size: .72rem !important;
+  letter-spacing: .12em !important;
+  margin-bottom: 4px !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-modal__header h2,
+.train-upgrade-modal__header h2 {
+  color: #ffffff !important;
+  font-size: clamp(1.55rem, 2.65vw, 2.25rem) !important;
+  letter-spacing: -.035em !important;
+  line-height: 1.05 !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-modal__header span,
+.train-upgrade-modal__header span {
+  display: block !important;
+  color: rgba(255,255,255,.78) !important;
+  font-size: .88rem !important;
+  margin-top: 6px !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-modal__close,
+.train-upgrade-modal__close {
+  background: rgba(255,255,255,.14) !important;
+  color: #ffffff !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-modal__close:hover,
+.train-upgrade-modal__close:hover {
+  background: rgba(255,255,255,.22) !important;
+}
+
+/* Cards de selección un poco menos toscas */
+.train-upgrade-card--v70 .train-upgrade-card__main {
+  padding: 14px 18px !important;
+  min-height: 86px !important;
+}
+
+.train-upgrade-card--v70 .train-upgrade-card__details {
+  margin: 0 16px 16px !important;
+  padding: 14px !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.train-upgrade-card--v70 .train-upgrade-card__details img {
+  height: 150px !important;
+  border-radius: 16px !important;
+}
+
+.train-upgrade-card--v70 .train-upgrade-card__details strong {
+  font-size: 1.02rem !important;
+}
+
+.train-upgrade-card--v70 .train-upgrade-card__details li {
+  font-size: .86rem !important;
+  line-height: 1.28 !important;
+  margin-bottom: 4px !important;
+}
+
+.train-upgrade-card--v70 .train-upgrade-select-btn {
+  min-height: 42px !important;
+  padding: 10px 18px !important;
+  font-size: .88rem !important;
+  font-weight: 800 !important;
+  letter-spacing: .015em !important;
+}
+
+.train-upgrade-modal--v70 .train-upgrade-apply-btn,
+.train-upgrade-modal--v70 .train-upgrade-cancel-btn {
+  font-weight: 800 !important;
+  letter-spacing: .02em !important;
+  font-size: .9rem !important;
+}
+
+/* Menú de extras/almuerzo con estilo My Cusco Trip */
+#extrasSection label,
+#extrasSection > label {
+  color: #0a3a26 !important;
+  font-weight: 950 !important;
+}
+
+.booking-extra-select {
+  width: 100% !important;
+  min-height: 52px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(10,58,38,.16) !important;
+  background-color: #ffffff !important;
+  color: #0a3a26 !important;
+  font-weight: 850 !important;
+  font-size: .96rem !important;
+  padding: 0 46px 0 16px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: 0 10px 26px rgba(10,58,38,.06) !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #0a3a26 50%),
+    linear-gradient(135deg, #0a3a26 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.booking-extra-select:focus {
+  outline: 0 !important;
+  border-color: #566b3f !important;
+  box-shadow: 0 0 0 4px rgba(86,107,63,.16), 0 10px 26px rgba(10,58,38,.08) !important;
+}
+
+#extrasSection .booking-field-help {
+  color: #6b7a72 !important;
+  font-size: .78rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Modal de pasajeros: cabecera verde oscura como referencia adjunta */
+.passenger-modal__dialog {
+  overflow: hidden !important;
+}
+
+.passenger-modal__header {
+  background: #0a3a26 !important;
+  color: #ffffff !important;
+  padding: 24px 78px 20px 28px !important;
+  border-bottom: 0 !important;
+}
+
+.passenger-modal__titlebar::before {
+  content: "RESERVA MY CUSCO TRIP";
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,.70);
+  font-size: .78rem;
+  font-weight: 950;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.passenger-modal__titlebar h2,
+#passengerModalTitle,
+.passenger-modal__header .passenger-modal__titlebar h2 {
+  color: #ffffff !important;
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.035em !important;
+  margin: 0 !important;
+}
+
+.passenger-modal__meta-row {
+  display: block !important;
+  margin-top: 10px !important;
+}
+
+.passenger-modal__paynow-card {
+  display: none !important;
+}
+
+.passenger-modal__code-card {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: rgba(255,255,255,.82) !important;
+  border-radius: 0 !important;
+}
+
+.passenger-modal__inline-label {
+  color: rgba(255,255,255,.74) !important;
+  font-size: .94rem !important;
+  font-weight: 800 !important;
+}
+
+.passenger-modal__code {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .04em !important;
+}
+
+.passenger-modal__subtitle {
+  margin: 4px 0 0 !important;
+  color: rgba(255,255,255,.72) !important;
+  font-size: .84rem !important;
+  font-weight: 750 !important;
+}
+
+.passenger-modal__warning {
+  margin-top: 14px !important;
+  background: rgba(255,255,255,.10) !important;
+  color: rgba(255,255,255,.86) !important;
+  border-left-color: rgba(255,255,255,.55) !important;
+}
+
+.passenger-modal__close {
+  background: rgba(255,255,255,.14) !important;
+  color: #ffffff !important;
+}
+
+.passenger-modal__close:hover {
+  background: rgba(255,255,255,.22) !important;
+}
+
+@media (max-width: 760px) {
+  .train-upgrade-modal--v70 .train-upgrade-modal__header,
+  .train-upgrade-modal__header,
+  .passenger-modal__header {
+    padding: 18px 58px 16px 18px !important;
+  }
+  .train-upgrade-card--v70 .train-upgrade-card__details img {
+    height: 170px !important;
+  }
+}

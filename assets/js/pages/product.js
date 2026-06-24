@@ -7030,3 +7030,75 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV70, 1600);
   }
 })();
+
+/* =========================================================
+   PATCH MCT V71 - Header reserva y ajustes estéticos finales
+   ========================================================= */
+(function () {
+  function patchV71() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV71Applied) return true;
+
+    const proto = Object.getPrototypeOf(page) || page;
+    const oldOpen = proto.openPassengerReservationModal;
+
+    function formatReservationDateOnly(value) {
+      const date = value ? new Date(value) : new Date();
+      if (Number.isNaN(date.getTime())) return "Reserva generada";
+      try {
+        return `Reserva generada: ${date.toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" }).replace(/\./g, "")}`;
+      } catch (_) {
+        return `Reserva generada: ${date.toLocaleDateString("es-PE")}`;
+      }
+    }
+
+    proto.applyPassengerHeaderV71 = function () {
+      const modal = document.getElementById("passengerReservationModal");
+      if (!modal) return;
+      const title = document.getElementById("passengerModalTitle");
+      const timestamp = document.getElementById("passengerReservationTimestamp");
+      if (title && !modal.classList.contains("passenger-modal--review")) title.textContent = "Datos de los pasajeros";
+      if (timestamp) timestamp.textContent = formatReservationDateOnly(this.currentPreReservation?.createdAt);
+    };
+
+    proto.openPassengerReservationModal = function () {
+      const result = oldOpen.apply(this, arguments);
+      this.applyPassengerHeaderV71?.();
+      return result;
+    };
+
+    const oldRenderExtras = proto.renderExtras;
+    proto.renderExtras = function (extras) {
+      const result = oldRenderExtras.apply(this, arguments);
+      const section = document.getElementById("extrasSection");
+      const label = section?.querySelector("label");
+      if (label) label.textContent = "Extras: opciones de almuerzo";
+      return result;
+    };
+
+    const oldRenderPaymentReviewStep = proto.renderPaymentReviewStep;
+    if (typeof oldRenderPaymentReviewStep === "function") {
+      proto.renderPaymentReviewStep = function (payload) {
+        const result = oldRenderPaymentReviewStep.apply(this, arguments);
+        const title = document.getElementById("passengerModalTitle");
+        if (title) title.textContent = "Resumen de tu reserva";
+        return result;
+      };
+    }
+
+    page.__mctV71Applied = true;
+    try {
+      page.applyPassengerHeaderV71?.();
+    } catch (error) {
+      console.warn("MCT V71 post-apply warning:", error);
+    }
+    return true;
+  }
+
+  if (!patchV71()) {
+    document.addEventListener("DOMContentLoaded", patchV71);
+    setTimeout(patchV71, 250);
+    setTimeout(patchV71, 900);
+  }
+})();
