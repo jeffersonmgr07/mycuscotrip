@@ -7351,151 +7351,72 @@ document.addEventListener("click", function (event) {
 })();
 
 /* =========================================================
-   PATCH MCT V74 - Mobile UX for train modal and checkout review
+   PATCH MCT V76 - Review móvil y botones / sin zoom iOS
    ========================================================= */
 (function () {
-  function patchV74() {
+  function patchV76() {
     const page = window.MyCuscoTripProductPage;
     if (!page) return false;
-    if (page.__mctV74Applied) return true;
+    if (page.__mctV76Applied) return true;
+
     const proto = Object.getPrototypeOf(page) || page;
     const esc = function (value) {
       if (typeof page.escapeHtml === "function") return page.escapeHtml(value ?? "");
       return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
     };
-    const money = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
-    const curr = () => page.product?.currency || "USD";
+    const formatMoney = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const currency = () => page.product?.currency || "USD";
 
     function normalizeDocumentType(value) {
-      const key = String(value || "").trim().toLowerCase();
-      const map = { dni: "DNI", passport: "Pasaporte", pasaporte: "Pasaporte", id_card: "Documento de identidad", document: "Documento", other: "Otro", otro: "Otro" };
-      if (map[key]) return map[key];
-      if (!key) return "";
-      return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
+      const raw = String(value || "").trim();
+      const lower = raw.toLowerCase();
+      if (!raw) return "";
+      if (["dni", "d.n.i", "documento nacional de identidad"].includes(lower)) return "DNI";
+      if (["passport", "pasaporte"].includes(lower)) return "Pasaporte";
+      if (["ce", "c.e.", "carnet de extranjeria", "carné de extranjería", "carnet de extranjería"].includes(lower)) return "CE";
+      if (["id", "identity card"].includes(lower)) return "Documento de identidad";
+      return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
     }
+
     function formatTravelDate(value) {
       if (!value) return "-";
-      const raw = String(value).trim();
-      const iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
-      let date = null;
-      if (iso) date = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
-      else {
-        const parsed = new Date(raw);
-        if (!Number.isNaN(parsed.getTime())) date = parsed;
-      }
-      if (date && !Number.isNaN(date.getTime())) {
-        return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/ de /g, " ");
-      }
-      return raw.replace(/\bde\s+/gi, "").replace(/,/g, "");
+      const raw = String(value);
+      const date = new Date(`${raw}T12:00:00`);
+      if (Number.isNaN(date.getTime())) return raw;
+      return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
     }
+
     function formatTravelers(adults, children) {
       const a = Number(adults || 0);
       const c = Number(children || 0);
-      const parts = [`${a} ${a === 1 ? "adulto" : "adultos"}`];
+      const parts = [];
+      if (a > 0) parts.push(`${a} ${a === 1 ? "adulto" : "adultos"}`);
       if (c > 0) parts.push(`${c} ${c === 1 ? "niño" : "niños"}`);
-      return parts.join(" · ");
+      return parts.join(", ") || "-";
     }
-    function splitTrainLines(value) {
-      const raw = String(value || "").trim();
-      if (!raw) return "Incluidos según selección";
-      const chunks = raw.split(/\s*[|\n]+\s*/).filter(Boolean);
-      if (chunks.length > 1) return `<div class="passenger-review-train-lines">${chunks.map((line) => `<span>${esc(line)}</span>`).join("")}</div>`;
-      const fixed = raw.replace(/\s*(Retorno|Tren de retorno)\s*:/i, "|Retorno:");
-      const lines = fixed.split("|").filter(Boolean);
-      if (lines.length > 1) return `<div class="passenger-review-train-lines">${lines.map((line) => `<span>${esc(line.trim())}</span>`).join("")}</div>`;
-      return esc(raw);
+
+    function trainLine(train, label) {
+      if (!train) return "";
+      const name = String(train.label || "Tren").trim();
+      const time = String(train.departureTime || "").trim();
+      return `<span>${esc(label)}: ${esc(name.toUpperCase())}${time ? ` ${esc(time)}` : ""}</span>`;
     }
-    function ensurePassengerButtons() {
+
+    function ensurePassengerActionButtons() {
       const actions = document.querySelector(".passenger-modal__actions");
       if (!actions) return;
-      const submit = actions.querySelector('button[type="submit"]');
       let cancel = actions.querySelector(".passenger-modal__cancel-btn");
+      const submit = actions.querySelector('button[type="submit"]');
       if (!cancel) {
         cancel = document.createElement("button");
         cancel.type = "button";
         cancel.className = "btn passenger-modal__cancel-btn";
+        cancel.setAttribute("data-close-passenger-modal", "");
         cancel.textContent = "Cancelar";
         actions.insertBefore(cancel, submit || null);
       }
       cancel.onclick = () => page.closePassengerReservationModal?.();
-    }
-
-    proto.renderTrainUpgradeCardV70 = function (train, direction) {
-      const expandedId = direction === "outbound" ? this.expandedOutboundTrainId : this.expandedReturnTrainId;
-      const selectedId = direction === "outbound" ? this.trainUpgradeDraftOutboundId : this.trainUpgradeDraftReturnId;
-      const expanded = expandedId === train.id;
-      const selected = selectedId === train.id;
-      const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
-      const diffText = diff > 0 ? `+ ${curr()} ${money(diff)}` : "Incluido";
-      const logo = this.getTrainCompanyLogo?.(train.company) || "";
-      const image = this.getTrainImageForUpgrade?.(train) || "";
-      const features = this.getTrainFeatureListForUpgrade?.(train) || [];
-      const duration = this.formatTrainDurationForUpgrade?.(train) || "";
-      const directionLabel = direction === "outbound" ? "tren de ida" : "tren de retorno";
-      const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
-      return `
-        <article class="train-upgrade-card train-upgrade-card--v69 train-upgrade-card--v70 train-upgrade-card--v74 ${expanded ? "is-expanded" : ""} ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">
-          <div class="train-upgrade-card__main">
-            <span class="train-upgrade-card__radio" aria-hidden="true"></span>
-            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" />` : ""}</span>
-            <span class="train-upgrade-card__service"><strong>${esc(train.label || "Tren")}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
-            <span class="train-upgrade-card__route-row">
-              <span class="train-upgrade-card__station"><em>Salida</em><b>${esc(train.departureTime || "")}</b><small>${esc(endpoints.from)}</small></span>
-              <span class="train-upgrade-card__duration">${esc(duration)}</span>
-              <span class="train-upgrade-card__station"><em>Llegada</em><b>${esc(train.arrivalTime || "")}</b><small>${esc(endpoints.to)}</small></span>
-            </span>
-            <span class="train-upgrade-card__price"><em>Cargo adicional</em><b>${esc(diffText)}</b></span>
-          </div>
-          <div class="train-upgrade-card__details">
-            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || "Tren")}" loading="lazy" />` : ""}
-            <details class="train-upgrade-card__features">
-              <summary>Ver características</summary>
-              <ul>${features.map((feature) => `<li>${esc(feature)}</li>`).join("")}</ul>
-            </details>
-            <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">Seleccionar este ${esc(directionLabel)}</button>
-          </div>
-        </article>
-      `;
-    };
-    proto.renderTrainUpgradeCard = proto.renderTrainUpgradeCardV70;
-    proto.renderTrainUpgradeCardV69 = proto.renderTrainUpgradeCardV70;
-
-    proto.renderSelectedTrainSummaryV70 = function (train, direction) {
-      if (!train) return "";
-      const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
-      const diffText = diff > 0 ? `+ ${curr()} ${money(diff)}` : "Incluido";
-      const logo = this.getTrainCompanyLogo?.(train.company) || "";
-      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
-      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
-      const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
-      return `
-        <article class="train-upgrade-selected-summary train-upgrade-selected-summary--v70 train-upgrade-selected-summary--v73 train-upgrade-selected-summary--v74">
-          <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
-          <div class="train-upgrade-selected-summary__content">
-            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
-            <div>
-              <strong>${esc(title)}</strong>
-              <b>${esc(train.label || "Tren")}</b>
-              <span>${esc(`${endpoints.from} ${train.departureTime || ""} → ${endpoints.to} ${train.arrivalTime || ""}`)}</span>
-              <em>${esc(diffText)}</em>
-            </div>
-            <button type="button" data-modify-train-upgrade data-train-direction="${esc(direction)}">${esc(modifyText)}</button>
-          </div>
-        </article>
-      `;
-    };
-    proto.renderSelectedTrainSummaryV69 = proto.renderSelectedTrainSummaryV70;
-
-    const previousRenderLists = proto.renderTrainUpgradeListsV70 || proto.renderTrainUpgradeLists;
-    if (typeof previousRenderLists === "function") {
-      proto.renderTrainUpgradeListsV70 = function () {
-        const result = previousRenderLists.apply(this, arguments);
-        const apply = document.querySelector("[data-apply-train-upgrade]");
-        if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
-        return result;
-      };
-      proto.renderTrainUpgradeLists = proto.renderTrainUpgradeListsV70;
-      proto.renderTrainUpgradeListsV69 = proto.renderTrainUpgradeListsV70;
+      if (submit && !submit.textContent.trim()) submit.textContent = "Continuar";
     }
 
     proto.renderPaymentReviewStep = function (payload) {
@@ -7503,7 +7424,8 @@ document.addEventListener("click", function (event) {
       const modal = document.getElementById("passengerReservationModal");
       const form = document.getElementById("passengerReservationForm");
       if (!review) return;
-      ensurePassengerButtons();
+
+      ensurePassengerActionButtons();
 
       const serviceTotalValue = Number(payload.serviceTotalValue || 0);
       const payNowValue = Number(payload.payNowValue || 0);
@@ -7524,29 +7446,32 @@ document.addEventListener("click", function (event) {
         </li>`;
       }).join("");
 
-      const trainHtml = splitTrainLines(payload.summary?.trainSelection || "Incluidos según selección");
+      const outboundTrain = this.getSelectedOutboundTrain?.() || this.findTrainById?.(this.selectedOutboundTrainId, this.availableOutboundTrains);
+      const returnTrain = this.getSelectedReturnTrain?.() || this.findTrainById?.(this.selectedReturnTrainId, this.availableReturnTrains);
+      const trainHtml = `<div class="passenger-review-train-lines">${trainLine(outboundTrain, "Ida")}${trainLine(returnTrain, "Retorno") || "<span>Retorno: incluido según selección</span>"}</div>`;
+
       const rows = [
-        ["Experiencia", esc(payload.productTitle || "-")],
-        ["Fecha", esc(formatTravelDate(payload.date))],
-        ["Viajeros", esc(formatTravelers(payload.adults, payload.children))],
-        ["Trenes", trainHtml, true],
-        ["Extras", esc(payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras")]
+        { label: "Experiencia", value: payload.productTitle },
+        { label: "Fecha", value: formatTravelDate(payload.date) },
+        { label: "Viajeros", value: formatTravelers(payload.adults, payload.children) },
+        { label: "Trenes", html: trainHtml },
+        { label: "Extras", value: payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras" }
       ];
       if (payLaterValue > 0.01) {
-        rows.push(["Total del servicio", esc(payload.serviceTotal || "-")]);
-        rows.push(["Saldo pendiente", esc(payload.payLater || "-")]);
+        rows.push({ label: "Total del servicio", value: payload.serviceTotal });
+        rows.push({ label: "Saldo pendiente", value: payload.payLater });
       }
 
       review.hidden = false;
       review.innerHTML = `
-        <div class="passenger-review-card passenger-review-card--final passenger-review-card--v73 passenger-review-card--v74">
+        <div class="passenger-review-card passenger-review-card--final passenger-review-card--v73 passenger-review-card--v76">
           <div class="passenger-review-total">
             <span>${esc(paymentLabel)}</span>
             <strong>${esc(payload.payNow || "")}</strong>
-            ${hasDiscount ? `<small><span>Antes:</span> <del>${esc(payload.serviceTotal || "")}</del> <b>Ahorras ${esc(payload.currency || curr())} ${esc(money(discountAmount))}</b></small>` : ""}
+            ${hasDiscount ? `<small><span>Antes:</span> <del>${esc(payload.serviceTotal || "")}</del> <b>Ahorras ${esc(payload.currency || currency())} ${esc(formatMoney(discountAmount))}</b></small>` : ""}
           </div>
           <div class="passenger-review-grid passenger-review-grid--final">
-            ${rows.map(([label, value, isHtml]) => `<div><span>${esc(label)}</span><strong>${isHtml ? value : value}</strong></div>`).join("")}
+            ${rows.map((row) => `<div><span>${esc(row.label)}</span><strong>${row.html || esc(row.value || "-")}</strong></div>`).join("")}
           </div>
           <div class="passenger-review-passengers">
             <strong>Datos de pasajeros</strong>
@@ -7562,10 +7487,12 @@ document.addEventListener("click", function (event) {
       const warning = document.querySelector(".passenger-modal__warning");
       if (warning) warning.hidden = true;
       const message = document.querySelector("[data-passenger-message]");
-      if (message) { message.textContent = ""; message.classList.remove("is-error"); }
+      if (message) {
+        message.textContent = "";
+        message.classList.remove("is-error");
+      }
       const submit = form?.querySelector('button[type="submit"]');
       if (submit) submit.textContent = "Pagar";
-      ensurePassengerButtons();
       review.querySelector("[data-edit-passenger-details]")?.addEventListener("click", () => {
         if (form) delete form.dataset.paymentReviewConfirmed;
         if (modal) modal.classList.remove("passenger-modal--review");
@@ -7574,28 +7501,33 @@ document.addEventListener("click", function (event) {
         if (title) title.textContent = "Datos de los pasajeros";
         if (warning) warning.hidden = false;
         if (submit) submit.textContent = "Continuar";
-        ensurePassengerButtons();
+        ensurePassengerActionButtons();
       });
       review.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
-    const oldOpen = proto.openPassengerReservationModal;
-    if (typeof oldOpen === "function") {
+    const oldOpenPassenger = proto.openPassengerReservationModal;
+    if (typeof oldOpenPassenger === "function") {
       proto.openPassengerReservationModal = function () {
-        const result = oldOpen.apply(this, arguments);
-        setTimeout(ensurePassengerButtons, 0);
+        const result = oldOpenPassenger.apply(this, arguments);
+        window.setTimeout(() => {
+          ensurePassengerActionButtons();
+          const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
+          if (submit && submit.textContent.trim() !== "Pagar") submit.textContent = "Continuar";
+        }, 0);
         return result;
       };
     }
 
-    page.__mctV74Applied = true;
-    try { ensurePassengerButtons(); } catch (_) {}
+    page.__mctV76Applied = true;
+    try { ensurePassengerActionButtons(); } catch (error) { console.warn("MCT V76 post-apply warning:", error); }
     return true;
   }
-  if (!patchV74()) {
-    document.addEventListener("DOMContentLoaded", patchV74);
-    setTimeout(patchV74, 300);
-    setTimeout(patchV74, 900);
-    setTimeout(patchV74, 1600);
+
+  if (!patchV76()) {
+    document.addEventListener("DOMContentLoaded", patchV76);
+    setTimeout(patchV76, 250);
+    setTimeout(patchV76, 900);
+    setTimeout(patchV76, 1600);
   }
 })();

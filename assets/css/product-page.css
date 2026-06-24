@@ -7673,3 +7673,268 @@ body.passenger-modal-open {
     font-size: 0.82rem !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V76 - Ajustes móviles finales checkout/trenes
+   ========================================================= */
+@media (max-width: 760px) {
+  /* Evita zoom automático de iOS al enfocar campos */
+  .passenger-modal input,
+  .passenger-modal select,
+  .passenger-modal textarea,
+  .passenger-modal button {
+    font-size: 16px !important;
+  }
+
+  /* Botones del modal de pasajeros y resumen siempre en una línea */
+  .passenger-modal__actions {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+    padding-top: 8px !important;
+  }
+
+  .passenger-modal__actions .btn,
+  .passenger-modal__actions .booking-main-btn,
+  .passenger-modal__actions .passenger-modal__cancel-btn {
+    flex: 0 1 auto !important;
+    width: auto !important;
+    min-width: 132px !important;
+    max-width: 48% !important;
+    min-height: 46px !important;
+    padding: 12px 18px !important;
+    border-radius: 999px !important;
+    font-size: 0.92rem !important;
+    white-space: nowrap !important;
+  }
+
+  .passenger-review-list,
+  .passenger-review-list li,
+  .passenger-review-passenger {
+    width: 100% !important;
+  }
+
+  .passenger-review-list li,
+  .passenger-review-passenger {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    align-items: start !important;
+    text-align: left !important;
+    padding: 16px 16px !important;
+  }
+
+  .passenger-review-list li span,
+  .passenger-review-passenger span {
+    display: block !important;
+    font-size: 1.05rem !important;
+    line-height: 1.1 !important;
+    color: var(--mct-green-deep, #083f2b) !important;
+    font-weight: 900 !important;
+  }
+
+  .passenger-review-list li strong,
+  .passenger-review-passenger strong {
+    display: block !important;
+    font-size: 1rem !important;
+    line-height: 1.2 !important;
+    color: var(--mct-green-deep, #083f2b) !important;
+    font-weight: 850 !important;
+    margin: 0 !important;
+  }
+
+  .passenger-review-passenger.is-pending strong {
+    color: #a45b13 !important;
+  }
+
+  .passenger-review-train-lines {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    text-align: left !important;
+  }
+
+  .passenger-review-train-lines span {
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  /* Modal trenes: cards móviles tipo selector de trenes */
+  .train-upgrade-modal--v70 .train-upgrade-modal__body {
+    padding: 14px 14px 112px !important;
+  }
+
+  .train-upgrade-card--v70 {
+    border-radius: 22px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__main {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas:
+      "service service service"
+      "from duration to"
+      "divider divider divider"
+      "price price price" !important;
+    gap: 10px 8px !important;
+    padding: 18px 16px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__service strong {
+    font-size: clamp(1.08rem, 5.8vw, 1.34rem) !important;
+    line-height: 1.06 !important;
+    max-width: 100% !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__service small {
+    font-size: 0.9rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__station b {
+    font-size: clamp(1.58rem, 8.4vw, 1.96rem) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__station small {
+    font-size: clamp(0.78rem, 3.9vw, 0.94rem) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__duration {
+    min-width: 86px !important;
+    padding: 8px 10px !important;
+    font-size: 0.8rem !important;
+    transform: translateY(4px) !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price {
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    border-radius: 999px !important;
+    background: #edf8f1 !important;
+    overflow: hidden !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price em {
+    max-width: 42% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price b {
+    font-size: clamp(1.08rem, 6vw, 1.45rem) !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .train-upgrade-card--v70.is-expanded .train-upgrade-card__details {
+    display: grid !important;
+    margin: 0 14px 16px !important;
+    padding: 12px !important;
+    border-radius: 20px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__details img {
+    height: 178px !important;
+    border-radius: 16px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__details strong {
+    font-size: 0.98rem !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__details li {
+    font-size: 0.84rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-select-btn {
+    border-radius: 16px !important;
+    min-height: 46px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Tren seleccionado en móvil: título/logo a la izquierda y datos debajo */
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content {
+    display: grid !important;
+    grid-template-columns: 78px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 14px !important;
+  }
+
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content img {
+    width: 78px !important;
+    height: 48px !important;
+  }
+
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div {
+    display: grid !important;
+    gap: 4px !important;
+    text-align: left !important;
+  }
+
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div strong,
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div b,
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div span,
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content div em {
+    overflow-wrap: anywhere !important;
+  }
+
+  .train-upgrade-selected-summary--v70 .train-upgrade-selected-summary__content button {
+    grid-column: 1 / -1 !important;
+    min-height: 44px !important;
+  }
+
+  .train-upgrade-modal--v70 .train-upgrade-modal__footer {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .train-upgrade-modal--v70 .train-upgrade-modal__footer-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .train-upgrade-modal--v70 .train-upgrade-cancel-btn,
+  .train-upgrade-modal--v70 .train-upgrade-apply-btn {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 46px !important;
+    border-radius: 999px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .passenger-modal__actions .btn,
+  .passenger-modal__actions .booking-main-btn,
+  .passenger-modal__actions .passenger-modal__cancel-btn {
+    min-width: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    font-size: 0.84rem !important;
+  }
+  .train-upgrade-card--v70 .train-upgrade-card__duration {
+    min-width: 72px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
