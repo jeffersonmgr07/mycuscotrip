@@ -7938,3 +7938,59 @@ body.passenger-modal-open {
     padding-right: 8px !important;
   }
 }
+
+
+/* =========================================================
+   V77 - Ajuste fino móvil: tamaños en cards de trenes
+   Solo reduce ligeramente horas y badge de cargo/incluido.
+   No afecta escritorio.
+   ========================================================= */
+@media (max-width: 640px) {
+  .train-upgrade-card--v70 .train-upgrade-card__station b {
+    font-size: clamp(1.42rem, 7.2vw, 1.74rem) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__station small {
+    font-size: clamp(0.74rem, 3.55vw, 0.88rem) !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__duration {
+    font-size: 0.76rem !important;
+    padding: 7px 9px !important;
+    min-width: 80px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price {
+    gap: 6px !important;
+    padding: 9px 12px !important;
+    min-height: 42px !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price em {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.075em !important;
+    max-width: 44% !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price b {
+    font-size: clamp(0.98rem, 5.15vw, 1.24rem) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.025em !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .train-upgrade-card--v70 .train-upgrade-card__station b {
+    font-size: clamp(1.28rem, 7vw, 1.56rem) !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price em {
+    font-size: 0.52rem !important;
+  }
+
+  .train-upgrade-card--v70 .train-upgrade-card__price b {
+    font-size: clamp(0.88rem, 4.8vw, 1.08rem) !important;
+  }
+}
