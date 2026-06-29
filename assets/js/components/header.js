@@ -13,6 +13,7 @@ class MyCuscoTripHeader {
 
     this.currentActiveLink = null;
     this.dropdownCloseDelay = 200;
+    this.mobileBreakpoint = 1120;
     this.dropdownTimers = new WeakMap();
     this.slugMapCache = new Map();
 
@@ -147,7 +148,7 @@ class MyCuscoTripHeader {
     const href = link.getAttribute("href") || "";
     const isDropdownToggle = link.classList.contains("nav-dropdown-toggle");
 
-    if (window.innerWidth < 992 && isDropdownToggle) {
+    if (window.innerWidth < this.mobileBreakpoint && isDropdownToggle) {
       event.preventDefault();
       const parent = link.closest(".nav-item--dropdown");
       const isOpen = parent?.classList.contains("is-open") || parent?.classList.contains("is-dropdown-open");
@@ -169,7 +170,7 @@ class MyCuscoTripHeader {
 
     this.setActiveLink(link);
 
-    if (window.innerWidth < 992 && !isDropdownToggle) {
+    if (window.innerWidth < this.mobileBreakpoint && !isDropdownToggle) {
       this.closeMobileMenu();
       const icon = this.mobileMenuBtn?.querySelector("i");
       if (icon) {
@@ -250,6 +251,32 @@ class MyCuscoTripHeader {
       });
     }
 
+    if (currentFile === "product.html" && currentSearch) {
+      const params = new URLSearchParams(currentSearch);
+      const currentSlug = params.get("slug") || "";
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && currentSlug && href.includes(`slug=${encodeURIComponent(currentSlug)}`)) activeLink = link;
+      });
+    }
+
+    if (currentFile === "quote-packages.html") {
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && href.includes("quote-packages.html")) activeLink = link;
+      });
+    }
+
+    if (cleanPathForSection.includes("/pages/informacion-util/") || cleanPathForSection.includes("/pages/ayuda/")) {
+      this.navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        link.classList.remove("active");
+        if (!activeLink && (href.includes("/pages/informacion-util/") || href.includes("/pages/ayuda/"))) activeLink = link;
+      });
+    }
+
     this.navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
       link.classList.remove("active");
@@ -284,7 +311,7 @@ class MyCuscoTripHeader {
   }
 
   handleResize() {
-    if (window.innerWidth >= 992) {
+    if (window.innerWidth >= this.mobileBreakpoint) {
       this.closeMobileMenu();
 
       const icon = this.mobileMenuBtn?.querySelector("i");
@@ -308,7 +335,7 @@ class MyCuscoTripHeader {
     }
 
     if (
-      window.innerWidth < 992 &&
+      window.innerWidth < this.mobileBreakpoint &&
       this.navMenu &&
       this.mobileMenuBtn &&
       this.navMenu.classList.contains("active") &&
@@ -480,11 +507,30 @@ class MyCuscoTripHeader {
     this.navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
       if (!href || href.startsWith("http") || href.startsWith("#")) return;
+      if (link.dataset.noLocalize === "true") return;
+
       const url = new URL(href, window.location.origin);
       const parts = url.pathname.split("/").filter(Boolean);
       if (["en", "pt", "fr", "de", "it", "zh", "ja"].includes(parts[0])) parts.shift();
       const clean = parts.join("/") || "index.html";
-      link.setAttribute("href", `${pagePrefix}${clean === "index.html" ? "" : clean}${url.search}${url.hash}`);
+      const params = new URLSearchParams(url.search);
+
+      const setLocalizedHref = (queryParams = params) => {
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : "";
+        link.setAttribute("href", `${pagePrefix}${clean === "index.html" ? "" : clean}${query}${url.hash}`);
+      };
+
+      const productId = String(link.dataset.productId || "").trim();
+      if (clean === "product.html" && productId) {
+        this.loadSlugIndex(currentLang).then((index) => {
+          const translatedSlug = index.get(productId);
+          if (translatedSlug) params.set("slug", translatedSlug);
+          setLocalizedHref(params);
+        }).catch(() => setLocalizedHref(params));
+        return;
+      }
+
+      setLocalizedHref(params);
     });
     this.langLinks.forEach((link) => {
       const targetLang = link.dataset.lang || "es";

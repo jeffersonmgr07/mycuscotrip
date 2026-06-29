@@ -1,0 +1,21 @@
+REESTRUCTURA MENÚ DE NAVEGACIÓN - MyCuscoTrip
+
+Archivos modificados incluidos:
+1) mycuscotrip-main/components/header.html
+2) mycuscotrip-main/assets/css/header.css
+3) mycuscotrip-main/assets/js/components/header.js
+4) mycuscotrip-main/assets/data/ui-translations.json
+
+Instrucciones:
+- Sube/reemplaza estos 4 archivos en las mismas rutas de tu repositorio GitHub.
+- No borres carpetas completas; reemplaza únicamente estos archivos.
+- Después de subir, limpia caché del navegador o prueba en modo incógnito.
+
+Cambios principales:
+- Menú reestructurado como OTA boutique especializada:
+  Machu Picchu / Paquetes Cusco / Experiencias Ancestrales / Trekking y Naturaleza / Guía de viaje.
+- Links directos a productos existentes mediante product.html?slug=...
+- Links al cotizador quote-packages.html para paquetes personalizados, Unión Eterna y renovación de votos.
+- Hoteles, restaurantes y páginas informativas quedan en Guía de viaje para no competir con los productos estrella.
+- Header responsive ajustado: menú móvil/hamburguesa desde 1120px para evitar saturación en laptops/tablets.
+- Traducciones agregadas para las nuevas etiquetas del menú en ES/EN/PT/FR/DE/IT/ZH/JA.
