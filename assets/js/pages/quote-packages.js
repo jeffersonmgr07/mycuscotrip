@@ -295,15 +295,25 @@
   function getInitialPackagePreset(intent) {
     const key = normalizeText(intent).replace(/_/g, "-");
     const presets = {
+      "machu-picchu-2d1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
+      "machu-picchu-2d-1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
       "machu-picchu-overnight-2d1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
       "machu-picchu-overnight-2d-1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
       "overnight-2d": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
-      "cusco-machu-picchu-3d2n": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
-      "cusco-machu-picchu-3d-2n": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
-      "paquetes-cusco-3-dias-2-noches": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
-      "cusco-magico-5d4n": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" },
-      "cusco-magico-5d-4n": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" },
-      "paquetes-cusco-5-dias-4-noches": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" }
+      "cusco-machu-picchu-3d2n": { days: 3, nights: 2, label: "Cusco Machu Picchu 3D/2N" },
+      "cusco-machu-picchu-3d-2n": { days: 3, nights: 2, label: "Cusco Machu Picchu 3D/2N" },
+      "paquetes-cusco-3-dias-2-noches": { days: 3, nights: 2, label: "Cusco Machu Picchu 3D/2N" },
+      "cusco-valle-machu-picchu-4d3n": { days: 4, nights: 3, label: "Cusco Valle Machu Picchu 4D/3N" },
+      "cusco-valle-machu-picchu-4d-3n": { days: 4, nights: 3, label: "Cusco Valle Machu Picchu 4D/3N" },
+      "paquetes-cusco-4-dias-3-noches": { days: 4, nights: 3, label: "Cusco Valle Machu Picchu 4D/3N" },
+      "cusco-valle-machu-picchu-5d4n": { days: 5, nights: 4, label: "Cusco Valle Machu Picchu 5D/4N" },
+      "cusco-valle-machu-picchu-5d-4n": { days: 5, nights: 4, label: "Cusco Valle Machu Picchu 5D/4N" },
+      "cusco-magico-5d4n": { days: 5, nights: 4, label: "Cusco Valle Machu Picchu 5D/4N" },
+      "cusco-magico-5d-4n": { days: 5, nights: 4, label: "Cusco Valle Machu Picchu 5D/4N" },
+      "paquetes-cusco-5-dias-4-noches": { days: 5, nights: 4, label: "Cusco Valle Machu Picchu 5D/4N" },
+      "cusco-valle-machu-picchu-6d5n": { days: 6, nights: 5, label: "Cusco Valle Machu Picchu 6D/5N" },
+      "cusco-valle-machu-picchu-6d-5n": { days: 6, nights: 5, label: "Cusco Valle Machu Picchu 6D/5N" },
+      "paquetes-cusco-6-dias-5-noches": { days: 6, nights: 5, label: "Cusco Valle Machu Picchu 6D/5N" }
     };
     return presets[key] || null;
   }
@@ -515,6 +525,12 @@
           trekkingsCusco: state.data.trekkingsCusco
         }
       });
+
+      // Si la duración no existe en el generador automático, usamos una ruta mínima de respaldo.
+      // Esto permite que Machu Picchu 2D/1N llegue al cotizador desde el search bar.
+      if (!state.options.length) {
+        state.options = getFallbackOptions(params);
+      }
     } else {
       state.options = getFallbackOptions(params);
     }
@@ -534,7 +550,33 @@
   }
 
   function getFallbackOptions(params) {
-    const card = toArray(state.data.packagesCusco?.packageCards).find((item) => Number(item.days) === params.days && Number(item.nights) === params.nights);
+    const days = Number(params.days || 0);
+    const nights = Number(params.nights || 0);
+
+    if (days === 2 && nights === 1) {
+      const overnightTour =
+        findTourByCode("machu-picchu-overnight-clasico") ||
+        findTourByCode("machu-picchu-overnight-express") ||
+        findTourByCode("mapi_003");
+
+      if (!overnightTour) return [];
+
+      return [{
+        id: "quote-machu-picchu-2d1n",
+        slug: "machu-picchu-2d1n",
+        title: "Machu Picchu 2 días / 1 noche",
+        recommendedTitle: "Machu Picchu 2D/1N recomendado",
+        shortDescription: "Viaje a Machu Picchu con pernocte en Aguas Calientes, ideal para visitar sin correr.",
+        days: 2,
+        nights: 1,
+        includedTourCodes: [overnightTour.internalCode || overnightTour.id || overnightTour.slug].filter(Boolean),
+        includedTours: [overnightTour],
+        arrivalDepartureProfile: { label: "Horario personalizado" },
+        generationReason: "fallback-machu-picchu-2d1n"
+      }];
+    }
+
+    const card = toArray(state.data.packagesCusco?.packageCards).find((item) => Number(item.days) === days && Number(item.nights) === nights);
     if (!card) return [];
     const codes = toArray(card.search?.includedTourCodes);
     return [{

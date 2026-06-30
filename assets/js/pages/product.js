@@ -440,6 +440,49 @@ class MyCuscoTripProductPage {
     this.renderSimilarExperiences();
   }
 
+
+  getQueryValue(names = []) {
+    for (const name of names) {
+      const value = this.params.get(name);
+      if (value !== null && value !== "") return value;
+    }
+    return "";
+  }
+
+  getQueryNumber(names = [], fallback = 0, min = 0, max = 99) {
+    const value = this.getQueryValue(names);
+    if (value === "") return fallback;
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return fallback;
+    return Math.min(max, Math.max(min, parsed));
+  }
+
+  applyInitialSearchParams() {
+    if (!this.params || ![...this.params.keys()].length) return;
+
+    const queryAdults = this.getQueryNumber(["adultos", "adults", "adult"], this.adults, 1, 30);
+    const queryChildren = this.getQueryNumber(["ninos", "niños", "children", "child"], this.children, 0, 30);
+
+    this.adults = queryAdults;
+    this.children = queryChildren;
+
+    const queryDate = this.getQueryValue(["fecha", "fechaInicio", "startDate", "start", "date"]);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(queryDate)) {
+      this.date = queryDate;
+      const input = document.getElementById("travelDate");
+      if (input?._flatpickr) input._flatpickr.setDate(queryDate, true);
+      else if (input) input.value = queryDate;
+      this.refreshItineraryDates?.();
+    }
+
+    const queryDepartureTime = this.getQueryValue(["horaSalida", "departureTime", "departure"]);
+    if (/^\d{2}:\d{2}$/.test(queryDepartureTime)) {
+      this.selectedDepartureTime = queryDepartureTime;
+      const departureTimeSelect = document.getElementById("departureTimeSelect");
+      if (departureTimeSelect) departureTimeSelect.value = queryDepartureTime;
+    }
+  }
+
   initBookingLogic() {
     const dateInput = document.getElementById("travelDate");
 
@@ -536,7 +579,12 @@ class MyCuscoTripProductPage {
     this.bindAccommodationEvents();
     this.bindHotelModalEvents();
 
+    this.applyInitialSearchParams();
     this.updatePassengersUI();
+    if (this.productType === "package" && this.selectedPackageOption) {
+      this.resolveDynamicAccommodationPlan();
+      this.renderDynamicPackageContent();
+    }
     this.refreshAccommodationSelections();
     this.updatePricing();
   }
