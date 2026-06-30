@@ -42,7 +42,10 @@
     pendingTrainCode: null,
     paypalRenderedKey: "",
     paypalRendering: false,
-    paypalTimer: null
+    paypalTimer: null,
+    initialSource: "",
+    initialIntent: "",
+    pickers: { travelRange: null, arrival: null, departure: null }
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -97,6 +100,13 @@
     const d = String(date.getDate()).padStart(2, "0");
     const m = String(date.getMonth() + 1).padStart(2, "0");
     return `${d}/${m}/${date.getFullYear()}`;
+  }
+
+  function formatISODate(date) {
+    if (!date) return "";
+    const d = String(date.getDate()).padStart(2, "0");
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    return `${date.getFullYear()}-${m}-${d}`;
   }
 
   function addDays(date, days) {
@@ -282,12 +292,126 @@
     help.textContent = `Duración detectada: ${state.dates.days} días / ${state.dates.nights} noches.`;
   }
 
+  function getInitialPackagePreset(intent) {
+    const key = normalizeText(intent).replace(/_/g, "-");
+    const presets = {
+      "machu-picchu-overnight-2d1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
+      "machu-picchu-overnight-2d-1n": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
+      "overnight-2d": { days: 2, nights: 1, label: "Machu Picchu 2D/1N" },
+      "cusco-machu-picchu-3d2n": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
+      "cusco-machu-picchu-3d-2n": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
+      "paquetes-cusco-3-dias-2-noches": { days: 3, nights: 2, label: "Cusco + Machu Picchu 3D/2N" },
+      "cusco-magico-5d4n": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" },
+      "cusco-magico-5d-4n": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" },
+      "paquetes-cusco-5-dias-4-noches": { days: 5, nights: 4, label: "Cusco Mágico 5D/4N" }
+    };
+    return presets[key] || null;
+  }
+
+  function getQueryValue(params, names = []) {
+    for (const name of names) {
+      const value = params.get(name);
+      if (value !== null && value !== "") return value;
+    }
+    return "";
+  }
+
+  function setFlatpickrDate(instance, value, triggerChange = false) {
+    if (!instance || !value) return;
+    try {
+      instance.setDate(value, triggerChange);
+    } catch (_) {
+      // Si flatpickr no está disponible o el valor no es válido, no detenemos el cotizador.
+    }
+  }
+
+  function applyInitialQueryParams() {
+    const params = new URLSearchParams(window.location.search || "");
+    if (![...params.keys()].length) return false;
+
+    const intent = getQueryValue(params, ["intent", "package", "slug", "tipo"]);
+    const source = getQueryValue(params, ["source", "utm_source"]);
+    const preset = getInitialPackagePreset(intent);
+
+    state.initialIntent = intent || "";
+    state.initialSource = source || "";
+
+    const adults = getQueryValue(params, ["adultos", "adults", "adult"]);
+    const children = getQueryValue(params, ["ninos", "niños", "children", "child"]);
+    if (adults) state.adults = clampNumber(adults, 1, 30);
+    if (children !== "") state.children = clampNumber(children, 0, 30);
+
+    const arrivalTime = getQueryValue(params, ["arrivalTime", "arrival", "horaLlegada"]);
+    const departureTime = getQueryValue(params, ["departureTime", "departure", "horaSalida"]);
+    if (/^\d{2}:\d{2}$/.test(arrivalTime)) state.arrivalTime = arrivalTime;
+    if (/^\d{2}:\d{2}$/.test(departureTime)) state.departureTime = departureTime;
+
+    const nationality = getQueryValue(params, ["nationality", "nacionalidad"]);
+    if (nationality) state.nationality = nationality;
+
+    const currency = getQueryValue(params, ["currency", "moneda"]);
+    if (currency) state.currency = String(currency).toUpperCase();
+
+    const start = parseISODate(getQueryValue(params, ["fechaInicio", "startDate", "start", "fecha"]));
+    let end = parseISODate(getQueryValue(params, ["fechaFin", "endDate", "end"]));
+
+    const queryDays = Number(getQueryValue(params, ["days", "dias"]));
+    const queryNights = Number(getQueryValue(params, ["nights", "noches"]));
+    const presetDays = Number.isFinite(queryDays) && queryDays > 0 ? queryDays : preset?.days;
+    const presetNights = Number.isFinite(queryNights) && queryNights >= 0 ? queryNights : preset?.nights;
+
+    if (start && !end && Number.isFinite(Number(presetNights))) {
+      end = addDays(start, Number(presetNights));
+    }
+
+    if (start && end) {
+      const diff = Math.max(0, getDateDiffDays(start, end));
+      state.dates = {
+        start,
+        end,
+        days: Number.isFinite(Number(presetDays)) ? Number(presetDays) : diff + 1,
+        nights: Number.isFinite(Number(presetNights)) ? Number(presetNights) : diff
+      };
+      setFlatpickrDate(state.pickers.travelRange, [formatISODate(start), formatISODate(end)], false);
+    }
+
+    setFlatpickrDate(state.pickers.arrival, state.arrivalTime, false);
+    setFlatpickrDate(state.pickers.departure, state.departureTime, false);
+
+    const nationalitySelect = $("#nationality");
+    if (nationalitySelect) nationalitySelect.value = state.nationality;
+    const currencySelect = $("#quoteCurrency");
+    if (currencySelect) currencySelect.value = state.currency;
+
+    setText("#adultsCount", state.adults);
+    setText("#childrenCount", state.children);
+    updateTravelHelp();
+
+    if (state.dates.start && state.dates.end) {
+      state.selectedOptionIndex = -1;
+      state.selectedHotels = {};
+      state.selectedTrains = { outbound: null, return: null };
+      state.selectedExtras.clear();
+      generateAndRenderOptions();
+    }
+
+    if (intent && $("#clientNotes")) {
+      const note = preset?.label
+        ? `Interés inicial desde la búsqueda: ${preset.label}.`
+        : `Interés inicial desde la búsqueda: ${intent}.`;
+      const currentNotes = String($("#clientNotes").value || "").trim();
+      $("#clientNotes").value = currentNotes ? `${currentNotes}\n${note}` : note;
+    }
+
+    return true;
+  }
+
   function initPickers() {
     if (typeof flatpickr !== "undefined") {
       const locale = flatpickr.l10ns?.es || flatpickr.l10ns?.default;
       const travelRange = $("#travelRange");
       if (travelRange) {
-        flatpickr(travelRange, {
+        state.pickers.travelRange = flatpickr(travelRange, {
           mode: "range",
           locale,
           dateFormat: "Y-m-d",
@@ -308,7 +432,7 @@
 
       const arrival = $("#arrivalTime");
       if (arrival) {
-        flatpickr(arrival, {
+        state.pickers.arrival = flatpickr(arrival, {
           enableTime: true,
           noCalendar: true,
           time_24hr: true,
@@ -323,7 +447,7 @@
 
       const departure = $("#departureTime");
       if (departure) {
-        flatpickr(departure, {
+        state.pickers.departure = flatpickr(departure, {
           enableTime: true,
           noCalendar: true,
           time_24hr: true,
@@ -2665,9 +2789,15 @@
     initPickers();
     bindEvents();
     await loadData();
+    const hasInitialQuery = applyInitialQueryParams();
     applyCurrencyRulesByNationality();
-    updateSummary();
-    updatePrintableTemplate();
+    if (!hasInitialQuery) {
+      updateSummary();
+      updatePrintableTemplate();
+    } else {
+      updateSummary();
+      updatePrintableTemplate();
+    }
     console.info("[quote-packages] Cotizador dinámico restaurado.");
   }
 
