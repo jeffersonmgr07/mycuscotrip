@@ -17,7 +17,33 @@
   };
 
   const EXCHANGE_FALLBACK = 3.75;
-  const STORAGE_KEY = "mct_quote_package_state_v18";
+  const STORAGE_KEY = "mct_quote_package_state_v19";
+
+  // Motor comercial v80: costos operativos reales + margen controlado.
+  // Tours base: costo operativo PEN x 1.5. Hoteles: netCost x 1.2.
+  // Extras/tickets: se cobran aparte, sin markup general y sin descuento.
+  const TOUR_OPERATIONAL_MARKUP = 1.5;
+  const HOTEL_OPERATIONAL_MARKUP = 1.2;
+
+  const TOUR_OPERATIONAL_COSTS_PEN = {
+    CUZ001: 20, // Bienvenida Ancestral Cusco
+    CUZ002: 15, // City Tour Cusco + Centros Arqueológicos
+    CUZ003FD: 50,
+    CUZ003CON: 50,
+    CUZ003VIP: 50,
+    CUZ003VIPCON: 50,
+    CUZ006: 55, // Laguna Humantay
+    CUZ007: 50, // Montaña de Colores Vinicunca
+    CUZ008: 65, // Montaña Palcoyo
+    CUZ009: 95, // Siete Lagunas Ausangate
+    CUZ005: 30 // Valle Sur
+  };
+
+  const BTP_TOUR_CODES = new Set(["CUZ002", "CUZ003FD", "CUZ003CON", "CUZ003VIP", "CUZ003VIPCON", "CUZ004", "CUZ005"]);
+  const SACRED_VALLEY_CODES = new Set(["CUZ003FD", "CUZ003CON", "CUZ003VIP", "CUZ003VIPCON"]);
+  const SACRED_VALLEY_VIP_CODES = new Set(["CUZ003VIP", "CUZ003VIPCON"]);
+  const MACHU_EXTRA_TOURIST_LUNCH_USD = 30;
+  const MACHU_EXTRA_TINKUY_USD = 57;
 
   const state = {
     data: {},
@@ -214,6 +240,65 @@
     if (from === "USD" && to === "PEN") return value * state.exchangeRate;
     if (from === "PEN" && to === "USD") return value / state.exchangeRate;
     return value;
+  }
+
+  function roundQuoteAmount(amount, currency = state.currency) {
+    const value = Number(amount || 0);
+    if (!Number.isFinite(value) || value <= 0) return 0;
+
+    // Evita montos tipo 450.17. Se redondea hacia arriba al múltiplo comercial más cercano de 0.50.
+    return Math.ceil((value - 0.000001) * 2) / 2;
+  }
+
+  function fromPenToUSD(amountPEN) {
+    return convert(Number(amountPEN || 0), "PEN", "USD");
+  }
+
+  function getMachuPicchuOperationalCostPEN() {
+    const guidePEN = 30;
+    const entrancePEN = state.nationality === "foreign" ? 152 : 64;
+    const busUSD = state.nationality === "national" ? 15 : 24;
+    return guidePEN + entrancePEN + convert(busUSD, "USD", "PEN");
+  }
+
+  function getTourOperationalCostPEN(tour) {
+    const code = getTourCode(tour);
+    if (!code) return null;
+
+    if (isMachuPicchuTour(tour)) return getMachuPicchuOperationalCostPEN();
+    if (Number.isFinite(Number(TOUR_OPERATIONAL_COSTS_PEN[code]))) return Number(TOUR_OPERATIONAL_COSTS_PEN[code]);
+
+    const internalCostPEN = tour?.internalPricing?.currency === "PEN" && Number.isFinite(Number(tour?.internalPricing?.costPEN))
+      ? Number(tour.internalPricing.costPEN)
+      : null;
+
+    return internalCostPEN;
+  }
+
+  function getTourPublishedPriceUSDFromCost(costPEN) {
+    const publishedPEN = roundQuoteAmount(Number(costPEN || 0) * TOUR_OPERATIONAL_MARKUP, "PEN");
+    return fromPenToUSD(publishedPEN);
+  }
+
+  function getArrivalTransferCostPENPerPassenger() {
+    const pax = Math.max(getPassengerCount(), 1);
+    if (pax === 1) return 30 * TOUR_OPERATIONAL_MARKUP;
+    if (pax === 2) return 15 * TOUR_OPERATIONAL_MARKUP;
+    return 10 * TOUR_OPERATIONAL_MARKUP;
+  }
+
+  function getDepartureTransferCostPENPerPassenger() {
+    return 10 * TOUR_OPERATIONAL_MARKUP;
+  }
+
+  function getLogisticsBasePriceUSDPerPassenger() {
+    if (!getSelectedOption()) return 0;
+    const totalPEN = getArrivalTransferCostPENPerPassenger() + getDepartureTransferCostPENPerPassenger();
+    return fromPenToUSD(roundQuoteAmount(totalPEN, "PEN"));
+  }
+
+  function getNationalityAdmissionType() {
+    return state.nationality === "national" ? "national" : "foreign";
   }
 
   async function fetchJSON(path, fallback) {
@@ -598,6 +683,12 @@
 
   function getTourBasePriceUSD(tour, passengerType = "adult") {
     if (!tour) return 0;
+
+    const operationalCostPEN = getTourOperationalCostPEN(tour);
+    if (Number.isFinite(Number(operationalCostPEN))) {
+      return getTourPublishedPriceUSDFromCost(operationalCostPEN);
+    }
+
     let price = 0;
     const nationalityPricing = tour.basePricingByNationality?.[state.nationality];
     if (nationalityPricing && Number.isFinite(Number(nationalityPricing[passengerType]))) {
@@ -1190,10 +1281,19 @@
 
   function getRoomPriceUSD(room) {
     if (!room) return 0;
+
+    const netCost = room.netCost;
+    if (netCost && Number.isFinite(Number(netCost.amount))) {
+      const netCurrency = netCost.currency || "PEN";
+      const markedAmount = roundQuoteAmount(Number(netCost.amount) * HOTEL_OPERATIONAL_MARKUP, netCurrency);
+      return convert(markedAmount, netCurrency, "USD");
+    }
+
     const currency = room.publishedPricing?.currency || room.currency || "USD";
     const amount = Number(room.publishedPricing?.amount ?? room.pricePerNight ?? 0);
     return convert(amount, currency, "USD");
   }
+
 
   function getRoomCapacity(room) {
     return Number(room?.capacity || room?.maxAdults || 1) || 1;
@@ -1721,7 +1821,7 @@
     if (!train) return 0;
     const adult = getTrainPriceUSD(train, "adult") * state.adults;
     const child = getTrainPriceUSD(train, "child") * state.children;
-    return convert(adult + child, "USD", state.currency);
+    return roundQuoteAmount(convert(adult + child, "USD", state.currency), state.currency);
   }
 
 
@@ -1828,44 +1928,169 @@
 
   function getExtraPriceUSD(extra) {
     if (!extra) return 0;
-    if (Number.isFinite(Number(extra.publishedPriceUSD))) return Number(extra.publishedPriceUSD);
-    if (Number.isFinite(Number(extra.costUSD))) return Number(extra.costUSD);
-    const byNationality = extra.costByNationality?.[state.nationality];
+
+    if (Number.isFinite(Number(extra.amount))) return convert(Number(extra.amount), extra.currency || "PEN", "USD");
+    if (Number.isFinite(Number(extra.amountPEN))) return convert(Number(extra.amountPEN), "PEN", "USD");
+    if (Number.isFinite(Number(extra.amountUSD))) return Number(extra.amountUSD);
+
+    const byNationality = extra.costByNationality?.[state.nationality] || extra.costByNationality?.[getNationalityAdmissionType()];
     if (byNationality) {
-      if (Number.isFinite(Number(byNationality.amountUSD))) return Number(byNationality.amountUSD);
+      if (Number.isFinite(Number(byNationality.costPEN))) return convert(Number(byNationality.costPEN), "PEN", "USD");
       if (Number.isFinite(Number(byNationality.amountPEN))) return convert(Number(byNationality.amountPEN), "PEN", "USD");
       if (Number.isFinite(Number(byNationality.adultPEN))) return convert(Number(byNationality.adultPEN), "PEN", "USD");
+      if (Number.isFinite(Number(byNationality.costUSD))) return Number(byNationality.costUSD);
+      if (Number.isFinite(Number(byNationality.amountUSD))) return Number(byNationality.amountUSD);
     }
+
+    if (Number.isFinite(Number(extra.costPEN))) return convert(Number(extra.costPEN), "PEN", "USD");
+    if (Number.isFinite(Number(extra.costUSD))) return Number(extra.costUSD);
+    if (Number.isFinite(Number(extra.publishedPriceUSD))) return Number(extra.publishedPriceUSD);
+
     return 0;
+  }
+
+  function pushExtra(extras, payload) {
+    if (!payload?.code) return;
+    if (extras.some((item) => item.code === payload.code)) return;
+    extras.push({
+      perPerson: true,
+      required: false,
+      optional: true,
+      nonDiscountable: true,
+      ...payload
+    });
   }
 
   function getAvailableExtras() {
     const option = getSelectedOption();
     if (!option) return [];
-    const seen = new Set();
+
+    const tours = getOptionTours(option);
+    const codes = new Set(tours.map(getTourCode).filter(Boolean));
     const extras = [];
-    getOptionTours(option).forEach((tour) => {
-      toArray(tour.extras).forEach((extra) => {
-        const code = extra.code || `${tour.internalCode}-${extra.label}`;
-        if (seen.has(code)) return;
-        seen.add(code);
-        extras.push({ ...extra, code, tourTitle: tour.title, tourCode: tour.internalCode });
+    const nationalityType = getNationalityAdmissionType();
+    const btpCodes = [...codes].filter((code) => BTP_TOUR_CODES.has(code));
+
+    if (btpCodes.length > 1) {
+      pushExtra(extras, {
+        code: `btp-general-${nationalityType}`,
+        label: "Boleto Turístico General Cusco",
+        tourTitle: "Aplica para City Tour, Valle Sagrado, Maras/Moray o Valle Sur",
+        amount: state.nationality === "national" ? 70 : 130,
+        currency: "PEN",
+        required: true,
+        optional: false
       });
-    });
+    } else if (btpCodes.length === 1) {
+      pushExtra(extras, {
+        code: `btp-partial-${btpCodes[0]}-${nationalityType}`,
+        label: "Boleto Turístico Parcial Cusco",
+        tourTitle: findTourByCode(btpCodes[0])?.title || "Tour con boleto turístico",
+        amount: state.nationality === "national" ? 40 : 70,
+        currency: "PEN",
+        required: true,
+        optional: false
+      });
+    }
+
+    if (codes.has("CUZ002")) {
+      pushExtra(extras, {
+        code: "qoricancha-ticket",
+        label: "Ingreso al Templo Qoricancha",
+        tourTitle: "City Tour Cusco + Centros Arqueológicos",
+        amount: 20,
+        currency: "PEN",
+        required: true,
+        optional: false
+      });
+    }
+
+    if ([...SACRED_VALLEY_CODES].some((code) => codes.has(code))) {
+      pushExtra(extras, {
+        code: "sacred-valley-local-lunch",
+        label: "Almuerzo en Valle Sagrado",
+        tourTitle: "Valle Sagrado de los Incas",
+        amount: 30,
+        currency: "PEN"
+      });
+    }
+
+    if ([...SACRED_VALLEY_VIP_CODES].some((code) => codes.has(code)) || codes.has("CUZ004")) {
+      pushExtra(extras, {
+        code: "maras-salt-mines-ticket",
+        label: "Ingreso a las Minas de Sal de Maras",
+        tourTitle: codes.has("CUZ004") ? "Maras y Moray" : "Valle Sagrado VIP",
+        amount: 20,
+        currency: "PEN",
+        required: true,
+        optional: false
+      });
+    }
+
+    if (codes.has("CUZ006")) {
+      pushExtra(extras, { code: "humantay-entrance-ticket", label: "Ingreso a Laguna Humantay", tourTitle: "Laguna Humantay", amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "humantay-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Laguna Humantay", amount: 30, currency: "PEN" });
+    }
+
+    if (codes.has("CUZ007")) {
+      pushExtra(extras, { code: "vinicunca-entrance-ticket", label: "Ingreso a Montaña de Colores Vinicunca", tourTitle: "Montaña de Colores Vinicunca", amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "vinicunca-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Montaña de Colores Vinicunca", amount: 30, currency: "PEN" });
+    }
+
+    if (codes.has("CUZ008")) {
+      pushExtra(extras, { code: "palcoyo-entrance-ticket", label: "Ingreso a Montaña Palcoyo", tourTitle: "Montaña Palcoyo", amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "palcoyo-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Montaña Palcoyo", amount: 30, currency: "PEN" });
+    }
+
+    if (codes.has("CUZ009")) {
+      pushExtra(extras, { code: "seven-lagoons-entrance-ticket", label: "Ingreso a Siete Lagunas Ausangate", tourTitle: "Siete Lagunas del Ausangate", amount: 25, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "seven-lagoons-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Siete Lagunas del Ausangate", amount: 35, currency: "PEN" });
+      pushExtra(extras, { code: "pacchanta-hot-springs", label: "Ingreso a termas de Pacchanta", tourTitle: "Siete Lagunas del Ausangate", amount: 30, currency: "PEN" });
+    }
+
+    if (codes.has("CUZ005")) {
+      pushExtra(extras, {
+        code: "andahuaylillas-church-ticket",
+        label: "Ingreso a la Iglesia de Andahuaylillas",
+        tourTitle: "Valle Sur de Cusco",
+        amount: 20,
+        currency: "PEN",
+        required: true,
+        optional: false
+      });
+    }
+
+    if (tours.some(isMachuPicchuTour)) {
+      pushExtra(extras, {
+        code: "lunch-tinkuy-belmond",
+        label: "Almuerzo buffet Tinkuy - Belmond Sanctuary Lodge",
+        tourTitle: "Machu Picchu",
+        amount: MACHU_EXTRA_TINKUY_USD,
+        currency: "USD"
+      });
+      pushExtra(extras, {
+        code: "lunch-full-house",
+        label: "Almuerzo turístico en restaurante Full House Machu Picchu",
+        tourTitle: "Machu Picchu",
+        amount: MACHU_EXTRA_TOURIST_LUNCH_USD,
+        currency: "USD"
+      });
+    }
+
     return extras;
   }
 
   function getExtraTotal(extra) {
     const priceUSD = getExtraPriceUSD(extra);
     const multiplier = extra.perPerson === false ? 1 : getPassengerCount();
-    return convert(priceUSD * multiplier, "USD", state.currency);
+    return roundQuoteAmount(convert(priceUSD * multiplier, "USD", state.currency), state.currency);
   }
 
   function renderExtras() {
     const section = $("#extrasSection");
     const target = $("#extrasContainer");
     if (!section || !target) return;
-    const extras = getAvailableExtras().filter((extra) => extra.optional !== false || extra.required !== true);
+    const extras = getAvailableExtras();
     if (!getSelectedOption() || !extras.length) {
       section.hidden = true;
       target.innerHTML = "";
@@ -1873,13 +2098,14 @@
     }
     section.hidden = false;
     target.innerHTML = extras.map((extra) => {
-      const checked = state.selectedExtras.has(extra.code);
+      const isRequired = extra.required === true;
+      const checked = isRequired || state.selectedExtras.has(extra.code);
       return `
-        <label class="quote-extra-card ${checked ? "is-selected" : ""}">
-          <input type="checkbox" value="${escapeHtml(extra.code)}" ${checked ? "checked" : ""}>
+        <label class="quote-extra-card ${checked ? "is-selected" : ""} ${isRequired ? "is-required" : ""}">
+          <input type="checkbox" value="${escapeHtml(extra.code)}" ${checked ? "checked" : ""} ${isRequired ? "disabled" : ""}>
           <span>
             <strong>${escapeHtml(extra.label || "Extra")}</strong>
-            <small>${escapeHtml(extra.tourTitle || "Servicio adicional")}</small>
+            <small>${escapeHtml(isRequired ? `${extra.tourTitle || "Ticket obligatorio"} · obligatorio / sin descuento` : (extra.tourTitle || "Servicio adicional"))}</small>
           </span>
           <em>${money(getExtraTotal(extra))}</em>
         </label>
@@ -1887,59 +2113,79 @@
     }).join("");
   }
 
+
   function getBaseTotals() {
     const option = getSelectedOption();
     if (!option) return { adult: 0, child: 0, total: 0 };
-    const adultUSD = getOptionBaseAdult(option) * state.adults;
-    const childUSD = getOptionBaseChild(option) * state.children;
+
+    const adultPriceUSD = getOptionBaseAdult(option) + getLogisticsBasePriceUSDPerPassenger();
+    const childPriceUSD = getOptionBaseChild(option) + getLogisticsBasePriceUSDPerPassenger();
+    const adultUSD = adultPriceUSD * state.adults;
+    const childUSD = childPriceUSD * state.children;
+
     return {
-      adult: convert(adultUSD, "USD", state.currency),
-      child: convert(childUSD, "USD", state.currency),
-      total: convert(adultUSD + childUSD, "USD", state.currency)
+      adult: roundQuoteAmount(convert(adultUSD, "USD", state.currency), state.currency),
+      child: roundQuoteAmount(convert(childUSD, "USD", state.currency), state.currency),
+      total: roundQuoteAmount(convert(adultUSD + childUSD, "USD", state.currency), state.currency)
     };
   }
 
+
   function getHotelTotal() {
-    return Object.values(state.selectedHotels).reduce((sum, option) => sum + convert(option?.priceUSD || 0, "USD", state.currency), 0);
+    const total = Object.values(state.selectedHotels).reduce((sum, option) => sum + convert(option?.priceUSD || 0, "USD", state.currency), 0);
+    return roundQuoteAmount(total, state.currency);
   }
 
   function getTrainsTotal() {
-    return getTrainTotal(state.selectedTrains.outbound) + getTrainTotal(state.selectedTrains.return);
+    return roundQuoteAmount(getTrainTotal(state.selectedTrains.outbound) + getTrainTotal(state.selectedTrains.return), state.currency);
   }
 
   function getExtrasTotal() {
     const extras = getAvailableExtras();
-    return extras
-      .filter((extra) => state.selectedExtras.has(extra.code))
+    const total = extras
+      .filter((extra) => extra.required === true || state.selectedExtras.has(extra.code))
       .reduce((sum, extra) => sum + getExtraTotal(extra), 0);
+    return roundQuoteAmount(total, state.currency);
+  }
+
+  function getDiscountableSubtotal() {
+    return roundQuoteAmount(getBaseTotals().total + getHotelTotal() + getTrainsTotal(), state.currency);
+  }
+
+  function getNonDiscountableSubtotal() {
+    return getExtrasTotal();
   }
 
   function getSubtotalBeforeDiscount() {
-    return getBaseTotals().total + getHotelTotal() + getTrainsTotal() + getExtrasTotal();
+    return roundQuoteAmount(getDiscountableSubtotal() + getNonDiscountableSubtotal(), state.currency);
   }
 
-  function getManualDiscountAmount(subtotal) {
+  function getManualDiscountAmount(discountableSubtotal) {
     const discount = state.manualDiscount;
     if (!discount) return 0;
-    if (discount.type === "percent") return subtotal * (Number(discount.value || 0) / 100);
+    if (discount.type === "percent") return discountableSubtotal * (Number(discount.value || 0) / 100);
     if (discount.type === "fixed") return convert(Number(discount.value || 0), discount.currency || state.currency, state.currency);
     return 0;
   }
+
 
   function getPaymentMode() {
     return $("#paymentMode")?.value || "full";
   }
 
   function getPaymentBreakdown() {
-    const subtotal = getSubtotalBeforeDiscount();
-    const manualDiscount = Math.min(subtotal, getManualDiscountAmount(subtotal));
-    const fullDiscount = getPaymentMode() === "full" && !state.manualDiscount ? subtotal * 0.05 : 0;
-    const discount = Math.min(subtotal, manualDiscount + fullDiscount);
-    const total = Math.max(0, subtotal - discount);
-    const advance = getPaymentMode() === "partial" ? Math.min(total, convert(49.9 * getPassengerCount(), "USD", state.currency)) : total;
-    const balance = Math.max(0, total - advance);
-    return { subtotal, manualDiscount, fullDiscount, discount, total, advance, balance };
+    const discountableSubtotal = getDiscountableSubtotal();
+    const nonDiscountableSubtotal = getNonDiscountableSubtotal();
+    const subtotal = roundQuoteAmount(discountableSubtotal + nonDiscountableSubtotal, state.currency);
+    const manualDiscount = Math.min(discountableSubtotal, getManualDiscountAmount(discountableSubtotal));
+    const fullDiscount = getPaymentMode() === "full" && !state.manualDiscount ? discountableSubtotal * 0.05 : 0;
+    const discount = roundQuoteAmount(Math.min(discountableSubtotal, manualDiscount + fullDiscount), state.currency);
+    const total = roundQuoteAmount(Math.max(0, discountableSubtotal - discount) + nonDiscountableSubtotal, state.currency);
+    const advance = getPaymentMode() === "partial" ? Math.min(total, roundQuoteAmount(convert(49.9 * getPassengerCount(), "USD", state.currency), state.currency)) : total;
+    const balance = roundQuoteAmount(Math.max(0, total - advance), state.currency);
+    return { subtotal, discountableSubtotal, nonDiscountableSubtotal, manualDiscount, fullDiscount, discount, total, advance, balance };
   }
+
 
   function updateSummary() {
     ensureQuoteReference();
@@ -2051,7 +2297,7 @@
     setText("#printCouponCode", state.manualDiscount?.code || "MCT-XXXX");
     setText("#printCouponDiscount", state.manualDiscount?.type === "percent" ? `${state.manualDiscount.value}%` : money(convert(state.manualDiscount?.value || 0, state.manualDiscount?.currency || state.currency, state.currency)));
 
-    const selectedExtras = getAvailableExtras().filter((extra) => state.selectedExtras.has(extra.code));
+    const selectedExtras = getAvailableExtras().filter((extra) => extra.required === true || state.selectedExtras.has(extra.code));
     const trainItems = [state.selectedTrains.outbound, state.selectedTrains.return].filter(Boolean);
     const itineraryTours = buildItineraryItems(option)
       .flatMap((day) => day.activities.map((activity) => getActivityDisplayTitle(activity, day)))

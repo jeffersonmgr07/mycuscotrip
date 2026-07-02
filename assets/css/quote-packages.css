@@ -6869,3 +6869,17 @@ body.quote-reservation-open {
     height: 54px;
   }
 }
+
+/* Ajuste v80: extras obligatorios sin descuento */
+.quote-extra-card.is-required {
+  cursor: default;
+}
+
+.quote-extra-card.is-required input[type="checkbox"] {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.quote-extra-card.is-required:hover {
+  transform: none;
+}
