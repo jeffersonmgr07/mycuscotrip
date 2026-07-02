@@ -6884,243 +6884,148 @@ body.quote-reservation-open {
   transform: none;
 }
 
-
-/* === V82: ajuste compacto SOLO para impresión/PDF ===
-   Objetivo: evitar que "Detalles de pago" salte a una segunda hoja.
-   No cambia cálculos, tours, hoteles, trenes, extras ni lógica del cotizador.
+/* === V83: ajuste fino de impresión, basado en V81 ===
+   No reduce tipografías globales ni compacta itinerario.
+   Solo quita aire vertical en cabecera, cajas superiores, servicios y pago
+   para que "Detalles de pago" entre en la primera hoja con mejor legibilidad.
 */
 @media print {
+  #printQuotation .print-sheet,
   .print-sheet {
-    padding: 6mm 8mm !important;
-    line-height: 1.16 !important;
+    padding: 8mm 9mm !important; /* mantiene el margen legible de V81 */
   }
 
   #printQuotation .print-header,
   .print-header,
   body.is-generating-pdf .print-header {
-    gap: 5mm !important;
-    margin-bottom: 2.4mm !important;
-    padding-bottom: 2mm !important;
-    max-height: none !important;
+    padding-bottom: 2.6mm !important;
+    margin-bottom: 2.8mm !important;
+    gap: 10mm !important;
   }
 
   #printQuotation .print-logo,
   .print-logo,
   body.is-generating-pdf .print-logo {
-    width: 31mm !important;
-    margin-bottom: 0.4mm !important;
-  }
-
-  #printQuotation .print-company,
-  .print-company,
-  body.is-generating-pdf .print-company,
-  #printQuotation .print-header__right,
-  .print-header__right,
-  body.is-generating-pdf .print-header__right {
-    gap: 0.7mm !important;
+    width: 50mm !important;
+    max-width: 50mm !important;
+    margin-bottom: 1.6mm !important;
   }
 
   #printQuotation .print-company p,
   .print-company p,
-  body.is-generating-pdf .print-company p,
+  body.is-generating-pdf .print-company p {
+    margin-bottom: 0.55mm !important;
+    line-height: 1.16 !important;
+  }
+
+  #printQuotation .print-header__right,
+  .print-header__right,
+  body.is-generating-pdf .print-header__right {
+    padding-top: 2.5mm !important;
+  }
+
+  #printQuotation .print-header__right h1,
+  .print-header__right h1,
+  body.is-generating-pdf .print-header__right h1 {
+    margin-bottom: 2.6mm !important;
+  }
+
   #printQuotation .print-header__right p,
   .print-header__right p,
   body.is-generating-pdf .print-header__right p {
-    font-size: 6.7pt !important;
-    line-height: 1.08 !important;
-    margin: 0 !important;
+    margin-bottom: 0.55mm !important;
+    line-height: 1.16 !important;
   }
 
-  #printQuotation .print-quote-badge,
-  .print-quote-badge,
-  body.is-generating-pdf .print-quote-badge {
-    padding: 1mm 2.6mm !important;
-    font-size: 6.4pt !important;
+  #printQuotation .print-client-grid,
+  .print-client-grid,
+  body.is-generating-pdf .print-client-grid {
+    gap: 3mm !important;
+    margin-bottom: 1.6mm !important;
   }
 
-  .print-client-grid {
-    gap: 2.2mm !important;
-    margin-bottom: 1.2mm !important;
+  #printQuotation .print-info-box,
+  .print-info-box,
+  body.is-generating-pdf .print-info-box {
+    padding-bottom: 1.2mm !important;
   }
 
-  .print-info-box {
-    padding: 1.5mm 2.2mm !important;
-    border-radius: 2mm !important;
-    margin-bottom: 0 !important;
-  }
-
+  #printQuotation .print-info-box h3,
   .print-info-box h3,
-  .print-section h3 {
-    padding: 1.15mm 2.2mm !important;
-    border-radius: 1.8mm !important;
-    font-size: 7.7pt !important;
-    line-height: 1.08 !important;
+  #printQuotation .print-section h3,
+  .print-section h3,
+  body.is-generating-pdf .print-info-box h3,
+  body.is-generating-pdf .print-section h3 {
+    padding-top: 1.35mm !important;
+    padding-bottom: 1.35mm !important;
   }
 
-  .print-info-box h3 {
-    margin: -1.5mm -2.2mm 1mm !important;
+  #printQuotation .print-info-box p,
+  .print-info-box p,
+  body.is-generating-pdf .print-info-box p {
+    margin-top: 0.75mm !important;
+    line-height: 1.18 !important;
   }
 
-  .print-info-box p {
-    font-size: 6.75pt !important;
-    line-height: 1.12 !important;
-    margin: 0 0 0.45mm !important;
-  }
-
-  .print-section {
-    margin-top: 0 !important;
-    margin-bottom: 1.1mm !important;
-    padding: 0 !important;
-  }
-
-  .print-section h3 {
-    margin: 0 0 0.7mm !important;
+  #printQuotation .print-section,
+  .print-section,
+  body.is-generating-pdf .print-section {
+    margin-bottom: 1.55mm !important;
   }
 
   #printQuotation .print-services-list--compact,
   #printQuotation .print-payment-list--quote,
-  .print-services-list,
-  .print-payment-list {
-    padding: 0.6mm 0.8mm !important;
-    gap: 0.35mm !important;
+  .print-services-list--compact,
+  .print-payment-list--quote,
+  body.is-generating-pdf #printQuotation .print-services-list--compact,
+  body.is-generating-pdf #printQuotation .print-payment-list--quote {
+    padding-top: 0.75mm !important;
+    padding-bottom: 1mm !important;
   }
 
   #printQuotation .print-service-row,
   #printQuotation .print-payment-row,
   .print-service-row,
-  .print-payment-row {
-    min-height: 0 !important;
-    padding: 0.75mm 1.8mm !important;
-    border-radius: 2mm !important;
-    font-size: 6.6pt !important;
-    line-height: 1.05 !important;
+  .print-payment-row,
+  body.is-generating-pdf #printQuotation .print-service-row,
+  body.is-generating-pdf #printQuotation .print-payment-row {
+    padding-top: 0.85mm !important;
+    padding-bottom: 0.85mm !important;
+    line-height: 1.16 !important;
   }
 
   #printQuotation .print-payment-row--strong,
   .print-payment-row--strong,
-  #printQuotation .print-payment-row--total,
-  .print-payment-row--total {
-    padding: 0.9mm 1.8mm !important;
-    margin-top: 0.25mm !important;
+  body.is-generating-pdf #printQuotation .print-payment-row--strong {
+    padding-top: 1mm !important;
+    padding-bottom: 1mm !important;
   }
 
-  /* Evita que toda la sección de pago sea empujada completa a la página 2. */
+  /* No forzar todo el bloque de pago a una nueva página si todavía queda espacio. */
   #printQuotation .print-section--payment,
   .print-section--payment,
   body.is-generating-pdf .print-section--payment {
     break-inside: auto !important;
     page-break-inside: auto !important;
   }
-
-  /* El itinerario puede empezar limpio en la siguiente página si el paquete es largo. */
-  #printQuotation .print-section--itinerary,
-  .print-section--itinerary,
-  body.is-generating-pdf .print-section--itinerary {
-    break-before: auto !important;
-    page-break-before: auto !important;
-    margin-top: 1.2mm !important;
-  }
-
-  #printQuotation .print-itinerary-list,
-  .print-itinerary-list,
-  body.is-generating-pdf .print-itinerary-list {
-    padding: 0.8mm 1.2mm !important;
-    gap: 1.1mm !important;
-  }
-
-  #printQuotation .print-itinerary-item--activity-images,
-  .print-itinerary-item--activity-images,
-  body.is-generating-pdf .print-itinerary-item--activity-images {
-    padding: 1.2mm !important;
-  }
-
-  #printQuotation .print-itinerary-dayline,
-  body.is-generating-pdf .print-itinerary-dayline {
-    margin-bottom: 1mm !important;
-    gap: 1.6mm !important;
-  }
-
-  #printQuotation .print-itinerary-day-badge,
-  body.is-generating-pdf .print-itinerary-day-badge {
-    padding: 0.8mm 3mm !important;
-    font-size: 7.4pt !important;
-  }
-
-  #printQuotation .print-itinerary-date-label,
-  body.is-generating-pdf .print-itinerary-date-label {
-    font-size: 6.7pt !important;
-  }
-
-  #printQuotation .print-itinerary-activity-block--with-image,
-  .print-itinerary-activity-block--with-image,
-  body.is-generating-pdf .print-itinerary-activity-block--with-image {
-    grid-template-columns: 21mm minmax(0, 1fr) !important;
-    gap: 1.4mm !important;
-    margin-top: 0.9mm !important;
-    padding-top: 0.9mm !important;
-  }
-
-  #printQuotation .print-itinerary-activity-block--with-image img,
-  .print-itinerary-activity-block--with-image img,
-  body.is-generating-pdf .print-itinerary-activity-block--with-image img {
-    width: 21mm !important;
-    max-width: 21mm !important;
-    height: 14mm !important;
-    max-height: 14mm !important;
-  }
-
-  #printQuotation .print-itinerary-activity-block h4,
-  .print-itinerary-activity-block h4,
-  body.is-generating-pdf .print-itinerary-activity-block h4 {
-    font-size: 6.9pt !important;
-    line-height: 1.08 !important;
-    margin-bottom: 0.25mm !important;
-  }
-
-  #printQuotation .print-itinerary-activity-block p,
-  .print-itinerary-activity-block p,
-  body.is-generating-pdf .print-itinerary-activity-block p {
-    font-size: 6.25pt !important;
-    line-height: 1.08 !important;
-  }
-
-  #printQuotation .print-itinerary-note-badge,
-  .print-itinerary-note-badge,
-  body.is-generating-pdf .print-itinerary-note-badge {
-    margin-top: 0.35mm !important;
-    padding: 0.45mm 1.2mm !important;
-    font-size: 5.9pt !important;
-  }
-
-  .print-footer {
-    margin-top: 1.8mm !important;
-    padding-top: 1.4mm !important;
-  }
 }
 
 body.is-generating-pdf .print-sheet {
-  padding: 6mm 8mm !important;
-  line-height: 1.16 !important;
+  padding: 8mm 9mm !important;
+}
+
+body.is-generating-pdf .print-header {
+  padding-bottom: 2.6mm !important;
+  margin-bottom: 2.8mm !important;
+  gap: 10mm !important;
+}
+
+body.is-generating-pdf .print-logo {
+  width: 50mm !important;
+  max-width: 50mm !important;
+  margin-bottom: 1.6mm !important;
 }
 
 body.is-generating-pdf .print-section {
-  margin-bottom: 1.1mm !important;
-}
-
-body.is-generating-pdf .print-client-grid {
-  gap: 2.2mm !important;
-  margin-bottom: 1.2mm !important;
-}
-
-body.is-generating-pdf #printQuotation .print-services-list--compact,
-body.is-generating-pdf #printQuotation .print-payment-list--quote {
-  padding: 0.6mm 0.8mm !important;
-  gap: 0.35mm !important;
-}
-
-body.is-generating-pdf #printQuotation .print-service-row,
-body.is-generating-pdf #printQuotation .print-payment-row {
-  padding: 0.75mm 1.8mm !important;
-  font-size: 6.6pt !important;
-  line-height: 1.05 !important;
+  margin-bottom: 1.55mm !important;
 }
