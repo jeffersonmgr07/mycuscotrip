@@ -1316,6 +1316,96 @@
         font-size: 0.94rem;
       }
     }
+
+
+    /* Ajuste definitivo: colores del hero, radios y barra del formulario */
+    .mp-hero h1.mp-hero-title .mp-hero-title__top {
+      color: #ffffff !important;
+    }
+
+    .mp-hero h1.mp-hero-title .mp-hero-title__main {
+      color: #ffd36a !important;
+    }
+
+    .mp-form-header {
+      background: var(--landing-green-dark);
+      color: #ffffff;
+      padding: 18px 20px;
+      border-radius: 22px;
+      align-items: center;
+      margin: -4px 0 20px;
+      box-shadow: 0 14px 32px rgba(10, 58, 38, 0.16);
+    }
+
+    .mp-form-header h2,
+    .mp-form-header p {
+      color: #ffffff;
+    }
+
+    .mp-form-header p {
+      opacity: 0.86;
+    }
+
+    .mp-form-header .mp-form-badge {
+      color: var(--landing-green-dark);
+      background: #ffffff;
+    }
+
+    .mp-radio-grid {
+      align-items: stretch;
+    }
+
+    .mp-radio-card {
+      display: grid !important;
+      grid-template-columns: 22px minmax(0, 1fr) !important;
+      grid-template-rows: auto auto;
+      column-gap: 12px;
+      row-gap: 4px;
+      align-items: start;
+      padding: 18px 18px !important;
+      min-height: auto;
+    }
+
+    .mp-field .mp-radio-card input[type="radio"] {
+      position: static !important;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      min-height: 18px !important;
+      max-width: 18px !important;
+      max-height: 18px !important;
+      padding: 0 !important;
+      margin: 2px 0 0 !important;
+      border-radius: 50% !important;
+      accent-color: var(--landing-green);
+      cursor: pointer;
+    }
+
+    .mp-radio-card strong {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .mp-radio-card span {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    @media (max-width: 768px) {
+      .mp-form-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .mp-radio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
 </style>
 </head>
 <body>
