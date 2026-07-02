@@ -37,6 +37,7 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '265041872328503');
     fbq('track', 'PageView');
+    window.MCT_MANUAL_META_PAGEVIEW_SENT = true;
   </script>
 <!-- End Meta Pixel Code -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -1852,13 +1853,14 @@
           if (packageSelect) {
             const packageName = packageSelect.getAttribute("data-package-select") || "Machu Picchu alternative package";
             const packageValue = Number(packageSelect.getAttribute("data-package-value") || 0);
-            trackLandingEvent("begin_checkout", {
+            trackLandingEvent("select_item", {
               item_id: packageName.toLowerCase().replace(/\s+/g, "-"),
               item_name: packageName,
               item_category: "machu_picchu_package",
               currency: "USD",
-              value: packageValue
-            }, { metaEventName: "InitiateCheckout", tiktokEventName: "InitiateCheckout" });
+              value: packageValue,
+              cta_id: "package_view_and_book"
+            }, { metaEventName: "ViewContent", tiktokEventName: "ClickButton" });
           }
 
           const packageRequest = event.target.closest("[data-package-request]");

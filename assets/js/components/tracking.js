@@ -48,7 +48,7 @@
     hotel_selected: { ga4: "hotel_selected", meta: "CustomizeProduct", tiktok: "ClickButton" },
     passenger_modal_open: { ga4: "passenger_modal_open", meta: "InitiateCheckout", tiktok: "InitiateCheckout" },
     pre_reservation_created: { ga4: "pre_reservation_created", meta: "CompleteRegistration", tiktok: "CompleteRegistration" },
-    begin_payment: { ga4: "begin_payment", meta: "InitiateCheckout", tiktok: "InitiateCheckout" }
+    begin_payment: { ga4: "begin_payment", meta: "AddPaymentInfo", tiktok: "AddPaymentInfo" }
   };
 
   function hasValue(value) {
@@ -89,6 +89,14 @@
 
   function initMetaPixel() {
     if (!hasValue(config.facebookPixelId) || loaded.meta) return;
+
+    // Si una página ya cargó manualmente el Meta Pixel, reutilizamos esa instancia
+    // para evitar inicializaciones duplicadas. Esto aplica a landings con código
+    // oficial pegado en el <head>.
+    if (typeof window.fbq === "function") {
+      loaded.meta = true;
+      return;
+    }
 
     /* eslint-disable */
     !function(f,b,e,v,n,t,s){
@@ -211,7 +219,7 @@
       providers.push("ga4");
     }
 
-    if (typeof window.fbq === "function" && hasValue(config.facebookPixelId)) {
+    if (!options.skipMeta && typeof window.fbq === "function" && hasValue(config.facebookPixelId)) {
       const metaName = options.metaEventName || mapping.meta || eventName;
       const metaParams = toMetaParams(normalized);
       const standardEvents = new Set([
@@ -250,7 +258,13 @@
       page_title: document.title,
       page_location: window.location.href,
       page_path: window.location.pathname
-    }, { metaEventName: "PageView" });
+    }, {
+      metaEventName: "PageView",
+      // Las landings que conservan el snippet oficial de Meta ya disparan PageView
+      // manualmente. Evitamos duplicar solo el PageView de Meta, pero mantenemos GA4,
+      // GTM/dataLayer y TikTok.
+      skipMeta: window.MCT_MANUAL_META_PAGEVIEW_SENT === true
+    });
   }
 
   function getLinkContext(link) {

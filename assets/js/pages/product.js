@@ -3211,7 +3211,7 @@ class MyCuscoTripProductPage {
         value: Number(payload.payNowValue || 0),
         payment_status: "pending",
         payment_provider: "paypal"
-      }, { metaEventName: "InitiateCheckout" });
+      }, { metaEventName: "AddPaymentInfo", tiktokEventName: "AddPaymentInfo" });
 
       const pendingRecord = {
         reservationCode: finalReservationCode,
