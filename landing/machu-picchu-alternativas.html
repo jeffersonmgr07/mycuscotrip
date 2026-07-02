@@ -1233,6 +1233,89 @@
         min-width: 190px;
       }
     }
+
+
+    /* Correcciones visuales solicitadas - Hero y FAQ */
+    .mp-hero h1.mp-hero-title {
+      max-width: 820px;
+      margin-bottom: 18px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+    }
+
+    .mp-hero-title__top,
+    .mp-hero-title__main {
+      display: block;
+    }
+
+    .mp-hero-title__top {
+      color: #ffffff;
+      font-weight: 800;
+      white-space: nowrap;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+    }
+
+    .mp-hero-title__main {
+      color: #ffd36a;
+      font-weight: 900;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.25);
+    }
+
+    .mp-faq-grid {
+      grid-template-columns: 1fr;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .mp-faq-item summary {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-right: 18px;
+    }
+
+    .mp-faq-item summary::after {
+      content: "+";
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      color: var(--landing-green-dark);
+      background: rgba(10, 58, 38, 0.08);
+      border: 1px solid rgba(10, 58, 38, 0.12);
+      font-size: 1.1rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .mp-faq-item[open] summary::after {
+      content: "−";
+      background: var(--landing-gold-soft);
+      color: #775711;
+    }
+
+    @media (max-width: 768px) {
+      .mp-hero h1.mp-hero-title {
+        font-size: clamp(2.15rem, 10vw, 3.15rem);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.035em;
+      }
+
+      .mp-hero-title__top {
+        font-size: 0.86em;
+      }
+
+      .mp-faq-item summary {
+        padding: 16px 16px;
+        font-size: 0.94rem;
+      }
+    }
 </style>
 </head>
 <body>
@@ -1248,7 +1331,7 @@
 <div class="container mp-hero__grid">
 <div class="mp-hero__content">
 <span class="mp-eyebrow"><i class="fas fa-ticket"></i> Alternativas para Machu Picchu</span>
-<h1>Sin tickets para Machu Picchu</h1>
+<h1 class="mp-hero-title"><span class="mp-hero-title__top">Sin tickets para</span><span class="mp-hero-title__main">Machu Picchu?</span></h1>
 <p class="mp-hero__lead">Descubre nuestras alternativas seguras para tu fecha de viaje. Todas nuestras opciones están diseñadas para lograr la visita a una maravilla mundial en temporada de alta demanda, ajustándonos a la disponibilidad oficial y a los canales de venta oficiales de Machu Picchu.</p>
 <div class="mp-hero__actions">
 <a class="mp-btn mp-btn--primary" data-landing-cta="hero_form" href="#formulario-alternativa"><i class="fas fa-user-check"></i>
@@ -1256,7 +1339,6 @@
             </a>
 </div>
 </div>
-
 </div>
 </section>
 <section class="mp-section mp-section--soft" id="paquetes">
@@ -1296,7 +1378,6 @@
 <div class="mp-product-actions">
 <a class="mp-card-link mp-card-link--primary" data-package-select="Machu Picchu Overnight 2D/1N" data-package-value="399" href="../product.html?slug=machu-picchu-overnight-clasico&amp;source=landing_mp_alternativas">Ver y reservar
                     <i class="fas fa-arrow-right"></i></a>
-
 </div>
 </div>
 </div>
@@ -1328,7 +1409,6 @@
 <div class="mp-product-actions">
 <a class="mp-card-link mp-card-link--primary" data-package-select="Machu Picchu Flexible 3D/2N" data-package-value="469" href="../product.html?slug=paquetes-cusco-3-dias-2-noches&amp;source=landing_mp_alternativas">Ver y reservar
                     <i class="fas fa-arrow-right"></i></a>
-
 </div>
 </div>
 </div>
@@ -1360,7 +1440,6 @@
 <div class="mp-product-actions">
 <a class="mp-card-link mp-card-link--primary" data-package-select="Machu Picchu Tranquilo 4D/3N" data-package-value="589" href="../product.html?slug=paquetes-cusco-4-dias-3-noches&amp;source=landing_mp_alternativas">Ver y reservar
                     <i class="fas fa-arrow-right"></i></a>
-
 </div>
 </div>
 </div>
@@ -1422,7 +1501,6 @@
 <div class="mp-field">
 <label for="contactMethod">¿Cómo quieres ser contactado?</label>
 <select id="contactMethod" name="contactMethod" required="">
-
 <option selected="selected" value="WhatsApp">WhatsApp</option>
 <option value="Llamada">Llamada</option>
 <option value="Correo electrónico">Correo electrónico</option>
@@ -1478,39 +1556,7 @@
 </section>
 </div>
 </section>
-<section class="mp-section mp-section--soft" id="como-funciona">
-<div class="container">
-<div class="mp-section-header">
-<div>
-<span class="mp-section-kicker"><i class="fas fa-list-check"></i> Cómo funciona</span>
-<h2>Proceso simple para campañas de retargeting</h2>
-<p>La página está pensada para captar leads calientes de personas que ya intentaron comprar tickets o están preocupadas por la disponibilidad.</p>
-</div>
-</div>
-<div class="mp-flow-grid">
-<article class="mp-flow-card">
-<div class="mp-flow-icon"><i class="fas fa-magnifying-glass"></i></div>
-<h3>1. Detectamos la necesidad</h3>
-<p>El anuncio habla directamente al problema: fechas agotadas o tickets sin disponibilidad.</p>
-</article>
-<article class="mp-flow-card">
-<div class="mp-flow-icon"><i class="fas fa-file-signature"></i></div>
-<h3>2. Captamos datos útiles</h3>
-<p>Nombre, WhatsApp, fechas, turistas y estado de vuelos para medir intención real.</p>
-</article>
-<article class="mp-flow-card">
-<div class="mp-flow-icon"><i class="fas fa-suitcase"></i></div>
-<h3>3. Ofrecemos paquetes</h3>
-<p>Mostramos opciones 2D/1N, 3D/2N y 4D/3N como rutas alternativas.</p>
-</article>
-<article class="mp-flow-card">
-<div class="mp-flow-icon"><i class="fas fa-chart-line"></i></div>
-<h3>4. Medimos conversiones</h3>
-<p>Se disparan eventos de PageView, Lead, Contact y BeginCheckout para Meta y TikTok.</p>
-</article>
-</div>
-</div>
-</section>
+
 <section class="mp-section mp-section--white" id="preguntas">
 <div class="container">
 <div class="mp-section-header">
@@ -1520,7 +1566,7 @@
 </div>
 </div>
 <div class="mp-faq-grid">
-<details class="mp-faq-item" open="">
+<details class="mp-faq-item">
 <summary>¿My Cusco Trip puede garantizar entradas si están agotadas?</summary>
 <p>No prometemos disponibilidad que no exista oficialmente. Revisamos opciones reales, fechas cercanas, circuitos disponibles y paquetes que puedan ayudarte a reorganizar el viaje.</p>
 </details>
