@@ -46,8 +46,14 @@
       voucher.total
     );
 
+    const transactionId = result?.paypalOrderId || result?.orderId || token || finalCode;
+    const purchaseKey = `mct_purchase_tracked_paypal_${transactionId}`;
+    try {
+      if (transactionId && localStorage.getItem(purchaseKey)) return;
+    } catch (error) {}
+
     window.mctTrack("purchase", {
-      transaction_id: result?.paypalOrderId || result?.orderId || token || finalCode,
+      transaction_id: transactionId,
       reservation_code: finalCode,
       item_id: productId,
       item_name: productTitle,
@@ -63,6 +69,10 @@
         price: value
       }]
     }, { metaEventName: "Purchase", tiktokEventName: "CompletePayment" });
+
+    try {
+      if (transactionId) localStorage.setItem(purchaseKey, "1");
+    } catch (error) {}
   }
 
   function setCard(state, title, message, code, actionsHtml) {

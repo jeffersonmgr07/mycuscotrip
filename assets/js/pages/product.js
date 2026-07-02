@@ -2774,7 +2774,7 @@ class MyCuscoTripProductPage {
       value: Number(preReservation.payNowValue || 0),
       total_value: Number(preReservation.serviceTotalValue || 0),
       passengers: preReservation.totalPassengers
-    }, { metaEventName: "InitiateCheckout" });
+    }, { metaEventName: "ViewContent", tiktokEventName: "ClickButton" });
     this.trackEvent("begin_checkout", {
       reservation_code: preReservation.code,
       currency: preReservation.currency,
