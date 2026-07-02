@@ -17,9 +17,9 @@
   };
 
   const EXCHANGE_FALLBACK = 3.75;
-  const STORAGE_KEY = "mct_quote_package_state_v19";
+  const STORAGE_KEY = "mct_quote_package_state_v81";
 
-  // Motor comercial v80: costos operativos reales + margen controlado.
+  // Motor comercial v81: costos operativos reales + margen controlado.
   // Tours base: costo operativo PEN x 1.5. Hoteles: netCost x 1.2.
   // Extras/tickets: se cobran aparte, sin markup general y sin descuento.
   const TOUR_OPERATIONAL_MARKUP = 1.5;
