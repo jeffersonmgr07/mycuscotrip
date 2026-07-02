@@ -48,7 +48,7 @@
     hotel_selected: { ga4: "hotel_selected", meta: "CustomizeProduct", tiktok: "ClickButton" },
     passenger_modal_open: { ga4: "passenger_modal_open", meta: "InitiateCheckout", tiktok: "InitiateCheckout" },
     pre_reservation_created: { ga4: "pre_reservation_created", meta: "CompleteRegistration", tiktok: "CompleteRegistration" },
-    begin_payment: { ga4: "begin_payment", meta: "AddPaymentInfo", tiktok: "AddPaymentInfo" }
+    begin_payment: { ga4: "begin_payment", meta: "InitiateCheckout", tiktok: "InitiateCheckout" }
   };
 
   function hasValue(value) {
@@ -91,8 +91,7 @@
     if (!hasValue(config.facebookPixelId) || loaded.meta) return;
 
     // Si una página ya cargó manualmente el Meta Pixel, reutilizamos esa instancia
-    // para evitar inicializaciones duplicadas. Esto aplica a landings con código
-    // oficial pegado en el <head>.
+    // para evitar inicializaciones duplicadas.
     if (typeof window.fbq === "function") {
       loaded.meta = true;
       return;
@@ -222,12 +221,18 @@
     if (!options.skipMeta && typeof window.fbq === "function" && hasValue(config.facebookPixelId)) {
       const metaName = options.metaEventName || mapping.meta || eventName;
       const metaParams = toMetaParams(normalized);
+      const eventID = options.eventID || normalized.event_id || normalized.eventID || "";
       const standardEvents = new Set([
         "PageView", "ViewContent", "Search", "Lead", "InitiateCheckout",
         "AddPaymentInfo", "Purchase", "Contact", "CompleteRegistration",
         "CustomizeProduct", "AddToCart"
       ]);
-      window.fbq(standardEvents.has(metaName) ? "track" : "trackCustom", metaName, metaParams);
+      const trackMethod = standardEvents.has(metaName) ? "track" : "trackCustom";
+      if (eventID) {
+        window.fbq(trackMethod, metaName, metaParams, { eventID });
+      } else {
+        window.fbq(trackMethod, metaName, metaParams);
+      }
       providers.push("meta");
     }
 
@@ -260,9 +265,7 @@
       page_path: window.location.pathname
     }, {
       metaEventName: "PageView",
-      // Las landings que conservan el snippet oficial de Meta ya disparan PageView
-      // manualmente. Evitamos duplicar solo el PageView de Meta, pero mantenemos GA4,
-      // GTM/dataLayer y TikTok.
+      // Las landings con el snippet oficial de Meta ya envían PageView manualmente.
       skipMeta: window.MCT_MANUAL_META_PAGEVIEW_SENT === true
     });
   }
