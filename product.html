@@ -33,7 +33,7 @@
 <link href="./assets/css/header.css" rel="stylesheet"/>
 <link href="./assets/css/footer.css" rel="stylesheet"/>
 <link href="./assets/css/responsive.css" rel="stylesheet"/>
-<link href="./assets/css/product-page.css?v=77" rel="stylesheet"/>
+<link href="./assets/css/product-page.css?v=79" rel="stylesheet"/>
 <link href="./assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <link href="https://mycuscotrip.com/product.html?slug=machu-picchu-full-day-clasico" rel="canonical"/></head>
 <body>
@@ -59,9 +59,9 @@
 <i class="fas fa-share-nodes"></i>
 <span data-i18n="product.share">Compartir</span>
 </button>
-<button class="experience-action-btn" type="button">
-<i class="far fa-heart"></i>
-<span data-i18n="product.save">Guardar</span>
+<button class="experience-action-btn" id="printProductItineraryBtn" type="button" aria-label="Imprimir itinerario">
+<i class="fas fa-print"></i>
+<span>Imprimir</span>
 </button>
 </div>
 </div>
@@ -551,7 +551,8 @@
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
-<script src="./assets/js/pages/product.js?v=77"></script>
+<script src="./assets/js/pages/product.js?v=79"></script>
 <script src="./assets/js/components/coupon-popup.js"></script>
+<section class="product-print-sheet" id="productPrintArea" aria-label="Itinerario imprimible"></section>
 </body>
 </html>

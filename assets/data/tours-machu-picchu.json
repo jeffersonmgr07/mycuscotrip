@@ -68,35 +68,35 @@
         "guideLanguages": [
           "es",
           "en",
-          "otros idiomas consultar"
+          "otros idiomas, consultar"
         ]
       },
       "basePricing": {
-        "adult": 287.9,
-        "child": 269.9
+        "adult": 448.38,
+        "child": 448.38
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 252.9,
-          "child": 243.9,
+          "adult": 448.38,
+          "child": 448.38,
           "currency": "USD"
         },
         "andean_community": {
-          "adult": 262.9,
-          "child": 253.9,
+          "adult": 448.38,
+          "child": 448.38,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 287.9,
-          "child": 269.9,
+          "adult": 448.38,
+          "child": 448.38,
           "currency": "USD"
         }
       },
       "internalPricing": {
         "pricingModel": "operational_cost_plus_net_margin",
         "baseCurrency": "USD",
-        "targetNetProfitUSD": 50,
-        "guideCostUSD": 10,
+        "targetNetProfitUSD": 100,
+        "guideCostUSD": 50,
         "defaultTrainCostUSD": 128,
         "defaultOutboundTrainCostUSD": 66,
         "defaultReturnTrainCostUSD": 62,
@@ -104,18 +104,21 @@
         "defaultOutboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_0640_OLLANTAYTAMB",
         "defaultReturnTrainCode": "INCA_MAPI_OLLA_VOYAGER_2020_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
-        "trainCostSnapshotDate": "2026-05-01"
+        "trainCostSnapshotDate": "2026-05-01",
+        "guideCostModel": "fixed_per_group_prorated_1_to_10_passengers"
       },
       "financialRules": {
         "exchangeRateUsed": 3.75,
         "paypalFeePercent": 5.4,
         "paypalFixedUSD": 0.3,
-        "bankWithdrawPercent": 1.5,
+        "bankWithdrawPercent": 3,
         "igvPercent": 18,
         "netFactor": 0.9283,
         "rounding": {
           "USD": "ceil_to_next_x.90"
-        }
+        },
+        "maxPublicDiscountBufferPercent": 10,
+        "publicBasePriceStrategy": "inflate_to_preserve_net_after_discount_and_payment_fees"
       },
       "ticketPricingByNationality": {
         "machuPicchuEntrance": {
@@ -355,7 +358,7 @@
         }
       ],
       "paymentOptions": {
-        "fullPaymentDiscountPercent": 0,
+        "fullPaymentDiscountPercent": 10,
         "partialPaymentPerPerson": 149,
         "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
       },
