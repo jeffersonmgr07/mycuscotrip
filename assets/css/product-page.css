@@ -8403,3 +8403,57 @@ body.passenger-modal-open {
     page-break-inside: avoid !important;
   }
 }
+
+/* =========================================================
+   V82 - Impresión: logo, monto destacado, no incluye/info
+   ========================================================= */
+.product-print-sheet .print-sheet--v82 .print-logo--v82,
+.product-print-sheet .print-sheet--v82 .print-logo {
+  display: block !important;
+  width: 168px;
+  max-width: 168px;
+  height: auto;
+  max-height: 68px;
+  object-fit: contain;
+  margin: 0 0 7px;
+}
+.product-print-sheet .print-sheet--v82 .print-pay-now {
+  align-items: center;
+  background: #eaf6ef;
+  border: 1px solid #cfe5d7;
+  margin-top: 6px !important;
+  padding: 10px 11px !important;
+}
+.product-print-sheet .print-sheet--v82 .print-pay-now strong,
+.product-print-sheet .print-sheet--v82 .print-pay-now span {
+  font-size: 14px;
+  line-height: 1.15;
+  color: #073d29;
+}
+.product-print-sheet .print-sheet--v82 .print-section--excludes,
+.product-print-sheet .print-sheet--v82 .print-section--important {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.product-print-sheet .print-sheet--v82 .print-section--important .print-list li {
+  font-size: 9.7px;
+}
+.product-print-sheet .print-sheet--v82 .print-footer {
+  font-size: 9.2px;
+  line-height: 1.38;
+}
+@media print {
+  .product-print-sheet .print-sheet--v82 .print-logo--v82,
+  .product-print-sheet .print-sheet--v82 .print-logo {
+    display: block !important;
+    width: 42mm !important;
+    max-width: 42mm !important;
+    max-height: 17mm !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .product-print-sheet .print-sheet--v82 .print-pay-now strong,
+  .product-print-sheet .print-sheet--v82 .print-pay-now span {
+    font-size: 14px !important;
+  }
+}
