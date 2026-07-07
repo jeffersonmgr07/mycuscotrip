@@ -8083,3 +8083,144 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV80, 1600);
   }
 })();
+
+/* =========================================================
+   V81 - Ajuste formato de impresión: galería 3 imágenes,
+   descripción bajo itinerario y mejor paginación A4
+   ========================================================= */
+(function () {
+  function patchV81() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page || page.__mctV81Applied) return false;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const esc = function (value) {
+      if (typeof page.escapeHtml === "function") return page.escapeHtml(value ?? "");
+      return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    };
+    const money = function (value) {
+      return Number(value || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+    const selectedOutbound = function (ctx) {
+      return ctx.getSelectedOutboundTrain?.() || ctx.findTrainById?.(ctx.selectedOutboundTrainId, ctx.availableOutboundTrains) || null;
+    };
+    const selectedReturn = function (ctx) {
+      return ctx.getSelectedReturnTrain?.() || ctx.findTrainById?.(ctx.selectedReturnTrainId, ctx.availableReturnTrains) || null;
+    };
+    const formatDateLong = function (value) {
+      if (!value) return "Por confirmar";
+      const date = new Date(`${value}T12:00:00`);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+    };
+    const isMachuClassic = function (ctx) {
+      return String(ctx?.product?.slug || ctx?.slug || "") === "machu-picchu-full-day-clasico";
+    };
+
+    proto.getProductPrintImagesV81 = function () {
+      const images = this.product?.images || {};
+      const candidates = [];
+      if (images.cover) candidates.push(images.cover);
+      if (this.product?.image) candidates.push(this.product.image);
+      if (Array.isArray(images.gallery)) candidates.push(...images.gallery);
+      if (this.product?.fallbackImage) candidates.push(this.product.fallbackImage);
+      candidates.push("./assets/img/placeholder/experience.jpg");
+      const unique = [];
+      candidates.forEach((src) => {
+        const clean = String(src || "").trim();
+        if (clean && !unique.includes(clean)) unique.push(clean);
+      });
+      while (unique.length < 3) unique.push(unique[unique.length - 1] || "./assets/img/placeholder/experience.jpg");
+      return unique.slice(0, 3);
+    };
+
+    proto.renderProductPrintGalleryV81 = function () {
+      const title = this.product?.title || "Tour";
+      return `<div class="print-gallery print-gallery--v81">
+        ${this.getProductPrintImagesV81().map((src, index) => `<figure><img src="${esc(src)}" alt="${esc(title)} imagen ${index + 1}" /></figure>`).join("")}
+      </div>`;
+    };
+
+    proto.printProductItineraryV78 = function () {
+      this.updatePricing?.();
+      const target = document.getElementById("productPrintArea");
+      if (!target) return window.print();
+      const currency = this.product?.currency || "USD";
+      const summary = this.getBookingSummary?.() || {};
+      const quote = this.dynamicMachuClassicQuoteV78 || {};
+      const out = selectedOutbound(this);
+      const ret = selectedReturn(this);
+      const itinerary = this.getProductPrintItineraryItemsV80?.() || this.product?.itinerary || [];
+      const dateLabel = formatDateLong(this.date);
+      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const includes = this.getPrintIncludesV80?.() || (this.product?.includes || []).slice(0, 10);
+      const destination = isMachuClassic(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
+      const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
+      const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
+      const discountText = `- ${currency} ${money(Number(quote.discount || Math.max(discount, 0)))}`;
+      const finalPassenger = summary.finalPassengerPrice || `${currency} ${money(Number(summary.rawPayNow || quote.payNow || 0) / Math.max(1, Number(this.getTotalPassengers?.() || 1)))}`;
+      const modeShort = summary.paymentModeShort || (this.paymentMode === "full" ? "Completo" : "Anticipo");
+
+      target.innerHTML = `<div class="print-sheet print-sheet--v81">
+        <header class="print-header print-header--v80 print-header--v81">
+          <div>
+            <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
+            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
+            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+          </div>
+          <div class="print-header__right">
+            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
+            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
+            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
+            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+          </div>
+        </header>
+        ${this.renderProductPrintGalleryV81()}
+        <div class="print-grid print-grid--trip">
+          <div class="print-info-box">
+            <p><strong>Destino:</strong> ${esc(destination)}</p>
+            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+          </div>
+          <div class="print-info-box print-info-box--payment">
+            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
+            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>Monto total a pagar:</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
+          </div>
+        </div>
+        <section class="print-section print-section--trains">
+          <h2>Trenes seleccionados</h2>
+          <div class="print-train-grid">${this.renderTrainPrintCardV80?.(out, "outbound") || ""}${this.renderTrainPrintCardV80?.(ret, "return") || ""}</div>
+        </section>
+        <section class="print-section print-section--itinerary">
+          <h2>Itinerario según tu selección</h2>
+          <div class="print-itinerary-list">
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+          </div>
+        </section>
+        <section class="print-section print-section--description">
+          <h2>Descripción</h2>
+          <p class="print-description print-description--body">${esc(description)}</p>
+        </section>
+        <section class="print-section print-section--includes">
+          <h2>Incluye</h2>
+          <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
+        </section>
+        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.</footer>
+      </div>`;
+      window.setTimeout(() => window.print(), 80);
+    };
+
+    page.__mctV81Applied = true;
+    return true;
+  }
+  if (!patchV81()) {
+    document.addEventListener("DOMContentLoaded", patchV81);
+    setTimeout(patchV81, 250);
+    setTimeout(patchV81, 900);
+    setTimeout(patchV81, 1600);
+  }
+})();
