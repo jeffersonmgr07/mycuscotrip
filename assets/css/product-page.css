@@ -8457,3 +8457,88 @@ body.passenger-modal-open {
     font-size: 14px !important;
   }
 }
+
+/* =========================================================
+   V83 - Impresión: horas a.m./p.m. + URL/QR para reservar
+   ========================================================= */
+.product-print-sheet .print-sheet--v83 .print-itinerary-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1px;
+}
+.product-print-sheet .print-sheet--v83 .print-time-main {
+  display: block;
+  font-size: 10px;
+  line-height: 1.1;
+  color: #0b4a33;
+  font-weight: 900;
+}
+.product-print-sheet .print-sheet--v83 .print-time-approx {
+  display: block;
+  font-size: 8.4px;
+  line-height: 1.05;
+  color: #6a7b73;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+.product-print-sheet .print-sheet--v83 .print-train-card--v83 small {
+  display: block;
+  margin-top: 4px;
+  color: #4d5f57;
+  font-size: 10px;
+  line-height: 1.25;
+}
+.product-print-sheet .print-section--book-v83 {
+  display: grid;
+  grid-template-columns: 1fr 24mm;
+  align-items: center;
+  gap: 10px;
+  background: #f4faf6;
+  border-color: #cfe5d7;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.product-print-sheet .print-section--book-v83 h2 {
+  margin: 0 0 4px;
+  color: #073d29;
+  font-size: 12px;
+}
+.product-print-sheet .print-section--book-v83 p {
+  margin: 0;
+  color: #0b4a33;
+  font-size: 9.5px;
+  line-height: 1.25;
+  word-break: break-all;
+  font-weight: 800;
+}
+.product-print-sheet .print-section--book-v83 small {
+  display: block;
+  margin-top: 3px;
+  color: #6a7b73;
+  font-size: 8.8px;
+  line-height: 1.2;
+}
+.product-print-sheet .print-booking-qr {
+  width: 24mm;
+  height: 24mm;
+  border-radius: 10px;
+  border: 1px solid #dfe9e4;
+  background: #fff;
+  padding: 3px;
+}
+.product-print-sheet .print-booking-qr img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+@media print {
+  .product-print-sheet .print-section--book-v83 {
+    grid-template-columns: 1fr 24mm !important;
+  }
+  .product-print-sheet .print-booking-qr {
+    width: 24mm !important;
+    height: 24mm !important;
+  }
+}
