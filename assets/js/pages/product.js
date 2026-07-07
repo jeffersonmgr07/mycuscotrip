@@ -7832,3 +7832,254 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV78, 1600);
   }
 })();
+
+
+/* =========================================================
+   PATCH MCT V80 - Formato impresión producto + precio por pasajero
+   ========================================================= */
+(function () {
+  function patchV80() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV80Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const esc = function (value) {
+      if (typeof page.escapeHtml === "function") return page.escapeHtml(value ?? "");
+      return String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    };
+    const money = function (value) {
+      return typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    };
+    const isMachuClassic = function () {
+      const slug = String(this?.product?.slug || this?.slug || "").trim();
+      return slug === "machu-picchu-full-day-clasico";
+    };
+    const addMinutes = function (time, delta) {
+      const match = String(time || "").match(/^(\d{1,2}):(\d{2})/);
+      if (!match) return "";
+      let total = Number(match[1]) * 60 + Number(match[2]) + Number(delta || 0);
+      total = ((total % 1440) + 1440) % 1440;
+      return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+    };
+    const formatDateLong = function (value) {
+      if (!value) return "Fecha por definir";
+      const date = new Date(`${value}T12:00:00`);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+    };
+    const trainStationName = function (train, key, fallback) {
+      const raw = train?.raw || {};
+      const value = raw[key] || train?.[key] || fallback;
+      const map = {
+        OLLA_MAPI: "Ollantaytambo",
+        MAPI_OLLA: "Ollantaytambo",
+        CUSCO_MAPI: "Cusco",
+        MAPI_CUSCO: "Cusco",
+        URU_MAPI: "Urubamba",
+        MAPI_URU: "Urubamba",
+        HIDRO_MAPI: "Hidroeléctrica",
+        MAPI_HIDRO: "Hidroeléctrica",
+        MAPI: "Machu Picchu",
+        OLLA: "Ollantaytambo"
+      };
+      return map[String(value || "").trim()] || value;
+    };
+    const selectedOutbound = function (ctx) {
+      return ctx.getSelectedOutboundTrain?.() || ctx.findTrainById?.(ctx.selectedOutboundTrainId, ctx.availableOutboundTrains) || null;
+    };
+    const selectedReturn = function (ctx) {
+      return ctx.getSelectedReturnTrain?.() || ctx.findTrainById?.(ctx.selectedReturnTrainId, ctx.availableReturnTrains) || null;
+    };
+    const totalPassengers = function (ctx) {
+      return Math.max(1, Number(ctx.getTotalPassengers?.() || (Number(ctx.adults || 0) + Number(ctx.children || 0)) || 1));
+    };
+    const getFinalPassengerPrice = function (ctx, quote) {
+      const pax = totalPassengers(ctx);
+      const total = Number((quote?.serviceTotal || 0) - (quote?.discount || 0));
+      return Math.max(total, 0) / pax;
+    };
+    const ensureFinalPassengerPriceRow = function () {
+      let row = document.getElementById("finalPassengerPriceRow");
+      const serviceRow = document.getElementById("serviceTotalRow");
+      if (!row && serviceRow?.parentNode) {
+        row = document.createElement("div");
+        row.id = "finalPassengerPriceRow";
+        row.className = "booking-summary__line booking-summary__line--per-passenger";
+        row.innerHTML = `<span>Precio final por pasajero</span><strong id="finalPassengerPrice">USD 0.00</strong>`;
+        serviceRow.parentNode.insertBefore(row, serviceRow);
+      }
+      return row;
+    };
+
+    const previousUpdateMachuClassicPricing = proto.updateMachuClassicPricingV78;
+    if (typeof previousUpdateMachuClassicPricing === "function") {
+      proto.updateMachuClassicPricingV78 = function () {
+        const result = previousUpdateMachuClassicPricing.apply(this, arguments);
+        if (!isMachuClassic.call(this)) return result;
+        const currency = this.product?.currency || "USD";
+        const quote = this.dynamicMachuClassicQuoteV78 || {};
+        const finalPassenger = getFinalPassengerPrice(this, quote);
+        const row = ensureFinalPassengerPriceRow();
+        if (row) row.hidden = false;
+        this.setText?.("finalPassengerPrice", `${currency} ${money(finalPassenger)}`);
+        const serviceLabel = document.querySelector("#serviceTotalRow > span");
+        if (serviceLabel) serviceLabel.textContent = "Total de servicios";
+        const payNowLabel = document.getElementById("payNowLabel");
+        if (payNowLabel) payNowLabel.textContent = "Monto a pagar ahora";
+        return result;
+      };
+    }
+
+    const previousGetBookingSummary = proto.getBookingSummary;
+    proto.getBookingSummary = function () {
+      const summary = previousGetBookingSummary?.apply(this, arguments) || {};
+      if (!isMachuClassic.call(this)) return summary;
+      const currency = this.product?.currency || "USD";
+      const quote = this.dynamicMachuClassicQuoteV78 || (this.updateMachuClassicPricingV78?.(), this.dynamicMachuClassicQuoteV78) || {};
+      const finalPassenger = getFinalPassengerPrice(this, quote);
+      return {
+        ...summary,
+        finalPassengerPrice: `${currency} ${money(finalPassenger)}`,
+        rawFinalPassengerPrice: finalPassenger,
+        paymentModeShort: this.paymentMode === "full" ? "Completo" : "Anticipo"
+      };
+    };
+
+    proto.getProductPrintItineraryItemsV80 = function () {
+      const items = Array.isArray(this.product?.itinerary) ? JSON.parse(JSON.stringify(this.product.itinerary)) : [];
+      const out = selectedOutbound(this);
+      const ret = selectedReturn(this);
+      const outboundDeparture = out?.departureTime || "06:40";
+      const returnDeparture = ret?.departureTime || "20:20";
+      const returnArrival = ret?.arrivalTime || "21:59";
+      const pickupTime = addMinutes(outboundDeparture, -160) || "04:00";
+      const cuscoArrival = addMinutes(returnArrival, 120) || "22:30";
+      return items.map((item) => {
+        const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
+        if (text.includes("recojo")) return { ...item, time: `${pickupTime} aprox.` };
+        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || "Viaje en tren a Machu Picchu Pueblo" };
+        if (text.includes("tren de retorno")) return { ...item, time: `${returnDeparture} aprox.` };
+        if (text.includes("llegada a estación") || text.includes("ollantaytambo y traslado")) return { ...item, time: `${returnArrival} aprox.` };
+        if (text.includes("llegada a cusco")) return { ...item, time: `${cuscoArrival} aprox.` };
+        return item;
+      });
+    };
+
+    proto.getProductPrintImageV80 = function () {
+      const images = this.product?.images || {};
+      return images.cover || this.product?.fallbackImage || (Array.isArray(images.gallery) ? images.gallery[0] : "") || "./assets/img/placeholder/experience.jpg";
+    };
+
+    proto.renderTrainPrintCardV80 = function (train, direction) {
+      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? "Retorno" : "Ida"}</span><b>Por confirmar</b></div>`;
+      const from = direction === "return" ? trainStationName(train, "departureStation", "Machu Picchu") : trainStationName(train, "departureStation", "Ollantaytambo");
+      const to = direction === "return" ? trainStationName(train, "arrivalStation", "Ollantaytambo") : trainStationName(train, "arrivalStation", "Machu Picchu");
+      return `<div class="print-train-card">
+        <span>${direction === "return" ? "Tren de retorno" : "Tren de ida"}</span>
+        <b>${esc(train.companyName || train.company || "Tren")} · ${esc(train.label || "")}</b>
+        <small>${esc(from)} ${esc(train.departureTime || "")} → ${esc(to)} ${esc(train.arrivalTime || "")}</small>
+      </div>`;
+    };
+
+    proto.getPrintIncludesV80 = function () {
+      const selectedLunch = (this.product?.extras || []).filter((extra) => this.selectedExtras?.has(extra.code) && String(extra.exclusiveGroup || "").toLowerCase() === "lunch");
+      const includes = Array.isArray(this.product?.includes) ? [...this.product.includes] : [];
+      if (selectedLunch.length) {
+        const lunchLabel = selectedLunch.map((extra) => extra.label).join(" / ");
+        const optionIndex = includes.findIndex((item) => String(item).toLowerCase().includes("opción de almuerzo"));
+        const lunchText = `Almuerzo incluido: ${lunchLabel}.`;
+        if (optionIndex >= 0) includes[optionIndex] = lunchText;
+        else includes.push(lunchText);
+      }
+      return includes.slice(0, 10);
+    };
+
+    proto.printProductItineraryV78 = function () {
+      this.updatePricing?.();
+      const target = document.getElementById("productPrintArea");
+      if (!target) return window.print();
+      const currency = this.product?.currency || "USD";
+      const summary = this.getBookingSummary?.() || {};
+      const quote = this.dynamicMachuClassicQuoteV78 || {};
+      const out = selectedOutbound(this);
+      const ret = selectedReturn(this);
+      const itinerary = this.getProductPrintItineraryItemsV80?.() || this.product?.itinerary || [];
+      const dateLabel = formatDateLong(this.date);
+      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const includes = this.getPrintIncludesV80?.() || (this.product?.includes || []).slice(0, 10);
+      const cover = this.getProductPrintImageV80?.() || "./assets/img/placeholder/experience.jpg";
+      const destination = isMachuClassic.call(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
+      const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
+      const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
+      const discountText = `- ${currency} ${money(Number(quote.discount || Math.max(discount, 0)))}`;
+      const finalPassenger = summary.finalPassengerPrice || `${currency} ${money(getFinalPassengerPrice(this, quote))}`;
+      const modeShort = summary.paymentModeShort || (this.paymentMode === "full" ? "Completo" : "Anticipo");
+
+      target.innerHTML = `<div class="print-sheet">
+        <header class="print-header print-header--v80">
+          <div>
+            <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
+            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
+            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-description">${esc(description)}</p>
+          </div>
+          <div class="print-header__right">
+            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
+            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
+            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
+            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+          </div>
+        </header>
+        <figure class="print-banner"><img src="${esc(cover)}" alt="${esc(this.product?.title || "Tour")}" /></figure>
+        <div class="print-grid print-grid--trip">
+          <div class="print-info-box">
+            <p><strong>Destino:</strong> ${esc(destination)}</p>
+            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+          </div>
+          <div class="print-info-box print-info-box--payment">
+            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
+            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>Monto total a pagar:</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
+          </div>
+        </div>
+        <section class="print-section">
+          <h2>Trenes seleccionados</h2>
+          <div class="print-train-grid">${this.renderTrainPrintCardV80(out, "outbound")}${this.renderTrainPrintCardV80(ret, "return")}</div>
+        </section>
+        <section class="print-section">
+          <h2>Itinerario según tu selección</h2>
+          <div class="print-itinerary-list">
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+          </div>
+        </section>
+        <section class="print-section">
+          <h2>Incluye</h2>
+          <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
+        </section>
+        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.</footer>
+      </div>`;
+      window.setTimeout(() => window.print(), 80);
+    };
+
+    page.__mctV80Applied = true;
+    try {
+      if (isMachuClassic.call(page)) {
+        const row = ensureFinalPassengerPriceRow();
+        if (row) row.hidden = false;
+        page.updatePricing?.();
+      }
+    } catch (error) { console.warn("MCT V80 post-apply warning:", error); }
+    return true;
+  }
+  if (!patchV80()) {
+    document.addEventListener("DOMContentLoaded", patchV80);
+    setTimeout(patchV80, 250);
+    setTimeout(patchV80, 900);
+    setTimeout(patchV80, 1600);
+  }
+})();
