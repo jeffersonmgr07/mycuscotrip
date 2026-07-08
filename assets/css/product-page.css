@@ -8542,3 +8542,76 @@ body.passenger-modal-open {
     height: 24mm !important;
   }
 }
+
+
+/* =========================================================
+   V85 - Overnight clásico: hotel incluido y hotel en impresión
+   ========================================================= */
+.hotel-option-card__badge--included {
+  background: #e8f5ec;
+  color: #0a3a26;
+  border: 1px solid rgba(10, 58, 38, .16);
+}
+.booking-accommodation-card--overnight-v85 .booking-accommodation-card__price {
+  color: #0a3a26;
+  font-weight: 800;
+}
+.product-print-sheet .print-section--hotel-v85 {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.product-print-sheet .print-hotel-summary-v85 {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  background: #f7fbf8;
+  border: 1px solid #dfe9e4;
+  border-radius: 12px;
+  padding: 9px 10px;
+  margin-bottom: 8px;
+}
+.product-print-sheet .print-hotel-summary-v85 strong,
+.product-print-sheet .print-hotel-summary-v85 small,
+.product-print-sheet .print-hotel-summary-v85 b {
+  display: block;
+}
+.product-print-sheet .print-hotel-summary-v85 strong {
+  color: #073d29;
+  font-size: 13px;
+}
+.product-print-sheet .print-hotel-summary-v85 small {
+  color: #54665e;
+  font-size: 9.7px;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+.product-print-sheet .print-hotel-summary-v85 b {
+  color: #0b4a33;
+  font-size: 11px;
+  text-align: right;
+}
+.product-print-sheet .print-hotel-gallery-v85 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+.product-print-sheet .print-hotel-gallery-v85 figure {
+  margin: 0;
+  height: 24mm;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #dfe9e4;
+  background: #eef7f1;
+}
+.product-print-sheet .print-hotel-gallery-v85 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media print {
+  .product-print-sheet .print-hotel-gallery-v85 figure {
+    height: 24mm !important;
+  }
+}

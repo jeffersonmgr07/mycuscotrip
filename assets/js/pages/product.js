@@ -9058,3 +9058,266 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV84, 1600);
   }
 })();
+
+
+/* =========================================================
+   PATCH MCT V85 - Overnight clásico: hotel incluido, trenes visibles e impresión hotel
+   ========================================================= */
+(function () {
+  function patchV85() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV85Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+    const slugOf = (ctx) => String(ctx?.product?.slug || ctx?.slug || "").trim();
+    const isOvernightClassic = (ctx) => slugOf(ctx) === "machu-picchu-overnight-clasico";
+    const esc = (value) => typeof page.escapeHtml === "function"
+      ? page.escapeHtml(value ?? "")
+      : String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    const money = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const paxCount = (ctx) => Math.max(1, Number(ctx.getTotalPassengers?.() || (Number(ctx.adults || 0) + Number(ctx.children || 0)) || 1));
+    const defaultHotelCode = (ctx) => ctx.product?.accommodationSelection?.defaultHotelCode || ctx.product?.internalPricing?.defaultHotelCode || "luz-garden-3s";
+    const hotelCreditTotal = (ctx) => {
+      const pax = paxCount(ctx);
+      const internal = ctx.product?.internalPricing || {};
+      const single = Number(internal.defaultHotelCostUSD || ctx.product?.accommodationSelection?.defaultHotelCostUSD || 45);
+      const shared = Number(internal.defaultHotelCostPerPersonIfSharedUSD || 22.5);
+      return pax <= 1 ? single : (pax === 2 ? single : shared * pax);
+    };
+    const comboUpgradeTotal = (ctx, hotelCode, combo) => {
+      if (!combo) return 0;
+      if (!hotelCode || hotelCode === defaultHotelCode(ctx)) return 0;
+      return Math.max(0, Number(combo.totalForStay || 0) - hotelCreditTotal(ctx));
+    };
+    const comboUpgradePerPerson = (ctx, hotelCode, combo) => comboUpgradeTotal(ctx, hotelCode, combo) / paxCount(ctx);
+
+    proto.calculateOvernightHotelUpgradeTotalV84 = function () {
+      if (!isOvernightClassic(this)) return 0;
+      const destination = "aguas-calientes";
+      const selectedCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
+      if (!selectedCode || selectedCode === "no-hotel") return 0;
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      return comboUpgradeTotal(this, selectedCode, selection?.combination);
+    };
+
+    const ensureFinalPassengerRowV85 = function (ctx) {
+      let row = document.getElementById("finalPassengerPriceRow");
+      const serviceRow = document.getElementById("serviceTotalRow");
+      if (!row && serviceRow?.parentNode) {
+        row = document.createElement("div");
+        row.id = "finalPassengerPriceRow";
+        row.className = "booking-summary__line booking-summary__line--per-passenger";
+        row.innerHTML = `<span>Precio final por pasajero</span><strong id="finalPassengerPrice">${esc(ctx.product?.currency || "USD")} 0.00</strong>`;
+        serviceRow.parentNode.insertBefore(row, serviceRow);
+      }
+      return row;
+    };
+
+    const prevUpdateOvernight = proto.updateMachuOvernightPricingV84;
+    if (typeof prevUpdateOvernight === "function") {
+      proto.updateMachuOvernightPricingV84 = function () {
+        const result = prevUpdateOvernight.apply(this, arguments);
+        if (isOvernightClassic(this)) {
+          const quote = this.dynamicMachuClassicQuoteV78 || {};
+          const pax = paxCount(this);
+          const finalPassenger = Number(quote.payNow || 0) / pax;
+          const row = ensureFinalPassengerRowV85(this);
+          if (row) row.hidden = false;
+          this.setText?.("finalPassengerPrice", `${this.product?.currency || "USD"} ${money(finalPassenger)}`);
+          this.updateTrainAdjustmentSummaryRow?.(Number(quote.trainAdjustmentTotal || 0), this.product?.currency || "USD");
+          const hotelRow = document.getElementById("accommodationTotal")?.closest(".booking-summary__line");
+          if (hotelRow) {
+            const label = hotelRow.querySelector("span");
+            if (label) label.textContent = "Upgrade de hotel";
+            hotelRow.hidden = !(Number(quote.accommodationTotal || 0) > 0);
+          }
+        }
+        return result;
+      };
+    }
+
+    const previousOpenHotelModal = proto.openHotelModal;
+    proto.openHotelModal = function (destination) {
+      if (!isOvernightClassic(this) || String(destination) !== "aguas-calientes") {
+        return previousOpenHotelModal?.apply(this, arguments);
+      }
+      const modal = document.getElementById("hotelSelectionModal");
+      const title = document.getElementById("hotelModalTitle");
+      const subtitle = document.getElementById("hotelModalSubtitle");
+      const list = document.getElementById("hotelModalList");
+      const cancelBtn = document.getElementById("cancelHotelModalBtn");
+      if (!modal || !title || !subtitle || !list) return;
+      this.activeHotelModalDestination = destination;
+      if (cancelBtn) cancelBtn.textContent = this.t("product.selectHotelRoom", "Select hotel and room");
+      const destinationLabel = this.getDestinationLabel(destination);
+      const nights = 1;
+      const passengers = paxCount(this);
+      title.textContent = "Upgrade de hotel en Aguas Calientes";
+      subtitle.textContent = "El Hotel Luz Garden Machu Picchu está incluido. Compara hoteles y habitaciones disponibles para tu noche en Aguas Calientes.";
+      const hotels = (this.getHotelsByDestination?.(destination) || []).filter((h) => h?.hotelCode !== "no-hotel");
+      const pendingHotelCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
+      const pendingCombinationKey = this.selectedCombinationsByDestination?.[destination]?.key || "";
+      list.innerHTML = hotels.map((hotel) => {
+        const combinations = this.generateAccommodationCombinations(hotel.rooms || [], passengers, nights);
+        const currentHotelCode = pendingHotelCode;
+        const currentCombinationKey = pendingCombinationKey;
+        const isSelectedHotel = currentHotelCode === hotel.hotelCode;
+        const initialCombo = combinations.find((combo) => isSelectedHotel && combo.key === currentCombinationKey) || combinations[0] || null;
+        const images = [...new Set([...(hotel.images?.cover ? [hotel.images.cover] : []), ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])])];
+        const upgrade = comboUpgradeTotal(this, hotel.hotelCode, initialCombo);
+        const upgradePerPerson = comboUpgradePerPerson(this, hotel.hotelCode, initialCombo);
+        const badge = hotel.hotelCode === defaultHotelCode(this)
+          ? "Hotel incluido en el precio"
+          : `+ ${this.product.currency || "USD"} ${money(upgradePerPerson)} por persona`;
+        return `
+          <article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""} hotel-option-card--overnight-v85"
+            data-hotel-card="${esc(hotel.hotelCode)}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-selected-combo-key="${esc(initialCombo?.key || "")}">
+            <div class="hotel-option-card__header">
+              <div>
+                <h3>${esc(hotel.hotelName)}</h3>
+                <p>${this.renderStars?.(hotel.stars || 0) || `${hotel.stars || 0}★`} · ${esc(hotel.location || destinationLabel)}</p>
+                ${hotel.address ? `<p>${esc(hotel.address)}</p>` : ""}
+              </div>
+              <div class="hotel-option-card__badge ${hotel.hotelCode === defaultHotelCode(this) ? "hotel-option-card__badge--included" : ""}">${esc(badge)}</div>
+            </div>
+            <div class="hotel-option-card__content">
+              <div class="hotel-option-card__media"><div class="hotel-option-card__gallery">${this.renderHotelModalGallery(images, hotel.hotelName)}</div>${this.renderHotelFeatures(hotel)}</div>
+              <div class="hotel-option-card__body">
+                <label>Selecciona tipo de habitación</label>
+                <div class="hotel-option-card__options">
+                  ${combinations.length ? combinations.map((combo) => {
+                    const comboUpgrade = comboUpgradeTotal(this, hotel.hotelCode, combo);
+                    const comboPerPerson = comboUpgrade / passengers;
+                    const sub = hotel.hotelCode === defaultHotelCode(this)
+                      ? `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Incluido en el precio base`
+                      : `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Upgrade total + ${this.product.currency || "USD"} ${money(comboUpgrade)} · ${this.product.currency || "USD"} ${money(comboPerPerson)} por persona`;
+                    return `<button type="button" class="hotel-combo-btn ${isSelectedHotel && currentCombinationKey === combo.key ? "is-selected" : ""}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-combo-key="${esc(combo.key)}"><span class="hotel-combo-radio" aria-hidden="true"></span><span class="hotel-combo-btn__main">${esc(combo.label)}</span><span class="hotel-combo-btn__sub">${esc(sub)}</span></button>`;
+                  }).join("") : `<p>No hay habitaciones válidas para ${passengers} viajeros.</p>`}
+                </div>
+              </div>
+            </div>
+          </article>`;
+      }).join("");
+      this.bindHotelModalSelectionEvents();
+      this.bindHotelModalGalleryEvents();
+      modal.hidden = false;
+      document.body.classList.add("hotel-modal-open");
+    };
+
+    const previousRenderAccommodation = proto.renderAccommodationOptions;
+    proto.renderAccommodationOptions = function (product) {
+      const result = previousRenderAccommodation?.apply(this, arguments);
+      if (!isOvernightClassic(this)) return result;
+      const destination = "aguas-calientes";
+      this.ensureOvernightDefaultHotelV84?.();
+      const section = document.getElementById("packageAccommodationSection");
+      const container = document.getElementById("hotelSelectorsContainer");
+      if (!section || !container) return result;
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      const hotel = selection?.hotel || this.getHotelByCode?.(destination, defaultHotelCode(this));
+      const combo = selection?.combination || null;
+      const upgradeTotal = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
+      const image = hotel?.images?.cover || hotel?.images?.gallery?.[0] || "";
+      section.hidden = false;
+      section.classList.add("booking-field--hotel-upgrade-v84", "booking-field--hotel-upgrade-v85");
+      container.innerHTML = `<div class="booking-accommodation-card booking-accommodation-card--selected booking-accommodation-card--overnight-v84 booking-accommodation-card--overnight-v85">
+        ${image ? `<div class="booking-accommodation-card__thumb"><img src="${this.resolveAssetPath(image)}" alt="${esc(hotel?.hotelName || "Hotel seleccionado")}" loading="lazy" /></div>` : ""}
+        <div class="booking-accommodation-card__header"><strong>Hotel seleccionado</strong><small>1 noche en Aguas Calientes</small></div>
+        <div class="booking-accommodation-card__body">
+          <p class="booking-accommodation-card__selected">${esc(hotel?.hotelName || "Hotel Luz Garden Machu Picchu")} ${hotel?.stars ? `· ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p>
+          <p class="booking-accommodation-card__selected">${esc(combo?.label || "Habitación según disponibilidad")}</p>
+          <p class="booking-accommodation-card__price">${upgradeTotal > 0 ? `+ ${this.product.currency || "USD"} ${money(upgradeTotal)} total por upgrade` : "Hotel incluido en el precio"}</p>
+          <button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="aguas-calientes"><i class="fas fa-hotel"></i> Upgrade de hotel</button>
+        </div>
+      </div>`;
+      this.bindAccommodationEvents?.();
+      return result;
+    };
+
+    const previousRenderProduct = proto.renderProduct;
+    proto.renderProduct = function (product) {
+      const result = previousRenderProduct?.apply(this, arguments);
+      if (isOvernightClassic(this)) {
+        this.ensureOvernightDefaultHotelV84?.();
+        this.renderTrainSelectionOptions?.(this.product);
+        this.renderAccommodationOptions?.(this.product);
+        this.updatePricing?.();
+      }
+      return result;
+    };
+
+    const prevGetPrintItinerary = proto.getProductPrintItineraryItemsV83;
+    proto.getProductPrintItineraryItemsV83 = function () {
+      if (!isOvernightClassic(this)) return prevGetPrintItinerary?.apply(this, arguments) || [];
+      const out = this.getSelectedOutboundTrain?.() || this.findTrainById?.(this.selectedOutboundTrainId, this.availableOutboundTrains) || null;
+      const ret = this.getSelectedReturnTrain?.() || this.findTrainById?.(this.selectedReturnTrainId, this.availableReturnTrains) || null;
+      const outDep = out?.departureTime || "16:36";
+      const outArr = out?.arrivalTime || "18:01";
+      const retDep = ret?.departureTime || "20:20";
+      const retArr = ret?.arrivalTime || "21:59";
+      return [
+        { time: "Día 1 · 01:30 p.m. aprox.", title: "Recojo en Cusco y traslado a Ollantaytambo", description: "Recojo desde tu hotel o punto coordinado en Cusco y traslado hacia la estación de tren de Ollantaytambo." },
+        { time: "Día 1 · 03:30 p.m. aprox.", title: "Llegada a Ollantaytambo", description: "Llegada referencial a la estación para realizar el registro y abordar el tren turístico." },
+        { time: `Día 1 · ${outDep} aprox.`, title: "Viaje en tren a Aguas Calientes", description: "Salida en tren turístico hacia Machu Picchu Pueblo/Aguas Calientes según el tren seleccionado." },
+        { time: `Día 1 · ${outArr} aprox.`, title: "Llegada a Aguas Calientes y traslado al hotel", description: "Llegada a Machu Picchu Pueblo y asistencia hacia el hotel seleccionado para realizar el check-in." },
+        { time: "Día 1 · Noche", title: "Noche en Aguas Calientes", description: "Noche libre en Aguas Calientes para descansar antes de la visita a Machu Picchu del día siguiente." },
+        { time: "Día 2 · 09:00 a.m. aprox.", title: "Encuentro en la Plaza de Armas de Aguas Calientes", description: "Reunión con el guía para iniciar la coordinación del tour guiado a Machu Picchu." },
+        { time: "Día 2 · 09:30 a.m. aprox.", title: "Fila y bus Consettur hacia Machu Picchu", description: "Abordaje del bus turístico de subida hasta la puerta de ingreso al Centro Arqueológico de Machu Picchu." },
+        { time: "Día 2 · 10:00 a.m. aprox.", title: "Tour guiado en Machu Picchu", description: "Recorrido guiado por Machu Picchu. El circuito se confirma según disponibilidad oficial de boletos." },
+        { time: "Día 2 · 01:00 p.m. aprox.", title: "Fin del tour guiado y tiempo para almorzar", description: "Finaliza la visita guiada. Puedes agregar almuerzo opcional en Tinkuy/Belmond Sanctuary Lodge o almorzar por tu cuenta." },
+        { time: "Día 2 · 03:00 p.m. aprox.", title: "Bus de bajada hacia Aguas Calientes", description: "Retorno en bus Consettur hacia Machu Picchu Pueblo. Tendrás tiempo libre hasta la hora del tren." },
+        { time: "Día 2 · 07:50 p.m. aprox.", title: "Embarque para el tren de retorno", description: "Presentación en la estación de tren de Aguas Calientes para abordar el tren de retorno seleccionado." },
+        { time: `Día 2 · ${retDep} aprox.`, title: "Tren de retorno", description: "Salida en tren turístico de retorno según la selección disponible." },
+        { time: `Día 2 · ${retArr} aprox.`, title: "Llegada y transbordo hacia bus turístico", description: "Transbordo operativo desde tren hacia bus turístico para continuar el viaje hacia la ciudad de Cusco." },
+        { time: "Día 2 · 11:45 p.m. aprox.", title: "Llegada a Cusco y fin de servicios", description: "Llegada referencial a la ciudad de Cusco. El desembarque se realiza cerca de la Plaza de Armas o punto coordinado." }
+      ];
+    };
+
+    proto.renderOvernightHotelPrintSectionV85 = function () {
+      if (!isOvernightClassic(this)) return "";
+      const selection = this.getSelectedAccommodationForDestination?.("aguas-calientes");
+      const hotel = selection?.hotel || this.getHotelByCode?.("aguas-calientes", defaultHotelCode(this));
+      if (!hotel) return "";
+      const combo = selection?.combination || null;
+      const images = [...new Set([...(hotel.images?.cover ? [hotel.images.cover] : []), ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])])].slice(0, 3);
+      const upgrade = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
+      const currency = this.product?.currency || "USD";
+      return `<section class="print-section print-section--hotel-v85"><h2>Hotel seleccionado</h2>
+        <div class="print-hotel-summary-v85"><div><strong>${esc(hotel.hotelName || "Hotel seleccionado")}</strong><small>${hotel.stars ? `${hotel.stars} estrellas · ` : ""}1 noche en Aguas Calientes</small><small>${esc(combo?.label || "Habitación según disponibilidad")}</small></div><b>${upgrade > 0 ? `Upgrade + ${currency} ${money(upgrade)}` : "Incluido en el precio"}</b></div>
+        ${images.length ? `<div class="print-hotel-gallery-v85">${images.map((src, i) => `<figure><img src="${this.resolveAssetPath(src)}" alt="${esc((hotel.hotelName || "Hotel") + " " + (i + 1))}" /></figure>`).join("")}</div>` : ""}
+      </section>`;
+    };
+
+    const previousPrint = proto.printProductItineraryV78;
+    if (typeof previousPrint === "function") {
+      proto.printProductItineraryV78 = function () {
+        const result = previousPrint.apply(this, arguments);
+        if (isOvernightClassic(this)) {
+          const area = document.getElementById("productPrintArea");
+          const trains = area?.querySelector(".print-section--trains");
+          if (trains && !area.querySelector(".print-section--hotel-v85")) {
+            trains.insertAdjacentHTML("afterend", this.renderOvernightHotelPrintSectionV85?.() || "");
+          }
+        }
+        return result;
+      };
+    }
+
+    page.__mctV85Applied = true;
+    try {
+      if (isOvernightClassic(page)) {
+        page.ensureOvernightDefaultHotelV84?.();
+        page.renderTrainSelectionOptions?.(page.product);
+        page.renderAccommodationOptions?.(page.product);
+        page.updatePricing?.();
+      }
+    } catch (error) { console.warn("MCT V85 post-apply warning:", error); }
+    return true;
+  }
+  if (!patchV85()) {
+    document.addEventListener("DOMContentLoaded", patchV85);
+    setTimeout(patchV85, 250);
+    setTimeout(patchV85, 900);
+    setTimeout(patchV85, 1600);
+  }
+})();

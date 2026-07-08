@@ -804,7 +804,7 @@
       "typeLabel": "2 días / 1 noche",
       "badge": "Overnight",
       "featured": true,
-      "location": "Cusco / Valle Sagrado / Machu Picchu",
+      "location": "Centro arqueológico de Machu Picchu",
       "currency": "USD",
       "days": 2,
       "nights": 1,
@@ -812,7 +812,7 @@
       "description": "Versión clásica overnight de Machu Picchu para viajar el primer día a Aguas Calientes, descansar una noche y visitar el Centro Arqueológico de Machu Picchu al día siguiente con tren, bus, ingreso oficial, guía profesional y alojamiento incluido.",
       "duration": {
         "label": "2 días / 1 noche",
-        "maxGroupSize": 15,
+        "maxGroupSize": 12,
         "guideLanguages": [
           "es",
           "en"
@@ -922,37 +922,92 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Recojo desde el hotel y traslado a la estación de tren según coordinación",
-        "Ticket de tren turístico de ida y retorno según selección disponible",
-        "Hotel Luz Garden Machu Picchu 3 estrellas en Aguas Calientes o hotel seleccionado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad de circuito 1, 2 o 3",
-        "Guía profesional en español, inglés (otros idiomas, consultar)",
-        "Traslado final hacia Cusco según estación y modalidad seleccionada"
+        "Recojo desde el hotel en Cusco y traslado a la estación de tren de Ollantaytambo.",
+        "Ticket de tren turístico de ida y retorno según selección disponible.",
+        "Noche de alojamiento en Aguas Calientes en el hotel seleccionado.",
+        "Ticket de ingreso oficial a Machu Picchu. El circuito 1, 2 o 3 depende de la disponibilidad oficial de boletos.",
+        "Bus Consettur Machu Picchu de subida y bajada.",
+        "Guía profesional certificado en español o inglés.",
+        "Opción de almuerzo en Belmond Sanctuary Lodge o restaurante en Aguas Calientes desde la sección de extras.",
+        "Traslado final hacia Cusco según estación y modalidad seleccionada.",
+        "Asistencia 24/7 antes y durante la experiencia."
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Early check-in, late check-out o gastos adicionales del hotel",
-        "Guardaequipaje, propinas y gastos personales",
-        "Servicios no mencionados en el itinerario"
+        "Alimentos y bebidas no especificados.",
+        "Early check-in, late check-out o gastos adicionales del hotel.",
+        "Guardaequipaje, propinas y gastos personales.",
+        "Servicios no mencionados en el itinerario."
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
-          "description": "Iniciaremos con el traslado desde Cusco o el punto coordinado hacia la estación correspondiente. Abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando el paisaje del Valle Sagrado y la ruta ferroviaria hacia la ceja de selva. A tu llegada, tendrás asistencia para ubicarte en Aguas Calientes y coordinar los detalles de la visita del día siguiente. La noche será en Aguas Calientes según el hotel seleccionado.",
-          "images": [
-            "./assets/img/placeholder/experience.jpg",
-            "./assets/img/placeholder/experience.jpg"
-          ]
+          "time": "Día 1 · 01:30 p.m. aprox.",
+          "title": "Recojo en Cusco y traslado a Ollantaytambo",
+          "description": "Iniciaremos con el recojo desde tu hotel o punto coordinado en Cusco para trasladarnos hacia la estación de tren de Ollantaytambo."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur hacia la ciudadela de Machu Picchu. Realizarás la visita guiada por el circuito confirmado, con explicación de los sectores principales, historia y arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado y continuar con el traslado final hacia Cusco o punto coordinado.",
-          "images": [
-            "./assets/img/placeholder/experience.jpg",
-            "./assets/img/placeholder/experience.jpg"
-          ]
+          "time": "Día 1 · 03:30 p.m. aprox.",
+          "title": "Llegada a Ollantaytambo",
+          "description": "Llegada referencial a la estación para realizar el registro y prepararse para abordar el tren turístico hacia Machu Picchu Pueblo."
+        },
+        {
+          "time": "Día 1 · 04:36 p.m. aprox.",
+          "title": "Viaje en tren a Aguas Calientes",
+          "description": "Salida en tren turístico hacia Machu Picchu Pueblo/Aguas Calientes. El horario puede ajustarse según el tren seleccionado."
+        },
+        {
+          "time": "Día 1 · 06:01 p.m. aprox.",
+          "title": "Llegada a Aguas Calientes y traslado al hotel",
+          "description": "Llegada a Machu Picchu Pueblo y traslado o asistencia hacia el hotel seleccionado para realizar el check-in."
+        },
+        {
+          "time": "Día 1 · Noche",
+          "title": "Noche en Aguas Calientes",
+          "description": "Noche libre en Aguas Calientes para descansar antes de la visita a Machu Picchu del día siguiente."
+        },
+        {
+          "time": "Día 2 · 09:00 a.m. aprox.",
+          "title": "Encuentro en la Plaza de Armas de Aguas Calientes",
+          "description": "Reunión con el guía para iniciar la coordinación del tour guiado a Machu Picchu."
+        },
+        {
+          "time": "Día 2 · 09:30 a.m. aprox.",
+          "title": "Fila y bus Consettur hacia Machu Picchu",
+          "description": "Coordinación para abordar el bus turístico de subida hasta la puerta de ingreso al Centro Arqueológico de Machu Picchu."
+        },
+        {
+          "time": "Día 2 · 10:00 a.m. aprox.",
+          "title": "Tour guiado en Machu Picchu",
+          "description": "Inicio del recorrido guiado por Machu Picchu. El circuito se confirma según disponibilidad oficial de boletos."
+        },
+        {
+          "time": "Día 2 · 01:00 p.m. aprox.",
+          "title": "Fin del tour guiado y tiempo para almorzar",
+          "description": "Finaliza la visita guiada. Puedes agregar almuerzo opcional en Tinkuy/Belmond Sanctuary Lodge o almorzar por tu cuenta."
+        },
+        {
+          "time": "Día 2 · 03:00 p.m. aprox.",
+          "title": "Bus de bajada hacia Aguas Calientes",
+          "description": "Retorno en bus Consettur hacia Machu Picchu Pueblo. Si no tomas almuerzo opcional, tendrás tiempo libre para actividades por tu cuenta."
+        },
+        {
+          "time": "Día 2 · 07:50 p.m. aprox.",
+          "title": "Embarque para el tren de retorno",
+          "description": "Presentación en la estación de tren de Aguas Calientes para abordar el tren de retorno seleccionado."
+        },
+        {
+          "time": "Día 2 · 08:20 p.m. aprox.",
+          "title": "Tren de retorno hacia Ollantaytambo",
+          "description": "Salida en tren turístico de retorno. El horario final depende del tren seleccionado."
+        },
+        {
+          "time": "Día 2 · 10:00 p.m. aprox.",
+          "title": "Transbordo hacia bus turístico",
+          "description": "Transbordo operativo desde tren hacia bus turístico para continuar el viaje hacia la ciudad de Cusco."
+        },
+        {
+          "time": "Día 2 · 11:45 p.m. aprox.",
+          "title": "Llegada a Cusco y fin de servicios",
+          "description": "Llegada referencial a la ciudad de Cusco. El desembarque se realiza cerca de la Plaza de Armas o punto coordinado."
         }
       ],
       "trainSelection": {
@@ -1047,7 +1102,8 @@
         "defaultHotelCode": "luz-garden-3s",
         "defaultHotelName": "Hotel Luz Garden Machu Picchu",
         "defaultHotelCostUSD": 45,
-        "upgradeEnabled": true
+        "upgradeEnabled": true,
+        "allowNoHotel": false
       },
       "extras": [
         {
@@ -1156,6 +1212,12 @@
           "nights": 1,
           "label": "Aguas Calientes - 1 noche"
         }
+      ],
+      "importantInfo": [
+        "La disponibilidad del circuito de ingreso a Machu Picchu se confirma según boletos oficiales disponibles.",
+        "Los horarios de tren pueden variar según disponibilidad operativa y selección realizada.",
+        "El hotel incluido corresponde a una noche en Aguas Calientes. Cualquier upgrade de hotel se calcula como cargo adicional.",
+        "Se recomienda llevar documento de identidad o pasaporte, calzado cómodo, ropa ligera, abrigo para la noche y protección solar."
       ]
     },
     {
