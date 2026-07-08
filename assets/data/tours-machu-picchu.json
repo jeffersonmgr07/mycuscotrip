@@ -914,9 +914,12 @@
       },
       "capacity": 15,
       "images": {
-        "cover": "./assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
+        "cover": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
         "gallery": [
-          "./assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
+          "./assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/2.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/3.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/4.jpg"
         ]
       },
       "includes": [

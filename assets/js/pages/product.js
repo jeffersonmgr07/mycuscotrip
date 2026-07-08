@@ -559,12 +559,14 @@ class MyCuscoTripProductPage {
     }
 
     const mainImage = finalImages[0];
+    const fallbackImage = finalImages[1] || this.resolvePath("assets/img/tours/machu-picchu-full-day/cover.jpg");
     const sideImages = finalImages.slice(1);
     const mobileImages = finalImages;
+    const mainFallbackAttr = this.escapeHtml(fallbackImage);
 
     gallery.innerHTML = `
       <div class="experience-gallery__main">
-        <img src="${mainImage}" alt="${this.escapeHtml(this.product?.title || "Experiencia")}" loading="eager" />
+        <img src="${mainImage}" alt="${this.escapeHtml(this.product?.title || "Experiencia")}" loading="eager" onerror="this.onerror=null;this.src='${mainFallbackAttr}';" />
       </div>
 
       ${sideImages.length ? `
@@ -575,6 +577,7 @@ class MyCuscoTripProductPage {
               src="${src}"
               alt="Galería ${index + 2}"
               loading="lazy"
+              onerror="this.remove();"
             />
           `).join("")}
         </div>
@@ -587,6 +590,7 @@ class MyCuscoTripProductPage {
             src="${src}"
             alt="${this.escapeHtml(this.product?.title || "Experiencia")} imagen ${index + 1}"
             loading="${index === 0 ? "eager" : "lazy"}"
+            onerror="${index === 0 ? `this.onerror=null;this.src='${mainFallbackAttr}';` : "this.remove();"}"
           />
         `).join("")}
       </div>

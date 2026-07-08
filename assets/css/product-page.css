@@ -8745,3 +8745,138 @@ body.passenger-modal-open {
     justify-self: start !important;
   }
 }
+
+
+/* =========================================================
+   PATCH MCT V88 - Uniformidad visual itinerarios, cover y CTAs
+   ========================================================= */
+:root {
+  --mct-cta-fuchsia: #c72d6b;
+  --mct-cta-fuchsia-dark: #a81f58;
+}
+
+/* Mantener todos los itinerarios visuales con el estilo compacto del Full Day clásico */
+.experience-itinerary-timeline,
+.experience-itinerary-timeline--overnight-v86 {
+  gap: 16px !important;
+}
+
+.experience-itinerary-activity,
+.experience-itinerary-activity--overnight-v86 {
+  grid-template-columns: 150px minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: center !important;
+  padding: 14px 16px !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.experience-itinerary-time-pill,
+.experience-itinerary-time-pill--overnight-v86 {
+  min-width: 128px !important;
+  min-height: 52px !important;
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  background: var(--mct-green-dark, #0a3a26) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+  font-weight: 900 !important;
+}
+
+.experience-itinerary-time-pill strong,
+.experience-itinerary-time-pill--overnight-v86 strong {
+  color: inherit !important;
+  display: block !important;
+  margin: 0 !important;
+  font-size: 0.86rem !important;
+  line-height: 1.12 !important;
+}
+
+.experience-itinerary-time-pill small,
+.experience-itinerary-time-pill--overnight-v86 small {
+  color: inherit !important;
+  display: block !important;
+  font-size: 0.76rem !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+  opacity: 0.98 !important;
+}
+
+.experience-itinerary-activity strong,
+.experience-itinerary-activity--overnight-v86 .experience-itinerary-activity__copy > strong {
+  color: var(--mct-green-dark, #0a3a26) !important;
+  font-size: 1.02rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 5px !important;
+}
+
+.experience-itinerary-activity p,
+.experience-itinerary-activity--overnight-v86 p {
+  margin: 0 !important;
+  color: #59645e !important;
+  line-height: 1.48 !important;
+}
+
+/* Botón de upgrade de hotel con la misma línea visual que upgrade de trenes */
+.open-hotel-modal-btn {
+  justify-self: start !important;
+  width: auto !important;
+  max-width: 280px !important;
+  min-height: 40px !important;
+  padding: 10px 24px !important;
+  border-radius: 999px !important;
+  background: var(--mct-military, #566b3f) !important;
+  border: 1px solid var(--mct-military, #566b3f) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 24px rgba(86, 107, 63, 0.18) !important;
+  font-size: 0.86rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+}
+
+.open-hotel-modal-btn:hover {
+  background: #485a35 !important;
+  border-color: #485a35 !important;
+  color: #ffffff !important;
+}
+
+/* CTA principal más visible */
+#paypalButton.booking-main-btn {
+  background: var(--mct-cta-fuchsia) !important;
+  border-color: var(--mct-cta-fuchsia) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 30px rgba(199, 45, 107, 0.26) !important;
+}
+
+#paypalButton.booking-main-btn:hover {
+  background: var(--mct-cta-fuchsia-dark) !important;
+  border-color: var(--mct-cta-fuchsia-dark) !important;
+}
+
+@media (max-width: 760px) {
+  .experience-itinerary-activity,
+  .experience-itinerary-activity--overnight-v86 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  .experience-itinerary-time-pill,
+  .experience-itinerary-time-pill--overnight-v86 {
+    justify-self: start !important;
+    min-width: 124px !important;
+    min-height: 48px !important;
+  }
+
+  .open-hotel-modal-btn {
+    justify-self: stretch !important;
+    max-width: none !important;
+  }
+}
