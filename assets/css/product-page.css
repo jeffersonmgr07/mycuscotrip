@@ -8880,3 +8880,83 @@ body.passenger-modal-open {
     max-width: none !important;
   }
 }
+
+
+/* =========================================================
+   PATCH MCT V89 - Ajuste final badges itinerario y hotel overnight
+   ========================================================= */
+/* Forzar texto blanco dentro del badge de hora en todos los itinerarios visuales */
+#itinerary .experience-itinerary-time-pill,
+#itinerary .experience-itinerary-time-pill *,
+#itinerary .experience-itinerary-time-pill--overnight-v86,
+#itinerary .experience-itinerary-time-pill--overnight-v86 * {
+  color: #ffffff !important;
+}
+
+#itinerary .experience-itinerary-time-pill strong,
+#itinerary .experience-itinerary-time-pill--overnight-v86 strong {
+  white-space: nowrap !important;
+}
+
+/* Mantener el badge de hora con proporción uniforme en todos los tours */
+#itinerary .experience-itinerary-time-pill,
+#itinerary .experience-itinerary-time-pill--overnight-v86 {
+  width: 128px !important;
+  min-width: 128px !important;
+  max-width: 128px !important;
+  min-height: 52px !important;
+  box-sizing: border-box !important;
+}
+
+/* Compactar el recuadro de hotel seleccionado del Overnight sin cambiar su información */
+.booking-accommodation-card--overnight-v86 {
+  gap: 0 !important;
+}
+
+.booking-accommodation-card--overnight-v86 .booking-accommodation-card__thumb {
+  height: 82px !important;
+  margin: 0 !important;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+.booking-accommodation-card--overnight-v86 .booking-accommodation-card__header {
+  padding: 10px 14px !important;
+}
+
+.booking-accommodation-card--overnight-v86 .booking-accommodation-card__body {
+  padding: 12px 14px 14px !important;
+  gap: 6px !important;
+}
+
+.booking-accommodation-card--overnight-v86 .open-hotel-modal-btn {
+  justify-self: center !important;
+  align-self: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 260px !important;
+  margin: 10px auto 0 !important;
+  min-height: 42px !important;
+  padding: 10px 24px !important;
+  font-size: 0.86rem !important;
+  line-height: 1.1 !important;
+}
+
+@media (max-width: 760px) {
+  #itinerary .experience-itinerary-time-pill,
+  #itinerary .experience-itinerary-time-pill--overnight-v86 {
+    width: 124px !important;
+    min-width: 124px !important;
+    max-width: 124px !important;
+    min-height: 48px !important;
+  }
+
+  .booking-accommodation-card--overnight-v86 .booking-accommodation-card__thumb {
+    height: 92px !important;
+  }
+
+  .booking-accommodation-card--overnight-v86 .open-hotel-modal-btn {
+    justify-self: center !important;
+    width: auto !important;
+    max-width: 260px !important;
+  }
+}
