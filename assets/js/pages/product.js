@@ -8728,3 +8728,333 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV83, 1600);
   }
 })();
+
+/* =========================================================
+   PATCH MCT V84 - Overnight clásico: precio, trenes, hotel y QR robusto
+   ========================================================= */
+(function () {
+  function patchV84() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV84Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const slugOf = (ctx) => String(ctx?.product?.slug || ctx?.slug || "").trim();
+    const isFullDayClassic = (ctx) => slugOf(ctx) === "machu-picchu-full-day-clasico";
+    const isOvernightClassic = (ctx) => slugOf(ctx) === "machu-picchu-overnight-clasico";
+    const isClassicPricedMachu = (ctx) => isFullDayClassic(ctx) || isOvernightClassic(ctx);
+    const esc = (value) => typeof page.escapeHtml === "function"
+      ? page.escapeHtml(value ?? "")
+      : String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
+    const money = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const paxCount = (ctx) => Math.max(1, Number(ctx.getTotalPassengers?.() || (Number(ctx.adults || 0) + Number(ctx.children || 0)) || 1));
+    const roundToPoint90 = (value) => {
+      const n = Number(value || 0);
+      if (!Number.isFinite(n)) return 0.90;
+      return Math.max(0.90, Math.ceil(n - 0.90) + 0.90);
+    };
+    const hotelIncludedCost = (ctx, pax) => {
+      if (!isOvernightClassic(ctx)) return 0;
+      const internal = ctx.product?.internalPricing || {};
+      const single = Number(internal.defaultHotelCostUSD || 45);
+      const shared = Number(internal.defaultHotelCostPerPersonIfSharedUSD || 22.5);
+      return pax <= 1 ? single : shared * pax;
+    };
+    const defaultHotelCode = (ctx) => ctx.product?.accommodationSelection?.defaultHotelCode || ctx.product?.internalPricing?.defaultHotelCode || "luz-garden-3s";
+
+    proto.calculateMachuClassicBasePriceV84 = function () {
+      const pax = paxCount(this);
+      const rules = this.product?.financialRules || {};
+      const internal = this.product?.internalPricing || {};
+      const guideCost = Number(internal.guideCostUSD || 50);
+      const fixedNetBasePerPerson = Number(internal.fixedNetBasePerPersonUSD || 320);
+      const hotelCost = hotelIncludedCost(this, pax);
+      const targetNetTotal = (fixedNetBasePerPerson * pax) + guideCost + hotelCost;
+      const paypalPercent = Number(rules.paypalFeePercent ?? 5.4) / 100;
+      const paypalFixed = Number(rules.paypalFixedUSD ?? 0.3);
+      const bankPercent = Number(rules.bankWithdrawPercent ?? 3) / 100;
+      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 10) / 100;
+      const chargedNeeded = ((targetNetTotal / Math.max(0.0001, 1 - bankPercent)) + paypalFixed) / Math.max(0.0001, 1 - paypalPercent);
+      const publicBaseTotalRaw = chargedNeeded / Math.max(0.0001, 1 - discountPercent);
+      const publicPerPerson = roundToPoint90(publicBaseTotalRaw / pax);
+      const publicBaseTotal = publicPerPerson * pax;
+      const targetNetPerPerson = targetNetTotal / pax;
+      return { pax, guideCost, hotelCost, targetNetTotal, targetNetPerPerson, publicBaseTotal, publicPerPerson, paypalPercent, paypalFixed, bankPercent, discountPercent };
+    };
+
+    proto.calculateOvernightHotelUpgradeTotalV84 = function () {
+      if (!isOvernightClassic(this)) return 0;
+      const destination = "aguas-calientes";
+      const selectedCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
+      if (!selectedCode || selectedCode === defaultHotelCode(this) || selectedCode === "no-hotel") return 0;
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      const selectedPerPerson = Number(selection?.combination?.additionalPerPerson || 0);
+      const hotels = this.getHotelsByDestination?.(destination) || [];
+      const defaultHotel = hotels.find((h) => h.hotelCode === defaultHotelCode(this));
+      let defaultPerPerson = 0;
+      if (defaultHotel && typeof this.generateAccommodationCombinations === "function") {
+        const combos = this.generateAccommodationCombinations(defaultHotel.rooms || [], paxCount(this), 1);
+        defaultPerPerson = Number(combos?.[0]?.additionalPerPerson || 0);
+      }
+      return Math.max(0, selectedPerPerson - defaultPerPerson) * paxCount(this);
+    };
+
+    proto.updateMachuOvernightPricingV84 = function () {
+      const currency = this.product?.currency || "USD";
+      const base = this.calculateMachuClassicBasePriceV84();
+      const pax = base.pax;
+      const basePerPerson = base.publicPerPerson;
+      const adultsTotal = Number(this.adults || 0) * basePerPerson;
+      const childrenTotal = Number(this.children || 0) * basePerPerson;
+      const extrasTotal = this.calculateExtrasTotal?.() || 0;
+      const trainAdjustmentTotal = this.calculateSelectedTrainAdjustmentTotal?.() || 0;
+      const accommodationTotal = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
+      const serviceTotal = base.publicBaseTotal + extrasTotal + trainAdjustmentTotal + accommodationTotal;
+      if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
+      const fullDiscountPercent = 10;
+      const partialPerPerson = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 149);
+      const discountInfo = this.getDiscountInfo?.(serviceTotal, fullDiscountPercent) || { discount: serviceTotal * 0.10, percent: 10 };
+      const discount = Number(discountInfo.discount || 0);
+      const discountedTotal = Math.max(serviceTotal - discount, 0);
+      let payNow = discountedTotal;
+      let payLater = 0;
+      let infoText = "Pagando el total ahora obtienes un 10% de descuento.";
+      if (this.paymentMode !== "full") {
+        payNow = Math.min(pax * partialPerPerson, discountedTotal);
+        payLater = Math.max(discountedTotal - payNow, 0);
+        infoText = this.product?.paymentOptions?.partialPaymentLabel || "Reserva con anticipo y completa el saldo antes del viaje.";
+      }
+      this.dynamicMachuClassicQuoteV78 = {
+        currency, pax, basePerPerson, publicBaseTotal: base.publicBaseTotal,
+        targetNetPerPerson: base.targetNetPerPerson,
+        adultsTotal, childrenTotal, extrasTotal, trainAdjustmentTotal, accommodationTotal,
+        serviceTotal, discount, payNow, payLater, hotelIncludedCost: base.hotelCost
+      };
+      this.setText?.("productBasePrice", `${currency} ${money(basePerPerson)}`);
+      this.setText?.("adultsTotal", `${currency} ${money(adultsTotal)}`);
+      this.setText?.("childrenTotal", `${currency} ${money(childrenTotal)}`);
+      this.setText?.("extrasTotal", `${currency} ${money(extrasTotal)}`);
+      this.setText?.("serviceTotal", `${currency} ${money(serviceTotal)}`);
+      this.setText?.("payNowTotal", `${currency} ${money(payNow)}`);
+      this.setText?.("discountTotal", `- ${currency} ${money(discount)}`);
+      this.setText?.("payLaterTotal", `${currency} ${money(payLater)}`);
+      this.setText?.("accommodationTotal", `${currency} ${money(accommodationTotal)}`);
+      this.setText?.("finalPassengerPrice", `${currency} ${money(discountedTotal / pax)}`);
+      const adultsRow = document.getElementById("adultsTotal")?.closest(".booking-summary__line");
+      if (adultsRow) {
+        const label = adultsRow.querySelector("span");
+        if (label) label.textContent = `Adultos x${String(this.adults || 0).padStart(2, "0")}`;
+        adultsRow.hidden = false;
+      }
+      const childrenRow = document.getElementById("childrenTotal")?.closest(".booking-summary__line");
+      if (childrenRow) {
+        const label = childrenRow.querySelector("span");
+        if (label) label.textContent = `Niños x${String(this.children || 0).padStart(2, "0")}`;
+        childrenRow.hidden = !(Number(this.children || 0) > 0);
+      }
+      const extrasRow = document.getElementById("extrasTotal")?.closest(".booking-summary__line");
+      if (extrasRow) extrasRow.hidden = !(extrasTotal > 0);
+      const accommodationRow = document.getElementById("accommodationTotal")?.closest(".booking-summary__line");
+      if (accommodationRow) {
+        const label = accommodationRow.querySelector("span");
+        if (label) label.textContent = "Upgrade de hotel";
+        accommodationRow.hidden = !(accommodationTotal > 0);
+      }
+      const discountRow = document.getElementById("discountRow");
+      if (discountRow) discountRow.hidden = !(discount > 0 && this.paymentMode === "full");
+      const payLaterRow = document.getElementById("payLaterRow");
+      if (payLaterRow) payLaterRow.hidden = this.paymentMode === "full" || payLater <= 0;
+      const paymentInfo = document.getElementById("paymentInfo");
+      if (paymentInfo) paymentInfo.textContent = infoText;
+      this.updateTrainAdjustmentSummaryRow?.(trainAdjustmentTotal, currency);
+      const payNowLabel = document.getElementById("payNowLabel");
+      if (payNowLabel) payNowLabel.textContent = "Pagar ahora";
+      return true;
+    };
+
+    const previousUpdatePricing = proto.updatePricing;
+    proto.updatePricing = function () {
+      if (isOvernightClassic(this)) return this.updateMachuOvernightPricingV84();
+      return previousUpdatePricing?.apply(this, arguments);
+    };
+
+    const previousRenderProduct = proto.renderProduct;
+    proto.renderProduct = function (product) {
+      const result = previousRenderProduct?.apply(this, arguments);
+      if (isOvernightClassic(this)) {
+        if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
+        const lang = document.getElementById("detailLanguages");
+        if (lang) lang.textContent = "Guía profesional: español, inglés (otros idiomas, consultar)";
+        const serviceSection = document.getElementById("serviceModeSection");
+        const serviceSelect = document.getElementById("serviceMode");
+        if (serviceSection) serviceSection.hidden = true;
+        if (serviceSelect) serviceSelect.value = "group";
+        this.serviceMode = "group";
+        this.ensureOvernightDefaultHotelV84?.();
+        this.renderAccommodationOptions?.(this.product);
+        this.bindAccommodationEvents?.();
+        const price = this.calculateMachuClassicBasePriceV84?.();
+        if (price) this.setText?.("productBasePrice", `${this.product?.currency || "USD"} ${money(price.publicPerPerson)}`);
+        this.updatePricing?.();
+      }
+      return result;
+    };
+
+    proto.ensureOvernightDefaultHotelV84 = function () {
+      if (!isOvernightClassic(this)) return;
+      const destination = "aguas-calientes";
+      if (!this.selectedHotelsByDestination) this.selectedHotelsByDestination = {};
+      if (!this.selectedCombinationsByDestination) this.selectedCombinationsByDestination = {};
+      if (!this.selectedHotelsByDestination[destination] || this.selectedHotelsByDestination[destination] === "no-hotel") {
+        this.selectedHotelsByDestination[destination] = defaultHotelCode(this);
+      }
+      const hotel = this.getHotelByCode?.(destination, this.selectedHotelsByDestination[destination]);
+      if (hotel && !this.selectedCombinationsByDestination[destination]) {
+        const combos = this.generateAccommodationCombinations?.(hotel.rooms || [], paxCount(this), 1) || [];
+        if (combos[0]) this.selectedCombinationsByDestination[destination] = combos[0];
+      }
+    };
+
+    const previousGetAccommodationSummary = proto.getAccommodationSummary;
+    proto.getAccommodationSummary = function (product) {
+      if (String(product?.slug || this.product?.slug || this.slug || "") === "machu-picchu-overnight-clasico") {
+        return [{ destination: "aguas-calientes", nights: 1, label: "Aguas Calientes - 1 noche" }];
+      }
+      return previousGetAccommodationSummary?.apply(this, arguments) || [];
+    };
+
+    const previousGetDefaultHotelCode = proto.getDefaultHotelCodeForDestination;
+    proto.getDefaultHotelCodeForDestination = function (destination) {
+      if (isOvernightClassic(this) && String(destination || "").toLowerCase().includes("aguas")) return defaultHotelCode(this);
+      return previousGetDefaultHotelCode?.apply(this, arguments) || "";
+    };
+
+    const previousRenderAccommodation = proto.renderAccommodationOptions;
+    proto.renderAccommodationOptions = function (product) {
+      if (!product || String(product.slug || this.product?.slug || "") !== "machu-picchu-overnight-clasico") {
+        return previousRenderAccommodation?.apply(this, arguments);
+      }
+      const section = document.getElementById("packageAccommodationSection");
+      const container = document.getElementById("hotelSelectorsContainer");
+      if (!section || !container) return;
+      this.ensureOvernightDefaultHotelV84?.();
+      const destination = "aguas-calientes";
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      const hotel = selection?.hotel || this.getHotelByCode?.(destination, defaultHotelCode(this));
+      const combo = selection?.combination || null;
+      const upgradeTotal = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
+      const image = hotel?.images?.cover || hotel?.images?.gallery?.[0] || "";
+      section.hidden = false;
+      section.classList.add("booking-field--hotel-upgrade-v84");
+      container.innerHTML = `<div class="booking-accommodation-card booking-accommodation-card--selected booking-accommodation-card--overnight-v84">
+        ${image ? `<div class="booking-accommodation-card__thumb"><img src="${this.resolveAssetPath(image)}" alt="${esc(hotel?.hotelName || "Hotel seleccionado")}" loading="lazy" /></div>` : ""}
+        <div class="booking-accommodation-card__header">
+          <strong>Hotel incluido</strong>
+          <small>1 noche en Aguas Calientes</small>
+        </div>
+        <div class="booking-accommodation-card__body">
+          <p class="booking-accommodation-card__selected">${esc(hotel?.hotelName || "Hotel Luz Garden Machu Picchu")} ${hotel?.stars ? `· ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p>
+          <p class="booking-accommodation-card__selected">${esc(combo?.label || "Habitación según disponibilidad")}</p>
+          <p class="booking-accommodation-card__price">${upgradeTotal > 0 ? `+ ${this.product.currency || "USD"} ${money(upgradeTotal)} total por upgrade` : "Incluido en el precio base"}</p>
+          <button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="aguas-calientes"><i class="fas fa-hotel"></i> Upgrade de hotel</button>
+        </div>
+      </div>`;
+    };
+
+    const previousGetBookingSummary = proto.getBookingSummary;
+    proto.getBookingSummary = function () {
+      if (!isOvernightClassic(this)) return previousGetBookingSummary?.apply(this, arguments);
+      const currency = this.product?.currency || "USD";
+      const quote = this.dynamicMachuClassicQuoteV78 || (this.updateMachuOvernightPricingV84?.(), this.dynamicMachuClassicQuoteV78) || {};
+      const selectedExtras = (this.product?.extras || []).filter((extra) => this.selectedExtras?.has(extra.code)).map((extra) => extra.label);
+      const selection = this.getSelectedAccommodationForDestination?.("aguas-calientes");
+      const accommodation = selection?.hotel ? [`Aguas Calientes - ${selection.hotel.hotelName}${selection.combination?.label ? ` - ${selection.combination.label}` : ""}`] : ["Aguas Calientes - Hotel Luz Garden Machu Picchu"];
+      const finalPassenger = Number(quote.payNow || 0) / paxCount(this);
+      return {
+        title: this.product.title,
+        date: this.date || "Por confirmar",
+        adults: this.adults,
+        children: this.children,
+        departureTime: this.getSelectedDepartureTimeLabel?.(),
+        trainSelection: this.getSelectedTrainSummaryLabel?.(),
+        serviceMode: "Tour en grupo",
+        accommodation,
+        extras: selectedExtras,
+        serviceTotal: `${currency} ${money(quote.serviceTotal || 0)}`,
+        payNow: `${currency} ${money(quote.payNow || 0)}`,
+        payLater: `${currency} ${money(quote.payLater || 0)}`,
+        rawServiceTotal: Number(quote.serviceTotal || 0),
+        rawPayNow: Number(quote.payNow || 0),
+        rawPayLater: Number(quote.payLater || 0),
+        paymentMode: this.paymentMode === "full" ? "Pago completo" : "Reserva con anticipo",
+        paymentModeShort: this.paymentMode === "full" ? "Completo" : "Anticipo",
+        finalPassengerPrice: `${currency} ${money(finalPassenger)}`,
+        couponCode: this.appliedCoupon?.couponCode || ""
+      };
+    };
+
+    const previousGetPrintIncludes = proto.getPrintIncludesV83 || proto.getPrintIncludesV82;
+    proto.getPrintIncludesV83 = function () {
+      const base = (typeof previousGetPrintIncludes === "function" ? previousGetPrintIncludes.apply(this, arguments) : (this.product?.includes || [])) || [];
+      if (!isOvernightClassic(this)) return base;
+      const selection = this.getSelectedAccommodationForDestination?.("aguas-calientes");
+      const hotelName = selection?.hotel?.hotelName || "Hotel Luz Garden Machu Picchu";
+      const combo = selection?.combination?.label ? ` (${selection.combination.label})` : "";
+      const item = `Alojamiento incluido: ${hotelName}${combo}, 1 noche en Aguas Calientes`;
+      return [...base.filter((x) => !String(x).toLowerCase().includes("alojamiento incluido")), item];
+    };
+
+    const previousPrint = proto.printProductItineraryV78;
+    if (typeof previousPrint === "function") {
+      proto.printProductItineraryV78 = function () {
+        const originalPrint = window.print;
+        let printCalled = false;
+        const safePrint = () => {
+          if (printCalled) return;
+          printCalled = true;
+          window.print = originalPrint;
+          originalPrint.call(window);
+        };
+        window.print = () => {
+          const area = document.getElementById("productPrintArea");
+          const imgs = Array.from(area?.querySelectorAll("img") || []);
+          if (!imgs.length) return safePrint();
+          let pending = imgs.filter((img) => !img.complete || img.naturalWidth === 0).length;
+          if (!pending) return safePrint();
+          const done = () => { pending -= 1; if (pending <= 0) window.setTimeout(safePrint, 120); };
+          imgs.forEach((img) => {
+            if (img.complete && img.naturalWidth > 0) return;
+            img.addEventListener("load", done, { once: true });
+            img.addEventListener("error", done, { once: true });
+          });
+          window.setTimeout(safePrint, 2200);
+        };
+        try {
+          const result = previousPrint.apply(this, arguments);
+          window.setTimeout(() => { if (!printCalled) window.print(); }, 2600);
+          return result;
+        } catch (error) {
+          window.print = originalPrint;
+          throw error;
+        }
+      };
+    }
+
+    page.__mctV84Applied = true;
+    try {
+      if (isOvernightClassic(page)) {
+        page.ensureOvernightDefaultHotelV84?.();
+        page.renderAccommodationOptions?.(page.product);
+        page.bindAccommodationEvents?.();
+        page.updatePricing?.();
+      }
+    } catch (error) { console.warn("MCT V84 post-apply warning:", error); }
+    return true;
+  }
+  if (!patchV84()) {
+    document.addEventListener("DOMContentLoaded", patchV84);
+    setTimeout(patchV84, 250);
+    setTimeout(patchV84, 900);
+    setTimeout(patchV84, 1600);
+  }
+})();

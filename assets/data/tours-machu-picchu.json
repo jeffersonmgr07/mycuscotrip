@@ -809,7 +809,7 @@
       "days": 2,
       "nights": 1,
       "shortDescription": "Experiencia 2 días / 1 noche a Machu Picchu con tren, bus, ingreso oficial y guía profesional.",
-      "description": "Versión overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Versión clásica overnight de Machu Picchu para viajar el primer día a Aguas Calientes, descansar una noche y visitar el Centro Arqueológico de Machu Picchu al día siguiente con tren, bus, ingreso oficial, guía profesional y alojamiento incluido.",
       "duration": {
         "label": "2 días / 1 noche",
         "maxGroupSize": 15,
@@ -819,50 +819,56 @@
         ]
       },
       "basePricing": {
-        "adult": 287.9,
-        "child": 269.9
+        "adult": 489.9,
+        "child": 489.9
       },
       "basePricingByNationality": {
         "national": {
-          "adult": 252.9,
-          "child": 243.9,
+          "adult": 489.9,
+          "child": 489.9,
           "currency": "USD"
         },
         "andean_community": {
-          "adult": 262.9,
-          "child": 253.9,
+          "adult": 489.9,
+          "child": 489.9,
           "currency": "USD"
         },
         "foreign": {
-          "adult": 287.9,
-          "child": 269.9,
+          "adult": 489.9,
+          "child": 489.9,
           "currency": "USD"
         }
       },
       "internalPricing": {
         "pricingModel": "operational_cost_plus_net_margin",
         "baseCurrency": "USD",
-        "targetNetProfitUSD": 50,
-        "guideCostUSD": 10,
+        "targetNetProfitUSD": 100,
+        "guideCostUSD": 50,
         "defaultTrainCostUSD": 142,
         "defaultOutboundTrainCostUSD": 74,
         "defaultReturnTrainCostUSD": 68,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_45",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68",
+        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
-        "trainCostSnapshotDate": "2026-05-01"
+        "trainCostSnapshotDate": "2026-05-01",
+        "fixedNetBasePerPersonUSD": 320,
+        "defaultHotelCostUSD": 45,
+        "defaultHotelCostPerPersonIfSharedUSD": 22.5,
+        "hotelCostRule": "USD 45 para 1 pasajero; USD 22.50 por pasajero desde 2 pasajeros, según indicación comercial.",
+        "defaultHotelCode": "luz-garden-3s"
       },
       "financialRules": {
         "exchangeRateUsed": 3.75,
         "paypalFeePercent": 5.4,
         "paypalFixedUSD": 0.3,
-        "bankWithdrawPercent": 1.5,
+        "bankWithdrawPercent": 3,
         "igvPercent": 18,
         "netFactor": 0.9283,
         "rounding": {
           "USD": "ceil_to_next_x.90"
-        }
+        },
+        "maxPublicDiscountBufferPercent": 10
       },
       "ticketPricingByNationality": {
         "machuPicchuEntrance": {
@@ -917,17 +923,19 @@
       },
       "includes": [
         "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
+        "Recojo desde el hotel y traslado a la estación de tren según coordinación",
+        "Ticket de tren turístico de ida y retorno según selección disponible",
+        "Hotel Luz Garden Machu Picchu 3 estrellas en Aguas Calientes o hotel seleccionado",
         "Bus Consettur de subida y bajada a Machu Picchu",
-        "Ingreso oficial a Machu Picchu según disponibilidad",
-        "Guía profesional en español e inglés",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Ingreso oficial a Machu Picchu según disponibilidad de circuito 1, 2 o 3",
+        "Guía profesional en español, inglés (otros idiomas, consultar)",
+        "Traslado final hacia Cusco según estación y modalidad seleccionada"
       ],
       "excludes": [
         "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
-        "Gastos personales",
-        "Servicios no mencionados"
+        "Early check-in, late check-out o gastos adicionales del hotel",
+        "Guardaequipaje, propinas y gastos personales",
+        "Servicios no mencionados en el itinerario"
       ],
       "itinerary": [
         {
@@ -954,8 +962,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": true,
         "defaultTrainCodes": {
-          "outbound": "INCA_OLLA_MAPI_VOYAGER_45",
-          "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68"
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail",
@@ -963,11 +971,14 @@
         ],
         "allowedRoutes": {
           "outbound": [
-            "OLLA_MAPI"
+            "OLLA_MAPI",
+            "CUSCO_MAPI",
+            "URU_MAPI"
           ],
           "return": [
             "MAPI_CUSCO",
-            "MAPI_OLLA"
+            "MAPI_OLLA",
+            "MAPI_URU"
           ]
         },
         "allowedCategories": "all_available",
@@ -978,29 +989,29 @@
         "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
         "timeWindows": {
           "outbound": {
-            "min": "15:00",
+            "min": "05:00",
             "max": "22:00"
           },
           "return": {
-            "min": "12:00",
+            "min": "15:00",
             "max": "22:00"
           }
         }
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_45",
-        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68",
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
-          "outboundAdultCost": 74,
-          "returnAdultCost": 68,
-          "totalAdultTrainCost": 142,
-          "snapshotDate": "2026-05-01",
-          "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
+          "outboundAdultCost": 85,
+          "returnAdultCost": 75,
+          "totalAdultTrainCost": 160,
+          "snapshotDate": "2026-06-23",
+          "note": "Snapshot utilizado para calcular el precio base visible del tour."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_OLLA_MAPI_VOYAGER_45",
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
           "company": "incarail",
           "serviceName": "The Voyager",
           "route": "OLLA_MAPI",
@@ -1009,30 +1020,34 @@
           "departureTime": "16:36",
           "arrivalTime": "18:09",
           "currency": "USD",
-          "adultCostUSD": 74
+          "adultCostUSD": 85
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_68",
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
           "company": "incarail",
-          "serviceName": "The Voyager Bimodal",
+          "serviceName": "The Voyager",
           "route": "MAPI_CUSCO",
           "departureStation": "Machu Picchu",
-          "arrivalStation": "Cusco",
-          "departureTime": "21:30",
-          "arrivalTime": "01:15",
+          "arrivalStation": "Cusco Av. El Sol 843",
+          "departureTime": "20:20",
+          "arrivalTime": "00:10",
           "currency": "USD",
-          "adultCostUSD": 68
+          "adultCostUSD": 75
         }
       },
       "accommodationSelection": {
         "required": true,
-        "includedInBasePrice": false,
+        "includedInBasePrice": true,
         "allowedDestinations": [
           "aguas-calientes"
         ],
         "recommendedHotelTags": [
           "standard"
-        ]
+        ],
+        "defaultHotelCode": "luz-garden-3s",
+        "defaultHotelName": "Hotel Luz Garden Machu Picchu",
+        "defaultHotelCostUSD": 45,
+        "upgradeEnabled": true
       },
       "extras": [
         {
@@ -1055,7 +1070,7 @@
         }
       ],
       "paymentOptions": {
-        "fullPaymentDiscountPercent": 0,
+        "fullPaymentDiscountPercent": 10,
         "partialPaymentPerPerson": 149,
         "partialPaymentLabel": "Reserva con anticipo y completa el saldo antes del viaje"
       },
@@ -1133,6 +1148,13 @@
         {
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
+        }
+      ],
+      "accommodationSummary": [
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 noche"
         }
       ]
     },
