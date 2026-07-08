@@ -8615,3 +8615,133 @@ body.passenger-modal-open {
     height: 24mm !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V86 - Overnight clásico: trenes visibles e itinerario estilo timeline
+   ========================================================= */
+.booking-field--train-upgrade-overnight-v86 {
+  display: grid !important;
+}
+
+.experience-itinerary-item--overnight-v86 {
+  position: relative;
+  padding: 22px 24px !important;
+  border-left: 6px solid var(--mct-green-dark, #0a3a26) !important;
+  background: rgba(10, 58, 38, 0.025) !important;
+}
+
+.experience-itinerary-item--overnight-v86 + .experience-itinerary-item--overnight-v86 {
+  margin-top: 28px !important;
+}
+
+.experience-itinerary-item--overnight-v86 .experience-itinerary-day-meta {
+  margin-bottom: 14px !important;
+}
+
+.experience-itinerary-item--overnight-v86 .experience-itinerary-day-pill {
+  background: var(--mct-green-dark, #0a3a26) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 8px 18px !important;
+  font-weight: 900 !important;
+}
+
+.experience-itinerary-item--overnight-v86 .experience-itinerary-day-title {
+  margin: 0 0 22px !important;
+  color: var(--mct-green-dark, #0a3a26) !important;
+  font-size: clamp(1.25rem, 2vw, 1.65rem) !important;
+}
+
+.experience-itinerary-timeline--overnight-v86 {
+  display: grid !important;
+  gap: 18px !important;
+  margin-top: 0 !important;
+}
+
+.experience-itinerary-activity--overnight-v86 {
+  display: grid !important;
+  grid-template-columns: 190px minmax(0, 1fr) !important;
+  gap: 20px !important;
+  align-items: start !important;
+  padding: 18px 20px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(10, 58, 38, 0.08) !important;
+  background: #fff !important;
+  box-shadow: 0 14px 34px rgba(10, 58, 38, 0.04) !important;
+}
+
+.experience-itinerary-time-pill--overnight-v86 {
+  align-self: start !important;
+  min-width: 166px !important;
+  min-height: 62px !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 9px 16px !important;
+  border-radius: 999px !important;
+  background: var(--mct-green-dark, #0a3a26) !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+}
+
+.experience-itinerary-time-pill--overnight-v86 strong {
+  color: inherit !important;
+  display: block !important;
+  margin: 0 !important;
+  font-size: 1.02rem !important;
+}
+
+.experience-itinerary-time-pill--overnight-v86 small {
+  color: inherit !important;
+  display: block !important;
+  font-size: 0.88rem !important;
+  font-weight: 900 !important;
+  opacity: 0.95 !important;
+}
+
+.experience-itinerary-activity--overnight-v86 .experience-itinerary-activity__copy > strong {
+  color: var(--mct-green-dark, #0a3a26) !important;
+  font-size: 1.12rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+
+.experience-itinerary-activity--overnight-v86 p {
+  margin: 0 !important;
+  color: #59645e !important;
+  line-height: 1.55 !important;
+}
+
+.hotel-option-card__badge--included,
+.hotel-option-card--overnight-v86 .hotel-option-card__badge--included {
+  background: rgba(10, 58, 38, 0.09) !important;
+  color: var(--mct-green-dark, #0a3a26) !important;
+  border-color: rgba(10, 58, 38, 0.12) !important;
+}
+
+.booking-accommodation-card--overnight-v86 .booking-accommodation-card__price {
+  color: var(--mct-green-dark, #0a3a26) !important;
+  font-weight: 900 !important;
+}
+
+@media (max-width: 760px) {
+  .experience-itinerary-item--overnight-v86 {
+    padding: 18px 16px !important;
+    border-left-width: 4px !important;
+  }
+
+  .experience-itinerary-activity--overnight-v86 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  .experience-itinerary-time-pill--overnight-v86 {
+    min-width: 148px !important;
+    min-height: 54px !important;
+    justify-self: start !important;
+  }
+}

@@ -9321,3 +9321,321 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV85, 1600);
   }
 })();
+
+/* =========================================================
+   PATCH MCT V86 - Overnight clásico: upgrade trenes visible + itinerario timeline
+   ========================================================= */
+(function () {
+  function patchV86() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV86Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const esc = (value) => typeof page.escapeHtml === "function" ? page.escapeHtml(value) : String(value ?? "").replace(/[&<>'"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch]));
+    const money = (value) => typeof page.formatMoney === "function" ? page.formatMoney(Number(value || 0)) : Number(value || 0).toFixed(2);
+    const slugOf = (ctx) => String(ctx?.product?.slug || ctx?.slug || "").trim();
+    const isOvernightClassic = (ctx) => slugOf(ctx) === "machu-picchu-overnight-clasico";
+    const paxCount = (ctx) => Math.max(1, Number(ctx?.adults || 0) + Number(ctx?.children || 0));
+    const defaultHotelCode = (ctx) => String(ctx?.product?.accommodationSelection?.defaultHotelCode || ctx?.product?.internalPricing?.defaultHotelCode || "luz-garden-3s");
+    const OUTBOUND_DEFAULT = "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB";
+    const RETURN_DEFAULT = "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU";
+
+    function forcedTrainConfig(ctx, product) {
+      const original = product?.trainSelection || product?.raw?.trainSelection || {};
+      return {
+        ...original,
+        required: true,
+        customerCanChangeTrain: true,
+        fixedSelection: false,
+        sameCompanyRoundTrip: false,
+        allowMixedCompanies: true,
+        mode: "overnight_flexible_any_company",
+        defaultTrainCodes: {
+          ...(original.defaultTrainCodes || {}),
+          outbound: OUTBOUND_DEFAULT,
+          return: RETURN_DEFAULT
+        },
+        allowedCompanies: ["incarail", "perurail"],
+        allowedRoutes: {
+          outbound: ["OLLA_MAPI", "CUSCO_MAPI", "URU_MAPI", "HIDRO_MAPI"],
+          return: ["MAPI_CUSCO", "MAPI_OLLA", "MAPI_URU", "MAPI_HIDRO"]
+        },
+        allowedCategories: "all_available",
+        timeWindows: {
+          outbound: { min: "05:00", max: "22:00" },
+          return: { min: "15:00", max: "22:00" }
+        },
+        returnOptionsRule: "any_company_afternoon_return",
+        priceAdjustmentRule: "selected_train_total_cost_minus_default_train_total_cost"
+      };
+    }
+
+    const previousIsTrainSelectionEnabled = proto.isTrainSelectionEnabled;
+    proto.isTrainSelectionEnabled = function (product) {
+      if (isOvernightClassic({ product: product || this.product, slug: this.slug })) return true;
+      return previousIsTrainSelectionEnabled?.apply(this, arguments) ?? false;
+    };
+
+    const previousGetTrainConfig = proto.getTrainConfig;
+    proto.getTrainConfig = function (product) {
+      const resolvedProduct = product || this.product;
+      if (isOvernightClassic({ product: resolvedProduct, slug: this.slug })) return forcedTrainConfig(this, resolvedProduct);
+      return previousGetTrainConfig?.apply(this, arguments) || {};
+    };
+
+    const previousGetDefaultTrainSelection = proto.getDefaultTrainSelection;
+    proto.getDefaultTrainSelection = function (product) {
+      const resolvedProduct = product || this.product;
+      if (isOvernightClassic({ product: resolvedProduct, slug: this.slug })) {
+        return { outboundTrainId: OUTBOUND_DEFAULT, returnTrainId: RETURN_DEFAULT };
+      }
+      return previousGetDefaultTrainSelection?.apply(this, arguments) || { outboundTrainId: "", returnTrainId: "" };
+    };
+
+    proto.ensureOvernightTrainSectionV86 = function () {
+      if (!isOvernightClassic(this)) return;
+      const section = document.getElementById("trainSelectionSection");
+      const container = document.getElementById("trainSelectionContainer");
+      if (!section || !container) return;
+
+      const catalog = this.getTrainCatalog?.() || [];
+      const defaultSelection = this.getDefaultTrainSelection?.(this.product) || { outboundTrainId: OUTBOUND_DEFAULT, returnTrainId: RETURN_DEFAULT };
+      const previousSelectedOut = this.selectedOutboundTrainId;
+      const previousSelectedRet = this.selectedReturnTrainId;
+
+      this.availableOutboundTrains = this.getDirectionalTrains?.(catalog, "outbound", defaultSelection.outboundTrainId) || [];
+      this.availableReturnTrains = this.getDirectionalTrains?.(catalog, "return", defaultSelection.returnTrainId) || [];
+
+      if (typeof this.isCommercialTrainForFullDay === "function") {
+        this.availableOutboundTrains = this.availableOutboundTrains.filter((train) => this.isCommercialTrainForFullDay(train));
+        this.availableReturnTrains = this.availableReturnTrains.filter((train) => this.isCommercialTrainForFullDay(train));
+      }
+
+      const fallbackOutbound = this.createFallbackTrainOption?.(defaultSelection.outboundTrainId, "The Voyager 16:36") || null;
+      const fallbackReturn = this.createFallbackTrainOption?.(defaultSelection.returnTrainId, "The Voyager 20:20") || null;
+      if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
+      if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
+      if (!this.availableOutboundTrains.length && !this.availableReturnTrains.length) return;
+
+      this.trainUpgradeSameCompanyOnly = false;
+      this.selectedOutboundTrainId = this.availableOutboundTrains.some((train) => train.id === previousSelectedOut) ? previousSelectedOut : (defaultSelection.outboundTrainId || this.availableOutboundTrains[0]?.id || "");
+      this.selectedReturnTrainId = this.availableReturnTrains.some((train) => train.id === previousSelectedRet) ? previousSelectedRet : (defaultSelection.returnTrainId || this.availableReturnTrains[0]?.id || "");
+
+      section.hidden = false;
+      section.classList.add("booking-field--train-upgrade", "booking-field--train-upgrade-overnight-v86");
+      const label = document.getElementById("trainSelectionLabel");
+      const help = document.getElementById("trainSelectionHelp");
+      if (label) label.hidden = true;
+      if (help) help.textContent = "";
+      if (!container.querySelector("#openTrainUpgradeModal")) {
+        container.innerHTML = `
+          <div class="booking-train-upgrade" data-train-selection>
+            <div class="booking-train-upgrade__summary" id="trainUpgradeSummaryCards"></div>
+            <button class="btn booking-secondary-btn booking-train-upgrade__button" id="openTrainUpgradeModal" type="button">
+              <i class="fas fa-train"></i> Upgrade de trenes
+            </button>
+            <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
+          </div>
+        `;
+      }
+      this.ensureTrainUpgradeModal?.();
+      this.bindTrainUpgradeEvents?.();
+      this.updateTrainSelectionState?.(false);
+      this.updateTrainAdjustmentSummaryRow?.(this.calculateSelectedTrainAdjustmentTotal?.() || 0, this.product?.currency || "USD");
+    };
+
+    const previousRenderTrainSelection = proto.renderTrainSelectionOptions;
+    proto.renderTrainSelectionOptions = function (product) {
+      const resolvedProduct = product || this.product;
+      if (!isOvernightClassic({ product: resolvedProduct, slug: this.slug })) {
+        return previousRenderTrainSelection?.apply(this, arguments);
+      }
+      const result = previousRenderTrainSelection?.call(this, resolvedProduct);
+      this.ensureOvernightTrainSectionV86?.();
+      return result;
+    };
+
+    function splitOvernightTime(value, fallbackDay) {
+      const text = String(value || "").trim();
+      const match = text.match(/D[ií]a\s*(\d+)\s*·\s*(.+)$/i);
+      const day = Number(match?.[1] || fallbackDay || 1);
+      let time = (match?.[2] || text || "").trim();
+      time = time.replace(/\baprox\.?/i, "").trim();
+      const approx = /aprox/i.test(text) ? "aprox." : "";
+      return { day, time, approx };
+    }
+
+    proto.renderOvernightItineraryTimelineV86 = function (items) {
+      const target = document.getElementById("productItinerary");
+      if (!target || !isOvernightClassic(this)) return false;
+      const list = Array.isArray(items) && items.length ? items : (this.product?.itinerary || []);
+      if (!list.length) return false;
+      const groups = new Map();
+      list.forEach((item, index) => {
+        const parsed = splitOvernightTime(item.time || item.hour || "", item.day || (index < 5 ? 1 : 2));
+        if (!groups.has(parsed.day)) groups.set(parsed.day, []);
+        groups.get(parsed.day).push({ ...item, __time: parsed.time, __approx: parsed.approx });
+      });
+      target.innerHTML = [...groups.entries()].sort((a, b) => a[0] - b[0]).map(([day, dayItems]) => {
+        const dateLabel = this.getItineraryDateLabel?.(day) || "";
+        return `<div class="experience-itinerary-item experience-itinerary-item--day experience-itinerary-item--overnight-v86" data-itinerary-day="${esc(day)}">
+          <div class="experience-itinerary-item__content">
+            <div class="experience-itinerary-day-meta">
+              <span class="experience-itinerary-day-pill">Día ${esc(day)}</span>
+              <span class="experience-itinerary-date-pill" data-itinerary-date-for="${esc(day)}" ${dateLabel ? "" : "hidden"}>${esc(dateLabel)}</span>
+            </div>
+            <h3 class="experience-itinerary-day-title">Itinerario detallado del día</h3>
+            <div class="experience-itinerary-timeline experience-itinerary-timeline--overnight-v86">
+              ${dayItems.map((item, index) => `<article class="experience-itinerary-activity experience-itinerary-activity--overnight-v86">
+                <span class="experience-itinerary-time-pill experience-itinerary-time-pill--overnight-v86"><strong>${esc(item.__time || `Paso ${index + 1}`)}</strong>${item.__approx ? `<small>${esc(item.__approx)}</small>` : ""}</span>
+                <div class="experience-itinerary-activity__copy"><strong>${esc(item.title || `Actividad ${index + 1}`)}</strong>${item.description ? `<p>${esc(item.description)}</p>` : ""}</div>
+              </article>`).join("")}
+            </div>
+          </div>
+        </div>`;
+      }).join("");
+      return true;
+    };
+
+    const previousRenderItinerary = proto.renderItinerary;
+    proto.renderItinerary = function (items) {
+      if (isOvernightClassic(this) && this.renderOvernightItineraryTimelineV86?.(items)) return;
+      return previousRenderItinerary?.apply(this, arguments);
+    };
+
+    const hotelCreditTotal = (ctx) => {
+      const pax = paxCount(ctx);
+      const internal = ctx.product?.internalPricing || {};
+      const single = Number(internal.defaultHotelCostUSD || ctx.product?.accommodationSelection?.defaultHotelCostUSD || 45);
+      const shared = Number(internal.defaultHotelCostPerPersonIfSharedUSD || 22.5);
+      return pax <= 1 ? single : (pax === 2 ? single : shared * pax);
+    };
+    const comboUpgradeTotal = (ctx, hotelCode, combo) => {
+      if (!combo || !hotelCode || hotelCode === "no-hotel" || hotelCode === defaultHotelCode(ctx)) return 0;
+      return Math.max(0, Number(combo.totalForStay || 0) - hotelCreditTotal(ctx));
+    };
+
+    proto.calculateOvernightHotelUpgradeTotalV86 = function () {
+      if (!isOvernightClassic(this)) return 0;
+      const destination = "aguas-calientes";
+      const selectedCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
+      if (!selectedCode || selectedCode === defaultHotelCode(this) || selectedCode === "no-hotel") return 0;
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      return comboUpgradeTotal(this, selectedCode, selection?.combination);
+    };
+    proto.calculateOvernightHotelUpgradeTotalV84 = function () {
+      return this.calculateOvernightHotelUpgradeTotalV86?.() || 0;
+    };
+
+    const previousOpenHotelModal = proto.openHotelModal;
+    proto.openHotelModal = function (destination) {
+      if (!isOvernightClassic(this) || String(destination) !== "aguas-calientes") {
+        return previousOpenHotelModal?.apply(this, arguments);
+      }
+      const modal = document.getElementById("hotelSelectionModal");
+      const title = document.getElementById("hotelModalTitle");
+      const subtitle = document.getElementById("hotelModalSubtitle");
+      const list = document.getElementById("hotelModalList");
+      const cancelBtn = document.getElementById("cancelHotelModalBtn");
+      if (!modal || !title || !subtitle || !list) return;
+      this.activeHotelModalDestination = destination;
+      if (cancelBtn) cancelBtn.textContent = "Seleccionar hotel y habitación";
+      const passengers = paxCount(this);
+      title.textContent = "Upgrade de hotel en Aguas Calientes";
+      subtitle.textContent = "El Hotel Luz Garden está incluido. Puedes mantenerlo sin cargo o elegir un upgrade de hotel.";
+      const hotels = (this.getHotelsByDestination?.(destination) || []).filter((hotel) => hotel?.hotelCode && hotel.hotelCode !== "no-hotel");
+      const currentHotelCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
+      const currentCombinationKey = this.selectedCombinationsByDestination?.[destination]?.key || "";
+      list.innerHTML = hotels.map((hotel) => {
+        const combinations = this.generateAccommodationCombinations?.(hotel.rooms || [], passengers, 1) || [];
+        const isSelectedHotel = currentHotelCode === hotel.hotelCode;
+        const initialCombo = combinations.find((combo) => isSelectedHotel && combo.key === currentCombinationKey) || combinations[0] || null;
+        const images = [...new Set([...(hotel.images?.cover ? [hotel.images.cover] : []), ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])])];
+        const hotelIncluded = hotel.hotelCode === defaultHotelCode(this);
+        const upgrade = comboUpgradeTotal(this, hotel.hotelCode, initialCombo);
+        const badge = hotelIncluded ? "Hotel incluido en el precio" : `+ ${this.product?.currency || "USD"} ${money(upgrade / passengers)} por persona`;
+        return `<article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""} hotel-option-card--overnight-v86" data-hotel-card="${esc(hotel.hotelCode)}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-selected-combo-key="${esc(initialCombo?.key || "")}">
+          <div class="hotel-option-card__header">
+            <div><h3>${esc(hotel.hotelName || "Hotel")}</h3><p>${this.renderStars?.(hotel.stars || 0) || `${hotel.stars || 0}★`} · ${esc(hotel.location || "Aguas Calientes")}</p>${hotel.summary ? `<p>${esc(hotel.summary)}</p>` : ""}</div>
+            <div class="hotel-option-card__badge ${hotelIncluded ? "hotel-option-card__badge--included" : ""}">${esc(badge)}</div>
+          </div>
+          <div class="hotel-option-card__content">
+            <div class="hotel-option-card__media"><div class="hotel-option-card__gallery">${this.renderHotelModalGallery?.(images, hotel.hotelName || "Hotel") || ""}</div>${this.renderHotelFeatures?.(hotel) || ""}</div>
+            <div class="hotel-option-card__body"><label>Selecciona tipo de habitación</label><div class="hotel-option-card__options">
+              ${combinations.length ? combinations.map((combo) => {
+                const comboUpgrade = comboUpgradeTotal(this, hotel.hotelCode, combo);
+                const comboPerPerson = comboUpgrade / passengers;
+                const sub = hotelIncluded ? `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Incluido en el precio base` : `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Upgrade total + ${this.product?.currency || "USD"} ${money(comboUpgrade)} · ${this.product?.currency || "USD"} ${money(comboPerPerson)} por persona`;
+                return `<button type="button" class="hotel-combo-btn ${isSelectedHotel && currentCombinationKey === combo.key ? "is-selected" : ""}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-combo-key="${esc(combo.key)}"><span class="hotel-combo-radio" aria-hidden="true"></span><span class="hotel-combo-btn__main">${esc(combo.label)}</span><span class="hotel-combo-btn__sub">${esc(sub)}</span></button>`;
+              }).join("") : `<p>No hay habitaciones válidas para ${passengers} viajeros.</p>`}
+            </div></div>
+          </div>
+        </article>`;
+      }).join("");
+      this.bindHotelModalSelectionEvents?.();
+      this.bindHotelModalGalleryEvents?.();
+      modal.hidden = false;
+      document.body.classList.add("hotel-modal-open");
+    };
+
+    const previousRenderAccommodationOptions = proto.renderAccommodationOptions;
+    proto.renderAccommodationOptions = function (product) {
+      const result = previousRenderAccommodationOptions?.apply(this, arguments);
+      if (!isOvernightClassic(this)) return result;
+      const destination = "aguas-calientes";
+      this.ensureOvernightDefaultHotelV84?.();
+      const section = document.getElementById("packageAccommodationSection");
+      const container = document.getElementById("hotelSelectorsContainer");
+      if (!section || !container) return result;
+      const selection = this.getSelectedAccommodationForDestination?.(destination);
+      const hotel = selection?.hotel || this.getHotelByCode?.(destination, defaultHotelCode(this));
+      const combo = selection?.combination || null;
+      const upgradeTotal = this.calculateOvernightHotelUpgradeTotalV86?.() || 0;
+      const image = hotel?.images?.cover || hotel?.images?.gallery?.[0] || "";
+      section.hidden = false;
+      section.classList.add("booking-field--hotel-upgrade-v86");
+      container.innerHTML = `<div class="booking-accommodation-card booking-accommodation-card--selected booking-accommodation-card--overnight-v86">
+        ${image ? `<div class="booking-accommodation-card__thumb"><img src="${this.resolveAssetPath?.(image) || image}" alt="${esc(hotel?.hotelName || "Hotel seleccionado")}" loading="lazy" /></div>` : ""}
+        <div class="booking-accommodation-card__header"><strong>Hotel seleccionado</strong><small>1 noche en Aguas Calientes</small></div>
+        <div class="booking-accommodation-card__body"><p class="booking-accommodation-card__selected">${esc(hotel?.hotelName || "Hotel Luz Garden")} ${hotel?.stars ? `· ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p><p class="booking-accommodation-card__selected">${esc(combo?.label || "Habitación según disponibilidad")}</p><p class="booking-accommodation-card__price">${upgradeTotal > 0 ? `+ ${this.product?.currency || "USD"} ${money(upgradeTotal)} total por upgrade` : "Hotel incluido en el precio"}</p><button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="aguas-calientes"><i class="fas fa-hotel"></i> Upgrade de hotel</button></div>
+      </div>`;
+      this.bindAccommodationEvents?.();
+      return result;
+    };
+
+    const previousRenderProduct = proto.renderProduct;
+    proto.renderProduct = function (product) {
+      const result = previousRenderProduct?.apply(this, arguments);
+      if (isOvernightClassic(this)) {
+        this.renderOvernightItineraryTimelineV86?.(this.product?.itinerary || []);
+        this.ensureOvernightTrainSectionV86?.();
+        this.renderAccommodationOptions?.(this.product);
+        this.updatePricing?.();
+      }
+      return result;
+    };
+
+    const kick = () => {
+      try {
+        if (isOvernightClassic(page)) {
+          page.renderOvernightItineraryTimelineV86?.(page.product?.itinerary || []);
+          page.ensureOvernightTrainSectionV86?.();
+          page.renderAccommodationOptions?.(page.product);
+          page.updatePricing?.();
+        }
+      } catch (error) { console.warn("MCT V86 post-apply warning:", error); }
+    };
+
+    page.__mctV86Applied = true;
+    kick();
+    [250, 700, 1400, 2400].forEach((delay) => setTimeout(kick, delay));
+    return true;
+  }
+  if (!patchV86()) {
+    document.addEventListener("DOMContentLoaded", patchV86);
+    setTimeout(patchV86, 250);
+    setTimeout(patchV86, 900);
+    setTimeout(patchV86, 1600);
+  }
+})();
