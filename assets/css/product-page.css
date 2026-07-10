@@ -8960,3 +8960,80 @@ body.passenger-modal-open {
     max-width: 260px !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT V90 - Uniformidad real de badges de hora
+   =========================================================
+   Motivo: en Overnight el horario dentro del badge usa <strong>,
+   y una regla global de .experience-itinerary-activity strong lo hacía
+   más grande que en Full Day. Este override queda al final para que
+   todos los badges de itinerario se vean iguales.
+*/
+#itinerary .experience-itinerary-time-pill,
+#itinerary .experience-itinerary-time-pill--overnight-v86 {
+  width: 128px !important;
+  min-width: 128px !important;
+  max-width: 128px !important;
+  min-height: 52px !important;
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  background: var(--mct-green-dark, #0a3a26) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.12 !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+  box-sizing: border-box !important;
+}
+
+#itinerary .experience-itinerary-time-pill *,
+#itinerary .experience-itinerary-time-pill--overnight-v86 * {
+  color: #ffffff !important;
+}
+
+#itinerary .experience-itinerary-time-pill strong,
+#itinerary .experience-itinerary-time-pill--overnight-v86 strong {
+  color: #ffffff !important;
+  display: block !important;
+  margin: 0 !important;
+  font-size: 0.86rem !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+#itinerary .experience-itinerary-time-pill small,
+#itinerary .experience-itinerary-time-pill--overnight-v86 small {
+  color: #ffffff !important;
+  display: block !important;
+  margin: 0 !important;
+  font-size: 0.76rem !important;
+  line-height: 1.08 !important;
+  font-weight: 900 !important;
+  opacity: 0.98 !important;
+}
+
+@media (max-width: 760px) {
+  #itinerary .experience-itinerary-time-pill,
+  #itinerary .experience-itinerary-time-pill--overnight-v86 {
+    width: 124px !important;
+    min-width: 124px !important;
+    max-width: 124px !important;
+    min-height: 48px !important;
+    font-size: 0.76rem !important;
+  }
+
+  #itinerary .experience-itinerary-time-pill strong,
+  #itinerary .experience-itinerary-time-pill--overnight-v86 strong {
+    font-size: 0.84rem !important;
+  }
+
+  #itinerary .experience-itinerary-time-pill small,
+  #itinerary .experience-itinerary-time-pill--overnight-v86 small {
+    font-size: 0.74rem !important;
+  }
+}
