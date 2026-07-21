@@ -1,0 +1,23 @@
+MY CUSCO TRIP — INSTRUCCIONES DE SUBIDA V91
+=============================================
+
+OPCIÓN RECOMENDADA: ZIP DE ARCHIVOS MODIFICADOS
+1. Descarga y descomprime “mycuscotrip-v91-archivos-para-subir.zip”.
+2. Copia TODO su contenido dentro de la raíz de tu repositorio de GitHub.
+3. Acepta reemplazar los archivos existentes.
+4. Conserva exactamente las carpetas y nombres de archivo.
+5. Haz commit y push de todos los cambios juntos.
+
+No necesitas eliminar archivos existentes: esta actualización no borra ningún archivo del proyecto.
+
+PRUEBAS RÁPIDAS DESPUÉS DE PUBLICAR
+- Abre el menú Machu Picchu y prueba sus cinco enlaces.
+- Abre el menú Cusco y prueba sus cuatro enlaces.
+- Abre Experiencias Ancestrales y verifica Astronomía y Ayahuasca.
+- Abre Trekking y Naturaleza y prueba sus filtros.
+- Revisa la vista móvil y fuerza una recarga sin caché.
+
+NOTA SOBRE LOS FORMULARIOS ESPECIALES
+Las páginas de Astronomía y Ayahuasca no tienen carrito ni pago directo. El formulario guarda temporalmente la solicitud en el navegador, registra el evento analítico si el tracking está activo y abre WhatsApp con los datos ingresados para completar el contacto.
+
+Consulta CAMBIOS_V91_REESTRUCTURACION_MENU.md para ver el detalle técnico.
