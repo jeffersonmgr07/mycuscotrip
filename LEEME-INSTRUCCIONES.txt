@@ -1,0 +1,94 @@
+MyCuscoTrip — archivos corregidos (solo lo modificado)
+========================================================
+
+Esta carpeta contiene ÚNICAMENTE los archivos que fueron creados o modificados
+durante esta revisión. Sube/reemplaza estos archivos en la raíz de tu repo de
+GitHub, respetando las mismas rutas de carpeta que ves aquí.
+
+QUÉ SE CORRIGIÓ EN ESTOS ARCHIVOS
+----------------------------------
+1. hoteles/assets/js/pages/hoteles.js
+   hoteles/assets/css/hoteles.css
+   -> El modal de reserva de hoteles ya no crece hacia abajo. Ahora es un
+      wizard de 2 pasos: (1) elegir hotel + habitación, (2) al pulsar
+      "Continuar", el modal cambia de vista y muestra datos del titular + pago,
+      con un botón "Volver" para regresar. Probado en navegador.
+
+2. assets/js/pages/product.js
+   assets/js/pages/quote-packages.js
+   assets/data/ui-translations.json
+   -> 228 textos que estaban escritos directamente en español dentro del
+      código (nombres de habitaciones, botones de trenes, extras, etc.) ahora
+      usan el sistema de traducción, con sus 8 idiomas agregados al diccionario.
+   quote-packages.html (raíz)
+   -> Le faltaba cargar el motor de traducción (i18n.js); ya se agregó.
+
+3. en/agencias.html, en/all-experiences.html, en/astronomia-andina-cusco.html,
+   en/ayahuasca-cusco.html, en/cotizador-vuelos.html, en/private-package.html,
+   en/product.html, en/quote-packages.html, en/verificar-reserva.html
+   -> Textos que se habían quedado en español dentro de la versión en inglés.
+
+4. de/, fr/, it/, ja/, pt/, zh/ (astronomia-andina-cusco.html, ayahuasca-cusco.html, product.html)
+   -> Las páginas de "Astronomía Andina" y "Ayahuasca" tenían varios textos
+      (etiquetas del formulario, pasos, aviso de consentimiento) que NUNCA
+      habían sido traducidos en NINGÚN idioma, incluyendo inglés. Ya están
+      traducidos en los 7 idiomas no-españoles.
+      product.html en estos idiomas: se corrigió un subtítulo del formulario
+      de reserva que también estaba solo en español.
+
+5. pages/ayuda/*, pages/conocenos/*, pages/informacion-util/*, pages/legales/*,
+   pages/socios/aliados.html, pages/socios/trabaja-con-nosotros.html (25 páginas)
+   -> Estas páginas eran una plantilla genérica (el texto decía literalmente
+      "el contenido puede ampliarse... según avance la implementación"). Ahora
+      tienen contenido real y específico para cada tema.
+   -> IMPORTANTE — LEGAL: las 8 páginas de pages/legales/ (términos y
+      condiciones, política de privacidad, política de cookies, libro de
+      reclamaciones, contrato de servicios, etc.) fueron redactadas con
+      información general correcta y de buena fe, pero NO reemplazan la
+      revisión de un abogado peruano. Antes de publicarlas, pide que un
+      abogado (idealmente especializado en derecho del consumidor y
+      protección de datos en Perú) las revise y ajuste según tu operación
+      real — por ejemplo, si tienes RUC/razón social específica que declarar,
+      si aplican otras normas sectoriales, o si tus políticas de cancelación
+      reales difieren de lo descrito.
+   -> Estas 25 páginas solo existen en español (pages/ no está duplicado por
+      idioma en el sitio); traducirlas a los otros 7 idiomas sería un trabajo
+      aparte, dime si lo quieres para una siguiente etapa.
+
+
+ARCHIVOS QUE PUEDES ELIMINAR DE TU REPO (limpieza)
+----------------------------------------------------
+Estos son archivos internos de desarrollo (bitácoras de cambios, instrucciones,
+notas) o basura de un script roto. Ninguno es usado por el sitio en vivo —
+confirmado que no hay referencias a ellos desde ningún HTML/JS/CSS.
+
+A) 88 archivos llamados exactamente "none" (1 byte cada uno, artefacto de un
+   script de descarga roto), regados en decenas de carpetas de imágenes.
+   Ver la lista completa en: archivos-a-eliminar-none.txt (adjunto en esta carpeta)
+
+B) 63 archivos/carpetas de documentación interna (changelogs CAMBIOS_V*.md,
+   reportes, instrucciones de subida, READMEs de módulos):
+   Ver la lista completa en: archivos-a-eliminar-documentacion.txt (adjunto)
+
+Nota: no borré nada de tu repo real — estas listas son solo para que tú (o
+quien suba los archivos) los elimine desde GitHub directamente, ya que subir
+esta carpeta no borra archivos existentes automáticamente.
+
+
+6. assets/data/i18n/{fr,de,pt,it,zh,ja}/ui-translations.json
+   -> Esta era la causa más importante de tu queja original. El sitio carga
+      DOS capas de traducción por idioma: el diccionario central
+      (ui-translations.json, punto 2) y luego estos 6 archivos, que se cargan
+      DESPUÉS y sobrescriben al primero. Tenían cientos de palabras copiadas
+      literalmente del inglés en vez de traducidas (233 en italiano, 223 en
+      chino, 222 en japonés, 153 en alemán, 78 en portugués, 62 en francés).
+      Ya están traducidas y verificadas; solo quedan nombres propios/marca
+      que correctamente no se traducen (WhatsApp, Machu Picchu, Wi-Fi, nombres
+      de tours como "Salkantay Trek").
+
+
+PENDIENTE / NO INCLUIDO AQUÍ
+------------------------------
+- Traducción de las 25 páginas del footer a los otros 7 idiomas (por ahora
+  solo existen en español).
+- Datos de clientes reales en data/reservas.json y docs/ (no tocados, a pedido tuyo).

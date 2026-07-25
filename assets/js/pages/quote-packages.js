@@ -86,6 +86,20 @@
       .replace(/'/g, "&#039;");
   }
 
+  // Defensive i18n helper: quote-packages.html (Spanish root) does not always load assets/js/i18n.js,
+  // so every lookup falls back to the original Spanish text instead of throwing when MyCuscoTripI18n is missing.
+  function t(key, fallback = "", replacements = {}) {
+    let value = window.MyCuscoTripI18n?.t?.(key, fallback) ?? fallback;
+    Object.entries(replacements || {}).forEach(([name, replacement]) => {
+      value = String(value).replaceAll(`{${name}}`, replacement);
+    });
+    return value;
+  }
+
+  function getActiveLocale() {
+    return window.MCT_LOCALE || window.MyCuscoTripI18n?.locale || "es";
+  }
+
   function normalizeText(value) {
     return String(value || "")
       .trim()
@@ -113,7 +127,7 @@
   }
 
   function formatDate(date) {
-    if (!date) return "Por completar";
+    if (!date) return t("booking.pending", "Por completar");
     try {
       return new Intl.DateTimeFormat("es-PE", { day: "2-digit", month: "short", year: "numeric" }).format(date);
     } catch (_) {
@@ -330,7 +344,7 @@
 
   function updateExchangeRateHelp() {
     const help = $("#exchangeRateHelp");
-    if (help) help.textContent = `Tipo de cambio referencial: 1 USD = S/ ${state.exchangeRate.toFixed(2)}.`;
+    if (help) help.textContent = t("quote.exchangeRateHelp", "Tipo de cambio referencial: 1 USD = S/ {rate}.", { rate: state.exchangeRate.toFixed(2) });
   }
 
   function generateQuoteReference() {
@@ -361,8 +375,8 @@
   }
 
   function getTravelRangeLabel() {
-    if (!state.dates.start || !state.dates.end) return "Por completar";
-    return `${formatDate(state.dates.start)} al ${formatDate(state.dates.end)}`;
+    if (!state.dates.start || !state.dates.end) return t("booking.pending", "Por completar");
+    return t("quote.dateRangeTo", "{start} al {end}", { start: formatDate(state.dates.start), end: formatDate(state.dates.end) });
   }
 
   function updateTravelHelp() {
@@ -374,7 +388,7 @@
       return;
     }
     help.hidden = false;
-    help.textContent = `Duración detectada: ${state.dates.days} días / ${state.dates.nights} noches.`;
+    help.textContent = t("quote.durationDetected", "Duración detectada: {days} días / {nights} noches.", { days: state.dates.days, nights: state.dates.nights });
   }
 
   function getInitialPackagePreset(intent) {
@@ -492,8 +506,8 @@
 
     if (intent && $("#clientNotes")) {
       const note = preset?.label
-        ? `Interés inicial desde la búsqueda: ${preset.label}.`
-        : `Interés inicial desde la búsqueda: ${intent}.`;
+        ? t("quote.initialInterestPreset", "Interés inicial desde la búsqueda: {label}.", { label: preset.label })
+        : t("quote.initialInterestIntent", "Interés inicial desde la búsqueda: {intent}.", { intent });
       const currentNotes = String($("#clientNotes").value || "").trim();
       $("#clientNotes").value = currentNotes ? `${currentNotes}\n${note}` : note;
     }
@@ -503,7 +517,8 @@
 
   function initPickers() {
     if (typeof flatpickr !== "undefined") {
-      const locale = flatpickr.l10ns?.es || flatpickr.l10ns?.default;
+      const activeLocaleCode = getActiveLocale();
+      const locale = flatpickr.l10ns?.[activeLocaleCode] || flatpickr.l10ns?.es || flatpickr.l10ns?.default;
       const travelRange = $("#travelRange");
       if (travelRange) {
         state.pickers.travelRange = flatpickr(travelRange, {
@@ -564,12 +579,12 @@
 
     if (state.nationality === "national") {
       [...currency.options].forEach((option) => { option.disabled = false; });
-      if (help) help.textContent = "Turistas peruanos pueden ver tren local sujeto a disponibilidad presencial con DNI físico vigente.";
+      if (help) help.textContent = t("quote.nationalHelp", "Turistas peruanos pueden ver tren local sujeto a disponibilidad presencial con DNI físico vigente.");
     } else {
       state.currency = "USD";
       currency.value = "USD";
       [...currency.options].forEach((option) => { option.disabled = option.value === "PEN"; });
-      if (help) help.textContent = "Para extranjeros y Comunidad Andina se cotiza en USD; el tren local no aplica.";
+      if (help) help.textContent = t("quote.foreignHelp", "Para extranjeros y Comunidad Andina se cotiza en USD; el tren local no aplica.");
       if (state.selectedTrains.outbound?.isLocalTrain || state.selectedTrains.return?.isLocalTrain) {
         state.selectedTrains = { outbound: null, return: null };
       }
@@ -649,14 +664,14 @@
       return [{
         id: "quote-machu-picchu-2d1n",
         slug: "machu-picchu-2d1n",
-        title: "Machu Picchu 2 días / 1 noche",
-        recommendedTitle: "Machu Picchu 2D/1N recomendado",
-        shortDescription: "Viaje a Machu Picchu con pernocte en Aguas Calientes, ideal para visitar sin correr.",
+        title: t("search.packageMachuPicchu2d1n", "Machu Picchu 2 días / 1 noche"),
+        recommendedTitle: t("search.packageOvernight", "Machu Picchu 2D/1N recomendado"),
+        shortDescription: t("search.packageOvernightDesc", "Viaje a Machu Picchu con pernocte en Aguas Calientes, ideal para visitar sin correr."),
         days: 2,
         nights: 1,
         includedTourCodes: [overnightTour.internalCode || overnightTour.id || overnightTour.slug].filter(Boolean),
         includedTours: [overnightTour],
-        arrivalDepartureProfile: { label: "Horario personalizado" },
+        arrivalDepartureProfile: { label: t("quote.customSchedule", "Horario personalizado") },
         generationReason: "fallback-machu-picchu-2d1n"
       }];
     }
@@ -668,7 +683,7 @@
       ...card,
       includedTourCodes: codes,
       includedTours: codes.map(findTourByCode).filter(Boolean),
-      arrivalDepartureProfile: { label: "Horario personalizado" },
+      arrivalDepartureProfile: { label: t("quote.customSchedule", "Horario personalizado") },
       generationReason: "fallback-card"
     }];
   }
@@ -801,25 +816,25 @@
   }
 
   function getOptionCommercialBadge(option, index) {
-    if (index === 0) return "Recomendado";
-    if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return "Más vendido";
-    if (option?.hasTrekkingAfterMachuPicchu) return "Aventura";
-    if (Number(option?.freeUsefulDays || 0) === 0) return "Aprovecha mejor el tiempo";
-    return option?.badge || option?.rawCard?.badge || "Ruta sugerida";
+    if (index === 0) return t("quote.badge.recommended", "Recomendado");
+    if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return t("quote.badge.bestSeller", "Más vendido");
+    if (option?.hasTrekkingAfterMachuPicchu) return t("quote.badge.adventure", "Aventura");
+    if (Number(option?.freeUsefulDays || 0) === 0) return t("quote.badge.bestUseOfTime", "Aprovecha mejor el tiempo");
+    return option?.badge || option?.rawCard?.badge || t("quote.badge.suggestedRoute", "Ruta sugerida");
   }
 
   function getOptionCommercialText(option, index) {
-    if (!option) return "Ruta sugerida según tus fechas y horarios.";
+    if (!option) return t("quote.routeText.default", "Ruta sugerida según tus fechas y horarios.");
     const codes = toArray(option.includedTourCodes);
     if (option.sacredValleyMode === "connection") {
-      return "Ruta recomendada: combina Valle Sagrado con conexión hacia Aguas Calientes y Machu Picchu al día siguiente, evitando traslados innecesarios.";
+      return t("quote.routeText.connection", "Ruta recomendada: combina Valle Sagrado con conexión hacia Aguas Calientes y Machu Picchu al día siguiente, evitando traslados innecesarios.");
     }
     if (option.hasTrekkingAfterMachuPicchu || codes.some((code) => ["CUZ006", "CUZ007", "CUZ008", "CUZ009"].includes(code))) {
-      return "Ruta para aprovechar al máximo el tiempo, agregando excursiones de naturaleza o trekking sin repetir servicios.";
+      return t("quote.routeText.adventure", "Ruta para aprovechar al máximo el tiempo, agregando excursiones de naturaleza o trekking sin repetir servicios.");
     }
-    if (index === 0) return "Ruta equilibrada y comercialmente recomendada para conocer Cusco, Valle Sagrado y Machu Picchu con buen ritmo.";
-    if (codes.length <= 3) return "Ruta más suave y pausada, ideal si prefieres evitar demasiadas excursiones o caminatas exigentes.";
-    return "Ruta clásica con actividades culturales, pensada para mantener un buen balance entre visitas, traslados y descanso.";
+    if (index === 0) return t("quote.routeText.balanced", "Ruta equilibrada y comercialmente recomendada para conocer Cusco, Valle Sagrado y Machu Picchu con buen ritmo.");
+    if (codes.length <= 3) return t("quote.routeText.relaxed", "Ruta más suave y pausada, ideal si prefieres evitar demasiadas excursiones o caminatas exigentes.");
+    return t("quote.routeText.classic", "Ruta clásica con actividades culturales, pensada para mantener un buen balance entre visitas, traslados y descanso.");
   }
 
   function renderPackageOptions() {
@@ -829,15 +844,15 @@
 
     if (intro) {
       intro.textContent = state.options.length
-        ? `Encontramos ${state.options.length} alternativa(s) compatibles con ${state.dates.days} días / ${state.dates.nights} noches y tus horarios.`
-        : `No encontramos paquetes compatibles con ${state.dates.days} días / ${state.dates.nights} noches. Ajusta tus fechas o consulta por WhatsApp.`;
+        ? t("quote.optionsFound", "Encontramos {n} alternativa(s) compatibles con {days} días / {nights} noches y tus horarios.", { n: state.options.length, days: state.dates.days, nights: state.dates.nights })
+        : t("quote.optionsNotFound", "No encontramos paquetes compatibles con {days} días / {nights} noches. Ajusta tus fechas o consulta por WhatsApp.", { days: state.dates.days, nights: state.dates.nights });
     }
 
     if (!state.options.length) {
       target.innerHTML = `
         <div class="quote-empty-state">
-          <strong>No hay una ruta automática para esta duración.</strong>
-          <p>Prueba con una estadía de 3 a 10 días o escríbenos para armar un paquete manual.</p>
+          <strong>${escapeHtml(t("quote.noAutoRoute.title", "No hay una ruta automática para esta duración."))}</strong>
+          <p>${escapeHtml(t("quote.noAutoRoute.body", "Prueba con una estadía de 3 a 10 días o escríbenos para armar un paquete manual."))}</p>
         </div>
       `;
       return;
@@ -857,17 +872,17 @@
       return `
         <button type="button" class="quote-package-option ${isSelected ? "is-selected" : ""}" data-option-index="${index}">
           <span class="quote-package-option__badge">${escapeHtml(badge)}</span>
-          <strong>${escapeHtml(option.rawCard?.recommendedTitle || option.title || `Paquete ${option.days}D/${option.nights}N`)}</strong>
+          <strong>${escapeHtml(option.rawCard?.recommendedTitle || option.title || t("quote.packageFallbackTitle", "Paquete {days}D/{nights}N", { days: option.days, nights: option.nights }))}</strong>
           <small>${escapeHtml(commercialText)}</small>
-          <p>${escapeHtml(titles || option.shortDescription || "Itinerario armado desde los JSON del proyecto.")}</p>
-          <em>Precio base desde ${money(baseAdult)} por adulto, sin hoteles ni trenes seleccionados</em>
+          <p>${escapeHtml(titles || option.shortDescription || t("quote.itineraryFallbackDescription", "Itinerario armado desde los datos del proyecto."))}</p>
+          <em>${escapeHtml(t("quote.priceFromAdult", "Precio base desde {price} por adulto, sin hoteles ni trenes seleccionados", { price: money(baseAdult) }))}</em>
         </button>
       `;
     }).join("");
 
     const moreHtml = !state.showAllItineraryOptions && state.options.length > visibleCount ? `
       <button type="button" class="quote-show-more-itineraries" data-show-more-itineraries>
-        Ver más itinerarios (${state.options.length - visibleCount} más)
+        ${escapeHtml(t("quote.showMoreItineraries", "Ver más itinerarios ({n} más)", { n: state.options.length - visibleCount }))}
       </button>
     ` : "";
 
@@ -1001,7 +1016,7 @@
     }
 
     // Día 1: siempre inicia con recojo/recepción. Las actividades permitidas dependen estrictamente de la hora de llegada.
-    putSynthetic(1, "Recojo aeropuerto · Recepción en Cusco", "Recepción en Cusco y traslado inicial.", state.arrivalTime || "--:--");
+    putSynthetic(1, t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), state.arrivalTime || "--:--");
 
     const availableFrom = getAvailableStartTime(state.arrivalTime);
     const dayOneRule = getDayOneArrivalRule();
@@ -1012,13 +1027,13 @@
 
     if (dayOneRule === "welcome-city") {
       const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || "09:00") : null;
-      if (welcome) usedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
-      if (city) usedCity = put(1, city, "Salida sugerida 13:00.");
+      if (welcome) usedWelcome = put(1, welcome, t("quote.day.suggestedDeparture", "Salida sugerida {time}.", { time: welcomeStart }));
+      if (city) usedCity = put(1, city, t("quote.day.suggestedDeparture", "Salida sugerida {time}.", { time: "13:00" }));
     } else if (dayOneRule === "city-only") {
-      if (city) usedCity = put(1, city, "Salida sugerida 13:00.");
+      if (city) usedCity = put(1, city, t("quote.day.suggestedDeparture", "Salida sugerida {time}.", { time: "13:00" }));
     } else if (dayOneRule === "welcome-only") {
       const welcomeStart = welcome ? (getFirstAvailableStartTime(welcome, availableFrom) || availableFrom) : null;
-      if (welcome) usedWelcome = put(1, welcome, `Salida sugerida ${welcomeStart}.`);
+      if (welcome) usedWelcome = put(1, welcome, t("quote.day.suggestedDeparture", "Salida sugerida {time}.", { time: welcomeStart }));
     }
     // Si llega desde las 15:00, no se agrega ningún tour el primer día.
     // Bienvenida/City no se reubican en días intermedios; solo podrán intentarse el último día si no se usaron.
@@ -1030,11 +1045,11 @@
 
     if (valleyConnection) {
       const valleyDay = totalDays >= 4 ? 2 : Math.min(2, totalDays);
-      put(valleyDay, valleyConnection, "Conexión hacia Aguas Calientes para dormir cerca de Machu Picchu.");
-      if (machu) put(Math.min(valleyDay + 1, totalDays), machu, "Machu Picchu se programa al día siguiente de la conexión del Valle Sagrado.");
+      put(valleyDay, valleyConnection, t("quote.day.connectionToAguasCalientes", "Conexión hacia Aguas Calientes para dormir cerca de Machu Picchu."));
+      if (machu) put(Math.min(valleyDay + 1, totalDays), machu, t("quote.day.machuAfterConnection", "Machu Picchu se programa al día siguiente de la conexión del Valle Sagrado."));
     } else {
-      if (machu) put(totalDays >= 3 ? 2 : Math.min(2, totalDays), machu, "Versión Full Day compatible con Valle Sagrado Full Day o ruta clásica.");
-      if (valleyFullDay) put(totalDays >= 4 ? 3 : Math.min(2, totalDays), valleyFullDay, "Valle Sagrado en versión Full Day, sin noche previa en Aguas Calientes.");
+      if (machu) put(totalDays >= 3 ? 2 : Math.min(2, totalDays), machu, t("quote.day.fullDayCompatibleValley", "Versión Full Day compatible con Valle Sagrado Full Day o ruta clásica."));
+      if (valleyFullDay) put(totalDays >= 4 ? 3 : Math.min(2, totalDays), valleyFullDay, t("quote.day.valleyFullDayNoOvernight", "Valle Sagrado en versión Full Day, sin noche previa en Aguas Calientes."));
     }
 
     // Llenar días intermedios solo con excursiones que realmente ocupan el día.
@@ -1046,7 +1061,7 @@
         if (isMachuPicchuTour(candidate) || isSacredValleyTour(candidate)) return false;
         return isFullDayLikeTour(candidate) || isMarasMorayOrValleSur(candidate);
       }, middlePriority);
-      if (tour) put(dayNumber, tour, "Día completo disponible para aprovechar la ruta.");
+      if (tour) put(dayNumber, tour, t("quote.day.fullDayAvailable", "Día completo disponible para aprovechar la ruta."));
     }
 
     // Forzados al último día solo si encajan con la regla de salida.
@@ -1054,7 +1069,7 @@
     forcedLastDayCodes.forEach((code) => {
       const idx = remaining.findIndex((tour) => getTourCode(tour) === code);
       if (idx >= 0 && canUseTourOnSpecificLastDay(remaining[idx])) {
-        put(lastDayNumber, remaining.splice(idx, 1)[0], "Compatible con tu horario de salida.");
+        put(lastDayNumber, remaining.splice(idx, 1)[0], t("quote.day.compatibleWithDeparture", "Compatible con tu horario de salida."));
       }
     });
 
@@ -1064,7 +1079,7 @@
         if (isMachuPicchuTour(tour) || isSacredValleyTour(tour)) return false;
         return canUseTourOnSpecificLastDay(tour);
       }, lastDayPriority);
-      if (lastTour) put(lastDayNumber, lastTour, "Compatible con tu horario de salida.");
+      if (lastTour) put(lastDayNumber, lastTour, t("quote.day.compatibleWithDeparture", "Compatible con tu horario de salida."));
     }
 
     // Si la salida es desde las 20:00 y quedaron Bienvenida + City sin usar, puede ser una combinación válida del último día.
@@ -1072,20 +1087,20 @@
     const lastDayHasTour = () => dayByNumber(lastDayNumber).activities.some((item) => item.tour);
     if (timeToMinutes(state.departureTime || "00:00") >= timeToMinutes("20:00") && !lastDayHasTour()) {
       if (!usedWelcome && welcome && !dayByNumber(lastDayNumber).activities.some((item) => isWelcomeTour(item.tour)) && canUseTourOnSpecificLastDay(welcome)) {
-        put(lastDayNumber, welcome, "Versión panorámica compatible con salida nocturna.");
+        put(lastDayNumber, welcome, t("quote.day.panoramicCompatibleNightDeparture", "Versión panorámica compatible con salida nocturna."));
         usedWelcome = true;
       }
       if (!usedCity && city && !dayByNumber(lastDayNumber).activities.some((item) => isCityTour(item.tour)) && canUseTourOnSpecificLastDay(city)) {
-        put(lastDayNumber, city, "City Tour en horario de mañana compatible con salida nocturna.");
+        put(lastDayNumber, city, t("quote.day.cityMorningCompatibleNightDeparture", "City Tour en horario de mañana compatible con salida nocturna."));
         usedCity = true;
       }
     } else {
       if (!usedWelcome && welcome && !dayByNumber(lastDayNumber).activities.length && canUseTourOnSpecificLastDay(welcome)) {
-        put(lastDayNumber, welcome, "Versión panorámica compatible con tu horario de salida.");
+        put(lastDayNumber, welcome, t("quote.day.panoramicCompatibleDeparture", "Versión panorámica compatible con tu horario de salida."));
         usedWelcome = true;
       }
       if (!usedCity && city && !dayByNumber(lastDayNumber).activities.length && canUseTourOnSpecificLastDay(city)) {
-        put(lastDayNumber, city, "City Tour en horario de mañana compatible con tu horario de salida.");
+        put(lastDayNumber, city, t("quote.day.cityMorningCompatibleDeparture", "City Tour en horario de mañana compatible con tu horario de salida."));
         usedCity = true;
       }
     }
@@ -1099,22 +1114,22 @@
         if (dayHasMajorActivity(day.day)) return false;
         return true;
       });
-      if (targetDay) put(targetDay.day, tour, "Día disponible para esta excursión.");
+      if (targetDay) put(targetDay.day, tour, t("quote.day.availableForExcursion", "Día disponible para esta excursión."));
     });
 
     return days.map((day) => {
       let activities = day.activities.length ? [...day.activities] : [{
         tour: null,
-        note: day.day === 1 ? "Llegada, traslado al hotel y aclimatación ligera." : day.day === lastDayNumber ? "Traslado de salida y asistencia final." : "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.",
-        syntheticTitle: day.day === 1 ? "Recojo aeropuerto · Recepción en Cusco" : day.day === lastDayNumber ? "Traslado de salida" : "Día flexible"
+        note: day.day === 1 ? t("quote.day.arrivalNote", "Llegada, traslado al hotel y aclimatación ligera.") : day.day === lastDayNumber ? t("quote.day.departureFinalNote", "Traslado de salida y asistencia final.") : t("quote.day.flexibleNote", "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad."),
+        syntheticTitle: day.day === 1 ? t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco") : day.day === lastDayNumber ? t("quote.day.departureTransfer", "Traslado de salida") : t("quote.day.flexibleDay", "Día flexible")
       }];
 
       if (day.day === lastDayNumber && !activities.some((item) => !item.tour && normalizeText(item.syntheticTitle || "").includes("traslado"))) {
         activities = [...activities, {
           tour: null,
           startTime: state.departureTime ? addMinutesToTime(state.departureTime, -120) : "--:--",
-          note: "Traslado final según horario de salida.",
-          syntheticTitle: "Traslado de salida"
+          note: t("quote.day.finalTransferNote", "Traslado final según horario de salida."),
+          syntheticTitle: t("quote.day.departureTransfer", "Traslado de salida")
         }];
       }
 
@@ -1129,10 +1144,10 @@
 
   function getActivityDisplayTitle(activity, day) {
     const tour = activity?.tour;
-    const rawTitle = tour?.title || activity?.syntheticTitle || "Actividad";
+    const rawTitle = tour?.title || activity?.syntheticTitle || t("quote.activity", "Actividad");
     const totalDays = Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1);
     if (day?.day === totalDays && tour && isWelcomeTour(tour)) {
-      return "Tour panorámico Cusco";
+      return t("quote.panoramicTourCusco", "Tour panorámico Cusco");
     }
     return rawTitle;
   }
@@ -1177,33 +1192,33 @@
     const tour = activity?.tour;
     const title = normalizeText(getActivityDisplayTitle(activity, day));
     if (!tour) {
-      if (day?.day === 1) return "Recepción en aeropuerto o terminal terrestre, asistencia inicial y traslado hacia el hotel o punto coordinado en Cusco.";
-      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return "Recojo desde el hotel o punto coordinado y traslado al aeropuerto o terminal terrestre según el horario real de salida.";
-      return activity?.note || "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.";
+      if (day?.day === 1) return t("quote.activityDesc.arrivalDay1", "Recepción en aeropuerto o terminal terrestre, asistencia inicial y traslado hacia el hotel o punto coordinado en Cusco.");
+      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return t("quote.activityDesc.departureLastDay", "Recojo desde el hotel o punto coordinado y traslado al aeropuerto o terminal terrestre según el horario real de salida.");
+      return activity?.note || t("quote.day.flexibleNote", "Día flexible para descanso, caminata ligera o ajuste operativo según disponibilidad.");
     }
-    if (isCityTour(tour)) return "Visita guiada por los principales atractivos de Cusco: Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, con retorno coordinado a la ciudad.";
-    if (isWelcomeTour(tour) && title.includes("panoramico")) return "Recorrido panorámico por Cusco con enfoque cultural, vistas de la ciudad, ceremonia andina simbólica y paradas fotográficas antes del traslado final.";
-    if (isWelcomeTour(tour)) return "Experiencia cultural de bienvenida en Cusco con ceremonia andina simbólica, vistas panorámicas y tiempo de adaptación suave antes de continuar con el itinerario.";
-    if (isSacredValleyConnectionTour(tour)) return "Ruta por el Valle Sagrado visitando puntos destacados como Pisac, Urubamba y Ollantaytambo, finalizando con conexión hacia Aguas Calientes para dormir cerca de Machu Picchu.";
-    if (isSacredValleyTour(tour)) return "Excursión de día completo por el Valle Sagrado de los Incas con visitas culturales, paisajes andinos y retorno coordinado a Cusco.";
-    if (isMachuPicchuTour(tour)) return "Visita a Machu Picchu con coordinación de traslados, bus de subida, ingreso oficial según disponibilidad, guiado profesional y retorno según la modalidad seleccionada.";
-    if (title.includes("montana de colores") || title.includes("montaña de colores")) return "Salida de madrugada hacia Vinicunca, desayuno, caminata asistida hasta la Montaña de Colores, tiempo para fotografías, almuerzo y retorno aproximado por la tarde.";
-    return tour?.description || tour?.shortDescription || activity?.note || "Servicio coordinado según tus horarios y disponibilidad operativa.";
+    if (isCityTour(tour)) return t("quote.activityDesc.cityTour", "Visita guiada por los principales atractivos de Cusco: Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, con retorno coordinado a la ciudad.");
+    if (isWelcomeTour(tour) && title.includes("panoramico")) return t("quote.activityDesc.panoramicWelcome", "Recorrido panorámico por Cusco con enfoque cultural, vistas de la ciudad, ceremonia andina simbólica y paradas fotográficas antes del traslado final.");
+    if (isWelcomeTour(tour)) return t("quote.activityDesc.welcome", "Experiencia cultural de bienvenida en Cusco con ceremonia andina simbólica, vistas panorámicas y tiempo de adaptación suave antes de continuar con el itinerario.");
+    if (isSacredValleyConnectionTour(tour)) return t("quote.activityDesc.sacredValleyConnection", "Ruta por el Valle Sagrado visitando puntos destacados como Pisac, Urubamba y Ollantaytambo, finalizando con conexión hacia Aguas Calientes para dormir cerca de Machu Picchu.");
+    if (isSacredValleyTour(tour)) return t("quote.activityDesc.sacredValley", "Excursión de día completo por el Valle Sagrado de los Incas con visitas culturales, paisajes andinos y retorno coordinado a Cusco.");
+    if (isMachuPicchuTour(tour)) return t("quote.activityDesc.machuPicchu", "Visita a Machu Picchu con coordinación de traslados, bus de subida, ingreso oficial según disponibilidad, guiado profesional y retorno según la modalidad seleccionada.");
+    if (title.includes("montana de colores") || title.includes("montaña de colores")) return t("quote.activityDesc.vinicunca", "Salida de madrugada hacia Vinicunca, desayuno, caminata asistida hasta la Montaña de Colores, tiempo para fotografías, almuerzo y retorno aproximado por la tarde.");
+    return tour?.description || tour?.shortDescription || activity?.note || t("quote.activityDesc.genericService", "Servicio coordinado según tus horarios y disponibilidad operativa.");
   }
 
   function getActivityPlacesText(activity, day) {
     const tour = activity?.tour;
     if (!tour) {
-      if (day?.day === 1) return "Aeropuerto/terminal · hotel en Cusco";
-      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return "Hotel en Cusco · aeropuerto/terminal";
+      if (day?.day === 1) return t("quote.places.airportHotelCusco", "Aeropuerto/terminal · hotel en Cusco");
+      if (day?.day === Math.max(Number(state.dates.days || getSelectedOption()?.days || 1), 1)) return t("quote.places.hotelCuscoAirport", "Hotel en Cusco · aeropuerto/terminal");
       return "Cusco";
     }
     const places = toArray(tour?.places || tour?.highlights || tour?.mainPlaces).map((item) => typeof item === "string" ? item : item?.name).filter(Boolean);
     if (places.length) return places.slice(0, 5).join(" · ");
-    if (isCityTour(tour)) return "Qoricancha · Sacsayhuamán · Qenqo · Puca Pucara · Tambomachay";
-    if (isSacredValleyConnectionTour(tour)) return "Pisac · Urubamba · Ollantaytambo · conexión a Machu Picchu";
-    if (isMachuPicchuTour(tour)) return "Aguas Calientes · bus turístico · ciudadela de Machu Picchu";
-    return "Cusco y alrededores";
+    if (isCityTour(tour)) return t("quote.places.cityTourStops", "Qoricancha · Sacsayhuamán · Qenqo · Puca Pucara · Tambomachay");
+    if (isSacredValleyConnectionTour(tour)) return t("quote.places.sacredValleyConnectionStops", "Pisac · Urubamba · Ollantaytambo · conexión a Machu Picchu");
+    if (isMachuPicchuTour(tour)) return t("quote.places.machuPicchuStops", "Aguas Calientes · bus turístico · ciudadela de Machu Picchu");
+    return t("quote.places.cuscoAndSurroundings", "Cusco y alrededores");
   }
 
   function renderItineraryPreview() {
@@ -1217,8 +1232,8 @@
     if (!option) {
       target.innerHTML = `
         <div class="quote-empty-state">
-          <strong>Selecciona tus fechas para generar el itinerario.</strong>
-          <p>El cotizador revisará duración y horarios para proponer la ruta compatible.</p>
+          <strong>${escapeHtml(t("quote.selectDatesTitle", "Selecciona tus fechas para generar el itinerario."))}</strong>
+          <p>${escapeHtml(t("quote.selectDatesBody", "El cotizador revisará duración y horarios para proponer la ruta compatible."))}</p>
         </div>
       `;
       return;
@@ -1232,7 +1247,7 @@
         const time = getActivityDisplayTime(activity, day, index);
         const description = getActivityDisplayDescription(activity, day);
         const places = getActivityPlacesText(activity, day);
-        const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "Actividad turística";
+        const meta = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || t("quote.touristActivity", "Actividad turística");
         const image = getActivityImage(activity, day);
         return `
           <div class="quote-itinerary-activity quote-itinerary-activity--with-image">
@@ -1324,7 +1339,7 @@
 
   function getRoomDescription(room) {
     const parts = [
-      room?.label || room?.roomType || "Habitación",
+      room?.label || room?.roomType || t("quote.room", "Habitación"),
       room?.bedType,
       Number(room?.capacity || 0) ? `capacidad ${room.capacity}` : ""
     ].filter(Boolean);
@@ -1333,10 +1348,10 @@
 
   function getRoomsSummary(rooms = []) {
     const list = toArray(rooms).filter(Boolean);
-    if (!list.length) return "Habitación por confirmar";
+    if (!list.length) return t("quote.roomToConfirm", "Habitación por confirmar");
     const counts = new Map();
     list.forEach((room) => {
-      const label = room?.label || room?.roomType || "Habitación";
+      const label = room?.label || room?.roomType || t("quote.room", "Habitación");
       counts.set(label, (counts.get(label) || 0) + 1);
     });
     return Array.from(counts.entries()).map(([label, count]) => `${count > 1 ? `${count} × ` : ""}${label}`).join(" + ");
@@ -1400,7 +1415,7 @@
     const list = toArray(rooms).filter(Boolean);
     const counts = new Map();
     list.forEach((room) => {
-      const label = room?.label || room?.roomType || "Habitación";
+      const label = room?.label || room?.roomType || t("quote.room", "Habitación");
       counts.set(label, (counts.get(label) || 0) + 1);
     });
     return Array.from(counts.entries()).map(([label, count]) => `${String(count).padStart(2, "0")} ${count === 1 ? label.toLowerCase() : `${label.toLowerCase()}s`}`).join(" + ");
@@ -1466,8 +1481,8 @@
       key: `${destination}::none`,
       destination,
       type: "none",
-      label: "Sin hotel / solo tours",
-      description: "No se suma alojamiento para este destino.",
+      label: t("quote.hotel.noneLabel", "Sin hotel / solo tours"),
+      description: t("quote.hotel.noneDescription", "No se suma alojamiento para este destino."),
       priceUSD: 0,
       nights: plan?.nights || 0,
       rooms: []
@@ -1484,7 +1499,7 @@
           hotel,
           room: combo.rooms[0] || null,
           rooms: combo.rooms,
-          label: hotel.hotelName || "Hotel seleccionado",
+          label: hotel.hotelName || t("quote.hotelSelectedFallback", "Hotel seleccionado"),
           description: `${hotel.stars || ""}★ · ${hotel.location || plan?.label || destination} · ${getRoomsSummary(combo.rooms)}`,
           roomsSummary: getRoomsSummary(combo.rooms),
           roomsDetails: getRoomsDetails(combo.rooms),
@@ -1519,18 +1534,18 @@
     section.hidden = false;
     target.innerHTML = plan.map((item) => {
       const selected = getSelectedHotelOption(item.destination);
-      const text = selected ? selected.label : "Por elegir";
-      const priceText = selected ? money(convert(selected.priceUSD, "USD", state.currency)) : "No seleccionado";
+      const text = selected ? selected.label : t("quote.hotel.toBeChosen", "Por elegir");
+      const priceText = selected ? money(convert(selected.priceUSD, "USD", state.currency)) : t("quote.hotel.noneSelectedPrice", "No seleccionado");
       return `
         <div class="quote-dynamic-card">
           <div>
             <span>${escapeHtml(item.label)} · ${item.nights} noche(s)</span>
             <strong>${escapeHtml(text)}</strong>
-            <p>${escapeHtml(selected?.description || "Puedes elegir hotel o continuar sin alojamiento.")}</p>
+            <p>${escapeHtml(selected?.description || t("quote.hotel.defaultDescription", "Puedes elegir hotel o continuar sin alojamiento."))}</p>
             <small>${escapeHtml(priceText)}</small>
           </div>
           <button type="button" class="btn quote-secondary-btn" data-open-hotel="${escapeHtml(item.destination)}">
-            <i class="fas fa-hotel"></i> ${selected ? "Cambiar hotel" : "Elegir hotel"}
+            <i class="fas fa-hotel"></i> ${selected ? t("quote.hotel.change", "Cambiar hotel") : t("quote.hotel.choose", "Elegir hotel")}
           </button>
         </div>
       `;
@@ -1547,8 +1562,8 @@
     const plan = getAccommodationPlan().find((item) => item.destination === destination);
     if (!modal || !list || !plan) return;
 
-    if (title) title.textContent = `Elige alojamiento en ${plan.label}`;
-    if (intro) intro.textContent = `Selecciona el hotel y luego una combinación de habitación compatible para ${getPassengerCount()} pasajero(s).`;
+    if (title) title.textContent = t("quote.hotel.modalTitle", "Elige alojamiento en {place}", { place: plan.label });
+    if (intro) intro.textContent = t("quote.hotel.modalIntro", "Selecciona el hotel y luego una combinación de habitación compatible para {n} pasajero(s).", { n: getPassengerCount() });
 
     const options = buildHotelOptions(destination);
     const noneOption = options.find((option) => option.type === "none");
@@ -1565,7 +1580,7 @@
       <button type="button" class="quote-hotel-choice-card quote-hotel-choice-card--none ${noneSelected ? "is-selected" : ""}" data-hotel-key="${escapeHtml(noneOption.key)}">
         <span class="quote-choice-dot" aria-hidden="true"></span>
         <div>
-          <strong>Opción sin hotel</strong>
+          <strong>${escapeHtml(t("quote.hotel.noneOption", "Opción sin hotel"))}</strong>
           <em>${escapeHtml(money(0))}</em>
         </div>
       </button>
@@ -1590,7 +1605,7 @@
             <span class="quote-choice-dot" aria-hidden="true"></span>
             <div>
               <strong>${escapeHtml(getRoomComboDisplayTitle(option.rooms))}</strong>
-              <small>${option.rooms.length} habitación(es) | Total + ${escapeHtml(money(total))}</small>
+              <small>${escapeHtml(t("quote.roomsCountTotalSuffix", "{n} habitación(es) | Total + {price}", { n: option.rooms.length, price: money(total) }))}</small>
             </div>
           </button>
         `;
@@ -1600,22 +1615,22 @@
         <article class="quote-hotel-group-card quote-hotel-group-card--wide ${selectedInHotel ? "is-selected" : ""}">
           <div class="quote-hotel-group-card__left">
             <div class="quote-hotel-group-card__head quote-hotel-group-card__head--top">
-              <strong>${escapeHtml(hotel?.hotelName || "Hotel seleccionado")}</strong>
+              <strong>${escapeHtml(hotel?.hotelName || t("quote.hotelSelectedFallback", "Hotel seleccionado"))}</strong>
               <p>${escapeHtml(`${hotel?.stars ? "★".repeat(Number(hotel.stars)) : "Hotel"} · ${hotel?.location || plan.label}`)}</p>
               ${hotel?.address ? `<p>${escapeHtml(hotel.address)}</p>` : ""}
             </div>
             <div class="quote-hotel-gallery" data-gallery-index="0">
-              ${firstImage ? `<img src="${escapeHtml(resolveAssetPath(firstImage))}" alt="${escapeHtml(hotel?.hotelName || "Hotel")}" loading="lazy">` : `<div class="quote-hotel-gallery__empty"><i class="fas fa-hotel"></i></div>`}
+              ${firstImage ? `<img src="${escapeHtml(resolveAssetPath(firstImage))}" alt="${escapeHtml(hotel?.hotelName || t("quote.hotelGeneric", "Hotel"))}" loading="lazy">` : `<div class="quote-hotel-gallery__empty"><i class="fas fa-hotel"></i></div>`}
               ${images.length > 1 ? `
-                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--prev" data-hotel-gallery="prev" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="Foto anterior">‹</button>
-                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--next" data-hotel-gallery="next" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="Foto siguiente">›</button>
+                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--prev" data-hotel-gallery="prev" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="${escapeHtml(t("booking.galleryPrev", "Foto anterior"))}">‹</button>
+                <button type="button" class="quote-hotel-gallery__nav quote-hotel-gallery__nav--next" data-hotel-gallery="next" data-images="${escapeHtml(images.map(resolveAssetPath).join("|"))}" aria-label="${escapeHtml(t("booking.galleryNext", "Foto siguiente"))}">›</button>
               ` : ""}
             </div>
             ${features.length ? `<div class="quote-hotel-feature-list quote-hotel-feature-list--pills">${features.map((item) => `<small><i class="fas fa-check"></i> ${escapeHtml(item)}</small>`).join("")}</div>` : ""}
           </div>
           <div class="quote-hotel-group-card__right">
             <div class="quote-hotel-price-pill">+ ${escapeHtml(money(convert(Number.isFinite(minPrice) ? minPrice : 0, "USD", state.currency)))} total</div>
-            <h3>Selecciona tipo de acomodación</h3>
+            <h3>${escapeHtml(t("quote.hotel.selectAccommodationType", "Selecciona tipo de acomodación"))}</h3>
             <div class="quote-room-combo-list">
               ${roomsHtml}
             </div>
@@ -1627,7 +1642,7 @@
     list.innerHTML = `
       <div class="quote-hotel-modal-list quote-hotel-modal-list--wide">
         ${noneHtml}
-        ${hotelHtml || `<div class="quote-empty-state"><strong>No hay hoteles configurados para este destino.</strong><p>Puedes continuar sin hotel o consultar una opción manual.</p></div>`}
+        ${hotelHtml || `<div class="quote-empty-state"><strong>${escapeHtml(t("quote.hotel.noneConfigured", "No hay hoteles configurados para este destino."))}</strong><p>${escapeHtml(t("quote.hotel.noneConfiguredBody", "Puedes continuar sin hotel o consultar una opción manual."))}</p></div>`}
       </div>
     `;
     modal.hidden = false;
@@ -1797,22 +1812,22 @@
 
   function renderTrainSelectedCard(container, direction, train) {
     if (!container) return;
-    const label = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
+    const label = direction === "outbound" ? t("booking.train.outbound", "Tren de ida") : t("booking.train.return", "Tren de retorno");
     const price = train ? getTrainTotal(train) : 0;
-    const logo = train ? `<img class="quote-train-selected-logo" src="${escapeHtml(getTrainLogoPath(train))}" alt="${escapeHtml(train.companyName || train.company || "Tren")}">` : "";
+    const logo = train ? `<img class="quote-train-selected-logo" src="${escapeHtml(getTrainLogoPath(train))}" alt="${escapeHtml(train.companyName || train.company || t("quote.train.detailTrainFallback", "Tren"))}">` : "";
     container.innerHTML = `
       <div class="quote-train-selected-content">
         ${logo}
         <div>
           <span>${label}</span>
-          <strong>${escapeHtml(train ? `${train.companyName || train.company} · ${train.serviceName}` : "Sin selección")}</strong>
-          <p>${escapeHtml(train ? `${train.departureStation} ${train.departureTime} → ${train.arrivalStation} ${train.arrivalTime}` : "Elige una opción de tren para completar la cotización.")}</p>
-          ${train?.isLocalTrain ? `<small>Tren local referencial: requiere compra presencial con DNI.</small>` : ""}
+          <strong>${escapeHtml(train ? `${train.companyName || train.company} · ${train.serviceName}` : t("booking.noSelection", "Sin selección"))}</strong>
+          <p>${escapeHtml(train ? `${train.departureStation} ${train.departureTime} → ${train.arrivalStation} ${train.arrivalTime}` : t("quote.train.pendingHelp", "Elige una opción de tren para completar la cotización."))}</p>
+          ${train?.isLocalTrain ? `<small>${escapeHtml(t("quote.train.localNote", "Tren local referencial: requiere compra presencial con DNI."))}</small>` : ""}
           ${train ? `<small>${money(price)}</small>` : ""}
         </div>
       </div>
       <button type="button" class="btn quote-secondary-btn" data-train-direction="${direction}">
-        <i class="fas fa-train"></i> ${train ? "Cambiar tren" : "Elegir tren"}
+        <i class="fas fa-train"></i> ${train ? t("booking.train.change", "Cambiar tren") : t("booking.train.choose", "Elegir tren")}
       </button>
     `;
   }
@@ -1834,11 +1849,11 @@
   }
 
   function getTrainCompanyRuleNote(direction) {
-    if (direction !== "return") return "El retorno se filtrará según la empresa elegida en la ida.";
+    if (direction !== "return") return t("quote.train.ruleNoteReturnGeneric", "El retorno se filtrará según la empresa elegida en la ida.");
     const outbound = state.selectedTrains.outbound;
-    if (!outbound) return "Primero puedes elegir ida para filtrar el retorno por empresa.";
-    if (outbound.isLocalTrain) return "Como elegiste tren local de ida, puedes seleccionar cualquier tren de retorno compatible.";
-    return `Como elegiste ${outbound.companyName || outbound.company}, el retorno se limita a la misma empresa.`;
+    if (!outbound) return t("quote.train.ruleNoteChooseOutboundFirst", "Primero puedes elegir ida para filtrar el retorno por empresa.");
+    if (outbound.isLocalTrain) return t("quote.train.ruleNoteLocalOutbound", "Como elegiste tren local de ida, puedes seleccionar cualquier tren de retorno compatible.");
+    return t("quote.train.ruleNoteSameCompany", "Como elegiste {company}, el retorno se limita a la misma empresa.", { company: outbound.companyName || outbound.company });
   }
 
   function openTrainModal(direction) {
@@ -1850,18 +1865,18 @@
     const list = $("#trainSelectionModalList");
     if (!modal || !list) return;
 
-    const label = state.activeTrainDirection === "outbound" ? "ida a Machu Picchu" : "retorno desde Machu Picchu";
-    if (title) title.textContent = `Elige tren de ${label}`;
+    const label = state.activeTrainDirection === "outbound" ? t("quote.train.outboundLabel", "ida a Machu Picchu") : t("quote.train.returnLabel", "retorno desde Machu Picchu");
+    if (title) title.textContent = t("quote.train.modalTitle", "Elige tren de {label}", { label });
     if (intro) intro.textContent = state.nationality === "national"
-      ? `${getTrainCompanyRuleNote(state.activeTrainDirection)} También verás tren local referencial cuando aplique.`
-      : `${getTrainCompanyRuleNote(state.activeTrainDirection)} Mostramos solo trenes turísticos compatibles.`;
+      ? t("quote.train.introNational", "{note} También verás tren local referencial cuando aplique.", { note: getTrainCompanyRuleNote(state.activeTrainDirection) })
+      : t("quote.train.introForeign", "{note} Mostramos solo trenes turísticos compatibles.", { note: getTrainCompanyRuleNote(state.activeTrainDirection) });
 
     const options = getTrainOptions(state.activeTrainDirection);
     if (!options.length) {
       list.innerHTML = `
         <div class="quote-empty-state">
-          <strong>No hay trenes compatibles para esta ruta.</strong>
-          <p>Cambia la ruta seleccionada o consúltanos para revisar disponibilidad manualmente.</p>
+          <strong>${escapeHtml(t("quote.train.noneCompatible", "No hay trenes compatibles para esta ruta."))}</strong>
+          <p>${escapeHtml(t("quote.train.noneCompatibleBody", "Cambia la ruta seleccionada o consúltanos para revisar disponibilidad manualmente."))}</p>
         </div>
       `;
     } else {
@@ -1874,14 +1889,14 @@
             <span class="quote-choice-dot" aria-hidden="true"></span>
             <div class="quote-train-modal-card__body">
               <div class="quote-train-title-row">
-                <img class="quote-train-inline-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || "Tren")}" loading="lazy">
+                <img class="quote-train-inline-logo" src="${escapeHtml(logo)}" alt="${escapeHtml(train.companyName || train.company || t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy">
                 <div>
                   <strong>${escapeHtml(train.serviceName || train.category || train.code)}</strong>
                   </div>
               </div>
               <div class="quote-train-schedule-row">
-                <div><small>Salida</small><b>${escapeHtml(train.departureStation)} · ${escapeHtml(train.departureTime)}</b></div>
-                <div><small>Llegada</small><b>${escapeHtml(train.arrivalStation)} · ${escapeHtml(train.arrivalTime)}</b></div>
+                <div><small>${escapeHtml(t("booking.departure", "Salida"))}</small><b>${escapeHtml(train.departureStation)} · ${escapeHtml(train.departureTime)}</b></div>
+                <div><small>${escapeHtml(t("booking.arrival", "Llegada"))}</small><b>${escapeHtml(train.arrivalStation)} · ${escapeHtml(train.arrivalTime)}</b></div>
               </div>
               <em>${train.isLocalTrain ? "S/ 0.00" : money(price)}</em>
             </div>
@@ -1918,10 +1933,10 @@
     if (!modal || !content || !train) return;
     $("#trainDetailsModalTitle").textContent = train.serviceName || train.code;
     content.innerHTML = `
-      <p><strong>Empresa:</strong> ${escapeHtml(train.companyName || train.company)}</p>
-      <p><strong>Ruta:</strong> ${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</p>
-      <p><strong>Categoría:</strong> ${escapeHtml(train.category || "")}</p>
-      <p>${escapeHtml(train.notes || "Tarifa referencial sujeta a disponibilidad.")}</p>
+      <p><strong>${escapeHtml(t("quote.train.company", "Empresa"))}:</strong> ${escapeHtml(train.companyName || train.company)}</p>
+      <p><strong>${escapeHtml(t("quote.train.route", "Ruta"))}:</strong> ${escapeHtml(train.departureStation)} ${escapeHtml(train.departureTime)} → ${escapeHtml(train.arrivalStation)} ${escapeHtml(train.arrivalTime)}</p>
+      <p><strong>${escapeHtml(t("quote.train.category", "Categoría"))}:</strong> ${escapeHtml(train.category || "")}</p>
+      <p>${escapeHtml(train.notes || t("quote.train.fareNote", "Tarifa referencial sujeta a disponibilidad."))}</p>
     `;
     modal.hidden = false;
   }
@@ -1974,8 +1989,8 @@
     if (btpCodes.length > 1) {
       pushExtra(extras, {
         code: `btp-general-${nationalityType}`,
-        label: "Boleto Turístico General Cusco",
-        tourTitle: "Aplica para City Tour, Valle Sagrado, Maras/Moray o Valle Sur",
+        label: t("quote.extra.btcGeneralLabel", "Boleto Turístico General Cusco"),
+        tourTitle: t("quote.extra.btcGeneralApplies", "Aplica para City Tour, Valle Sagrado, Maras/Moray o Valle Sur"),
         amount: state.nationality === "national" ? 70 : 130,
         currency: "PEN",
         required: true,
@@ -1984,8 +1999,8 @@
     } else if (btpCodes.length === 1) {
       pushExtra(extras, {
         code: `btp-partial-${btpCodes[0]}-${nationalityType}`,
-        label: "Boleto Turístico Parcial Cusco",
-        tourTitle: findTourByCode(btpCodes[0])?.title || "Tour con boleto turístico",
+        label: t("quote.extra.btcPartialLabel", "Boleto Turístico Parcial Cusco"),
+        tourTitle: findTourByCode(btpCodes[0])?.title || t("quote.extra.btcPartialFallbackTitle", "Tour con boleto turístico"),
         amount: state.nationality === "national" ? 40 : 70,
         currency: "PEN",
         required: true,
@@ -1996,8 +2011,8 @@
     if (codes.has("CUZ002")) {
       pushExtra(extras, {
         code: "qoricancha-ticket",
-        label: "Ingreso al Templo Qoricancha",
-        tourTitle: "City Tour Cusco + Centros Arqueológicos",
+        label: t("quote.extra.qoricanchaLabel", "Ingreso al Templo Qoricancha"),
+        tourTitle: t("quote.extra.cityTourArchTitle", "City Tour Cusco + Centros Arqueológicos"),
         amount: 20,
         currency: "PEN",
         required: true,
@@ -2008,8 +2023,8 @@
     if ([...SACRED_VALLEY_CODES].some((code) => codes.has(code))) {
       pushExtra(extras, {
         code: "sacred-valley-local-lunch",
-        label: "Almuerzo en Valle Sagrado",
-        tourTitle: "Valle Sagrado de los Incas",
+        label: t("quote.extra.sacredValleyLunchLabel", "Almuerzo en Valle Sagrado"),
+        tourTitle: t("quote.extra.sacredValleyTitle", "Valle Sagrado de los Incas"),
         amount: 30,
         currency: "PEN"
       });
@@ -2018,8 +2033,8 @@
     if ([...SACRED_VALLEY_VIP_CODES].some((code) => codes.has(code)) || codes.has("CUZ004")) {
       pushExtra(extras, {
         code: "maras-salt-mines-ticket",
-        label: "Ingreso a las Minas de Sal de Maras",
-        tourTitle: codes.has("CUZ004") ? "Maras y Moray" : "Valle Sagrado VIP",
+        label: t("quote.extra.marasSaltMinesLabel", "Ingreso a las Minas de Sal de Maras"),
+        tourTitle: codes.has("CUZ004") ? t("quote.extra.marasMorayTitle", "Maras y Moray") : t("product.sacredValleyVip", "Valle Sagrado VIP"),
         amount: 20,
         currency: "PEN",
         required: true,
@@ -2028,31 +2043,31 @@
     }
 
     if (codes.has("CUZ006")) {
-      pushExtra(extras, { code: "humantay-entrance-ticket", label: "Ingreso a Laguna Humantay", tourTitle: "Laguna Humantay", amount: 20, currency: "PEN", required: true, optional: false });
-      pushExtra(extras, { code: "humantay-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Laguna Humantay", amount: 30, currency: "PEN" });
+      pushExtra(extras, { code: "humantay-entrance-ticket", label: t("quote.extra.humantayEntranceLabel", "Ingreso a Laguna Humantay"), tourTitle: t("product.humantayLake", "Laguna Humantay"), amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "humantay-food-pack", label: t("quote.extra.localFoodPackLabel", "Alimentación local: desayuno y almuerzo básico"), tourTitle: t("product.humantayLake", "Laguna Humantay"), amount: 30, currency: "PEN" });
     }
 
     if (codes.has("CUZ007")) {
-      pushExtra(extras, { code: "vinicunca-entrance-ticket", label: "Ingreso a Montaña de Colores Vinicunca", tourTitle: "Montaña de Colores Vinicunca", amount: 20, currency: "PEN", required: true, optional: false });
-      pushExtra(extras, { code: "vinicunca-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Montaña de Colores Vinicunca", amount: 30, currency: "PEN" });
+      pushExtra(extras, { code: "vinicunca-entrance-ticket", label: t("quote.extra.vinicuncaEntranceLabel", "Ingreso a Montaña de Colores Vinicunca"), tourTitle: t("quote.extra.vinicuncaTitle", "Montaña de Colores Vinicunca"), amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "vinicunca-food-pack", label: t("quote.extra.localFoodPackLabel", "Alimentación local: desayuno y almuerzo básico"), tourTitle: t("quote.extra.vinicuncaTitle", "Montaña de Colores Vinicunca"), amount: 30, currency: "PEN" });
     }
 
     if (codes.has("CUZ008")) {
-      pushExtra(extras, { code: "palcoyo-entrance-ticket", label: "Ingreso a Montaña Palcoyo", tourTitle: "Montaña Palcoyo", amount: 20, currency: "PEN", required: true, optional: false });
-      pushExtra(extras, { code: "palcoyo-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Montaña Palcoyo", amount: 30, currency: "PEN" });
+      pushExtra(extras, { code: "palcoyo-entrance-ticket", label: t("quote.extra.palcoyoEntranceLabel", "Ingreso a Montaña Palcoyo"), tourTitle: t("product.palcoyoMountain", "Montaña Palcoyo"), amount: 20, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "palcoyo-food-pack", label: t("quote.extra.localFoodPackLabel", "Alimentación local: desayuno y almuerzo básico"), tourTitle: t("product.palcoyoMountain", "Montaña Palcoyo"), amount: 30, currency: "PEN" });
     }
 
     if (codes.has("CUZ009")) {
-      pushExtra(extras, { code: "seven-lagoons-entrance-ticket", label: "Ingreso a Siete Lagunas Ausangate", tourTitle: "Siete Lagunas del Ausangate", amount: 25, currency: "PEN", required: true, optional: false });
-      pushExtra(extras, { code: "seven-lagoons-food-pack", label: "Alimentación local: desayuno y almuerzo básico", tourTitle: "Siete Lagunas del Ausangate", amount: 35, currency: "PEN" });
-      pushExtra(extras, { code: "pacchanta-hot-springs", label: "Ingreso a termas de Pacchanta", tourTitle: "Siete Lagunas del Ausangate", amount: 30, currency: "PEN" });
+      pushExtra(extras, { code: "seven-lagoons-entrance-ticket", label: t("quote.extra.sevenLagoonsEntranceLabel", "Ingreso a Siete Lagunas Ausangate"), tourTitle: t("product.sevenLakes", "Siete Lagunas del Ausangate"), amount: 25, currency: "PEN", required: true, optional: false });
+      pushExtra(extras, { code: "seven-lagoons-food-pack", label: t("quote.extra.localFoodPackLabel", "Alimentación local: desayuno y almuerzo básico"), tourTitle: t("product.sevenLakes", "Siete Lagunas del Ausangate"), amount: 35, currency: "PEN" });
+      pushExtra(extras, { code: "pacchanta-hot-springs", label: t("quote.extra.pacchantaEntranceLabel", "Ingreso a termas de Pacchanta"), tourTitle: t("product.sevenLakes", "Siete Lagunas del Ausangate"), amount: 30, currency: "PEN" });
     }
 
     if (codes.has("CUZ005")) {
       pushExtra(extras, {
         code: "andahuaylillas-church-ticket",
-        label: "Ingreso a la Iglesia de Andahuaylillas",
-        tourTitle: "Valle Sur de Cusco",
+        label: t("quote.extra.andahuaylillasLabel", "Ingreso a la Iglesia de Andahuaylillas"),
+        tourTitle: t("quote.extra.valleSurTitle", "Valle Sur de Cusco"),
         amount: 20,
         currency: "PEN",
         required: true,
@@ -2063,15 +2078,15 @@
     if (tours.some(isMachuPicchuTour)) {
       pushExtra(extras, {
         code: "lunch-tinkuy-belmond",
-        label: "Almuerzo buffet Tinkuy - Belmond Sanctuary Lodge",
-        tourTitle: "Machu Picchu",
+        label: t("quote.extra.tinkuyLunchLabel", "Almuerzo buffet Tinkuy - Belmond Sanctuary Lodge"),
+        tourTitle: t("nav.machuPicchu", "Machu Picchu"),
         amount: MACHU_EXTRA_TINKUY_USD,
         currency: "USD"
       });
       pushExtra(extras, {
         code: "lunch-full-house",
-        label: "Almuerzo turístico en restaurante Full House Machu Picchu",
-        tourTitle: "Machu Picchu",
+        label: t("quote.extra.fullHouseLunchLabel", "Almuerzo turístico en restaurante Full House Machu Picchu"),
+        tourTitle: t("nav.machuPicchu", "Machu Picchu"),
         amount: MACHU_EXTRA_TOURIST_LUNCH_USD,
         currency: "USD"
       });
@@ -2104,8 +2119,8 @@
         <label class="quote-extra-card ${checked ? "is-selected" : ""} ${isRequired ? "is-required" : ""}">
           <input type="checkbox" value="${escapeHtml(extra.code)}" ${checked ? "checked" : ""} ${isRequired ? "disabled" : ""}>
           <span>
-            <strong>${escapeHtml(extra.label || "Extra")}</strong>
-            <small>${escapeHtml(isRequired ? `${extra.tourTitle || "Ticket obligatorio"} · obligatorio / sin descuento` : (extra.tourTitle || "Servicio adicional"))}</small>
+            <strong>${escapeHtml(extra.label || t("booking.extra", "Extra"))}</strong>
+            <small>${escapeHtml(isRequired ? `${extra.tourTitle || t("booking.mandatoryTicket", "Ticket obligatorio")} · ${t("quote.extras.mandatorySuffix", "obligatorio / sin descuento")}` : (extra.tourTitle || t("booking.additionalService", "Servicio adicional")))}</small>
           </span>
           <em>${money(getExtraTotal(extra))}</em>
         </label>
@@ -2195,9 +2210,9 @@
     const extrasTotal = getExtrasTotal();
     const payment = getPaymentBreakdown();
 
-    setText("#adultSummaryLabel", `Adultos x${state.adults}`);
+    setText("#adultSummaryLabel", t("booking.adultsCount", "Adultos x{n}", { n: state.adults }));
     setText("#adultSummaryTotal", money(bases.adult));
-    setText("#childrenSummaryLabel", `Niños x${state.children}`);
+    setText("#childrenSummaryLabel", t("booking.childrenCount", "Niños x{n}", { n: state.children }));
     setText("#childrenSummaryTotal", money(bases.child));
     toggleRow("#childrenSummaryRow", state.children > 0);
 
@@ -2222,9 +2237,9 @@
 
     const info = $("#paymentInfoText");
     if (info) {
-      if (!getSelectedOption()) info.textContent = "Selecciona fechas e itinerario para generar la cotización.";
-      else if (getTrainSelectionConfig() && (!state.selectedTrains.outbound || !state.selectedTrains.return)) info.textContent = "Elige tren de ida y retorno para completar la cotización final.";
-      else info.textContent = `Cotización referencial generada. Total: ${money(payment.total)}.`;
+      if (!getSelectedOption()) info.textContent = t("quote.payment.selectDates", "Selecciona fechas e itinerario para generar la cotización.");
+      else if (getTrainSelectionConfig() && (!state.selectedTrains.outbound || !state.selectedTrains.return)) info.textContent = t("quote.payment.chooseTrains", "Elige tren de ida y retorno para completar la cotización final.");
+      else info.textContent = t("quote.payment.generated", "Cotización referencial generada. Total: {total}.", { total: money(payment.total) });
     }
   }
 
@@ -2244,7 +2259,7 @@
     const code = String(input?.value || "").trim().toUpperCase();
     if (!code) {
       state.manualDiscount = null;
-      if (message) message.textContent = "Ingresa tu código promocional si tienes uno.";
+      if (message) message.textContent = t("quote.discount.enterCode", "Ingresa tu código promocional si tienes uno.");
       updateSummary();
       updatePrintableTemplate();
       return;
@@ -2252,13 +2267,13 @@
     const found = toArray(state.data.discounts).find((item) => String(item.code || "").toUpperCase() === code);
     if (!found || !found.active) {
       state.manualDiscount = null;
-      if (message) message.textContent = "Código no válido o inactivo.";
+      if (message) message.textContent = t("quote.discount.invalidCode", "Código no válido o inactivo.");
       updateSummary();
       updatePrintableTemplate();
       return;
     }
     state.manualDiscount = found;
-    if (message) message.textContent = `${found.label || "Descuento aplicado"}.`;
+    if (message) message.textContent = `${found.label || t("quote.discount.applied", "Descuento aplicado")}.`;
     updateSummary();
     updatePrintableTemplate();
   }
@@ -2280,17 +2295,17 @@
     setText("#printQuoteReference", ref);
     setText("#printIssueDate", formatDateShort(today));
     setText("#printValidUntil", formatDateShort(validUntil));
-    setText("#printClientName", $("#clientName")?.value || "Por completar");
-    setText("#printClientPhone", $("#clientPhone")?.value || "Por completar");
-    setText("#printClientEmail", $("#clientEmail")?.value || "Por completar");
-    setText("#printClientDocument", $("#clientDocument")?.value || "Por completar");
-    setText("#printClientNotes", $("#clientNotes")?.value || "Sin comentarios adicionales");
+    setText("#printClientName", $("#clientName")?.value || t("booking.pending", "Por completar"));
+    setText("#printClientPhone", $("#clientPhone")?.value || t("booking.pending", "Por completar"));
+    setText("#printClientEmail", $("#clientEmail")?.value || t("booking.pending", "Por completar"));
+    setText("#printClientDocument", $("#clientDocument")?.value || t("booking.pending", "Por completar"));
+    setText("#printClientNotes", $("#clientNotes")?.value || t("quote.print.noComments", "Sin comentarios adicionales"));
     setText("#printTravelDates", getTravelRangeLabel());
-    setText("#printTravelDuration", state.dates.days ? `${state.dates.days} días / ${state.dates.nights} noches` : "Por completar");
+    setText("#printTravelDuration", state.dates.days ? `${state.dates.days} días / ${state.dates.nights} noches` : t("booking.pending", "Por completar"));
     setText("#printPassengerSummary", `${state.adults} adulto(s), ${state.children} niño(s)`);
     setText("#printNationality", getNationalityLabel());
-    setText("#printArrivalTime", state.arrivalTime || "Por completar");
-    setText("#printDepartureTime", state.departureTime || "Por completar");
+    setText("#printArrivalTime", state.arrivalTime || t("booking.pending", "Por completar"));
+    setText("#printDepartureTime", state.departureTime || t("booking.pending", "Por completar"));
 
     const couponBox = $("#printCouponBox");
     if (couponBox) couponBox.hidden = !state.manualDiscount;
@@ -2305,8 +2320,8 @@
     const uniqueTours = [...new Set(itineraryTours)];
 
     const trainSummary = (train) => {
-      if (!train) return "Por seleccionar";
-      const company = train.isLocalTrain ? "PeruRail" : (train.companyName || train.company || "Tren");
+      if (!train) return t("booking.pending", "Por completar");
+      const company = train.isLocalTrain ? "PeruRail" : (train.companyName || train.company || t("quote.train.detailTrainFallback", "Tren"));
       const service = train.serviceName || train.category || train.code;
       return `${company} · ${service} · ${train.departureTime || "--:--"} ${train.departureStation || ""} → ${train.arrivalTime || "--:--"} ${train.arrivalStation || ""}`;
     };
@@ -2314,12 +2329,12 @@
     const services = $("#printSelectedServices");
     if (services) {
       const rows = [
-        ["Itinerario seleccionado", option?.rawCard?.recommendedTitle || option?.title || "Itinerario por confirmar"],
-        ["Tren de ida", trainSummary(state.selectedTrains.outbound)],
-        ["Tren de retorno", trainSummary(state.selectedTrains.return)],
-        ["Tours incluidos", uniqueTours.length ? uniqueTours.join(" · ") : "Por confirmar"],
-        ["Extras seleccionados", selectedExtras.length ? selectedExtras.map((extra) => extra.label || "Extra").join(" · ") : "Sin extras seleccionados"],
-        ["Asistencia incluida", "Recojo del aeropuerto o terminal, coordinación local y soporte durante el viaje"]
+        [t("quote.print.itineraryLabel", "Itinerario seleccionado"), option?.rawCard?.recommendedTitle || option?.title || t("quote.print.itineraryToBeSelected", "Itinerario por confirmar")],
+        [t("booking.train.outbound", "Tren de ida"), trainSummary(state.selectedTrains.outbound)],
+        [t("booking.train.return", "Tren de retorno"), trainSummary(state.selectedTrains.return)],
+        [t("quote.print.toursIncluded", "Tours incluidos"), uniqueTours.length ? uniqueTours.join(" · ") : t("quote.print.toBeConfirmed", "Por confirmar")],
+        [t("quote.print.extrasSelected", "Extras seleccionados"), selectedExtras.length ? selectedExtras.map((extra) => extra.label || t("booking.extra", "Extra")).join(" · ") : t("quote.print.noExtrasSelected", "Sin extras seleccionados")],
+        [t("quote.print.assistanceIncludedLabel", "Asistencia incluida"), t("quote.print.assistanceIncluded", "Recojo del aeropuerto o terminal, coordinación local y soporte durante el viaje")]
       ];
       services.innerHTML = `
         <div class="print-services-list print-services-list--compact">
@@ -2342,13 +2357,13 @@
         <div class="print-hotel-strip-list">
           ${hotelItems.map((item) => {
             const images = getHotelGalleryImages(item.hotel).slice(0, 4);
-            const destinationLabel = getAccommodationPlan().find((plan) => plan.destination === item.destination)?.label || item.hotel?.location || "Alojamiento";
+            const destinationLabel = getAccommodationPlan().find((plan) => plan.destination === item.destination)?.label || item.hotel?.location || t("quote.print.accommodationFallback", "Alojamiento");
             return `
               <div class="print-hotel-row print-hotel-row--strip">
                 <div class="print-hotel-info">
-                  <strong>${escapeHtml(item.label || "Hotel seleccionado")}</strong>
+                  <strong>${escapeHtml(item.label || t("quote.hotelSelectedFallback", "Hotel seleccionado"))}</strong>
                   <span>${escapeHtml(destinationLabel)} · ${Number(item.nights || 0)} noche(s)</span>
-                  <span>${escapeHtml(item.roomsSummary || "Habitación seleccionada")}</span>
+                  <span>${escapeHtml(item.roomsSummary || t("quote.print.roomSelected", "Habitación seleccionada"))}</span>
                 </div>
                 <div class="print-hotel-gallery">
                   ${images.map((image) => `<img src="${escapeHtml(resolveAssetPath(image))}" alt="${escapeHtml(item.label || "Hotel")}">`).join("")}
@@ -2367,16 +2382,16 @@
       const trainTotal = getTrainsTotal();
       const extrasTotal = getExtrasTotal();
       const rows = [
-        [`Adultos x${state.adults}`, money(bases.adult)],
-        ...(state.children > 0 ? [[`Niños x${state.children}`, money(bases.child)]] : []),
-        ["Alojamiento", money(hotelTotal)],
-        ["Trenes", trainTotal > 0 ? money(trainTotal) : "Tren local seleccionado · sin adicional"],
-        ...(extrasTotal > 0 ? [["Extras", money(extrasTotal)]] : []),
-        ...(payment.manualDiscount > 0 ? [[`Cupón ${state.manualDiscount?.code || "aplicado"}`, `- ${money(payment.manualDiscount)}`]] : []),
-        ...(payment.fullDiscount > 0 ? [["Descuento pago total 5%", `- ${money(payment.fullDiscount)}`]] : []),
-        ["Total cotizado", money(payment.total)],
-        [getPaymentMode() === "partial" ? "Pagarás ahora" : "Pago 100%", money(payment.advance)],
-        ...(payment.balance > 0 ? [["Saldo pendiente", money(payment.balance)]] : [])
+        [t("booking.adultsCount", "Adultos x{n}", { n: state.adults }), money(bases.adult)],
+        ...(state.children > 0 ? [[t("booking.childrenCount", "Niños x{n}", { n: state.children }), money(bases.child)]] : []),
+        [t("quote.print.accommodation", "Alojamiento"), money(hotelTotal)],
+        [t("quote.print.trainsLabel", "Trenes"), trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")],
+        ...(extrasTotal > 0 ? [[t("quote.print.extrasLabel", "Extras"), money(extrasTotal)]] : []),
+        ...(payment.manualDiscount > 0 ? [[`${t("quote.summary.discount", "Descuento")} ${state.manualDiscount?.code || t("quote.print.couponApplied", "aplicado")}`, `- ${money(payment.manualDiscount)}`]] : []),
+        ...(payment.fullDiscount > 0 ? [[t("quote.print.fullPaymentDiscount", "Descuento pago total 5%"), `- ${money(payment.fullDiscount)}`]] : []),
+        [t("quote.print.totalQuoted", "Total cotizado"), money(payment.total)],
+        [getPaymentMode() === "partial" ? t("quote.print.payNowPartial", "Pagarás ahora") : t("quote.print.payNowFull", "Pago 100%"), money(payment.advance)],
+        ...(payment.balance > 0 ? [[t("quote.print.balancePending", "Saldo pendiente"), money(payment.balance)]] : [])
       ];
       paymentTarget.innerHTML = `
         <div class="print-payment-list print-payment-list--quote">
@@ -2431,7 +2446,7 @@
 
   function getNationalityLabel() {
     const select = $("#nationality");
-    return select?.selectedOptions?.[0]?.textContent || "Por completar";
+    return select?.selectedOptions?.[0]?.textContent || t("booking.pending", "Por completar");
   }
 
   function clearDependentSections() {
@@ -2467,7 +2482,7 @@
     toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
     const label = toggle.querySelector("span");
     const icon = toggle.querySelector("i");
-    if (label) label.textContent = expanded ? "Ver menos" : "Ver más";
+    if (label) label.textContent = expanded ? t("quote.viewLess", "Ver menos") : t("quote.viewMore", "Ver más");
     if (icon) icon.className = `fas fa-chevron-${expanded ? "down" : "up"}`;
   }
 
@@ -2485,7 +2500,7 @@
     return Object.values(state.selectedHotels)
       .filter(Boolean)
       .map((item) => {
-        const label = item.type === "none" ? `${item.destination}: sin hotel` : `${item.label} · ${item.roomsSummary || item.description || "Habitación"}`;
+        const label = item.type === "none" ? `${item.destination}: ${t("quote.summary.noHotel", "sin hotel")}` : `${item.label} · ${item.roomsSummary || item.description || t("quote.summary.roomFallback", "Habitación")}`;
         return { label, amount: convert(item.priceUSD || 0, "USD", state.currency) };
       });
   }
@@ -2497,23 +2512,23 @@
     const payment = getPaymentBreakdown();
     const hotelRows = getSelectedHotelSummaryRows();
     const trainRows = [
-      state.selectedTrains.outbound ? { label: `Tren ida · ${state.selectedTrains.outbound.companyName || state.selectedTrains.outbound.company || "Tren"}`, amount: getTrainTotal(state.selectedTrains.outbound) } : null,
-      state.selectedTrains.return ? { label: `Tren retorno · ${state.selectedTrains.return.companyName || state.selectedTrains.return.company || "Tren"}`, amount: getTrainTotal(state.selectedTrains.return) } : null
+      state.selectedTrains.outbound ? { label: `${t("quote.summary.trainOutbound", "Tren ida")} · ${state.selectedTrains.outbound.companyName || state.selectedTrains.outbound.company || t("quote.train.detailTrainFallback", "Tren")}`, amount: getTrainTotal(state.selectedTrains.outbound) } : null,
+      state.selectedTrains.return ? { label: `${t("quote.summary.trainReturn", "Tren retorno")} · ${state.selectedTrains.return.companyName || state.selectedTrains.return.company || t("quote.train.detailTrainFallback", "Tren")}`, amount: getTrainTotal(state.selectedTrains.return) } : null
     ].filter(Boolean);
     const paypalUSD = getPaymentAmountForPayPalUSD(payment);
 
     target.innerHTML = `
-      <div><span>Código</span><strong>${escapeHtml(getQuoteReferenceValue())}</strong></div>
-      <div><span>Itinerario</span><strong>${escapeHtml(option?.rawCard?.recommendedTitle || option?.title || "Por definir")}</strong></div>
-      <div><span>Fechas</span><strong>${escapeHtml(getTravelRangeLabel())}</strong></div>
-      <div><span>Pasajeros</span><strong>${state.adults} adulto(s), ${state.children} niño(s)</strong></div>
-      ${hotelRows.length ? hotelRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>Alojamiento</span><strong>Sin alojamiento seleccionado</strong></div>`}
-      ${trainRows.length ? trainRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>Trenes</span><strong>Por elegir / no aplica</strong></div>`}
-      ${payment.discount > 0 ? `<div><span>Descuento</span><strong>- ${escapeHtml(money(payment.discount))}</strong></div>` : ""}
-      <div class="quote-reservation-summary__total"><span>Total cotizado</span><strong>${escapeHtml(money(payment.total))}</strong></div>
-      <div><span>${payment.balance > 0 ? "Anticipo a pagar ahora" : "Pago a realizar ahora"}</span><strong>${escapeHtml(money(payment.advance))}</strong></div>
-      ${payment.balance > 0 ? `<div><span>Saldo pendiente</span><strong>${escapeHtml(money(payment.balance))}</strong></div>` : ""}
-      <div><span>Monto PayPal</span><strong>USD ${paypalUSD}</strong></div>
+      <div><span>${t("quote.summary.code", "Código")}</span><strong>${escapeHtml(getQuoteReferenceValue())}</strong></div>
+      <div><span>${t("quote.summary.itinerary", "Itinerario")}</span><strong>${escapeHtml(option?.rawCard?.recommendedTitle || option?.title || t("quote.print.toBeConfirmed", "Por confirmar"))}</strong></div>
+      <div><span>${t("quote.summary.dates", "Fechas")}</span><strong>${escapeHtml(getTravelRangeLabel())}</strong></div>
+      <div><span>${t("quote.summary.passengers", "Pasajeros")}</span><strong>${state.adults} adulto(s), ${state.children} niño(s)</strong></div>
+      ${hotelRows.length ? hotelRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>${t("quote.summary.accommodation", "Alojamiento")}</span><strong>${t("quote.summary.noAccommodation", "Sin alojamiento seleccionado")}</strong></div>`}
+      ${trainRows.length ? trainRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>${t("quote.summary.trains", "Trenes")}</span><strong>${t("quote.summary.trainsPending", "Por elegir / no aplica")}</strong></div>`}
+      ${payment.discount > 0 ? `<div><span>${t("quote.summary.discount", "Descuento")}</span><strong>- ${escapeHtml(money(payment.discount))}</strong></div>` : ""}
+      <div class="quote-reservation-summary__total"><span>${t("quote.summary.total", "Total cotizado")}</span><strong>${escapeHtml(money(payment.total))}</strong></div>
+      <div><span>${payment.balance > 0 ? t("quote.summary.payNowBalance", "Anticipo a pagar ahora") : t("quote.summary.payNowFull", "Pago a realizar ahora")}</span><strong>${escapeHtml(money(payment.advance))}</strong></div>
+      ${payment.balance > 0 ? `<div><span>${t("quote.summary.balancePending", "Saldo pendiente")}</span><strong>${escapeHtml(money(payment.balance))}</strong></div>` : ""}
+      <div><span>${t("quote.summary.paypalAmount", "Monto PayPal")}</span><strong>USD ${paypalUSD}</strong></div>
     `;
   }
 
@@ -2544,44 +2559,44 @@
       cards.push(`
         <article class="quote-passenger-card${collapsed ? " is-collapsed" : ""}" data-passenger-card="${i}">
           <div class="quote-passenger-card__head">
-            <h4>Pasajero ${i} <small>${isAdult ? "Adulto" : "Niño"}</small></h4>
-            <button type="button" class="quote-passenger-toggle" data-passenger-toggle aria-expanded="${collapsed ? "false" : "true"}" aria-label="Desplegar pasajero ${i}">
+            <h4>${escapeHtml(t("quote.passenger.title", "Pasajero {n}", { n: i }))} <small>${isAdult ? escapeHtml(t("quote.passenger.adult", "Adulto")) : escapeHtml(t("quote.passenger.child", "Niño"))}</small></h4>
+            <button type="button" class="quote-passenger-toggle" data-passenger-toggle aria-expanded="${collapsed ? "false" : "true"}" aria-label="${escapeHtml(t("quote.passenger.expand", "Desplegar pasajero {n}", { n: i }))}">
               <i class="fas fa-chevron-${collapsed ? "down" : "up"}"></i>
             </button>
           </div>
           <div class="quote-passenger-card__body">
             <div class="quote-passenger-grid">
-              <label>Nombre(s)<input type="text" name="passenger_${i}_name" value="${escapeHtml(names)}" placeholder="Nombre completo"${required}></label>
-              <label>Apellido(s)<input type="text" name="passenger_${i}_lastname" value="${escapeHtml(lastnames)}" placeholder="Apellidos"${required}></label>
-              <label>Tipo de documento
+              <label>${escapeHtml(t("quote.passenger.firstName", "Nombre(s)"))}<input type="text" name="passenger_${i}_name" value="${escapeHtml(names)}" placeholder="${escapeHtml(t("quote.passenger.fullNamePlaceholder", "Nombre completo"))}"${required}></label>
+              <label>${escapeHtml(t("quote.passenger.lastName", "Apellido(s)"))}<input type="text" name="passenger_${i}_lastname" value="${escapeHtml(lastnames)}" placeholder="${escapeHtml(t("quote.passenger.lastnamePlaceholder", "Apellidos"))}"${required}></label>
+              <label>${escapeHtml(t("quote.passenger.docType", "Tipo de documento"))}
                 <select name="passenger_${i}_doctype"${required}>
-                  <option value="">Seleccionar</option>
+                  <option value="">${escapeHtml(t("quote.passenger.select", "Seleccionar"))}</option>
                   <option value="DNI">DNI</option>
-                  <option value="PASSPORT">Pasaporte</option>
-                  <option value="CE">Carné de extranjería</option>
+                  <option value="PASSPORT">${escapeHtml(t("quote.passenger.passport", "Pasaporte"))}</option>
+                  <option value="CE">${escapeHtml(t("quote.passenger.foreignId", "Carné de extranjería"))}</option>
                 </select>
               </label>
-              <label>Número de documento<input type="text" name="passenger_${i}_doc" value="${escapeHtml(documentNumber)}" placeholder="Documento"${required}></label>
-              <label>Nacionalidad<input type="text" name="passenger_${i}_nationality" value="${state.nationality === "national" ? "Perú" : ""}" placeholder="País"${required}></label>
-              <label>Fecha de nacimiento<input type="date" name="passenger_${i}_birthdate"${required}></label>
-              <label>Género
+              <label>${escapeHtml(t("quote.passenger.docNumber", "Número de documento"))}<input type="text" name="passenger_${i}_doc" value="${escapeHtml(documentNumber)}" placeholder="${escapeHtml(t("quote.passenger.docPlaceholder", "Documento"))}"${required}></label>
+              <label>${escapeHtml(t("quote.passenger.nationality", "Nacionalidad"))}<input type="text" name="passenger_${i}_nationality" value="${state.nationality === "national" ? "Perú" : ""}" placeholder="${escapeHtml(t("quote.passenger.countryPlaceholder", "País"))}"${required}></label>
+              <label>${escapeHtml(t("quote.passenger.birthdate", "Fecha de nacimiento"))}<input type="date" name="passenger_${i}_birthdate"${required}></label>
+              <label>${escapeHtml(t("quote.passenger.gender", "Género"))}
                 <select name="passenger_${i}_gender"${required}>
-                  <option value="">Seleccionar</option>
-                  <option value="female">Femenino</option>
-                  <option value="male">Masculino</option>
-                  <option value="other">Otro / prefiero no indicar</option>
+                  <option value="">${escapeHtml(t("quote.passenger.select", "Seleccionar"))}</option>
+                  <option value="female">${escapeHtml(t("quote.passenger.female", "Femenino"))}</option>
+                  <option value="male">${escapeHtml(t("quote.passenger.male", "Masculino"))}</option>
+                  <option value="other">${escapeHtml(t("quote.passenger.otherGender", "Otro / prefiero no indicar"))}</option>
                 </select>
               </label>
-              <label>Idioma
+              <label>${escapeHtml(t("quote.passenger.language", "Idioma"))}
                 <select name="passenger_${i}_language"${required}>
-                  <option value="">Seleccionar</option>
+                  <option value="">${escapeHtml(t("quote.passenger.select", "Seleccionar"))}</option>
                   <option value="es">Español</option>
                   <option value="en">English</option>
                 </select>
               </label>
               ${i === 1 ? `
-                <label>Email de contacto<input type="email" name="contact_email" value="${escapeHtml(email)}" placeholder="correo@ejemplo.com" required></label>
-                <label>WhatsApp de contacto<input type="tel" name="contact_phone" value="${escapeHtml(phone)}" placeholder="+51 999 999 999" required></label>
+                <label>${escapeHtml(t("quote.passenger.contactEmail", "Email de contacto"))}<input type="email" name="contact_email" value="${escapeHtml(email)}" placeholder="correo@ejemplo.com" required></label>
+                <label>${escapeHtml(t("quote.passenger.contactWhatsapp", "WhatsApp de contacto"))}<input type="tel" name="contact_phone" value="${escapeHtml(phone)}" placeholder="+51 999 999 999" required></label>
               ` : ""}
             </div>
           </div>
@@ -2620,16 +2635,16 @@
     const root = $("#quotePassengerForms");
     if (!root) return [];
     return [
-      { label: "nombre(s)", el: root.querySelector("input[name='passenger_1_name']") },
-      { label: "apellido(s)", el: root.querySelector("input[name='passenger_1_lastname']") },
-      { label: "tipo de documento", el: root.querySelector("select[name='passenger_1_doctype']") },
-      { label: "número de documento", el: root.querySelector("input[name='passenger_1_doc']") },
-      { label: "nacionalidad", el: root.querySelector("input[name='passenger_1_nationality']") },
-      { label: "fecha de nacimiento", el: root.querySelector("input[name='passenger_1_birthdate']") },
-      { label: "género", el: root.querySelector("select[name='passenger_1_gender']") },
-      { label: "idioma", el: root.querySelector("select[name='passenger_1_language']") },
-      { label: "email de contacto", el: root.querySelector("input[name='contact_email']") },
-      { label: "WhatsApp de contacto", el: root.querySelector("input[name='contact_phone']") }
+      { label: t("quote.field.name", "nombre(s)"), el: root.querySelector("input[name='passenger_1_name']") },
+      { label: t("quote.field.lastname", "apellido(s)"), el: root.querySelector("input[name='passenger_1_lastname']") },
+      { label: t("quote.field.docType", "tipo de documento"), el: root.querySelector("select[name='passenger_1_doctype']") },
+      { label: t("quote.field.docNumber", "número de documento"), el: root.querySelector("input[name='passenger_1_doc']") },
+      { label: t("quote.field.nationality", "nacionalidad"), el: root.querySelector("input[name='passenger_1_nationality']") },
+      { label: t("quote.field.birthdate", "fecha de nacimiento"), el: root.querySelector("input[name='passenger_1_birthdate']") },
+      { label: t("quote.field.gender", "género"), el: root.querySelector("select[name='passenger_1_gender']") },
+      { label: t("quote.field.language", "idioma"), el: root.querySelector("select[name='passenger_1_language']") },
+      { label: t("quote.field.contactEmail", "email de contacto"), el: root.querySelector("input[name='contact_email']") },
+      { label: t("quote.field.contactWhatsapp", "WhatsApp de contacto"), el: root.querySelector("input[name='contact_phone']") }
     ];
   }
 
@@ -2653,8 +2668,8 @@
       if (card?.classList.contains("is-collapsed")) card.querySelector("[data-passenger-toggle]")?.click();
       first?.focus({ preventScroll: false });
       const message = invalidEmail
-        ? "Revisa el email de contacto antes de continuar al pago."
-        : `Completa los datos obligatorios del pasajero 1: ${missing.map((field) => field.label).join(", ")}.`;
+        ? t("quote.validation.invalidEmail", "Revisa el email de contacto antes de continuar al pago.")
+        : t("quote.validation.missingFields", "Completa los datos obligatorios del pasajero 1: {fields}.", { fields: missing.map((field) => field.label).join(", ") });
       setText("#quotePaypalStatus", message);
     }
 
@@ -2742,12 +2757,12 @@
 
   function canOpenReservationModal(showMessage = true) {
     if (!getSelectedOption()) {
-      if (showMessage) alert("Selecciona primero un itinerario compatible para iniciar la reserva.");
+      if (showMessage) alert(t("quote.alert.selectItinerary", "Selecciona primero un itinerario compatible para iniciar la reserva."));
       return false;
     }
     const trainConfig = getTrainSelectionConfig();
     if (trainConfig && (!state.selectedTrains.outbound || !state.selectedTrains.return)) {
-      if (showMessage) alert("Selecciona tren de ida y retorno antes de iniciar la reserva.");
+      if (showMessage) alert(t("quote.alert.selectTrains", "Selecciona tren de ida y retorno antes de iniciar la reserva."));
       return false;
     }
     return true;
@@ -2759,10 +2774,10 @@
     ensureQuoteReference();
     const modal = $("#quoteReservationModal");
     if (!modal) {
-      alert("No se encontró el modal de reserva en quote-packages.html. Revisa que el HTML actualizado esté publicado.");
+      alert(t("quote.alert.modalMissing", "No se encontró el modal de reserva en quote-packages.html. Revisa que el HTML actualizado esté publicado."));
       return;
     }
-    setText("#quoteReservationCodeLabel", `Código de cotización: ${getQuoteReferenceValue()}`);
+    setText("#quoteReservationCodeLabel", t("quote.reservationCodeLabel", "Código de cotización: {code}", { code: getQuoteReferenceValue() }));
     renderPassengerForms();
     renderReservationSummary();
     setMobileSummaryExpanded(false);
@@ -2790,7 +2805,7 @@
     target.innerHTML = "";
 
     if (!window.paypal || !window.paypal.Buttons) {
-      setText("#quotePaypalStatus", "PayPal no cargó todavía. Revisa la conexión o reemplaza el Client ID sandbox por el Client ID de producción.");
+      setText("#quotePaypalStatus", t("quote.paypal.notLoaded", "PayPal no cargó todavía. Revisa la conexión o reemplaza el Client ID sandbox por el Client ID de producción."));
       return;
     }
 
@@ -2807,7 +2822,7 @@
         return actions.resolve();
       },
       createOrder: async (_data, actions) => {
-        if (!validatePrimaryPassengerData(true)) throw new Error("Completa los datos obligatorios del pasajero 1 antes de pagar.");
+        if (!validatePrimaryPassengerData(true)) throw new Error(t("quote.paypal.createOrderMissingPassenger", "Completa los datos obligatorios del pasajero 1 antes de pagar."));
         if (endpoint) {
           try {
             const response = await fetch(endpoint, {
@@ -2824,7 +2839,7 @@
         return actions.order.create({
           purchase_units: [{
             reference_id: getQuoteReferenceValue(),
-            description: `Reserva My Cusco Trip ${getQuoteReferenceValue()}`.slice(0, 120),
+            description: t("quote.paypal.orderDescription", "Reserva My Cusco Trip {ref}", { ref: getQuoteReferenceValue() }).slice(0, 120),
             amount: { currency_code: "USD", value: amountUSD }
           }]
         });
@@ -2845,11 +2860,11 @@
         }
         if (!details?.ok && actions?.order) details = await actions.order.capture();
         const paypalId = details?.id || details?.orderID || data?.orderID || "confirmado";
-        setText("#quotePaypalStatus", `Pago aprobado. ID: ${paypalId}`);
+        setText("#quotePaypalStatus", t("quote.paypal.paidApproved", "Pago aprobado. ID: {id}", { id: paypalId }));
         saveQuoteReservation({ paymentStatus: "paid", paypalId });
       },
-      onCancel: () => setText("#quotePaypalStatus", "Pago cancelado. Puedes intentarlo nuevamente o continuar por WhatsApp."),
-      onError: () => setText("#quotePaypalStatus", "No se pudo procesar PayPal. Verifica el Client ID o intenta nuevamente.")
+      onCancel: () => setText("#quotePaypalStatus", t("quote.paypal.cancelled", "Pago cancelado. Puedes intentarlo nuevamente o continuar por WhatsApp.")),
+      onError: () => setText("#quotePaypalStatus", t("quote.paypal.error", "No se pudo procesar PayPal. Verifica el Client ID o intenta nuevamente."))
     });
 
     try {
@@ -2858,7 +2873,7 @@
       window.setTimeout(() => { state.paypalRendering = false; }, 1300);
     } catch (error) {
       state.paypalRendering = false;
-      setText("#quotePaypalStatus", "No se pudieron dibujar los botones de PayPal. Revisa la configuración del SDK.");
+      setText("#quotePaypalStatus", t("quote.paypal.buttonsFailed", "No se pudieron dibujar los botones de PayPal. Revisa la configuración del SDK."));
     }
   }
 
@@ -2873,17 +2888,17 @@
     const payment = getPaymentBreakdown();
     const contact = getReservationContactData();
     const lines = [
-      "Hola My Cusco Trip, quiero continuar con esta cotización:",
-      `Código: ${$("#quoteReference")?.textContent || "COT-PE---"}`,
-      `Fechas: ${getTravelRangeLabel()}`,
-      `Duración: ${state.dates.days || "--"}D/${state.dates.nights || "--"}N`,
-      `Pasajeros: ${state.adults} adulto(s), ${state.children} niño(s)`,
-      `Itinerario: ${option?.rawCard?.recommendedTitle || option?.title || "Por definir"}`,
-      `Total referencial: ${money(payment.total)}`,
-      payment.balance > 0 ? `Anticipo: ${money(payment.advance)} | Saldo: ${money(payment.balance)}` : `Pago: ${money(payment.advance)}`,
-      contact.email ? `Email: ${contact.email}` : null,
-      contact.phone ? `WhatsApp: ${contact.phone}` : null,
-      fromModal ? "Ya completé los datos principales de pasajeros en el modal de reserva." : null
+      t("quote.whatsapp.intro", "Hola My Cusco Trip, quiero continuar con esta cotización:"),
+      t("quote.whatsapp.code", "Código: {code}", { code: $("#quoteReference")?.textContent || "COT-PE---" }),
+      t("quote.whatsapp.dates", "Fechas: {dates}", { dates: getTravelRangeLabel() }),
+      t("quote.whatsapp.duration", "Duración: {duration}", { duration: `${state.dates.days || "--"}D/${state.dates.nights || "--"}N` }),
+      t("quote.whatsapp.passengers", "Pasajeros: {n}", { n: `${state.adults} adulto(s), ${state.children} niño(s)` }),
+      t("quote.whatsapp.itinerary", "Itinerario: {itinerary}", { itinerary: option?.rawCard?.recommendedTitle || option?.title || t("quote.print.toBeConfirmed", "Por confirmar") }),
+      t("quote.whatsapp.total", "Total referencial: {total}", { total: money(payment.total) }),
+      payment.balance > 0 ? t("quote.whatsapp.advanceBalance", "Anticipo: {advance} | Saldo: {balance}", { advance: money(payment.advance), balance: money(payment.balance) }) : t("quote.whatsapp.pay", "Pago: {advance}", { advance: money(payment.advance) }),
+      contact.email ? t("quote.whatsapp.email", "Email: {email}", { email: contact.email }) : null,
+      contact.phone ? t("quote.whatsapp.whatsapp", "WhatsApp: {phone}", { phone: contact.phone }) : null,
+      fromModal ? t("quote.whatsapp.completedPassengers", "Ya completé los datos principales de pasajeros en el modal de reserva.") : null
     ].filter(Boolean);
     return `https://wa.me/51900608980?text=${encodeURIComponent(lines.join("\n"))}`;
   }

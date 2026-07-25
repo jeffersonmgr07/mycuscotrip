@@ -1,5 +1,11 @@
 "use strict";
 
+function mctLocaleDateTag() {
+  const code = String(window.MCT_LOCALE || window.MyCuscoTripI18n?.locale || document.documentElement.lang || "es").slice(0, 2).toLowerCase();
+  const map = { es: "es-PE", en: "en-US", fr: "fr-FR", de: "de-DE", pt: "pt-BR", it: "it-IT", zh: "zh-CN", ja: "ja-JP" };
+  return map[code] || "es-PE";
+}
+
 class MyCuscoTripProductPage {
   constructor() {
     this.params = new URLSearchParams(window.location.search);
@@ -381,10 +387,10 @@ class MyCuscoTripProductPage {
     } else {
       normalized.forEach((item) => {
         let value = item
-          .replace(/^(es|spa)$/i, "Spanish")
-          .replace(/^(en|eng)$/i, "English")
-          .replace(/espa[nñ]ol/gi, "Spanish")
-          .replace(/ingl[eé]s/gi, "English")
+          .replace(/^(es|spa)$/i, this.t("product.languageNameSpanish", "Spanish"))
+          .replace(/^(en|eng)$/i, this.t("product.languageNameEnglish", "English"))
+          .replace(/espa[nñ]ol/gi, this.t("product.languageNameSpanish", "Spanish"))
+          .replace(/ingl[eé]s/gi, this.t("product.languageNameEnglish", "English"))
           .replace(/otros idiomas a consultar/gi, this.t("product.otherLanguagesOnRequest", "Other languages available upon request"));
         if (!/otro|other|request|consult/i.test(value)) parts.push(value);
       });
@@ -421,9 +427,9 @@ class MyCuscoTripProductPage {
       this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
     }
 
-    this.setText("detailCapacity", this.t("product.maxTravelers", this.label("Máximo {count} viajeros por grupo", "Maximum {count} travelers per group"), { count: capacity }));
+    this.setText("detailCapacity", this.t("product.maxTravelers", "Máximo {count} viajeros por grupo", { count: capacity }));
     this.setText("detailDuration", duration);
-    this.setText("detailLanguages", this.t("product.guideIn", this.label("Guía profesional: {languages}", "Professional guide: {languages}"), { languages }));
+    this.setText("detailLanguages", this.t("product.guideIn", "Guía profesional: {languages}", { languages }));
     this.setText("detailLocation", location);
 
     this.renderGallery(product?.images || {});
@@ -444,8 +450,9 @@ class MyCuscoTripProductPage {
     const dateInput = document.getElementById("travelDate");
 
     if (dateInput && typeof flatpickr !== "undefined") {
+      const activeLocaleCode = window.MCT_LOCALE || window.MyCuscoTripI18n?.locale || "es";
       flatpickr(dateInput, {
-        locale: flatpickr.l10ns.es,
+        locale: flatpickr.l10ns?.[activeLocaleCode] || flatpickr.l10ns?.es,
         minDate: "today",
         dateFormat: "Y-m-d",
         altInput: true,
@@ -575,7 +582,7 @@ class MyCuscoTripProductPage {
             <img
               class="experience-gallery__slide ${index === 0 ? "is-active" : ""}"
               src="${src}"
-              alt="Galería ${index + 2}"
+              alt="${this.escapeHtml(this.t("product.galleryImageAlt", "Galería {n}", { n: index + 2 }))}"
               loading="lazy"
               onerror="this.remove();"
             />
@@ -736,7 +743,7 @@ class MyCuscoTripProductPage {
     const date = new Date(start);
     date.setDate(start.getDate() + Math.max(Number(dayNumber || 1) - 1, 0));
 
-    return date.toLocaleDateString("es-PE", {
+    return date.toLocaleDateString(mctLocaleDateTag(), {
       day: "numeric",
       month: "long"
     });
@@ -1003,8 +1010,8 @@ class MyCuscoTripProductPage {
     this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId);
     this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId);
 
-    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.label("Tren de ida incluido", "Included outbound train"));
-    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.label("Tren de retorno incluido", "Included return train"));
+    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.t("product.trainOutboundIncluded", "Tren de ida incluido"));
+    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.t("product.trainReturnIncluded", "Tren de retorno incluido"));
 
     if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
     if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
@@ -1017,25 +1024,25 @@ class MyCuscoTripProductPage {
     container.innerHTML = `
       <div class="booking-train-selection" data-train-selection>
         <div class="booking-train-selection__intro">
-          <strong>${this.escapeHtml(this.t("product.touristTrain", this.label("Tren turístico", "Tourist train")))}</strong>
+          <strong>${this.escapeHtml(this.t("product.touristTrain", "Tren turístico"))}</strong>
           <small>${this.escapeHtml(this.getTrainSelectionIntro(product, trainConfig))}</small>
         </div>
         ${this.availableOutboundTrains.length ? `
           <label class="booking-train-select-field" for="outboundTrainSelect">
-            <span>${this.escapeHtml(this.label("Tren de ida", "Outbound train"))}</span>
+            <span>${this.escapeHtml(this.t("booking.train.outbound", "Tren de ida"))}</span>
             <select id="outboundTrainSelect" data-train-direction="outbound" ${this.isTrainDirectionLocked("outbound", trainConfig) ? "disabled" : ""}>
               ${this.availableOutboundTrains.map((train) => this.renderTrainOption(train, this.selectedOutboundTrainId)).join("")}
             </select>
-            ${this.isTrainDirectionLocked("outbound", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.label("Tren de ida fijo para esta versión.", "Outbound train fixed for this version."))}</small>` : ""}
+            ${this.isTrainDirectionLocked("outbound", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.t("product.trainOutboundFixedNote", "Tren de ida fijo para esta versión."))}</small>` : ""}
           </label>
         ` : ""}
         ${this.availableReturnTrains.length ? `
           <label class="booking-train-select-field" for="returnTrainSelect">
-            <span>${this.escapeHtml(this.label("Tren de retorno", "Return train"))}</span>
+            <span>${this.escapeHtml(this.t("booking.train.return", "Tren de retorno"))}</span>
             <select id="returnTrainSelect" data-train-direction="return" ${this.isTrainDirectionLocked("return", trainConfig) ? "disabled" : ""}>
               ${this.getCompatibleReturnTrains(sameCompanyOnly).map((train) => this.renderTrainOption(train, this.selectedReturnTrainId)).join("")}
             </select>
-            ${this.isTrainDirectionLocked("return", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.label("Tren de retorno fijo para esta versión.", "Return train fixed for this version."))}</small>` : ""}
+            ${this.isTrainDirectionLocked("return", trainConfig) ? `<small class="booking-field-help">${this.escapeHtml(this.t("product.trainReturnFixedNote", "Tren de retorno fijo para esta versión."))}</small>` : ""}
           </label>
         ` : ""}
         <div id="trainSelectionSummary" class="booking-train-selection__summary"></div>
@@ -1057,7 +1064,7 @@ class MyCuscoTripProductPage {
     section.id = "trainSelectionSection";
     section.className = "booking-field";
     section.hidden = true;
-    section.innerHTML = `<label>${this.escapeHtml(this.t("product.touristTrain", this.label("Tren turístico", "Tourist train")))}</label><div id="trainSelectionContainer" class="booking-train-selection-wrap"></div>`;
+    section.innerHTML = `<label>${this.escapeHtml(this.t("product.touristTrain", "Tren turístico"))}</label><div id="trainSelectionContainer" class="booking-train-selection-wrap"></div>`;
     reference.parentNode.insertBefore(section, reference.nextSibling);
     return section;
   }
@@ -1226,9 +1233,9 @@ class MyCuscoTripProductPage {
   }
 
   getTrainSelectionIntro(product, config) {
-    if (config?.fixedSelection === true) return this.label("Esta versión ya tiene trenes definidos para mantener el horario operativo.", "This version already has defined trains to maintain the operating schedule.");
-    if (config?.fixedDirection === "outbound" || config?.fixedDirections?.includes?.("outbound")) return this.label("El tren de ida está definido por la categoría del producto. Puedes elegir el retorno disponible según la operación.", "The outbound train is defined by the product category. You can choose the available return according to the operation.");
-    return this.label("Elige los servicios de tren disponibles para esta versión. La diferencia de precio se calculará según el tren seleccionado.", "Choose the train services available for this version. The price difference will be calculated according to the selected train.");
+    if (config?.fixedSelection === true) return this.t("product.trainConfigFixedNote", "Esta versión ya tiene trenes definidos para mantener el horario operativo.");
+    if (config?.fixedDirection === "outbound" || config?.fixedDirections?.includes?.("outbound")) return this.t("product.trainConfigOutboundFixedNote", "El tren de ida está definido por la categoría del producto. Puedes elegir el retorno disponible según la operación.");
+    return this.t("product.trainConfigFlexibleNote", "Elige los servicios de tren disponibles para esta versión. La diferencia de precio se calculará según el tren seleccionado.");
   }
 
   createFallbackTrainOption(id, label) {
@@ -1238,7 +1245,7 @@ class MyCuscoTripProductPage {
 
   renderTrainOption(train, selectedId) {
     const selected = train.id === selectedId ? " selected" : "";
-    const meta = [train.company, train.departureTime, train.arrivalTime ? `${this.label("llega", "arrives")} ${train.arrivalTime}` : ""].filter(Boolean).join(" · ");
+    const meta = [train.company, train.departureTime, train.arrivalTime ? `${this.t("product.arrivesShort", "llega")} ${train.arrivalTime}` : ""].filter(Boolean).join(" · ");
     const price = train.price > 0 ? ` · USD ${this.formatMoney(train.price)}` : "";
     return `<option value="${this.escapeHtml(train.id)}"${selected}>${this.escapeHtml(train.label)}${meta ? ` · ${this.escapeHtml(meta)}` : ""}${price}</option>`;
   }
@@ -1298,10 +1305,10 @@ class MyCuscoTripProductPage {
 
     const summary = document.getElementById("trainSelectionSummary");
     if (!summary) return;
-    const companyNote = sameCompanyOnly ? this.label("Los trenes de ida y retorno se mantienen con la misma compañía cuando hay disponibilidad.", "Outbound and return trains stay with the same company when available.") : "";
+    const companyNote = sameCompanyOnly ? this.t("product.sameCompanyNote", "Los trenes de ida y retorno se mantienen con la misma compañía cuando hay disponibilidad.") : "";
     const adjustmentText = this.selectedTrainAdjustmentTotal > 0
-      ? `${this.label("Diferencia total", "Total difference")}: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
-      : this.label("Sin diferencia adicional frente al tren incluido.", "No additional difference from the included train.");
+      ? `${this.t("product.totalDifference", "Diferencia total")}: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
+      : this.t("product.noAdditionalDifference", "Sin diferencia adicional frente al tren incluido.");
     summary.innerHTML = `<small>${this.escapeHtml(this.getSelectedTrainSummaryLabel())}</small><strong>${this.escapeHtml(adjustmentText)}</strong>${companyNote ? `<small>${this.escapeHtml(companyNote)}</small>` : ""}`;
   }
 
@@ -1334,7 +1341,7 @@ class MyCuscoTripProductPage {
       row = document.createElement("div");
       row.id = "trainAdjustmentTotalRow";
       row.className = "booking-summary__line";
-      row.innerHTML = `<span>${this.escapeHtml(this.label("Tren seleccionado", "Selected train"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
+      row.innerHTML = `<span>${this.escapeHtml(this.t("product.selectedTrainLabel", "Tren seleccionado"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
       summary.insertBefore(row, serviceTotalRow);
     }
     row.hidden = !(amount > 0);
@@ -1345,10 +1352,10 @@ class MyCuscoTripProductPage {
   getSelectedTrainSummaryLabel() {
     const outbound = this.getSelectedOutboundTrain();
     const returning = this.getSelectedReturnTrain();
-    if (!outbound && !returning) return this.label("No aplica", "Not applicable");
+    if (!outbound && !returning) return this.t("booking.notApplicable", "No aplica");
     const parts = [];
-    if (outbound) parts.push(`${this.label("Ida", "Outbound")}: ${outbound.label}`);
-    if (returning) parts.push(`${this.label("Retorno", "Return")}: ${returning.label}`);
+    if (outbound) parts.push(`${this.t("product.outboundShort", "Ida")}: ${outbound.label}`);
+    if (returning) parts.push(`${this.t("product.returnShort", "Retorno")}: ${returning.label}`);
     return parts.join(" | ");
   }
 
@@ -1435,16 +1442,16 @@ class MyCuscoTripProductPage {
     section.hidden = false;
 
     select.innerHTML = `
-      ${groupEnabled ? `<option value="group">${this.escapeHtml(modes.group?.label || "Tour en grupo")}</option>` : ""}
-      ${privateEnabled ? `<option value="private">${this.escapeHtml(modes.private?.label || "Tour privado")}</option>` : ""}
+      ${groupEnabled ? `<option value="group">${this.escapeHtml(modes.group?.label || this.t("product.groupTour", "Tour en grupo"))}</option>` : ""}
+      ${privateEnabled ? `<option value="private">${this.escapeHtml(modes.private?.label || this.t("product.privateTour", "Tour privado"))}</option>` : ""}
     `;
 
     this.serviceMode = groupEnabled ? "group" : "private";
 
     if (help) {
       help.textContent = privateEnabled
-        ? "Selecciona si deseas viajar en servicio compartido o privado."
-        : "Esta experiencia se ofrece actualmente en servicio grupal.";
+        ? this.t("product.sharedServiceHelp", "Selecciona si deseas viajar en servicio compartido o privado.")
+        : this.t("product.groupOnlyHelp", "Esta experiencia se ofrece actualmente en servicio grupal.");
     }
   }
   renderAccommodationOptions(product) {
@@ -1965,8 +1972,8 @@ class MyCuscoTripProductPage {
           loading="lazy"
         />
         ${finalImages.length > 1 ? `
-          <button type="button" class="hotel-gallery-nav hotel-gallery-prev" aria-label="Imagen anterior">‹</button>
-          <button type="button" class="hotel-gallery-nav hotel-gallery-next" aria-label="Imagen siguiente">›</button>
+          <button type="button" class="hotel-gallery-nav hotel-gallery-prev" aria-label="${this.escapeHtml(this.t("booking.galleryPrev", "Imagen anterior"))}">‹</button>
+          <button type="button" class="hotel-gallery-nav hotel-gallery-next" aria-label="${this.escapeHtml(this.t("booking.galleryNext", "Imagen siguiente"))}">›</button>
         ` : ""}
       </div>
     `;
@@ -2811,7 +2818,7 @@ class MyCuscoTripProductPage {
         const review = document.getElementById("passengerCheckoutReview");
         if (review) { review.hidden = true; review.innerHTML = ""; }
         const submit = passengerForm.querySelector('button[type="submit"]');
-        if (submit) submit.textContent = "Continuar";
+        if (submit) submit.textContent = this.t("booking.continue", "Continuar");
       }
     });
   }
@@ -2912,7 +2919,7 @@ class MyCuscoTripProductPage {
       "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez", "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Vaticano", "Venezuela", "Vietnam", "Yemen", "Yibuti", "Zambia", "Zimbabue"
     ];
 
-    return `<option value="">Selecciona país</option>${countries.map((country) => `<option value="${this.escapeHtml(country)}">${this.escapeHtml(country)}</option>`).join("")}`;
+    return `<option value="">${this.t("product.selectCountry", "Selecciona país")}</option>${countries.map((country) => `<option value="${this.escapeHtml(country)}">${this.escapeHtml(country)}</option>`).join("")}`;
   }
 
   populateCountrySelects(scope = document) {
@@ -2936,7 +2943,7 @@ class MyCuscoTripProductPage {
     const startNumber = holderTravels ? 2 : 1;
 
     if (!additionalCount) {
-      container.innerHTML = `<p class="passenger-modal__note">No hay pasajeros adicionales según la cantidad seleccionada.</p>`;
+      container.innerHTML = `<p class="passenger-modal__note">${this.t("product.noAdditionalPassengers", "No hay pasajeros adicionales según la cantidad seleccionada.")}</p>`;
       return;
     }
 
@@ -2947,7 +2954,7 @@ class MyCuscoTripProductPage {
           <summary>Pasajero ${passengerNumber} <span>Datos del turista</span></summary>
           <label class="passenger-modal__check passenger-modal__check--later">
             <input type="checkbox" name="passenger_${passengerNumber}_complete_later" data-passenger-later="${passengerNumber}" />
-            <span>Ingresaré los datos de este pasajero más adelante.</span>
+            <span>${this.t("product.passengerLater", "Ingresaré los datos de este pasajero más adelante.")}</span>
           </label>
           <div class="passenger-modal__grid" data-passenger-fields="${passengerNumber}">
             <label>
@@ -2964,7 +2971,7 @@ class MyCuscoTripProductPage {
                 <option value="">Selecciona</option>
                 <option value="passport">Pasaporte</option>
                 <option value="dni">DNI</option>
-                <option value="id_card">Documento de identidad</option>
+                <option value="id_card">${this.t("product.docTypeIdCard", "Documento de identidad")}</option>
                 <option value="other">Otro</option>
               </select>
             </label>
@@ -3186,11 +3193,11 @@ class MyCuscoTripProductPage {
         return;
       }
 
-      throw new Error(paypalResult?.message || paypalResult?.error || "PayPal no devolvió enlace de pago.");
+      throw new Error(paypalResult?.message || paypalResult?.error || this.t("product.paypalNoPaymentLink", "PayPal no devolvió enlace de pago."));
     } catch (error) {
       console.error("No se pudo guardar la pre-reserva:", error);
       if (message) {
-        const backendMessage = error?.body?.error || error?.body?.message || error?.message || "No se pudo registrar la reserva. Revisa la conexión o la configuración del backend.";
+        const backendMessage = error?.body?.error || error?.body?.message || error?.message || this.t("product.reservationRegisterError", "No se pudo registrar la reserva. Revisa la conexión o la configuración del backend.");
         message.textContent = backendMessage;
         message.classList.add("is-error");
       }
@@ -3826,7 +3833,7 @@ class MyCuscoTripProductPage {
   normalizeRoomDefinition(room) {
     return {
       roomType: String(room.roomType || ""),
-      label: room.label || room.roomType || "Habitación",
+      label: room.label || room.roomType || this.t("quote.room", "Habitación"),
       bedType: room.bedType || "",
       capacity: Number(room.capacity || 0),
       pricePerNight: Number(
@@ -4487,7 +4494,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <input type="radio" id="extra-none" name="${inputName}" data-extra-code="" ${this.selectedExtras.size ? "" : "checked"} />
         <div class="booking-extra-text">
           <strong>Sin almuerzo adicional</strong>
-          <small>Puedes elegir solo una opción de almuerzo.</small>
+          <small>${this.t("product.onlyOneLunchOption", "Puedes elegir solo una opción de almuerzo.")}</small>
         </div>
       </label>
     ` : ""}${extras.map((extra) => {
@@ -4547,8 +4554,8 @@ document.addEventListener("DOMContentLoaded", () => {
     this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId)
       .filter((train) => this.isCommercialTrainForFullDay(train));
 
-    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.label("Tren de ida incluido", "Included outbound train"));
-    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.label("Tren de retorno incluido", "Included return train"));
+    const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.t("product.trainOutboundIncluded", "Tren de ida incluido"));
+    const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.t("product.trainReturnIncluded", "Tren de retorno incluido"));
     if (!this.availableOutboundTrains.length && fallbackOutbound) this.availableOutboundTrains = [fallbackOutbound];
     if (!this.availableReturnTrains.length && fallbackReturn) this.availableReturnTrains = [fallbackReturn];
     if (!this.availableOutboundTrains.length && !this.availableReturnTrains.length) return;
@@ -4616,17 +4623,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const summaryCards = document.getElementById("trainUpgradeSummaryCards");
     if (summaryCards) {
       summaryCards.innerHTML = `
-        ${this.renderTrainMiniSummary("Tren de ida", outbound, outboundDiff)}
-        ${this.renderTrainMiniSummary("Tren de retorno", returning, returnDiff)}
+        ${this.renderTrainMiniSummary(this.t("booking.train.outbound", "Tren de ida"), outbound, outboundDiff)}
+        ${this.renderTrainMiniSummary(this.t("booking.train.return", "Tren de retorno"), returning, returnDiff)}
       `;
     }
 
     const summary = document.getElementById("trainSelectionSummary");
     if (summary) {
       const adjustmentText = this.selectedTrainAdjustmentTotal > 0
-        ? `Excedente total: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
-        : "Sin excedente adicional frente a los trenes incluidos.";
-      summary.innerHTML = `<strong>${this.escapeHtml(adjustmentText)}</strong>${sameCompanyOnly ? `<small>${this.escapeHtml("La ida y el retorno se mantienen con la misma compañía de tren.")}</small>` : ""}`;
+        ? `${this.t("product.excessTotalLabel", "Excedente total")}: ${this.product?.currency || "USD"} ${this.formatMoney(this.selectedTrainAdjustmentTotal)}`
+        : this.t("product.noExtraDifferenceIncludedTrains", "Sin excedente adicional frente a los trenes incluidos.");
+      summary.innerHTML = `<strong>${this.escapeHtml(adjustmentText)}</strong>${sameCompanyOnly ? `<small>${this.escapeHtml(this.t("product.sameTrainCompanyNote", "La ida y el retorno se mantienen con la misma compañía de tren."))}</small>` : ""}`;
     }
 
     this.renderTrainUpgradeLists?.();
@@ -4634,11 +4641,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   proto.renderTrainMiniSummary = function (title, train, diff) {
     if (!train) return "";
-    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} p/p` : "Incluido";
+    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} p/p` : this.t("product.includedShort", "Incluido");
     return `
       <button class="booking-train-mini" type="button" data-open-train-upgrade>
         <span>${this.escapeHtml(title)}</span>
-        <strong>${this.escapeHtml(train.label || "Tren")}</strong>
+        <strong>${this.escapeHtml(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong>
         <small>${this.escapeHtml(`${train.companyName || train.company || ""} · ${train.departureTime || ""} → ${train.arrivalTime || ""}`)}</small>
         <em>${this.escapeHtml(diffText)}</em>
       </button>
@@ -4651,11 +4658,11 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
         <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
         <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
           <header class="train-upgrade-modal__header">
-            <p>Selección de trenes</p>
+            <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
             <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
-            <span>Elige primero el tren de ida. El retorno se filtrará automáticamente por la misma compañía.</span>
+            <span>${this.t("product.modal.chooseOutboundFirstAutoFilter", "Elige primero el tren de ida. El retorno se filtrará automáticamente por la misma compañía.")}</span>
           </header>
           <div class="train-upgrade-modal__body">
             <section>
@@ -4669,7 +4676,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <footer class="train-upgrade-modal__footer">
             <div id="trainUpgradeFooterSummary"></div>
-            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
           </footer>
         </div>
       </div>
@@ -4737,8 +4744,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (footer) {
       const total = this.calculateSelectedTrainAdjustmentTotal();
       footer.innerHTML = total > 0
-        ? `<strong>Excedente por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>Total calculado para ${this.getTotalPassengers()} viajero(s).</small>`
-        : `<strong>Sin excedente adicional</strong><small>Los trenes seleccionados no incrementan el precio base.</small>`;
+        ? `<strong>${this.t("product.excessUpgradeLabel", "Excedente por upgrade")}: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>${this.t("product.totalCalculatedForTravelers", "Total calculado para {n} viajero(s).", { n: this.getTotalPassengers() })}</small>`
+        : `<strong>${this.t("product.noExtraSurcharge", "Sin excedente adicional")}</strong><small>${this.t("product.trainsNoIncreasePrice", "Los trenes seleccionados no incrementan el precio base.")}</small>`;
     }
   };
 
@@ -4754,9 +4761,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const time = `${train.departureTime || ""} → ${train.arrivalTime || ""}`;
     return `
       <button type="button" class="train-upgrade-card ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${this.escapeHtml(direction)}" data-train-id="${this.escapeHtml(train.id)}" aria-pressed="${selected ? "true" : "false"}">
-        <span class="train-upgrade-card__logo">${logo ? `<img src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(train.companyName || train.company || "Tren")}" />` : ""}</span>
+        <span class="train-upgrade-card__logo">${logo ? `<img src="${this.escapeHtml(logo)}" alt="${this.escapeHtml(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" />` : ""}</span>
         <span class="train-upgrade-card__body">
-          <strong>${this.escapeHtml(train.label || "Tren turístico")}</strong>
+          <strong>${this.escapeHtml(train.label || this.t("product.touristTrain", "Tren turístico"))}</strong>
           <small>${this.escapeHtml(train.companyName || train.company || "")}</small>
           <em>${this.escapeHtml(time)}</em>
           <span>${this.escapeHtml(route)}</span>
@@ -4776,7 +4783,7 @@ document.addEventListener("DOMContentLoaded", () => {
   proto.getSelectedTrainSummaryLabel = function () {
     const outbound = this.getSelectedOutboundTrain();
     const returning = this.getSelectedReturnTrain();
-    if (!outbound && !returning) return this.label("No aplica", "Not applicable");
+    if (!outbound && !returning) return this.t("booking.notApplicable", "No aplica");
     const parts = [];
     if (outbound) parts.push(`Ida: ${outbound.label} ${outbound.departureTime || ""}`.trim());
     if (returning) parts.push(`Retorno: ${returning.label} ${returning.departureTime || ""}`.trim());
@@ -4897,10 +4904,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const rows = [
       ["Experiencia", payload.productTitle],
       ["Fecha", payload.date],
-      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+      [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
       ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
-      ["Total del servicio", payload.serviceTotal],
+      [this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal],
       ["Pagar ahora", payload.payNow],
       ["Saldo pendiente", payload.payLater]
     ];
@@ -4909,7 +4916,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="passenger-review-card">
         <div class="passenger-review-card__header">
           <strong>Resumen antes de pagar</strong>
-          <span>Confirma que todo esté correcto antes de ir a PayPal.</span>
+          <span>${this.t("product.modal.confirmBeforePaypal", "Confirma que todo esté correcto antes de ir a PayPal.")}</span>
         </div>
         <div class="passenger-review-grid">
           ${rows.map(([label, value]) => `<div><span>${this.escapeHtml(label)}</span><strong>${this.escapeHtml(value || "-")}</strong></div>`).join("")}
@@ -4971,8 +4978,8 @@ document.addEventListener("click", function (event) {
 
   proto.updateSeoMetaForProduct = function (product) {
     if (!product) return;
-    const title = product.title || "Machu Picchu Full Day Clásico";
-    const desc = product.seoDescription || product.description || product.shortDescription || "Tour a Machu Picchu desde Cusco con tren turístico, bus, ingreso oficial y guía profesional.";
+    const title = product.title || this.t("search.tourMachuPicchuClassic", "Machu Picchu Full Day Clásico");
+    const desc = product.seoDescription || product.description || product.shortDescription || this.t("product.seoMachuFullDayDescription", "Tour a Machu Picchu desde Cusco con tren turístico, bus, ingreso oficial y guía profesional.");
     const cleanDesc = String(desc).replace(/\s+/g, " ").slice(0, 170);
     const slug = product.slug || this.slug || "machu-picchu-full-day-clasico";
     const url = `https://mycuscotrip.com/product.html?slug=${encodeURIComponent(slug)}`;
@@ -5017,7 +5024,7 @@ document.addEventListener("click", function (event) {
       "url": url,
       "touristType": ["Cultural tourism", "Adventure tourism"],
       "provider": { "@type": "TravelAgency", "name": "My Cusco Trip", "url": "https://mycuscotrip.com/" },
-      "itinerary": { "@type": "ItemList", "itemListElement": (product.itinerary || []).map((item, index) => ({ "@type": "ListItem", "position": index + 1, "name": item.title || `Paso ${index + 1}` })) }
+      "itinerary": { "@type": "ItemList", "itemListElement": (product.itinerary || []).map((item, index) => ({ "@type": "ListItem", "position": index + 1, "name": item.title || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }) })) }
     });
   };
 
@@ -5050,18 +5057,18 @@ document.addEventListener("click", function (event) {
     }
     section.hidden = false;
     const label = section.querySelector("label");
-    if (label) label.textContent = isClassicMachu(this) ? "Extras: opciones de almuerzo" : "Extras";
+    if (label) label.textContent = isClassicMachu(this) ? this.t("product.extrasLunchOptionsLabel", "Extras: opciones de almuerzo") : this.t("quote.print.extrasLabel", "Extras");
     const current = [...this.selectedExtras][0] || "";
     container.innerHTML = `
-      <select class="booking-extra-select" id="tourExtraLunchSelect" aria-label="Extras: opciones de almuerzo">
-        <option value="">Sin almuerzo adicional</option>
+      <select class="booking-extra-select" id="tourExtraLunchSelect" aria-label="${this.escapeHtml(this.t("product.extrasLunchOptionsLabel", "Extras: opciones de almuerzo"))}">
+        <option value="">${this.escapeHtml(this.t("product.noAdditionalLunch", "Sin almuerzo adicional"))}</option>
         ${extras.map((extra) => {
           const amount = Number(extra.price || extra.publishedPriceUSD || extra.publishedPricing?.amount || 0);
           const price = `${this.product.currency || "USD"} ${this.formatMoney(amount)}`;
           return `<option value="${this.escapeHtml(extra.code)}" ${current === extra.code ? "selected" : ""}>${this.escapeHtml(extra.label)} · ${this.escapeHtml(price)} ${extra.perPerson ? "p/p" : ""}</option>`;
         }).join("")}
       </select>
-      <small class="booking-field-help">Puedes elegir solo una opción de almuerzo para esta reserva.</small>
+      <small class="booking-field-help">${this.escapeHtml(this.t("product.chooseOneLunchOption", "Puedes elegir solo una opción de almuerzo para esta reserva."))}</small>
     `;
     container.querySelector("#tourExtraLunchSelect")?.addEventListener("change", (event) => {
       this.selectedExtras.clear();
@@ -5079,12 +5086,12 @@ document.addEventListener("click", function (event) {
       row = document.createElement("div");
       row.id = "trainAdjustmentTotalRow";
       row.className = "booking-summary__line";
-      row.innerHTML = `<span>${this.escapeHtml(this.label("Upgrade de trenes", "Train upgrade"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
+      row.innerHTML = `<span>${this.escapeHtml(this.t("product.trainUpgradeButton", "Upgrade de trenes"))}</span><strong id="trainAdjustmentTotal">${this.escapeHtml(currency)} 0.00</strong>`;
       summary.insertBefore(row, serviceTotalRow);
     }
     row.hidden = false;
     const label = row.querySelector("span");
-    if (label) label.textContent = this.label("Upgrade de trenes", "Train upgrade");
+    if (label) label.textContent = this.t("product.trainUpgradeButton", "Upgrade de trenes");
     const value = document.getElementById("trainAdjustmentTotal");
     if (value) value.textContent = `${currency} ${this.formatMoney(Math.max(0, Number(amount || 0)))}`;
   };
@@ -5097,8 +5104,8 @@ document.addEventListener("click", function (event) {
       const currency = this.product?.currency || "USD";
       const partial = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 49.9);
       info.textContent = this.paymentMode === "full"
-        ? `Pagando el total ahora estás obteniendo un ${percent}% de descuento.`
-        : `Reserva con anticipo de ${currency} ${this.formatMoney(partial)} por persona y completa el saldo días antes de tu viaje.`;
+        ? this.t("product.fullPaymentDiscountNoteA", "Pagando el total ahora estás obteniendo un {percent}% de descuento.", { percent })
+        : this.t("product.depositReservationNote", "Reserva con anticipo de {currency} {amount} por persona y completa el saldo días antes de tu viaje.", { currency, amount: this.formatMoney(partial) });
     }
     return result;
   };
@@ -5109,36 +5116,36 @@ document.addEventListener("click", function (event) {
       <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
         <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
         <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
           <header class="train-upgrade-modal__header">
-            <p>Selección de trenes</p>
+            <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
             <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
-            <span>Elige tu tren de ida. El retorno se filtrará automáticamente por la misma compañía.</span>
+            <span>${this.t("product.modal.chooseOutboundFirstAutoFilterAlt", "Elige tu tren de ida. El retorno se filtrará automáticamente por la misma compañía.")}</span>
           </header>
           <div class="train-upgrade-modal__tools">
-            <label>Ordenar / filtrar</label>
+            <label>${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
             <select id="trainUpgradeSortFilter">
-              <option value="early">Más temprano primero</option>
-              <option value="late">Más tarde primero</option>
-              <option value="cheap">Más barato primero</option>
-              <option value="panoramic">Trenes panorámicos</option>
-              <option value="economy">Económicos</option>
-              <option value="nocharge">Sin cargo adicional</option>
+              <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+              <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+              <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+              <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+              <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+              <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
             </select>
           </div>
           <div class="train-upgrade-modal__body">
             <section>
-              <h3>Tren de ida</h3>
+              <h3>${this.t("booking.train.outbound", "Tren de ida")}</h3>
               <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
             </section>
             <section>
-              <h3>Tren de retorno</h3>
+              <h3>${this.t("booking.train.return", "Tren de retorno")}</h3>
               <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
             </section>
           </div>
           <footer class="train-upgrade-modal__footer">
             <div id="trainUpgradeFooterSummary"></div>
-            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+            <button class="btn booking-main-btn" type="button" data-close-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
           </footer>
         </div>
       </div>
@@ -5176,8 +5183,8 @@ document.addEventListener("click", function (event) {
     if (footer) {
       const total = this.calculateSelectedTrainAdjustmentTotal();
       footer.innerHTML = total > 0
-        ? `<strong>Cargo adicional por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>Total calculado para ${this.getTotalPassengers()} viajero(s).</small>`
-        : `<strong>Sin cargo adicional</strong><small>Los trenes seleccionados no incrementan el precio base.</small>`;
+        ? `<strong>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${this.product?.currency || "USD"} ${this.formatMoney(total)}</strong><small>${this.t("product.totalCalculatedForTravelers", "Total calculado para {n} viajero(s).", { n: this.getTotalPassengers() })}</small>`
+        : `<strong>${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</strong><small>${this.t("product.trainsNoIncreasePrice", "Los trenes seleccionados no incrementan el precio base.")}</small>`;
     }
   };
 
@@ -5221,15 +5228,15 @@ document.addEventListener("click", function (event) {
     const returnArrive = returning?.arrivalTime || "21:59";
     const cuscoArrive = this.addMinutesToTime(returnArrive, 100) || "23:30";
     return [
-      { time: this.formatApproxTime(pickup), title: "Recojo en el hotel y traslado a la estación", description: "Recojo desde tu hotel en Cusco o punto coordinado y traslado turístico hacia la estación correspondiente para abordar el tren hacia Machu Picchu Pueblo." },
-      { time: this.formatApproxTime(outbound?.departureTime || "06:40"), title: "Viaje en tren a Machu Picchu Pueblo", description: `Salida en ${outbound?.label || "tren turístico"} desde ${outbound?.departureStation || outbound?.raw?.departureStation || "Ollantaytambo"} hacia ${outbound?.arrivalStation || outbound?.raw?.arrivalStation || "Machu Picchu"}.` },
-      { time: "09:00 a.m. aprox.", title: "Bus Consettur e ingreso oficial a Machu Picchu", description: "Coordinación para subir en bus Consettur hasta la puerta de ingreso. El circuito se confirma según disponibilidad oficial de boletos." },
-      { time: "10:00 a.m. aprox.", title: "Tour guiado en Machu Picchu", description: "Recorrido guiado por la ciudadela inca junto a un guía profesional certificado. La ruta puede corresponder al circuito 1, 2 o 3 según disponibilidad." },
-      { time: "01:00 p.m. aprox.", title: "Fin del tour guiado y tiempo libre para almorzar", description: "Finaliza la visita guiada. Tendrás tiempo libre para almorzar en Aguas Calientes; puedes agregar almuerzo en la sección de extras." },
-      { time: "03:00 p.m. aprox.", title: "Bus de bajada hacia Aguas Calientes", description: "Descenso en bus Consettur desde Machu Picchu hacia Aguas Calientes para descansar, caminar por el pueblo o prepararte para el retorno." },
-      { time: this.formatApproxTime(returnDepart), title: "Tren de retorno hacia Ollantaytambo", description: `Viaje de retorno en ${returning?.label || "tren turístico"} desde ${returning?.departureStation || returning?.raw?.departureStation || "Machu Picchu"} hacia ${returning?.arrivalStation || returning?.raw?.arrivalStation || "Ollantaytambo"}.` },
-      { time: this.formatApproxTime(returnArrive), title: "Llegada a estación y traslado hacia Cusco", description: "Llegada estimada a la estación de Ollantaytambo y traslado terrestre hacia la ciudad de Cusco." },
-      { time: this.formatApproxTime(cuscoArrive), title: "Llegada a Cusco y fin de los servicios", description: "Desembarque cerca de la Plaza de Armas de Cusco o punto coordinado dentro de la zona operativa. Fin de los servicios." }
+      { time: this.formatApproxTime(pickup), title: this.t("product.itin.pickupTitle", "Recojo en el hotel y traslado a la estación"), description: this.t("product.itin.pickupDesc", "Recojo desde tu hotel en Cusco o punto coordinado y traslado turístico hacia la estación correspondiente para abordar el tren hacia Machu Picchu Pueblo.") },
+      { time: this.formatApproxTime(outbound?.departureTime || "06:40"), title: this.t("product.itin.trainToMachuTitle", "Viaje en tren a Machu Picchu Pueblo"), description: this.t("product.itin.trainToMachuDesc", "Salida en {train} desde {from} hacia {to}.", { train: outbound?.label || this.t("product.touristTrain", "Tren turístico"), from: outbound?.departureStation || outbound?.raw?.departureStation || "Ollantaytambo", to: outbound?.arrivalStation || outbound?.raw?.arrivalStation || "Machu Picchu" }) },
+      { time: "09:00 a.m. aprox.", title: this.t("product.itin.busInTitle", "Bus Consettur e ingreso oficial a Machu Picchu"), description: this.t("product.itin.busInDesc", "Coordinación para subir en bus Consettur hasta la puerta de ingreso. El circuito se confirma según disponibilidad oficial de boletos.") },
+      { time: "10:00 a.m. aprox.", title: this.t("product.itin.guidedTourTitle", "Tour guiado en Machu Picchu"), description: this.t("product.itin.guidedTourDesc", "Recorrido guiado por la ciudadela inca junto a un guía profesional certificado. La ruta puede corresponder al circuito 1, 2 o 3 según disponibilidad.") },
+      { time: "01:00 p.m. aprox.", title: this.t("product.itin.tourEndTitle", "Fin del tour guiado y tiempo libre para almorzar"), description: this.t("product.itin.tourEndDesc", "Finaliza la visita guiada. Tendrás tiempo libre para almorzar en Aguas Calientes; puedes agregar almuerzo en la sección de extras.") },
+      { time: "03:00 p.m. aprox.", title: this.t("product.itin.busDownTitle", "Bus de bajada hacia Aguas Calientes"), description: this.t("product.itin.busDownDesc", "Descenso en bus Consettur desde Machu Picchu hacia Aguas Calientes para descansar, caminar por el pueblo o prepararte para el retorno.") },
+      { time: this.formatApproxTime(returnDepart), title: this.t("product.itin.returnTrainTitle", "Tren de retorno hacia Ollantaytambo"), description: this.t("product.itin.returnTrainDesc", "Viaje de retorno en {train} desde {from} hacia {to}.", { train: returning?.label || this.t("product.touristTrain", "Tren turístico"), from: returning?.departureStation || returning?.raw?.departureStation || "Machu Picchu", to: returning?.arrivalStation || returning?.raw?.arrivalStation || "Ollantaytambo" }) },
+      { time: this.formatApproxTime(returnArrive), title: this.t("product.itin.arrivalCuscoTransferTitle", "Llegada a estación y traslado hacia Cusco"), description: this.t("product.itin.arrivalCuscoTransferDesc", "Llegada estimada a la estación de Ollantaytambo y traslado terrestre hacia la ciudad de Cusco.") },
+      { time: this.formatApproxTime(cuscoArrive), title: this.t("product.itin.arrivalCuscoEndTitle", "Llegada a Cusco y fin de los servicios"), description: this.t("product.itin.arrivalCuscoEndDesc", "Desembarque cerca de la Plaza de Armas de Cusco o punto coordinado dentro de la zona operativa. Fin de los servicios.") }
     ];
   };
 
@@ -5250,10 +5257,10 @@ document.addEventListener("click", function (event) {
     const rows = [
       ["Experiencia", payload.productTitle],
       ["Fecha", payload.date],
-      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+      [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
       ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
-      ["Total del servicio", payload.serviceTotal],
+      [this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal],
       ["Pagar ahora", payload.payNow],
       ["Saldo pendiente", payload.payLater]
     ];
@@ -5261,7 +5268,7 @@ document.addEventListener("click", function (event) {
     review.innerHTML = `
       <div class="passenger-review-card passenger-review-card--premium">
         <div class="passenger-review-card__header">
-          <strong>Resumen de tu reserva</strong>
+          <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
           <span>Revisa el resumen de tu reserva antes de continuar al pago.</span>
         </div>
         <div class="passenger-review-grid">
@@ -5284,7 +5291,7 @@ document.addEventListener("click", function (event) {
 
   document.addEventListener("DOMContentLoaded", () => {
     const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
-    if (submit) submit.textContent = "Continuar";
+    if (submit) submit.textContent = this.t("booking.continue", "Continuar");
   });
 })();
 
@@ -5314,31 +5321,31 @@ document.addEventListener("click", function (event) {
       <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
         <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
         <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
           <header class="train-upgrade-modal__header">
-            <p>Selección de trenes</p>
+            <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
             <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
             <span></span>
           </header>
           <div class="train-upgrade-modal__tools">
-            <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+            <label for="trainUpgradeSortFilter">${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
             <select id="trainUpgradeSortFilter">
-              <option value="early">Más temprano primero</option>
-              <option value="late">Más tarde primero</option>
-              <option value="cheap">Más barato primero</option>
-              <option value="panoramic">Trenes panorámicos</option>
-              <option value="economy">Económicos</option>
-              <option value="nocharge">Sin cargo adicional</option>
+              <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+              <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+              <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+              <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+              <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+              <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
             </select>
           </div>
           <div class="train-upgrade-modal__body">
             <section id="trainUpgradeOutboundSection">
-              <h3>Tren de ida</h3>
-              <p class="train-upgrade-step-note">Primero elige tu tren de ida. Después se mostrarán solo los retornos compatibles con la misma compañía.</p>
+              <h3>${this.t("booking.train.outbound", "Tren de ida")}</h3>
+              <p class="train-upgrade-step-note">${this.t("product.modal.chooseOutboundFirstThenReturn", "Primero elige tu tren de ida. Después se mostrarán solo los retornos compatibles con la misma compañía.")}</p>
               <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
             </section>
             <section id="trainUpgradeReturnSection" hidden>
-              <h3>Tren de retorno</h3>
+              <h3>${this.t("booking.train.return", "Tren de retorno")}</h3>
               <p class="train-upgrade-step-note">Ahora elige el tren de retorno para completar tu upgrade.</p>
               <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
             </section>
@@ -5346,8 +5353,8 @@ document.addEventListener("click", function (event) {
           <footer class="train-upgrade-modal__footer">
             <div id="trainUpgradeFooterSummary"></div>
             <div class="train-upgrade-modal__footer-actions">
-              <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
-              <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+              <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>${this.t("booking.cancel", "Cancelar")}</button>
+              <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
             </div>
           </footer>
         </div>
@@ -5444,11 +5451,11 @@ document.addEventListener("click", function (event) {
     if (footer) {
       const total = this.calculateSelectedTrainAdjustmentTotal();
       const label = total > 0
-        ? `Cargo adicional por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}`
-        : "Sin cargo adicional";
+        ? `${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${this.product?.currency || "USD"} ${this.formatMoney(total)}`
+        : this.t("product.noAdditionalCharge", "Sin cargo adicional");
       const hint = step === "outbound"
-        ? "Selecciona la ida para ver los retornos compatibles."
-        : `Total calculado para ${this.getTotalPassengers()} viajero(s).`;
+        ? this.t("product.selectOutboundToSeeReturns", "Selecciona la ida para ver los retornos compatibles.")
+        : this.t("product.totalCalculatedForTravelers", "Total calculado para {n} viajero(s).", { n: this.getTotalPassengers() });
       footer.innerHTML = `<strong>${esc.call(this, label)}</strong><small>${esc.call(this, hint)}</small>`;
     }
   };
@@ -5460,24 +5467,24 @@ document.addEventListener("click", function (event) {
     if (!target || !preReservation) return;
 
     const summary = preReservation.summary || {};
-    const trains = summary.trainSelection || this.getSelectedTrainSummaryLabel?.() || "Incluidos según selección";
+    const trains = summary.trainSelection || this.getSelectedTrainSummaryLabel?.() || this.t("product.includedBySelection", "Incluidos según selección");
     const extras = summary.extras?.length ? summary.extras.join(", ") : "Sin extras adicionales";
     target.hidden = false;
     target.innerHTML = `
-      <aside class="passenger-summary-card" aria-label="Resumen de reserva">
+      <aside class="passenger-summary-card" aria-label="${this.escapeHtml(this.t('reservationSummary', 'Resumen de reserva'))}">
         <div class="passenger-summary-card__title">
           <strong>Detalles de tu viaje</strong>
           <span>${esc.call(this, preReservation.code || "")}</span>
         </div>
         <div class="passenger-summary-card__row"><span>Experiencia</span><strong>${esc.call(this, preReservation.productTitle || summary.title || "")}</strong></div>
-        <div class="passenger-summary-card__row"><span>Fecha</span><strong>${esc.call(this, preReservation.date || "Por confirmar")}</strong></div>
+        <div class="passenger-summary-card__row"><span>Fecha</span><strong>${esc.call(this, preReservation.date || this.t("quote.print.toBeConfirmed", "Por confirmar"))}</strong></div>
         <div class="passenger-summary-card__row"><span>Pasajeros</span><strong>${esc.call(this, `${preReservation.totalPassengers || this.getTotalPassengers()} viajero(s)`)}</strong></div>
         <div class="passenger-summary-card__train"><span>Trenes seleccionados</span><strong>${esc.call(this, trains)}</strong></div>
         <div class="passenger-summary-card__row"><span>Extras</span><strong>${esc.call(this, extras)}</strong></div>
         <div class="passenger-summary-card__row"><span>Total del servicio</span><strong>${esc.call(this, preReservation.serviceTotal || summary.serviceTotal || "")}</strong></div>
         <div class="passenger-summary-card__total"><span>Pagar ahora</span><strong>${esc.call(this, preReservation.payNow || summary.payNow || "")}</strong></div>
         <div class="passenger-summary-card__row"><span>Saldo pendiente</span><strong>${esc.call(this, preReservation.payLater || summary.payLater || "")}</strong></div>
-        <p class="passenger-summary-card__note">Completa al menos los datos del titular para continuar. Los pasajeros marcados para completar después quedarán como pendientes en el resumen.</p>
+        <p class="passenger-summary-card__note">${this.t("product.modal.completeHolderDataNote", "Completa al menos los datos del titular para continuar. Los pasajeros marcados para completar después quedarán como pendientes en el resumen.")}</p>
       </aside>
     `;
   };
@@ -5495,10 +5502,10 @@ document.addEventListener("click", function (event) {
     const rows = [
       ["Experiencia", payload.productTitle],
       ["Fecha", payload.date],
-      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+      [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
       ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
-      ["Total del servicio", payload.serviceTotal],
+      [this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal],
       ["Pagar ahora", payload.payNow],
       ["Saldo pendiente", payload.payLater]
     ];
@@ -5506,7 +5513,7 @@ document.addEventListener("click", function (event) {
     review.innerHTML = `
       <div class="passenger-review-card passenger-review-card--premium">
         <div class="passenger-review-card__header">
-          <strong>Resumen de tu reserva</strong>
+          <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
           <span>Revisa el resumen de tu reserva antes de continuar al pago.</span>
         </div>
         <div class="passenger-review-grid">
@@ -5553,7 +5560,7 @@ document.addEventListener("click", function (event) {
     if (!active && form) {
       delete form.dataset.paymentReviewConfirmed;
       const submit = form.querySelector('button[type="submit"]');
-      if (submit) submit.textContent = "Continuar";
+      if (submit) submit.textContent = this.t("booking.continue", "Continuar");
       const review = document.getElementById("passengerCheckoutReview");
       if (review) { review.hidden = true; review.innerHTML = ""; }
     }
@@ -5566,7 +5573,7 @@ document.addEventListener("click", function (event) {
     const modal = document.getElementById("passengerReservationModal");
     if (modal) modal.classList.remove("passenger-modal--review");
     const title = document.getElementById("passengerModalTitle");
-    if (title) title.textContent = "Detalles de reserva";
+    if (title) title.textContent = this.t("product.bookingDetailsTitle", "Detalles de reserva");
     const warning = document.querySelector(".passenger-modal__warning");
     if (warning) warning.hidden = false;
   };
@@ -5574,14 +5581,14 @@ document.addEventListener("click", function (event) {
   proto.renderTrainMiniSummary = function (title, train, diff) {
     if (!train) return "";
     const logo = this.getTrainCompanyLogo?.(train.company) || "";
-    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} p/p` : "Incluido";
+    const diffText = diff > 0 ? `+ ${this.product?.currency || "USD"} ${this.formatMoney(diff)} p/p` : this.t("product.includedShort", "Incluido");
     const company = train.companyName || train.company || "";
     const time = `${train.departureTime || ""} → ${train.arrivalTime || ""}`.trim();
     return `
-      <button class="booking-train-mini" type="button" data-open-train-upgrade aria-label="Cambiar ${esc.call(this, title)}">
+      <button class="booking-train-mini" type="button" data-open-train-upgrade aria-label="${this.escapeHtml(this.t('product.changeItemLabel', 'Cambiar {item}', { item: esc.call(this, title) }))}">
         <span class="booking-train-mini__label">${esc.call(this, title)}</span>
-        <strong class="booking-train-mini__name">${esc.call(this, train.label || "Tren")}</strong>
-        ${logo ? `<span class="booking-train-mini__logo"><img src="${esc.call(this, logo)}" alt="${esc.call(this, company || "Tren")}" /></span>` : `<span class="booking-train-mini__company">${esc.call(this, company)}</span>`}
+        <strong class="booking-train-mini__name">${esc.call(this, train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong>
+        ${logo ? `<span class="booking-train-mini__logo"><img src="${esc.call(this, logo)}" alt="${esc.call(this, company || this.t("quote.train.detailTrainFallback", "Tren"))}" /></span>` : `<span class="booking-train-mini__company">${esc.call(this, company)}</span>`}
         <small class="booking-train-mini__time">${esc.call(this, [company, time].filter(Boolean).join(" · "))}</small>
         <em class="booking-train-mini__badge">${esc.call(this, diffText)}</em>
       </button>
@@ -5605,8 +5612,8 @@ document.addEventListener("click", function (event) {
     const summaryCards = document.getElementById("trainUpgradeSummaryCards");
     if (summaryCards) {
       summaryCards.innerHTML = `
-        ${this.renderTrainMiniSummary("Tren de ida", outbound, outboundDiff)}
-        ${this.renderTrainMiniSummary("Tren de retorno", returning, returnDiff)}
+        ${this.renderTrainMiniSummary(this.t("booking.train.outbound", "Tren de ida"), outbound, outboundDiff)}
+        ${this.renderTrainMiniSummary(this.t("booking.train.return", "Tren de retorno"), returning, returnDiff)}
       `;
     }
 
@@ -5627,44 +5634,44 @@ document.addEventListener("click", function (event) {
       <div class="train-upgrade-modal" hidden id="trainUpgradeModal">
         <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
         <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+          <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
           <header class="train-upgrade-modal__header">
-            <p>Selección de trenes</p>
+            <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
             <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
-            <span>Elige primero la ida y después el retorno compatible.</span>
+            <span>${this.t("product.modal.chooseOutboundThenReturnShort", "Elige primero la ida y después el retorno compatible.")}</span>
           </header>
-          <div class="train-upgrade-modal__steps" role="tablist" aria-label="Pasos para elegir trenes">
+          <div class="train-upgrade-modal__steps" role="tablist" aria-label="${this.escapeHtml(this.t('product.trainSelectionSteps', 'Pasos para elegir trenes'))}">
             <button type="button" class="train-upgrade-step is-active" data-train-step="outbound">1. Selecciona tu tren de ida</button>
             <button type="button" class="train-upgrade-step" data-train-step="return">2. Selecciona tu tren de retorno</button>
           </div>
           <div class="train-upgrade-modal__tools">
-            <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+            <label for="trainUpgradeSortFilter">${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
             <select id="trainUpgradeSortFilter">
-              <option value="early">Más temprano primero</option>
-              <option value="late">Más tarde primero</option>
-              <option value="cheap">Más barato primero</option>
-              <option value="panoramic">Trenes panorámicos</option>
-              <option value="economy">Económicos</option>
-              <option value="nocharge">Sin cargo adicional</option>
+              <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+              <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+              <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+              <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+              <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+              <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
             </select>
           </div>
           <div class="train-upgrade-modal__body">
             <section id="trainUpgradeOutboundSection">
-              <h3>Tren de ida</h3>
-              <p class="train-upgrade-step-note">Elige un tren de ida. Al seleccionarlo, verás solo los trenes de retorno compatibles con la misma compañía.</p>
+              <h3>${this.t("booking.train.outbound", "Tren de ida")}</h3>
+              <p class="train-upgrade-step-note">${this.t("product.modal.chooseOutboundSeeReturnsNote", "Elige un tren de ida. Al seleccionarlo, verás solo los trenes de retorno compatibles con la misma compañía.")}</p>
               <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
             </section>
             <section id="trainUpgradeReturnSection" hidden>
-              <h3>Tren de retorno</h3>
-              <p class="train-upgrade-step-note">Elige el tren de retorno para completar la selección.</p>
+              <h3>${this.t("booking.train.return", "Tren de retorno")}</h3>
+              <p class="train-upgrade-step-note">${this.t("product.modal.chooseReturnToComplete", "Elige el tren de retorno para completar la selección.")}</p>
               <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
             </section>
           </div>
           <footer class="train-upgrade-modal__footer">
             <div id="trainUpgradeFooterSummary"></div>
             <div class="train-upgrade-modal__footer-actions">
-              <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
-              <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+              <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>${this.t("booking.cancel", "Cancelar")}</button>
+              <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
             </div>
           </footer>
         </div>
@@ -5768,11 +5775,11 @@ document.addEventListener("click", function (event) {
     if (footer) {
       const total = this.calculateSelectedTrainAdjustmentTotal();
       const label = total > 0
-        ? `Cargo adicional por upgrade: ${this.product?.currency || "USD"} ${this.formatMoney(total)}`
-        : "Sin cargo adicional";
+        ? `${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${this.product?.currency || "USD"} ${this.formatMoney(total)}`
+        : this.t("product.noAdditionalCharge", "Sin cargo adicional");
       const hint = step === "outbound"
-        ? "Selecciona la ida para continuar con el retorno."
-        : `Total calculado para ${this.getTotalPassengers()} viajero(s).`;
+        ? this.t("product.selectOutboundToContinue", "Selecciona la ida para continuar con el retorno.")
+        : this.t("product.totalCalculatedForTravelers", "Total calculado para {n} viajero(s).", { n: this.getTotalPassengers() });
       footer.innerHTML = `<strong>${esc.call(this, label)}</strong><small>${esc.call(this, hint)}</small>`;
     }
   };
@@ -5798,10 +5805,10 @@ document.addEventListener("click", function (event) {
     const rows = [
       ["Experiencia", payload.productTitle],
       ["Fecha", payload.date],
-      ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-      ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+      [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+      [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
       ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"],
-      ["Total del servicio", payload.serviceTotal],
+      [this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal],
       ["Saldo pendiente", payload.payLater]
     ];
 
@@ -5809,7 +5816,7 @@ document.addEventListener("click", function (event) {
     review.innerHTML = `
       <div class="passenger-review-card passenger-review-card--final">
         <div class="passenger-review-card__header">
-          <strong>Resumen de tu reserva</strong>
+          <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
           <span>Revisa los datos antes de continuar al pago.</span>
         </div>
         <div class="passenger-review-total">
@@ -5829,7 +5836,7 @@ document.addEventListener("click", function (event) {
 
     if (modal) modal.classList.add("passenger-modal--review");
     const title = document.getElementById("passengerModalTitle");
-    if (title) title.textContent = "Resumen de tu reserva";
+    if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
     const warning = document.querySelector(".passenger-modal__warning");
     if (warning) warning.hidden = true;
     const message = document.querySelector("[data-passenger-message]");
@@ -5844,9 +5851,9 @@ document.addEventListener("click", function (event) {
       if (modal) modal.classList.remove("passenger-modal--review");
       review.hidden = true;
       review.innerHTML = "";
-      if (title) title.textContent = "Detalles de reserva";
+      if (title) title.textContent = this.t("product.bookingDetailsTitle", "Detalles de reserva");
       if (warning) warning.hidden = false;
-      if (submit) submit.textContent = "Continuar";
+      if (submit) submit.textContent = this.t("booking.continue", "Continuar");
     });
     review.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -5878,24 +5885,24 @@ document.addEventListener("click", function (event) {
 
     proto.getTrainFeatureListForUpgrade = function (train) {
       const text = `${train?.label || ""} ${train?.category || ""}`.toLowerCase();
-      if (text.includes("observatory")) return ["Vagón panorámico", "Vista superior", "Experiencia premium"];
-      if (text.includes("vistadome")) return ["Ventanas panorámicas", "Experiencia escénica", "Mayor confort"];
-      if (text.includes("360")) return ["Vista panorámica", "Coche observatorio", "Experiencia fotográfica"];
-      if (text.includes("prime")) return ["Servicio superior", "Ambiente cómodo", "Mejor experiencia a bordo"];
-      if (text.includes("expedition")) return ["Servicio turístico", "Buena relación precio/horario", "Operado por PeruRail"];
-      return ["Servicio turístico", "Horario operativo", "Incluido en la experiencia"];
+      if (text.includes("observatory")) return [this.t("product.trainFeature.panoramicCoachShort", "Vagón panorámico"), this.t("product.trainFeature.upperViewShort", "Vista superior"), this.t("product.trainFeature.premiumExperienceShort", "Experiencia premium")];
+      if (text.includes("vistadome")) return [this.t("product.trainFeature.panoramicWindowsShort", "Ventanas panorámicas"), this.t("product.trainFeature.scenicExperienceShort", "Experiencia escénica"), this.t("product.trainFeature.moreComfortShort", "Mayor confort")];
+      if (text.includes("360")) return [this.t("product.trainFeature.panoramicViewShort", "Vista panorámica"), this.t("product.trainFeature.observatoryCoachShort", "Coche observatorio"), this.t("product.trainFeature.photoExperienceShort", "Experiencia fotográfica")];
+      if (text.includes("prime")) return [this.t("product.trainFeature.superiorServiceShort", "Servicio superior"), this.t("product.trainFeature.comfortableAtmosphereShort", "Ambiente cómodo"), this.t("product.trainFeature.bestOnboardExperienceShort", "Mejor experiencia a bordo")];
+      if (text.includes("expedition")) return [this.t("product.trainFeature.touristServiceShort", "Servicio turístico"), this.t("product.trainFeature.goodPriceScheduleRatioShort", "Buena relación precio/horario"), this.t("product.trainFeature.operatedByPeruRail", "Operado por PeruRail")];
+      return [this.t("product.trainFeature.touristServiceShort", "Servicio turístico"), this.t("product.trainFeature.operatingScheduleShort", "Horario operativo"), this.t("product.trainFeature.includedInExperienceShort", "Incluido en la experiencia")];
     };
 
     proto.renderTrainMiniSummary = function (title, train, diff) {
       if (!train) return "";
       const currency = this.product?.currency || "USD";
-      const diffText = diff > 0 ? `+ ${currency} ${this.formatMoney(diff)}` : "Incluido";
+      const diffText = diff > 0 ? `+ ${currency} ${this.formatMoney(diff)}` : this.t("product.includedShort", "Incluido");
       const company = train.companyName || train.company || "";
       const time = `${train.departureTime || ""} → ${train.arrivalTime || ""}`.trim();
       return `
-        <button class="booking-train-mini" type="button" data-open-train-upgrade aria-label="Cambiar ${esc.call(this, title)}">
+        <button class="booking-train-mini" type="button" data-open-train-upgrade aria-label="${this.escapeHtml(this.t('product.changeItemLabel', 'Cambiar {item}', { item: esc.call(this, title) }))}">
           <span class="booking-train-mini__label">${esc.call(this, title)}</span>
-          <strong class="booking-train-mini__name">${esc.call(this, train.label || "Tren")}</strong>
+          <strong class="booking-train-mini__name">${esc.call(this, train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong>
           <span class="booking-train-mini__company">${esc.call(this, company)}</span>
           <small class="booking-train-mini__time">${esc.call(this, time)}</small>
           <em class="booking-train-mini__badge">${esc.call(this, diffText)}</em>
@@ -5911,35 +5918,35 @@ document.addEventListener("click", function (event) {
         <div class="train-upgrade-modal train-upgrade-modal--v67" hidden id="trainUpgradeModal">
           <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
           <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
             <header class="train-upgrade-modal__header">
-              <p>Selección de trenes</p>
+              <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
               <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
-              <span>Primero selecciona el tren de ida. Luego se habilitarán los retornos compatibles.</span>
+              <span>${this.t("product.modal.selectOutboundThenReturnsEnabled", "Primero selecciona el tren de ida. Luego se habilitarán los retornos compatibles.")}</span>
             </header>
             <div class="train-upgrade-modal__tools">
-              <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+              <label for="trainUpgradeSortFilter">${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
               <select id="trainUpgradeSortFilter">
-                <option value="early">Más temprano primero</option>
-                <option value="late">Más tarde primero</option>
-                <option value="cheap">Más barato primero</option>
-                <option value="panoramic">Trenes panorámicos</option>
-                <option value="economy">Económicos</option>
-                <option value="nocharge">Sin cargo adicional</option>
+                <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+                <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+                <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+                <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+                <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+                <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
               </select>
             </div>
             <div class="train-upgrade-modal__body">
               <section id="trainUpgradeOutboundSection" class="train-upgrade-section">
                 <div class="train-upgrade-section__heading">
                   <span>1</span>
-                  <div><h3>Selecciona tu tren de ida</h3><p>Haz clic en una opción para ver detalles y confirmar la selección.</p></div>
+                  <div><h3>Selecciona tu tren de ida</h3><p>${this.t("product.modal.clickOptionToConfirm", "Haz clic en una opción para ver detalles y confirmar la selección.")}</p></div>
                 </div>
                 <div class="train-upgrade-modal__list" id="trainUpgradeOutboundList"></div>
               </section>
               <section id="trainUpgradeReturnSection" class="train-upgrade-section" hidden>
                 <div class="train-upgrade-section__heading">
                   <span>2</span>
-                  <div><h3>Selecciona tu tren de retorno</h3><p>Solo se muestran trenes compatibles con la compañía elegida en la ida.</p></div>
+                  <div><h3>Selecciona tu tren de retorno</h3><p>${this.t("product.modal.onlySameCompanyReturns", "Solo se muestran trenes compatibles con la compañía elegida en la ida.")}</p></div>
                 </div>
                 <div class="train-upgrade-modal__list" id="trainUpgradeReturnList"></div>
               </section>
@@ -5947,8 +5954,8 @@ document.addEventListener("click", function (event) {
             <footer class="train-upgrade-modal__footer">
               <div id="trainUpgradeFooterSummary"></div>
               <div class="train-upgrade-modal__footer-actions">
-                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
-                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>Aplicar selección</button>
+                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>${this.t("booking.cancel", "Cancelar")}</button>
+                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-close-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
               </div>
             </footer>
           </div>
@@ -6048,7 +6055,7 @@ document.addEventListener("click", function (event) {
         const outboundDiff = this.getTrainPositiveDifferencePerPerson(outboundTrain, "outbound");
         const returnDiff = this.getTrainPositiveDifferencePerPerson(returnTrain, "return");
         const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
-        footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc.call(this, this.product?.currency || "USD")} ${esc.call(this, this.formatMoney(total))}</strong><small>${hasOutboundSelection ? "Puedes aplicar la selección o seguir ajustando los trenes." : "Selecciona primero tu tren de ida."}</small>`;
+        footer.innerHTML = `<strong>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc.call(this, this.product?.currency || "USD")} ${esc.call(this, this.formatMoney(total))}</strong><small>${hasOutboundSelection ? this.t("product.canApplyOrKeepAdjusting", "Puedes aplicar la selección o seguir ajustando los trenes.") : this.t("product.selectOutboundFirst", "Selecciona primero tu tren de ida.")}</small>`;
       }
     };
 
@@ -6067,7 +6074,7 @@ document.addEventListener("click", function (event) {
         <article class="train-upgrade-card ${selected ? "is-selected" : ""} ${expanded ? "is-expanded" : ""}" data-train-upgrade-option data-train-direction="${esc.call(this, direction)}" data-train-id="${esc.call(this, train.id)}">
           <div class="train-upgrade-card__main">
             <div class="train-upgrade-card__body">
-              <strong>${esc.call(this, train.label || "Tren")}</strong>
+              <strong>${esc.call(this, train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong>
               <small>${esc.call(this, company)}</small>
               <span>${esc.call(this, train.departureTime || "")} → ${esc.call(this, train.arrivalTime || "")}</span>
               <em>${esc.call(this, train.route || "")}</em>
@@ -6075,11 +6082,11 @@ document.addEventListener("click", function (event) {
             <div class="train-upgrade-card__price">${esc.call(this, priceText)}</div>
           </div>
           <div class="train-upgrade-card__details">
-            <img src="${esc.call(this, image)}" alt="${esc.call(this, train.label || "Tren")}" loading="lazy" />
+            <img src="${esc.call(this, image)}" alt="${esc.call(this, train.label || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />
             <div>
-              <strong>${selected ? "Tren seleccionado" : "Detalles del tren"}</strong>
+              <strong>${selected ? this.t("product.selectedTrainLabel", "Tren seleccionado") : this.t("product.trainDetails", "Detalles del tren")}</strong>
               <ul>${features.map((feature) => `<li>${esc.call(this, feature)}</li>`).join("")}</ul>
-              <button type="button" class="train-upgrade-select-btn" data-select-train-upgrade data-train-direction="${esc.call(this, direction)}" data-train-id="${esc.call(this, train.id)}">${selected ? "Seleccionado" : "Seleccionar este tren"}</button>
+              <button type="button" class="train-upgrade-select-btn" data-select-train-upgrade data-train-direction="${esc.call(this, direction)}" data-train-id="${esc.call(this, train.id)}">${selected ? this.t("product.trainSelectedState", "Seleccionado") : this.t("product.selectThisTrain", "Seleccionar este tren")}</button>
             </div>
           </div>
         </article>
@@ -6112,8 +6119,8 @@ document.addEventListener("click", function (event) {
       const rows = [
         ["Experiencia", payload.productTitle],
         ["Fecha", payload.date],
-        ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-        ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+        [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+        [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
         ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"]
       ];
       if (payLaterValue > 0.01) rows.push(["Saldo pendiente", payload.payLater]);
@@ -6122,7 +6129,7 @@ document.addEventListener("click", function (event) {
       review.innerHTML = `
         <div class="passenger-review-card passenger-review-card--final passenger-review-card--v67">
           <div class="passenger-review-card__header">
-            <strong>Resumen de tu reserva</strong>
+            <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
             <span>Revisa los datos antes de continuar al pago.</span>
           </div>
           <div class="passenger-review-total">
@@ -6143,7 +6150,7 @@ document.addEventListener("click", function (event) {
 
       if (modal) modal.classList.add("passenger-modal--review");
       const title = document.getElementById("passengerModalTitle");
-      if (title) title.textContent = "Resumen de tu reserva";
+      if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
       const warning = document.querySelector(".passenger-modal__warning");
       if (warning) warning.hidden = true;
       const message = document.querySelector("[data-passenger-message]");
@@ -6158,9 +6165,9 @@ document.addEventListener("click", function (event) {
         if (modal) modal.classList.remove("passenger-modal--review");
         review.hidden = true;
         review.innerHTML = "";
-        if (title) title.textContent = "Detalles de reserva";
+        if (title) title.textContent = this.t("product.bookingDetailsTitle", "Detalles de reserva");
         if (warning) warning.hidden = false;
-        if (submit) submit.textContent = "Continuar";
+        if (submit) submit.textContent = this.t("booking.continue", "Continuar");
       });
       review.scrollIntoView({ behavior: "smooth", block: "start" });
     };
@@ -6199,12 +6206,12 @@ document.addEventListener("click", function (event) {
 
     proto.getTrainFeatureListForUpgrade = function (train) {
       const text = `${train?.label || ""} ${train?.category || ""}`.toLowerCase();
-      if (text.includes("observatory")) return ["Ventanas panorámicas y vista superior.", "Coche observatorio para disfrutar el paisaje.", "Experiencia escénica premium hacia Machu Picchu.", "Ideal para viajeros que desean mejores vistas."];
-      if (text.includes("vistadome")) return ["Ventanas panorámicas para el valle.", "Ambiente cómodo durante el recorrido.", "Servicio turístico escénico.", "Buena opción para mejorar la experiencia a bordo."];
-      if (text.includes("360")) return ["Vista panorámica durante el viaje.", "Coche observatorio según operación.", "Experiencia fotográfica superior.", "Ideal para disfrutar el paisaje andino."];
-      if (text.includes("prime")) return ["Servicio superior de Inca Rail.", "Ambiente cómodo y elegante.", "Mejor experiencia a bordo.", "Opción recomendada para un upgrade equilibrado."];
-      if (text.includes("expedition")) return ["Servicio turístico práctico y seguro.", "Buena relación entre horario y precio.", "Operado por PeruRail.", "Ideal para una experiencia clásica a Machu Picchu."];
-      return ["Servicio turístico incluido en la experiencia.", "Horario operativo para Machu Picchu Full Day.", "Reserva sujeta a disponibilidad final.", "La categoría se confirma con tu asesor de viajes."];
+      if (text.includes("observatory")) return [this.t("product.trainFeature.observatoryWindows", "Ventanas panorámicas y vista superior."), this.t("product.trainFeature.observatoryCoach", "Coche observatorio para disfrutar el paisaje."), this.t("product.trainFeature.observatoryScenicPremium", "Experiencia escénica premium hacia Machu Picchu."), this.t("product.trainFeature.idealBetterViews", "Ideal para viajeros que desean mejores vistas.")];
+      if (text.includes("vistadome")) return [this.t("product.trainFeature.vistadomeWindowsValley", "Ventanas panorámicas para el valle."), this.t("product.trainFeature.comfortableDuringTrip", "Ambiente cómodo durante el recorrido."), this.t("product.trainFeature.scenicTouristService", "Servicio turístico escénico."), this.t("product.trainFeature.goodOnboardUpgrade", "Buena opción para mejorar la experiencia a bordo.")];
+      if (text.includes("360")) return [this.t("product.trainFeature.panoramicViewTrip", "Vista panorámica durante el viaje."), this.t("product.trainFeature.observatoryCarByOperation", "Coche observatorio según operación."), this.t("product.trainFeature.superiorPhotoExperience", "Experiencia fotográfica superior."), this.t("product.trainFeature.idealAndeanScenery", "Ideal para disfrutar el paisaje andino.")];
+      if (text.includes("prime")) return [this.t("product.trainFeature.superiorServiceIncaRail", "Servicio superior de Inca Rail."), this.t("product.trainFeature.comfortableElegant", "Ambiente cómodo y elegante."), this.t("product.trainFeature.betterOnboardExperience", "Mejor experiencia a bordo."), this.t("product.trainFeature.recommendedBalancedUpgrade", "Opción recomendada para un upgrade equilibrado.")];
+      if (text.includes("expedition")) return [this.t("product.trainFeature.practicalSafeService", "Servicio turístico práctico y seguro."), this.t("product.trainFeature.goodSchedulePriceRatio", "Buena relación entre horario y precio."), this.t("product.trainFeature.operatedByPeruRail", "Operado por PeruRail."), this.t("product.trainFeature.idealClassicExperience", "Ideal para una experiencia clásica a Machu Picchu.")];
+      return [this.t("product.touristServiceIncluded", "Servicio turístico incluido en la experiencia."), this.t("product.operatingScheduleFullDay", "Horario operativo para Machu Picchu Full Day."), this.t("product.reservationSubjectToAvailability", "Reserva sujeta a disponibilidad final."), this.t("product.categoryConfirmedByAdvisor", "La categoría se confirma con tu asesor de viajes.")];
     };
 
     proto.formatTrainDurationForUpgrade = function (train) {
@@ -6224,13 +6231,13 @@ document.addEventListener("click", function (event) {
 
     proto.renderTrainMiniSummary = function (title, train, diff) {
       if (!train) return "";
-      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido";
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : this.t("product.includedShort", "Incluido");
       const company = train.companyName || train.company || "";
       const time = [train.departureTime, train.arrivalTime].filter(Boolean).join(" → ");
       return `
-        <button class="booking-train-mini booking-train-mini--v69" type="button" data-open-train-upgrade aria-label="Cambiar ${esc(title)}">
+        <button class="booking-train-mini booking-train-mini--v69" type="button" data-open-train-upgrade aria-label="${this.escapeHtml(this.t('product.changeItemLabel', 'Cambiar {item}', { item: esc(title) }))}">
           <span class="booking-train-mini__label">${esc(title)}</span>
-          <strong class="booking-train-mini__name">${esc(train.label || "Tren")}</strong>
+          <strong class="booking-train-mini__name">${esc(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong>
           <span class="booking-train-mini__company">${esc(company)}</span>
           <small class="booking-train-mini__time">${esc(time)}</small>
           <em class="booking-train-mini__badge">${esc(diffText)}</em>
@@ -6261,21 +6268,21 @@ document.addEventListener("click", function (event) {
         <div class="train-upgrade-modal train-upgrade-modal--v69" hidden id="trainUpgradeModal">
           <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
           <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
             <header class="train-upgrade-modal__header">
-              <p>Selección de trenes</p>
+              <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
               <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
               <span>Elige primero la ida, confirma el tren y luego selecciona el retorno compatible.</span>
             </header>
             <div class="train-upgrade-modal__tools">
-              <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+              <label for="trainUpgradeSortFilter">${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
               <select id="trainUpgradeSortFilter">
-                <option value="early">Más temprano primero</option>
-                <option value="late">Más tarde primero</option>
-                <option value="cheap">Más barato primero</option>
-                <option value="panoramic">Trenes panorámicos</option>
-                <option value="economy">Económicos</option>
-                <option value="nocharge">Sin cargo adicional</option>
+                <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+                <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+                <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+                <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+                <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+                <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
               </select>
             </div>
             <div class="train-upgrade-modal__body">
@@ -6286,8 +6293,8 @@ document.addEventListener("click", function (event) {
             <footer class="train-upgrade-modal__footer">
               <div id="trainUpgradeFooterSummary"></div>
               <div class="train-upgrade-modal__footer-actions">
-                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
-                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-apply-train-upgrade>Aplicar selección</button>
+                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>${this.t("booking.cancel", "Cancelar")}</button>
+                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-apply-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
               </div>
             </footer>
           </div>
@@ -6399,14 +6406,14 @@ document.addEventListener("click", function (event) {
       const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
       const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido / sin recargo";
       const logo = this.getTrainCompanyLogo?.(train.company) || "";
-      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
-      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
+      const title = direction === "outbound" ? this.t("booking.train.outbound", "Tren de ida") : this.t("booking.train.return", "Tren de retorno");
+      const modifyText = direction === "outbound" ? this.t("product.editOutboundTrain", "Modificar tren de ida") : this.t("product.editReturnTrain", "Modificar tren de retorno");
       const date = this.selectedDate ? this.formatDateForDisplay?.(this.selectedDate) || this.selectedDate : "Fecha de viaje";
       return `
         <article class="train-upgrade-selected-summary">
           <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
           <div class="train-upgrade-selected-summary__content">
-            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
+            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />` : ""}
             <div>
               <strong>${esc(title)}</strong>
               <b>${esc(`${train.companyName || train.company || ""} ${train.label || ""}`.trim())}</b>
@@ -6477,7 +6484,7 @@ document.addEventListener("click", function (event) {
               <strong>Resumen de trenes seleccionados</strong>
               <span>Ida: ${esc(outboundTrain?.label || "-")} · ${esc(outboundTrain?.departureTime || "")} → ${esc(outboundTrain?.arrivalTime || "")}</span>
               <span>Retorno: ${esc(returnTrain?.label || "-")} · ${esc(returnTrain?.departureTime || "")} → ${esc(returnTrain?.arrivalTime || "")}</span>
-              <b>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</b>
+              <b>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc(currency())} ${esc(formatMoney(total))}</b>
             </div>
           `;
         }
@@ -6489,7 +6496,7 @@ document.addEventListener("click", function (event) {
         const outboundDiff = this.getTrainPositiveDifferencePerPerson?.(outboundTrain, "outbound") || 0;
         const returnDiff = this.getTrainPositiveDifferencePerPerson?.(returnTrain, "return") || 0;
         const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
-        footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${this.trainUpgradeReturnConfirmed ? "Listo para aplicar la selección." : "Confirma ida y retorno para aplicar el cambio."}</small>`;
+        footer.innerHTML = `<strong>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${this.trainUpgradeReturnConfirmed ? this.t("product.readyToApplySelection", "Listo para aplicar la selección.") : this.t("product.confirmBothToApply", "Confirma ida y retorno para aplicar el cambio.")}</small>`;
       }
       if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
     };
@@ -6501,29 +6508,29 @@ document.addEventListener("click", function (event) {
       const expanded = expandedId === train.id;
       const selected = selectedId === train.id;
       const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
-      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido";
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : this.t("product.includedShort", "Incluido");
       const logo = this.getTrainCompanyLogo?.(train.company) || "";
       const image = this.getTrainImageForUpgrade?.(train) || "";
       const features = this.getTrainFeatureListForUpgrade?.(train) || [];
       const duration = this.formatTrainDurationForUpgrade?.(train) || "";
-      const directionLabel = direction === "outbound" ? "tren de ida" : "tren de retorno";
+      const directionLabel = direction === "outbound" ? this.t("product.trainDirectionOutboundLower", "tren de ida") : this.t("product.trainDirectionReturnLower", "tren de retorno");
       return `
         <article class="train-upgrade-card train-upgrade-card--v69 ${expanded ? "is-expanded" : ""} ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">
           <div class="train-upgrade-card__main">
             <span class="train-upgrade-card__radio" aria-hidden="true"></span>
-            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" />` : ""}</span>
-            <span class="train-upgrade-card__service"><strong>${esc(train.label || "Tren")}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
+            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" />` : ""}</span>
+            <span class="train-upgrade-card__service"><strong>${esc(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
             <span class="train-upgrade-card__station"><em>Salida</em><b>${esc(train.departureTime || "")}</b><small>${esc((train.route || "").split("→")[0]?.trim() || "Ollantaytambo")}</small></span>
             <span class="train-upgrade-card__duration">${esc(duration)}</span>
             <span class="train-upgrade-card__station"><em>Llegada</em><b>${esc(train.arrivalTime || "")}</b><small>${esc((train.route || "").split("→")[1]?.trim() || "Machu Picchu")}</small></span>
             <span class="train-upgrade-card__price"><em>Cargo adicional</em><b>${esc(diffText)}</b></span>
           </div>
           <div class="train-upgrade-card__details">
-            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || "Tren")}" loading="lazy" />` : ""}
+            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />` : ""}
             <div>
-              <strong>${esc((train.label || "Tren") + " — " + (train.companyName || train.company || ""))}</strong>
+              <strong>${esc((train.label || this.t("quote.train.detailTrainFallback", "Tren")) + " — " + (train.companyName || train.company || ""))}</strong>
               <ul>${features.map((feature) => `<li>${esc(feature)}</li>`).join("")}</ul>
-              <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">Seleccionar este ${esc(directionLabel)}</button>
+              <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">${this.t("product.selectThisTrainDirection", "Seleccionar este {train}", { train: esc(directionLabel) })}</button>
             </div>
           </div>
         </article>
@@ -6542,7 +6549,7 @@ document.addEventListener("click", function (event) {
       const payLaterValue = Number(payload.payLaterValue || 0);
       const hasDiscount = serviceTotalValue > 0 && payNowValue > 0 && payNowValue < serviceTotalValue && payLaterValue <= 0.01;
       const discountAmount = Math.max(0, serviceTotalValue - payNowValue);
-      const paymentLabel = hasDiscount ? "Monto a pagar ahora (descuento aplicado)" : "Monto a pagar ahora";
+      const paymentLabel = hasDiscount ? this.t("product.payNowWithDiscount", "Monto a pagar ahora (descuento aplicado)") : this.t("product.payNowLabel", "Monto a pagar ahora");
 
       const passengerRows = (payload.passengers || []).map((p) => {
         const name = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
@@ -6558,12 +6565,12 @@ document.addEventListener("click", function (event) {
       const rows = [
         ["Experiencia", payload.productTitle],
         ["Fecha", payload.date],
-        ["Viajeros", `${payload.adults || 0} adulto(s) · ${payload.children || 0} niño(s)`],
-        ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+        [this.t("product.travelersLabel", "Viajeros"), `${this.t("product.adultsPlural", "{n} adulto(s)", { n: payload.adults || 0 })} · ${this.t("product.childrenPlural", "{n} niño(s)", { n: payload.children || 0 })}`],
+        [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
         ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"]
       ];
       if (payLaterValue > 0.01) {
-        rows.push(["Total del servicio", payload.serviceTotal]);
+        rows.push([this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal]);
         rows.push(["Saldo pendiente", payload.payLater]);
       }
 
@@ -6571,7 +6578,7 @@ document.addEventListener("click", function (event) {
       review.innerHTML = `
         <div class="passenger-review-card passenger-review-card--final passenger-review-card--v69">
           <div class="passenger-review-card__header">
-            <strong>Resumen de tu reserva</strong>
+            <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
             <span>Revisa los datos antes de continuar al pago.</span>
           </div>
           <div class="passenger-review-total">
@@ -6592,7 +6599,7 @@ document.addEventListener("click", function (event) {
 
       if (modal) modal.classList.add("passenger-modal--review");
       const title = document.getElementById("passengerModalTitle");
-      if (title) title.textContent = "Resumen de tu reserva";
+      if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
       const warning = document.querySelector(".passenger-modal__warning");
       if (warning) warning.hidden = true;
       const message = document.querySelector("[data-passenger-message]");
@@ -6607,9 +6614,9 @@ document.addEventListener("click", function (event) {
         if (modal) modal.classList.remove("passenger-modal--review");
         review.hidden = true;
         review.innerHTML = "";
-        if (title) title.textContent = "Detalles de reserva";
+        if (title) title.textContent = this.t("product.bookingDetailsTitle", "Detalles de reserva");
         if (warning) warning.hidden = false;
-        if (submit) submit.textContent = "Continuar";
+        if (submit) submit.textContent = this.t("booking.continue", "Continuar");
       });
       review.scrollIntoView({ behavior: "smooth", block: "start" });
     };
@@ -6740,23 +6747,23 @@ document.addEventListener("click", function (event) {
         <div class="train-upgrade-modal train-upgrade-modal--v69 train-upgrade-modal--v70" hidden id="trainUpgradeModal">
           <div class="train-upgrade-modal__backdrop" data-close-train-upgrade></div>
           <div class="train-upgrade-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trainUpgradeModalTitle">
-            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="Cerrar"><i class="fas fa-xmark"></i></button>
+            <button class="train-upgrade-modal__close" type="button" data-close-train-upgrade aria-label="${this.escapeHtml(this.t("booking.close", "Cerrar"))}"><i class="fas fa-xmark"></i></button>
             <header class="train-upgrade-modal__header">
-              <p>Selección de trenes</p>
+              <p>${this.t("product.modal.trainSelectionHeading", "Selección de trenes")}</p>
               <h2 id="trainUpgradeModalTitle">Upgrade de trenes</h2>
               <span>Elige primero la ida, confirma el tren y luego selecciona el retorno compatible.</span>
             </header>
             <div class="train-upgrade-modal__tools train-upgrade-modal__tools--v70">
               <strong class="train-upgrade-modal__step-title" id="trainUpgradeCurrentStepTitle">Elige tu tren de ida</strong>
               <div class="train-upgrade-modal__filter">
-                <label for="trainUpgradeSortFilter">Ordenar / filtrar</label>
+                <label for="trainUpgradeSortFilter">${this.t("product.modal.sortFilterLabel", "Ordenar / filtrar")}</label>
                 <select id="trainUpgradeSortFilter">
-                  <option value="early">Más temprano primero</option>
-                  <option value="late">Más tarde primero</option>
-                  <option value="cheap">Más barato primero</option>
-                  <option value="panoramic">Trenes panorámicos</option>
-                  <option value="economy">Económicos</option>
-                  <option value="nocharge">Sin cargo adicional</option>
+                  <option value="early">${this.t("product.modal.sortEarliest", "Más temprano primero")}</option>
+                  <option value="late">${this.t("product.modal.sortLatest", "Más tarde primero")}</option>
+                  <option value="cheap">${this.t("product.modal.sortCheapest", "Más barato primero")}</option>
+                  <option value="panoramic">${this.t("product.modal.filterPanoramic", "Trenes panorámicos")}</option>
+                  <option value="economy">${this.t("product.modal.filterEconomy", "Económicos")}</option>
+                  <option value="nocharge">${this.t("product.noAdditionalCharge", "Sin cargo adicional")}</option>
                 </select>
               </div>
             </div>
@@ -6768,8 +6775,8 @@ document.addEventListener("click", function (event) {
             <footer class="train-upgrade-modal__footer">
               <div id="trainUpgradeFooterSummary"></div>
               <div class="train-upgrade-modal__footer-actions">
-                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>Cancelar</button>
-                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-apply-train-upgrade>Aplicar selección</button>
+                <button class="btn train-upgrade-cancel-btn" type="button" data-close-train-upgrade>${this.t("booking.cancel", "Cancelar")}</button>
+                <button class="btn booking-main-btn train-upgrade-apply-btn" type="button" data-apply-train-upgrade>${this.t("product.modal.applySelection", "Aplicar selección")}</button>
               </div>
             </footer>
           </div>
@@ -6890,8 +6897,8 @@ document.addEventListener("click", function (event) {
 
       if (stepTitle) {
         stepTitle.textContent = !this.trainUpgradeOutboundConfirmed
-          ? "Elige tu tren de ida"
-          : (!this.trainUpgradeReturnConfirmed ? "Elige tu tren de retorno" : "Resumen de trenes seleccionados");
+          ? this.t("product.chooseOutboundTrain", "Elige tu tren de ida")
+          : (!this.trainUpgradeReturnConfirmed ? this.t("product.chooseReturnTrain", "Elige tu tren de retorno") : this.t("product.trainSelectedSummaryHeading", "Resumen de trenes seleccionados"));
       }
 
       if (this.trainUpgradeOutboundConfirmed) {
@@ -6928,7 +6935,7 @@ document.addEventListener("click", function (event) {
               <strong>Resumen de trenes seleccionados</strong>
               <span>Ida: ${esc(outboundTrain?.label || "-")} · ${esc(outboundTrain?.departureTime || "")} → ${esc(outboundTrain?.arrivalTime || "")}</span>
               <span>Retorno: ${esc(returnTrain?.label || "-")} · ${esc(returnTrain?.departureTime || "")} → ${esc(returnTrain?.arrivalTime || "")}</span>
-              <b>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</b>
+              <b>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc(currency())} ${esc(formatMoney(total))}</b>
             </div>
           `;
         }
@@ -6940,7 +6947,7 @@ document.addEventListener("click", function (event) {
         const outboundDiff = this.getTrainPositiveDifferencePerPerson?.(outboundTrain, "outbound") || 0;
         const returnDiff = this.getTrainPositiveDifferencePerPerson?.(returnTrain, "return") || 0;
         const total = (outboundDiff + returnDiff) * this.getTotalPassengers();
-        footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${this.trainUpgradeReturnConfirmed ? "Listo para aplicar la selección." : "Confirma ida y retorno para aplicar el cambio."}</small>`;
+        footer.innerHTML = `<strong>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${this.trainUpgradeReturnConfirmed ? this.t("product.readyToApplySelection", "Listo para aplicar la selección.") : this.t("product.confirmBothToApply", "Confirma ida y retorno para aplicar el cambio.")}</small>`;
       }
       if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
     };
@@ -6951,30 +6958,30 @@ document.addEventListener("click", function (event) {
       const expanded = expandedId === train.id;
       const selected = selectedId === train.id;
       const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
-      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido";
+      const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : this.t("product.includedShort", "Incluido");
       const logo = this.getTrainCompanyLogo?.(train.company) || "";
       const image = this.getTrainImageForUpgrade?.(train) || "";
       const features = this.getTrainFeatureListForUpgrade?.(train) || [];
       const duration = this.formatTrainDurationForUpgrade?.(train) || "";
-      const directionLabel = direction === "outbound" ? "tren de ida" : "tren de retorno";
+      const directionLabel = direction === "outbound" ? this.t("product.trainDirectionOutboundLower", "tren de ida") : this.t("product.trainDirectionReturnLower", "tren de retorno");
       const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
       return `
         <article class="train-upgrade-card train-upgrade-card--v69 train-upgrade-card--v70 ${expanded ? "is-expanded" : ""} ${selected ? "is-selected" : ""}" data-train-upgrade-option data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">
           <div class="train-upgrade-card__main">
             <span class="train-upgrade-card__radio" aria-hidden="true"></span>
-            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" />` : ""}</span>
-            <span class="train-upgrade-card__service"><strong>${esc(train.label || "Tren")}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
+            <span class="train-upgrade-card__logo">${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" />` : ""}</span>
+            <span class="train-upgrade-card__service"><strong>${esc(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}</strong><small>${esc(train.companyName || train.company || "")}</small></span>
             <span class="train-upgrade-card__station"><em>Salida</em><b>${esc(train.departureTime || "")}</b><small>${esc(endpoints.from)}</small></span>
             <span class="train-upgrade-card__duration">${esc(duration)}</span>
             <span class="train-upgrade-card__station"><em>Llegada</em><b>${esc(train.arrivalTime || "")}</b><small>${esc(endpoints.to)}</small></span>
             <span class="train-upgrade-card__price"><em>Cargo adicional</em><b>${esc(diffText)}</b></span>
           </div>
           <div class="train-upgrade-card__details">
-            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || "Tren")}" loading="lazy" />` : ""}
+            ${image ? `<img src="${esc(image)}" alt="${esc(train.label || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />` : ""}
             <div>
-              <strong>${esc((train.label || "Tren") + " — " + (train.companyName || train.company || ""))}</strong>
+              <strong>${esc((train.label || this.t("quote.train.detailTrainFallback", "Tren")) + " — " + (train.companyName || train.company || ""))}</strong>
               <ul>${features.map((feature) => `<li>${esc(feature)}</li>`).join("")}</ul>
-              <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">Seleccionar este ${esc(directionLabel)}</button>
+              <button type="button" class="train-upgrade-select-btn" data-confirm-train-upgrade data-train-direction="${esc(direction)}" data-train-id="${esc(train.id)}">${this.t("product.selectThisTrainDirection", "Seleccionar este {train}", { train: esc(directionLabel) })}</button>
             </div>
           </div>
         </article>
@@ -6986,15 +6993,15 @@ document.addEventListener("click", function (event) {
       const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
       const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido / sin recargo";
       const logo = this.getTrainCompanyLogo?.(train.company) || "";
-      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
-      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
+      const title = direction === "outbound" ? this.t("booking.train.outbound", "Tren de ida") : this.t("booking.train.return", "Tren de retorno");
+      const modifyText = direction === "outbound" ? this.t("product.editOutboundTrain", "Modificar tren de ida") : this.t("product.editReturnTrain", "Modificar tren de retorno");
       const date = this.selectedDate ? this.formatDateForDisplay?.(this.selectedDate) || this.selectedDate : "Fecha de viaje";
       const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: "", to: "" };
       return `
         <article class="train-upgrade-selected-summary train-upgrade-selected-summary--v70">
           <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
           <div class="train-upgrade-selected-summary__content">
-            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
+            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />` : ""}
             <div>
               <strong>${esc(title)}</strong>
               <b>${esc(`${train.companyName || train.company || ""} ${train.label || ""}`.trim())}</b>
@@ -7049,11 +7056,11 @@ document.addEventListener("click", function (event) {
 
     function formatReservationDateOnly(value) {
       const date = value ? new Date(value) : new Date();
-      if (Number.isNaN(date.getTime())) return "Reserva generada";
+      if (Number.isNaN(date.getTime())) return this.t("product.reservationGeneratedFallback", "Reserva generada");
       try {
-        return `Reserva generada: ${date.toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" }).replace(/\./g, "")}`;
+        return this.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "short", year: "numeric" }).replace(/\./g, "") });
       } catch (_) {
-        return `Reserva generada: ${date.toLocaleDateString("es-PE")}`;
+        return this.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag()) });
       }
     }
 
@@ -7062,7 +7069,7 @@ document.addEventListener("click", function (event) {
       if (!modal) return;
       const title = document.getElementById("passengerModalTitle");
       const timestamp = document.getElementById("passengerReservationTimestamp");
-      if (title && !modal.classList.contains("passenger-modal--review")) title.textContent = "Datos de los pasajeros";
+      if (title && !modal.classList.contains("passenger-modal--review")) title.textContent = this.t("product.passengerDetailsTitle", "Datos de los pasajeros");
       if (timestamp) timestamp.textContent = formatReservationDateOnly(this.currentPreReservation?.createdAt);
     };
 
@@ -7077,7 +7084,7 @@ document.addEventListener("click", function (event) {
       const result = oldRenderExtras.apply(this, arguments);
       const section = document.getElementById("extrasSection");
       const label = section?.querySelector("label");
-      if (label) label.textContent = "Extras: opciones de almuerzo";
+      if (label) label.textContent = this.t("product.extrasLunchOptionsLabel", "Extras: opciones de almuerzo");
       return result;
     };
 
@@ -7086,7 +7093,7 @@ document.addEventListener("click", function (event) {
       proto.renderPaymentReviewStep = function (payload) {
         const result = oldRenderPaymentReviewStep.apply(this, arguments);
         const title = document.getElementById("passengerModalTitle");
-        if (title) title.textContent = "Resumen de tu reserva";
+        if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
         return result;
       };
     }
@@ -7128,12 +7135,12 @@ document.addEventListener("click", function (event) {
       const key = String(value || "").trim().toLowerCase();
       const map = {
         dni: "DNI",
-        passport: "Pasaporte",
-        pasaporte: "Pasaporte",
-        id_card: "Documento de identidad",
-        document: "Documento",
-        other: "Otro",
-        otro: "Otro"
+        passport: page.t ? page.t("quote.passenger.passport", "Pasaporte") : "Pasaporte",
+        pasaporte: page.t ? page.t("quote.passenger.passport", "Pasaporte") : "Pasaporte",
+        id_card: page.t ? page.t("product.docTypeIdCard", "Documento de identidad") : "Documento de identidad",
+        document: page.t ? page.t("quote.passenger.docPlaceholder", "Documento") : "Documento",
+        other: page.t ? page.t("product.docTypeOther", "Otro") : "Otro",
+        otro: page.t ? page.t("product.docTypeOther", "Otro") : "Otro"
       };
       if (map[key]) return map[key];
       if (!key) return "";
@@ -7151,7 +7158,7 @@ document.addEventListener("click", function (event) {
         if (!Number.isNaN(parsed.getTime())) date = parsed;
       }
       if (date && !Number.isNaN(date.getTime())) {
-        return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/ de /g, " ");
+        return date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "long", year: "numeric" }).replace(/ de /g, " ");
       }
       return raw.replace(/\bde\s+/gi, "").replace(/,/g, "");
     }
@@ -7160,8 +7167,8 @@ document.addEventListener("click", function (event) {
       const a = Number(adults || 0);
       const c = Number(children || 0);
       const parts = [];
-      parts.push(`${a} ${a === 1 ? "adulto" : "adultos"}`);
-      if (c > 0) parts.push(`${c} ${c === 1 ? "niño" : "niños"}`);
+      parts.push(String(window.MyCuscoTripI18n?.t("product.adultsPlural", "{n} adulto(s)") ?? "{n} adulto(s)").replace("{n}", a));
+      if (c > 0) parts.push(String(window.MyCuscoTripI18n?.t("product.childrenPlural", "{n} niño(s)") ?? "{n} niño(s)").replace("{n}", c));
       return parts.join(" · ");
     }
 
@@ -7175,11 +7182,11 @@ document.addEventListener("click", function (event) {
         cancel.type = "button";
         cancel.className = "btn passenger-modal__cancel-btn";
         cancel.setAttribute("data-close-passenger-modal", "");
-        cancel.textContent = "Cancelar";
+        cancel.textContent = this.t("booking.cancel", "Cancelar");
         actions.insertBefore(cancel, submit || null);
       }
       cancel.onclick = () => page.closePassengerReservationModal?.();
-      if (submit && !submit.textContent.trim()) submit.textContent = "Continuar";
+      if (submit && !submit.textContent.trim()) submit.textContent = this.t("booking.continue", "Continuar");
     }
 
     const oldOpenPassenger = proto.openPassengerReservationModal;
@@ -7189,7 +7196,7 @@ document.addEventListener("click", function (event) {
         window.setTimeout(() => {
           ensurePassengerActionButtons();
           const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
-          if (submit) submit.textContent = "Continuar";
+          if (submit) submit.textContent = this.t("booking.continue", "Continuar");
         }, 0);
         return result;
       };
@@ -7208,7 +7215,7 @@ document.addEventListener("click", function (event) {
       const payLaterValue = Number(payload.payLaterValue || 0);
       const hasDiscount = serviceTotalValue > 0 && payNowValue > 0 && payNowValue < serviceTotalValue && payLaterValue <= 0.01;
       const discountAmount = Math.max(0, serviceTotalValue - payNowValue);
-      const paymentLabel = hasDiscount ? "Monto a pagar ahora (descuento aplicado)" : "Monto a pagar ahora";
+      const paymentLabel = hasDiscount ? this.t("product.payNowWithDiscount", "Monto a pagar ahora (descuento aplicado)") : this.t("product.payNowLabel", "Monto a pagar ahora");
 
       const passengerRows = (payload.passengers || []).map((p) => {
         const name = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
@@ -7226,11 +7233,11 @@ document.addEventListener("click", function (event) {
         ["Experiencia", payload.productTitle],
         ["Fecha", formatTravelDate(payload.date)],
         ["Viajeros", formatTravelers(payload.adults, payload.children)],
-        ["Trenes", payload.summary?.trainSelection || "Incluidos según selección"],
+        [this.t("quote.print.trainsLabel", "Trenes"), payload.summary?.trainSelection || this.t("product.includedBySelection", "Incluidos según selección")],
         ["Extras", payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras"]
       ];
       if (payLaterValue > 0.01) {
-        rows.push(["Total del servicio", payload.serviceTotal]);
+        rows.push([this.t("product.serviceTotalLabel", "Total del servicio"), payload.serviceTotal]);
         rows.push(["Saldo pendiente", payload.payLater]);
       }
 
@@ -7238,7 +7245,7 @@ document.addEventListener("click", function (event) {
       review.innerHTML = `
         <div class="passenger-review-card passenger-review-card--final passenger-review-card--v73">
           <div class="passenger-review-card__header">
-            <strong>Resumen de tu reserva</strong>
+            <strong>${this.t("booking.reservationSummaryTitle", "Resumen de tu reserva")}</strong>
             <span>Revisa los datos antes de continuar al pago.</span>
           </div>
           <div class="passenger-review-total">
@@ -7259,7 +7266,7 @@ document.addEventListener("click", function (event) {
 
       if (modal) modal.classList.add("passenger-modal--review");
       const title = document.getElementById("passengerModalTitle");
-      if (title) title.textContent = "Resumen de tu reserva";
+      if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
       const warning = document.querySelector(".passenger-modal__warning");
       if (warning) warning.hidden = true;
       const message = document.querySelector("[data-passenger-message]");
@@ -7276,7 +7283,7 @@ document.addEventListener("click", function (event) {
         review.innerHTML = "";
         if (title) title.textContent = "Datos de los pasajeros";
         if (warning) warning.hidden = false;
-        if (submit) submit.textContent = "Continuar";
+        if (submit) submit.textContent = this.t("booking.continue", "Continuar");
         ensurePassengerActionButtons();
       });
       review.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -7287,14 +7294,14 @@ document.addEventListener("click", function (event) {
       const diff = this.getTrainPositiveDifferencePerPerson?.(train, direction) || 0;
       const diffText = diff > 0 ? `+ ${currency()} ${formatMoney(diff)}` : "Incluido / sin recargo";
       const logo = this.getTrainCompanyLogo?.(train.company) || "";
-      const title = direction === "outbound" ? "Tren de ida" : "Tren de retorno";
-      const modifyText = direction === "outbound" ? "Modificar tren de ida" : "Modificar tren de retorno";
+      const title = direction === "outbound" ? this.t("booking.train.outbound", "Tren de ida") : this.t("booking.train.return", "Tren de retorno");
+      const modifyText = direction === "outbound" ? this.t("product.editOutboundTrain", "Modificar tren de ida") : this.t("product.editReturnTrain", "Modificar tren de retorno");
       const endpoints = this.getTrainEndpointsV70?.(train, direction) || { from: direction === "return" ? "Machu Picchu" : "Ollantaytambo", to: direction === "return" ? "Ollantaytambo" : "Machu Picchu" };
       return `
         <article class="train-upgrade-selected-summary train-upgrade-selected-summary--v70 train-upgrade-selected-summary--v73">
           <span class="train-upgrade-selected-summary__badge">Tren seleccionado</span>
           <div class="train-upgrade-selected-summary__content">
-            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || "Tren")}" loading="lazy" />` : ""}
+            ${logo ? `<img src="${esc(logo)}" alt="${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))}" loading="lazy" />` : ""}
             <div>
               <strong>${esc(title)}</strong>
               <b>${esc(`${train.companyName || train.company || ""} ${train.label || ""}`.trim())}</b>
@@ -7324,9 +7331,9 @@ document.addEventListener("click", function (event) {
         const total = perPerson * totalPassengers;
         if (footer) {
           const note = this.trainUpgradeReturnConfirmed
-            ? `Cargo total para ${totalPassengers} ${totalPassengers === 1 ? "pasajero" : "pasajeros"}. Cargo por persona: ${currency()} ${formatMoney(perPerson)}.`
-            : "Confirma ida y retorno para aplicar el cambio.";
-          footer.innerHTML = `<strong>Cargo adicional por upgrade: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${esc(note)}</small>`;
+            ? this.t("product.totalChargeForPassengers", "Cargo total para {n} {word}. Cargo por persona: {currency} {perPerson}.", { n: totalPassengers, word: totalPassengers === 1 ? this.t("product.passengerSingular", "pasajero") : this.t("product.passengerPlural", "pasajeros"), currency: currency(), perPerson: formatMoney(perPerson) })
+            : this.t("product.confirmBothToApply", "Confirma ida y retorno para aplicar el cambio.");
+          footer.innerHTML = `<strong>${this.t("product.additionalUpgradeCharge", "Cargo adicional por upgrade")}: ${esc(currency())} ${esc(formatMoney(total))}</strong><small>${esc(note)}</small>`;
         }
         const apply = document.querySelector("[data-apply-train-upgrade]");
         if (apply) apply.disabled = !(this.trainUpgradeOutboundConfirmed && this.trainUpgradeReturnConfirmed);
@@ -7378,7 +7385,7 @@ document.addEventListener("click", function (event) {
       if (["dni", "d.n.i", "documento nacional de identidad"].includes(lower)) return "DNI";
       if (["passport", "pasaporte"].includes(lower)) return "Pasaporte";
       if (["ce", "c.e.", "carnet de extranjeria", "carné de extranjería", "carnet de extranjería"].includes(lower)) return "CE";
-      if (["id", "identity card"].includes(lower)) return "Documento de identidad";
+      if (["id", "identity card"].includes(lower)) return page.t ? page.t("product.docTypeIdCard", "Documento de identidad") : "Documento de identidad";
       return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
     }
 
@@ -7387,21 +7394,21 @@ document.addEventListener("click", function (event) {
       const raw = String(value);
       const date = new Date(`${raw}T12:00:00`);
       if (Number.isNaN(date.getTime())) return raw;
-      return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
     }
 
     function formatTravelers(adults, children) {
       const a = Number(adults || 0);
       const c = Number(children || 0);
       const parts = [];
-      if (a > 0) parts.push(`${a} ${a === 1 ? "adulto" : "adultos"}`);
-      if (c > 0) parts.push(`${c} ${c === 1 ? "niño" : "niños"}`);
+      if (a > 0) parts.push(page.t ? page.t("product.adultsPlural", "{n} adulto(s)", { n: a }) : `${a} adulto(s)`);
+      if (c > 0) parts.push(page.t ? page.t("product.childrenPlural", "{n} niño(s)", { n: c }) : `${c} niño(s)`);
       return parts.join(", ") || "-";
     }
 
     function trainLine(train, label) {
       if (!train) return "";
-      const name = String(train.label || "Tren").trim();
+      const name = String(train.label || (page.t ? page.t("quote.train.detailTrainFallback", "Tren") : "Tren")).trim();
       const time = String(train.departureTime || "").trim();
       return `<span>${esc(label)}: ${esc(name.toUpperCase())}${time ? ` ${esc(time)}` : ""}</span>`;
     }
@@ -7416,11 +7423,11 @@ document.addEventListener("click", function (event) {
         cancel.type = "button";
         cancel.className = "btn passenger-modal__cancel-btn";
         cancel.setAttribute("data-close-passenger-modal", "");
-        cancel.textContent = "Cancelar";
+        cancel.textContent = page.t ? page.t("booking.cancel", "Cancelar") : "Cancelar";
         actions.insertBefore(cancel, submit || null);
       }
       cancel.onclick = () => page.closePassengerReservationModal?.();
-      if (submit && !submit.textContent.trim()) submit.textContent = "Continuar";
+      if (submit && !submit.textContent.trim()) submit.textContent = page.t ? page.t("booking.continue", "Continuar") : "Continuar";
     }
 
     proto.renderPaymentReviewStep = function (payload) {
@@ -7436,7 +7443,7 @@ document.addEventListener("click", function (event) {
       const payLaterValue = Number(payload.payLaterValue || 0);
       const hasDiscount = serviceTotalValue > 0 && payNowValue > 0 && payNowValue < serviceTotalValue && payLaterValue <= 0.01;
       const discountAmount = Math.max(0, serviceTotalValue - payNowValue);
-      const paymentLabel = hasDiscount ? "Monto a pagar ahora (descuento aplicado)" : "Monto a pagar ahora";
+      const paymentLabel = hasDiscount ? page.t("product.payNowWithDiscount", "Monto a pagar ahora (descuento aplicado)") : page.t("product.payNowLabel", "Monto a pagar ahora");
 
       const passengerRows = (payload.passengers || []).map((p) => {
         const name = [p.firstName, p.lastName].filter(Boolean).join(" ").trim();
@@ -7444,26 +7451,26 @@ document.addEventListener("click", function (event) {
         const docType = normalizeDocumentType(p.documentType);
         const doc = [docType, p.documentNumber].filter(Boolean).join(" · ");
         return `<li class="passenger-review-passenger ${pending ? "is-pending" : "is-complete"}">
-          <span>Pasajero ${esc(p.passengerNumber || "")}</span>
-          <strong>${esc(pending ? "Pendiente de datos" : name)}</strong>
-          ${doc ? `<small>${esc(doc)}</small>` : `<small>${pending ? "Se podrá completar después" : "Datos registrados"}</small>`}
+          <span>${esc(page.t("quote.passenger.title", "Pasajero {n}", { n: p.passengerNumber || "" }))}</span>
+          <strong>${esc(pending ? page.t("product.pendingData", "Pendiente de datos") : name)}</strong>
+          ${doc ? `<small>${esc(doc)}</small>` : `<small>${pending ? esc(page.t("product.canCompleteLater", "Se podrá completar después")) : esc(page.t("product.dataRegistered", "Datos registrados"))}</small>`}
         </li>`;
       }).join("");
 
       const outboundTrain = this.getSelectedOutboundTrain?.() || this.findTrainById?.(this.selectedOutboundTrainId, this.availableOutboundTrains);
       const returnTrain = this.getSelectedReturnTrain?.() || this.findTrainById?.(this.selectedReturnTrainId, this.availableReturnTrains);
-      const trainHtml = `<div class="passenger-review-train-lines">${trainLine(outboundTrain, "Ida")}${trainLine(returnTrain, "Retorno") || "<span>Retorno: incluido según selección</span>"}</div>`;
+      const trainHtml = `<div class="passenger-review-train-lines">${trainLine(outboundTrain, page.t("product.outboundShort", "Ida"))}${trainLine(returnTrain, page.t("product.returnShort", "Retorno")) || `<span>${esc(page.t("product.returnIncludedBySelection", "Retorno: incluido según selección"))}</span>`}</div>`;
 
       const rows = [
-        { label: "Experiencia", value: payload.productTitle },
-        { label: "Fecha", value: formatTravelDate(payload.date) },
-        { label: "Viajeros", value: formatTravelers(payload.adults, payload.children) },
-        { label: "Trenes", html: trainHtml },
-        { label: "Extras", value: payload.summary?.extras?.length ? payload.summary.extras.join(", ") : "Sin extras" }
+        { label: page.t("product.experienceLabel", "Experiencia"), value: payload.productTitle },
+        { label: page.t("product.dateLabel", "Fecha"), value: formatTravelDate(payload.date) },
+        { label: page.t("product.travelersLabel", "Viajeros"), value: formatTravelers(payload.adults, payload.children) },
+        { label: page.t("quote.summary.trains", "Trenes"), html: trainHtml },
+        { label: page.t("quote.print.extrasLabel", "Extras"), value: payload.summary?.extras?.length ? payload.summary.extras.join(", ") : page.t("product.noExtras", "Sin extras") }
       ];
       if (payLaterValue > 0.01) {
-        rows.push({ label: "Total del servicio", value: payload.serviceTotal });
-        rows.push({ label: "Saldo pendiente", value: payload.payLater });
+        rows.push({ label: page.t("product.serviceTotalLabel", "Total del servicio"), value: payload.serviceTotal });
+        rows.push({ label: page.t("quote.summary.balancePending", "Saldo pendiente"), value: payload.payLater });
       }
 
       review.hidden = false;
@@ -7472,22 +7479,22 @@ document.addEventListener("click", function (event) {
           <div class="passenger-review-total">
             <span>${esc(paymentLabel)}</span>
             <strong>${esc(payload.payNow || "")}</strong>
-            ${hasDiscount ? `<small><span>Antes:</span> <del>${esc(payload.serviceTotal || "")}</del> <b>Ahorras ${esc(payload.currency || currency())} ${esc(formatMoney(discountAmount))}</b></small>` : ""}
+            ${hasDiscount ? `<small><span>${esc(page.t("product.beforeLabel", "Antes"))}:</span> <del>${esc(payload.serviceTotal || "")}</del> <b>${esc(page.t("product.youSaveAmount", "Ahorras {amount}", { amount: `${payload.currency || currency()} ${formatMoney(discountAmount)}` }))}</b></small>` : ""}
           </div>
           <div class="passenger-review-grid passenger-review-grid--final">
             ${rows.map((row) => `<div><span>${esc(row.label)}</span><strong>${row.html || esc(row.value || "-")}</strong></div>`).join("")}
           </div>
           <div class="passenger-review-passengers">
-            <strong>Datos de pasajeros</strong>
+            <strong>${esc(page.t("product.passengerDataLabel", "Datos de pasajeros"))}</strong>
             <ul class="passenger-review-list">${passengerRows}</ul>
           </div>
-          <button class="passenger-review-edit-btn" type="button" data-edit-passenger-details>Editar datos de pasajeros</button>
+          <button class="passenger-review-edit-btn" type="button" data-edit-passenger-details>${esc(page.t("product.editPassengerData", "Editar datos de pasajeros"))}</button>
         </div>
       `;
 
       if (modal) modal.classList.add("passenger-modal--review");
       const title = document.getElementById("passengerModalTitle");
-      if (title) title.textContent = "Resumen de tu reserva";
+      if (title) title.textContent = page.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
       const warning = document.querySelector(".passenger-modal__warning");
       if (warning) warning.hidden = true;
       const message = document.querySelector("[data-passenger-message]");
@@ -7496,15 +7503,15 @@ document.addEventListener("click", function (event) {
         message.classList.remove("is-error");
       }
       const submit = form?.querySelector('button[type="submit"]');
-      if (submit) submit.textContent = "Pagar";
+      if (submit) submit.textContent = page.t("booking.pay", "Pagar");
       review.querySelector("[data-edit-passenger-details]")?.addEventListener("click", () => {
         if (form) delete form.dataset.paymentReviewConfirmed;
         if (modal) modal.classList.remove("passenger-modal--review");
         review.hidden = true;
         review.innerHTML = "";
-        if (title) title.textContent = "Datos de los pasajeros";
+        if (title) title.textContent = page.t("product.passengerDetailsTitle", "Datos de los pasajeros");
         if (warning) warning.hidden = false;
-        if (submit) submit.textContent = "Continuar";
+        if (submit) submit.textContent = page.t("booking.continue", "Continuar");
         ensurePassengerActionButtons();
       });
       review.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -7517,7 +7524,7 @@ document.addEventListener("click", function (event) {
         window.setTimeout(() => {
           ensurePassengerActionButtons();
           const submit = document.querySelector('#passengerReservationForm button[type="submit"]');
-          if (submit && submit.textContent.trim() !== "Pagar") submit.textContent = "Continuar";
+          if (submit && submit.textContent.trim() !== page.t("booking.pay", "Pagar")) submit.textContent = page.t("booking.continue", "Continuar");
         }, 0);
         return result;
       };
@@ -7568,7 +7575,7 @@ document.addEventListener("click", function (event) {
       if (!value) return "Fecha por definir";
       const date = new Date(`${value}T12:00:00`);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
     };
     const trainStationName = function (train, key, fallback) {
       const raw = train?.raw || {};
@@ -7605,7 +7612,7 @@ document.addEventListener("click", function (event) {
         const result = originalRenderProduct.apply(this, arguments);
         if (String(product?.slug || this.slug || "") === "machu-picchu-full-day-clasico") {
           const lang = document.getElementById("detailLanguages");
-          if (lang) lang.textContent = "Guía profesional: español, inglés (otros idiomas, consultar)";
+          if (lang) lang.textContent = this.t("product.guideProfessionalEsEn", "Guía profesional: español, inglés (otros idiomas, consultar)");
           const price = this.calculateMachuClassicBasePriceV78?.();
           if (price) this.setText?.("productBasePrice", `${this.product?.currency || "USD"} ${money(price.publicPerPerson)}`);
         }
@@ -7633,11 +7640,11 @@ document.addEventListener("click", function (event) {
       const discountedTotal = Math.max(serviceTotal - discount, 0);
       let payNow = discountedTotal;
       let payLater = 0;
-      let infoText = "Pagando el total ahora obtienes un 10% de descuento.";
+      let infoText = this.t("product.fullPaymentDiscountNoteB", "Pagando el total ahora obtienes un {percent}% de descuento.", { percent: fullDiscountPercent });
       if (this.paymentMode !== "full") {
         payNow = Math.min(pax * partialPerPerson, discountedTotal);
         payLater = Math.max(discountedTotal - payNow, 0);
-        infoText = this.product?.paymentOptions?.partialPaymentLabel || `Reserva con anticipo y completa el saldo antes del viaje.`;
+        infoText = this.product?.paymentOptions?.partialPaymentLabel || this.t("product.depositReservationNoteShort", "Reserva con anticipo y completa el saldo antes del viaje.");
       }
       this.dynamicMachuClassicQuoteV78 = {
         currency, pax, basePerPerson, publicBaseTotal: base.publicBaseTotal,
@@ -7740,7 +7747,7 @@ document.addEventListener("click", function (event) {
       return items.map((item) => {
         const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
         if (text.includes("recojo")) return { ...item, time: `${pickupTime} aprox.` };
-        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || "Viaje en tren a Machu Picchu Pueblo" };
+        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || this.t("product.itin.trainToMachuTitle", "Viaje en tren a Machu Picchu Pueblo") };
         if (text.includes("tren de retorno")) return { ...item, time: `${returnDeparture} aprox.` };
         if (text.includes("llegada a estación") || text.includes("ollantaytambo y traslado")) return { ...item, time: `${returnArrival} aprox.` };
         if (text.includes("llegada a cusco")) return { ...item, time: `${cuscoArrival} aprox.` };
@@ -7749,12 +7756,12 @@ document.addEventListener("click", function (event) {
     };
 
     proto.renderTrainPrintCardV78 = function (train, direction) {
-      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? "Retorno" : "Ida"}</span><b>Por confirmar</b></div>`;
+      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? this.t("booking.train.returnShort", "Retorno") : this.t("booking.train.outboundShort", "Ida")}</span><b>${this.t("quote.print.toBeConfirmed", "Por confirmar")}</b></div>`;
       const from = direction === "return" ? trainStationName(train, "departureStation", "Machu Picchu") : trainStationName(train, "departureStation", "Ollantaytambo");
       const to = direction === "return" ? trainStationName(train, "arrivalStation", "Ollantaytambo") : trainStationName(train, "arrivalStation", "Machu Picchu");
       return `<div class="print-train-card">
-        <span>${direction === "return" ? "Tren de retorno" : "Tren de ida"}</span>
-        <b>${esc(train.companyName || train.company || "Tren")} · ${esc(train.label || "")}</b>
+        <span>${direction === "return" ? this.t("booking.train.return", "Tren de retorno") : this.t("booking.train.outbound", "Tren de ida")}</span>
+        <b>${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))} · ${esc(train.label || "")}</b>
         <small>${esc(from)} ${esc(train.departureTime || "")} → ${esc(to)} ${esc(train.arrivalTime || "")}</small>
       </div>`;
     };
@@ -7769,28 +7776,28 @@ document.addEventListener("click", function (event) {
       const ret = selectedReturn(this);
       const itinerary = this.getProductPrintItineraryItemsV78?.() || this.product?.itinerary || [];
       const dateLabel = formatDateLong(this.date);
-      const generated = new Date().toLocaleDateString("es-PE", { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
-      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const generated = new Date().toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "long", year: "numeric" }).replace(/^0/, "");
+      const pax = `${this.t("product.adultsPlural", "{n} adulto(s)", { n: this.adults || 0 })}${Number(this.children || 0) > 0 ? `, ${this.t("product.childrenPlural", "{n} niño(s)", { n: this.children })}` : ""}`;
       const includes = (this.product?.includes || []).slice(0, 8);
       target.innerHTML = `<div class="print-sheet">
         <header class="print-header">
           <div>
             <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
-            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
-            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-eyebrow">${this.t("product.print.itineraryEyebrow", "ITINERARIO DE VIAJE")}</p>
+            <h1>${esc(this.product?.title || this.t("product.print.experienceFallback", "Experiencia My Cusco Trip"))}</h1>
           </div>
           <div class="print-header__right">
-            <p><strong>Fecha de emisión:</strong> ${esc(generated)}</p>
-            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
+            <p><strong>${this.t("product.print.issueDateLabel", "Fecha de emisión:")}</strong> ${esc(generated)}</p>
+            <p><strong>${this.t("product.print.travelDateLabel", "Fecha de viaje:")}</strong> ${esc(dateLabel)}</p>
             <p><strong>Pasajeros:</strong> ${esc(pax)}</p>
             <p><strong>Modalidad:</strong> ${esc(summary.paymentMode || "Reserva online")}</p>
           </div>
         </header>
         <div class="print-grid">
           <div class="print-info-box">
-            <p><strong>Destino:</strong> ${esc(this.product?.location || "Cusco / Machu Picchu")}</p>
-            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
-            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+            <p><strong>${this.t("product.print.destinationLabel", "Destino:")}</strong> ${esc(this.product?.location || "Cusco / Machu Picchu")}</p>
+            <p><strong>${this.t("product.print.durationLabel", "Duración:")}</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>${this.t("product.print.guideLabel", "Guía:")}</strong> ${this.t("product.languagesEsEnConsult", "español, inglés (otros idiomas, consultar)")}</p>
           </div>
           <div class="print-info-box">
             <p><strong>Total del servicio:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
@@ -7799,20 +7806,20 @@ document.addEventListener("click", function (event) {
           </div>
         </div>
         <section class="print-section">
-          <h2>Trenes seleccionados</h2>
+          <h2>${this.t("product.print.selectedTrainsHeading", "Trenes seleccionados")}</h2>
           <div class="print-train-grid">${this.renderTrainPrintCardV78(out, "outbound")}${this.renderTrainPrintCardV78(ret, "return")}</div>
         </section>
         <section class="print-section">
-          <h2>Itinerario según tu selección</h2>
+          <h2>${this.t("product.print.itineraryHeading", "Itinerario según tu selección")}</h2>
           <div class="print-itinerary-list">
-            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</div><div><h3>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
           </div>
         </section>
         <section class="print-section">
-          <h2>Incluye</h2>
+          <h2>${this.t("product.print.includesHeading", "Incluye")}</h2>
           <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
         </section>
-        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.</footer>
+        <footer class="print-footer">${this.t("product.print.footerNoteShort", "Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.")}</footer>
       </div>`;
       window.setTimeout(() => window.print(), 80);
     };
@@ -7824,7 +7831,7 @@ document.addEventListener("click", function (event) {
         if (page.product?.paymentOptions) page.product.paymentOptions.fullPaymentDiscountPercent = 10;
         page.updatePricing?.();
         const lang = document.getElementById("detailLanguages");
-        if (lang) lang.textContent = "Guía profesional: español, inglés (otros idiomas, consultar)";
+        if (lang) lang.textContent = this.t("product.guideProfessionalEsEn", "Guía profesional: español, inglés (otros idiomas, consultar)");
       }
     } catch (error) { console.warn("MCT V78 post-apply warning:", error); }
     return true;
@@ -7870,7 +7877,7 @@ document.addEventListener("click", function (event) {
       if (!value) return "Fecha por definir";
       const date = new Date(`${value}T12:00:00`);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
     };
     const trainStationName = function (train, key, fallback) {
       const raw = train?.raw || {};
@@ -7928,9 +7935,9 @@ document.addEventListener("click", function (event) {
         if (row) row.hidden = false;
         this.setText?.("finalPassengerPrice", `${currency} ${money(finalPassenger)}`);
         const serviceLabel = document.querySelector("#serviceTotalRow > span");
-        if (serviceLabel) serviceLabel.textContent = "Total de servicios";
+        if (serviceLabel) serviceLabel.textContent = this.t("product.totalServices", "Total de servicios");
         const payNowLabel = document.getElementById("payNowLabel");
-        if (payNowLabel) payNowLabel.textContent = "Monto a pagar ahora";
+        if (payNowLabel) payNowLabel.textContent = this.t("product.payNowLabel", "Monto a pagar ahora");
         return result;
       };
     }
@@ -7962,7 +7969,7 @@ document.addEventListener("click", function (event) {
       return items.map((item) => {
         const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
         if (text.includes("recojo")) return { ...item, time: `${pickupTime} aprox.` };
-        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || "Viaje en tren a Machu Picchu Pueblo" };
+        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || this.t("product.itin.trainToMachuTitle", "Viaje en tren a Machu Picchu Pueblo") };
         if (text.includes("tren de retorno")) return { ...item, time: `${returnDeparture} aprox.` };
         if (text.includes("llegada a estación") || text.includes("ollantaytambo y traslado")) return { ...item, time: `${returnArrival} aprox.` };
         if (text.includes("llegada a cusco")) return { ...item, time: `${cuscoArrival} aprox.` };
@@ -7976,12 +7983,12 @@ document.addEventListener("click", function (event) {
     };
 
     proto.renderTrainPrintCardV80 = function (train, direction) {
-      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? "Retorno" : "Ida"}</span><b>Por confirmar</b></div>`;
+      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? this.t("booking.train.returnShort", "Retorno") : this.t("booking.train.outboundShort", "Ida")}</span><b>${this.t("quote.print.toBeConfirmed", "Por confirmar")}</b></div>`;
       const from = direction === "return" ? trainStationName(train, "departureStation", "Machu Picchu") : trainStationName(train, "departureStation", "Ollantaytambo");
       const to = direction === "return" ? trainStationName(train, "arrivalStation", "Ollantaytambo") : trainStationName(train, "arrivalStation", "Machu Picchu");
       return `<div class="print-train-card">
-        <span>${direction === "return" ? "Tren de retorno" : "Tren de ida"}</span>
-        <b>${esc(train.companyName || train.company || "Tren")} · ${esc(train.label || "")}</b>
+        <span>${direction === "return" ? this.t("booking.train.return", "Tren de retorno") : this.t("booking.train.outbound", "Tren de ida")}</span>
+        <b>${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))} · ${esc(train.label || "")}</b>
         <small>${esc(from)} ${esc(train.departureTime || "")} → ${esc(to)} ${esc(train.arrivalTime || "")}</small>
       </div>`;
     };
@@ -7991,7 +7998,7 @@ document.addEventListener("click", function (event) {
       const includes = Array.isArray(this.product?.includes) ? [...this.product.includes] : [];
       if (selectedLunch.length) {
         const lunchLabel = selectedLunch.map((extra) => extra.label).join(" / ");
-        const optionIndex = includes.findIndex((item) => String(item).toLowerCase().includes("opción de almuerzo"));
+        const optionIndex = includes.findIndex((item) => String(item).toLowerCase().includes(String(this.t("product.lunchOption", "opción de almuerzo")).toLowerCase()));
         const lunchText = `Almuerzo incluido: ${lunchLabel}.`;
         if (optionIndex >= 0) includes[optionIndex] = lunchText;
         else includes.push(lunchText);
@@ -8010,11 +8017,11 @@ document.addEventListener("click", function (event) {
       const ret = selectedReturn(this);
       const itinerary = this.getProductPrintItineraryItemsV80?.() || this.product?.itinerary || [];
       const dateLabel = formatDateLong(this.date);
-      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
-      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const generated = new Date().toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.t("product.adultsPlural", "{n} adulto(s)", { n: this.adults || 0 })}${Number(this.children || 0) > 0 ? `, ${this.t("product.childrenPlural", "{n} niño(s)", { n: this.children })}` : ""}`;
       const includes = this.getPrintIncludesV80?.() || (this.product?.includes || []).slice(0, 10);
       const cover = this.getProductPrintImageV80?.() || "./assets/img/placeholder/experience.jpg";
-      const destination = isMachuClassic.call(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const destination = isMachuClassic.call(this) ? this.t("product.machuPicchuArchSite", "Centro arqueológico de Machu Picchu") : (this.product?.location || "Cusco / Machu Picchu");
       const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
       const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
       const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
@@ -8026,46 +8033,46 @@ document.addEventListener("click", function (event) {
         <header class="print-header print-header--v80">
           <div>
             <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
-            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
-            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-eyebrow">${this.t("product.print.itineraryEyebrow", "ITINERARIO DE VIAJE")}</p>
+            <h1>${esc(this.product?.title || this.t("product.print.experienceFallback", "Experiencia My Cusco Trip"))}</h1>
             <p class="print-description">${esc(description)}</p>
           </div>
           <div class="print-header__right">
-            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
-            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
-            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
-            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+            <p><strong>${this.t("product.print.quoteDateLabel", "Fecha de cotización:")}</strong> ${esc(generated)}</p>
+            <p><strong>${this.t("product.print.travelDateLabel", "Fecha de viaje:")}</strong> ${esc(dateLabel)}</p>
+            <p><strong>${this.t("product.print.passengerCountLabel", "Cantidad de pasajeros:")}</strong> ${esc(pax)}</p>
+            <p><strong>${this.t("product.print.paymentModeLabel", "Modo de pago:")}</strong> ${esc(modeShort)}</p>
           </div>
         </header>
         <figure class="print-banner"><img src="${esc(cover)}" alt="${esc(this.product?.title || "Tour")}" /></figure>
         <div class="print-grid print-grid--trip">
           <div class="print-info-box">
-            <p><strong>Destino:</strong> ${esc(destination)}</p>
-            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
-            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+            <p><strong>${this.t("product.print.destinationLabel", "Destino:")}</strong> ${esc(destination)}</p>
+            <p><strong>${this.t("product.print.durationLabel", "Duración:")}</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>${this.t("product.print.guideLabel", "Guía:")}</strong> ${this.t("product.languagesEsEnConsult", "español, inglés (otros idiomas, consultar)")}</p>
           </div>
           <div class="print-info-box print-info-box--payment">
-            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
-            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
-            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
-            <p class="print-pay-now"><strong>Monto total a pagar:</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
+            <p><strong>${this.t("product.print.finalPricePerPassengerLabel", "Precio final por pasajero:")}</strong> ${esc(finalPassenger)}</p>
+            <p><strong>${this.t("product.totalServices", "Total de servicios")}:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>${this.t("product.print.discountAppliedLabel", "Descuento aplicado:")}</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>${this.t("product.print.totalToPayLabel", "Monto total a pagar:")}</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
           </div>
         </div>
         <section class="print-section">
-          <h2>Trenes seleccionados</h2>
+          <h2>${this.t("product.print.selectedTrainsHeading", "Trenes seleccionados")}</h2>
           <div class="print-train-grid">${this.renderTrainPrintCardV80(out, "outbound")}${this.renderTrainPrintCardV80(ret, "return")}</div>
         </section>
         <section class="print-section">
-          <h2>Itinerario según tu selección</h2>
+          <h2>${this.t("product.print.itineraryHeading", "Itinerario según tu selección")}</h2>
           <div class="print-itinerary-list">
-            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</div><div><h3>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
           </div>
         </section>
         <section class="print-section">
-          <h2>Incluye</h2>
+          <h2>${this.t("product.print.includesHeading", "Incluye")}</h2>
           <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
         </section>
-        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.</footer>
+        <footer class="print-footer">${this.t("product.print.footerNoteShort", "Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.")}</footer>
       </div>`;
       window.setTimeout(() => window.print(), 80);
     };
@@ -8112,10 +8119,10 @@ document.addEventListener("click", function (event) {
       return ctx.getSelectedReturnTrain?.() || ctx.findTrainById?.(ctx.selectedReturnTrainId, ctx.availableReturnTrains) || null;
     };
     const formatDateLong = function (value) {
-      if (!value) return "Por confirmar";
+      if (!value) return this.t("quote.print.toBeConfirmed", "Por confirmar");
       const date = new Date(`${value}T12:00:00`);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
     };
     const isMachuClassic = function (ctx) {
       return String(ctx?.product?.slug || ctx?.slug || "") === "machu-picchu-full-day-clasico";
@@ -8156,10 +8163,10 @@ document.addEventListener("click", function (event) {
       const ret = selectedReturn(this);
       const itinerary = this.getProductPrintItineraryItemsV80?.() || this.product?.itinerary || [];
       const dateLabel = formatDateLong(this.date);
-      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
-      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const generated = new Date().toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.t("product.adultsPlural", "{n} adulto(s)", { n: this.adults || 0 })}${Number(this.children || 0) > 0 ? `, ${this.t("product.childrenPlural", "{n} niño(s)", { n: this.children })}` : ""}`;
       const includes = this.getPrintIncludesV80?.() || (this.product?.includes || []).slice(0, 10);
-      const destination = isMachuClassic(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const destination = isMachuClassic(this) ? this.t("product.machuPicchuArchSite", "Centro arqueológico de Machu Picchu") : (this.product?.location || "Cusco / Machu Picchu");
       const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
       const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
       const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
@@ -8171,49 +8178,49 @@ document.addEventListener("click", function (event) {
         <header class="print-header print-header--v80 print-header--v81">
           <div>
             <img class="print-logo" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
-            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
-            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-eyebrow">${this.t("product.print.itineraryEyebrow", "ITINERARIO DE VIAJE")}</p>
+            <h1>${esc(this.product?.title || this.t("product.print.experienceFallback", "Experiencia My Cusco Trip"))}</h1>
           </div>
           <div class="print-header__right">
-            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
-            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
-            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
-            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+            <p><strong>${this.t("product.print.quoteDateLabel", "Fecha de cotización:")}</strong> ${esc(generated)}</p>
+            <p><strong>${this.t("product.print.travelDateLabel", "Fecha de viaje:")}</strong> ${esc(dateLabel)}</p>
+            <p><strong>${this.t("product.print.passengerCountLabel", "Cantidad de pasajeros:")}</strong> ${esc(pax)}</p>
+            <p><strong>${this.t("product.print.paymentModeLabel", "Modo de pago:")}</strong> ${esc(modeShort)}</p>
           </div>
         </header>
         ${this.renderProductPrintGalleryV81()}
         <div class="print-grid print-grid--trip">
           <div class="print-info-box">
-            <p><strong>Destino:</strong> ${esc(destination)}</p>
-            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
-            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+            <p><strong>${this.t("product.print.destinationLabel", "Destino:")}</strong> ${esc(destination)}</p>
+            <p><strong>${this.t("product.print.durationLabel", "Duración:")}</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>${this.t("product.print.guideLabel", "Guía:")}</strong> ${this.t("product.languagesEsEnConsult", "español, inglés (otros idiomas, consultar)")}</p>
           </div>
           <div class="print-info-box print-info-box--payment">
-            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
-            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
-            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
-            <p class="print-pay-now"><strong>Monto total a pagar:</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
+            <p><strong>${this.t("product.print.finalPricePerPassengerLabel", "Precio final por pasajero:")}</strong> ${esc(finalPassenger)}</p>
+            <p><strong>${this.t("product.totalServices", "Total de servicios")}:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>${this.t("product.print.discountAppliedLabel", "Descuento aplicado:")}</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>${this.t("product.print.totalToPayLabel", "Monto total a pagar:")}</strong> ${esc(summary.payNow || `${currency} 0.00`)}</p>
           </div>
         </div>
         <section class="print-section print-section--trains">
-          <h2>Trenes seleccionados</h2>
+          <h2>${this.t("product.print.selectedTrainsHeading", "Trenes seleccionados")}</h2>
           <div class="print-train-grid">${this.renderTrainPrintCardV80?.(out, "outbound") || ""}${this.renderTrainPrintCardV80?.(ret, "return") || ""}</div>
         </section>
         <section class="print-section print-section--itinerary">
-          <h2>Itinerario según tu selección</h2>
+          <h2>${this.t("product.print.itineraryHeading", "Itinerario según tu selección")}</h2>
           <div class="print-itinerary-list">
-            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</div><div><h3>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
           </div>
         </section>
         <section class="print-section print-section--description">
-          <h2>Descripción</h2>
+          <h2>${this.t("product.print.descriptionHeading", "Descripción")}</h2>
           <p class="print-description print-description--body">${esc(description)}</p>
         </section>
         <section class="print-section print-section--includes">
-          <h2>Incluye</h2>
+          <h2>${this.t("product.print.includesHeading", "Incluye")}</h2>
           <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
         </section>
-        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.</footer>
+        <footer class="print-footer">${this.t("product.print.footerNoteShort", "Documento referencial generado desde My Cusco Trip. Los horarios finales se confirman según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje.")}</footer>
       </div>`;
       window.setTimeout(() => window.print(), 80);
     };
@@ -8266,7 +8273,7 @@ document.addEventListener("click", function (event) {
       if (!value) return "Fecha por definir";
       const date = new Date(`${value}T12:00:00`);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
     };
     const trainStationName = function (train, key, fallback) {
       const raw = train?.raw || {};
@@ -8358,7 +8365,7 @@ document.addEventListener("click", function (event) {
       return items.map((item) => {
         const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
         if (text.includes("recojo")) return { ...item, time: `${pickupTime} aprox.` };
-        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || "Viaje en tren a Machu Picchu Pueblo" };
+        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} aprox.`, title: item.title || this.t("product.itin.trainToMachuTitle", "Viaje en tren a Machu Picchu Pueblo") };
         if (text.includes("tren de retorno")) return { ...item, time: `${returnDeparture} aprox.` };
         if (text.includes("llegada a estación") || text.includes("ollantaytambo y traslado")) return { ...item, time: `${returnArrival} aprox.` };
         if (text.includes("llegada a cusco")) return { ...item, time: `${cuscoArrival} aprox.` };
@@ -8367,12 +8374,12 @@ document.addEventListener("click", function (event) {
     };
 
     proto.renderTrainPrintCardV82 = function (train, direction) {
-      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? "Retorno" : "Ida"}</span><b>Por confirmar</b></div>`;
+      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? this.t("booking.train.returnShort", "Retorno") : this.t("booking.train.outboundShort", "Ida")}</span><b>${this.t("quote.print.toBeConfirmed", "Por confirmar")}</b></div>`;
       const from = direction === "return" ? trainStationName(train, "departureStation", "Machu Picchu") : trainStationName(train, "departureStation", "Ollantaytambo");
       const to = direction === "return" ? trainStationName(train, "arrivalStation", "Ollantaytambo") : trainStationName(train, "arrivalStation", "Machu Picchu");
       return `<div class="print-train-card">
-        <span>${direction === "return" ? "Tren de retorno" : "Tren de ida"}</span>
-        <b>${esc(train.companyName || train.company || "Tren")} · ${esc(train.label || "")}</b>
+        <span>${direction === "return" ? this.t("booking.train.return", "Tren de retorno") : this.t("booking.train.outbound", "Tren de ida")}</span>
+        <b>${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))} · ${esc(train.label || "")}</b>
         <small>${esc(from)} ${esc(train.departureTime || "")} → ${esc(to)} ${esc(train.arrivalTime || "")}</small>
       </div>`;
     };
@@ -8405,12 +8412,12 @@ document.addEventListener("click", function (event) {
       const ret = selectedReturn(this);
       const itinerary = this.getProductPrintItineraryItemsV82?.() || this.product?.itinerary || [];
       const dateLabel = formatDateLong(this.date);
-      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
-      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const generated = new Date().toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.t("product.adultsPlural", "{n} adulto(s)", { n: this.adults || 0 })}${Number(this.children || 0) > 0 ? `, ${this.t("product.childrenPlural", "{n} niño(s)", { n: this.children })}` : ""}`;
       const includes = this.getPrintIncludesV82?.() || [];
       const excludes = this.getPrintExcludesV82?.() || [];
       const importantInfo = this.getPrintImportantInfoV82?.() || [];
-      const destination = isMachuClassic.call(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const destination = isMachuClassic.call(this) ? this.t("product.machuPicchuArchSite", "Centro arqueológico de Machu Picchu") : (this.product?.location || "Cusco / Machu Picchu");
       const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
       const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
       const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
@@ -8422,51 +8429,51 @@ document.addEventListener("click", function (event) {
         <header class="print-header print-header--v80 print-header--v81 print-header--v82">
           <div>
             <img class="print-logo print-logo--v82" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
-            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
-            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-eyebrow">${this.t("product.print.itineraryEyebrow", "ITINERARIO DE VIAJE")}</p>
+            <h1>${esc(this.product?.title || this.t("product.print.experienceFallback", "Experiencia My Cusco Trip"))}</h1>
           </div>
           <div class="print-header__right">
-            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
-            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
-            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
-            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+            <p><strong>${this.t("product.print.quoteDateLabel", "Fecha de cotización:")}</strong> ${esc(generated)}</p>
+            <p><strong>${this.t("product.print.travelDateLabel", "Fecha de viaje:")}</strong> ${esc(dateLabel)}</p>
+            <p><strong>${this.t("product.print.passengerCountLabel", "Cantidad de pasajeros:")}</strong> ${esc(pax)}</p>
+            <p><strong>${this.t("product.print.paymentModeLabel", "Modo de pago:")}</strong> ${esc(modeShort)}</p>
           </div>
         </header>
         ${this.renderProductPrintGalleryV81?.() || ""}
         <div class="print-grid print-grid--trip">
           <div class="print-info-box">
-            <p><strong>Destino:</strong> ${esc(destination)}</p>
-            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
-            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+            <p><strong>${this.t("product.print.destinationLabel", "Destino:")}</strong> ${esc(destination)}</p>
+            <p><strong>${this.t("product.print.durationLabel", "Duración:")}</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>${this.t("product.print.guideLabel", "Guía:")}</strong> ${this.t("product.languagesEsEnConsult", "español, inglés (otros idiomas, consultar)")}</p>
           </div>
           <div class="print-info-box print-info-box--payment">
-            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
-            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
-            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
-            <p class="print-pay-now"><strong>Monto total a pagar:</strong> <span>${esc(summary.payNow || `${currency} 0.00`)}</span></p>
+            <p><strong>${this.t("product.print.finalPricePerPassengerLabel", "Precio final por pasajero:")}</strong> ${esc(finalPassenger)}</p>
+            <p><strong>${this.t("product.totalServices", "Total de servicios")}:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>${this.t("product.print.discountAppliedLabel", "Descuento aplicado:")}</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>${this.t("product.print.totalToPayLabel", "Monto total a pagar:")}</strong> <span>${esc(summary.payNow || `${currency} 0.00`)}</span></p>
           </div>
         </div>
         <section class="print-section print-section--trains">
-          <h2>Trenes seleccionados</h2>
+          <h2>${this.t("product.print.selectedTrainsHeading", "Trenes seleccionados")}</h2>
           <div class="print-train-grid">${this.renderTrainPrintCardV82(out, "outbound")}${this.renderTrainPrintCardV82(ret, "return")}</div>
         </section>
         <section class="print-section print-section--itinerary">
-          <h2>Itinerario según tu selección</h2>
+          <h2>${this.t("product.print.itineraryHeading", "Itinerario según tu selección")}</h2>
           <div class="print-itinerary-list">
-            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${esc(item.time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</div><div><h3>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
           </div>
         </section>
         <section class="print-section print-section--description">
-          <h2>Descripción</h2>
+          <h2>${this.t("product.print.descriptionHeading", "Descripción")}</h2>
           <p class="print-description print-description--body">${esc(description)}</p>
         </section>
         <section class="print-section print-section--includes">
-          <h2>Incluye</h2>
+          <h2>${this.t("product.print.includesHeading", "Incluye")}</h2>
           <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
         </section>
-        ${excludes.length ? `<section class="print-section print-section--excludes"><h2>No incluye</h2><ul class="print-list">${excludes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
-        ${importantInfo.length ? `<section class="print-section print-section--important"><h2>Información importante</h2><ul class="print-list">${importantInfo.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
-        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirmarán según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje. Esta cotización tiene una vigencia de 2 días hábiles; pasado ese plazo, deberá volver a cotizarse.</footer>
+        ${excludes.length ? `<section class="print-section print-section--excludes"><h2>${this.t("product.print.excludesHeading", "No incluye")}</h2><ul class="print-list">${excludes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
+        ${importantInfo.length ? `<section class="print-section print-section--important"><h2>${this.t("product.print.importantInfoHeading", "Información importante")}</h2><ul class="print-list">${importantInfo.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
+        <footer class="print-footer">${this.t("product.print.footerNote", "Documento referencial generado desde My Cusco Trip. Los horarios finales se confirmarán según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje. Esta cotización tiene una vigencia de 2 días hábiles; pasado ese plazo, deberá volver a cotizarse.")}</footer>
       </div>`;
       window.setTimeout(() => window.print(), 80);
     };
@@ -8511,7 +8518,7 @@ document.addEventListener("click", function (event) {
       if (!value) return "Fecha por definir";
       const date = new Date(`${value}T12:00:00`);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
+      return date.toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
     };
     const addMinutes = function (time, delta) {
       const match = String(time || "").match(/^(\d{1,2})[:.](\d{2})/);
@@ -8604,7 +8611,7 @@ document.addEventListener("click", function (event) {
       return baseItems.map((item) => {
         const text = `${item.title || ""} ${item.description || ""}`.toLowerCase();
         if (text.includes("recojo")) return { ...item, time: `${pickupTime} approx.` };
-        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} approx.`, title: item.title || "Viaje en tren a Machu Picchu Pueblo" };
+        if (text.includes("viaje en tren") || text.includes("tren a machu")) return { ...item, time: `${outboundDeparture} approx.`, title: item.title || this.t("product.itin.trainToMachuTitle", "Viaje en tren a Machu Picchu Pueblo") };
         if (text.includes("tren de retorno")) return { ...item, time: `${returnDeparture} approx.` };
         if (text.includes("llegada a estación") || text.includes("ollantaytambo y traslado")) return { ...item, time: `${returnArrival} approx.` };
         if (text.includes("llegada a cusco")) return { ...item, time: `${cuscoArrival} approx.` };
@@ -8613,12 +8620,12 @@ document.addEventListener("click", function (event) {
     };
 
     proto.renderTrainPrintCardV83 = function (train, direction) {
-      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? "Retorno" : "Ida"}</span><b>Por confirmar</b></div>`;
+      if (!train) return `<div class="print-train-card"><span>${direction === "return" ? this.t("booking.train.returnShort", "Retorno") : this.t("booking.train.outboundShort", "Ida")}</span><b>${this.t("quote.print.toBeConfirmed", "Por confirmar")}</b></div>`;
       const from = direction === "return" ? trainStationName(train, "departureStation", "Machu Picchu") : trainStationName(train, "departureStation", "Ollantaytambo");
       const to = direction === "return" ? trainStationName(train, "arrivalStation", "Ollantaytambo") : trainStationName(train, "arrivalStation", "Machu Picchu");
       return `<div class="print-train-card print-train-card--v83">
-        <span>${direction === "return" ? "Tren de retorno" : "Tren de ida"}</span>
-        <b>${esc(train.companyName || train.company || "Tren")} · ${esc(train.label || "")}</b>
+        <span>${direction === "return" ? this.t("booking.train.return", "Tren de retorno") : this.t("booking.train.outbound", "Tren de ida")}</span>
+        <b>${esc(train.companyName || train.company || this.t("quote.train.detailTrainFallback", "Tren"))} · ${esc(train.label || "")}</b>
         <small>${esc(from)} ${renderTrainTime(train.departureTime)} → ${esc(to)} ${renderTrainTime(train.arrivalTime)}</small>
       </div>`;
     };
@@ -8645,12 +8652,12 @@ document.addEventListener("click", function (event) {
       const ret = selectedReturn(this);
       const itinerary = this.getProductPrintItineraryItemsV83?.() || this.product?.itinerary || [];
       const dateLabel = formatDateLong(this.date);
-      const generated = new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" });
-      const pax = `${this.adults || 0} adulto${Number(this.adults) === 1 ? "" : "s"}${Number(this.children || 0) > 0 ? `, ${this.children} niño${Number(this.children) === 1 ? "" : "s"}` : ""}`;
+      const generated = new Date().toLocaleDateString(mctLocaleDateTag(), { day: "numeric", month: "long", year: "numeric" });
+      const pax = `${this.t("product.adultsPlural", "{n} adulto(s)", { n: this.adults || 0 })}${Number(this.children || 0) > 0 ? `, ${this.t("product.childrenPlural", "{n} niño(s)", { n: this.children })}` : ""}`;
       const includes = this.getPrintIncludesV83?.() || [];
       const excludes = this.getPrintExcludesV83?.() || [];
       const importantInfo = this.getPrintImportantInfoV83?.() || [];
-      const destination = isMachuClassic(this) ? "Centro arqueológico de Machu Picchu" : (this.product?.location || "Cusco / Machu Picchu");
+      const destination = isMachuClassic(this) ? this.t("product.machuPicchuArchSite", "Centro arqueológico de Machu Picchu") : (this.product?.location || "Cusco / Machu Picchu");
       const description = this.product?.description || this.product?.shortDescription || "Experiencia organizada por My Cusco Trip con asistencia personalizada antes y durante el viaje.";
       const discount = Number(summary.rawServiceTotal || quote.serviceTotal || 0) - Number(summary.rawPayNow || quote.payNow || 0);
       const showDiscount = this.paymentMode === "full" && Number(quote.discount || discount || 0) > 0;
@@ -8664,59 +8671,59 @@ document.addEventListener("click", function (event) {
         <header class="print-header print-header--v80 print-header--v81 print-header--v82">
           <div>
             <img class="print-logo print-logo--v82" src="./assets/img/reserva/logo-color.png" alt="My Cusco Trip" />
-            <p class="print-eyebrow">ITINERARIO DE VIAJE</p>
-            <h1>${esc(this.product?.title || "Experiencia My Cusco Trip")}</h1>
+            <p class="print-eyebrow">${this.t("product.print.itineraryEyebrow", "ITINERARIO DE VIAJE")}</p>
+            <h1>${esc(this.product?.title || this.t("product.print.experienceFallback", "Experiencia My Cusco Trip"))}</h1>
           </div>
           <div class="print-header__right">
-            <p><strong>Fecha de cotización:</strong> ${esc(generated)}</p>
-            <p><strong>Fecha de viaje:</strong> ${esc(dateLabel)}</p>
-            <p><strong>Cantidad de pasajeros:</strong> ${esc(pax)}</p>
-            <p><strong>Modo de pago:</strong> ${esc(modeShort)}</p>
+            <p><strong>${this.t("product.print.quoteDateLabel", "Fecha de cotización:")}</strong> ${esc(generated)}</p>
+            <p><strong>${this.t("product.print.travelDateLabel", "Fecha de viaje:")}</strong> ${esc(dateLabel)}</p>
+            <p><strong>${this.t("product.print.passengerCountLabel", "Cantidad de pasajeros:")}</strong> ${esc(pax)}</p>
+            <p><strong>${this.t("product.print.paymentModeLabel", "Modo de pago:")}</strong> ${esc(modeShort)}</p>
           </div>
         </header>
         ${this.renderProductPrintGalleryV81?.() || ""}
         <div class="print-grid print-grid--trip">
           <div class="print-info-box">
-            <p><strong>Destino:</strong> ${esc(destination)}</p>
-            <p><strong>Duración:</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
-            <p><strong>Guía:</strong> español, inglés (otros idiomas, consultar)</p>
+            <p><strong>${this.t("product.print.destinationLabel", "Destino:")}</strong> ${esc(destination)}</p>
+            <p><strong>${this.t("product.print.durationLabel", "Duración:")}</strong> ${esc(this.product?.duration?.label || "Full Day")}</p>
+            <p><strong>${this.t("product.print.guideLabel", "Guía:")}</strong> ${this.t("product.languagesEsEnConsult", "español, inglés (otros idiomas, consultar)")}</p>
           </div>
           <div class="print-info-box print-info-box--payment">
-            <p><strong>Precio final por pasajero:</strong> ${esc(finalPassenger)}</p>
-            <p><strong>Total de servicios:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
-            ${showDiscount ? `<p><strong>Descuento aplicado:</strong> ${esc(discountText)}</p>` : ""}
-            <p class="print-pay-now"><strong>Monto total a pagar:</strong> <span>${esc(summary.payNow || `${currency} 0.00`)}</span></p>
+            <p><strong>${this.t("product.print.finalPricePerPassengerLabel", "Precio final por pasajero:")}</strong> ${esc(finalPassenger)}</p>
+            <p><strong>${this.t("product.totalServices", "Total de servicios")}:</strong> ${esc(summary.serviceTotal || `${currency} 0.00`)}</p>
+            ${showDiscount ? `<p><strong>${this.t("product.print.discountAppliedLabel", "Descuento aplicado:")}</strong> ${esc(discountText)}</p>` : ""}
+            <p class="print-pay-now"><strong>${this.t("product.print.totalToPayLabel", "Monto total a pagar:")}</strong> <span>${esc(summary.payNow || `${currency} 0.00`)}</span></p>
           </div>
         </div>
         <section class="print-section print-section--trains">
-          <h2>Trenes seleccionados</h2>
+          <h2>${this.t("product.print.selectedTrainsHeading", "Trenes seleccionados")}</h2>
           <div class="print-train-grid">${this.renderTrainPrintCardV83(out, "outbound")}${this.renderTrainPrintCardV83(ret, "return")}</div>
         </section>
         <section class="print-section print-section--itinerary">
-          <h2>Itinerario según tu selección</h2>
+          <h2>${this.t("product.print.itineraryHeading", "Itinerario según tu selección")}</h2>
           <div class="print-itinerary-list">
-            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${renderPrintTime(item.time || `Paso ${index + 1}`)}</div><div><h3>${esc(item.title || `Actividad ${index + 1}`)}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
+            ${itinerary.map((item, index) => `<article class="print-itinerary-item"><div class="print-itinerary-time">${renderPrintTime(item.time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</div><div><h3>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</h3><p>${esc(item.description || "")}</p></div></article>`).join("")}
           </div>
         </section>
         <section class="print-section print-section--description">
-          <h2>Descripción</h2>
+          <h2>${this.t("product.print.descriptionHeading", "Descripción")}</h2>
           <p class="print-description print-description--body">${esc(description)}</p>
         </section>
         <section class="print-section print-section--includes">
-          <h2>Incluye</h2>
+          <h2>${this.t("product.print.includesHeading", "Incluye")}</h2>
           <ul class="print-list">${includes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
         </section>
-        ${excludes.length ? `<section class="print-section print-section--excludes"><h2>No incluye</h2><ul class="print-list">${excludes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
-        ${importantInfo.length ? `<section class="print-section print-section--important"><h2>Información importante</h2><ul class="print-list">${importantInfo.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
+        ${excludes.length ? `<section class="print-section print-section--excludes"><h2>${this.t("product.print.excludesHeading", "No incluye")}</h2><ul class="print-list">${excludes.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
+        ${importantInfo.length ? `<section class="print-section print-section--important"><h2>${this.t("product.print.importantInfoHeading", "Información importante")}</h2><ul class="print-list">${importantInfo.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>` : ""}
         <section class="print-section print-section--book-v83">
           <div class="print-booking-copy">
             <h2>Puedes reservar este itinerario en:</h2>
             <p>${esc(productUrl)}</p>
             <small>O escaneando este QR desde tu celular.</small>
           </div>
-          <div class="print-booking-qr"><img src="${esc(qrUrl)}" alt="QR para reservar este itinerario" /></div>
+          <div class="print-booking-qr"><img src="${esc(qrUrl)}" alt="${esc(this.t("product.qrReserveItinerary", "QR para reservar este itinerario"))}" /></div>
         </section>
-        <footer class="print-footer">Documento referencial generado desde My Cusco Trip. Los horarios finales se confirmarán según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje. Esta cotización tiene una vigencia de 2 días hábiles; pasado ese plazo, deberá volver a cotizarse.</footer>
+        <footer class="print-footer">${this.t("product.print.footerNote", "Documento referencial generado desde My Cusco Trip. Los horarios finales se confirmarán según disponibilidad operativa, trenes, ingreso oficial a Machu Picchu y coordinación del asesor de viaje. Esta cotización tiene una vigencia de 2 días hábiles; pasado ese plazo, deberá volver a cotizarse.")}</footer>
       </div>`;
       window.setTimeout(() => window.print(), 350);
     };
@@ -8822,11 +8829,11 @@ document.addEventListener("click", function (event) {
       const discountedTotal = Math.max(serviceTotal - discount, 0);
       let payNow = discountedTotal;
       let payLater = 0;
-      let infoText = "Pagando el total ahora obtienes un 10% de descuento.";
+      let infoText = this.t("product.fullPaymentDiscountNoteB", "Pagando el total ahora obtienes un {percent}% de descuento.", { percent: fullDiscountPercent });
       if (this.paymentMode !== "full") {
         payNow = Math.min(pax * partialPerPerson, discountedTotal);
         payLater = Math.max(discountedTotal - payNow, 0);
-        infoText = this.product?.paymentOptions?.partialPaymentLabel || "Reserva con anticipo y completa el saldo antes del viaje.";
+        infoText = this.product?.paymentOptions?.partialPaymentLabel || this.t("product.depositReservationNoteShort", "Reserva con anticipo y completa el saldo antes del viaje.");
       }
       this.dynamicMachuClassicQuoteV78 = {
         currency, pax, basePerPerson, publicBaseTotal: base.publicBaseTotal,
@@ -8861,7 +8868,7 @@ document.addEventListener("click", function (event) {
       const accommodationRow = document.getElementById("accommodationTotal")?.closest(".booking-summary__line");
       if (accommodationRow) {
         const label = accommodationRow.querySelector("span");
-        if (label) label.textContent = "Upgrade de hotel";
+        if (label) label.textContent = this.t("product.hotelUpgradeButton", "Upgrade de hotel");
         accommodationRow.hidden = !(accommodationTotal > 0);
       }
       const discountRow = document.getElementById("discountRow");
@@ -8888,7 +8895,7 @@ document.addEventListener("click", function (event) {
       if (isOvernightClassic(this)) {
         if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
         const lang = document.getElementById("detailLanguages");
-        if (lang) lang.textContent = "Guía profesional: español, inglés (otros idiomas, consultar)";
+        if (lang) lang.textContent = this.t("product.guideProfessionalEsEn", "Guía profesional: español, inglés (otros idiomas, consultar)");
         const serviceSection = document.getElementById("serviceModeSection");
         const serviceSelect = document.getElementById("serviceMode");
         if (serviceSection) serviceSection.hidden = true;
@@ -8976,7 +8983,7 @@ document.addEventListener("click", function (event) {
       const finalPassenger = Number(quote.payNow || 0) / paxCount(this);
       return {
         title: this.product.title,
-        date: this.date || "Por confirmar",
+        date: this.date || this.t("quote.print.toBeConfirmed", "Por confirmar"),
         adults: this.adults,
         children: this.children,
         departureTime: this.getSelectedDepartureTimeLabel?.(),
@@ -9004,7 +9011,7 @@ document.addEventListener("click", function (event) {
       const selection = this.getSelectedAccommodationForDestination?.("aguas-calientes");
       const hotelName = selection?.hotel?.hotelName || "Hotel Luz Garden Machu Picchu";
       const combo = selection?.combination?.label ? ` (${selection.combination.label})` : "";
-      const item = `Alojamiento incluido: ${hotelName}${combo}, 1 noche en Aguas Calientes`;
+      const item = this.t("product.accommodationIncludedNote", "Alojamiento incluido: {hotel}{combo}, 1 noche en Aguas Calientes", { hotel: hotelName, combo });
       return [...base.filter((x) => !String(x).toLowerCase().includes("alojamiento incluido")), item];
     };
 
@@ -9132,7 +9139,7 @@ document.addEventListener("click", function (event) {
           const hotelRow = document.getElementById("accommodationTotal")?.closest(".booking-summary__line");
           if (hotelRow) {
             const label = hotelRow.querySelector("span");
-            if (label) label.textContent = "Upgrade de hotel";
+            if (label) label.textContent = this.t("product.hotelUpgradeButton", "Upgrade de hotel");
             hotelRow.hidden = !(Number(quote.accommodationTotal || 0) > 0);
           }
         }
@@ -9187,7 +9194,7 @@ document.addEventListener("click", function (event) {
             <div class="hotel-option-card__content">
               <div class="hotel-option-card__media"><div class="hotel-option-card__gallery">${this.renderHotelModalGallery(images, hotel.hotelName)}</div>${this.renderHotelFeatures(hotel)}</div>
               <div class="hotel-option-card__body">
-                <label>Selecciona tipo de habitación</label>
+                <label>${this.t("product.selectRoomType", "Selecciona tipo de habitación")}</label>
                 <div class="hotel-option-card__options">
                   ${combinations.length ? combinations.map((combo) => {
                     const comboUpgrade = comboUpgradeTotal(this, hotel.hotelCode, combo);
@@ -9259,21 +9266,24 @@ document.addEventListener("click", function (event) {
       const outArr = out?.arrivalTime || "18:01";
       const retDep = ret?.departureTime || "20:20";
       const retArr = ret?.arrivalTime || "21:59";
+      const day1 = this.t("product.print.dayLabel", "Día {n}", { n: 1 });
+      const day2 = this.t("product.print.dayLabel", "Día {n}", { n: 2 });
+      const approx = this.t("product.print.approx", "aprox.");
       return [
-        { time: "Día 1 · 01:30 p.m. aprox.", title: "Recojo en Cusco y traslado a Ollantaytambo", description: "Recojo desde tu hotel o punto coordinado en Cusco y traslado hacia la estación de tren de Ollantaytambo." },
-        { time: "Día 1 · 03:30 p.m. aprox.", title: "Llegada a Ollantaytambo", description: "Llegada referencial a la estación para realizar el registro y abordar el tren turístico." },
-        { time: `Día 1 · ${outDep} aprox.`, title: "Viaje en tren a Aguas Calientes", description: "Salida en tren turístico hacia Machu Picchu Pueblo/Aguas Calientes según el tren seleccionado." },
-        { time: `Día 1 · ${outArr} aprox.`, title: "Llegada a Aguas Calientes y traslado al hotel", description: "Llegada a Machu Picchu Pueblo y asistencia hacia el hotel seleccionado para realizar el check-in." },
-        { time: "Día 1 · Noche", title: "Noche en Aguas Calientes", description: "Noche libre en Aguas Calientes para descansar antes de la visita a Machu Picchu del día siguiente." },
-        { time: "Día 2 · 09:00 a.m. aprox.", title: "Encuentro en la Plaza de Armas de Aguas Calientes", description: "Reunión con el guía para iniciar la coordinación del tour guiado a Machu Picchu." },
-        { time: "Día 2 · 09:30 a.m. aprox.", title: "Fila y bus Consettur hacia Machu Picchu", description: "Abordaje del bus turístico de subida hasta la puerta de ingreso al Centro Arqueológico de Machu Picchu." },
-        { time: "Día 2 · 10:00 a.m. aprox.", title: "Tour guiado en Machu Picchu", description: "Recorrido guiado por Machu Picchu. El circuito se confirma según disponibilidad oficial de boletos." },
-        { time: "Día 2 · 01:00 p.m. aprox.", title: "Fin del tour guiado y tiempo para almorzar", description: "Finaliza la visita guiada. Puedes agregar almuerzo opcional en Tinkuy/Belmond Sanctuary Lodge o almorzar por tu cuenta." },
-        { time: "Día 2 · 03:00 p.m. aprox.", title: "Bus de bajada hacia Aguas Calientes", description: "Retorno en bus Consettur hacia Machu Picchu Pueblo. Tendrás tiempo libre hasta la hora del tren." },
-        { time: "Día 2 · 07:50 p.m. aprox.", title: "Embarque para el tren de retorno", description: "Presentación en la estación de tren de Aguas Calientes para abordar el tren de retorno seleccionado." },
-        { time: `Día 2 · ${retDep} aprox.`, title: "Tren de retorno", description: "Salida en tren turístico de retorno según la selección disponible." },
-        { time: `Día 2 · ${retArr} aprox.`, title: "Llegada y transbordo hacia bus turístico", description: "Transbordo operativo desde tren hacia bus turístico para continuar el viaje hacia la ciudad de Cusco." },
-        { time: "Día 2 · 11:45 p.m. aprox.", title: "Llegada a Cusco y fin de servicios", description: "Llegada referencial a la ciudad de Cusco. El desembarque se realiza cerca de la Plaza de Armas o punto coordinado." }
+        { time: `${day1} · 01:30 p.m. ${approx}`, title: this.t("product.itin.ovPickupCuscoTitle", "Recojo en Cusco y traslado a Ollantaytambo"), description: this.t("product.itin.ovPickupCuscoDesc", "Recojo desde tu hotel o punto coordinado en Cusco y traslado hacia la estación de tren de Ollantaytambo.") },
+        { time: `${day1} · 03:30 p.m. ${approx}`, title: this.t("product.itin.ovArrivalOllantaTitle", "Llegada a Ollantaytambo"), description: this.t("product.itin.ovArrivalOllantaDesc", "Llegada referencial a la estación para realizar el registro y abordar el tren turístico.") },
+        { time: `${day1} · ${outDep} ${approx}`, title: this.t("product.itin.ovTrainToAguasTitle", "Viaje en tren a Aguas Calientes"), description: this.t("product.itin.ovTrainToAguasDesc", "Salida en tren turístico hacia Machu Picchu Pueblo/Aguas Calientes según el tren seleccionado.") },
+        { time: `${day1} · ${outArr} ${approx}`, title: this.t("product.itin.ovArrivalAguasHotelTitle", "Llegada a Aguas Calientes y traslado al hotel"), description: this.t("product.itin.ovArrivalAguasHotelDesc", "Llegada a Machu Picchu Pueblo y asistencia hacia el hotel seleccionado para realizar el check-in.") },
+        { time: `${day1} · ${this.t("product.print.nightLabel", "Noche")}`, title: this.t("product.itin.ovNightTitle", "Noche en Aguas Calientes"), description: this.t("product.itin.ovNightDesc", "Noche libre en Aguas Calientes para descansar antes de la visita a Machu Picchu del día siguiente.") },
+        { time: `${day2} · 09:00 a.m. ${approx}`, title: this.t("product.itin.ovMeetingPlazaTitle", "Encuentro en la Plaza de Armas de Aguas Calientes"), description: this.t("product.itin.ovMeetingPlazaDesc", "Reunión con el guía para iniciar la coordinación del tour guiado a Machu Picchu.") },
+        { time: `${day2} · 09:30 a.m. ${approx}`, title: this.t("product.itin.ovBusQueueTitle", "Fila y bus Consettur hacia Machu Picchu"), description: this.t("product.itin.ovBusQueueDesc", "Abordaje del bus turístico de subida hasta la puerta de ingreso al Centro Arqueológico de Machu Picchu.") },
+        { time: `${day2} · 10:00 a.m. ${approx}`, title: this.t("product.itin.guidedTourTitle", "Tour guiado en Machu Picchu"), description: this.t("product.itin.ovGuidedTourGenericDesc", "Recorrido guiado por Machu Picchu. El circuito se confirma según disponibilidad oficial de boletos.") },
+        { time: `${day2} · 01:00 p.m. ${approx}`, title: this.t("product.itin.tourEndTitleShort", "Fin del tour guiado y tiempo para almorzar"), description: this.t("product.itin.ovLunchOptionalDesc", "Finaliza la visita guiada. Puedes agregar almuerzo opcional en Tinkuy/Belmond Sanctuary Lodge o almorzar por tu cuenta.") },
+        { time: `${day2} · 03:00 p.m. ${approx}`, title: this.t("product.itin.busDownTitle", "Bus de bajada hacia Aguas Calientes"), description: this.t("product.itin.ovBusDownReturnDesc", "Retorno en bus Consettur hacia Machu Picchu Pueblo. Tendrás tiempo libre hasta la hora del tren.") },
+        { time: `${day2} · 07:50 p.m. ${approx}`, title: this.t("product.itin.ovBoardingReturnTitle", "Embarque para el tren de retorno"), description: this.t("product.itin.ovBoardingReturnDesc", "Presentación en la estación de tren de Aguas Calientes para abordar el tren de retorno seleccionado.") },
+        { time: `${day2} · ${retDep} ${approx}`, title: this.t("booking.train.return", "Tren de retorno"), description: this.t("product.itin.ovReturnTrainDepartureDesc", "Salida en tren turístico de retorno según la selección disponible.") },
+        { time: `${day2} · ${retArr} ${approx}`, title: this.t("product.itin.ovTransferBusTitle", "Llegada y transbordo hacia bus turístico"), description: this.t("product.itin.ovTransferBusDesc", "Transbordo operativo desde tren hacia bus turístico para continuar el viaje hacia la ciudad de Cusco.") },
+        { time: `${day2} · 11:45 p.m. ${approx}`, title: this.t("product.itin.arrivalCuscoEndTitleShort", "Llegada a Cusco y fin de servicios"), description: this.t("product.itin.arrivalCuscoEndReferentialDesc", "Llegada referencial a la ciudad de Cusco. El desembarque se realiza cerca de la Plaza de Armas o punto coordinado.") }
       ];
     };
 
@@ -9286,8 +9296,8 @@ document.addEventListener("click", function (event) {
       const images = [...new Set([...(hotel.images?.cover ? [hotel.images.cover] : []), ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])])].slice(0, 3);
       const upgrade = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
       const currency = this.product?.currency || "USD";
-      return `<section class="print-section print-section--hotel-v85"><h2>Hotel seleccionado</h2>
-        <div class="print-hotel-summary-v85"><div><strong>${esc(hotel.hotelName || "Hotel seleccionado")}</strong><small>${hotel.stars ? `${hotel.stars} estrellas · ` : ""}1 noche en Aguas Calientes</small><small>${esc(combo?.label || "Habitación según disponibilidad")}</small></div><b>${upgrade > 0 ? `Upgrade + ${currency} ${money(upgrade)}` : "Incluido en el precio"}</b></div>
+      return `<section class="print-section print-section--hotel-v85"><h2>${this.t("booking.hotelSelectedFallback", "Hotel seleccionado")}</h2>
+        <div class="print-hotel-summary-v85"><div><strong>${esc(hotel.hotelName || this.t("booking.hotelSelectedFallback", "Hotel seleccionado"))}</strong><small>${hotel.stars ? `${hotel.stars} ${this.t("product.starsWord", "estrellas")} · ` : ""}${this.t("product.oneNightAguasCalientes", "1 noche en Aguas Calientes")}</small><small>${esc(combo?.label || this.t("product.selectRoomAvailability", "Habitación según disponibilidad"))}</small></div><b>${upgrade > 0 ? this.t("product.upgradePlusAmount", "Upgrade + {amount}", { amount: `${currency} ${money(upgrade)}` }) : this.t("product.includedInPrice", "Incluido en el precio")}</b></div>
         ${images.length ? `<div class="print-hotel-gallery-v85">${images.map((src, i) => `<figure><img src="${this.resolveAssetPath(src)}" alt="${esc((hotel.hotelName || "Hotel") + " " + (i + 1))}" /></figure>`).join("")}</div>` : ""}
       </section>`;
     };
@@ -9489,11 +9499,11 @@ document.addEventListener("click", function (event) {
               <span class="experience-itinerary-day-pill">Día ${esc(day)}</span>
               <span class="experience-itinerary-date-pill" data-itinerary-date-for="${esc(day)}" ${dateLabel ? "" : "hidden"}>${esc(dateLabel)}</span>
             </div>
-            <h3 class="experience-itinerary-day-title">Itinerario detallado del día</h3>
+            <h3 class="experience-itinerary-day-title">${this.t("product.fullDayItinerary", "Itinerario detallado del día")}</h3>
             <div class="experience-itinerary-timeline experience-itinerary-timeline--overnight-v86">
               ${dayItems.map((item, index) => `<article class="experience-itinerary-activity experience-itinerary-activity--overnight-v86">
-                <span class="experience-itinerary-time-pill experience-itinerary-time-pill--overnight-v86"><strong>${esc(item.__time || `Paso ${index + 1}`)}</strong>${item.__approx ? `<small>${esc(item.__approx)}</small>` : ""}</span>
-                <div class="experience-itinerary-activity__copy"><strong>${esc(item.title || `Actividad ${index + 1}`)}</strong>${item.description ? `<p>${esc(item.description)}</p>` : ""}</div>
+                <span class="experience-itinerary-time-pill experience-itinerary-time-pill--overnight-v86"><strong>${esc(item.__time || this.t("product.print.stepFallback", "Paso {n}", { n: index + 1 }))}</strong>${item.__approx ? `<small>${esc(item.__approx)}</small>` : ""}</span>
+                <div class="experience-itinerary-activity__copy"><strong>${esc(item.title || this.t("product.print.activityFallback", "Actividad {n}", { n: index + 1 }))}</strong>${item.description ? `<p>${esc(item.description)}</p>` : ""}</div>
               </article>`).join("")}
             </div>
           </div>
@@ -9544,10 +9554,10 @@ document.addEventListener("click", function (event) {
       const cancelBtn = document.getElementById("cancelHotelModalBtn");
       if (!modal || !title || !subtitle || !list) return;
       this.activeHotelModalDestination = destination;
-      if (cancelBtn) cancelBtn.textContent = "Seleccionar hotel y habitación";
+      if (cancelBtn) cancelBtn.textContent = this.t("product.selectHotelRoomBtn", "Seleccionar hotel y habitación");
       const passengers = paxCount(this);
-      title.textContent = "Upgrade de hotel en Aguas Calientes";
-      subtitle.textContent = "El Hotel Luz Garden está incluido. Puedes mantenerlo sin cargo o elegir un upgrade de hotel.";
+      title.textContent = this.t("product.overnightHotelUpgradeTitle", "Upgrade de hotel en Aguas Calientes");
+      subtitle.textContent = this.t("product.overnightIntroTextV86", "El Hotel Luz Garden está incluido. Puedes mantenerlo sin cargo o elegir un upgrade de hotel.");
       const hotels = (this.getHotelsByDestination?.(destination) || []).filter((hotel) => hotel?.hotelCode && hotel.hotelCode !== "no-hotel");
       const currentHotelCode = this.selectedHotelsByDestination?.[destination] || defaultHotelCode(this);
       const currentCombinationKey = this.selectedCombinationsByDestination?.[destination]?.key || "";
@@ -9558,21 +9568,24 @@ document.addEventListener("click", function (event) {
         const images = [...new Set([...(hotel.images?.cover ? [hotel.images.cover] : []), ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])])];
         const hotelIncluded = hotel.hotelCode === defaultHotelCode(this);
         const upgrade = comboUpgradeTotal(this, hotel.hotelCode, initialCombo);
-        const badge = hotelIncluded ? "Hotel incluido en el precio" : `+ ${this.product?.currency || "USD"} ${money(upgrade / passengers)} por persona`;
+        const badge = hotelIncluded ? this.t("product.hotelIncludedInPrice", "Hotel incluido en el precio") : this.t("product.upgradePerPersonAmount", "+ {price} por persona", { price: `${this.product?.currency || "USD"} ${money(upgrade / passengers)}` });
         return `<article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""} hotel-option-card--overnight-v86" data-hotel-card="${esc(hotel.hotelCode)}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-selected-combo-key="${esc(initialCombo?.key || "")}">
           <div class="hotel-option-card__header">
-            <div><h3>${esc(hotel.hotelName || "Hotel")}</h3><p>${this.renderStars?.(hotel.stars || 0) || `${hotel.stars || 0}★`} · ${esc(hotel.location || "Aguas Calientes")}</p>${hotel.summary ? `<p>${esc(hotel.summary)}</p>` : ""}</div>
+            <div><h3>${esc(hotel.hotelName || this.t("quote.hotelGeneric", "Hotel"))}</h3><p>${this.renderStars?.(hotel.stars || 0) || `${hotel.stars || 0}★`} · ${esc(hotel.location || "Aguas Calientes")}</p>${hotel.summary ? `<p>${esc(hotel.summary)}</p>` : ""}</div>
             <div class="hotel-option-card__badge ${hotelIncluded ? "hotel-option-card__badge--included" : ""}">${esc(badge)}</div>
           </div>
           <div class="hotel-option-card__content">
-            <div class="hotel-option-card__media"><div class="hotel-option-card__gallery">${this.renderHotelModalGallery?.(images, hotel.hotelName || "Hotel") || ""}</div>${this.renderHotelFeatures?.(hotel) || ""}</div>
-            <div class="hotel-option-card__body"><label>Selecciona tipo de habitación</label><div class="hotel-option-card__options">
+            <div class="hotel-option-card__media"><div class="hotel-option-card__gallery">${this.renderHotelModalGallery?.(images, hotel.hotelName || this.t("quote.hotelGeneric", "Hotel")) || ""}</div>${this.renderHotelFeatures?.(hotel) || ""}</div>
+            <div class="hotel-option-card__body"><label>${this.escapeHtml(this.t("booking.selectRoomType", "Selecciona tipo de habitación"))}</label><div class="hotel-option-card__options">
               ${combinations.length ? combinations.map((combo) => {
                 const comboUpgrade = comboUpgradeTotal(this, hotel.hotelCode, combo);
                 const comboPerPerson = comboUpgrade / passengers;
-                const sub = hotelIncluded ? `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Incluido en el precio base` : `${combo.totalRooms} ${combo.totalRooms === 1 ? "habitación" : "habitaciones"} | Upgrade total + ${this.product?.currency || "USD"} ${money(comboUpgrade)} · ${this.product?.currency || "USD"} ${money(comboPerPerson)} por persona`;
+                const roomWord = combo.totalRooms === 1 ? this.t("product.room", "habitación") : this.t("product.roomsPluralLower", "habitaciones");
+                const sub = hotelIncluded
+                  ? this.t("product.roomsIncludedInBasePrice", "{rooms} | Incluido en el precio base", { rooms: `${combo.totalRooms} ${roomWord}` })
+                  : this.t("product.roomsUpgradeTotal", "{rooms} | Upgrade total + {price} · {pricePerPerson} por persona", { rooms: `${combo.totalRooms} ${roomWord}`, price: `${this.product?.currency || "USD"} ${money(comboUpgrade)}`, pricePerPerson: `${this.product?.currency || "USD"} ${money(comboPerPerson)}` });
                 return `<button type="button" class="hotel-combo-btn ${isSelectedHotel && currentCombinationKey === combo.key ? "is-selected" : ""}" data-destination="${esc(destination)}" data-hotel-code="${esc(hotel.hotelCode)}" data-combo-key="${esc(combo.key)}"><span class="hotel-combo-radio" aria-hidden="true"></span><span class="hotel-combo-btn__main">${esc(combo.label)}</span><span class="hotel-combo-btn__sub">${esc(sub)}</span></button>`;
-              }).join("") : `<p>No hay habitaciones válidas para ${passengers} viajeros.</p>`}
+              }).join("") : `<p>${this.escapeHtml(this.t("product.noValidRoomsForTravelers", "No hay habitaciones válidas para {count} viajeros.", { count: passengers }))}</p>`}
             </div></div>
           </div>
         </article>`;
@@ -9600,9 +9613,9 @@ document.addEventListener("click", function (event) {
       section.hidden = false;
       section.classList.add("booking-field--hotel-upgrade-v86");
       container.innerHTML = `<div class="booking-accommodation-card booking-accommodation-card--selected booking-accommodation-card--overnight-v86">
-        ${image ? `<div class="booking-accommodation-card__thumb"><img src="${this.resolveAssetPath?.(image) || image}" alt="${esc(hotel?.hotelName || "Hotel seleccionado")}" loading="lazy" /></div>` : ""}
-        <div class="booking-accommodation-card__header"><strong>Hotel seleccionado</strong><small>1 noche en Aguas Calientes</small></div>
-        <div class="booking-accommodation-card__body"><p class="booking-accommodation-card__selected">${esc(hotel?.hotelName || "Hotel Luz Garden")} ${hotel?.stars ? `· ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p><p class="booking-accommodation-card__selected">${esc(combo?.label || "Habitación según disponibilidad")}</p><p class="booking-accommodation-card__price">${upgradeTotal > 0 ? `+ ${this.product?.currency || "USD"} ${money(upgradeTotal)} total por upgrade` : "Hotel incluido en el precio"}</p><button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="aguas-calientes"><i class="fas fa-hotel"></i> Upgrade de hotel</button></div>
+        ${image ? `<div class="booking-accommodation-card__thumb"><img src="${this.resolveAssetPath?.(image) || image}" alt="${esc(hotel?.hotelName || this.t("booking.hotelSelectedFallback", "Hotel seleccionado"))}" loading="lazy" /></div>` : ""}
+        <div class="booking-accommodation-card__header"><strong>${this.escapeHtml(this.t("booking.hotelSelectedFallback", "Hotel seleccionado"))}</strong><small>${this.escapeHtml(this.t("product.oneNightAguasCalientes", "1 noche en Aguas Calientes"))}</small></div>
+        <div class="booking-accommodation-card__body"><p class="booking-accommodation-card__selected">${esc(hotel?.hotelName || this.t("product.hotelLuzGardenFallback", "Hotel Luz Garden"))} ${hotel?.stars ? `· ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p><p class="booking-accommodation-card__selected">${esc(combo?.label || this.t("product.selectRoomAvailability", "Habitación según disponibilidad"))}</p><p class="booking-accommodation-card__price">${upgradeTotal > 0 ? this.t("product.upgradeTotalAmount", "+ {price} total por upgrade", { price: `${this.product?.currency || "USD"} ${money(upgradeTotal)}` }) : this.t("product.hotelIncludedInPrice", "Hotel incluido en el precio")}</p><button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="aguas-calientes"><i class="fas fa-hotel"></i> ${this.t("product.hotelUpgradeButton", "Upgrade de hotel")}</button></div>
       </div>`;
       this.bindAccommodationEvents?.();
       return result;

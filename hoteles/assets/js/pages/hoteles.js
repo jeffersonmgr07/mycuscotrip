@@ -365,7 +365,7 @@
     state.calendarMonth = month;
 
     content.innerHTML = `
-      <section class="hotel-detail hotel-detail--balanced">
+      <section class="hotel-detail hotel-detail--balanced" id="hotelStep1">
         <div class="hotel-detail__left">
           <div id="hotelGalleryMount" class="hotel-detail__gallery"></div>
           <div class="hotel-title-block">
@@ -388,10 +388,13 @@
             </div>
             <button type="button" class="hotel-search-availability-btn" id="hotelSearchAvailabilityBtn"><i class="fa-solid fa-magnifying-glass"></i> Ver disponibilidad</button>
             <div id="hotelRoomsPanel" class="hotel-rooms-panel" hidden></div>
-            <div id="hotelPaymentPanel" class="hotel-payment-panel" hidden></div>
           </div>
         </div>
-      </section>`;
+      </section>
+      <div class="hotel-step2" id="hotelStep2" hidden>
+        <button type="button" class="hotel-step-back" data-hotel-back-to-step1><i class="fa-solid fa-arrow-left"></i> Volver a elegir habitación</button>
+        <div id="hotelPaymentPanel" class="hotel-payment-panel"></div>
+      </div>`;
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -504,7 +507,8 @@
     const rooms = $('#hotelRoomsPanel');
     const pay = $('#hotelPaymentPanel');
     if (rooms) { rooms.hidden = true; rooms.innerHTML = ''; }
-    if (pay) { pay.hidden = true; pay.innerHTML = ''; }
+    if (pay) { pay.innerHTML = ''; }
+    backToRoomStep();
   }
 
   function scrollHotelPanelIntoView(selector, block = 'start') {
@@ -583,7 +587,7 @@
     state.activeGuest = null;
     state.accommodations = options;
     state.paypalRenderedFor = null;
-    if (payment) { payment.hidden = true; payment.innerHTML = ''; }
+    if (payment) { payment.innerHTML = ''; }
 
     panel.hidden = false;
     if (!options.length) {
@@ -597,7 +601,10 @@
         <strong>Elige tu acomodación</strong>
         <small>${nights} noche${nights === 1 ? '' : 's'} · ${adults} adulto${adults === 1 ? '' : 's'}${children ? ` · ${children} niño${children === 1 ? '' : 's'}` : ''}</small>
       </div>
-      <div class="hotel-room-list">${options.map((option, idx) => renderRoomOption(option, idx, nights)).join('')}</div>`;
+      <div class="hotel-room-list">${options.map((option, idx) => renderRoomOption(option, idx, nights)).join('')}</div>
+      <div class="hotel-room-continue-wrap" id="hotelRoomContinueWrap" hidden>
+        <button type="button" class="hotel-search-availability-btn" id="hotelContinueToPaymentBtn">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+      </div>`;
     scrollHotelPanelIntoView(panel);
   }
 
@@ -619,16 +626,25 @@
 
   function selectAccommodation() {
     const room = getSelectedRoom();
-    const panel = $('#hotelPaymentPanel');
-    if (!room || !panel || !state.activeSearch || !state.activeHotel) return;
+    const wrap = $('#hotelRoomContinueWrap');
+    if (!room || !state.activeSearch || !state.activeHotel) return;
     state.activeRoom = room;
+    if (wrap) wrap.hidden = false;
+  }
+
+  function openPaymentStep() {
+    const room = state.activeRoom;
+    const panel = $('#hotelPaymentPanel');
+    const step1 = $('#hotelStep1');
+    const step2 = $('#hotelStep2');
+    if (!room || !panel || !step1 || !step2 || !state.activeSearch || !state.activeHotel) return;
     state.activeGuest = null;
     state.paypalRenderedFor = null;
+    panel.hidden = false;
     const price = getRoomPrice(room);
     const total = Number(price.amount || 0) * Number(state.activeSearch.nights || 1);
     const currency = price.currency || 'USD';
 
-    panel.hidden = false;
     panel.innerHTML = `
       <div class="hotel-payment-summary">
         <strong>Datos del titular de la reserva</strong>
@@ -668,8 +684,20 @@
       </div>
       <div class="hotel-paypal-lock" id="hotelPaypalLock"><i class="fa-solid fa-lock"></i> Completa los datos del titular de reserva para continuar al pago.</div>
       <div id="hotelPaypalButtons" class="hotel-paypal-buttons" hidden></div>`;
-    scrollHotelPanelIntoView(panel);
+    step1.hidden = true;
+    step2.hidden = false;
+    const dialog = $('.hotel-detail-modal__dialog');
+    if (dialog) dialog.scrollTop = 0;
     updatePaypalState();
+  }
+
+  function backToRoomStep() {
+    const step1 = $('#hotelStep1');
+    const step2 = $('#hotelStep2');
+    if (step1) step1.hidden = false;
+    if (step2) step2.hidden = true;
+    const dialog = $('.hotel-detail-modal__dialog');
+    if (dialog) dialog.scrollTop = 0;
   }
 
   function readGuestData() {
@@ -854,6 +882,8 @@
       if (event.target.closest('[data-calendar-apply]')) closeHotelCalendar();
       if (event.target.closest('[data-close-hotel-modal]')) closeHotel();
       if (event.target.closest('#hotelSearchAvailabilityBtn')) showAvailability();
+      if (event.target.closest('#hotelContinueToPaymentBtn')) openPaymentStep();
+      if (event.target.closest('[data-hotel-back-to-step1]')) backToRoomStep();
       if (event.target.closest('#hotelManualPaymentBtn')) saveHotelOrder({ id: 'manual_pending', status: 'PENDING_PAYMENT' });
     });
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeHotel(); });

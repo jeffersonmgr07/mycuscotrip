@@ -651,7 +651,7 @@
 </head>
 <body>
 <div class="page">
-<div class="title">Cotizador de vuelos</div>
+<div class="title">Flight Quote Tool</div>
 <section class="search-box">
 <div class="trip-switches">
 <button class="trip-btn active" data-trip="oneway" type="button">One way</button>
@@ -700,7 +700,7 @@
 </select>
 </div>
 <div class="field">
-<label for="price">Precio final total (USD)</label>
+<label for="price">Final total price (USD)</label>
 <input id="price" step="0.01" type="number" value="280.26"/>
 </div>
 <div class="field">
@@ -755,7 +755,7 @@
 <input id="cardFeePercent" step="0.01" type="number" value="5"/>
 </div>
 <div class="field">
-<label>Seguro de viaje</label>
+<label>Travel insurance</label>
 <label class="field-checkbox">
 <input id="includeInsurance" type="checkbox"/>
 <span>Agregar seguro</span>
@@ -1115,7 +1115,7 @@
                 <div class="options-grid">
                   <div class="option-card">
                     <div class="option-left">
-                      <div class="option-title">Seguro de viaje</div>
+                      <div class="option-title">Travel insurance</div>
                       <div class="option-desc">Additional coverage for the passenger.</div>
                     </div>
                     <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}</div>

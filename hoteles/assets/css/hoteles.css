@@ -890,6 +890,45 @@
   margin-top: 4px;
 }
 
+/* Step wizard: room selection (step 1) -> traveler data + payment (step 2), no vertical growth */
+#hotelStep1,
+#hotelStep2 {
+  animation: hotelStepFade .22s ease;
+}
+@keyframes hotelStepFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hotel-room-continue-wrap[hidden] { display: none !important; }
+.hotel-room-continue-wrap {
+  padding-top: 4px;
+}
+.hotel-step2 {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 18px 26px;
+}
+#hotelStep1[hidden],
+#hotelStep2[hidden] { display: none !important; }
+.hotel-step-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  color: var(--hotel-green);
+  font-weight: 850;
+  font-size: .88rem;
+  padding: 6px 2px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.hotel-step-back:hover { text-decoration: underline; }
+.hotel-step2 .hotel-payment-panel {
+  border-top: 0;
+  padding-top: 0;
+}
+
 @media (max-width: 980px) {
   .hotel-detail--balanced {
     grid-template-columns: 1fr;

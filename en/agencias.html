@@ -35,7 +35,7 @@
 <p>Authorized agencies <span>|</span> Confidential rates</p>
 <nav aria-label="Main menu for agencies" class="agency-mainnav">
 <a href="#inicio">Inicio</a>
-<a href="#servicios">Servicios</a>
+<a href="#servicios">Services</a>
 <a href="#reservas">Bookings</a>
 <a href="#pagos">Payments</a>
 <a href="#reportes">Reportes</a>
@@ -43,15 +43,15 @@
 </div>
 </header>
 <div class="agency-layout">
-<aside aria-label="Servicios para agencias" class="agency-sidebar">
+<aside aria-label="Services para agencias" class="agency-sidebar">
 <div class="agency-sidebar__intro">
 <span>Portal operador</span>
-<strong>Tours diarios</strong>
+<strong>Daily tours</strong>
 </div>
 <nav aria-label="Lista de tours" class="agency-service-menu" id="serviceMenu">
 <button class="is-active" data-service="all" type="button">
 <span aria-hidden="true" class="service-icon">◎</span>
-<span>Todos los tours</span>
+<span>All tours</span>
 <small>Ver disponibilidad general</small>
 </button>
 </nav>
@@ -59,7 +59,7 @@
 <main class="agency-content" id="inicio">
 <section aria-labelledby="pageTitle" class="agency-hero">
 <div>
-<p class="eyebrow">Uso exclusivo para agencias</p>
+<p class="eyebrow">Exclusive use for agencies</p>
 <h1 id="pageTitle">Tour Reservations</h1>
 <p class="agency-hero__lead">Check available schedules, select spaces and register requests for your agency. Displayed prices are net rates in Peruvian soles for authorized agencies.</p>
 </div>
@@ -79,9 +79,9 @@
 </div>
 <form class="agency-filters" id="searchForm">
 <label>
-<span>Servicio</span>
+<span>Service</span>
 <select id="serviceSelect" name="service">
-<option value="all">Todos los tours</option>
+<option value="all">All tours</option>
 </select>
 </label>
 <label>
@@ -113,13 +113,13 @@
 </label>
 <button class="agency-button agency-button--primary" type="submit">
 <span aria-hidden="true">⌕</span>
-              Buscar tours
+              Search tours
             </button>
 </form>
 </section>
 <section aria-label="Search summary" class="agency-grid agency-kpis">
 <article class="agency-mini-card">
-<small>Servicios disponibles</small>
+<small>Services disponibles</small>
 <strong id="kpiServices">0</strong>
 </article>
 <article class="agency-mini-card">
@@ -139,7 +139,7 @@
 <div class="agency-card__header agency-card__header--inline">
 <div>
 <p class="eyebrow">Paso 2</p>
-<h2 id="resultsTitle">Tours y horarios disponibles</h2>
+<h2 id="resultsTitle">Available tours and schedules</h2>
 </div>
 <div class="agency-tools">
 <label class="agency-search-mini">
@@ -154,7 +154,7 @@
 <thead>
 <tr>
 <th>Elegir</th>
-<th>Servicio</th>
+<th>Service</th>
 <th>Date</th>
 <th>Hora</th>
 <th>Duration</th>
@@ -168,7 +168,7 @@
 <tbody id="resultsBody"></tbody>
 </table>
 </div>
-<p class="agency-empty" hidden="" id="emptyResults">No se encontraron tours para esos filtros.</p>
+<p class="agency-empty" hidden="" id="emptyResults">No tours found for those filters.</p>
 </section>
 <section class="agency-split" id="reservas">
 <article aria-labelledby="summaryTitle" class="agency-card agency-summary">
@@ -188,8 +188,8 @@
 <small>Amount subject to validation and operational confirmation.</small>
 </div>
 <div class="agency-actions">
-<button class="agency-button agency-button--primary" disabled="" id="reserveButton" type="button">Registrar reserva</button>
-<button class="agency-button agency-button--secondary" disabled="" id="paymentButton" type="button">Registrar pago</button>
+<button class="agency-button agency-button--primary" disabled="" id="reserveButton" type="button">Register booking</button>
+<button class="agency-button agency-button--secondary" disabled="" id="paymentButton" type="button">Register payment</button>
 </div>
 </article>
 <article aria-labelledby="paymentTitle" class="agency-card agency-payment" id="pagos">
@@ -227,7 +227,7 @@
 <dialog class="agency-dialog" id="reserveDialog">
 <form class="agency-dialog__panel" id="reserveForm" method="dialog">
 <button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
-<p class="eyebrow">Nueva reserva</p>
+<p class="eyebrow">New booking</p>
 <h2>Agency and passenger details</h2>
 <div class="dialog-grid">
 <label><span>Agency</span><input id="agencyName" placeholder="Business name" required=""/></label>
@@ -239,7 +239,7 @@
 </div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
-<button class="agency-button agency-button--primary" type="submit">Guardar reserva pendiente</button>
+<button class="agency-button agency-button--primary" type="submit">Save pending booking</button>
 </div>
 </form>
 </dialog>
@@ -254,12 +254,12 @@
 <label><span>Method</span><select id="paymentMethod"><option>Bank transfer</option><option>Account deposit</option><option>Corporate Yape / Plin</option></select></label>
 <label><span>Transaction number</span><input id="paymentOperation" placeholder="e.g. 00981231" required=""/></label>
 <label class="dialog-grid__full"><span>Comprobante</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
-<label class="dialog-grid__full"><span>Nota de pago</span><textarea id="paymentNotes" placeholder="Banco, titular, hora aproximada, etc." rows="3"></textarea></label>
+<label class="dialog-grid__full"><span>Payment note</span><textarea id="paymentNotes" placeholder="Banco, titular, hora aproximada, etc." rows="3"></textarea></label>
 </div>
 <div class="dialog-alert">The receipt will remain <strong>Pending approval</strong> until the reservations team validates it.</div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
-<button class="agency-button agency-button--primary" type="submit">Registrar pago pendiente</button>
+<button class="agency-button agency-button--primary" type="submit">Register pending payment</button>
 </div>
 </form>
 </dialog>
