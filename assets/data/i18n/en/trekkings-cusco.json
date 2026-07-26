@@ -83,9 +83,11 @@
         "camino-inca"
       ],
       "highlights": [
-        "Camino Inca corto",
-        "Machu Picchu entrance ticket",
-        "Historic route"
+        "Short hike along a stretch of the original Inca Trail to Machu Picchu",
+        "Includes the official Inca Trail permit (Inca Trail Network)",
+        "Passes through Wiñay Wayna and arrives at Machu Picchu via the Sun Gate (Inti Punku)",
+        "Ideal for travelers short on time who still want to experience the original Inca route",
+        "Tourist train and ground transfers included"
       ],
       "permits": {
         "required": true,
@@ -135,7 +137,7 @@
           "Historic route"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Camino Inca 2D/1N | My Cusco Trip",
         "description": "Short Inca Trail version that connects trekking, history and Machu Picchu in a compact route."
@@ -161,6 +163,40 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Ollantaytambo – Km 104 – Wiñay Wayna – Inti Punku",
+          "description": "Very early pickup from your hotel in Cusco and transfer to the Ollantaytambo train station to board the scenic train to Km 104, the checkpoint where the official Inca Trail permit and each passenger's ID are verified. From there the hike begins (approx. 3 to 4 hours), crossing the Urubamba River and passing near the archaeological sites of Chachabamba and Choquesuysuy, climbing a cloud-forest trail lined with orchids up to the Wiñay Wayna complex. The route continues to Inti Punku (Sun Gate), where you get your first views of Machu Picchu before descending to Aguas Calientes for the overnight stay."
+        },
+        {
+          "title": "Day 2: Machu Picchu and return to Cusco",
+          "description": "Breakfast, then a ride up by tourist bus (or on foot) to the citadel of Machu Picchu for a guided tour of its main sectors, covering its history, architecture and significance within the Inca empire. Free time to explore on your own before heading back down to Aguas Calientes. In the afternoon, return by train to Ollantaytambo and then by tourist transport to Cusco."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Official Inca Trail permit (Inca Trail Network / Ministry of Culture), subject to availability and complete passenger information",
+        "Ollantaytambo – Km 104 tourist train and Aguas Calientes – Ollantaytambo return train",
+        "Tourist transportation Ollantaytambo/Cusco on the overland legs",
+        "Professional bilingual guide (Spanish and English)",
+        "1 night of accommodation in Aguas Calientes",
+        "Meals per itinerary (lunch on day 1, breakfast on day 2)",
+        "Official entrance ticket to Machu Picchu",
+        "Aguas Calientes – Machu Picchu tourist bus (way up)",
+        "First aid kit"
+      ],
+      "excludes": [
+        "Dinner on day 1",
+        "Lunch and dinner on day 2",
+        "Machu Picchu – Aguas Calientes downhill bus (optional if you prefer to walk down)",
+        "Trekking pole (restricted use, subject to Inca Trail regulations)",
+        "Sleeping bag rental",
+        "Alcoholic beverages and soft drinks",
+        "Tips",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -200,10 +236,12 @@
         "camino-inca"
       ],
       "highlights": [
-        "Camino Inca classic",
-        "Wiñay Wayna",
-        "Inti Punku",
-        "Machu Picchu"
+        "Classic 4-day route along the original Inca Trail to Machu Picchu",
+        "Includes the official Inca Trail permit, with limited quota and mandatory advance booking",
+        "Crosses Warmiwañusca (Dead Woman's Pass), the highest point of the route",
+        "Visits the archaeological sites of Runkurakay, Sayacmarca and Phuyupatamarca",
+        "Arrival at Machu Picchu through the Sun Gate (Inti Punku) at sunrise",
+        "Full camping equipment, cooks and porters included"
       ],
       "permits": {
         "required": true,
@@ -254,7 +292,7 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Camino Inca Classic 4D/3N | My Cusco Trip",
         "description": "Classic route to Machu Picchu along ancient Inca trails, campsites and archaeological sites."
@@ -280,6 +318,50 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Km 82 – Llactapata – Wayllabamba",
+          "description": "Early-morning pickup from your hotel in Cusco and transfer by bus to Ollantaytambo and then to Km 82, the checkpoint where the official Inca Trail permit and each passenger's ID are verified. The hike begins by crossing a bridge over the Urubamba River and follows a mostly flat trail to Miskay, then climbs to the archaeological site of Llactapata, with views of the Verónica snow-capped peak. The route continues to Wayllabamba (approx. 3,000 m/9,840 ft), the first designated campsite, where the cook team prepares dinner."
+        },
+        {
+          "title": "Day 2: Wayllabamba – Warmiwañusca (Dead Woman's Pass) – Pacaymayu",
+          "description": "Considered the most demanding day of the route: a steady climb up stone stairways and puna trails to Warmiwañusca, or Dead Woman's Pass, the highest point of the trail at approximately 4,200-4,215 m (13,780-13,830 ft). After taking in the panoramic mountain views, the trail descends to the Pacaymayu valley (around 3,600 m/11,810 ft), where the second designated campsite is set up and a hot dinner prepared by the cook team is served."
+        },
+        {
+          "title": "Day 3: Pacaymayu – Runkurakay – Sayacmarca – Phuyupatamarca – Wiñay Wayna",
+          "description": "Considered the day richest in archaeology: a climb to the Runkurakay pass and site, followed by a descent to Sayacmarca through a rock-carved Inca tunnel. The trail continues to Phuyupatamarca ('town above the clouds'), with its agricultural terraces and views of the Vilcabamba mountain range, then descends a long stone stairway to the Wiñay Wayna complex, where the last designated campsite is set up, already within the cloud forest."
+        },
+        {
+          "title": "Day 4: Wiñay Wayna – Inti Punku – Machu Picchu – return to Cusco",
+          "description": "Very early departure (before dawn) to the final Inca Trail checkpoint and an approximately 2-hour walk to Inti Punku (Sun Gate), from where, weather permitting, you get your first views of Machu Picchu at sunrise. Descent to the citadel for a guided tour of its main sectors. Free time before heading down to Aguas Calientes for lunch and boarding the return train to Ollantaytambo, connecting with tourist transport to Cusco."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Official Inca Trail permit (Inca Trail Network / Ministry of Culture), subject to official availability and complete passenger information",
+        "Tourist transportation Cusco – Km 82 (start of the route)",
+        "Professional bilingual guide (Spanish and English)",
+        "Cook team and full menu (3 breakfasts, 3 lunches, 3 dinners, plus snacks/hydration)",
+        "Porter team for tents, kitchen and shared luggage",
+        "Camping tents, sleeping pad and dining/kitchen tent",
+        "3 nights of camping at designated campsites (Wayllabamba, Pacaymayu, Wiñay Wayna)",
+        "Official entrance ticket to Machu Picchu",
+        "Return train Aguas Calientes – Ollantaytambo and transportation to Cusco",
+        "First aid kit and emergency oxygen tank"
+      ],
+      "excludes": [
+        "Breakfast on day 1",
+        "Lunch and dinner on day 4",
+        "Sleeping bag (optional rental)",
+        "Trekking pole (rubber-tipped, mandatory under Inca Trail regulations)",
+        "Additional personal porter for your own luggage (optional service at extra cost)",
+        "Private chemical toilets (available as an optional upgrade)",
+        "Alcoholic beverages and soft drinks",
+        "Tips for guide, cook and porters",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -319,9 +401,11 @@
         "machu-picchu"
       ],
       "highlights": [
-        "Nevado Salkantay",
-        "High-Andean landscapes",
-        "Machu Picchu"
+        "4-day hike at the foot of the Salkantay snow-capped peak, one of the most sacred apus in the Andes",
+        "Crossing of the Salkantay Pass above 4,600 m (15,090 ft)",
+        "High-Andean landscapes, glaciers and a transition into the cloud forest",
+        "Ends with a visit to Machu Picchu and return by train",
+        "Cook team, pack horses and camping equipment included"
       ],
       "permits": {
         "required": false,
@@ -372,7 +456,7 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
         "description": "Adventure route to Machu Picchu with mountain landscapes, changing ecosystems and demanding hikes."
@@ -398,6 +482,50 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Mollepata – Soraypampa",
+          "description": "Early-morning pickup from your hotel in Cusco and transfer by vehicle to Mollepata, where breakfast is served before continuing by road to the trailhead. A moderate ascent hike (approx. 3 hours) through the valley to Soraypampa, with views of the Salkantay snow-capped peak. Pack horses carry the shared luggage. Dinner and overnight at the Soraypampa campsite, at the foot of the mountain range."
+        },
+        {
+          "title": "Day 2: Soraypampa – Salkantay Pass – Collpapampa",
+          "description": "A climb of approximately 3 to 4 hours from Soraypampa to the Salkantay Pass, the highest point of the route at around 4,600-4,650 m (15,090-15,255 ft), with close-up views of the Salkantay snow-capped peak. Lunch on the way down in the Huayracmachay area, followed by a noticeable change in landscape toward the cloud forest, descending several more hours to the Collpapampa campsite, already in warmer, more humid weather."
+        },
+        {
+          "title": "Day 3: Collpapampa – Chaullay – Sahuayaco Beach – Hidroeléctrica – Aguas Calientes",
+          "description": "A hike through coffee plantations, tropical fruit orchards and cloud forest, passing through Chaullay and Sahuayaco Beach along the river. The trail continues to the Hidroeléctrica area, from where you walk (or take transportation, depending on operation) alongside the railway for approximately 2 hours to Aguas Calientes, where you spend the night at a lodging with a private bathroom."
+        },
+        {
+          "title": "Day 4: Machu Picchu and return to Cusco",
+          "description": "Very early departure to the citadel of Machu Picchu (by tourist bus or on foot) for a guided tour of the sanctuary's main sectors. Free time to explore before heading down to Aguas Calientes for lunch. In the afternoon, return by train to Ollantaytambo and then by tourist transport to Cusco."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Tourist transportation Cusco – Mollepata/Soraypampa",
+        "Professional bilingual guide (Spanish and English)",
+        "Cook team and full menu (breakfasts, lunches and dinners per itinerary)",
+        "Pack horses for shared luggage and camping equipment",
+        "Camping tents, sleeping pad and dining/kitchen tent",
+        "2 nights of camping (Soraypampa and Collpapampa) and 1 night of accommodation in Aguas Calientes",
+        "Entrance to the Salkantay route",
+        "Official entrance ticket to Machu Picchu",
+        "Return train Aguas Calientes – Ollantaytambo and transportation to Cusco",
+        "First aid kit and emergency oxygen tank"
+      ],
+      "excludes": [
+        "Dinner on the last day in Cusco",
+        "Aguas Calientes – Machu Picchu tourist bus (up and/or down, optional)",
+        "Entrance to the hot springs if visited along the route",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Additional horse for personal use (emergencies only/optional at extra cost)",
+        "Alcoholic beverages and soft drinks",
+        "Tips for guide, cook and horsemen",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -437,9 +565,11 @@
         "machu-picchu"
       ],
       "highlights": [
-        "Complete Salkantay route",
-        "Humantay Lake opcional",
-        "Machu Picchu"
+        "Extended version of the Salkantay trek with an extra day to enjoy the route at a more relaxed pace",
+        "Crossing of the Salkantay Pass and a walk through cloud forest toward Lucmabamba",
+        "Visit to the Llactapata archaeological site with views of Machu Picchu",
+        "Ends with a visit to Machu Picchu and return by train",
+        "Cook team, pack horses and camping equipment included"
       ],
       "permits": {
         "required": false,
@@ -490,7 +620,7 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Salkantay Trek 5D/4N | My Cusco Trip",
         "description": "More complete Salkantay Trek version with a better pace for acclimatization and connection with Machu Picchu."
@@ -516,6 +646,54 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Mollepata – Soraypampa",
+          "description": "Early-morning pickup from your hotel in Cusco and transfer by vehicle to the town of Mollepata, where breakfast is served before continuing by road to the trailhead. A moderate ascent hike (approx. 3 hours) through the valley to Soraypampa, with close-up views of the Salkantay snow-capped peak. Pack horses carry the shared luggage and camping gear. Dinner and overnight at the Soraypampa campsite."
+        },
+        {
+          "title": "Day 2: Soraypampa – Salkantay Pass – Chaullay",
+          "description": "Considered the most demanding day of the route: a climb of approximately 3 to 4 hours from Soraypampa to the Salkantay Pass, at around 4,630-4,650 m (15,190-15,255 ft), the highest point of the trek. Lunch in the Huayracmachay area during the descent, followed by a marked change in landscape from the high puna to the cloud forest, reaching the Chaullay campsite, in milder, more humid weather."
+        },
+        {
+          "title": "Day 3: Chaullay – cloud forest – Lucmabamba",
+          "description": "A more relaxed hike through cloud forest, coffee plantations and tropical fruit orchards, with the chance to spot birds and flora typical of the cloud forest. Arrival in the afternoon at the Lucmabamba campsite, where some operators offer the option (not included) of visiting the Cocalmayo hot springs before dinner."
+        },
+        {
+          "title": "Day 4: Lucmabamba – Llactapata – Hidroeléctrica – Aguas Calientes",
+          "description": "An approximately 3-hour climb from Lucmabamba to the Llactapata archaeological site, a former Inca settlement offering your first views of Machu Picchu across the valley, walking a stretch of the original Inca trail. Descent to the Hidroeléctrica area for lunch and a final hike (approx. 2-3 hours) alongside the railway to Aguas Calientes, where you spend the night at a lodging with a private bathroom."
+        },
+        {
+          "title": "Day 5: Machu Picchu and return to Cusco",
+          "description": "Very early departure to the citadel of Machu Picchu (by tourist bus or on foot) for a guided tour of the sanctuary's main sectors. Free time to explore before heading down to Aguas Calientes for lunch. In the afternoon, return by train to Ollantaytambo and then by tourist transport to Cusco."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Tourist transportation Cusco – Mollepata/Soraypampa",
+        "Professional bilingual guide (Spanish and English)",
+        "Cook team and full menu (breakfasts, lunches and dinners per itinerary)",
+        "Pack horses for shared luggage and camping equipment",
+        "Camping tents, sleeping pad and dining/kitchen tent",
+        "3 nights of camping (Soraypampa, Chaullay and Lucmabamba) and 1 night of accommodation in Aguas Calientes",
+        "Entrance to the Salkantay route",
+        "Official entrance ticket to Machu Picchu",
+        "Return train Aguas Calientes – Ollantaytambo and transportation to Cusco",
+        "First aid kit and emergency oxygen tank"
+      ],
+      "excludes": [
+        "Dinner on the last day in Cusco",
+        "Aguas Calientes – Machu Picchu tourist bus (up and/or down, optional)",
+        "Entrance to the Cocalmayo hot springs in Lucmabamba",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Additional horse for personal use (emergencies only/optional at extra cost)",
+        "Alcoholic beverages and soft drinks",
+        "Tips for guide, cook and horsemen",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -554,9 +732,11 @@
         "ausangate"
       ],
       "highlights": [
-        "Nevado Ausangate",
-        "Lagunas altoandinas",
-        "Comunidades andinas"
+        "5-day hike around the Ausangate snow-capped peak, the highest apu in the Cusco region",
+        "Route past turquoise and emerald-toned glacial lagoons",
+        "Crossing of Palomani Pass, one of the highest passes in the region (~5,200 m / 17,060 ft)",
+        "Contact with high-Andean alpaca-herding communities",
+        "Cook team, horses, horsemen and camping equipment included"
       ],
       "permits": {
         "required": false,
@@ -605,7 +785,7 @@
           "Comunidades andinas"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Ausangate Trek | My Cusco Trip",
         "description": "High-mountain trek around Ausangate, ideal for experienced travelers with good acclimatization."
@@ -631,6 +811,53 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Tinki – Upis",
+          "description": "Very early pickup from your hotel in Cusco and transfer by vehicle (approx. 3-4 hours) to the community of Tinki, gateway to the Ausangate mountain range. Meeting with the horsemen and pack horse team, then start of the hike to Upis (around 4,400 m/14,435 ft), an area with natural hot springs and close-up views of the Ausangate snow-capped peak (6,384 m/20,945 ft). Dinner and first overnight at the designated campsite."
+        },
+        {
+          "title": "Day 2: Upis – Arapa Pass – high-Andean lagoons – Ausangatecocha",
+          "description": "Climb to Arapa Pass (approx. 4,850-4,900 m/15,910-16,075 ft), with views of several turquoise-toned glacial lagoons such as Pukacocha, Hatun Pukacocha and Qomerqocha. Descent to the Ausangatecocha area, where camp is set up beside a lagoon fed by the mountain's meltwater. Frequent sightings of vicuñas, alpacas and high-Andean birds throughout the day."
+        },
+        {
+          "title": "Day 3: Ausangatecocha – Palomani Pass – Pampacancha – Q'ampa",
+          "description": "The most demanding day of the circuit: a climb to Palomani Pass, at around 5,200 m (17,060 ft) and the highest point of the entire route, with panoramic views of the Vilcanota mountain range. Descent to Pampacancha, a grazing area for llamas and alpacas belonging to local communities, before continuing to the Q'ampa campsite."
+        },
+        {
+          "title": "Day 4: Q'ampa – Andean pass – Pacchanta",
+          "description": "Crossing one last high Andean pass before starting the descent to Pacchanta, a community known for its natural hot springs at the foot of Ausangate. Free afternoon to relax in the thermal pools (entrance not included) and spend time with the local alpaca-herding community. Last overnight at the Pacchanta campsite."
+        },
+        {
+          "title": "Day 5: Pacchanta – Tinki – return to Cusco",
+          "description": "A short hike (approx. 1-2 hours) from Pacchanta to Tinki, closing the circuit around the Ausangate snow-capped peak. Farewell lunch and return by tourist transport to Cusco, arriving in the late afternoon/evening."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Round-trip tourist transportation Cusco – Tinki",
+        "Professional bilingual guide (Spanish and English)",
+        "Cook team and full menu (breakfasts, lunches and dinners per itinerary, plus snacks and hydration)",
+        "Horses and horsemen for shared luggage and camping equipment",
+        "Emergency horse available throughout the route",
+        "Camping tents, sleeping pad and dining/kitchen tent",
+        "4 nights of camping at designated campsites (Upis, Ausangatecocha, Q'ampa and Pacchanta)",
+        "Treated/boiled water along the route",
+        "First aid kit and emergency oxygen tank"
+      ],
+      "excludes": [
+        "Breakfast on day 1",
+        "Dinner on day 5 in Cusco",
+        "Entrance to the Pacchanta hot springs",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Additional horse for personal use (emergencies only/optional at extra cost)",
+        "Alcoholic beverages and soft drinks",
+        "Tips for guide, cook and horsemen",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -670,9 +897,11 @@
         "vinicunca"
       ],
       "highlights": [
-        "Ausangate",
-        "Rainbow Mountain",
-        "High-Andean landscapes"
+        "Combines the Ausangate circuit with Rainbow Mountain (Vinicunca)",
+        "Route past glacial lagoons and high-mountain scenery",
+        "Visit to the Red Valley, a less crowded alternative next to Vinicunca",
+        "Contact with alpaca-herding communities and hot springs in Pacchanta",
+        "Cook team, horses, horsemen and camping equipment included"
       ],
       "permits": {
         "required": false,
@@ -722,7 +951,7 @@
           "High-Andean landscapes"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Ausangate + Vinicunca | My Cusco Trip",
         "description": "Adventure route combining Ausangate landscapes with Rainbow Mountain."
@@ -748,6 +977,50 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Tinki/Pitumarca – start of the hike",
+          "description": "Very early pickup from your hotel in Cusco and transfer by vehicle (several hours) to the Tinki/Pitumarca area, at the foot of the Ausangate mountain range. Meeting with the horsemen and pack horse team and start of the hike to the first campsite, with initial views of the Ausangate snow-capped peak (6,384 m/20,945 ft) and the surrounding high-Andean landscape."
+        },
+        {
+          "title": "Day 2: climb to an Andean pass – glacial lagoons – Ausangatecocha",
+          "description": "Climb to a high Andean pass (around 4,900-5,000 m/16,075-16,400 ft) with views of several turquoise and emerald-toned glacial lagoons. Continuation to the Ausangatecocha area, where camp is set up beside a lagoon fed by the mountain's meltwater, with frequent sightings of vicuñas, alpacas and high-Andean birds."
+        },
+        {
+          "title": "Day 3: Rainbow Mountain (Vinicunca) – Red Valley – Pacchanta",
+          "description": "The most demanding day of the trek: a hike to Rainbow Mountain (Vinicunca), a formation known for its stripes of red, ochre, turquoise and lilac tones, at a high point of the route around 5,000-5,200 m (16,400-17,060 ft). Descent through the so-called Red Valley to Pacchanta, a community with natural hot springs at the foot of Ausangate, where you spend the night and can enjoy the thermal pools (entrance not included)."
+        },
+        {
+          "title": "Day 4: Pacchanta – Tinki – return to Cusco",
+          "description": "A short hike from Pacchanta to Tinki to close the route. Farewell lunch and return by tourist transport to Cusco, arriving in the late afternoon/evening."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Round-trip tourist transportation Cusco – Tinki/Pitumarca",
+        "Professional bilingual guide (Spanish and English)",
+        "Cook team and full menu (breakfasts, lunches and dinners per itinerary, plus snacks and hydration)",
+        "Horses and horsemen for shared luggage and camping equipment",
+        "Emergency horse available throughout the route",
+        "Camping tents, sleeping pad and dining/kitchen tent",
+        "3 nights of camping at designated campsites",
+        "Entrance to the Rainbow Mountain (Vinicunca) area",
+        "Treated/boiled water along the route",
+        "First aid kit and emergency oxygen tank"
+      ],
+      "excludes": [
+        "Breakfast on day 1",
+        "Dinner on day 4 in Cusco",
+        "Entrance to the Pacchanta hot springs",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Additional horse for personal use (emergencies only/optional at extra cost)",
+        "Alcoholic beverages and soft drinks",
+        "Tips for guide, cook and horsemen",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -787,9 +1060,11 @@
         "inca-jungle"
       ],
       "highlights": [
-        "Adventure",
-        "High jungle",
-        "Machu Picchu"
+        "Combines a mountain bike descent, hiking and ziplining through the cloud forest",
+        "Bike descent from Abra Málaga (~4,300 m / 14,105 ft)",
+        "Zipline/canopy activity with views over the Santa Teresa valley",
+        "Hot springs and a final hike to Aguas Calientes",
+        "Ends with a visit to Machu Picchu and return to Cusco"
       ],
       "permits": {
         "required": false,
@@ -839,7 +1114,7 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
         "description": "Active route to Machu Picchu combining adventure, nature and hiking sections."
@@ -865,6 +1140,46 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Abra Málaga – bike descent – Santa María",
+          "description": "Very early pickup from your hotel in Cusco (between 6:00 and 6:30 a.m.) and drive through the highlands to Abra Málaga, at around 4,300-4,350 m (14,105-14,270 ft), with a breakfast stop in the Sacred Valley. From the pass, a multi-hour mountain bike descent begins along a paved and later gravel road, crossing ecological zones that shift from cold puna to cloud forest. Lunch along the way and arrival in the afternoon at Santa María, where you spend the night at basic hostel/lodge-style accommodation."
+        },
+        {
+          "title": "Day 2: Santa María – Santa Teresa – zipline, hot springs and hike to Aguas Calientes",
+          "description": "Breakfast, then transfer to Santa Teresa for a zipline/canopy circuit over the valley (an optional activity with some operators). Free time to relax at the Cocalmayo hot springs. In the afternoon, a hike of around 2 to 3 hours alongside the railway to Aguas Calientes (Machu Picchu Pueblo), where you spend the night at simple lodging with a private bathroom, already within the cloud forest area."
+        },
+        {
+          "title": "Day 3: Machu Picchu and return to Cusco",
+          "description": "Very early departure from Aguas Calientes by bus (or on foot, depending on preference) to the citadel of Machu Picchu for an approximately 2-hour guided tour of the sanctuary's main sectors. Free time to explore on your own before heading back down to Aguas Calientes. In the afternoon, return by train to Ollantaytambo and from there by tourist transport to Cusco, arriving at night."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Tourist transportation Cusco – Abra Málaga",
+        "Mountain bike and safety gear (helmet, gloves) for the descent",
+        "Support vehicle during the biking stretch",
+        "Professional bilingual guide (Spanish and English)",
+        "2 nights of basic accommodation (Santa María and Aguas Calientes)",
+        "Meals per itinerary (breakfasts, lunches and dinner)",
+        "Official entrance ticket to Machu Picchu",
+        "Guided tour at Machu Picchu",
+        "Return transportation to Cusco (train + tourist bus or overland option depending on operation)",
+        "First aid kit"
+      ],
+      "excludes": [
+        "First breakfast on day 1",
+        "Last dinner in Cusco",
+        "Entrance to the Cocalmayo hot springs",
+        "Zipline/canopy activity if charged as an extra by the operator",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Alcoholic beverages and soft drinks",
+        "Tips",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     },
     {
@@ -904,9 +1219,11 @@
         "inca-jungle"
       ],
       "highlights": [
-        "Complete adventure",
-        "High jungle",
-        "Machu Picchu"
+        "Extended version with an extra day that adds rafting and a stretch of the original Inca trail",
+        "Mountain bike descent from Abra Málaga and a rafting session on the Urubamba River",
+        "Hike along a stretch of the original Inca trail through cloud-forest scenery",
+        "Zipline/canopy activity in Santa Teresa",
+        "Ends with a visit to Machu Picchu and return to Cusco"
       ],
       "permits": {
         "required": false,
@@ -956,7 +1273,7 @@
           "Machu Picchu"
         ]
       },
-      "status": "draft",
+      "status": "published",
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
         "description": "More complete Inca Jungle version with more time for adventure activities and the connection to Machu Picchu."
@@ -982,6 +1299,52 @@
           "q": "What should I bring?",
           "a": "We recommend bringing your passport or ID, water, sun protection, comfortable clothes, a light jacket and cash for personal expenses or tickets not included."
         }
+      ],
+      "itinerary": [
+        {
+          "title": "Day 1: Cusco – Abra Málaga – bike descent – rafting – Santa María",
+          "description": "Pickup from your hotel in Cusco between 6:00 and 6:30 a.m. and transfer through the Sacred Valley to Abra Málaga (approx. 4,300-4,350 m/14,105-14,270 ft), the starting point for a multi-hour mountain bike descent to the Santa María area, crossing different ecological zones. In the afternoon, for those who want it, an optional rafting session on moderate stretches of the Urubamba River (depending on river level and safety conditions). Dinner and overnight at basic lodge/hostel-style accommodation in Santa María."
+        },
+        {
+          "title": "Day 2: Santa María – stretch of the original Inca trail – Santa Teresa",
+          "description": "Breakfast, then a hike along trails that include a stretch of the original Inca trail, through cloud-forest scenery, coffee, fruit and coca plantations. Visit to a local family and a brief coca-leaf ceremony following Andean custom. River crossing via a hand-pulled cable car (oroya) and arrival in Santa Teresa, where there is free time at the Cocalmayo hot springs in the afternoon. Overnight at simple accommodation in Santa Teresa."
+        },
+        {
+          "title": "Day 3: Santa Teresa – zipline – hike to Aguas Calientes",
+          "description": "In the morning, a zipline/canopy activity over the Santa Teresa valley (several lines with views of the mountains and river). Transfer to the Hidroeléctrica area for lunch, then an approximately 2 to 3-hour hike alongside the railway to Aguas Calientes (Machu Picchu Pueblo). Dinner and overnight at lodging with a private bathroom, with an informative talk from the guide about the following day's visit to Machu Picchu."
+        },
+        {
+          "title": "Day 4: Machu Picchu and return to Cusco",
+          "description": "Very early departure to the citadel of Machu Picchu (by tourist bus or on foot) for an approximately 2-hour guided tour of the main archaeological sectors. Free time for photos and further exploration before heading down to Aguas Calientes for lunch. In the afternoon, return by train to Ollantaytambo and then by tourist transport to Cusco, arriving at night."
+        }
+      ],
+      "includes": [
+        "Pickup from your hotel in Cusco",
+        "Tourist transportation Cusco – Abra Málaga",
+        "Mountain bike and safety gear (helmet, gloves) for the descent",
+        "Support vehicle during the biking stretch",
+        "Rafting session on the Urubamba River (depending on river conditions)",
+        "Zipline/canopy tour in Santa Teresa",
+        "Professional bilingual guide (Spanish and English)",
+        "3 nights of basic accommodation (Santa María, Santa Teresa and Aguas Calientes)",
+        "Meals per itinerary (breakfasts, lunches and dinners)",
+        "Official entrance ticket to Machu Picchu",
+        "Guided tour at Machu Picchu",
+        "Return transportation to Cusco (train + tourist bus or overland option depending on operation)",
+        "First aid kit"
+      ],
+      "excludes": [
+        "First breakfast on day 1",
+        "Last dinner in Cusco",
+        "Entrance to the Cocalmayo hot springs",
+        "Sleeping bag rental",
+        "Trekking pole rental",
+        "Alcoholic beverages and soft drinks",
+        "Additional porter for extra luggage during the hiking stretches",
+        "Tips",
+        "Travel insurance",
+        "Personal expenses",
+        "Services not mentioned"
       ]
     }
   ]

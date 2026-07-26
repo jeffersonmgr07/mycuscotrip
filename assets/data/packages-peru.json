@@ -814,7 +814,14 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 939.9,
-      "priceLabel": "Desde USD 939.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 939.90 por persona sin hoteles",
+      "highlights": [
+        "City Tour por Lima colonial y moderna",
+        "City Tour por Cusco, Sacsayhuamán y centros arqueológicos cercanos",
+        "Full day a Machu Picchu con tren, bus, ingreso oficial y guía",
+        "Ruta corta ideal para quienes tienen poco tiempo disponible",
+        "Traslados de llegada y salida incluidos"
+      ]
     },
     {
       "id": "pkg_peru_6d5n",
@@ -924,7 +931,14 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 1119.9,
-      "priceLabel": "Desde USD 1,119.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 1,119.90 por persona sin hoteles",
+      "highlights": [
+        "City Tour por Lima colonial y moderna",
+        "Recorrido por el Valle Sagrado de los Incas",
+        "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
+        "Mayor tiempo para disfrutar Cusco y el Valle Sagrado sin apuro",
+        "Traslados de llegada y salida incluidos"
+      ]
     },
     {
       "id": "pkg_peru_7d6n",
@@ -1039,7 +1053,14 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 1309.9,
-      "priceLabel": "Desde USD 1,309.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 1,309.90 por persona sin hoteles",
+      "highlights": [
+        "Full day Paracas, Ica y Huacachina con Islas Ballestas, bodega y dunas",
+        "City Tour por Cusco, Sacsayhuamán y centros arqueológicos cercanos",
+        "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
+        "Combina costa sur, desierto y sierra en una sola ruta",
+        "Traslados de llegada y salida incluidos"
+      ]
     },
     {
       "id": "pkg_peru_8d7n",
@@ -1576,7 +1597,14 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 1499.9,
-      "priceLabel": "Desde USD 1,499.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 1,499.90 por persona sin hoteles",
+      "highlights": [
+        "City Tour por Lima colonial y moderna",
+        "City Tour por Arequipa y el Monasterio de Santa Catalina",
+        "Full day al Cañón del Colca con Cruz del Cóndor",
+        "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
+        "Ruta andina que combina Lima, Arequipa y Cusco"
+      ]
     },
     {
       "id": "pkg_peru_10d9n",
@@ -2677,7 +2705,14 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 1869.9,
-      "priceLabel": "Desde USD 1,869.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 1,869.90 por persona sin hoteles",
+      "highlights": [
+        "Full day Paracas, Ica y Huacachina con Islas Ballestas, bodega y dunas",
+        "Full day al Cañón del Colca desde Arequipa con Cruz del Cóndor",
+        "Lago Titicaca con visita a las islas de los Uros y Taquile",
+        "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
+        "Ruta esencial del sur del Perú: costa, desierto, Colca, Titicaca y Cusco"
+      ]
     },
     {
       "id": "pkg_peru_14d13n",
@@ -2802,7 +2837,15 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 2239.9,
-      "priceLabel": "Desde USD 2,239.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 2,239.90 por persona sin hoteles",
+      "highlights": [
+        "Full day Paracas, Ica y Huacachina",
+        "Full day al Cañón del Colca desde Arequipa",
+        "Lago Titicaca con Uros y Taquile",
+        "Machu Picchu en modalidad 2 días / 1 noche",
+        "Extensión amazónica en Tambopata con caminata o navegación por la selva",
+        "Ruta completa que combina el sur clásico del Perú con selva"
+      ]
     },
     {
       "id": "pkg_peru_15d14n",
@@ -2935,7 +2978,16 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 2489.9,
-      "priceLabel": "Desde USD 2,489.90 por persona sin hoteles"
+      "priceLabel": "Desde USD 2,489.90 por persona sin hoteles",
+      "highlights": [
+        "Full day Paracas, Ica y Huacachina",
+        "Sobrevuelo panorámico sobre las Líneas de Nazca",
+        "Full day al Cañón del Colca desde Arequipa",
+        "Lago Titicaca con Uros y Taquile",
+        "Machu Picchu en modalidad 2 días / 1 noche",
+        "Extensión amazónica en Tambopata",
+        "La ruta más completa para descubrir el Perú de costa a selva"
+      ]
     }
   ],
   "durationConfigs": [

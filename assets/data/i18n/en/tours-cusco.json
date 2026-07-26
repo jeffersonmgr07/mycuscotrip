@@ -290,7 +290,14 @@
       "seo": {
         "title": "Ancestral Welcome to Cusco | My Cusco Trip",
         "description": "Enjoy a scenic introduction to Cusco with an Andean welcome ceremony, textile center visit and panoramic views from Cristo Blanco."
-      }
+      },
+      "highlights": [
+        "Panoramic double-decker bus tour through Cusco's most iconic landmarks",
+        "Andean Pago a la Tierra (offering to Mother Earth) ceremony led by an Andean priest",
+        "Visit to a textile center specializing in alpaca and baby alpaca fiber with a live demonstration",
+        "Panoramic view of the city from the Cristo Blanco viewpoint",
+        "Bilingual guide throughout the tour"
+      ]
     },
     {
       "id": "exp_002",
@@ -624,7 +631,14 @@
       "seo": {
         "title": "Cusco City Tour + Archaeological Sites | My Cusco Trip",
         "description": "Visit Cusco’s most important nearby archaeological sites, including Sacsayhuamán, Qenqo, Puka Pukara and Tambomachay."
-      }
+      },
+      "highlights": [
+        "Tour through Cusco's historic center and its colonial-Inca architecture",
+        "Visit to the Sacsayhuamán archaeological complex and its megalithic walls",
+        "Tour of Qenqo, Puka Pukara and Tambomachay",
+        "Professional guide in Spanish and English",
+        "Tourist transportation included from Cusco"
+      ]
     },
     {
       "id": "exp_003_fd",
@@ -930,7 +944,14 @@
       "seo": {
         "title": "Sacred Valley of the Incas - Full Day | My Cusco Trip",
         "description": "Explore Pisac, Urubamba, Ollantaytambo and Chinchero on a complete cultural route through the Sacred Valley."
-      }
+      },
+      "highlights": [
+        "Visit to the agricultural terraces of Pisac and its craft market",
+        "Tour of Ollantaytambo, an ancient Inca town still inhabited today",
+        "Cultural stop in Chinchero, the cradle of Andean textile tradition",
+        "Free time in Urubamba for an optional lunch",
+        "Professional guide in Spanish and English throughout the route"
+      ]
     },
     {
       "id": "exp_003_con",
@@ -1234,7 +1255,14 @@
       "seo": {
         "title": "Sacred Valley with Connection to Machu Picchu | My Cusco Trip",
         "description": "Travel through the Sacred Valley and finish in Ollantaytambo to connect smoothly with your train to Aguas Calientes."
-      }
+      },
+      "highlights": [
+        "Classic route through Pisac and its craft market",
+        "Visit to Ollantaytambo with a direct connection to Aguas Calientes",
+        "Ideal for combining the Sacred Valley with your trip to Machu Picchu without returning to Cusco",
+        "Professional guide in Spanish and English",
+        "Tourist transportation throughout the Sacred Valley"
+      ]
     },
     {
       "id": "exp_003_vip",
@@ -1617,7 +1645,14 @@
       "seo": {
         "title": "Sacred Valley VIP - Full Day | My Cusco Trip",
         "description": "A complete Sacred Valley route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac."
-      }
+      },
+      "highlights": [
+        "Extended VIP route through Chinchero, Maras, Moray, Urubamba, Ollantaytambo and Pisac",
+        "Visit to the Maras Salt Mines and its thousands of salt pools",
+        "Tour of the circular terraces of Moray",
+        "Optional buffet lunch in Urubamba",
+        "Professional guide in Spanish and English on the extended route"
+      ]
     },
     {
       "id": "exp_003_vip_con",
@@ -1990,7 +2025,14 @@
       "seo": {
         "title": "Sacred Valley VIP with Connection to Machu Picchu | My Cusco Trip",
         "description": "A VIP Sacred Valley route through Chinchero, Maras, Moray, Urubamba and Ollantaytambo, ending with your connection to Machu Picchu."
-      }
+      },
+      "highlights": [
+        "VIP route through Chinchero, the Maras Salt Mines, Moray, Urubamba and Ollantaytambo",
+        "Traditional textile demonstration in Chinchero",
+        "Ends in Ollantaytambo with a direct connection to Machu Picchu",
+        "Ideal for travelers looking for the most complete Sacred Valley route",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_004",
@@ -2343,7 +2385,14 @@
       "seo": {
         "title": "Maras & Moray | My Cusco Trip",
         "description": "Discover Moray’s impressive Inca agricultural terraces and the famous Maras Salt Mines on a scenic half-day tour."
-      }
+      },
+      "highlights": [
+        "Visit to the Maras Salt Mines, a unique landscape of thousands of salt pools",
+        "Tour of the circular terraces of Moray, an Inca agricultural laboratory",
+        "Chinchero textile center with traditional weaving techniques",
+        "Ideal half-day route to complement the Sacred Valley",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_005",
@@ -2675,7 +2724,14 @@
       "seo": {
         "title": "South Valley of Cusco | My Cusco Trip",
         "description": "Explore Tipón, Pikillacta and Andahuaylillas on a cultural route through the southern side of Cusco."
-      }
+      },
+      "highlights": [
+        "Visit to the Tipón archaeological site and its Inca hydraulic system",
+        "Tour of the Wari citadel of Pikillacta",
+        "Andahuaylillas church, known as the Sistine Chapel of America",
+        "Ideal half-day route to discover southern Cusco",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_006",
@@ -2972,7 +3028,14 @@
       "seo": {
         "title": "Humantay Lake | My Cusco Trip",
         "description": "Visit the stunning turquoise lagoon at the foot of the Humantay snow-capped mountain."
-      }
+      },
+      "highlights": [
+        "Hike to the turquoise lagoon at the foot of the Humantay snow-capped peak",
+        "High Andean landscapes and mountain range views",
+        "Breakfast included before starting the hike",
+        "Lunch included on the return",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_007",
@@ -3307,7 +3370,14 @@
       "seo": {
         "title": "Rainbow Mountain (Vinicunca) | My Cusco Trip",
         "description": "Experience an unforgettable Andean hike to the famous Rainbow Mountain of Peru."
-      }
+      },
+      "highlights": [
+        "Hike to the famous Rainbow Mountain (Vinicunca)",
+        "Unique multicolored high-Andean landscapes",
+        "Breakfast and lunch included",
+        "Recommended for travelers in good physical condition due to the altitude",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_008",
@@ -3636,7 +3706,14 @@
       "seo": {
         "title": "Palcoyo Rainbow Mountain | My Cusco Trip",
         "description": "Explore Palcoyo’s colorful mountain range and stone forest on a more accessible alternative to Vinicunca."
-      }
+      },
+      "highlights": [
+        "A more accessible alternative to Vinicunca, with less physical effort",
+        "View of colorful mountains and a stone forest",
+        "Breakfast and buffet lunch included",
+        "Entrance to the Palcoyo mountain range included",
+        "Professional guide in Spanish and English"
+      ]
     },
     {
       "id": "exp_009",
@@ -3991,7 +4068,14 @@
       "seo": {
         "title": "Seven Lakes of Ausangate | My Cusco Trip",
         "description": "Discover the Seven Lakes of Ausangate on a full-day hike surrounded by glaciers, high-Andean landscapes and impressive mountain scenery."
-      }
+      },
+      "highlights": [
+        "Full-day hike among the 7 lagoons of Ausangate in turquoise and emerald tones",
+        "Views of the Ausangate snow-capped peak and the Vilcanota mountain range",
+        "Option to enjoy hot springs in Pacchanta, depending on the day's operation",
+        "Breakfast and lunch included",
+        "First aid kit included"
+      ]
     }
   ]
 }

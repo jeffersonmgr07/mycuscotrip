@@ -450,7 +450,14 @@
         "El tour incluye caminata sobre terreno duro e irregular dentro de Machu Picchu; se recomienda usar zapatos de trekking o zapatillas cómodas con buena suela.",
         "Lleva ropa ligera, abrigo para la mañana/noche, bloqueador solar, agua y documento de identidad o pasaporte original."
       ],
-      "extrasSelectionMode": "single"
+      "extrasSelectionMode": "single",
+      "highlights": [
+        "Full day a Machu Picchu con tren en categoría The Voyager y opción de upgrade a otras categorías",
+        "Libertad para elegir tren de ida y retorno entre IncaRail y PeruRail",
+        "Bus Consettur de subida y bajada incluido",
+        "Ingreso oficial a Machu Picchu y guía profesional certificado",
+        "Traslados terrestres incluidos desde Cusco hasta la estación"
+      ]
     },
     {
       "id": "mapi_002",
@@ -509,8 +516,8 @@
         "defaultOutboundTrainCostUSD": 74,
         "defaultReturnTrainCostUSD": 99,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_41",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_VOYAGER_0800_CUSCO_AV_EL",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -619,8 +626,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_41",
-          "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44"
+          "outbound": "INCA_CUSCO_MAPI_VOYAGER_0800_CUSCO_AV_EL",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail"
@@ -649,8 +656,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_41",
-        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+        "outboundTrainCode": "INCA_CUSCO_MAPI_VOYAGER_0800_CUSCO_AV_EL",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 74,
@@ -660,7 +667,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_CUSCO_MAPI_VOYAGER_BIMODAL_41",
+          "trainCode": "INCA_CUSCO_MAPI_VOYAGER_0800_CUSCO_AV_EL",
           "company": "incarail",
           "serviceName": "The Voyager Bimodal",
           "route": "CUSCO_MAPI",
@@ -672,7 +679,7 @@
           "adultCostUSD": 74
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
           "company": "incarail",
           "serviceName": "The Voyager Bimodal",
           "route": "MAPI_CUSCO",
@@ -789,6 +796,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Alternativa más económica en categoría Voyager de IncaRail",
+        "Ideal para viajeros con presupuesto ajustado o poco tiempo disponible",
+        "Bus Consettur, ingreso oficial y guía profesional incluidos",
+        "Traslados terrestres necesarios según estación",
+        "Recorrido en el mismo día sin pernocte"
       ]
     },
     {
@@ -1219,6 +1233,13 @@
         "Los horarios de tren pueden variar según disponibilidad operativa y selección realizada.",
         "El hotel incluido corresponde a una noche en Aguas Calientes. Cualquier upgrade de hotel se calcula como cargo adicional.",
         "Se recomienda llevar documento de identidad o pasaporte, calzado cómodo, ropa ligera, abrigo para la noche y protección solar."
+      ],
+      "highlights": [
+        "2 días / 1 noche con alojamiento en Aguas Calientes incluido",
+        "Libertad total para elegir tren entre todas las categorías de IncaRail y PeruRail",
+        "Más tiempo para explorar Machu Picchu con menor presión de horario",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Ideal para quienes prefieren evitar los traslados largos en el mismo día"
       ]
     },
     {
@@ -1278,8 +1299,8 @@
         "defaultOutboundTrainCostUSD": 74,
         "defaultReturnTrainCostUSD": 99,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_45",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -1376,8 +1397,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": true,
         "defaultTrainCodes": {
-          "outbound": "INCA_OLLA_MAPI_VOYAGER_45",
-          "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44"
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail",
@@ -1400,11 +1421,11 @@
         "fallbackBehavior": "Si un código de tren no existe o no tiene tarifa vigente en trains.json, ocultar opción y mostrar pendiente de confirmación.",
         "allowedTrainCodes": {
           "outbound": [
-            "INCA_OLLA_MAPI_VOYAGER_45",
+            "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
             "PERU_OLLA_MAPI_EXPEDITION_15_27"
           ],
           "return": [
-            "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+            "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
             "PERU_MAPI_OLLA_EXPEDITION_74P",
             "PERU_MAPI_WANCHAQ_EXPEDITION_74P"
           ]
@@ -1422,8 +1443,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_45",
-        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 74,
@@ -1433,7 +1454,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_OLLA_MAPI_VOYAGER_45",
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
           "company": "incarail",
           "serviceName": "The Voyager",
           "route": "OLLA_MAPI",
@@ -1445,7 +1466,7 @@
           "adultCostUSD": 74
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_44",
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_1900_MACHU_PICCHU",
           "company": "incarail",
           "serviceName": "The Voyager Bimodal",
           "route": "MAPI_CUSCO",
@@ -1567,6 +1588,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "2 días / 1 noche en Aguas Calientes con opciones de tren predefinidas",
+        "Alternativa ágil para quienes buscan el overnight sin elegir tren manualmente",
+        "Bus Consettur, ingreso oficial y guía profesional incluidos",
+        "Alojamiento en Aguas Calientes la noche previa a la visita",
+        "Traslados terrestres necesarios según estación y modalidad"
       ]
     },
     {
@@ -1626,8 +1654,8 @@
         "defaultOutboundTrainCostUSD": 114,
         "defaultReturnTrainCostUSD": 113.05,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "PERU_SANPEDRO_MAPI_VISTADOME_31",
-        "defaultReturnTrainCode": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
+        "defaultOutboundTrainCode": "PERU_CUSCO_MAPI_VISTADOME_31_SAN_PEDRO",
+        "defaultReturnTrainCode": "PERU_MAPI_CUSCO_VISTADOME_32_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -1736,8 +1764,8 @@
         "sameCompanyRoundTrip": true,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "PERU_SANPEDRO_MAPI_VISTADOME_31",
-          "return": "PERU_MAPI_SANPEDRO_EXPEDITION_32"
+          "outbound": "PERU_CUSCO_MAPI_VISTADOME_31_SAN_PEDRO",
+          "return": "PERU_MAPI_CUSCO_VISTADOME_32_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "perurail"
@@ -1780,8 +1808,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "PERU_SANPEDRO_MAPI_VISTADOME_31",
-        "returnTrainCode": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
+        "outboundTrainCode": "PERU_CUSCO_MAPI_VISTADOME_31_SAN_PEDRO",
+        "returnTrainCode": "PERU_MAPI_CUSCO_VISTADOME_32_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 114,
@@ -1791,7 +1819,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "PERU_SANPEDRO_MAPI_VISTADOME_31",
+          "trainCode": "PERU_CUSCO_MAPI_VISTADOME_31_SAN_PEDRO",
           "company": "perurail",
           "serviceName": "Vistadome 31",
           "route": "CUSCO_MAPI",
@@ -1803,7 +1831,7 @@
           "adultCostUSD": 114
         },
         "resolvedReturn": {
-          "trainCode": "PERU_MAPI_SANPEDRO_EXPEDITION_32",
+          "trainCode": "PERU_MAPI_CUSCO_VISTADOME_32_MACHU_PICCHU",
           "company": "perurail",
           "serviceName": "Expedition 32",
           "route": "MAPI_CUSCO",
@@ -1920,6 +1948,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Viaja en los trenes Vistadome de PeruRail, con ventanales panorámicos de piso a techo",
+        "Opción de tren Vistadome Observatorio con techo de cristal",
+        "Ideal para quienes buscan disfrutar el paisaje del Valle Sagrado durante el trayecto",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Experiencia full day sin pernocte"
       ]
     },
     {
@@ -1979,8 +2014,8 @@
         "defaultOutboundTrainCostUSD": 100,
         "defaultReturnTrainCostUSD": 99,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_66",
+        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_PRIME_0800_CUSCO_AV_EL",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_PRIME_1900_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -2089,8 +2124,8 @@
         "sameCompanyRoundTrip": true,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
-          "return": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_66"
+          "outbound": "INCA_CUSCO_MAPI_PRIME_0800_CUSCO_AV_EL",
+          "return": "INCA_MAPI_CUSCO_PRIME_1900_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail"
@@ -2131,8 +2166,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
-        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_66",
+        "outboundTrainCode": "INCA_CUSCO_MAPI_PRIME_0800_CUSCO_AV_EL",
+        "returnTrainCode": "INCA_MAPI_CUSCO_PRIME_1900_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 100,
@@ -2142,7 +2177,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_CUSCO_MAPI_PRIME_BIMODAL_41",
+          "trainCode": "INCA_CUSCO_MAPI_PRIME_0800_CUSCO_AV_EL",
           "company": "incarail",
           "serviceName": "The Prime Bimodal",
           "route": "CUSCO_MAPI",
@@ -2154,7 +2189,7 @@
           "adultCostUSD": 100
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_BIMODAL_66",
+          "trainCode": "INCA_MAPI_CUSCO_PRIME_1900_MACHU_PICCHU",
           "company": "incarail",
           "serviceName": "The Voyager Bimodal",
           "route": "MAPI_CUSCO",
@@ -2271,6 +2306,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Viaja en la categoría Prime de IncaRail, un nivel premium con mayor confort",
+        "Servicio a bordo superior a la categoría estándar Voyager",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Experiencia full day pensada para viajeros que buscan mayor comodidad",
+        "Traslados terrestres incluidos según estación"
       ]
     },
     {
@@ -2330,8 +2372,8 @@
         "defaultOutboundTrainCostUSD": 311,
         "defaultReturnTrainCostUSD": 276,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_BIMODAL_43",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+        "defaultOutboundTrainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_0800_CUSCO_AV_EL",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -2440,8 +2482,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "INCA_CUSCO_MAPI_FIRST_CLASS_BIMODAL_43",
-          "return": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46"
+          "outbound": "INCA_CUSCO_MAPI_FIRST_CLASS_0800_CUSCO_AV_EL",
+          "return": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail"
@@ -2485,8 +2527,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_BIMODAL_43",
-        "returnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+        "outboundTrainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_0800_CUSCO_AV_EL",
+        "returnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 311,
@@ -2496,7 +2538,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_BIMODAL_43",
+          "trainCode": "INCA_CUSCO_MAPI_FIRST_CLASS_0800_CUSCO_AV_EL",
           "company": "incarail",
           "serviceName": "The First Class Bimodal",
           "route": "CUSCO_MAPI",
@@ -2508,7 +2550,7 @@
           "adultCostUSD": 311
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+          "trainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
           "company": "incarail",
           "serviceName": "The First Class Bimodal",
           "route": "MAPI_CUSCO",
@@ -2625,6 +2667,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Viaja de ida en la categoría First Class de IncaRail, la más alta de la compañía",
+        "Retorno flexible entre Voyager, 360, Prime o First Class según disponibilidad",
+        "Servicio a bordo exclusivo y mayor confort en el tramo de ida",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Experiencia full day de un solo día"
       ]
     },
     {
@@ -2684,8 +2733,8 @@
         "defaultOutboundTrainCostUSD": 292,
         "defaultReturnTrainCostUSD": 276,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_FIRST_CLASS_43",
-        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+        "defaultOutboundTrainCode": "INCA_OLLA_MAPI_FIRST_CLASS_1115_OLLANTAYTAMB",
+        "defaultReturnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -2782,8 +2831,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "INCA_OLLA_MAPI_FIRST_CLASS_43",
-          "return": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46"
+          "outbound": "INCA_OLLA_MAPI_FIRST_CLASS_1115_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "incarail"
@@ -2826,8 +2875,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "INCA_OLLA_MAPI_FIRST_CLASS_43",
-        "returnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+        "outboundTrainCode": "INCA_OLLA_MAPI_FIRST_CLASS_1115_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 292,
@@ -2837,7 +2886,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "INCA_OLLA_MAPI_FIRST_CLASS_43",
+          "trainCode": "INCA_OLLA_MAPI_FIRST_CLASS_1115_OLLANTAYTAMB",
           "company": "incarail",
           "serviceName": "The First Class",
           "route": "OLLA_MAPI",
@@ -2849,7 +2898,7 @@
           "adultCostUSD": 292
         },
         "resolvedReturn": {
-          "trainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_BIMODAL_46",
+          "trainCode": "INCA_MAPI_CUSCO_FIRST_CLASS_1900_MACHU_PICCHU",
           "company": "incarail",
           "serviceName": "The First Class Bimodal",
           "route": "MAPI_CUSCO",
@@ -2971,6 +3020,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Ida en la categoría First Class de IncaRail con retorno flexible entre varias categorías",
+        "2 días / 1 noche con alojamiento en Aguas Calientes incluido",
+        "Más tiempo en el santuario sin la presión de regresar el mismo día",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Servicio a bordo exclusivo en el trayecto de ida"
       ]
     },
     {
@@ -3030,8 +3086,8 @@
         "defaultOutboundTrainCostUSD": 598.5,
         "defaultReturnTrainCostUSD": 75.05,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
-        "defaultReturnTrainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+        "defaultOutboundTrainCode": "PERU_CUSCO_MAPI_HIRAM_BINGHAM_11_POROY",
+        "defaultReturnTrainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -3140,8 +3196,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
-          "return": "PERU_MAPI_WANCHAQ_EXPEDITION_86P"
+          "outbound": "PERU_CUSCO_MAPI_HIRAM_BINGHAM_11_POROY",
+          "return": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "perurail"
@@ -3185,8 +3241,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
-        "returnTrainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+        "outboundTrainCode": "PERU_CUSCO_MAPI_HIRAM_BINGHAM_11_POROY",
+        "returnTrainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 598.5,
@@ -3196,7 +3252,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "PERU_POROY_MAPI_HIRAM_BINGHAM_11",
+          "trainCode": "PERU_CUSCO_MAPI_HIRAM_BINGHAM_11_POROY",
           "company": "perurail",
           "serviceName": "Hiram Bingham 11",
           "route": "CUSCO_MAPI",
@@ -3208,7 +3264,7 @@
           "adultCostUSD": 598.5
         },
         "resolvedReturn": {
-          "trainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+          "trainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
           "company": "perurail",
           "serviceName": "Expedition 86P",
           "route": "MAPI_CUSCO",
@@ -3328,6 +3384,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Ida en el legendario tren Hiram Bingham de PeruRail, la experiencia de lujo más exclusiva a Machu Picchu",
+        "Servicio gourmet a bordo y ambiente de la época dorada del ferrocarril",
+        "Retorno flexible entre Expedition, Vistadome, Vistadome Observatorio o Hiram Bingham",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos",
+        "Experiencia full day pensada para quienes buscan el máximo nivel de lujo"
       ]
     },
     {
@@ -3387,8 +3450,8 @@
         "defaultOutboundTrainCostUSD": 598.5,
         "defaultReturnTrainCostUSD": 75.05,
         "trainPricingSource": "assets/data/trains.json",
-        "defaultOutboundTrainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11",
-        "defaultReturnTrainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+        "defaultOutboundTrainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11_OLLANTAYTAMB",
+        "defaultReturnTrainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
         "trainCostIsSnapshot": true,
         "trainCostSnapshotDate": "2026-05-01"
       },
@@ -3485,8 +3548,8 @@
         "sameCompanyRoundTrip": false,
         "allowMixedCompanies": false,
         "defaultTrainCodes": {
-          "outbound": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11",
-          "return": "PERU_MAPI_WANCHAQ_EXPEDITION_86P"
+          "outbound": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11_OLLANTAYTAMB",
+          "return": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU"
         },
         "allowedCompanies": [
           "perurail"
@@ -3530,8 +3593,8 @@
       },
       "defaultTrainSelection": {
         "source": "assets/data/trains.json",
-        "outboundTrainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11",
-        "returnTrainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+        "outboundTrainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11_OLLANTAYTAMB",
+        "returnTrainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
         "pricingSnapshot": {
           "currency": "USD",
           "outboundAdultCost": 598.5,
@@ -3541,7 +3604,7 @@
           "note": "Snapshot utilizado para calcular el precio base visible del tour. La fuente operativa de verdad para trenes es assets/data/trains.json."
         },
         "resolvedOutbound": {
-          "trainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11",
+          "trainCode": "PERU_OLLA_MAPI_HIRAM_BINGHAM_11_OLLANTAYTAMB",
           "company": "perurail",
           "serviceName": "Hiram Bingham 11",
           "route": "OLLA_MAPI",
@@ -3553,7 +3616,7 @@
           "adultCostUSD": 598.5
         },
         "resolvedReturn": {
-          "trainCode": "PERU_MAPI_WANCHAQ_EXPEDITION_86P",
+          "trainCode": "PERU_MAPI_CUSCO_EXPEDITION_86P_MACHU_PICCHU",
           "company": "perurail",
           "serviceName": "Expedition 86P",
           "route": "MAPI_CUSCO",
@@ -3676,6 +3739,13 @@
           "q": "¿Las entradas a Machu Picchu están garantizadas?",
           "a": "Las entradas se gestionan según disponibilidad oficial para tu fecha y circuito seleccionado. Revisamos la mejor opción disponible antes de confirmar la reserva."
         }
+      ],
+      "highlights": [
+        "Ida en el tren de lujo Hiram Bingham de PeruRail con servicio gourmet a bordo",
+        "2 días / 1 noche con alojamiento en Aguas Calientes incluido",
+        "Retorno flexible entre Expedition, Vistadome, Vistadome Observatorio o Hiram Bingham",
+        "Más tiempo para disfrutar Machu Picchu sin apuro",
+        "Bus Consettur, ingreso oficial y guía profesional certificado incluidos"
       ]
     }
   ],

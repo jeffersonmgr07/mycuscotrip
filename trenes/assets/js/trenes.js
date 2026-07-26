@@ -193,7 +193,7 @@
   }
 
   function syncDateLimits() {
-    const minOutbound = todayISO(2);
+    const minOutbound = todayISO(1);
     const outboundInput = $('#outboundDate');
     const returnInput = $('#returnDate');
     if (outboundInput) {
@@ -1444,12 +1444,10 @@
   }
 
   async function init() {
-    const outDate = todayISO(2);
-    const retDate = outDate;
-    $('#outboundDate').value = outDate;
-    $('#returnDate').value = retDate;
-    state.outboundDate = outDate;
-    state.returnDate = retDate;
+    $('#outboundDate').value = '';
+    $('#returnDate').value = '';
+    state.outboundDate = '';
+    state.returnDate = '';
     syncDateLimits();
     updateSearchCollapsedSummary();
     applyTrainTranslations();
@@ -1461,7 +1459,17 @@
       return;
     }
     bindEvents();
-    renderResults();
+    renderSearchPrompt();
+  }
+
+  function renderSearchPrompt() {
+    const outboundResults = $('#outboundResults');
+    if (outboundResults) {
+      outboundResults.hidden = false;
+      outboundResults.innerHTML = `<div class="empty-state"><strong>Elige tus fechas de viaje</strong><span>Selecciona la fecha de ida (y de retorno, si aplica) y presiona "Buscar" para ver los trenes disponibles.</span></div>`;
+    }
+    const returnBlock = $('#returnBlock');
+    if (returnBlock) returnBlock.hidden = true;
   }
 
   document.addEventListener('DOMContentLoaded', init);

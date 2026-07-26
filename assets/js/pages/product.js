@@ -4549,10 +4549,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const sameCompanyOnly = this.shouldKeepSameTrainCompany(trainConfig);
     this.trainUpgradeSameCompanyOnly = sameCompanyOnly;
 
+    // The "commercial only" filter hides ultra-premium categories (Hiram Bingham, First Class) from
+    // generic flexible-upgrade tours. Packages whose own config is specifically built around those
+    // categories (restricted_category, luxury_flexible, fixed, etc.) must NOT have this filter applied,
+    // or their own default/fixed train gets removed and falls back to an empty placeholder.
+    const genericFlexibleModes = ["flexible_same_company", "flexible_any_company"];
+    const shouldExcludePremiumCategories = genericFlexibleModes.includes(String(trainConfig?.mode || ""));
+
     this.availableOutboundTrains = this.getDirectionalTrains(trainCatalog, "outbound", defaultSelection.outboundTrainId)
-      .filter((train) => this.isCommercialTrainForFullDay(train));
+      .filter((train) => !shouldExcludePremiumCategories || this.isCommercialTrainForFullDay(train));
     this.availableReturnTrains = this.getDirectionalTrains(trainCatalog, "return", defaultSelection.returnTrainId)
-      .filter((train) => this.isCommercialTrainForFullDay(train));
+      .filter((train) => !shouldExcludePremiumCategories || this.isCommercialTrainForFullDay(train));
 
     const fallbackOutbound = this.createFallbackTrainOption(defaultSelection.outboundTrainId, this.t("product.trainOutboundIncluded", "Tren de ida incluido"));
     const fallbackReturn = this.createFallbackTrainOption(defaultSelection.returnTrainId, this.t("product.trainReturnIncluded", "Tren de retorno incluido"));
@@ -5560,7 +5567,7 @@ document.addEventListener("click", function (event) {
     if (!active && form) {
       delete form.dataset.paymentReviewConfirmed;
       const submit = form.querySelector('button[type="submit"]');
-      if (submit) submit.textContent = this.t("booking.continue", "Continuar");
+      if (submit) submit.textContent = window.MyCuscoTripProductPage?.t("booking.continue", "Continuar") ?? "Continuar";
       const review = document.getElementById("passengerCheckoutReview");
       if (review) { review.hidden = true; review.innerHTML = ""; }
     }
@@ -7056,11 +7063,11 @@ document.addEventListener("click", function (event) {
 
     function formatReservationDateOnly(value) {
       const date = value ? new Date(value) : new Date();
-      if (Number.isNaN(date.getTime())) return this.t("product.reservationGeneratedFallback", "Reserva generada");
+      if (Number.isNaN(date.getTime())) return window.MyCuscoTripProductPage?.t("product.reservationGeneratedFallback", "Reserva generada") ?? "Reserva generada";
       try {
-        return this.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "short", year: "numeric" }).replace(/\./g, "") });
+        return window.MyCuscoTripProductPage?.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag(), { day: "2-digit", month: "short", year: "numeric" }).replace(/\./g, "") }) ?? "Reserva generada";
       } catch (_) {
-        return this.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag()) });
+        return window.MyCuscoTripProductPage?.t("product.reservationGeneratedOn", "Reserva generada: {date}", { date: date.toLocaleDateString(mctLocaleDateTag()) }) ?? "Reserva generada";
       }
     }
 

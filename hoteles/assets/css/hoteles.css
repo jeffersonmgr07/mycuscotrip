@@ -1784,3 +1784,48 @@
   .hotel-owner-property-actions .hotel-admin-btn{flex:1 1 100%;justify-content:center;}
   .hotel-map-preview iframe{height:210px;}
 }
+
+/* =========================================================
+   PATCH MCT MODAL-STYLE-UNIFY — Estilo minimalista tipo "trenes v8"
+   aplicado al modal de reserva de hoteles. Solo estética.
+   ========================================================= */
+.hotel-detail-modal__dialog {
+  background: #edf2f0 !important;
+}
+.hotel-detail-modal__head {
+  background: transparent !important;
+  color: #252c29 !important;
+  border-bottom: 1px solid #d6dfda !important;
+}
+.hotel-detail-modal__head h2 {
+  color: #252c29 !important;
+}
+.hotel-reservation-box,
+.hotel-step2 .hotel-payment-summary {
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.hotel-reservation-box input,
+.hotel-reservation-box select,
+.hotel-holder-grid--premium input,
+.hotel-holder-grid--premium select {
+  border: 1px solid #cfd9d4 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+.hotel-search-availability-btn {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+.hotel-step-back {
+  color: #5c6b64 !important;
+}
+.hotel-holder-section-title {
+  background: transparent !important;
+  color: #252c29 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #d6dfda !important;
+  border-radius: 0 !important;
+  padding: 0 0 14px !important;
+  font-family: Montserrat, sans-serif !important;
+}

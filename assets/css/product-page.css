@@ -9037,3 +9037,116 @@ body.passenger-modal-open {
     font-size: 0.74rem !important;
   }
 }
+
+/* =========================================================
+   PATCH MCT MODAL-STYLE-UNIFY — Estilo minimalista tipo "trenes v8"
+   aplicado al modal de pasajeros (tours/paquetes). Solo estética.
+   ========================================================= */
+.passenger-modal__dialog {
+  background: #edf2f0 !important;
+}
+.passenger-modal__header {
+  background: transparent !important;
+  color: #252c29 !important;
+  padding: 28px 32px 0 !important;
+}
+.passenger-modal__titlebar::before {
+  color: #5c6b64 !important;
+}
+.passenger-modal__titlebar,
+.passenger-modal__titlebar h2,
+#passengerModalTitle {
+  background: transparent !important;
+  color: #252c29 !important;
+  padding: 0 0 18px !important;
+  border-bottom: 1px solid #d6dfda !important;
+  border-radius: 0 !important;
+  font-family: Montserrat, sans-serif !important;
+  font-weight: 900 !important;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem) !important;
+  letter-spacing: -0.02em !important;
+}
+.passenger-modal__code-card,
+.passenger-modal__paynow-card {
+  background: #fff !important;
+  border: 1px solid #d6dfda !important;
+  box-shadow: none !important;
+}
+.passenger-modal__eyebrow,
+.passenger-modal__inline-label,
+.passenger-modal__paynow-card span {
+  color: #5c6b64 !important;
+}
+.passenger-modal__code,
+.passenger-modal__paynow-card strong {
+  color: #0e1712 !important;
+}
+.passenger-modal__subtitle {
+  color: #5c6b64 !important;
+}
+.passenger-modal__warning {
+  background: #fff !important;
+  color: #435049 !important;
+  border: 1px solid #d6dfda !important;
+  box-shadow: none !important;
+}
+.passenger-modal__body {
+  background: transparent !important;
+  padding: 24px 32px 32px !important;
+}
+.passenger-modal__section {
+  background: transparent !important;
+  border: 0 !important;
+  border-top: 1px solid #d6dfda !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 20px 0 !important;
+}
+.passenger-modal__section:first-of-type {
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+.passenger-modal__section-title strong {
+  color: #0e1712 !important;
+  font-family: Montserrat, sans-serif !important;
+  font-weight: 900 !important;
+}
+.passenger-modal__grid input,
+.passenger-modal__grid select,
+.passenger-modal__additional input,
+.passenger-modal__additional select {
+  min-height: 52px !important;
+  border: 1px solid #cfd9d4 !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+.passenger-modal__grid input:focus,
+.passenger-modal__grid select:focus {
+  border-color: var(--train-green, #062803) !important;
+  box-shadow: 0 0 0 3px rgba(6, 40, 3, 0.08) !important;
+}
+.passenger-modal__actions {
+  border-top: 1px solid #d6dfda !important;
+  padding: 24px 0 0 !important;
+  margin: 8px 32px 32px !important;
+}
+.passenger-modal__cancel-btn {
+  background: #fff !important;
+  border: 1px solid #cfd9d4 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+.passenger-modal__actions .booking-main-btn {
+  border-radius: 10px !important;
+  min-height: 58px !important;
+  box-shadow: none !important;
+}
+.passenger-modal__snapshot,
+.passenger-modal__review {
+  background: #fff !important;
+  border: 1px solid #d6dfda !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}

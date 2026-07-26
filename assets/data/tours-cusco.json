@@ -286,7 +286,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Recorrido panorámico en bus de dos pisos por los puntos emblemáticos de Cusco",
+        "Ceremonia andina de Pago a la Tierra guiada por un sacerdote andino",
+        "Visita a un centro textil de fibra de alpaca y baby alpaca con demostración en vivo",
+        "Vista panorámica de la ciudad desde el mirador del Cristo Blanco",
+        "Guía bilingüe durante todo el recorrido"
+      ]
     },
     {
       "id": "exp_002",
@@ -616,7 +623,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Recorrido por el centro histórico de Cusco y su arquitectura colonial-inca",
+        "Visita al complejo arqueológico de Sacsayhuamán y sus muros megalíticos",
+        "Recorrido por Qenqo, Puka Pukara y Tambomachay",
+        "Guía profesional en español e inglés",
+        "Transporte turístico incluido desde Cusco"
+      ]
     },
     {
       "id": "exp_003_fd",
@@ -918,7 +932,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Visita a las terrazas agrícolas de Pisac y su mercado artesanal",
+        "Recorrido por Ollantaytambo, antigua ciudad inca aún habitada",
+        "Parada cultural en Chinchero, cuna de la tradición textil andina",
+        "Tiempo libre en Urubamba para almuerzo opcional",
+        "Guía profesional en español e inglés durante toda la ruta"
+      ]
     },
     {
       "id": "exp_003_con",
@@ -1218,7 +1239,14 @@
         "Esta variante finaliza en Ollantaytambo y está pensada para paquetes con Machu Picchu Overnight.",
         "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Ruta clásica por Pisac y su mercado artesanal",
+        "Visita a Ollantaytambo con conexión directa hacia Aguas Calientes",
+        "Ideal para combinar el Valle Sagrado con tu viaje a Machu Picchu sin regresar a Cusco",
+        "Guía profesional en español e inglés",
+        "Transporte turístico por todo el Valle Sagrado"
+      ]
     },
     {
       "id": "exp_003_vip",
@@ -1597,7 +1625,14 @@
         "Ruta VIP con Maras y Moray.",
         "El ingreso a Salineras de Maras se maneja como extra obligatorio de esta variante."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Ruta ampliada VIP por Chinchero, Maras, Moray, Urubamba, Ollantaytambo y Pisac",
+        "Visita a las Salineras de Maras y sus miles de pozas de sal",
+        "Recorrido por las terrazas circulares de Moray",
+        "Almuerzo buffet opcional en Urubamba",
+        "Guía profesional en español e inglés en ruta ampliada"
+      ]
     },
     {
       "id": "exp_003_vip_con",
@@ -1966,7 +2001,14 @@
         "Esta variante está pensada como ruta preferida para paquetes con Machu Picchu Overnight.",
         "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Ruta VIP por Chinchero, Salineras de Maras, Moray, Urubamba y Ollantaytambo",
+        "Demostración textil tradicional en Chinchero",
+        "Finaliza en Ollantaytambo con conexión directa hacia Machu Picchu",
+        "Ideal para viajeros que buscan la ruta más completa del Valle Sagrado",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_004",
@@ -2315,7 +2357,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Visita a las Salineras de Maras, un paisaje único de miles de pozas de sal",
+        "Recorrido por las terrazas circulares de Moray, laboratorio agrícola inca",
+        "Centro textil de Chinchero con técnicas tradicionales de tejido",
+        "Ruta ideal de medio día para complementar el Valle Sagrado",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_005",
@@ -2643,7 +2692,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Visita al sitio arqueológico de Tipón y su sistema hidráulico inca",
+        "Recorrido por la ciudadela Wari de Pikillacta",
+        "Iglesia de Andahuaylillas, conocida como la Capilla Sixtina de América",
+        "Ruta de medio día ideal para descubrir el sur de Cusco",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_006",
@@ -2936,7 +2992,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Caminata hacia la laguna turquesa a los pies del nevado Humantay",
+        "Paisajes altoandinos y vistas de la cordillera",
+        "Desayuno incluido antes de iniciar la caminata",
+        "Almuerzo incluido al retorno",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_007",
@@ -3267,7 +3330,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Caminata hacia la famosa Montaña de Colores (Vinicunca)",
+        "Paisajes altoandinos multicolores únicos en el mundo",
+        "Desayuno y almuerzo incluidos",
+        "Recomendado para viajeros con buena condición física por la altitud",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_008",
@@ -3592,7 +3662,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Alternativa más accesible que Vinicunca, con menor esfuerzo físico",
+        "Vista de montañas de colores y un bosque de piedras",
+        "Desayuno y almuerzo buffet incluidos",
+        "Ingreso a la Cordillera Palcoyo incluido",
+        "Guía profesional en español e inglés"
+      ]
     },
     {
       "id": "exp_009",
@@ -3943,7 +4020,14 @@
         "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
         "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
       ],
-      "places": []
+      "places": [],
+      "highlights": [
+        "Caminata full day entre las 7 lagunas del Ausangate de tonos turquesa y esmeralda",
+        "Vistas del nevado Ausangate y la cordillera del Vilcanota",
+        "Opción de disfrutar aguas termales en Pacchanta según operación del día",
+        "Desayuno y almuerzo incluidos",
+        "Botiquín de primeros auxilios incluido"
+      ]
     }
   ]
 }

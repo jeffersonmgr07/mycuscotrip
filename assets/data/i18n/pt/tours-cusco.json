@@ -290,7 +290,14 @@
       "seo": {
         "title": "Boas-vindas Ancestrais em Cusco | My Cusco Trip",
         "description": "Aproveite uma introdução panorâmica a Cusco com cerimônia andina, visita a um centro têxtil e vistas do Cristo Blanco."
-      }
+      },
+      "highlights": [
+        "Passeio panorâmico em ônibus de dois andares pelos pontos mais emblemáticos de Cusco",
+        "Cerimônia andina de Pago a la Tierra (oferenda à Mãe Terra) conduzida por um sacerdote andino",
+        "Visita a um centro têxtil especializado em fibra de alpaca e baby alpaca com demonstração ao vivo",
+        "Vista panorâmica da cidade a partir do mirante do Cristo Blanco",
+        "Guia bilíngue durante todo o passeio"
+      ]
     },
     {
       "id": "exp_002",
@@ -624,7 +631,14 @@
       "seo": {
         "title": "City Tour Cusco + Sítios Arqueológicos | My Cusco Trip",
         "description": "Percorra Cusco, Sacsayhuamán, Qenqo, Puka Pukara e Tambomachay em uma tarde cultural."
-      }
+      },
+      "highlights": [
+        "Passeio pelo centro histórico de Cusco e sua arquitetura colonial-inca",
+        "Visita ao complexo arqueológico de Sacsayhuamán e seus muros megalíticos",
+        "Passeio por Qenqo, Puka Pukara e Tambomachay",
+        "Guia profissional em espanhol e inglês",
+        "Transporte turístico incluído a partir de Cusco"
+      ]
     },
     {
       "id": "exp_003_fd",
@@ -930,7 +944,14 @@
       "seo": {
         "title": "Vale Sagrado dos Incas - Dia inteiro | My Cusco Trip",
         "description": "Conheça Pisac, Urubamba, Ollantaytambo e Chinchero em uma rota cultural completa pelo Vale Sagrado."
-      }
+      },
+      "highlights": [
+        "Visita aos terraços agrícolas de Pisac e seu mercado artesanal",
+        "Passeio por Ollantaytambo, antiga cidade inca ainda habitada",
+        "Parada cultural em Chinchero, berço da tradição têxtil andina",
+        "Tempo livre em Urubamba para almoço opcional",
+        "Guia profissional em espanhol e inglês durante todo o percurso"
+      ]
     },
     {
       "id": "exp_003_con",
@@ -1234,7 +1255,14 @@
       "seo": {
         "title": "Vale Sagrado com conexão a Machu Picchu | My Cusco Trip",
         "description": "Rota clássica pelo Vale Sagrado finalizando em Ollantaytambo para conectar com o trem a Aguas Calientes."
-      }
+      },
+      "highlights": [
+        "Roteiro clássico por Pisac e seu mercado artesanal",
+        "Visita a Ollantaytambo com conexão direta a Aguas Calientes",
+        "Ideal para combinar o Vale Sagrado com sua viagem a Machu Picchu sem retornar a Cusco",
+        "Guia profissional em espanhol e inglês",
+        "Transporte turístico por todo o Vale Sagrado"
+      ]
     },
     {
       "id": "exp_003_vip",
@@ -1617,7 +1645,14 @@
       "seo": {
         "title": "Vale Sagrado VIP - Dia inteiro | My Cusco Trip",
         "description": "Rota ampliada por Chinchero, Maras, Moray, Urubamba, Ollantaytambo e Pisac."
-      }
+      },
+      "highlights": [
+        "Roteiro VIP ampliado por Chinchero, Maras, Moray, Urubamba, Ollantaytambo e Pisac",
+        "Visita às Salinas de Maras e suas milhares de poças de sal",
+        "Passeio pelos terraços circulares de Moray",
+        "Almoço buffet opcional em Urubamba",
+        "Guia profissional em espanhol e inglês no roteiro ampliado"
+      ]
     },
     {
       "id": "exp_003_vip_con",
@@ -1990,7 +2025,14 @@
       "seo": {
         "title": "Vale Sagrado VIP com conexão a Machu Picchu | My Cusco Trip",
         "description": "Rota VIP por Chinchero, Maras, Moray, Urubamba e Ollantaytambo, finalizando com conexão a Machu Picchu."
-      }
+      },
+      "highlights": [
+        "Roteiro VIP por Chinchero, Salinas de Maras, Moray, Urubamba e Ollantaytambo",
+        "Demonstração têxtil tradicional em Chinchero",
+        "Finaliza em Ollantaytambo com conexão direta a Machu Picchu",
+        "Ideal para viajantes que buscam o roteiro mais completo do Vale Sagrado",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_004",
@@ -2343,7 +2385,14 @@
       "seo": {
         "title": "Maras e Moray | My Cusco Trip",
         "description": "Descubra o laboratório agrícola inca de Moray e as famosas Salineras de Maras."
-      }
+      },
+      "highlights": [
+        "Visita às Salinas de Maras, uma paisagem única com milhares de poças de sal",
+        "Passeio pelos terraços circulares de Moray, laboratório agrícola inca",
+        "Centro têxtil de Chinchero com técnicas tradicionais de tecelagem",
+        "Roteiro ideal de meio dia para complementar o Vale Sagrado",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_005",
@@ -2675,7 +2724,14 @@
       "seo": {
         "title": "Valle Sur | My Cusco Trip",
         "description": "Percorra Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco."
-      }
+      },
+      "highlights": [
+        "Visita ao sítio arqueológico de Tipón e seu sistema hidráulico inca",
+        "Passeio pela cidadela Wari de Pikillacta",
+        "Igreja de Andahuaylillas, conhecida como a Capela Sistina da América",
+        "Roteiro ideal de meio dia para conhecer o sul de Cusco",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_006",
@@ -2972,7 +3028,14 @@
       "seo": {
         "title": "Lago Humantay | My Cusco Trip",
         "description": "Caminhe até a lagoa turquesa aos pés do nevado Humantay."
-      }
+      },
+      "highlights": [
+        "Caminhada até a lagoa turquesa aos pés do nevado Humantay",
+        "Paisagens altoandinas e vistas da cordilheira",
+        "Café da manhã incluído antes de iniciar a caminhada",
+        "Almoço incluído no retorno",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_007",
@@ -3307,7 +3370,14 @@
       "seo": {
         "title": "Montanha Colorida Vinicunca | My Cusco Trip",
         "description": "Viva uma aventura até a famosa montanha arco-íris dos Andes."
-      }
+      },
+      "highlights": [
+        "Caminhada até a famosa Montanha de Cores (Vinicunca)",
+        "Paisagens altoandinas multicoloridas únicas no mundo",
+        "Café da manhã e almoço incluídos",
+        "Recomendado para viajantes em boa condição física devido à altitude",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_008",
@@ -3636,7 +3706,14 @@
       "seo": {
         "title": "Montanha Palcoyo | My Cusco Trip",
         "description": "Explore a cordilheira colorida de Palcoyo e seu bosque de pedras em uma caminhada mais acessível."
-      }
+      },
+      "highlights": [
+        "Alternativa mais acessível que Vinicunca, com menor esforço físico",
+        "Vista de montanhas coloridas e uma floresta de pedras",
+        "Café da manhã e almoço buffet incluídos",
+        "Entrada na Cordilheira Palcoyo incluída",
+        "Guia profissional em espanhol e inglês"
+      ]
     },
     {
       "id": "exp_009",
@@ -3991,7 +4068,14 @@
       "seo": {
         "title": "Sete Lagoas do Ausangate | My Cusco Trip",
         "description": "Explore as Sete Lagoas do Ausangate em um full day entre montanhas, glaciares e paisagens altoandinas."
-      }
+      },
+      "highlights": [
+        "Caminhada de dia inteiro entre as 7 lagoas do Ausangate em tons turquesa e esmeralda",
+        "Vistas do nevado Ausangate e da cordilheira de Vilcanota",
+        "Opção de aproveitar as águas termais em Pacchanta, conforme a operação do dia",
+        "Café da manhã e almoço incluídos",
+        "Kit de primeiros socorros incluído"
+      ]
     }
   ]
 }
