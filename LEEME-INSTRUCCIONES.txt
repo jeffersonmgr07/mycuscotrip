@@ -87,8 +87,114 @@ esta carpeta no borra archivos existentes automáticamente.
       de tours como "Salkantay Trek").
 
 
+7. trenes/assets/js/trenes.js
+   -> La página de trenes ya no permite reservar para el mismo día (mínimo
+      mañana), y ya NO muestra la lista de trenes hasta que eliges fecha y
+      presionas "Buscar".
+
+8. assets/js/pages/product.js + assets/data/tours-machu-picchu.json
+   + product.html (raíz y los 7 idiomas, solo el número de versión ?v=)
+   -> BUG IMPORTANTE encontrado y corregido: 13 códigos de tren configurados
+      en 6 paquetes (Hiram Bingham, First Class, First Class Overnight, The
+      Prime, Panorámico Vistadome, Full Day/Overnight Express) no coincidían
+      con los códigos reales de trains.json (por ejemplo, uno decía
+      "PERU_POROY_MAPI_HIRAM_BINGHAM_11" y el real es
+      "PERU_CUSCO_MAPI_HIRAM_BINGHAM_11_POROY", con el orden invertido).
+      Esto hacía que esos paquetes mostraran un tren "vacío" (sin horario ni
+      precio real) en vez del tren correcto.
+   -> Además, había un filtro que ocultaba a propósito las categorías
+      Hiram Bingham y First Class de la lista de trenes (para no ofrecerlas
+      gratis en tours genéricos), pero ese mismo filtro se aplicaba también
+      a los paquetes que SON justamente Hiram Bingham/First Class, borrando
+      su propio tren por defecto. Ya corregido para que el filtro solo
+      aplique a los paquetes flexibles genéricos.
+   -> Verificado en navegador: Hiram Bingham (ida fija en Hiram Bingham,
+      retorno con opción Expedition/Vistadome/Hiram Bingham), First Class
+      (ida en First Class, retorno con otro servicio de Inca Rail), The
+      Prime y Panorámico Vistadome, todos muestran ahora trenes reales con
+      horario y precio correctos.
+   -> Subí el número de versión del script (?v=) en las 8 versiones de
+      product.html para asegurar que el navegador cargue el archivo
+      corregido y no una copia vieja en caché.
+
+
+9. assets/css/product-page.css, hoteles/assets/css/hoteles.css,
+   restaurantes/restaurantes.css + product.html (8 idiomas), hoteles/index.html,
+   restaurantes/index.html (solo el número de versión ?v=)
+   -> Unifiqué el estilo visual de los 3 modales de reserva (hoteles, tours/
+      paquetes, restaurantes) con el estilo minimalista que ya tenías en el
+      modal de trenes ("v8"): se quitó la barra verde de título por un
+      encabezado plano con texto oscuro y un separador fino, las tarjetas
+      con sombra pesada se cambiaron por divisores simples, y los campos de
+      formulario quedaron con bordes suaves y más espaciado. Verificado
+      visualmente en los 3 (incluyendo el paso de resumen/pago del modal de
+      tours), con buen contraste de texto en todos los casos.
+
+
+10. assets/data/trekkings-cusco.json + assets/data/i18n/{en,pt}/trekkings-cusco.json
+    -> Investigué (vía fuentes de operadores/OTAs reales de Cusco/Camino Inca/
+       Inca Jungle) y escribí itinerarios completos, día por día, para los 8
+       treks que antes estaban vacíos y en estado "draft" (por eso sus cards
+       mostraban "Consultar disponibilidad" por WhatsApp en vez de "ver
+       itinerario"): Camino Inca 2D/1N, Camino Inca Clásico 4D/3N, Salkantay
+       4D/3N, Salkantay 5D/4N, Ausangate Trek, Ausangate + Vinicunca, Inca
+       Jungle 3D/2N e Inca Jungle 4D/3N (este es el que mencionaste como
+       "Inca Young"). Cada uno ahora tiene itinerario real, incluye/no incluye,
+       highlights, y su estado cambió a "published" para que aparezcan con
+       "ver itinerario" en vez del botón de WhatsApp.
+    -> Para el Camino Inca (2D/1N y 4D/3N) se dejó explícito que requieren el
+       permiso oficial del Camino Inca (Red de Caminos Inca / Ministerio de
+       Cultura), de cupo limitado y reserva anticipada — esto es un requisito
+       legal real, no un detalle menor.
+    -> Traduje este mismo contenido a inglés y portugués (no solo español):
+       el sitio carga un archivo de catálogo COMPLETAMENTE DISTINTO por
+       idioma (no es una traducción superpuesta), así que si solo hubiera
+       corregido el archivo en español, un visitante en inglés o portugués
+       seguía viendo las cards rotas sin itinerario. Verifiqué que las 3
+       versiones (ES/EN/PT) tengan el mismo número de días/incluye/no incluye.
+
+11. assets/data/tours-cusco.json, tours-machu-picchu.json, tours-peru.json,
+    packages-cusco.json, packages-peru.json + sus versiones en
+    assets/data/i18n/{en,pt}/
+    -> Agregué "highlights" (4-8 puntos concretos por producto) a los 35
+       tours que no tenían ese campo, a los 7 paquetes de Perú que estaban
+       publicados pero completamente vacíos (paquetes de 5, 6, 7, 9, 12, 14
+       y 15 días), y mejoré los 8 paquetes de Cusco que tenían highlights
+       genéricos ("Ideal para viajes cortos") por otros más específicos
+       basados en lo que cada paquete realmente incluye. Todo esto también
+       traducido a inglés y portugués, no solo en español.
+
+12. index.html + en/, pt/, fr/, de/, it/, ja/, zh/ (los 8 index.html)
+    -> Arreglo del buscador del home ("¿Planes para Machu Picchu?"): encontré
+       que el buscador se inicializaba dos veces por una condición de carrera
+       (su propio script intenta crearlo apenas carga la página, pero en ese
+       momento el HTML del buscador todavía no había terminado de cargarse
+       dinámicamente, así que esa primera instancia quedaba "vacía"; la
+       instancia real y funcional se creaba después, pero nunca se guardaba
+       como la referencia global). El efecto práctico: cuando el sistema de
+       traducción terminaba de cargar, intentaba refrescar los textos del
+       buscador sobre la instancia vacía en vez de la real, dejando el
+       buscador con textos sin traducir/desactualizados en conexiones lentas
+       (algo muy probable para viajeros usando datos móviles). Corregido en
+       los 8 idiomas. Verificado en navegador: selector de fechas, contador
+       de pasajeros, cambio de pestaña Tours/Paquetes, y el botón "Buscar"
+       (que arma la URL correcta hacia product.html o quote-packages.html
+       según corresponda) — todo probado y funcionando.
+
+
 PENDIENTE / NO INCLUIDO AQUÍ
-------------------------------
+------------------------------------------------------
 - Traducción de las 25 páginas del footer a los otros 7 idiomas (por ahora
   solo existen en español).
+- Traducción de highlights/itinerarios a los otros 5 idiomas (fr, de, it, ja,
+  zh) — por ahora solo están completos en español, inglés y portugués como
+  pediste específicamente.
+- Investigación de un tour de Kayak nuevo (lo mencionaste como ejemplo de
+  tour faltante; no encontré ningún producto de kayak existente en el
+  catálogo para corregir, y crear uno desde cero — precios, itinerario,
+  proveedor — es una tarea nueva, no una corrección; dime si quieres que la
+  desarrolle en la siguiente etapa).
+- Verificación end-to-end de la pasarela de PayPal (no pude probarla desde
+  mi entorno porque llama a tu Google Apps Script real; pruébala tú en el
+  sitio en vivo).
 - Datos de clientes reales en data/reservas.json y docs/ (no tocados, a pedido tuyo).

@@ -1005,7 +1005,7 @@
       if (typeof MyCuscoTripSearchBar === 'function' && typeof flatpickr !== 'undefined') {
         setTimeout(() => {
           try {
-            new MyCuscoTripSearchBar();
+            window.mctSearchBarInstance = new MyCuscoTripSearchBar();
             console.log('SearchBar JS inicializado');
           } catch (e) {
             console.error('Error en SearchBar JS:', e);
