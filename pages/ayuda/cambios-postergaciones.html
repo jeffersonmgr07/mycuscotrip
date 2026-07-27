@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="../../" />
   <title>Cambios y postergaciones | My Cusco Trip</title>
-  <meta name="description" content="Información general sobre solicitudes de cambio, reprogramación o postergación." />
-
+  <meta name="description" content="Formulario para solicitar cambio de fecha o postergación de una reserva de My Cusco Trip." />
+  <link rel="canonical" href="https://mycuscotrip.com/pages/ayuda/cambios-postergaciones.html" />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
@@ -15,102 +15,50 @@
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
   <link rel="stylesheet" href="./assets/css/static-page.css" />
+  <link rel="stylesheet" href="./assets/css/public-forms.css" />
+
 </head>
 <body class="static-page">
   <div id="header-container"></div>
-
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
-
+  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" /></a>
   <main>
-    <section class="static-hero">
-      <div class="container">
-        <span class="static-hero__eyebrow">Centro de ayuda</span>
-        <h1>Cambios y postergaciones</h1>
-        <p>Información general sobre solicitudes de cambio, reprogramación o postergación.</p>
-      </div>
-    </section>
-
-    <section class="static-content">
-      <div class="container static-layout">
-        <div>
-          <article class="static-card">
-            <h2>Cómo solicitar un cambio</h2>
-            <p>Si necesitas mover la fecha de tu tour, paquete o servicio de tren, escríbenos por WhatsApp indicando tu código de reserva y la nueva fecha que buscas. Revisamos disponibilidad con el operador correspondiente y te confirmamos si el cambio procede sin costo o con un ajuste de tarifa.</p>
-            <ul>
-              <li>Los cambios están sujetos a la disponibilidad real del hotel, tren u operador en la nueva fecha.</li>
-              <li>Mientras más anticipación tengas para avisar, mayor es la probabilidad de reprogramar sin costo adicional.</li>
-              <li>Algunos servicios (boletos de tren, entradas a Machu Picchu) tienen políticas propias del operador que aplicamos tal cual las recibimos.</li>
-            </ul>
-          </article>
-
-          <article class="static-card">
-            <h2>Postergaciones por clima o fuerza mayor</h2>
-            <p>Actividades al aire libre como trekkings, observación de estrellas o algunas excursiones dependen de condiciones climáticas. Si una actividad no puede realizarse por motivos de seguridad, coordinamos contigo una fecha alternativa o una experiencia equivalente siempre que sea posible.</p>
-          </article>
-        </div>
-
-        <aside class="static-sidebar">
-          <div class="static-cta">
-            <h2>¿Necesitas ayuda?</h2>
-            <p>Un asesor puede orientarte por WhatsApp y ayudarte a elegir la mejor experiencia para tu viaje.</p>
-            <a class="static-btn" href="https://wa.me/51900608980" target="_blank" rel="noopener">
-              <i class="fab fa-whatsapp"></i>
-              Hablar con un asesor
-            </a>
-          </div>
-
-          <article class="static-card">
-            <h2>Explora también</h2>
-            <ul class="static-link-list">
-              <li><a href="./all-experiences.html">Todas las experiencias</a></li>
-              <li><a href="./machu-picchu-tours.html">Tours a Machu Picchu</a></li>
-              <li><a href="./paquetes-cusco.html">Paquetes completos</a></li>
-              <li><a href="./explora-peru.html">Explora Perú</a></li>
-            </ul>
-          </article>
-        </aside>
-      </div>
-    </section>
+    <section class="static-hero"><div class="container"><span class="static-hero__eyebrow">Gestiona tu reserva</span><h1>Cambios y postergaciones</h1><p>Registra los datos de tu reserva y la nueva fecha para que revisemos cada servicio y sus condiciones.</p></div></section>
+    <section class="static-content"><div class="container static-layout"><div>
+<article class="static-card"><h2>Cómo se evalúa una postergación</h2><p>La solicitud se revisa por cada componente: entrada, tren, hotel, transporte, guía y actividad. Puede existir diferencia tarifaria, penalidad o un servicio no modificable. No realices nuevas compras hasta recibir nuestra respuesta.</p><ul><li>Solicita el cambio con la mayor anticipación posible.</li><li>Utiliza el correo registrado en la reserva.</li><li>Propón una nueva fecha, pero mantén flexibilidad.</li><li>La solicitud no se considera aprobada hasta recibir confirmación escrita.</li></ul></article>
+<article class="static-card"><form class="public-form" data-public-form data-form-type="booking_postponement" data-success="Estamos recibiendo tu solicitud de cambio o postergación. En breve nuestro equipo se comunicará contigo para revisar disponibilidad, condiciones y posibles diferencias.">
+<section class="public-form__section"><h3>Datos de la reserva</h3><div class="public-form__grid"><div class="public-form__field"><span>Código de reserva *</span><input name="reservationCode" required autocomplete="off" /></div><div class="public-form__field"><span>Nombre y apellido del titular *</span><input name="fullName" required autocomplete="name" /></div><div class="public-form__field"><span>Correo registrado *</span><input type="email" name="email" required autocomplete="email" /></div><div class="public-form__field"><span>Fecha original del servicio</span><input type="date" name="originalDate" /></div></div></section>
+<section class="public-form__section"><h3>Solicitud</h3><div class="public-form__grid"><div class="public-form__field"><span>Nueva fecha solicitada *</span><input type="date" name="requestedDate" required /></div><div class="public-form__field"><span>Flexibilidad</span><select name="dateFlexibility"><option>Fecha exacta</option><option>± 1 día</option><option>± 3 días</option><option>Durante el mismo mes</option><option>Fecha por definir</option></select></div><div class="public-form__field public-form__field--full"><span>Motivo de la postergación *</span><textarea name="reason" required></textarea></div><div class="public-form__field public-form__field--full"><span>Servicios que deseas cambiar</span><textarea name="servicesToChange" placeholder="Ej. paquete completo, solo tren, hotel, tour específico…"></textarea></div></div></section>
+<label class="public-form__check"><input type="checkbox" name="acknowledgement" value="yes" required /><span>Entiendo que la solicitud está sujeta a disponibilidad, políticas de proveedores, penalidades y diferencias tarifarias, y que no implica aprobación automática.</span></label><div class="public-form__actions"><button class="public-form__submit" type="submit"><i class="fa-solid fa-calendar-days"></i> Enviar solicitud</button></div><div class="public-form__status" data-form-status></div></form></article>
+</div><aside class="static-sidebar">
+<div class="static-cta">
+  <h2>¿Necesitas orientación?</h2>
+  <p>Un asesor de My Cusco Trip puede revisar tu fecha, disponibilidad y alternativas antes de que confirmes una reserva.</p>
+  <a class="static-btn" href="https://wa.me/51900608980" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Hablar con un asesor</a>
+</div>
+<article class="static-card"><h2>Explora también</h2>
+<ul class="static-link-list">
+  <li><a href="./pages/ayuda/preguntas-frecuentes.html">Preguntas frecuentes</a></li>
+  <li><a href="./pages/ayuda/cambios-postergaciones.html">Cambios y postergaciones</a></li>
+  <li><a href="./pages/ayuda/descargar-travel-voucher.html">Travel voucher</a></li>
+  <li><a href="./pages/ayuda/descargar-tickets-servicios.html">Tickets de servicios</a></li>
+</ul></article>
+</aside></div></section>
   </main>
-
   <div id="footer-container"></div>
-
   <script>
-    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
-    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "./";
-
-    async function loadComponent(componentName, targetId) {
-      try {
-        const response = await fetch(`${BASE_PATH}components/${componentName}.html`);
-        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-        const html = await response.text();
-        const target = document.getElementById(targetId);
-        if (target) target.innerHTML = html;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-      }
-    }
-
-    async function initializePage() {
-      await Promise.all([
-        loadComponent("header", "header-container"),
-        loadComponent("footer", "footer-container")
-      ]);
-
-      if (window.MyCuscoTripFooter?.initFooterAccordions) {
-        window.MyCuscoTripFooter.initFooterAccordions();
-      }
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializePage);
-    } else {
-      initializePage();
-    }
+    const IS_GITHUB_PAGES=window.location.hostname.includes("github.io");
+    const BASE_PATH=IS_GITHUB_PAGES?"/mycuscotrip/":"/";
+    async function loadComponent(name,targetId){try{const r=await fetch(`${BASE_PATH}components/${name}.html`,{cache:"no-store"});if(!r.ok)throw new Error(r.status);const target=document.getElementById(targetId);if(target)target.innerHTML=await r.text();}catch(e){console.error(`Error cargando ${name}:`,e);}}
+    async function initializePage(){await Promise.all([loadComponent("header","header-container"),loadComponent("footer","footer-container")]);window.initMyCuscoTripHeader?.();window.MyCuscoTripFooter?.initFooterAccordions?.();}
+    document.readyState==="loading"?document.addEventListener("DOMContentLoaded",initializePage):initializePage();
   </script>
+  <script src="./assets/js/config/tracking-config.js"></script>
+  <script src="./assets/js/components/tracking.js"></script>
+  <script src="./assets/js/i18n.js"></script>
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/footer.js"></script>
+  <script src="./assets/js/config/public-forms-config.js"></script>
+  <script src="./assets/js/components/public-forms.js"></script>
+
 </body>
 </html>

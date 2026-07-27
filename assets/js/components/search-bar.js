@@ -37,113 +37,60 @@ class MyCuscoTripSearchBar {
     this.options = {
       tours: [
         {
-          value: "machu-picchu-full-day-clasico",
-          labelKey: "search.tourMachuPicchuClassic",
-          fallback: "Machu Picchu Full Day Clásico",
-          url: "./product.html?slug=machu-picchu-full-day-clasico"
+          value: "machu-picchu",
+          labelKey: "search.categoryMachuPicchu",
+          fallback: "Machu Picchu",
+          url: "./machu-picchu-tours.html"
         },
         {
-          value: "machu-picchu-full-day-express",
-          labelKey: "search.tourFullDayExpress",
-          fallback: "Machu Picchu Full Day Express",
-          url: "./product.html?slug=machu-picchu-full-day-express"
+          value: "tours-cusco",
+          labelKey: "search.categoryCuscoTours",
+          fallback: "Tours en Cusco",
+          url: "./cusco-tours.html"
         },
         {
-          value: "machu-picchu-overnight-clasico",
-          labelKey: "search.tourOvernight",
-          fallback: "Machu Picchu Overnight 2D/1N",
-          url: "./product.html?slug=machu-picchu-overnight-clasico"
+          value: "experiencias-ancestrales",
+          labelKey: "search.categoryAncestral",
+          fallback: "Experiencias ancestrales",
+          url: "./all-experiences.html?q=ancestral&destino=cusco"
         },
         {
-          value: "machu-picchu-panoramico-vistadome",
-          labelKey: "search.tourPanoramic",
-          fallback: "Machu Picchu Panorámico",
-          url: "./product.html?slug=machu-picchu-panoramico-vistadome"
-        },
-        {
-          value: "machu-picchu-luxury-hiram-bingham",
-          labelKey: "search.tourHiramBingham",
-          fallback: "Machu Picchu Luxury Hiram Bingham",
-          url: "./product.html?slug=machu-picchu-luxury-hiram-bingham"
-        },
-        {
-          value: "bienvenida-ancestral-cusco",
-          labelKey: "search.tourAncestralWelcomeShort",
-          fallback: "Bienvenida a Cusco",
-          url: "./product.html?slug=bienvenida-ancestral-cusco"
-        },
-        {
-          value: "todos-tours-machu-picchu",
-          labelKey: "search.allMachuPicchuTours",
-          fallback: "Todos los tours de Machu Picchu",
-          url: "./all-experiences.html?destino=machu-picchu&tipo=tour"
-        },
-        {
-          value: "todos-tours-cusco",
-          labelKey: "search.allCuscoTours",
-          fallback: "Todos los tours de Cusco",
-          url: "./all-experiences.html?destino=cusco&tipo=tour"
+          value: "trekkings-naturaleza",
+          labelKey: "search.categoryTrekkingsNature",
+          fallback: "Trekkings y naturaleza",
+          url: "./trekkings.html"
         }
       ],
       paquetes: [
         {
-          value: "machu-picchu-2d1n",
-          labelKey: "search.packageMachuPicchu2d1n",
-          fallback: "Machu Picchu 2 días / 1 noche",
-          quoteIntent: "machu-picchu-2d1n",
-          days: 2,
-          nights: 1,
-          dateMode: "single-fixed"
+          value: "solo-machu-picchu",
+          labelKey: "search.packageOnlyMachuPicchu",
+          fallback: "Paquetes solo a Machu Picchu",
+          url: "./machu-picchu-overnight.html"
         },
         {
-          value: "cusco-machu-picchu-3d2n",
-          labelKey: "search.packageCuscoMachuPicchu3d2n",
-          fallback: "Cusco Machu Picchu 3 días / 2 noches",
-          quoteIntent: "cusco-machu-picchu-3d2n",
-          days: 3,
-          nights: 2,
-          dateMode: "single-fixed"
+          value: "cusco-machu-picchu",
+          labelKey: "search.packageCuscoMachuPicchu",
+          fallback: "Paquetes Cusco y Machu Picchu",
+          url: "./paquetes-cusco.html"
         },
         {
-          value: "cusco-valle-machu-picchu-4d3n",
-          labelKey: "search.packageCuscoValleMachuPicchu4d3n",
-          fallback: "Cusco Valle Machu Picchu 4 días / 3 noches",
-          quoteIntent: "cusco-valle-machu-picchu-4d3n",
-          days: 4,
-          nights: 3,
-          dateMode: "single-fixed"
+          value: "machu-picchu-trekking",
+          labelKey: "search.packageMachuPicchuTrekking",
+          fallback: "Machu Picchu + trekking",
+          url: "./trekkings.html?tipo=paquete&destino=machu-picchu"
         },
         {
-          value: "cusco-valle-machu-picchu-5d4n",
-          labelKey: "search.packageCuscoValleMachuPicchu5d4n",
-          fallback: "Cusco Valle Machu Picchu 5 días / 4 noches",
-          quoteIntent: "cusco-valle-machu-picchu-5d4n",
-          days: 5,
-          nights: 4,
-          dateMode: "single-fixed"
+          value: "aventura-naturaleza",
+          labelKey: "search.packageAdventureNature",
+          fallback: "Paquetes de aventura y naturaleza",
+          url: "./trekking-cusco.html?tipo=paquete"
         },
         {
-          value: "cusco-valle-machu-picchu-6d5n",
-          labelKey: "search.packageCuscoValleMachuPicchu6d5n",
-          fallback: "Cusco Valle Machu Picchu 6 días / 5 noches",
-          quoteIntent: "cusco-valle-machu-picchu-6d5n",
-          days: 6,
-          nights: 5,
-          dateMode: "single-fixed"
-        },
-        {
-          value: "paquete-personalizado-cusco-machu-picchu",
-          labelKey: "search.packageCustomCuscoMachuPicchu",
-          fallback: "Paquete personalizado Cusco Machu Picchu",
-          quoteIntent: "paquete-personalizado-cusco-machu-picchu",
-          dateMode: "range"
-        },
-        {
-          value: "union-ancestral-andes-matrimonio-andino",
-          labelKey: "search.packageAncestralUnion",
-          fallback: "Unión Ancestral en los Andes / Matrimonio Andino",
-          quoteIntent: "union-ancestral-andes-matrimonio-andino",
-          dateMode: "range"
+          value: "peru-personalizado",
+          labelKey: "search.packagePeruCustom",
+          fallback: "Perú multidestino o personalizado",
+          url: "./explora-peru.html"
         }
       ]
     };
@@ -202,16 +149,16 @@ class MyCuscoTripSearchBar {
     return this.getCurrentOptions().find((option) => option.value === value) || this.getCurrentOptions()[0] || null;
   }
 
-  isFixedPackageOption(option = this.getCurrentOption()) {
-    return this.currentTab === "paquetes" && option?.dateMode === "single-fixed" && Number.isFinite(Number(option?.days)) && Number.isFinite(Number(option?.nights));
+  isFixedPackageOption() {
+    return false;
   }
 
-  isRangePackageOption(option = this.getCurrentOption()) {
-    return this.currentTab === "paquetes" && !this.isFixedPackageOption(option);
+  isRangePackageOption() {
+    return this.currentTab === "paquetes";
   }
 
   getCalendarMode() {
-    return this.isRangePackageOption() ? "range" : "single";
+    return this.currentTab === "paquetes" ? "range" : "single";
   }
 
   renderIntentOptions() {
@@ -235,20 +182,18 @@ class MyCuscoTripSearchBar {
 
     if (this.currentTab === "paquetes") {
       if (this.intentLabel) {
-        this.intentLabel.dataset.i18n = "search.packageType";
-        this.intentLabel.textContent = this.t("search.packageType", "Tipo de paquete");
+        this.intentLabel.dataset.i18n = "search.packageDestinationStyle";
+        this.intentLabel.textContent = this.t("search.packageDestinationStyle", "Destino o estilo");
       }
       if (this.submitText) {
-        this.submitText.dataset.i18n = "search.quoteSubmit";
-        this.submitText.textContent = this.t("search.quoteSubmit", "Cotizar mi viaje");
+        this.submitText.dataset.i18n = "search.findPackages";
+        this.submitText.textContent = this.t("search.findPackages", "Buscar paquetes");
       }
-      this.dateInput.placeholder = this.isFixedPackageOption(option)
-        ? this.t("search.selectStartDate", "Selecciona fecha de inicio")
-        : this.t("search.selectDateRange", "Selecciona rango de fechas");
+      this.dateInput.placeholder = this.t("search.selectDateRange", "Selecciona rango de fechas");
     } else {
       if (this.intentLabel) {
-        this.intentLabel.dataset.i18n = "search.experienceType";
-        this.intentLabel.textContent = this.t("search.experienceType", "Tipo de viaje");
+        this.intentLabel.dataset.i18n = "search.type";
+        this.intentLabel.textContent = this.t("search.type", "Tipo");
       }
       if (this.submitText) {
         this.submitText.dataset.i18n = "search.submit";
@@ -555,41 +500,26 @@ class MyCuscoTripSearchBar {
     return `${base}${connector}${params.toString()}`;
   }
 
-  buildPackageQuoteUrl() {
+  buildPackageCatalogUrl() {
     const option = this.getCurrentOption();
     const params = new URLSearchParams();
-    const fixed = this.isFixedPackageOption(option);
-    const days = this.selectedDays !== ""
-      ? Number(this.selectedDays)
-      : (Number.isFinite(Number(option?.days)) ? Number(option.days) : "");
-    const nights = this.selectedNights !== ""
-      ? Number(this.selectedNights)
-      : (Number.isFinite(Number(option?.nights)) ? Number(option.nights) : NaN);
-    const inferredEndDate = !this.selectedEndDate && this.selectedStartDate && Number.isFinite(nights)
-      ? this.addDaysToISO(this.selectedStartDate, nights)
-      : "";
-
     params.set("source", "home-search");
-    params.set("intent", option?.quoteIntent || option?.value || "paquete-personalizado-cusco-machu-picchu");
+    params.set("intent", option?.value || "paquete");
     params.set("adultos", String(this.adults));
     params.set("ninos", String(this.children));
-    params.set("arrivalTime", "09:00");
-    params.set("departureTime", "20:00");
-
     if (this.selectedStartDate) params.set("fechaInicio", this.selectedStartDate);
-    if (this.selectedEndDate || inferredEndDate) params.set("fechaFin", this.selectedEndDate || inferredEndDate);
-    if (days) params.set("days", String(days));
-    if (Number.isFinite(nights) && nights >= 0) params.set("nights", String(nights));
-    if (fixed) params.set("durationLocked", "1");
+    if (this.selectedEndDate) params.set("fechaFin", this.selectedEndDate);
 
-    return `./quote-packages.html?${params.toString()}`;
+    const base = option?.url || "./paquetes-cusco.html";
+    const connector = base.includes("?") ? "&" : "?";
+    return `${base}${connector}${params.toString()}`;
   }
 
   handleSubmit(event) {
     event.preventDefault();
     this.closeQuantityPanel();
     window.location.href = this.currentTab === "paquetes"
-      ? this.buildPackageQuoteUrl()
+      ? this.buildPackageCatalogUrl()
       : this.buildTourUrl();
   }
 

@@ -1284,8 +1284,7 @@
       lines.push(`Celular: ${data.emergencia.celular}`);
       lines.push(`Email: ${data.emergencia.email || '-'}`);
       lines.push(`Comentarios: ${data.emergencia.comentarios || '-'}`);
-      return lines.join('
-');
+      return lines.join('\n');
     }
 
     async function submitRegistration(e) {
@@ -1329,6 +1328,7 @@
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
+<script src="./assets/js/components/footer.js"></script>
 <script src="./assets/js/lib/utils.js"></script>
 </body>
 </html>

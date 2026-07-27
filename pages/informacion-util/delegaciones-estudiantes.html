@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="../../" />
   <title>Delegaciones de estudiantes | My Cusco Trip</title>
-  <meta name="description" content="Programas pensados para colegios, universidades y grupos académicos." />
-
+  <meta name="description" content="Formulario para solicitar viajes escolares, universitarios, científicos, académicos, deportivos, culturales o institucionales." />
+  <link rel="canonical" href="https://mycuscotrip.com/pages/informacion-util/delegaciones-estudiantes.html" />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="./assets/css/main.css" />
@@ -15,102 +15,72 @@
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
   <link rel="stylesheet" href="./assets/css/static-page.css" />
+  <link rel="stylesheet" href="./assets/css/public-forms.css" />
+
 </head>
 <body class="static-page">
   <div id="header-container"></div>
-
-  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
-  </a>
-
+  <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" /></a>
   <main>
-    <section class="static-hero">
-      <div class="container">
-        <span class="static-hero__eyebrow">Información útil</span>
-        <h1>Delegaciones de estudiantes</h1>
-        <p>Programas pensados para colegios, universidades y grupos académicos.</p>
-      </div>
-    </section>
-
-    <section class="static-content">
-      <div class="container static-layout">
-        <div>
-          <article class="static-card">
-            <h2>Viajes educativos a Cusco y Machu Picchu</h2>
-            <p>Diseñamos itinerarios para delegaciones escolares y universitarias con un enfoque educativo: historia inca, arqueología, geografía andina y cultura viva, coordinados directamente con los profesores o responsables de la delegación.</p>
-          </article>
-
-          <article class="static-card">
-            <h2>Qué incluye la coordinación</h2>
-            <ul>
-              <li>Itinerario adaptado a la edad y objetivo académico del grupo.</li>
-              <li>Coordinación de transporte, hospedaje y horarios de tren para grupos numerosos.</li>
-              <li>Un solo punto de contacto para el docente o coordinador responsable durante todo el viaje.</li>
-            </ul>
-            <p>Contáctanos por WhatsApp con el número de estudiantes, fechas tentativas y el nivel educativo del grupo para preparar una propuesta.</p>
-          </article>
-        </div>
-
-        <aside class="static-sidebar">
-          <div class="static-cta">
-            <h2>¿Necesitas ayuda?</h2>
-            <p>Un asesor puede orientarte por WhatsApp y ayudarte a elegir la mejor experiencia para tu viaje.</p>
-            <a class="static-btn" href="https://wa.me/51900608980" target="_blank" rel="noopener">
-              <i class="fab fa-whatsapp"></i>
-              Hablar con un asesor
-            </a>
-          </div>
-
-          <article class="static-card">
-            <h2>Explora también</h2>
-            <ul class="static-link-list">
-              <li><a href="./all-experiences.html">Todas las experiencias</a></li>
-              <li><a href="./machu-picchu-tours.html">Tours a Machu Picchu</a></li>
-              <li><a href="./paquetes-cusco.html">Paquetes completos</a></li>
-              <li><a href="./explora-peru.html">Explora Perú</a></li>
-            </ul>
-          </article>
-        </aside>
-      </div>
-    </section>
+    <section class="static-hero"><div class="container"><span class="static-hero__eyebrow">Grupos especiales</span><h1>Delegaciones de estudiantes</h1><p>Cuéntanos el objetivo, tamaño y fechas de tu delegación para diseñar una propuesta segura y coordinada.</p></div></section>
+    <section class="static-content"><div class="container static-layout"><div>
+<article class="static-card"><h2>Viajes diseñados para aprender y coordinar mejor</h2><p>Atendemos solicitudes de colegios, universidades, delegaciones científicas o académicas, grupos deportivos, culturales y organizaciones. La propuesta se construye según edades, objetivos, responsables, presupuesto y protocolos de la institución.</p><div class="content-grid"><div><h3>Escolares</h3><p>Ritmo adecuado, responsables, alimentación, seguridad y contenidos educativos.</p></div><div><h3>Universitarios</h3><p>Arqueología, historia, turismo, sostenibilidad, arquitectura, biodiversidad y trabajo de campo.</p></div><div><h3>Científicas o académicas</h3><p>Logística especializada, permisos, coordinación local y agendas técnicas.</p></div><div><h3>Otras delegaciones</h3><p>Equipos deportivos, agrupaciones culturales, asociaciones y viajes institucionales.</p></div></div></article>
+<article class="static-card">
+<form class="public-form" data-public-form data-form-type="student_delegation" data-success="Recibimos la solicitud de tu delegación. Nuestro equipo revisará la logística y se comunicará contigo para solicitar o confirmar los detalles faltantes.">
+<section class="public-form__section"><h3>Datos de la delegación</h3><div class="public-form__grid">
+<div class="public-form__field"><span>Tipo de delegación *</span><select name="delegationType" required><option value="">Selecciona</option><option>Escolar</option><option>Universitaria</option><option>Científica o académica</option><option>Deportiva</option><option>Cultural</option><option>Institucional</option><option>Otra</option></select></div>
+<div class="public-form__field"><span>Institución u organización *</span><input name="institution" required /></div>
+<div class="public-form__field"><span>Cantidad estimada de viajeros *</span><input name="travelers" type="number" min="5" max="500" required /></div>
+<div class="public-form__field"><span>Edades o nivel educativo</span><input name="ageRange" placeholder="Ej. 15–17 años / universitarios" /></div>
+<div class="public-form__field"><span>Fecha aproximada de inicio *</span><input name="travelStart" type="date" required /></div>
+<div class="public-form__field"><span>Fecha aproximada de retorno *</span><input name="travelEnd" type="date" required /></div>
+<div class="public-form__field public-form__field--full"><span>Objetivo del viaje y destinos de interés *</span><textarea name="tripObjective" required placeholder="Cuéntanos qué desean aprender, visitar o desarrollar."></textarea></div>
+</div></section>
+<section class="public-form__section"><h3>Representante del grupo</h3><div class="public-form__grid">
+<div class="public-form__field public-form__field--full"><span>Nombre completo del representante *</span><input name="fullName" autocomplete="name" required /></div>
+<div class="public-form__field"><span>Correo electrónico *</span><input name="email" type="email" autocomplete="email" required /></div>
+<div class="public-form__field"><span>WhatsApp *</span><div class="public-form__phone"><select name="countryCode" data-country-dial data-default="+51" required></select><input name="whatsappNumber" inputmode="numeric" required placeholder="900 000 000" /></div></div>
+<div class="public-form__field"><span>País *</span><select name="country" data-country-name required></select></div>
+<div class="public-form__field"><span>Cargo o relación con el grupo</span><input name="representativeRole" placeholder="Docente, coordinador, director…" /></div>
+</div></section>
+<section class="public-form__section"><h3>Necesidades de la propuesta</h3><div class="public-form__grid">
+<div class="public-form__field"><span>Alojamiento</span><select name="lodging"><option>Por definir</option><option>No requerido</option><option>Hostal / económico</option><option>3 estrellas</option><option>4 estrellas</option><option>5 estrellas</option></select></div>
+<div class="public-form__field"><span>Tipo de servicio</span><select name="serviceType"><option>Propuesta integral</option><option>Solo tours y entradas</option><option>Solo transporte</option><option>Asistencia académica/logística</option></select></div>
+<div class="public-form__field public-form__field--full"><span>Comentarios, presupuesto o requisitos institucionales</span><textarea name="message" placeholder="Políticas de alimentación, seguros, facturación, accesibilidad, charlas, permisos u otros."></textarea></div>
+</div></section>
+<label class="public-form__check"><input type="checkbox" name="privacyConsent" value="yes" required /><span>Acepto el tratamiento de estos datos para elaborar y responder la solicitud.</span></label>
+<div class="public-form__actions"><button class="public-form__submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button></div><div class="public-form__status" data-form-status></div>
+</form></article>
+</div><aside class="static-sidebar">
+<div class="static-cta">
+  <h2>¿Necesitas orientación?</h2>
+  <p>Un asesor de My Cusco Trip puede revisar tu fecha, disponibilidad y alternativas antes de que confirmes una reserva.</p>
+  <a class="static-btn" href="https://wa.me/51900608980" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Hablar con un asesor</a>
+</div>
+<article class="static-card"><h2>Explora también</h2>
+<ul class="static-link-list">
+  <li><a href="./pages/informacion-util/planifica-tu-viaje.html">Planifica tu viaje</a></li>
+  <li><a href="./pages/informacion-util/como-llegar-machu-picchu.html">Cómo llegar a Machu Picchu</a></li>
+  <li><a href="./pages/informacion-util/frecuencia-trenes.html">Trenes y categorías</a></li>
+  <li><a href="./pages/informacion-util/boleto-machu-picchu.html">Boletos y circuitos</a></li>
+</ul></article>
+</aside></div></section>
   </main>
-
   <div id="footer-container"></div>
-
   <script>
-    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
-    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "./";
-
-    async function loadComponent(componentName, targetId) {
-      try {
-        const response = await fetch(`${BASE_PATH}components/${componentName}.html`);
-        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-        const html = await response.text();
-        const target = document.getElementById(targetId);
-        if (target) target.innerHTML = html;
-      } catch (error) {
-        console.error(`Error cargando ${componentName}:`, error);
-      }
-    }
-
-    async function initializePage() {
-      await Promise.all([
-        loadComponent("header", "header-container"),
-        loadComponent("footer", "footer-container")
-      ]);
-
-      if (window.MyCuscoTripFooter?.initFooterAccordions) {
-        window.MyCuscoTripFooter.initFooterAccordions();
-      }
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializePage);
-    } else {
-      initializePage();
-    }
+    const IS_GITHUB_PAGES=window.location.hostname.includes("github.io");
+    const BASE_PATH=IS_GITHUB_PAGES?"/mycuscotrip/":"/";
+    async function loadComponent(name,targetId){try{const r=await fetch(`${BASE_PATH}components/${name}.html`,{cache:"no-store"});if(!r.ok)throw new Error(r.status);const target=document.getElementById(targetId);if(target)target.innerHTML=await r.text();}catch(e){console.error(`Error cargando ${name}:`,e);}}
+    async function initializePage(){await Promise.all([loadComponent("header","header-container"),loadComponent("footer","footer-container")]);window.initMyCuscoTripHeader?.();window.MyCuscoTripFooter?.initFooterAccordions?.();}
+    document.readyState==="loading"?document.addEventListener("DOMContentLoaded",initializePage):initializePage();
   </script>
+  <script src="./assets/js/config/tracking-config.js"></script>
+  <script src="./assets/js/components/tracking.js"></script>
+  <script src="./assets/js/i18n.js"></script>
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/footer.js"></script>
+  <script src="./assets/js/config/public-forms-config.js"></script>
+  <script src="./assets/js/components/public-forms.js"></script>
+
 </body>
 </html>
