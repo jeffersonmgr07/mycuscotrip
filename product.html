@@ -361,18 +361,17 @@
 <div class="passenger-modal" hidden="" id="passengerReservationModal">
 <div class="passenger-modal__backdrop" data-close-passenger-modal=""></div>
 <div aria-labelledby="passengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
-<button aria-label="Cerrar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
-<i class="fas fa-xmark"></i>
-</button>
 <div class="passenger-modal__header">
 <div class="passenger-modal__titlebar">
 <h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalles de reserva</h2>
+<button aria-label="Copiar código de reserva" class="passenger-modal__code-pill" id="passengerReservationCodeCopy" type="button">
+<span id="passengerReservationCode">CUZ000000</span>
+</button>
+<button aria-label="Cerrar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
+<i class="fas fa-xmark"></i>
+</button>
 </div>
 <div class="passenger-modal__meta-row">
-<div aria-label="Código de reserva" class="passenger-modal__code-card">
-<span class="passenger-modal__inline-label">Código de reserva:</span>
-<p class="passenger-modal__code" id="passengerReservationCode">CUS000000</p>
-</div>
 <div class="passenger-modal__paynow-card" aria-live="polite">
 <span>Monto a pagar ahora:</span>
 <strong id="passengerPayNowAmount">USD 0.00</strong>

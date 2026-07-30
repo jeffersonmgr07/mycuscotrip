@@ -1,0 +1,40 @@
+Etiqueta visible,URL anterior,URL nueva,Archivo físico,Estado,Acción,Razón
+Machu Picchu (todo),/machu-picchu-tours.html,/machu-picchu-tours.html,machu-picchu-tours.html,activo,sin cambio,Ya existía y coincide con el propósito
+Machu Picchu Full Days,/machu-picchu-full-days.html,/machu-picchu-full-days.html,machu-picchu-full-days.html,activo,sin cambio,Ya existía
+Machu Picchu Overnight,/machu-picchu-overnight.html,/machu-picchu-overnight.html,machu-picchu-overnight.html,activo,etiqueta renombrada a "Machu Picchu 2 días / 1 noche",Nombre comercial más claro que "Overnight"
+Paquetes con Machu Picchu,(no existía en el menú),/paquetes-cusco.html?destino=machu-picchu,paquetes-cusco.html,activo,filtrado (nuevo query param),Reutiliza catálogo existente en vez de crear landing
+Trenes premium,/machu-picchu-premium-trains.html,/machu-picchu-premium-trains.html,machu-picchu-premium-trains.html,activo,sin cambio,Ya existía
+Machu Picchu de lujo,/machu-picchu-hiram-bingham.html,/machu-picchu-hiram-bingham.html,machu-picchu-hiram-bingham.html,activo,sin cambio,Ya existía
+Tours en Cusco,/cusco-tours.html,/cusco-tours.html,cusco-tours.html,activo,sin cambio,Ya existía
+Valle Sagrado,(no existía en el menú),/all-experiences.html?destino=valle-sagrado,all-experiences.html,activo,filtrado (nuevo),Producto real ya existe en tours-cusco.json
+Montaña de Colores,(no existía en el menú),/all-experiences.html?q=vinicunca,all-experiences.html,activo,filtrado (nuevo),Producto real ya existe en tours-cusco.json
+Laguna Humantay,(no existía en el menú),/all-experiences.html?q=humantay,all-experiences.html,activo,filtrado (nuevo),Producto real ya existe en tours-cusco.json
+Paquetes Cusco + Machu Picchu,/paquetes-cusco.html,/paquetes-cusco.html,paquetes-cusco.html,activo,sin cambio,Ya existía
+Trekkings desde Cusco,/trekking-cusco.html,/trekking-cusco.html,trekking-cusco.html,activo,sin cambio,Ya existía
+Ver todo Cusco,/todo-cusco.html,/todo-cusco.html,todo-cusco.html,activo,etiqueta renombrada,"""Todo Cusco"" -> ""Ver todo Cusco"" para lenguaje de acción"
+Circuitos por Perú (todos),(nuevo top-level),/explora-peru.html,explora-peru.html,activo,reutilizado como hub principal,Ya existía como catálogo de paquetes-peru; solo se renombró el H1
+Lima + Cusco + Machu Picchu,(no existía en el menú),/explora-peru.html?route=lima-cusco,explora-peru.html,activo,filtrado (nuevo),routeTemplates.lima-cusco ya existe en packages-peru.json
+Lima + Paracas/Ica + Cusco + Machu Picchu,(no existía en el menú),/explora-peru.html?route=lima-paracas-cusco,explora-peru.html,activo,filtrado (nuevo),routeTemplates.lima-paracas-cusco ya existe
+Sur del Perú,(no existía en el menú),/explora-peru.html?route=lima-paracas-arequipa-puno-cusco,explora-peru.html,activo,filtrado (nuevo),routeTemplates.lima-paracas-arequipa-puno-cusco ya existe
+Perú Sur + Amazonía,(no existía en el menú),/explora-peru.html?route=peru-sur-amazonia,explora-peru.html,activo,filtrado (nuevo),routeTemplates.peru-sur-amazonia ya existe
+Viajes de 5 a 7 días,(no existía en el menú),/explora-peru.html?minDays=5&maxDays=7,explora-peru.html,activo,filtrado (nuevo),catalog-landing.js ya soportaba minDays/maxDays via data-attrs; se extendió a leer de la URL
+Viajes de 8 a 10 días,(no existía en el menú),/explora-peru.html?minDays=8&maxDays=10,explora-peru.html,activo,filtrado (nuevo),Idem anterior
+Viajes de 11 a 15 días,(no existía en el menú),/explora-peru.html?minDays=11&maxDays=15,explora-peru.html,activo,filtrado (nuevo),Idem anterior
+Diseña tu viaje a medida,(no existía en el menú),/quote-packages.html?source=nav&intent=peru-personalizado,quote-packages.html,activo,reutilizado,Cotizador ya existente
+Experiencias Ancestrales (todas),/all-experiences.html?q=ancestral&destino=cusco,/all-experiences.html?q=ancestral&destino=cusco,all-experiences.html,activo,sin cambio,Ya existía
+Bienvenida Ancestral,/product.html?slug=bienvenida-ancestral-cusco,/product.html?slug=bienvenida-ancestral-cusco,product.html,activo,sin cambio,Ya existía
+Unión Eterna en los Andes,/union-eterna-andes.html,/union-eterna-andes.html,union-eterna-andes.html,activo,sin cambio,Ya existía
+Astronomía Andina y Estrellas,/astronomia-andina-cusco.html,/astronomia-andina-cusco.html,astronomia-andina-cusco.html,activo,sin cambio,Ya existía
+Experiencia de Ayahuasca,/ayahuasca-cusco.html,/ayahuasca-cusco.html,ayahuasca-cusco.html,activo,sin cambio,Ya existía
+Aventura y Naturaleza (todas),/trekkings.html,/trekkings.html,trekkings.html,activo,categoría renombrada de "Trekking y Naturaleza",Nombre más amplio para incluir futuras actividades
+Camino Inca,/trekkings.html?categoria=camino-inca,/trekkings.html?categoria=camino-inca,trekkings.html,activo,sin cambio,Ya existía
+Inca Jungle,/trekkings.html?categoria=inca-jungle,/trekkings.html?categoria=inca-jungle,trekkings.html,activo,sin cambio,Ya existía
+Salkantay Trek,/trekkings.html?categoria=salkantay,/trekkings.html?categoria=salkantay,trekkings.html,activo,sin cambio,Ya existía
+Ausangate Trek,/trekkings.html?categoria=ausangate,/trekkings.html?categoria=ausangate,trekkings.html,activo,sin cambio,Ya existía
+Caminatas de un día,(no existía en el menú),/all-experiences.html?tipo=tour&days=1,all-experiences.html,activo,filtrado (best-effort; ver riesgos en navigation-restructure-audit.md),No hay etiqueta explícita de "1 día" en el catálogo actual
+Guía para organizar tu viaje,(no existía),/organiza-tu-viaje.html,organiza-tu-viaje.html,NUEVO,creado,No existía ningún hub que agrupara trenes/hoteles/restaurantes/traslados/info
+Trenes a Machu Picchu,/trenes/,/trenes/,trenes/index.html,activo,sin cambio,Ya existía
+Hoteles recomendados,/hoteles/,/hoteles/,hoteles/index.html,activo,sin cambio,Ya existía
+Restaurantes en Cusco,/restaurantes/,/restaurantes/,restaurantes/index.html,activo,sin cambio,Ya existía
+Traslados y transporte,(no existía),/organiza-tu-viaje.html#traslados,organiza-tu-viaje.html,NUEVO,creado (ancla dentro del hub nuevo),Parte del hub nuevo
+Información para viajeros,(no existía),/organiza-tu-viaje.html#informacion,organiza-tu-viaje.html,NUEVO,creado (ancla dentro del hub nuevo),Parte del hub nuevo

@@ -31,8 +31,8 @@ const guidePhrase = {
 
 const ui = {
   es: {
-    "product.guideSpanishEnglish": "español e inglés (otros idiomas previa consulta/coordinación y pueden tener costo adicional)",
-    "product.otherLanguagesOnRequest": "otros idiomas previa consulta/coordinación y pueden tener costo adicional",
+    "product.guideSpanishEnglish": "español e inglés (otros idiomas consultar)",
+    "product.otherLanguagesOnRequest": "otros idiomas consultar",
     "product.guideIn": "Guía profesional: {languages}",
     "product.groupSizeFlexible": "Según la modalidad seleccionada",
     "product.infoPending": "La información se entrega en la coordinación final del viaje.",
@@ -116,8 +116,8 @@ const ui = {
     "product.reviewsCount": "(24 reseñas)"
   },
   en: {
-    "product.guideSpanishEnglish": "Spanish and English (other languages available upon request/coordination and may have an additional cost)",
-    "product.otherLanguagesOnRequest": "other languages available upon request/coordination and may have an additional cost",
+    "product.guideSpanishEnglish": "Spanish and English (other languages ask us)",
+    "product.otherLanguagesOnRequest": "other languages ask us",
     "product.guideIn": "Professional guide: {languages}",
     "product.groupSizeFlexible": "According to the selected service",
     "product.infoPending": "Information will be provided by your travel advisor.",
@@ -201,8 +201,8 @@ const ui = {
     "product.reviewsCount": "(24 reviews)"
   },
   pt: {
-    "product.guideSpanishEnglish": "espanhol e inglês (português sujeito a consulta/coordenação prévia e pode ter custo adicional)",
-    "product.otherLanguagesOnRequest": "português sujeito a consulta/coordenação prévia e pode ter custo adicional",
+    "product.guideSpanishEnglish": "espanhol e inglês (outros idiomas consultar)",
+    "product.otherLanguagesOnRequest": "outros idiomas consultar",
     "product.guideIn": "Guia profissional: {languages}",
     "product.groupSizeFlexible": "De acordo com o serviço selecionado",
     "product.infoPending": "As informações serão entregues pelo seu consultor de viagem.",
@@ -286,8 +286,8 @@ const ui = {
     "product.reviewsCount": "(24 avaliações)"
   },
   fr: {
-    "product.guideSpanishEnglish": "espagnol et anglais (français sur demande/coordination préalable et peut entraîner un coût supplémentaire)",
-    "product.otherLanguagesOnRequest": "français sur demande/coordination préalable et peut entraîner un coût supplémentaire",
+    "product.guideSpanishEnglish": "espagnol et anglais (autres langues nous consulter)",
+    "product.otherLanguagesOnRequest": "autres langues nous consulter",
     "product.guideIn": "Guide professionnel : {languages}",
     "product.groupSizeFlexible": "Selon le service sélectionné",
     "product.infoPending": "Les informations seront fournies par votre conseiller voyage.",
@@ -371,8 +371,8 @@ const ui = {
     "product.reviewsCount": "(24 avis)"
   },
   de: {
-    "product.guideSpanishEnglish": "Spanisch und Englisch (Deutsch auf Anfrage/Vorabkoordination und ggf. gegen Aufpreis)",
-    "product.otherLanguagesOnRequest": "Deutsch auf Anfrage/Vorabkoordination und ggf. gegen Aufpreis",
+    "product.guideSpanishEnglish": "Spanisch und Englisch (andere Sprachen auf Anfrage)",
+    "product.otherLanguagesOnRequest": "andere Sprachen auf Anfrage",
     "product.guideIn": "Professionelle Reiseleitung: {languages}",
     "product.groupSizeFlexible": "Je nach ausgewähltem Service",
     "product.infoPending": "Die Informationen erhalten Sie von Ihrem Reiseberater.",
