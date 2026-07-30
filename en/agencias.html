@@ -38,7 +38,7 @@
 <a href="#servicios">Services</a>
 <a href="#reservas">Bookings</a>
 <a href="#pagos">Payments</a>
-<a href="#reportes">Reportes</a>
+<a href="#reportes">Reports</a>
 </nav>
 </div>
 </header>
@@ -63,7 +63,7 @@
 <h1 id="pageTitle">Tour Reservations</h1>
 <p class="agency-hero__lead">Check available schedules, select spaces and register requests for your agency. Displayed prices are net rates in Peruvian soles for authorized agencies.</p>
 </div>
-<div aria-label="Estado operativo" class="agency-hero__status">
+<div aria-label="Operating status" class="agency-hero__status">
 <span class="status-dot"></span>
 <strong>Daily operation</strong>
 <small>Manual confirmation by the reservations team</small>
@@ -73,7 +73,7 @@
 <div class="agency-card__header">
 <div>
 <p class="eyebrow">Paso 1</p>
-<h2 id="filtersTitle">Buscar disponibilidad</h2>
+<h2 id="filtersTitle">Check availability</h2>
 </div>
 <span class="agency-chip agency-chip--secure">Tarifa neta en soles</span>
 </div>
@@ -104,7 +104,7 @@
 </label>
 </fieldset>
 <label>
-<span>Idioma</span>
+<span>Language</span>
 <select id="languageSelect" name="language">
 <option value="Español / Inglés">Spanish / English</option>
 <option value="Español">Spanish</option>
@@ -143,10 +143,10 @@
 </div>
 <div class="agency-tools">
 <label class="agency-search-mini">
-<span class="sr-only">Filtrar por texto</span>
+<span class="sr-only">Filter by text</span>
 <input id="quickFilter" placeholder="Filter by name, time or pickup point" type="search"/>
 </label>
-<button class="agency-button agency-button--ghost" id="clearSelection" type="button">Limpiar</button>
+<button class="agency-button agency-button--ghost" id="clearSelection" type="button">Clear</button>
 </div>
 </div>
 <div aria-label="Tabla de tours disponibles" class="agency-table-wrap" role="region" tabindex="0">
@@ -158,8 +158,8 @@
 <th>Date</th>
 <th>Hora</th>
 <th>Duration</th>
-<th>Recojo</th>
-<th>Idioma</th>
+<th>Pickup</th>
+<th>Language</th>
 <th>Tarifa neta</th>
 <th>Subtotal</th>
 <th>Estado</th>
@@ -214,10 +214,10 @@
 <section aria-labelledby="requestsTitle" class="agency-card" id="reportes">
 <div class="agency-card__header agency-card__header--inline">
 <div>
-<p class="eyebrow">Seguimiento</p>
+<p class="eyebrow">Tracking</p>
 <h2 id="requestsTitle">Registered bookings and payments</h2>
 </div>
-<button class="agency-button agency-button--ghost" id="exportRequests" type="button">Exportar CSV</button>
+<button class="agency-button agency-button--ghost" id="exportRequests" type="button">Export CSV</button>
 </div>
 <div class="requests-list" id="requestsList"></div>
 </section>
@@ -226,7 +226,7 @@
 </div>
 <dialog class="agency-dialog" id="reserveDialog">
 <form class="agency-dialog__panel" id="reserveForm" method="dialog">
-<button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
+<button aria-label="Close" class="dialog-close" data-close-dialog="" type="button">×</button>
 <p class="eyebrow">New booking</p>
 <h2>Agency and passenger details</h2>
 <div class="dialog-grid">
@@ -238,14 +238,14 @@
 <label class="dialog-grid__full"><span>Operational notes</span><textarea id="bookingNotes" placeholder="Pickup hotel, language, special requirements, etc." rows="3"></textarea></label>
 </div>
 <div class="dialog-actions">
-<button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
+<button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancel</button>
 <button class="agency-button agency-button--primary" type="submit">Save pending booking</button>
 </div>
 </form>
 </dialog>
 <dialog class="agency-dialog" id="paymentDialog">
 <form class="agency-dialog__panel" id="paymentForm" method="dialog">
-<button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
+<button aria-label="Close" class="dialog-close" data-close-dialog="" type="button">×</button>
 <p class="eyebrow">Register manual payment</p>
 <h2>Upload receipt</h2>
 <div class="dialog-grid">
@@ -253,12 +253,12 @@
 <label><span>Amount paid</span><input id="paymentAmount" min="0" required="" step="0.01" type="number"/></label>
 <label><span>Method</span><select id="paymentMethod"><option>Bank transfer</option><option>Account deposit</option><option>Corporate Yape / Plin</option></select></label>
 <label><span>Transaction number</span><input id="paymentOperation" placeholder="e.g. 00981231" required=""/></label>
-<label class="dialog-grid__full"><span>Comprobante</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
-<label class="dialog-grid__full"><span>Payment note</span><textarea id="paymentNotes" placeholder="Banco, titular, hora aproximada, etc." rows="3"></textarea></label>
+<label class="dialog-grid__full"><span>Receipt</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
+<label class="dialog-grid__full"><span>Payment note</span><textarea id="paymentNotes" placeholder="Bank, account holder, approximate time, etc." rows="3"></textarea></label>
 </div>
 <div class="dialog-alert">The receipt will remain <strong>Pending approval</strong> until the reservations team validates it.</div>
 <div class="dialog-actions">
-<button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
+<button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancel</button>
 <button class="agency-button agency-button--primary" type="submit">Register pending payment</button>
 </div>
 </form>

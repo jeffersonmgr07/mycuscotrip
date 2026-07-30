@@ -56,12 +56,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "2 days / 1 night",
-      "badge": "Coming soon",
+      "badge": "Inca Trail",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 599.9,
       "days": 2,
       "nights": 1,
       "shortDescription": "Short Inca Trail version that connects trekking, history and Machu Picchu in a compact route.",
@@ -101,7 +101,8 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirm availability before charging the booking."
+        "notes": "Confirm availability before charging the booking.",
+        "bookingNotice": "Booking is subject to official Inca Trail availability and passenger data validation."
       },
       "operationalNotes": [
         "A basic fitness assessment is recommended.",
@@ -149,7 +150,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -197,7 +198,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 599.9,
+        "child": 569.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_002",
@@ -209,12 +219,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Coming soon",
+      "badge": "Classic",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 849.9,
       "days": 4,
       "nights": 3,
       "shortDescription": "Classic route to Machu Picchu along ancient Inca trails, campsites and archaeological sites.",
@@ -255,7 +265,8 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirm availability before charging the booking."
+        "notes": "Confirm availability before charging the booking.",
+        "bookingNotice": "Booking is subject to official Inca Trail availability and passenger data validation."
       },
       "operationalNotes": [
         "A basic fitness assessment is recommended.",
@@ -304,7 +315,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -362,7 +373,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 849.9,
+        "child": 819.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 299.9,
+        "partialPaymentLabel": "Reserve with USD 299.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_003",
@@ -374,12 +394,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Coming soon",
+      "badge": "Adventure",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 649.9,
       "days": 4,
       "nights": 3,
       "shortDescription": "Adventure route to Machu Picchu with mountain landscapes, changing ecosystems and demanding hikes.",
@@ -468,7 +488,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -526,7 +546,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 649.9,
+        "child": 649.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_004",
@@ -538,12 +567,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "5 days / 4 nights",
-      "badge": "Coming soon",
+      "badge": "Best seller",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 729.9,
       "days": 5,
       "nights": 4,
       "shortDescription": "More complete Salkantay Trek version with a better pace for acclimatization and connection with Machu Picchu.",
@@ -632,7 +661,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -694,7 +723,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 729.9,
+        "child": 729.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_005",
@@ -706,12 +744,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "5 days / 4 nights",
-      "badge": "Coming soon",
+      "badge": "High altitude",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 649.9,
       "days": 5,
       "nights": 4,
       "shortDescription": "High-mountain trek around Ausangate, ideal for experienced travelers with good acclimatization.",
@@ -797,7 +835,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -858,7 +896,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 649.9,
+        "child": 649.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 249.9,
+        "partialPaymentLabel": "Reserve with USD 249.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_006",
@@ -870,12 +917,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Coming soon",
+      "badge": "Complete route",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 549.9,
       "days": 4,
       "nights": 3,
       "shortDescription": "Adventure route combining Ausangate landscapes with Rainbow Mountain.",
@@ -963,7 +1010,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -1021,7 +1068,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 549.9,
+        "child": 549.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_007",
@@ -1033,12 +1089,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "3 days / 2 nights",
-      "badge": "Coming soon",
+      "badge": "Adventure",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 399.9,
       "days": 3,
       "nights": 2,
       "shortDescription": "Active route to Machu Picchu combining adventure, nature and hiking sections.",
@@ -1126,7 +1182,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -1180,7 +1236,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 399.9,
+        "child": 399.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     },
     {
       "id": "trk_cusco_008",
@@ -1192,12 +1257,12 @@
       "productFamily": "cusco-trekking",
       "type": "trekking",
       "typeLabel": "4 days / 3 nights",
-      "badge": "Coming soon",
+      "badge": "Adrenaline",
       "featured": false,
       "location": "Cusco / Andes",
       "currency": "USD",
-      "priceMode": "consult",
-      "priceFrom": null,
+      "priceMode": "static",
+      "priceFrom": 499.9,
       "days": 4,
       "nights": 3,
       "shortDescription": "More complete Inca Jungle version with more time for adventure activities and the connection to Machu Picchu.",
@@ -1285,7 +1350,7 @@
         },
         {
           "q": "Does the tour include a guide?",
-          "a": "Yes. All our tours include a professional guide in Spanish and English. Other languages are available upon request/coordination and may have an additional cost."
+          "a": "Yes. Includes a professional guide in Spanish and English (other languages ask us)."
         },
         {
           "q": "Which tickets or extras should I consider?",
@@ -1345,7 +1410,16 @@
         "Travel insurance",
         "Personal expenses",
         "Services not mentioned"
-      ]
+      ],
+      "basePricing": {
+        "adult": 499.9,
+        "child": 499.9
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 0,
+        "partialPaymentPerPerson": 199.9,
+        "partialPaymentLabel": "Reserve with USD 199.90 per person and pay the remaining balance before the trip"
+      }
     }
   ]
 }

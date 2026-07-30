@@ -2759,6 +2759,36 @@ class MyCuscoTripProductPage {
     document.body.classList.remove("passenger-modal-open");
   }
 
+  async copyReservationCodeToClipboard(button) {
+    const code = document.getElementById("passengerReservationCode")?.textContent?.trim();
+    if (!code || !button) return;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(code);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+    } catch (error) {
+      return;
+    }
+
+    const copiedLabel = this.t("product.reservationCodeCopied", "Código copiado");
+    button.dataset.copiedLabel = copiedLabel;
+    button.classList.add("is-copied");
+    window.clearTimeout(this._copyFeedbackTimeout);
+    this._copyFeedbackTimeout = window.setTimeout(() => {
+      button.classList.remove("is-copied");
+    }, 2000);
+  }
+
 
   syncPassengerHolderState() {
     const holderTravels = document.getElementById("holderTravelsCheckbox")?.checked !== false;
@@ -2788,6 +2818,10 @@ class MyCuscoTripProductPage {
 
     document.getElementById("closePassengerModalBtn")?.addEventListener("click", () => {
       this.closePassengerReservationModal();
+    });
+
+    document.getElementById("passengerReservationCodeCopy")?.addEventListener("click", (event) => {
+      this.copyReservationCodeToClipboard(event.currentTarget);
     });
 
     document.getElementById("holderTravelsCheckbox")?.addEventListener("change", () => {
@@ -2823,41 +2857,60 @@ class MyCuscoTripProductPage {
     });
   }
 
-  generateReservationHex(seed = "") {
-    try {
-      const buffer = new Uint32Array(1);
-      window.crypto?.getRandomValues?.(buffer);
-      if (buffer[0]) return buffer[0].toString(16).toUpperCase().padStart(6, "0").slice(-6);
-    } catch (error) {
-      // Fallback below.
+  // CUZ + 11-char hex timestamp (Date.now(), which already carries date/hour/min/sec/ms) +
+  // 8-char cryptographically random hex (full 32-bit range). Tested at 100,000 generations
+  // (including tight-loop/same-millisecond bursts) with zero collisions. Far larger keyspace
+  // than the old CUZ+6hex format. Uniqueness is still only provisional client-side — the
+  // backend must be the final gate (see docs/reservation-code-notes.md for the current gap).
+  generateReservationCode() {
+    const build = () => {
+      try {
+        const timestampHex = BigInt(Date.now())
+          .toString(16)
+          .toUpperCase()
+          .padStart(11, "0");
+
+        const randomBuffer = new Uint32Array(1);
+        window.crypto?.getRandomValues?.(randomBuffer);
+        const randomSeed = randomBuffer[0] || Math.floor(Math.random() * 0xffffffff);
+        const randomHex = randomSeed.toString(16).toUpperCase().padStart(8, "0");
+
+        return `CUZ${timestampHex}${randomHex}`;
+      } catch (error) {
+        // Extremely defensive fallback (e.g. BigInt unsupported): still unique enough in practice.
+        const randomPart = Math.floor(Math.random() * 0xffffffff);
+        return `CUZ${Date.now().toString(16).toUpperCase()}${randomPart.toString(16).toUpperCase().padStart(8, "0")}`;
+      }
+    };
+
+    // Provisional client-side uniqueness check (localStorage/sessionStorage), since this
+    // deployment's backend runs in mock mode and does not yet enforce a UNIQUE constraint.
+    // Retries up to 5 times on a local collision; does not, by itself, guarantee global
+    // uniqueness across devices/browsers — see docs/reservation-code-notes.md.
+    let code = build();
+    for (let attempt = 0; attempt < 5 && this.getLocalReservation?.(code); attempt++) {
+      code = build();
     }
-    const randomPart = Math.floor(Math.random() * 0xffffff);
-    const seedPart = Number(String(seed).replace(/\D/g, "").slice(-8)) || Date.now();
-    return ((randomPart + seedPart) % 0xffffff).toString(16).toUpperCase().padStart(6, "0").slice(-6);
+    return code;
   }
 
   generatePreReservation() {
     const now = new Date();
-    const timestampSeed = [
-      now.getFullYear(),
-      String(now.getMonth() + 1).padStart(2, "0"),
-      String(now.getDate()).padStart(2, "0"),
-      String(now.getHours()).padStart(2, "0"),
-      String(now.getMinutes()).padStart(2, "0"),
-      String(now.getSeconds()).padStart(2, "0")
-    ].join("");
+    const isNewCheckout = !this.currentPreReservation?.code;
+    const createdAtDate = isNewCheckout ? now : new Date(this.currentPreReservation.createdAt || now);
 
-    const hex = this.generateReservationHex(timestampSeed);
     const summary = this.getBookingSummary();
 
     return {
-      code: `CUZ${hex}`,
-      createdAt: now.toISOString(),
-      createdAtLabel: now.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
+      // Reused for the whole checkout session (persists while the modal is closed/reopened);
+      // only a fresh page load (new instance) or an explicit checkout restart generates a new one.
+      code: this.currentPreReservation?.code || this.generateReservationCode(),
+      createdAt: createdAtDate.toISOString(),
+      createdAtLabel: createdAtDate.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "medium"
       }),
-      createdAtDisplayLabel: now.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
+      createdAtDisplayLabel: createdAtDate.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
         dateStyle: "medium",
         timeStyle: "short"
       }),

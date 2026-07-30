@@ -15,6 +15,7 @@ class MyCuscoTripSearchBar {
     this.dateInput = this.root.querySelector("#mctFecha");
     this.dateField = this.root.querySelector(".mct-fecha-field");
     this.durationEl = this.root.querySelector("#mctDuration");
+    this.flexibleDatesInput = this.root.querySelector("#mctFlexibleDates");
 
     this.qtyToggle = this.root.querySelector(".mct-qty-toggle");
     this.qtyPanel = this.root.querySelector(".mct-qty-panel");
@@ -43,54 +44,96 @@ class MyCuscoTripSearchBar {
           url: "./machu-picchu-tours.html"
         },
         {
-          value: "tours-cusco",
+          value: "cusco",
           labelKey: "search.categoryCuscoTours",
-          fallback: "Tours en Cusco",
+          fallback: "Cusco",
           url: "./cusco-tours.html"
         },
         {
-          value: "experiencias-ancestrales",
+          value: "valle-sagrado",
+          labelKey: "search.categoryValleSagrado",
+          fallback: "Valle Sagrado",
+          url: "./all-experiences.html?destino=valle-sagrado"
+        },
+        {
+          value: "montana-colores",
+          labelKey: "search.categoryMontanaColores",
+          fallback: "Montaña de Colores",
+          url: "./all-experiences.html?q=vinicunca"
+        },
+        {
+          value: "laguna-humantay",
+          labelKey: "search.categoryLagunaHumantay",
+          fallback: "Laguna Humantay",
+          url: "./all-experiences.html?q=humantay"
+        },
+        {
+          value: "ancestral",
           labelKey: "search.categoryAncestral",
           fallback: "Experiencias ancestrales",
           url: "./all-experiences.html?q=ancestral&destino=cusco"
         },
         {
-          value: "trekkings-naturaleza",
+          value: "aventura-naturaleza",
           labelKey: "search.categoryTrekkingsNature",
-          fallback: "Trekkings y naturaleza",
+          fallback: "Aventura y naturaleza",
           url: "./trekkings.html"
+        },
+        {
+          value: "todos-tours",
+          labelKey: "search.categoryAllTours",
+          fallback: "Todos los tours",
+          url: "./all-experiences.html?tipo=tour"
         }
       ],
       paquetes: [
         {
           value: "solo-machu-picchu",
-          labelKey: "search.packageOnlyMachuPicchu",
-          fallback: "Paquetes solo a Machu Picchu",
+          labelKey: "search.packageSoloMachuPicchu",
+          fallback: "Solo Machu Picchu / 2D-1N",
           url: "./machu-picchu-overnight.html"
         },
         {
           value: "cusco-machu-picchu",
           labelKey: "search.packageCuscoMachuPicchu",
-          fallback: "Paquetes Cusco y Machu Picchu",
+          fallback: "Cusco + Machu Picchu",
           url: "./paquetes-cusco.html"
         },
         {
-          value: "machu-picchu-trekking",
-          labelKey: "search.packageMachuPicchuTrekking",
-          fallback: "Machu Picchu + trekking",
-          url: "./trekkings.html?tipo=paquete&destino=machu-picchu"
+          value: "lima-cusco",
+          labelKey: "search.packageLimaCusco",
+          fallback: "Lima + Cusco + Machu Picchu",
+          url: "./explora-peru.html?route=lima-cusco"
         },
         {
-          value: "aventura-naturaleza",
-          labelKey: "search.packageAdventureNature",
-          fallback: "Paquetes de aventura y naturaleza",
-          url: "./trekking-cusco.html?tipo=paquete"
+          value: "lima-paracas-cusco",
+          labelKey: "search.packageLimaParacasCusco",
+          fallback: "Lima + Paracas/Ica + Cusco + Machu Picchu",
+          url: "./explora-peru.html?route=lima-paracas-cusco"
+        },
+        {
+          value: "sur-peru",
+          labelKey: "search.packageSurPeru",
+          fallback: "Sur del Perú",
+          url: "./explora-peru.html?route=lima-paracas-arequipa-puno-cusco"
+        },
+        {
+          value: "sur-amazonia",
+          labelKey: "search.packageSurAmazonia",
+          fallback: "Perú Sur + Amazonía",
+          url: "./explora-peru.html?route=peru-sur-amazonia"
+        },
+        {
+          value: "circuitos-peru",
+          labelKey: "search.packageAllCircuits",
+          fallback: "Todos los circuitos por Perú",
+          url: "./explora-peru.html"
         },
         {
           value: "peru-personalizado",
-          labelKey: "search.packagePeruCustom",
-          fallback: "Perú multidestino o personalizado",
-          url: "./explora-peru.html"
+          labelKey: "search.packageCustomDesign",
+          fallback: "Diseña un viaje a medida",
+          url: "./quote-packages.html?intent=peru-personalizado"
         }
       ]
     };
@@ -463,6 +506,15 @@ class MyCuscoTripSearchBar {
       this.applyTabRules({ clearDates: true });
     });
 
+    this.flexibleDatesInput?.addEventListener("change", () => {
+      const isFlexible = this.isFlexibleDates();
+      if (isFlexible) this.clearDates();
+      if (this.dateField) this.dateField.classList.toggle("is-disabled", isFlexible);
+      if (this.flatpickrInstance) {
+        if (isFlexible) this.flatpickrInstance.close();
+      }
+    });
+
     document.addEventListener("click", (event) => {
       const insideQty =
         this.qtyPanel?.contains(event.target) ||
@@ -483,14 +535,21 @@ class MyCuscoTripSearchBar {
     });
   }
 
+  isFlexibleDates() {
+    return Boolean(this.flexibleDatesInput?.checked);
+  }
+
   buildTourUrl() {
     const option = this.getCurrentOption();
     const params = new URLSearchParams();
     params.set("source", "home-search");
+    params.set("type", "tour");
     params.set("intent", option?.value || "tour");
     params.set("adultos", String(this.adults));
     params.set("ninos", String(this.children));
-    if (this.selectedDate) {
+    if (this.isFlexibleDates()) {
+      params.set("flexible", "1");
+    } else if (this.selectedDate) {
       params.set("fecha", this.selectedDate);
       params.set("fechaInicio", this.selectedDate);
     }
@@ -504,11 +563,16 @@ class MyCuscoTripSearchBar {
     const option = this.getCurrentOption();
     const params = new URLSearchParams();
     params.set("source", "home-search");
+    params.set("type", "package");
     params.set("intent", option?.value || "paquete");
     params.set("adultos", String(this.adults));
     params.set("ninos", String(this.children));
-    if (this.selectedStartDate) params.set("fechaInicio", this.selectedStartDate);
-    if (this.selectedEndDate) params.set("fechaFin", this.selectedEndDate);
+    if (this.isFlexibleDates()) {
+      params.set("flexible", "1");
+    } else {
+      if (this.selectedStartDate) params.set("fechaInicio", this.selectedStartDate);
+      if (this.selectedEndDate) params.set("fechaFin", this.selectedEndDate);
+    }
 
     const base = option?.url || "./paquetes-cusco.html";
     const connector = base.includes("?") ? "&" : "?";

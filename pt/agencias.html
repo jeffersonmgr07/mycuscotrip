@@ -29,59 +29,59 @@
 <header class="agency-topbar">
 <a aria-label="Volver al inicio de My Cusco Trip" class="agency-brand" href="index.html">
 <img alt="My Cusco Trip" class="agency-brand__logo" src="../assets/img/reserva/logo-color.png"/>
-<span class="agency-brand__badge">Passeio operador</span>
+<span class="agency-brand__badge">Operadora de turismo</span>
 </a>
 <div class="agency-topbar__right">
-<p>Agencias autorizadas <span>|</span> Tarifas confidenciales</p>
-<nav aria-label="Menú principal para agencias" class="agency-mainnav">
+<p>Agências autorizadas <span>|</span> Tarifas confidenciais</p>
+<nav aria-label="Menu principal para agências" class="agency-mainnav">
 <a href="#inicio">Inicio</a>
-<a href="#servicios">Servicios</a>
+<a href="#servicios">Serviços</a>
 <a href="#reservas">Reservas</a>
-<a href="#pagos">Pagos</a>
-<a href="#reportes">Reportes</a>
+<a href="#pagos">Pagamentos</a>
+<a href="#reportes">Relatórios</a>
 </nav>
 </div>
 </header>
 <div class="agency-layout">
-<aside aria-label="Servicios para agencias" class="agency-sidebar">
+<aside aria-label="Serviços para agências" class="agency-sidebar">
 <div class="agency-sidebar__intro">
 <span>Portal operador</span>
 <strong>Passeios diarios</strong>
 </div>
-<nav aria-label="Lista de tours" class="agency-service-menu" id="serviceMenu">
+<nav aria-label="Lista de passeios" class="agency-service-menu" id="serviceMenu">
 <button class="is-active" data-service="all" type="button">
 <span aria-hidden="true" class="service-icon">◎</span>
-<span>Todos los tours</span>
-<small>Ver disponibilidad general</small>
+<span>Todos os passeios</span>
+<small>Ver disponibilidade geral</small>
 </button>
 </nav>
 </aside>
 <main class="agency-content" id="inicio">
 <section aria-labelledby="pageTitle" class="agency-hero">
 <div>
-<p class="eyebrow">Uso exclusivo para agencias</p>
+<p class="eyebrow">Uso exclusivo para agências</p>
 <h1 id="pageTitle">Reserva de Passeios</h1>
-<p class="agency-hero__lead">Consulta horarios disponibles, elige cupos y registra solicitudes para tu agencia. Los precios mostrados son tarifas netas en soles para agencias autorizadas.</p>
+<p class="agency-hero__lead">Consulte horários disponíveis, escolha vagas e registre solicitações para sua agência. Os preços exibidos são tarifas líquidas em soles para agências autorizadas.</p>
 </div>
-<div aria-label="Estado operativo" class="agency-hero__status">
+<div aria-label="Status operacional" class="agency-hero__status">
 <span class="status-dot"></span>
-<strong>Operación diaria</strong>
-<small>Confirmación manual por equipo de reservas</small>
+<strong>Operação diária</strong>
+<small>Confirmação manual pela equipe de reservas</small>
 </div>
 </section>
 <section aria-labelledby="filtersTitle" class="agency-card agency-filter-card" id="servicios">
 <div class="agency-card__header">
 <div>
 <p class="eyebrow">Paso 1</p>
-<h2 id="filtersTitle">Buscar disponibilidad</h2>
+<h2 id="filtersTitle">Consultar disponibilidade</h2>
 </div>
 <span class="agency-chip agency-chip--secure">Tarifa neta en soles</span>
 </div>
 <form class="agency-filters" id="searchForm">
 <label>
-<span>Servicio</span>
+<span>Serviço</span>
 <select id="serviceSelect" name="service">
-<option value="all">Todos los tours</option>
+<option value="all">Todos os passeios</option>
 </select>
 </label>
 <label>
@@ -89,37 +89,37 @@
 <input id="travelDate" name="date" required="" type="date"/>
 </label>
 <fieldset class="passenger-grid">
-<legend>Pasajeros</legend>
+<legend>Passageiros</legend>
 <label>
 <span>Adulto</span>
 <input id="adultCount" max="60" min="1" type="number" value="2"/>
 </label>
 <label>
-<span>Niño</span>
+<span>Criança</span>
 <input id="childCount" max="60" min="0" type="number" value="0"/>
 </label>
 <label>
-<span>Guía / TC</span>
+<span>Guia / TC</span>
 <input id="guideCount" max="10" min="0" type="number" value="0"/>
 </label>
 </fieldset>
 <label>
 <span>Idioma</span>
 <select id="languageSelect" name="language">
-<option value="Español / Inglés">Español / Inglés</option>
-<option value="Español">Español</option>
-<option value="Inglés">Inglés</option>
+<option value="Español / Inglés">Espanhol / Inglês</option>
+<option value="Español">Espanhol</option>
+<option value="Inglés">Inglês</option>
 </select>
 </label>
 <button class="agency-button agency-button--primary" type="submit">
 <span aria-hidden="true">⌕</span>
-              Buscar tours
+              Buscar passeios
             </button>
 </form>
 </section>
-<section aria-label="Resumen de búsqueda" class="agency-grid agency-kpis">
+<section aria-label="Resumo da busca" class="agency-grid agency-kpis">
 <article class="agency-mini-card">
-<small>Servicios disponibles</small>
+<small>Serviços disponíveis</small>
 <strong id="kpiServices">0</strong>
 </article>
 <article class="agency-mini-card">
@@ -131,7 +131,7 @@
 <strong id="kpiFrom">S/ 0.00</strong>
 </article>
 <article class="agency-mini-card agency-mini-card--notice">
-<small>Estado de pago</small>
+<small>Status de pagamento</small>
 <strong>Manual</strong>
 </article>
 </section>
@@ -139,26 +139,26 @@
 <div class="agency-card__header agency-card__header--inline">
 <div>
 <p class="eyebrow">Paso 2</p>
-<h2 id="resultsTitle">Passeios y horarios disponibles</h2>
+<h2 id="resultsTitle">Passeios e horários disponíveis</h2>
 </div>
 <div class="agency-tools">
 <label class="agency-search-mini">
 <span class="sr-only">Filtrar por texto</span>
-<input id="quickFilter" placeholder="Filtrar por nombre, hora o punto de recojo" type="search"/>
+<input id="quickFilter" placeholder="Filtrar por nome, horário ou ponto de coleta" type="search"/>
 </label>
-<button class="agency-button agency-button--ghost" id="clearSelection" type="button">Limpiar</button>
+<button class="agency-button agency-button--ghost" id="clearSelection" type="button">Limpar</button>
 </div>
 </div>
 <div aria-label="Tabla de tours disponibles" class="agency-table-wrap" role="region" tabindex="0">
 <table class="agency-table">
 <thead>
 <tr>
-<th>Elegir</th>
-<th>Servicio</th>
-<th>Fecha</th>
+<th>Selecionar</th>
+<th>Serviço</th>
+<th>Data</th>
 <th>Hora</th>
-<th>Duración</th>
-<th>Recojo</th>
+<th>Duração</th>
+<th>Coleta</th>
 <th>Idioma</th>
 <th>Tarifa neta</th>
 <th>Subtotal</th>
@@ -168,54 +168,54 @@
 <tbody id="resultsBody"></tbody>
 </table>
 </div>
-<p class="agency-empty" hidden="" id="emptyResults">No se encontraron tours para esos filtros.</p>
+<p class="agency-empty" hidden="" id="emptyResults">Nenhum passeio encontrado para esses filtros.</p>
 </section>
 <section class="agency-split" id="reservas">
 <article aria-labelledby="summaryTitle" class="agency-card agency-summary">
 <div class="agency-card__header">
 <div>
 <p class="eyebrow">Paso 3</p>
-<h2 id="summaryTitle">Resumen de reserva</h2>
+<h2 id="summaryTitle">Resumo da reserva</h2>
 </div>
-<span class="agency-chip" id="summaryStatus">Sin selección</span>
+<span class="agency-chip" id="summaryStatus">Sem seleção</span>
 </div>
 <div class="summary-empty" id="selectedSummary">
-              Selecciona un horario para ver el resumen de la reserva.
+              Selecione um horário para ver o resumo da reserva.
             </div>
 <div class="agency-total-box">
-<span>Total neto agencia</span>
+<span>Total líquido da agência</span>
 <strong id="totalAmount">S/ 0.00</strong>
-<small>Importe sujeto a validación y confirmación operativa.</small>
+<small>Valor sujeito a validação e confirmação operacional.</small>
 </div>
 <div class="agency-actions">
 <button class="agency-button agency-button--primary" disabled="" id="reserveButton" type="button">Registrar reserva</button>
-<button class="agency-button agency-button--secondary" disabled="" id="paymentButton" type="button">Registrar pago</button>
+<button class="agency-button agency-button--secondary" disabled="" id="paymentButton" type="button">Registrar pagamento</button>
 </div>
 </article>
 <article aria-labelledby="paymentTitle" class="agency-card agency-payment" id="pagos">
 <div class="agency-card__header">
 <div>
-<p class="eyebrow">Pago por transferencia</p>
-<h2 id="paymentTitle">Transferencia y comprobante</h2>
+<p class="eyebrow">Pagamento por transferência</p>
+<h2 id="paymentTitle">Transferência e comprovante</h2>
 </div>
 </div>
 <ol class="approval-steps">
-<li><strong>Reserva registrada</strong><span>La agencia separa cupos para una fecha y horario.</span></li>
-<li><strong>Pago manual</strong><span>Sube comprobante de transferencia o depósito.</span></li>
-<li><strong>Revisión interna</strong><span>Reservas valida el pago y aprueba la operación.</span></li>
-<li><strong>Confirmación</strong><span>Se emite voucher o confirmación final.</span></li>
+<li><strong>Reserva registrada</strong><span>A agência separa vagas para uma data e horário.</span></li>
+<li><strong>Pagamento manual</strong><span>Envie o comprovante de transferência ou depósito.</span></li>
+<li><strong>Revisão interna</strong><span>A equipe de reservas valida o pagamento e aprova a operação.</span></li>
+<li><strong>Confirmação</strong><span>É emitido o voucher ou a confirmação final.</span></li>
 </ol>
 <div class="bank-box">
 <strong>Datos bancarios</strong>
-<p>Los pagos se registran mediante transferencia o depósito y serán validados por el equipo de reservas.</p>
+<p>Os pagamentos são registrados por transferência ou depósito e serão validados pela equipe de reservas.</p>
 </div>
 </article>
 </section>
 <section aria-labelledby="requestsTitle" class="agency-card" id="reportes">
 <div class="agency-card__header agency-card__header--inline">
 <div>
-<p class="eyebrow">Seguimiento</p>
-<h2 id="requestsTitle">Reservas y pagos registrados</h2>
+<p class="eyebrow">Acompanhamento</p>
+<h2 id="requestsTitle">Reservas e pagamentos registrados</h2>
 </div>
 <button class="agency-button agency-button--ghost" id="exportRequests" type="button">Exportar CSV</button>
 </div>
@@ -226,40 +226,40 @@
 </div>
 <dialog class="agency-dialog" id="reserveDialog">
 <form class="agency-dialog__panel" id="reserveForm" method="dialog">
-<button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
-<p class="eyebrow">Nueva reserva</p>
-<h2>Datos de la agencia y pasajeros</h2>
+<button aria-label="Fechar" class="dialog-close" data-close-dialog="" type="button">×</button>
+<p class="eyebrow">Nova reserva</p>
+<h2>Dados da agência e passageiros</h2>
 <div class="dialog-grid">
-<label><span>Agencia</span><input id="agencyName" placeholder="Nombre comercial" required=""/></label>
-<label><span>Ejecutivo / contacto</span><input id="agencyContact" placeholder="Nombre del ejecutivo" required=""/></label>
-<label><span>Correo</span><input id="agencyEmail" placeholder="reservas@agencia.com" required="" type="email"/></label>
+<label><span>Agência</span><input id="agencyName" placeholder="Nome comercial" required=""/></label>
+<label><span>Executivo / contato</span><input id="agencyContact" placeholder="Nome do executivo" required=""/></label>
+<label><span>E-mail</span><input id="agencyEmail" placeholder="reservas@agencia.com" required="" type="email"/></label>
 <label><span>WhatsApp</span><input id="agencyPhone" placeholder="+51 ..." required=""/></label>
-<label class="dialog-grid__full"><span>Nombre del pasajero líder</span><input id="leadPassenger" placeholder="Nombre y apellido" required=""/></label>
-<label class="dialog-grid__full"><span>Observaciones operativas</span><textarea id="bookingNotes" placeholder="Hotel de recojo, idioma, requerimientos especiales, etc." rows="3"></textarea></label>
+<label class="dialog-grid__full"><span>Nome do passageiro titular</span><input id="leadPassenger" placeholder="Nome e sobrenome" required=""/></label>
+<label class="dialog-grid__full"><span>Observações operacionais</span><textarea id="bookingNotes" placeholder="Hotel de coleta, idioma, requisitos especiais, etc." rows="3"></textarea></label>
 </div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
-<button class="agency-button agency-button--primary" type="submit">Guardar reserva pendiente</button>
+<button class="agency-button agency-button--primary" type="submit">Salvar reserva pendente</button>
 </div>
 </form>
 </dialog>
 <dialog class="agency-dialog" id="paymentDialog">
 <form class="agency-dialog__panel" id="paymentForm" method="dialog">
-<button aria-label="Cerrar" class="dialog-close" data-close-dialog="" type="button">×</button>
-<p class="eyebrow">Registrar pago manual</p>
-<h2>Subir comprobante</h2>
+<button aria-label="Fechar" class="dialog-close" data-close-dialog="" type="button">×</button>
+<p class="eyebrow">Registrar pagamento manual</p>
+<h2>Enviar comprovante</h2>
 <div class="dialog-grid">
-<label><span>Código de reserva</span><input id="paymentReservationCode" readonly=""/></label>
-<label><span>Monto pagado</span><input id="paymentAmount" min="0" required="" step="0.01" type="number"/></label>
-<label><span>Método</span><select id="paymentMethod"><option>Transferencia bancaria</option><option>Depósito en cuenta</option><option>Yape / Plin corporativo</option></select></label>
-<label><span>Número de operación</span><input id="paymentOperation" placeholder="Ej. 00981231" required=""/></label>
-<label class="dialog-grid__full"><span>Comprobante</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
-<label class="dialog-grid__full"><span>Nota de pago</span><textarea id="paymentNotes" placeholder="Banco, titular, hora aproximada, etc." rows="3"></textarea></label>
+<label><span>Código da reserva</span><input id="paymentReservationCode" readonly=""/></label>
+<label><span>Valor pago</span><input id="paymentAmount" min="0" required="" step="0.01" type="number"/></label>
+<label><span>Método</span><select id="paymentMethod"><option>Transferência bancária</option><option>Depósito em conta</option><option>Yape / Plin corporativo</option></select></label>
+<label><span>Número da operação</span><input id="paymentOperation" placeholder="Ex.: 00981231" required=""/></label>
+<label class="dialog-grid__full"><span>Comprovante</span><input accept="image/*,.pdf" id="paymentProof" required="" type="file"/></label>
+<label class="dialog-grid__full"><span>Observação do pagamento</span><textarea id="paymentNotes" placeholder="Banco, titular da conta, horário aproximado, etc." rows="3"></textarea></label>
 </div>
-<div class="dialog-alert">El comprobante quedará en estado <strong>Pendiente de aprobación</strong> hasta la validación del equipo de reservas.</div>
+<div class="dialog-alert">O comprovante ficará com status <strong>Pendente de aprovação</strong> até a validação da equipe de reservas.</div>
 <div class="dialog-actions">
 <button class="agency-button agency-button--ghost" data-close-dialog="" type="button">Cancelar</button>
-<button class="agency-button agency-button--primary" type="submit">Registrar pago pendiente</button>
+<button class="agency-button agency-button--primary" type="submit">Registrar pagamento pendente</button>
 </div>
 </form>
 </dialog>

@@ -2674,18 +2674,98 @@ body.hotel-modal-open {
   box-shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
 }
 
+/* Consolidated close-button rule (single source of truth). This used to be patched in
+   five separate places across this file (background/color kept flip-flopping between
+   near-invisible white-on-white and low-contrast tints); those duplicate blocks were
+   removed instead of adding yet another override here. */
 .passenger-modal__close {
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 2;
+  z-index: 10;
   width: 42px;
   height: 42px;
-  border: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(10, 58, 38, 0.25);
   border-radius: 999px;
-  background: rgba(10, 58, 38, 0.08);
+  background: #ffffff;
   color: #0a3a26;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.22);
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
+}
+
+.passenger-modal__close:hover,
+.passenger-modal__close:focus-visible {
+  background: #0a3a26;
+  color: #ffffff;
+  outline: 3px solid rgba(10, 58, 38, 0.35);
+  outline-offset: 2px;
+}
+
+/* Titlebar row: [title] [reservation-code pill] [X], single line (July 2026 modal spec).
+   Scoped narrowly on purpose — this file has many older breakpoint-specific titlebar
+   rules further down controlling spacing/typography; this block only handles the row
+   layout and re-flows the close button (now nested here instead of absolute-positioned
+   over the header) without touching those. */
+.passenger-modal__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.passenger-modal__titlebar h2 {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.passenger-modal__titlebar .passenger-modal__close {
+  position: static;
+  flex: 0 0 auto;
+}
+
+.passenger-modal__code-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(10, 58, 38, 0.25);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0a3a26;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 12px;
+  white-space: nowrap;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.passenger-modal__code-pill:hover,
+.passenger-modal__code-pill:focus-visible {
+  background: rgba(10, 58, 38, 0.08);
+  outline: 2px solid rgba(10, 58, 38, 0.35);
+  outline-offset: 2px;
+}
+
+.passenger-modal__code-pill.is-copied::after {
+  content: attr(data-copied-label);
+  margin-left: 4px;
+  font-weight: 600;
+  color: #0a3a26;
+}
+
+@media (max-width: 480px) {
+  .passenger-modal__code-pill {
+    font-size: 11px;
+    padding: 5px 9px;
+    gap: 4px;
+  }
 }
 
 .passenger-modal__header {
@@ -4122,11 +4202,6 @@ body.train-upgrade-modal-open {
   color: #0a3a26 !important;
 }
 
-.passenger-modal__close {
-  background: #ecf3ef !important;
-  color: #0a3a26 !important;
-}
-
 .passenger-modal__actions {
   justify-content: flex-end !important;
   gap: 12px;
@@ -5394,11 +5469,6 @@ body.train-upgrade-modal-open {
 .passenger-modal__titlebar {
   background: transparent !important;
   padding: 0 !important;
-}
-
-.passenger-modal__close {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
 }
 
 .passenger-modal__meta-row {
@@ -6893,15 +6963,6 @@ body.train-upgrade-modal-open {
   border-left-color: rgba(255,255,255,.55) !important;
 }
 
-.passenger-modal__close {
-  background: rgba(255,255,255,.14) !important;
-  color: #ffffff !important;
-}
-
-.passenger-modal__close:hover {
-  background: rgba(255,255,255,.22) !important;
-}
-
 @media (max-width: 760px) {
   .train-upgrade-modal--v70 .train-upgrade-modal__header,
   .train-upgrade-modal__header,
@@ -7058,13 +7119,6 @@ body.passenger-modal-open {
   z-index: 4 !important;
   margin-top: 4px !important;
   padding: 14px 0 0 !important;
-}
-
-.passenger-modal__close {
-  top: 18px !important;
-  right: 18px !important;
-  background: rgba(255, 255, 255, 0.14) !important;
-  color: #ffffff !important;
 }
 
 .passenger-modal--review .passenger-modal__header {

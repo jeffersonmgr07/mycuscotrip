@@ -705,3 +705,41 @@ body {
     padding: 8px !important;
   }
 }
+
+/* Fechas flexibles (búsqueda sin fecha exacta) — julio 2026 */
+.search-bar .mct-flexible-dates {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #56645f;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.search-bar .mct-flexible-dates input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #0a3a26;
+}
+
+.search-bar .mct-fecha-field.is-disabled .mct-input,
+.search-bar .mct-fecha-field.is-disabled .mct-label {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.search-bar .mct-fecha-field.is-disabled .mct-flexible-dates {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 900px) {
+  .search-bar .mct-flexible-dates {
+    font-size: 0.85rem;
+  }
+}

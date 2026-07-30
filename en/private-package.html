@@ -36,14 +36,14 @@
 <section class="private-hero" id="privateHero">
 <div class="private-hero__overlay"></div>
 <div class="container private-hero__content">
-<span class="private-badge" id="proposalBadge">Propuesta privada</span>
+<span class="private-badge" id="proposalBadge">Private proposal</span>
 <h1 id="proposalTitle">Loading proposal...</h1>
 <p id="proposalSubtitle"></p>
 <div class="private-hero__meta" id="proposalMeta"></div>
 <div class="private-hero__actions">
 <a class="private-btn private-btn--whatsapp" href="#" id="proposalWhatsappTop" rel="noopener" target="_blank">
 <i class="fab fa-whatsapp"></i>
-            Consultar por WhatsApp
+            Ask on WhatsApp
           </a>
 <a class="private-btn private-btn--light" href="#privatePricing">
             View estimated price
@@ -56,7 +56,7 @@
 <div class="private-note">
 <i class="fas fa-lock"></i>
 <div>
-<strong>Enlace privado comercial</strong>
+<strong>Private commercial link</strong>
 <p>This proposal does not appear in public listings. Share it only with the corresponding client.</p>
 </div>
 </div>
@@ -75,14 +75,14 @@
 <article class="private-card">
 <div class="private-card__header">
 <span>02</span>
-<h2>Itinerario propuesto</h2>
+<h2>Proposed itinerary</h2>
 </div>
 <div class="private-itinerary" id="proposalItinerary"></div>
 </article>
 <article class="private-card">
 <div class="private-card__header">
 <span>03</span>
-<h2>Seleccionar alojamiento</h2>
+<h2>Select accommodation</h2>
 </div>
 <p class="private-muted">Choose a hotel or lodge by destination. The price recalculates automatically based on the selection.</p>
 <div class="private-lodging-stack" id="lodgingSelector"></div>
@@ -140,7 +140,7 @@
       const target = document.getElementById(targetId);
       if (!target) return;
       const response = await fetch(`./components/${name}.html`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`No se pudo cargar ${name}`);
+      if (!response.ok) throw new Error(`Could not load ${name}`);
       target.innerHTML = await response.text();
     }
 

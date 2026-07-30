@@ -356,16 +356,24 @@
 <div class="passenger-modal" hidden="" id="passengerReservationModal">
 <div class="passenger-modal__backdrop" data-close-passenger-modal=""></div>
 <div aria-labelledby="passengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
-<button aria-label="Cerrar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
+<div class="passenger-modal__header">
+<div class="passenger-modal__titlebar">
+<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalhes da reserva</h2>
+<button aria-label="Copiar código da reserva" class="passenger-modal__code-pill" id="passengerReservationCodeCopy" type="button">
+<span id="passengerReservationCode">CUZ000000</span>
+</button>
+<button aria-label="Fechar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
 <i class="fas fa-xmark"></i>
 </button>
-<div class="passenger-modal__header">
-<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalles de reserva</h2>
-<div aria-label="Código de reserva" class="passenger-modal__code-card">
-<p class="passenger-modal__code" id="passengerReservationCode">CUZ000000</p>
+</div>
+<div class="passenger-modal__meta-row">
+<div class="passenger-modal__paynow-card" aria-live="polite">
+<span>Valor a pagar agora:</span>
+<strong id="passengerPayNowAmount">USD 0.00</strong>
+</div>
 </div>
 <p class="passenger-modal__subtitle" id="passengerReservationTimestamp"></p>
-<p class="passenger-modal__warning">Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
+<p class="passenger-modal__warning">Insira nomes, sobrenomes e documentos exatamente como constam na documentação oficial. Esses dados serão usados para emitir passagens, tickets de transporte, trens e ingressos a Machu Picchu; se estiverem incorretos, podem impedir o uso dos serviços do itinerário.</p>
 </div>
 <div class="passenger-modal__body">
 <button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>

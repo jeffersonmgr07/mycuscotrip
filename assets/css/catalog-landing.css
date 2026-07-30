@@ -275,11 +275,8 @@
   }
 }
 
-
-/* Ocultar estado vacio en vitrinas catalogo cuando el catalogo ya se renderiza. */
-.catalog-empty,
-#catalogLandingEmpty {
-  display: none !important;
+.catalog-empty__cta {
+  margin-top: 6px;
 }
 
 /* Quote builder lite - pre-backend ready */

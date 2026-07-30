@@ -74,8 +74,12 @@
   }
 
 
-  function t(key, fallback = "") {
-    return window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+  function t(key, fallback = "", replacements = {}) {
+    let value = window.MyCuscoTripI18n?.t?.(key, fallback) || fallback || key;
+    Object.entries(replacements || {}).forEach(([name, replacement]) => {
+      value = String(value).replaceAll(`{${name}}`, replacement);
+    });
+    return value;
   }
 
 
@@ -312,18 +316,51 @@
       .filter((item) => isPublicProduct(item, config.includeDrafts));
   }
 
+  // Perú multidestino: cada routeTemplate real (assets/data/packages-peru.json) exige un
+  // conjunto de "bloques" de destino. Estos bloques se traducen aquí a los slugs de
+  // search.destinations que ya usan las packageCards, para poder filtrar por ?route=
+  // sin tener que volver a pedir el JSON completo de rutas.
+  const ROUTE_REQUIRED_BLOCKS = {
+    "lima-cusco": ["lima", "cusco_machu_picchu"],
+    "lima-paracas-cusco": ["lima", "paracas_ica", "cusco_machu_picchu"],
+    "lima-arequipa-cusco": ["lima", "arequipa_colca", "cusco_machu_picchu"],
+    "lima-puno-cusco": ["lima", "puno_titicaca", "cusco_machu_picchu"],
+    "lima-paracas-arequipa-puno-cusco": ["lima", "paracas_ica", "arequipa_colca", "puno_titicaca", "cusco_machu_picchu"],
+    "peru-sur-amazonia": ["lima", "cusco_machu_picchu", "tambopata"],
+    "lima-paracas-cusco-puno-arequipa": ["lima", "paracas_ica", "cusco_machu_picchu", "puno_titicaca", "arequipa_colca"]
+  };
+
+  const BLOCK_DESTINATION_SLUGS = {
+    lima: ["lima"],
+    paracas_ica: ["paracas", "ica", "huacachina"],
+    arequipa_colca: ["arequipa", "colca"],
+    puno_titicaca: ["puno", "titicaca"],
+    cusco_machu_picchu: ["cusco", "machu-picchu", "valle-sagrado"],
+    tambopata: ["tambopata", "iquitos", "amazonas", "amazonia"]
+  };
+
+  function getUrlParams() {
+    return new URLSearchParams(window.location.search);
+  }
+
   function getPageConfig() {
     const body = document.body;
+    const urlParams = getUrlParams();
 
     const toList = (value) => String(value || "").split(",").map((item) => normalizeText(item)).filter(Boolean);
-    const toNumberOrNull = (value) => value === undefined || value === "" ? null : Number(value);
+    const toNumberOrNull = (value) => value === undefined || value === "" || value === null ? null : Number(value);
+
+    const urlMinDays = toNumberOrNull(urlParams.get("minDays"));
+    const urlMaxDays = toNumberOrNull(urlParams.get("maxDays"));
+    const urlDestination = toList(urlParams.get("destination") || urlParams.get("destino") || "");
+    const route = normalizeText(urlParams.get("route") || "");
 
     return {
       kind: body.dataset.catalogKind || "",
       family: body.dataset.catalogFamily || "",
       families: toList(body.dataset.catalogFamilies),
       mode: body.dataset.catalogMode || "",
-      destinations: toList(body.dataset.catalogDestinations),
+      destinations: urlDestination.length ? urlDestination : toList(body.dataset.catalogDestinations),
       themes: toList(body.dataset.catalogThemes),
       keywords: toList(body.dataset.catalogKeywords),
       excludeKeywords: toList(body.dataset.catalogExcludeKeywords),
@@ -331,14 +368,34 @@
       excludeIds: toList(body.dataset.catalogExcludeIds),
       days: toNumberOrNull(body.dataset.catalogDays),
       nights: toNumberOrNull(body.dataset.catalogNights),
-      minDays: toNumberOrNull(body.dataset.catalogMinDays),
-      maxDays: toNumberOrNull(body.dataset.catalogMaxDays),
+      minDays: urlMinDays !== null ? urlMinDays : toNumberOrNull(body.dataset.catalogMinDays),
+      maxDays: urlMaxDays !== null ? urlMaxDays : toNumberOrNull(body.dataset.catalogMaxDays),
       minNights: toNumberOrNull(body.dataset.catalogMinNights),
       maxNights: toNumberOrNull(body.dataset.catalogMaxNights),
       includeDrafts: body.dataset.catalogIncludeDrafts === "true",
       trekkingCategory: getTrekkingCategoryConfig(),
+      route,
+      routeLabel: route ? route.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" ") : "",
       limit: Number(body.dataset.catalogLimit || 0)
     };
+  }
+
+  function productMatchesRoute(item, route) {
+    if (!route) return true;
+    const requiredBlocks = ROUTE_REQUIRED_BLOCKS[route];
+    if (!requiredBlocks) return true; // unknown route key: don't filter everything out
+
+    const haystack = [
+      item.location,
+      ...(item.search.destinations || []),
+      ...(item.search.keywords || []),
+      ...(item.search.includedTags || [])
+    ].map(normalizeText);
+
+    return requiredBlocks.every((block) => {
+      const slugs = BLOCK_DESTINATION_SLUGS[block] || [block];
+      return slugs.some((slug) => haystack.some((entry) => entry.includes(normalizeText(slug))));
+    });
   }
 
   function productMatchesDestination(item, destinations) {
@@ -449,6 +506,7 @@
       if (!productMatchesThemes(item, config.themes)) return false;
       if (!productMatchesKeywords(item, config.keywords)) return false;
       if (productMatchesExcludedKeywords(item, config.excludeKeywords)) return false;
+      if (!productMatchesRoute(item, config.route)) return false;
       if (config.mode === "trekkings" && !isTrekkingCandidate(item)) return false;
       if (config.mode === "trekkings" && config.trekkingCategory) {
         const categoryTerms = config.trekkingCategory.keywords || [];
@@ -479,6 +537,27 @@
     count.textContent = `${total} ${total === 1 ? t("catalog.experienceFound", "experiencia encontrada") : t("catalog.experiencesFound", "experiencias encontradas")}${suffix}`;
   }
 
+  function buildEmptyStateMarkup() {
+    const config = getPageConfig();
+    const routeLabel = config.routeLabel;
+    const messageBase = routeLabel
+      ? t("catalog.emptyRoute", "Todavía no tenemos paquetes publicados para la ruta {route}, pero podemos armar un itinerario a medida.", { route: routeLabel })
+      : t("catalog.emptyGeneric", "No encontramos resultados publicados para esta búsqueda, pero podemos armar un itinerario a medida para ti.");
+
+    const whatsappText = routeLabel
+      ? `Hola My Cusco Trip, quiero un itinerario personalizado para la ruta ${routeLabel}.`
+      : "Hola My Cusco Trip, quiero un itinerario personalizado para mi viaje a Perú.";
+
+    return `
+      <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+      <h3>${escapeHtml(t("catalog.emptyTitle", "Aún no tenemos esa combinación publicada"))}</h3>
+      <p>${escapeHtml(messageBase)}</p>
+      <a class="btn catalog-empty__cta" href="https://wa.me/51900608980?text=${encodeURIComponent(whatsappText)}" target="_blank" rel="noopener">
+        ${escapeHtml(t("catalog.requestCustomItinerary", "Solicitar itinerario personalizado"))}
+      </a>
+    `;
+  }
+
   function renderCards() {
     const grid = qs("#catalogLandingGrid");
     const empty = qs("#catalogLandingEmpty");
@@ -487,7 +566,10 @@
 
     if (!state.filtered.length) {
       grid.innerHTML = "";
-      if (empty) empty.hidden = false;
+      if (empty) {
+        empty.hidden = false;
+        empty.innerHTML = buildEmptyStateMarkup();
+      }
       return;
     }
 
@@ -574,6 +656,37 @@
     allExperiencesLink.href = `./all-experiences.html${params.toString() ? `?${params.toString()}` : ""}`;
   }
 
+  const ROUTE_LABELS = {
+    "lima-cusco": "Lima + Cusco + Machu Picchu",
+    "lima-paracas-cusco": "Lima + Paracas/Ica + Cusco + Machu Picchu",
+    "lima-arequipa-cusco": "Lima + Arequipa/Colca + Cusco + Machu Picchu",
+    "lima-puno-cusco": "Lima + Puno/Titicaca + Cusco + Machu Picchu",
+    "lima-paracas-arequipa-puno-cusco": "Sur del Perú",
+    "peru-sur-amazonia": "Perú Sur + Amazonía",
+    "lima-paracas-cusco-puno-arequipa": "Lima + Paracas/Ica + Cusco + Puno + Arequipa"
+  };
+
+  function applyRouteCopy() {
+    const config = getPageConfig();
+    const heroTitle = qs("#catalogPageTitle") || document.querySelector(".catalog-hero h1");
+    const heroText = qs("#catalogPageIntro") || document.querySelector(".catalog-hero p");
+
+    if (config.route && ROUTE_LABELS[config.route]) {
+      const label = ROUTE_LABELS[config.route];
+      if (heroTitle) heroTitle.textContent = label;
+      if (heroText) heroText.textContent = t("catalog.routeIntro", "Paquetes y circuitos disponibles para la ruta {route}.", { route: label });
+      document.title = `${label} | My Cusco Trip`;
+      return;
+    }
+
+    if (config.minDays !== null || config.maxDays !== null) {
+      const label = config.maxDays
+        ? t("catalog.durationRangeLabel", "Viajes de {min} a {max} días", { min: config.minDays || 1, max: config.maxDays })
+        : t("catalog.durationMinLabel", "Viajes de {min} días o más", { min: config.minDays });
+      if (heroTitle) heroTitle.textContent = label;
+    }
+  }
+
   function applyTrekkingCategoryCopy() {
     const config = getPageConfig();
     if (config.mode !== "trekkings" || !config.trekkingCategory) return;
@@ -607,6 +720,7 @@
     `;
 
     applyTrekkingCategoryCopy();
+    applyRouteCopy();
 
     await buildCatalog();
     applyCatalogFilter();

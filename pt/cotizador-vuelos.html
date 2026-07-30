@@ -700,11 +700,11 @@
 </select>
 </div>
 <div class="field">
-<label for="price">Precio final total (USD)</label>
+<label for="price">Preço final total (USD)</label>
 <input id="price" step="0.01" type="number" value="280.26"/>
 </div>
 <div class="field">
-<label for="passengers">Pasajeros</label>
+<label for="passengers">Passageiros</label>
 <select id="passengers">
 <option value="1">1 adulto</option>
 <option value="2">2 adultos</option>
@@ -1066,8 +1066,8 @@
           <div class="flight-side">
             ${buildBagsLine(values)}
             <div class="price">${formatMoney(values.price)}</div>
-            <div class="price-label">Precio final por persona</div>
-            <button class="buy-btn" id="buyNowBtn" type="button">Comprar</button>
+            <div class="price-label">Preço final por pessoa</div>
+            <button class="buy-btn" id="buyNowBtn" type="button">Comprar agora</button>
           </div>
         </article>
 
@@ -1096,7 +1096,7 @@
                     <div class="detail-value">${values.cabinClass}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Pasajeros</div>
+                    <div class="detail-label">Passageiros</div>
                     <div class="detail-value">${values.passengers} adulto(s)</div>
                   </div>
                   <div class="detail-row">
@@ -1179,7 +1179,7 @@
 
             <aside class="quote-summary-box">
               <div class="quote-summary-top">
-                <div class="mini-title">Precio por Adulto</div>
+                <div class="mini-title">Preço por Adulto</div>
                 <div class="big-price">${formatMoney(totals.baseFare)}</div>
               </div>
 

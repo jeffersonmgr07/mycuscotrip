@@ -2695,9 +2695,9 @@
 <section class="voucher-web" id="voucherWeb" style="display:none;"></section>
 <section class="print-voucher" id="voucherPrint"></section>
 <section class="empty-state" id="voucherEmpty" style="display:none;">
-<h1 id="emptyTitle">Reserva no encontrada</h1>
-<p id="emptyText">No hay una reserva cargada para mostrar.</p>
-<a class="back-home" href="mi-reserva.html" id="emptyBtn">Ir a Mi Reserva</a>
+<h1 id="emptyTitle">Reserva não encontrada</h1>
+<p id="emptyText">Não há uma reserva carregada para exibir.</p>
+<a class="back-home" href="mi-reserva.html" id="emptyBtn">Ir para Minha Reserva</a>
 </section>
 </div>
 </main>
@@ -2706,7 +2706,8 @@
     const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
     const BASE_PATH = IS_GITHUB_PAGES ? '/mycuscotrip/' : '/';
 
-    let currentLanguage = localStorage.getItem("voucherLanguage") || "es";
+    let currentLanguage = localStorage.getItem("voucherLanguage")
+      || (window.MCT_LOCALE === "en" ? "en" : window.MCT_LOCALE === "pt" ? "pt" : "es");
 
     const i18n = {
       es: {
@@ -2825,6 +2826,65 @@
         payNow: "Pay now",
         goToPayment: "Go to payment",
         completePayment: "Complete total payment",
+        noData: "-"
+      },
+      pt: {
+        langLabel: "Idioma",
+        back: "Voltar",
+        print: "Imprimir voucher",
+        emptyTitle: "Reserva não encontrada",
+        emptyText: "Não há uma reserva carregada para exibir.",
+        emptyBtn: "Ir para Minha Reserva",
+        subtitle: "Especialistas em criar viagens cheias de emoção pelo Vale Sagrado dos Incas",
+        contact1: "Portal de Panes 123 - Plaza de Armas Cusco",
+        contact2: "WhatsApp: +51 900 608 980",
+        contact3: "E-mail: reservas@mycuscotrip.com",
+        contact4: "Site: www.mycuscotrip.com",
+        travelVoucher: "TRAVEL VOUCHER",
+        bookingCode: "Código da reserva",
+        holder: "Titular da reserva",
+        travelDate: "Duração",
+        destination: "Destino",
+        pack: "Pacote / programa",
+        passengersCount: "Passageiros",
+        language: "Idioma",
+        phone: "Telefone de contato",
+        coupon: "Cupom / referência",
+        passengers: "Dados dos passageiros",
+        travelers: "passageiro(s)",
+        fullName: "Nome completo",
+        documentType: "Tipo de documento",
+        documentNumber: "Nº do documento",
+        nationality: "Nacionalidade",
+        birthDate: "Data de nascimento",
+        lodging: "Informações de hotel / hospedagem",
+        hotels: "hotel(is)",
+        services: "Serviços e itinerário",
+        serviceLabel: "serviço(s)",
+        code: "Código",
+        service: "Serviço",
+        date: "Data",
+        start: "Início",
+        departure: "Partida",
+        end: "Fim",
+        status: "Status",
+        included: "Incluído",
+        extra: "Não incluído",
+        transfers: "Informações de voo ou ônibus",
+        operator: "Operadora",
+        number: "Número",
+        origin: "Origem",
+        arrival: "Chegada",
+        assistance: "Assistência pessoal",
+        assignedAgent: "Agente designado",
+        assignedAgentText: "Para qualquer assistência durante sua viagem, entre em contato com seu agente de viagens designado:",
+        includes: "Serviços incluídos",
+        notIncludes: "Não incluído / serviços adicionais",
+        recommendations: "Recomendações",
+        pendingPayments: "Pagamentos pendentes",
+        payNow: "Pagar agora",
+        goToPayment: "Ir para o pagamento",
+        completePayment: "Completar pagamento total",
         noData: "-"
       }
     };
@@ -2952,7 +3012,7 @@
         }
       }
 
-      const locale = lang === "en" ? "en-US" : "es-PE";
+      const locale = lang === "en" ? "en-US" : lang === "pt" ? "pt-BR" : "es-PE";
       const formatted = date.toLocaleDateString(locale, {
         weekday: "long",
         year: "numeric",
@@ -3064,7 +3124,9 @@
         icon: "🎂",
         text: currentLanguage === "en"
           ? `Birthday during service - ${month}/${day}`
-          : `Cumpleaños durante el servicio - ${day}/${month}`
+          : currentLanguage === "pt"
+            ? `Aniversário durante o serviço - ${day}/${month}`
+            : `Cumpleaños durante el servicio - ${day}/${month}`
       };
     }
 
@@ -3106,6 +3168,13 @@
         if (adults) parts.push(`${adults} adult${adults === 1 ? "" : "s"}`);
         if (children) parts.push(`${children} child${children === 1 ? "" : "ren"}`);
         return parts.join(" and ") || i18n[lang].noData;
+      }
+
+      if (lang === "pt") {
+        const parts = [];
+        if (adults) parts.push(`${adults} adulto${adults === 1 ? "" : "s"}`);
+        if (children) parts.push(`${children} criança${children === 1 ? "" : "s"}`);
+        return parts.join(" e ") || i18n[lang].noData;
       }
 
       const parts = [];
