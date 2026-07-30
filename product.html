@@ -33,7 +33,7 @@
 <link href="./assets/css/header.css" rel="stylesheet"/>
 <link href="./assets/css/footer.css" rel="stylesheet"/>
 <link href="./assets/css/responsive.css" rel="stylesheet"/>
-<link href="./assets/css/product-page.css?v=94" rel="stylesheet"/>
+<link href="./assets/css/product-page.css?v=20260730-93" rel="stylesheet"/>
 <link href="./assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <link href="https://mycuscotrip.com/product.html?slug=machu-picchu-full-day-clasico" rel="canonical"/></head>
 <body>
@@ -363,10 +363,13 @@
 <div aria-labelledby="passengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
 <div class="passenger-modal__header">
 <div class="passenger-modal__titlebar">
-<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalles de reserva</h2>
+<h2 id="passengerModalTitle" data-i18n="product.passengerDetailsTitle">Datos de los pasajeros</h2>
+<div class="passenger-modal__code-wrap">
+<span class="passenger-modal__code-label" data-i18n="product.reservationCodeLabel">Código de reserva:</span>
 <button aria-label="Copiar código de reserva" class="passenger-modal__code-pill" id="passengerReservationCodeCopy" type="button">
 <span id="passengerReservationCode">CUZ000000</span>
 </button>
+</div>
 <button aria-label="Cerrar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
 <i class="fas fa-xmark"></i>
 </button>
@@ -377,8 +380,11 @@
 <strong id="passengerPayNowAmount">USD 0.00</strong>
 </div>
 </div>
-<p class="passenger-modal__subtitle" id="passengerReservationTimestamp"></p>
-<p class="passenger-modal__warning">Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
+<p aria-hidden="true" class="passenger-modal__subtitle" hidden id="passengerReservationTimestamp"></p>
+<details class="passenger-modal__warning passenger-modal__important">
+<summary data-i18n="product.importantInformation">Información importante</summary>
+<p>Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
+</details>
 </div>
 <div class="passenger-modal__body">
 <button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
@@ -550,7 +556,7 @@
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>
 <script src="./assets/js/components/header.js"></script>
-<script src="./assets/js/pages/product.js?v=91"></script>
+<script src="./assets/js/pages/product.js?v=20260730-93"></script>
 <script src="./assets/js/components/coupon-popup.js"></script>
 <section class="product-print-sheet" id="productPrintArea" aria-label="Itinerario imprimible"></section>
 </body>

@@ -9730,3 +9730,160 @@ document.addEventListener("click", function (event) {
     setTimeout(patchV86, 1600);
   }
 })();
+
+/* =========================================================
+   MCT V93 — Código CUZ de 6 hex, cabecera visible y recuperación
+   ========================================================= */
+(function () {
+  function patchV93() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV93Applied) return true;
+
+    const proto = Object.getPrototypeOf(page) || page;
+
+    // El código visible conserva el formato solicitado: CUZ + 6 hexadecimales.
+    // Se deriva de la marca temporal de alta resolución (fecha/hora/segundos/
+    // microsegundos aproximados del navegador) y se mezcla a 24 bits. La
+    // unicidad global debe validarse también en el backend porque 6 hex = 24 bits.
+    proto.generateReservationCode = function () {
+      const buildFromTimestamp = (nonce = 0) => {
+        const epochMs = Date.now();
+        const performanceMicros = Math.floor((window.performance?.now?.() || 0) * 1000);
+        const source = `${epochMs}:${performanceMicros}:${nonce}`;
+        let hash = 0x811c9dc5;
+        for (let i = 0; i < source.length; i += 1) {
+          hash ^= source.charCodeAt(i);
+          hash = Math.imul(hash, 0x01000193) >>> 0;
+        }
+        const hex = (hash & 0xffffff).toString(16).toUpperCase().padStart(6, "0");
+        return `CUZ${hex}`;
+      };
+
+      let nonce = 0;
+      let code = buildFromTimestamp(nonce);
+      while (nonce < 32 && this.getLocalReservation?.(code)) {
+        nonce += 1;
+        code = buildFromTimestamp(nonce);
+      }
+      return code;
+    };
+
+    proto.applyReservationHeaderV93 = function () {
+      const modal = document.getElementById("passengerReservationModal");
+      if (!modal) return;
+      const title = document.getElementById("passengerModalTitle");
+      const timestamp = document.getElementById("passengerReservationTimestamp");
+      const code = document.getElementById("passengerReservationCode");
+      const codeButton = document.getElementById("passengerReservationCodeCopy");
+      const close = document.getElementById("closePassengerModalBtn");
+      const important = modal.querySelector(".passenger-modal__important");
+
+      if (title && !modal.classList.contains("passenger-modal--review")) {
+        title.textContent = this.t("product.passengerDetailsTitle", "Datos de los pasajeros");
+      }
+      if (timestamp) {
+        timestamp.textContent = "";
+        timestamp.hidden = true;
+        timestamp.setAttribute("aria-hidden", "true");
+      }
+      if (code) code.textContent = String(this.currentPreReservation?.code || code.textContent || "").toUpperCase();
+      if (codeButton) {
+        codeButton.hidden = false;
+        codeButton.removeAttribute("aria-hidden");
+      }
+      if (close) {
+        close.hidden = false;
+        close.removeAttribute("aria-hidden");
+      }
+      // The explanatory box starts collapsed to reduce visual noise.
+      if (important && !important.dataset.v93Initialized) {
+        important.open = false;
+        important.dataset.v93Initialized = "true";
+      }
+    };
+
+    const previousOpen = proto.openPassengerReservationModal;
+    if (typeof previousOpen === "function") {
+      proto.openPassengerReservationModal = function () {
+        const result = previousOpen.apply(this, arguments);
+        this.applyReservationHeaderV93?.();
+        window.setTimeout(() => this.applyReservationHeaderV93?.(), 0);
+        return result;
+      };
+    }
+
+    const previousReview = proto.renderPaymentReviewStep;
+    if (typeof previousReview === "function") {
+      proto.renderPaymentReviewStep = function () {
+        const result = previousReview.apply(this, arguments);
+        const title = document.getElementById("passengerModalTitle");
+        if (title) title.textContent = this.t("booking.reservationSummaryTitle", "Resumen de tu reserva");
+        this.applyReservationHeaderV93?.();
+        return result;
+      };
+    }
+
+    proto.getReservationRecoveryUrlV93 = function (reservationCode) {
+      const locale = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
+      const base = window.MyCuscoTripI18n?.getBasePath?.() || (window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/");
+      const prefix = locale && locale !== "es" ? `${base}${locale}/` : base;
+      const params = new URLSearchParams();
+      if (reservationCode) params.set("codigo", reservationCode);
+      params.set("origen", "pago-cancelado");
+      return `${prefix}mi-reserva.html?${params.toString()}`;
+    };
+
+    proto.maskEmailV93 = function (email) {
+      const value = String(email || "").trim();
+      const [name, domain] = value.split("@");
+      if (!name || !domain) return "";
+      const visible = name.slice(0, Math.min(2, name.length));
+      return `${visible}${"•".repeat(Math.max(3, Math.min(7, name.length - visible.length)))}@${domain}`;
+    };
+
+    proto.showPaymentReturnNotice = function (_status, reservationCode, record) {
+      const panel = document.querySelector(".booking-panel");
+      if (!panel) return;
+      document.getElementById("paymentReturnNotice")?.remove();
+
+      const code = String(reservationCode || record?.reservationCode || record?.code || "").trim().toUpperCase();
+      const payload = record?.payload || record || {};
+      const email = record?.holderEmail || payload?.holder?.email || payload?.holderEmail || "";
+      const maskedEmail = this.maskEmailV93?.(email) || "";
+      const recoveryUrl = this.getReservationRecoveryUrlV93?.(code) || "/mi-reserva.html";
+      const title = this.t("payment.cancelledTitle", "El pago no se completó");
+      const body = this.t(
+        "payment.cancelledBody",
+        "El proceso de pago no se completó. Tu reserva sigue disponible con el código {code}. Puedes recuperarla y volver a pagar usando el correo registrado.",
+        { code }
+      );
+      const emailText = maskedEmail
+        ? this.t("payment.registeredEmail", "Correo registrado: {email}", { email: maskedEmail })
+        : "";
+      const cta = this.t("payment.recoverCta", "Recuperar y pagar reserva");
+
+      panel.insertAdjacentHTML("afterbegin", `
+        <div class="payment-return-notice" id="paymentReturnNotice" role="status">
+          <strong>${this.escapeHtml(title)}</strong>
+          <p>${this.escapeHtml(body)}</p>
+          ${code ? `<span class="payment-return-notice__code">${this.escapeHtml(code)}</span>` : ""}
+          ${emailText ? `<p class="payment-return-notice__email">${this.escapeHtml(emailText)}</p>` : ""}
+          <a class="payment-return-notice__action" href="${this.escapeHtml(recoveryUrl)}">
+            <i class="fas fa-rotate-left" aria-hidden="true"></i>
+            ${this.escapeHtml(cta)}
+          </a>
+        </div>
+      `);
+    };
+
+    page.__mctV93Applied = true;
+    page.applyReservationHeaderV93?.();
+    return true;
+  }
+
+  if (!patchV93()) {
+    document.addEventListener("DOMContentLoaded", patchV93);
+    [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV93, delay));
+  }
+})();

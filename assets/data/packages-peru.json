@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "updatedAt": "2026-05-18",
+  "version": "2026-07-30-v93",
+  "updatedAt": "2026-07-30",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "Archivo de configuración para generar paquetes dinámicos combinados de Perú. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
@@ -719,7 +719,7 @@
       "badge": "Primer viaje",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Perú",
-      "shortDescription": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos días.",
+      "shortDescription": "Circuito esencial que conecta Lima, Cusco, el Valle Sagrado y Machu Picchu en cinco días, con traslados y tiempos de aclimatación coordinados.",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -821,7 +821,114 @@
         "Full day a Machu Picchu con tren, bus, ingreso oficial y guía",
         "Ruta corta ideal para quienes tienen poco tiempo disponible",
         "Traslados de llegada y salida incluidos"
-      ]
+      ],
+      "description": "Circuito esencial que conecta Lima, Cusco, el Valle Sagrado y Machu Picchu en cinco días, con traslados y tiempos de aclimatación coordinados.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima y primera experiencia en la capital",
+          "description": "Recepción en el aeropuerto de Lima y traslado al hotel. Según la hora de llegada, recorrido panorámico por Miraflores, Parque del Amor, Larcomar y Barranco, con tiempo para descansar y recibir la explicación operativa del viaje.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Vuelo Lima–Cusco y recorrido histórico",
+          "description": "Traslado al aeropuerto y vuelo a Cusco. Después de la instalación y un tiempo de aclimatación, visita guiada por el centro histórico, Qoricancha y los principales complejos arqueológicos cercanos, ajustando el ritmo a la altura.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Salida hacia el Valle Sagrado para visitar mercados, paisajes y centros arqueológicos como Pisac, Chinchero u Ollantaytambo según la operación confirmada. Por la tarde, tren turístico a Machu Picchu Pueblo y asistencia para el alojamiento.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Bus de subida a la ciudadela y visita guiada por el circuito asignado, con explicación histórica y tiempo para fotografías en los puntos autorizados. Retorno a Machu Picchu Pueblo, tren a Ollantaytambo y traslado final al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Salida de Cusco",
+          "description": "Desayuno y tiempo libre según el horario del vuelo. Traslado al aeropuerto de Cusco para la conexión a Lima o al siguiente destino, con asistencia hasta el cierre de los servicios.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima y primera experiencia en la capital",
+          "description": "Recepción en el aeropuerto de Lima y traslado al hotel. Según la hora de llegada, recorrido panorámico por Miraflores, Parque del Amor, Larcomar y Barranco, con tiempo para descansar y recibir la explicación operativa del viaje.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Vuelo Lima–Cusco y recorrido histórico",
+          "description": "Traslado al aeropuerto y vuelo a Cusco. Después de la instalación y un tiempo de aclimatación, visita guiada por el centro histórico, Qoricancha y los principales complejos arqueológicos cercanos, ajustando el ritmo a la altura.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Salida hacia el Valle Sagrado para visitar mercados, paisajes y centros arqueológicos como Pisac, Chinchero u Ollantaytambo según la operación confirmada. Por la tarde, tren turístico a Machu Picchu Pueblo y asistencia para el alojamiento.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Bus de subida a la ciudadela y visita guiada por el circuito asignado, con explicación histórica y tiempo para fotografías en los puntos autorizados. Retorno a Machu Picchu Pueblo, tren a Ollantaytambo y traslado final al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Salida de Cusco",
+          "description": "Desayuno y tiempo libre según el horario del vuelo. Traslado al aeropuerto de Cusco para la conexión a Lima o al siguiente destino, con asistencia hasta el cierre de los servicios.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_6d5n",
@@ -835,7 +942,7 @@
       "badge": "Clásico",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Valle Sagrado / Perú",
-      "shortDescription": "Ruta clásica con Lima, Valle Sagrado, Cusco y Machu Picchu.",
+      "shortDescription": "Ruta clásica con una jornada completa en Lima y una secuencia cómoda por Cusco, Valle Sagrado y Machu Picchu.",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -938,7 +1045,134 @@
         "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
         "Mayor tiempo para disfrutar Cusco y el Valle Sagrado sin apuro",
         "Traslados de llegada y salida incluidos"
-      ]
+      ],
+      "description": "Ruta clásica con una jornada completa en Lima y una secuencia cómoda por Cusco, Valle Sagrado y Machu Picchu.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Reunión de bienvenida, revisión de documentos, horarios y recomendaciones para el recorrido por la costa y los Andes.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Lima histórica, Miraflores y Barranco",
+          "description": "Visita guiada por el centro histórico de Lima, plazas coloniales y principales monumentos. La experiencia continúa por Miraflores y Barranco, combinando patrimonio, gastronomía y vistas del océano Pacífico.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Traslado al aeropuerto, vuelo Lima–Cusco y recepción al llegar. Tarde de aclimatación con caminata ligera por el centro histórico o bienvenida ancestral, según el horario confirmado.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado con visitas culturales y arqueológicas en Pisac, Chinchero u Ollantaytambo. Tren turístico desde el valle hacia Machu Picchu Pueblo y noche cerca de la ciudadela.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Ingreso a Machu Picchu con guía y circuito oficial confirmado. Después de la visita, retorno en bus y tren, seguido del traslado desde Ollantaytambo al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Salida de Cusco",
+          "description": "Tiempo libre de acuerdo con el vuelo y traslado al aeropuerto. Posibilidad de conectar con Lima o continuar hacia otro destino del Perú.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Reunión de bienvenida, revisión de documentos, horarios y recomendaciones para el recorrido por la costa y los Andes.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Lima histórica, Miraflores y Barranco",
+          "description": "Visita guiada por el centro histórico de Lima, plazas coloniales y principales monumentos. La experiencia continúa por Miraflores y Barranco, combinando patrimonio, gastronomía y vistas del océano Pacífico.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Traslado al aeropuerto, vuelo Lima–Cusco y recepción al llegar. Tarde de aclimatación con caminata ligera por el centro histórico o bienvenida ancestral, según el horario confirmado.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado con visitas culturales y arqueológicas en Pisac, Chinchero u Ollantaytambo. Tren turístico desde el valle hacia Machu Picchu Pueblo y noche cerca de la ciudadela.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Ingreso a Machu Picchu con guía y circuito oficial confirmado. Después de la visita, retorno en bus y tren, seguido del traslado desde Ollantaytambo al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Salida de Cusco",
+          "description": "Tiempo libre de acuerdo con el vuelo y traslado al aeropuerto. Posibilidad de conectar con Lima o continuar hacia otro destino del Perú.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_7d6n",
@@ -952,7 +1186,7 @@
       "badge": "Top ventas",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Perú",
-      "shortDescription": "Combina costa sur, desierto, Cusco y Machu Picchu.",
+      "shortDescription": "Programa de costa y Andes que suma Paracas, Ica y Huacachina a Cusco, Valle Sagrado y Machu Picchu.",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -1060,7 +1294,154 @@
         "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
         "Combina costa sur, desierto y sierra en una sola ruta",
         "Traslados de llegada y salida incluidos"
-      ]
+      ],
+      "description": "Programa de costa y Andes que suma Paracas, Ica y Huacachina a Cusco, Valle Sagrado y Machu Picchu.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación inicial sobre el programa. Tiempo libre para descansar o caminar por Miraflores según la hora de llegada.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Islas Ballestas, Ica y Huacachina",
+          "description": "Salida temprana hacia Paracas para navegar a las Islas Ballestas, sujeta a condiciones marítimas. Continuación a Ica para una experiencia vitivinícola y visita al oasis de Huacachina, con tubulares y sandboarding opcionales según operación y clima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Cusco y bienvenida andina",
+          "description": "Vuelo Lima–Cusco, recepción y traslado al hotel. Tarde de aclimatación y experiencia de bienvenida andina o paseo suave por el centro histórico.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Cusco histórico y complejos arqueológicos",
+          "description": "Visita a Qoricancha, la Plaza de Armas y los complejos de Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, según boleto y operación. Regreso al hotel para preparar el viaje al Valle Sagrado.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por poblados, paisajes y sitios arqueológicos del Valle Sagrado. Desde Ollantaytambo, tren hacia Machu Picchu Pueblo y asistencia para el alojamiento.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Bus hacia la ciudadela, visita guiada por el circuito confirmado y tiempo para apreciar los principales sectores incas. Retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Salida de Cusco",
+          "description": "Desayuno, tiempo libre según itinerario aéreo y traslado al aeropuerto para finalizar el programa.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación inicial sobre el programa. Tiempo libre para descansar o caminar por Miraflores según la hora de llegada.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Islas Ballestas, Ica y Huacachina",
+          "description": "Salida temprana hacia Paracas para navegar a las Islas Ballestas, sujeta a condiciones marítimas. Continuación a Ica para una experiencia vitivinícola y visita al oasis de Huacachina, con tubulares y sandboarding opcionales según operación y clima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Cusco y bienvenida andina",
+          "description": "Vuelo Lima–Cusco, recepción y traslado al hotel. Tarde de aclimatación y experiencia de bienvenida andina o paseo suave por el centro histórico.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Cusco histórico y complejos arqueológicos",
+          "description": "Visita a Qoricancha, la Plaza de Armas y los complejos de Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, según boleto y operación. Regreso al hotel para preparar el viaje al Valle Sagrado.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por poblados, paisajes y sitios arqueológicos del Valle Sagrado. Desde Ollantaytambo, tren hacia Machu Picchu Pueblo y asistencia para el alojamiento.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Bus hacia la ciudadela, visita guiada por el circuito confirmado y tiempo para apreciar los principales sectores incas. Retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Salida de Cusco",
+          "description": "Desayuno, tiempo libre según itinerario aéreo y traslado al aeropuerto para finalizar el programa.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_8d7n",
@@ -1074,7 +1455,7 @@
       "badge": "Completo",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Puno",
-      "shortDescription": "Ruta compacta por la costa sur, Cusco, Machu Picchu y el Lago Titicaca, con hoteles configurables y servicios principales coordinados.",
+      "shortDescription": "Ruta compacta por Lima, costa sur, Cusco, Machu Picchu y Lago Titicaca.",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -1180,7 +1561,7 @@
       },
       "priceFrom": 1439.9,
       "priceLabel": "Desde USD 1,439.90 por persona sin hoteles",
-      "description": "Este paquete de 8 días y 7 noches conecta Lima, Paracas, Ica, Huacachina, Cusco, el Valle Sagrado, Machu Picchu y Puno en una ruta equilibrada para viajeros que desean conocer lo esencial del Perú sin llegar hasta Arequipa. Incluye asistencia operativa, traslados principales, experiencias guiadas, tren hacia Machu Picchu, Ruta del Sol y Lago Titicaca con Uros y Taquile según disponibilidad.",
+      "description": "Ruta compacta por Lima, costa sur, Cusco, Machu Picchu y Lago Titicaca.",
       "images": {
         "cover": "./assets/img/packages/peru/8d7n/cover.jpg",
         "gallery": [
@@ -1248,88 +1629,81 @@
         {
           "day": 1,
           "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Según el horario, recorrido por Miraflores, Barranco, Larcomar y el Circuito Mágico del Agua para tener una primera mirada de la capital.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Excursión de día completo a la costa sur: navegación a las Islas Ballestas, experiencia vitivinícola en Ica y visita al oasis de Huacachina. Actividades en dunas sujetas a clima y operación.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
           "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. El resto del día quedará coordinado para aclimatación, asistencia y preparación de la ruta hacia el Valle Sagrado.",
+          "description": "Vuelo Lima–Cusco, traslado al hotel y tiempo para aclimatarse. Bienvenida ancestral inspirada en la tradición andina o paseo ligero por el centro, según horario.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
-            "./assets/img/tours/city-tour/cover.jpg"
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Visitas culturales y arqueológicas en el Valle Sagrado, con ruta por Chinchero, Pisac u Ollantaytambo según programación. Tren a Machu Picchu Pueblo y noche en Aguas Calientes.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 5,
           "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "description": "Visita guiada a Machu Picchu por el circuito asignado. Retorno en bus y tren, seguido de traslado desde Ollantaytambo al hotel en Cusco.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 6,
           "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "description": "Viaje turístico en bus por el corredor andino, con paradas habituales en Andahuaylillas, Raqchi, La Raya y Pucará según operador. Llegada a Puno y traslado al hotel.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 7,
           "title": "Lago Titicaca: Uros y Taquile",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Luego continuarás hacia la isla Taquile, reconocida por su textilería, miradores naturales y cultura viva. Según disponibilidad, operación y ritmo del grupo, la experiencia puede ajustarse con alternativas culturales en el lago.",
+          "description": "Navegación por el Lago Titicaca para conocer las islas flotantes de los Uros y la comunidad de Taquile, su textilería y paisajes. El programa puede ajustarse por condiciones lacustres y operación local.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Salida desde Puno hacia Lima",
-          "description": "Traslado desde el hotel en Puno hacia el aeropuerto de Juliaca para tomar el vuelo hacia Lima, sujeto a disponibilidad y confirmación de tarifa. Fin de nuestros servicios con asistencia coordinada para la salida y conexión con tu siguiente vuelo o extensión de viaje.",
+          "title": "Salida desde Puno",
+          "description": "Traslado al aeropuerto de Juliaca para el vuelo a Lima o conexión con el siguiente destino. Fin de los servicios coordinados.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         }
       ],
@@ -1337,88 +1711,81 @@
         {
           "day": 1,
           "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Según el horario, recorrido por Miraflores, Barranco, Larcomar y el Circuito Mágico del Agua para tener una primera mirada de la capital.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Excursión de día completo a la costa sur: navegación a las Islas Ballestas, experiencia vitivinícola en Ica y visita al oasis de Huacachina. Actividades en dunas sujetas a clima y operación.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
           "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. El resto del día quedará coordinado para aclimatación, asistencia y preparación de la ruta hacia el Valle Sagrado.",
+          "description": "Vuelo Lima–Cusco, traslado al hotel y tiempo para aclimatarse. Bienvenida ancestral inspirada en la tradición andina o paseo ligero por el centro, según horario.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
-            "./assets/img/tours/city-tour/cover.jpg"
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Visitas culturales y arqueológicas en el Valle Sagrado, con ruta por Chinchero, Pisac u Ollantaytambo según programación. Tren a Machu Picchu Pueblo y noche en Aguas Calientes.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 5,
           "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "description": "Visita guiada a Machu Picchu por el circuito asignado. Retorno en bus y tren, seguido de traslado desde Ollantaytambo al hotel en Cusco.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 6,
           "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "description": "Viaje turístico en bus por el corredor andino, con paradas habituales en Andahuaylillas, Raqchi, La Raya y Pucará según operador. Llegada a Puno y traslado al hotel.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 7,
           "title": "Lago Titicaca: Uros y Taquile",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Luego continuarás hacia la isla Taquile, reconocida por su textilería, miradores naturales y cultura viva. Según disponibilidad, operación y ritmo del grupo, la experiencia puede ajustarse con alternativas culturales en el lago.",
+          "description": "Navegación por el Lago Titicaca para conocer las islas flotantes de los Uros y la comunidad de Taquile, su textilería y paisajes. El programa puede ajustarse por condiciones lacustres y operación local.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Salida desde Puno hacia Lima",
-          "description": "Traslado desde el hotel en Puno hacia el aeropuerto de Juliaca para tomar el vuelo hacia Lima, sujeto a disponibilidad y confirmación de tarifa. Fin de nuestros servicios con asistencia coordinada para la salida y conexión con tu siguiente vuelo o extensión de viaje.",
+          "title": "Salida desde Puno",
+          "description": "Traslado al aeropuerto de Juliaca para el vuelo a Lima o conexión con el siguiente destino. Fin de los servicios coordinados.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         }
       ],
@@ -1483,7 +1850,9 @@
         ]
       },
       "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo y Puno.",
-      "capacity": 30
+      "capacity": 30,
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_9d8n",
@@ -1497,7 +1866,7 @@
       "badge": "Andes del Sur",
       "featured": false,
       "location": "Lima / Arequipa / Colca / Cusco / Perú",
-      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu.",
+      "shortDescription": "Circuito por Lima, Arequipa, Cañón del Colca, Cusco, Valle Sagrado y Machu Picchu.",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -1604,7 +1973,194 @@
         "Full day al Cañón del Colca con Cruz del Cóndor",
         "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
         "Ruta andina que combina Lima, Arequipa y Cusco"
-      ]
+      ],
+      "description": "Circuito por Lima, Arequipa, Cañón del Colca, Cusco, Valle Sagrado y Machu Picchu.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación general del programa. Tiempo libre para descansar en Miraflores.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Vuelo a Arequipa y ciudad blanca",
+          "description": "Vuelo a Arequipa y traslado al hotel. Recorrido por la Plaza de Armas, miradores tradicionales y el Monasterio de Santa Catalina, de acuerdo con horarios de vuelo y entradas.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Salida por la Reserva Nacional de Salinas y Aguada Blanca, con vistas de volcanes y camélidos andinos. Llegada a Chivay, tiempo para aclimatarse y opción de baños termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Cruz del Cóndor y retorno a Arequipa",
+          "description": "Visita temprana al mirador de la Cruz del Cóndor para observar el cañón y, cuando las condiciones lo permiten, el vuelo de los cóndores. Paradas en pueblos y miradores del valle antes de regresar a Arequipa.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Traslado al aeropuerto y vuelo a Cusco. Recepción, instalación en el hotel y tarde tranquila para adaptarse a la altura.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cusco histórico y sitios arqueológicos",
+          "description": "Visita guiada por Qoricancha, centro histórico y los complejos arqueológicos cercanos. Tarde libre para gastronomía, compras o actividades opcionales.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Ruta por el Valle Sagrado con visitas culturales y arqueológicas. Tren desde Ollantaytambo a Machu Picchu Pueblo y alojamiento cerca de la ciudadela.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Ingreso y visita guiada a Machu Picchu por el circuito asignado. Retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Salida de Cusco",
+          "description": "Tiempo libre según el vuelo y traslado al aeropuerto para la conexión a Lima o al siguiente destino.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación general del programa. Tiempo libre para descansar en Miraflores.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Vuelo a Arequipa y ciudad blanca",
+          "description": "Vuelo a Arequipa y traslado al hotel. Recorrido por la Plaza de Armas, miradores tradicionales y el Monasterio de Santa Catalina, de acuerdo con horarios de vuelo y entradas.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Salida por la Reserva Nacional de Salinas y Aguada Blanca, con vistas de volcanes y camélidos andinos. Llegada a Chivay, tiempo para aclimatarse y opción de baños termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Cruz del Cóndor y retorno a Arequipa",
+          "description": "Visita temprana al mirador de la Cruz del Cóndor para observar el cañón y, cuando las condiciones lo permiten, el vuelo de los cóndores. Paradas en pueblos y miradores del valle antes de regresar a Arequipa.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Traslado al aeropuerto y vuelo a Cusco. Recepción, instalación en el hotel y tarde tranquila para adaptarse a la altura.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cusco histórico y sitios arqueológicos",
+          "description": "Visita guiada por Qoricancha, centro histórico y los complejos arqueológicos cercanos. Tarde libre para gastronomía, compras o actividades opcionales.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Ruta por el Valle Sagrado con visitas culturales y arqueológicas. Tren desde Ollantaytambo a Machu Picchu Pueblo y alojamiento cerca de la ciudadela.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Ingreso y visita guiada a Machu Picchu por el circuito asignado. Retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Salida de Cusco",
+          "description": "Tiempo libre según el vuelo y traslado al aeropuerto para la conexión a Lima o al siguiente destino.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_10d9n",
@@ -1618,7 +2174,7 @@
       "badge": "Ruta completa",
       "featured": true,
       "location": "Lima / Paracas / Ica / Huacachina / Cusco / Machu Picchu / Puno / Arequipa",
-      "shortDescription": "Vive una ruta completa por el Perú combinando Lima nocturna, Barranco y Miraflores, aventura en Huacachina, experiencia marina en Paracas, bienvenida ancestral en Cusco, Valle Sagrado, tren hacia Machu Picchu, Ruta del Sol hacia Puno, Lago Titicaca y la magia colonial de Arequipa con opción de Cañón del Colca.",
+      "shortDescription": "Viaje multidestino por costa, Andes y altiplano: Lima, Huacachina, Cusco, Machu Picchu, Titicaca y Arequipa.",
       "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -1695,7 +2251,7 @@
           "en"
         ]
       },
-      "description": "Este paquete multidestino ha sido diseñado para viajeros que desean conocer lo más representativo del Perú en una sola ruta: la energía urbana de Lima, el desierto de Ica y Huacachina, la fauna marina de Paracas, la espiritualidad andina de Cusco, la grandeza de Machu Picchu, los paisajes de la Ruta del Sol, la vida ancestral del Lago Titicaca y el encanto volcánico de Arequipa. Es una experiencia ideal para grupos que buscan comodidad, asistencia coordinada, hoteles configurables y tours seleccionados en cada destino.",
+      "description": "Viaje multidestino por costa, Andes y altiplano: Lima, Huacachina, Cusco, Machu Picchu, Titicaca y Arequipa.",
       "images": {
         "cover": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/cover.jpg",
         "gallery": [
@@ -1769,222 +2325,204 @@
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación inicial. Tiempo libre en Miraflores según la hora de llegada.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-noche.jpg",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas podrás navegar hacia las Islas Ballestas para observar fauna marina como lobos marinos, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, donde podrás disfrutar de las dunas, tomar fotografías y realizar la experiencia de tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Día completo por la costa sur con Islas Ballestas, experiencia de pisco y vinos en Ica y visita al oasis de Huacachina. Retorno a Lima al finalizar.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/huacachina.jpg",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Vuelo Lima–Cusco, recepción y traslado. Tarde libre o bienvenida ancestral de baja exigencia física.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
-            "./assets/img/tours/city-tour/cover.jpg"
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás la tradición textil de Chinchero, la zona arqueológica y el mercado artesanal de Pisac, y continuarás por paisajes andinos hasta Ollantaytambo. Desde allí abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Según la opción elegida, podrás viajar en tren turístico o panorámico.",
-          "overnight": "Aguas Calientes",
-          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "title": "Cusco histórico y arqueológico",
+          "description": "Recorrido por el centro histórico, Qoricancha y los principales complejos arqueológicos del entorno de Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/city-tour/cover.jpg"
           ]
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
-          "overnight": "Cusco",
-          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Visitas en el Valle Sagrado y conexión en tren desde Ollantaytambo a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
-          "overnight": "Puno",
-          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada por el circuito oficial confirmado, retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno a Arequipa",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Según disponibilidad y ritmo del grupo, la experiencia puede complementarse con Taquile, Amantaní o una alternativa cultural en el lago. Por la noche abordarás el bus nocturno hacia Arequipa.",
-          "overnight": "Bus nocturno Puno - Arequipa",
-          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "title": "Ruta del Sol hacia Puno",
+          "description": "Bus turístico Cusco–Puno con paradas culturales y paisajes altoandinos. Llegada y traslado al hotel.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Llegada a Arequipa y City Tour",
-          "description": "Llegada a Arequipa por la mañana y traslado al hotel. Después de descansar, iniciarás una experiencia por la Ciudad Blanca: centro histórico, miradores, arquitectura en sillar y espacios coloniales. Según la operación, se puede incluir el Monasterio de Santa Catalina, la Plaza de Armas, Yanahuara y puntos panorámicos para apreciar los volcanes que rodean la ciudad.",
-          "overnight": "Arequipa",
-          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "title": "Lago Titicaca",
+          "description": "Excursión a Uros y Taquile, o alternativa cultural equivalente según condiciones y disponibilidad.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/arequipa/cover.jpg",
-            "./assets/img/packages/peru/arequipa/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 9,
-          "title": "Arequipa: Colca o experiencia urbana y vuelo a Lima",
-          "description": "Este día podrás elegir entre una experiencia de día completo al Cañón del Colca, ideal para quienes desean ver paisajes andinos, terrazas, pueblos tradicionales y, con suerte, el vuelo del cóndor; o una experiencia más ligera en Arequipa, como Ruta del Sillar, campiña o recorrido gastronómico. Por la tarde o noche tomarás el vuelo Arequipa - Lima, incluido en la estructura del paquete sujeto a confirmación de tarifa y horario.",
-          "overnight": "Lima",
-          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "title": "Puno hacia Arequipa",
+          "description": "Traslado terrestre desde Puno a Arequipa. Por la tarde, recorrido panorámico o caminata por el centro histórico de la Ciudad Blanca.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/colca/cover.jpg",
-            "./assets/img/packages/peru/arequipa/2.jpg"
+            "./assets/img/packages/peru/arequipa/cover.jpg"
           ]
         },
         {
           "day": 10,
-          "title": "Salida internacional desde Lima",
-          "description": "Traslado desde el hotel en Lima hacia el aeropuerto internacional según el horario de tu vuelo. Fin de nuestros servicios con asistencia coordinada para el grupo.",
+          "title": "Salida de Arequipa",
+          "description": "Traslado al aeropuerto para conectar con Lima o continuar el viaje. Fin de los servicios.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/arequipa/cover.jpg"
           ]
         }
       ],
       "dailyItinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación inicial. Tiempo libre en Miraflores según la hora de llegada.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/lima-noche.jpg",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas podrás navegar hacia las Islas Ballestas para observar fauna marina como lobos marinos, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, donde podrás disfrutar de las dunas, tomar fotografías y realizar la experiencia de tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Día completo por la costa sur con Islas Ballestas, experiencia de pisco y vinos en Ica y visita al oasis de Huacachina. Retorno a Lima al finalizar.",
           "overnight": "Lima",
-          "image": "./assets/img/packages/peru/10d9n-lima-huacachina-cusco-puno-arequipa/huacachina.jpg",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Vuelo Lima–Cusco, recepción y traslado. Tarde libre o bienvenida ancestral de baja exigencia física.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
-            "./assets/img/tours/city-tour/cover.jpg"
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás la tradición textil de Chinchero, la zona arqueológica y el mercado artesanal de Pisac, y continuarás por paisajes andinos hasta Ollantaytambo. Desde allí abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Según la opción elegida, podrás viajar en tren turístico o panorámico.",
-          "overnight": "Aguas Calientes",
-          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "title": "Cusco histórico y arqueológico",
+          "description": "Recorrido por el centro histórico, Qoricancha y los principales complejos arqueológicos del entorno de Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/city-tour/cover.jpg"
           ]
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
-          "overnight": "Cusco",
-          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Visitas en el Valle Sagrado y conexión en tren desde Ollantaytambo a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
-          "overnight": "Puno",
-          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada por el circuito oficial confirmado, retorno en tren y traslado al hotel en Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno a Arequipa",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Según disponibilidad y ritmo del grupo, la experiencia puede complementarse con Taquile, Amantaní o una alternativa cultural en el lago. Por la noche abordarás el bus nocturno hacia Arequipa.",
-          "overnight": "Bus nocturno Puno - Arequipa",
-          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "title": "Ruta del Sol hacia Puno",
+          "description": "Bus turístico Cusco–Puno con paradas culturales y paisajes altoandinos. Llegada y traslado al hotel.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Llegada a Arequipa y City Tour",
-          "description": "Llegada a Arequipa por la mañana y traslado al hotel. Después de descansar, iniciarás una experiencia por la Ciudad Blanca: centro histórico, miradores, arquitectura en sillar y espacios coloniales. Según la operación, se puede incluir el Monasterio de Santa Catalina, la Plaza de Armas, Yanahuara y puntos panorámicos para apreciar los volcanes que rodean la ciudad.",
-          "overnight": "Arequipa",
-          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "title": "Lago Titicaca",
+          "description": "Excursión a Uros y Taquile, o alternativa cultural equivalente según condiciones y disponibilidad.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/arequipa/cover.jpg",
-            "./assets/img/packages/peru/arequipa/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 9,
-          "title": "Arequipa: Colca o experiencia urbana y vuelo a Lima",
-          "description": "Este día podrás elegir entre una experiencia de día completo al Cañón del Colca, ideal para quienes desean ver paisajes andinos, terrazas, pueblos tradicionales y, con suerte, el vuelo del cóndor; o una experiencia más ligera en Arequipa, como Ruta del Sillar, campiña o recorrido gastronómico. Por la tarde o noche tomarás el vuelo Arequipa - Lima, incluido en la estructura del paquete sujeto a confirmación de tarifa y horario.",
-          "overnight": "Lima",
-          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "title": "Puno hacia Arequipa",
+          "description": "Traslado terrestre desde Puno a Arequipa. Por la tarde, recorrido panorámico o caminata por el centro histórico de la Ciudad Blanca.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/colca/cover.jpg",
-            "./assets/img/packages/peru/arequipa/2.jpg"
+            "./assets/img/packages/peru/arequipa/cover.jpg"
           ]
         },
         {
           "day": 10,
-          "title": "Salida internacional desde Lima",
-          "description": "Traslado desde el hotel en Lima hacia el aeropuerto internacional según el horario de tu vuelo. Fin de nuestros servicios con asistencia coordinada para el grupo.",
+          "title": "Salida de Arequipa",
+          "description": "Traslado al aeropuerto para conectar con Lima o continuar el viaje. Fin de los servicios.",
           "overnight": "Fin del viaje",
-          "image": "./assets/img/packages/peru/lima-night/2.jpg",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/2.jpg"
+            "./assets/img/packages/peru/arequipa/cover.jpg"
           ]
         }
       ],
@@ -2097,7 +2635,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_bolivia_uyuni_10d9n",
@@ -2111,7 +2651,7 @@
       "badge": "Nuevo",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Puno / Uyuni",
-      "shortDescription": "Ruta multidestino que combina lo esencial del Perú con una extensión hacia el Salar de Uyuni en Bolivia.",
+      "shortDescription": "Circuito internacional por Lima, costa sur, Cusco, Machu Picchu, Puno, La Paz y Salar de Uyuni.",
       "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2181,7 +2721,7 @@
           "en"
         ]
       },
-      "description": "Este paquete combina Lima, Paracas, Ica, Huacachina, Cusco, Valle Sagrado, Machu Picchu, Ruta del Sol, Lago Titicaca y una extensión hacia el Salar de Uyuni. Es una opción pensada para viajeros que desean unir Perú y Bolivia en una sola ruta, con servicios principales coordinados, hoteles configurables y conexiones sujetas a disponibilidad operativa.",
+      "description": "Circuito internacional por Lima, costa sur, Cusco, Machu Picchu, Puno, La Paz y Salar de Uyuni.",
       "images": {
         "cover": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/cover.jpg",
         "gallery": [
@@ -2255,85 +2795,78 @@
       "dailyItinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Orientación de la ruta internacional y revisión de documentos migratorios.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Excursión a Islas Ballestas, Ica y el oasis de Huacachina, con actividades sujetas a clima y operación.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Vuelo a Cusco, traslado al hotel y tarde tranquila para adaptarse a la altura.",
           "overnight": "Cusco",
-          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
             "./assets/img/tours/city-tour/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido cultural por el Valle Sagrado y tren desde Ollantaytambo a Machu Picchu Pueblo.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 5,
           "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "description": "Visita guiada a Machu Picchu por el circuito asignado y retorno a Cusco en tren y vehículo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Ruta del Sol a Puno",
+          "description": "Viaje turístico por Andahuaylillas, Raqchi, La Raya y Pucará según operación, con llegada a Puno.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno hacia Uyuni",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros y continuarás con una experiencia cultural en Taquile o una alternativa operativa similar según disponibilidad. Al finalizar el día, traslado hacia el terminal para abordar el bus nocturno con destino a Uyuni, dando inicio a la extensión hacia Bolivia.",
-          "overnight": "Bus nocturno Puno - Uyuni",
+          "title": "Uros y cruce terrestre hacia La Paz",
+          "description": "Visita temprana a las islas flotantes de los Uros o experiencia breve en el Titicaca. Luego, traslado terrestre hacia Bolivia con cruce fronterizo asistido y llegada a La Paz.",
+          "overnight": "La Paz",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Llegada a Uyuni y Salar de Uyuni",
-          "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
+          "title": "La Paz hacia Uyuni",
+          "description": "Traslado aéreo o terrestre a Uyuni según la opción contratada. Recepción, orientación y experiencia de atardecer en los alrededores del salar cuando el horario lo permita.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg",
           "images": [
@@ -2342,8 +2875,8 @@
         },
         {
           "day": 9,
-          "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
-          "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
+          "title": "Salar de Uyuni",
+          "description": "Excursión de día completo por el Salar de Uyuni: Colchani, montículos de sal, antiguas locomotoras y puntos panorámicos. En temporada de lluvias, la ruta se adapta para priorizar seguridad y el efecto espejo.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg",
           "images": [
@@ -2352,8 +2885,8 @@
         },
         {
           "day": 10,
-          "title": "Salida desde Uyuni o conexión a La Paz",
-          "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
+          "title": "Salida de Uyuni o conexión a La Paz",
+          "description": "Traslado al aeropuerto o terminal para la conexión a La Paz y el siguiente destino. El horario final depende del medio de transporte seleccionado.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg",
           "images": [
@@ -2364,85 +2897,78 @@
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto y traslado al hotel. Orientación de la ruta internacional y revisión de documentos migratorios.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/lima-night/cover.jpg",
-            "./assets/img/packages/peru/lima-night/1.jpg"
+            "./assets/img/packages/peru/lima-night/cover.jpg"
           ]
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Excursión a Islas Ballestas, Ica y el oasis de Huacachina, con actividades sujetas a clima y operación.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-            "./assets/img/packages/peru/paracas-huacachina/1.jpg"
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
           ]
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Vuelo a Cusco y aclimatación",
+          "description": "Vuelo a Cusco, traslado al hotel y tarde tranquila para adaptarse a la altura.",
           "overnight": "Cusco",
-          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
-            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
             "./assets/img/tours/city-tour/cover.jpg"
           ]
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido cultural por el Valle Sagrado y tren desde Ollantaytambo a Machu Picchu Pueblo.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
-            "./assets/img/tours/valle-sagrado/cover.jpg",
-            "./assets/img/tours/machu-picchu-panoramico-vistadome/cover.jpg"
+            "./assets/img/tours/valle-sagrado/cover.jpg"
           ]
         },
         {
           "day": 5,
           "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "description": "Visita guiada a Machu Picchu por el circuito asignado y retorno a Cusco en tren y vehículo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg",
-            "./assets/img/quote/fallbacks/machu-picchu.jpg"
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
           ]
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Ruta del Sol a Puno",
+          "description": "Viaje turístico por Andahuaylillas, Raqchi, La Raya y Pucará según operación, con llegada a Puno.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
-            "./assets/img/packages/peru/ruta-del-sol/1.jpg"
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
           ]
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno hacia Uyuni",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros y continuarás con una experiencia cultural en Taquile o una alternativa operativa similar según disponibilidad. Al finalizar el día, traslado hacia el terminal para abordar el bus nocturno con destino a Uyuni, dando inicio a la extensión hacia Bolivia.",
-          "overnight": "Bus nocturno Puno - Uyuni",
+          "title": "Uros y cruce terrestre hacia La Paz",
+          "description": "Visita temprana a las islas flotantes de los Uros o experiencia breve en el Titicaca. Luego, traslado terrestre hacia Bolivia con cruce fronterizo asistido y llegada a La Paz.",
+          "overnight": "La Paz",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
-            "./assets/img/packages/peru/titicaca/cover.jpg",
-            "./assets/img/packages/peru/titicaca/1.jpg"
+            "./assets/img/packages/peru/titicaca/cover.jpg"
           ]
         },
         {
           "day": 8,
-          "title": "Llegada a Uyuni y Salar de Uyuni",
-          "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
+          "title": "La Paz hacia Uyuni",
+          "description": "Traslado aéreo o terrestre a Uyuni según la opción contratada. Recepción, orientación y experiencia de atardecer en los alrededores del salar cuando el horario lo permita.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-8-salar-de-uyuni.jpg",
           "images": [
@@ -2451,8 +2977,8 @@
         },
         {
           "day": 9,
-          "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
-          "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
+          "title": "Salar de Uyuni",
+          "description": "Excursión de día completo por el Salar de Uyuni: Colchani, montículos de sal, antiguas locomotoras y puntos panorámicos. En temporada de lluvias, la ruta se adapta para priorizar seguridad y el efecto espejo.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-9-salar-de-uyuni.jpg",
           "images": [
@@ -2461,8 +2987,8 @@
         },
         {
           "day": 10,
-          "title": "Salida desde Uyuni o conexión a La Paz",
-          "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
+          "title": "Salida de Uyuni o conexión a La Paz",
+          "description": "Traslado al aeropuerto o terminal para la conexión a La Paz y el siguiente destino. El horario final depende del medio de transporte seleccionado.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/10d9n-peru-bolivia-uyuni/day-10-la-paz-bolivia.jpg",
           "images": [
@@ -2579,7 +3105,9 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
-      }
+      },
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_12d11n",
@@ -2593,7 +3121,7 @@
       "badge": "Perú esencial",
       "featured": true,
       "location": "Lima / Paracas / Ica / Arequipa / Perú",
-      "shortDescription": "Ruta esencial del Perú sur con costa, Colca, Titicaca, Cusco y Machu Picchu.",
+      "shortDescription": "Gran ruta del sur del Perú con Lima, Paracas, Arequipa, Colca, Puno, Cusco y Machu Picchu.",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2712,7 +3240,254 @@
         "Lago Titicaca con visita a las islas de los Uros y Taquile",
         "Machu Picchu en modalidad 2 días / 1 noche con alojamiento en Aguas Calientes",
         "Ruta esencial del sur del Perú: costa, desierto, Colca, Titicaca y Cusco"
-      ]
+      ],
+      "description": "Gran ruta del sur del Perú con Lima, Paracas, Arequipa, Colca, Puno, Cusco y Machu Picchu.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación del recorrido por el sur del Perú.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Islas Ballestas, experiencia vitivinícola en Ica y visita al oasis de Huacachina. Retorno a Lima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Arequipa",
+          "description": "Vuelo Lima–Arequipa, traslado al hotel y caminata panorámica por la Plaza de Armas y el centro histórico.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Arequipa y Monasterio de Santa Catalina",
+          "description": "Visita guiada a los principales atractivos de la Ciudad Blanca, incluyendo Santa Catalina y miradores, según disponibilidad.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Ruta por el altiplano y la reserva de Salinas y Aguada Blanca. Llegada a Chivay, descanso y opción de aguas termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cruz del Cóndor y traslado a Puno",
+          "description": "Visita a la Cruz del Cóndor y pueblos del Colca. Continuación por carretera hacia Puno con llegada por la tarde o noche.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Lago Titicaca: Uros y Taquile",
+          "description": "Navegación para conocer Uros y Taquile, con interpretación cultural y paisajes del lago navegable más alto del mundo.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Ruta del Sol de Puno a Cusco",
+          "description": "Bus turístico por Pucará, La Raya, Raqchi y Andahuaylillas según operador. Llegada a Cusco y traslado al hotel.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Cusco histórico",
+          "description": "Visita al centro histórico, Qoricancha y complejos arqueológicos cercanos. Tiempo libre para aclimatación y compras.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Ruta por el Valle Sagrado y tren desde Ollantaytambo. Noche en Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada a la ciudadela por el circuito confirmado. Retorno en tren y traslado a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Salida de Cusco",
+          "description": "Traslado al aeropuerto para conectar con Lima o con el siguiente destino.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y orientación del recorrido por el sur del Perú.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Islas Ballestas, experiencia vitivinícola en Ica y visita al oasis de Huacachina. Retorno a Lima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Arequipa",
+          "description": "Vuelo Lima–Arequipa, traslado al hotel y caminata panorámica por la Plaza de Armas y el centro histórico.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Arequipa y Monasterio de Santa Catalina",
+          "description": "Visita guiada a los principales atractivos de la Ciudad Blanca, incluyendo Santa Catalina y miradores, según disponibilidad.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Ruta por el altiplano y la reserva de Salinas y Aguada Blanca. Llegada a Chivay, descanso y opción de aguas termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cruz del Cóndor y traslado a Puno",
+          "description": "Visita a la Cruz del Cóndor y pueblos del Colca. Continuación por carretera hacia Puno con llegada por la tarde o noche.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Lago Titicaca: Uros y Taquile",
+          "description": "Navegación para conocer Uros y Taquile, con interpretación cultural y paisajes del lago navegable más alto del mundo.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Ruta del Sol de Puno a Cusco",
+          "description": "Bus turístico por Pucará, La Raya, Raqchi y Andahuaylillas según operador. Llegada a Cusco y traslado al hotel.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Cusco histórico",
+          "description": "Visita al centro histórico, Qoricancha y complejos arqueológicos cercanos. Tiempo libre para aclimatación y compras.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Ruta por el Valle Sagrado y tren desde Ollantaytambo. Noche en Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada a la ciudadela por el circuito confirmado. Retorno en tren y traslado a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Salida de Cusco",
+          "description": "Traslado al aeropuerto para conectar con Lima o con el siguiente destino.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_14d13n",
@@ -2726,7 +3501,7 @@
       "badge": "Naturaleza",
       "featured": false,
       "location": "Lima / Paracas / Arequipa / Puno / Perú",
-      "shortDescription": "Ruta amplia para combinar el sur clásico del Perú con una extensión de Amazonía.",
+      "shortDescription": "Ruta completa por el sur del Perú con extensión de naturaleza y lodge en la Amazonía de Puerto Maldonado.",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2845,7 +3620,294 @@
         "Machu Picchu en modalidad 2 días / 1 noche",
         "Extensión amazónica en Tambopata con caminata o navegación por la selva",
         "Ruta completa que combina el sur clásico del Perú con selva"
-      ]
+      ],
+      "description": "Ruta completa por el sur del Perú con extensión de naturaleza y lodge en la Amazonía de Puerto Maldonado.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción, traslado al hotel y orientación de la ruta por costa, Andes y Amazonía.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Navegación a Islas Ballestas, experiencia de pisco en Ica y visita al oasis de Huacachina.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Arequipa",
+          "description": "Vuelo a Arequipa, traslado y primera caminata por el centro histórico.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Arequipa, Santa Catalina y miradores",
+          "description": "Recorrido por la Plaza de Armas, Santa Catalina y miradores tradicionales con vistas de volcanes.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Valle del Colca",
+          "description": "Viaje por el altiplano hacia Chivay, paradas paisajísticas y opción de baños termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cruz del Cóndor y llegada a Puno",
+          "description": "Observación del cañón desde la Cruz del Cóndor y traslado por carretera hacia Puno.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Lago Titicaca",
+          "description": "Excursión a Uros y Taquile, con contacto cultural y navegación por el lago.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Ruta del Sol a Cusco",
+          "description": "Bus turístico con paradas culturales entre Puno y Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Cusco histórico y arqueológico",
+          "description": "Visita a Qoricancha, centro histórico y complejos arqueológicos cercanos.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado y tren a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada a Machu Picchu y retorno en tren a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Vuelo a Puerto Maldonado y lodge amazónico",
+          "description": "Vuelo a Puerto Maldonado, traslado fluvial o terrestre al lodge y primera caminata interpretativa por la selva.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        },
+        {
+          "day": 13,
+          "title": "Amazonía: fauna, bosque y río",
+          "description": "Día de actividades en la reserva: senderos, laguna o cocha, navegación y observación de fauna según lodge, clima y temporada.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        },
+        {
+          "day": 14,
+          "title": "Retorno a Puerto Maldonado y salida",
+          "description": "Traslado al aeropuerto de Puerto Maldonado para el vuelo a Lima o la siguiente conexión.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción, traslado al hotel y orientación de la ruta por costa, Andes y Amazonía.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ica y Huacachina",
+          "description": "Navegación a Islas Ballestas, experiencia de pisco en Ica y visita al oasis de Huacachina.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Vuelo a Arequipa",
+          "description": "Vuelo a Arequipa, traslado y primera caminata por el centro histórico.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Arequipa, Santa Catalina y miradores",
+          "description": "Recorrido por la Plaza de Armas, Santa Catalina y miradores tradicionales con vistas de volcanes.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Valle del Colca",
+          "description": "Viaje por el altiplano hacia Chivay, paradas paisajísticas y opción de baños termales.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Cruz del Cóndor y llegada a Puno",
+          "description": "Observación del cañón desde la Cruz del Cóndor y traslado por carretera hacia Puno.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Lago Titicaca",
+          "description": "Excursión a Uros y Taquile, con contacto cultural y navegación por el lago.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Ruta del Sol a Cusco",
+          "description": "Bus turístico con paradas culturales entre Puno y Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Cusco histórico y arqueológico",
+          "description": "Visita a Qoricancha, centro histórico y complejos arqueológicos cercanos.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado y tren a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada a Machu Picchu y retorno en tren a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Vuelo a Puerto Maldonado y lodge amazónico",
+          "description": "Vuelo a Puerto Maldonado, traslado fluvial o terrestre al lodge y primera caminata interpretativa por la selva.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        },
+        {
+          "day": 13,
+          "title": "Amazonía: fauna, bosque y río",
+          "description": "Día de actividades en la reserva: senderos, laguna o cocha, navegación y observación de fauna según lodge, clima y temporada.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        },
+        {
+          "day": 14,
+          "title": "Retorno a Puerto Maldonado y salida",
+          "description": "Traslado al aeropuerto de Puerto Maldonado para el vuelo a Lima o la siguiente conexión.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/packages/peru/14d13n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/14d13n/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     },
     {
       "id": "pkg_peru_15d14n",
@@ -2859,7 +3921,7 @@
       "badge": "Mega viaje",
       "featured": false,
       "location": "Lima / Paracas / Ica / Nazca / Perú",
-      "shortDescription": "Versión extensa para viajeros que quieren una experiencia completa del Perú.",
+      "shortDescription": "Circuito integral de 15 días por costa, Nazca, Arequipa, Colca, Titicaca, Cusco, Machu Picchu y Amazonía.",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2987,7 +4049,314 @@
         "Machu Picchu en modalidad 2 días / 1 noche",
         "Extensión amazónica en Tambopata",
         "La ruta más completa para descubrir el Perú de costa a selva"
-      ]
+      ],
+      "description": "Circuito integral de 15 días por costa, Nazca, Arequipa, Colca, Titicaca, Cusco, Machu Picchu y Amazonía.",
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y reunión de orientación para el circuito completo.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Lima histórica, Miraflores y Barranco",
+          "description": "Recorrido por el centro histórico, plazas coloniales, Miraflores y Barranco, con tiempo para disfrutar la gastronomía limeña.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Paracas, Islas Ballestas, Ica y Huacachina",
+          "description": "Salida a la costa sur, navegación en Paracas, experiencia vitivinícola y visita a Huacachina. Noche en Ica o Paracas para continuar la ruta.",
+          "overnight": "Ica o Paracas",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Líneas de Nazca y traslado a Arequipa",
+          "description": "Traslado hacia Nazca. Sobrevuelo opcional de las Líneas de Nazca sujeto a clima, peso, disponibilidad y condiciones operativas; luego conexión terrestre o aérea hacia Arequipa.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Arequipa y Santa Catalina",
+          "description": "Visita a la Ciudad Blanca, Monasterio de Santa Catalina, Plaza de Armas y miradores tradicionales.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Viaje por la reserva de Salinas y Aguada Blanca, miradores altoandinos y llegada a Chivay.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Cruz del Cóndor y llegada a Puno",
+          "description": "Visita a la Cruz del Cóndor y pueblos del valle. Traslado hacia Puno por la tarde.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Lago Titicaca: Uros y Taquile",
+          "description": "Día completo de navegación y experiencia cultural en Uros y Taquile.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Ruta del Sol de Puno a Cusco",
+          "description": "Viaje turístico con paradas culturales en el corredor altiplánico hasta Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Cusco histórico y sitios arqueológicos",
+          "description": "Visita a Qoricancha, centro histórico y complejos arqueológicos, con tarde libre.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado y conexión en tren a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada por el circuito oficial asignado y retorno a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 13,
+          "title": "Vuelo a Puerto Maldonado y entrada a la selva",
+          "description": "Vuelo a Puerto Maldonado, traslado al lodge y primera actividad interpretativa en la Amazonía.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        },
+        {
+          "day": 14,
+          "title": "Experiencia amazónica de día completo",
+          "description": "Senderos, navegación, observación de aves y fauna o visita a una cocha, según el programa del lodge y las condiciones naturales.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        },
+        {
+          "day": 15,
+          "title": "Retorno a Lima y fin del viaje",
+          "description": "Traslado a Puerto Maldonado, vuelo a Lima y asistencia para la conexión internacional o extensión del viaje.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Lima",
+          "description": "Recepción en el aeropuerto, traslado al hotel y reunión de orientación para el circuito completo.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Lima histórica, Miraflores y Barranco",
+          "description": "Recorrido por el centro histórico, plazas coloniales, Miraflores y Barranco, con tiempo para disfrutar la gastronomía limeña.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Paracas, Islas Ballestas, Ica y Huacachina",
+          "description": "Salida a la costa sur, navegación en Paracas, experiencia vitivinícola y visita a Huacachina. Noche en Ica o Paracas para continuar la ruta.",
+          "overnight": "Ica o Paracas",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Líneas de Nazca y traslado a Arequipa",
+          "description": "Traslado hacia Nazca. Sobrevuelo opcional de las Líneas de Nazca sujeto a clima, peso, disponibilidad y condiciones operativas; luego conexión terrestre o aérea hacia Arequipa.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Arequipa y Santa Catalina",
+          "description": "Visita a la Ciudad Blanca, Monasterio de Santa Catalina, Plaza de Armas y miradores tradicionales.",
+          "overnight": "Arequipa",
+          "image": "./assets/img/packages/peru/arequipa/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/arequipa/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Arequipa hacia el Valle del Colca",
+          "description": "Viaje por la reserva de Salinas y Aguada Blanca, miradores altoandinos y llegada a Chivay.",
+          "overnight": "Valle del Colca",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Cruz del Cóndor y llegada a Puno",
+          "description": "Visita a la Cruz del Cóndor y pueblos del valle. Traslado hacia Puno por la tarde.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/colca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/colca/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Lago Titicaca: Uros y Taquile",
+          "description": "Día completo de navegación y experiencia cultural en Uros y Taquile.",
+          "overnight": "Puno",
+          "image": "./assets/img/packages/peru/titicaca/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/titicaca/cover.jpg"
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Ruta del Sol de Puno a Cusco",
+          "description": "Viaje turístico con paradas culturales en el corredor altiplánico hasta Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/ruta-del-sol/cover.jpg"
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Cusco histórico y sitios arqueológicos",
+          "description": "Visita a Qoricancha, centro histórico y complejos arqueológicos, con tarde libre.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/city-tour/cover.jpg",
+          "images": [
+            "./assets/img/tours/city-tour/cover.jpg"
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
+          "description": "Recorrido por el Valle Sagrado y conexión en tren a Machu Picchu Pueblo.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Visita guiada por el circuito oficial asignado y retorno a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+          ]
+        },
+        {
+          "day": 13,
+          "title": "Vuelo a Puerto Maldonado y entrada a la selva",
+          "description": "Vuelo a Puerto Maldonado, traslado al lodge y primera actividad interpretativa en la Amazonía.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        },
+        {
+          "day": 14,
+          "title": "Experiencia amazónica de día completo",
+          "description": "Senderos, navegación, observación de aves y fauna o visita a una cocha, según el programa del lodge y las condiciones naturales.",
+          "overnight": "Amazonía",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        },
+        {
+          "day": 15,
+          "title": "Retorno a Lima y fin del viaje",
+          "description": "Traslado a Puerto Maldonado, vuelo a Lima y asistencia para la conexión internacional o extensión del viaje.",
+          "overnight": "Fin del viaje",
+          "image": "./assets/img/packages/peru/15d14n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/15d14n/cover.jpg"
+          ]
+        }
+      ],
+      "itineraryStatus": "complete",
+      "itineraryLanguage": "es"
     }
   ],
   "durationConfigs": [

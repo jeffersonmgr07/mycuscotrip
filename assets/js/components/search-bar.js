@@ -500,15 +500,6 @@ class MyCuscoTripSearchBar {
       this.applyTabRules({ clearDates: true });
     });
 
-    this.flexibleDatesInput?.addEventListener("change", () => {
-      const isFlexible = this.isFlexibleDates();
-      if (isFlexible) this.clearDates();
-      if (this.dateField) this.dateField.classList.toggle("is-disabled", isFlexible);
-      if (this.flatpickrInstance) {
-        if (isFlexible) this.flatpickrInstance.close();
-      }
-    });
-
     document.addEventListener("click", (event) => {
       const insideQty =
         this.qtyPanel?.contains(event.target) ||
@@ -530,7 +521,7 @@ class MyCuscoTripSearchBar {
   }
 
   isFlexibleDates() {
-    return Boolean(this.flexibleDatesInput?.checked);
+    return false;
   }
 
   buildTourUrl() {

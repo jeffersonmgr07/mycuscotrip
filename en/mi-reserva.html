@@ -279,11 +279,11 @@
 <form id="reservaForm">
 <div class="reserva-field">
 <label for="codigo">Booking code</label>
-<input id="codigo" name="codigo" placeholder="Ex. CUS12345" required="" type="text"/>
+<input id="codigo" name="codigo" autocapitalize="characters" autocomplete="off" maxlength="32" spellcheck="false" placeholder="Ex. CUZ1A2B3C" required="" type="text"/>
 </div>
 <div class="reserva-field">
-<label for="apellido">Last name</label>
-<input id="apellido" name="apellido" placeholder="Ex. Garcia" required="" type="text"/>
+<label for="identifier">Correo electrónico o apellido</label>
+<input id="identifier" name="identifier" placeholder="Ej. viajero@email.com" required="" type="text" autocomplete="email"/>
 </div>
 <div class="reserva-error" id="errorMessage"></div>
 <button class="reserva-btn" id="buscarBtn" type="submit">
@@ -417,137 +417,11 @@
   </script>
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
-<script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/components/header.js"></script>
 <script src="../assets/js/lib/utils.js"></script>
-<script>
-    const form = document.getElementById("reservaForm");
-    const errorMessage = document.getElementById("errorMessage");
-    const buscarBtn = document.getElementById("buscarBtn");
 
-    function limpiarExacto(valor) {
-      return String(valor || "").trim().toUpperCase();
-    }
-
-    function normalizarParaSugerencia(valor) {
-      return limpiarExacto(valor)
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-    }
-
-    function obtenerApellidoReserva(reserva) {
-      return String(reserva?.apellido || "").trim();
-    }
-
-    function codigoCoincideExacto(reserva, codigoIngresado) {
-      return limpiarExacto(reserva?.codigo) === limpiarExacto(codigoIngresado);
-    }
-
-    function apellidoCoincideExacto(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerApellidoReserva(reserva);
-      if (!apellidoReserva || !String(apellidoIngresado || "").trim()) return false;
-      return limpiarExacto(apellidoReserva) === limpiarExacto(apellidoIngresado);
-    }
-
-    function distanciaLevenshtein(a, b) {
-      const textoA = normalizarParaSugerencia(a);
-      const textoB = normalizarParaSugerencia(b);
-      const matriz = Array.from({ length: textoA.length + 1 }, () => []);
-
-      for (let i = 0; i <= textoA.length; i++) matriz[i][0] = i;
-      for (let j = 0; j <= textoB.length; j++) matriz[0][j] = j;
-
-      for (let i = 1; i <= textoA.length; i++) {
-        for (let j = 1; j <= textoB.length; j++) {
-          const costo = textoA[i - 1] === textoB[j - 1] ? 0 : 1;
-          matriz[i][j] = Math.min(
-            matriz[i - 1][j] + 1,
-            matriz[i][j - 1] + 1,
-            matriz[i - 1][j - 1] + costo
-          );
-        }
-      }
-
-      return matriz[textoA.length][textoB.length];
-    }
-
-    function pareceApellidoMalEscrito(reserva, apellidoIngresado) {
-      const apellidoReserva = obtenerApellidoReserva(reserva);
-      const apellido = String(apellidoIngresado || "").trim();
-      if (!apellidoReserva || !apellido) return false;
-
-      const esperado = normalizarParaSugerencia(apellidoReserva);
-      const ingresado = normalizarParaSugerencia(apellido);
-      if (!esperado || !ingresado) return false;
-
-      // Solo sugerimos error de escritura cuando el dato es razonablemente cercano.
-      // Ejemplos: BATISTA / BAUTISTA, MELENDEZ / MELENDES, MUCKLE / MUKLE.
-      const distancia = distanciaLevenshtein(esperado, ingresado);
-      const limite = esperado.length <= 6 ? 1 : 2;
-      return distancia > 0 && distancia <= limite;
-    }
-
-    async function cargarReservas() {
-      const response = await fetch("../data/reservas.json", { cache: "no-store" });
-      if (!response.ok) {
-        throw new Error(`Could not load ../data/reservas.json (${response.status})`);
-      }
-      const reservas = await response.json();
-      if (!Array.isArray(reservas)) {
-        throw new Error("The data/reservas.json file does not contain a valid booking list.");
-      }
-      return reservas;
-    }
-
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      errorMessage.style.display = "none";
-      errorMessage.textContent = "";
-      buscarBtn.disabled = true;
-      buscarBtn.textContent = "Searching...";
-
-      const codigo = document.getElementById("codigo").value;
-      const apellido = document.getElementById("apellido").value;
-
-      if (!String(codigo || "").trim() || !String(apellido || "").trim()) {
-        errorMessage.textContent = "Enter your booking code and last name.";
-        errorMessage.style.display = "block";
-        buscarBtn.disabled = false;
-        buscarBtn.textContent = "Find booking";
-        return;
-      }
-
-      try {
-        const reservas = await cargarReservas();
-        const reservaPorCodigo = reservas.find((reserva) => codigoCoincideExacto(reserva, codigo));
-
-        if (!reservaPorCodigo) {
-          errorMessage.textContent = "No booking was found with those details.";
-          errorMessage.style.display = "block";
-          return;
-        }
-
-        if (!apellidoCoincideExacto(reservaPorCodigo, apellido)) {
-          errorMessage.textContent = pareceApellidoMalEscrito(reservaPorCodigo, apellido)
-            ? "It looks like your last name may be misspelled. Please check that it matches the last name registered in your booking."
-            : "No booking was found with those details.";
-          errorMessage.style.display = "block";
-          return;
-        }
-
-        localStorage.setItem("reservaSeleccionada", JSON.stringify(reservaPorCodigo));
-        const codigoUrl = encodeURIComponent(reservaPorCodigo.codigo || String(codigo).trim());
-        window.location.assign(`./detalle-reserva.html?codigo=${codigoUrl}`);
-      } catch (error) {
-        console.error("Error consultando reserva:", error);
-        errorMessage.textContent = "We could not access the booking file. Please try again or contact us on WhatsApp.";
-        errorMessage.style.display = "block";
-      } finally {
-        buscarBtn.disabled = false;
-        buscarBtn.textContent = "Find booking";
-      }
-    });
-  </script>
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/core/api-client.js"></script>
+<script src="../assets/js/pages/reservation-recovery.js"></script>
 </body>
 </html>

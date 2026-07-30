@@ -10,8 +10,14 @@
     return window.location.hostname.includes("github.io") ? "/mycuscotrip/" : "/";
   }
 
+  function getPathParts(pathname = window.location.pathname) {
+    const parts = String(pathname || "").split("/").filter(Boolean);
+    if (window.location.hostname.includes("github.io") && parts[0] === "mycuscotrip") parts.shift();
+    return parts;
+  }
+
   function getCurrentFolderLocale() {
-    const segment = window.location.pathname.split("/").filter(Boolean)[0] || "";
+    const segment = getPathParts()[0] || "";
     return SUPPORTED_LOCALES.includes(segment) && segment !== DEFAULT_LOCALE ? segment : "";
   }
 
@@ -141,11 +147,24 @@
   function getLocalizedPath(locale, path) {
     const lang = normalizeLocale(locale);
     const url = new URL(path || window.location.href, window.location.origin);
-    const parts = url.pathname.split("/").filter(Boolean);
+    const parts = getPathParts(url.pathname);
     if (SUPPORTED_LOCALES.includes(parts[0])) parts.shift();
     const cleanPath = parts.join("/") || "index.html";
-    const prefix = lang === DEFAULT_LOCALE ? "/" : `/${lang}/`;
-    return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${url.search}${url.hash}`;
+    const params = new URLSearchParams(url.search);
+    const base = getBasePath();
+
+    // Static/footer pages exist only once under /pages/. Keep that canonical
+    // physical route and carry the selected language in the query string.
+    if (cleanPath.startsWith("pages/")) {
+      if (lang === DEFAULT_LOCALE) params.delete("lang");
+      else params.set("lang", lang);
+      const query = params.toString() ? `?${params.toString()}` : "";
+      return `${base}${cleanPath}${query}${url.hash}`;
+    }
+
+    const prefix = lang === DEFAULT_LOCALE ? base : `${base}${lang}/`;
+    const query = params.toString() ? `?${params.toString()}` : "";
+    return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${query}${url.hash}`;
   }
 
   async function initI18n(locale) {

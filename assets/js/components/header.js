@@ -493,9 +493,11 @@ class MyCuscoTripHeader {
     const currentLang = window.MyCuscoTripI18n?.getLocaleFromUrl?.() || "es";
     const url = new URL(href, window.location.origin);
     const parts = url.pathname.split("/").filter(Boolean);
+    if (window.location.hostname.includes("github.io") && parts[0] === "mycuscotrip") parts.shift();
     if (supportedLocales.includes(parts[0])) parts.shift();
 
     const cleanPath = parts.join("/") || "index.html";
+    const basePath = this.getBasePath();
     const params = new URLSearchParams(url.search);
 
     if (cleanPath === "product.html" && params.has("slug")) {
@@ -504,14 +506,25 @@ class MyCuscoTripHeader {
       params.set("slug", nextSlug);
     }
 
-    const prefix = targetLang === "es" ? "/" : `/${targetLang}/`;
+    // Footer/static pages live once under /pages/. Localizing them by adding
+    // /en/, /pt/, etc. produced 404s because those physical folders do not
+    // exist. Keep the canonical path and carry the language in ?lang=.
+    if (cleanPath.startsWith("pages/")) {
+      if (targetLang === "es") params.delete("lang");
+      else params.set("lang", targetLang);
+      const query = params.toString() ? `?${params.toString()}` : "";
+      return `${basePath}${cleanPath}${query}${url.hash}`;
+    }
+
+    const prefix = targetLang === "es" ? basePath : `${basePath}${targetLang}/`;
     const query = params.toString() ? `?${params.toString()}` : "";
     return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${query}${url.hash}`;
   }
 
   localizeHeaderLinks(lang) {
     const currentLang = lang || "es";
-    const pagePrefix = currentLang === "es" ? "/" : `/${currentLang}/`;
+    const basePath = this.getBasePath();
+    const pagePrefix = currentLang === "es" ? basePath : `${basePath}${currentLang}/`;
     this.navLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
       if (!href || href.startsWith("http") || href.startsWith("#")) return;
@@ -519,6 +532,7 @@ class MyCuscoTripHeader {
 
       const url = new URL(href, window.location.origin);
       const parts = url.pathname.split("/").filter(Boolean);
+      if (window.location.hostname.includes("github.io") && parts[0] === "mycuscotrip") parts.shift();
       if (["en", "pt", "fr", "de", "it", "zh", "ja"].includes(parts[0])) parts.shift();
       const clean = parts.join("/") || "index.html";
       const params = new URLSearchParams(url.search);

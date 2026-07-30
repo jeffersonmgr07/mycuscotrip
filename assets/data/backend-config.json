@@ -1,9 +1,9 @@
 {
-  "version": "1.2.0",
-  "updatedAt": "2026-05-28",
+  "version": "1.3.0",
+  "updatedAt": "2026-07-30",
   "mode": "apps_script",
   "apiBaseUrl": "https://script.google.com/macros/s/AKfycbxhBchwmQvPghrQvacpbvnQkd-rNFCZUJjFzDeTYTvnRfUu13pG7k0Eds_4-mzYFmZ0/exec",
-  "notes": "Backend Google Apps Script para cupones, reservas, pasajeros, PayPal en USD y Mercado Pago en PEN. Reemplazar apiBaseUrl por la URL /exec publicada.",
+  "notes": "Backend Google Apps Script para cupones, reservas, pasajeros, PayPal en USD y Mercado Pago en PEN. La recuperación V93 requiere lookupReservation por código + correo o apellido; reemplazar apiBaseUrl por la URL /exec publicada que implemente ese contrato.",
   "endpoints": {
     "quotes": "/api/quotes",
     "preReservations": "/api/pre-reservations",

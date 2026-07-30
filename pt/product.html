@@ -14,7 +14,7 @@
 <link href="../assets/css/header.css" rel="stylesheet"/>
 <link href="../assets/css/footer.css" rel="stylesheet"/>
 <link href="../assets/css/responsive.css" rel="stylesheet"/>
-<link href="../assets/css/product-page.css?v=20" rel="stylesheet"/>
+<link href="../assets/css/product-page.css?v=20260730-93" rel="stylesheet"/>
 <link href="../assets/css/coupon-popup.css?v=7" rel="stylesheet"/>
 <meta content="pt_BR" property="og:locale"/><meta content="Detalhes do passeio e reserva segura | My Cusco Trip" property="og:title"/><meta content="Revise itinerário, inclusões, hotéis, trens, preços e opções de reserva para sua experiência no Peru." property="og:description"/><meta content="Detalhes do passeio e reserva segura | My Cusco Trip" name="twitter:title"/><meta content="Revise itinerário, inclusões, hotéis, trens, preços e opções de reserva para sua experiência no Peru." name="twitter:description"/><link href="https://mycuscotrip.com/pt/product.html" rel="canonical"/><meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/><script>window.MCT_LOCALE="pt"; window.MCT_IS_LOCALIZED_PAGE=true;</script>
 <!-- Social sharing fallback -->
@@ -358,10 +358,13 @@
 <div aria-labelledby="passengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
 <div class="passenger-modal__header">
 <div class="passenger-modal__titlebar">
-<h2 id="passengerModalTitle" data-i18n="product.bookingDetails">Detalhes da reserva</h2>
+<h2 id="passengerModalTitle" data-i18n="product.passengerDetailsTitle">Dados dos passageiros</h2>
+<div class="passenger-modal__code-wrap">
+<span class="passenger-modal__code-label" data-i18n="product.reservationCodeLabel">Código da reserva:</span>
 <button aria-label="Copiar código da reserva" class="passenger-modal__code-pill" id="passengerReservationCodeCopy" type="button">
 <span id="passengerReservationCode">CUZ000000</span>
 </button>
+</div>
 <button aria-label="Fechar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
 <i class="fas fa-xmark"></i>
 </button>
@@ -372,8 +375,11 @@
 <strong id="passengerPayNowAmount">USD 0.00</strong>
 </div>
 </div>
-<p class="passenger-modal__subtitle" id="passengerReservationTimestamp"></p>
-<p class="passenger-modal__warning">Insira nomes, sobrenomes e documentos exatamente como constam na documentação oficial. Esses dados serão usados para emitir passagens, tickets de transporte, trens e ingressos a Machu Picchu; se estiverem incorretos, podem impedir o uso dos serviços do itinerário.</p>
+<p aria-hidden="true" class="passenger-modal__subtitle" hidden id="passengerReservationTimestamp"></p>
+<details class="passenger-modal__warning passenger-modal__important">
+<summary data-i18n="product.importantInformation">Informação importante</summary>
+<p>Insira nomes, sobrenomes e documentos exatamente como constam na documentação oficial. Esses dados serão usados para emitir passagens, bilhetes de transporte, trens e ingressos para Machu Picchu; dados incorretos podem impedir o uso dos serviços do itinerário.</p>
+</details>
 </div>
 <div class="passenger-modal__body">
 <button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
@@ -530,7 +536,7 @@
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
 <script src="../assets/js/components/header.js"></script>
-<script src="../assets/js/pages/product.js?v=21"></script>
+<script src="../assets/js/pages/product.js?v=20260730-93"></script>
 <script src="../assets/js/components/coupon-popup.js"></script>
 </body>
 </html>

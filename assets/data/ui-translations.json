@@ -1019,7 +1019,14 @@
     "catalog.routeIntro": "Paquetes y circuitos disponibles para la ruta {route}.",
     "catalog.durationRangeLabel": "Viajes de {min} a {max} días",
     "catalog.durationMinLabel": "Viajes de {min} días o más",
-    "search.categoryOtherPeruDestinations": "Otros destinos en Perú"
+    "search.categoryOtherPeruDestinations": "Otros destinos en Perú",
+    "product.reservationCodeLabel": "Código de reserva:",
+    "product.importantInformation": "Información importante",
+    "footer.recoverReservation": "Recuperar o pagar una reserva",
+    "payment.cancelledTitle": "El pago no se completó",
+    "payment.cancelledBody": "El proceso de pago no se completó. Tu reserva sigue disponible con el código {code}. Puedes recuperarla y volver a pagar usando el correo registrado.",
+    "payment.recoverCta": "Recuperar y pagar reserva",
+    "payment.registeredEmail": "Correo registrado: {email}"
   },
   "en": {
     "nav.machuPicchuTours": "Machu Picchu Tours",
@@ -2070,7 +2077,14 @@
     "catalog.routeIntro": "Packages and circuits available for the {route} route.",
     "catalog.durationRangeLabel": "{min} to {max}-day trips",
     "catalog.durationMinLabel": "Trips of {min} days or more",
-    "search.categoryOtherPeruDestinations": "Other destinations in Peru"
+    "search.categoryOtherPeruDestinations": "Other destinations in Peru",
+    "product.reservationCodeLabel": "Reservation code:",
+    "product.importantInformation": "Important information",
+    "footer.recoverReservation": "Recover or pay for a reservation",
+    "payment.cancelledTitle": "Payment was not completed",
+    "payment.cancelledBody": "The payment process was not completed. Your reservation is still available under code {code}. You can recover it and try paying again using the registered email.",
+    "payment.recoverCta": "Recover and pay reservation",
+    "payment.registeredEmail": "Registered email: {email}"
   },
   "pt": {
     "nav.machuPicchuTours": "Tours a Machu Picchu",
@@ -3089,7 +3103,14 @@
     "catalog.routeIntro": "Pacotes e circuitos disponíveis para a rota {route}.",
     "catalog.durationRangeLabel": "Viagens de {min} a {max} dias",
     "catalog.durationMinLabel": "Viagens de {min} dias ou mais",
-    "search.categoryOtherPeruDestinations": "Outros destinos no Peru"
+    "search.categoryOtherPeruDestinations": "Outros destinos no Peru",
+    "product.reservationCodeLabel": "Código da reserva:",
+    "product.importantInformation": "Informação importante",
+    "footer.recoverReservation": "Recuperar ou pagar uma reserva",
+    "payment.cancelledTitle": "O pagamento não foi concluído",
+    "payment.cancelledBody": "O processo de pagamento não foi concluído. Sua reserva continua disponível com o código {code}. Você pode recuperá-la e tentar pagar novamente usando o e-mail cadastrado.",
+    "payment.recoverCta": "Recuperar e pagar reserva",
+    "payment.registeredEmail": "E-mail cadastrado: {email}"
   },
   "fr": {
     "nav.machuPicchuTours": "Tours à Machu Picchu",
@@ -4068,7 +4089,14 @@
     "search.packageMachuPicchuTrekking": "Machu Picchu + trekking",
     "search.packageAdventureNature": "Forfaits aventure et nature",
     "search.packagePeruCustom": "Pérou multidestination ou sur mesure",
-    "nav.completeYourTrip": "Complétez votre voyage"
+    "nav.completeYourTrip": "Complétez votre voyage",
+    "product.reservationCodeLabel": "Code de réservation :",
+    "product.importantInformation": "Information importante",
+    "footer.recoverReservation": "Récupérer ou payer une réservation",
+    "payment.cancelledTitle": "Le paiement n’a pas été finalisé",
+    "payment.cancelledBody": "Le processus de paiement n’a pas été finalisé. Votre réservation reste disponible sous le code {code}. Vous pouvez la récupérer et réessayer le paiement avec l’e-mail enregistré.",
+    "payment.recoverCta": "Récupérer et payer la réservation",
+    "payment.registeredEmail": "E-mail enregistré : {email}"
   },
   "de": {
     "nav.machuPicchuTours": "Machu-Picchu-Touren",
@@ -5047,7 +5075,14 @@
     "search.packageMachuPicchuTrekking": "Machu Picchu + Trekking",
     "search.packageAdventureNature": "Abenteuer- und Naturpakete",
     "search.packagePeruCustom": "Peru Rundreise oder individuell",
-    "nav.completeYourTrip": "Ergänzen Sie Ihre Reise"
+    "nav.completeYourTrip": "Ergänzen Sie Ihre Reise",
+    "product.reservationCodeLabel": "Buchungscode:",
+    "product.importantInformation": "Wichtige Information",
+    "footer.recoverReservation": "Buchung wiederherstellen oder bezahlen",
+    "payment.cancelledTitle": "Die Zahlung wurde nicht abgeschlossen",
+    "payment.cancelledBody": "Der Zahlungsvorgang wurde nicht abgeschlossen. Ihre Buchung bleibt unter dem Code {code} verfügbar. Sie können sie mit der registrierten E-Mail-Adresse wiederherstellen und erneut bezahlen.",
+    "payment.recoverCta": "Buchung wiederherstellen und bezahlen",
+    "payment.registeredEmail": "Registrierte E-Mail: {email}"
   },
   "it": {
     "nav.machuPicchuTours": "Tour a Machu Picchu",
@@ -6026,7 +6061,14 @@
     "search.packageMachuPicchuTrekking": "Machu Picchu + trekking",
     "search.packageAdventureNature": "Pacchetti avventura e natura",
     "search.packagePeruCustom": "Perù multidestinazione o personalizzato",
-    "nav.completeYourTrip": "Completa il tuo viaggio"
+    "nav.completeYourTrip": "Completa il tuo viaggio",
+    "product.reservationCodeLabel": "Codice di prenotazione:",
+    "product.importantInformation": "Informazioni importanti",
+    "footer.recoverReservation": "Recupera o paga una prenotazione",
+    "payment.cancelledTitle": "Il pagamento non è stato completato",
+    "payment.cancelledBody": "Il processo di pagamento non è stato completato. La prenotazione resta disponibile con il codice {code}. Puoi recuperarla e riprovare il pagamento usando l’e-mail registrata.",
+    "payment.recoverCta": "Recupera e paga la prenotazione",
+    "payment.registeredEmail": "E-mail registrata: {email}"
   },
   "zh": {
     "nav.machuPicchuTours": "马丘比丘旅游",
@@ -7005,7 +7047,14 @@
     "search.packageMachuPicchuTrekking": "马丘比丘 + 徒步",
     "search.packageAdventureNature": "探险与自然套餐",
     "search.packagePeruCustom": "秘鲁多目的地或定制",
-    "nav.completeYourTrip": "完善您的旅程"
+    "nav.completeYourTrip": "完善您的旅程",
+    "product.reservationCodeLabel": "预订代码：",
+    "product.importantInformation": "重要信息",
+    "footer.recoverReservation": "找回或支付预订",
+    "payment.cancelledTitle": "付款未完成",
+    "payment.cancelledBody": "付款流程未完成。您的预订仍以代码 {code} 保留。您可以使用登记的电子邮箱找回预订并重新付款。",
+    "payment.recoverCta": "找回并支付预订",
+    "payment.registeredEmail": "登记邮箱：{email}"
   },
   "ja": {
     "nav.machuPicchuTours": "マチュピチュツアー",
@@ -7984,6 +8033,13 @@
     "search.packageMachuPicchuTrekking": "マチュピチュ + トレッキング",
     "search.packageAdventureNature": "冒険と自然のパッケージ",
     "search.packagePeruCustom": "ペルー周遊またはカスタム",
-    "nav.completeYourTrip": "旅をさらに充実"
+    "nav.completeYourTrip": "旅をさらに充実",
+    "product.reservationCodeLabel": "予約コード：",
+    "product.importantInformation": "重要な情報",
+    "footer.recoverReservation": "予約の復元または支払い",
+    "payment.cancelledTitle": "支払いが完了しませんでした",
+    "payment.cancelledBody": "支払い手続きが完了しませんでした。予約はコード {code} で引き続き保持されています。登録済みのメールアドレスを使用して予約を復元し、再度支払うことができます。",
+    "payment.recoverCta": "予約を復元して支払う",
+    "payment.registeredEmail": "登録メール：{email}"
   }
 }

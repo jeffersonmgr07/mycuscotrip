@@ -1,67 +1,42 @@
-# Código de reserva CUZ — notas de implementación (julio 2026)
+# Código de reserva CUZ — formato V93 (30 de julio de 2026)
 
-## Formato nuevo
+## Formato visible
 
-`assets/js/pages/product.js` → `generateReservationCode()`
+El checkout de `product.html` usa el formato solicitado:
 
+```text
+CUZ + 6 caracteres hexadecimales en mayúsculas
 ```
-CUZ + timestamp en hex (11 caracteres, de Date.now(), incluye ms) + 8 caracteres hex aleatorios (crypto.getRandomValues, 32 bits)
+
+Ejemplo:
+
+```text
+CUZ1A2B3C
 ```
 
-Ejemplo: `CUZ19FB141E159318E7585` (22 caracteres en total).
+La generación está implementada en `assets/js/pages/product.js`, dentro del parche **MCT V93**.
 
-Antes: `CUZ` + 6 hex aleatorios (9 caracteres), sin componente de timestamp.
+## Cómo se genera
 
-## Prueba de duplicados
+1. Se toma la marca temporal del momento en que se crea la pre-reserva mediante `Date.now()`.
+2. Se agrega la medición de alta resolución de `performance.now()`, convertida a microsegundos aproximados.
+3. Se incorpora un contador de reintento local.
+4. La cadena temporal se mezcla mediante FNV-1a y se reduce a 24 bits.
+5. El valor se representa como seis dígitos hexadecimales y se antepone `CUZ`.
 
-Script de prueba (no forma parte del bundle de producción): genera 100,000 códigos
-con la misma fórmula, incluyendo una prueba de ráfaga (20,000 llamadas en el mismo
-tick de reloj). Resultado: **0 colisiones** en ambos escenarios.
+El navegador no garantiza microsegundos absolutos del sistema operativo: `performance.now()` ofrece una medición de alta resolución cuyo nivel exacto puede reducirse por políticas de privacidad del navegador. Por ello, el valor debe considerarse una derivación temporal de alta resolución, no un reloj forense.
 
-La versión inicial truncaba el componente aleatorio a 6 caracteres hex (24 bits) y sí
-producía colisiones ocasionales en ráfagas de miles de llamadas en el mismo milisegundo
-(5 colisiones en 100,000 en la prueba). Por eso se usa el hex aleatorio completo de 8
-caracteres (32 bits) en la versión final.
+## Límite matemático y unicidad
 
-## Persistencia por sesión de checkout
+Seis caracteres hexadecimales ofrecen **16,777,216 combinaciones**. El frontend revisa las reservas guardadas en el mismo navegador y reintenta hasta 32 veces ante una coincidencia local.
 
-`generatePreReservation()` ahora reutiliza `this.currentPreReservation.code` si ya existe
-uno para la sesión de compra activa (misma carga de página). Solo se genera un código
-nuevo cuando:
-- es la primera vez que se abre el modal en esa carga de página, o
-- se restaura un pago (`restoredPaymentPayload.code`, retorno de PayPal/Mercado Pago).
+Esto no garantiza unicidad entre dispositivos. El backend debe ser la autoridad final:
 
-Recargar la página / iniciar un checkout nuevo sí genera un código nuevo (comportamiento
-esperado).
+1. Guardar el código en una columna o índice único.
+2. Rechazar una colisión y devolver un código nuevo.
+3. Devolver siempre el código definitivo al frontend antes de crear la orden PayPal.
+4. No utilizar el código como único factor de autenticación para consultar datos personales.
 
-## Limitación conocida: unicidad de backend
+## Compatibilidad
 
-Este repositorio **no incluye un backend real de reservas** para `product.js` /
-`assets/js/core/api-client.js`. En modo por defecto (`isBackendEnabled()` en falso o
-sin configurar), las reservas se guardan como "borrador local en modo mock"
-(`saveMockDraft`) en `localStorage`/`sessionStorage`, sin ningún endpoint que valide
-una restricción `UNIQUE` real entre distintos navegadores/dispositivos.
-
-Por eso, siguiendo la regla 12.2 del prompt de traducciones/precios/reservas:
-
-- **No se declara que el código sea único de forma garantizada.**
-- Se implementó una verificación previa del lado del cliente: antes de aceptar un
-  código recién generado, `generateReservationCode()` revisa si ya existe una reserva
-  local (`getLocalReservation`) con ese mismo código y reintenta hasta 5 veces si hay
-  coincidencia. Esto solo protege contra colisiones dentro del mismo navegador/sesión,
-  **no** contra colisiones entre distintos usuarios o dispositivos.
-- Cuando exista un backend real (Google Apps Script u otro) para las reservas de
-  `product.html`, debe:
-  1. Tener una columna/índice con restricción `UNIQUE` para el código de reserva.
-  2. Rechazar o regenerar (hasta 5 intentos) el código si ya existe al momento de guardar.
-  3. Devolver el código final al frontend para que reemplace el provisional
-     (`preReservation.code`) antes de mostrarlo en el modal, WhatsApp, correo o
-     comprobantes.
-
-## Compatibilidad con códigos antiguos
-
-El nuevo formato no rompe la lectura de códigos antiguos (`CUZ` + 6 hex): no hay
-ninguna validación de longitud fija en `verificar-reserva.html`, `detalle-reserva.html`
-ni en las búsquedas por código — todas comparan el string completo, no un patrón de
-longitud. Se confirmó por búsqueda en el código que ningún componente asume que el
-código de reserva mide exactamente 9 caracteres.
+La página `mi-reserva.html` no limita la búsqueda a nueve caracteres; mantiene compatibilidad con códigos históricos de mayor longitud. El placeholder muestra el formato nuevo `CUZ1A2B3C`.
