@@ -80,9 +80,9 @@ class MyCuscoTripSearchBar {
           url: "./trekkings.html"
         },
         {
-          value: "todos-tours",
-          labelKey: "search.categoryAllTours",
-          fallback: "Todos los tours",
+          value: "otros-destinos-peru",
+          labelKey: "search.categoryOtherPeruDestinations",
+          fallback: "Otros destinos en Perú",
           url: "./all-experiences.html?tipo=tour"
         }
       ],
@@ -90,26 +90,20 @@ class MyCuscoTripSearchBar {
         {
           value: "solo-machu-picchu",
           labelKey: "search.packageSoloMachuPicchu",
-          fallback: "Solo Machu Picchu / 2D-1N",
+          fallback: "Machu Picchu",
           url: "./machu-picchu-overnight.html"
         },
         {
           value: "cusco-machu-picchu",
           labelKey: "search.packageCuscoMachuPicchu",
-          fallback: "Cusco + Machu Picchu",
+          fallback: "Paquetes Cusco y Machu Picchu",
           url: "./paquetes-cusco.html"
         },
         {
           value: "lima-cusco",
           labelKey: "search.packageLimaCusco",
-          fallback: "Lima + Cusco + Machu Picchu",
+          fallback: "Paquetes Lima, Cusco y Machu Picchu",
           url: "./explora-peru.html?route=lima-cusco"
-        },
-        {
-          value: "lima-paracas-cusco",
-          labelKey: "search.packageLimaParacasCusco",
-          fallback: "Lima + Paracas/Ica + Cusco + Machu Picchu",
-          url: "./explora-peru.html?route=lima-paracas-cusco"
         },
         {
           value: "sur-peru",
@@ -120,7 +114,7 @@ class MyCuscoTripSearchBar {
         {
           value: "sur-amazonia",
           labelKey: "search.packageSurAmazonia",
-          fallback: "Perú Sur + Amazonía",
+          fallback: "Amazonía",
           url: "./explora-peru.html?route=peru-sur-amazonia"
         },
         {
@@ -132,7 +126,7 @@ class MyCuscoTripSearchBar {
         {
           value: "peru-personalizado",
           labelKey: "search.packageCustomDesign",
-          fallback: "Diseña un viaje a medida",
+          fallback: "Diseñar viaje a medida",
           url: "./quote-packages.html?intent=peru-personalizado"
         }
       ]
@@ -226,7 +220,7 @@ class MyCuscoTripSearchBar {
     if (this.currentTab === "paquetes") {
       if (this.intentLabel) {
         this.intentLabel.dataset.i18n = "search.packageDestinationStyle";
-        this.intentLabel.textContent = this.t("search.packageDestinationStyle", "Destino o estilo");
+        this.intentLabel.textContent = this.t("search.packageDestinationStyle", "Destino");
       }
       if (this.submitText) {
         this.submitText.dataset.i18n = "search.findPackages";
@@ -236,7 +230,7 @@ class MyCuscoTripSearchBar {
     } else {
       if (this.intentLabel) {
         this.intentLabel.dataset.i18n = "search.type";
-        this.intentLabel.textContent = this.t("search.type", "Tipo");
+        this.intentLabel.textContent = this.t("search.type", "Destino");
       }
       if (this.submitText) {
         this.submitText.dataset.i18n = "search.submit";

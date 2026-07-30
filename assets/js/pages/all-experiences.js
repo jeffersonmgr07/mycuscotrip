@@ -66,6 +66,20 @@
     "otros-destinos": "Other destinations"
   };
 
+  const PUBLIC_DESTINATION_LABELS_PT = {
+    "cusco": "Cusco",
+    "machu-picchu": "Machu Picchu",
+    "valle-sagrado": "Vale Sagrado",
+    "puno": "Puno",
+    "arequipa": "Arequipa",
+    "ica": "Ica",
+    "lima": "Lima",
+    "paracas": "Paracas",
+    "maras-moray": "Maras e Moray",
+    "tarapoto": "Tarapoto",
+    "otros-destinos": "Outros destinos"
+  };
+
   const HIDDEN_DESTINATIONS = new Set([
     "peru",
     "aguas-calientes",
@@ -236,7 +250,8 @@
 
   function getPublicDestinationLabel(destination) {
     const publicValue = getPublicDestinationValue(destination);
-    const labels = isEnglishLocale() ? PUBLIC_DESTINATION_LABELS_EN : PUBLIC_DESTINATION_LABELS;
+    const locale = getLocale();
+    const labels = locale === "en" ? PUBLIC_DESTINATION_LABELS_EN : locale === "pt" ? PUBLIC_DESTINATION_LABELS_PT : PUBLIC_DESTINATION_LABELS;
     return labels[publicValue] || formatLabel(publicValue);
   }
 
@@ -278,9 +293,11 @@
       const nights = Number(match[2] || Math.max(days - 1, 0));
       return {
         key: `${days}d${nights}n`,
-        label: isEnglishLocale()
+        label: getLocale() === "en"
           ? `${days} day${days === 1 ? "" : "s"} / ${nights} night${nights === 1 ? "" : "s"}`
-          : `${days} días / ${nights} noche${nights === 1 ? "" : "s"}`,
+          : getLocale() === "pt"
+            ? `${days} dia${days === 1 ? "" : "s"} / ${nights} noite${nights === 1 ? "" : "s"}`
+            : `${days} días / ${nights} noche${nights === 1 ? "" : "s"}`,
         rank: 100 + days
       };
     }
@@ -440,8 +457,19 @@
     return base + featuredPenalty + Math.min(price, 999) / 1000;
   }
 
+  function getIncludedTourKeywords(codes, tourIndex) {
+    // Pulls each included tour's own search.keywords (a stable, untranslated taxonomy —
+    // e.g. "bienvenida ancestral cusco" stays the same across es/en/pt) into the generated
+    // package's searchable text. Without this, a package only inherited the included tours'
+    // *titles* via highlights, and titles are legitimately translated/pluralized per language
+    // (e.g. pt "Ancestrais" vs es/en "Ancestral"), which silently broke text search for
+    // every generated package in whichever locale phrased the title differently.
+    return unique(codes).flatMap((code) => toArray(tourIndex.get(code)?.search?.keywords));
+  }
+
   function createDynamicPackageCard({ option, optionIndex, card, tourIndex, source = "packagesCusco" }) {
     const highlights = getOptionHighlights(option, tourIndex);
+    const includedTourKeywords = getIncludedTourKeywords(option?.includedTourCodes, tourIndex);
     const search = card?.search || {};
     const optionBadge = optionIndex === 0
       ? tr("Opción recomendada", "Recommended option")
@@ -483,7 +511,7 @@
         includedTourCodes: unique([...(toArray(search.includedTourCodes)), ...toArray(option?.includedTourCodes)]),
         includedTags: unique([...(toArray(search.includedTags)), "hotel", "tren", "con-hotel", "con-tren", ...toArray(option?.includedTourCodes).map(normalizeText)]),
         themes: toArray(search.themes),
-        keywords: unique([...(toArray(search.keywords)), "hotel", "tren", "con hotel", "con tren", optionLabel, ...highlights])
+        keywords: unique([...(toArray(search.keywords)), ...includedTourKeywords, "hotel", "tren", "con hotel", "con tren", optionLabel, ...highlights])
       },
       source,
       raw: option,
@@ -741,9 +769,12 @@
 
     const total = state.filteredCatalog.length;
     if (count) {
-      count.textContent = isEnglishLocale()
+      const locale = getLocale();
+      count.textContent = locale === "en"
         ? `${total} experience${total === 1 ? "" : "s"} found`
-        : `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
+        : locale === "pt"
+          ? `${total} experiência${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`
+          : `${total} experiencia${total === 1 ? "" : "s"} encontrada${total === 1 ? "" : "s"}`;
     }
     if (summary) summary.textContent = tr("Explora experiencias disponibles según los filtros seleccionados.", "Explore available experiences based on the selected filters.");
 

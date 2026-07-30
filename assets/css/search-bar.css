@@ -706,12 +706,25 @@ body {
   }
 }
 
-/* Fechas flexibles (búsqueda sin fecha exacta) — julio 2026 */
+/* Fechas flexibles (búsqueda sin fecha exacta) — julio 2026.
+   Vive al costado del botón de búsqueda (no dentro del campo de fecha): ese campo tiene su
+   propio listener de clic para abrir el calendario en todo el div, así que un checkbox anidado
+   ahí adentro reabría el calendario por burbujeo del evento al marcarlo. */
+.search-bar .mct-submit-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 14px;
+}
+
+.search-bar .mct-submit-group .mct-submit {
+  margin-left: 0;
+}
+
 .search-bar .mct-flexible-dates {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
   font-size: 0.78rem;
   font-weight: 600;
   color: #56645f;
@@ -733,13 +746,16 @@ body {
   pointer-events: none;
 }
 
-.search-bar .mct-fecha-field.is-disabled .mct-flexible-dates {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 @media (max-width: 900px) {
+  .search-bar .mct-submit-group {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    margin-left: 0;
+    gap: 8px;
+  }
+
   .search-bar .mct-flexible-dates {
+    justify-content: center;
     font-size: 0.85rem;
   }
 }

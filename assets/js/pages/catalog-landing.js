@@ -330,6 +330,21 @@
     "lima-paracas-cusco-puno-arequipa": ["lima", "paracas_ica", "cusco_machu_picchu", "puno_titicaca", "arequipa_colca"]
   };
 
+  // Same minDays/maxDays as each real routeTemplate in assets/data/packages-peru.json.
+  // Every route's required blocks are a superset of "lima-cusco" (all circuits pass through
+  // Lima and Cusco/Machu Picchu), so block-matching alone can't tell a 5-day circuit from a
+  // 15-day one — this range narrows a `route=` filter to packages of a plausible length for
+  // that specific route instead of matching everything that merely touches Lima and Cusco.
+  const ROUTE_DAYS_RANGE = {
+    "lima-cusco": [5, 7],
+    "lima-paracas-cusco": [7, 10],
+    "lima-arequipa-cusco": [8, 11],
+    "lima-puno-cusco": [7, 10],
+    "lima-paracas-arequipa-puno-cusco": [10, 13],
+    "peru-sur-amazonia": [12, 15],
+    "lima-paracas-cusco-puno-arequipa": [10, 10]
+  };
+
   const BLOCK_DESTINATION_SLUGS = {
     lima: ["lima"],
     paracas_ica: ["paracas", "ica", "huacachina"],
@@ -354,6 +369,7 @@
     const urlMaxDays = toNumberOrNull(urlParams.get("maxDays"));
     const urlDestination = toList(urlParams.get("destination") || urlParams.get("destino") || "");
     const route = normalizeText(urlParams.get("route") || "");
+    const routeDaysRange = route ? ROUTE_DAYS_RANGE[route] : null;
 
     return {
       kind: body.dataset.catalogKind || "",
@@ -368,8 +384,8 @@
       excludeIds: toList(body.dataset.catalogExcludeIds),
       days: toNumberOrNull(body.dataset.catalogDays),
       nights: toNumberOrNull(body.dataset.catalogNights),
-      minDays: urlMinDays !== null ? urlMinDays : toNumberOrNull(body.dataset.catalogMinDays),
-      maxDays: urlMaxDays !== null ? urlMaxDays : toNumberOrNull(body.dataset.catalogMaxDays),
+      minDays: urlMinDays !== null ? urlMinDays : routeDaysRange ? routeDaysRange[0] : toNumberOrNull(body.dataset.catalogMinDays),
+      maxDays: urlMaxDays !== null ? urlMaxDays : routeDaysRange ? routeDaysRange[1] : toNumberOrNull(body.dataset.catalogMaxDays),
       minNights: toNumberOrNull(body.dataset.catalogMinNights),
       maxNights: toNumberOrNull(body.dataset.catalogMaxNights),
       includeDrafts: body.dataset.catalogIncludeDrafts === "true",

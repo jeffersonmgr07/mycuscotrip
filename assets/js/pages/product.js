@@ -82,6 +82,20 @@ class MyCuscoTripProductPage {
     return this.getLocale() === "en";
   }
 
+  getDateLocale() {
+    const locale = this.getLocale();
+    if (locale === "en") return "en-US";
+    if (locale === "pt") return "pt-BR";
+    return "es-PE";
+  }
+
+  getDefaultHolderLanguageName() {
+    const locale = this.getLocale();
+    if (locale === "en") return "English";
+    if (locale === "pt") return "Português";
+    return "Español";
+  }
+
   label(esValue, enValue) {
     return this.isEnglishLocale() ? enValue : esValue;
   }
@@ -2906,11 +2920,11 @@ class MyCuscoTripProductPage {
       // only a fresh page load (new instance) or an explicit checkout restart generates a new one.
       code: this.currentPreReservation?.code || this.generateReservationCode(),
       createdAt: createdAtDate.toISOString(),
-      createdAtLabel: createdAtDate.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
+      createdAtLabel: createdAtDate.toLocaleString(this.getDateLocale(), {
         dateStyle: "medium",
         timeStyle: "medium"
       }),
-      createdAtDisplayLabel: createdAtDate.toLocaleString(this.isEnglishLocale() ? "en-US" : "es-PE", {
+      createdAtDisplayLabel: createdAtDate.toLocaleString(this.getDateLocale(), {
         dateStyle: "medium",
         timeStyle: "short"
       }),
@@ -3090,7 +3104,7 @@ class MyCuscoTripProductPage {
       whatsappCountryCode: String(data.get("holderWhatsappCountryCode") || "").trim(),
       whatsapp: String(data.get("holderWhatsapp") || "").trim(),
       email: String(data.get("holderEmail") || "").trim(),
-      language: String(data.get("holderLanguage") || "").trim() || (this.isEnglishLocale() ? "English" : "Español"),
+      language: String(data.get("holderLanguage") || "").trim() || this.getDefaultHolderLanguageName(),
       travels: holderTravels
     };
 
