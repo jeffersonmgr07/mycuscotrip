@@ -1,0 +1,35 @@
+My Cusco Trip V95.1 — Parche acumulativo V94 + impresión V95
+Fecha: 2026-08-01
+
+ARCHIVOS DE CONFIGURACIÓN V94 INCLUIDOS
+assets/data/packages-peru.json
+assets/data/i18n/en/packages-peru.json
+assets/data/i18n/pt/packages-peru.json
+assets/data/i18n/fr/packages-peru.json
+assets/data/i18n/de/packages-peru.json
+assets/data/i18n/it/packages-peru.json
+assets/data/i18n/zh/packages-peru.json
+assets/data/i18n/ja/packages-peru.json
+
+ARCHIVOS DE LÓGICA Y ESTILO
+assets/js/pages/product.js
+assets/css/product-page.css
+
+HTML CON CACHÉ ACTUALIZADA
+product.html
+en/product.html
+pt/product.html
+fr/product.html
+de/product.html
+it/product.html
+zh/product.html
+ja/product.html
+
+DOCUMENTACIÓN
+CAMBIOS_V951_RESTAURACION_HOTELES_TRENES_E_IMPRESION.md
+V951_PATCH_MANIFEST.txt
+
+PRODUCTO OBJETIVO
+ID: pkg_peru_7d6n_humantay
+ES slug: peru-lima-paracas-cusco-machu-picchu-humantay-7-dias-6-noches
+EN slug: peru-lima-paracas-cusco-machu-picchu-humantay-7-days-6-nights

@@ -10283,7 +10283,7 @@ document.addEventListener("click", function (event) {
         const accommodationLabel = this.t("product.accommodation", "Alojamiento");
 
         return `<article class="print-itinerary-day-v95${image ? " print-itinerary-day-v95--with-image" : ""}">
-          ${image ? `<figure class="print-itinerary-day-image-v95"><img src="${esc(this, image)}" alt="${esc(this, `${dayLabel}: ${title}`)}" /></figure>` : ""}
+          ${image ? `<figure class="print-itinerary-day-image-v95"><img src="${esc(this, image)}" alt="${esc(this, `${dayLabel}: ${title}`)}" loading="eager" decoding="sync" /></figure>` : ""}
           <div class="print-itinerary-day-content-v95">
             <div class="print-itinerary-day-meta-v95">
               <span class="print-itinerary-day-badge-v95">${esc(this, dayLabel)}</span>
@@ -10377,121 +10377,5 @@ document.addEventListener("click", function (event) {
   if (!patchV95()) {
     document.addEventListener("DOMContentLoaded", patchV95);
     [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV95, delay));
-  }
-})();
-
-
-/* =========================================================
-   PATCH MCT V95 - Impresión de circuitos: imágenes y fechas por día
-   ========================================================= */
-(function () {
-  function patchV95() {
-    const page = window.MyCuscoTripProductPage;
-    if (!page) return false;
-    if (page.__mctV95Applied) return true;
-    const proto = Object.getPrototypeOf(page) || page;
-
-    const esc = (value) => typeof page.escapeHtml === "function"
-      ? page.escapeHtml(value ?? "")
-      : String(value ?? "").replace(/[&<>'"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch]));
-
-    function localeTag() {
-      const raw = String(document.documentElement.lang || "es").toLowerCase();
-      const map = {
-        es: "es-PE", en: "en-US", pt: "pt-BR", fr: "fr-FR",
-        de: "de-DE", it: "it-IT", ja: "ja-JP", zh: "zh-CN"
-      };
-      return map[raw.split("-")[0]] || raw || "es-PE";
-    }
-
-    function parseTravelDate(value) {
-      const raw = String(value || "").trim();
-      const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
-      if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12, 0, 0, 0);
-      const parsed = new Date(raw);
-      if (Number.isNaN(parsed.getTime())) return null;
-      return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), 12, 0, 0, 0);
-    }
-
-    function addCalendarDays(date, amount) {
-      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate() + Number(amount || 0), 12, 0, 0, 0);
-    }
-
-    function formatItineraryDate(date) {
-      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
-      const currentYear = new Date().getFullYear();
-      const options = date.getFullYear() === currentYear
-        ? { day: "numeric", month: "long" }
-        : { day: "numeric", month: "long", year: "numeric" };
-      try {
-        return new Intl.DateTimeFormat(localeTag(), options).format(date);
-      } catch (error) {
-        return date.toLocaleDateString(undefined, options);
-      }
-    }
-
-    function isMultiDayCircuit(ctx) {
-      const itinerary = Array.isArray(ctx?.product?.itinerary) ? ctx.product.itinerary : [];
-      const configuredDays = Number(ctx?.product?.days || ctx?.product?.duration?.days || 0);
-      return configuredDays > 1 || itinerary.some((item) => Number(item?.day || 0) > 0);
-    }
-
-    proto.renderMultiDayPrintItineraryV95 = function () {
-      const itinerary = Array.isArray(this.product?.itinerary) ? this.product.itinerary : [];
-      if (!itinerary.length) return "";
-      const startDate = parseTravelDate(this.date);
-      const dayLabel = (n) => this.t?.("product.print.dayLabel", "Día {n}", { n }) || `Día ${n}`;
-      const overnightLabel = this.t?.("product.print.overnightLabel", "Alojamiento") || "Alojamiento";
-      const datePending = this.t?.("product.print.dateToBeConfirmed", "Fecha por confirmar") || "Fecha por confirmar";
-
-      return itinerary.map((item, index) => {
-        const dayNumber = Math.max(1, Number(item?.day || index + 1));
-        const itemDate = startDate ? addCalendarDays(startDate, dayNumber - 1) : null;
-        const formattedDate = formatItineraryDate(itemDate) || datePending;
-        const rawImage = item?.image || (Array.isArray(item?.images) ? item.images[0] : "") || "";
-        const image = rawImage ? (this.resolveAssetPath?.(rawImage) || rawImage) : "";
-        return `<article class="print-day-card print-day-card--v95">
-          <div class="print-day-card__head">
-            <span class="print-day-badge">${esc(dayLabel(dayNumber))}</span>
-            <span class="print-day-date">${esc(formattedDate)}</span>
-          </div>
-          <div class="print-day-card__body ${image ? "print-day-card__body--with-image" : ""}">
-            ${image ? `<figure class="print-day-card__image"><img src="${esc(image)}" alt="${esc(item?.title || dayLabel(dayNumber))}" loading="eager" decoding="sync" /></figure>` : ""}
-            <div class="print-day-card__content">
-              <h3>${esc(item?.title || dayLabel(dayNumber))}</h3>
-              <p>${esc(item?.description || "")}</p>
-              ${item?.overnight ? `<p class="print-day-card__overnight"><strong>${esc(overnightLabel)}:</strong> ${esc(item.overnight)}</p>` : ""}
-            </div>
-          </div>
-        </article>`;
-      }).join("");
-    };
-
-    const previousPrint = proto.printProductItineraryV78;
-    if (typeof previousPrint === "function") {
-      proto.printProductItineraryV78 = function () {
-        const result = previousPrint.apply(this, arguments);
-        if (!isMultiDayCircuit(this)) return result;
-
-        const area = document.getElementById("productPrintArea");
-        const list = area?.querySelector(".print-section--itinerary .print-itinerary-list");
-        if (list) {
-          list.classList.add("print-itinerary-list--days-v95");
-          list.innerHTML = this.renderMultiDayPrintItineraryV95?.() || list.innerHTML;
-        }
-        return result;
-      };
-    }
-
-    page.__mctV95Applied = true;
-    return true;
-  }
-
-  if (!patchV95()) {
-    document.addEventListener("DOMContentLoaded", patchV95);
-    setTimeout(patchV95, 250);
-    setTimeout(patchV95, 900);
-    setTimeout(patchV95, 1600);
   }
 })();

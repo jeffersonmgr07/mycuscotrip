@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-30-v93",
+  "version": "V94",
   "updatedAt": "2026-08-01",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
@@ -1444,28 +1444,65 @@
       "itineraryLanguage": "es"
     },
     {
-      "id": "pkg_peru_7d6n_humantay_city",
-      "slug": "peru-lima-paracas-huacachina-cusco-machu-picchu-humantay-7-dias-6-noches",
-      "title": "Perú 7 días: Lima, Paracas, Huacachina, Cusco, Machu Picchu y Humantay",
+      "id": "pkg_peru_7d6n_humantay",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 7,
       "nights": 6,
-      "typeLabel": "7 días / 6 noches",
-      "badge": "Nuevo circuito",
       "featured": true,
-      "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Perú",
-      "shortDescription": "Ruta completa de una semana que combina costa, desierto y Andes, con hoteles, trenes seleccionados, Machu Picchu, Laguna Humantay y circuito arqueológico de Cusco incluidos.",
       "image": "./assets/img/packages/peru/7d6n/cover.jpg",
-      "images": [
-        "./assets/img/packages/peru/7d6n/cover.jpg",
-        "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
-        "./assets/img/tours/machu-picchu-overnight/cover.jpg"
-      ],
+      "images": {
+        "cover": "./assets/img/packages/peru/7d6n/cover.jpg",
+        "gallery": [
+          "./assets/img/packages/peru/lima-night/cover.jpg",
+          "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "./assets/img/tours/valle-sagrado/cover.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "./assets/img/tours/laguna-humantay/cover.jpg",
+          "./assets/img/tours/city-tour/cover.jpg"
+        ]
+      },
       "showItineraryImages": true,
-      "priceMode": "static_base_including_default_hotels_plus_configurable_upgrades",
+      "priceMode": "static_base_plus_configurable_services",
       "status": "published",
-      "capacity": 30,
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1539.9,
+        "child": 1539.9,
+        "currency": "USD",
+        "mode": "published_price_including_default_hotels_and_trains",
+        "protectedNetAfterMaxDiscountAndPaypal": 1238.23,
+        "estimatedAverageProfitUSD": 200,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4,
+        "basis": "per_person_double_occupancy",
+        "exchangeRateUSDToPEN": 3.75,
+        "label": "Precio base por persona con hoteles y trenes incluidos",
+        "description": "Tarifa calculada para dos adultos compartiendo habitación. Incluye los hoteles preseleccionados y los trenes base; una habitación individual o un hotel superior puede generar suplemento."
+      },
+      "internalPricing": {
+        "calculationVersion": "V94-2026-08-01",
+        "publishedPriceUSD": 1539.9,
+        "netAfter15PercentDiscountAndPaypalUSD": 1238.23,
+        "targetAverageProfitUSDPerPerson": 200,
+        "referenceTravelers": 2,
+        "referenceOccupancy": "double_or_matrimonial_shared",
+        "defaultHotelCostReferenceUSDPerPerson": {
+          "lima_2_nights": 79.2,
+          "cusco_3_nights": 60.0,
+          "aguas_calientes_1_night": 24.0,
+          "total": 163.2
+        },
+        "humantayReferenceCostUSDPerPerson": 21.33,
+        "additionalReferenceCostVsExisting7D6NUSDPerPerson": 184.53,
+        "pricingGuardrail": "Reconfirm hotel, train, Machu Picchu admission and supplier rates before final confirmation."
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1539.9,
       "search": {
         "kind": "package",
         "destinations": [
@@ -1475,6 +1512,7 @@
           "ica",
           "huacachina",
           "cusco",
+          "sacred-valley",
           "machu-picchu",
           "humantay"
         ],
@@ -1487,8 +1525,11 @@
         ],
         "includedTourCodes": [
           "PER003",
-          "CUZ002",
-          "MAPI003"
+          "CUZ001",
+          "CUZ003CON",
+          "MAPI003",
+          "CUZ006",
+          "CUZ002"
         ],
         "includedTags": [
           "lima",
@@ -1499,79 +1540,258 @@
           "cusco",
           "valle-sagrado",
           "machu-picchu",
-          "humantay",
-          "city-tour"
+          "laguna-humantay"
         ],
         "themes": [
           "cultural",
           "naturaleza",
-          "aventura"
+          "aventura",
+          "multidestino"
         ],
         "keywords": [
-          "peru 7 dias humantay machu picchu",
-          "lima paracas huacachina cusco",
-          "valle sagrado machu picchu"
+          "perú costa y andes: lima, paracas, cusco, machu picchu y humantay 7 días / 6 noches",
+          "peru 7 days humantay",
+          "peru 7 dias humantay",
+          "lima paracas huacachina cusco machu picchu humantay"
         ]
       },
+      "accommodationSummary": [
+        {
+          "destination": "lima",
+          "nights": 2,
+          "label": "Lima - 2 noches"
+        },
+        {
+          "destination": "cusco",
+          "nights": 3,
+          "label": "Cusco - 3 noches"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Machu Picchu Pueblo - 1 noche"
+        }
+      ],
+      "hotelSelection": {
+        "required": true,
+        "includedInBasePrice": true,
+        "allowNoHotel": false,
+        "customerCanChangeHotel": true,
+        "upgradeEnabled": true,
+        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
+        "defaultHotelCodes": {
+          "lima": "arawi-miraflores-3s",
+          "cusco": "cusco-boutique-3s",
+          "aguas-calientes": "luz-garden-3s"
+        },
+        "includedAllowancePerPersonUSD": {
+          "lima": 79.2,
+          "cusco": 76.35,
+          "aguas-calientes": 32.45
+        }
+      },
+      "defaultHotelsByDestination": {
+        "lima": "arawi-miraflores-3s",
+        "cusco": "cusco-boutique-3s",
+        "aguas-calientes": "luz-garden-3s"
+      },
+      "trainSelection": {
+        "required": true,
+        "source": "assets/data/trains.json",
+        "mode": "flexible_any_company",
+        "sameCompanyRoundTrip": false,
+        "allowMixedCompanies": true,
+        "fixedSelection": false,
+        "customerCanChangeTrain": true,
+        "defaultTrainCodes": {
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU"
+        },
+        "allowedCompanies": [
+          "incarail",
+          "perurail"
+        ],
+        "allowedRoutes": {
+          "outbound": [
+            "OLLA_MAPI",
+            "CUSCO_MAPI",
+            "URU_MAPI"
+          ],
+          "return": [
+            "MAPI_CUSCO",
+            "MAPI_OLLA",
+            "MAPI_URU"
+          ]
+        },
+        "allowedCategories": "all_available",
+        "returnOptionsRule": "any_company_afternoon_return",
+        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "22:00"
+          },
+          "return": {
+            "min": "15:00",
+            "max": "22:00"
+          }
+        }
+      },
+      "defaultTrainSelection": {
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+        "resolvedOutbound": {
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "OLLA_MAPI",
+          "departureStation": "Ollantaytambo",
+          "arrivalStation": "Machu Picchu",
+          "departureTime": "16:36",
+          "arrivalTime": "18:09",
+          "currency": "USD",
+          "adultCostUSD": 85,
+          "childCostUSD": 68
+        },
+        "resolvedReturn": {
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "MAPI_CUSCO",
+          "departureStation": "Machu Picchu",
+          "arrivalStation": "Cusco Av. El Sol 843",
+          "departureTime": "20:20",
+          "arrivalTime": "00:10",
+          "currency": "USD",
+          "adultCostUSD": 75,
+          "childCostUSD": 60
+        },
+        "pricingSnapshot": {
+          "outboundAdultCost": 85,
+          "returnAdultCost": 75,
+          "totalAdultTrainCost": 160,
+          "currency": "USD"
+        }
+      },
+      "tripMode": "overnight",
+      "machuPicchuMode": "overnight-classic",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "capacity": 15,
+      "itineraryStatus": "complete",
+      "slug": "peru-lima-paracas-cusco-machu-picchu-humantay-7-dias-6-noches",
+      "title": "Perú Costa y Andes: Lima, Paracas, Cusco, Machu Picchu y Humantay 7 días / 6 noches",
+      "typeLabel": "7 días / 6 noches",
+      "badge": "Nuevo circuito",
+      "location": "Lima / Paracas / Ica / Cusco / Valle Sagrado / Machu Picchu / Humantay",
+      "shortDescription": "Un circuito completo que combina la costa, el desierto y los Andes con hoteles, trenes y principales ingresos incluidos.",
+      "priceLabel": "Desde USD 1,539.90 por persona, base doble, con hoteles y trenes incluidos",
+      "experienceType": [
+        "Cultural",
+        "Naturaleza",
+        "Aventura suave",
+        "Multidestino"
+      ],
+      "highlights": [
+        "Llegada asistida a Lima y dos noches en Miraflores",
+        "Full day a Paracas, Islas Ballestas, Ica y Huacachina con tubulares",
+        "Bienvenida ancestral y aclimatación en Cusco",
+        "Valle Sagrado con tren Inca Rail de las 16:36 hacia Machu Picchu Pueblo",
+        "Machu Picchu con ingreso, bus Consettur, guía y retorno Inca Rail de las 20:20",
+        "Caminata a la Laguna Humantay con desayuno y almuerzo",
+        "City Tour arqueológico de Cusco con Boleto Turístico General"
+      ],
+      "details": [
+        "6 noches: 2 en Lima, 3 en Cusco y 1 en Machu Picchu Pueblo",
+        "Hoteles base: Arawi Miraflores Express, Hotel Cusco Boutique y Hotel Luz Garden",
+        "Vuelos nacionales e internacionales no incluidos; se cotizan por separado",
+        "Itinerario exigente por el retorno nocturno de Machu Picchu y la salida temprana a Humantay"
+      ],
+      "includes": [
+        "Recepción en el aeropuerto de Lima, traslado al hotel y orientación inicial del programa",
+        "2 noches en Arawi Miraflores Express o equivalente seleccionado, con desayuno según política del hotel",
+        "Recepción en el aeropuerto de Cusco y traslados de llegada y salida según el itinerario confirmado",
+        "3 noches en Hotel Cusco Boutique o equivalente seleccionado, con desayuno",
+        "1 noche en Hotel Luz Garden en Machu Picchu Pueblo o equivalente seleccionado, con desayuno",
+        "Full day Lima–Paracas–Ica–Huacachina–Lima con transporte turístico",
+        "Tour en lancha a las Islas Ballestas, ingreso o tasa turística aplicable y asistencia local",
+        "Visita de Ica y Huacachina, experiencia en bodega, tubulares y sandboarding básico según operación",
+        "Bienvenida ancestral en Cusco",
+        "Tour del Valle Sagrado con transporte, guía y conexión a Ollantaytambo",
+        "Boleto Turístico General de Cusco para los atractivos incluidos en Valle Sagrado y City Tour",
+        "Tren base de ida Inca Rail The Voyager, Ollantaytambo–Machu Picchu, salida 16:36",
+        "Tren base de retorno Inca Rail The Voyager, Machu Picchu–Cusco, salida 20:20",
+        "Traslados operativos entre hotel, estaciones y puntos de inicio o final de los tours",
+        "Ingreso a Machu Picchu por el circuito confirmado según disponibilidad oficial",
+        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Servicio de guía profesional en Machu Picchu",
+        "Tour de Laguna Humantay con transporte, desayuno, almuerzo e ingreso turístico",
+        "City Tour arqueológico de Cusco: Qoricancha, Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay, sujeto a horario de vuelo",
+        "Asistencia por WhatsApp durante el programa"
+      ],
+      "excludes": [
+        "Vuelos internacionales",
+        "Vuelo Lima–Cusco; se cotiza aparte según fecha, equipaje y disponibilidad",
+        "Otros vuelos nacionales no indicados expresamente como incluidos",
+        "Ingreso a Qoricancha si el operador o la tarifa vigente lo cobra fuera del Boleto Turístico General",
+        "Almuerzo del Valle Sagrado y almuerzo o cena en Machu Picchu Pueblo, salvo que se indique lo contrario en la confirmación",
+        "Caballos en la caminata a Humantay",
+        "Early check-in, late check-out, bebidas, propinas, gastos personales y servicios no mencionados",
+        "Suplementos por habitación individual, temporada alta, feriados o upgrades de hoteles y trenes"
+      ],
+      "importantInfo": [
+        "La tarifa publicada es por persona sobre la base de dos adultos compartiendo habitación. El sistema calcula automáticamente suplementos por habitación individual o upgrades.",
+        "El vuelo Lima–Cusco no está incluido y debe emitirse en un horario compatible con la bienvenida ancestral. Podemos cotizarlo por separado.",
+        "El ingreso y circuito de Machu Picchu dependen de la disponibilidad oficial al confirmar la reserva.",
+        "La navegación a Islas Ballestas y las actividades en dunas están sujetas a condiciones marítimas, climáticas y operativas.",
+        "El tren de retorno de las 20:20 llega a Cusco aproximadamente a las 00:10. La salida a Laguna Humantay suele ser de madrugada, por lo que el descanso entre ambos servicios es muy corto. Se recomienda buena condición física o solicitar un tren de retorno anterior.",
+        "La caminata a Humantay se realiza a gran altitud y exige aclimatación, abrigo, hidratación y calzado adecuado.",
+        "El City Tour del día 7 se ajustará al horario del vuelo de salida; para realizarlo completo se recomienda un vuelo nocturno o una noche adicional en Cusco."
+      ],
+      "pickupInfo": "Los recojos se coordinan desde los hoteles seleccionados. Los horarios finales se confirman según vuelos, trenes, ingresos oficiales, clima y operación vigente.",
+      "faq": [
+        {
+          "q": "¿La tarifa incluye hoteles?",
+          "a": "Sí. La tarifa base incluye Arawi Miraflores Express en Lima, Hotel Cusco Boutique en Cusco y Hotel Luz Garden en Machu Picchu Pueblo, sobre base doble. Puedes cambiar de hotel pagando únicamente la diferencia correspondiente."
+        },
+        {
+          "q": "¿Qué trenes están incluidos?",
+          "a": "La selección base considera Inca Rail The Voyager de Ollantaytambo a Machu Picchu a las 16:36 y el retorno Machu Picchu–Cusco a las 20:20. Puedes elegir otra opción disponible y el sistema calculará el upgrade."
+        },
+        {
+          "q": "¿Incluye el vuelo Lima–Cusco?",
+          "a": "No. El vuelo se cotiza por separado para elegir el horario, equipaje y tarifa que mejor se adapten al programa."
+        },
+        {
+          "q": "¿Qué ingresos están incluidos?",
+          "a": "Incluye el ingreso a Machu Picchu según circuito confirmado, buses Consettur, Boleto Turístico General para los atractivos aplicables de Cusco y Valle Sagrado, ingreso a Humantay y tasas o ingresos turísticos indicados para Paracas y Huacachina."
+        },
+        {
+          "q": "¿El día de Humantay es exigente?",
+          "a": "Sí. Además de la altitud y la caminata, el tren de retorno del día anterior llega de madrugada. Recomendamos revisar la condición física del viajero o cambiar a un tren de retorno más temprano."
+        },
+        {
+          "q": "¿Puedo realizar el City Tour completo el último día?",
+          "a": "Sí, siempre que el vuelo de salida sea nocturno. Con vuelos tempranos o por la tarde, el recorrido debe ajustarse o añadirse una noche extra."
+        }
+      ],
+      "itineraryLanguage": "es",
+      "description": "Un circuito completo que combina la costa, el desierto y los Andes con hoteles, trenes y principales ingresos incluidos.",
       "duration": {
         "label": "7 días / 6 noches",
+        "maxGroupSize": 15,
         "guideLanguages": [
           "es",
           "en"
         ]
       },
-      "description": "Circuito cuidadosamente secuenciado con dos noches en Lima, tres en Cusco y una en Machu Picchu Pueblo. Incluye los principales servicios terrestres, hoteles base y trenes Inca Rail Voyager seleccionados; no incluye vuelos nacionales ni internacionales.",
-      "experienceType": "Circuito multidestino cultural y de naturaleza",
-      "highlights": [
-        "Islas Ballestas, Ica y Huacachina con navegación y tubulares",
-        "Bienvenida ancestral en Cusco y tiempo de aclimatación",
-        "Valle Sagrado con conexión Inca Rail de las 16:36 a Machu Picchu Pueblo",
-        "Ingreso a Machu Picchu, bus Consettur y visita guiada",
-        "Laguna Humantay y City Tour arqueológico de Cusco",
-        "Seis noches de alojamiento incluidas en la tarifa base"
-      ],
-      "details": [
-        "Servicios turísticos compartidos salvo indicación distinta",
-        "Guías profesionales en español e inglés",
-        "Itinerario sujeto a ajustes operativos"
-      ],
-      "includes": [
-        "Recepción en el aeropuerto y traslado de llegada en Lima",
-        "2 noches en Arawi Miraflores Express de Lima",
-        "3 noches en Hotel Cusco Boutique de Cusco",
-        "1 noche en Hotel Luz Garden de Machu Picchu Pueblo",
-        "Desayunos según el servicio confirmado de cada hotel",
-        "Full day Paracas, Islas Ballestas, Ica y Huacachina, con transporte turístico, tour en lancha, ingresos aplicables de Paracas, tubulares y sandboarding",
-        "Recepción en el aeropuerto de Cusco y traslado al hotel",
-        "Experiencia de bienvenida ancestral en Cusco",
-        "Tour del Valle Sagrado con boleto turístico general",
-        "Tren Inca Rail The Voyager de ida a las 16:36 y retorno The Voyager de las 20:20",
-        "Ingreso a Machu Picchu según el circuito confirmado",
-        "Bus Consettur de subida y bajada y guía profesional en Machu Picchu",
-        "Tour Laguna Humantay con transporte turístico, desayuno, almuerzo y guía",
-        "City Tour de Cusco con boleto turístico general y visitas arqueológicas guiadas",
-        "Traslados operativos requeridos por el itinerario confirmado"
-      ],
-      "excludes": [
-        "Vuelos internacionales",
-        "Vuelo doméstico Lima–Cusco; se cotiza por separado",
-        "Vuelo de salida desde Cusco o cualquier otro vuelo doméstico",
-        "Alimentación no mencionada expresamente",
-        "Ingreso a Qoricancha cuando no esté cubierto por el boleto turístico general, salvo confirmación expresa en el servicio final",
-        "Propinas, gastos personales, seguro de viaje y upgrades opcionales"
-      ],
-      "importantInfo": [
-        "El circuito y horario de ingreso a Machu Picchu están sujetos a disponibilidad oficial.",
-        "La navegación a Islas Ballestas y la caminata a Humantay dependen del clima, el mar y las condiciones de la ruta.",
-        "El vuelo Lima–Cusco debe programarse con margen suficiente para la aclimatación y la bienvenida ancestral.",
-        "Los horarios de tren pueden ser modificados por el operador ferroviario; cuando sea necesario se coordinará un servicio equivalente."
-      ],
-      "pickupInfo": "Los horarios de recojo y puntos de encuentro se confirman después de la reserva según hoteles, vuelos y operación vigente.",
       "itinerary": [
         {
           "day": 1,
           "title": "Llegada a Lima y día libre",
-          "description": "Recepción en el Aeropuerto Internacional Jorge Chávez y traslado privado o coordinado hacia el hotel Arawi Miraflores Express. Nuestro equipo realizará una orientación inicial sobre horarios, recomendaciones y servicios del programa. El resto del día queda libre para descansar o recorrer Miraflores por cuenta propia, de acuerdo con la hora de llegada.",
+          "description": "Recepción personalizada en el aeropuerto Jorge Chávez, asistencia con el equipaje y traslado al hotel en Miraflores. Al llegar se brinda una orientación breve sobre horarios, recomendaciones y documentos necesarios para el programa. El resto del día queda libre para descansar o recorrer los alrededores por cuenta propia, de acuerdo con la hora de llegada.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -1581,7 +1801,7 @@
         {
           "day": 2,
           "title": "Paracas, Islas Ballestas, Ica y Huacachina",
-          "description": "Salida de madrugada desde Lima hacia Paracas. Navegación en lancha por las Islas Ballestas para observar fauna marina y el geoglifo del Candelabro, siempre sujeta a condiciones marítimas. Continuación hacia Ica y el oasis de Huacachina, con recorrido en tubulares y experiencia de sandboarding. Regreso a Lima al finalizar el full day.",
+          "description": "Salida muy temprano desde Lima por la Panamericana Sur. En Paracas se realiza la navegación hacia las Islas Ballestas para observar el Candelabro, formaciones rocosas y fauna marina, siempre que las condiciones del mar lo permitan. Luego se continúa hacia Ica para una visita cultural o vitivinícola y finalmente al oasis de Huacachina, donde se incluye el paseo en tubulares y una experiencia básica de sandboarding. Retorno nocturno a Lima.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -1591,7 +1811,7 @@
         {
           "day": 3,
           "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Traslado al aeropuerto de Lima para abordar el vuelo hacia Cusco. El vuelo Lima–Cusco no está incluido y se cotiza por separado según fecha, equipaje y disponibilidad. A la llegada, recepción, traslado al Hotel Cusco Boutique y tiempo de aclimatación. Más tarde se realiza una bienvenida ancestral andina, concebida como una introducción respetuosa a la cosmovisión local.",
+          "description": "Traslado al aeropuerto de Lima para tomar el vuelo a Cusco, servicio aéreo no incluido y cotizable por separado. A la llegada, recepción y traslado al Hotel Cusco Boutique. Se deja tiempo para aclimatarse antes de participar en una bienvenida ancestral inspirada en la cosmovisión andina, programada como actividad suave y sujeta al horario del vuelo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -1601,7 +1821,7 @@
         {
           "day": 4,
           "title": "Valle Sagrado y conexión a Machu Picchu Pueblo",
-          "description": "Recojo desde el hotel para recorrer el Valle Sagrado de los Incas. El programa contempla sitios culturales y arqueológicos operados en la ruta, con boleto turístico general incluido. Por la tarde, conexión en Ollantaytambo y embarque en el tren Inca Rail The Voyager de las 16:36 hacia Machu Picchu Pueblo. Recepción y alojamiento en el Hotel Luz Garden.",
+          "description": "Recojo en el hotel para recorrer el Valle Sagrado. El programa combina paisajes, mercados tradicionales y sitios arqueológicos como Pisac y Ollantaytambo, según la programación operativa. Después del almuerzo —incluido solo cuando figure en la confirmación— se continúa a la estación de Ollantaytambo para abordar el Inca Rail The Voyager de las 16:36. Llegada aproximada a Machu Picchu Pueblo a las 18:09, asistencia y alojamiento en Hotel Luz Garden.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -1610,18 +1830,18 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno nocturno a Cusco",
-          "description": "Traslado en bus Consettur hacia el acceso de Machu Picchu y visita guiada por el circuito confirmado al momento de la reserva. El programa incluye ingreso, bus de subida y bajada y asistencia turística. Después de la visita habrá tiempo libre en Machu Picchu Pueblo. Por la noche, retorno en el tren Inca Rail The Voyager de las 20:20 y traslado hacia el hotel en Cusco.",
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Después del desayuno, encuentro con el guía y subida en bus Consettur hasta el acceso de Machu Picchu. Visita guiada por el circuito oficial confirmado, con interpretación histórica y tiempo para fotografías dentro de las reglas vigentes. Descenso en bus, tiempo libre para almorzar y abordar el tren Inca Rail The Voyager de las 20:20 con servicio bimodal hasta Cusco. Llegada prevista alrededor de las 00:10 y traslado o asistencia hacia el hotel.",
           "overnight": "Cusco",
-          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
           ]
         },
         {
           "day": 6,
           "title": "Laguna Humantay",
-          "description": "Salida muy temprano hacia Mollepata y Soraypampa. Después del desayuno, inicio de la caminata de altura hacia la Laguna Humantay, rodeada por paisajes del nevado Salkantay. Tiempo para fotografías y explicación del guía antes del descenso. Almuerzo turístico y retorno a Cusco por la tarde. La actividad exige buena condición física y está sujeta al clima y a las condiciones de la ruta.",
+          "description": "Salida de madrugada hacia Mollepata para desayunar y continuar a Soraypampa. Desde allí comienza la caminata de altura hacia la Laguna Humantay, rodeada por nevados y paisajes altoandinos. Tras la visita y el tiempo para fotografías, descenso, almuerzo y retorno a Cusco al final de la tarde. Es una jornada físicamente exigente, especialmente por el retorno nocturno del día anterior.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/laguna-humantay/cover.jpg",
           "images": [
@@ -1630,9 +1850,9 @@
         },
         {
           "day": 7,
-          "title": "City Tour y centros arqueológicos de Cusco",
-          "description": "Mañana libre y, según el horario operativo confirmado, recorrido guiado por el centro histórico y los principales complejos arqueológicos cercanos a Cusco. La visita contempla Qoricancha y/o puntos del centro colonial, además de Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. El boleto turístico general está incluido. El programa finaliza después del tour; el traslado de salida puede coordinarse según el horario del vuelo del pasajero.",
-          "overnight": "Fin del programa",
+          "title": "City Tour arqueológico de Cusco y fin del programa",
+          "description": "Recorrido por el legado inca y colonial de Cusco, comenzando por Qoricancha y continuando hacia Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay. Los ingresos aplicables se cubren con el Boleto Turístico General, salvo Qoricancha cuando corresponda un ticket independiente. El recorrido y el traslado final se coordinan según el horario de salida; para completar todas las visitas se recomienda reservar un vuelo nocturno.",
+          "overnight": "Fin del viaje",
           "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
             "./assets/img/tours/city-tour/cover.jpg"
@@ -1643,7 +1863,7 @@
         {
           "day": 1,
           "title": "Llegada a Lima y día libre",
-          "description": "Recepción en el Aeropuerto Internacional Jorge Chávez y traslado privado o coordinado hacia el hotel Arawi Miraflores Express. Nuestro equipo realizará una orientación inicial sobre horarios, recomendaciones y servicios del programa. El resto del día queda libre para descansar o recorrer Miraflores por cuenta propia, de acuerdo con la hora de llegada.",
+          "description": "Recepción personalizada en el aeropuerto Jorge Chávez, asistencia con el equipaje y traslado al hotel en Miraflores. Al llegar se brinda una orientación breve sobre horarios, recomendaciones y documentos necesarios para el programa. El resto del día queda libre para descansar o recorrer los alrededores por cuenta propia, de acuerdo con la hora de llegada.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -1653,7 +1873,7 @@
         {
           "day": 2,
           "title": "Paracas, Islas Ballestas, Ica y Huacachina",
-          "description": "Salida de madrugada desde Lima hacia Paracas. Navegación en lancha por las Islas Ballestas para observar fauna marina y el geoglifo del Candelabro, siempre sujeta a condiciones marítimas. Continuación hacia Ica y el oasis de Huacachina, con recorrido en tubulares y experiencia de sandboarding. Regreso a Lima al finalizar el full day.",
+          "description": "Salida muy temprano desde Lima por la Panamericana Sur. En Paracas se realiza la navegación hacia las Islas Ballestas para observar el Candelabro, formaciones rocosas y fauna marina, siempre que las condiciones del mar lo permitan. Luego se continúa hacia Ica para una visita cultural o vitivinícola y finalmente al oasis de Huacachina, donde se incluye el paseo en tubulares y una experiencia básica de sandboarding. Retorno nocturno a Lima.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -1663,7 +1883,7 @@
         {
           "day": 3,
           "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Traslado al aeropuerto de Lima para abordar el vuelo hacia Cusco. El vuelo Lima–Cusco no está incluido y se cotiza por separado según fecha, equipaje y disponibilidad. A la llegada, recepción, traslado al Hotel Cusco Boutique y tiempo de aclimatación. Más tarde se realiza una bienvenida ancestral andina, concebida como una introducción respetuosa a la cosmovisión local.",
+          "description": "Traslado al aeropuerto de Lima para tomar el vuelo a Cusco, servicio aéreo no incluido y cotizable por separado. A la llegada, recepción y traslado al Hotel Cusco Boutique. Se deja tiempo para aclimatarse antes de participar en una bienvenida ancestral inspirada en la cosmovisión andina, programada como actividad suave y sujeta al horario del vuelo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -1673,7 +1893,7 @@
         {
           "day": 4,
           "title": "Valle Sagrado y conexión a Machu Picchu Pueblo",
-          "description": "Recojo desde el hotel para recorrer el Valle Sagrado de los Incas. El programa contempla sitios culturales y arqueológicos operados en la ruta, con boleto turístico general incluido. Por la tarde, conexión en Ollantaytambo y embarque en el tren Inca Rail The Voyager de las 16:36 hacia Machu Picchu Pueblo. Recepción y alojamiento en el Hotel Luz Garden.",
+          "description": "Recojo en el hotel para recorrer el Valle Sagrado. El programa combina paisajes, mercados tradicionales y sitios arqueológicos como Pisac y Ollantaytambo, según la programación operativa. Después del almuerzo —incluido solo cuando figure en la confirmación— se continúa a la estación de Ollantaytambo para abordar el Inca Rail The Voyager de las 16:36. Llegada aproximada a Machu Picchu Pueblo a las 18:09, asistencia y alojamiento en Hotel Luz Garden.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -1682,18 +1902,18 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno nocturno a Cusco",
-          "description": "Traslado en bus Consettur hacia el acceso de Machu Picchu y visita guiada por el circuito confirmado al momento de la reserva. El programa incluye ingreso, bus de subida y bajada y asistencia turística. Después de la visita habrá tiempo libre en Machu Picchu Pueblo. Por la noche, retorno en el tren Inca Rail The Voyager de las 20:20 y traslado hacia el hotel en Cusco.",
+          "title": "Machu Picchu y retorno a Cusco",
+          "description": "Después del desayuno, encuentro con el guía y subida en bus Consettur hasta el acceso de Machu Picchu. Visita guiada por el circuito oficial confirmado, con interpretación histórica y tiempo para fotografías dentro de las reglas vigentes. Descenso en bus, tiempo libre para almorzar y abordar el tren Inca Rail The Voyager de las 20:20 con servicio bimodal hasta Cusco. Llegada prevista alrededor de las 00:10 y traslado o asistencia hacia el hotel.",
           "overnight": "Cusco",
-          "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
           "images": [
-            "./assets/img/tours/machu-picchu-overnight/cover.jpg"
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
           ]
         },
         {
           "day": 6,
           "title": "Laguna Humantay",
-          "description": "Salida muy temprano hacia Mollepata y Soraypampa. Después del desayuno, inicio de la caminata de altura hacia la Laguna Humantay, rodeada por paisajes del nevado Salkantay. Tiempo para fotografías y explicación del guía antes del descenso. Almuerzo turístico y retorno a Cusco por la tarde. La actividad exige buena condición física y está sujeta al clima y a las condiciones de la ruta.",
+          "description": "Salida de madrugada hacia Mollepata para desayunar y continuar a Soraypampa. Desde allí comienza la caminata de altura hacia la Laguna Humantay, rodeada por nevados y paisajes altoandinos. Tras la visita y el tiempo para fotografías, descenso, almuerzo y retorno a Cusco al final de la tarde. Es una jornada físicamente exigente, especialmente por el retorno nocturno del día anterior.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/laguna-humantay/cover.jpg",
           "images": [
@@ -1702,110 +1922,22 @@
         },
         {
           "day": 7,
-          "title": "City Tour y centros arqueológicos de Cusco",
-          "description": "Mañana libre y, según el horario operativo confirmado, recorrido guiado por el centro histórico y los principales complejos arqueológicos cercanos a Cusco. La visita contempla Qoricancha y/o puntos del centro colonial, además de Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay. El boleto turístico general está incluido. El programa finaliza después del tour; el traslado de salida puede coordinarse según el horario del vuelo del pasajero.",
-          "overnight": "Fin del programa",
+          "title": "City Tour arqueológico de Cusco y fin del programa",
+          "description": "Recorrido por el legado inca y colonial de Cusco, comenzando por Qoricancha y continuando hacia Sacsayhuamán, Qenqo, Puka Pukara y Tambomachay. Los ingresos aplicables se cubren con el Boleto Turístico General, salvo Qoricancha cuando corresponda un ticket independiente. El recorrido y el traslado final se coordinan según el horario de salida; para completar todas las visitas se recomienda reservar un vuelo nocturno.",
+          "overnight": "Fin del viaje",
           "image": "./assets/img/tours/city-tour/cover.jpg",
           "images": [
             "./assets/img/tours/city-tour/cover.jpg"
           ]
         }
       ],
-      "accommodationSummary": [
-        {
-          "destination": "lima",
-          "nights": 2,
-          "label": "Lima - 2 noches",
-          "defaultHotelCode": "arawi-miraflores-3s"
-        },
-        {
-          "destination": "cusco",
-          "nights": 3,
-          "label": "Cusco - 3 noches",
-          "defaultHotelCode": "cusco-boutique-3s"
-        },
-        {
-          "destination": "aguas-calientes",
-          "nights": 1,
-          "label": "Machu Picchu Pueblo - 1 noche",
-          "defaultHotelCode": "luz-garden-3s"
-        }
-      ],
-      "defaultHotelSelections": {
-        "lima": "arawi-miraflores-3s",
-        "cusco": "cusco-boutique-3s",
-        "aguas-calientes": "luz-garden-3s"
+      "seo": {
+        "title": "Perú Costa y Andes: Lima, Paracas, Cusco, Machu Picchu y Humantay 7 días / 6 noches",
+        "description": "Un circuito completo que combina la costa, el desierto y los Andes con hoteles, trenes y principales ingresos incluidos.",
+        "canonicalSlug": "peru-lima-paracas-cusco-machu-picchu-humantay-7-dias-6-noches",
+        "language": "es"
       },
-      "hotelsIncludedInBase": true,
-      "trainSelection": {
-        "required": true,
-        "customerCanChangeTrain": true,
-        "fixedSelection": false,
-        "sameCompanyRoundTrip": false,
-        "mode": "sacred_valley_connection",
-        "defaultTrainCodes": {
-          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
-          "return": "INCA_MAPI_OLLA_VOYAGER_2020_MACHU_PICCHU"
-        },
-        "allowedOutboundTrainCodes": [
-          "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
-          "INCA_OLLA_MAPI_PRIME_1636_OLLANTAYTAMB"
-        ],
-        "allowedReturnTrainCodes": [
-          "INCA_MAPI_OLLA_VOYAGER_2020_MACHU_PICCHU",
-          "INCA_MAPI_OLLA_PRIME_1900_MACHU_PICCHU"
-        ]
-      },
-      "defaultTrainSelection": {
-        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
-        "returnTrainCode": "INCA_MAPI_OLLA_VOYAGER_2020_MACHU_PICCHU"
-      },
-      "trainFilter": {
-        "outbound": [
-          "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
-          "INCA_OLLA_MAPI_PRIME_1636_OLLANTAYTAMB"
-        ],
-        "return": [
-          "INCA_MAPI_OLLA_VOYAGER_2020_MACHU_PICCHU",
-          "INCA_MAPI_OLLA_PRIME_1900_MACHU_PICCHU"
-        ]
-      },
-      "currency": "USD",
-      "basePricing": {
-        "adult": 1529.9,
-        "child": 1529.9,
-        "currency": "USD",
-        "mode": "published_price_including_default_hotels",
-        "label": "Precio base por persona con hoteles seleccionados",
-        "description": "Tarifa publicada protegida que incluye hoteles base y trenes base. Soporta hasta 15% de descuento por pago total y 5.4% de comisión PayPal.",
-        "protectedNetAfterMaxDiscountAndPaypal": 1230.19,
-        "maxDiscountPercent": 15,
-        "paypalPercent": 5.4,
-        "targetAverageProfitPerPersonUSD": 200
-      },
-      "priceFrom": 1529.9,
-      "priceLabel": "Desde USD 1,529.90 por persona con hoteles",
-      "hotelPricingNote": "Arawi Miraflores Express, Hotel Cusco Boutique y Hotel Luz Garden están incluidos como selección base. El precio solo cambia si el viajero elige un upgrade, otra distribución de habitaciones o un hotel de mayor tarifa.",
-      "paymentOptions": {
-        "fullPaymentDiscountPercent": 15,
-        "partialPaymentPerPerson": 49.9
-      },
-      "faq": [
-        {
-          "q": "¿Incluye vuelos?",
-          "a": "No. El vuelo Lima–Cusco y cualquier otro vuelo nacional o internacional se cotizan por separado."
-        },
-        {
-          "q": "¿Qué hoteles están incluidos?",
-          "a": "La selección base incluye Arawi Miraflores Express en Lima, Hotel Cusco Boutique en Cusco y Hotel Luz Garden en Machu Picchu Pueblo. Se pueden elegir upgrades desde el selector de hoteles."
-        },
-        {
-          "q": "¿Qué trenes están incluidos?",
-          "a": "La base incluye Inca Rail The Voyager de las 16:36 desde Ollantaytambo y el retorno de las 20:20. Los horarios equivalentes dependen de disponibilidad ferroviaria."
-        }
-      ],
-      "itineraryStatus": "complete",
-      "itineraryLanguage": "es"
+      "hotelPricingNote": "Tarifa calculada para dos adultos compartiendo habitación. Incluye los hoteles preseleccionados y los trenes base; una habitación individual o un hotel superior puede generar suplemento."
     },
     {
       "id": "pkg_peru_8d7n",
