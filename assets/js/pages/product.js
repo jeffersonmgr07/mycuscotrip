@@ -751,16 +751,21 @@ class MyCuscoTripProductPage {
   getItineraryDateLabel(dayNumber) {
     if (!this.date) return "";
 
-    const start = new Date(`${this.date}T00:00:00`);
+    const start = new Date(`${this.date}T12:00:00`);
     if (Number.isNaN(start.getTime())) return "";
 
     const date = new Date(start);
     date.setDate(start.getDate() + Math.max(Number(dayNumber || 1) - 1, 0));
 
-    return date.toLocaleDateString(mctLocaleDateTag(), {
+    const currentYear = new Date().getFullYear();
+    const options = {
       day: "numeric",
       month: "long"
-    });
+    };
+
+    if (date.getFullYear() !== currentYear) options.year = "numeric";
+
+    return date.toLocaleDateString(mctLocaleDateTag(), options);
   }
 
   refreshItineraryDates() {
@@ -9889,119 +9894,604 @@ document.addEventListener("click", function (event) {
 })();
 
 /* =========================================================
-   PATCH MCT V94 - Circuitos Perú: hoteles base incluidos + trenes configurables
+   MCT V94 — Circuito Perú 7D/6N con Humantay
+   Hoteles base incluidos + upgrades y trenes configurables
    ========================================================= */
 (function () {
   function patchV94() {
     const page = window.MyCuscoTripProductPage;
-    if (!page) return false;
-    if (page.__mctV94Applied) return true;
-    const proto = Object.getPrototypeOf(page) || page;
+    if (!page || page.__mctV94Applied) return Boolean(page);
 
-    const hasIncludedHotels = (ctx, product) => Boolean((product || ctx.product)?.hotelsIncludedInBase);
-    const defaultMap = (ctx, product) => (product || ctx.product)?.defaultHotelSelections || {};
+    const proto = Object.getPrototypeOf(page);
+    if (!proto) return false;
 
-    proto.ensureIncludedHotelDefaultsV94 = function (product) {
-      const resolved = product || this.product;
-      if (!hasIncludedHotels(this, resolved)) return;
-      if (!this.selectedHotelsByDestination) this.selectedHotelsByDestination = {};
-      if (!this.selectedCombinationsByDestination) this.selectedCombinationsByDestination = {};
-      const map = defaultMap(this, resolved);
-      const passengers = Math.max(1, this.getTotalPassengers?.() || 1);
-      const summary = this.getAccommodationSummary?.(resolved) || [];
+    const PACKAGE_ID = "pkg_peru_7d6n_humantay";
+
+    const isTarget = (ctx, product) => {
+      const source = product || ctx?.product || {};
+      return String(source?.id || source?.raw?.id || "") === PACKAGE_ID;
+    };
+
+    const escape = (ctx, value) => ctx.escapeHtml?.(value) || String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+    const money = (ctx, value) => ctx.formatMoney?.(Number(value || 0)) || Number(value || 0).toFixed(2);
+
+    proto.getV94HotelConfig = function () {
+      return this.product?.hotelSelection || this.product?.raw?.hotelSelection || {};
+    };
+
+    proto.getV94IncludedHotelAllowance = function (destination) {
+      const config = this.getV94HotelConfig?.() || {};
+      return Number(config?.includedAllowancePerPersonUSD?.[destination] || 0);
+    };
+
+    proto.getV94HotelUpgradePerPerson = function (destination, combination) {
+      if (!combination) return 0;
+      const included = this.getV94IncludedHotelAllowance?.(destination) || 0;
+      return Math.max(0, Number(combination.additionalPerPerson || 0) - included);
+    };
+
+    proto.ensureV94DefaultHotels = function () {
+      if (!isTarget(this)) return;
+
+      const config = this.getV94HotelConfig?.() || {};
+      const defaults = config.defaultHotelCodes || this.product?.defaultHotelsByDestination || {};
+      const summary = this.getAccommodationSummary?.(this.product) || [];
+      const passengers = Math.max(1, Number(this.getTotalPassengers?.() || 1));
 
       summary.forEach((item) => {
-        const code = map[item.destination] || item.defaultHotelCode || "";
-        if (!code) return;
-        if (!this.selectedHotelsByDestination[item.destination] || this.selectedHotelsByDestination[item.destination] === "no-hotel") {
-          this.selectedHotelsByDestination[item.destination] = code;
+        const destination = String(item.destination || "");
+        const defaultCode = String(defaults[destination] || "");
+        let hotelCode = String(this.selectedHotelsByDestination?.[destination] || "");
+
+        if (!hotelCode || hotelCode === "no-hotel") {
+          hotelCode = defaultCode;
+          if (hotelCode) this.selectedHotelsByDestination[destination] = hotelCode;
         }
-        const hotel = this.getHotelByCode?.(item.destination, this.selectedHotelsByDestination[item.destination]);
+
+        const hotel = this.getHotelByCode?.(destination, hotelCode) || this.getHotelByCode?.(destination, defaultCode);
         if (!hotel) return;
-        const combos = this.generateAccommodationCombinations?.(hotel.rooms || [], passengers, Number(item.nights || 0)) || [];
-        const selectedKey = this.selectedCombinationsByDestination[item.destination]?.key;
-        this.selectedCombinationsByDestination[item.destination] = combos.find((c) => c.key === selectedKey) || combos[0] || null;
+
+        if (hotel.hotelCode !== hotelCode) {
+          hotelCode = hotel.hotelCode;
+          this.selectedHotelsByDestination[destination] = hotelCode;
+        }
+
+        const combinations = this.generateAccommodationCombinations?.(
+          hotel.rooms || [],
+          passengers,
+          Number(item.nights || 0)
+        ) || [];
+
+        const selectedKey = this.selectedCombinationsByDestination?.[destination]?.key;
+        const selected = combinations.find((combo) => combo.key === selectedKey);
+        this.selectedCombinationsByDestination[destination] = selected || combinations[0] || null;
       });
     };
 
-    const previousRenderAccommodation = proto.renderAccommodationOptions;
-    proto.renderAccommodationOptions = function (product) {
-      this.ensureIncludedHotelDefaultsV94?.(product || this.product);
-      return previousRenderAccommodation?.apply(this, arguments);
+    const previousIsTrainSelectionEnabled = proto.isTrainSelectionEnabled;
+    proto.isTrainSelectionEnabled = function (product) {
+      if (isTarget(this, product)) return true;
+      return previousIsTrainSelectionEnabled?.apply(this, arguments) || false;
     };
 
-    const previousRefreshAccommodation = proto.refreshAccommodationSelections;
+    const previousRefreshAccommodationSelections = proto.refreshAccommodationSelections;
     proto.refreshAccommodationSelections = function () {
-      this.ensureIncludedHotelDefaultsV94?.(this.product);
-      const result = previousRefreshAccommodation?.apply(this, arguments);
-      this.ensureIncludedHotelDefaultsV94?.(this.product);
+      if (isTarget(this)) this.ensureV94DefaultHotels?.();
+      const result = previousRefreshAccommodationSelections?.apply(this, arguments);
+      if (isTarget(this)) this.ensureV94DefaultHotels?.();
       return result;
     };
 
-    proto.getDefaultHotelCodeForDestination = (function (previous) {
-      return function (destination) {
-        const map = defaultMap(this, this.product);
-        if (map[destination]) return map[destination];
-        return previous?.apply(this, arguments) || "";
-      };
-    })(proto.getDefaultHotelCodeForDestination);
+    const previousCalculateAccommodationAdditionalPerPerson = proto.calculateAccommodationAdditionalPerPerson;
+    proto.calculateAccommodationAdditionalPerPerson = function (destination) {
+      if (!isTarget(this)) {
+        return previousCalculateAccommodationAdditionalPerPerson?.apply(this, arguments) || 0;
+      }
+      this.ensureV94DefaultHotels?.();
+      const combination = this.selectedCombinationsByDestination?.[destination] || null;
+      return this.getV94HotelUpgradePerPerson?.(destination, combination) || 0;
+    };
 
-    function defaultComboTotal(ctx, destination) {
-      const product = ctx.product;
-      if (!hasIncludedHotels(ctx, product)) return 0;
-      const item = (ctx.getAccommodationSummary?.(product) || []).find((x) => x.destination === destination);
-      const code = defaultMap(ctx, product)[destination] || item?.defaultHotelCode || "";
-      const hotel = ctx.getHotelByCode?.(destination, code);
-      if (!hotel || !item) return 0;
-      const passengers = Math.max(1, ctx.getTotalPassengers?.() || 1);
-      const combos = ctx.generateAccommodationCombinations?.(hotel.rooms || [], passengers, Number(item.nights || 0)) || [];
-      return Number(combos[0]?.totalForStay || 0);
-    }
-
-    const previousAccommodationTotal = proto.calculateAccommodationTotal;
+    const previousCalculateAccommodationTotal = proto.calculateAccommodationTotal;
     proto.calculateAccommodationTotal = function () {
-      if (!hasIncludedHotels(this, this.product)) return previousAccommodationTotal?.apply(this, arguments) || 0;
+      if (!isTarget(this)) {
+        return previousCalculateAccommodationTotal?.apply(this, arguments) || 0;
+      }
+
+      this.ensureV94DefaultHotels?.();
+      const passengers = Math.max(1, Number(this.getTotalPassengers?.() || 1));
       const summary = this.getAccommodationSummary?.(this.product) || [];
+
       return summary.reduce((total, item) => {
-        const code = this.selectedHotelsByDestination?.[item.destination];
-        const combo = this.selectedCombinationsByDestination?.[item.destination];
-        if (!code || code === "no-hotel" || !combo) return total - defaultComboTotal(this, item.destination);
-        return total + Math.max(0, Number(combo.totalForStay || 0) - defaultComboTotal(this, item.destination));
+        const combination = this.selectedCombinationsByDestination?.[item.destination] || null;
+        const differencePerPerson = this.getV94HotelUpgradePerPerson?.(item.destination, combination) || 0;
+        return total + (differencePerPerson * passengers);
       }, 0);
     };
 
-    const previousAccommodationPerPerson = proto.calculateAccommodationAdditionalPerPerson;
-    proto.calculateAccommodationAdditionalPerPerson = function (destination) {
-      if (!hasIncludedHotels(this, this.product)) return previousAccommodationPerPerson?.apply(this, arguments) || 0;
-      const passengers = Math.max(1, this.getTotalPassengers?.() || 1);
-      const code = this.selectedHotelsByDestination?.[destination];
-      const combo = this.selectedCombinationsByDestination?.[destination];
-      const selected = (!code || code === "no-hotel" || !combo) ? 0 : Number(combo.totalForStay || 0);
-      return Math.max(0, selected - defaultComboTotal(this, destination)) / passengers;
+    const previousRenderAccommodationOptions = proto.renderAccommodationOptions;
+    proto.renderAccommodationOptions = function (product) {
+      if (!isTarget(this, product)) {
+        return previousRenderAccommodationOptions?.apply(this, arguments);
+      }
+
+      this.ensureV94DefaultHotels?.();
+      const section = document.getElementById("packageAccommodationSection");
+      const container = document.getElementById("hotelSelectorsContainer");
+      if (!section || !container) return;
+
+      const summary = this.getAccommodationSummary?.(product || this.product) || [];
+      if (!summary.length) {
+        section.hidden = true;
+        container.innerHTML = "";
+        return;
+      }
+
+      section.hidden = false;
+      section.classList.add("booking-field--included-hotels-v94");
+
+      container.innerHTML = summary.map((item) => {
+        const destination = String(item.destination || "");
+        const selection = this.getSelectedAccommodationForDestination?.(destination) || {};
+        const hotel = selection.hotel;
+        const combination = selection.combination;
+        const destinationLabel = this.getDestinationLabel?.(destination) || destination;
+        const cardTitle = this.t("product.hotelInDestination", "Hotel en {destination}", { destination: destinationLabel });
+        const differencePerPerson = this.getV94HotelUpgradePerPerson?.(destination, combination) || 0;
+        const image = hotel?.images?.cover || hotel?.images?.gallery?.[0] || "";
+        const priceText = differencePerPerson > 0
+          ? this.t("product.upgradePerPersonAmount", "+ {price} por persona", { price: `${this.product?.currency || "USD"} ${money(this, differencePerPerson)}` })
+          : this.t("product.hotelIncludedInPrice", "Hotel incluido en el precio");
+
+        return `<div class="booking-accommodation-card booking-accommodation-card--selected booking-accommodation-card--included-v94">
+          ${image ? `<div class="booking-accommodation-card__thumb"><img src="${escape(this, this.resolveAssetPath?.(image) || image)}" alt="${escape(this, hotel?.hotelName || destinationLabel)}" loading="lazy" /></div>` : ""}
+          <div class="booking-accommodation-card__header">
+            <strong>${escape(this, cardTitle)}</strong>
+            <small>${Number(item.nights || 0)} ${escape(this, this.t(Number(item.nights || 0) === 1 ? "product.night" : "product.nights", Number(item.nights || 0) === 1 ? "noche" : "noches"))}</small>
+          </div>
+          <div class="booking-accommodation-card__body">
+            <p class="booking-accommodation-card__selected">${escape(this, hotel?.hotelName || this.t("product.accommodationPending", "Alojamiento según disponibilidad"))}${hotel?.stars ? ` · ${this.renderStars?.(hotel.stars) || `${hotel.stars}★`}` : ""}</p>
+            <p class="booking-accommodation-card__selected">${escape(this, combination?.label || this.t("product.selectRoomAvailability", "Habitación según disponibilidad"))}</p>
+            <p class="booking-accommodation-card__price">${escape(this, priceText)}</p>
+            <button type="button" class="btn booking-secondary-btn open-hotel-modal-btn" data-destination="${escape(this, destination)}">
+              <i class="fas fa-hotel" aria-hidden="true"></i>
+              ${escape(this, this.t("product.changeHotel", "Cambiar hotel"))}
+            </button>
+          </div>
+        </div>`;
+      }).join("");
+
+      this.bindAccommodationEvents?.();
     };
 
-    const previousIsTrainEnabled = proto.isTrainSelectionEnabled;
-    proto.isTrainSelectionEnabled = function (product) {
-      const resolved = product || this.product;
-      const cfg = resolved?.trainSelection || resolved?.raw?.trainSelection || {};
-      if (this.isPackage?.(resolved) && cfg.required === true && cfg.customerCanChangeTrain === true) return true;
-      return previousIsTrainEnabled?.apply(this, arguments) ?? false;
+    const previousOpenHotelModal = proto.openHotelModal;
+    proto.openHotelModal = function (destination) {
+      if (!isTarget(this)) return previousOpenHotelModal?.apply(this, arguments);
+
+      this.ensureV94DefaultHotels?.();
+
+      const modal = document.getElementById("hotelSelectionModal");
+      const title = document.getElementById("hotelModalTitle");
+      const subtitle = document.getElementById("hotelModalSubtitle");
+      const list = document.getElementById("hotelModalList");
+      const cancelBtn = document.getElementById("cancelHotelModalBtn");
+      if (!modal || !title || !subtitle || !list) return;
+
+      this.activeHotelModalDestination = destination;
+      if (cancelBtn) cancelBtn.textContent = this.t("product.selectHotelRoom", "Seleccionar hotel y habitación");
+
+      const destinationLabel = this.getDestinationLabel?.(destination) || destination;
+      const summaryItem = (this.getAccommodationSummary?.(this.product) || []).find((item) => item.destination === destination);
+      const nights = Number(summaryItem?.nights || 0);
+      const passengers = Math.max(1, Number(this.getTotalPassengers?.() || 1));
+      const config = this.getV94HotelConfig?.() || {};
+      const defaultCode = String(config?.defaultHotelCodes?.[destination] || this.product?.defaultHotelsByDestination?.[destination] || "");
+      const currentHotelCode = String(this.selectedHotelsByDestination?.[destination] || defaultCode);
+      const currentCombinationKey = String(this.selectedCombinationsByDestination?.[destination]?.key || "");
+      const hotels = (this.getHotelsByDestination?.(destination) || []).filter((hotel) => hotel?.hotelCode && hotel.hotelCode !== "no-hotel");
+
+      title.textContent = this.t("product.chooseHotelInDestination", "Elige tu hotel en {destination}", { destination: destinationLabel });
+      subtitle.textContent = this.t(
+        "product.includedHotelUpgradeIntroV94",
+        "El hotel base ya está incluido. Puedes mantenerlo o elegir otra opción; solo se sumará el suplemento correspondiente.",
+        { destination: destinationLabel, nights }
+      );
+
+      list.innerHTML = hotels.map((hotel) => {
+        const combinations = this.generateAccommodationCombinations?.(hotel.rooms || [], passengers, nights) || [];
+        const isSelectedHotel = currentHotelCode === hotel.hotelCode;
+        const initialCombo = combinations.find((combo) => isSelectedHotel && combo.key === currentCombinationKey) || combinations[0] || null;
+        const images = [...new Set([
+          ...(hotel.images?.cover ? [hotel.images.cover] : []),
+          ...(Array.isArray(hotel.images?.gallery) ? hotel.images.gallery : [])
+        ])];
+        const initialDifference = this.getV94HotelUpgradePerPerson?.(destination, initialCombo) || 0;
+        const isBaseHotel = hotel.hotelCode === defaultCode;
+        const badgeText = initialDifference > 0
+          ? this.t("product.upgradePerPersonAmount", "+ {price} por persona", { price: `${this.product?.currency || "USD"} ${money(this, initialDifference)}` })
+          : (isBaseHotel
+            ? this.t("product.hotelIncludedInPrice", "Hotel incluido en el precio")
+            : this.t("product.noAdditionalDifference", "Sin diferencia adicional"));
+
+        return `<article class="hotel-option-card ${isSelectedHotel ? "is-selected" : ""} hotel-option-card--included-v94" data-hotel-card="${escape(this, hotel.hotelCode)}" data-destination="${escape(this, destination)}" data-hotel-code="${escape(this, hotel.hotelCode)}" data-selected-combo-key="${escape(this, initialCombo?.key || "")}">
+          <div class="hotel-option-card__header">
+            <div>
+              <h3>${escape(this, hotel.hotelName || this.t("quote.hotelGeneric", "Hotel"))}</h3>
+              <p>${this.renderStars?.(hotel.stars || 0) || `${hotel.stars || 0}★`} · ${escape(this, hotel.location || destinationLabel)}</p>
+              ${hotel.summary ? `<p>${escape(this, hotel.summary)}</p>` : ""}
+            </div>
+            <div class="hotel-option-card__badge ${initialDifference <= 0 ? "hotel-option-card__badge--included" : ""}">${escape(this, badgeText)}</div>
+          </div>
+          <div class="hotel-option-card__content">
+            <div class="hotel-option-card__media">
+              <div class="hotel-option-card__gallery">${this.renderHotelModalGallery?.(images, hotel.hotelName || this.t("quote.hotelGeneric", "Hotel")) || ""}</div>
+              ${this.renderHotelFeatures?.(hotel) || ""}
+            </div>
+            <div class="hotel-option-card__body">
+              <label>${escape(this, this.t("booking.selectRoomType", "Selecciona tipo de habitación"))}</label>
+              <div class="hotel-option-card__options">
+                ${combinations.length ? combinations.map((combo) => {
+                  const differencePerPerson = this.getV94HotelUpgradePerPerson?.(destination, combo) || 0;
+                  const differenceTotal = differencePerPerson * passengers;
+                  const roomsText = `${combo.totalRooms} ${this.t(combo.totalRooms === 1 ? "product.room" : "product.rooms", combo.totalRooms === 1 ? "habitación" : "habitaciones")}`;
+                  const subText = differencePerPerson > 0
+                    ? this.t("product.roomsUpgradeTotal", "{rooms} | Upgrade total + {price} · {pricePerPerson} por persona", {
+                        rooms: roomsText,
+                        price: `${this.product?.currency || "USD"} ${money(this, differenceTotal)}`,
+                        pricePerPerson: `${this.product?.currency || "USD"} ${money(this, differencePerPerson)}`
+                      })
+                    : this.t("product.roomsIncludedInBasePrice", "{rooms} | Incluido en el precio base", { rooms: roomsText });
+
+                  return `<button type="button" class="hotel-combo-btn ${isSelectedHotel && currentCombinationKey === combo.key ? "is-selected" : ""}" data-destination="${escape(this, destination)}" data-hotel-code="${escape(this, hotel.hotelCode)}" data-combo-key="${escape(this, combo.key)}">
+                    <span class="hotel-combo-radio" aria-hidden="true"></span>
+                    <span class="hotel-combo-btn__main">${escape(this, combo.label)}</span>
+                    <span class="hotel-combo-btn__sub">${escape(this, subText)}</span>
+                  </button>`;
+                }).join("") : `<p>${escape(this, this.t("product.noValidRoomsForTravelers", "No hay habitaciones válidas para {count} viajeros.", { count: passengers }))}</p>`}
+              </div>
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+
+      this.bindHotelModalSelectionEvents?.();
+      this.bindHotelModalGalleryEvents?.();
+      modal.hidden = false;
+      document.body.classList.add("hotel-modal-open");
+    };
+
+    const previousRenderProduct = proto.renderProduct;
+    proto.renderProduct = function (product) {
+      if (isTarget(this, product)) this.ensureV94DefaultHotels?.();
+      const result = previousRenderProduct?.apply(this, arguments);
+      if (isTarget(this, product || this.product)) {
+        this.ensureV94DefaultHotels?.();
+        this.renderAccommodationOptions?.(product || this.product);
+        this.renderTrainSelectionOptions?.(product || this.product);
+        this.updatePricing?.();
+      }
+      return result;
+    };
+
+    const kick = () => {
+      try {
+        if (!isTarget(page)) return;
+        page.ensureV94DefaultHotels?.();
+        page.renderAccommodationOptions?.(page.product);
+        page.renderTrainSelectionOptions?.(page.product);
+        page.updatePricing?.();
+      } catch (error) {
+        console.warn("MCT V94 post-apply warning:", error);
+      }
     };
 
     page.__mctV94Applied = true;
-    page.ensureIncludedHotelDefaultsV94?.(page.product);
-    page.renderAccommodationOptions?.(page.product);
-    page.bindAccommodationEvents?.();
-    page.renderTrainSelectionOptions?.(page.product);
-    page.updatePricing?.();
+    kick();
+    [250, 700, 1400, 2400].forEach((delay) => setTimeout(kick, delay));
     return true;
   }
 
   if (!patchV94()) {
-    let attempts = 0;
-    const timer = setInterval(() => {
-      attempts += 1;
-      if (patchV94() || attempts > 80) clearInterval(timer);
-    }, 100);
+    document.addEventListener("DOMContentLoaded", patchV94);
+    [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV94, delay));
+  }
+})();
+
+/* =========================================================
+   MCT V95 — Impresión de itinerarios por día con imágenes y fechas
+   ========================================================= */
+(function () {
+  function patchV95() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page || page.__mctV95Applied) return Boolean(page);
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const esc = (ctx, value) => typeof ctx.escapeHtml === "function"
+      ? ctx.escapeHtml(value ?? "")
+      : String(value ?? "").replace(/[&<>'"]/g, (char) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+        }[char]));
+
+    const unique = (items) => Array.from(new Set((items || [])
+      .map((item) => String(item || "").trim())
+      .filter(Boolean)));
+
+    proto.getProductPrintDayItemsV95 = function () {
+      const daily = Array.isArray(this.product?.dailyItinerary)
+        ? this.product.dailyItinerary
+        : Array.isArray(this.product?.raw?.dailyItinerary)
+          ? this.product.raw.dailyItinerary
+          : [];
+
+      if (daily.length) return JSON.parse(JSON.stringify(daily));
+
+      const itinerary = Array.isArray(this.product?.itinerary)
+        ? this.product.itinerary
+        : Array.isArray(this.product?.raw?.itinerary)
+          ? this.product.raw.itinerary
+          : [];
+
+      if (!itinerary.length) return [];
+
+      const numbered = itinerary.filter((item) => Number.isFinite(Number(item?.day)));
+      const uniqueDays = new Set(numbered.map((item) => Number(item.day)));
+      const looksLikeDailyItinerary = numbered.length === itinerary.length && uniqueDays.size === itinerary.length;
+
+      return looksLikeDailyItinerary ? JSON.parse(JSON.stringify(itinerary)) : [];
+    };
+
+    proto.getProductPrintDayImageV95 = function (item, index) {
+      const direct = typeof this.collectItineraryItemImages === "function"
+        ? this.collectItineraryItemImages(item)
+        : unique([
+            item?.image,
+            ...(Array.isArray(item?.images) ? item.images : []),
+            item?.media?.image,
+            ...(Array.isArray(item?.media?.images) ? item.media.images : [])
+          ]);
+
+      const productImages = this.product?.images || this.product?.raw?.images || {};
+      const fallbackGallery = Array.isArray(productImages.gallery) ? productImages.gallery : [];
+      const fallback = direct[0]
+        || fallbackGallery[index]
+        || productImages.cover
+        || this.product?.image
+        || this.product?.fallbackImage
+        || "./assets/img/placeholder/experience.jpg";
+
+      return typeof this.resolveAssetPath === "function" ? this.resolveAssetPath(fallback) : fallback;
+    };
+
+    proto.renderProductPrintDayItineraryV95 = function () {
+      const days = this.getProductPrintDayItemsV95?.() || [];
+      if (!days.length) return "";
+
+      return days.map((item, index) => {
+        const dayNumber = Math.max(1, Number(item?.day || index + 1));
+        const dayLabel = this.t("product.print.dayLabel", "Día {n}", { n: dayNumber });
+        const dateLabel = this.getItineraryDateLabel?.(dayNumber) || "";
+        const title = item?.title || this.t("product.print.activityFallback", "Actividad {n}", { n: dayNumber });
+        const description = item?.description || "";
+        const overnight = item?.overnight || item?.accommodation || "";
+        const image = this.getProductPrintDayImageV95?.(item, index) || "";
+        const accommodationLabel = this.t("product.accommodation", "Alojamiento");
+
+        return `<article class="print-itinerary-day-v95${image ? " print-itinerary-day-v95--with-image" : ""}">
+          ${image ? `<figure class="print-itinerary-day-image-v95"><img src="${esc(this, image)}" alt="${esc(this, `${dayLabel}: ${title}`)}" /></figure>` : ""}
+          <div class="print-itinerary-day-content-v95">
+            <div class="print-itinerary-day-meta-v95">
+              <span class="print-itinerary-day-badge-v95">${esc(this, dayLabel)}</span>
+              ${dateLabel ? `<span class="print-itinerary-day-date-v95">${esc(this, dateLabel)}</span>` : ""}
+            </div>
+            <h3>${esc(this, title)}</h3>
+            <p>${esc(this, description)}</p>
+            ${overnight ? `<span class="print-itinerary-overnight-v95"><strong>${esc(this, accommodationLabel)}:</strong> ${esc(this, overnight)}</span>` : ""}
+          </div>
+        </article>`;
+      }).join("");
+    };
+
+    proto.enhanceProductPrintItineraryV95 = function () {
+      const target = document.getElementById("productPrintArea");
+      if (!target) return false;
+
+      const dayHtml = this.renderProductPrintDayItineraryV95?.() || "";
+      if (!dayHtml) return false;
+
+      const list = target.querySelector(".print-section--itinerary .print-itinerary-list");
+      if (!list) return false;
+
+      list.classList.add("print-itinerary-list--days-v95");
+      list.innerHTML = dayHtml;
+      target.querySelector(".print-sheet")?.classList.add("print-sheet--v95");
+      return true;
+    };
+
+    proto.waitForProductPrintImagesV95 = function (root, timeoutMs = 2600) {
+      const images = Array.from(root?.querySelectorAll?.("img") || []);
+      if (!images.length) return Promise.resolve();
+
+      const waits = images.map((image) => {
+        if (image.complete) return Promise.resolve();
+        return new Promise((resolve) => {
+          const finish = () => resolve();
+          image.addEventListener("load", finish, { once: true });
+          image.addEventListener("error", finish, { once: true });
+        });
+      });
+
+      return Promise.race([
+        Promise.all(waits),
+        new Promise((resolve) => window.setTimeout(resolve, timeoutMs))
+      ]);
+    };
+
+    const previousPrint = proto.printProductItineraryV78;
+    if (typeof previousPrint === "function") {
+      proto.printProductItineraryV78 = function () {
+        const nativePrint = window.print;
+        let restored = false;
+        const restorePrint = () => {
+          if (restored) return;
+          restored = true;
+          window.print = nativePrint;
+        };
+
+        window.print = function () {};
+
+        let result;
+        try {
+          result = previousPrint.apply(this, arguments);
+          this.enhanceProductPrintItineraryV95?.();
+        } catch (error) {
+          restorePrint();
+          throw error;
+        }
+
+        const area = document.getElementById("productPrintArea");
+        this.waitForProductPrintImagesV95?.(area, 2600)
+          .catch(() => {})
+          .finally(() => {
+            window.setTimeout(() => {
+              restorePrint();
+              nativePrint.call(window);
+            }, 80);
+          });
+
+        window.setTimeout(restorePrint, 4200);
+        return result;
+      };
+    }
+
+    page.__mctV95Applied = true;
+    try { page.refreshItineraryDates?.(); } catch (error) { console.warn("MCT V95 date refresh warning:", error); }
+    return true;
+  }
+
+  if (!patchV95()) {
+    document.addEventListener("DOMContentLoaded", patchV95);
+    [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV95, delay));
+  }
+})();
+
+
+/* =========================================================
+   PATCH MCT V95 - Impresión de circuitos: imágenes y fechas por día
+   ========================================================= */
+(function () {
+  function patchV95() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV95Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const esc = (value) => typeof page.escapeHtml === "function"
+      ? page.escapeHtml(value ?? "")
+      : String(value ?? "").replace(/[&<>'"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch]));
+
+    function localeTag() {
+      const raw = String(document.documentElement.lang || "es").toLowerCase();
+      const map = {
+        es: "es-PE", en: "en-US", pt: "pt-BR", fr: "fr-FR",
+        de: "de-DE", it: "it-IT", ja: "ja-JP", zh: "zh-CN"
+      };
+      return map[raw.split("-")[0]] || raw || "es-PE";
+    }
+
+    function parseTravelDate(value) {
+      const raw = String(value || "").trim();
+      const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12, 0, 0, 0);
+      const parsed = new Date(raw);
+      if (Number.isNaN(parsed.getTime())) return null;
+      return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), 12, 0, 0, 0);
+    }
+
+    function addCalendarDays(date, amount) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate() + Number(amount || 0), 12, 0, 0, 0);
+    }
+
+    function formatItineraryDate(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+      const currentYear = new Date().getFullYear();
+      const options = date.getFullYear() === currentYear
+        ? { day: "numeric", month: "long" }
+        : { day: "numeric", month: "long", year: "numeric" };
+      try {
+        return new Intl.DateTimeFormat(localeTag(), options).format(date);
+      } catch (error) {
+        return date.toLocaleDateString(undefined, options);
+      }
+    }
+
+    function isMultiDayCircuit(ctx) {
+      const itinerary = Array.isArray(ctx?.product?.itinerary) ? ctx.product.itinerary : [];
+      const configuredDays = Number(ctx?.product?.days || ctx?.product?.duration?.days || 0);
+      return configuredDays > 1 || itinerary.some((item) => Number(item?.day || 0) > 0);
+    }
+
+    proto.renderMultiDayPrintItineraryV95 = function () {
+      const itinerary = Array.isArray(this.product?.itinerary) ? this.product.itinerary : [];
+      if (!itinerary.length) return "";
+      const startDate = parseTravelDate(this.date);
+      const dayLabel = (n) => this.t?.("product.print.dayLabel", "Día {n}", { n }) || `Día ${n}`;
+      const overnightLabel = this.t?.("product.print.overnightLabel", "Alojamiento") || "Alojamiento";
+      const datePending = this.t?.("product.print.dateToBeConfirmed", "Fecha por confirmar") || "Fecha por confirmar";
+
+      return itinerary.map((item, index) => {
+        const dayNumber = Math.max(1, Number(item?.day || index + 1));
+        const itemDate = startDate ? addCalendarDays(startDate, dayNumber - 1) : null;
+        const formattedDate = formatItineraryDate(itemDate) || datePending;
+        const rawImage = item?.image || (Array.isArray(item?.images) ? item.images[0] : "") || "";
+        const image = rawImage ? (this.resolveAssetPath?.(rawImage) || rawImage) : "";
+        return `<article class="print-day-card print-day-card--v95">
+          <div class="print-day-card__head">
+            <span class="print-day-badge">${esc(dayLabel(dayNumber))}</span>
+            <span class="print-day-date">${esc(formattedDate)}</span>
+          </div>
+          <div class="print-day-card__body ${image ? "print-day-card__body--with-image" : ""}">
+            ${image ? `<figure class="print-day-card__image"><img src="${esc(image)}" alt="${esc(item?.title || dayLabel(dayNumber))}" loading="eager" decoding="sync" /></figure>` : ""}
+            <div class="print-day-card__content">
+              <h3>${esc(item?.title || dayLabel(dayNumber))}</h3>
+              <p>${esc(item?.description || "")}</p>
+              ${item?.overnight ? `<p class="print-day-card__overnight"><strong>${esc(overnightLabel)}:</strong> ${esc(item.overnight)}</p>` : ""}
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+    };
+
+    const previousPrint = proto.printProductItineraryV78;
+    if (typeof previousPrint === "function") {
+      proto.printProductItineraryV78 = function () {
+        const result = previousPrint.apply(this, arguments);
+        if (!isMultiDayCircuit(this)) return result;
+
+        const area = document.getElementById("productPrintArea");
+        const list = area?.querySelector(".print-section--itinerary .print-itinerary-list");
+        if (list) {
+          list.classList.add("print-itinerary-list--days-v95");
+          list.innerHTML = this.renderMultiDayPrintItineraryV95?.() || list.innerHTML;
+        }
+        return result;
+      };
+    }
+
+    page.__mctV95Applied = true;
+    return true;
+  }
+
+  if (!patchV95()) {
+    document.addEventListener("DOMContentLoaded", patchV95);
+    setTimeout(patchV95, 250);
+    setTimeout(patchV95, 900);
+    setTimeout(patchV95, 1600);
   }
 })();

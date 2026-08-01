@@ -9564,3 +9564,298 @@ body.passenger-modal-open {
     justify-self: stretch !important;
   }
 }
+
+/* =========================================================
+   MCT V95 — Itinerario impreso por día con imágenes y fechas
+   ========================================================= */
+.product-print-sheet .print-sheet--v95 .print-itinerary-list--days-v95 {
+  display: grid;
+  gap: 8px;
+}
+
+.product-print-sheet .print-itinerary-day-v95 {
+  display: grid;
+  grid-template-columns: 46mm minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid #d8e6de;
+  border-left: 4px solid #0b4a33;
+  border-radius: 12px;
+  background: #f8fbf9;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.product-print-sheet .print-itinerary-day-v95:not(.print-itinerary-day-v95--with-image) {
+  grid-template-columns: 1fr;
+}
+
+.product-print-sheet .print-itinerary-day-image-v95 {
+  width: 46mm;
+  min-height: 34mm;
+  margin: 0;
+  overflow: hidden;
+  background: #e9f2ed;
+}
+
+.product-print-sheet .print-itinerary-day-image-v95 img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 34mm;
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-print-sheet .print-itinerary-day-content-v95 {
+  min-width: 0;
+  padding: 9px 10px 9px 0;
+}
+
+.product-print-sheet .print-itinerary-day-v95:not(.print-itinerary-day-v95--with-image) .print-itinerary-day-content-v95 {
+  padding-left: 10px;
+}
+
+.product-print-sheet .print-itinerary-day-meta-v95 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.product-print-sheet .print-itinerary-day-badge-v95,
+.product-print-sheet .print-itinerary-day-date-v95 {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.product-print-sheet .print-itinerary-day-badge-v95 {
+  background: #0b4a33;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+}
+
+.product-print-sheet .print-itinerary-day-date-v95 {
+  border: 1px solid #bfd5c8;
+  background: #fff;
+  color: #0b4a33;
+}
+
+.product-print-sheet .print-itinerary-day-content-v95 h3 {
+  margin: 0 0 4px;
+  color: #073d29;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12.2px;
+  line-height: 1.22;
+}
+
+.product-print-sheet .print-itinerary-day-content-v95 p {
+  margin: 0;
+  color: #475a52;
+  font-size: 9.7px;
+  line-height: 1.38;
+}
+
+.product-print-sheet .print-itinerary-overnight-v95 {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 6px;
+  border-radius: 7px;
+  background: #edf6f1;
+  padding: 4px 7px;
+  color: #385249;
+  font-size: 8.9px;
+  line-height: 1.2;
+}
+
+.product-print-sheet .print-itinerary-overnight-v95 strong {
+  color: #073d29;
+}
+
+@media print {
+  .product-print-sheet .print-sheet--v95 .print-itinerary-list--days-v95 {
+    gap: 2.2mm !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-v95 {
+    grid-template-columns: 44mm minmax(0, 1fr) !important;
+    gap: 2.5mm !important;
+    border-radius: 3mm !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-v95:not(.print-itinerary-day-v95--with-image) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-image-v95 {
+    width: 44mm !important;
+    min-height: 32mm !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-image-v95 img {
+    min-height: 32mm !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-content-v95 {
+    padding: 2.2mm 2.5mm 2.2mm 0 !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-v95:not(.print-itinerary-day-v95--with-image) .print-itinerary-day-content-v95 {
+    padding-left: 2.5mm !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-badge-v95,
+  .product-print-sheet .print-itinerary-day-date-v95 {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+}
+
+/* =========================================================
+   MCT V95 - Impresión de circuitos con fecha e imagen por día
+   ========================================================= */
+.print-itinerary-list--days-v95 {
+  display: grid;
+  gap: 14px;
+}
+
+.print-day-card--v95 {
+  border: 1px solid #d8e2dc;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-day-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #edf5f0;
+  border-bottom: 1px solid #d8e2dc;
+}
+
+.print-day-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: #0b4a34;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.print-day-date {
+  color: #183f31;
+  font-size: 13px;
+  font-weight: 750;
+  text-transform: capitalize;
+}
+
+.print-day-card__body {
+  padding: 14px;
+}
+
+.print-day-card__body--with-image {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.print-day-card__image {
+  margin: 0;
+  width: 100%;
+  height: 124px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #edf1ef;
+}
+
+.print-day-card__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.print-day-card__content h3 {
+  margin: 0 0 7px;
+  color: #123d2c;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.print-day-card__content p {
+  margin: 0;
+  color: #43534d;
+  font-size: 12.5px;
+  line-height: 1.48;
+}
+
+.print-day-card__overnight {
+  margin-top: 8px !important;
+  color: #244d3c !important;
+  font-size: 12px !important;
+}
+
+@media print {
+  .print-itinerary-list--days-v95 {
+    display: block !important;
+  }
+
+  .print-day-card--v95 {
+    margin: 0 0 12px !important;
+    border-color: #cbd8d1 !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-day-card__head,
+  .print-day-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-day-card__body--with-image {
+    grid-template-columns: 175px minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .print-day-card__image {
+    height: 112px !important;
+  }
+}
+
+@media print and (max-width: 700px) {
+  .print-day-card__body--with-image {
+    grid-template-columns: 145px minmax(0, 1fr) !important;
+  }
+}
