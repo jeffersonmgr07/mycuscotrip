@@ -9887,3 +9887,121 @@ document.addEventListener("click", function (event) {
     [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV93, delay));
   }
 })();
+
+/* =========================================================
+   PATCH MCT V94 - Circuitos Perú: hoteles base incluidos + trenes configurables
+   ========================================================= */
+(function () {
+  function patchV94() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    if (page.__mctV94Applied) return true;
+    const proto = Object.getPrototypeOf(page) || page;
+
+    const hasIncludedHotels = (ctx, product) => Boolean((product || ctx.product)?.hotelsIncludedInBase);
+    const defaultMap = (ctx, product) => (product || ctx.product)?.defaultHotelSelections || {};
+
+    proto.ensureIncludedHotelDefaultsV94 = function (product) {
+      const resolved = product || this.product;
+      if (!hasIncludedHotels(this, resolved)) return;
+      if (!this.selectedHotelsByDestination) this.selectedHotelsByDestination = {};
+      if (!this.selectedCombinationsByDestination) this.selectedCombinationsByDestination = {};
+      const map = defaultMap(this, resolved);
+      const passengers = Math.max(1, this.getTotalPassengers?.() || 1);
+      const summary = this.getAccommodationSummary?.(resolved) || [];
+
+      summary.forEach((item) => {
+        const code = map[item.destination] || item.defaultHotelCode || "";
+        if (!code) return;
+        if (!this.selectedHotelsByDestination[item.destination] || this.selectedHotelsByDestination[item.destination] === "no-hotel") {
+          this.selectedHotelsByDestination[item.destination] = code;
+        }
+        const hotel = this.getHotelByCode?.(item.destination, this.selectedHotelsByDestination[item.destination]);
+        if (!hotel) return;
+        const combos = this.generateAccommodationCombinations?.(hotel.rooms || [], passengers, Number(item.nights || 0)) || [];
+        const selectedKey = this.selectedCombinationsByDestination[item.destination]?.key;
+        this.selectedCombinationsByDestination[item.destination] = combos.find((c) => c.key === selectedKey) || combos[0] || null;
+      });
+    };
+
+    const previousRenderAccommodation = proto.renderAccommodationOptions;
+    proto.renderAccommodationOptions = function (product) {
+      this.ensureIncludedHotelDefaultsV94?.(product || this.product);
+      return previousRenderAccommodation?.apply(this, arguments);
+    };
+
+    const previousRefreshAccommodation = proto.refreshAccommodationSelections;
+    proto.refreshAccommodationSelections = function () {
+      this.ensureIncludedHotelDefaultsV94?.(this.product);
+      const result = previousRefreshAccommodation?.apply(this, arguments);
+      this.ensureIncludedHotelDefaultsV94?.(this.product);
+      return result;
+    };
+
+    proto.getDefaultHotelCodeForDestination = (function (previous) {
+      return function (destination) {
+        const map = defaultMap(this, this.product);
+        if (map[destination]) return map[destination];
+        return previous?.apply(this, arguments) || "";
+      };
+    })(proto.getDefaultHotelCodeForDestination);
+
+    function defaultComboTotal(ctx, destination) {
+      const product = ctx.product;
+      if (!hasIncludedHotels(ctx, product)) return 0;
+      const item = (ctx.getAccommodationSummary?.(product) || []).find((x) => x.destination === destination);
+      const code = defaultMap(ctx, product)[destination] || item?.defaultHotelCode || "";
+      const hotel = ctx.getHotelByCode?.(destination, code);
+      if (!hotel || !item) return 0;
+      const passengers = Math.max(1, ctx.getTotalPassengers?.() || 1);
+      const combos = ctx.generateAccommodationCombinations?.(hotel.rooms || [], passengers, Number(item.nights || 0)) || [];
+      return Number(combos[0]?.totalForStay || 0);
+    }
+
+    const previousAccommodationTotal = proto.calculateAccommodationTotal;
+    proto.calculateAccommodationTotal = function () {
+      if (!hasIncludedHotels(this, this.product)) return previousAccommodationTotal?.apply(this, arguments) || 0;
+      const summary = this.getAccommodationSummary?.(this.product) || [];
+      return summary.reduce((total, item) => {
+        const code = this.selectedHotelsByDestination?.[item.destination];
+        const combo = this.selectedCombinationsByDestination?.[item.destination];
+        if (!code || code === "no-hotel" || !combo) return total - defaultComboTotal(this, item.destination);
+        return total + Math.max(0, Number(combo.totalForStay || 0) - defaultComboTotal(this, item.destination));
+      }, 0);
+    };
+
+    const previousAccommodationPerPerson = proto.calculateAccommodationAdditionalPerPerson;
+    proto.calculateAccommodationAdditionalPerPerson = function (destination) {
+      if (!hasIncludedHotels(this, this.product)) return previousAccommodationPerPerson?.apply(this, arguments) || 0;
+      const passengers = Math.max(1, this.getTotalPassengers?.() || 1);
+      const code = this.selectedHotelsByDestination?.[destination];
+      const combo = this.selectedCombinationsByDestination?.[destination];
+      const selected = (!code || code === "no-hotel" || !combo) ? 0 : Number(combo.totalForStay || 0);
+      return Math.max(0, selected - defaultComboTotal(this, destination)) / passengers;
+    };
+
+    const previousIsTrainEnabled = proto.isTrainSelectionEnabled;
+    proto.isTrainSelectionEnabled = function (product) {
+      const resolved = product || this.product;
+      const cfg = resolved?.trainSelection || resolved?.raw?.trainSelection || {};
+      if (this.isPackage?.(resolved) && cfg.required === true && cfg.customerCanChangeTrain === true) return true;
+      return previousIsTrainEnabled?.apply(this, arguments) ?? false;
+    };
+
+    page.__mctV94Applied = true;
+    page.ensureIncludedHotelDefaultsV94?.(page.product);
+    page.renderAccommodationOptions?.(page.product);
+    page.bindAccommodationEvents?.();
+    page.renderTrainSelectionOptions?.(page.product);
+    page.updatePricing?.();
+    return true;
+  }
+
+  if (!patchV94()) {
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts += 1;
+      if (patchV94() || attempts > 80) clearInterval(timer);
+    }, 100);
+  }
+})();
