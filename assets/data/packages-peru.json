@@ -1575,16 +1575,21 @@
       "hotelSelection": {
         "required": true,
         "includedInBasePrice": true,
-        "allowNoHotel": false,
+        "allowNoHotel": true,
         "customerCanChangeHotel": true,
         "upgradeEnabled": true,
-        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
+        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance_or_deduct_allowance_when_no_hotel",
         "defaultHotelCodes": {
           "lima": "arawi-miraflores-3s",
           "cusco": "cusco-boutique-3s",
           "aguas-calientes": "luz-garden-3s"
         },
         "includedAllowancePerPersonUSD": {
+          "lima": 79.2,
+          "cusco": 76.35,
+          "aguas-calientes": 32.45
+        },
+        "noHotelDeductionPerPersonUSD": {
           "lima": 79.2,
           "cusco": 76.35,
           "aguas-calientes": 32.45

@@ -1,0 +1,17 @@
+/* Ajuste visual limitado al circuito Perú 7D/6N con hoteles incluidos. */
+.booking-accommodation-card--no-hotel-v96 {
+  border-style: dashed;
+}
+
+.booking-accommodation-card__price--deduction-v96,
+.hotel-option-card__badge--deduction-v96 {
+  font-weight: 800;
+}
+
+.hotel-option-card--deduction-v96 .hotel-combo-btn {
+  width: 100%;
+}
+
+.hotel-option-card--deduction-v96 .hotel-combo-btn__sub {
+  white-space: normal;
+}
