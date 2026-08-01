@@ -1,0 +1,10 @@
+PARCHE EXCLUSIVO DE IMPRESIÓN — CIRCUITO PERÚ 7 DÍAS / 6 NOCHES
+
+Este parche únicamente:
+- reemplaza “Paso 1, Paso 2...” por badges “Día 1, Día 2...” en la impresión;
+- muestra la fecha correspondiente al costado de cada badge;
+- agrega la imagen configurada para cada día dentro de su recuadro impreso;
+- muestra el año solo cuando la fecha corresponde a un año diferente del actual.
+
+No contiene ni modifica archivos JSON de productos, precios, hoteles, trenes o reservas.
+Copiar el contenido del ZIP sobre la raíz del proyecto y aceptar el reemplazo de los product.html.
