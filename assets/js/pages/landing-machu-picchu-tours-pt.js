@@ -1253,6 +1253,8 @@
     const dialog = modal?.querySelector(".passenger-modal__dialog");
     if (modal) modal.scrollTop = 0;
     if (dialog) dialog.scrollTop = 0;
+    const modalBody = modal?.querySelector(".passenger-modal__body");
+    if (modalBody) modalBody.scrollTop = 0;
     const cancel = document.getElementById("mptPassengerCancel");
     const submit = document.getElementById("mptPassengerSubmit");
     if (cancel) cancel.textContent = CHECKOUT_I18N.edit;
@@ -1287,6 +1289,8 @@
     modal.scrollTop = 0;
     const dialog = modal.querySelector(".passenger-modal__dialog");
     if (dialog) dialog.scrollTop = 0;
+    const modalBody = modal?.querySelector(".passenger-modal__body");
+    if (modalBody) modalBody.scrollTop = 0;
     state.activeModal = modal;
     document.body.classList.add("passenger-modal-open");
     document.addEventListener("keydown", handleModalKeydown);

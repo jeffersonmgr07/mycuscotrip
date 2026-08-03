@@ -219,3 +219,41 @@ body.passenger-modal-open { overflow: hidden !important; }
   .passenger-modal__actions { display: grid; grid-template-columns: 1fr 1fr; }
   .passenger-modal__actions .btn { width: 100%; min-width: 0; padding-inline: 10px; }
 }
+
+/* =========================================================
+   MCT V6.1 — ajuste estructural sin rediseñar el modal
+   Mantiene la apariencia previa de la landing y permite scroll real.
+   ========================================================= */
+#mptPassengerModal .passenger-modal__dialog {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#mptPassengerModal .passenger-modal__header {
+  flex: 0 0 auto;
+}
+
+#mptPassengerModal .passenger-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* El monto conserva contraste, pero sin negrita visualmente pesada. */
+#mptPassengerModal .passenger-modal__paynow-card strong,
+#mptPassengerModal #mptPassengerPayNow,
+#mptPassengerModal .mpt-payment-review__total strong {
+  font-weight: 400;
+}
+
+@media (max-width: 760px) {
+  #mptPassengerModal .passenger-modal__dialog {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+  }
+}

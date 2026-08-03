@@ -1,0 +1,34 @@
+/*
+ * My Cusco Trip — corrección de desplazamiento del modal general.
+ * V6.1: no altera colores, tamaños, tipografías, columnas ni espaciados.
+ * Solo limita el diálogo a la pantalla y hace desplazable su cuerpo.
+ */
+body.passenger-modal-open {
+  overflow: hidden !important;
+}
+
+#passengerReservationModal .passenger-modal__dialog {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: calc(100dvh - 36px) !important;
+  overflow: hidden !important;
+}
+
+#passengerReservationModal .passenger-modal__header {
+  flex: 0 0 auto !important;
+}
+
+#passengerReservationModal .passenger-modal__body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@media (max-width: 760px) {
+  #passengerReservationModal .passenger-modal__dialog {
+    max-height: calc(100dvh - 20px) !important;
+  }
+}
