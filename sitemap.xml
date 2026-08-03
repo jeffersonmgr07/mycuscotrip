@@ -2022,4 +2022,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
+
+  <url>
+    <loc>https://mycuscotrip.com/pt/landing/machu-picchu-y-tours-peru.html</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

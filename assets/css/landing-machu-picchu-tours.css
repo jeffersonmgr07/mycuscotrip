@@ -1497,3 +1497,35 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   V5 — Desktop two-column configurator + sticky booking summary
+   Mobile rules remain unchanged.
+   ========================================================= */
+@media (min-width: 1025px) {
+  html,
+  body.mpt-page {
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+  }
+
+  .mpt-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 370px);
+    align-items: start;
+  }
+
+  .mpt-addons-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mpt-summary {
+    position: sticky;
+    top: var(--mpt-sticky-offset, 104px);
+    align-self: start;
+    max-height: calc(100vh - var(--mpt-sticky-offset, 104px) - 18px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+}

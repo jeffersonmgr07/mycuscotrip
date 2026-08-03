@@ -1,0 +1,273 @@
+{
+  "version": "1.3.0",
+  "updatedAt": "2026-08-03",
+  "landingId": "machu-picchu-y-tours-peru",
+  "currency": "USD",
+  "priceNote": "Preço base em USD. Altere somente currency e adultPrice se a tarifa comercial for atualizada.",
+  "whatsapp": {
+    "phone": "51900608980",
+    "messageTemplate": "Olá, desejo confirmar minha seleção de passeios. Código: {reservationCode}. {servicesSummary}. Somos {totalPassengers} viajantes. Total: {currency} {total}. Origem: {source}."
+  },
+  "disclaimers": {
+    "availability": "As datas e os horários estão sujeitos à disponibilidade. Nossa equipe verificará ingressos, trens e a operação antes de emitir os serviços.",
+    "documentationNote": "Os dados de cada passageiro devem coincidir exatamente com o documento de identidade ou passaporte válido na data da viagem."
+  },
+  "childPolicy": {
+    "minAge": 3,
+    "maxAge": 11,
+    "infantMaxAge": 2,
+    "infantPricingAvailable": false,
+    "infantNote": "Bebês de 0 a 2 anos não precisam de ingresso para Machu Picchu nem para os passeios adicionais, mas devem ser registrados na reserva. A tarifa para bebês será configurada quando estiver disponível.",
+    "documentationMessage": "A tarifa infantil é válida para crianças de {minAge} a {maxAge} anos completos na data da viagem. A idade será verificada pelo documento de identidade ou passaporte."
+  },
+  "destinationGroups": {
+    "cusco": [
+      "machu-picchu-full-day",
+      "laguna-humantay",
+      "montana-colores-vinicunca",
+      "valle-sagrado-full-day",
+      "bienvenida-ancestral-cusco",
+      "siete-lagunas-ausangate",
+      "valle-sur-cusco"
+    ],
+    "lima-ica": [
+      "paracas-ica-huacachina"
+    ]
+  },
+  "minGapDaysBetweenGroups": 1,
+  "operationalWarnings": [
+    {
+      "id": "machu-picchu-late-train-humantay-next-day",
+      "condition": {
+        "firstServiceId": "machu-picchu-full-day",
+        "firstServiceLateAfterHour": 19,
+        "secondServiceId": "laguna-humantay",
+        "daysApart": 1
+      },
+      "message": "O retorno de Machu Picchu será à noite e o passeio à Lagoa Humantay começa de madrugada no dia seguinte. O tempo de descanso será muito curto. Recomendamos alterar a data ou solicitar um trem de retorno mais cedo."
+    }
+  ],
+  "mainProduct": {
+    "id": "machu-picchu-full-day",
+    "slug": "machu-picchu-full-day",
+    "title": "Machu Picchu Full Day",
+    "origin": "cusco",
+    "badge": "Mais vendido",
+    "selectedByDefault": true,
+    "removable": false,
+    "image": "../../assets/img/tours/machu-picchu-full-day/cover.jpg",
+    "gallery": [
+      "../../assets/img/tours/machu-picchu-full-day/1.jpg",
+      "../../assets/img/tours/machu-picchu-full-day/2.jpg"
+    ],
+    "shortDescription": "Visite Machu Picchu em um único dia saindo de Cusco, com trem turístico, ônibus oficiais, ingresso, guia profissional e assistência durante toda a experiência.",
+    "adultPrice": 399,
+    "childPricing": {
+      "type": "fixed_discount",
+      "discountAmount": 80
+    },
+    "includes": [
+      "Embarque no hotel ou endereço em Cusco",
+      "Trem turístico de ida e volta, categoria The Voyager da Inca Rail",
+      "Ônibus Consettur: Machu Picchu Pueblo – cidadela – Machu Picchu Pueblo",
+      "Ingresso oficial para Machu Picchu (circuito sujeito à disponibilidade)",
+      "Guia profissional em português, espanhol ou inglês, sujeito à confirmação",
+      "Traslado de ida e volta até a estação de trem",
+      "Assistência e orientação 24 horas por dia, 7 dias por semana"
+    ],
+    "mealOptions": [
+      {
+        "id": "no-meal",
+        "label": "Sem almoço",
+        "pricePerPerson": 0,
+        "default": true
+      },
+      {
+        "id": "standard-lunch",
+        "label": "Almoço padrão",
+        "pricePerPerson": 20,
+        "default": false
+      },
+      {
+        "id": "tinkuy-buffet",
+        "label": "Buffet Tinkuy no Belmond Sanctuary Lodge",
+        "pricePerPerson": 45,
+        "default": false
+      }
+    ],
+    "mealSelectionType": "single",
+    "mealDisclaimer": "A alimentação não está incluída no preço base. Selecione apenas uma opção."
+  },
+  "addons": [
+    {
+      "id": "bienvenida-ancestral-cusco",
+      "slug": "bienvenida-ancestral-cusco",
+      "title": "Boas-vindas Ancestrais em Cusco",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/bienvenida-ancestral-cusco/1.jpg",
+        "../../assets/img/tours/bienvenida-ancestral-cusco/2.jpg"
+      ],
+      "shortDescription": "Comece sua estadia com um passeio panorâmico, uma cerimônia andina e vistas especiais de Cusco",
+      "pricePerPerson": 11.9,
+      "includes": [
+        "Ônibus panorâmico",
+        "Guia bilíngue",
+        "Cerimônia andina",
+        "Visita a um centro têxtil",
+        "Mirante panorâmico"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "laguna-humantay",
+      "slug": "laguna-humantay",
+      "title": "Lagoa Humantay",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/laguna-humantay/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/laguna-humantay/1.jpg",
+        "../../assets/img/tours/laguna-humantay/2.jpg"
+      ],
+      "shortDescription": "Caminhe até a lagoa turquesa aos pés da montanha nevada Humantay, uma das excursões mais impressionantes de Cusco.",
+      "pricePerPerson": 69,
+      "includes": [
+        "Embarque em Cusco",
+        "Transporte turístico",
+        "Guia profissional",
+        "Ingresso na área da lagoa",
+        "Café da manhã",
+        "Almoço"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "montana-colores-vinicunca",
+      "slug": "montana-de-colores",
+      "title": "Montanha Colorida Vinicunca",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/montana-colores/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/montana-colores/1.jpg",
+        "../../assets/img/tours/montana-colores/2.jpg"
+      ],
+      "shortDescription": "Conheça a famosa montanha arco-íris dos Andes em uma excursão de dia inteiro saindo de Cusco.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Embarque em Cusco",
+        "Transporte turístico",
+        "Guia profissional em português, espanhol ou inglês, sujeito à confirmação",
+        "Café da manhã e almoço conforme a operação"
+      ],
+      "excludesNote": "O ingresso local e o cavalo opcional não estão incluídos, salvo confirmação expressa.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sagrado-full-day",
+      "slug": "valle-sagrado-full-day",
+      "title": "Vale Sagrado dos Incas",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/valle-sagrado/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/valle-sagrado/1.jpg",
+        "../../assets/img/tours/valle-sagrado/2.jpg"
+      ],
+      "shortDescription": "Visite Pisac, Urubamba, Ollantaytambo e Chinchero em um roteiro cultural completo pelo Vale Sagrado.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Embarque em Cusco",
+        "Transporte turístico",
+        "Guia profissional em português, espanhol ou inglês, sujeito à confirmação",
+        "Retorno a Cusco ao final do passeio"
+      ],
+      "excludesNote": "O Bilhete Turístico e o almoço buffet não estão incluídos.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "siete-lagunas-ausangate",
+      "slug": "siete-lagunas-ausangate",
+      "title": "Sete Lagoas de Ausangate",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/siete-lagunas-ausangate/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/siete-lagunas-ausangate/1.jpg",
+        "../../assets/img/tours/siete-lagunas-ausangate/2.jpg"
+      ],
+      "shortDescription": "Explore sete lagoas andinas entre montanhas, geleiras e paisagens de Ausangate.",
+      "pricePerPerson": 86.9,
+      "includes": [
+        "Embarque em Cusco",
+        "Transporte turístico de ida e volta",
+        "Guia profissional",
+        "Café da manhã",
+        "Almoço",
+        "Kit de primeiros socorros e cilindro de oxigênio"
+      ],
+      "excludesNote": "Ingressos locais, águas termais e cavalo opcional não estão incluídos, salvo confirmação expressa.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sur-cusco",
+      "slug": "valle-sur",
+      "title": "Vale Sul de Cusco",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/valle-sur/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/valle-sur/1.jpg",
+        "../../assets/img/tours/valle-sur/2.jpg"
+      ],
+      "shortDescription": "Visite Tipón, Pikillacta e Andahuaylillas em um roteiro cultural de meio dia ao sul de Cusco.",
+      "pricePerPerson": 20.9,
+      "includes": [
+        "Embarque em Cusco",
+        "Transporte turístico",
+        "Guia profissional em português, espanhol ou inglês, sujeito à confirmação"
+      ],
+      "excludesNote": "O Bilhete Turístico parcial e o ingresso para Andahuaylillas não estão incluídos.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "paracas-ica-huacachina",
+      "slug": "paracas-ica-huacachina",
+      "title": "Paracas, Ica e Huacachina – Dia Inteiro",
+      "origin": "lima-ica",
+      "image": "../../assets/img/packages/peru/paracas-huacachina/cover.jpg",
+      "gallery": [
+        "../../assets/img/packages/peru/paracas-huacachina/1.jpg"
+      ],
+      "shortDescription": "Visite as Ilhas Ballestas, Ica e as dunas de Huacachina em um passeio completo saindo de Lima.",
+      "pricePerPerson": 89,
+      "includes": [
+        "Transporte turístico saindo de Lima",
+        "Passeio de barco às Ilhas Ballestas",
+        "Assistência local",
+        "Visita a Ica e Huacachina",
+        "Buggies e sandboard conforme as condições operacionais"
+      ],
+      "excludesNote": "A alimentação não está incluída.",
+      "extras": [
+        {
+          "id": "lunch",
+          "label": "Adicionar almoço",
+          "pricePerPerson": 20,
+          "type": "toggle"
+        }
+      ],
+      "requiresDateSelection": true
+    }
+  ],
+  "upsellModal": {
+    "title": "Adicione mais experiências aos seus dias no Peru",
+    "text": "Machu Picchu já está selecionado. Você pode acrescentar passeios em Cusco, no Vale Sagrado ou no litoral peruano, cada um com sua própria data.",
+    "benefit": "Organize várias experiências em uma única reserva e um único pagamento.",
+    "viewAddonsButton": "Ver experiências adicionais",
+    "continueAloneButton": "Continuar somente com Machu Picchu"
+  }
+}

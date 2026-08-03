@@ -10,6 +10,7 @@
 <link href="https://mycuscotrip.com/landing/machu-picchu-y-tours-peru.html" rel="canonical"/>
 <link href="https://mycuscotrip.com/landing/machu-picchu-y-tours-peru.html" hreflang="es" rel="alternate"/>
 <link href="https://mycuscotrip.com/en/landing/machu-picchu-y-tours-peru.html" hreflang="en" rel="alternate"/>
+<link href="https://mycuscotrip.com/pt/landing/machu-picchu-y-tours-peru.html" hreflang="pt" rel="alternate"/>
 <link href="https://mycuscotrip.com/landing/machu-picchu-y-tours-peru.html" hreflang="x-default" rel="alternate"/>
 <meta content="website" property="og:type"/>
 <meta content="es_PE" property="og:locale"/>
@@ -53,7 +54,8 @@
 <link href="../assets/css/header.css" rel="stylesheet"/>
 <link href="../assets/css/footer.css" rel="stylesheet"/>
 <link href="../assets/css/responsive.css" rel="stylesheet"/>
-<link href="../assets/css/landing-machu-picchu-tours.css?v=20260803-4" rel="stylesheet"/>
+<link href="../assets/css/landing-machu-picchu-tours.css?v=20260803-5" rel="stylesheet"/>
+<link href="../assets/css/landing-reservation-modal.css?v=20260803-5" rel="stylesheet"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -338,35 +340,37 @@
 </div>
 
 <!-- Modal de datos de viajeros -->
-<div class="mpt-modal" hidden id="mptPassengerModal" role="dialog" aria-modal="true" aria-labelledby="mptPassengerTitle">
-  <div class="mpt-modal__backdrop" data-mpt-modal-close></div>
-  <div class="mpt-modal__panel" style="max-width:640px; max-height:88vh; overflow-y:auto;">
-    <button aria-label="Cerrar" class="mpt-close" data-mpt-modal-close type="button"><i class="fas fa-xmark"></i></button>
-    <h2 id="mptPassengerTitle">Datos de los viajeros</h2>
-    <p>Estos datos se solicitan una sola vez para toda tu reserva. Deben coincidir exactamente con el documento de identidad o pasaporte vigente el día del viaje.</p>
-    <form id="mptPassengerForm" novalidate>
-      <div id="mptPassengerFields"></div>
-      <p class="mpt-availability-note" style="text-align:left; margin-top:14px;">
-        Las fechas y horarios están sujetos a disponibilidad. Nuestro equipo verificará entradas, trenes y operación antes de emitir los servicios.
-      </p>
-      <div class="mpt-modal__actions">
-        <button class="mpt-btn mpt-btn--primary" type="submit">Confirmar y continuar</button>
-        <button class="mpt-btn mpt-btn--secondary" id="mptPassengerWhatsapp" type="button"><i class="fab fa-whatsapp"></i> Continuar por WhatsApp</button>
+<!-- MODAL DE PASAJEROS / CHECKOUT PAYPAL -->
+<div class="passenger-modal" hidden id="mptPassengerModal">
+  <div class="passenger-modal__backdrop" data-close-passenger-modal></div>
+  <div aria-labelledby="mptPassengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
+    <div class="passenger-modal__header">
+      <div class="passenger-modal__titlebar">
+        <h2 id="mptPassengerModalTitle">Datos de los pasajeros</h2>
+        <div class="passenger-modal__code-wrap">
+          <span class="passenger-modal__code-label">Código de reserva:</span>
+          <button aria-label="Código copiado" class="passenger-modal__code-pill" id="mptReservationCodeCopy" type="button"><span id="mptReservationCode">CUZ000000</span></button>
+        </div>
       </div>
-    </form>
-  </div>
-</div>
-
-<!-- Confirmación de pre-reserva -->
-<div class="mpt-modal" hidden id="mptConfirmationModal" role="dialog" aria-modal="true" aria-labelledby="mptConfirmationTitle">
-  <div class="mpt-modal__backdrop" data-mpt-modal-close></div>
-  <div class="mpt-modal__panel">
-    <button aria-label="Cerrar" class="mpt-close" data-mpt-modal-close type="button"><i class="fas fa-xmark"></i></button>
-    <h2 id="mptConfirmationTitle">¡Tu pre-reserva quedó registrada!</h2>
-    <p>Código de reserva: <strong id="mptConfirmationCode">—</strong></p>
-    <p>Nuestro equipo verificará disponibilidad de entradas, trenes y operación antes de emitir tus servicios.</p>
-    <div class="mpt-modal__actions">
-      <button class="mpt-btn mpt-btn--primary" id="mptConfirmationWhatsapp" type="button"><i class="fab fa-whatsapp"></i> Confirmar por WhatsApp</button>
+      <button aria-label="Cerrar modal" class="passenger-modal__close" id="mptPassengerClose" type="button"><i class="fas fa-xmark"></i></button>
+      <div class="passenger-modal__meta-row">
+        <div class="passenger-modal__paynow-card" aria-live="polite"><span>Monto a pagar ahora:</span><strong id="mptPassengerPayNow">USD 0.00</strong></div>
+      </div>
+      <details class="passenger-modal__warning passenger-modal__important">
+        <summary>Información importante</summary>
+        <p>Ingresa nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se utilizarán para emitir entradas, trenes y servicios turísticos.</p>
+      </details>
+    </div>
+    <div class="passenger-modal__body">
+      <form class="passenger-modal__form" id="mptPassengerForm" novalidate>
+        <div id="mptPassengerFields"></div>
+        <div class="passenger-modal__review" id="mptPassengerReview" hidden></div>
+        <p aria-live="polite" class="passenger-modal__message" id="mptPassengerMessage"></p>
+        <div class="passenger-modal__actions">
+          <button class="btn passenger-modal__cancel-btn" id="mptPassengerCancel" type="button">Cancelar</button>
+          <button class="btn booking-main-btn" id="mptPassengerSubmit" type="submit">Continuar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -380,6 +384,6 @@
 <script src="../assets/js/i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-<script src="../assets/js/pages/landing-machu-picchu-tours.js?v=20260803-4"></script>
+<script src="../assets/js/pages/landing-machu-picchu-tours.js?v=20260803-5"></script>
 </body>
 </html>

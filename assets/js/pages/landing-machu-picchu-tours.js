@@ -3,7 +3,7 @@
 
   const LANDING_ID = "landing-machu-picchu-tours";
   const LANDING_NAME = "Machu Picchu + Tours en Perú";
-  const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v4";
+  const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
@@ -892,70 +892,129 @@
     }
   }
 
-  // ---------- Passenger form ----------
+  // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  function renderPassengerFields() {
-    const totalPax = state.adults + state.children;
-    const container = document.getElementById("mptPassengerFields");
-    let html = `
-      <fieldset style="border:none; padding:0; margin:0 0 18px;">
-        <legend style="font-weight:800; color:var(--color-primary,#062803); margin-bottom:10px;">Titular de la reserva (viajero 1)</legend>
-        <div class="mpt-field-grid">
-          <div class="mpt-field"><label for="holderFirstName">Nombres</label><input id="holderFirstName" name="holderFirstName" required minlength="2" type="text"/></div>
-          <div class="mpt-field"><label for="holderLastName">Apellidos</label><input id="holderLastName" name="holderLastName" required minlength="2" type="text"/></div>
-          <div class="mpt-field">
-            <label for="holderDocumentType">Tipo de documento</label>
-            <select id="holderDocumentType" name="holderDocumentType" required>
-              <option value="">Selecciona</option>
-              <option value="passport">Pasaporte</option>
-              <option value="dni">DNI</option>
-              <option value="id_card">Documento de identidad</option>
-              <option value="other">Otro</option>
-            </select>
-          </div>
-          <div class="mpt-field"><label for="holderDocumentNumber">N° de documento</label><input id="holderDocumentNumber" name="holderDocumentNumber" required type="text"/></div>
-          <div class="mpt-field"><label for="holderNationality">Nacionalidad</label><input id="holderNationality" name="holderNationality" required type="text"/></div>
-          <div class="mpt-field"><label for="holderBirthdate">Fecha de nacimiento</label><input id="holderBirthdate" name="holderBirthdate" required type="date"/></div>
-          <div class="mpt-field"><label for="holderEmail">Correo</label><input id="holderEmail" name="holderEmail" required type="email"/></div>
-          <div class="mpt-field"><label for="holderWhatsapp">WhatsApp (con código de país)</label><input id="holderWhatsapp" name="holderWhatsapp" required type="tel" placeholder="+51 900 000 000"/></div>
-          <div class="mpt-field mpt-field--wide"><label for="holderPickupLocation">Hotel o dirección de recojo en Cusco</label><input id="holderPickupLocation" name="holderPickupLocation" required type="text" placeholder="Nombre del hotel y dirección, si la conoces"/></div>
-        </div>
-      </fieldset>
-    `;
-    for (let n = 2; n <= totalPax; n += 1) {
-      html += `
-        <fieldset style="border:1px solid var(--mct-border,rgba(23,43,39,.14)); border-radius:12px; padding:14px; margin-bottom:14px;">
-          <legend style="font-weight:800; color:var(--color-primary,#062803); padding:0 6px;">Viajero ${n}</legend>
-          <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; margin-bottom:10px;">
-            <input type="checkbox" name="passenger_${n}_complete_later"/> Completar estos datos después
-          </label>
-          <div class="mpt-field-grid" data-passenger-fields="${n}">
-            <div class="mpt-field"><label for="passenger_${n}_firstName">Nombres</label><input id="passenger_${n}_firstName" name="passenger_${n}_firstName" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_lastName">Apellidos</label><input id="passenger_${n}_lastName" name="passenger_${n}_lastName" type="text"/></div>
-            <div class="mpt-field">
-              <label for="passenger_${n}_documentType">Tipo de documento</label>
-              <select id="passenger_${n}_documentType" name="passenger_${n}_documentType">
-                <option value="">Selecciona</option>
-                <option value="passport">Pasaporte</option>
-                <option value="dni">DNI</option>
-                <option value="id_card">Documento de identidad</option>
-                <option value="other">Otro</option>
-              </select>
-            </div>
-            <div class="mpt-field"><label for="passenger_${n}_documentNumber">N° de documento</label><input id="passenger_${n}_documentNumber" name="passenger_${n}_documentNumber" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_nationality">Nacionalidad</label><input id="passenger_${n}_nationality" name="passenger_${n}_nationality" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_birthdate">Fecha de nacimiento</label><input id="passenger_${n}_birthdate" name="passenger_${n}_birthdate" type="date"/></div>
-          </div>
-        </fieldset>
-      `;
-    }
-    container.innerHTML = html;
+  const CHECKOUT_I18N = {"lang": "es", "locale": "es-PE", "name": "Machu Picchu + Tours en Perú", "data": "assets/data/landing-machu-picchu-tours.json", "copy": "Código copiado", "noDate": "sin fecha", "modalTitle": "Datos de los pasajeros", "codeLabel": "Código de reserva:", "payNow": "Monto a pagar ahora:", "important": "Información importante", "importantText": "Ingresa nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se utilizarán para emitir entradas, trenes y servicios turísticos.", "holderTitle": "Titular de reserva / Pasajero 1", "holderOnly": "Titular de reserva", "required": "Datos obligatorios para continuar", "first": "Nombres", "last": "Apellidos", "docType": "Tipo de documento", "select": "Selecciona", "passport": "Pasaporte", "dni": "DNI", "idcard": "Documento de identidad", "other": "Otro", "docNum": "Número de documento", "nationality": "Nacionalidad", "birth": "Fecha de nacimiento", "whatsapp": "WhatsApp", "email": "Correo", "language": "Idioma solicitado", "pickup": "Hotel o dirección de recojo en Cusco", "pickupPh": "Nombre del hotel y dirección, si la conoces", "holderTravels": "El titular también forma parte del grupo de pasajeros.", "tourists": "Registro de turistas", "touristsNote": "Puedes completar pasajeros adicionales ahora o hasta 15 a 30 días antes del viaje.", "traveler": "Pasajero", "later": "Completar estos datos después", "cancel": "Cancelar", "edit": "Editar datos", "continue": "Continuar", "pay": "Pagar con PayPal", "saving": "Guardando reserva…", "connecting": "Conectando con PayPal…", "review": "Revisa tu reserva antes de pagar", "holder": "Titular", "pickupShort": "Recojo", "services": "Servicios", "total": "Total a pagar", "paypalNote": "Al continuar serás redirigido de forma segura a PayPal para pagar el 100% de la reserva.", "formRequired": "Completa los datos obligatorios para continuar.", "backendError": "No se pudo registrar la reserva ni iniciar PayPal. Revisa la conexión e inténtalo nuevamente.", "noApproval": "PayPal no devolvió un enlace de pago.", "paymentUnavailable": "El backend de pagos no está disponible.", "dateTransition": "Para viajar entre Lima/Ica y Cusco necesitas al menos un día para el traslado. Selecciona una fecha posterior para continuar.", "selectDate": "Selecciona una fecha para continuar.", "pastDate": "La fecha no puede ser anterior a hoy.", "duplicateDate": "Dos tours no pueden tener la misma fecha.", "statusEdit": "Revisa los datos y pulsa continuar.", "reviewButton": "Continuar", "modalAriaClose": "Cerrar modal", "requestedLanguages": ["Español", "English", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
+
+  function setPassengerMessage(message, isError) {
+    const target = document.getElementById("mptPassengerMessage");
+    if (!target) return;
+    target.textContent = message || "";
+    target.classList.toggle("is-error", Boolean(isError));
   }
 
-  function validateAndCollectPassengerForm() {
+  function passengerDocumentOptions() {
+    return `
+      <option value="">${escapeHtml(CHECKOUT_I18N.select)}</option>
+      <option value="passport">${escapeHtml(CHECKOUT_I18N.passport)}</option>
+      <option value="dni">${escapeHtml(CHECKOUT_I18N.dni)}</option>
+      <option value="id_card">${escapeHtml(CHECKOUT_I18N.idcard)}</option>
+      <option value="other">${escapeHtml(CHECKOUT_I18N.other)}</option>`;
+  }
+
+  function requestedLanguageOptions() {
+    return CHECKOUT_I18N.requestedLanguages.map((language, index) => `<option value="${escapeHtml(language)}" ${index === 0 ? "selected" : ""}>${escapeHtml(language)}</option>`).join("");
+  }
+
+  function renderAdditionalPassengerFields(holderTravels) {
+    const target = document.getElementById("mptAdditionalPassengers");
+    if (!target) return;
+    const totalPax = state.adults + state.children;
+    const startNumber = holderTravels ? 2 : 1;
+    const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
+    if (!slots) {
+      target.innerHTML = "";
+      return;
+    }
+    target.innerHTML = Array.from({ length: slots }, (_, index) => {
+      const number = startNumber + index;
+      return `
+        <details class="passenger-modal__optional-passenger" open>
+          <summary><span>${escapeHtml(CHECKOUT_I18N.traveler)} ${number}</span><i class="fas fa-chevron-down"></i></summary>
+          <div class="passenger-modal__passenger-content">
+            <label class="passenger-modal__check">
+              <input type="checkbox" name="passenger_${number}_complete_later" data-passenger-later="${number}"/>
+              <span>${escapeHtml(CHECKOUT_I18N.later)}</span>
+            </label>
+            <div class="passenger-modal__grid" data-passenger-fields="${number}">
+              <label><span>${escapeHtml(CHECKOUT_I18N.first)}</span><input name="passenger_${number}_firstName" minlength="2" required type="text"/></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.last)}</span><input name="passenger_${number}_lastName" minlength="2" required type="text"/></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.docType)}</span><select name="passenger_${number}_documentType" required>${passengerDocumentOptions()}</select></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.docNum)}</span><input name="passenger_${number}_documentNumber" required type="text"/></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><input name="passenger_${number}_nationality" required type="text"/></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.birth)}</span><input name="passenger_${number}_birthdate" required type="date"/></label>
+            </div>
+          </div>
+        </details>`;
+    }).join("");
+    target.querySelectorAll("[data-passenger-later]").forEach((checkbox) => {
+      checkbox.addEventListener("change", () => toggleAdditionalPassengerFields(checkbox));
+    });
+  }
+
+  function toggleAdditionalPassengerFields(checkbox) {
+    const number = checkbox.dataset.passengerLater;
+    const fields = document.querySelector(`[data-passenger-fields="${number}"]`);
+    if (!fields) return;
+    fields.classList.toggle("is-disabled", checkbox.checked);
+    fields.querySelectorAll("input,select").forEach((field) => {
+      field.disabled = checkbox.checked;
+      field.required = !checkbox.checked;
+    });
+  }
+
+  function renderPassengerFields() {
+    const container = document.getElementById("mptPassengerFields");
+    if (!container) return;
+    container.innerHTML = `
+      <section class="passenger-modal__section passenger-modal__section--holder">
+        <div class="passenger-modal__section-title">
+          <strong id="mptHolderSectionTitle">${escapeHtml(CHECKOUT_I18N.holderTitle)}</strong>
+          <span>${escapeHtml(CHECKOUT_I18N.required)}</span>
+        </div>
+        <div class="passenger-modal__grid">
+          <label><span>${escapeHtml(CHECKOUT_I18N.first)}</span><input autocomplete="given-name" minlength="2" name="holderFirstName" required type="text"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.last)}</span><input autocomplete="family-name" minlength="2" name="holderLastName" required type="text"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.docType)}</span><select name="holderDocumentType" required>${passengerDocumentOptions()}</select></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.docNum)}</span><input name="holderDocumentNumber" required type="text"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><input name="holderNationality" required type="text"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.birth)}</span><input name="holderBirthdate" required type="date"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.whatsapp)}</span><input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="+51 900 000 000" required type="tel"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.email)}</span><input autocomplete="email" name="holderEmail" required type="email"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.language)}</span><select name="holderLanguage" required>${requestedLanguageOptions()}</select></label>
+          <label class="is-wide"><span>${escapeHtml(CHECKOUT_I18N.pickup)}</span><input name="holderPickupLocation" placeholder="${escapeHtml(CHECKOUT_I18N.pickupPh)}" required type="text"/></label>
+        </div>
+        <label class="passenger-modal__check">
+          <input checked id="mptHolderTravels" name="holderTravels" type="checkbox"/>
+          <span>${escapeHtml(CHECKOUT_I18N.holderTravels)}</span>
+        </label>
+      </section>
+      <section class="passenger-modal__section">
+        <div class="passenger-modal__section-title">
+          <strong>${escapeHtml(CHECKOUT_I18N.tourists)}</strong>
+          <span>${escapeHtml(CHECKOUT_I18N.touristsNote)}</span>
+        </div>
+        <div class="passenger-modal__additional" id="mptAdditionalPassengers"></div>
+      </section>`;
+    renderAdditionalPassengerFields(true);
+    document.getElementById("mptHolderTravels")?.addEventListener("change", (event) => {
+      const holderTravels = event.currentTarget.checked;
+      const title = document.getElementById("mptHolderSectionTitle");
+      if (title) title.textContent = holderTravels ? CHECKOUT_I18N.holderTitle : CHECKOUT_I18N.holderOnly;
+      renderAdditionalPassengerFields(holderTravels);
+    });
+  }
+
+  function collectPassengerForm() {
     const form = document.getElementById("mptPassengerForm");
-    if (!form.reportValidity()) return null;
+    if (!form) return null;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      setPassengerMessage(CHECKOUT_I18N.formRequired, true);
+      return null;
+    }
     const data = new FormData(form);
+    const holderTravels = data.get("holderTravels") === "on";
     const holder = {
       role: "holder",
       firstName: String(data.get("holderFirstName") || "").trim(),
@@ -964,127 +1023,291 @@
       documentNumber: String(data.get("holderDocumentNumber") || "").trim(),
       nationality: String(data.get("holderNationality") || "").trim(),
       birthdate: String(data.get("holderBirthdate") || "").trim(),
-      email: String(data.get("holderEmail") || "").trim(),
       whatsapp: String(data.get("holderWhatsapp") || "").trim(),
-      pickupLocation: String(data.get("holderPickupLocation") || "").trim()
+      email: String(data.get("holderEmail") || "").trim(),
+      language: String(data.get("holderLanguage") || "").trim(),
+      pickupLocation: String(data.get("holderPickupLocation") || "").trim(),
+      travels: holderTravels
     };
     const totalPax = state.adults + state.children;
+    const startNumber = holderTravels ? 2 : 1;
+    const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
     const passengers = [];
-    for (let n = 2; n <= totalPax; n += 1) {
-      const completeLater = data.get(`passenger_${n}_complete_later`) === "on";
+    if (holderTravels) {
       passengers.push({
-        role: "traveler",
-        completionStatus: completeLater ? "pending" : "provided",
-        firstName: String(data.get(`passenger_${n}_firstName`) || "").trim(),
-        lastName: String(data.get(`passenger_${n}_lastName`) || "").trim(),
-        documentType: String(data.get(`passenger_${n}_documentType`) || "").trim(),
-        documentNumber: String(data.get(`passenger_${n}_documentNumber`) || "").trim(),
-        nationality: String(data.get(`passenger_${n}_nationality`) || "").trim(),
-        birthdate: String(data.get(`passenger_${n}_birthdate`) || "").trim()
+        passengerNumber: 1,
+        role: "holder_passenger",
+        completionStatus: "complete",
+        firstName: holder.firstName,
+        lastName: holder.lastName,
+        documentType: holder.documentType,
+        documentNumber: holder.documentNumber,
+        nationality: holder.nationality,
+        birthdate: holder.birthdate,
+        email: holder.email,
+        whatsapp: holder.whatsapp,
+        language: holder.language
       });
     }
-    return { holder, passengers };
+    for (let index = 0; index < slots; index += 1) {
+      const number = startNumber + index;
+      const completeLater = data.get(`passenger_${number}_complete_later`) === "on";
+      passengers.push({
+        passengerNumber: number,
+        role: "traveler",
+        completionStatus: completeLater ? "pending" : "provided",
+        completeLater,
+        firstName: completeLater ? "" : String(data.get(`passenger_${number}_firstName`) || "").trim(),
+        lastName: completeLater ? "" : String(data.get(`passenger_${number}_lastName`) || "").trim(),
+        documentType: completeLater ? "" : String(data.get(`passenger_${number}_documentType`) || "").trim(),
+        documentNumber: completeLater ? "" : String(data.get(`passenger_${number}_documentNumber`) || "").trim(),
+        nationality: completeLater ? "" : String(data.get(`passenger_${number}_nationality`) || "").trim(),
+        birthdate: completeLater ? "" : String(data.get(`passenger_${number}_birthdate`) || "").trim()
+      });
+    }
+    return { holder, holderTravels, passengers };
   }
 
-  // ---------- Reservation building + hand-off ----------
-
-  function buildReservationObject(holder, passengers) {
+  function buildReservationObject(holder, holderTravels, passengers) {
     const summary = calculateBookingSummary();
     const services = [];
     if (state.mainProduct.selected) {
+      const meal = (state.data.mainProduct.mealOptions || []).find((item) => item.id === state.mainProduct.mealOptionId);
       services.push({
         id: state.data.mainProduct.id,
+        productId: state.data.mainProduct.id,
         title: state.data.mainProduct.title,
         date: state.mainProduct.date,
-        extras: state.mainProduct.mealOptionId && state.mainProduct.mealOptionId !== "no-meal" ? [state.mainProduct.mealOptionId] : []
+        origin: state.data.mainProduct.origin,
+        extras: meal && meal.pricePerPerson > 0 ? [meal.label] : [],
+        lineTotal: summary.lines.find((line) => line.id === state.data.mainProduct.id)?.lineTotal || 0
       });
     }
     (state.data.addons || []).forEach((addon) => {
-      const sel = state.addons[addon.id];
-      if (!sel?.selected) return;
+      const selected = state.addons[addon.id];
+      if (!selected?.selected) return;
       services.push({
         id: addon.id,
+        productId: addon.id,
         title: addon.title,
-        date: sel.date,
-        extras: Object.keys(sel.extras || {}).filter((k) => sel.extras[k])
+        date: selected.date,
+        origin: addon.origin,
+        extras: Object.keys(selected.extras || {}).filter((key) => selected.extras[key]),
+        lineTotal: summary.lines.find((line) => line.id === addon.id)?.lineTotal || 0
       });
     });
-
     if (!state.reservationCode) state.reservationCode = generateReservationCode();
-
+    const now = new Date();
+    const serviceNames = services.map((service) => service.title).join(" + ");
     return {
+      code: state.reservationCode,
       reservationCode: state.reservationCode,
+      createdAt: now.toISOString(),
+      createdAtLabel: now.toLocaleString(CHECKOUT_I18N.locale),
       source: LANDING_ID,
-      createdAt: new Date().toISOString(),
-      travelers: { adults: state.adults, children: state.children, passengers: [holder, ...passengers] },
-      pickup: { location: holder.pickupLocation || "", city: "Cusco" },
+      landingId: LANDING_ID,
+      productSlug: "machu-picchu-y-tours-peru",
+      productId: LANDING_ID,
+      productTitle: serviceNames || LANDING_NAME,
+      date: state.mainProduct.date,
+      adults: state.adults,
+      children: state.children,
+      totalPassengers: state.adults + state.children,
+      currency: summary.currency,
+      paymentMode: "full",
+      serviceTotal: formatCurrency(summary.subtotal, summary.currency),
+      payNow: formatCurrency(summary.total, summary.currency),
+      payLater: formatCurrency(0, summary.currency),
+      serviceTotalValue: summary.subtotal,
+      payNowValue: summary.total,
+      payLaterValue: 0,
+      status: "pre_reservation",
+      paymentStatus: "pending",
+      holderIsPassenger: holderTravels,
+      holder,
+      passengers,
+      travelers: { adults: state.adults, children: state.children, passengers },
+      pickup: { location: holder.pickupLocation, city: "Cusco" },
       services,
+      couponCode: state.coupon?.code || "",
+      appliedCoupon: state.coupon || null,
       discount: state.coupon ? { code: state.coupon.code, type: state.coupon.type, value: state.coupon.value, amount: summary.discount } : {},
       pricing: { subtotal: summary.subtotal, discount: summary.discount, total: summary.total, currency: summary.currency },
+      summary: {
+        title: serviceNames || LANDING_NAME,
+        date: state.mainProduct.date,
+        adults: state.adults,
+        children: state.children,
+        services: services.map((service) => ({ id: service.id, title: service.title, date: service.date, lineTotal: service.lineTotal })),
+        serviceTotal: formatCurrency(summary.subtotal, summary.currency),
+        payNow: formatCurrency(summary.total, summary.currency),
+        payLater: formatCurrency(0, summary.currency),
+        rawServiceTotal: summary.subtotal,
+        rawPayNow: summary.total,
+        rawPayLater: 0,
+        paymentMode: "full",
+        couponCode: state.coupon?.code || ""
+      },
+      passengerDataPolicy: "additional_passengers_can_be_completed_15_to_30_days_before_travel",
       attribution: getAttribution()
     };
   }
 
-  function buildWhatsAppLink(reservation) {
-    const template = state.data.whatsapp.messageTemplate;
-    const servicesSummary = reservation.services.map((s) => `${s.title} (${formatDateSpanish(s.date)})`).join(", ");
-    const text = template
-      .replace("{reservationCode}", reservation.reservationCode)
-      .replace("{servicesSummary}", servicesSummary)
-      .replace("{totalPassengers}", String(reservation.travelers.adults + reservation.travelers.children))
-      .replace("{currency}", reservation.pricing.currency)
-      .replace("{total}", formatMoney(reservation.pricing.total))
-      .replace("{source}", reservation.source);
-    return `https://wa.me/${state.data.whatsapp.phone}?text=${encodeURIComponent(text)}`;
+  function renderPaymentReview(reservation) {
+    const target = document.getElementById("mptPassengerReview");
+    if (!target) return;
+    target.hidden = false;
+    target.innerHTML = `
+      <h3>${escapeHtml(CHECKOUT_I18N.review)}</h3>
+      <div class="mpt-payment-review__grid">
+        <div class="mpt-payment-review__card"><span>${escapeHtml(CHECKOUT_I18N.holder)}</span><strong>${escapeHtml(`${reservation.holder.firstName} ${reservation.holder.lastName}`)}</strong></div>
+        <div class="mpt-payment-review__card"><span>${escapeHtml(CHECKOUT_I18N.pickupShort)}</span><strong>${escapeHtml(reservation.pickup.location)}</strong></div>
+      </div>
+      <h4>${escapeHtml(CHECKOUT_I18N.services)}</h4>
+      <ul class="mpt-payment-review__services">
+        ${reservation.services.map((service) => `<li><span>${escapeHtml(service.title)}<small> · ${escapeHtml(formatDateSpanish(service.date))}</small></span><strong>${escapeHtml(formatCurrency(service.lineTotal, reservation.currency))}</strong></li>`).join("")}
+      </ul>
+      <div class="mpt-payment-review__total"><span>${escapeHtml(CHECKOUT_I18N.total)}</span><strong>${escapeHtml(formatCurrency(reservation.pricing.total, reservation.currency))}</strong></div>
+      <p class="mpt-availability-note">${escapeHtml(CHECKOUT_I18N.paypalNote)}</p>`;
+    const modal = document.getElementById("mptPassengerModal");
+    modal?.classList.add("passenger-modal--review");
+    const dialog = modal?.querySelector(".passenger-modal__dialog");
+    if (modal) modal.scrollTop = 0;
+    if (dialog) dialog.scrollTop = 0;
+    const cancel = document.getElementById("mptPassengerCancel");
+    const submit = document.getElementById("mptPassengerSubmit");
+    if (cancel) cancel.textContent = CHECKOUT_I18N.edit;
+    if (submit) submit.textContent = CHECKOUT_I18N.pay;
   }
 
-  async function finalizeReservation(holder, passengers, options) {
-    trackLandingEvent("passenger_form_started", {});
-    const reservation = buildReservationObject(holder, passengers);
-
-    try {
-      localStorage.setItem(`mct_landing_reservation_${reservation.reservationCode}`, "1");
-    } catch (error) {
-      /* storage unavailable */
-    }
-    clearDraftState();
-
-    trackLandingEvent("pre_reservation_created", {
-      reservation_code: reservation.reservationCode,
-      total: reservation.pricing.total,
-      currency: reservation.pricing.currency,
-      services_count: reservation.services.length
-    });
-
-    try {
-      trackLandingEvent("checkout_started", { reservation_code: reservation.reservationCode });
-      trackLandingEvent("payment_started", { reservation_code: reservation.reservationCode }, { metaEventName: "InitiateCheckout" });
-      if (window.MyCuscoTripApiClient?.createPreReservation) {
-        await withTimeout(window.MyCuscoTripApiClient.createPreReservation(reservation), 4000);
-      }
-    } catch (error) {
-      /* mock-safe: pre-reservation still recorded locally */
-    }
-
-    closeModal(document.getElementById("mptPassengerModal"));
-
-    if (options?.openWhatsapp) {
-      trackLandingEvent("whatsapp_click", { reservation_code: reservation.reservationCode });
-      window.open(buildWhatsAppLink(reservation), "_blank", "noopener");
-    }
-
-    showConfirmation(reservation);
-  }
-
-  function showConfirmation(reservation) {
-    state.lastReservation = reservation;
-    document.getElementById("mptConfirmationCode").textContent = reservation.reservationCode;
-    openModal(document.getElementById("mptConfirmationModal"));
+  function resetPassengerReview() {
+    const form = document.getElementById("mptPassengerForm");
+    const review = document.getElementById("mptPassengerReview");
+    document.getElementById("mptPassengerModal")?.classList.remove("passenger-modal--review");
+    if (form) delete form.dataset.reviewConfirmed;
+    if (review) { review.hidden = true; review.innerHTML = ""; }
+    const cancel = document.getElementById("mptPassengerCancel");
+    const submit = document.getElementById("mptPassengerSubmit");
+    if (cancel) cancel.textContent = CHECKOUT_I18N.cancel;
+    if (submit) submit.textContent = CHECKOUT_I18N.continue;
+    setPassengerMessage("", false);
   }
 
   function openPassengerModal() {
+    const modal = document.getElementById("mptPassengerModal");
+    if (!modal) return;
+    if (!state.reservationCode) state.reservationCode = generateReservationCode();
     renderPassengerFields();
-    openModal(document.getElementById("mptPassengerModal"));
+    resetPassengerReview();
+    const summary = calculateBookingSummary();
+    document.getElementById("mptReservationCode").textContent = state.reservationCode;
+    document.getElementById("mptPassengerPayNow").textContent = formatCurrency(summary.total, summary.currency);
+    modal.hidden = false;
+    modal.scrollTop = 0;
+    const dialog = modal.querySelector(".passenger-modal__dialog");
+    if (dialog) dialog.scrollTop = 0;
+    state.activeModal = modal;
+    document.body.classList.add("passenger-modal-open");
+    document.addEventListener("keydown", handleModalKeydown);
+    modal.querySelector("input,button,select")?.focus();
+    trackLandingEvent("passenger_modal_open", { reservation_code: state.reservationCode, value: summary.total, currency: summary.currency });
+  }
+
+  function closePassengerModal() {
+    const modal = document.getElementById("mptPassengerModal");
+    if (!modal) return;
+    modal.hidden = true;
+    modal.classList.remove("passenger-modal--review");
+    state.activeModal = null;
+    document.body.classList.remove("passenger-modal-open");
+    document.removeEventListener("keydown", handleModalKeydown);
+  }
+
+  async function copyReservationCode() {
+    const button = document.getElementById("mptReservationCodeCopy");
+    const code = document.getElementById("mptReservationCode")?.textContent?.trim();
+    if (!button || !code) return;
+    try { await navigator.clipboard.writeText(code); } catch (error) {
+      const area = document.createElement("textarea"); area.value = code; area.style.position = "fixed"; area.style.opacity = "0"; document.body.appendChild(area); area.select(); document.execCommand("copy"); area.remove();
+    }
+    button.dataset.copiedLabel = CHECKOUT_I18N.copy;
+    button.classList.add("is-copied");
+    window.setTimeout(() => button.classList.remove("is-copied"), 1800);
+  }
+
+  function persistPendingPayment(reservation) {
+    const record = { reservationCode: reservation.code, lastName: reservation.holder.lastName, holderEmail: reservation.holder.email, createdAt: reservation.createdAt, payload: reservation };
+    try {
+      sessionStorage.setItem(`mct_pending_payment_${reservation.code}`, JSON.stringify(record));
+      localStorage.setItem(`mct_pending_payment_${reservation.code}`, JSON.stringify(record));
+      localStorage.setItem(`mct_landing_reservation_${reservation.code}`, "1");
+    } catch (error) { /* storage unavailable */ }
+  }
+
+  async function processPayPalCheckout(reservation) {
+    const submit = document.getElementById("mptPassengerSubmit");
+    if (submit) { submit.disabled = true; submit.textContent = CHECKOUT_I18N.saving; }
+    setPassengerMessage(CHECKOUT_I18N.saving, false);
+    try {
+      if (!window.MyCuscoTripApiClient?.createPreReservation || !window.MyCuscoTripApiClient?.createPayPalOrder) throw new Error(CHECKOUT_I18N.paymentUnavailable);
+      const apiResult = await withTimeout(window.MyCuscoTripApiClient.createPreReservation(reservation), 20000);
+      if (!apiResult || apiResult.ok === false || apiResult.mock) throw new Error(apiResult?.message || CHECKOUT_I18N.paymentUnavailable);
+      const finalCode = String(apiResult.reservationCode || apiResult.code || reservation.code).trim();
+      reservation.code = finalCode;
+      reservation.reservationCode = finalCode;
+      state.reservationCode = finalCode;
+      document.getElementById("mptReservationCode").textContent = finalCode;
+      persistPendingPayment(reservation);
+      setPassengerMessage(CHECKOUT_I18N.connecting, false);
+      if (submit) submit.textContent = CHECKOUT_I18N.connecting;
+      const paypalResult = await withTimeout(window.MyCuscoTripApiClient.createPayPalOrder({
+        code: finalCode,
+        reservationCode: finalCode,
+        currency: reservation.currency,
+        total: Number(reservation.payNowValue || reservation.pricing.total || 0),
+        amountToPayNowValue: Number(reservation.payNowValue || reservation.pricing.total || 0),
+        productId: reservation.productId,
+        productTitle: reservation.productTitle
+      }), 20000);
+      if (!paypalResult || paypalResult.ok === false || paypalResult.mock) throw new Error(paypalResult?.message || CHECKOUT_I18N.paymentUnavailable);
+      if (!paypalResult.approvalUrl) throw new Error(CHECKOUT_I18N.noApproval);
+      trackLandingEvent("begin_payment", { reservation_code: finalCode, currency: reservation.currency, value: reservation.pricing.total, payment_provider: "paypal" }, { metaEventName: "InitiateCheckout" });
+      window.location.assign(paypalResult.approvalUrl);
+    } catch (error) {
+      console.error("Landing PayPal checkout error:", error);
+      setPassengerMessage(error?.body?.message || error?.body?.error || error?.message || CHECKOUT_I18N.backendError, true);
+      if (submit) { submit.disabled = false; submit.textContent = CHECKOUT_I18N.pay; }
+    }
+  }
+
+  async function handlePassengerFormSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.dataset.reviewConfirmed !== "true") {
+      const result = collectPassengerForm();
+      if (!result) return;
+      const reservation = buildReservationObject(result.holder, result.holderTravels, result.passengers);
+      state.lastReservation = reservation;
+      renderPaymentReview(reservation);
+      form.dataset.reviewConfirmed = "true";
+      setPassengerMessage("", false);
+      return;
+    }
+    if (!state.lastReservation) { resetPassengerReview(); return; }
+    await processPayPalCheckout(state.lastReservation);
+  }
+
+  function bindPassengerModalEvents() {
+    const modal = document.getElementById("mptPassengerModal");
+    modal?.querySelectorAll("[data-close-passenger-modal]").forEach((button) => button.addEventListener("click", closePassengerModal));
+    document.getElementById("mptPassengerClose")?.addEventListener("click", closePassengerModal);
+    document.getElementById("mptReservationCodeCopy")?.addEventListener("click", copyReservationCode);
+    document.getElementById("mptPassengerForm")?.addEventListener("submit", handlePassengerFormSubmit);
+    document.getElementById("mptPassengerCancel")?.addEventListener("click", () => {
+      const form = document.getElementById("mptPassengerForm");
+      if (form?.dataset.reviewConfirmed === "true") { resetPassengerReview(); return; }
+      closePassengerModal();
+    });
   }
 
   function onContinueClick() {
@@ -1095,14 +1318,17 @@
       firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    if (shouldShowUpsell()) {
-      openUpsellModal();
-      return;
-    }
+    if (shouldShowUpsell()) { openUpsellModal(); return; }
     openPassengerModal();
   }
 
-  // ---------- Event wiring ----------
+  function syncStickySummaryOffset() {
+    const header = document.querySelector("#header-container header, #header-container .header, #header-container .site-header");
+    const height = Math.ceil(header?.getBoundingClientRect?.().height || 80);
+    document.documentElement.style.setProperty("--mpt-sticky-offset", `${height + 16}px`);
+  }
+
+    // ---------- Event wiring ----------
 
   function bindGlobalEvents() {
     document.querySelectorAll("[data-mpt-modal-close]").forEach((btn) => {
@@ -1127,29 +1353,7 @@
       openPassengerModal();
     });
 
-    document.getElementById("mptPassengerForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const result = validateAndCollectPassengerForm();
-      if (!result) return;
-      finalizeReservation(result.holder, result.passengers, { openWhatsapp: false });
-    });
-
-    document.getElementById("mptPassengerWhatsapp").addEventListener("click", () => {
-      const result = validateAndCollectPassengerForm();
-      if (!result) return;
-      finalizeReservation(result.holder, result.passengers, { openWhatsapp: true });
-    });
-
-    document.getElementById("mptPassengerFields").addEventListener("change", (e) => {
-      const checkbox = e.target.closest('[name$="_complete_later"]');
-      if (!checkbox) return;
-      const match = checkbox.name.match(/passenger_(\d+)_complete_later/);
-      if (!match) return;
-      const fieldsWrap = document.querySelector(`[data-passenger-fields="${match[1]}"]`);
-      fieldsWrap?.querySelectorAll("input,select").forEach((el) => {
-        el.disabled = checkbox.checked;
-      });
-    });
+    bindPassengerModalEvents();
 
     document.getElementById("mptMobileBarContinue").addEventListener("click", onContinueClick);
 
@@ -1159,9 +1363,6 @@
       });
     });
 
-    document.getElementById("mptConfirmationWhatsapp").addEventListener("click", () => {
-      if (state.lastReservation) window.open(buildWhatsAppLink(state.lastReservation), "_blank", "noopener");
-    });
 
     const addonsGrid = document.getElementById("mptAddonsGrid");
     addonsGrid.addEventListener("change", (e) => {
@@ -1252,6 +1453,9 @@
         console.warn("Header JS no inicializado:", error);
       }
     }
+    syncStickySummaryOffset();
+    window.addEventListener("resize", syncStickySummaryOffset, { passive: true });
+
     document.querySelectorAll(".mpt-hero__video--desktop").forEach((video) => { video.playbackRate = 0.6; });
     document.querySelectorAll(".mpt-hero__video--mobile").forEach((video) => { video.playbackRate = 0.8; });
 

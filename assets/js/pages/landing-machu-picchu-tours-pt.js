@@ -2,7 +2,7 @@
   "use strict";
 
   const LANDING_ID = "landing-machu-picchu-tours";
-  const LANDING_NAME = "Machu Picchu + Tours in Peru";
+  const LANDING_NAME = "Machu Picchu + Tours no Peru";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
@@ -55,7 +55,7 @@
         });
       }
     } catch (error) {
-      console.warn(`Could not load component ${componentName}:`, error);
+      console.warn(`Não foi possível carregar o componente ${componentName}:`, error);
     }
   }
 
@@ -69,7 +69,7 @@
   }
 
   function formatMoney(value) {
-    return Number(value || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return Number(value || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   function formatCurrency(value, currency) {
@@ -104,8 +104,8 @@
 
   function formatDateSpanish(value) {
     const date = parseISODate(value);
-    if (!date) return "date not selected";
-    return date.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+    if (!date) return "data não selecionada";
+    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
   }
 
   function daysBetween(dateAStr, dateBStr) {
@@ -314,7 +314,7 @@
         if (diff !== null && diff < minGap + 1) {
           return {
             valid: false,
-            message: "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.",
+            message: "Para viajar entre Lima/Ica e Cusco, é necessário reservar pelo menos um dia para o deslocamento. Selecione uma data posterior para continuar.",
             conflictingIds: [a.id, b.id]
           };
         }
@@ -348,10 +348,10 @@
     selectedTours.forEach((t) => {
       if (!t.date) {
         valid = false;
-        if (!silent) setFieldError(t.id, "Select a date to continue.");
+        if (!silent) setFieldError(t.id, "Selecione uma data para continuar.");
       } else if (t.date < todayStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "The date cannot be earlier than today.");
+        if (!silent) setFieldError(t.id, "A data não pode ser anterior a hoje.");
       }
     });
 
@@ -364,7 +364,7 @@
     Object.values(byDate).forEach((ids) => {
       if (ids.length > 1) {
         valid = false;
-        if (!silent) ids.forEach((id) => setFieldError(id, "Two tours cannot be scheduled for the same date."));
+        if (!silent) ids.forEach((id) => setFieldError(id, "Dois passeios não podem ter a mesma data."));
       }
     });
 
@@ -510,14 +510,14 @@
       const list = await response.json();
       const found = (Array.isArray(list) ? list : []).find((item) => String(item.code || "").toUpperCase() === code);
       if (!found || !found.active) {
-        return { valid: false, message: "Invalid or inactive code." };
+        return { valid: false, message: "Código inválido ou inativo." };
       }
       if (found.expiresAt && new Date(found.expiresAt).getTime() < Date.now()) {
-        return { valid: false, message: "This discount code has expired." };
+        return { valid: false, message: "Este código de desconto expirou." };
       }
       return { valid: true, couponCode: found.code, type: found.type, value: found.value, currency: found.currency, label: found.label };
     } catch (error) {
-      return { valid: false, message: "The coupon could not be validated at this time." };
+      return { valid: false, message: "Não foi possível validar o cupom neste momento." };
     }
   }
 
@@ -525,11 +525,11 @@
     const code = String(rawCode || "").trim().toUpperCase();
     if (!code) {
       state.coupon = null;
-      setCouponMessage("Enter a discount code.", "error");
+      setCouponMessage("Digite um código de desconto.", "error");
       renderSummary();
       return;
     }
-    setCouponMessage("Validating code…", "");
+    setCouponMessage("Validando código…", "");
 
     let result = null;
     try {
@@ -544,7 +544,7 @@
 
     if (!result.valid) {
       state.coupon = null;
-      setCouponMessage(result.message || "Invalid or inactive code.", "error");
+      setCouponMessage(result.message || "Código inválido ou inativo.", "error");
       renderSummary();
       trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false });
       return;
@@ -556,7 +556,7 @@
       value: Number(result.value ?? result.discountPercent ?? 0),
       currency: result.currency || state.data.currency
     };
-    setCouponMessage(`Coupon applied: ${result.label || state.coupon.code}.`, "success");
+    setCouponMessage(`Cupom aplicado: ${result.label || state.coupon.code}.`, "success");
     renderSummary();
     trackLandingEvent("coupon_applied", {
       coupon_code: state.coupon.code,
@@ -595,34 +595,34 @@
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
             <div class="mpt-price-row">
-              <div class="mpt-price-pill"><span>Adult</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
-              <div class="mpt-price-pill"><span>Child (${childPolicy.minAge}-${childPolicy.maxAge} years)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
+              <div class="mpt-price-pill"><span>Adulto</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
+              <div class="mpt-price-pill"><span>Criança (${childPolicy.minAge}-${childPolicy.maxAge} anos)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
-                <label for="${dateInputId(p.id)}">Date</label>
-                <input id="${dateInputId(p.id)}" type="text" placeholder="Select a date" readonly aria-describedby="${errorId(p.id)}"/>
+                <label for="${dateInputId(p.id)}">Data</label>
+                <input id="${dateInputId(p.id)}" type="text" placeholder="Selecione uma data" readonly aria-describedby="${errorId(p.id)}"/>
                 <span class="mpt-field-error" id="${errorId(p.id)}" role="alert"></span>
               </div>
               <div class="mpt-field">
-                <label for="mptAdults">Adults</label>
-                <select id="mptAdults" aria-label="Number of adults for the entire booking">${qtyOptions(1, 10, state.adults)}</select>
+                <label for="mptAdults">Adultos</label>
+                <select id="mptAdults" aria-label="Quantidade de adultos para toda a reserva">${qtyOptions(1, 10, state.adults)}</select>
               </div>
               <div class="mpt-field">
-                <label for="mptChildren">Children</label>
-                <select id="mptChildren" aria-label="Number of children for the entire booking">${qtyOptions(0, 10, state.children)}</select>
+                <label for="mptChildren">Crianças</label>
+                <select id="mptChildren" aria-label="Quantidade de crianças para toda a reserva">${qtyOptions(0, 10, state.children)}</select>
               </div>
             </div>
             <div>
-              <strong style="font-size:0.85rem;">Includes:</strong>
+              <strong style="font-size:0.85rem;">Inclui:</strong>
               <ul class="mpt-includes">${(p.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
             </div>
             <div>
-              <strong style="font-size:0.85rem;">Meals (optional):</strong>
-              <div class="mpt-meal-options" role="radiogroup" aria-label="Meal options">
+              <strong style="font-size:0.85rem;">Alimentação (opcional):</strong>
+              <div class="mpt-meal-options" role="radiogroup" aria-label="Opções de alimentação">
                 ${(p.mealOptions || []).map((m) => `
                   <label class="mpt-meal-option">
-                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/person)` : " (included at no extra cost)"}</span>
+                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/pessoa)` : " (incluído sem custo adicional)"}</span>
                     <input type="radio" name="mptMeal" value="${escapeHtml(m.id)}" ${state.mainProduct.mealOptionId === m.id ? "checked" : ""}/>
                   </label>
                 `).join("")}
@@ -658,8 +658,8 @@
       minDate: "today",
       dateFormat: "Y-m-d",
       altInput: true,
-      altFormat: "M j, Y",
-      locale: "default",
+      altFormat: "d M Y",
+      locale: "pt",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
@@ -687,10 +687,10 @@
           <div class="mpt-card__body">
             <div class="mpt-card__summary">
               <h3>${escapeHtml(addon.title)}</h3>
-              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / person</div>
+              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / pessoa</div>
             </div>
             <button class="mpt-card__disclosure" type="button" data-addon-expand data-addon-id="${escapeHtml(addon.id)}" aria-expanded="${sel.selected ? "true" : "false"}" aria-controls="${escapeHtml(detailsId)}">
-              <span>See what is included</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
+              <span>Ver o que inclui</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="mpt-card__expandable" id="${escapeHtml(detailsId)}">
               <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
@@ -699,22 +699,22 @@
               <div class="mpt-card__toggle-row">
                 <label class="mpt-card__checkbox">
                   <input type="checkbox" data-addon-id="${escapeHtml(addon.id)}" ${sel.selected ? "checked" : ""}/>
-                  Add to my trip
+                  Adicionar à minha viagem
                 </label>
               </div>
               <div class="mpt-card__details">
                 <div class="mpt-field">
-                  <label for="${dateInputId(addon.id)}">Date for ${escapeHtml(addon.title)}</label>
-                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Select a date" readonly aria-describedby="${errorId(addon.id)}"/>
+                  <label for="${dateInputId(addon.id)}">Data de ${escapeHtml(addon.title)}</label>
+                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Selecione uma data" readonly aria-describedby="${errorId(addon.id)}"/>
                   <span class="mpt-field-error" id="${errorId(addon.id)}" role="alert"></span>
                 </div>
                 ${(addon.extras || []).map((extra) => `
                   <label class="mpt-card__extra">
                     <input type="checkbox" data-extra-toggle data-addon-id="${escapeHtml(addon.id)}" data-extra-id="${escapeHtml(extra.id)}" ${sel.extras?.[extra.id] ? "checked" : ""}/>
-                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/person)
+                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/pessoa)
                   </label>
                 `).join("")}
-                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Remove from my trip</button>
+                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Remover da minha viagem</button>
               </div>
             </div>
           </div>
@@ -729,8 +729,8 @@
         minDate: "today",
         dateFormat: "Y-m-d",
         altInput: true,
-        altFormat: "M j, Y",
-        locale: "default",
+        altFormat: "d M Y",
+        locale: "pt",
         defaultDate: sel.date || undefined,
         onChange(selectedDates, dateStr) {
           state.addons[addon.id].date = dateStr || null;
@@ -805,26 +805,26 @@
     content.innerHTML = `
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
-        <span><i class="fas fa-user"></i> ${summary.adults} adult(s)</span>
-        <span><i class="fas fa-child"></i> ${summary.children} child(ren)</span>
+        <span><i class="fas fa-user"></i> ${summary.adults} adulto(s)</span>
+        <span><i class="fas fa-child"></i> ${summary.children} niño(s)</span>
       </div>
-      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">You have not added any experiences yet.</p>'}</div>
+      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Você ainda não adicionou outras experiências.</p>'}</div>
 
       <div class="mpt-coupon">
-        <input id="mptCouponInput" type="text" placeholder="Discount code" aria-label="Discount code" value="${escapeHtml(state.coupon?.code || "")}"/>
-        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Apply</button>
+        <input id="mptCouponInput" type="text" placeholder="Código de desconto" aria-label="Código de desconto" value="${escapeHtml(state.coupon?.code || "")}"/>
+        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Aplicar</button>
       </div>
-      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Remove coupon</button>` : ""}
+      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Remover cupom</button>` : ""}
       <p class="mpt-coupon-message" id="mptCouponMessage"></p>
 
       <div class="mpt-summary__totals">
         <div class="mpt-summary__totals-row"><span>Subtotal</span><strong>${formatCurrency(summary.subtotal, currency)}</strong></div>
-        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Discount</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
+        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Desconto</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
         <div class="mpt-summary__totals-row mpt-summary__total"><span>Total</span><span aria-live="polite">${formatCurrency(summary.total, currency)}</span></div>
       </div>
 
-      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continue with my booking</button>
-      <p class="mpt-availability-note">Dates and times are subject to availability. Our team will verify tickets, trains and operating conditions before issuing the services.</p>
+      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continuar com minha reserva</button>
+      <p class="mpt-availability-note">As datas e os horários estão sujeitos à disponibilidade. Nossa equipe verificará ingressos, trens e a operação antes de emitir os serviços.</p>
     `;
 
     renderOperationalWarnings(summary.warnings);
@@ -894,7 +894,7 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay with PayPal", "saving": "Saving booking…", "connecting": "Connecting to PayPal…", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "The date cannot be earlier than today.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
+  const CHECKOUT_I18N = {"lang": "pt", "locale": "pt-BR", "name": "Machu Picchu + Tours no Peru", "data": "assets/data/i18n/pt/landing-machu-picchu-tours.json", "copy": "Código copiado", "noDate": "data não selecionada", "modalTitle": "Dados dos passageiros", "codeLabel": "Código da reserva:", "payNow": "Valor a pagar agora:", "important": "Informação importante", "importantText": "Digite nomes, sobrenomes e dados dos documentos exatamente como aparecem no documento oficial. Essas informações serão utilizadas para emitir ingressos, passagens de trem e serviços turísticos.", "holderTitle": "Titular da reserva / Passageiro 1", "holderOnly": "Titular da reserva", "required": "Dados obrigatórios para continuar", "first": "Nome(s)", "last": "Sobrenome(s)", "docType": "Tipo de documento", "select": "Selecione", "passport": "Passaporte", "dni": "DNI", "idcard": "Documento de identidade", "other": "Outro", "docNum": "Número do documento", "nationality": "Nacionalidade", "birth": "Data de nascimento", "whatsapp": "WhatsApp", "email": "E-mail", "language": "Idioma solicitado", "pickup": "Hotel ou endereço de embarque em Cusco", "pickupPh": "Nome do hotel e endereço, se souber", "holderTravels": "O titular da reserva também faz parte do grupo de passageiros.", "tourists": "Cadastro de passageiros", "touristsNote": "Você pode preencher os dados dos demais passageiros agora ou entre 15 e 30 dias antes da viagem.", "traveler": "Passageiro", "later": "Preencher estes dados depois", "cancel": "Cancelar", "edit": "Editar dados", "continue": "Continuar", "pay": "Pagar com PayPal", "saving": "Salvando a reserva…", "connecting": "Conectando ao PayPal…", "review": "Revise sua reserva antes do pagamento", "holder": "Titular", "pickupShort": "Embarque", "services": "Serviços", "total": "Total a pagar", "paypalNote": "Ao continuar, você será redirecionado com segurança ao PayPal para pagar 100% da reserva.", "formRequired": "Preencha os dados obrigatórios para continuar.", "backendError": "Não foi possível registrar a reserva nem iniciar o PayPal. Verifique a conexão e tente novamente.", "noApproval": "O PayPal não retornou um link de aprovação do pagamento.", "paymentUnavailable": "O sistema de pagamentos não está disponível.", "dateTransition": "Para viajar entre Lima/Ica e Cusco, é necessário reservar pelo menos um dia para o deslocamento. Selecione uma data posterior para continuar.", "selectDate": "Selecione uma data para continuar.", "pastDate": "A data não pode ser anterior a hoje.", "duplicateDate": "Dois passeios não podem ter a mesma data.", "statusEdit": "Revise os dados e clique em continuar.", "reviewButton": "Continuar", "modalAriaClose": "Fechar modal", "requestedLanguages": ["Português", "Español", "English", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
@@ -1388,7 +1388,7 @@
         const expanded = !card.classList.contains("is-expanded");
         card.classList.toggle("is-expanded", expanded);
         disclosure.setAttribute("aria-expanded", expanded ? "true" : "false");
-        disclosure.querySelector("span").textContent = expanded ? "Hide details" : "See what is included";
+        disclosure.querySelector("span").textContent = expanded ? "Ocultar detalhes" : "Ver o que inclui";
         return;
       }
       const removeBtn = e.target.closest("[data-addon-remove]");
@@ -1434,8 +1434,8 @@
 
   async function fetchLandingData() {
     const basePath = getSiteBasePath();
-    const response = await fetch(`${basePath}assets/data/i18n/en/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
-    if (!response.ok) throw new Error("Could not load the landing page information.");
+    const response = await fetch(`${basePath}assets/data/i18n/pt/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
+    if (!response.ok) throw new Error("Não foi possível carregar as informações da landing page.");
     return response.json();
   }
 
@@ -1450,7 +1450,7 @@
       try {
         window.initMyCuscoTripHeader();
       } catch (error) {
-        console.warn("Header JavaScript was not initialized:", error);
+        console.warn("O JavaScript do cabeçalho não foi inicializado:", error);
       }
     }
     syncStickySummaryOffset();

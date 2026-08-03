@@ -1,0 +1,221 @@
+/* My Cusco Trip landing checkout modal — same visual system as product pages */
+body.passenger-modal-open { overflow: hidden !important; }
+.passenger-modal[hidden] { display: none !important; }
+.passenger-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2147482500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+  padding: 16px;
+  background: rgba(2, 24, 15, .66);
+  backdrop-filter: blur(3px);
+}
+.passenger-modal__backdrop { position: fixed; inset: 0; }
+.passenger-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 1080px);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  border-radius: 24px;
+  background: #f7faf8;
+  box-shadow: 0 28px 80px rgba(0,0,0,.34);
+}
+.passenger-modal__header {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 20px 76px 18px 28px;
+  background: #0a3a26;
+  color: #fff;
+}
+.passenger-modal__titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+.passenger-modal__titlebar h2 {
+  margin: 0;
+  color: #fff;
+  font: 800 clamp(1.45rem, 2.8vw, 2.2rem)/1.05 "Montserrat", sans-serif;
+  letter-spacing: -.035em;
+}
+.passenger-modal__code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.passenger-modal__code-label {
+  color: rgba(255,255,255,.76);
+  font-size: .82rem;
+  font-weight: 800;
+}
+.passenger-modal__code-pill {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: #fff;
+  color: #0a3a26;
+  font: 900 .88rem/1 "Montserrat", sans-serif;
+  letter-spacing: .055em;
+  cursor: pointer;
+}
+.passenger-modal__code-pill.is-copied::after {
+  content: attr(data-copied-label);
+  position: absolute;
+  margin: 32px 0 0 -95px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #10251d;
+  color: #fff;
+  font-size: .72rem;
+  letter-spacing: 0;
+}
+.passenger-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.passenger-modal__meta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.passenger-modal__paynow-card {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.12);
+}
+.passenger-modal__paynow-card span { color: rgba(255,255,255,.74); font-size: .8rem; font-weight: 800; }
+.passenger-modal__paynow-card strong { color: #fff; font: 900 1.05rem/1 "Montserrat", sans-serif; }
+.passenger-modal__warning {
+  margin: 2px 0 0;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.10);
+  border-left: 3px solid rgba(255,255,255,.62);
+  color: rgba(255,255,255,.9);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.passenger-modal__warning summary { cursor: pointer; font-weight: 900; }
+.passenger-modal__warning p { margin: 8px 0 0; }
+.passenger-modal__body { padding: 22px 28px 28px; }
+.passenger-modal__form { display: grid; gap: 16px; }
+.passenger-modal__section,
+.passenger-modal__optional-passenger,
+.passenger-modal__review {
+  border: 1px solid rgba(23,43,39,.14);
+  border-radius: 18px;
+  background: #fff;
+  padding: 18px;
+  box-shadow: 0 7px 20px rgba(10,58,38,.06);
+}
+.passenger-modal__section--holder { border-color: rgba(10,58,38,.24); }
+.passenger-modal__section-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+.passenger-modal__section-title strong { color: #0a3a26; font: 850 1rem/1.25 "Montserrat", sans-serif; }
+.passenger-modal__section-title span { color: #6b7772; font-size: .79rem; }
+.passenger-modal__grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.passenger-modal__grid label { display: grid; gap: 6px; color: #25372f; font-size: .82rem; font-weight: 800; }
+.passenger-modal__grid label.is-wide { grid-column: 1 / -1; }
+.passenger-modal__grid input,
+.passenger-modal__grid select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(23,43,39,.20);
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px 12px;
+  color: #172b25;
+  font: 600 .92rem/1.2 "Open Sans", sans-serif;
+}
+.passenger-modal__grid input:focus,
+.passenger-modal__grid select:focus { outline: 3px solid rgba(81,104,63,.18); border-color: #51683f; }
+.passenger-modal__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 14px;
+  color: #34483f;
+  font-size: .86rem;
+  font-weight: 700;
+}
+.passenger-modal__check input { margin-top: 3px; accent-color: #0a3a26; }
+.passenger-modal__additional { display: grid; gap: 13px; }
+.passenger-modal__optional-passenger { padding: 0; overflow: hidden; box-shadow: none; }
+.passenger-modal__optional-passenger summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: #0a3a26;
+  font-weight: 850;
+}
+.passenger-modal__optional-passenger[open] summary { border-bottom: 1px solid rgba(23,43,39,.12); }
+.passenger-modal__optional-passenger .passenger-modal__passenger-content { padding: 16px; }
+.passenger-modal__grid.is-disabled { opacity: .48; }
+.passenger-modal__message { min-height: 20px; margin: 0; color: #4f6259; font-size: .86rem; }
+.passenger-modal__message.is-error { color: #b3261e; font-weight: 700; }
+.passenger-modal__review[hidden] { display: none !important; }
+.passenger-modal__review h3 { margin: 0 0 12px; color: #0a3a26; font-size: 1.18rem; }
+.mpt-payment-review__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mpt-payment-review__card { padding: 13px; border-radius: 13px; background: #f4f8f5; border: 1px solid rgba(10,58,38,.12); }
+.mpt-payment-review__card span { display: block; color: #6b7772; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.mpt-payment-review__card strong { display: block; margin-top: 4px; color: #0a3a26; }
+.mpt-payment-review__services { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.mpt-payment-review__services li { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(23,43,39,.16); }
+.mpt-payment-review__total { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 14px; border-radius: 14px; background: #0a3a26; color: #fff; }
+.mpt-payment-review__total strong { font-size: 1.35rem; }
+.passenger-modal__actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 4px; }
+.passenger-modal__actions .btn {
+  width: auto;
+  min-width: 148px;
+  min-height: 48px;
+  border-radius: 16px;
+  padding: 13px 23px;
+  font: 850 .94rem/1 "Montserrat", sans-serif;
+  cursor: pointer;
+}
+.passenger-modal__cancel-btn { border: 1px solid rgba(10,58,38,.34); background: #fff; color: #0a3a26; }
+.passenger-modal__actions .booking-main-btn { border: 1px solid #51683f; background: #51683f; color: #fff; box-shadow: 0 12px 26px rgba(10,58,38,.18); }
+.passenger-modal__actions .booking-main-btn:disabled { opacity: .64; cursor: wait; }
+.passenger-modal--review .passenger-modal__section { display: none; }
+.passenger-modal--review .passenger-modal__warning { display: none; }
+
+@media (max-width: 760px) {
+  .passenger-modal { padding: 0; }
+  .passenger-modal__dialog { width: 100%; min-height: 100vh; max-height: 100vh; border-radius: 0; }
+  .passenger-modal__header { padding: 16px 58px 16px 18px; }
+  .passenger-modal__titlebar { display: block; }
+  .passenger-modal__titlebar h2 { font-size: clamp(1.35rem, 7vw, 1.9rem); }
+  .passenger-modal__code-wrap { margin-top: 9px; }
+  .passenger-modal__warning { font-size: .82rem; }
+  .passenger-modal__body { padding: 16px; }
+  .passenger-modal__grid,
+  .mpt-payment-review__grid { grid-template-columns: 1fr; }
+  .passenger-modal__section-title { display: grid; }
+  .passenger-modal__actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .passenger-modal__actions .btn { width: 100%; min-width: 0; padding-inline: 10px; }
+}
