@@ -894,7 +894,7 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay with PayPal", "saving": "Saving booking…", "connecting": "Connecting to PayPal…", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "The date cannot be earlier than today.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
+  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "selectCountry": "Select country", "selectCode": "Select code", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay", "saving": "Saving booking…", "connecting": "Connecting to PayPal…", "summaryTitle": "Booking summary", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "The date cannot be earlier than today.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
@@ -915,6 +915,79 @@
   function requestedLanguageOptions() {
     return CHECKOUT_I18N.requestedLanguages.map((language, index) => `<option value="${escapeHtml(language)}" ${index === 0 ? "selected" : ""}>${escapeHtml(language)}</option>`).join("");
   }
+
+  let checkoutCountriesPromise = null;
+
+  function loadCheckoutCountries() {
+    if (checkoutCountriesPromise) return checkoutCountriesPromise;
+    const url = `${getSiteBasePath()}assets/data/countries.json`.replace(/([^:]\/)\/{2,}/g, "$1");
+    checkoutCountriesPromise = fetch(url, { cache: "force-cache" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Countries ${response.status}`);
+        return response.json();
+      })
+      .catch((error) => {
+        console.warn("Could not load country list:", error);
+        return [
+          { name: "Perú", dialCode: "+51" },
+          { name: "Estados Unidos", dialCode: "+1" },
+          { name: "México", dialCode: "+52" },
+          { name: "Colombia", dialCode: "+57" },
+          { name: "Brasil", dialCode: "+55" },
+          { name: "Chile", dialCode: "+56" },
+          { name: "Argentina", dialCode: "+54" },
+          { name: "España", dialCode: "+34" },
+          { name: "Portugal", dialCode: "+351" }
+        ];
+      });
+    return checkoutCountriesPromise;
+  }
+
+  function compactPhoneCodeSelect(select) {
+    if (!select) return;
+    const selectedValue = select.value || "+51";
+    Array.from(select.options || []).forEach((option) => {
+      const fullLabel = option.dataset.fullLabel || option.textContent || option.value;
+      option.dataset.fullLabel = fullLabel;
+      option.textContent = option.value === selectedValue ? option.value : fullLabel;
+    });
+  }
+
+  function expandPhoneCodeSelect(select) {
+    if (!select) return;
+    Array.from(select.options || []).forEach((option) => {
+      if (option.dataset.fullLabel) option.textContent = option.dataset.fullLabel;
+    });
+  }
+
+  async function populateCheckoutCountrySelects(scope) {
+    if (!scope) return;
+    const countries = await loadCheckoutCountries();
+    scope.querySelectorAll("select[data-country-select]").forEach((select) => {
+      const current = select.value || select.dataset.default || "Perú";
+      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option>${countries.map((country) => `<option value="${escapeHtml(country.name)}">${escapeHtml(country.name)}</option>`).join("")}`;
+      select.value = current;
+      if (!select.value) select.value = "Perú";
+    });
+    scope.querySelectorAll("select[data-phone-code-select]").forEach((select) => {
+      const current = select.value || "+51";
+      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCode)}</option>${countries.map((country) => {
+        const label = `${country.dialCode} · ${country.name}`;
+        return `<option value="${escapeHtml(country.dialCode)}" data-full-label="${escapeHtml(label)}">${escapeHtml(label)}</option>`;
+      }).join("")}`;
+      select.value = current;
+      if (!select.value) select.value = "+51";
+      if (select.dataset.phoneSelectBound !== "true") {
+        select.dataset.phoneSelectBound = "true";
+        select.addEventListener("mousedown", () => expandPhoneCodeSelect(select));
+        select.addEventListener("focus", () => expandPhoneCodeSelect(select));
+        select.addEventListener("change", () => window.setTimeout(() => compactPhoneCodeSelect(select), 0));
+        select.addEventListener("blur", () => compactPhoneCodeSelect(select));
+      }
+      compactPhoneCodeSelect(select);
+    });
+  }
+
 
   function renderAdditionalPassengerFields(holderTravels) {
     const target = document.getElementById("mptAdditionalPassengers");
@@ -941,12 +1014,13 @@
               <label><span>${escapeHtml(CHECKOUT_I18N.last)}</span><input name="passenger_${number}_lastName" minlength="2" required type="text"/></label>
               <label><span>${escapeHtml(CHECKOUT_I18N.docType)}</span><select name="passenger_${number}_documentType" required>${passengerDocumentOptions()}</select></label>
               <label><span>${escapeHtml(CHECKOUT_I18N.docNum)}</span><input name="passenger_${number}_documentNumber" required type="text"/></label>
-              <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><input name="passenger_${number}_nationality" required type="text"/></label>
+              <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><select autocomplete="country-name" data-country-select data-default="Perú" name="passenger_${number}_nationality" required><option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option></select></label>
               <label><span>${escapeHtml(CHECKOUT_I18N.birth)}</span><input name="passenger_${number}_birthdate" required type="date"/></label>
             </div>
           </div>
         </details>`;
     }).join("");
+    populateCheckoutCountrySelects(target);
     target.querySelectorAll("[data-passenger-later]").forEach((checkbox) => {
       checkbox.addEventListener("change", () => toggleAdditionalPassengerFields(checkbox));
     });
@@ -977,9 +1051,9 @@
           <label><span>${escapeHtml(CHECKOUT_I18N.last)}</span><input autocomplete="family-name" minlength="2" name="holderLastName" required type="text"/></label>
           <label><span>${escapeHtml(CHECKOUT_I18N.docType)}</span><select name="holderDocumentType" required>${passengerDocumentOptions()}</select></label>
           <label><span>${escapeHtml(CHECKOUT_I18N.docNum)}</span><input name="holderDocumentNumber" required type="text"/></label>
-          <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><input name="holderNationality" required type="text"/></label>
+          <label><span>${escapeHtml(CHECKOUT_I18N.nationality)}</span><select autocomplete="country-name" data-country-select data-default="Perú" name="holderNationality" required><option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option></select></label>
           <label><span>${escapeHtml(CHECKOUT_I18N.birth)}</span><input name="holderBirthdate" required type="date"/></label>
-          <label><span>${escapeHtml(CHECKOUT_I18N.whatsapp)}</span><input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="+51 900 000 000" required type="tel"/></label>
+          <label class="passenger-phone-field"><span>${escapeHtml(CHECKOUT_I18N.whatsapp)}</span><div class="passenger-phone-row"><select aria-label="${escapeHtml(CHECKOUT_I18N.selectCode)}" data-phone-code-select name="holderWhatsappCountryCode" required><option value="+51">+51</option></select><input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="900 000 000" required type="tel"/></div></label>
           <label><span>${escapeHtml(CHECKOUT_I18N.email)}</span><input autocomplete="email" name="holderEmail" required type="email"/></label>
           <label><span>${escapeHtml(CHECKOUT_I18N.language)}</span><select name="holderLanguage" required>${requestedLanguageOptions()}</select></label>
           <label class="is-wide"><span>${escapeHtml(CHECKOUT_I18N.pickup)}</span><input name="holderPickupLocation" placeholder="${escapeHtml(CHECKOUT_I18N.pickupPh)}" required type="text"/></label>
@@ -996,6 +1070,7 @@
         </div>
         <div class="passenger-modal__additional" id="mptAdditionalPassengers"></div>
       </section>`;
+    populateCheckoutCountrySelects(container);
     renderAdditionalPassengerFields(true);
     document.getElementById("mptHolderTravels")?.addEventListener("change", (event) => {
       const holderTravels = event.currentTarget.checked;
@@ -1023,7 +1098,9 @@
       documentNumber: String(data.get("holderDocumentNumber") || "").trim(),
       nationality: String(data.get("holderNationality") || "").trim(),
       birthdate: String(data.get("holderBirthdate") || "").trim(),
-      whatsapp: String(data.get("holderWhatsapp") || "").trim(),
+      whatsappCountryCode: String(data.get("holderWhatsappCountryCode") || "+51").trim(),
+      whatsappNumber: String(data.get("holderWhatsapp") || "").trim(),
+      whatsapp: `${String(data.get("holderWhatsappCountryCode") || "+51").trim()} ${String(data.get("holderWhatsapp") || "").trim()}`.trim(),
       email: String(data.get("holderEmail") || "").trim(),
       language: String(data.get("holderLanguage") || "").trim(),
       pickupLocation: String(data.get("holderPickupLocation") || "").trim(),
@@ -1156,6 +1233,8 @@
   function renderPaymentReview(reservation) {
     const target = document.getElementById("mptPassengerReview");
     if (!target) return;
+    const modalTitle = document.getElementById("mptPassengerModalTitle");
+    if (modalTitle) modalTitle.textContent = CHECKOUT_I18N.summaryTitle;
     target.hidden = false;
     target.innerHTML = `
       <h3>${escapeHtml(CHECKOUT_I18N.review)}</h3>
@@ -1183,6 +1262,8 @@
   function resetPassengerReview() {
     const form = document.getElementById("mptPassengerForm");
     const review = document.getElementById("mptPassengerReview");
+    const modalTitle = document.getElementById("mptPassengerModalTitle");
+    if (modalTitle) modalTitle.textContent = CHECKOUT_I18N.modalTitle;
     document.getElementById("mptPassengerModal")?.classList.remove("passenger-modal--review");
     if (form) delete form.dataset.reviewConfirmed;
     if (review) { review.hidden = true; review.innerHTML = ""; }

@@ -1,0 +1,375 @@
+/*
+ * My Cusco Trip — modal compartido de pasajeros / resumen de reserva
+ * V6 (2026-08-03)
+ * Este archivo se carga después de product-page.css o landing-reservation-modal.css.
+ */
+body.passenger-modal-open {
+  overflow: hidden !important;
+}
+
+.passenger-modal[hidden] {
+  display: none !important;
+}
+
+.passenger-modal:not([hidden]) {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147482500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+  background: rgba(2, 24, 15, .66) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+}
+
+.passenger-modal__backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+.passenger-modal__dialog {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(96vw, 1080px) !important;
+  max-width: 1080px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  background: #f7faf8 !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .34) !important;
+}
+
+.passenger-modal__header {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  display: grid !important;
+  gap: 10px !important;
+  padding: 20px 76px 18px 28px !important;
+  background: #0a3a26 !important;
+  color: #fff !important;
+  border-bottom: 0 !important;
+}
+
+.passenger-modal__titlebar {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #fff !important;
+}
+
+.passenger-modal__titlebar::before {
+  content: none !important;
+  display: none !important;
+}
+
+.passenger-modal__titlebar h2,
+.passenger-modal__header .passenger-modal__titlebar h2,
+#passengerModalTitle,
+#mptPassengerModalTitle {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #fff !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: clamp(1.45rem, 2.8vw, 2.2rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.035em !important;
+}
+
+.passenger-modal__code-wrap {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  min-width: 0 !important;
+}
+
+.passenger-modal__code-label {
+  color: rgba(255, 255, 255, .76) !important;
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+}
+
+.passenger-modal__code-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 34px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: 7px 12px !important;
+  background: #fff !important;
+  color: #0a3a26 !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: .88rem !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  letter-spacing: .055em !important;
+  cursor: pointer !important;
+}
+
+.passenger-modal__close {
+  position: absolute !important;
+  top: 16px !important;
+  right: 18px !important;
+  z-index: 3 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .48) !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, .12) !important;
+  color: #fff !important;
+  cursor: pointer !important;
+}
+
+.passenger-modal__meta-row {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.passenger-modal__paynow-card {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  margin: 0 !important;
+  padding: 9px 12px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .12) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* El monto se muestra con peso normal para evitar una cabecera visualmente cargada. */
+.passenger-modal__paynow-card span,
+.passenger-modal__paynow-card strong,
+#passengerPayNowAmount,
+#mptPassengerPayNow {
+  color: #fff !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: .9rem !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+
+.passenger-modal__warning {
+  width: 100% !important;
+  margin: 2px 0 0 !important;
+  padding: 11px 14px !important;
+  border: 0 !important;
+  border-left: 3px solid rgba(255, 255, 255, .62) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .10) !important;
+  color: rgba(255, 255, 255, .9) !important;
+  font-size: .88rem !important;
+  line-height: 1.5 !important;
+}
+
+.passenger-modal__warning summary {
+  color: inherit !important;
+  cursor: pointer !important;
+  font-weight: 800 !important;
+}
+
+.passenger-modal__warning p {
+  margin: 8px 0 0 !important;
+  color: inherit !important;
+}
+
+/* El cuerpo es el área desplazable. Así el modal siempre permite llegar a Continuar/Pagar. */
+.passenger-modal__body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 22px 28px 28px !important;
+}
+
+.passenger-modal__form {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.passenger-modal__section,
+.passenger-modal__optional-passenger,
+.passenger-modal__review {
+  border: 1px solid rgba(23, 43, 39, .14) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 20px rgba(10, 58, 38, .06) !important;
+}
+
+.passenger-modal__grid input,
+.passenger-modal__grid select,
+.passenger-phone-row input,
+.passenger-phone-row select {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 46px !important;
+  border: 1px solid rgba(23, 43, 39, .20) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  padding: 10px 12px !important;
+  color: #172b25 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: .92rem !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+.passenger-phone-field .passenger-phone-row {
+  display: grid !important;
+  grid-template-columns: minmax(92px, 118px) minmax(0, 1fr) !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.passenger-phone-row select {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.passenger-modal__actions {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+  padding: 8px 0 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.passenger-modal__actions .btn,
+.passenger-modal__cancel-btn,
+.passenger-modal__actions .booking-main-btn {
+  width: auto !important;
+  min-width: 148px !important;
+  max-width: none !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 13px 24px !important;
+  border-radius: 16px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: .94rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .02em !important;
+}
+
+.passenger-modal__cancel-btn {
+  border: 1px solid rgba(10, 58, 38, .34) !important;
+  background: #fff !important;
+  color: #0a3a26 !important;
+}
+
+.passenger-modal__actions .booking-main-btn {
+  border: 1px solid #51683f !important;
+  background: #51683f !important;
+  color: #fff !important;
+  box-shadow: 0 12px 26px rgba(10, 58, 38, .18) !important;
+}
+
+/* En la revisión, el total conserva jerarquía por fondo, no por negrita excesiva. */
+.mpt-payment-review__total strong {
+  font-weight: 500 !important;
+}
+
+@media (max-width: 760px) {
+  .passenger-modal:not([hidden]) {
+    align-items: stretch !important;
+    padding: 0 !important;
+  }
+
+  .passenger-modal__dialog {
+    width: 100% !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+  }
+
+  .passenger-modal__header {
+    padding: 16px 58px 16px 18px !important;
+  }
+
+  .passenger-modal__titlebar {
+    display: block !important;
+  }
+
+  .passenger-modal__titlebar h2,
+  .passenger-modal__header .passenger-modal__titlebar h2,
+  #passengerModalTitle,
+  #mptPassengerModalTitle {
+    font-size: clamp(1.3rem, 7vw, 1.85rem) !important;
+    line-height: 1.06 !important;
+  }
+
+  .passenger-modal__code-wrap {
+    margin-top: 9px !important;
+  }
+
+  .passenger-modal__paynow-card {
+    width: 100% !important;
+  }
+
+  .passenger-modal__body {
+    padding: 16px 16px 22px !important;
+  }
+
+  .passenger-modal__grid,
+  .mpt-payment-review__grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .passenger-phone-field .passenger-phone-row {
+    grid-template-columns: minmax(90px, 108px) minmax(0, 1fr) !important;
+  }
+
+  .passenger-modal__actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 12px !important;
+  }
+
+  .passenger-modal__actions .btn,
+  .passenger-modal__cancel-btn,
+  .passenger-modal__actions .booking-main-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+}
