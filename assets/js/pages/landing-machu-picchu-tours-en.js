@@ -2,7 +2,7 @@
   "use strict";
 
   const LANDING_ID = "landing-machu-picchu-tours";
-  const LANDING_NAME = "Machu Picchu + Tours en Perú";
+  const LANDING_NAME = "Machu Picchu + Tours in Peru";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v4";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
@@ -55,7 +55,7 @@
         });
       }
     } catch (error) {
-      console.warn(`No se pudo cargar el componente ${componentName}:`, error);
+      console.warn(`Could not load component ${componentName}:`, error);
     }
   }
 
@@ -69,7 +69,7 @@
   }
 
   function formatMoney(value) {
-    return Number(value || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return Number(value || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   function formatCurrency(value, currency) {
@@ -104,8 +104,8 @@
 
   function formatDateSpanish(value) {
     const date = parseISODate(value);
-    if (!date) return "sin fecha";
-    return date.toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" });
+    if (!date) return "date not selected";
+    return date.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
   }
 
   function daysBetween(dateAStr, dateBStr) {
@@ -314,7 +314,7 @@
         if (diff !== null && diff < minGap + 1) {
           return {
             valid: false,
-            message: "Para viajar entre Lima/Ica y Cusco necesitas al menos un día para el traslado. Selecciona una fecha posterior para continuar.",
+            message: "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.",
             conflictingIds: [a.id, b.id]
           };
         }
@@ -348,10 +348,10 @@
     selectedTours.forEach((t) => {
       if (!t.date) {
         valid = false;
-        if (!silent) setFieldError(t.id, "Selecciona una fecha para continuar.");
+        if (!silent) setFieldError(t.id, "Select a date to continue.");
       } else if (t.date < todayStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "La fecha no puede ser anterior a hoy.");
+        if (!silent) setFieldError(t.id, "The date cannot be earlier than today.");
       }
     });
 
@@ -364,7 +364,7 @@
     Object.values(byDate).forEach((ids) => {
       if (ids.length > 1) {
         valid = false;
-        if (!silent) ids.forEach((id) => setFieldError(id, "Dos tours no pueden tener la misma fecha."));
+        if (!silent) ids.forEach((id) => setFieldError(id, "Two tours cannot be scheduled for the same date."));
       }
     });
 
@@ -510,14 +510,14 @@
       const list = await response.json();
       const found = (Array.isArray(list) ? list : []).find((item) => String(item.code || "").toUpperCase() === code);
       if (!found || !found.active) {
-        return { valid: false, message: "Código no válido o inactivo." };
+        return { valid: false, message: "Invalid or inactive code." };
       }
       if (found.expiresAt && new Date(found.expiresAt).getTime() < Date.now()) {
-        return { valid: false, message: "Este código de descuento ha expirado." };
+        return { valid: false, message: "This discount code has expired." };
       }
       return { valid: true, couponCode: found.code, type: found.type, value: found.value, currency: found.currency, label: found.label };
     } catch (error) {
-      return { valid: false, message: "No se pudo validar el cupón en este momento." };
+      return { valid: false, message: "The coupon could not be validated at this time." };
     }
   }
 
@@ -525,11 +525,11 @@
     const code = String(rawCode || "").trim().toUpperCase();
     if (!code) {
       state.coupon = null;
-      setCouponMessage("Ingresa un código de descuento.", "error");
+      setCouponMessage("Enter a discount code.", "error");
       renderSummary();
       return;
     }
-    setCouponMessage("Validando código…", "");
+    setCouponMessage("Validating code…", "");
 
     let result = null;
     try {
@@ -544,7 +544,7 @@
 
     if (!result.valid) {
       state.coupon = null;
-      setCouponMessage(result.message || "Código no válido o inactivo.", "error");
+      setCouponMessage(result.message || "Invalid or inactive code.", "error");
       renderSummary();
       trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false });
       return;
@@ -556,7 +556,7 @@
       value: Number(result.value ?? result.discountPercent ?? 0),
       currency: result.currency || state.data.currency
     };
-    setCouponMessage(`Cupón aplicado: ${result.label || state.coupon.code}.`, "success");
+    setCouponMessage(`Coupon applied: ${result.label || state.coupon.code}.`, "success");
     renderSummary();
     trackLandingEvent("coupon_applied", {
       coupon_code: state.coupon.code,
@@ -595,34 +595,34 @@
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
             <div class="mpt-price-row">
-              <div class="mpt-price-pill"><span>Adulto</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
-              <div class="mpt-price-pill"><span>Niño (${childPolicy.minAge}-${childPolicy.maxAge} años)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
+              <div class="mpt-price-pill"><span>Adult</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
+              <div class="mpt-price-pill"><span>Child (${childPolicy.minAge}-${childPolicy.maxAge} years)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
-                <label for="${dateInputId(p.id)}">Fecha</label>
-                <input id="${dateInputId(p.id)}" type="text" placeholder="Selecciona una fecha" readonly aria-describedby="${errorId(p.id)}"/>
+                <label for="${dateInputId(p.id)}">Date</label>
+                <input id="${dateInputId(p.id)}" type="text" placeholder="Select a date" readonly aria-describedby="${errorId(p.id)}"/>
                 <span class="mpt-field-error" id="${errorId(p.id)}" role="alert"></span>
               </div>
               <div class="mpt-field">
-                <label for="mptAdults">Adultos</label>
-                <select id="mptAdults" aria-label="Cantidad de adultos para toda la reserva">${qtyOptions(1, 10, state.adults)}</select>
+                <label for="mptAdults">Adults</label>
+                <select id="mptAdults" aria-label="Number of adults for the entire booking">${qtyOptions(1, 10, state.adults)}</select>
               </div>
               <div class="mpt-field">
-                <label for="mptChildren">Niños</label>
-                <select id="mptChildren" aria-label="Cantidad de niños para toda la reserva">${qtyOptions(0, 10, state.children)}</select>
+                <label for="mptChildren">Children</label>
+                <select id="mptChildren" aria-label="Number of children for the entire booking">${qtyOptions(0, 10, state.children)}</select>
               </div>
             </div>
             <div>
-              <strong style="font-size:0.85rem;">Incluye:</strong>
+              <strong style="font-size:0.85rem;">Includes:</strong>
               <ul class="mpt-includes">${(p.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
             </div>
             <div>
-              <strong style="font-size:0.85rem;">Alimentación (opcional):</strong>
-              <div class="mpt-meal-options" role="radiogroup" aria-label="Opciones de alimentación">
+              <strong style="font-size:0.85rem;">Meals (optional):</strong>
+              <div class="mpt-meal-options" role="radiogroup" aria-label="Meal options">
                 ${(p.mealOptions || []).map((m) => `
                   <label class="mpt-meal-option">
-                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/persona)` : " (incluido sin costo)"}</span>
+                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/person)` : " (included at no extra cost)"}</span>
                     <input type="radio" name="mptMeal" value="${escapeHtml(m.id)}" ${state.mainProduct.mealOptionId === m.id ? "checked" : ""}/>
                   </label>
                 `).join("")}
@@ -658,8 +658,8 @@
       minDate: "today",
       dateFormat: "Y-m-d",
       altInput: true,
-      altFormat: "d M Y",
-      locale: "es",
+      altFormat: "M j, Y",
+      locale: "default",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
@@ -687,10 +687,10 @@
           <div class="mpt-card__body">
             <div class="mpt-card__summary">
               <h3>${escapeHtml(addon.title)}</h3>
-              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / persona</div>
+              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / person</div>
             </div>
             <button class="mpt-card__disclosure" type="button" data-addon-expand data-addon-id="${escapeHtml(addon.id)}" aria-expanded="${sel.selected ? "true" : "false"}" aria-controls="${escapeHtml(detailsId)}">
-              <span>Ver qué incluye</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
+              <span>See what is included</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="mpt-card__expandable" id="${escapeHtml(detailsId)}">
               <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
@@ -699,22 +699,22 @@
               <div class="mpt-card__toggle-row">
                 <label class="mpt-card__checkbox">
                   <input type="checkbox" data-addon-id="${escapeHtml(addon.id)}" ${sel.selected ? "checked" : ""}/>
-                  Añadir a mi viaje
+                  Add to my trip
                 </label>
               </div>
               <div class="mpt-card__details">
                 <div class="mpt-field">
-                  <label for="${dateInputId(addon.id)}">Fecha de ${escapeHtml(addon.title)}</label>
-                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Selecciona una fecha" readonly aria-describedby="${errorId(addon.id)}"/>
+                  <label for="${dateInputId(addon.id)}">Date for ${escapeHtml(addon.title)}</label>
+                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Select a date" readonly aria-describedby="${errorId(addon.id)}"/>
                   <span class="mpt-field-error" id="${errorId(addon.id)}" role="alert"></span>
                 </div>
                 ${(addon.extras || []).map((extra) => `
                   <label class="mpt-card__extra">
                     <input type="checkbox" data-extra-toggle data-addon-id="${escapeHtml(addon.id)}" data-extra-id="${escapeHtml(extra.id)}" ${sel.extras?.[extra.id] ? "checked" : ""}/>
-                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/persona)
+                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/person)
                   </label>
                 `).join("")}
-                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Quitar de mi viaje</button>
+                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Remove from my trip</button>
               </div>
             </div>
           </div>
@@ -729,8 +729,8 @@
         minDate: "today",
         dateFormat: "Y-m-d",
         altInput: true,
-        altFormat: "d M Y",
-        locale: "es",
+        altFormat: "M j, Y",
+        locale: "default",
         defaultDate: sel.date || undefined,
         onChange(selectedDates, dateStr) {
           state.addons[addon.id].date = dateStr || null;
@@ -805,26 +805,26 @@
     content.innerHTML = `
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
-        <span><i class="fas fa-user"></i> ${summary.adults} adulto(s)</span>
-        <span><i class="fas fa-child"></i> ${summary.children} niño(s)</span>
+        <span><i class="fas fa-user"></i> ${summary.adults} adult(s)</span>
+        <span><i class="fas fa-child"></i> ${summary.children} child(ren)</span>
       </div>
-      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Aún no has agregado experiencias.</p>'}</div>
+      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">You have not added any experiences yet.</p>'}</div>
 
       <div class="mpt-coupon">
-        <input id="mptCouponInput" type="text" placeholder="Código de descuento" aria-label="Código de descuento" value="${escapeHtml(state.coupon?.code || "")}"/>
-        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Aplicar</button>
+        <input id="mptCouponInput" type="text" placeholder="Discount code" aria-label="Discount code" value="${escapeHtml(state.coupon?.code || "")}"/>
+        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Apply</button>
       </div>
-      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Quitar cupón</button>` : ""}
+      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Remove coupon</button>` : ""}
       <p class="mpt-coupon-message" id="mptCouponMessage"></p>
 
       <div class="mpt-summary__totals">
         <div class="mpt-summary__totals-row"><span>Subtotal</span><strong>${formatCurrency(summary.subtotal, currency)}</strong></div>
-        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Descuento</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
+        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Discount</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
         <div class="mpt-summary__totals-row mpt-summary__total"><span>Total</span><span aria-live="polite">${formatCurrency(summary.total, currency)}</span></div>
       </div>
 
-      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continuar con mi reserva</button>
-      <p class="mpt-availability-note">Las fechas y horarios están sujetos a disponibilidad. Nuestro equipo verificará entradas, trenes y operación antes de emitir los servicios.</p>
+      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continue with my booking</button>
+      <p class="mpt-availability-note">Dates and times are subject to availability. Our team will verify tickets, trains and operating conditions before issuing the services.</p>
     `;
 
     renderOperationalWarnings(summary.warnings);
@@ -899,52 +899,52 @@
     const container = document.getElementById("mptPassengerFields");
     let html = `
       <fieldset style="border:none; padding:0; margin:0 0 18px;">
-        <legend style="font-weight:800; color:var(--color-primary,#062803); margin-bottom:10px;">Titular de la reserva (viajero 1)</legend>
+        <legend style="font-weight:800; color:var(--color-primary,#062803); margin-bottom:10px;">Booking holder (traveler 1)</legend>
         <div class="mpt-field-grid">
-          <div class="mpt-field"><label for="holderFirstName">Nombres</label><input id="holderFirstName" name="holderFirstName" required minlength="2" type="text"/></div>
-          <div class="mpt-field"><label for="holderLastName">Apellidos</label><input id="holderLastName" name="holderLastName" required minlength="2" type="text"/></div>
+          <div class="mpt-field"><label for="holderFirstName">First name(s)</label><input id="holderFirstName" name="holderFirstName" required minlength="2" type="text"/></div>
+          <div class="mpt-field"><label for="holderLastName">Last name(s)</label><input id="holderLastName" name="holderLastName" required minlength="2" type="text"/></div>
           <div class="mpt-field">
-            <label for="holderDocumentType">Tipo de documento</label>
+            <label for="holderDocumentType">Document type</label>
             <select id="holderDocumentType" name="holderDocumentType" required>
-              <option value="">Selecciona</option>
-              <option value="passport">Pasaporte</option>
+              <option value="">Select</option>
+              <option value="passport">Passport</option>
               <option value="dni">DNI</option>
-              <option value="id_card">Documento de identidad</option>
-              <option value="other">Otro</option>
+              <option value="id_card">Identity document</option>
+              <option value="other">Other</option>
             </select>
           </div>
-          <div class="mpt-field"><label for="holderDocumentNumber">N° de documento</label><input id="holderDocumentNumber" name="holderDocumentNumber" required type="text"/></div>
-          <div class="mpt-field"><label for="holderNationality">Nacionalidad</label><input id="holderNationality" name="holderNationality" required type="text"/></div>
-          <div class="mpt-field"><label for="holderBirthdate">Fecha de nacimiento</label><input id="holderBirthdate" name="holderBirthdate" required type="date"/></div>
-          <div class="mpt-field"><label for="holderEmail">Correo</label><input id="holderEmail" name="holderEmail" required type="email"/></div>
-          <div class="mpt-field"><label for="holderWhatsapp">WhatsApp (con código de país)</label><input id="holderWhatsapp" name="holderWhatsapp" required type="tel" placeholder="+51 900 000 000"/></div>
-          <div class="mpt-field mpt-field--wide"><label for="holderPickupLocation">Hotel o dirección de recojo en Cusco</label><input id="holderPickupLocation" name="holderPickupLocation" required type="text" placeholder="Nombre del hotel y dirección, si la conoces"/></div>
+          <div class="mpt-field"><label for="holderDocumentNumber">Document number</label><input id="holderDocumentNumber" name="holderDocumentNumber" required type="text"/></div>
+          <div class="mpt-field"><label for="holderNationality">Nationality</label><input id="holderNationality" name="holderNationality" required type="text"/></div>
+          <div class="mpt-field"><label for="holderBirthdate">Date of birth</label><input id="holderBirthdate" name="holderBirthdate" required type="date"/></div>
+          <div class="mpt-field"><label for="holderEmail">Email</label><input id="holderEmail" name="holderEmail" required type="email"/></div>
+          <div class="mpt-field"><label for="holderWhatsapp">WhatsApp (including country code)</label><input id="holderWhatsapp" name="holderWhatsapp" required type="tel" placeholder="+51 900 000 000"/></div>
+          <div class="mpt-field mpt-field--wide"><label for="holderPickupLocation">Hotel or pickup address in Cusco</label><input id="holderPickupLocation" name="holderPickupLocation" required type="text" placeholder="Hotel name and address, if known"/></div>
         </div>
       </fieldset>
     `;
     for (let n = 2; n <= totalPax; n += 1) {
       html += `
         <fieldset style="border:1px solid var(--mct-border,rgba(23,43,39,.14)); border-radius:12px; padding:14px; margin-bottom:14px;">
-          <legend style="font-weight:800; color:var(--color-primary,#062803); padding:0 6px;">Viajero ${n}</legend>
+          <legend style="font-weight:800; color:var(--color-primary,#062803); padding:0 6px;">Traveler ${n}</legend>
           <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; margin-bottom:10px;">
-            <input type="checkbox" name="passenger_${n}_complete_later"/> Completar estos datos después
+            <input type="checkbox" name="passenger_${n}_complete_later"/> Complete these details later
           </label>
           <div class="mpt-field-grid" data-passenger-fields="${n}">
-            <div class="mpt-field"><label for="passenger_${n}_firstName">Nombres</label><input id="passenger_${n}_firstName" name="passenger_${n}_firstName" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_lastName">Apellidos</label><input id="passenger_${n}_lastName" name="passenger_${n}_lastName" type="text"/></div>
+            <div class="mpt-field"><label for="passenger_${n}_firstName">First name(s)</label><input id="passenger_${n}_firstName" name="passenger_${n}_firstName" type="text"/></div>
+            <div class="mpt-field"><label for="passenger_${n}_lastName">Last name(s)</label><input id="passenger_${n}_lastName" name="passenger_${n}_lastName" type="text"/></div>
             <div class="mpt-field">
-              <label for="passenger_${n}_documentType">Tipo de documento</label>
+              <label for="passenger_${n}_documentType">Document type</label>
               <select id="passenger_${n}_documentType" name="passenger_${n}_documentType">
-                <option value="">Selecciona</option>
-                <option value="passport">Pasaporte</option>
+                <option value="">Select</option>
+                <option value="passport">Passport</option>
                 <option value="dni">DNI</option>
-                <option value="id_card">Documento de identidad</option>
-                <option value="other">Otro</option>
+                <option value="id_card">Identity document</option>
+                <option value="other">Other</option>
               </select>
             </div>
-            <div class="mpt-field"><label for="passenger_${n}_documentNumber">N° de documento</label><input id="passenger_${n}_documentNumber" name="passenger_${n}_documentNumber" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_nationality">Nacionalidad</label><input id="passenger_${n}_nationality" name="passenger_${n}_nationality" type="text"/></div>
-            <div class="mpt-field"><label for="passenger_${n}_birthdate">Fecha de nacimiento</label><input id="passenger_${n}_birthdate" name="passenger_${n}_birthdate" type="date"/></div>
+            <div class="mpt-field"><label for="passenger_${n}_documentNumber">Document number</label><input id="passenger_${n}_documentNumber" name="passenger_${n}_documentNumber" type="text"/></div>
+            <div class="mpt-field"><label for="passenger_${n}_nationality">Nationality</label><input id="passenger_${n}_nationality" name="passenger_${n}_nationality" type="text"/></div>
+            <div class="mpt-field"><label for="passenger_${n}_birthdate">Date of birth</label><input id="passenger_${n}_birthdate" name="passenger_${n}_birthdate" type="date"/></div>
           </div>
         </fieldset>
       `;
@@ -1187,7 +1187,7 @@
         const expanded = !card.classList.contains("is-expanded");
         card.classList.toggle("is-expanded", expanded);
         disclosure.setAttribute("aria-expanded", expanded ? "true" : "false");
-        disclosure.querySelector("span").textContent = expanded ? "Ocultar detalles" : "Ver qué incluye";
+        disclosure.querySelector("span").textContent = expanded ? "Hide details" : "See what is included";
         return;
       }
       const removeBtn = e.target.closest("[data-addon-remove]");
@@ -1233,8 +1233,8 @@
 
   async function fetchLandingData() {
     const basePath = getSiteBasePath();
-    const response = await fetch(`${basePath}assets/data/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
-    if (!response.ok) throw new Error("No se pudo cargar la información de la landing.");
+    const response = await fetch(`${basePath}assets/data/i18n/en/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
+    if (!response.ok) throw new Error("Could not load the landing page information.");
     return response.json();
   }
 
@@ -1249,7 +1249,7 @@
       try {
         window.initMyCuscoTripHeader();
       } catch (error) {
-        console.warn("Header JS no inicializado:", error);
+        console.warn("Header JavaScript was not initialized:", error);
       }
     }
     document.querySelectorAll(".mpt-hero__video--desktop").forEach((video) => { video.playbackRate = 0.6; });
