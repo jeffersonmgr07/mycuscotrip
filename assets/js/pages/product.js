@@ -4361,8 +4361,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const originalRenderProduct = proto.renderProduct;
 
   proto.init = async function () {
-    const paymentState = String(this.params.get("payment") || "").toLowerCase();
-    const reservationCode = String(this.params.get("reservationCode") || "").trim();
+    const paymentState = String(this.params.get("payment") || this.params.get("paypal") || "").toLowerCase();
+    const reservationCode = String(this.params.get("reservationCode") || this.params.get("codigo") || this.params.get("code") || "").trim();
+
+    if (reservationCode && paymentState.includes("cancel")) {
+      const landingRecord = this.getLocalReservation?.(reservationCode);
+      const landingPayload = landingRecord?.payload || landingRecord || {};
+      const sourcePage = String(landingPayload?.sourcePage || landingPayload?.landingPath || "").trim();
+      const isLandingReservation = landingPayload?.source === "landing-machu-picchu-tours"
+        || landingPayload?.landingId === "landing-machu-picchu-tours"
+        || sourcePage.includes("/landing/machu-picchu-y-tours-peru.html");
+      if (isLandingReservation) {
+        const localeMatch = sourcePage.match(/^\/(en|pt)\//i) || window.location.pathname.match(/^\/(en|pt)\//i);
+        const fallbackPath = localeMatch
+          ? `/${localeMatch[1].toLowerCase()}/landing/machu-picchu-y-tours-peru.html`
+          : "/landing/machu-picchu-y-tours-peru.html";
+        let landingUrl;
+        try {
+          landingUrl = new URL(sourcePage || fallbackPath, window.location.origin);
+          if (landingUrl.origin !== window.location.origin) landingUrl = new URL(fallbackPath, window.location.origin);
+        } catch (error) {
+          landingUrl = new URL(fallbackPath, window.location.origin);
+        }
+        landingUrl.searchParams.set("payment", "cancelled");
+        landingUrl.searchParams.set("reservationCode", reservationCode);
+        window.location.replace(landingUrl.toString());
+        return;
+      }
+    }
 
     if (!this.slug && reservationCode && paymentState.includes("cancel")) {
       const record = this.getLocalReservation?.(reservationCode);

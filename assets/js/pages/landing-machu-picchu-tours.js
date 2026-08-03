@@ -894,13 +894,172 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "es", "locale": "es-PE", "name": "Machu Picchu + Tours en Perú", "data": "assets/data/landing-machu-picchu-tours.json", "copy": "Código copiado", "noDate": "sin fecha", "modalTitle": "Datos de los pasajeros", "codeLabel": "Código de reserva:", "payNow": "Monto a pagar ahora:", "important": "Información importante", "importantText": "Ingresa nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se utilizarán para emitir entradas, trenes y servicios turísticos.", "holderTitle": "Titular de reserva / Pasajero 1", "holderOnly": "Titular de reserva", "required": "Datos obligatorios para continuar", "first": "Nombres", "last": "Apellidos", "docType": "Tipo de documento", "select": "Selecciona", "passport": "Pasaporte", "dni": "DNI", "idcard": "Documento de identidad", "other": "Otro", "docNum": "Número de documento", "nationality": "Nacionalidad", "selectCountry": "Selecciona país", "selectCode": "Selecciona código", "birth": "Fecha de nacimiento", "whatsapp": "WhatsApp", "email": "Correo", "language": "Idioma solicitado", "pickup": "Hotel o dirección de recojo en Cusco", "pickupPh": "Nombre del hotel y dirección, si la conoces", "holderTravels": "El titular también forma parte del grupo de pasajeros.", "tourists": "Registro de turistas", "touristsNote": "Puedes completar pasajeros adicionales ahora o hasta 15 a 30 días antes del viaje.", "traveler": "Pasajero", "later": "Completar estos datos después", "cancel": "Cancelar", "edit": "Editar datos", "continue": "Continuar", "pay": "Pagar", "saving": "Guardando reserva…", "connecting": "Conectando con PayPal…", "summaryTitle": "Resumen de tu reserva", "review": "Revisa tu reserva antes de pagar", "holder": "Titular", "pickupShort": "Recojo", "services": "Servicios", "total": "Total a pagar", "paypalNote": "Al continuar serás redirigido de forma segura a PayPal para pagar el 100% de la reserva.", "formRequired": "Completa los datos obligatorios para continuar.", "backendError": "No se pudo registrar la reserva ni iniciar PayPal. Revisa la conexión e inténtalo nuevamente.", "noApproval": "PayPal no devolvió un enlace de pago.", "paymentUnavailable": "El backend de pagos no está disponible.", "dateTransition": "Para viajar entre Lima/Ica y Cusco necesitas al menos un día para el traslado. Selecciona una fecha posterior para continuar.", "selectDate": "Selecciona una fecha para continuar.", "pastDate": "La fecha no puede ser anterior a hoy.", "duplicateDate": "Dos tours no pueden tener la misma fecha.", "statusEdit": "Revisa los datos y pulsa continuar.", "reviewButton": "Continuar", "modalAriaClose": "Cerrar modal", "requestedLanguages": ["Español", "English", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"]};
+  const CHECKOUT_I18N = {"lang": "es", "locale": "es-PE", "name": "Machu Picchu + Tours en Perú", "data": "assets/data/landing-machu-picchu-tours.json", "copy": "Código copiado", "noDate": "sin fecha", "modalTitle": "Datos de los pasajeros", "codeLabel": "Código de reserva:", "payNow": "Monto a pagar ahora:", "important": "Información importante", "importantText": "Ingresa nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se utilizarán para emitir entradas, trenes y servicios turísticos.", "holderTitle": "Titular de reserva / Pasajero 1", "holderOnly": "Titular de reserva", "required": "Datos obligatorios para continuar", "first": "Nombres", "last": "Apellidos", "docType": "Tipo de documento", "select": "Selecciona", "passport": "Pasaporte", "dni": "DNI", "idcard": "Documento de identidad", "other": "Otro", "docNum": "Número de documento", "nationality": "Nacionalidad", "selectCountry": "Selecciona país", "selectCode": "Selecciona código", "birth": "Fecha de nacimiento", "whatsapp": "WhatsApp", "email": "Correo", "language": "Idioma solicitado", "pickup": "Hotel o dirección de recojo en Cusco", "pickupPh": "Nombre del hotel y dirección, si la conoces", "holderTravels": "El titular también forma parte del grupo de pasajeros.", "tourists": "Registro de turistas", "touristsNote": "Puedes completar pasajeros adicionales ahora o hasta 15 a 30 días antes del viaje.", "traveler": "Pasajero", "later": "Completar estos datos después", "cancel": "Cancelar", "edit": "Editar datos", "continue": "Continuar", "pay": "Pagar", "saving": "Generando tu reserva…", "connecting": "Conectando de forma segura con PayPal…", "summaryTitle": "Resumen de tu reserva", "review": "Revisa tu reserva antes de pagar", "holder": "Titular", "pickupShort": "Recojo", "services": "Servicios", "total": "Total a pagar", "paypalNote": "Al continuar serás redirigido de forma segura a PayPal para pagar el 100% de la reserva.", "formRequired": "Completa los datos obligatorios para continuar.", "backendError": "No se pudo registrar la reserva ni iniciar PayPal. Revisa la conexión e inténtalo nuevamente.", "noApproval": "PayPal no devolvió un enlace de pago.", "paymentUnavailable": "El backend de pagos no está disponible.", "dateTransition": "Para viajar entre Lima/Ica y Cusco necesitas al menos un día para el traslado. Selecciona una fecha posterior para continuar.", "selectDate": "Selecciona una fecha para continuar.", "pastDate": "La fecha no puede ser anterior a hoy.", "duplicateDate": "Dos tours no pueden tener la misma fecha.", "statusEdit": "Revisa los datos y pulsa continuar.", "reviewButton": "Continuar", "modalAriaClose": "Cerrar modal", "requestedLanguages": ["Español", "English", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "El pago no se completó. Tu reserva sigue guardada y puedes volver a intentarlo.", "processingTitle": "Estamos preparando tu reserva"};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
     if (!target) return;
     target.textContent = message || "";
     target.classList.toggle("is-error", Boolean(isError));
+  }
+
+
+  function ensureCheckoutProcessingOverlay() {
+    let overlay = document.getElementById("mptCheckoutProcessing");
+    if (overlay) return overlay;
+    overlay = document.createElement("div");
+    overlay.id = "mptCheckoutProcessing";
+    overlay.className = "mpt-checkout-processing";
+    overlay.hidden = true;
+    overlay.setAttribute("role", "status");
+    overlay.setAttribute("aria-live", "polite");
+    overlay.setAttribute("aria-busy", "true");
+    overlay.innerHTML = `
+      <div class="mpt-checkout-processing__card">
+        <span class="mpt-checkout-processing__spinner" aria-hidden="true"></span>
+        <strong>${escapeHtml(CHECKOUT_I18N.processingTitle)}</strong>
+        <p id="mptCheckoutProcessingMessage"></p>
+      </div>`;
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+
+  function showCheckoutProcessing(message) {
+    const overlay = ensureCheckoutProcessingOverlay();
+    const target = overlay.querySelector("#mptCheckoutProcessingMessage");
+    if (target) target.textContent = message || CHECKOUT_I18N.saving;
+    overlay.hidden = false;
+    document.body.classList.add("mpt-checkout-processing-open");
+  }
+
+  function hideCheckoutProcessing() {
+    const overlay = document.getElementById("mptCheckoutProcessing");
+    if (overlay) overlay.hidden = true;
+    document.body.classList.remove("mpt-checkout-processing-open");
+  }
+
+  function buildLandingPaymentUrl(status, reservationCode) {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    url.searchParams.set("payment", status);
+    if (reservationCode) url.searchParams.set("reservationCode", reservationCode);
+    return url.toString();
+  }
+
+  function buildPayPalReturnUrl(reservationCode) {
+    const url = new URL(`${getSiteBasePath()}paypal-retorno.html`.replace(/([^:]\/)\/{2,}/g, "$1"), window.location.origin);
+    if (reservationCode) url.searchParams.set("reservationCode", reservationCode);
+    return url.toString();
+  }
+
+  function getPendingPaymentRecord(reservationCode) {
+    if (!reservationCode) return null;
+    const keys = [
+      `mct_pending_payment_${reservationCode}`,
+      `mct_pre_reservation_${reservationCode}`
+    ];
+    for (const storage of [window.sessionStorage, window.localStorage]) {
+      for (const key of keys) {
+        try {
+          const raw = storage.getItem(key);
+          if (raw) return JSON.parse(raw);
+        } catch (error) {
+          /* storage unavailable or invalid record */
+        }
+      }
+    }
+    return null;
+  }
+
+  function getCancelledPaymentContext() {
+    const params = new URLSearchParams(window.location.search);
+    const payment = String(params.get("payment") || params.get("paypal") || "").toLowerCase();
+    if (!payment.includes("cancel")) return null;
+    const reservationCode = String(params.get("reservationCode") || params.get("codigo") || params.get("code") || "").trim().toUpperCase();
+    const record = getPendingPaymentRecord(reservationCode);
+    const reservation = record?.payload || record || null;
+    return reservation ? { reservationCode, record, reservation } : null;
+  }
+
+  function applyReservationSelectionToState(reservation) {
+    if (!reservation || !state.data) return;
+    if (Number(reservation.adults) > 0) state.adults = Number(reservation.adults);
+    if (Number.isFinite(Number(reservation.children))) state.children = Number(reservation.children);
+    const services = Array.isArray(reservation.services) ? reservation.services : [];
+    const mainId = state.data.mainProduct.id;
+    const mainService = services.find((service) => String(service.id || service.productId || "") === String(mainId));
+    if (mainService) {
+      state.mainProduct.selected = true;
+      state.mainProduct.date = mainService.date || null;
+      const selectedMealLabel = Array.isArray(mainService.extras) ? mainService.extras[0] : "";
+      const meal = (state.data.mainProduct.mealOptions || []).find((option) => option.label === selectedMealLabel);
+      if (meal) state.mainProduct.mealOptionId = meal.id;
+    }
+    (state.data.addons || []).forEach((addon) => {
+      const service = services.find((item) => String(item.id || item.productId || "") === String(addon.id));
+      state.addons[addon.id] = {
+        ...(state.addons[addon.id] || { selected: false, date: null, extras: {} }),
+        selected: Boolean(service),
+        date: service?.date || null,
+        extras: service ? Object.fromEntries((service.extras || []).map((key) => [key, true])) : {}
+      };
+    });
+    if (reservation.appliedCoupon) state.coupon = reservation.appliedCoupon;
+    state.reservationCode = reservation.reservationCode || reservation.code || state.reservationCode;
+    state.lastReservation = reservation;
+  }
+
+  function setPassengerFieldValue(form, name, value) {
+    const field = form?.elements?.namedItem(name);
+    if (!field || value == null) return;
+    field.value = String(value);
+  }
+
+  async function populatePassengerFormFromReservation(reservation) {
+    const form = document.getElementById("mptPassengerForm");
+    const fields = document.getElementById("mptPassengerFields");
+    if (!form || !fields || !reservation) return;
+    await populateCheckoutCountrySelects(fields);
+    const holder = reservation.holder || {};
+    const holderTravels = reservation.holderIsPassenger !== false && holder.travels !== false;
+    setPassengerFieldValue(form, "holderFirstName", holder.firstName);
+    setPassengerFieldValue(form, "holderLastName", holder.lastName);
+    setPassengerFieldValue(form, "holderDocumentType", holder.documentType);
+    setPassengerFieldValue(form, "holderDocumentNumber", holder.documentNumber);
+    setPassengerFieldValue(form, "holderNationality", holder.nationality);
+    setPassengerFieldValue(form, "holderBirthdate", holder.birthdate);
+    const phoneCode = holder.whatsappCountryCode || "+51";
+    const phoneNumber = holder.whatsappNumber || String(holder.whatsapp || "").replace(phoneCode, "").trim();
+    setPassengerFieldValue(form, "holderWhatsappCountryCode", phoneCode);
+    setPassengerFieldValue(form, "holderWhatsapp", phoneNumber);
+    setPassengerFieldValue(form, "holderEmail", holder.email);
+    setPassengerFieldValue(form, "holderLanguage", holder.language);
+    setPassengerFieldValue(form, "holderPickupLocation", holder.pickupLocation || reservation.pickup?.location);
+    const holderCheckbox = document.getElementById("mptHolderTravels");
+    if (holderCheckbox) holderCheckbox.checked = holderTravels;
+    const title = document.getElementById("mptHolderSectionTitle");
+    if (title) title.textContent = holderTravels ? CHECKOUT_I18N.holderTitle : CHECKOUT_I18N.holderOnly;
+    renderAdditionalPassengerFields(holderTravels);
+    const additional = document.getElementById("mptAdditionalPassengers");
+    if (additional) await populateCheckoutCountrySelects(additional);
+    const passengers = (reservation.passengers || []).filter((passenger) => passenger.role !== "holder_passenger");
+    passengers.forEach((passenger, index) => {
+      const number = Number(passenger.passengerNumber) || ((holderTravels ? 2 : 1) + index);
+      const later = form.elements.namedItem(`passenger_${number}_complete_later`);
+      if (later) {
+        later.checked = passenger.completeLater || passenger.completionStatus === "pending";
+        toggleAdditionalPassengerFields(later);
+      }
+      setPassengerFieldValue(form, `passenger_${number}_firstName`, passenger.firstName);
+      setPassengerFieldValue(form, `passenger_${number}_lastName`, passenger.lastName);
+      setPassengerFieldValue(form, `passenger_${number}_documentType`, passenger.documentType);
+      setPassengerFieldValue(form, `passenger_${number}_documentNumber`, passenger.documentNumber);
+      setPassengerFieldValue(form, `passenger_${number}_nationality`, passenger.nationality);
+      setPassengerFieldValue(form, `passenger_${number}_birthdate`, passenger.birthdate);
+    });
+    const codeSelect = form.elements.namedItem("holderWhatsappCountryCode");
+    if (codeSelect) compactPhoneCodeSelect(codeSelect);
   }
 
   function passengerDocumentOptions() {
@@ -1183,6 +1342,8 @@
       createdAtLabel: now.toLocaleString(CHECKOUT_I18N.locale),
       source: LANDING_ID,
       landingId: LANDING_ID,
+      sourcePage: window.location.pathname,
+      landingPath: window.location.pathname,
       productSlug: "machu-picchu-y-tours-peru",
       productId: LANDING_ID,
       productTitle: serviceNames || LANDING_NAME,
@@ -1276,26 +1437,38 @@
     setPassengerMessage("", false);
   }
 
-  function openPassengerModal() {
+  async function openPassengerModal(options = {}) {
     const modal = document.getElementById("mptPassengerModal");
     if (!modal) return;
+    const restoredReservation = options?.reservation || null;
+    if (restoredReservation) {
+      state.reservationCode = restoredReservation.reservationCode || restoredReservation.code || state.reservationCode;
+      state.lastReservation = restoredReservation;
+    }
     if (!state.reservationCode) state.reservationCode = generateReservationCode();
     renderPassengerFields();
     resetPassengerReview();
+    if (restoredReservation) await populatePassengerFormFromReservation(restoredReservation);
     const summary = calculateBookingSummary();
     document.getElementById("mptReservationCode").textContent = state.reservationCode;
-    document.getElementById("mptPassengerPayNow").textContent = formatCurrency(summary.total, summary.currency);
+    document.getElementById("mptPassengerPayNow").textContent = formatCurrency(restoredReservation?.pricing?.total ?? summary.total, restoredReservation?.currency || summary.currency);
     modal.hidden = false;
     modal.scrollTop = 0;
     const dialog = modal.querySelector(".passenger-modal__dialog");
     if (dialog) dialog.scrollTop = 0;
-    const modalBody = modal?.querySelector(".passenger-modal__body");
+    const modalBody = modal.querySelector(".passenger-modal__body");
     if (modalBody) modalBody.scrollTop = 0;
     state.activeModal = modal;
     document.body.classList.add("passenger-modal-open");
     document.addEventListener("keydown", handleModalKeydown);
+    if (restoredReservation) {
+      const form = document.getElementById("mptPassengerForm");
+      renderPaymentReview(restoredReservation);
+      if (form) form.dataset.reviewConfirmed = "true";
+      setPassengerMessage(CHECKOUT_I18N.cancelledReturn, false);
+    }
     modal.querySelector("input,button,select")?.focus();
-    trackLandingEvent("passenger_modal_open", { reservation_code: state.reservationCode, value: summary.total, currency: summary.currency });
+    trackLandingEvent("passenger_modal_open", { reservation_code: state.reservationCode, value: restoredReservation?.pricing?.total ?? summary.total, currency: restoredReservation?.currency || summary.currency });
   }
 
   function closePassengerModal() {
@@ -1306,6 +1479,7 @@
     state.activeModal = null;
     document.body.classList.remove("passenger-modal-open");
     document.removeEventListener("keydown", handleModalKeydown);
+    hideCheckoutProcessing();
   }
 
   async function copyReservationCode() {
@@ -1331,8 +1505,12 @@
 
   async function processPayPalCheckout(reservation) {
     const submit = document.getElementById("mptPassengerSubmit");
-    if (submit) { submit.disabled = true; submit.textContent = CHECKOUT_I18N.saving; }
-    setPassengerMessage(CHECKOUT_I18N.saving, false);
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = CHECKOUT_I18N.pay;
+    }
+    setPassengerMessage("", false);
+    showCheckoutProcessing(CHECKOUT_I18N.saving);
     try {
       if (!window.MyCuscoTripApiClient?.createPreReservation || !window.MyCuscoTripApiClient?.createPayPalOrder) throw new Error(CHECKOUT_I18N.paymentUnavailable);
       const apiResult = await withTimeout(window.MyCuscoTripApiClient.createPreReservation(reservation), 20000);
@@ -1340,11 +1518,14 @@
       const finalCode = String(apiResult.reservationCode || apiResult.code || reservation.code).trim();
       reservation.code = finalCode;
       reservation.reservationCode = finalCode;
+      reservation.sourcePage = window.location.pathname;
+      reservation.landingPath = window.location.pathname;
       state.reservationCode = finalCode;
       document.getElementById("mptReservationCode").textContent = finalCode;
       persistPendingPayment(reservation);
-      setPassengerMessage(CHECKOUT_I18N.connecting, false);
-      if (submit) submit.textContent = CHECKOUT_I18N.connecting;
+      showCheckoutProcessing(CHECKOUT_I18N.connecting);
+      const cancelUrl = buildLandingPaymentUrl("cancelled", finalCode);
+      const returnUrl = buildPayPalReturnUrl(finalCode);
       const paypalResult = await withTimeout(window.MyCuscoTripApiClient.createPayPalOrder({
         code: finalCode,
         reservationCode: finalCode,
@@ -1352,7 +1533,15 @@
         total: Number(reservation.payNowValue || reservation.pricing.total || 0),
         amountToPayNowValue: Number(reservation.payNowValue || reservation.pricing.total || 0),
         productId: reservation.productId,
-        productTitle: reservation.productTitle
+        productTitle: reservation.productTitle,
+        source: LANDING_ID,
+        landingId: LANDING_ID,
+        sourcePage: window.location.pathname,
+        landingPath: window.location.pathname,
+        cancelUrl,
+        cancel_url: cancelUrl,
+        returnUrl,
+        return_url: returnUrl
       }), 20000);
       if (!paypalResult || paypalResult.ok === false || paypalResult.mock) throw new Error(paypalResult?.message || CHECKOUT_I18N.paymentUnavailable);
       if (!paypalResult.approvalUrl) throw new Error(CHECKOUT_I18N.noApproval);
@@ -1360,8 +1549,12 @@
       window.location.assign(paypalResult.approvalUrl);
     } catch (error) {
       console.error("Landing PayPal checkout error:", error);
+      hideCheckoutProcessing();
       setPassengerMessage(error?.body?.message || error?.body?.error || error?.message || CHECKOUT_I18N.backendError, true);
-      if (submit) { submit.disabled = false; submit.textContent = CHECKOUT_I18N.pay; }
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = CHECKOUT_I18N.pay;
+      }
     }
   }
 
@@ -1553,12 +1746,17 @@
 
     initState();
     restoreDraftIfAny();
+    const cancelledPayment = getCancelledPaymentContext();
+    if (cancelledPayment?.reservation) applyReservationSelectionToState(cancelledPayment.reservation);
     renderMainProduct();
     renderAddons();
     bindGlobalEvents();
     validateAllDates({ silent: true });
     renderSummary();
     trackLandingEvent("landing_view", {});
+    if (cancelledPayment?.reservation) {
+      await openPassengerModal({ reservation: cancelledPayment.reservation, paymentCancelled: true });
+    }
   }
 
   if (document.readyState === "loading") {
