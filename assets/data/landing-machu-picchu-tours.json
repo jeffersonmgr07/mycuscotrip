@@ -1,0 +1,150 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-08-03",
+  "landingId": "machu-picchu-y-tours-peru",
+  "currency": "USD",
+  "priceNote": "PENDIENTE DE CONFIRMAR: se usó USD 399 (precio de venta real) para adultPrice de mainProduct. Si el precio definitivo pasa a ser PEN 199, cambiar 'currency' a \"PEN\" y 'adultPrice' aquí — es el único lugar que hay que tocar, el JS no tiene precios hardcodeados.",
+  "whatsapp": {
+    "phone": "51900608980",
+    "messageTemplate": "Hola, deseo confirmar mi selección de tours. Código: {reservationCode}. {servicesSummary} Somos {totalPassengers} viajeros. Total: {currency} {total}. Origen: {source}."
+  },
+  "disclaimers": {
+    "availability": "Las fechas y horarios están sujetos a disponibilidad. Nuestro equipo verificará entradas, trenes y operación antes de emitir los servicios.",
+    "documentationNote": "Los datos de cada viajero deben coincidir exactamente con su documento de identidad o pasaporte vigente el día del viaje."
+  },
+  "childPolicy": {
+    "minAge": 3,
+    "maxAge": 11,
+    "infantMaxAge": 2,
+    "infantPricingAvailable": false,
+    "infantNote": "Los bebés de 0 a 2 años no requieren entrada a Machu Picchu ni a los tours complementarios, pero deben registrarse en la reserva. Tarifa de bebés: configurar aquí cuando esté disponible.",
+    "documentationMessage": "La tarifa de niño aplica de {minAge} a {maxAge} años cumplidos a la fecha del viaje. Se validará con el documento de identidad o pasaporte del menor."
+  },
+  "destinationGroups": {
+    "cusco": ["machu-picchu-full-day", "laguna-humantay"],
+    "lima-ica": ["paracas-ica-huacachina"]
+  },
+  "minGapDaysBetweenGroups": 1,
+  "operationalWarnings": [
+    {
+      "id": "machu-picchu-late-train-humantay-next-day",
+      "condition": {
+        "firstServiceId": "machu-picchu-full-day",
+        "firstServiceLateAfterHour": 19,
+        "secondServiceId": "laguna-humantay",
+        "daysApart": 1
+      },
+      "message": "Tu retorno de Machu Picchu será de noche y Laguna Humantay comienza de madrugada. El descanso será muy corto. Te recomendamos cambiar la fecha o consultar un tren de retorno anterior."
+    }
+  ],
+  "mainProduct": {
+    "id": "machu-picchu-full-day",
+    "slug": "machu-picchu-full-day",
+    "title": "Machu Picchu Full Day",
+    "origin": "cusco",
+    "badge": "Experiencia principal",
+    "selectedByDefault": true,
+    "removable": false,
+    "image": "../assets/img/tours/machu-picchu-full-day/cover.jpg",
+    "gallery": [
+      "../assets/img/tours/machu-picchu-full-day/1.jpg",
+      "../assets/img/tours/machu-picchu-full-day/2.jpg"
+    ],
+    "shortDescription": "Visita la ciudadela inca de Machu Picchu en un solo día, con tren panorámico, bus de subida, guía profesional y todo coordinado desde Cusco.",
+    "adultPrice": 399,
+    "childPricing": {
+      "type": "fixed_discount",
+      "discountAmount": 80
+    },
+    "includes": [
+      "Recojo en tu hotel en Cusco",
+      "Tren turístico ida y vuelta",
+      "Bus Consettur Aguas Calientes - Machu Picchu - Aguas Calientes",
+      "Ingreso oficial a Machu Picchu",
+      "Guía profesional en español e inglés",
+      "Traslados terrestres"
+    ],
+    "mealOptions": [
+      {
+        "id": "no-meal",
+        "label": "Sin almuerzo",
+        "pricePerPerson": 0,
+        "default": true
+      },
+      {
+        "id": "standard-lunch",
+        "label": "Almuerzo estándar",
+        "pricePerPerson": 20,
+        "default": false
+      },
+      {
+        "id": "tinkuy-buffet",
+        "label": "Buffet Tinkuy en Belmond Sanctuary Lodge",
+        "pricePerPerson": 45,
+        "default": false
+      }
+    ],
+    "mealSelectionType": "single",
+    "mealDisclaimer": "La alimentación no está incluida en el precio base. Elige una sola opción."
+  },
+  "addons": [
+    {
+      "id": "laguna-humantay",
+      "slug": "laguna-humantay",
+      "title": "Laguna Humantay",
+      "origin": "cusco",
+      "image": "../assets/img/tours/laguna-humantay/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/laguna-humantay/1.jpg",
+        "../assets/img/tours/laguna-humantay/2.jpg"
+      ],
+      "shortDescription": "Camina hasta la laguna turquesa a los pies del nevado Humantay, una de las excursiones más impresionantes de Cusco.",
+      "pricePerPerson": 69,
+      "includes": [
+        "Transporte turístico",
+        "Guía profesional",
+        "Entrada a la zona de la laguna",
+        "Desayuno",
+        "Almuerzo"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "paracas-ica-huacachina",
+      "slug": "paracas-ica-huacachina",
+      "title": "Paracas, Ica y Huacachina Full Day",
+      "origin": "lima-ica",
+      "image": "../assets/img/packages/peru/paracas-huacachina/cover.jpg",
+      "gallery": [
+        "../assets/img/packages/peru/paracas-huacachina/1.jpg"
+      ],
+      "shortDescription": "Islas Ballestas, Ica y las dunas de Huacachina en un solo día completo desde Lima, con transporte turístico y asistencia local.",
+      "pricePerPerson": 89,
+      "includes": [
+        "Transporte turístico",
+        "Islas Ballestas",
+        "Asistencia local",
+        "Visita a Ica y Huacachina",
+        "Tubulares y sandboarding según operación"
+      ],
+      "excludesNote": "No incluye alimentación.",
+      "extras": [
+        {
+          "id": "lunch",
+          "label": "Agregar almuerzo",
+          "pricePerPerson": 20,
+          "type": "toggle"
+        }
+      ],
+      "requiresDateSelection": true
+    }
+  ],
+  "upsellModal": {
+    "title": "Antes de continuar, aprovecha tu viaje por Perú",
+    "text": "Ya tienes Machu Picchu seleccionado. Puedes añadir Huacachina o Laguna Humantay en fechas diferentes y organizar todas tus experiencias dentro de una sola reserva.",
+    "benefit": "Al reservar más de una experiencia puedes acceder a una tarifa especial para tu viaje.",
+    "viewAddonsButton": "Ver tours adicionales",
+    "continueAloneButton": "Continuar solo con Machu Picchu"
+  }
+}
