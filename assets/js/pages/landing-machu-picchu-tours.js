@@ -3,14 +3,14 @@
 
   const LANDING_ID = "landing-machu-picchu-tours";
   const LANDING_NAME = "Machu Picchu + Tours en Perú";
-  const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru";
+  const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v3";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 
   const state = {
     data: null,
-    adults: 2,
+    adults: 1,
     children: 0,
     mainProduct: { selected: true, date: null, mealOptionId: "no-meal" },
     addons: {},

@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "updatedAt": "2026-08-03",
   "landingId": "machu-picchu-y-tours-peru",
   "currency": "USD",
@@ -100,6 +100,28 @@
   },
   "addons": [
     {
+      "id": "bienvenida-ancestral-cusco",
+      "slug": "bienvenida-ancestral-cusco",
+      "title": "Bienvenida Ancestral en Cusco",
+      "origin": "cusco",
+      "image": "../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/bienvenida-ancestral-cusco/1.jpg",
+        "../assets/img/tours/bienvenida-ancestral-cusco/2.jpg"
+      ],
+      "shortDescription": "Empieza tu estadía con un recorrido panorámico, una ceremonia andina y vistas especiales de Cusco.",
+      "pricePerPerson": 11.9,
+      "includes": [
+        "Bus panorámico",
+        "Guía bilingüe",
+        "Ceremonia andina",
+        "Visita a centro textil",
+        "Mirador panorámico"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
       "id": "laguna-humantay",
       "slug": "laguna-humantay",
       "title": "Laguna Humantay",
@@ -163,28 +185,6 @@
         "Retorno a Cusco al finalizar"
       ],
       "excludesNote": "Boleto turístico y almuerzo buffet no incluidos.",
-      "extras": [],
-      "requiresDateSelection": true
-    },
-    {
-      "id": "bienvenida-ancestral-cusco",
-      "slug": "bienvenida-ancestral-cusco",
-      "title": "Bienvenida Ancestral en Cusco",
-      "origin": "cusco",
-      "image": "../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
-      "gallery": [
-        "../assets/img/tours/bienvenida-ancestral-cusco/1.jpg",
-        "../assets/img/tours/bienvenida-ancestral-cusco/2.jpg"
-      ],
-      "shortDescription": "Empieza tu estadía con un recorrido panorámico, una ceremonia andina y vistas especiales de Cusco.",
-      "pricePerPerson": 11.9,
-      "includes": [
-        "Bus panorámico",
-        "Guía bilingüe",
-        "Ceremonia andina",
-        "Visita a centro textil",
-        "Mirador panorámico"
-      ],
       "extras": [],
       "requiresDateSelection": true
     },
