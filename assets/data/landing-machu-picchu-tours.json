@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updatedAt": "2026-08-03",
   "landingId": "machu-picchu-y-tours-peru",
   "currency": "USD",
@@ -21,8 +21,18 @@
     "documentationMessage": "La tarifa de niño aplica de {minAge} a {maxAge} años cumplidos a la fecha del viaje. Se validará con el documento de identidad o pasaporte del menor."
   },
   "destinationGroups": {
-    "cusco": ["machu-picchu-full-day", "laguna-humantay"],
-    "lima-ica": ["paracas-ica-huacachina"]
+    "cusco": [
+      "machu-picchu-full-day",
+      "laguna-humantay",
+      "montana-colores-vinicunca",
+      "valle-sagrado-full-day",
+      "bienvenida-ancestral-cusco",
+      "siete-lagunas-ausangate",
+      "valle-sur-cusco"
+    ],
+    "lima-ica": [
+      "paracas-ica-huacachina"
+    ]
   },
   "minGapDaysBetweenGroups": 1,
   "operationalWarnings": [
@@ -42,7 +52,7 @@
     "slug": "machu-picchu-full-day",
     "title": "Machu Picchu Full Day",
     "origin": "cusco",
-    "badge": "Experiencia principal",
+    "badge": "Bestseller",
     "selectedByDefault": true,
     "removable": false,
     "image": "../assets/img/tours/machu-picchu-full-day/cover.jpg",
@@ -50,19 +60,20 @@
       "../assets/img/tours/machu-picchu-full-day/1.jpg",
       "../assets/img/tours/machu-picchu-full-day/2.jpg"
     ],
-    "shortDescription": "Visita la ciudadela inca de Machu Picchu en un solo día, con tren panorámico, bus de subida, guía profesional y todo coordinado desde Cusco.",
+    "shortDescription": "Visita Machu Picchu en un solo día desde Cusco, con tren turístico, buses oficiales, ingreso, guía profesional y asistencia durante toda la experiencia.",
     "adultPrice": 399,
     "childPricing": {
       "type": "fixed_discount",
       "discountAmount": 80
     },
     "includes": [
-      "Recojo en tu hotel en Cusco",
-      "Tren turístico ida y vuelta",
-      "Bus Consettur Aguas Calientes - Machu Picchu - Aguas Calientes",
-      "Ingreso oficial a Machu Picchu",
-      "Guía profesional en español e inglés",
-      "Traslados terrestres"
+      "Recojo en tu hotel o dirección en Cusco",
+      "Tren turístico de ida y retorno, categoría The Voyager de Inca Rail",
+      "Bus Consettur: Machu Picchu Pueblo – ciudadela – Machu Picchu Pueblo",
+      "Ingreso oficial a Machu Picchu (circuito sujeto a disponibilidad)",
+      "Guía profesional en español o inglés",
+      "Traslado y retorno hacia la estación de trenes",
+      "Asistencia y orientación 24/7"
     ],
     "mealOptions": [
       {
@@ -101,12 +112,124 @@
       "shortDescription": "Camina hasta la laguna turquesa a los pies del nevado Humantay, una de las excursiones más impresionantes de Cusco.",
       "pricePerPerson": 69,
       "includes": [
+        "Recojo en Cusco",
         "Transporte turístico",
         "Guía profesional",
-        "Entrada a la zona de la laguna",
+        "Ingreso a la zona de la laguna",
         "Desayuno",
         "Almuerzo"
       ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "montana-colores-vinicunca",
+      "slug": "montana-de-colores",
+      "title": "Montaña de Colores Vinicunca",
+      "origin": "cusco",
+      "image": "../assets/img/tours/montana-colores/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/montana-colores/1.jpg",
+        "../assets/img/tours/montana-colores/2.jpg"
+      ],
+      "shortDescription": "Conoce la famosa montaña arcoíris de los Andes en una excursión full day desde Cusco.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional en español o inglés",
+        "Desayuno y almuerzo según operación"
+      ],
+      "excludesNote": "El ingreso local y el caballo opcional no están incluidos, salvo confirmación expresa.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sagrado-full-day",
+      "slug": "valle-sagrado-full-day",
+      "title": "Valle Sagrado de los Incas",
+      "origin": "cusco",
+      "image": "../assets/img/tours/valle-sagrado/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/valle-sagrado/1.jpg",
+        "../assets/img/tours/valle-sagrado/2.jpg"
+      ],
+      "shortDescription": "Recorre Pisac, Urubamba, Ollantaytambo y Chinchero en una ruta cultural completa por el Valle Sagrado.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional en español o inglés",
+        "Retorno a Cusco al finalizar"
+      ],
+      "excludesNote": "Boleto turístico y almuerzo buffet no incluidos.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "bienvenida-ancestral-cusco",
+      "slug": "bienvenida-ancestral-cusco",
+      "title": "Bienvenida Ancestral en Cusco",
+      "origin": "cusco",
+      "image": "../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/bienvenida-ancestral-cusco/1.jpg",
+        "../assets/img/tours/bienvenida-ancestral-cusco/2.jpg"
+      ],
+      "shortDescription": "Empieza tu estadía con un recorrido panorámico, una ceremonia andina y vistas especiales de Cusco.",
+      "pricePerPerson": 11.9,
+      "includes": [
+        "Bus panorámico",
+        "Guía bilingüe",
+        "Ceremonia andina",
+        "Visita a centro textil",
+        "Mirador panorámico"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "siete-lagunas-ausangate",
+      "slug": "siete-lagunas-ausangate",
+      "title": "Siete Lagunas del Ausangate",
+      "origin": "cusco",
+      "image": "../assets/img/tours/siete-lagunas-ausangate/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/siete-lagunas-ausangate/1.jpg",
+        "../assets/img/tours/siete-lagunas-ausangate/2.jpg"
+      ],
+      "shortDescription": "Explora siete lagunas altoandinas entre montañas, glaciares y paisajes del Ausangate.",
+      "pricePerPerson": 86.9,
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico ida y retorno",
+        "Guía profesional",
+        "Desayuno",
+        "Almuerzo",
+        "Botiquín y balón de oxígeno"
+      ],
+      "excludesNote": "Ingresos locales, baños termales y caballo opcional no incluidos, salvo confirmación expresa.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sur-cusco",
+      "slug": "valle-sur",
+      "title": "Valle Sur de Cusco",
+      "origin": "cusco",
+      "image": "../assets/img/tours/valle-sur/cover.jpg",
+      "gallery": [
+        "../assets/img/tours/valle-sur/1.jpg",
+        "../assets/img/tours/valle-sur/2.jpg"
+      ],
+      "shortDescription": "Visita Tipón, Pikillacta y Andahuaylillas en una ruta cultural de medio día al sur de Cusco.",
+      "pricePerPerson": 20.9,
+      "includes": [
+        "Recojo en Cusco",
+        "Transporte turístico",
+        "Guía profesional en español o inglés"
+      ],
+      "excludesNote": "Boleto turístico parcial e ingreso a Andahuaylillas no incluidos.",
       "extras": [],
       "requiresDateSelection": true
     },
@@ -119,11 +242,11 @@
       "gallery": [
         "../assets/img/packages/peru/paracas-huacachina/1.jpg"
       ],
-      "shortDescription": "Islas Ballestas, Ica y las dunas de Huacachina en un solo día completo desde Lima, con transporte turístico y asistencia local.",
+      "shortDescription": "Islas Ballestas, Ica y las dunas de Huacachina en un día completo desde Lima.",
       "pricePerPerson": 89,
       "includes": [
-        "Transporte turístico",
-        "Islas Ballestas",
+        "Transporte turístico desde Lima",
+        "Navegación a Islas Ballestas",
         "Asistencia local",
         "Visita a Ica y Huacachina",
         "Tubulares y sandboarding según operación"
@@ -141,10 +264,10 @@
     }
   ],
   "upsellModal": {
-    "title": "Antes de continuar, aprovecha tu viaje por Perú",
-    "text": "Ya tienes Machu Picchu seleccionado. Puedes añadir Huacachina o Laguna Humantay en fechas diferentes y organizar todas tus experiencias dentro de una sola reserva.",
-    "benefit": "Al reservar más de una experiencia puedes acceder a una tarifa especial para tu viaje.",
-    "viewAddonsButton": "Ver tours adicionales",
+    "title": "Añade más experiencias a tus días en Perú",
+    "text": "Ya tienes Machu Picchu seleccionado. Puedes sumar tours en Cusco, el Valle Sagrado o la costa peruana, cada uno con su propia fecha.",
+    "benefit": "Organiza varias experiencias dentro de una sola reserva y un solo pago.",
+    "viewAddonsButton": "Ver experiencias adicionales",
     "continueAloneButton": "Continuar solo con Machu Picchu"
   }
 }

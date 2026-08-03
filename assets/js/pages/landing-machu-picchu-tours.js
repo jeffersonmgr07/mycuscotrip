@@ -586,7 +586,7 @@
 
     container.innerHTML = `
       <div class="mpt-main-product">
-        <span class="mpt-main-product__flag"><i class="fas fa-star"></i> ${escapeHtml(p.badge || "Experiencia principal")}</span>
+        <span class="mpt-main-product__flag">${escapeHtml(p.badge || "Bestseller")}</span>
         <div class="mpt-main-product__grid">
           <div class="mpt-main-product__media">
             <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" loading="eager" fetchpriority="high"/>
@@ -678,39 +678,47 @@
     const currency = state.data.currency;
     grid.innerHTML = (state.data.addons || []).map((addon) => {
       const sel = state.addons[addon.id];
+      const detailsId = `mpt-addon-content-${addon.id}`;
       return `
-        <div class="mpt-card${sel.selected ? " is-selected" : ""}" data-addon-id="${escapeHtml(addon.id)}">
+        <article class="mpt-card${sel.selected ? " is-selected is-expanded" : ""}" data-addon-id="${escapeHtml(addon.id)}">
           <div class="mpt-card__media">
             <img src="${escapeHtml(addon.image)}" alt="${escapeHtml(addon.title)}" loading="lazy"/>
           </div>
           <div class="mpt-card__body">
-            <h3>${escapeHtml(addon.title)}</h3>
-            <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / persona</div>
-            <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
-            <ul class="mpt-card__includes">${(addon.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
-            ${addon.excludesNote ? `<p style="color:#b3261e; font-size:0.8rem; font-weight:700;">${escapeHtml(addon.excludesNote)}</p>` : ""}
-            <div class="mpt-card__toggle-row">
-              <label class="mpt-card__checkbox">
-                <input type="checkbox" data-addon-id="${escapeHtml(addon.id)}" ${sel.selected ? "checked" : ""}/>
-                Agregar a mi viaje
-              </label>
+            <div class="mpt-card__summary">
+              <h3>${escapeHtml(addon.title)}</h3>
+              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / persona</div>
             </div>
-            <div class="mpt-card__details">
-              <div class="mpt-field">
-                <label for="${dateInputId(addon.id)}">Fecha de ${escapeHtml(addon.title)}</label>
-                <input id="${dateInputId(addon.id)}" type="text" placeholder="Selecciona una fecha" readonly aria-describedby="${errorId(addon.id)}"/>
-                <span class="mpt-field-error" id="${errorId(addon.id)}" role="alert"></span>
-              </div>
-              ${(addon.extras || []).map((extra) => `
-                <label class="mpt-card__extra">
-                  <input type="checkbox" data-extra-toggle data-addon-id="${escapeHtml(addon.id)}" data-extra-id="${escapeHtml(extra.id)}" ${sel.extras?.[extra.id] ? "checked" : ""}/>
-                  ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/persona)
+            <button class="mpt-card__disclosure" type="button" data-addon-expand data-addon-id="${escapeHtml(addon.id)}" aria-expanded="${sel.selected ? "true" : "false"}" aria-controls="${escapeHtml(detailsId)}">
+              <span>Ver qué incluye</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="mpt-card__expandable" id="${escapeHtml(detailsId)}">
+              <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
+              <ul class="mpt-card__includes">${(addon.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
+              ${addon.excludesNote ? `<p class="mpt-card__excludes">${escapeHtml(addon.excludesNote)}</p>` : ""}
+              <div class="mpt-card__toggle-row">
+                <label class="mpt-card__checkbox">
+                  <input type="checkbox" data-addon-id="${escapeHtml(addon.id)}" ${sel.selected ? "checked" : ""}/>
+                  Añadir a mi viaje
                 </label>
-              `).join("")}
-              <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Quitar de mi viaje</button>
+              </div>
+              <div class="mpt-card__details">
+                <div class="mpt-field">
+                  <label for="${dateInputId(addon.id)}">Fecha de ${escapeHtml(addon.title)}</label>
+                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Selecciona una fecha" readonly aria-describedby="${errorId(addon.id)}"/>
+                  <span class="mpt-field-error" id="${errorId(addon.id)}" role="alert"></span>
+                </div>
+                ${(addon.extras || []).map((extra) => `
+                  <label class="mpt-card__extra">
+                    <input type="checkbox" data-extra-toggle data-addon-id="${escapeHtml(addon.id)}" data-extra-id="${escapeHtml(extra.id)}" ${sel.extras?.[extra.id] ? "checked" : ""}/>
+                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/persona)
+                  </label>
+                `).join("")}
+                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Quitar de mi viaje</button>
+              </div>
             </div>
           </div>
-        </div>
+        </article>
       `;
     }).join("");
 
@@ -739,6 +747,9 @@
     state.addons[id].selected = selected;
     const card = document.querySelector(`.mpt-card[data-addon-id="${id}"]`);
     card?.classList.toggle("is-selected", selected);
+    if (selected) card?.classList.add("is-expanded");
+    const disclosure = card?.querySelector("[data-addon-expand]");
+    if (disclosure) disclosure.setAttribute("aria-expanded", card.classList.contains("is-expanded") ? "true" : "false");
     if (selected) {
       trackLandingEvent("addon_added", { addon_id: id });
       if (!state.addons[id].date) state.pickers[id]?.open();
@@ -757,24 +768,6 @@
       card.classList.add("is-highlighted");
       setTimeout(() => card.classList.remove("is-highlighted"), 2600);
     });
-  }
-
-  // ---------- Rendering: "qué incluye" grid (section 6, static per JSON) ----------
-
-  function renderIncludesGrid() {
-    const grid = document.getElementById("mptIncludesGrid");
-    if (!grid) return;
-    const items = [state.data.mainProduct, ...(state.data.addons || [])];
-    grid.innerHTML = items.map((item) => `
-      <div class="mpt-card">
-        <div class="mpt-card__media"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy"/></div>
-        <div class="mpt-card__body">
-          <h3>${escapeHtml(item.title)}</h3>
-          <ul class="mpt-card__includes">${(item.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
-          ${item.excludesNote ? `<p style="color:#b3261e; font-size:0.8rem; font-weight:700;">${escapeHtml(item.excludesNote)}</p>` : ""}
-        </div>
-      </div>
-    `).join("");
   }
 
   // ---------- Rendering: operational warnings ----------
@@ -799,10 +792,6 @@
     const content = document.getElementById("mptSummaryContent");
     const currency = summary.currency;
 
-    const restoredNote = state.restoredFromDraft
-      ? `<div class="mpt-summary__alert"><i class="fas fa-clock-rotate-left"></i> Recuperamos tu selección anterior.</div>`
-      : "";
-
     const linesHtml = summary.lines.map((line) => `
       <div class="mpt-summary__item">
         <div>
@@ -814,7 +803,6 @@
     `).join("");
 
     content.innerHTML = `
-      ${restoredNote}
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
         <span><i class="fas fa-user"></i> ${summary.adults} adulto(s)</span>
@@ -824,7 +812,7 @@
 
       <div class="mpt-coupon">
         <input id="mptCouponInput" type="text" placeholder="Código de descuento" aria-label="Código de descuento" value="${escapeHtml(state.coupon?.code || "")}"/>
-        <button class="mpt-btn mpt-btn--secondary" id="mptCouponApply" type="button" style="width:auto; padding:0 18px;">Aplicar</button>
+        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Aplicar</button>
       </div>
       ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Quitar cupón</button>` : ""}
       <p class="mpt-coupon-message" id="mptCouponMessage"></p>
@@ -930,6 +918,7 @@
           <div class="mpt-field"><label for="holderBirthdate">Fecha de nacimiento</label><input id="holderBirthdate" name="holderBirthdate" required type="date"/></div>
           <div class="mpt-field"><label for="holderEmail">Correo</label><input id="holderEmail" name="holderEmail" required type="email"/></div>
           <div class="mpt-field"><label for="holderWhatsapp">WhatsApp (con código de país)</label><input id="holderWhatsapp" name="holderWhatsapp" required type="tel" placeholder="+51 900 000 000"/></div>
+          <div class="mpt-field mpt-field--wide"><label for="holderPickupLocation">Hotel o dirección de recojo en Cusco</label><input id="holderPickupLocation" name="holderPickupLocation" required type="text" placeholder="Nombre del hotel y dirección, si la conoces"/></div>
         </div>
       </fieldset>
     `;
@@ -976,7 +965,8 @@
       nationality: String(data.get("holderNationality") || "").trim(),
       birthdate: String(data.get("holderBirthdate") || "").trim(),
       email: String(data.get("holderEmail") || "").trim(),
-      whatsapp: String(data.get("holderWhatsapp") || "").trim()
+      whatsapp: String(data.get("holderWhatsapp") || "").trim(),
+      pickupLocation: String(data.get("holderPickupLocation") || "").trim()
     };
     const totalPax = state.adults + state.children;
     const passengers = [];
@@ -1027,6 +1017,7 @@
       source: LANDING_ID,
       createdAt: new Date().toISOString(),
       travelers: { adults: state.adults, children: state.children, passengers: [holder, ...passengers] },
+      pickup: { location: holder.pickupLocation || "", city: "Cusco" },
       services,
       discount: state.coupon ? { code: state.coupon.code, type: state.coupon.type, value: state.coupon.value, amount: summary.discount } : {},
       pricing: { subtotal: summary.subtotal, discount: summary.discount, total: summary.total, currency: summary.currency },
@@ -1189,6 +1180,16 @@
       }
     });
     addonsGrid.addEventListener("click", (e) => {
+      const disclosure = e.target.closest("[data-addon-expand]");
+      if (disclosure) {
+        const id = disclosure.dataset.addonId;
+        const card = addonsGrid.querySelector(`.mpt-card[data-addon-id="${id}"]`);
+        const expanded = !card.classList.contains("is-expanded");
+        card.classList.toggle("is-expanded", expanded);
+        disclosure.setAttribute("aria-expanded", expanded ? "true" : "false");
+        disclosure.querySelector("span").textContent = expanded ? "Ocultar detalles" : "Ver qué incluye";
+        return;
+      }
       const removeBtn = e.target.closest("[data-addon-remove]");
       if (!removeBtn) return;
       const id = removeBtn.dataset.addonId;
@@ -1251,6 +1252,8 @@
         console.warn("Header JS no inicializado:", error);
       }
     }
+    document.querySelectorAll(".mpt-hero__video--desktop").forEach((video) => { video.playbackRate = 0.6; });
+    document.querySelectorAll(".mpt-hero__video--mobile").forEach((video) => { video.playbackRate = 0.8; });
 
     try {
       state.data = await fetchLandingData();
@@ -1263,7 +1266,6 @@
     restoreDraftIfAny();
     renderMainProduct();
     renderAddons();
-    renderIncludesGrid();
     bindGlobalEvents();
     validateAllDates({ silent: true });
     renderSummary();
