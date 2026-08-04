@@ -12,8 +12,7 @@
     toursMachuPicchu: "./assets/data/tours-machu-picchu.json",
     trekkingsCusco: "./assets/data/trekkings-cusco.json",
     hotels: "./assets/data/hotels.json",
-    trains: "./assets/data/trains.json",
-    discounts: "./assets/data/discount-codes.json"
+    trains: "./assets/data/trains.json"
   };
 
   const EXCHANGE_FALLBACK = 3.75;
@@ -327,17 +326,16 @@
   }
 
   async function loadData() {
-    const [packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains, discounts] = await Promise.all([
+    const [packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains] = await Promise.all([
       fetchJSON(DATA_PATHS.packagesCusco, {}),
       fetchJSON(DATA_PATHS.toursCusco, { products: [] }),
       fetchJSON(DATA_PATHS.toursMachuPicchu, { tours: [] }),
       fetchJSON(DATA_PATHS.trekkingsCusco, { products: [] }),
       fetchJSON(DATA_PATHS.hotels, { destinations: {} }),
-      fetchJSON(DATA_PATHS.trains, { trains: [] }),
-      fetchJSON(DATA_PATHS.discounts, [])
+      fetchJSON(DATA_PATHS.trains, { trains: [] })
     ]);
 
-    state.data = { packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains, discounts };
+    state.data = { packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains };
     state.exchangeRate = Number(packagesCusco?.exchangeRateUSDToPEN || hotels?.pricingEngine?.exchangeRateUSDToPEN || EXCHANGE_FALLBACK) || EXCHANGE_FALLBACK;
     updateExchangeRateHelp();
   }
@@ -2253,10 +2251,12 @@
     if (el) el.hidden = !visible;
   }
 
-  function applyManualDiscountCode() {
+  async function applyManualDiscountCode() {
     const input = $("#discountCodeInput");
     const message = $("#discountCodeMessage");
+    const button = $("#applyDiscountCodeBtn");
     const code = String(input?.value || "").trim().toUpperCase();
+
     if (!code) {
       state.manualDiscount = null;
       if (message) message.textContent = t("quote.discount.enterCode", "Ingresa tu código promocional si tienes uno.");
@@ -2264,18 +2264,58 @@
       updatePrintableTemplate();
       return;
     }
-    const found = toArray(state.data.discounts).find((item) => String(item.code || "").toUpperCase() === code);
-    if (!found || !found.active) {
-      state.manualDiscount = null;
-      if (message) message.textContent = t("quote.discount.invalidCode", "Código no válido o inactivo.");
+
+    if (message) message.textContent = t("quote.discount.validating", "Validando código promocional...");
+    if (button) button.disabled = true;
+
+    try {
+      if (!window.MyCuscoTripApiClient?.validateCoupon) {
+        throw new Error(t("quote.discount.validationUnavailable", "No pudimos validar el cupón en este momento. Inténtalo nuevamente."));
+      }
+
+      const result = await window.MyCuscoTripApiClient.validateCoupon({
+        couponCode: code,
+        subtotal: getDiscountableSubtotal(),
+        currency: state.currency,
+        locale: document.documentElement.lang || "es",
+        page: window.location.pathname,
+        source: "quote_packages"
+      });
+
+      if (!result || result.mock) {
+        throw new Error(t("quote.discount.validationUnavailable", "No pudimos validar el cupón en este momento. Inténtalo nuevamente."));
+      }
+
+      if (!result.valid) {
+        state.manualDiscount = null;
+        if (message) message.textContent = result.message || t("quote.discount.invalidCode", "Código no válido o inactivo.");
+        updateSummary();
+        updatePrintableTemplate();
+        return;
+      }
+
+      state.manualDiscount = {
+        code: result.couponCode || code,
+        type: String(result.type || "percent").toLowerCase() === "fixed" ? "fixed" : "percent",
+        value: Number(result.value ?? result.discountPercent ?? 0),
+        currency: result.currency || state.currency,
+        label: result.label || "",
+        expiresAt: result.expiresAt || ""
+      };
+
+      if (input) input.value = state.manualDiscount.code;
+      if (message) message.textContent = `${state.manualDiscount.label || t("quote.discount.applied", "Descuento aplicado")}.`;
       updateSummary();
       updatePrintableTemplate();
-      return;
+    } catch (error) {
+      console.error("No se pudo validar el cupón:", error);
+      state.manualDiscount = null;
+      if (message) message.textContent = error?.message || t("quote.discount.validationUnavailable", "No pudimos validar el cupón en este momento. Inténtalo nuevamente.");
+      updateSummary();
+      updatePrintableTemplate();
+    } finally {
+      if (button) button.disabled = false;
     }
-    state.manualDiscount = found;
-    if (message) message.textContent = `${found.label || t("quote.discount.applied", "Descuento aplicado")}.`;
-    updateSummary();
-    updatePrintableTemplate();
   }
 
   function getCommercialOfferAmount(total) {

@@ -249,7 +249,7 @@
         whatsapp: String(formData.get("whatsapp") || "").trim(),
         email: String(formData.get("email") || "").trim(),
         couponCode: this.options.couponCode,
-        requestedCouponLabel: "hasta 15%",
+        requestedCouponLabel: this.t("coupon.requestedLabel", "hasta 15%"),
         page: window.location.href,
         createdAt: new Date().toISOString()
       };
@@ -278,7 +278,8 @@
           registeredAt: Date.now(),
           couponCode: generatedCode,
           discountPercent,
-          expiresAt: result?.expiresAt || ""
+          expiresAt: result?.expiresAt || "",
+          email: payload.email
         });
         this.trackEvent("coupon_form_submit", {
           coupon_code: generatedCode,
@@ -293,7 +294,7 @@
         }, { metaEventName: "Lead" });
         const successMessage = result?.mock
           ? this.formatMessage("coupon.successMock", "Modo prueba: cupón {code} generado localmente. Configura el backend para enviar correos reales.", { code: generatedCode })
-          : this.formatMessage("coupon.successWithCode", "Listo. Tu cupón {code} fue enviado a tu correo y vence en 24 horas.", { code: generatedCode });
+          : this.formatMessage("coupon.successWithCode", "Listo. Tu cupón {code} fue enviado a tu correo, tendrá una vigencia mínima de 48 horas y caducará al finalizar ese día.", { code: generatedCode });
         this.setMessage(successMessage, false);
         window.setTimeout(() => this.hide(), 2600);
       } catch (error) {

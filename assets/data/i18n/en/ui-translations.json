@@ -408,7 +408,7 @@
   "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate",
   "product.notAvailable": "This experience is not publicly available.",
   "product.savingReservation": "Saving reservation...",
-  "coupon.successWithCode": "Done. Your coupon {code} was sent to your email and expires in 24 hours.",
+  "coupon.successWithCode": "Done. Your coupon {code} was sent to your email. It will remain valid for at least 48 hours and expire at the end of that day.",
   "product.connectingToPaypal": "Connecting to PayPal...",
   "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails.",
   "nav.experiences": "Experiences",
@@ -446,5 +446,6 @@
   "nav.howToGetMachuPicchu": "How to Get to Machu Picchu",
   "nav.faq": "Frequently Asked Questions",
   "cards.comingSoon": "Coming soon",
-  "cards.askAvailability": "Ask about availability"
+  "cards.askAvailability": "Ask about availability",
+  "product.couponFixedDiscountApplied": "Coupon {code} applied: {currency} {amount} discount."
 }

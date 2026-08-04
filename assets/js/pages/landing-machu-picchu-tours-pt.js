@@ -503,24 +503,6 @@
     if (type === "success") el.classList.add("is-success");
   }
 
-  async function validateCouponLocally(code) {
-    try {
-      const basePath = getSiteBasePath();
-      const response = await fetch(`${basePath}assets/data/discount-codes.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
-      const list = await response.json();
-      const found = (Array.isArray(list) ? list : []).find((item) => String(item.code || "").toUpperCase() === code);
-      if (!found || !found.active) {
-        return { valid: false, message: "Código inválido ou inativo." };
-      }
-      if (found.expiresAt && new Date(found.expiresAt).getTime() < Date.now()) {
-        return { valid: false, message: "Este código de desconto expirou." };
-      }
-      return { valid: true, couponCode: found.code, type: found.type, value: found.value, currency: found.currency, label: found.label };
-    } catch (error) {
-      return { valid: false, message: "Não foi possível validar o cupom neste momento." };
-    }
-  }
-
   async function applyCoupon(rawCode) {
     const code = String(rawCode || "").trim().toUpperCase();
     if (!code) {
@@ -529,41 +511,59 @@
       renderSummary();
       return;
     }
+
     setCouponMessage("Validando código…", "");
 
-    let result = null;
     try {
-      if (window.MyCuscoTripApiClient?.validateCoupon) {
-        const apiResult = await withTimeout(window.MyCuscoTripApiClient.validateCoupon(code), 4000);
-        if (apiResult && !apiResult.mock) result = apiResult;
+      if (!window.MyCuscoTripApiClient?.validateCoupon) {
+        throw new Error("Não foi possível validar o cupom neste momento. Tente novamente.");
       }
-    } catch (error) {
-      result = null;
-    }
-    if (!result) result = await validateCouponLocally(code);
 
-    if (!result.valid) {
-      state.coupon = null;
-      setCouponMessage(result.message || "Código inválido ou inativo.", "error");
+      const summary = calculateSummary();
+      const result = await withTimeout(window.MyCuscoTripApiClient.validateCoupon({
+        couponCode: code,
+        subtotal: Number(summary.subtotal || 0),
+        currency: summary.currency || state.data.currency || "USD",
+        locale: "pt",
+        page: window.location.pathname
+      }), 8000);
+
+      if (!result || result.mock) {
+        throw new Error("Não foi possível validar o cupom neste momento. Tente novamente.");
+      }
+
+      if (!result.valid) {
+        state.coupon = null;
+        setCouponMessage(result.message || "Código inválido ou inativo.", "error");
+        renderSummary();
+        trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: result.reason || "" });
+        return;
+      }
+
+      const couponType = String(result.type || (result.discountPercent ? "percent" : "percent")).toLowerCase() === "fixed" ? "fixed" : "percent";
+      state.coupon = {
+        code: result.couponCode || code,
+        type: couponType,
+        value: Number(result.value ?? result.discountPercent ?? 0),
+        currency: result.currency || summary.currency || state.data.currency || "USD",
+        expiresAt: result.expiresAt || ""
+      };
+
+      setCouponMessage(`Cupom aplicado: ${result.label || state.coupon.code}.`, "success");
       renderSummary();
-      trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false });
-      return;
+      trackLandingEvent("coupon_applied", {
+        coupon_code: state.coupon.code,
+        coupon_valid: true,
+        coupon_type: state.coupon.type,
+        coupon_value: state.coupon.value
+      });
+    } catch (error) {
+      console.error("Coupon validation failed:", error);
+      state.coupon = null;
+      setCouponMessage(error?.message || "Não foi possível validar o cupom neste momento. Tente novamente.", "error");
+      renderSummary();
+      trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: "backend_unavailable" });
     }
-
-    state.coupon = {
-      code: result.couponCode || code,
-      type: result.type || "percent",
-      value: Number(result.value ?? result.discountPercent ?? 0),
-      currency: result.currency || state.data.currency
-    };
-    setCouponMessage(`Cupom aplicado: ${result.label || state.coupon.code}.`, "success");
-    renderSummary();
-    trackLandingEvent("coupon_applied", {
-      coupon_code: state.coupon.code,
-      coupon_valid: true,
-      coupon_type: state.coupon.type,
-      coupon_value: state.coupon.value
-    });
   }
 
   function removeCoupon() {
@@ -1405,7 +1405,22 @@
       </div>
       <h4>${escapeHtml(CHECKOUT_I18N.services)}</h4>
       <ul class="mpt-payment-review__services">
-        ${reservation.services.map((service) => `<li><span>${escapeHtml(service.title)}<small> · ${escapeHtml(formatDateSpanish(service.date))}</small></span><strong>${escapeHtml(formatCurrency(service.lineTotal, reservation.currency))}</strong></li>`).join("")}
+        ${reservation.services.map((service) => {
+          const formattedPrice = formatCurrency(service.lineTotal, reservation.currency);
+          const priceParts = String(formattedPrice).trim().split(/\s+/);
+          const priceCurrency = priceParts.shift() || reservation.currency || "USD";
+          const priceAmount = priceParts.join(" ");
+          return `<li>
+            <span class="mpt-payment-review__service-info">
+              <strong class="mpt-payment-review__service-title">${escapeHtml(service.title)}</strong>
+              <small class="mpt-payment-review__service-date">${escapeHtml(formatDateSpanish(service.date))}</small>
+            </span>
+            <strong class="mpt-payment-review__service-price">
+              <small>${escapeHtml(priceCurrency)}</small>
+              <span>${escapeHtml(priceAmount)}</span>
+            </strong>
+          </li>`;
+        }).join("")}
       </ul>
       <div class="mpt-payment-review__total"><span>${escapeHtml(CHECKOUT_I18N.total)}</span><strong>${escapeHtml(formatCurrency(reservation.pricing.total, reservation.currency))}</strong></div>
       <p class="mpt-availability-note">${escapeHtml(CHECKOUT_I18N.paypalNote)}</p>`;

@@ -1,0 +1,12 @@
+Validaciones realizadas:
+- JavaScript landing ES: sintaxis correcta.
+- JavaScript landing EN: sintaxis correcta.
+- JavaScript landing PT: sintaxis correcta.
+- product.js: sintaxis correcta.
+- quote-packages.js: sintaxis correcta.
+- coupon-popup.js: sintaxis correcta.
+- Google Apps Script Code.gs: sintaxis JavaScript correcta.
+- ui-translations.json: JSON válido.
+- i18n/en/ui-translations.json: JSON válido.
+- discount-codes.json: JSON válido y vacío intencionalmente.
+- No quedan referencias frontend a validateCouponLocally ni lecturas de discount-codes.json.

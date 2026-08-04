@@ -2069,26 +2069,61 @@ class MyCuscoTripProductPage {
   }
 
   getAppliedCouponPercent() {
-    return Number(this.appliedCoupon?.discountPercent || this.appliedCoupon?.percent || 0) || 0;
+    const type = String(this.appliedCoupon?.type || "percent").toLowerCase();
+    if (type !== "percent") return 0;
+    return Number(this.appliedCoupon?.value ?? this.appliedCoupon?.discountPercent ?? this.appliedCoupon?.percent ?? 0) || 0;
   }
 
-  getDiscountInfo(serviceTotal, fullDiscountPercent = 0) {
-    const couponPercent = this.getAppliedCouponPercent();
-    const fullPercent = this.paymentMode === "full" ? Number(fullDiscountPercent || 0) : 0;
-    const percent = Math.max(couponPercent, fullPercent, 0);
-    const source = percent > 0 && couponPercent >= fullPercent ? "coupon" : (percent > 0 ? "full_payment" : "none");
+  getAppliedCouponDiscount(serviceTotal, currency = this.product?.currency || "USD") {
+    const coupon = this.appliedCoupon;
+    const total = Math.max(0, Number(serviceTotal || 0));
+    if (!coupon || total <= 0) return 0;
+
+    const type = String(coupon.type || "percent").toLowerCase();
+    const value = Math.max(0, Number(coupon.value ?? coupon.discountPercent ?? coupon.percent ?? 0));
+
+    if (type === "fixed") {
+      const couponCurrency = String(coupon.currency || currency || "USD").toUpperCase();
+      const targetCurrency = String(currency || "USD").toUpperCase();
+      if (couponCurrency !== targetCurrency) return 0;
+      return Math.min(total, value);
+    }
+
+    return Math.min(total, total * (value / 100));
+  }
+
+  getDiscountInfo(serviceTotal, fullDiscountPercent = 0, currency = this.product?.currency || "USD") {
+    const total = Math.max(0, Number(serviceTotal || 0));
+    const couponDiscount = this.getAppliedCouponDiscount(total, currency);
+    const fullPercent = this.paymentMode === "full" ? Math.max(0, Number(fullDiscountPercent || 0)) : 0;
+    const fullDiscount = total * (fullPercent / 100);
+    const discount = Math.max(couponDiscount, fullDiscount, 0);
+    const source = discount > 0 && couponDiscount >= fullDiscount ? "coupon" : (discount > 0 ? "full_payment" : "none");
+    const percent = total > 0 ? (discount / total) * 100 : 0;
+
     return {
       percent,
       source,
-      discount: Number(serviceTotal || 0) * (percent / 100)
+      discount,
+      couponDiscount,
+      fullDiscount,
+      couponType: String(this.appliedCoupon?.type || "percent").toLowerCase(),
+      couponValue: Number(this.appliedCoupon?.value ?? this.appliedCoupon?.discountPercent ?? 0)
     };
   }
 
   getDiscountInfoText(discountInfo, fallbackText = "") {
     if (discountInfo?.source === "coupon") {
+      if (discountInfo.couponType === "fixed") {
+        return this.t("product.couponFixedDiscountApplied", "Coupon {code} applied: {currency} {amount} discount.", {
+          code: this.appliedCoupon?.couponCode || "",
+          currency: this.appliedCoupon?.currency || this.product?.currency || "USD",
+          amount: this.formatMoney(discountInfo.couponDiscount || 0)
+        });
+      }
       return this.t("product.couponDiscountApplied", "Coupon {code} applied: {percent}% discount.", {
         code: this.appliedCoupon?.couponCode || "",
-        percent: discountInfo.percent
+        percent: Number(this.appliedCoupon?.value ?? this.appliedCoupon?.discountPercent ?? 0)
       });
     }
     return fallbackText;
@@ -2115,17 +2150,36 @@ class MyCuscoTripProductPage {
     this.setDiscountMessage(this.t("product.validatingDiscount", "Validating discount code..."), false);
 
     try {
-      const result = await window.MyCuscoTripApiClient?.validateCoupon?.(code);
-      if (!result?.valid) {
+      if (!window.MyCuscoTripApiClient?.validateCoupon) {
+        throw new Error(this.t("product.discountValidationError", "We could not validate this code right now."));
+      }
+
+      const currentSummary = this.getBookingSummary?.() || {};
+      const result = await window.MyCuscoTripApiClient.validateCoupon({
+        couponCode: code,
+        subtotal: Number(currentSummary.rawServiceTotal || 0),
+        currency: this.product?.currency || "USD",
+        locale: document.documentElement.lang || "es",
+        productId: this.product?.id || this.product?.code || this.slug || "",
+        page: window.location.pathname
+      });
+      if (!result || result.mock) {
+        throw new Error(this.t("product.discountValidationError", "We could not validate this code right now."));
+      }
+      if (!result.valid) {
         this.appliedCoupon = null;
-        this.setDiscountMessage(result?.message || this.t("product.invalidDiscountCode", "Invalid or expired discount code."), true);
+        this.setDiscountMessage(result.message || this.t("product.invalidDiscountCode", "Invalid or expired discount code."), true);
         this.updatePricing();
         return;
       }
 
+      const couponType = String(result.type || (result.discountPercent ? "percent" : "percent")).toLowerCase() === "fixed" ? "fixed" : "percent";
       this.appliedCoupon = {
         couponCode: result.couponCode || code,
-        discountPercent: Number(result.discountPercent || 0),
+        type: couponType,
+        value: Number(result.value ?? result.discountPercent ?? 0),
+        currency: result.currency || this.product?.currency || "USD",
+        discountPercent: couponType === "percent" ? Number(result.value ?? result.discountPercent ?? 0) : 0,
         expiresAt: result.expiresAt || ""
       };
       if (input) input.value = this.appliedCoupon.couponCode;

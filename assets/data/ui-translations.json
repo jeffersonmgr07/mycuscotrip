@@ -380,7 +380,7 @@
     "product.breakfastIncludedSubjectToRate": "Desayuno incluido o sujeto a tarifa confirmada",
     "product.notAvailable": "Esta experiencia no está disponible públicamente.",
     "product.savingReservation": "Guardando reserva...",
-    "coupon.successWithCode": "Listo. Tu cupón {code} fue enviado a tu correo y vence en 24 horas.",
+    "coupon.successWithCode": "Listo. Tu cupón {code} fue enviado a tu correo, tendrá una vigencia mínima de 48 horas y caducará al finalizar ese día.",
     "product.connectingToPaypal": "Conectando con PayPal...",
     "coupon.successMock": "Modo prueba: cupón {code} generado localmente. Configura el backend para enviar correos reales.",
     "nav.experiences": "Experiencias",
@@ -1026,7 +1026,8 @@
     "payment.cancelledTitle": "El pago no se completó",
     "payment.cancelledBody": "El proceso de pago no se completó. Tu reserva sigue disponible con el código {code}. Puedes recuperarla y volver a pagar usando el correo registrado.",
     "payment.recoverCta": "Recuperar y pagar reserva",
-    "payment.registeredEmail": "Correo registrado: {email}"
+    "payment.registeredEmail": "Correo registrado: {email}",
+    "product.couponFixedDiscountApplied": "Cupón {code} aplicado: descuento de {currency} {amount}."
   },
   "en": {
     "nav.machuPicchuTours": "Machu Picchu Tours",
@@ -1438,7 +1439,7 @@
     "product.breakfastIncludedSubjectToRate": "Breakfast included or subject to the confirmed rate",
     "product.notAvailable": "This experience is not publicly available.",
     "product.savingReservation": "Saving reservation...",
-    "coupon.successWithCode": "Done. Your coupon {code} was sent to your email and expires in 24 hours.",
+    "coupon.successWithCode": "Done. Your coupon {code} was sent to your email. It will remain valid for at least 48 hours and expire at the end of that day.",
     "product.connectingToPaypal": "Connecting to PayPal...",
     "coupon.successMock": "Test mode: coupon {code} was generated locally. Configure the backend to send real emails.",
     "nav.experiences": "Experiences",
@@ -2084,7 +2085,8 @@
     "payment.cancelledTitle": "Payment was not completed",
     "payment.cancelledBody": "The payment process was not completed. Your reservation is still available under code {code}. You can recover it and try paying again using the registered email.",
     "payment.recoverCta": "Recover and pay reservation",
-    "payment.registeredEmail": "Registered email: {email}"
+    "payment.registeredEmail": "Registered email: {email}",
+    "product.couponFixedDiscountApplied": "Coupon {code} applied: {currency} {amount} discount."
   },
   "pt": {
     "nav.machuPicchuTours": "Tours a Machu Picchu",
@@ -3110,7 +3112,9 @@
     "payment.cancelledTitle": "O pagamento não foi concluído",
     "payment.cancelledBody": "O processo de pagamento não foi concluído. Sua reserva continua disponível com o código {code}. Você pode recuperá-la e tentar pagar novamente usando o e-mail cadastrado.",
     "payment.recoverCta": "Recuperar e pagar reserva",
-    "payment.registeredEmail": "E-mail cadastrado: {email}"
+    "payment.registeredEmail": "E-mail cadastrado: {email}",
+    "coupon.successWithCode": "Pronto. Seu cupom {code} foi enviado ao seu e-mail, terá validade mínima de 48 horas e expirará no final desse dia.",
+    "product.couponFixedDiscountApplied": "Cupom {code} aplicado: desconto de {currency} {amount}."
   },
   "fr": {
     "nav.machuPicchuTours": "Tours à Machu Picchu",
@@ -4096,7 +4100,9 @@
     "payment.cancelledTitle": "Le paiement n’a pas été finalisé",
     "payment.cancelledBody": "Le processus de paiement n’a pas été finalisé. Votre réservation reste disponible sous le code {code}. Vous pouvez la récupérer et réessayer le paiement avec l’e-mail enregistré.",
     "payment.recoverCta": "Récupérer et payer la réservation",
-    "payment.registeredEmail": "E-mail enregistré : {email}"
+    "payment.registeredEmail": "E-mail enregistré : {email}",
+    "coupon.successWithCode": "Votre coupon {code} a été envoyé à votre e-mail. Il restera valable au moins 48 heures et expirera à la fin de cette journée.",
+    "product.couponFixedDiscountApplied": "Coupon {code} appliqué : remise de {currency} {amount}."
   },
   "de": {
     "nav.machuPicchuTours": "Machu-Picchu-Touren",
@@ -5082,7 +5088,9 @@
     "payment.cancelledTitle": "Die Zahlung wurde nicht abgeschlossen",
     "payment.cancelledBody": "Der Zahlungsvorgang wurde nicht abgeschlossen. Ihre Buchung bleibt unter dem Code {code} verfügbar. Sie können sie mit der registrierten E-Mail-Adresse wiederherstellen und erneut bezahlen.",
     "payment.recoverCta": "Buchung wiederherstellen und bezahlen",
-    "payment.registeredEmail": "Registrierte E-Mail: {email}"
+    "payment.registeredEmail": "Registrierte E-Mail: {email}",
+    "coupon.successWithCode": "Ihr Coupon {code} wurde per E-Mail gesendet. Er bleibt mindestens 48 Stunden gültig und läuft am Ende dieses Tages ab.",
+    "product.couponFixedDiscountApplied": "Coupon {code} angewendet: {currency} {amount} Rabatt."
   },
   "it": {
     "nav.machuPicchuTours": "Tour a Machu Picchu",
@@ -6068,7 +6076,9 @@
     "payment.cancelledTitle": "Il pagamento non è stato completato",
     "payment.cancelledBody": "Il processo di pagamento non è stato completato. La prenotazione resta disponibile con il codice {code}. Puoi recuperarla e riprovare il pagamento usando l’e-mail registrata.",
     "payment.recoverCta": "Recupera e paga la prenotazione",
-    "payment.registeredEmail": "E-mail registrata: {email}"
+    "payment.registeredEmail": "E-mail registrata: {email}",
+    "coupon.successWithCode": "Il tuo coupon {code} è stato inviato via e-mail. Sarà valido per almeno 48 ore e scadrà alla fine di quel giorno.",
+    "product.couponFixedDiscountApplied": "Coupon {code} applicato: sconto di {currency} {amount}."
   },
   "zh": {
     "nav.machuPicchuTours": "马丘比丘旅游",
@@ -7054,7 +7064,9 @@
     "payment.cancelledTitle": "付款未完成",
     "payment.cancelledBody": "付款流程未完成。您的预订仍以代码 {code} 保留。您可以使用登记的电子邮箱找回预订并重新付款。",
     "payment.recoverCta": "找回并支付预订",
-    "payment.registeredEmail": "登记邮箱：{email}"
+    "payment.registeredEmail": "登记邮箱：{email}",
+    "coupon.successWithCode": "优惠码 {code} 已发送至您的邮箱。优惠码至少有效 48 小时，并将在对应日期当天结束时失效。",
+    "product.couponFixedDiscountApplied": "优惠码 {code} 已应用：优惠 {currency} {amount}。"
   },
   "ja": {
     "nav.machuPicchuTours": "マチュピチュツアー",
@@ -8040,6 +8052,8 @@
     "payment.cancelledTitle": "支払いが完了しませんでした",
     "payment.cancelledBody": "支払い手続きが完了しませんでした。予約はコード {code} で引き続き保持されています。登録済みのメールアドレスを使用して予約を復元し、再度支払うことができます。",
     "payment.recoverCta": "予約を復元して支払う",
-    "payment.registeredEmail": "登録メール：{email}"
+    "payment.registeredEmail": "登録メール：{email}",
+    "coupon.successWithCode": "クーポン {code} をメールで送信しました。少なくとも48時間有効で、その日の終了時に失効します。",
+    "product.couponFixedDiscountApplied": "クーポン {code} を適用しました：{currency} {amount} 割引。"
   }
 }
