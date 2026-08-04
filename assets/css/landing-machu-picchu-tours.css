@@ -843,62 +843,7 @@ button:focus-visible {
    V2 — Ajustes visuales solicitados (2026-08-03)
    ============================================ */
 
-/* Respeto entre logo, navegación y acciones en escritorio intermedio. */
-@media (min-width: 1121px) and (max-width: 1480px) {
-  .mpt-page .header-container {
-    width: 100%;
-    max-width: none;
-    grid-template-columns: 176px minmax(0, 1fr) auto;
-    gap: 20px;
-    padding-inline: 18px;
-  }
-
-  .mpt-page .header .logo {
-    width: 176px;
-    min-width: 176px;
-    padding-right: 10px;
-  }
-
-  .mpt-page .header .logo img {
-    width: 166px;
-    max-width: 100%;
-    height: 64px;
-    object-fit: contain;
-    object-position: left center;
-  }
-
-  .mpt-page .header .nav-menu {
-    gap: clamp(7px, 0.8vw, 13px);
-  }
-
-  .mpt-page .header .nav-menu a {
-    font-size: clamp(0.72rem, 0.72vw, 0.84rem);
-  }
-
-  .mpt-page .header .header-actions {
-    margin-left: 4px;
-  }
-}
-
-@media (min-width: 1121px) and (max-width: 1320px) {
-  .mpt-page .header .wa-header {
-    display: none;
-  }
-
-  .mpt-page .header-container {
-    grid-template-columns: 162px minmax(0, 1fr) auto;
-    gap: 14px;
-  }
-
-  .mpt-page .header .logo {
-    width: 162px;
-    min-width: 162px;
-  }
-
-  .mpt-page .header .logo img {
-    width: 154px;
-  }
-}
+/* El header usa exclusivamente la configuración global para mantener el logo en la misma posición en todas las páginas. */
 
 /* Hero con el mismo video del index y una capa verde legible. */
 .mpt-hero {

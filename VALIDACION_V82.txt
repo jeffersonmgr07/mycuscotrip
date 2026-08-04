@@ -1,0 +1,8 @@
+VALIDACIÓN V8.2
+
+- assets/js/components/header.js: sintaxis válida con node --check.
+- Las landings ES, EN y PT cargan una sola vez coupon-popup.css y coupon-popup.js.
+- Las tres landings cargan header.css, header.js, landing CSS y modal CSS con versión 20260803-82.
+- El ajuste de color usa un selector limitado a #mptPassengerModal .passenger-modal__important > p.
+- Se eliminó únicamente el bloque de estilos de header exclusivo de la landing; el resto del CSS de la landing permanece intacto.
+- El header global incluye un elemento compacto de desbordamiento y mueve allí solo los últimos elementos que no caben.

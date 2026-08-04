@@ -574,3 +574,132 @@
     padding-top: 4px;
   }
 }
+
+/* =========================================================
+   V82 — posición uniforme del logo y navegación adaptable
+   El logo conserva el mismo margen global de .container.
+   Los elementos que no caben pasan al menú compacto "Más".
+   ========================================================= */
+@media (min-width: 1121px) {
+  .header-container {
+    column-gap: clamp(14px, 1.45vw, 24px);
+  }
+
+  .logo {
+    flex: 0 0 auto;
+    padding-right: 12px;
+  }
+
+  .nav {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .nav-menu {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    gap: clamp(8px, 1.05vw, 16px);
+  }
+
+  .nav-menu > .nav-item.is-overflow-hidden {
+    display: none !important;
+  }
+
+  .nav-item--overflow {
+    display: none !important;
+    flex: 0 0 auto;
+  }
+
+  .nav-item--overflow.is-active {
+    display: flex !important;
+  }
+
+  .nav-more-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 48px;
+    min-height: 38px;
+    padding: 7px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .nav-more-toggle:hover,
+  .nav-item--overflow.is-dropdown-open .nav-more-toggle,
+  .nav-item--overflow:focus-within .nav-more-toggle {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .nav-more-toggle .fa-ellipsis {
+    font-size: 1rem;
+  }
+
+  .nav-more-toggle .fa-chevron-down {
+    font-size: 0.64rem;
+  }
+
+  .nav-dropdown--overflow {
+    left: auto;
+    right: 0;
+    transform: translateY(8px);
+    width: min(340px, calc(100vw - 32px));
+    min-width: 280px;
+    max-height: min(70vh, 560px);
+    overflow-y: auto;
+  }
+
+  .nav-item--overflow:hover .nav-dropdown--overflow,
+  .nav-item--overflow:focus-within .nav-dropdown--overflow,
+  .nav-item--overflow.is-dropdown-open .nav-dropdown--overflow,
+  .nav-item--overflow.is-open .nav-dropdown--overflow {
+    transform: translateY(0);
+  }
+
+  .nav-overflow__heading {
+    display: block !important;
+    margin-top: 5px;
+  }
+
+  .nav-overflow__heading:first-child {
+    margin-top: 0;
+  }
+
+  .nav-overflow__heading > a {
+    color: #053220 !important;
+    font-weight: 900 !important;
+    background: #f1f7f3;
+  }
+
+  .nav-overflow__subitem {
+    display: block !important;
+  }
+
+  .nav-overflow__subitem > a {
+    padding-left: 22px !important;
+    color: #315246 !important;
+    font-size: 0.86rem !important;
+  }
+}
+
+@media (min-width: 1121px) and (max-width: 1380px) {
+  .nav-menu a {
+    font-size: clamp(0.76rem, 0.78vw, 0.86rem);
+  }
+
+  .logo img {
+    height: 68px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .nav-item--overflow {
+    display: none !important;
+  }
+}
+

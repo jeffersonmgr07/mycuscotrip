@@ -454,3 +454,8 @@ body.mpt-checkout-processing-open {
     font-size: .94rem;
   }
 }
+/* V82: únicamente el texto desplegado de Información importante. */
+#mptPassengerModal .passenger-modal__important > p {
+  color: #ffffff !important;
+}
+

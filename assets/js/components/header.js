@@ -2,7 +2,10 @@ class MyCuscoTripHeader {
   constructor() {
     this.header = document.querySelector(".header");
     this.mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+    this.nav = document.querySelector(".nav");
     this.navMenu = document.querySelector(".nav-menu");
+    this.navOverflowItem = document.querySelector(".nav-item--overflow");
+    this.navOverflowMenu = document.querySelector(".nav-dropdown--overflow");
     this.navLinks = document.querySelectorAll(".nav-menu a");
     this.dropdownItems = document.querySelectorAll(".nav-item--dropdown");
 
@@ -16,6 +19,7 @@ class MyCuscoTripHeader {
     this.mobileBreakpoint = 1120;
     this.dropdownTimers = new WeakMap();
     this.slugMapCache = new Map();
+    this.overflowFrame = null;
 
     this.init();
   }
@@ -25,6 +29,10 @@ class MyCuscoTripHeader {
     this.handleScroll();
     this.updateActiveLink();
     this.initializeLanguage();
+    this.queueDesktopOverflowSync();
+    window.setTimeout(() => this.queueDesktopOverflowSync(), 250);
+    window.setTimeout(() => this.queueDesktopOverflowSync(), 700);
+    document.fonts?.ready?.then(() => this.queueDesktopOverflowSync()).catch(() => {});
   }
 
   setupEventListeners() {
@@ -318,7 +326,91 @@ class MyCuscoTripHeader {
     }
   }
 
+  queueDesktopOverflowSync() {
+    if (this.overflowFrame) window.cancelAnimationFrame(this.overflowFrame);
+    this.overflowFrame = window.requestAnimationFrame(() => {
+      this.overflowFrame = null;
+      this.syncDesktopOverflow();
+    });
+  }
+
+  syncDesktopOverflow() {
+    if (!this.nav || !this.navMenu || !this.navOverflowItem || !this.navOverflowMenu) return;
+
+    const primaryItems = Array.from(this.navMenu.children).filter((item) => item !== this.navOverflowItem);
+    primaryItems.forEach((item) => item.classList.remove("is-overflow-hidden"));
+    this.navOverflowItem.classList.remove("is-active", "is-dropdown-open", "is-open");
+    this.navOverflowItem.setAttribute("aria-hidden", "true");
+    this.navOverflowMenu.innerHTML = "";
+
+    if (window.innerWidth < this.mobileBreakpoint) return;
+
+    const availableWidth = Math.floor(this.nav.getBoundingClientRect().width);
+    if (!availableWidth) return;
+
+    this.navOverflowItem.classList.add("is-active");
+    this.navOverflowItem.setAttribute("aria-hidden", "false");
+
+    const hiddenItems = [];
+    const overflows = () => this.navMenu.scrollWidth > availableWidth + 1;
+
+    for (let index = primaryItems.length - 1; index >= 0 && overflows(); index -= 1) {
+      const item = primaryItems[index];
+      item.classList.add("is-overflow-hidden");
+      hiddenItems.unshift(item);
+    }
+
+    if (!hiddenItems.length) {
+      this.navOverflowItem.classList.remove("is-active");
+      this.navOverflowItem.setAttribute("aria-hidden", "true");
+      return;
+    }
+
+    this.renderDesktopOverflowMenu(hiddenItems);
+  }
+
+  renderDesktopOverflowMenu(hiddenItems) {
+    if (!this.navOverflowMenu) return;
+    const fragment = document.createDocumentFragment();
+
+    hiddenItems.forEach((item) => {
+      const toggle = item.querySelector(":scope > .nav-dropdown-toggle, :scope > a");
+      const label = toggle?.querySelector("span")?.textContent?.trim() || toggle?.textContent?.trim() || "";
+      const href = toggle?.getAttribute("href") || "#";
+
+      const heading = document.createElement("li");
+      heading.className = "nav-overflow__heading";
+      const headingLink = document.createElement("a");
+      headingLink.href = href;
+      headingLink.textContent = label;
+      if (toggle?.classList.contains("active")) headingLink.classList.add("active");
+      headingLink.addEventListener("click", (event) => this.handleOverflowLinkClick(event));
+      heading.appendChild(headingLink);
+      fragment.appendChild(heading);
+
+      item.querySelectorAll(":scope > .nav-dropdown > li > a").forEach((sourceLink) => {
+        const subItem = document.createElement("li");
+        subItem.className = "nav-overflow__subitem";
+        const subLink = sourceLink.cloneNode(true);
+        subLink.addEventListener("click", (event) => this.handleOverflowLinkClick(event));
+        subItem.appendChild(subLink);
+        fragment.appendChild(subItem);
+      });
+    });
+
+    this.navOverflowMenu.appendChild(fragment);
+  }
+
+  handleOverflowLinkClick(event) {
+    const link = event.currentTarget;
+    const href = link.getAttribute("href") || "";
+    if (href === "#") event.preventDefault();
+    this.closeDropdown(this.navOverflowItem);
+  }
+
   handleResize() {
+    this.queueDesktopOverflowSync();
+
     if (window.innerWidth >= this.mobileBreakpoint) {
       this.closeMobileMenu();
 
