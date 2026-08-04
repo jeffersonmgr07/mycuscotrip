@@ -677,3 +677,54 @@ body.coupon-popup-open {
     opacity: 0.1 !important;
   }
 }
+
+
+/* V8.3 - WhatsApp del popup: código de país + número en una sola línea */
+#couponPopup .coupon-popup__phone-row {
+  display: grid !important;
+  grid-template-columns: 112px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+
+#couponPopup .coupon-popup__phone-row select,
+#couponPopup .coupon-popup__phone-row input {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 43px !important;
+  border: 1px solid rgba(10, 58, 38, 0.14) !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  padding: 10px 12px !important;
+  color: #172b27 !important;
+  font: inherit !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+#couponPopup .coupon-popup__phone-row select {
+  padding-right: 28px !important;
+  cursor: pointer !important;
+}
+
+#couponPopup .coupon-popup__phone-row select:focus,
+#couponPopup .coupon-popup__phone-row input:focus {
+  border-color: #e609a2 !important;
+  box-shadow: 0 0 0 4px rgba(230, 9, 162, 0.13) !important;
+}
+
+@media (max-width: 720px) {
+  #couponPopup .coupon-popup__phone-row {
+    grid-template-columns: 98px minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  #couponPopup .coupon-popup__phone-row select,
+  #couponPopup .coupon-popup__phone-row input {
+    min-height: 38px !important;
+    padding: 8px 10px !important;
+    border-radius: 11px !important;
+    font-size: 0.76rem !important;
+  }
+}

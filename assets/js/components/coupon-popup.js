@@ -99,6 +99,7 @@
       if (document.getElementById("couponPopup")) {
         this.popup = document.getElementById("couponPopup");
         this.form = this.popup?.querySelector("form") || null;
+        this.populateCountryDialCodes();
         return;
       }
 
@@ -144,9 +145,27 @@
                 <input type="text" name="name" autocomplete="name" required minlength="2" />
               </label>
 
-              <label>
+              <label class="coupon-popup__whatsapp-field">
                 <span>${this.escapeHtml(this.t("coupon.whatsapp", "WhatsApp"))}</span>
-                <input type="tel" name="whatsapp" autocomplete="tel" required inputmode="tel" />
+                <div class="coupon-popup__phone-row">
+                  <select
+                    name="whatsappCountryCode"
+                    data-coupon-country-code
+                    autocomplete="tel-country-code"
+                    aria-label="${this.escapeHtml(this.t("coupon.countryCode", "Código de país"))}"
+                    required
+                  >
+                    <option value="+51">+51 · Perú</option>
+                  </select>
+                  <input
+                    type="tel"
+                    name="whatsappNumber"
+                    autocomplete="tel-national"
+                    required
+                    inputmode="tel"
+                    placeholder="${this.escapeHtml(this.t("coupon.phoneNumber", "Número"))}"
+                  />
+                </div>
               </label>
 
               <label>
@@ -165,6 +184,50 @@
       document.body.appendChild(wrapper);
       this.popup = wrapper;
       this.form = wrapper.querySelector("form");
+      this.populateCountryDialCodes();
+    }
+
+    getCountriesUrl() {
+      const script = Array.from(document.scripts).find((item) =>
+        String(item.src || "").includes("/assets/js/components/coupon-popup.js")
+      );
+
+      if (script?.src) {
+        return new URL("../../data/countries.json", script.src).href;
+      }
+
+      const basePath = window.location.hostname.includes("github.io")
+        ? `/${window.location.pathname.split("/").filter(Boolean)[0] || ""}`
+        : "";
+      return `${basePath}/assets/data/countries.json`;
+    }
+
+    async populateCountryDialCodes() {
+      const select = this.popup?.querySelector("[data-coupon-country-code]");
+      if (!select || select.dataset.populated === "true") return;
+
+      const currentValue = select.value || "+51";
+
+      try {
+        const response = await fetch(this.getCountriesUrl(), { cache: "force-cache" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const countries = await response.json();
+        if (!Array.isArray(countries) || !countries.length) return;
+
+        select.innerHTML = countries.map((country) => {
+          const dialCode = String(country?.dialCode || "").trim();
+          const name = String(country?.name || country?.code || "").trim();
+          if (!dialCode) return "";
+          return `<option value="${this.escapeHtml(dialCode)}">${this.escapeHtml(`${dialCode} · ${name}`)}</option>`;
+        }).join("");
+
+        select.value = currentValue;
+        if (!select.value) select.value = "+51";
+        select.dataset.populated = "true";
+      } catch (error) {
+        console.warn("No se pudo cargar la lista de códigos de país del cupón:", error);
+      }
     }
 
     bindEvents() {
@@ -244,9 +307,13 @@
       if (!this.form) return;
 
       const formData = new FormData(this.form);
+      const whatsappCountryCode = String(formData.get("whatsappCountryCode") || "+51").trim();
+      const whatsappNumber = String(formData.get("whatsappNumber") || "").trim();
       const payload = {
         name: String(formData.get("name") || "").trim(),
-        whatsapp: String(formData.get("whatsapp") || "").trim(),
+        whatsappCountryCode,
+        whatsappNumber,
+        whatsapp: `${whatsappCountryCode}${whatsappNumber.replace(/\D/g, "")}`,
         email: String(formData.get("email") || "").trim(),
         couponCode: this.options.couponCode,
         requestedCouponLabel: this.t("coupon.requestedLabel", "hasta 15%"),

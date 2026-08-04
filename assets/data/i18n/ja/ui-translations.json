@@ -414,5 +414,7 @@
   "nav.howToGetMachuPicchu": "マチュピチュへの行き方",
   "nav.faq": "よくある質問",
   "cards.comingSoon": "近日公開",
-  "cards.askAvailability": "空き状況を問い合わせる"
+  "cards.askAvailability": "空き状況を問い合わせる",
+  "coupon.countryCode": "国番号",
+  "coupon.phoneNumber": "電話番号"
 }

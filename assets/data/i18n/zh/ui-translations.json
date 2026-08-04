@@ -414,5 +414,7 @@
   "nav.howToGetMachuPicchu": "如何前往马丘比丘",
   "nav.faq": "常见问题",
   "cards.comingSoon": "即将推出",
-  "cards.askAvailability": "咨询可用日期"
+  "cards.askAvailability": "咨询可用日期",
+  "coupon.countryCode": "国家/地区代码",
+  "coupon.phoneNumber": "号码"
 }

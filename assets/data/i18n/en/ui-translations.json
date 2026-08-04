@@ -447,5 +447,7 @@
   "nav.faq": "Frequently Asked Questions",
   "cards.comingSoon": "Coming soon",
   "cards.askAvailability": "Ask about availability",
-  "product.couponFixedDiscountApplied": "Coupon {code} applied: {currency} {amount} discount."
+  "product.couponFixedDiscountApplied": "Coupon {code} applied: {currency} {amount} discount.",
+  "coupon.countryCode": "Country code",
+  "coupon.phoneNumber": "Number"
 }

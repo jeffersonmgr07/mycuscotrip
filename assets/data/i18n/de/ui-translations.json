@@ -414,5 +414,7 @@
   "nav.howToGetMachuPicchu": "Anreise nach Machu Picchu",
   "nav.faq": "Häufige Fragen",
   "cards.comingSoon": "Demnächst",
-  "cards.askAvailability": "Verfügbarkeit anfragen"
+  "cards.askAvailability": "Verfügbarkeit anfragen",
+  "coupon.countryCode": "Ländervorwahl",
+  "coupon.phoneNumber": "Nummer"
 }
