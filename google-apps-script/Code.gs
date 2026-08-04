@@ -1,6 +1,6 @@
 /*
 My Cusco Trip - Backend ligero para Google Apps Script
-Versión: 2026-08-03-v4.0-cupones-google-sheets-48h
+Versión: 2026-08-03-v4.1-cupones-validacion-ui-fix
 
 Qué hace:
 - Recibe leads del popup de cupón.
@@ -29,6 +29,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
+const BACKEND_VERSION = '2026-08-03-v4.1-cupones-validacion-ui-fix';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -83,34 +84,95 @@ function setupCouponSystem() {
     COUPON_MAX_USES: '1'
   }, false);
 
+  repairCouponSheetSchema_();
   setupSheets();
   const timeZone = getCouponTimeZone_();
   SpreadsheetApp.openById(SPREADSHEET_ID).setSpreadsheetTimeZone(timeZone);
-  seedPublicCoupon_();
+  const publicCoupon = upsertPublicCoupon_();
   return {
     ok: true,
+    version: BACKEND_VERSION,
     message: 'Sistema de cupones configurado correctamente.',
     sheet: SHEETS.COUPONS,
     timeZone: timeZone,
+    publicCoupon: publicCoupon,
     popupTtlHours: number_(getProp_('COUPON_TTL_HOURS', '48'), 48),
     graceUntilEndOfDay: boolean_(getProp_('COUPON_GRACE_END_OF_DAY', 'true'), true)
   };
 }
 
-function ensureHeaders_(sh, headers) {
-  const lastColumn = Math.max(sh.getLastColumn(), headers.length);
-  const current = sh.getLastRow() ? sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(function(h) { return String(h || '').trim(); }) : [];
-  let changed = false;
-  headers.forEach(function(header) {
-    if (current.indexOf(header) === -1) {
-      current.push(header);
-      changed = true;
-    }
-  });
-  if (changed || !current[0]) {
-    sh.getRange(1, 1, 1, current.length).setValues([current]);
+/**
+ * Corrige una migración defectuosa de encabezados de la hoja Cupones.
+ * La versión anterior podía dejar columnas vacías entre los encabezados
+ * antiguos y los nuevos. Esta función reconstruye la hoja con el orden
+ * canónico sin eliminar registros.
+ */
+function repairCouponSheetSchema_() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sh = ss.getSheetByName(SHEETS.COUPONS);
+  if (!sh) {
+    sh = ss.insertSheet(SHEETS.COUPONS);
+    sh.getRange(1, 1, 1, HEADERS.Cupones.length).setValues([HEADERS.Cupones]);
     sh.setFrozenRows(1);
+    return { ok: true, rows: 0, repaired: false };
   }
+
+  const lastRow = sh.getLastRow();
+  const lastCol = sh.getLastColumn();
+  if (lastRow < 1 || lastCol < 1) {
+    sh.clearContents();
+    sh.getRange(1, 1, 1, HEADERS.Cupones.length).setValues([HEADERS.Cupones]);
+    sh.setFrozenRows(1);
+    return { ok: true, rows: 0, repaired: false };
+  }
+
+  const values = sh.getRange(1, 1, lastRow, lastCol).getValues();
+  const existingHeaders = values[0].map(function(value) { return clean_(value); });
+  const headerPositions = {};
+  existingHeaders.forEach(function(header, index) {
+    if (header && headerPositions[header] == null) headerPositions[header] = index;
+  });
+
+  const legacyCount = 14;
+  const dataRows = values.slice(1).map(function(row) {
+    return HEADERS.Cupones.map(function(header, canonicalIndex) {
+      const mappedIndex = headerPositions[header];
+      let value = mappedIndex == null ? '' : row[mappedIndex];
+
+      // Recupera datos escritos en las posiciones 15-25 cuando los nombres
+      // de sus encabezados quedaron desplazados más a la derecha.
+      if ((value === '' || value == null) && canonicalIndex >= legacyCount && canonicalIndex < row.length) {
+        value = row[canonicalIndex];
+      }
+      return value == null ? '' : value;
+    });
+  });
+
+  const alreadyCanonical = existingHeaders.length === HEADERS.Cupones.length &&
+    HEADERS.Cupones.every(function(header, index) { return existingHeaders[index] === header; });
+  if (alreadyCanonical) return { ok: true, rows: dataRows.length, repaired: false };
+
+  sh.clearContents();
+  sh.getRange(1, 1, 1, HEADERS.Cupones.length).setValues([HEADERS.Cupones]);
+  if (dataRows.length) sh.getRange(2, 1, dataRows.length, HEADERS.Cupones.length).setValues(dataRows);
+  sh.setFrozenRows(1);
+  return { ok: true, rows: dataRows.length, repaired: true };
+}
+
+function ensureHeaders_(sh, headers) {
+  const currentWidth = Math.max(1, sh.getLastColumn());
+  const current = sh.getLastRow()
+    ? sh.getRange(1, 1, 1, currentWidth).getValues()[0].map(function(h) { return String(h || '').trim(); })
+    : [];
+
+  while (current.length && !current[current.length - 1]) current.pop();
+  headers.forEach(function(header) {
+    if (current.indexOf(header) === -1) current.push(header);
+  });
+
+  if (!current.length) current.push.apply(current, headers);
+  sh.getRange(1, 1, 1, current.length).setValues([current]);
+  sh.setFrozenRows(1);
 }
 
 function setupScriptPropertiesExample() {
@@ -194,9 +256,12 @@ function testCreatePayPalOrder() {
 
 function doGet(e) {
   try {
-    const action = String(e && e.parameter && e.parameter.action || 'health').trim();
-    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script', time: new Date().toISOString() });
-    if (action === 'lookupReservation') return json_(lookupReservation_(e.parameter || {}));
+    const params = e && e.parameter || {};
+    const action = String(params.action || 'health').trim();
+    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script', version: BACKEND_VERSION, time: new Date().toISOString() });
+    if (action === 'couponHealth') return json_(couponHealth_(params));
+    if (action === 'validateCoupon') return json_(validateCoupon_(params));
+    if (action === 'lookupReservation') return json_(lookupReservation_(params));
     return json_({ ok: false, error: 'Acción GET no reconocida.' });
   } catch (err) {
     return json_({ ok: false, error: getErrorMessage_(err) });
@@ -289,6 +354,7 @@ function validateCoupon_(p) {
   const code = normalizeCode_(p.couponCode || p.code);
   if (!code) return couponInvalid_(locale, 'COUPON_EMPTY');
 
+  if (isPublicCouponCode_(code)) ensurePublicCouponReady_();
   const coupon = findCoupon_(code);
   if (!coupon) return couponInvalid_(locale, 'COUPON_NOT_FOUND', true);
 
@@ -1313,30 +1379,111 @@ function getReservationOriginPage_(row) {
 }
 
 function seedPublicCoupon_() {
-  const code = normalizeCode_(getProp_('PUBLIC_COUPON_CODE', 'BETSWELCOME05'));
-  if (!code || findCoupon_(code)) return;
+  return upsertPublicCoupon_();
+}
 
+function getPublicCouponCode_() {
+  return normalizeCode_(getProp_('PUBLIC_COUPON_CODE', 'BETSWELCOME05'));
+}
+
+function isPublicCouponCode_(code) {
+  return normalizeCode_(code) === getPublicCouponCode_();
+}
+
+function ensurePublicCouponReady_() {
+  const code = getPublicCouponCode_();
+  if (!code) return null;
+  const existing = findCoupon_(code);
+  if (!existing) return upsertPublicCoupon_();
+
+  const row = existing.row;
   const percent = Math.max(0, number_(getProp_('PUBLIC_COUPON_PERCENT', '5'), 5));
-  appendCouponRecord_({
+  const status = normalizeText_(row.Estado);
+  const active = row.Activo === '' || row.Activo == null ? true : boolean_(row.Activo, true);
+  const needsRepair = !active || status.indexOf('expir') >= 0 || status.indexOf('canje') >= 0 ||
+    normalizeCouponType_(row.Tipo || 'percent') !== 'percent' ||
+    number_(row.Valor || row.Porcentaje, 0) !== percent || clean_(row.VigenteHasta) !== '';
+
+  if (needsRepair) return upsertPublicCoupon_();
+  return {
     couponCode: code,
-    status: 'Vigente',
     type: 'percent',
     value: percent,
     currency: 'USD',
-    active: true,
-    startsAt: new Date().toISOString(),
-    expiresAt: '',
-    maxUses: 0,
-    uses: 0,
-    name: 'Cupón público del popup',
-    whatsapp: '',
-    email: '',
-    page: '/',
-    locale: 'es',
-    source: 'public_popup',
-    createdAt: new Date().toISOString(),
-    notes: 'Cupón público inicial. MaxUsos 0 significa uso ilimitado.'
+    status: row.Estado || 'Vigente'
+  };
+}
+
+function upsertPublicCoupon_() {
+  const code = getPublicCouponCode_();
+  if (!code) return null;
+  const percent = Math.max(0, number_(getProp_('PUBLIC_COUPON_PERCENT', '5'), 5));
+  const existing = findCoupon_(code);
+
+  if (existing) {
+    updateRowFields_(existing, {
+      Estado: 'Vigente',
+      Porcentaje: percent,
+      VigenteHasta: '',
+      Tipo: 'percent',
+      Valor: percent,
+      Moneda: 'USD',
+      Activo: true,
+      VigenteDesde: existing.row.VigenteDesde || new Date(),
+      MaxUsos: 0,
+      CorreoVinculado: '',
+      ReservadoHasta: '',
+      Notas: 'Cupón público del popup. Uso ilimitado; no caduca mientras permanezca activo.'
+    });
+  } else {
+    appendCouponRecord_({
+      couponCode: code,
+      status: 'Vigente',
+      type: 'percent',
+      value: percent,
+      currency: 'USD',
+      active: true,
+      startsAt: new Date().toISOString(),
+      expiresAt: '',
+      maxUses: 0,
+      uses: 0,
+      name: 'Cupón público del popup',
+      whatsapp: '',
+      email: '',
+      page: '/',
+      locale: 'es',
+      source: 'public_popup',
+      createdAt: new Date().toISOString(),
+      notes: 'Cupón público del popup. Uso ilimitado; no caduca mientras permanezca activo.'
+    });
+  }
+
+  return {
+    couponCode: code,
+    type: 'percent',
+    value: percent,
+    currency: 'USD',
+    status: 'Vigente'
+  };
+}
+
+function couponHealth_(params) {
+  repairCouponSheetSchema_();
+  ensurePublicCouponReady_();
+  const code = normalizeCode_(params.couponCode || params.code || getPublicCouponCode_());
+  const validation = validateCoupon_({
+    couponCode: code,
+    subtotal: number_(params.subtotal, 399),
+    currency: params.currency || 'USD',
+    locale: params.locale || 'es'
   });
+  return {
+    ok: true,
+    version: BACKEND_VERSION,
+    publicCouponCode: getPublicCouponCode_(),
+    checkedCode: code,
+    validation: validation
+  };
 }
 
 function appendCouponRecord_(record) {

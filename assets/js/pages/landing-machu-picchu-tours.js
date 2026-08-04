@@ -15,6 +15,8 @@
     mainProduct: { selected: true, date: null, mealOptionId: "no-meal" },
     addons: {},
     coupon: null,
+    couponDraftCode: "",
+    couponFeedback: { message: "", type: "" },
     upsellModalShown: false,
     restoredFromDraft: false,
     pickers: {},
@@ -243,7 +245,8 @@
         children: state.children,
         mainProduct: state.mainProduct,
         addons: state.addons,
-        coupon: state.coupon
+        coupon: state.coupon,
+        couponDraftCode: state.couponDraftCode
       };
       localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot));
     } catch (error) {
@@ -266,7 +269,8 @@
       Object.keys(snapshot.addons || {}).forEach((id) => {
         if (state.addons[id]) state.addons[id] = { ...state.addons[id], ...snapshot.addons[id] };
       });
-      if (snapshot.coupon) state.coupon = snapshot.coupon;
+      if (snapshot.coupon) { state.coupon = snapshot.coupon; state.couponDraftCode = snapshot.coupon.code || ""; }
+      else if (snapshot.couponDraftCode) state.couponDraftCode = snapshot.couponDraftCode;
       state.restoredFromDraft = true;
     } catch (error) {
       /* corrupted draft, ignore */
@@ -495,20 +499,23 @@
   // ---------- Coupon module ----------
 
   function setCouponMessage(message, type) {
+    state.couponFeedback = { message: message || "", type: type || "" };
     const el = document.getElementById("mptCouponMessage");
     if (!el) return;
-    el.textContent = message || "";
+    el.textContent = state.couponFeedback.message;
     el.classList.remove("is-error", "is-success");
-    if (type === "error") el.classList.add("is-error");
-    if (type === "success") el.classList.add("is-success");
+    if (state.couponFeedback.type === "error") el.classList.add("is-error");
+    if (state.couponFeedback.type === "success") el.classList.add("is-success");
   }
 
   async function applyCoupon(rawCode) {
     const code = String(rawCode || "").trim().toUpperCase();
+    state.couponDraftCode = code;
+
     if (!code) {
       state.coupon = null;
-      setCouponMessage("Ingresa un código de descuento.", "error");
       renderSummary();
+      setCouponMessage("Ingresa un código de descuento.", "error");
       return;
     }
 
@@ -519,14 +526,18 @@
         throw new Error("No pudimos validar el cupón en este momento. Inténtalo nuevamente.");
       }
 
-      const summary = calculateSummary();
-      const result = await withTimeout(window.MyCuscoTripApiClient.validateCoupon({
+      const summary = calculateBookingSummary();
+      const validationPromise = window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
         subtotal: Number(summary.subtotal || 0),
         currency: summary.currency || state.data.currency || "USD",
         locale: "es",
         page: window.location.pathname
-      }), 8000);
+      });
+      const result = await Promise.race([
+        validationPromise,
+        new Promise((_, reject) => window.setTimeout(() => reject(new Error("La validación tardó demasiado. Inténtalo nuevamente.")), 12000))
+      ]);
 
       if (!result || result.mock) {
         throw new Error("No pudimos validar el cupón en este momento. Inténtalo nuevamente.");
@@ -534,8 +545,8 @@
 
       if (!result.valid) {
         state.coupon = null;
-        setCouponMessage(result.message || "Código no válido o inactivo.", "error");
         renderSummary();
+        setCouponMessage(result.message || "Código no válido o inactivo.", "error");
         trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: result.reason || "" });
         return;
       }
@@ -548,9 +559,10 @@
         currency: result.currency || summary.currency || state.data.currency || "USD",
         expiresAt: result.expiresAt || ""
       };
+      state.couponDraftCode = state.coupon.code;
 
-      setCouponMessage(`Cupón aplicado: ${result.label || state.coupon.code}.`, "success");
       renderSummary();
+      setCouponMessage(`Cupón aplicado: ${result.label || state.coupon.code}.`, "success");
       trackLandingEvent("coupon_applied", {
         coupon_code: state.coupon.code,
         coupon_valid: true,
@@ -560,17 +572,16 @@
     } catch (error) {
       console.error("Coupon validation failed:", error);
       state.coupon = null;
-      setCouponMessage(error?.message || "No pudimos validar el cupón en este momento. Inténtalo nuevamente.", "error");
       renderSummary();
+      setCouponMessage(error?.message || "No pudimos validar el cupón en este momento. Inténtalo nuevamente.", "error");
       trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: "backend_unavailable" });
     }
   }
 
   function removeCoupon() {
     state.coupon = null;
-    const input = document.getElementById("mptCouponInput");
-    if (input) input.value = "";
-    setCouponMessage("", "");
+    state.couponDraftCode = "";
+    state.couponFeedback = { message: "", type: "" };
     renderSummary();
   }
 
@@ -811,11 +822,11 @@
       <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Aún no has agregado experiencias.</p>'}</div>
 
       <div class="mpt-coupon">
-        <input id="mptCouponInput" type="text" placeholder="Código de descuento" aria-label="Código de descuento" value="${escapeHtml(state.coupon?.code || "")}"/>
+        <input id="mptCouponInput" type="text" placeholder="Código de descuento" aria-label="Código de descuento" value="${escapeHtml(state.coupon?.code || state.couponDraftCode || "")}"/>
         <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Aplicar</button>
       </div>
       ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Quitar cupón</button>` : ""}
-      <p class="mpt-coupon-message" id="mptCouponMessage"></p>
+      <p class="mpt-coupon-message${state.couponFeedback?.type === "error" ? " is-error" : state.couponFeedback?.type === "success" ? " is-success" : ""}" id="mptCouponMessage">${escapeHtml(state.couponFeedback?.message || "")}</p>
 
       <div class="mpt-summary__totals">
         <div class="mpt-summary__totals-row"><span>Subtotal</span><strong>${formatCurrency(summary.subtotal, currency)}</strong></div>

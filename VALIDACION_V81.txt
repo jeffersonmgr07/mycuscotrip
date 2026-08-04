@@ -1,0 +1,34 @@
+VALIDACIÓN V8.1
+
+1. Sintaxis JavaScript
+- landing-machu-picchu-tours.js: OK
+- landing-machu-picchu-tours-en.js: OK
+- landing-machu-picchu-tours-pt.js: OK
+- Google Apps Script Code.gs: OK
+
+2. Prueba de migración de hoja
+- Se simuló la estructura V8 con encabezados desplazados.
+- setupCouponSystem() reconstruyó 25 encabezados canónicos sin perder registros.
+
+3. Cupón público
+- Código: BETSWELCOME05
+- Tipo: percent
+- Valor: 5
+- Subtotal probado: USD 399.00
+- Descuento devuelto: USD 19.95
+- Resultado: valid=true
+
+4. Cupón personal
+- Se generó un código único de prueba.
+- Tipo: percent
+- Valor: 15
+- Subtotal probado: USD 1,000.00
+- Descuento devuelto: USD 150.00
+- Vigencia: 48 horas más gracia hasta el final del día.
+- Resultado: valid=true
+
+5. Interfaz landing
+- Se eliminó la llamada inexistente calculateSummary().
+- Se usa calculateBookingSummary().
+- El código escrito se conserva cuando el backend rechaza o no responde.
+- Los mensajes de éxito/error se conservan después de reconstruir el resumen.
