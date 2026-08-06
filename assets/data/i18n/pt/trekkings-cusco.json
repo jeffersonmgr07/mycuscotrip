@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-06",
   "sourceFile": "assets/data/trekkings-cusco.json",
   "scope": "cusco-trekkings",
-  "description": "Catálogo futuro separado de trekkings en Cusco. Preparado para All Experiences, fichas de producto y filtros, sin mezclarse con paquetes dinámicos.",
+  "description": "Catálogo futuro separado de trekkings em Cusco. Preparado para All Experiences, fichas de produto e filtros, sem se misturar com pacotes dinâmicos.",
   "currency": "USD",
   "status": "draft-ready",
   "productKind": "trekking",
@@ -92,22 +92,22 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de pasajeros."
+        "notes": "Sujeito à disponibilidade oficial e aos dados completos dos passageiros."
       },
       "accommodationType": [
-        "campamento o alojamiento según operación"
+        "acampamento ou hospedagem conforme a operação"
       ],
       "season": "Todo el año sujeto a clima y disponibilidad",
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva.",
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva.",
         "bookingNotice": "A reserva está sujeita à disponibilidade oficial da Trilha Inca e à validação dos dados dos passageiros."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -141,7 +141,7 @@
       "status": "published",
       "seo": {
         "title": "Camino Inca 2D/1N | My Cusco Trip",
-        "description": "Versión corta del Camino Inca para conectar trekking, historia y Machu Picchu en una ruta compacta."
+        "description": "Versão curta do Caminho Inca para conectar trekking, história e Machu Picchu em uma rota compacta."
       },
       "faq": [
         {
@@ -256,7 +256,7 @@
       "permits": {
         "required": true,
         "type": "Camino Inca / Red de Caminos Inca",
-        "notes": "Sujeto a disponibilidad oficial y datos completos de pasajeros."
+        "notes": "Sujeito à disponibilidade oficial e aos dados completos dos passageiros."
       },
       "accommodationType": [
         "campamento"
@@ -265,13 +265,13 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva.",
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva.",
         "bookingNotice": "A reserva está sujeita à disponibilidade oficial da Trilha Inca e à validação dos dados dos passageiros."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -306,7 +306,7 @@
       "status": "published",
       "seo": {
         "title": "Camino Inca Clássico 4D/3N | My Cusco Trip",
-        "description": "Ruta clásica hacia Machu Picchu por antiguos caminos incas, campamentos y sitios arqueológicos."
+        "description": "Rota clássica rumo a Machu Picchu por antigos caminhos incas, acampamentos e sítios arqueológicos."
       },
       "faq": [
         {
@@ -430,7 +430,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "campamento",
@@ -440,12 +440,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -479,7 +479,7 @@
       "status": "published",
       "seo": {
         "title": "Salkantay Trek 4D/3N | My Cusco Trip",
-        "description": "Ruta de aventura hacia Machu Picchu con paisajes de montaña, cambios de ecosistema y caminatas exigentes."
+        "description": "Rota de aventura rumo a Machu Picchu com paisagens de montanha, mudanças de ecossistema e caminhadas exigentes."
       },
       "faq": [
         {
@@ -603,7 +603,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "campamento",
@@ -613,12 +613,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -652,7 +652,7 @@
       "status": "published",
       "seo": {
         "title": "Salkantay Trek 5D/4N | My Cusco Trip",
-        "description": "Versión más completa del Salkantay Trek con mejor ritmo para aclimatación y conexión con Machu Picchu."
+        "description": "Versão mais completa do Salkantay Trek com melhor ritmo para aclimatação e conexão com Machu Picchu."
       },
       "faq": [
         {
@@ -779,7 +779,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "campamento"
@@ -788,12 +788,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -826,7 +826,7 @@
       "status": "published",
       "seo": {
         "title": "Ausangate Trek | My Cusco Trip",
-        "description": "Trekking de alta montaña alrededor del Ausangate, ideal para viajeros con experiencia y buena aclimatación."
+        "description": "Trekking de alta montanha ao redor do Ausangate, ideal para viajantes com experiência e boa aclimatação."
       },
       "faq": [
         {
@@ -953,7 +953,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "campamento"
@@ -962,12 +962,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -1001,7 +1001,7 @@
       "status": "published",
       "seo": {
         "title": "Ausangate + Vinicunca | My Cusco Trip",
-        "description": "Ruta de aventura que combina paisajes del Ausangate con la Montanha Colorida."
+        "description": "Rota de aventura que combina paisagens do Ausangate com a Montanha Colorida."
       },
       "faq": [
         {
@@ -1125,7 +1125,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "alojamiento básico"
@@ -1134,12 +1134,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -1173,7 +1173,7 @@
       "status": "published",
       "seo": {
         "title": "Inca Jungle 3D/2N | My Cusco Trip",
-        "description": "Ruta activa hacia Machu Picchu con combinación de aventura, naturaleza y tramos de caminata."
+        "description": "Rota ativa rumo a Machu Picchu combinando aventura, natureza e trechos de caminhada."
       },
       "faq": [
         {
@@ -1293,7 +1293,7 @@
       "permits": {
         "required": false,
         "type": "No definido",
-        "notes": "Sujeto a operación, clima y disponibilidad."
+        "notes": "Sujeito à operação, ao clima e à disponibilidade."
       },
       "accommodationType": [
         "alojamiento básico"
@@ -1302,12 +1302,12 @@
       "availability": {
         "mode": "on_request",
         "requiresManualConfirmation": true,
-        "notes": "Confirmar disponibilidad antes de cobrar reserva."
+        "notes": "Confirmar disponibilidade antes de cobrar a reserva."
       },
       "operationalNotes": [
         "Requiere evaluación básica de condición física.",
         "Itinerario y campamentos pueden variar por clima, permisos o regulación local.",
-        "Precios finales se confirmarán según fecha, tamaño de grupo y servicios incluidos."
+        "Os preços finais serão confirmados conforme a data, o tamanho do grupo e os serviços incluídos."
       ],
       "images": {
         "cover": "./assets/img/placeholder/experience.jpg",
@@ -1341,7 +1341,7 @@
       "status": "published",
       "seo": {
         "title": "Inca Jungle 4D/3N | My Cusco Trip",
-        "description": "Versión más completa del Inca Jungle con más tiempo para actividades de aventura y conexión con Machu Picchu."
+        "description": "Versão mais completa do Inca Jungle com mais tempo para atividades de aventura e conexão com Machu Picchu."
       },
       "faq": [
         {

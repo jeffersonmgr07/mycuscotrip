@@ -314,10 +314,10 @@
       "days": 3,
       "nights": 2,
       "typeLabel": "3 jours / 2 nuits",
-      "badge": "Escapada esencial",
+      "badge": "Escapade essentielle",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Opciones dinámicas para conocer Cusco y Machu Picchu en una escapada corta.",
+      "shortDescription": "Options dynamiques pour découvrir Cusco et Machu Picchu lors d'une courte escapade.",
       "image": "./assets/img/packages/cusco/3d2n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -356,18 +356,18 @@
           "3 dias 2 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 3 jours / 2 nuits",
-      "recommendedTitle": "Escapada esencial a Cusco y Machu Picchu",
+      "commercialLabel": "Forfait flexible 3 jours / 2 nuits",
+      "recommendedTitle": "Escapade essentielle à Cusco et Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Machu Picchu",
-        "Expérience cultural"
+        "Expérience culturelle"
       ],
       "highlights": [
-        "Ideal para viajes cortos",
-        "Opciones Journée complète u Overnight según horario",
-        "Ruta compacta y flexible"
+        "Idéal pour les voyages courts",
+        "Options Journée complète ou Overnight selon l'horaire",
+        "Itinéraire compact et flexible"
       ],
       "seo": {
         "title": "Forfaits Cusco 3 jours / 2 nuits | My Cusco Trip",
@@ -416,10 +416,10 @@
       "days": 4,
       "nights": 3,
       "typeLabel": "4 jours / 3 nuits",
-      "badge": "Más vendido",
+      "badge": "Meilleure vente",
       "featured": true,
       "location": "Cusco / Machu Picchu",
-      "shortDescription": "Combinaciones dinámicas con City Circuit, Machu Picchu y una excursión adicional.",
+      "shortDescription": "Combinaisons dynamiques avec City Circuit, Machu Picchu et une excursion supplémentaire.",
       "image": "./assets/img/packages/cusco/4d3n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -469,19 +469,19 @@
           "machu picchu montaña de colores"
         ]
       },
-      "commercialLabel": "Paquete flexible 4 jours / 3 nuits",
-      "recommendedTitle": "Ruta recomendada Cusco, Vallée Sacrée y Machu Picchu",
+      "commercialLabel": "Forfait flexible 4 jours / 3 nuits",
+      "recommendedTitle": "Circuit recommandé Cusco, Vallée Sacrée et Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "City Circuit",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Humantay o Vinicunca"
+        "Humantay ou Vinicunca"
       ],
       "highlights": [
-        "Más vendido",
-        "Permite naturaleza o aventura",
-        "Buen equilibrio de tiempo y experiencias"
+        "Meilleure vente",
+        "Permet nature ou aventure",
+        "Bon équilibre entre temps et expériences"
       ],
       "seo": {
         "title": "Forfaits Cusco 4 jours / 3 nuits | My Cusco Trip",
@@ -530,10 +530,10 @@
       "days": 5,
       "nights": 4,
       "typeLabel": "5 jours / 4 nuits",
-      "badge": "Recomendado",
+      "badge": "Recommandé",
       "featured": true,
       "location": "Cusco / Vallée Sacrée / Machu Picchu",
-      "shortDescription": "Paquetes flexibles con Cusco, Vallée Sacrée, Machu Picchu y trekking opcional.",
+      "shortDescription": "Forfaits flexibles avec Cusco, Vallée Sacrée, Machu Picchu et trek optionnel.",
       "image": "./assets/img/packages/cusco/5d4n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -587,19 +587,19 @@
           "5 dias 4 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 5 jours / 4 nuits",
-      "recommendedTitle": "Cusco completo con aventura opcional",
+      "commercialLabel": "Forfait flexible 5 jours / 4 nuits",
+      "recommendedTitle": "Cusco complet avec aventure optionnelle",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Montaña o Laguna"
+        "Montagne ou Lagune"
       ],
       "highlights": [
-        "Ritmo cómodo",
-        "Más opciones de excursiones",
-        "Recomendado para primera visita"
+        "Rythme confortable",
+        "Plus d'options d'excursions",
+        "Recommandé pour une première visite"
       ],
       "seo": {
         "title": "Forfaits Cusco 5 jours / 4 nuits | My Cusco Trip",
@@ -648,10 +648,10 @@
       "days": 6,
       "nights": 5,
       "typeLabel": "6 jours / 5 nuits",
-      "badge": "Completo",
+      "badge": "Complet",
       "featured": true,
       "location": "Cusco / Vallée Sacrée / Machu Picchu",
-      "shortDescription": "Combinaciones completas con rutas culturales, Machu Picchu y naturaleza andina.",
+      "shortDescription": "Combinaisons complètes avec circuits culturels, Machu Picchu et nature andine.",
       "image": "./assets/img/packages/cusco/6d5n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -704,19 +704,19 @@
           "6 dias 5 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 6 jours / 5 nuits",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 6 jours / 5 nuits",
+      "commercialLabel": "Forfait flexible 6 jours / 5 nuits",
+      "recommendedTitle": "Circuit complet Cusco et Machu Picchu 6 jours / 5 nuits",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Nature andine"
       ],
       "highlights": [
-        "Más jours para personalizar",
-        "Compatible con rutas culturales y naturales",
-        "Permite una experiencia menos apresurada"
+        "Plus de jours pour personnaliser",
+        "Compatible avec des circuits culturels et naturels",
+        "Permet une expérience moins précipitée"
       ],
       "seo": {
         "title": "Forfaits Cusco 6 jours / 5 nuits | My Cusco Trip",
@@ -765,10 +765,10 @@
       "days": 7,
       "nights": 6,
       "typeLabel": "7 jours / 6 nuits",
-      "badge": "Expérience amplia",
+      "badge": "Expérience étendue",
       "featured": false,
       "location": "Cusco / Vallée Sacrée / Machu Picchu",
-      "shortDescription": "Mayor variedad de combinaciones con cultura, Machu Picchu y hasta dos rutas de naturaleza.",
+      "shortDescription": "Plus grande variété de combinaisons avec culture, Machu Picchu et jusqu'à deux circuits nature.",
       "image": "./assets/img/packages/cusco/7d6n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -824,19 +824,19 @@
           "7 dias 6 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 7 jours / 6 nuits",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 7 jours / 6 nuits",
+      "commercialLabel": "Forfait flexible 7 jours / 6 nuits",
+      "recommendedTitle": "Circuit complet Cusco et Machu Picchu 7 jours / 6 nuits",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Nature andine"
       ],
       "highlights": [
-        "Más jours para personalizar",
-        "Compatible con rutas culturales y naturales",
-        "Permite una experiencia menos apresurada"
+        "Plus de jours pour personnaliser",
+        "Compatible avec des circuits culturels et naturels",
+        "Permet une expérience moins précipitée"
       ],
       "seo": {
         "title": "Forfaits Cusco 7 jours / 6 nuits | My Cusco Trip",
@@ -885,10 +885,10 @@
       "days": 8,
       "nights": 7,
       "typeLabel": "8 jours / 7 nuits",
-      "badge": "Profundo",
+      "badge": "Circuit approfondi",
       "featured": false,
       "location": "Cusco / Vallée Sacrée / Machu Picchu / Ausangate",
-      "shortDescription": "Diseñado para combinar los principales clásicos con rutas naturales y culturales menos saturadas.",
+      "shortDescription": "Conçu pour combiner les principaux classiques avec des circuits nature et culture moins fréquentés.",
       "image": "./assets/img/packages/cusco/8d7n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -945,19 +945,19 @@
           "8 dias 7 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 8 jours / 7 nuits",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 8 jours / 7 nuits",
+      "commercialLabel": "Forfait flexible 8 jours / 7 nuits",
+      "recommendedTitle": "Circuit complet Cusco et Machu Picchu 8 jours / 7 nuits",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Nature andine"
       ],
       "highlights": [
-        "Más jours para personalizar",
-        "Compatible con rutas culturales y naturales",
-        "Permite una experiencia menos apresurada"
+        "Plus de jours pour personnaliser",
+        "Compatible avec des circuits culturels et naturels",
+        "Permet une expérience moins précipitée"
       ],
       "seo": {
         "title": "Forfaits Cusco 8 jours / 7 nuits | My Cusco Trip",
@@ -1009,7 +1009,7 @@
       "badge": "Flexible",
       "featured": false,
       "location": "Cusco / Vallée Sacrée / Machu Picchu / Ausangate",
-      "shortDescription": "Configuración amplia para itinerarios con más descanso, rutas alternativas y upgrades.",
+      "shortDescription": "Configuration élargie pour des itinéraires avec plus de repos, des circuits alternatifs et des surclassements.",
       "image": "./assets/img/packages/cusco/9d8n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -1064,19 +1064,19 @@
           "9 dias 8 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 9 jours / 8 nuits",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 9 jours / 8 nuits",
+      "commercialLabel": "Forfait flexible 9 jours / 8 nuits",
+      "recommendedTitle": "Circuit complet Cusco et Machu Picchu 9 jours / 8 nuits",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Nature andine"
       ],
       "highlights": [
-        "Más jours para personalizar",
-        "Compatible con rutas culturales y naturales",
-        "Permite una experiencia menos apresurada"
+        "Plus de jours pour personnaliser",
+        "Compatible avec des circuits culturels et naturels",
+        "Permet une expérience moins précipitée"
       ],
       "seo": {
         "title": "Forfaits Cusco 9 jours / 8 nuits | My Cusco Trip",
@@ -1125,10 +1125,10 @@
       "days": 10,
       "nights": 9,
       "typeLabel": "10 jours / 9 nuits",
-      "badge": "Gran viaje",
+      "badge": "Grand voyage",
       "featured": false,
       "location": "Cusco / Vallée Sacrée / Machu Picchu / Ausangate",
-      "shortDescription": "La configuración más completa para combinar clásicos, experiencias culturales y rutas naturales.",
+      "shortDescription": "La configuration la plus complète pour combiner classiques, expériences culturelles et circuits nature.",
       "image": "./assets/img/packages/cusco/10d9n/cover.jpg",
       "priceMode": "dynamic_from_selected_itinerary",
       "status": "published",
@@ -1187,19 +1187,19 @@
           "10 dias 9 nuits"
         ]
       },
-      "commercialLabel": "Paquete flexible 10 jours / 9 nuits",
-      "recommendedTitle": "Ruta completa Cusco y Machu Picchu 10 jours / 9 nuits",
+      "commercialLabel": "Forfait flexible 10 jours / 9 nuits",
+      "recommendedTitle": "Circuit complet Cusco et Machu Picchu 10 jours / 9 nuits",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
         "Vallée Sacrée",
         "Machu Picchu",
-        "Naturaleza andina"
+        "Nature andine"
       ],
       "highlights": [
-        "Más jours para personalizar",
-        "Compatible con rutas culturales y naturales",
-        "Permite una experiencia menos apresurada"
+        "Plus de jours pour personnaliser",
+        "Compatible avec des circuits culturels et naturels",
+        "Permet une expérience moins précipitée"
       ],
       "seo": {
         "title": "Forfaits Cusco 10 jours / 9 nuits | My Cusco Trip",

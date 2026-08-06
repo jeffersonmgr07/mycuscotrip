@@ -4,7 +4,7 @@
   "sourceFile": "assets/data/tours.json",
   "targetFile": "assets/data/tours-cusco.json",
   "scope": "cusco-simple-tours",
-  "description": "Passeios simples de Cusco separados del catálogo principal. El precio publicado se calcula para que el neto final estimado después de PayPal y retiro bancario sea igual al doble del costo interno del tour. Los extras no se duplican; solo cubren comisiones de cobro y retiro.",
+  "description": "Tours simples de Cusco separados do catálogo principal. O preço publicado é calculado para que o valor líquido final estimado após o PayPal e o saque bancário seja igual ao dobro do custo interno do tour. Os extras não são duplicados; cobrem apenas as comissões de cobrança e saque.",
   "pricingEngine": {
     "baseCurrency": "PEN",
     "displayCurrency": "USD",
@@ -18,17 +18,17 @@
         "payment_provider_rate"
       ],
       "updatedAt": "2026-05-01",
-      "notes": "Usar 3.75 como tipo de cambio operativo hasta integrar una fuente automática. El tipo de cambio no debe quedar hardcodeado dentro del JS ni dentro de cada tour."
+      "notes": "Usar 3,75 como taxa de câmbio operacional até integrar uma fonte automática. A taxa de câmbio não deve ficar fixa no código (hardcoded) dentro do JS nem dentro de cada tour."
     },
     "tourMarkup": {
       "mode": "target_net",
       "targetNetFormula": "internalCostPEN * 2",
-      "description": "La agencia debe recibir neto en cuenta bancaria el doble del costo interno del tour."
+      "description": "A agência deve receber, em valor líquido, na conta bancária, o dobro do custo interno do tour."
     },
     "extrasMarkup": {
       "mode": "net_cost_only_plus_payment_fees",
       "targetNetFormula": "internalCost",
-      "description": "Los extras, tickets y alimentación no se duplican. Solo se publica el valor necesario para cubrir comisiones y recibir el costo neto indicado."
+      "description": "Os extras, ingressos e alimentação não são duplicados. Publica-se apenas o valor necessário para cobrir as comissões e receber o custo líquido indicado."
     },
     "fees": {
       "paypalPercent": 0.054,
@@ -61,7 +61,7 @@
       "category": "cusco",
       "type": "cultural-tour",
       "typeLabel": "2 h 30 min",
-      "badge": "Nuevo",
+      "badge": "Novo",
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
@@ -82,7 +82,7 @@
       "serviceModes": {
         "group": {
           "enabled": true,
-          "label": "Passeio en grupo"
+          "label": "Passeio em grupo"
         },
         "private": {
           "enabled": false,
@@ -99,48 +99,48 @@
         ]
       },
       "includes": [
-        "Bus panorâmico",
-        "Guía bilingüe",
-        "Ceremonia andina",
-        "Visita textil",
-        "Mirador"
+        "Ônibus panorâmico",
+        "Guia bilíngue",
+        "Cerimônia andina",
+        "Visita têxtil",
+        "Mirante"
       ],
       "excludes": [
         "Despesas pessoais",
-        "Servicios no mencionados"
+        "Serviços não mencionados"
       ],
       "itinerary": [
         {
-          "title": "Encuentro y salida en bus panorâmico",
-          "description": "Nos reuniremos en Plaza Regocijo o en el punto previamente coordinado. Desde allí iniciaremos el recorrido en bus panorâmico de dos pisos, ideal para tener una primera conexión visual con la ciudad del Cusco y sus alrededores.",
+          "title": "Encontro e saída em ônibus panorâmico",
+          "description": "Nos encontraremos na Praça Regocijo ou no ponto previamente combinado. A partir daí, iniciaremos o percurso em ônibus panorâmico de dois andares, ideal para ter um primeiro contato visual com a cidade de Cusco e seus arredores.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Recorrido panorâmico por Cusco",
-          "description": "Durante el trayecto, el guía compartirá datos históricos y culturales mientras observas sectores representativos de la ciudad, vistas hacia Sacsayhuamán y paisajes urbanos ideales para fotografías.",
+          "title": "Passeio panorâmico por Cusco",
+          "description": "Durante o trajeto, o guia compartilhará dados históricos e culturais enquanto você observa setores representativos da cidade, vistas para Sacsayhuamán e paisagens urbanas ideais para fotografias.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Ceremonia andina de bienvenida",
-          "description": "Participaremos en una ceremonia simbólica de Pago a la Tierra guiada por un sacerdote andino. Esta experiencia está pensada como un ritual de armonía, gratitud y buen augurio para iniciar tu viaje por Cusco y Machu Picchu.",
+          "title": "Cerimônia andina de boas-vindas",
+          "description": "Participaremos de uma cerimônia simbólica de Pago a la Tierra (oferenda à Mãe Terra) conduzida por um sacerdote andino. Esta experiência é pensada como um ritual de harmonia, gratidão e bom augúrio para iniciar sua viagem por Cusco e Machu Picchu.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Centro textil y cultura andina",
-          "description": "Visitaremos un centro textil especializado en fibra de alpaca y baby alpaca, donde conocerás técnicas tradicionales de tejido, tintes naturales y detalles de la vestimenta andina.",
+          "title": "Centro têxtil e cultura andina",
+          "description": "Visitaremos um centro têxtil especializado em fibra de alpaca e baby alpaca, onde você conhecerá técnicas tradicionais de tecelagem, tingimento natural e detalhes da vestimenta andina.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Mirador del Cristo Blanco",
-          "description": "Finalizaremos en el mirador del Cristo Blanco, uno de los puntos panorâmicos más fotografiados de Cusco, con tiempo para contemplar la ciudad y capturar imágenes memorables.",
+          "title": "Mirante do Cristo Blanco",
+          "description": "Encerraremos no mirante do Cristo Blanco, um dos pontos panorâmicos mais fotografados de Cusco, com tempo para contemplar a cidade e capturar imagens memoráveis.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -172,7 +172,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 10,00 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -243,7 +243,7 @@
           "16:00"
         ],
         "durationLabel": "2 h 30 min",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [],
       "search": {
@@ -282,9 +282,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -306,8 +306,8 @@
       "title": "City Tour Cusco + Sítios Arqueológicos",
       "category": "cusco",
       "type": "half-day-tour",
-      "typeLabel": "Medio dia",
-      "badge": "Imperdible",
+      "typeLabel": "Meio dia",
+      "badge": "Imperdível",
       "featured": true,
       "location": "Cusco",
       "currency": "USD",
@@ -349,28 +349,28 @@
         "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
-        "Boleto turístico",
-        "Ingreso a Catedral o Koricancha",
+        "Ingresso turístico",
+        "Entrada à Catedral ou ao Koricancha",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
           "title": "Centro histórico de Cusco",
-          "description": "Iniciaremos el recorrido con una introducción a la ciudad imperial, sus calles coloniales, templos y espacios históricos que muestran la fusión entre la arquitectura inca y española.",
+          "description": "Iniciaremos o passeio com uma introdução à cidade imperial, suas ruas coloniais, templos e espaços históricos que mostram a fusão entre a arquitetura inca e espanhola.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Sacsayhuamán",
-          "description": "Visitaremos el imponente complejo arqueológico de Sacsayhuamán, reconocido por sus enormes bloques de piedra perfectamente ensamblados y su importancia ceremonial para el antiguo Cusco.",
+          "description": "Visitaremos o imponente complexo arqueológico de Sacsayhuamán, reconhecido por seus enormes blocos de pedra perfeitamente encaixados e sua importância cerimonial para o antigo Cusco.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Qenqo, Puka Pukara y Tambomachay",
-          "description": "Continuaremos hacia los centros arqueológicos cercanos a la ciudad. Conheçarás espacios ceremoniales, antiguos puntos de control y estructuras vinculadas al culto al agua.",
+          "title": "Qenqo, Puka Pukara e Tambomachay",
+          "description": "Continuaremos até os sítios arqueológicos próximos à cidade. Você conhecerá espaços cerimoniais, antigos pontos de controle e estruturas ligadas ao culto à água.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -459,7 +459,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 12.9,
-        "partialPaymentLabel": "Reserva con USD 12.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 12,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CTY"
@@ -525,8 +525,8 @@
           "13:00",
           "14:00"
         ],
-        "durationLabel": "Medio dia",
-        "frequency": "Diario"
+        "durationLabel": "Meio dia",
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -623,9 +623,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -689,45 +689,45 @@
         "Busca em Cusco",
         "Transporte turístico",
         "Guia profissional em espanhol e inglês",
-        "Retorno a Cusco al finalizar el tour"
+        "Retorno a Cusco ao final do tour"
       ],
       "excludes": [
-        "Boleto turístico",
-        "Almuerzo buffet",
+        "Ingresso turístico",
+        "Almoço buffet",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
           "title": "Pisac arqueológico",
-          "description": "Salida desde Cusco hacia el Vale Sagrado para visitar el centro arqueológico de Pisac, famoso por sus terrazas agrícolas, vistas panorámicas y legado inca.",
+          "description": "Saída de Cusco em direção ao Vale Sagrado para visitar o sítio arqueológico de Pisac, famoso por seus terraços agrícolas, vistas panorâmicas e legado inca.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tiempo para recorrer el mercado artesanal, conocer productos locales, textiles, cerámica y piezas inspiradas en la iconografía andina.",
+          "description": "Tempo para percorrer o mercado artesanal, conhecer produtos locais, têxteis, cerâmica e peças inspiradas na iconografia andina.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Llegaremos a Urubamba, corazón del Vale Sagrado, donde tendrás espacio para tomar un almuerzo buffet opcional antes de continuar la ruta.",
+          "description": "Chegaremos a Urubamba, coração do Vale Sagrado, onde você terá tempo para um almoço buffet opcional antes de continuar a rota.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
-          "description": "Visitaremos el centro arqueológico de Ollantaytambo, antigua ciudad inca viva y punto estratégico del valle por su arquitectura, terrazas y templos.",
+          "description": "Visitaremos o sítio arqueológico de Ollantaytambo, antiga cidade inca viva e ponto estratégico do vale por sua arquitetura, terraços e templos.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Chinchero",
-          "description": "Cerraremos la ruta con una visita cultural en Chinchero, reconocido por sus tradiciones textiles, paisaje andino y herencia histórica.",
+          "description": "Encerraremos a rota com uma visita cultural em Chinchero, reconhecido por suas tradições têxteis, paisagem andina e herança histórica.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -806,7 +806,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 19,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VAL"
@@ -869,7 +869,7 @@
         "startTimes": [],
         "endTime": "20:00",
         "durationLabel": "Full Day",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -936,9 +936,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -960,16 +960,16 @@
       "title": "Vale Sagrado com conexão a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Full Day con conexión",
+      "typeLabel": "Full Day com conexão",
       "variantType": "connection",
-      "badge": "Conexión Machu Picchu",
+      "badge": "Conexão Machu Picchu",
       "featured": true,
       "location": "Cusco / Vale Sagrado / Ollantaytambo",
       "currency": "USD",
       "shortDescription": "Rota clássica pelo Vale Sagrado finalizando em Ollantaytambo para conectar com o trem a Aguas Calientes.",
       "description": "Versão do Vale Sagrado pensada para quem continuará a Machu Picchu, evitando retornar a Cusco e aproveitando melhor a logística da viagem.",
       "duration": {
-        "label": "Full Day con conexión",
+        "label": "Full Day com conexão",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1000,41 +1000,41 @@
       },
       "includes": [
         "Busca em Cusco",
-        "Transporte turístico por el Vale Sagrado",
+        "Transporte turístico pelo Vale Sagrado",
         "Guia profissional em espanhol e inglês",
-        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+        "Término em Ollantaytambo para conexão a Machu Picchu"
       ],
       "excludes": [
-        "Boleto turístico",
-        "Almuerzo buffet",
-        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Ingresso turístico",
+        "Almoço buffet",
+        "Trem para Aguas Calientes, exceto se estiver incluído no pacote selecionado",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
           "title": "Pisac arqueológico",
-          "description": "Iniciaremos la ruta por el Vale Sagrado visitando Pisac arqueológico, con terrazas incas, miradores naturales y una introducción al legado agrícola del valle.",
+          "description": "Iniciaremos a rota pelo Vale Sagrado visitando Pisac arqueológico, com terraços incas, mirantes naturais e uma introdução ao legado agrícola do vale.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tendrás tiempo para recorrer el mercado artesanal y conocer productos locales antes de continuar hacia el corazón del Vale Sagrado.",
+          "description": "Você terá tempo para percorrer o mercado artesanal e conhecer produtos locais antes de continuar rumo ao coração do Vale Sagrado.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Realizaremos una parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
+          "description": "Faremos uma parada em Urubamba para almoço opcional e descanso antes de continuar rumo a Ollantaytambo.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Ollantaytambo y conexión a Machu Picchu",
-          "description": "Visitaremos Ollantaytambo y finalizaremos en este punto para facilitar la conexión hacia Aguas Calientes según el tren o servicio coordinado para Machu Picchu.",
+          "title": "Ollantaytambo e conexão a Machu Picchu",
+          "description": "Visitaremos Ollantaytambo e encerraremos o passeio neste ponto para facilitar a conexão a Aguas Calientes conforme o trem ou serviço coordenado para Machu Picchu.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -1043,7 +1043,7 @@
       "faq": [
         {
           "q": "Quanto tempo dura a experiência?",
-          "a": "A duração referencial é Full Day con conexión. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
+          "a": "A duração referencial é Full Day com conexão. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
           "q": "O tour inclui guia?",
@@ -1117,7 +1117,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 19,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALCON"
@@ -1179,8 +1179,8 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:30",
-        "durationLabel": "Full Day con conexión",
-        "frequency": "Diario"
+        "durationLabel": "Full Day com conexão",
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -1248,8 +1248,8 @@
         ]
       },
       "pricingNotes": [
-        "Esta variante finaliza en Ollantaytambo y está pensada para paquetes con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
+        "Esta variante termina em Ollantaytambo e é pensada para pacotes com Machu Picchu Overnight.",
+        "O trem para Aguas Calientes é gerenciado a partir de trains.json quando faz parte de um pacote."
       ],
       "places": [],
       "seo": {
@@ -1273,7 +1273,7 @@
       "type": "cultural-tour",
       "typeLabel": "Full Day VIP",
       "variantType": "vip-full-day",
-      "badge": "Ruta VIP",
+      "badge": "Rota VIP",
       "featured": true,
       "location": "Cusco / Vale Sagrado / Maras / Moray",
       "currency": "USD",
@@ -1313,61 +1313,61 @@
         "Busca em Cusco",
         "Transporte turístico",
         "Guia profissional em espanhol e inglês",
-        "Ruta ampliada por Chinchero, Maras, Moray, Ollantaytambo y Pisac",
-        "Retorno a Cusco al finalizar el tour"
+        "Rota ampliada por Chinchero, Maras, Moray, Ollantaytambo e Pisac",
+        "Retorno a Cusco ao final do tour"
       ],
       "excludes": [
-        "Boleto turístico",
-        "Ingreso a Salineras de Maras",
-        "Almuerzo buffet",
+        "Ingresso turístico",
+        "Entrada às Salineras de Maras",
+        "Almoço buffet",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
           "title": "Chinchero",
-          "description": "Comenzaremos con Chinchero, donde conocerás su tradición textil, paisajes andinos y expresiones culturales vivas del Vale Sagrado.",
+          "description": "Começaremos com Chinchero, onde você conhecerá sua tradição têxtil, paisagens andinas e expressões culturais vivas do Vale Sagrado.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
-          "description": "Visitaremos las Salineras de Maras, un paisaje único formado por miles de pozas de sal utilizadas desde tiempos antiguos.",
+          "description": "Visitaremos as Salineras de Maras, uma paisagem única formada por milhares de poças de sal utilizadas desde tempos antigos.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
-          "description": "Exploraremos Moray, conocido por sus terrazas circulares y su posible uso como laboratorio agrícola inca.",
+          "description": "Exploraremos Moray, conhecido por seus terraços circulares e seu possível uso como laboratório agrícola inca.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Parada para almuerzo buffet opcional en Urubamba, rodeado por el paisaje fértil del Vale Sagrado.",
+          "description": "Parada para almoço buffet opcional em Urubamba, cercada pela paisagem fértil do Vale Sagrado.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Ollantaytambo",
-          "description": "Recorrido por Ollantaytambo, una antigua ciudad inca viva con terrazas monumentales y calles históricas.",
+          "description": "Passeio por Ollantaytambo, uma antiga cidade inca viva com terraços monumentais e ruas históricas.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Pisac arqueológico",
-          "description": "Visita a Pisac arqueológico para apreciar terrazas, caminos y vistas panorámicas del valle.",
+          "description": "Visita a Pisac arqueológico para apreciar terraços, caminhos e vistas panorâmicas do vale.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Mercado artesanal de Pisac",
-          "description": "Tiempo para recorrer el mercado artesanal antes del retorno final a Cusco.",
+          "description": "Tempo para percorrer o mercado artesanal antes do retorno final a Cusco.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -1474,7 +1474,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 19,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALVIP"
@@ -1537,7 +1537,7 @@
         "startTimes": [],
         "endTime": "20:00",
         "durationLabel": "Full Day VIP",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -1638,8 +1638,8 @@
         ]
       },
       "pricingNotes": [
-        "Ruta VIP con Maras e Moray.",
-        "El ingreso a Salineras de Maras se maneja como extra obligatorio de esta variante."
+        "Rota VIP com Maras e Moray.",
+        "A entrada às Salineras de Maras é tratada como extra obrigatório desta variante."
       ],
       "places": [],
       "seo": {
@@ -1661,16 +1661,16 @@
       "title": "Vale Sagrado VIP com conexão a Machu Picchu",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Full Day VIP con conexión",
+      "typeLabel": "Full Day VIP com conexão",
       "variantType": "vip-connection",
-      "badge": "VIP + Conexión",
+      "badge": "VIP + Conexão",
       "featured": true,
       "location": "Cusco / Vale Sagrado / Ollantaytambo",
       "currency": "USD",
       "shortDescription": "Rota VIP por Chinchero, Maras, Moray, Urubamba e Ollantaytambo, finalizando com conexão a Machu Picchu.",
       "description": "Opção eficiente para unir a rota VIP do Vale Sagrado com a continuação para Aguas Calientes ou Machu Picchu.",
       "duration": {
-        "label": "Full Day VIP con conexión",
+        "label": "Full Day VIP com conexão",
         "maxGroupSize": 18,
         "guideLanguages": [
           "es",
@@ -1701,49 +1701,49 @@
       },
       "includes": [
         "Busca em Cusco",
-        "Transporte turístico por ruta VIP del Vale Sagrado",
+        "Transporte turístico pela rota VIP do Vale Sagrado",
         "Guia profissional em espanhol e inglês",
-        "Finalización en Ollantaytambo para conexión hacia Machu Picchu"
+        "Término em Ollantaytambo para conexão a Machu Picchu"
       ],
       "excludes": [
-        "Boleto turístico",
-        "Ingreso a Salineras de Maras",
-        "Almuerzo buffet",
-        "Tren a Aguas Calientes, salvo que esté incluido dentro del paquete seleccionado",
+        "Ingresso turístico",
+        "Entrada às Salineras de Maras",
+        "Almoço buffet",
+        "Trem para Aguas Calientes, exceto se estiver incluído no pacote selecionado",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
           "title": "Chinchero",
-          "description": "Iniciaremos la ruta VIP con una visita cultural a Chinchero y una demostración textil tradicional.",
+          "description": "Iniciaremos a rota VIP com uma visita cultural a Chinchero e uma demonstração têxtil tradicional.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Salineras de Maras",
-          "description": "Continuaremos hacia las Salineras de Maras, con tiempo para observar las pozas de sal y el paisaje del valle.",
+          "description": "Continuaremos até as Salineras de Maras, com tempo para observar as poças de sal e a paisagem do vale.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
-          "description": "Visitaremos Moray, centro arqueológico famoso por sus terrazas circulares y microclimas agrícolas.",
+          "description": "Visitaremos Moray, sítio arqueológico famoso por seus terraços circulares e microclimas agrícolas.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Urubamba",
-          "description": "Parada en Urubamba para almuerzo opcional y descanso antes de continuar hacia Ollantaytambo.",
+          "description": "Parada em Urubamba para almoço opcional e descanso antes de continuar rumo a Ollantaytambo.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Ollantaytambo y conexión a Machu Picchu",
-          "description": "Finalizaremos en Ollantaytambo para conectar con el programa hacia Machu Picchu o Aguas Calientes, según la opción seleccionada.",
+          "title": "Ollantaytambo e conexão a Machu Picchu",
+          "description": "Encerraremos em Ollantaytambo para conectar com o programa rumo a Machu Picchu ou Aguas Calientes, conforme a opção selecionada.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -1752,7 +1752,7 @@
       "faq": [
         {
           "q": "Quanto tempo dura a experiência?",
-          "a": "A duração referencial é Full Day VIP con conexión. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
+          "a": "A duração referencial é Full Day VIP com conexão. O horário final é coordenado antes da saída para que você saiba com clareza a busca, as visitas e o retorno."
         },
         {
           "q": "O tour inclui guia?",
@@ -1830,7 +1830,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP con conexión."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP com conexão."
         },
         {
           "code": "sacred-valley-buffet-basic",
@@ -1854,7 +1854,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 19.9,
-        "partialPaymentLabel": "Reserva con USD 19.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 19,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VALVIPCON"
@@ -1916,8 +1916,8 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:30",
-        "durationLabel": "Full Day VIP con conexión",
-        "frequency": "Diario"
+        "durationLabel": "Full Day VIP com conexão",
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -1974,7 +1974,7 @@
               "publishedPENApprox": 30
             }
           },
-          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP con conexión."
+          "availabilityNote": "Aplica-se à rota Vale Sagrado VIP com conexão."
         }
       ],
       "search": {
@@ -2018,8 +2018,8 @@
         ]
       },
       "pricingNotes": [
-        "Esta variante está pensada como ruta preferida para paquetes con Machu Picchu Overnight.",
-        "El tren a Aguas Calientes se gestiona desde trains.json cuando forma parte de un paquete."
+        "Esta variante é pensada como rota preferida para pacotes com Machu Picchu Overnight.",
+        "O trem para Aguas Calientes é gerenciado a partir de trains.json quando faz parte de um pacote."
       ],
       "places": [],
       "seo": {
@@ -2041,8 +2041,8 @@
       "title": "Maras e Moray",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Medio dia",
-      "badge": "Imperdible",
+      "typeLabel": "Meio dia",
+      "badge": "Imperdível",
       "featured": true,
       "location": "Cusco / Maras / Moray",
       "currency": "USD",
@@ -2085,34 +2085,34 @@
       ],
       "excludes": [
         "Bilhete turístico parcial",
-        "Ingreso a Salineras",
+        "Entrada às Salineras",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
-          "title": "Recojo en hotel",
-          "description": "Recojo desde tu hotel o punto coordinado en Cusco para iniciar la ruta hacia Chinchero, Maras e Moray.",
+          "title": "Busca no hotel",
+          "description": "Busca no seu hotel ou ponto combinado em Cusco para iniciar a rota rumo a Chinchero, Maras e Moray.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Centro textil de Chinchero",
-          "description": "Visita cultural para conocer técnicas tradicionales de tejido, tintes naturales y productos elaborados con fibra de alpaca.",
+          "title": "Centro têxtil de Chinchero",
+          "description": "Visita cultural para conhecer técnicas tradicionais de tecelagem, tingimento natural e produtos feitos com fibra de alpaca.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Moray",
-          "description": "Recorrido por las terrazas circulares de Moray, consideradas uno de los espacios agrícolas experimentales más interesantes del mundo andino.",
+          "description": "Passeio pelos terraços circulares de Moray, considerados um dos espaços agrícolas experimentais mais interessantes do mundo andino.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Maras y Salineras",
-          "description": "Visita al pueblo de Maras y a las famosas salineras, con miles de pozas que forman uno de los paisajes más fotogénicos del Vale Sagrado.",
+          "title": "Maras e Salineras",
+          "description": "Visita ao povoado de Maras e às famosas salineras, com milhares de poças que formam uma das paisagens mais fotogênicas do Vale Sagrado.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -2167,7 +2167,7 @@
               "publishedPENApprox": 80
             }
           },
-          "availabilityNote": "No cobrar si el pasajero ya compró el Circuito 2 para Vale Sagrado en el mismo viaje."
+          "availabilityNote": "Não cobrar se o passageiro já comprou o Circuito 2 para o Vale Sagrado na mesma viagem."
         },
         {
           "code": "maras-salt-mines-ticket",
@@ -2219,7 +2219,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 10,00 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -2281,8 +2281,8 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "15:00",
-        "durationLabel": "Medio dia",
-        "frequency": "Diario"
+        "durationLabel": "Meio dia",
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -2311,7 +2311,7 @@
               "publishedPENApprox": 80
             }
           },
-          "availabilityNote": "No cobrar si el pasajero ya compró el Circuito 2 para Vale Sagrado en el mismo viaje."
+          "availabilityNote": "Não cobrar se o passageiro já comprou o Circuito 2 para o Vale Sagrado na mesma viagem."
         },
         {
           "code": "maras-salt-mines-ticket",
@@ -2377,9 +2377,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -2401,7 +2401,7 @@
       "title": "Vale Sul de Cusco",
       "category": "cusco",
       "type": "cultural-tour",
-      "typeLabel": "Medio dia",
+      "typeLabel": "Meio dia",
       "badge": "Cultural",
       "featured": true,
       "location": "Cusco / Tipón / Pikillacta / Andahuaylillas",
@@ -2561,7 +2561,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 10,
-        "partialPaymentLabel": "Reserva con USD 10.00 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 10,00 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -2623,8 +2623,8 @@
       "operationalSchedule": {
         "startTimes": [],
         "endTime": "14:30",
-        "durationLabel": "Medio dia",
-        "frequency": "Diario"
+        "durationLabel": "Meio dia",
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -2716,14 +2716,14 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
-        "title": "Valle Sur | My Cusco Trip",
-        "description": "Percorra Tipón, Pikillacta y Andahuaylillas en una ruta cultural al sur de Cusco."
+        "title": "Vale Sul de Cusco | My Cusco Trip",
+        "description": "Percorra Tipón, Pikillacta e Andahuaylillas em uma rota cultural ao sul de Cusco."
       },
       "highlights": [
         "Visita ao sítio arqueológico de Tipón e seu sistema hidráulico inca",
@@ -2741,7 +2741,7 @@
       "category": "cusco",
       "type": "adventure-tour",
       "typeLabel": "Full Day",
-      "badge": "Top ventas",
+      "badge": "Mais vendido",
       "featured": true,
       "location": "Cusco / Humantay",
       "currency": "USD",
@@ -2781,39 +2781,39 @@
         "Busca em Cusco",
         "Transporte turístico",
         "Guia profissional em espanhol e inglês",
-        "Desayuno",
-        "Almuerzo"
+        "Café da manhã",
+        "Almoço"
       ],
       "excludes": [
-        "Ingreso",
-        "Caballo opcional",
+        "Entrada",
+        "Cavalo opcional",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
-          "title": "Salida desde Cusco",
-          "description": "Recojo temprano y viaje hacia Mollepata, atravesando paisajes andinos hasta llegar a la zona de inicio de la excursión.",
+          "title": "Saída de Cusco",
+          "description": "Busca bem cedo e viagem até Mollepata, atravessando paisagens andinas até chegar à área de início da excursão.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Desayuno e inicio de caminata",
-          "description": "Parada para desayuno y preparación antes de iniciar la caminata hacia la Lago Humantay.",
+          "title": "Café da manhã e início da caminhada",
+          "description": "Parada para café da manhã e preparação antes de iniciar a caminhada até o Lago Humantay.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Llegada a Lago Humantay",
-          "description": "Arribo a la laguna turquesa ubicada a los pies del nevado Humantay, con tiempo para fotos, descanso y explicación del guía.",
+          "title": "Chegada ao Lago Humantay",
+          "description": "Chegada à lagoa turquesa localizada aos pés do nevado Humantay, com tempo para fotos, descanso e explicação do guia.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Retorno y almuerzo",
-          "description": "Descenso por la misma ruta, almuerzo en la zona y retorno en transporte turístico hacia Cusco.",
+          "title": "Retorno e almoço",
+          "description": "Descida pela mesma rota, almoço na região e retorno em transporte turístico até Cusco.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -2892,7 +2892,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 14,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "HUM"
@@ -2955,7 +2955,7 @@
         "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -3020,9 +3020,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -3087,35 +3087,35 @@
         "Guia profissional em espanhol e inglês"
       ],
       "excludes": [
-        "Ingreso",
-        "Caballo opcional",
+        "Entrada",
+        "Cavalo opcional",
         "Despesas pessoais"
       ],
       "itinerary": [
         {
-          "title": "Salida de madrugada",
-          "description": "Recojo temprano en Cusco y viaje hacia el punto de inicio de la ruta a Vinicunca.",
+          "title": "Saída de madrugada",
+          "description": "Busca bem cedo em Cusco e viagem até o ponto de início da rota para Vinicunca.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Desayuno y caminata",
-          "description": "Parada para desayuno antes de iniciar la caminata hacia la Montanha Colorida, atravesando paisajes altoandinos.",
+          "title": "Café da manhã e caminhada",
+          "description": "Parada para café da manhã antes de iniciar a caminhada até a Montanha Colorida, atravessando paisagens altoandinas.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Llegada a la Montanha Colorida",
-          "description": "Tiempo para fotografías, explicación del guía y contemplación del paisaje de la montaña arcoíris.",
+          "title": "Chegada à Montanha Colorida",
+          "description": "Tempo para fotografias, explicação do guia e contemplação da paisagem da montanha arco-íris.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Retorno y almuerzo",
-          "description": "Descenso, almuerzo y retorno a Cusco al finalizar la experiencia.",
+          "title": "Retorno e almoço",
+          "description": "Descida, almoço e retorno a Cusco ao final da experiência.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -3230,7 +3230,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 14,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "VIN"
@@ -3293,7 +3293,7 @@
         "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -3362,9 +3362,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -3372,7 +3372,7 @@
         "description": "Viva uma aventura até a famosa montanha arco-íris dos Andes."
       },
       "highlights": [
-        "Caminhada até a famosa Montanha de Cores (Vinicunca)",
+        "Caminhada até a famosa Montanha Colorida (Vinicunca)",
         "Paisagens altoandinas multicoloridas únicas no mundo",
         "Café da manhã e almoço incluídos",
         "Recomendado para viajantes em boa condição física devido à altitude",
@@ -3424,52 +3424,52 @@
         ]
       },
       "includes": [
-        "Recojo de su hotel en Cusco",
+        "Busca no seu hotel em Cusco",
         "Transporte turístico",
-        "1 desayuno",
-        "1 almuerzo buffet",
-        "Ingreso a la Cordillera Palcoyo",
+        "1 café da manhã",
+        "1 almoço buffet",
+        "Entrada à Cordilheira Palcoyo",
         "Guia profissional em espanhol e inglês",
-        "Botiquín de primeros auxilios",
-        "Balón de oxígeno"
+        "Kit de primeiros socorros",
+        "Botijão de oxigênio"
       ],
       "excludes": [
-        "Cena",
+        "Jantar",
         "Despesas pessoais",
-        "Servicios no mencionados"
+        "Serviços não mencionados"
       ],
       "itinerary": [
         {
-          "title": "Recojo y salida",
-          "description": "Recojo entre 4:30 y 5:00 a. m. desde tu hotel en Cusco para iniciar el viaje hacia el sur de la región.",
+          "title": "Busca e saída",
+          "description": "Busca entre 4h30 e 5h00 no seu hotel em Cusco para iniciar a viagem rumo ao sul da região.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Desayuno en Cusipata",
-          "description": "Parada en Cusipata para desayuno antes de continuar hacia la comunidad de Palcoyo.",
+          "title": "Café da manhã em Cusipata",
+          "description": "Parada em Cusipata para café da manhã antes de continuar rumo à comunidade de Palcoyo.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Llegada a Palcoyo",
-          "description": "Arribo a la zona de Palcoyo, desde donde se aprecian montañas de colores y paisajes altoandinos.",
+          "title": "Chegada a Palcoyo",
+          "description": "Chegada à área de Palcoyo, de onde se observam montanhas coloridas e paisagens altoandinas.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Caminata y bosque de piedras",
-          "description": "Caminata accesible para recorrer la cordillera de colores y el bosque de piedras.",
+          "title": "Caminhada e bosque de pedras",
+          "description": "Caminhada acessível para percorrer a cordilheira colorida e o bosque de pedras.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Almuerzo y retorno",
-          "description": "Almuerzo en ruta y retorno a Cusco durante la tarde.",
+          "title": "Almoço e retorno",
+          "description": "Almoço a caminho e retorno a Cusco durante a tarde.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -3566,7 +3566,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 14,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -3629,7 +3629,7 @@
         "startTimes": [],
         "endTime": "17:00",
         "durationLabel": "Full Day",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -3698,9 +3698,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {
@@ -3762,59 +3762,59 @@
       },
       "includes": [
         "Busca em Cusco",
-        "Transporte turístico ida y vuelta",
+        "Transporte turístico de ida e volta",
         "Guia profissional em espanhol e inglês",
-        "Desayuno",
-        "Almuerzo",
-        "Botiquín de primeros auxilios",
-        "Balón de oxígeno"
+        "Café da manhã",
+        "Almoço",
+        "Kit de primeiros socorros",
+        "Botijão de oxigênio"
       ],
       "excludes": [
-        "Ingreso a las lagunas si aplica pago local",
-        "Baños termales de Pacchanta si aplican pago adicional",
-        "Caballo opcional",
+        "Entrada às lagoas, caso haja cobrança local",
+        "Águas termais de Pacchanta, caso haja cobrança adicional",
+        "Cavalo opcional",
         "Despesas pessoais",
-        "Servicios no mencionados"
+        "Serviços não mencionados"
       ],
       "itinerary": [
         {
-          "title": "Recojo y salida desde Cusco",
-          "description": "Recojo entre 4:00 y 4:30 a. m. desde tu hotel y viaje hacia Pacchanta, en la zona del Ausangate.",
+          "title": "Busca e saída de Cusco",
+          "description": "Busca entre 4h00 e 4h30 no seu hotel e viagem até Pacchanta, na área do Ausangate.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Desayuno en Pacchanta",
-          "description": "Llegada a Pacchanta, desayuno y explicación del guía sobre la ruta, altitud y recomendaciones para la caminata.",
+          "title": "Café da manhã em Pacchanta",
+          "description": "Chegada a Pacchanta, café da manhã e explicação do guia sobre a rota, altitude e recomendações para a caminhada.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Inicio de la caminata",
-          "description": "Inicio del trekking por senderos altoandinos con vistas del nevado Ausangate y la cordillera del Vilcanota.",
+          "title": "Início da caminhada",
+          "description": "Início do trekking por trilhas altoandinas com vistas do nevado Ausangate e da cordilheira de Vilcanota.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Recorrido por las 7 lagunas",
-          "description": "Visita a las lagunas del circuito, reconocidas por sus tonos turquesa, verde esmeralda y azul profundo.",
+          "title": "Percurso pelas 7 lagoas",
+          "description": "Visita às lagoas do circuito, reconhecidas por seus tons turquesa, verde esmeralda e azul profundo.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
           "title": "Retorno a Pacchanta",
-          "description": "Descenso hacia Pacchanta. Según la operación del dia, opción de disfrutar las aguas termales de la zona.",
+          "description": "Descida rumo a Pacchanta. Conforme a operação do dia, opção de aproveitar as águas termais da região.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Almuerzo y regreso a Cusco",
-          "description": "Almuerzo en la zona y retorno en transporte turístico hacia Cusco, llegando al atardecer.",
+          "title": "Almoço e retorno a Cusco",
+          "description": "Almoço na região e retorno em transporte turístico até Cusco, chegando ao entardecer.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -3911,7 +3911,7 @@
       "paymentOptions": {
         "fullPaymentDiscountPercent": 5,
         "partialPaymentPerPerson": 14.9,
-        "partialPaymentLabel": "Reserva con USD 14.90 por persona y paga el saldo en Cusco"
+        "partialPaymentLabel": "Reserve com USD 14,90 por pessoa e pague o restante em Cusco"
       },
       "booking": {
         "reservationCodePrefix": "CUZ"
@@ -3974,7 +3974,7 @@
         "startTimes": [],
         "endTime": "18:00",
         "durationLabel": "Full Day",
-        "frequency": "Diario"
+        "frequency": "Diário"
       },
       "ticketPricingByNationality": [
         {
@@ -4060,9 +4060,9 @@
         ]
       },
       "pricingNotes": [
-        "El precio base publicado está calculado para recibir neto el doble del costo interno del tour.",
-        "Los extras no se duplican; se calculan para recuperar el costo indicado después de comisiones.",
-        "Actualizar el tipo de cambio operativo desde currency-config.json antes de publicar precios finales."
+        "O preço base publicado é calculado para receber, em valor líquido, o dobro do custo interno do tour.",
+        "Os extras não são duplicados; são calculados para recuperar o custo indicado após as comissões.",
+        "Atualizar a taxa de câmbio operacional em currency-config.json antes de publicar os preços finais."
       ],
       "places": [],
       "seo": {

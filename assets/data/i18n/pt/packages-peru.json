@@ -3,7 +3,7 @@
   "updatedAt": "2026-08-01",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
-  "description": "Archivo de configuración para generar paquetes dinámicos combinados de Peru. No contiene itinerarios hardcodeados; define cards, rutas comerciales, bloques de destino, referencias a tours, reglas operativas, filtros de llegada/salida y metadatos para All Experience y product.html.",
+  "description": "Arquivo de configuração para gerar pacotes dinâmicos combinados do Peru. Não contém itinerários fixos (hardcoded); define cards, rotas comerciais, blocos de destino, referências a tours, regras operacionais, filtros de chegada/saída e metadados para All Experiences e product.html.",
   "status": "draft_ready_for_review",
   "dataSources": {
     "cuscoPackageConfig": "assets/data/packages-cusco.json",
@@ -46,48 +46,48 @@
       "key": "early-arrival__late-departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "late-departure",
-      "label": "Llegada temprano / salida tarde",
+      "label": "Chegada cedo / saída tarde",
       "arrivalAvailableFrom": "11:00",
       "departureAvailableUntil": "20:00",
       "rules": [
-        "Permite city tour, visita panorámica o experiencia medio dia el primer dia.",
-        "Permite tour corto o actividad urbana el último dia si no hay traslado interurbano."
+        "Permite city tour, visita panorâmica ou experiência de meio dia no primeiro dia.",
+        "Permite tour curto ou atividade urbana no último dia, se não houver traslado interurbano."
       ]
     },
     {
       "key": "early-arrival__early-departure",
       "arrivalProfile": "early-arrival",
       "departureProfile": "early-departure",
-      "label": "Llegada temprano / salida temprano",
+      "label": "Chegada cedo / saída cedo",
       "arrivalAvailableFrom": "11:00",
       "departureAvailableUntil": "10:00",
       "rules": [
-        "Permite actividad ligera el primer dia.",
-        "El último dia debe reservarse para traslado, aeropuerto o salida."
+        "Permite atividade leve no primeiro dia.",
+        "O último dia deve ser reservado para traslado, aeroporto ou saída."
       ]
     },
     {
       "key": "late-arrival__late-departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "late-departure",
-      "label": "Llegada tarde / salida tarde",
+      "label": "Chegada tarde / saída tarde",
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "20:00",
       "rules": [
-        "No programar full day el primer dia.",
-        "Permite actividad corta el último dia si el destino y traslado lo permiten."
+        "Não programar full day no primeiro dia.",
+        "Permite atividade curta no último dia se o destino e o traslado permitirem."
       ]
     },
     {
       "key": "late-arrival__early-departure",
       "arrivalProfile": "late-arrival",
       "departureProfile": "early-departure",
-      "label": "Llegada tarde / salida temprano",
+      "label": "Chegada tarde / saída cedo",
       "arrivalAvailableFrom": "15:00",
       "departureAvailableUntil": "10:00",
       "rules": [
-        "Primer y último dia deben tratarse como dias logísticos salvo disponibilidad real.",
-        "Reducir cantidad de tours y priorizar experiencias esenciales."
+        "Primeiro e último dia devem ser tratados como dias logísticos, salvo disponibilidade real.",
+        "Reduzir a quantidade de tours e priorizar experiências essenciais."
       ]
     }
   ],
@@ -615,11 +615,11 @@
       "useTrainsJsonAsSourceOfTruth": true
     },
     "commercialRules": [
-      "Priorizar rutas vendibles y comprensibles para cliente final.",
-      "No saturar paquetes cortos con demasiados traslados.",
-      "No programar full day al dia siguiente de una llegada nocturna o bus nocturno sin descanso.",
-      "No programar trekkings de alta exigencia antes de aclimatación mínima en Cusco.",
-      "Evitar dos tours de madrugada consecutivos salvo paquetes largos y con nota comercial."
+      "Priorizar rotas vendáveis e de fácil compreensão para o cliente final.",
+      "Não sobrecarregar pacotes curtos com traslados demais.",
+      "Não programar full day no dia seguinte a uma chegada noturna ou ônibus noturno sem descanso.",
+      "Não programar trekkings de alta exigência antes da aclimatação mínima em Cusco.",
+      "Evitar dois tours de madrugada consecutivos, salvo em pacotes longos e com nota comercial."
     ],
     "pricingRules": {
       "pricingMode": "sum_selected_products_plus_hotels_transport_extras",
@@ -716,10 +716,10 @@
       "days": 5,
       "nights": 4,
       "typeLabel": "5 dias / 4 noites",
-      "badge": "Primer viaje",
+      "badge": "Primeira viagem",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Peru",
-      "shortDescription": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos dias.",
+      "shortDescription": "Rota curta para combinar Lima, Cusco e Machu Picchu em poucos dias.",
       "image": "./assets/img/packages/peru/5d4n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -766,7 +766,7 @@
       },
       "seo": {
         "title": "Pacotes Peru: Lima + Cusco 5 dias / 4 noites | My Cusco Trip",
-        "description": "Ruta corta para combinar Lima, Cusco y Machu Picchu en pocos dias."
+        "description": "Rota curta para combinar Lima, Cusco e Machu Picchu em poucos dias."
       },
       "duration": {
         "label": "5 dias / 4 noites",
@@ -807,8 +807,8 @@
         "child": 939.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 749.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -839,7 +839,7 @@
       "badge": "Clássico",
       "featured": true,
       "location": "Lima / Cusco / Machu Picchu / Vale Sagrado / Peru",
-      "shortDescription": "Ruta clásica con Lima, Vale Sagrado, Cusco y Machu Picchu.",
+      "shortDescription": "Rota clássica com Lima, Vale Sagrado, Cusco e Machu Picchu.",
       "image": "./assets/img/packages/peru/6d5n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -887,7 +887,7 @@
       },
       "seo": {
         "title": "Pacotes Peru: Lima + Cusco 6 dias / 5 noites | My Cusco Trip",
-        "description": "Ruta clásica con Lima, Vale Sagrado, Cusco y Machu Picchu."
+        "description": "Rota clássica com Lima, Vale Sagrado, Cusco e Machu Picchu."
       },
       "duration": {
         "label": "6 dias / 5 noites",
@@ -928,8 +928,8 @@
         "child": 1119.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 899.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -957,7 +957,7 @@
       "days": 7,
       "nights": 6,
       "typeLabel": "7 dias / 6 noites",
-      "badge": "Top ventas",
+      "badge": "Mais vendido",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Peru",
       "shortDescription": "Combina costa sur, desierto, Cusco y Machu Picchu.",
@@ -1054,8 +1054,8 @@
         "child": 1309.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1049.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -1579,7 +1579,7 @@
     {
       "id": "pkg_peru_8d7n",
       "slug": "pacotes-peru-lima-paracas-ica-cusco-puno-8-dias-7-noites",
-      "title": "Perú esencial: Lima, Paracas, Ica, Cusco, Machu Picchu y Titicaca 8D/7N",
+      "title": "Peru essencial: Lima, Paracas, Ica, Cusco, Machu Picchu e Titicaca 8D/7N",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 8,
@@ -1588,7 +1588,7 @@
       "badge": "Completo",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Puno",
-      "shortDescription": "Ruta compacta por la costa sur, Cusco, Machu Picchu y el Lago Titicaca, con hoteles configurables y servicios principales coordinados.",
+      "shortDescription": "Rota compacta pela costa sul, Cusco, Machu Picchu e o Lago Titicaca, com hotéis configuráveis e serviços principais coordenados.",
       "image": "./assets/img/packages/peru/8d7n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -1644,10 +1644,10 @@
       },
       "seo": {
         "title": "Pacotes Peru: Lima + Paracas/Ica + Cusco/Puno 8 dias / 7 noites | My Cusco Trip",
-        "description": "Ruta extendida con costa sur, Andes, Machu Picchu y Lago Titicaca."
+        "description": "Rota estendida com costa sul, Andes, Machu Picchu e Lago Titicaca."
       },
       "duration": {
-        "label": "8 días / 7 noches",
+        "label": "8 dias / 7 noites",
         "maxGroupSize": 30,
         "guideLanguages": [
           "es",
@@ -1656,28 +1656,28 @@
       },
       "faq": [
         {
-          "q": "¿Cómo se organiza este paquete?",
-          "a": "El paquete se arma como una ruta flexible de 8 días / 7 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+          "q": "Como este pacote é organizado?",
+          "a": "O pacote é montado como uma rota flexível de 8 dias / 7 noites com experiências principais, traslados, trens e hospedagem conforme a opção escolhida."
         },
         {
-          "q": "¿Incluye guía?",
+          "q": "Inclui guia?",
           "a": "Sim. Inclui guia profissional em espanhol e inglês (outros idiomas consultar)."
         },
         {
-          "q": "¿Qué incluye la base del paquete?",
-          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+          "q": "O que está incluído na base do pacote?",
+          "a": "Inclui traslados de chegada e saída, assistência de viagem, transporte turístico conforme o programa e as experiências indicadas no itinerário."
         },
         {
-          "q": "¿Qué no está incluido?",
-          "a": "No incluye vuelos internacionales, alimentación no mencionada, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+          "q": "O que não está incluído?",
+          "a": "Não inclui voos internacionais, alimentação não mencionada, despesas pessoais, gorjetas voluntárias, serviços não mencionados nem upgrades opcionais não selecionados."
         },
         {
-          "q": "¿Puedo elegir hoteles y trenes?",
-          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+          "q": "Posso escolher hotéis e trens?",
+          "a": "Sim. Você pode revisar opções de hospedagem e trem quando o pacote permite; a tarifa é ajustada conforme a categoria selecionada."
         },
         {
-          "q": "¿Los horarios quedan confirmados desde el inicio?",
-          "a": "Los horarios finales de vuelos internos, trenes, buses, ingresos y recojos se confirman al momento de reservar según disponibilidad y operación vigente."
+          "q": "Os horários já ficam confirmados desde o início?",
+          "a": "Os horários finais de voos domésticos, trens, ônibus, ingressos e buscas são confirmados no momento da reserva, conforme disponibilidade e operação vigente."
         }
       ],
       "currency": "USD",
@@ -1686,8 +1686,8 @@
         "child": 1439.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1149.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -1697,8 +1697,8 @@
         "partialPaymentPerPerson": 49.9
       },
       "priceFrom": 1439.9,
-      "priceLabel": "A partir de USD 1,439.90 por pessoa sem hotéis",
-      "description": "Este paquete de 8 días y 7 noches conecta Lima, Paracas, Ica, Huacachina, Cusco, el Valle Sagrado, Machu Picchu y Puno en una ruta equilibrada para viajeros que desean conocer lo esencial del Perú sin llegar hasta Arequipa. Incluye asistencia operativa, traslados principales, experiencias guiadas, tren hacia Machu Picchu, Ruta del Sol y Lago Titicaca con Uros y Taquile según disponibilidad.",
+      "priceLabel": "A partir de USD 1.439,90 por pessoa sem hotéis",
+      "description": "Este pacote de 8 dias e 7 noites conecta Lima, Paracas, Ica, Huacachina, Cusco, o Vale Sagrado, Machu Picchu e Puno em uma rota equilibrada para viajantes que desejam conhecer o essencial do Peru sem chegar até Arequipa. Inclui assistência operacional, traslados principais, experiências guiadas, trem até Machu Picchu, Rota do Sol e Lago Titicaca com Uros e Taquile, conforme disponibilidade.",
       "images": {
         "cover": "./assets/img/packages/peru/8d7n/cover.jpg",
         "gallery": [
@@ -1713,60 +1713,60 @@
       "showItineraryImages": true,
       "experienceType": [
         "Cultural",
-        "Naturaleza",
-        "Aventura suave",
+        "Natureza",
+        "Aventura leve",
         "Multidestino"
       ],
       "highlights": [
-        "Recorrido nocturno en Lima por Miraflores, Barranco, Larcomar y Circuito Mágico del Agua",
-        "Full day Paracas, Ica y Huacachina con experiencia marina, vitivinícola y dunas",
-        "Bienvenida ancestral en Cusco",
-        "Valle Sagrado con tren hacia Machu Picchu Pueblo",
-        "Machu Picchu con tren, bus, ingreso y guía según disponibilidad",
-        "Ruta del Sol de Cusco a Puno con paradas culturales",
-        "Lago Titicaca con Uros y Taquile"
+        "Passeio noturno em Lima por Miraflores, Barranco, Larcomar e Circuito Mágico da Água",
+        "Full day Paracas, Ica e Huacachina com experiência marinha, vitivinícola e dunas",
+        "Boas-vindas ancestrais em Cusco",
+        "Vale Sagrado com trem até Machu Picchu Pueblo",
+        "Machu Picchu com trem, ônibus, ingresso e guia conforme disponibilidade",
+        "Rota do Sol de Cusco a Puno com paradas culturais",
+        "Lago Titicaca com Uros e Taquile"
       ],
       "details": [
-        "Guías en español e inglés; otros idiomas a consultar",
-        "Hoteles configurables en Lima, Cusco, Aguas Calientes y Puno",
-        "Itinerario ideal para conocer lo esencial del Perú en una ruta compacta",
-        "Reservas y horarios sujetos a disponibilidad al momento de confirmar"
+        "Guias em espanhol e inglês; outros idiomas a consultar",
+        "Hotéis configuráveis em Lima, Cusco, Aguas Calientes e Puno",
+        "Itinerário ideal para conhecer o essencial do Peru em uma rota compacta",
+        "Reservas e horários sujeitos a disponibilidade no momento da confirmação"
       ],
       "includes": [
-        "Precio base sin hoteles: incluye tours, traslados operativos, tren base, ingreso a Machu Picchu, bus a Machu Picchu, boletos turísticos requeridos, Ruta del Sol, Titicaca y vuelo Juliaca/Lima sujeto a disponibilidad y confirmación de tarifa.",
-        "Recojo desde el aeropuerto de Lima y traslado al hotel seleccionado en Lima",
-        "Traslados de salida y llegada necesarios según el itinerario confirmado",
-        "Recojo desde el hotel para las excursiones programadas en todos los destinos",
-        "Tour nocturno en Lima: Miraflores, Barranco, Larcomar y Circuito Mágico del Agua",
-        "Full day Paracas, Ica y Huacachina desde Lima",
-        "Vuelo doméstico Lima - Cusco, sujeto a confirmación de tarifa y disponibilidad",
-        "Bienvenida ancestral en Cusco",
-        "Valle Sagrado con conexión hacia Machu Picchu Pueblo",
-        "Tour Machu Picchu con tren, bus, ingreso y guía según disponibilidad",
-        "Ruta del Sol de Cusco a Puno, ruta turística con paradas culturales",
-        "Full day Lago Titicaca: Uros y Taquile o alternativa cultural según disponibilidad",
-        "Vuelo doméstico Juliaca - Lima, sujeto a confirmación de tarifa y disponibilidad",
-        "Alojamiento configurable por destino según elección de hoteles, categoría y disponibilidad"
+        "Preço base sem hotéis: inclui tours, traslados operacionais, trem base, ingresso a Machu Picchu, ônibus a Machu Picchu, bilhetes turísticos exigidos, Rota do Sol, Titicaca e voo Juliaca/Lima, sujeito a disponibilidade e confirmação de tarifa.",
+        "Busca no aeroporto de Lima e traslado ao hotel selecionado em Lima",
+        "Traslados de saída e chegada necessários conforme o itinerário confirmado",
+        "Busca no hotel para as excursões programadas em todos os destinos",
+        "Tour noturno em Lima: Miraflores, Barranco, Larcomar e Circuito Mágico da Água",
+        "Full day Paracas, Ica e Huacachina saindo de Lima",
+        "Voo doméstico Lima - Cusco, sujeito a confirmação de tarifa e disponibilidade",
+        "Boas-vindas ancestrais em Cusco",
+        "Vale Sagrado com conexão a Machu Picchu Pueblo",
+        "Tour Machu Picchu com trem, ônibus, ingresso e guia conforme disponibilidade",
+        "Rota do Sol de Cusco a Puno, rota turística com paradas culturais",
+        "Full day Lago Titicaca: Uros e Taquile ou alternativa cultural conforme disponibilidade",
+        "Voo doméstico Juliaca - Lima, sujeito a confirmação de tarifa e disponibilidade",
+        "Hospedagem configurável por destino, conforme escolha de hotéis, categoria e disponibilidade"
       ],
       "excludes": [
-        "Vuelos internacionales",
-        "Alimentación no mencionada en el programa",
-        "Early check-in o late check-out no confirmado por el hotel",
-        "Propinas, gastos personales y servicios no indicados como incluidos"
+        "Voos internacionais",
+        "Alimentação não mencionada no programa",
+        "Early check-in ou late check-out não confirmado pelo hotel",
+        "Gorjetas, despesas pessoais e serviços não indicados como incluídos"
       ],
       "importantInfo": [
-        "Cada pasajero debe viajar con pasaporte vigente y en buen estado. Se recomienda una vigencia mínima de 6 meses para entrar y salir del Perú.",
-        "Revisa que los nombres y números de documento coincidan exactamente con vuelos, trenes e ingresos turísticos.",
-        "Se recomienda llevar efectivo en soles para compras menores, servicios personales, propinas o lugares donde la conexión a internet pueda ser limitada.",
-        "Los horarios de vuelos domésticos, trenes, buses e ingresos a Machu Picchu están sujetos a disponibilidad al momento de confirmar la reserva.",
-        "El orden de las visitas puede ajustarse por clima, disponibilidad, regulaciones oficiales, operación turística o seguridad del grupo."
+        "Cada passageiro deve viajar com passaporte válido e em bom estado. Recomenda-se uma validade mínima de 6 meses para entrar e sair do Peru.",
+        "Verifique se os nomes e números de documento coincidem exatamente com voos, trens e ingressos turísticos.",
+        "Recomenda-se levar dinheiro em soles para compras menores, serviços pessoais, gorjetas ou locais onde a conexão à internet possa ser limitada.",
+        "Os horários de voos domésticos, trens, ônibus e ingressos a Machu Picchu estão sujeitos a disponibilidade no momento da confirmação da reserva.",
+        "A ordem das visitas pode ser ajustada por clima, disponibilidade, regulamentações oficiais, operação turística ou segurança do grupo."
       ],
-      "pickupInfo": "Para todas las excursiones coordinamos los recojos desde el hotel en cada destino. Los horarios finales, puntos de encuentro y traslados se confirman según el hotel elegido, fechas de viaje, operación vigente y servicios reservados.",
+      "pickupInfo": "Para todas as excursões, coordenamos as buscas no hotel em cada destino. Os horários finais, pontos de encontro e traslados são confirmados conforme o hotel escolhido, as datas da viagem, a operação vigente e os serviços reservados.",
       "dailyItinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Chegada a Lima e passeio noturno",
+          "description": "Ao chegar a Lima pela tarde, nossa equipe irá recebê-lo no aeroporto e levá-lo ao hotel selecionado. À noite, você terá uma primeira experiência pela capital peruana: passeio panorâmico por Miraflores e Barranco, visita a Larcomar de frente para o Oceano Pacífico e experiência no Circuito Mágico da Água, um dos espetáculos noturnos mais vistosos da cidade.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -1776,8 +1776,8 @@
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Full Day Paracas, Ica e Huacachina",
+          "description": "Saída do hotel em Lima rumo à costa sul. Em Paracas, você navegará até as Ilhas Ballestas para observar fauna marinha, aves guaneiras e paisagens do Oceano Pacífico. Em seguida, seguirá para Ica para viver uma experiência vitivinícola com visita a uma vinícola, degustação de vinhos e piscos, e uma pausa gastronômica. À tarde, visitará o oásis de Huacachina, com tempo para fotografias, dunas, tubulares e sandboard, conforme operação e clima.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -1787,8 +1787,8 @@
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. El resto del día quedará coordinado para aclimatación, asistencia y preparación de la ruta hacia el Valle Sagrado.",
+          "title": "Voo a Cusco e boas-vindas ancestrais",
+          "description": "Bem cedo, você embarcará no voo Lima - Cusco. Ao chegar, haverá traslado ao hotel e um breve período para aclimatação. Em seguida, você viverá umas boas-vindas ancestrais inspiradas no pago a la tierra (oferenda à terra), uma cerimônia simbólica para agradecer à Pachamama e pedir bons augúrios antes de percorrer os Andes. O restante do dia ficará reservado para aclimatação, assistência e preparação da rota rumo ao Vale Sagrado.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -1798,8 +1798,8 @@
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Vale Sagrado e trem até Machu Picchu Pueblo",
+          "description": "Após o café da manhã, você iniciará a rota do Vale Sagrado. Conhecerá paisagens andinas, vilarejos tradicionais e sítios arqueológicos como Chinchero, Pisac ou Ollantaytambo, conforme a operação. A partir de Ollantaytambo, embarcará no trem turístico rumo a Machu Picchu Pueblo, aproveitando o percurso ao lado do rio e das montanhas. Noite em Aguas Calientes para descansar antes da visita a Machu Picchu.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -1809,8 +1809,8 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "title": "Machu Picchu e retorno a Cusco",
+          "description": "Este será um dos dias mais aguardados da viagem. Você subirá de ônibus até a cidadela de Machu Picchu para fazer uma visita guiada pelos seus principais setores, mirantes e espaços cerimoniais. Após a experiência, terá tempo para almoçar em Machu Picchu Pueblo e embarcar no trem de retorno. Ao chegar a Ollantaytambo ou Cusco, você será levado ao hotel selecionado em Cusco.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
@@ -1820,8 +1820,8 @@
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Rota do Sol de Cusco a Puno",
+          "description": "Você viajará de Cusco a Puno pela famosa Rota do Sol, um roteiro turístico que conecta o mundo inca ao altiplano peruano. Durante o percurso, são feitas paradas culturais em locais como Andahuaylillas, Raqchi, La Raya e Pucará, conforme o operador e a operação vigente. É uma forma confortável e cênica de chegar ao Lago Titicaca enquanto você descobre história, paisagens altoandinas e comunidades do sul do Peru.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -1831,8 +1831,8 @@
         },
         {
           "day": 7,
-          "title": "Lago Titicaca: Uros y Taquile",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Luego continuarás hacia la isla Taquile, reconocida por su textilería, miradores naturales y cultura viva. Según disponibilidad, operación y ritmo del grupo, la experiencia puede ajustarse con alternativas culturales en el lago.",
+          "title": "Lago Titicaca: Uros e Taquile",
+          "description": "Dia inteiro para explorar o Lago Titicaca. Você visitará as ilhas flutuantes dos Uros, onde conhecerá como essa comunidade constrói e mantém suas ilhas de totora, além de suas tradições e estilo de vida. Em seguida, seguirá para a ilha de Taquile, reconhecida por seu artesanato têxtil, mirantes naturais e cultura viva. Conforme disponibilidade, operação e ritmo do grupo, a experiência pode ser ajustada com alternativas culturais no lago.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -1842,8 +1842,8 @@
         },
         {
           "day": 8,
-          "title": "Salida desde Puno hacia Lima",
-          "description": "Traslado desde el hotel en Puno hacia el aeropuerto de Juliaca para tomar el vuelo hacia Lima, sujeto a disponibilidad y confirmación de tarifa. Fin de nuestros servicios con asistencia coordinada para la salida y conexión con tu siguiente vuelo o extensión de viaje.",
+          "title": "Saída de Puno rumo a Lima",
+          "description": "Traslado do hotel em Puno até o aeroporto de Juliaca para embarcar no voo rumo a Lima, sujeito a disponibilidade e confirmação de tarifa. Fim de nossos serviços, com assistência coordenada para a saída e conexão com seu próximo voo ou extensão de viagem.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/lima-night/2.jpg",
           "images": [
@@ -1854,8 +1854,8 @@
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Chegada a Lima e passeio noturno",
+          "description": "Ao chegar a Lima pela tarde, nossa equipe irá recebê-lo no aeroporto e levá-lo ao hotel selecionado. À noite, você terá uma primeira experiência pela capital peruana: passeio panorâmico por Miraflores e Barranco, visita a Larcomar de frente para o Oceano Pacífico e experiência no Circuito Mágico da Água, um dos espetáculos noturnos mais vistosos da cidade.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -1865,8 +1865,8 @@
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Full Day Paracas, Ica e Huacachina",
+          "description": "Saída do hotel em Lima rumo à costa sul. Em Paracas, você navegará até as Ilhas Ballestas para observar fauna marinha, aves guaneiras e paisagens do Oceano Pacífico. Em seguida, seguirá para Ica para viver uma experiência vitivinícola com visita a uma vinícola, degustação de vinhos e piscos, e uma pausa gastronômica. À tarde, visitará o oásis de Huacachina, com tempo para fotografias, dunas, tubulares e sandboard, conforme operação e clima.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -1876,8 +1876,8 @@
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco y bienvenida ancestral",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra, una ceremonia simbólica para agradecer a la Pachamama y pedir buenos augurios antes de recorrer los Andes. El resto del día quedará coordinado para aclimatación, asistencia y preparación de la ruta hacia el Valle Sagrado.",
+          "title": "Voo a Cusco e boas-vindas ancestrais",
+          "description": "Bem cedo, você embarcará no voo Lima - Cusco. Ao chegar, haverá traslado ao hotel e um breve período para aclimatação. Em seguida, você viverá umas boas-vindas ancestrais inspiradas no pago a la tierra (oferenda à terra), uma cerimônia simbólica para agradecer à Pachamama e pedir bons augúrios antes de percorrer os Andes. O restante do dia ficará reservado para aclimatação, assistência e preparação da rota rumo ao Vale Sagrado.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -1887,8 +1887,8 @@
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Vale Sagrado e trem até Machu Picchu Pueblo",
+          "description": "Após o café da manhã, você iniciará a rota do Vale Sagrado. Conhecerá paisagens andinas, vilarejos tradicionais e sítios arqueológicos como Chinchero, Pisac ou Ollantaytambo, conforme a operação. A partir de Ollantaytambo, embarcará no trem turístico rumo a Machu Picchu Pueblo, aproveitando o percurso ao lado do rio e das montanhas. Noite em Aguas Calientes para descansar antes da visita a Machu Picchu.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -1898,8 +1898,8 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "title": "Machu Picchu e retorno a Cusco",
+          "description": "Este será um dos dias mais aguardados da viagem. Você subirá de ônibus até a cidadela de Machu Picchu para fazer uma visita guiada pelos seus principais setores, mirantes e espaços cerimoniais. Após a experiência, terá tempo para almoçar em Machu Picchu Pueblo e embarcar no trem de retorno. Ao chegar a Ollantaytambo ou Cusco, você será levado ao hotel selecionado em Cusco.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
@@ -1909,8 +1909,8 @@
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Rota do Sol de Cusco a Puno",
+          "description": "Você viajará de Cusco a Puno pela famosa Rota do Sol, um roteiro turístico que conecta o mundo inca ao altiplano peruano. Durante o percurso, são feitas paradas culturais em locais como Andahuaylillas, Raqchi, La Raya e Pucará, conforme o operador e a operação vigente. É uma forma confortável e cênica de chegar ao Lago Titicaca enquanto você descobre história, paisagens altoandinas e comunidades do sul do Peru.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -1920,8 +1920,8 @@
         },
         {
           "day": 7,
-          "title": "Lago Titicaca: Uros y Taquile",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros, donde conocerás cómo esta comunidad construye y mantiene sus islas de totora, además de sus tradiciones y estilo de vida. Luego continuarás hacia la isla Taquile, reconocida por su textilería, miradores naturales y cultura viva. Según disponibilidad, operación y ritmo del grupo, la experiencia puede ajustarse con alternativas culturales en el lago.",
+          "title": "Lago Titicaca: Uros e Taquile",
+          "description": "Dia inteiro para explorar o Lago Titicaca. Você visitará as ilhas flutuantes dos Uros, onde conhecerá como essa comunidade constrói e mantém suas ilhas de totora, além de suas tradições e estilo de vida. Em seguida, seguirá para a ilha de Taquile, reconhecida por seu artesanato têxtil, mirantes naturais e cultura viva. Conforme disponibilidade, operação e ritmo do grupo, a experiência pode ser ajustada com alternativas culturais no lago.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -1931,8 +1931,8 @@
         },
         {
           "day": 8,
-          "title": "Salida desde Puno hacia Lima",
-          "description": "Traslado desde el hotel en Puno hacia el aeropuerto de Juliaca para tomar el vuelo hacia Lima, sujeto a disponibilidad y confirmación de tarifa. Fin de nuestros servicios con asistencia coordinada para la salida y conexión con tu siguiente vuelo o extensión de viaje.",
+          "title": "Saída de Puno rumo a Lima",
+          "description": "Traslado do hotel em Puno até o aeroporto de Juliaca para embarcar no voo rumo a Lima, sujeito a disponibilidade e confirmação de tarifa. Fim de nossos serviços, com assistência coordenada para a saída e conexão com seu próximo voo ou extensão de viagem.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/lima-night/2.jpg",
           "images": [
@@ -1944,22 +1944,22 @@
         {
           "destination": "lima",
           "nights": 2,
-          "label": "Lima - 2 noches"
+          "label": "Lima - 2 noites"
         },
         {
           "destination": "cusco",
           "nights": 2,
-          "label": "Cusco - 2 noches"
+          "label": "Cusco - 2 noites"
         },
         {
           "destination": "aguas-calientes",
           "nights": 1,
-          "label": "Machu Picchu Pueblo - 1 noche"
+          "label": "Machu Picchu Pueblo - 1 noite"
         },
         {
           "destination": "puno",
           "nights": 2,
-          "label": "Puno - 2 noches"
+          "label": "Puno - 2 noites"
         }
       ],
       "trainSelection": {
@@ -2000,7 +2000,7 @@
           "PERU_MAPI_WANCHAQ_VISTADOME_606"
         ]
       },
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo y Puno.",
+      "hotelPricingNote": "A hospedagem é somada à parte, conforme o hotel e o tipo de quarto escolhidos em Lima, Cusco, Machu Picchu Pueblo e Puno.",
       "capacity": 30
     },
     {
@@ -2012,10 +2012,10 @@
       "days": 9,
       "nights": 8,
       "typeLabel": "9 dias / 8 noites",
-      "badge": "Andes del Sur",
+      "badge": "Andes do Sul",
       "featured": false,
       "location": "Lima / Arequipa / Colca / Cusco / Peru",
-      "shortDescription": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu.",
+      "shortDescription": "Rota andina com Lima, Arequipa, Colca, Cusco e Machu Picchu.",
       "image": "./assets/img/packages/peru/9d8n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2067,7 +2067,7 @@
       },
       "seo": {
         "title": "Pacotes Peru: Lima + Arequipa + Cusco 9 dias / 8 noites | My Cusco Trip",
-        "description": "Ruta andina con Lima, Arequipa, Colca, Cusco y Machu Picchu."
+        "description": "Rota andina com Lima, Arequipa, Colca, Cusco e Machu Picchu."
       },
       "duration": {
         "label": "9 dias / 8 noites",
@@ -2108,8 +2108,8 @@
         "child": 1499.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1199.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -2595,15 +2595,15 @@
         "child": 1569.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1259.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
       },
       "priceFrom": 1569.9,
       "priceLabel": "A partir de USD 1,569.90 por pessoa sem hotéis",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa y Lima final.",
+      "hotelPricingNote": "A hospedagem é somada à parte, conforme o hotel e o tipo de quarto escolhidos em Lima, Cusco, Machu Picchu Pueblo, Puno, Arequipa e Lima final.",
       "seo": {
         "title": "Peru 10 dias: Lima, Huacachina, Cusco, Machu Picchu, Titicaca e Arequipa | My Cusco Trip",
         "description": "Um roteiro completo de 10 dias pelo Peru combinando Lima, Huacachina, Paracas, Cusco, Vale Sagrado, Machu Picchu de trem, Rota do Sol, Lago Titicaca e Arequipa colonial."
@@ -2616,16 +2616,16 @@
     {
       "id": "pkg_peru_bolivia_uyuni_10d9n",
       "slug": "paquetes-peru-bolivia-lima-paracas-cusco-puno-uyuni-10-dias-9-noches",
-      "title": "Perú y Bolivia: Lima, Paracas, Cusco, Puno y Salar de Uyuni 10D/9N",
+      "title": "Peru e Bolívia: Lima, Paracas, Cusco, Puno e Salar de Uyuni 10D/9N",
       "productKind": "package",
       "productFamily": "peru-package",
       "days": 10,
       "nights": 9,
-      "typeLabel": "10 días / 9 noches",
-      "badge": "Nuevo",
+      "typeLabel": "10 dias / 9 noites",
+      "badge": "Novo",
       "featured": true,
       "location": "Lima / Paracas / Ica / Cusco / Machu Picchu / Puno / Uyuni",
-      "shortDescription": "Ruta multidestino que combina lo esencial del Perú con una extensión hacia el Salar de Uyuni en Bolivia.",
+      "shortDescription": "Circuito internacional por Lima, costa sul, Cusco, Machu Picchu, Puno, La Paz e Salar de Uyuni.",
       "image": "./assets/img/packages/peru/10d9n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -2688,14 +2688,14 @@
       },
       "capacity": 30,
       "duration": {
-        "label": "10 días / 9 noches",
+        "label": "10 dias / 9 noites",
         "maxGroupSize": 30,
         "guideLanguages": [
           "es",
           "en"
         ]
       },
-      "description": "Este paquete combina Lima, Paracas, Ica, Huacachina, Cusco, Valle Sagrado, Machu Picchu, Ruta del Sol, Lago Titicaca y una extensión hacia el Salar de Uyuni. Es una opción pensada para viajeros que desean unir Perú y Bolivia en una sola ruta, con servicios principales coordinados, hoteles configurables y conexiones sujetas a disponibilidad operativa.",
+      "description": "Circuito internacional por Lima, costa sul, Cusco, Machu Picchu, Puno, La Paz e Salar de Uyuni.",
       "images": {
         "cover": "./assets/img/packages/peru/10d9n/cover.jpg",
         "gallery": [
@@ -2710,63 +2710,63 @@
       "showItineraryImages": true,
       "experienceType": [
         "Cultural",
-        "Naturaleza",
-        "Aventura suave",
+        "Natureza",
+        "Aventura leve",
         "Multidestino",
-        "Perú + Bolivia"
+        "Peru + Bolívia"
       ],
       "highlights": [
-        "Lima nocturna, Paracas, Ica y Huacachina",
-        "Bienvenida ancestral y City Tour en Cusco",
-        "Valle Sagrado con tren hacia Machu Picchu",
-        "Machu Picchu con tren, bus, ingreso y guía",
-        "Ruta del Sol de Cusco a Puno",
-        "Lago Titicaca con Uros y Taquile",
-        "Bus nocturno hacia Uyuni",
-        "Salar de Uyuni y paisajes altiplánicos"
+        "Lima noturna, Paracas, Ica e Huacachina",
+        "Boas-vindas ancestrais e City Tour em Cusco",
+        "Vale Sagrado com trem até Machu Picchu",
+        "Machu Picchu com trem, ônibus, ingresso e guia",
+        "Rota do Sol de Cusco a Puno",
+        "Lago Titicaca com Uros e Taquile",
+        "Ônibus noturno até Uyuni",
+        "Salar de Uyuni e paisagens altiplânicas"
       ],
       "details": [
-        "Guías en español e inglés; otros idiomas a consultar",
-        "Hoteles configurables en Lima, Cusco, Aguas Calientes, Puno y Uyuni según disponibilidad",
-        "Conexión internacional terrestre Puno - Uyuni sujeta a operación y documentación migratoria",
-        "Reservas y horarios sujetos a disponibilidad al momento de confirmar"
+        "Guias em espanhol e inglês; outros idiomas a consultar",
+        "Hotéis configuráveis em Lima, Cusco, Aguas Calientes, Puno e Uyuni conforme disponibilidade",
+        "Conexão internacional terrestre Puno - Uyuni sujeita a operação e documentação migratória",
+        "Reservas e horários sujeitos a disponibilidade no momento da confirmação"
       ],
       "includes": [
-        "Precio base sin hoteles: incluye tours, traslados operativos, tren base, ingreso a Machu Picchu, bus a Machu Picchu, boletos turísticos requeridos, Ruta del Sol, Titicaca, bus nocturno Puno-Uyuni y servicios seleccionados en Uyuni sujetos a disponibilidad y confirmación de tarifa.",
-        "Recojo desde el aeropuerto de Lima y traslado al hotel seleccionado en Lima",
-        "Tour nocturno en Lima: Miraflores, Barranco, Larcomar y Circuito Mágico del Agua",
-        "Full day Paracas, Ica y Huacachina desde Lima",
-        "Vuelo doméstico Lima - Cusco, sujeto a confirmación de tarifa y disponibilidad",
-        "Bienvenida ancestral y City Tour Cusco",
-        "Valle Sagrado con conexión hacia Machu Picchu Pueblo",
-        "Tour Machu Picchu con tren, bus, ingreso y guía según disponibilidad",
-        "Ruta del Sol de Cusco a Puno",
-        "Full day Lago Titicaca: Uros y Taquile o alternativa cultural según disponibilidad",
-        "Bus nocturno Puno - Uyuni, sujeto a disponibilidad, operación fronteriza y documentación",
-        "Experiencia Salar de Uyuni y servicios locales según ruta confirmada",
-        "Alojamiento configurable por destino según elección de hoteles, categoría y disponibilidad"
+        "Preço base sem hotéis: inclui tours, traslados operacionais, trem base, ingresso a Machu Picchu, ônibus a Machu Picchu, bilhetes turísticos exigidos, Rota do Sol, Titicaca, ônibus noturno Puno-Uyuni e serviços selecionados em Uyuni, sujeitos a disponibilidade e confirmação de tarifa.",
+        "Busca no aeroporto de Lima e traslado ao hotel selecionado em Lima",
+        "Tour noturno em Lima: Miraflores, Barranco, Larcomar e Circuito Mágico da Água",
+        "Full day Paracas, Ica e Huacachina saindo de Lima",
+        "Voo doméstico Lima - Cusco, sujeito a confirmação de tarifa e disponibilidade",
+        "Boas-vindas ancestrais e City Tour Cusco",
+        "Vale Sagrado com conexão a Machu Picchu Pueblo",
+        "Tour Machu Picchu com trem, ônibus, ingresso e guia conforme disponibilidade",
+        "Rota do Sol de Cusco a Puno",
+        "Full day Lago Titicaca: Uros e Taquile ou alternativa cultural conforme disponibilidade",
+        "Ônibus noturno Puno - Uyuni, sujeito a disponibilidade, operação fronteiriça e documentação",
+        "Experiência Salar de Uyuni e serviços locais conforme rota confirmada",
+        "Hospedagem configurável por destino, conforme escolha de hotéis, categoria e disponibilidade"
       ],
       "excludes": [
-        "Vuelos internacionales",
-        "Alimentación no mencionada en el programa",
-        "Early check-in o late check-out no confirmado por el hotel",
-        "Propinas, gastos personales y servicios no indicados como incluidos",
-        "Trámites migratorios, visas, seguros especiales o requisitos de ingreso a Bolivia que correspondan según nacionalidad"
+        "Voos internacionais",
+        "Alimentação não mencionada no programa",
+        "Early check-in ou late check-out não confirmado pelo hotel",
+        "Gorjetas, despesas pessoais e serviços não indicados como incluídos",
+        "Trâmites migratórios, vistos, seguros especiais ou requisitos de entrada na Bolívia conforme a nacionalidade"
       ],
       "importantInfo": [
-        "Cada pasajero debe viajar con pasaporte vigente y en buen estado. Se recomienda una vigencia mínima de 6 meses para entrar y salir del Perú.",
-        "Revisa que los nombres y números de documento coincidan exactamente con vuelos, trenes e ingresos turísticos.",
-        "Se recomienda llevar efectivo en soles para compras menores, servicios personales, propinas o lugares donde la conexión a internet pueda ser limitada.",
-        "Los horarios de vuelos domésticos, trenes, buses e ingresos a Machu Picchu están sujetos a disponibilidad al momento de confirmar la reserva.",
-        "El orden de las visitas puede ajustarse por clima, disponibilidad, regulaciones oficiales, operación turística o seguridad del grupo.",
-        "Para la extensión a Uyuni, cada pasajero debe verificar requisitos migratorios de ingreso a Bolivia según su nacionalidad antes de reservar."
+        "Cada passageiro deve viajar com passaporte válido e em bom estado. Recomenda-se uma validade mínima de 6 meses para entrar e sair do Peru.",
+        "Verifique se os nomes e números de documento coincidem exatamente com voos, trens e ingressos turísticos.",
+        "Recomenda-se levar dinheiro em soles para compras menores, serviços pessoais, gorjetas ou locais onde a conexão à internet possa ser limitada.",
+        "Os horários de voos domésticos, trens, ônibus e ingressos a Machu Picchu estão sujeitos a disponibilidade no momento da confirmação da reserva.",
+        "A ordem das visitas pode ser ajustada por clima, disponibilidade, regulamentações oficiais, operação turística ou segurança do grupo.",
+        "Para a extensão a Uyuni, cada passageiro deve verificar os requisitos migratórios de entrada na Bolívia conforme sua nacionalidade antes de reservar."
       ],
-      "pickupInfo": "Para todas las excursiones coordinamos los recojos desde el hotel en cada destino. Los horarios finales, puntos de encuentro y traslados se confirman según el hotel elegido, fechas de viaje, operación vigente y servicios reservados.",
+      "pickupInfo": "Para todas as excursões, coordenamos as buscas no hotel em cada destino. Os horários finais, pontos de encontro e traslados são confirmados conforme o hotel escolhido, as datas da viagem, a operação vigente e os serviços reservados.",
       "dailyItinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Chegada a Lima",
+          "description": "Recepção no aeroporto e traslado ao hotel. Orientação sobre a rota internacional e revisão de documentos migratórios.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -2776,8 +2776,8 @@
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica e Huacachina",
+          "description": "Excursão às Ilhas Ballestas, Ica e ao oásis de Huacachina, com atividades sujeitas a clima e operação.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -2787,8 +2787,8 @@
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Voo a Cusco e aclimatação",
+          "description": "Voo a Cusco, traslado ao hotel e tarde tranquila para se adaptar à altitude.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -2798,8 +2798,8 @@
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Vale Sagrado e trem a Machu Picchu Pueblo",
+          "description": "Passeio cultural pelo Vale Sagrado e trem saindo de Ollantaytambo até Machu Picchu Pueblo.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -2809,8 +2809,8 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "title": "Machu Picchu e retorno a Cusco",
+          "description": "Visita guiada a Machu Picchu pelo circuito atribuído e retorno a Cusco de trem e veículo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
@@ -2820,8 +2820,8 @@
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Rota do Sol a Puno",
+          "description": "Viagem turística por Andahuaylillas, Raqchi, La Raya e Pucará conforme operação, com chegada a Puno.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -2831,8 +2831,8 @@
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno hacia Uyuni",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros y continuarás con una experiencia cultural en Taquile o una alternativa operativa similar según disponibilidad. Al finalizar el día, traslado hacia el terminal para abordar el bus nocturno con destino a Uyuni, dando inicio a la extensión hacia Bolivia.",
+          "title": "Uros e travessia terrestre até La Paz",
+          "description": "Visita matinal às ilhas flutuantes dos Uros ou experiência breve no Titicaca. Em seguida, traslado terrestre até a Bolívia com travessia de fronteira assistida e chegada a La Paz.",
           "overnight": "Bus nocturno Puno - Uyuni",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -2842,8 +2842,8 @@
         },
         {
           "day": 8,
-          "title": "Llegada a Uyuni y Salar de Uyuni",
-          "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
+          "title": "La Paz até Uyuni",
+          "description": "Traslado aéreo ou terrestre até Uyuni conforme a opção contratada. Recepção, orientação e experiência de pôr do sol nos arredores do salar quando o horário permitir.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -2852,8 +2852,8 @@
         },
         {
           "day": 9,
-          "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
-          "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
+          "title": "Salar de Uyuni",
+          "description": "Excursão de dia completo pelo Salar de Uyuni: Colchani, montes de sal, antigas locomotivas e pontos panorâmicos. Na temporada de chuvas, a rota é adaptada para priorizar a segurança e o efeito espelho.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -2862,8 +2862,8 @@
         },
         {
           "day": 10,
-          "title": "Salida desde Uyuni o conexión a La Paz",
-          "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
+          "title": "Saída de Uyuni ou conexão a La Paz",
+          "description": "Traslado ao aeroporto ou terminal para a conexão a La Paz e o próximo destino. O horário final depende do meio de transporte selecionado.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/lima-night/2.jpg",
           "images": [
@@ -2874,8 +2874,8 @@
       "itinerary": [
         {
           "day": 1,
-          "title": "Llegada a Lima y recorrido nocturno",
-          "description": "A tu llegada a Lima por la tarde, nuestro equipo te recibirá en el aeropuerto y te trasladará al hotel seleccionado. Por la noche tendrás una primera experiencia por la capital peruana: recorrido panorámico por Miraflores y Barranco, visita a Larcomar frente al océano Pacífico y experiencia en el Circuito Mágico del Agua, uno de los espectáculos nocturnos más vistosos de la ciudad.",
+          "title": "Chegada a Lima",
+          "description": "Recepção no aeroporto e traslado ao hotel. Orientação sobre a rota internacional e revisão de documentos migratórios.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/lima-night/cover.jpg",
           "images": [
@@ -2885,8 +2885,8 @@
         },
         {
           "day": 2,
-          "title": "Full Day Paracas, Ica y Huacachina",
-          "description": "Salida desde el hotel en Lima hacia la costa sur. En Paracas navegarás hacia las Islas Ballestas para observar fauna marina, aves guaneras y paisajes del océano Pacífico. Luego continuarás hacia Ica para vivir una experiencia vitivinícola con visita a bodega, degustación de vinos y piscos, y una pausa gastronómica. Por la tarde visitarás el oasis de Huacachina, con tiempo para fotografías, dunas, tubulares y sandboarding según operación y clima.",
+          "title": "Paracas, Ica e Huacachina",
+          "description": "Excursão às Ilhas Ballestas, Ica e ao oásis de Huacachina, com atividades sujeitas a clima e operação.",
           "overnight": "Lima",
           "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
           "images": [
@@ -2896,8 +2896,8 @@
         },
         {
           "day": 3,
-          "title": "Vuelo a Cusco, bienvenida ancestral y City Tour",
-          "description": "Muy temprano tomarás el vuelo Lima - Cusco. A tu llegada, traslado al hotel y tiempo breve para aclimatarte. Luego vivirás una bienvenida ancestral inspirada en el pago a la tierra. Por la tarde realizarás el City Tour de Cusco visitando Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay, además de una introducción cultural a la antigua capital del Imperio Inca.",
+          "title": "Voo a Cusco e aclimatação",
+          "description": "Voo a Cusco, traslado ao hotel e tarde tranquila para se adaptar à altitude.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
           "images": [
@@ -2907,8 +2907,8 @@
         },
         {
           "day": 4,
-          "title": "Valle Sagrado y tren hacia Machu Picchu Pueblo",
-          "description": "Después del desayuno iniciarás la ruta del Valle Sagrado. Conocerás paisajes andinos, pueblos tradicionales y sitios arqueológicos como Chinchero, Pisac u Ollantaytambo según operación. Desde Ollantaytambo abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando del recorrido junto al río y las montañas. Noche en Aguas Calientes para descansar antes de la visita a Machu Picchu.",
+          "title": "Vale Sagrado e trem a Machu Picchu Pueblo",
+          "description": "Passeio cultural pelo Vale Sagrado e trem saindo de Ollantaytambo até Machu Picchu Pueblo.",
           "overnight": "Aguas Calientes",
           "image": "./assets/img/tours/valle-sagrado/cover.jpg",
           "images": [
@@ -2918,8 +2918,8 @@
         },
         {
           "day": 5,
-          "title": "Machu Picchu y retorno a Cusco",
-          "description": "Este será uno de los días más esperados del viaje. Subirás en bus hacia la ciudadela de Machu Picchu para realizar una visita guiada por sus sectores principales, miradores y espacios ceremoniales. Después de la experiencia, tendrás tiempo para almorzar en Machu Picchu Pueblo y abordar el tren de retorno. Al llegar a Ollantaytambo o Cusco, te trasladaremos al hotel seleccionado en Cusco.",
+          "title": "Machu Picchu e retorno a Cusco",
+          "description": "Visita guiada a Machu Picchu pelo circuito atribuído e retorno a Cusco de trem e veículo.",
           "overnight": "Cusco",
           "image": "./assets/img/tours/machu-picchu-overnight/cover.jpg",
           "images": [
@@ -2929,8 +2929,8 @@
         },
         {
           "day": 6,
-          "title": "Ruta del Sol de Cusco a Puno",
-          "description": "Viajarás de Cusco a Puno por la famosa Ruta del Sol, una ruta turística que conecta el mundo inca con el altiplano peruano. Durante el recorrido se realizan paradas culturales en lugares como Andahuaylillas, Raqchi, La Raya y Pucará, según el operador y la operación vigente. Es una forma cómoda y escénica de llegar al Lago Titicaca mientras descubres historia, paisajes altoandinos y comunidades del sur del Perú.",
+          "title": "Rota do Sol a Puno",
+          "description": "Viagem turística por Andahuaylillas, Raqchi, La Raya e Pucará conforme operação, com chegada a Puno.",
           "overnight": "Puno",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -2940,8 +2940,8 @@
         },
         {
           "day": 7,
-          "title": "Lago Titicaca y bus nocturno hacia Uyuni",
-          "description": "Día completo para explorar el Lago Titicaca. Visitarás las islas flotantes de los Uros y continuarás con una experiencia cultural en Taquile o una alternativa operativa similar según disponibilidad. Al finalizar el día, traslado hacia el terminal para abordar el bus nocturno con destino a Uyuni, dando inicio a la extensión hacia Bolivia.",
+          "title": "Uros e travessia terrestre até La Paz",
+          "description": "Visita matinal às ilhas flutuantes dos Uros ou experiência breve no Titicaca. Em seguida, traslado terrestre até a Bolívia com travessia de fronteira assistida e chegada a La Paz.",
           "overnight": "Bus nocturno Puno - Uyuni",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -2951,8 +2951,8 @@
         },
         {
           "day": 8,
-          "title": "Llegada a Uyuni y Salar de Uyuni",
-          "description": "Llegada a Uyuni y asistencia para iniciar la experiencia por uno de los paisajes más impactantes de Sudamérica. La ruta puede incluir el Cementerio de Trenes, Colchani, los ojos de sal, montículos de sal, la inmensidad del salar y espacios panorámicos para fotografías. En temporada de lluvias, el salar puede mostrar el famoso efecto espejo, sujeto a clima y seguridad operativa.",
+          "title": "La Paz até Uyuni",
+          "description": "Traslado aéreo ou terrestre até Uyuni conforme a opção contratada. Recepção, orientação e experiência de pôr do sol nos arredores do salar quando o horário permitir.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/titicaca/cover.jpg",
           "images": [
@@ -2961,8 +2961,8 @@
         },
         {
           "day": 9,
-          "title": "Uyuni: lagunas altiplánicas o experiencia complementaria",
-          "description": "Día para continuar explorando el entorno de Uyuni según la operación elegida: lagunas altiplánicas, paisajes desérticos, formaciones rocosas o una ruta panorámica complementaria. La selección exacta dependerá de la temporada, accesos, condiciones climáticas y disponibilidad del operador local. Noche en Uyuni o conexión nocturna según el plan confirmado.",
+          "title": "Salar de Uyuni",
+          "description": "Excursão de dia completo pelo Salar de Uyuni: Colchani, montes de sal, antigas locomotivas e pontos panorâmicos. Na temporada de chuvas, a rota é adaptada para priorizar a segurança e o efeito espelho.",
           "overnight": "Uyuni",
           "image": "./assets/img/packages/peru/ruta-del-sol/cover.jpg",
           "images": [
@@ -2971,8 +2971,8 @@
         },
         {
           "day": 10,
-          "title": "Salida desde Uyuni o conexión a La Paz",
-          "description": "Traslado coordinado para tomar vuelo, bus o conexión hacia La Paz, Lima u otro destino según el plan confirmado. Fin de nuestros servicios con asistencia para la salida y orientación de conexión internacional.",
+          "title": "Saída de Uyuni ou conexão a La Paz",
+          "description": "Traslado ao aeroporto ou terminal para a conexão a La Paz e o próximo destino. O horário final depende do meio de transporte selecionado.",
           "overnight": "Fin del viaje",
           "image": "./assets/img/packages/peru/lima-night/2.jpg",
           "images": [
@@ -2982,55 +2982,55 @@
       ],
       "faq": [
         {
-          "q": "¿Cómo se organiza este paquete?",
-          "a": "El paquete se arma como una ruta flexible de 10 días / 9 noches con experiencias principales, traslados, trenes y alojamiento según la opción elegida."
+          "q": "Como este pacote é organizado?",
+          "a": "O pacote é montado como uma rota flexível de 10 dias / 9 noites com experiências principais, traslados, trens e hospedagem conforme a opção escolhida."
         },
         {
-          "q": "¿Incluye guía?",
+          "q": "Inclui guia?",
           "a": "Sim. Inclui guia profissional em espanhol e inglês (outros idiomas consultar)."
         },
         {
-          "q": "¿Qué incluye la base del paquete?",
-          "a": "Incluye traslados de llegada y salida, asistencia de viaje, transporte turístico según programa y las experiencias indicadas en el itinerario."
+          "q": "O que está incluído na base do pacote?",
+          "a": "Inclui traslados de chegada e saída, assistência de viagem, transporte turístico conforme o programa e as experiências indicadas no itinerário."
         },
         {
-          "q": "¿Qué no está incluido?",
-          "a": "No incluye vuelos internacionales, alimentación no mencionada, gastos personales, propinas voluntarias, servicios no mencionados ni upgrades opcionales no seleccionados."
+          "q": "O que não está incluído?",
+          "a": "Não inclui voos internacionais, alimentação não mencionada, despesas pessoais, gorjetas voluntárias, serviços não mencionados nem upgrades opcionais não selecionados."
         },
         {
-          "q": "¿Puedo elegir hoteles y trenes?",
-          "a": "Sí. Puedes revisar opciones de alojamiento y tren cuando el paquete lo permite; la tarifa se ajusta según la categoría seleccionada."
+          "q": "Posso escolher hotéis e trens?",
+          "a": "Sim. Você pode revisar opções de hospedagem e trem quando o pacote permite; a tarifa é ajustada conforme a categoria selecionada."
         },
         {
-          "q": "¿Los horarios quedan confirmados desde el inicio?",
-          "a": "Los horarios finales de vuelos internos, trenes, buses, ingresos y recojos se confirman al momento de reservar según disponibilidad y operación vigente."
+          "q": "Os horários já ficam confirmados desde o início?",
+          "a": "Os horários finais de voos domésticos, trens, ônibus, ingressos e buscas são confirmados no momento da reserva, conforme disponibilidade e operação vigente."
         }
       ],
       "accommodationSummary": [
         {
           "destination": "lima",
           "nights": 2,
-          "label": "Lima - 2 noches"
+          "label": "Lima - 2 noites"
         },
         {
           "destination": "cusco",
           "nights": 2,
-          "label": "Cusco - 2 noches"
+          "label": "Cusco - 2 noites"
         },
         {
           "destination": "aguas-calientes",
           "nights": 1,
-          "label": "Machu Picchu Pueblo - 1 noche"
+          "label": "Machu Picchu Pueblo - 1 noite"
         },
         {
           "destination": "puno",
           "nights": 1,
-          "label": "Puno - 1 noche"
+          "label": "Puno - 1 noite"
         },
         {
           "destination": "uyuni",
           "nights": 2,
-          "label": "Uyuni - 2 noches"
+          "label": "Uyuni - 2 noites"
         }
       ],
       "trainSelection": {
@@ -3077,15 +3077,15 @@
         "child": 1899.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio base referencial sin hoteles. Hoteles se agregan aparte según elección del cliente y servicios de Uyuni sujetos a disponibilidad.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço base referencial sem hotéis. Os hotéis são adicionados à parte, conforme a escolha do cliente, e os serviços em Uyuni estão sujeitos a disponibilidade.",
         "protectedNetAfterMaxDiscountAndPaypal": 1519.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
       },
       "priceFrom": 1899.9,
-      "priceLabel": "Desde USD 1,899.90 por persona sin hoteles",
-      "hotelPricingNote": "El alojamiento se suma aparte según el hotel y tipo de habitación elegido en Lima, Cusco, Machu Picchu Pueblo, Puno y Uyuni.",
+      "priceLabel": "A partir de USD 1.899,90 por pessoa sem hotéis",
+      "hotelPricingNote": "A hospedagem é somada à parte, conforme o hotel e o tipo de quarto escolhidos em Lima, Cusco, Machu Picchu Pueblo, Puno e Uyuni.",
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
@@ -3103,7 +3103,7 @@
       "badge": "Peru esencial",
       "featured": true,
       "location": "Lima / Paracas / Ica / Arequipa / Peru",
-      "shortDescription": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco y Machu Picchu.",
+      "shortDescription": "Rota essencial do sul do Peru com costa, Colca, Titicaca, Cusco e Machu Picchu.",
       "image": "./assets/img/packages/peru/12d11n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -3167,7 +3167,7 @@
       },
       "seo": {
         "title": "Pacotes Peru: Lima + Paracas + Arequipa + Puno + Cusco 12 dias / 11 noites | My Cusco Trip",
-        "description": "Ruta esencial del Peru sur con costa, Colca, Titicaca, Cusco y Machu Picchu."
+        "description": "Rota essencial do sul do Peru com costa, Colca, Titicaca, Cusco e Machu Picchu."
       },
       "duration": {
         "label": "12 dias / 11 noites",
@@ -3208,8 +3208,8 @@
         "child": 1869.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1499.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -3237,10 +3237,10 @@
       "days": 14,
       "nights": 13,
       "typeLabel": "14 dias / 13 noites",
-      "badge": "Naturaleza",
+      "badge": "Natureza",
       "featured": false,
       "location": "Lima / Paracas / Arequipa / Puno / Peru",
-      "shortDescription": "Ruta amplia para combinar el sur clásico del Peru con una extensión de Amazonía.",
+      "shortDescription": "Rota ampla para combinar o sul clássico do Peru com uma extensão na Amazônia.",
       "image": "./assets/img/packages/peru/14d13n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -3303,7 +3303,7 @@
       },
       "seo": {
         "title": "Pacotes Peru Sur + Amazonía 14 dias / 13 noites | My Cusco Trip",
-        "description": "Ruta amplia para combinar el sur clásico del Peru con una extensión de Amazonía."
+        "description": "Rota ampla para combinar o sul clássico do Peru com uma extensão na Amazônia."
       },
       "duration": {
         "label": "14 dias / 13 noites",
@@ -3344,8 +3344,8 @@
         "child": 2239.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1799.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -3374,10 +3374,10 @@
       "days": 15,
       "nights": 14,
       "typeLabel": "15 dias / 14 noites",
-      "badge": "Mega viaje",
+      "badge": "Mega viagem",
       "featured": false,
       "location": "Lima / Paracas / Ica / Nazca / Peru",
-      "shortDescription": "Versión extensa para viajeros que quieren una experiencia completa del Peru.",
+      "shortDescription": "Versão extensa para viajantes que querem uma experiência completa do Peru.",
       "image": "./assets/img/packages/peru/15d14n/cover.jpg",
       "priceMode": "static_base_plus_configurable_services",
       "status": "published",
@@ -3448,7 +3448,7 @@
       },
       "seo": {
         "title": "Pacotes Peru completo 15 dias / 14 noites | My Cusco Trip",
-        "description": "Versión extensa para viajeros que quieren una experiencia completa del Peru."
+        "description": "Versão extensa para viajantes que querem uma experiência completa do Peru."
       },
       "duration": {
         "label": "15 dias / 14 noites",
@@ -3489,8 +3489,8 @@
         "child": 2489.9,
         "currency": "USD",
         "mode": "published_price_without_hotels",
-        "label": "Precio base por persona sin hoteles",
-        "description": "Precio publicado protegido para soportar hasta 15% de descuento y 5.4% de comisión PayPal. Hoteles se agregan aparte según elección del cliente.",
+        "label": "Preço base por pessoa sem hotéis",
+        "description": "Preço publicado com proteção para suportar até 15% de desconto e 5,4% de comissão do PayPal. Os hotéis são adicionados à parte, conforme a escolha do cliente.",
         "protectedNetAfterMaxDiscountAndPaypal": 1999.9,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4
@@ -4012,7 +4012,7 @@
         "PER004"
       ],
       "requiresDestinationBlock": "paracas_ica",
-      "salesNote": "Agregar solo cuando el cliente acepte traslado más largo o noite estratégica en Ica/Nazca."
+      "salesNote": "Adicionar apenas quando o cliente aceitar um traslado mais longo ou uma noite estratégica em Ica/Nazca."
     },
     "withAmazonTambopata": {
       "label": "Agregar extensión Amazonía Tambopata",
@@ -4021,7 +4021,7 @@
         "PER012"
       ],
       "preferredPosition": "end_of_trip_after_cusco",
-      "salesNote": "Ideal después de Cusco por conectividad con Puerto Maldonado."
+      "salesNote": "Ideal depois de Cusco pela conectividade com Puerto Maldonado."
     },
     "withTarapoto": {
       "label": "Agregar extensión Tarapoto",
@@ -4031,7 +4031,7 @@
         "PER010"
       ],
       "preferredPosition": "start_or_end_by_flight_logic",
-      "salesNote": "Extensión de naturaleza suave con vuelos domésticos."
+      "salesNote": "Extensão de natureza leve com voos domésticos."
     },
     "withIquitos": {
       "label": "Agregar extensión Iquitos",
@@ -4040,7 +4040,7 @@
         "PER011"
       ],
       "preferredPosition": "start_or_end_by_flight_logic",
-      "salesNote": "Extensión amazónica que requiere validar vuelos y logística."
+      "salesNote": "Extensão amazônica que requer validação de voos e logística."
     }
   },
   "detailPageBehavior": {
@@ -4064,10 +4064,10 @@
     "fetchCacheModeRecommendation": "no-store"
   },
   "implementationNotes": [
-    "Este archivo no reemplaza tours-peru.json ni packages-cusco.json; los orquesta por referencia.",
-    "Los paquetes Peru deben mostrarse como cards vendibles por duración/ruta, pero el detalle debe generar las combinaciones reales al vuelo.",
-    "Si una ruta incluye Cusco/Machu Picchu, se deben aplicar las reglas de packages-cusco.json y tours-machu-picchu.json.",
-    "Los precios de tours-peru.json marcados como referenciales deben validarse comercialmente antes de publicación final."
+    "Este arquivo não substitui tours-peru.json nem packages-cusco.json; ele os orquestra por referência.",
+    "Os pacotes do Peru devem ser exibidos como cards vendáveis por duração/rota, mas o detalhe deve gerar as combinações reais em tempo real.",
+    "Se uma rota incluir Cusco/Machu Picchu, devem ser aplicadas as regras de packages-cusco.json e tours-machu-picchu.json.",
+    "Os preços de tours-peru.json marcados como referenciais devem ser validados comercialmente antes da publicação final."
   ],
   "defaultGuideLanguages": [
     "es",

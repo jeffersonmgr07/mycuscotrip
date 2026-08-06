@@ -671,11 +671,11 @@
 <input id="departureDate" type="date" value="2026-04-02"/>
 </div>
 <div class="field">
-<label for="departureTime">Hora salida ida</label>
+<label for="departureTime">Outbound departure time</label>
 <input id="departureTime" type="time" value="06:10"/>
 </div>
 <div class="field">
-<label for="arrivalTime">Hora llegada ida</label>
+<label for="arrivalTime">Outbound arrival time</label>
 <input id="arrivalTime" type="time" value="07:42"/>
 </div>
 <div class="field" id="returnDateField" style="display:none;">
@@ -683,11 +683,11 @@
 <input id="returnDate" type="date" value="2026-04-05"/>
 </div>
 <div class="field" id="returnDepartureTimeField" style="display:none;">
-<label for="returnDepartureTime">Hora salida vuelta</label>
+<label for="returnDepartureTime">Return departure time</label>
 <input id="returnDepartureTime" type="time" value="09:45"/>
 </div>
 <div class="field" id="returnArrivalTimeField" style="display:none;">
-<label for="returnArrivalTime">Hora llegada vuelta</label>
+<label for="returnArrivalTime">Return arrival time</label>
 <input id="returnArrivalTime" type="time" value="11:25"/>
 </div>
 <div class="field">
@@ -1118,21 +1118,21 @@
                       <div class="option-title">Travel insurance</div>
                       <div class="option-desc">Additional coverage for the passenger.</div>
                     </div>
-                    <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}</div>
+                    <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "Not included"}</div>
                   </div>
 
                   <div class="option-card">
                     <div class="option-left">
-                      <div class="option-title">Vuelo flexible</div>
-                      <div class="option-desc">Permite cambios bajo condiciones de tarifa.</div>
+                      <div class="option-title">Flexible flight</div>
+                      <div class="option-desc">Allows changes subject to fare conditions.</div>
                     </div>
-                    <div class="option-price">${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}</div>
+                    <div class="option-price">${values.includeFlexible ? formatMoney(values.flexiblePrice) : "Not included"}</div>
                   </div>
                 </div>
               </section>
 
               <section class="quote-section">
-                <div class="quote-section-title">Opciones de pago</div>
+                <div class="quote-section-title">Payment options</div>
                 <div class="detail-list">
                   <div class="detail-row">
                     <div class="detail-label">Bank transfer / deposit</div>
@@ -1244,7 +1244,7 @@ Ruta ida: ${routes.ida}
 Ruta vuelta: ${routes.vuelta}
 Airline: ${airline.name}
 Precio boleto: ${formatMoney(values.price)}
-Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}
+Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "Not included"}
 Flexible: ${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}
 Bank transfer total: ${formatMoney(totals.transferTotal)}
 Total tarjeta: ${formatMoney(totals.cardTotal)}`
@@ -1259,7 +1259,7 @@ Total tarjeta: ${formatMoney(totals.cardTotal)}`
       const values = getFormValues();
 
       if (!values.origin || !values.destination || !values.departureDate || !values.departureTime || !values.arrivalTime || values.price <= 0) {
-        results.innerHTML = `<div class="empty">Completa origen, destino, fecha, horas y precio final.</div>`;
+        results.innerHTML = `<div class="empty">Fill in origin, destination, date, times and final price.</div>`;
         return;
       }
 

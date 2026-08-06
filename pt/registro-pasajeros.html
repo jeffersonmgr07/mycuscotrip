@@ -520,69 +520,69 @@
 <div class="registro-shell">
 <div class="registro-grid">
 <aside class="registro-copy">
-<span class="eyebrow">Registro de pasajeros</span>
-<h1>Completa los datos de tu <span>viaje</span></h1>
+<span class="eyebrow">Registro de passageiros</span>
+<h1>Complete os dados da sua <span>viagem</span></h1>
 <p>
-            Ingresa el código de reserva enviado por tu asesor y registra los datos de los pasajeros,
-            información de llegada a Cusco y contacto de emergencia.
+            Insira o código de reserva enviado pelo seu consultor e registre os dados dos passageiros,
+            informações de chegada a Cusco e contato de emergência.
           </p>
 <div class="registro-info-list">
 <div class="registro-info-item">
 <i class="fa-solid fa-user-check"></i>
-<div>El primer pasajero será el titular de coordinación del grupo.</div>
+<div>O primeiro passageiro será o titular de coordenação do grupo.</div>
 </div>
 <div class="registro-info-item">
 <i class="fa-solid fa-users"></i>
-<div>Puedes registrar hasta 10 pasajeros por reserva.</div>
+<div>Você pode registrar até 10 passageiros por reserva.</div>
 </div>
 <div class="registro-info-item">
 <i class="fa-solid fa-plane-arrival"></i>
-<div>Los vuelos pueden completarse ahora o enviarse más adelante.</div>
+<div>Os voos podem ser preenchidos agora ou enviados mais tarde.</div>
 </div>
 </div>
 </aside>
 <section class="registro-panel">
 <div class="registro-panel-head">
-<div class="label-top">Acceso seguro</div>
-<h2>Formulario de registro</h2>
+<div class="label-top">Acesso seguro</div>
+<h2>Formulário de registro</h2>
 <p>
-              Valida tu reserva y completa la información requerida para preparar la operación de tu viaje y generar tu Travel Voucher.
+              Valide sua reserva e complete as informações necessárias para preparar a operação da sua viagem e gerar o seu Travel Voucher.
             </p>
 </div>
 <div class="registro-body">
 <div class="step-bar" id="stepBar">
-<div class="step-item is-active" data-step-label="0">Acceso</div>
-<div class="step-item" data-step-label="1">Pasajeros</div>
-<div class="step-item" data-step-label="2">Llegada</div>
-<div class="step-item" data-step-label="3">Emergencia</div>
+<div class="step-item is-active" data-step-label="0">Acesso</div>
+<div class="step-item" data-step-label="1">Passageiros</div>
+<div class="step-item" data-step-label="2">Chegada</div>
+<div class="step-item" data-step-label="3">Emergência</div>
 </div>
 <div class="alert error" id="globalAlert"></div>
 <section class="access-card is-active" id="accessCard">
 <div class="form-section">
 <div class="form-section-head">
 <h3>Validar reserva</h3>
-<small>Paso inicial</small>
+<small>Passo inicial</small>
 </div>
 <div class="form-section-body">
 <div class="field-grid">
 <div class="field">
 <label for="bookingCode">Código de reserva</label>
-<input autocomplete="off" id="bookingCode" placeholder="Ej. CUS12345" required="" type="text"/>
+<input autocomplete="off" id="bookingCode" placeholder="Ex. CUS12345" required="" type="text"/>
 </div>
 <div class="field">
-<label for="bookingKey">Apellido del primer pasajero o clave</label>
-<input autocomplete="off" id="bookingKey" placeholder="Ej. García" required="" type="text"/>
+<label for="bookingKey">Sobrenome do primeiro passageiro ou senha</label>
+<input autocomplete="off" id="bookingKey" placeholder="Ex. García" required="" type="text"/>
 </div>
 </div>
 <p class="help-text">
-                    Sugerencia: puedes enviar al pasajero un código de reserva y una clave corta. Por ejemplo: código CUS12345 + apellido del titular.
+                    Sugestão: você pode enviar ao passageiro um código de reserva e uma senha curta. Por exemplo: código CUS12345 + sobrenome do titular.
                   </p>
 </div>
 </div>
 <div class="actions-row">
 <div></div>
 <div class="actions-right">
-<button class="btn-primary" id="validateReservationBtn" type="button">Ingresar al formulario</button>
+<button class="btn-primary" id="validateReservationBtn" type="button">Acessar o formulário</button>
 </div>
 </div>
 </section>
@@ -591,71 +591,71 @@
 <div id="reservationSummaryMount"></div>
 <div class="form-section">
 <div class="form-section-head">
-<h3>Datos de pasajeros</h3>
-<small id="passengerCounter">1 pasajero</small>
+<h3>Dados dos passageiros</h3>
+<small id="passengerCounter">1 passageiro</small>
 </div>
 <div class="form-section-body">
 <div id="passengersContainer"></div>
 <button class="btn-ghost" id="addPassengerBtn" type="button">
-<i class="fa-solid fa-user-plus"></i> Agregar pasajero
+<i class="fa-solid fa-user-plus"></i> Adicionar passageiro
                     </button>
-<p class="help-text">El pasajero 1 será considerado titular de coordinación del grupo.</p>
+<p class="help-text">O passageiro 1 será considerado titular de coordenação do grupo.</p>
 </div>
 </div>
 </section>
 <section class="form-step" data-step="2">
 <div class="form-section">
 <div class="form-section-head">
-<h3>Medio de llegada a Cusco</h3>
-<small>Itinerario de viaje</small>
+<h3>Meio de chegada a Cusco</h3>
+<small>Itinerário de viagem</small>
 </div>
 <div class="form-section-body">
 <div class="field-grid">
 <div class="field-full">
-<label for="arrivalMode">¿Por qué medio llegarán a Cusco?</label>
+<label for="arrivalMode">Por qual meio vocês chegarão a Cusco?</label>
 <select id="arrivalMode" required="">
-<option value="">Selecciona una opción</option>
-<option value="aereo">Vía aérea</option>
-<option value="terrestre">Vía terrestre</option>
-<option value="mas-adelante">Ingresaré los datos de llegada más adelante</option>
-<option value="mycuscotrip">My Cusco Trip se encarga de la operación de mi vuelo</option>
+<option value="">Selecione uma opção</option>
+<option value="aereo">Via aérea</option>
+<option value="terrestre">Via terrestre</option>
+<option value="mas-adelante">Vou inserir os dados de chegada mais tarde</option>
+<option value="mycuscotrip">A My Cusco Trip cuida da operação do meu voo</option>
 </select>
 </div>
 </div>
 <div class="conditional-box" id="flightBox">
 <div class="field-grid three">
 <div class="field">
-<label for="arrivalFlightDate">Fecha de llegada</label>
+<label for="arrivalFlightDate">Data de chegada</label>
 <input id="arrivalFlightDate" type="date"/>
 </div>
 <div class="field">
-<label for="arrivalFlightTime">Hora de llegada</label>
+<label for="arrivalFlightTime">Hora de chegada</label>
 <input id="arrivalFlightTime" type="time"/>
 </div>
 <div class="field">
-<label for="arrivalFlightNumber">Número de vuelo llegada</label>
-<input id="arrivalFlightNumber" placeholder="Ej. LA2045" type="text"/>
+<label for="arrivalFlightNumber">Número do voo de chegada</label>
+<input id="arrivalFlightNumber" placeholder="Ex. LA2045" type="text"/>
 </div>
 </div>
 <div class="field-grid three" style="margin-top:16px;">
 <div class="field">
-<label for="departureFlightDate">Fecha de salida de Cusco</label>
+<label for="departureFlightDate">Data de saída de Cusco</label>
 <input id="departureFlightDate" type="date"/>
 </div>
 <div class="field">
-<label for="departureFlightTime">Hora de salida</label>
+<label for="departureFlightTime">Hora de saída</label>
 <input id="departureFlightTime" type="time"/>
 </div>
 <div class="field">
-<label for="departureFlightNumber">Número de vuelo salida</label>
-<input id="departureFlightNumber" placeholder="Ej. LA2050" type="text"/>
+<label for="departureFlightNumber">Número do voo de saída</label>
+<input id="departureFlightNumber" placeholder="Ex. LA2050" type="text"/>
 </div>
 </div>
 </div>
 <div class="conditional-box" id="landBox">
 <div class="field-grid three">
 <div class="field">
-<label for="landArrivalDate">Fecha de llegada</label>
+<label for="landArrivalDate">Data de chegada</label>
 <input id="landArrivalDate" type="date"/>
 </div>
 <div class="field">
@@ -664,16 +664,16 @@
 </div>
 <div class="field">
 <label for="landCompany">Empresa / transporte</label>
-<input id="landCompany" placeholder="Ej. Cruz del Sur" type="text"/>
+<input id="landCompany" placeholder="Ex. Cruz del Sur" type="text"/>
 </div>
 </div>
 <div class="field-grid" style="margin-top:16px;">
 <div class="field">
-<label for="landDepartureDate">Fecha de salida de Cusco</label>
+<label for="landDepartureDate">Data de saída de Cusco</label>
 <input id="landDepartureDate" type="date"/>
 </div>
 <div class="field">
-<label for="landDepartureTime">Hora aproximada de salida</label>
+<label for="landDepartureTime">Hora aproximada de saída</label>
 <input id="landDepartureTime" type="time"/>
 </div>
 </div>
@@ -681,15 +681,15 @@
 <div class="conditional-box" id="laterBox">
 <div class="field-grid">
 <div class="field">
-<label for="approxArrivalDate">Fecha aproximada de llegada</label>
+<label for="approxArrivalDate">Data aproximada de chegada</label>
 <input id="approxArrivalDate" type="date"/>
 </div>
 <div class="field">
-<label for="approxDepartureDate">Fecha aproximada de salida</label>
+<label for="approxDepartureDate">Data aproximada de saída</label>
 <input id="approxDepartureDate" type="date"/>
 </div>
 </div>
-<p class="help-text">Tu asesor de My Cusco Trip podrá completar o actualizar esta información después.</p>
+<p class="help-text">Seu consultor da My Cusco Trip poderá completar ou atualizar esta informação depois.</p>
 </div>
 </div>
 </div>
@@ -697,30 +697,30 @@
 <section class="form-step" data-step="3">
 <div class="form-section">
 <div class="form-section-head">
-<h3>Contacto de emergencia</h3>
-<small>Información importante</small>
+<h3>Contato de emergência</h3>
+<small>Informação importante</small>
 </div>
 <div class="form-section-body">
 <div class="field-grid">
 <div class="field">
-<label for="emergencyName">Nombre completo</label>
+<label for="emergencyName">Nome completo</label>
 <input id="emergencyName" required="" type="text"/>
 </div>
 <div class="field">
-<label for="emergencyRelation">Parentesco o relación</label>
-<input id="emergencyRelation" placeholder="Ej. Madre, esposo, amiga" required="" type="text"/>
+<label for="emergencyRelation">Parentesco ou relação</label>
+<input id="emergencyRelation" placeholder="Ex. Mãe, marido, amiga" required="" type="text"/>
 </div>
 <div class="field">
-<label for="emergencyPhone">Celular de emergencia</label>
-<input id="emergencyPhone" placeholder="Incluye código de país" required="" type="tel"/>
+<label for="emergencyPhone">Celular de emergência</label>
+<input id="emergencyPhone" placeholder="Inclua o código do país" required="" type="tel"/>
 </div>
 <div class="field">
-<label for="emergencyEmail">Correo de emergencia opcional</label>
+<label for="emergencyEmail">E-mail de emergência opcional</label>
 <input id="emergencyEmail" type="email"/>
 </div>
 <div class="field-full">
-<label for="additionalNotes">Comentarios adicionales opcionales</label>
-<textarea id="additionalNotes" placeholder="Alergias, restricciones alimentarias, observaciones médicas relevantes o indicaciones para coordinación."></textarea>
+<label for="additionalNotes">Comentários adicionais opcionais</label>
+<textarea id="additionalNotes" placeholder="Alergias, restrições alimentares, observações médicas relevantes ou indicações para coordenação."></textarea>
 </div>
 </div>
 </div>
@@ -729,19 +729,19 @@
 <section class="form-step" data-step="4">
 <div class="form-section">
 <div class="form-section-head">
-<h3>Revisión final</h3>
+<h3>Revisão final</h3>
 <small>Antes de enviar</small>
 </div>
 <div class="form-section-body">
 <div class="review-box" id="reviewBox"></div>
 <p class="help-text">
-                      Al enviar, la información se guardará directamente en tu hoja de Google Sheets mediante Google Apps Script.
+                      Ao enviar, a informação será salva diretamente na sua planilha do Google Sheets por meio do Google Apps Script.
                     </p>
 </div>
 </div>
 </section>
 <div class="actions-row" id="formActions" style="display:none;">
-<button class="btn-secondary" id="prevStepBtn" type="button">Volver</button>
+<button class="btn-secondary" id="prevStepBtn" type="button">Voltar</button>
 <div class="actions-right">
 <button class="btn-primary" id="nextStepBtn" type="button">Continuar</button>
 <button class="btn-primary" id="submitFormBtn" style="display:none;" type="submit">Enviar registro</button>
@@ -752,9 +752,9 @@
 <i class="fa-solid fa-circle-check"></i>
 <h3>Registro preparado</h3>
 <p>
-                La información fue enviada correctamente y quedó registrada en la hoja de Google Sheets de My Cusco Trip.
+                A informação foi enviada com sucesso e ficou registrada na planilha do Google Sheets da My Cusco Trip.
               </p>
-<button class="btn-primary" id="newRegisterBtn" type="button">Registrar otra reserva</button>
+<button class="btn-primary" id="newRegisterBtn" type="button">Registrar outra reserva</button>
 </section>
 </div>
 </section>
@@ -779,7 +779,7 @@
 
     async function apiRequest(payload) {
       if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('PEGA_AQUI')) {
-        throw new Error('Falta configurar la URL de Google Apps Script en GOOGLE_SCRIPT_URL.');
+        throw new Error('Falta configurar a URL do Google Apps Script em GOOGLE_SCRIPT_URL.');
       }
 
       const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -792,7 +792,7 @@
       });
 
       const data = await response.json();
-      if (!data.ok) throw new Error(data.message || 'No se pudo completar la operación.');
+      if (!data.ok) throw new Error(data.message || 'Não foi possível completar a operação.');
       return data;
     }
 
@@ -958,7 +958,7 @@
       const key = document.getElementById('bookingKey').value.trim();
 
       if (!code || !key) {
-        showAlert('Ingresa el código de reserva y el apellido o clave de acceso.');
+        showAlert('Insira o código de reserva e o sobrenome ou senha de acesso.');
         return;
       }
 
@@ -982,7 +982,7 @@
         showAlert(error.message);
       } finally {
         validateReservationBtn.disabled = false;
-        validateReservationBtn.textContent = 'Ingresar al formulario';
+        validateReservationBtn.textContent = 'Acessar o formulário';
       }
     }
 
@@ -1011,45 +1011,45 @@
       return `
         <article class="passenger-card" data-passenger-index="${index}">
           <div class="passenger-card-head">
-            <strong>Pasajero ${number}</strong>
+            <strong>Passageiro ${number}</strong>
             ${isHolder
-              ? '<span class="holder-badge"><i class="fa-solid fa-star"></i> Titular de coordinación</span>'
-              : '<button type="button" class="remove-passenger-btn" data-remove-passenger>Eliminar</button>'}
+              ? '<span class="holder-badge"><i class="fa-solid fa-star"></i> Titular de coordenação</span>'
+              : '<button type="button" class="remove-passenger-btn" data-remove-passenger>Remover</button>'}
           </div>
 
           <div class="field-grid">
             <div class="field">
-              <label for="paxFirstName${index}">Nombres</label>
+              <label for="paxFirstName${index}">Nomes</label>
               <input id="paxFirstName${index}" name="paxFirstName${index}" type="text" required />
             </div>
             <div class="field">
-              <label for="paxLastName${index}">Apellidos</label>
+              <label for="paxLastName${index}">Sobrenomes</label>
               <input id="paxLastName${index}" name="paxLastName${index}" type="text" required />
             </div>
             <div class="field">
-              <label for="paxBirthDate${index}">Fecha de nacimiento</label>
+              <label for="paxBirthDate${index}">Data de nascimento</label>
               <input id="paxBirthDate${index}" name="paxBirthDate${index}" type="date" required />
             </div>
             <div class="field">
               <label for="paxDocumentType${index}">Tipo de documento</label>
               <select id="paxDocumentType${index}" name="paxDocumentType${index}" required>
-                <option value="">Selecciona</option>
-                <option value="Pasaporte">Pasaporte</option>
+                <option value="">Selecione</option>
+                <option value="Pasaporte">Passaporte</option>
                 <option value="DNI">DNI</option>
-                <option value="Carnet de extranjería">Carnet de extranjería</option>
-                <option value="Cédula emitida por su país">Cédula emitida por su país</option>
+                <option value="Carnet de extranjería">Carteira de estrangeiro</option>
+                <option value="Cédula emitida por su país">Documento emitido pelo seu país</option>
               </select>
             </div>
             <div class="field">
-              <label for="paxDocumentNumber${index}">Número de documento</label>
+              <label for="paxDocumentNumber${index}">Número do documento</label>
               <input id="paxDocumentNumber${index}" name="paxDocumentNumber${index}" type="text" required />
             </div>
             <div class="field">
               <label for="paxPhone${index}">Celular</label>
-              <input id="paxPhone${index}" name="paxPhone${index}" type="tel" placeholder="Incluye código de país" required />
+              <input id="paxPhone${index}" name="paxPhone${index}" type="tel" placeholder="Inclua o código do país" required />
             </div>
             <div class="field-full">
-              <label for="paxEmail${index}">Correo electrónico opcional</label>
+              <label for="paxEmail${index}">E-mail opcional</label>
               <input id="paxEmail${index}" name="paxEmail${index}" type="email" />
             </div>
           </div>
@@ -1060,7 +1060,7 @@
     function renderPassengers() {
       const previousValues = collectPassengers(false);
       passengersContainer.innerHTML = Array.from({ length: passengerCount }, (_, index) => passengerTemplate(index)).join('');
-      passengerCounter.textContent = `${passengerCount} pasajero${passengerCount !== 1 ? 's' : ''}`;
+      passengerCounter.textContent = `${passengerCount} passageiro${passengerCount !== 1 ? 's' : ''}`;
       addPassengerBtn.disabled = passengerCount >= MAX_PASSENGERS;
 
       previousValues.forEach((pax, index) => {
@@ -1127,7 +1127,7 @@
         if (validate) {
           const required = [pax.nombres, pax.apellidos, pax.fechaNacimiento, pax.tipoDocumento, pax.numeroDocumento, pax.celular];
           if (required.some((item) => !item)) {
-            throw new Error(`Completa todos los campos obligatorios del pasajero ${index + 1}.`);
+            throw new Error(`Complete todos os campos obrigatórios do passageiro ${index + 1}.`);
           }
         }
 
@@ -1146,7 +1146,7 @@
 
     function collectTransport(validate = true) {
       const mode = document.getElementById('arrivalMode').value;
-      if (validate && !mode) throw new Error('Selecciona el medio de llegada a Cusco.');
+      if (validate && !mode) throw new Error('Selecione o meio de chegada a Cusco.');
 
       const transport = { medioLlegada: mode };
 
@@ -1199,7 +1199,7 @@
       };
 
       if (validate && (!emergency.nombre || !emergency.relacion || !emergency.celular)) {
-        throw new Error('Completa el nombre, relación y celular del contacto de emergencia.');
+        throw new Error('Complete o nome, a relação e o celular do contato de emergência.');
       }
 
       return emergency;
@@ -1245,16 +1245,16 @@
         const data = collectAll(false);
         reviewBox.textContent = buildReadableSummary(data);
       } catch (error) {
-        reviewBox.textContent = 'No se pudo generar el resumen.';
+        reviewBox.textContent = 'Não foi possível gerar o resumo.';
       }
     }
 
     function getModeLabel(mode) {
       const labels = {
-        aereo: 'Vía aérea',
-        terrestre: 'Vía terrestre',
-        'mas-adelante': 'Ingresará datos más adelante',
-        mycuscotrip: 'My Cusco Trip opera el vuelo'
+        aereo: 'Via aérea',
+        terrestre: 'Via terrestre',
+        'mas-adelante': 'Vai inserir os dados mais tarde',
+        mycuscotrip: 'A My Cusco Trip opera o voo'
       };
       return labels[mode] || '-';
     }
@@ -1262,42 +1262,42 @@
     function buildReadableSummary(data) {
       const r = data.resumenCompra || {};
       const lines = [];
-      lines.push(`REGISTRO DE PASAJEROS - MY CUSCO TRIP`);
+      lines.push(`REGISTRO DE PASSAGEIROS - MY CUSCO TRIP`);
       lines.push(`Código de reserva: ${data.reserva.code}`);
       lines.push(`Titular de compra: ${r.titularCompra || '-'}`);
-      lines.push(`Paquete: ${r.paquete || '-'}`);
-      lines.push(`Fecha de viaje: ${r.fechaViaje || '-'}`);
-      lines.push(`Monto total: ${money(r.montoTotal, r.moneda)}`);
-      lines.push(`Monto pagado: ${money(r.montoPagado, r.moneda)}`);
-      lines.push(`Saldo pendiente: ${money(r.saldoPendiente, r.moneda)}`);
-      lines.push(`Estado de pago: ${r.estadoPago || '-'}`);
-      lines.push(`Detalle pago: ${r.detallePago || '-'}`);
-      lines.push(`Fecha de registro: ${new Date(data.fechaRegistro).toLocaleString('es-PE')}`);
+      lines.push(`Pacote: ${r.paquete || '-'}`);
+      lines.push(`Data da viagem: ${r.fechaViaje || '-'}`);
+      lines.push(`Valor total: ${money(r.montoTotal, r.moneda)}`);
+      lines.push(`Valor pago: ${money(r.montoPagado, r.moneda)}`);
+      lines.push(`Saldo pendente: ${money(r.saldoPendiente, r.moneda)}`);
+      lines.push(`Status do pagamento: ${r.estadoPago || '-'}`);
+      lines.push(`Detalhe do pagamento: ${r.detallePago || '-'}`);
+      lines.push(`Data de registro: ${new Date(data.fechaRegistro).toLocaleString('pt-BR')}`);
       lines.push('');
-      lines.push(`PASAJEROS (${data.pasajeros.length})`);
+      lines.push(`PASSAGEIROS (${data.pasajeros.length})`);
       data.pasajeros.forEach((pax, index) => {
-        lines.push(`${index + 1}. ${pax.nombres} ${pax.apellidos}${pax.titularCoordinacion ? ' - TITULAR DE COORDINACIÓN' : ''}`);
-        lines.push(`   Fecha nacimiento: ${pax.fechaNacimiento}`);
+        lines.push(`${index + 1}. ${pax.nombres} ${pax.apellidos}${pax.titularCoordinacion ? ' - TITULAR DE COORDENAÇÃO' : ''}`);
+        lines.push(`   Data de nascimento: ${pax.fechaNacimiento}`);
         lines.push(`   Documento: ${pax.tipoDocumento} ${pax.numeroDocumento}`);
         lines.push(`   Celular: ${pax.celular}`);
         lines.push(`   Email: ${pax.email || '-'}`);
       });
       lines.push('');
-      lines.push('LLEGADA / SALIDA');
-      lines.push(`Medio: ${getModeLabel(data.transporte.medioLlegada)}`);
-      if (data.transporte.llegada) lines.push(`Llegada: ${JSON.stringify(data.transporte.llegada)}`);
-      if (data.transporte.salida) lines.push(`Salida: ${JSON.stringify(data.transporte.salida)}`);
+      lines.push('CHEGADA / SAÍDA');
+      lines.push(`Meio: ${getModeLabel(data.transporte.medioLlegada)}`);
+      if (data.transporte.llegada) lines.push(`Chegada: ${JSON.stringify(data.transporte.llegada)}`);
+      if (data.transporte.salida) lines.push(`Saída: ${JSON.stringify(data.transporte.salida)}`);
       if (data.transporte.llegadaAprox || data.transporte.salidaAprox) {
-        lines.push(`Llegada aproximada: ${data.transporte.llegadaAprox || '-'}`);
-        lines.push(`Salida aproximada: ${data.transporte.salidaAprox || '-'}`);
+        lines.push(`Chegada aproximada: ${data.transporte.llegadaAprox || '-'}`);
+        lines.push(`Saída aproximada: ${data.transporte.salidaAprox || '-'}`);
       }
       lines.push('');
-      lines.push('CONTACTO DE EMERGENCIA');
-      lines.push(`Nombre: ${data.emergencia.nombre}`);
-      lines.push(`Relación: ${data.emergencia.relacion}`);
+      lines.push('CONTATO DE EMERGÊNCIA');
+      lines.push(`Nome: ${data.emergencia.nombre}`);
+      lines.push(`Relação: ${data.emergencia.relacion}`);
       lines.push(`Celular: ${data.emergencia.celular}`);
       lines.push(`Email: ${data.emergencia.email || '-'}`);
-      lines.push(`Comentarios: ${data.emergencia.comentarios || '-'}`);
+      lines.push(`Comentários: ${data.emergencia.comentarios || '-'}`);
       return lines.join('
 ');
     }

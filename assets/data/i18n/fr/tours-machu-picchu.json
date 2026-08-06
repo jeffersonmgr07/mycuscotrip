@@ -168,12 +168,14 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
-        "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Prise en charge à l'hôtel et transfert vers la gare ferroviaire.",
+        "Billet de train en catégorie The Voyager avec option de surclassement.",
+        "Train aller-retour selon la sélection disponible.",
+        "Billet d'entrée officiel à Machu Picchu. Le circuit 1, 2 ou 3 dépend de la disponibilité officielle des billets.",
+        "Bus Consettur Machu Picchu aller-retour.",
+        "Guide professionnel certifié en espagnol ou en anglais.",
+        "Option de déjeuner au Belmond Sanctuary Lodge ou dans un restaurant à Aguas Calientes depuis la section des extras.",
+        "Assistance 24h/24 et 7j/7 avant et pendant l'expérience."
       ],
       "excludes": [
         "Alimentos y bebidas no especificados",
@@ -183,36 +185,73 @@
       ],
       "itinerary": [
         {
-          "title": "Recojo en hotel y traslado a estación",
-          "description": "Iniciaremos con el recojo desde tu hotel o punto previamente coordinado en Cusco. Según el horario del tren seleccionado, realizaremos el traslado hacia la estación correspondiente para iniciar la ruta hacia Machu Picchu.",
+          "time": "04h00 environ",
+          "title": "Prise en charge à l'hôtel et transfert vers la gare",
+          "description": "Prise en charge à votre hôtel à Cusco ou au point convenu, puis transfert touristique vers la gare correspondante pour embarquer dans le train vers Machu Picchu Pueblo.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordarás el tren turístico incluido o el tren que elijas durante la reserva. Durante el trayecto disfrutarás paisajes del Vallée Sacrée, montañas andinas y el ingreso progresivo hacia la ceja de selva de Machu Picchu Pueblo.",
+          "time": "06h40 environ",
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Départ en train touristique vers Aguas Calientes/Machu Picchu Pueblo. L'horaire peut varier selon la disponibilité et le train sélectionné.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Bus Consettur e billet d’entrée officiel a Machu Picchu",
-          "description": "Al llegar a Machu Picchu Pueblo, coordinaremos la subida en bus Consettur hacia la puerta de ingreso. El acceso se realizará con ticket oficial y circuito confirmado según disponibilidad del Ministerio de Cultura.",
+          "time": "09h00 environ",
+          "title": "Bus Consettur et entrée officielle à Machu Picchu",
+          "description": "Coordination pour monter en bus Consettur jusqu'à la porte d'entrée. Le circuit est confirmé selon la disponibilité officielle des billets.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Realizarás una visita guiada por los sectores principales de la ciudadela. El guía explicará la historia, arquitectura, organización urbana y significado ceremonial de Machu Picchu durante el recorrido autorizado.",
+          "time": "10h00 environ",
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé de la citadelle inca avec un guide professionnel certifié. L'itinéraire peut correspondre au circuit 1, 2 ou 3 selon la disponibilité.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Después de la visita, descenderás a Machu Picchu Pueblo para tomar el tren de retorno seleccionado. Al llegar a la estación final, realizaremos el traslado terrestre correspondiente hacia Cusco o punto coordinado.",
+          "time": "13h00 environ",
+          "title": "Fin de la visite guidée et temps libre pour déjeuner",
+          "description": "La visite guidée se termine. Vous aurez du temps libre pour déjeuner à Aguas Calientes ; vous pouvez ajouter un déjeuner dans la section des extras.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "15h00 environ",
+          "title": "Bus de descente vers Aguas Calientes",
+          "description": "Descente en bus Consettur depuis Machu Picchu vers Aguas Calientes pour vous reposer, vous promener dans le village ou vous préparer pour le retour.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "19h00 environ",
+          "title": "Train de retour vers Ollantaytambo",
+          "description": "Voyage de retour en train touristique depuis Machu Picchu Pueblo vers Ollantaytambo ou la gare finale indiquée selon le train sélectionné.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "20h45 environ",
+          "title": "Arrivée à la gare et transfert vers Cusco",
+          "description": "Arrivée estimée à la gare d'Ollantaytambo et transfert terrestre vers la ville de Cusco.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "22h00 à 22h30 environ",
+          "title": "Arrivée à Cusco et fin des services",
+          "description": "Débarquement près de la Plaza de Armas de Cusco ou au point convenu dans la zone opérationnelle. Fin des services.",
           "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
@@ -408,7 +447,27 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
-      ]
+      ],
+      "highlights": [
+        "Journée complète à Machu Picchu avec train en catégorie The Voyager et option de surclassement vers d'autres catégories",
+        "Liberté de choisir le train aller et retour entre IncaRail et PeruRail",
+        "Bus Consettur de montée et de descente inclus",
+        "Entrée officielle à Machu Picchu et guide professionnel certifié",
+        "Transferts terrestres inclus depuis Cusco jusqu'à la gare"
+      ],
+      "commercialBenefits": {
+        "flexibleBookingText": "Réservez votre place avec un acompte et payez la différence à votre arrivée à destination. Vous pouvez aussi choisir le paiement intégral et bénéficier d'une réduction lorsqu'elle est disponible.",
+        "quickConfirmationText": "La confirmation a lieu au moment du paiement. Nous vous contactons ensuite pour confirmer les horaires de train, le circuit disponible et les derniers détails de votre visite à Machu Picchu.",
+        "personalSupportText": "Nous nous chargeons de toute la logistique : prise en charge à votre hôtel, transfert à la gare, trains, bus, entrée officielle, guide certifié et coordination du meilleur horaire possible. Vous n'avez qu'à arriver prêt à profiter, au sein d'un petit groupe convivial."
+      },
+      "pickupInfo": "La prise en charge se fera à l'hôtel sélectionné ou indiqué par le voyageur à Cusco, après coordination préalable, à condition que l'hôtel se trouve dans le Centre Historique de Cusco ou une zone opérationnelle proche. L'horaire exact sera coordonné avec votre agent de voyage après la réservation ou quelques jours avant le voyage.",
+      "importantInfo": [
+        "Il est recommandé de réserver à l'avance, surtout en haute saison ou aux dates de forte demande.",
+        "Consultez les prévisions météo pour choisir une tenue adaptée avant le voyage.",
+        "Le tour comprend une marche sur un terrain dur et irrégulier à l'intérieur de Machu Picchu ; il est recommandé de porter des chaussures de randonnée ou des baskets confortables avec une bonne semelle.",
+        "Prévoyez des vêtements légers, une veste pour le matin/soir, de la crème solaire, de l'eau et votre pièce d'identité ou passeport original."
+      ],
+      "extrasSelectionMode": "single"
     },
     {
       "id": "mapi_002",
@@ -428,7 +487,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Expérience full day express a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión express de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version express de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "Journée complète Express",
         "maxGroupSize": 15,
@@ -535,39 +594,39 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Prise en charge et transfert vers la gare",
+          "description": "Prise en charge à l'hôtel ou au point convenu selon la gare et l'horaire du train sélectionné."
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Embarquement dans le train touristique vers Aguas Calientes selon la catégorie choisie."
         },
         {
-          "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e billet d’entrée officiel al santuario según circuito confirmado."
+          "title": "Bus et entrée à Machu Picchu",
+          "description": "Montée en bus Consettur et entrée officielle au sanctuaire selon le circuit confirmé."
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Recorrido guiado por los sectores principales de la ciudadela."
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé des principaux secteurs de la citadelle."
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "title": "Retour à Cusco",
+          "description": "Descente à Aguas Calientes, train de retour et transfert final à Cusco."
         }
       ],
       "trainSelection": {
@@ -751,6 +810,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Alternative la plus économique en catégorie Voyager d'IncaRail",
+        "Idéal pour les voyageurs avec un budget serré ou peu de temps disponible",
+        "Bus Consettur, entrée officielle et guide professionnel inclus",
+        "Transferts terrestres nécessaires selon la gare",
+        "Circuit dans la même journée, sans nuitée"
       ]
     },
     {
@@ -876,12 +942,15 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
-        "Billet officiel pour le Machu Picchu selon disponibilité",
-        "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Prise en charge à l'hôtel à Cusco et transfert vers la gare ferroviaire d'Ollantaytambo.",
+        "Billet de train touristique aller-retour selon la sélection disponible.",
+        "Nuit d'hébergement à Aguas Calientes dans l'hôtel sélectionné.",
+        "Billet d'entrée officiel à Machu Picchu. Le circuit 1, 2 ou 3 dépend de la disponibilité officielle des billets.",
+        "Bus Consettur Machu Picchu aller-retour.",
+        "Guide professionnel certifié en espagnol ou en anglais.",
+        "Option de déjeuner au Belmond Sanctuary Lodge ou dans un restaurant à Aguas Calientes depuis la section des extras.",
+        "Transfert final vers Cusco selon la gare et la formule sélectionnée.",
+        "Assistance 24h/24 et 7j/7 avant et pendant l'expérience."
       ],
       "excludes": [
         "Alimentos y bebidas no especificados",
@@ -891,18 +960,114 @@
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
-          "description": "Iniciaremos con el traslado desde Cusco o el punto coordinado hacia la estación correspondiente. Abordarás el tren turístico hacia Machu Picchu Pueblo, disfrutando el paisaje del Vallée Sacrée y la ruta ferroviaria hacia la ceja de selva. A tu llegada, tendrás asistencia para ubicarte en Aguas Calientes y coordinar los detalles de la visita del jour siguiente. La nuit será en Aguas Calientes según el hotel seleccionado.",
+          "time": "Jour 1 · 13h30 environ",
+          "title": "Prise en charge à Cusco et transfert vers Ollantaytambo",
+          "description": "Nous commencerons par la prise en charge à votre hôtel ou au point convenu à Cusco pour nous rendre à la gare ferroviaire d'Ollantaytambo.",
           "images": [
-            "./assets/img/placeholder/experience.jpg",
             "./assets/img/placeholder/experience.jpg"
           ]
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Después del desayuno o a la hora coordinada, subirás en bus Consettur hacia la ciudadela de Machu Picchu. Realizarás la visita guiada por el circuito confirmado, con explicación de los sectores principales, historia y arquitectura inca. Al finalizar, retornarás a Machu Picchu Pueblo para tomar el tren de regreso seleccionado y continuar con el traslado final hacia Cusco o punto coordinado.",
+          "time": "Jour 1 · 15h30 environ",
+          "title": "Arrivée à Ollantaytambo",
+          "description": "Arrivée estimée à la gare pour effectuer l'enregistrement et se préparer à embarquer dans le train touristique vers Machu Picchu Pueblo.",
           "images": [
-            "./assets/img/placeholder/experience.jpg",
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 1 · 16h36 environ",
+          "title": "Voyage en train vers Aguas Calientes",
+          "description": "Départ en train touristique vers Machu Picchu Pueblo/Aguas Calientes. L'horaire peut être ajusté selon le train sélectionné.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 1 · 18h01 environ",
+          "title": "Arrivée à Aguas Calientes et transfert à l'hôtel",
+          "description": "Arrivée à Machu Picchu Pueblo et transfert ou assistance vers l'hôtel sélectionné pour effectuer l'enregistrement (check-in).",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 1 · Soir",
+          "title": "Nuit à Aguas Calientes",
+          "description": "Soirée libre à Aguas Calientes pour vous reposer avant la visite de Machu Picchu le lendemain.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 09h00 environ",
+          "title": "Rendez-vous sur la Plaza de Armas d'Aguas Calientes",
+          "description": "Rencontre avec le guide pour démarrer la coordination de la visite guidée de Machu Picchu.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 09h30 environ",
+          "title": "File d'attente et bus Consettur vers Machu Picchu",
+          "description": "Coordination pour embarquer dans le bus touristique de montée jusqu'à la porte d'entrée du site archéologique de Machu Picchu.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 10h00 environ",
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Début du parcours guidé de Machu Picchu. Le circuit est confirmé selon la disponibilité officielle des billets.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 13h00 environ",
+          "title": "Fin de la visite guidée et temps pour déjeuner",
+          "description": "La visite guidée se termine. Vous pouvez ajouter un déjeuner optionnel à Tinkuy/Belmond Sanctuary Lodge ou déjeuner par vous-même.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 15h00 environ",
+          "title": "Bus de descente vers Aguas Calientes",
+          "description": "Retour en bus Consettur vers Machu Picchu Pueblo. Si vous ne prenez pas le déjeuner optionnel, vous aurez du temps libre pour des activités personnelles.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 19h50 environ",
+          "title": "Embarquement pour le train de retour",
+          "description": "Présentation à la gare d'Aguas Calientes pour embarquer dans le train de retour sélectionné.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 20h20 environ",
+          "title": "Train de retour vers Ollantaytambo",
+          "description": "Départ en train touristique de retour. L'horaire final dépend du train sélectionné.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 22h00 environ",
+          "title": "Correspondance vers le bus touristique",
+          "description": "Correspondance opérationnelle du train vers le bus touristique pour poursuivre le voyage vers la ville de Cusco.",
+          "images": [
+            "./assets/img/placeholder/experience.jpg"
+          ]
+        },
+        {
+          "time": "Jour 2 · 23h45 environ",
+          "title": "Arrivée à Cusco et fin des services",
+          "description": "Arrivée estimée dans la ville de Cusco. Le débarquement s'effectue près de la Plaza de Armas ou au point convenu.",
+          "images": [
             "./assets/img/placeholder/experience.jpg"
           ]
         }
@@ -1098,6 +1263,26 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "2 jours / 1 nuit avec hébergement à Aguas Calientes inclus",
+        "Liberté totale de choisir le train parmi toutes les catégories d'IncaRail et PeruRail",
+        "Plus de temps pour explorer Machu Picchu avec moins de contrainte horaire",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Idéal pour ceux qui préfèrent éviter les longs trajets dans la même journée"
+      ],
+      "accommodationSummary": [
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Aguas Calientes - 1 nuit"
+        }
+      ],
+      "importantInfo": [
+        "La disponibilité du circuit d'entrée à Machu Picchu est confirmée selon les billets officiels disponibles.",
+        "Les horaires de train peuvent varier selon la disponibilité opérationnelle et la sélection effectuée.",
+        "L'hôtel inclus correspond à une nuit à Aguas Calientes. Tout surclassement d'hôtel est facturé en supplément.",
+        "Il est recommandé d'apporter une pièce d'identité ou un passeport, des chaussures confortables, des vêtements légers, une veste pour le soir et une protection solaire."
       ]
     },
     {
@@ -1118,7 +1303,7 @@
       "days": 2,
       "nights": 1,
       "shortDescription": "Expérience 2 jours / 1 nuit express a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión overnight express de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version overnight express de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "2 jours / 1 nuit Express",
         "maxGroupSize": 15,
@@ -1225,27 +1410,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "title": "Jour 1 : Voyage vers Aguas Calientes",
+          "description": "Transfert à la gare et voyage en train vers Machu Picchu Pueblo. Nuit à Aguas Calientes selon l'hôtel sélectionné."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, billet d’entrée officiel, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Jour 2 : Machu Picchu et retour",
+          "description": "Bus de montée, entrée officielle, visite guidée et retour en train selon l'horaire sélectionné."
         }
       ],
       "trainSelection": {
@@ -1450,6 +1635,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "2 jours / 1 nuit à Aguas Calientes avec des options de train prédéfinies",
+        "Alternative rapide pour ceux qui recherchent la formule avec nuitée sans choisir le train manuellement",
+        "Bus Consettur, entrée officielle et guide professionnel inclus",
+        "Hébergement à Aguas Calientes la nuit précédant la visite",
+        "Transferts terrestres nécessaires selon la gare et la formule"
       ]
     },
     {
@@ -1470,7 +1662,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Expérience full day panoramique a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión panoramique de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version panoramique de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "Journée complète Panoramique",
         "maxGroupSize": 15,
@@ -1577,39 +1769,39 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Prise en charge et transfert vers la gare",
+          "description": "Prise en charge à l'hôtel ou au point convenu selon la gare et l'horaire du train sélectionné."
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Embarquement dans le train touristique vers Aguas Calientes selon la catégorie choisie."
         },
         {
-          "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e billet d’entrée officiel al santuario según circuito confirmado."
+          "title": "Bus et entrée à Machu Picchu",
+          "description": "Montée en bus Consettur et entrée officielle au sanctuaire selon le circuit confirmé."
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Recorrido guiado por los sectores principales de la ciudadela."
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé des principaux secteurs de la citadelle."
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "title": "Retour à Cusco",
+          "description": "Descente à Aguas Calientes, train de retour et transfert final à Cusco."
         }
       ],
       "trainSelection": {
@@ -1807,6 +1999,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Voyagez à bord des trains Vistadome de PeruRail, avec de grandes baies vitrées panoramiques du sol au plafond",
+        "Option de train Vistadome Observatorio avec toit vitré",
+        "Idéal pour ceux qui souhaitent profiter du paysage de la Vallée Sacrée pendant le trajet",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Expérience d'une journée complète sans nuitée"
       ]
     },
     {
@@ -1827,7 +2026,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Expérience full day premium a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión premium de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version premium de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "Journée complète Premium",
         "maxGroupSize": 15,
@@ -1934,39 +2133,39 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Prise en charge et transfert vers la gare",
+          "description": "Prise en charge à l'hôtel ou au point convenu selon la gare et l'horaire du train sélectionné."
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Embarquement dans le train touristique vers Aguas Calientes selon la catégorie choisie."
         },
         {
-          "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e billet d’entrée officiel al santuario según circuito confirmado."
+          "title": "Bus et entrée à Machu Picchu",
+          "description": "Montée en bus Consettur et entrée officielle au sanctuaire selon le circuit confirmé."
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Recorrido guiado por los sectores principales de la ciudadela."
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé des principaux secteurs de la citadelle."
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "title": "Retour à Cusco",
+          "description": "Descente à Aguas Calientes, train de retour et transfert final à Cusco."
         }
       ],
       "trainSelection": {
@@ -2162,6 +2361,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Voyagez en catégorie Prime d'IncaRail, un niveau premium offrant plus de confort",
+        "Service à bord supérieur à la catégorie standard Voyager",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Expérience d'une journée complète pensée pour les voyageurs recherchant plus de confort",
+        "Transferts terrestres inclus selon la gare"
       ]
     },
     {
@@ -2182,7 +2388,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Expérience full day first class a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión first class de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version first class de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "Journée complète First Class",
         "maxGroupSize": 8,
@@ -2289,39 +2495,39 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Prise en charge et transfert vers la gare",
+          "description": "Prise en charge à l'hôtel ou au point convenu selon la gare et l'horaire du train sélectionné."
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Embarquement dans le train touristique vers Aguas Calientes selon la catégorie choisie."
         },
         {
-          "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e billet d’entrée officiel al santuario según circuito confirmado."
+          "title": "Bus et entrée à Machu Picchu",
+          "description": "Montée en bus Consettur et entrée officielle au sanctuaire selon le circuit confirmé."
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Recorrido guiado por los sectores principales de la ciudadela."
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé des principaux secteurs de la citadelle."
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "title": "Retour à Cusco",
+          "description": "Descente à Aguas Calientes, train de retour et transfert final à Cusco."
         }
       ],
       "trainSelection": {
@@ -2520,6 +2726,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Voyagez à l'aller en catégorie First Class d'IncaRail, la plus haute gamme de la compagnie",
+        "Retour flexible entre Voyager, 360, Prime ou First Class selon disponibilité",
+        "Service à bord exclusif et plus grand confort sur le trajet aller",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Expérience d'une seule journée complète"
       ]
     },
     {
@@ -2540,7 +2753,7 @@
       "days": 2,
       "nights": 1,
       "shortDescription": "Expérience 2 jours / 1 nuit first class a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión first class overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version first class overnight de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "2 jours / 1 nuit First Class",
         "maxGroupSize": 8,
@@ -2647,27 +2860,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "title": "Jour 1 : Voyage vers Aguas Calientes",
+          "description": "Transfert à la gare et voyage en train vers Machu Picchu Pueblo. Nuit à Aguas Calientes selon l'hôtel sélectionné."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, billet d’entrée officiel, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Jour 2 : Machu Picchu et retour",
+          "description": "Bus de montée, entrée officielle, visite guidée et retour en train selon l'horaire sélectionné."
         }
       ],
       "trainSelection": {
@@ -2870,6 +3083,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Aller en catégorie First Class d'IncaRail avec retour flexible entre plusieurs catégories",
+        "2 jours / 1 nuit avec hébergement à Aguas Calientes inclus",
+        "Plus de temps dans le sanctuaire sans la pression de rentrer le jour même",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Service à bord exclusif sur le trajet aller"
       ]
     },
     {
@@ -2890,7 +3110,7 @@
       "days": 1,
       "nights": 0,
       "shortDescription": "Expérience full day luxury a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión luxury de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version luxury de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "Journée complète Luxury",
         "maxGroupSize": 8,
@@ -2997,39 +3217,39 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Recojo y traslado a estación",
-          "description": "Recojo desde hotel o punto coordinado según estación y horario del tren seleccionado."
+          "title": "Prise en charge et transfert vers la gare",
+          "description": "Prise en charge à l'hôtel ou au point convenu selon la gare et l'horaire du train sélectionné."
         },
         {
-          "title": "Viaje en tren a Machu Picchu Pueblo",
-          "description": "Abordaje del tren turístico hacia Aguas Calientes según la categoría elegida."
+          "title": "Voyage en train vers Machu Picchu Pueblo",
+          "description": "Embarquement dans le train touristique vers Aguas Calientes selon la catégorie choisie."
         },
         {
-          "title": "Bus e ingreso a Machu Picchu",
-          "description": "Subida en bus Consettur e billet d’entrée officiel al santuario según circuito confirmado."
+          "title": "Bus et entrée à Machu Picchu",
+          "description": "Montée en bus Consettur et entrée officielle au sanctuaire selon le circuit confirmé."
         },
         {
-          "title": "Circuit guiado en Machu Picchu",
-          "description": "Recorrido guiado por los sectores principales de la ciudadela."
+          "title": "Visite guidée de Machu Picchu",
+          "description": "Parcours guidé des principaux secteurs de la citadelle."
         },
         {
-          "title": "Retorno a Cusco",
-          "description": "Descenso a Aguas Calientes, tren de retorno y traslado final a Cusco."
+          "title": "Retour à Cusco",
+          "description": "Descente à Aguas Calientes, train de retour et transfert final à Cusco."
         }
       ],
       "trainSelection": {
@@ -3231,6 +3451,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Aller à bord du légendaire train Hiram Bingham de PeruRail, l'expérience de luxe la plus exclusive vers Machu Picchu",
+        "Service gastronomique à bord et ambiance de l'âge d'or du chemin de fer",
+        "Retour flexible entre Expedition, Vistadome, Vistadome Observatorio ou Hiram Bingham",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus",
+        "Expérience d'une journée complète pensée pour ceux qui recherchent le plus haut niveau de luxe"
       ]
     },
     {
@@ -3251,7 +3478,7 @@
       "days": 2,
       "nights": 1,
       "shortDescription": "Expérience 2 jours / 1 nuit luxury a Machu Picchu avec train, bus, billet d’entrée officiel y guide professionnel.",
-      "description": "Versión luxury overnight de Machu Picchu con reglas de tren, tarifas por nacionalidad y estructura preparada para upgrades de tren, hotel y extras.",
+      "description": "Version luxury overnight de Machu Picchu avec règles de train, tarifs par nationalité et structure prête pour les surclassements de train, d'hôtel et d'extras.",
       "duration": {
         "label": "2 jours / 1 nuit Luxury",
         "maxGroupSize": 8,
@@ -3358,27 +3585,27 @@
         ]
       },
       "includes": [
-        "Asistencia de viaje antes y durante la experiencia",
-        "Ticket de tren turístico según selección o tren predeterminado",
-        "Bus Consettur de subida y bajada a Machu Picchu",
+        "Assistance de voyage avant et pendant l'expérience",
+        "Billet de train touristique selon la sélection ou le train prédéfini",
+        "Bus Consettur aller-retour à Machu Picchu",
         "Billet officiel pour le Machu Picchu selon disponibilité",
         "Guide professionnel en espagnol et en anglais",
-        "Traslados terrestres necesarios según estación y modalidad seleccionada"
+        "Transferts terrestres nécessaires selon la gare et la formule sélectionnée"
       ],
       "excludes": [
-        "Alimentos y bebidas no especificados",
-        "Hotel en Aguas Calientes cuando la modalidad sea overnight y no se haya seleccionado hotel",
+        "Nourriture et boissons non spécifiées",
+        "Hôtel à Aguas Calientes lorsque la formule est overnight et qu'aucun hôtel n'a été sélectionné",
         "Dépenses personnelles",
-        "Servicios no mencionados"
+        "Services non mentionnés"
       ],
       "itinerary": [
         {
-          "title": "Día 1: Viaje a Aguas Calientes",
-          "description": "Traslado a estación y viaje en tren hacia Machu Picchu Pueblo. Noche en Aguas Calientes según hotel seleccionado."
+          "title": "Jour 1 : Voyage vers Aguas Calientes",
+          "description": "Transfert à la gare et voyage en train vers Machu Picchu Pueblo. Nuit à Aguas Calientes selon l'hôtel sélectionné."
         },
         {
-          "title": "Día 2: Machu Picchu y retorno",
-          "description": "Bus de subida, billet d’entrée officiel, visita guiada y retorno en tren según horario seleccionado."
+          "title": "Jour 2 : Machu Picchu et retour",
+          "description": "Bus de montée, entrée officielle, visite guidée et retour en train selon l'horaire sélectionné."
         }
       ],
       "trainSelection": {
@@ -3583,6 +3810,13 @@
           "q": "Les billets pour Machu Picchu sont-ils garantis ?",
           "a": "Les billets sont gérés selon la disponibilité officielle pour votre date et le circuit sélectionné. Nous vérifions la meilleure option disponible avant de confirmer la réservation."
         }
+      ],
+      "highlights": [
+        "Aller à bord du train de luxe Hiram Bingham de PeruRail avec service gastronomique à bord",
+        "2 jours / 1 nuit avec hébergement à Aguas Calientes inclus",
+        "Retour flexible entre Expedition, Vistadome, Vistadome Observatorio ou Hiram Bingham",
+        "Plus de temps pour profiter de Machu Picchu sans être pressé",
+        "Bus Consettur, entrée officielle et guide professionnel certifié inclus"
       ]
     }
   ],

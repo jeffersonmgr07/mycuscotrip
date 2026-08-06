@@ -2685,19 +2685,19 @@
 <div class="top-actions">
 <div class="top-actions-right">
 <button class="action-btn secondary" id="backBtn" onclick="window.location.href='./mi-reserva.html'">
-<i class="fa-solid fa-arrow-left"></i> Volver
+<i class="fa-solid fa-arrow-left"></i> Retour
           </button>
 <button class="action-btn primary" id="printBtn" onclick="window.print()">
-<i class="fa-solid fa-print"></i> Imprimir voucher
+<i class="fa-solid fa-print"></i> Imprimer le voucher
           </button>
 </div>
 </div>
 <section class="voucher-web" id="voucherWeb" style="display:none;"></section>
 <section class="print-voucher" id="voucherPrint"></section>
 <section class="empty-state" id="voucherEmpty" style="display:none;">
-<h1 id="emptyTitle">Reserva no encontrada</h1>
-<p id="emptyText">No hay una reserva cargada para mostrar.</p>
-<a class="back-home" href="mi-reserva.html" id="emptyBtn">Ir a Mi Reserva</a>
+<h1 id="emptyTitle">Réservation introuvable</h1>
+<p id="emptyText">Aucune réservation n'est chargée à afficher.</p>
+<a class="back-home" href="mi-reserva.html" id="emptyBtn">Aller à Ma réservation</a>
 </section>
 </div>
 </main>
@@ -3296,15 +3296,15 @@
                   ${hoteles.map(h => `
                     <div class="hotel-card">
                       <h3>${esc(h.nombre || t.noData)}</h3>
-                      <p><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</p>
+                      <p><strong>Emplacement :</strong> ${esc(h.ubicacion || t.noData)}</p>
                       <p><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</p>
                       <p><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</p>
-                      <p><strong>Noches:</strong> ${esc(h.noches || t.noData)}</p>
-                      <p><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</p>
-                      <p><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</p>
-                      <p><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</p>
-                      <p><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</p>
-                      <p><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</p>
+                      <p><strong>Nuits :</strong> ${esc(h.noches || t.noData)}</p>
+                      <p><strong>Catégorie :</strong> ${esc(h.categoria || t.noData)}</p>
+                      <p><strong>Chambre :</strong> ${esc(h.habitacion || t.noData)}</p>
+                      <p><strong>Adresse :</strong> ${esc(h.direccion || t.noData)}</p>
+                      <p><strong>Téléphone :</strong> ${esc(h.telefono || t.noData)}</p>
+                      <p><strong>Remarques :</strong> ${esc(h.observaciones || t.noData)}</p>
                     </div>
                   `).join("")}
                 </div>
@@ -3594,15 +3594,15 @@
               ${hoteles.map(h => `
                 <div class="pv-hotel-card">
                   <div class="pv-hotel-name">${esc(h.nombre || t.noData)}</div>
-                  <div><strong>Ubicación:</strong> ${esc(h.ubicacion || t.noData)}</div>
+                  <div><strong>Emplacement :</strong> ${esc(h.ubicacion || t.noData)}</div>
                   <div><strong>Check-in:</strong> ${esc(h.checkIn || t.noData)}</div>
                   <div><strong>Check-out:</strong> ${esc(h.checkOut || t.noData)}</div>
-                  <div><strong>Noches:</strong> ${esc(h.noches || t.noData)}</div>
-                  <div><strong>Categoría:</strong> ${esc(h.categoria || t.noData)}</div>
-                  <div><strong>Habitación:</strong> ${esc(h.habitacion || t.noData)}</div>
-                  <div><strong>Dirección:</strong> ${esc(h.direccion || t.noData)}</div>
-                  <div><strong>Teléfono:</strong> ${esc(h.telefono || t.noData)}</div>
-                  <div><strong>Observaciones:</strong> ${esc(h.observaciones || t.noData)}</div>
+                  <div><strong>Nuits :</strong> ${esc(h.noches || t.noData)}</div>
+                  <div><strong>Catégorie :</strong> ${esc(h.categoria || t.noData)}</div>
+                  <div><strong>Chambre :</strong> ${esc(h.habitacion || t.noData)}</div>
+                  <div><strong>Adresse :</strong> ${esc(h.direccion || t.noData)}</div>
+                  <div><strong>Téléphone :</strong> ${esc(h.telefono || t.noData)}</div>
+                  <div><strong>Remarques :</strong> ${esc(h.observaciones || t.noData)}</div>
                 </div>
               `).join("")}
             </div>
@@ -3668,18 +3668,18 @@
           ` : ""}
 
           <div class="pv-section">
-            <div class="pv-section-title">Información adicional</div>
+            <div class="pv-section-title">Informations complémentaires</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
-              ${incluye.length ? `<div class="pv-subtitle">Servicios incluidos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${noIncluye.length ? `<div class="pv-subtitle">Servicios no incluidos / adicionales</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${infoAdicional.length ? `<div class="pv-subtitle">Recomendaciones</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
+              ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Services inclus")}</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${noIncluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Not included / additional services" : "Services non inclus / complémentaires")}</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${infoAdicional.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Recommendations" : "Recommandations")}</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
             </div>
 
             <div class="pv-side-box">
               <div class="pv-assist-box">
-                <div class="pv-subtitle">Asistencia personalizada</div>
-                <div class="pv-assist-text">Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
+                <div class="pv-subtitle">Assistance personnalisée</div>
+                <div class="pv-assist-text">Pour toute assistance pendant votre voyage, vous pouvez contacter votre agent de voyage attitré :</div>
                 <div class="pv-agent-name">${esc(reserva.agenteAsignado || t.noData)}</div>
                 <div class="pv-agent-phone">${esc(reserva.agenteTelefono || t.noData)}</div>
               </div>
@@ -3714,7 +3714,7 @@
                 <img src="/assets/img/logos/Logo2.png" alt="My Cusco Trip">
               </div>
               <div class="pv-social-area">
-                <div class="pv-social-title">Síguenos en nuestras redes sociales</div>
+                <div class="pv-social-title">Suivez-nous sur les réseaux sociaux</div>
                 <div class="pv-socials">
                   <span class="pv-social-pill"><i class="fa-brands fa-instagram"></i> @mycuscotrip</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-facebook-f"></i> My Cusco Trip</span>

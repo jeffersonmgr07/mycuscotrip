@@ -651,7 +651,7 @@
 </head>
 <body>
 <div class="page">
-<div class="title">Cotizador de vuelos</div>
+<div class="title">Cotação de voos</div>
 <section class="search-box">
 <div class="trip-switches">
 <button class="trip-btn active" data-trip="oneway" type="button">One way</button>
@@ -659,7 +659,7 @@
 </div>
 <form class="search-grid" id="flightForm">
 <div class="field">
-<label for="origin">Origen</label>
+<label for="origin">Origem</label>
 <input id="origin" type="text" value="Lima"/>
 </div>
 <div class="field">
@@ -667,36 +667,36 @@
 <input id="destination" type="text" value="Arequipa"/>
 </div>
 <div class="field">
-<label for="departureDate">Fecha ida</label>
+<label for="departureDate">Data ida</label>
 <input id="departureDate" type="date" value="2026-04-02"/>
 </div>
 <div class="field">
-<label for="departureTime">Hora salida ida</label>
+<label for="departureTime">Hora de saída ida</label>
 <input id="departureTime" type="time" value="06:10"/>
 </div>
 <div class="field">
-<label for="arrivalTime">Hora llegada ida</label>
+<label for="arrivalTime">Hora de chegada ida</label>
 <input id="arrivalTime" type="time" value="07:42"/>
 </div>
 <div class="field" id="returnDateField" style="display:none;">
-<label for="returnDate">Fecha vuelta</label>
+<label for="returnDate">Data volta</label>
 <input id="returnDate" type="date" value="2026-04-05"/>
 </div>
 <div class="field" id="returnDepartureTimeField" style="display:none;">
-<label for="returnDepartureTime">Hora salida vuelta</label>
+<label for="returnDepartureTime">Hora de saída volta</label>
 <input id="returnDepartureTime" type="time" value="09:45"/>
 </div>
 <div class="field" id="returnArrivalTimeField" style="display:none;">
-<label for="returnArrivalTime">Hora llegada vuelta</label>
+<label for="returnArrivalTime">Hora de chegada volta</label>
 <input id="returnArrivalTime" type="time" value="11:25"/>
 </div>
 <div class="field">
-<label for="airline">Aerolínea</label>
+<label for="airline">Companhia aérea</label>
 <select id="airline">
 <option value="jetsmart">JetSMART</option>
 <option value="latam">LATAM</option>
 <option value="sky">SKY</option>
-<option value="custom">Otra</option>
+<option value="custom">Outra</option>
 </select>
 </div>
 <div class="field">
@@ -713,21 +713,21 @@
 </select>
 </div>
 <div class="field">
-<label for="bags">Objeto personal</label>
+<label for="bags">Item pessoal</label>
 <select id="bags">
 <option value="1">1</option>
 <option value="0">0</option>
 </select>
 </div>
 <div class="field">
-<label for="carryon">Equipaje cabina</label>
+<label for="carryon">Bagagem de mão</label>
 <select id="carryon">
 <option value="0">0</option>
 <option value="1">1</option>
 </select>
 </div>
 <div class="field">
-<label for="checked">Equipaje bodega</label>
+<label for="checked">Bagagem despachada</label>
 <select id="checked">
 <option value="0">0</option>
 <option value="1">1</option>
@@ -735,7 +735,7 @@
 </select>
 </div>
 <div class="field">
-<label for="cabinClass">Cabina</label>
+<label for="cabinClass">Cabine</label>
 <select id="cabinClass">
 <option value="Economy">Economy</option>
 <option value="Premium Economy">Premium Economy</option>
@@ -747,29 +747,29 @@
 <input id="insurancePrice" step="0.01" type="number" value="0"/>
 </div>
 <div class="field">
-<label for="flexiblePrice">Vuelo flexible (USD)</label>
+<label for="flexiblePrice">Voo flexível (USD)</label>
 <input id="flexiblePrice" step="0.01" type="number" value="0"/>
 </div>
 <div class="field">
-<label for="cardFeePercent">Cargo tarjeta (%)</label>
+<label for="cardFeePercent">Taxa do cartão (%)</label>
 <input id="cardFeePercent" step="0.01" type="number" value="5"/>
 </div>
 <div class="field">
-<label>Seguro de viaje</label>
+<label>Seguro de viagem</label>
 <label class="field-checkbox">
 <input id="includeInsurance" type="checkbox"/>
-<span>Agregar seguro</span>
+<span>Adicionar seguro</span>
 </label>
 </div>
 <div class="field">
-<label>Vuelo flexible</label>
+<label>Voo flexível</label>
 <label class="field-checkbox">
 <input id="includeFlexible" type="checkbox"/>
-<span>Agregar opción flexible</span>
+<span>Adicionar opção flexível</span>
 </label>
 </div>
 <div class="search-action">
-<button class="btn-primary" type="submit">Generar cotización</button>
+<button class="btn-primary" type="submit">Gerar cotação</button>
 </div>
 </form>
 </section>
@@ -790,7 +790,7 @@
         logo: "../assets/img/airlines/sky.png"
       },
       custom: {
-        name: "Aerolínea",
+        name: "Companhia aérea",
         logo: "../assets/img/airlines/default.png"
       }
     };
@@ -833,7 +833,7 @@
     function formatDate(dateStr) {
       if (!dateStr) return "";
       const date = new Date(dateStr + "T00:00:00");
-      return date.toLocaleDateString("es-PE", {
+      return date.toLocaleDateString("pt-BR", {
         day: "numeric",
         month: "short"
       });
@@ -858,7 +858,7 @@
     }
 
     function calculateDuration(startTime, endTime) {
-      if (!startTime || !endTime) return "Vuelo directo";
+      if (!startTime || !endTime) return "Voo direto";
       const [sh, sm] = startTime.split(":").map(Number);
       const [eh, em] = endTime.split(":").map(Number);
       let start = sh * 60 + sm;
@@ -903,7 +903,7 @@
         return {
           segments: [
             {
-              label: "Salida",
+              label: "Ida",
               date: values.departureDate,
               cabinClass: values.cabinClass,
               depTime: values.departureTime,
@@ -921,7 +921,7 @@
       return {
         segments: [
           {
-            label: "Salida",
+            label: "Ida",
             date: values.departureDate,
             cabinClass: values.cabinClass,
             depTime: values.departureTime,
@@ -933,7 +933,7 @@
             toCity: values.destination
           },
           {
-            label: "Vuelta",
+            label: "Volta",
             date: values.returnDate,
             cabinClass: values.cabinClass,
             depTime: values.returnDepartureTime,
@@ -951,7 +951,7 @@
     function buildBagsLine(values) {
       return `
         <div class="bags">
-          <span title="Objeto personal">
+          <span title="Item pessoal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M12 16v-4"></path>
@@ -960,7 +960,7 @@
             ${values.bags}
           </span>
 
-          <span title="Equipaje cabina">
+          <span title="Bagagem de mão">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="7" y="4" width="10" height="16" rx="2"></rect>
               <path d="M9 4V2h6v2"></path>
@@ -968,7 +968,7 @@
             ${values.carryon}
           </span>
 
-          <span title="Equipaje bodega">
+          <span title="Bagagem despachada">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="7" width="18" height="13" rx="2"></rect>
               <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -1015,7 +1015,7 @@
       const ida = `${values.origin} (${getAirportCode(values.origin)}) → ${values.destination} (${getAirportCode(values.destination)})`;
       const vuelta = tripType === "roundtrip"
         ? `${values.destination} (${getAirportCode(values.destination)}) → ${values.origin} (${getAirportCode(values.origin)})`
-        : "No aplica";
+        : "Não aplicável";
 
       return { ida, vuelta };
     }
@@ -1047,7 +1047,7 @@
                     <div class="line-wrap">
                       <div class="line"></div>
                     </div>
-                    <div class="direct">Vuelo directo</div>
+                    <div class="direct">Voo direto</div>
                   </div>
 
                   <div class="time-block">
@@ -1072,27 +1072,27 @@
         </article>
 
         <article class="formal-quote">
-          <h2>TARIFA DETALLADA</h2>
+          <h2>TARIFA DETALHADA</h2>
 
           <div class="quote-grid">
             <div>
               <section class="quote-section">
-                <div class="quote-section-title">Información del vuelo</div>
+                <div class="quote-section-title">Informações do voo</div>
                 <div class="detail-list">
                   <div class="detail-row">
-                    <div class="detail-label">Ruta ida</div>
+                    <div class="detail-label">Rota ida</div>
                     <div class="detail-value">${routes.ida}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Ruta vuelta</div>
+                    <div class="detail-label">Rota volta</div>
                     <div class="detail-value">${routes.vuelta}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Aerolínea</div>
+                    <div class="detail-label">Companhia aérea</div>
                     <div class="detail-value">${airline.name}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Cabina</div>
+                    <div class="detail-label">Cabine</div>
                     <div class="detail-value">${values.cabinClass}</div>
                   </div>
                   <div class="detail-row">
@@ -1100,56 +1100,56 @@
                     <div class="detail-value">${values.passengers} adulto(s)</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Equipaje</div>
+                    <div class="detail-label">Bagagem</div>
                     <div class="detail-value">
-                      <span class="tag-inline">Objeto personal: ${values.bags}</span>
-                      <span class="tag-inline">Cabina: ${values.carryon}</span>
-                      <span class="tag-inline">Bodega: ${values.checked}</span>
+                      <span class="tag-inline">Item pessoal: ${values.bags}</span>
+                      <span class="tag-inline">Bagagem de mão: ${values.carryon}</span>
+                      <span class="tag-inline">Despachada: ${values.checked}</span>
                     </div>
                   </div>
                 </div>
               </section>
 
               <section class="quote-section">
-                <div class="quote-section-title">Servicios opcionales</div>
+                <div class="quote-section-title">Serviços opcionais</div>
                 <div class="options-grid">
                   <div class="option-card">
                     <div class="option-left">
-                      <div class="option-title">Seguro de viaje</div>
-                      <div class="option-desc">Cobertura adicional para el pasajero.</div>
+                      <div class="option-title">Seguro de viagem</div>
+                      <div class="option-desc">Cobertura adicional para o passageiro.</div>
                     </div>
-                    <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}</div>
+                    <div class="option-price">${values.includeInsurance ? formatMoney(values.insurancePrice) : "Não incluído"}</div>
                   </div>
 
                   <div class="option-card">
                     <div class="option-left">
-                      <div class="option-title">Vuelo flexible</div>
-                      <div class="option-desc">Permite cambios bajo condiciones de tarifa.</div>
+                      <div class="option-title">Voo flexível</div>
+                      <div class="option-desc">Permite alterações sob condições da tarifa.</div>
                     </div>
-                    <div class="option-price">${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}</div>
+                    <div class="option-price">${values.includeFlexible ? formatMoney(values.flexiblePrice) : "Não incluído"}</div>
                   </div>
                 </div>
               </section>
 
               <section class="quote-section">
-                <div class="quote-section-title">Opciones de pago</div>
+                <div class="quote-section-title">Opções de pagamento</div>
                 <div class="detail-list">
                   <div class="detail-row">
-                    <div class="detail-label">Transferencia / depósito</div>
+                    <div class="detail-label">Transferência / depósito</div>
                     <div class="detail-value">${formatMoney(totals.transferTotal)}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Pago con tarjeta</div>
+                    <div class="detail-label">Pagamento com cartão</div>
                     <div class="detail-value">${formatMoney(totals.cardTotal)}</div>
                   </div>
                   <div class="detail-row">
-                    <div class="detail-label">Cargo adicional tarjeta</div>
+                    <div class="detail-label">Taxa adicional do cartão</div>
                     <div class="detail-value">${formatMoney(totals.cardFee)} (${values.cardFeePercent.toFixed(2)}%)</div>
                   </div>
                 </div>
 
                 <div class="payment-methods">
-                  <div class="payment-title">Cuentas bancarias</div>
+                  <div class="payment-title">Contas bancárias</div>
 
                   <div class="bank-list">
                     <div class="bank-item">
@@ -1171,7 +1171,7 @@
                   </div>
 
                   <div class="payment-note">
-                    El precio ingresado se toma como precio final del boleto. Los opcionales y el cargo por tarjeta se suman aparte si corresponden.
+                    O preço inserido é considerado o preço final da passagem. Os opcionais e a taxa do cartão são somados à parte, quando aplicável.
                   </div>
                 </div>
               </section>
@@ -1190,7 +1190,7 @@
                 </div>
 
                 <div class="price-line">
-                  <span>Imp. y tasas</span>
+                  <span>Impostos e taxas</span>
                   <strong>${formatMoney(totals.taxes)}</strong>
                 </div>
 
@@ -1208,7 +1208,7 @@
 
                 ${values.includeFlexible ? `
                   <div class="price-line">
-                    <span>Vuelo flexible</span>
+                    <span>Voo flexível</span>
                     <strong>${formatMoney(totals.flexible)}</strong>
                   </div>
                 ` : ""}
@@ -1220,13 +1220,13 @@
               </div>
 
               <div class="payment-methods">
-                <div class="payment-title">Opción de pago con tarjeta</div>
+                <div class="payment-title">Opção de pagamento com cartão</div>
                 <div class="price-line">
-                  <span>Cargo tarjeta</span>
+                  <span>Taxa do cartão</span>
                   <strong>${formatMoney(totals.cardFee)}</strong>
                 </div>
                 <div class="price-total">
-                  <span>Total con tarjeta</span>
+                  <span>Total com cartão</span>
                   <strong>${formatMoney(totals.cardTotal)}</strong>
                 </div>
               </div>
@@ -1237,17 +1237,17 @@
 
       document.getElementById("buyNowBtn").addEventListener("click", () => {
         const text = encodeURIComponent(
-`Hola, quiero comprar esta cotización.
+`Olá, quero comprar esta cotação.
 
-Tipo de viaje: ${tripType}
-Ruta ida: ${routes.ida}
-Ruta vuelta: ${routes.vuelta}
-Aerolínea: ${airline.name}
-Precio boleto: ${formatMoney(values.price)}
-Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "No incluido"}
-Flexible: ${values.includeFlexible ? formatMoney(values.flexiblePrice) : "No incluido"}
-Total transferencia: ${formatMoney(totals.transferTotal)}
-Total tarjeta: ${formatMoney(totals.cardTotal)}`
+Tipo de viagem: ${tripType}
+Rota ida: ${routes.ida}
+Rota volta: ${routes.vuelta}
+Companhia aérea: ${airline.name}
+Preço da passagem: ${formatMoney(values.price)}
+Seguro: ${values.includeInsurance ? formatMoney(values.insurancePrice) : "Não incluído"}
+Flexível: ${values.includeFlexible ? formatMoney(values.flexiblePrice) : "Não incluído"}
+Total transferência: ${formatMoney(totals.transferTotal)}
+Total cartão: ${formatMoney(totals.cardTotal)}`
         );
 
         window.open(`https://wa.me/51999999999?text=${text}`, "_blank");
@@ -1259,13 +1259,13 @@ Total tarjeta: ${formatMoney(totals.cardTotal)}`
       const values = getFormValues();
 
       if (!values.origin || !values.destination || !values.departureDate || !values.departureTime || !values.arrivalTime || values.price <= 0) {
-        results.innerHTML = `<div class="empty">Completa origen, destino, fecha, horas y precio final.</div>`;
+        results.innerHTML = `<div class="empty">Complete origem, destino, data, horários e preço final.</div>`;
         return;
       }
 
       if (tripType === "roundtrip") {
         if (!values.returnDate || !values.returnDepartureTime || !values.returnArrivalTime) {
-          results.innerHTML = `<div class="empty">Completa fecha y horas de la vuelta.</div>`;
+          results.innerHTML = `<div class="empty">Complete data e horários da volta.</div>`;
           return;
         }
       }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Expériences</title>
+</head>
+<body>
+
+<h1>Créer une expérience</h1>
+
+<form id="experienceForm">
+  <input type="text" id="title" placeholder="Titre" required />
+  <input type="text" id="slug" placeholder="Slug" required />
+  <input type="number" id="price" placeholder="Prix" required />
+  <input type="number" id="capacity" placeholder="Capacité" required />
+
+  <button type="submit">Enregistrer</button>
+</form>
+
+<hr>
+
+<h2>Expériences créées</h2>
+<ul id="experienceList"></ul>
+
+<script type="module" src="/assets/js/admin-experiences.js"></script>
+
+  <script src="../assets/js/config/tracking-config.js"></script>
+  <script src="../assets/js/components/tracking.js"></script>
+</body>
+</html>

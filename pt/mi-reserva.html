@@ -261,36 +261,36 @@
 <div class="reserva-grid">
 <div class="reserva-copy">
 <span class="eyebrow">Minha Reserva</span>
-<h1>Consulta tu <span>viaje</span> en segundos</h1>
+<h1>Consulte sua <span>viagem</span> em segundos</h1>
 <p>
-            Ingresa tu código de reserva y tu apellido para revisar el detalle
-            de tu itinerario, tarifas, viajeros y enlace de pago.
+            Insira o código da sua reserva e o seu sobrenome para revisar o detalhe
+            do seu itinerário, tarifas, viajantes e link de pagamento.
           </p>
 </div>
 <div class="reserva-panel">
 <div aria-label="Machu Picchu" class="reserva-image"></div>
 <div class="reserva-form-wrap">
 <div class="reserva-form-box">
-<div class="label-top">Acceso a reserva</div>
+<div class="label-top">Acesso à reserva</div>
 <h2>Buscar reserva</h2>
 <p class="intro">
-                Completa los datos registrados en tu compra para ver toda la información de tu reserva.
+                Preencha os dados registrados na sua compra para ver todas as informações da sua reserva.
               </p>
 <form id="reservaForm">
 <div class="reserva-field">
 <label for="codigo">Código de reserva</label>
-<input id="codigo" name="codigo" autocapitalize="characters" autocomplete="off" maxlength="32" spellcheck="false" placeholder="Ej. CUZ1A2B3C" required="" type="text"/>
+<input id="codigo" name="codigo" autocapitalize="characters" autocomplete="off" maxlength="32" spellcheck="false" placeholder="Ex. CUZ1A2B3C" required="" type="text"/>
 </div>
 <div class="reserva-field">
-<label for="identifier">Correo electrónico o apellido</label>
-<input id="identifier" name="identifier" placeholder="Ej. viajero@email.com" required="" type="text" autocomplete="email"/>
+<label for="identifier">E-mail ou sobrenome</label>
+<input id="identifier" name="identifier" placeholder="Ex. viajante@email.com" required="" type="text" autocomplete="email"/>
 </div>
 <div class="reserva-error" id="errorMessage"></div>
 <button class="reserva-btn" id="buscarBtn" type="submit">
                   Buscar reserva
                 </button>
 <p class="reserva-help">
-                  Validamos los datos comparándolos con el archivo de reservas cargado en tu sitio.
+                  Validamos os dados comparando-os com o arquivo de reservas carregado no seu site.
                 </p>
 </form>
 </div>
@@ -355,7 +355,7 @@
               <div style="color:white;font-weight:bold;font-size:1.2rem;">MyCuscoTrip</div>
               <nav>
                 <a href="./index.html" style="color:white;margin:0 10px;">Home</a>
-                <a href="./mi-reserva.html" style="color:white;margin:0 10px;">Mi Reserva</a>
+                <a href="./mi-reserva.html" style="color:white;margin:0 10px;">Minha Reserva</a>
               </nav>
             </div>
           </header>
@@ -365,14 +365,14 @@
             <div class="container">
               <div style="text-align:center;">
                 <p>© 2023 MyCuscoTrip</p>
-                <p>Especialistas en viajes a Cusco y Machu Picchu</p>
+                <p>Especialistas em viagens a Cusco e Machu Picchu</p>
               </div>
             </div>
           </footer>
         `
       };
 
-      return fallbacks[componentName] || `<div>Componente ${componentName} no disponible</div>`;
+      return fallbacks[componentName] || `<div>Componente ${componentName} não disponível</div>`;
     }
 
     function initializeComponents() {

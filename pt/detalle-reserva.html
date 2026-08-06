@@ -2685,7 +2685,7 @@
 <div class="top-actions">
 <div class="top-actions-right">
 <button class="action-btn secondary" id="backBtn" onclick="window.location.href='./mi-reserva.html'">
-<i class="fa-solid fa-arrow-left"></i> Volver
+<i class="fa-solid fa-arrow-left"></i> Voltar
           </button>
 <button class="action-btn primary" id="printBtn" onclick="window.print()">
 <i class="fa-solid fa-print"></i> Imprimir voucher
@@ -3737,18 +3737,18 @@
           ` : ""}
 
           <div class="pv-section">
-            <div class="pv-section-title">Información adicional</div>
+            <div class="pv-section-title">Informações adicionais</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
-              ${incluye.length ? `<div class="pv-subtitle">Servicios incluidos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${noIncluye.length ? `<div class="pv-subtitle">Servicios no incluidos / adicionales</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${infoAdicional.length ? `<div class="pv-subtitle">Recomendaciones</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
+              ${incluye.length ? `<div class="pv-subtitle">Serviços incluídos</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${noIncluye.length ? `<div class="pv-subtitle">Não incluído / serviços adicionais</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${infoAdicional.length ? `<div class="pv-subtitle">Recomendações</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
             </div>
 
             <div class="pv-side-box">
               <div class="pv-assist-box">
-                <div class="pv-subtitle">Asistencia personalizada</div>
-                <div class="pv-assist-text">Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
+                <div class="pv-subtitle">Assistência pessoal</div>
+                <div class="pv-assist-text">Para qualquer assistência durante sua viagem, entre em contato com seu agente de viagens designado:</div>
                 <div class="pv-agent-name">${esc(reserva.agenteAsignado || t.noData)}</div>
                 <div class="pv-agent-phone">${esc(reserva.agenteTelefono || t.noData)}</div>
               </div>
@@ -3783,7 +3783,7 @@
                 <img src="/assets/img/logos/Logo2.png" alt="My Cusco Trip">
               </div>
               <div class="pv-social-area">
-                <div class="pv-social-title">Síguenos en nuestras redes sociales</div>
+                <div class="pv-social-title">Siga-nos nas nossas redes sociais</div>
                 <div class="pv-socials">
                   <span class="pv-social-pill"><i class="fa-brands fa-instagram"></i> @mycuscotrip</span>
                   <span class="pv-social-pill"><i class="fa-brands fa-facebook-f"></i> My Cusco Trip</span>
@@ -3797,7 +3797,7 @@
             </div>
             <div class="pv-ad-banner-slot">
               <img src="/assets/img/reserva/banner-restaurantes.jpg" alt="Banner promocional" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-              <span style="display:none;">Espacio reservado para banner publicitario · sugerido: assets/img/reserva/banner-restaurantes.jpg</span>
+              <span style="display:none;">Espaço reservado para banner publicitário · sugerido: assets/img/reserva/banner-restaurantes.jpg</span>
             </div>
           </div>
         </div>

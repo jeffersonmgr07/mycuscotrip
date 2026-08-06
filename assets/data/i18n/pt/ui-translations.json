@@ -416,5 +416,20 @@
   "cards.comingSoon": "Em breve",
   "cards.askAvailability": "Consultar disponibilidade",
   "coupon.countryCode": "Código do país",
-  "coupon.phoneNumber": "Número"
+  "coupon.phoneNumber": "Número",
+  "product.connectingToPaypal": "Conectando com o PayPal...",
+  "coupon.successMock": "Modo teste: cupom {code} gerado localmente. Configure o backend para enviar e-mails reais.",
+  "search.selectStartDate": "Selecione a data de início",
+  "search.selectEndDateHint": "Selecione também a data de saída",
+  "search.fixedDurationHint": "{days} dias / {nights} noites · {start} a {end}",
+  "search.allMachuPicchuTours": "Todos os tours de Machu Picchu",
+  "search.allCuscoTours": "Todos os tours de Cusco",
+  "search.packageMachuPicchu2d1n": "Machu Picchu 2 dias / 1 noite",
+  "search.packageCuscoMachuPicchu3d2n": "Cusco Machu Picchu 3 dias / 2 noites",
+  "search.packageCuscoValleMachuPicchu4d3n": "Cusco Vale Machu Picchu 4 dias / 3 noites",
+  "search.packageCuscoValleMachuPicchu5d4n": "Cusco Vale Machu Picchu 5 dias / 4 noites",
+  "search.packageCuscoValleMachuPicchu6d5n": "Cusco Vale Machu Picchu 6 dias / 5 noites",
+  "search.packageCustomCuscoMachuPicchu": "Pacote personalizado Cusco Machu Picchu",
+  "search.packageAncestralUnion": "União Ancestral nos Andes / Casamento Andino",
+  "quote.extra.valleSurTitle": "Vale Sul de Cusco"
 }

@@ -55,11 +55,11 @@
 <div class="experience-actions">
 <button class="experience-action-btn" type="button">
 <i class="fas fa-share-nodes"></i>
-<span data-i18n="product.share">Compartir</span>
+<span data-i18n="product.share">Share</span>
 </button>
 <button class="experience-action-btn" type="button">
 <i class="far fa-heart"></i>
-<span data-i18n="product.save">Guardar</span>
+<span data-i18n="product.save">Save</span>
 </button>
 </div>
 </div>
@@ -72,10 +72,10 @@
 <div class="container experience-tabs-container">
 <nav aria-label="Experience sections" class="experience-tabs">
 <a href="#overview" data-i18n="product.summary">Summary</a>
-<a href="#details" data-i18n="product.details">Detalles</a>
-<a href="#itinerary" data-i18n="product.itinerary">Itinerario</a>
+<a href="#details" data-i18n="product.details">Details</a>
+<a href="#itinerary" data-i18n="product.itinerary">Itinerary</a>
 <a href="#faq" data-i18n="product.faq">FAQ</a>
-<a href="#similar-mobile" data-i18n="product.similar">Similares</a>
+<a href="#similar-mobile" data-i18n="product.similar">Similar</a>
 </nav>
 </div>
 </section>
@@ -125,7 +125,7 @@
 </article>
 <article class="experience-card">
 <div class="experience-card__header">
-<h2 data-i18n="product.highlights">Aspectos destacados</h2>
+<h2 data-i18n="product.highlights">Highlights</h2>
 </div>
 <ul class="experience-highlights" id="productHighlights"></ul>
 </article>
@@ -139,7 +139,7 @@
 <ul class="experience-list" id="productExcludes"></ul>
 </details>
 <details class="experience-accordion">
-<summary data-i18n="product.pickupMeeting">Recojo y punto de encuentro</summary>
+<summary data-i18n="product.pickupMeeting">Pickup & Trip Coordination</summary>
 <div class="experience-note-box">
 <p data-i18n="product.pickupMeetingText">Pickup and final coordination will be confirmed according to the booked experience, selected date and current operation.</p>
 </div>
@@ -147,13 +147,13 @@
 <details class="experience-accordion">
 <summary data-i18n="product.importantInfo">Important information</summary>
 <div class="experience-note-box">
-<p data-i18n="product.importantInfoText">Se recomienda reservar con anticipación. Revisa el pronóstico del clima para elegir la vestimenta adecuada y considera que el recorrido se realiza caminando sobre terreno duro e irregular; usa zapatos de trekking o zapatillas cómodas y ropa ligera.</p>
+<p data-i18n="product.importantInfoText">Please check weather, altitude, entry rules, train schedules, flights and required documents before completing your reservation.</p>
 </div>
 </details>
 </article>
 <article class="experience-card" id="itinerary">
 <div class="experience-card__header">
-<h2 data-i18n="product.itinerary">Itinerario</h2>
+<h2 data-i18n="product.itinerary">Itinerary</h2>
 </div>
 <section aria-label="Suggested route options for dynamic packages" aria-live="polite" class="package-route-chooser" hidden="" id="packageOptions">
 <div class="package-route-chooser__header">
@@ -183,7 +183,7 @@
 </article>
 <article class="experience-card similar-desktop-block" id="similar-desktop">
 <div class="experience-card__header">
-<h2 data-i18n="product.similarExperiences">Experiencias similares</h2>
+<h2 data-i18n="product.similarExperiences">Similar Experiences</h2>
 </div>
 <div class="similar-experiences-grid" id="similarExperiencesDesktop"></div>
 </article>
@@ -191,17 +191,17 @@
 <aside class="experience-sidebar">
 <div class="booking-panel">
 <div class="booking-panel__price">
-<span data-i18n="cards.from">Desde</span>
+<span data-i18n="cards.from">From</span>
 <strong id="productBasePrice">USD 0</strong>
-<small data-i18n="product.perAdult">por adulto</small>
+<small data-i18n="product.perAdult">per adult</small>
 </div>
 <form class="booking-panel__form" id="productBookingForm">
 <div class="booking-field">
 <label for="travelDate">Travel date</label>
-<input id="travelDate" data-i18n-placeholder="search.selectDate" placeholder="Selecciona fecha" readonly="" type="text"/>
+<input id="travelDate" data-i18n-placeholder="search.selectDate" placeholder="Select a date" readonly="" type="text"/>
 </div>
 <div class="booking-field" hidden="" id="departureTimeSection">
-<label for="departureTimeSelect" id="departureTimeLabel" data-i18n="product.departureTime">Horario de salida</label>
+<label for="departureTimeSelect" id="departureTimeLabel" data-i18n="product.departureTime">Departure time</label>
 <select hidden="" id="departureTimeSelect"></select>
 <div class="booking-note-box" hidden="" id="departureTimeFixed"></div>
 <small class="booking-field-help" id="departureTimeHelp"></small>
@@ -239,10 +239,10 @@
 </div>
 </div>
 <div class="booking-field" hidden="" id="serviceModeSection">
-<label for="serviceMode" data-i18n="product.serviceMode">Modalidad del servicio</label>
+<label for="serviceMode" data-i18n="product.serviceMode">Service mode</label>
 <select id="serviceMode">
-<option value="group" data-i18n="product.groupTour">Tour en grupo</option>
-<option value="private" data-i18n="product.privateTour">Tour privado</option>
+<option value="group" data-i18n="product.groupTour">Group tour</option>
+<option value="private" data-i18n="product.privateTour">Private tour</option>
 </select>
 <small class="booking-field-help" id="serviceModeHelp"></small>
 </div>
@@ -267,7 +267,7 @@
 <label for="discountCode">Discount code</label>
 <div class="booking-discount-row">
 <input id="discountCode" placeholder="Enter your code" type="text"/>
-<button class="booking-apply-btn" id="applyDiscountBtn" type="button" data-i18n="apply">Aplicar</button>
+<button class="booking-apply-btn" id="applyDiscountBtn" type="button" data-i18n="apply">Apply</button>
 </div>
 <p class="booking-discount-message" id="discountMessage"></p>
 </div>
@@ -275,11 +275,11 @@
 <label for="paymentMode">Payment method</label>
 <select id="paymentMode">
 <option value="full">Full payment</option>
-<option value="partial" data-i18n="product.depositOnly">Pagar solo un adelanto</option>
+<option value="partial" data-i18n="product.depositOnly">Reserve with a deposit</option>
 </select>
 </div>
 <div class="booking-summary-wrap">
-<div class="booking-summary-title" data-i18n="product.paymentDetails">Detalles del pago</div>
+<div class="booking-summary-title" data-i18n="product.paymentDetails">Payment details</div>
 <div class="booking-summary">
 <div class="booking-summary__line">
 <span>Adults</span>
@@ -290,7 +290,7 @@
 <strong id="childrenTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="accommodationTotalRow">
-<span data-i18n="product.accommodation">Alojamiento</span>
+<span data-i18n="product.accommodation">Accommodation</span>
 <strong id="accommodationTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line">
@@ -298,7 +298,7 @@
 <strong id="extrasTotal">USD 0</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="discountRow">
-<span data-i18n="product.discount">Descuento</span>
+<span data-i18n="product.discount">Discount</span>
 <strong id="discountTotal">- USD 0</strong>
 </div>
 <div class="booking-summary__line" id="serviceTotalRow">
@@ -323,7 +323,7 @@
 </div>
 <article class="experience-card similar-mobile-block" id="similar-mobile">
 <div class="experience-card__header">
-<h2 data-i18n="product.similarExperiences">Experiencias similares</h2>
+<h2 data-i18n="product.similarExperiences">Similar Experiences</h2>
 </div>
 <div class="similar-experiences-grid" id="similarExperiencesMobile"></div>
 </article>
@@ -335,12 +335,12 @@
 <div class="hotel-modal" hidden="" id="hotelSelectionModal">
 <div class="hotel-modal__backdrop" data-close-hotel-modal=""></div>
 <div aria-labelledby="hotelModalTitle" aria-modal="true" class="hotel-modal__dialog" role="dialog">
-<button aria-label="Cerrar modal" class="hotel-modal__close" data-i18n-label="product.closeModal" id="closeHotelModalBtn" type="button">
+<button aria-label="Close modal" class="hotel-modal__close" data-i18n-label="product.closeModal" id="closeHotelModalBtn" type="button">
 <i class="fas fa-xmark"></i>
 </button>
 <div class="hotel-modal__header">
 <p class="hotel-modal__eyebrow" id="hotelModalEyebrow" data-i18n="product.hotelSelection">Accommodation selection</p>
-<h2 id="hotelModalTitle" data-i18n="product.chooseHotel">Elige tu hotel</h2>
+<h2 id="hotelModalTitle" data-i18n="product.chooseHotel">Choose hotel</h2>
 <p class="hotel-modal__subtitle" data-i18n="product.hotelModalIntro" id="hotelModalSubtitle">
           Compare categories, photos, rooms and additional rates.
         </p>
@@ -350,7 +350,7 @@
 </div>
 <div class="hotel-modal__footer">
 <button class="btn booking-secondary-btn" data-i18n="product.close" id="cancelHotelModalBtn" type="button">
-          Cerrar
+          Close
         </button>
 </div>
 </div>
@@ -385,12 +385,12 @@
 </details>
 </div>
 <div class="passenger-modal__body">
-<button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
+<button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">View booking details</button>
 <div class="passenger-modal__snapshot" id="passengerPaymentSnapshot"></div>
 <form class="passenger-modal__form" id="passengerReservationForm" novalidate="">
 <section class="passenger-modal__section passenger-modal__section--holder">
 <div class="passenger-modal__section-title">
-<strong id="holderSectionTitle">Titular de reserva / Pasajero 1</strong>
+<strong id="holderSectionTitle">Reservation holder / Traveler 1</strong>
 <span>Required fields to continue</span>
 </div>
 <div class="passenger-modal__grid">
@@ -429,7 +429,7 @@
 <label class="passenger-phone-field">
 <span>WhatsApp</span>
 <div class="passenger-phone-row">
-<select aria-label="Código de país" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
+<select aria-label="Country code" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
 <input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="Número" required="" type="tel"/>
 </div>
 </label>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Experiences</title>
+  <script>window.MCT_LOCALE="en"; window.MCT_IS_LOCALIZED_PAGE=true;</script>
+</head>
+<body>
+
+<h1>Create experience</h1>
+
+<form id="experienceForm">
+  <input type="text" id="title" placeholder="Title" required />
+  <input type="text" id="slug" placeholder="Slug" required />
+  <input type="number" id="price" placeholder="Price" required />
+  <input type="number" id="capacity" placeholder="Capacity" required />
+
+  <button type="submit">Save</button>
+</form>
+
+<hr>
+
+<h2>Created experiences</h2>
+<ul id="experienceList"></ul>
+
+<script type="module" src="/assets/js/admin-experiences.js"></script>
+
+  <script src="../assets/js/config/tracking-config.js"></script>
+  <script src="../assets/js/components/tracking.js"></script>
+</body>
+</html>
