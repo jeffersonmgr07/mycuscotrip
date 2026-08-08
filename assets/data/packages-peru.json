@@ -2380,49 +2380,44 @@
       "status": "published",
       "currency": "USD",
       "basePricing": {
-        "adult": 1849.9,
-        "child": 1849.9,
+        "adult": 969.9,
+        "child": 969.9,
         "currency": "USD",
-        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
-        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
-        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
-        "estimatedAverageProfitUSD": 184.28,
+        "mode": "published_price_without_hotels",
+        "protectedNetAfterMaxDiscountAndPaypal": 779.9,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 766.09,
+        "estimatedAverageProfitUSD": 166.09,
         "minimumTargetProfitUSD": 150,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4,
         "bankWithdrawalEffectivePercent": 1.77,
-        "basis": "per_person_double_occupancy",
+        "basis": "per_person_without_hotels",
         "exchangeRateUSDToPEN": 3.75,
-        "label": "Precio base por persona con hoteles, trenes y vuelos nacionales incluidos",
-        "description": "Tarifa calculada para dos adultos compartiendo habitación. Incluye hoteles base, trenes The Voyager y vuelos nacionales Lima–Cusco–Lima. Los upgrades de hotel o tren y diferencias aéreas extraordinarias pueden generar suplemento."
+        "label": "Precio base por persona sin hoteles; incluye trenes y vuelos nacionales",
+        "description": "Tarifa del circuito sin alojamiento. Incluye vuelos nacionales Lima–Cusco–Lima con referencia operativa de USD 120 por persona, trenes The Voyager base, tours, ingresos y traslados indicados. Los hoteles se agregan por separado desde los modales de alojamiento."
       },
       "internalPricing": {
-        "calculationVersion": "V97-2026-08-07",
-        "publishedPriceUSD": 1849.9,
-        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
-        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
-        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "calculationVersion": "V98-2026-08-07",
+        "publishedPriceUSD": 969.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 824.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 779.9,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 766.09,
         "minimumTargetProfitUSDPerPerson": 150,
-        "estimatedReferenceCostUSDPerPerson": 1276.9,
-        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "operationalCostGuardrailUSDPerPerson": 600.0,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 166.09,
         "referenceTravelers": 2,
-        "referenceOccupancy": "double_or_matrimonial_shared",
-        "includedHotelAllowancePerPersonUSD": {
-          "lima_2_nights": 79.2,
-          "cusco_4_nights": 101.8,
-          "aguas_calientes_1_night": 32.45,
-          "total": 213.45
-        },
+        "referenceOccupancy": "hotel_pricing_separate_from_base",
+        "hotelsExcludedFromBasePrice": true,
         "defaultTrainReferenceUSDPerPerson": 160,
-        "domesticFlightReferenceUSDPerPerson": 200,
-        "domesticFlightGuardrailMaxUSDPerPerson": 230,
-        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+        "domesticFlightReferenceUSDPerPerson": 120,
+        "domesticFlightRequoteThresholdUSDPerPerson": 120,
+        "pricingGuardrail": "The USD 600 operational guardrail already uses USD 120 per person for Lima-Cusco-Lima airfare and treats the published Paracas rate as a conservative cost ceiling. Reconfirm flights and supplier rates before applying the maximum 15% discount. Hotels are priced separately by the hotel modal."
       },
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
       },
-      "priceFrom": 1849.9,
+      "priceFrom": 969.9,
       "search": {
         "kind": "package",
         "destinations": [
@@ -2498,29 +2493,6 @@
           "label": "Machu Picchu Pueblo - 1 noche"
         }
       ],
-      "hotelSelection": {
-        "required": true,
-        "includedInBasePrice": true,
-        "allowNoHotel": false,
-        "customerCanChangeHotel": true,
-        "upgradeEnabled": true,
-        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
-        "defaultHotelCodes": {
-          "lima": "arawi-miraflores-3s",
-          "cusco": "cusco-boutique-3s",
-          "aguas-calientes": "luz-garden-3s"
-        },
-        "includedAllowancePerPersonUSD": {
-          "lima": 79.2,
-          "cusco": 101.8,
-          "aguas-calientes": 32.45
-        }
-      },
-      "defaultHotelsByDestination": {
-        "lima": "arawi-miraflores-3s",
-        "cusco": "cusco-boutique-3s",
-        "aguas-calientes": "luz-garden-3s"
-      },
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
@@ -2612,8 +2584,8 @@
       "typeLabel": "8 días / 7 noches",
       "badge": "Nuevo circuito",
       "location": "Lima / Paracas / Ica / Cusco / Valle Sagrado / Machu Picchu / Valle Sur / Montaña de Colores",
-      "shortDescription": "Circuito completo de 8 días por la costa y los Andes con hoteles, vuelos nacionales, trenes, ingresos, traslados y excursiones principales incluidos.",
-      "priceLabel": "Desde USD 1,849.90 por persona, base doble, con hoteles, trenes y vuelos nacionales incluidos",
+      "shortDescription": "Circuito completo de 8 días por la costa y los Andes con vuelos nacionales, trenes, ingresos, traslados y excursiones principales incluidos. Los hoteles se seleccionan aparte y se suman según la acomodación elegida.",
+      "priceLabel": "Desde USD 969.90 por persona, sin hoteles; incluye trenes y vuelos nacionales",
       "experienceType": [
         "Cultural",
         "Naturaleza",
@@ -2621,7 +2593,7 @@
         "Multidestino"
       ],
       "highlights": [
-        "Recepción en Lima y dos noches en Miraflores",
+        "Recepción en Lima y estructura de alojamiento configurable: 2 noches Lima, 4 Cusco y 1 Machu Picchu Pueblo",
         "Full day Paracas, Islas Ballestas, Ica y Huacachina con tubulares y sandboarding",
         "Vuelos nacionales Lima–Cusco y Cusco–Lima incluidos",
         "Bienvenida ancestral y aclimatación en Cusco",
@@ -2638,7 +2610,6 @@
       ],
       "includes": [
         "Recepción en el aeropuerto de Lima y todos los traslados aeropuerto–hotel–aeropuerto indicados en el programa",
-        "2 noches en Lima, 4 noches en Cusco y 1 noche en Machu Picchu Pueblo en los hoteles seleccionados, con desayuno según política y horario del hotel",
         "Vuelos nacionales Lima–Cusco y Cusco–Lima en tarifa económica confirmada según fecha y disponibilidad",
         "Full day Paracas, Islas Ballestas, Ica y Huacachina con transporte turístico, navegación, tasas turísticas, bodega, tubulares y sandboarding básico según operación",
         "Bienvenida ancestral en Cusco",
@@ -2652,13 +2623,14 @@
       ],
       "excludes": [
         "Vuelos internacionales hacia o desde Perú",
+        "Alojamiento en Lima, Cusco y Machu Picchu Pueblo: se selecciona en el modal de hoteles y se agrega al precio base según la habitación y acomodación elegidas",
         "Comidas, bebidas o consumos no descritos expresamente como incluidos",
         "Equipaje adicional o servicios aéreos fuera de la tarifa doméstica emitida",
         "Caballos, ATV u otras actividades opcionales no indicadas en el programa",
         "Early check-in, late check-out, propinas, seguro de viaje, gastos personales y upgrades opcionales"
       ],
       "importantInfo": [
-        "La tarifa publicada es por persona sobre base de dos adultos compartiendo habitación; el sistema recalcula la acomodación cuando cambia la cantidad de pasajeros o el tipo de habitación.",
+        "El precio base no incluye hoteles. La ruta requiere 2 noches en Lima, 4 en Cusco y 1 en Machu Picchu Pueblo; el cotizador suma automáticamente el alojamiento seleccionado para cada destino.",
         "Los vuelos Lima–Cusco–Lima están incluidos dentro de una tarifa aérea protegida. Si al confirmar la reserva el costo conjunto supera el tope operativo interno, se debe recotizar la diferencia antes de emitir.",
         "Los horarios exactos de los vuelos domésticos se elegirán para mantener la secuencia del itinerario y una conexión segura con el vuelo internacional del día 8.",
         "El ingreso y circuito de Machu Picchu dependen de disponibilidad oficial al momento de confirmar.",
@@ -2669,8 +2641,8 @@
       "pickupInfo": "Los recojos se coordinan desde los hoteles seleccionados y aeropuertos indicados. Horarios finales sujetos a vuelos, trenes, ingreso oficial a Machu Picchu, clima y operación vigente.",
       "faq": [
         {
-          "q": "¿La tarifa incluye hoteles?",
-          "a": "Sí. Incluye 2 noches en Lima, 4 en Cusco y 1 en Machu Picchu Pueblo con hoteles base preseleccionados. Puedes cambiar de hotel y el sistema suma solo el suplemento correspondiente."
+          "q": "¿Los hoteles están incluidos en el precio base?",
+          "a": "No. El precio base corresponde a los servicios del circuito sin alojamiento. El sistema calcula 2 noches en Lima, 4 en Cusco y 1 en Machu Picchu Pueblo y agrega el valor del hotel y habitación que selecciones."
         },
         {
           "q": "¿Incluye los vuelos nacionales?",
@@ -2694,7 +2666,7 @@
         }
       ],
       "itineraryLanguage": "es",
-      "description": "Circuito completo de 8 días por la costa y los Andes con hoteles, vuelos nacionales, trenes, ingresos, traslados y excursiones principales incluidos.",
+      "description": "Circuito completo de 8 días por la costa y los Andes con vuelos nacionales, trenes, ingresos, traslados y excursiones principales incluidos. Los hoteles se seleccionan aparte y se suman según la acomodación elegida.",
       "duration": {
         "label": "8 días / 7 noches",
         "maxGroupSize": 15,
@@ -2869,11 +2841,11 @@
       ],
       "seo": {
         "title": "Perú Costa y Andes: Lima, Paracas, Ica, Cusco, Machu Picchu y Montaña de Colores 8D/7N",
-        "description": "Circuito completo de 8 días por la costa y los Andes con hoteles, vuelos nacionales, trenes, ingresos, traslados y excursiones principales incluidos.",
+        "description": "Circuito de 8 días por Lima, Paracas, Ica, Cusco, Machu Picchu y Montaña de Colores con vuelos nacionales, trenes, ingresos y traslados incluidos. Hoteles configurables se cotizan aparte.",
         "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-montana-colores-8-dias-7-noches",
         "language": "es"
       },
-      "hotelPricingNote": "Tarifa por persona en base doble. Incluye hoteles base en Lima, Cusco y Machu Picchu Pueblo; el modal permite cambiar la acomodación y calcula únicamente el suplemento del hotel elegido.",
+      "hotelPricingNote": "El precio base no incluye alojamiento. El sistema calcula 2 noches en Lima, 4 en Cusco y 1 en Machu Picchu Pueblo y suma el hotel, habitación y acomodación que el viajero elija en cada modal.",
       "domesticFlightsIncluded": true,
       "domesticFlightSelection": {
         "includedInBasePrice": true,
@@ -2893,9 +2865,9 @@
             "cabin": "economy"
           }
         ],
-        "referenceCostUSDPerPerson": 200,
-        "guardrailMaxCostUSDPerPerson": 230,
-        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+        "referenceCostUSDPerPerson": 120,
+        "guardrailMaxCostUSDPerPerson": 120,
+        "fareRule": "included_subject_to_date_schedule_and_availability; if the round-trip fare is materially above the USD 120 operational reference, re-quote before issuing; baggage follows the fare issued"
       },
       "priceIncludesDomesticFlights": true,
       "publicPriceIncludesDomesticFlights": true

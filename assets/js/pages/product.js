@@ -9974,7 +9974,7 @@ document.addEventListener("click", function (event) {
 })();
 
 /* =========================================================
-   MCT V94/V97 — Paquetes Perú con hotel base incluido
+   MCT V94 — Circuito Perú 7D/6N con Humantay
    Hoteles base incluidos + upgrades y trenes configurables
    ========================================================= */
 (function () {
@@ -9985,14 +9985,11 @@ document.addEventListener("click", function (event) {
     const proto = Object.getPrototypeOf(page);
     if (!proto) return false;
 
-    const PACKAGE_IDS = new Set([
-      "pkg_peru_7d6n_humantay",
-      "pkg_peru_8d7n_lima_cusco"
-    ]);
+    const PACKAGE_ID = "pkg_peru_7d6n_humantay";
 
     const isTarget = (ctx, product) => {
       const source = product || ctx?.product || {};
-      return PACKAGE_IDS.has(String(source?.id || source?.raw?.id || ""));
+      return String(source?.id || source?.raw?.id || "") === PACKAGE_ID;
     };
 
     const escape = (ctx, value) => ctx.escapeHtml?.(value) || String(value ?? "")
@@ -10460,5 +10457,54 @@ document.addEventListener("click", function (event) {
   if (!patchV95()) {
     document.addEventListener("DOMContentLoaded", patchV95);
     [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV95, delay));
+  }
+})();
+
+/* =========================================================
+   MCT V98 — Perú Lima + Cusco 8D/7N
+   Hotel NO incluido en base + trenes configurables incluidos
+   ========================================================= */
+(function () {
+  function patchV98LimaCusco8D7N() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    const proto = Object.getPrototypeOf(page);
+    if (!proto) return false;
+    if (proto.__mctV98LimaCusco8D7NApplied) return true;
+
+    const TARGET_ID = "pkg_peru_8d7n_lima_cusco";
+    const isTarget = (ctx, product) => {
+      const source = product || ctx?.product || {};
+      return String(source?.id || source?.raw?.id || "") === TARGET_ID;
+    };
+
+    // Generic packages normally hide train selection. This package is the exception:
+    // The Voyager 16:36 + 20:20 is already included in the base, and the modal only
+    // charges a positive difference when the traveler chooses a more expensive train.
+    const previousIsTrainSelectionEnabled = proto.isTrainSelectionEnabled;
+    proto.isTrainSelectionEnabled = function (product) {
+      if (isTarget(this, product)) return true;
+      return previousIsTrainSelectionEnabled?.apply(this, arguments) ?? false;
+    };
+
+    proto.__mctV98LimaCusco8D7NApplied = true;
+
+    // If the page had already rendered before this late patch loaded, refresh only trains/pricing.
+    // Accommodation intentionally stays on the generic package flow: no hotel selected = USD 0,
+    // then the full selected hotel stay is added by the existing hotel modal.
+    try {
+      if (isTarget(page, page.product)) {
+        page.renderTrainSelectionOptions?.(page.product);
+        page.updatePricing?.();
+      }
+    } catch (error) {
+      console.warn("MCT V98 Lima+Cusco 8D/7N post-apply warning:", error);
+    }
+    return true;
+  }
+
+  if (!patchV98LimaCusco8D7N()) {
+    document.addEventListener("DOMContentLoaded", patchV98LimaCusco8D7N);
+    [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV98LimaCusco8D7N, delay));
   }
 })();

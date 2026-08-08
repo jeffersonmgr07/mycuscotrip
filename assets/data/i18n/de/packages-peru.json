@@ -2007,49 +2007,44 @@
       "status": "published",
       "currency": "USD",
       "basePricing": {
-        "adult": 1849.9,
-        "child": 1849.9,
+        "adult": 969.9,
+        "child": 969.9,
         "currency": "USD",
-        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
-        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
-        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
-        "estimatedAverageProfitUSD": 184.28,
+        "mode": "published_price_without_hotels",
+        "protectedNetAfterMaxDiscountAndPaypal": 779.9,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 766.09,
+        "estimatedAverageProfitUSD": 166.09,
         "minimumTargetProfitUSD": 150,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4,
         "bankWithdrawalEffectivePercent": 1.77,
-        "basis": "per_person_double_occupancy",
+        "basis": "per_person_without_hotels",
         "exchangeRateUSDToPEN": 3.75,
-        "label": "Grundpreis pro Person inklusive Hotels, Züge und Inlandsflüge",
-        "description": "Preis für zwei Erwachsene im Doppelzimmer. Basishotels, The Voyager-Züge und Lima–Cusco–Lima-Flüge inklusive; Upgrades oder außergewöhnliche Flugpreisdifferenzen können Zuschläge verursachen."
+        "label": "Grundpreis pro Person ohne Hotels; Züge und Inlandsflüge inklusive",
+        "description": "Rundreisepreis ohne Unterkunft. Enthält Lima–Cusco–Lima-Inlandsflüge mit einer operativen Referenz von USD 120 pro Person, The Voyager-Basiszüge, Touren, Eintritte und angegebene Transfers. Hotels werden separat hinzugefügt."
       },
       "internalPricing": {
-        "calculationVersion": "V97-2026-08-07",
-        "publishedPriceUSD": 1849.9,
-        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
-        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
-        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "calculationVersion": "V98-2026-08-07",
+        "publishedPriceUSD": 969.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 824.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 779.9,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 766.09,
         "minimumTargetProfitUSDPerPerson": 150,
-        "estimatedReferenceCostUSDPerPerson": 1276.9,
-        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "operationalCostGuardrailUSDPerPerson": 600.0,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 166.09,
         "referenceTravelers": 2,
-        "referenceOccupancy": "double_or_matrimonial_shared",
-        "includedHotelAllowancePerPersonUSD": {
-          "lima_2_nights": 79.2,
-          "cusco_4_nights": 101.8,
-          "aguas_calientes_1_night": 32.45,
-          "total": 213.45
-        },
+        "referenceOccupancy": "hotel_pricing_separate_from_base",
+        "hotelsExcludedFromBasePrice": true,
         "defaultTrainReferenceUSDPerPerson": 160,
-        "domesticFlightReferenceUSDPerPerson": 200,
-        "domesticFlightGuardrailMaxUSDPerPerson": 230,
-        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+        "domesticFlightReferenceUSDPerPerson": 120,
+        "domesticFlightRequoteThresholdUSDPerPerson": 120,
+        "pricingGuardrail": "The USD 600 operational guardrail already uses USD 120 per person for Lima-Cusco-Lima airfare and treats the published Paracas rate as a conservative cost ceiling. Reconfirm flights and supplier rates before applying the maximum 15% discount. Hotels are priced separately by the hotel modal."
       },
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
       },
-      "priceFrom": 1849.9,
+      "priceFrom": 969.9,
       "search": {
         "kind": "package",
         "destinations": [
@@ -2125,29 +2120,6 @@
           "label": "Machu Picchu Pueblo - 1 Nacht"
         }
       ],
-      "hotelSelection": {
-        "required": true,
-        "includedInBasePrice": true,
-        "allowNoHotel": false,
-        "customerCanChangeHotel": true,
-        "upgradeEnabled": true,
-        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
-        "defaultHotelCodes": {
-          "lima": "arawi-miraflores-3s",
-          "cusco": "cusco-boutique-3s",
-          "aguas-calientes": "luz-garden-3s"
-        },
-        "includedAllowancePerPersonUSD": {
-          "lima": 79.2,
-          "cusco": 101.8,
-          "aguas-calientes": 32.45
-        }
-      },
-      "defaultHotelsByDestination": {
-        "lima": "arawi-miraflores-3s",
-        "cusco": "cusco-boutique-3s",
-        "aguas-calientes": "luz-garden-3s"
-      },
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
@@ -2239,8 +2211,8 @@
       "typeLabel": "8 Tage / 7 Nächte",
       "badge": "Neue Rundreise",
       "location": "Lima / Paracas / Ica / Cusco / Heiliges Tal / Machu Picchu / Südliches Tal / Regenbogenberg",
-      "shortDescription": "Komplette 8-tägige Rundreise mit Hotels, Inlandsflügen, Zügen, Eintritten, Transfers und Hauptausflügen.",
-      "priceLabel": "Ab USD 1.849,90 pro Person im Doppelzimmer, inklusive Hotels, Züge und Inlandsflüge",
+      "shortDescription": "Komplette 8-tägige Rundreise an Küste und Anden mit Inlandsflügen, Zügen, Eintritten, Transfers und Hauptausflügen. Hotels werden separat ausgewählt und je nach gewählter Belegung hinzugerechnet.",
+      "priceLabel": "Ab USD 969,90 pro Person, ohne Hotels; Züge und Inlandsflüge inklusive",
       "experienceType": [
         "Cultural",
         "Naturaleza",
@@ -2248,7 +2220,7 @@
         "Multidestino"
       ],
       "highlights": [
-        "Empfang in Lima und 2 Nächte in Miraflores",
+        "Empfang in Lima und konfigurierbare Unterkunft: 2 Nächte Lima, 4 Cusco und 1 Machu Picchu Pueblo",
         "Paracas, Ballestas, Ica und Huacachina mit Buggy/Sandboard",
         "Inlandsflüge Lima–Cusco und Cusco–Lima inklusive",
         "Andine Willkommenszeremonie in Cusco",
@@ -2265,7 +2237,6 @@
       ],
       "includes": [
         "Flughafenempfang und angegebene Transfers",
-        "2 Nächte Lima, 4 Cusco, 1 Machu Picchu Pueblo mit Frühstück",
         "Inlandsflüge Lima–Cusco und Cusco–Lima",
         "Paracas–Ballestas–Ica–Huacachina mit Boot, Gebühren, Weingut, Buggy und Sandboard",
         "Andine Willkommenszeremonie",
@@ -2279,13 +2250,14 @@
       ],
       "excludes": [
         "Internationale Flüge",
+        "Unterkunft in Lima, Cusco und Machu Picchu Pueblo: im Hotel-Modal auswählbar und je nach Zimmer und Belegung zum Grundpreis hinzuzurechnen",
         "Nicht genannte Mahlzeiten/Getränke",
         "Zusatzgepäck außerhalb des ausgestellten Flugtarifs",
         "Pferde, ATV oder optionale Aktivitäten",
         "Early/Late Check-in, Trinkgelder, Versicherung, persönliche Ausgaben und Upgrades"
       ],
       "importantInfo": [
-        "Preis pro Person im Doppelzimmer; Unterkunft wird je nach Zimmer neu berechnet.",
+        "Der Grundpreis enthält keine Hotels. Die Route benötigt 2 Nächte in Lima, 4 in Cusco und 1 in Machu Picchu Pueblo; das System addiert die gewählte Unterkunft für jedes Ziel automatisch.",
         "Inlandsflüge sind innerhalb eines geschützten Flugbudgets enthalten; außergewöhnliche Tarife müssen vor Ausstellung neu kalkuliert werden.",
         "Flugzeiten werden passend zur Reiseroute und Verbindung an Tag 8 gewählt.",
         "Machu Picchu-Rundgang nach offizieller Verfügbarkeit.",
@@ -2296,8 +2268,8 @@
       "pickupInfo": "Abholungen an ausgewählten Hotels und Flughäfen; endgültige Zeiten nach Flügen, Zügen, Machu Picchu, Wetter und Betrieb.",
       "faq": [
         {
-          "q": "Sind Hotels inklusive?",
-          "a": "Ja: 2 Nächte Lima, 4 Cusco, 1 Machu Picchu Pueblo; bei Hotelwechsel wird nur der Zuschlag berechnet."
+          "q": "Sind Hotels im Grundpreis enthalten?",
+          "a": "Nein. Der Grundpreis umfasst die Rundreise ohne Unterkunft. Das System berechnet 2 Nächte in Lima, 4 in Cusco und 1 in Machu Picchu Pueblo und addiert den Preis des gewählten Hotels und Zimmers."
         },
         {
           "q": "Sind Inlandsflüge inklusive?",
@@ -2321,7 +2293,7 @@
         }
       ],
       "itineraryLanguage": "de",
-      "description": "Komplette 8-tägige Rundreise mit Hotels, Inlandsflügen, Zügen, Eintritten, Transfers und Hauptausflügen.",
+      "description": "Komplette 8-tägige Rundreise an Küste und Anden mit Inlandsflügen, Zügen, Eintritten, Transfers und Hauptausflügen. Hotels werden separat ausgewählt und je nach gewählter Belegung hinzugerechnet.",
       "duration": {
         "label": "8 Tage / 7 Nächte",
         "maxGroupSize": 15,
@@ -2496,11 +2468,11 @@
       ],
       "seo": {
         "title": "Peru Küste & Anden: Lima, Paracas, Ica, Cusco, Machu Picchu & Regenbogenberg 8T/7N",
-        "description": "Komplette 8-tägige Rundreise mit Hotels, Inlandsflügen, Zügen, Eintritten, Transfers und Hauptausflügen.",
+        "description": "8-tägige Rundreise Lima, Paracas, Ica, Cusco, Machu Picchu und Regenbogenberg mit Inlandsflügen, Zügen, Eintritten und Transfers. Hotels separat konfigurierbar.",
         "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-regenbogenberg-8-tage-7-naechte",
         "language": "de"
       },
-      "hotelPricingNote": "Preis pro Person im Doppelzimmer. Basishotels inklusive; das Modal berechnet nur den Zuschlag der gewählten Option.",
+      "hotelPricingNote": "Der Grundpreis enthält keine Unterkunft. Das System berechnet 2 Nächte in Lima, 4 in Cusco und 1 in Machu Picchu Pueblo und addiert das im jeweiligen Hotel-Modal gewählte Hotel, Zimmer und die Belegung.",
       "domesticFlightsIncluded": true,
       "domesticFlightSelection": {
         "includedInBasePrice": true,
@@ -2520,9 +2492,9 @@
             "cabin": "economy"
           }
         ],
-        "referenceCostUSDPerPerson": 200,
-        "guardrailMaxCostUSDPerPerson": 230,
-        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+        "referenceCostUSDPerPerson": 120,
+        "guardrailMaxCostUSDPerPerson": 120,
+        "fareRule": "included_subject_to_date_schedule_and_availability; if the round-trip fare is materially above the USD 120 operational reference, re-quote before issuing; baggage follows the fare issued"
       },
       "priceIncludesDomesticFlights": true,
       "publicPriceIncludesDomesticFlights": true

@@ -1908,49 +1908,44 @@
       "status": "published",
       "currency": "USD",
       "basePricing": {
-        "adult": 1849.9,
-        "child": 1849.9,
+        "adult": 969.9,
+        "child": 969.9,
         "currency": "USD",
-        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
-        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
-        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
-        "estimatedAverageProfitUSD": 184.28,
+        "mode": "published_price_without_hotels",
+        "protectedNetAfterMaxDiscountAndPaypal": 779.9,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 766.09,
+        "estimatedAverageProfitUSD": 166.09,
         "minimumTargetProfitUSD": 150,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4,
         "bankWithdrawalEffectivePercent": 1.77,
-        "basis": "per_person_double_occupancy",
+        "basis": "per_person_without_hotels",
         "exchangeRateUSDToPEN": 3.75,
-        "label": "ホテル・列車・国内線込みの1名あたり基本料金",
-        "description": "2名1室利用を基準。基本ホテル、The Voyager列車、リマ–クスコ–リマ国内線を含みます。アップグレードや特別に高い航空運賃は追加料金となる場合があります。"
+        "label": "ホテル別の1名基本料金（列車・国内線込み）",
+        "description": "宿泊を除く周遊料金。リマ–クスコ–リマ国内線は1名 USD 120を運用参考額とし、基本The Voyager列車、ツアー、入場料、記載の送迎を含みます。ホテルは別途選択して加算します。"
       },
       "internalPricing": {
-        "calculationVersion": "V97-2026-08-07",
-        "publishedPriceUSD": 1849.9,
-        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
-        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
-        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "calculationVersion": "V98-2026-08-07",
+        "publishedPriceUSD": 969.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 824.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 779.9,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 766.09,
         "minimumTargetProfitUSDPerPerson": 150,
-        "estimatedReferenceCostUSDPerPerson": 1276.9,
-        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "operationalCostGuardrailUSDPerPerson": 600.0,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 166.09,
         "referenceTravelers": 2,
-        "referenceOccupancy": "double_or_matrimonial_shared",
-        "includedHotelAllowancePerPersonUSD": {
-          "lima_2_nights": 79.2,
-          "cusco_4_nights": 101.8,
-          "aguas_calientes_1_night": 32.45,
-          "total": 213.45
-        },
+        "referenceOccupancy": "hotel_pricing_separate_from_base",
+        "hotelsExcludedFromBasePrice": true,
         "defaultTrainReferenceUSDPerPerson": 160,
-        "domesticFlightReferenceUSDPerPerson": 200,
-        "domesticFlightGuardrailMaxUSDPerPerson": 230,
-        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+        "domesticFlightReferenceUSDPerPerson": 120,
+        "domesticFlightRequoteThresholdUSDPerPerson": 120,
+        "pricingGuardrail": "The USD 600 operational guardrail already uses USD 120 per person for Lima-Cusco-Lima airfare and treats the published Paracas rate as a conservative cost ceiling. Reconfirm flights and supplier rates before applying the maximum 15% discount. Hotels are priced separately by the hotel modal."
       },
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
       },
-      "priceFrom": 1849.9,
+      "priceFrom": 969.9,
       "search": {
         "kind": "package",
         "destinations": [
@@ -2026,29 +2021,6 @@
           "label": "マチュピチュ村 - 1泊"
         }
       ],
-      "hotelSelection": {
-        "required": true,
-        "includedInBasePrice": true,
-        "allowNoHotel": false,
-        "customerCanChangeHotel": true,
-        "upgradeEnabled": true,
-        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
-        "defaultHotelCodes": {
-          "lima": "arawi-miraflores-3s",
-          "cusco": "cusco-boutique-3s",
-          "aguas-calientes": "luz-garden-3s"
-        },
-        "includedAllowancePerPersonUSD": {
-          "lima": 79.2,
-          "cusco": 101.8,
-          "aguas-calientes": 32.45
-        }
-      },
-      "defaultHotelsByDestination": {
-        "lima": "arawi-miraflores-3s",
-        "cusco": "cusco-boutique-3s",
-        "aguas-calientes": "luz-garden-3s"
-      },
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
@@ -2140,8 +2112,8 @@
       "typeLabel": "8日間 / 7泊",
       "badge": "新しい周遊プラン",
       "location": "リマ / パラカス / イカ / クスコ / 聖なる谷 / マチュピチュ / 南部の谷 / レインボーマウンテン",
-      "shortDescription": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
-      "priceLabel": "1名 USD 1,849.90〜（2名1室基準、ホテル・列車・国内線込み）",
+      "shortDescription": "リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテンを巡る8日間。国内線、列車、入場料、送迎、主要ツアーを含み、ホテルは別途選択して料金に加算します。",
+      "priceLabel": "1名 USD 969.90〜（ホテル別途、列車・国内線込み）",
       "experienceType": [
         "Cultural",
         "Naturaleza",
@@ -2149,7 +2121,7 @@
         "Multidestino"
       ],
       "highlights": [
-        "リマ空港送迎とミラフローレス2泊",
+        "リマ到着＋宿泊を個別設定：リマ2泊、クスコ4泊、マチュピチュ村1泊",
         "パラカス、バジェスタス諸島、イカ、ワカチナ",
         "リマ–クスコ往復国内線込み",
         "クスコでアンデスの歓迎体験",
@@ -2166,7 +2138,6 @@
       ],
       "includes": [
         "指定空港送迎",
-        "リマ2泊・クスコ4泊・マチュピチュ村1泊（朝食付き）",
         "リマ–クスコ、クスコ–リマ国内線",
         "パラカス・バジェスタス・イカ・ワカチナ（船、税、ワイナリー、バギー、基本サンドボード）",
         "クスコのアンデス歓迎体験",
@@ -2180,13 +2151,14 @@
       ],
       "excludes": [
         "国際線",
+        "リマ、クスコ、マチュピチュ村の宿泊：ホテル選択画面で選び、客室と利用人数に応じて基本料金へ加算",
         "明記されていない食事・飲み物",
         "発券運賃外の追加手荷物",
         "馬、ATVなど任意アクティビティ",
         "アーリー/レイトチェックイン、チップ、保険、個人費用、アップグレード"
       ],
       "importantInfo": [
-        "2名1室基準の1名料金です。客室条件で再計算されます。",
+        "基本料金にホテルは含まれません。旅程にはリマ2泊、クスコ4泊、マチュピチュ村1泊が必要で、選択した宿泊料金が目的地ごとに自動加算されます。",
         "国内線は保護された航空運賃枠内で含まれ、高騰時は発券前に再見積もりします。",
         "国内線時刻は旅程と8日目の接続を考慮して選びます。",
         "マチュピチュの入場ルートは公式空席状況によります。",
@@ -2197,8 +2169,8 @@
       "pickupInfo": "選択ホテルと指定空港から送迎。最終時刻は航空便、列車、マチュピチュ、天候、運行状況で確定します。",
       "faq": [
         {
-          "q": "ホテルは含まれますか？",
-          "a": "はい。リマ2泊、クスコ4泊、マチュピチュ村1泊。ホテル変更時は差額のみ加算。"
+          "q": "ホテルは基本料金に含まれますか？",
+          "a": "いいえ。基本料金は宿泊を除く周遊サービスです。リマ2泊、クスコ4泊、マチュピチュ村1泊について、選択したホテルと客室の料金が加算されます。"
         },
         {
           "q": "国内線は含まれますか？",
@@ -2222,7 +2194,7 @@
         }
       ],
       "itineraryLanguage": "ja",
-      "description": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
+      "description": "リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテンを巡る8日間。国内線、列車、入場料、送迎、主要ツアーを含み、ホテルは別途選択して料金に加算します。",
       "duration": {
         "label": "8日間 / 7泊",
         "maxGroupSize": 15,
@@ -2397,11 +2369,11 @@
       ],
       "seo": {
         "title": "ペルー海岸とアンデス：リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテン 8日間 / 7泊",
-        "description": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
+        "description": "リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテン8日間。国内線、列車、入場料、送迎込み。ホテルは別途選択・加算。",
         "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-ja",
         "language": "ja"
       },
-      "hotelPricingNote": "2名1室基準。基本ホテル込み。ホテル選択モーダルでは選択したホテルの差額のみ計算します。",
+      "hotelPricingNote": "基本料金に宿泊は含まれません。システムはリマ2泊、クスコ4泊、マチュピチュ村1泊を計算し、各ホテル選択画面で選んだホテル・客室・利用人数の料金を加算します。",
       "domesticFlightsIncluded": true,
       "domesticFlightSelection": {
         "includedInBasePrice": true,
@@ -2421,9 +2393,9 @@
             "cabin": "economy"
           }
         ],
-        "referenceCostUSDPerPerson": 200,
-        "guardrailMaxCostUSDPerPerson": 230,
-        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+        "referenceCostUSDPerPerson": 120,
+        "guardrailMaxCostUSDPerPerson": 120,
+        "fareRule": "included_subject_to_date_schedule_and_availability; if the round-trip fare is materially above the USD 120 operational reference, re-quote before issuing; baggage follows the fare issued"
       },
       "priceIncludesDomesticFlights": true,
       "publicPriceIncludesDomesticFlights": true

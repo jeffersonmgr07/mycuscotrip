@@ -1908,49 +1908,44 @@
       "status": "published",
       "currency": "USD",
       "basePricing": {
-        "adult": 1849.9,
-        "child": 1849.9,
+        "adult": 969.9,
+        "child": 969.9,
         "currency": "USD",
-        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
-        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
-        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
-        "estimatedAverageProfitUSD": 184.28,
+        "mode": "published_price_without_hotels",
+        "protectedNetAfterMaxDiscountAndPaypal": 779.9,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 766.09,
+        "estimatedAverageProfitUSD": 166.09,
         "minimumTargetProfitUSD": 150,
         "maxDiscountPercent": 15,
         "paypalPercent": 5.4,
         "bankWithdrawalEffectivePercent": 1.77,
-        "basis": "per_person_double_occupancy",
+        "basis": "per_person_without_hotels",
         "exchangeRateUSDToPEN": 3.75,
-        "label": "每人基础价，含酒店、火车和国内航班",
-        "description": "按两位成人共享客房计算。包含基础酒店、The Voyager 火车及利马–库斯科–利马国内航班；升级或异常高机票可能产生补差。"
+        "label": "每人基础价格，不含酒店；含火车和国内航班",
+        "description": "不含住宿的线路价格。包含利马–库斯科–利马国内航班（每人 USD 120 运营参考价）、基础 The Voyager 火车、行程、门票及所列接送。酒店通过住宿弹窗另行加入。"
       },
       "internalPricing": {
-        "calculationVersion": "V97-2026-08-07",
-        "publishedPriceUSD": 1849.9,
-        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
-        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
-        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "calculationVersion": "V98-2026-08-07",
+        "publishedPriceUSD": 969.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 824.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 779.9,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 766.09,
         "minimumTargetProfitUSDPerPerson": 150,
-        "estimatedReferenceCostUSDPerPerson": 1276.9,
-        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "operationalCostGuardrailUSDPerPerson": 600.0,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 166.09,
         "referenceTravelers": 2,
-        "referenceOccupancy": "double_or_matrimonial_shared",
-        "includedHotelAllowancePerPersonUSD": {
-          "lima_2_nights": 79.2,
-          "cusco_4_nights": 101.8,
-          "aguas_calientes_1_night": 32.45,
-          "total": 213.45
-        },
+        "referenceOccupancy": "hotel_pricing_separate_from_base",
+        "hotelsExcludedFromBasePrice": true,
         "defaultTrainReferenceUSDPerPerson": 160,
-        "domesticFlightReferenceUSDPerPerson": 200,
-        "domesticFlightGuardrailMaxUSDPerPerson": 230,
-        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+        "domesticFlightReferenceUSDPerPerson": 120,
+        "domesticFlightRequoteThresholdUSDPerPerson": 120,
+        "pricingGuardrail": "The USD 600 operational guardrail already uses USD 120 per person for Lima-Cusco-Lima airfare and treats the published Paracas rate as a conservative cost ceiling. Reconfirm flights and supplier rates before applying the maximum 15% discount. Hotels are priced separately by the hotel modal."
       },
       "paymentOptions": {
         "fullPaymentDiscountPercent": 15,
         "partialPaymentPerPerson": 49.9
       },
-      "priceFrom": 1849.9,
+      "priceFrom": 969.9,
       "search": {
         "kind": "package",
         "destinations": [
@@ -2026,29 +2021,6 @@
           "label": "马丘比丘镇 - 1晚"
         }
       ],
-      "hotelSelection": {
-        "required": true,
-        "includedInBasePrice": true,
-        "allowNoHotel": false,
-        "customerCanChangeHotel": true,
-        "upgradeEnabled": true,
-        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
-        "defaultHotelCodes": {
-          "lima": "arawi-miraflores-3s",
-          "cusco": "cusco-boutique-3s",
-          "aguas-calientes": "luz-garden-3s"
-        },
-        "includedAllowancePerPersonUSD": {
-          "lima": 79.2,
-          "cusco": 101.8,
-          "aguas-calientes": 32.45
-        }
-      },
-      "defaultHotelsByDestination": {
-        "lima": "arawi-miraflores-3s",
-        "cusco": "cusco-boutique-3s",
-        "aguas-calientes": "luz-garden-3s"
-      },
       "trainSelection": {
         "required": true,
         "source": "assets/data/trains.json",
@@ -2140,8 +2112,8 @@
       "typeLabel": "8天 / 7晚",
       "badge": "全新线路",
       "location": "利马 / 帕拉卡斯 / 伊卡 / 库斯科 / 圣谷 / 马丘比丘 / 南谷 / 彩虹山",
-      "shortDescription": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
-      "priceLabel": "每人 USD 1,849.90 起（双人入住，含酒店、火车和国内航班）",
+      "shortDescription": "8天秘鲁海岸与安第斯线路，包含国内航班、火车、门票、接送和主要行程。酒店另行选择，并按所选房型与入住方式加入价格。",
+      "priceLabel": "每人 USD 969.90 起（不含酒店，含火车和国内航班）",
       "experienceType": [
         "Cultural",
         "Naturaleza",
@@ -2149,7 +2121,7 @@
         "Multidestino"
       ],
       "highlights": [
-        "利马接机及米拉弗洛雷斯2晚",
+        "利马接机＋住宿可选：利马2晚、库斯科4晚、马丘比丘镇1晚",
         "帕拉卡斯、鸟岛、伊卡、瓦卡奇纳沙漠活动",
         "利马–库斯科往返国内航班",
         "库斯科安第斯迎宾体验",
@@ -2166,7 +2138,6 @@
       ],
       "includes": [
         "行程所列机场接送",
-        "利马2晚、库斯科4晚、马丘比丘镇1晚及早餐",
         "利马–库斯科、库斯科–利马国内航班",
         "帕拉卡斯–鸟岛–伊卡–瓦卡奇纳，含船、税费、酒庄、沙丘车和基础滑沙",
         "库斯科安第斯迎宾体验",
@@ -2180,13 +2151,14 @@
       ],
       "excludes": [
         "国际航班",
+        "利马、库斯科和马丘比丘镇住宿：在酒店弹窗中选择，并按房型和入住方式加入基础价格",
         "未注明包含的餐饮",
         "已出票国内机票外的额外行李",
         "马匹、ATV或其他自选活动",
         "提前入住/延迟退房、小费、保险、个人消费及升级"
       ],
       "importantInfo": [
-        "价格按每人双人入住计算，房型变化会重新计算。",
+        "基础价格不含酒店。本行程需要利马2晚、库斯科4晚、马丘比丘镇1晚；系统会自动把各目的地所选住宿加入价格。",
         "国内航班在受保护的机票预算内包含；异常高票价需出票前重新报价。",
         "航班时间将配合行程及第8天国际转机。",
         "马丘比丘线路以官方可用性为准。",
@@ -2197,8 +2169,8 @@
       "pickupInfo": "从所选酒店及指定机场接送。最终时间取决于航班、火车、马丘比丘、天气及运营。",
       "faq": [
         {
-          "q": "酒店包含吗？",
-          "a": "包含：利马2晚、库斯科4晚、马丘比丘镇1晚；更换酒店仅计算升级差价。"
+          "q": "基础价格包含酒店吗？",
+          "a": "不包含。基础价格为不含住宿的线路服务。系统按利马2晚、库斯科4晚、马丘比丘镇1晚计算，并加入所选酒店和房型的价格。"
         },
         {
           "q": "国内航班包含吗？",
@@ -2222,7 +2194,7 @@
         }
       ],
       "itineraryLanguage": "zh",
-      "description": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
+      "description": "8天秘鲁海岸与安第斯线路，包含国内航班、火车、门票、接送和主要行程。酒店另行选择，并按所选房型与入住方式加入价格。",
       "duration": {
         "label": "8天 / 7晚",
         "maxGroupSize": 15,
@@ -2397,11 +2369,11 @@
       ],
       "seo": {
         "title": "秘鲁海岸与安第斯：利马、帕拉卡斯、伊卡、库斯科、马丘比丘和彩虹山 8天7晚",
-        "description": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
+        "description": "8天利马、帕拉卡斯、伊卡、库斯科、马丘比丘和彩虹山线路，含国内航班、火车、门票和接送。酒店另行选择计价。",
         "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-zh",
         "language": "zh"
       },
-      "hotelPricingNote": "双人入住每人价格。基础酒店已包含；酒店选择弹窗只计算所选酒店的升级差价。",
+      "hotelPricingNote": "基础价格不含住宿。系统按利马2晚、库斯科4晚、马丘比丘镇1晚计算，并将每个酒店弹窗中选择的酒店、房型和入住方式加入总价。",
       "domesticFlightsIncluded": true,
       "domesticFlightSelection": {
         "includedInBasePrice": true,
@@ -2421,9 +2393,9 @@
             "cabin": "economy"
           }
         ],
-        "referenceCostUSDPerPerson": 200,
-        "guardrailMaxCostUSDPerPerson": 230,
-        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+        "referenceCostUSDPerPerson": 120,
+        "guardrailMaxCostUSDPerPerson": 120,
+        "fareRule": "included_subject_to_date_schedule_and_availability; if the round-trip fare is materially above the USD 120 operational reference, re-quote before issuing; baggage follows the fare issued"
       },
       "priceIncludesDomesticFlights": true,
       "publicPriceIncludesDomesticFlights": true
