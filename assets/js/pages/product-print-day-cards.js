@@ -1,13 +1,29 @@
 /*
- * My Cusco Trip — ajuste exclusivo de impresión para el circuito
- * Perú: Lima, Paracas, Cusco, Machu Picchu y Humantay 7D/6N.
+ * My Cusco Trip — plantilla de impresión por días (V99)
  *
- * No modifica precios, hoteles, trenes, reservas ni el itinerario web.
+ * Objetivo:
+ * - No modifica el HTML normal del producto.
+ * - No modifica precios, hoteles, trenes, reservas ni pagos.
+ * - En impresión, convierte cada día de un circuito en una tarjeta con:
+ *     1) badge "Día N"
+ *     2) badge secundario con la fecha exacta calculada desde la fecha de inicio
+ *     3) imagen correspondiente a ese día
+ *
+ * Productos habilitados actualmente:
+ * - Perú Lima/Paracas/Ica/Cusco/Machu Picchu/Montaña de Colores 8D/7N
+ * - Perú 7D/6N Humantay (se conserva la mejora existente)
+ *
+ * Para reutilizar esta plantilla en otro circuito basta con añadir su product.id
+ * a PRINT_DAY_CARD_PRODUCT_IDS, siempre que tenga dailyItinerary (o itinerary)
+ * con campo day e imágenes por día.
  */
 (function () {
   "use strict";
 
-  const TARGET_PRODUCT_ID = "pkg_peru_7d6n_humantay";
+  const PRINT_DAY_CARD_PRODUCT_IDS = new Set([
+    "pkg_peru_8d7n_lima_cusco",
+    "pkg_peru_7d6n_humantay"
+  ]);
 
   function escapeHtml(context, value) {
     if (typeof context?.escapeHtml === "function") return context.escapeHtml(value ?? "");
@@ -20,13 +36,15 @@
     }[char]));
   }
 
-  function getLocale() {
-    const lang = String(
+  function getLanguage() {
+    return String(
       window.MyCuscoTripI18n?.getLocaleFromUrl?.()
       || document.documentElement.lang
       || "es"
-    ).toLowerCase();
+    ).toLowerCase().split("-")[0];
+  }
 
+  function getLocale() {
     const locales = {
       es: "es-PE",
       en: "en-US",
@@ -37,23 +55,36 @@
       zh: "zh-CN",
       ja: "ja-JP"
     };
+    return locales[getLanguage()] || "es-PE";
+  }
 
-    return locales[lang.split("-")[0]] || lang;
+  function getSelectedStartDate(context) {
+    // La fuente principal es el valor interno ISO YYYY-MM-DD que usa product.js.
+    if (context?.date) return String(context.date);
+
+    // Fallback defensivo por si en el futuro se guarda el ISO en el input.
+    const input = document.getElementById("travelDate");
+    const candidate = input?.dataset?.isoDate || input?.getAttribute?.("data-iso-date") || "";
+    return String(candidate || "");
   }
 
   function formatDayDate(context, dayNumber) {
-    if (!context?.date) return "";
+    const selectedDate = getSelectedStartDate(context);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)) return "";
 
-    const start = new Date(`${context.date}T12:00:00`);
+    // Mediodía evita saltos de fecha por zona horaria/DST al parsear YYYY-MM-DD.
+    const start = new Date(`${selectedDate}T12:00:00`);
     if (Number.isNaN(start.getTime())) return "";
 
     const date = new Date(start);
     date.setDate(start.getDate() + Math.max(Number(dayNumber || 1) - 1, 0));
 
-    const options = { day: "numeric", month: "long" };
-    if (date.getFullYear() !== new Date().getFullYear()) options.year = "numeric";
-
-    return date.toLocaleDateString(getLocale(), options);
+    // En impresión mostramos siempre el año para que la fecha sea inequívoca.
+    return date.toLocaleDateString(getLocale(), {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
   }
 
   function getDailyItems(context) {
@@ -71,7 +102,8 @@
         ? context.product.raw.itinerary
         : [];
 
-    return itinerary.filter((item) => Number.isFinite(Number(item?.day)));
+    const numbered = itinerary.filter((item) => Number.isFinite(Number(item?.day)));
+    return numbered.length ? numbered : [];
   }
 
   function getDayImage(context, item, index) {
@@ -86,11 +118,33 @@
 
     const productImages = context?.product?.images || context?.product?.raw?.images || {};
     const gallery = Array.isArray(productImages.gallery) ? productImages.gallery : [];
-    const source = collected[0] || gallery[index] || productImages.cover || context?.product?.image || "";
+    const source = collected[0]
+      || gallery[index]
+      || productImages.cover
+      || context?.product?.image
+      || context?.product?.fallbackImage
+      || "./assets/img/placeholder/experience.jpg";
 
     return source && typeof context?.resolveAssetPath === "function"
       ? context.resolveAssetPath(source)
       : source;
+  }
+
+  function getDayLabel(context, dayNumber) {
+    const translated = context?.t?.("product.print.dayLabel", "Día {n}", { n: dayNumber });
+    if (translated && !String(translated).includes("{n}")) return String(translated);
+
+    const languageLabels = {
+      es: `Día ${dayNumber}`,
+      en: `Day ${dayNumber}`,
+      pt: `Dia ${dayNumber}`,
+      fr: `Jour ${dayNumber}`,
+      de: `Tag ${dayNumber}`,
+      it: `Giorno ${dayNumber}`,
+      ja: `${dayNumber}日目`,
+      zh: `第${dayNumber}天`
+    };
+    return languageLabels[getLanguage()] || `Día ${dayNumber}`;
   }
 
   function renderDayCards(context) {
@@ -99,9 +153,11 @@
 
     return items.map((item, index) => {
       const dayNumber = Math.max(1, Number(item?.day || index + 1));
-      const dayLabel = context.t?.("product.print.dayLabel", "Día {n}", { n: dayNumber }) || `Día ${dayNumber}`;
+      const dayLabel = getDayLabel(context, dayNumber);
       const dateLabel = formatDayDate(context, dayNumber);
-      const title = item?.title || context.t?.("product.print.activityFallback", "Actividad {n}", { n: dayNumber }) || `Actividad ${dayNumber}`;
+      const title = item?.title
+        || context?.t?.("product.print.activityFallback", "Actividad {n}", { n: dayNumber })
+        || `Actividad ${dayNumber}`;
       const description = item?.description || "";
       const image = getDayImage(context, item, index);
 
@@ -110,10 +166,10 @@
         <div class="print-itinerary-day-content-mct">
           <div class="print-itinerary-day-meta-mct">
             <span class="print-itinerary-day-badge-mct">${escapeHtml(context, dayLabel)}</span>
-            ${dateLabel ? `<span class="print-itinerary-day-date-mct">${escapeHtml(context, dateLabel)}</span>` : ""}
+            ${dateLabel ? `<span class="print-itinerary-day-date-badge-mct">${escapeHtml(context, dateLabel)}</span>` : ""}
           </div>
           <h3>${escapeHtml(context, title)}</h3>
-          <p>${escapeHtml(context, description)}</p>
+          ${description ? `<p>${escapeHtml(context, description)}</p>` : ""}
         </div>
       </article>`;
     }).join("");
@@ -126,8 +182,9 @@
     const pending = images.map((image) => {
       if (image.complete) return Promise.resolve();
       return new Promise((resolve) => {
-        image.addEventListener("load", resolve, { once: true });
-        image.addEventListener("error", resolve, { once: true });
+        const done = () => resolve();
+        image.addEventListener("load", done, { once: true });
+        image.addEventListener("error", done, { once: true });
       });
     });
 
@@ -137,28 +194,35 @@
     ]);
   }
 
+  function isEnabledProduct(context) {
+    const id = String(context?.product?.id || context?.product?.raw?.id || "");
+    return PRINT_DAY_CARD_PRODUCT_IDS.has(id);
+  }
+
   function patchPrint() {
     const page = window.MyCuscoTripProductPage;
-    if (!page || page.__mctPrintDayCardsOnlyApplied) return Boolean(page);
+    if (!page || page.__mctPrintDayCardsV99Applied) return Boolean(page);
 
     const proto = Object.getPrototypeOf(page) || page;
     const previousPrint = proto.printProductItineraryV78;
     if (typeof previousPrint !== "function") return false;
 
     proto.printProductItineraryV78 = function () {
-      if (String(this.product?.id || "") !== TARGET_PRODUCT_ID) {
+      if (!isEnabledProduct(this)) {
         return previousPrint.apply(this, arguments);
       }
 
-      const nativePrint = window.print.bind(window);
-      let printRestored = false;
+      // Conservamos el print real antes de que los parches anteriores lo intercepten.
+      const realPrint = window.print.bind(window);
+      let restored = false;
       const restorePrint = () => {
-        if (printRestored) return;
-        printRestored = true;
-        window.print = nativePrint;
+        if (restored) return;
+        restored = true;
+        window.print = realPrint;
       };
 
-      // Bloquea únicamente las llamadas automáticas previas mientras cargan las imágenes.
+      // Los generadores previos de impresión llaman a window.print() automáticamente.
+      // Lo bloqueamos hasta haber reemplazado el itinerario y cargado sus imágenes.
       window.print = function () {};
 
       let result;
@@ -172,33 +236,35 @@
         if (list && cards) {
           list.innerHTML = cards;
           list.classList.add("print-itinerary-list--day-cards-mct");
-          area.classList.add("is-preparing-print-day-cards-mct");
+          area?.querySelector(".print-sheet")?.classList.add("print-sheet--day-cards-mct");
+          area?.classList.add("is-preparing-print-day-cards-mct");
         }
 
-        // Espera imágenes y, como mínimo, deja transcurrir las llamadas antiguas a print().
         Promise.all([
-          waitForImages(area, 3000),
-          new Promise((resolve) => window.setTimeout(resolve, 430))
+          waitForImages(area, 3500),
+          // Da tiempo a que terminen los setTimeout de impresión heredados.
+          new Promise((resolve) => window.setTimeout(resolve, 520))
         ]).finally(() => {
           area?.classList.remove("is-preparing-print-day-cards-mct");
           restorePrint();
-          nativePrint();
+          window.setTimeout(() => realPrint(), 60);
         });
       } catch (error) {
         restorePrint();
         throw error;
       }
 
-      window.setTimeout(restorePrint, 5000);
+      // Salvaguarda para no dejar window.print interceptado ante una excepción externa.
+      window.setTimeout(restorePrint, 5500);
       return result;
     };
 
-    page.__mctPrintDayCardsOnlyApplied = true;
+    page.__mctPrintDayCardsV99Applied = true;
     return true;
   }
 
   if (!patchPrint()) {
     document.addEventListener("DOMContentLoaded", patchPrint, { once: true });
-    [150, 500, 1000, 1800].forEach((delay) => window.setTimeout(patchPrint, delay));
+    [150, 500, 1000, 1800, 2800].forEach((delay) => window.setTimeout(patchPrint, delay));
   }
 })();

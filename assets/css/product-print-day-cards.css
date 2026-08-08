@@ -1,4 +1,8 @@
-/* Ajuste exclusivo de la versión impresa del circuito Perú 7D/6N. */
+/*
+ * My Cusco Trip — V99
+ * Estilos EXCLUSIVOS de la versión impresa del itinerario por días.
+ * No altera la vista normal del HTML.
+ */
 .product-print-sheet.is-preparing-print-day-cards-mct {
   display: block !important;
   position: fixed !important;
@@ -21,6 +25,7 @@
   align-items: stretch;
   padding: 0;
   overflow: hidden;
+  border: 1px solid #dce8e1;
   border-left: 3px solid #0b4a33;
   background: #f8fbf9;
   border-radius: 10px;
@@ -42,6 +47,7 @@
   height: 100%;
   min-height: 29mm;
   object-fit: cover;
+  object-position: center;
 }
 
 .product-print-sheet .print-itinerary-day-content-mct {
@@ -57,26 +63,32 @@
   margin-bottom: 5px;
 }
 
-.product-print-sheet .print-itinerary-day-badge-mct {
+.product-print-sheet .print-itinerary-day-badge-mct,
+.product-print-sheet .print-itinerary-day-date-badge-mct {
   display: inline-flex;
   align-items: center;
   min-height: 20px;
   padding: 3px 8px;
   border-radius: 999px;
-  background: #0b4a33;
-  color: #fff;
   font-size: 9px;
   line-height: 1;
   font-weight: 900;
+  white-space: nowrap;
+}
+
+/* Badge principal: Día 1, Día 2, etc. */
+.product-print-sheet .print-itinerary-day-badge-mct {
+  background: #0b4a33;
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
-.product-print-sheet .print-itinerary-day-date-mct {
+/* Badge secundario: fecha exacta calculada desde el selector. */
+.product-print-sheet .print-itinerary-day-date-badge-mct {
+  border: 1px solid #bfd5c8;
+  background: #edf6f1;
   color: #0b4a33;
-  font-size: 10px;
-  line-height: 1.1;
-  font-weight: 800;
 }
 
 .product-print-sheet .print-itinerary-item--day-card-mct h3 {
@@ -94,26 +106,41 @@
 }
 
 @media print {
+  .product-print-sheet .print-itinerary-list--day-cards-mct {
+    gap: 2mm !important;
+  }
+
   .product-print-sheet .print-itinerary-item--day-card-mct {
     grid-template-columns: 42mm minmax(0, 1fr) !important;
+    gap: 2.4mm !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
   }
 
   .product-print-sheet .print-itinerary-day-image-mct,
   .product-print-sheet .print-itinerary-day-image-mct img {
     width: 42mm !important;
     min-height: 29mm !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .product-print-sheet .print-itinerary-day-badge-mct,
+  .product-print-sheet .print-itinerary-day-date-badge-mct {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
   }
 
   .product-print-sheet .print-itinerary-day-badge-mct {
     background: #0b4a33 !important;
     color: #fff !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
+  }
+
+  .product-print-sheet .print-itinerary-day-date-badge-mct {
+    background: #edf6f1 !important;
+    color: #0b4a33 !important;
+    border-color: #bfd5c8 !important;
   }
 }
