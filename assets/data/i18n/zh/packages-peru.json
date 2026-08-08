@@ -1,6 +1,6 @@
 {
-  "version": "V94",
-  "updatedAt": "2026-08-01",
+  "version": "V97",
+  "updatedAt": "2026-08-07",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "面向国际旅客的专业旅行体验，包含清晰行程、当地协助和可靠的预订支持。",
@@ -1882,6 +1882,551 @@
         ]
       },
       "capacity": 30
+    },
+    {
+      "id": "pkg_peru_8d7n_lima_cusco",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 8,
+      "nights": 7,
+      "featured": true,
+      "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+      "images": {
+        "cover": "./assets/img/packages/peru/7d6n/cover.jpg",
+        "gallery": [
+          "./assets/img/packages/peru/lima-night/cover.jpg",
+          "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "./assets/img/tours/valle-sagrado/cover.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "./assets/img/tours/valle-sur/cover.jpg",
+          "./assets/img/tours/montana-colores/cover.jpg"
+        ]
+      },
+      "showItineraryImages": true,
+      "priceMode": "static_base_plus_configurable_services",
+      "status": "published",
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1849.9,
+        "child": 1849.9,
+        "currency": "USD",
+        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
+        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
+        "estimatedAverageProfitUSD": 184.28,
+        "minimumTargetProfitUSD": 150,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4,
+        "bankWithdrawalEffectivePercent": 1.77,
+        "basis": "per_person_double_occupancy",
+        "exchangeRateUSDToPEN": 3.75,
+        "label": "每人基础价，含酒店、火车和国内航班",
+        "description": "按两位成人共享客房计算。包含基础酒店、The Voyager 火车及利马–库斯科–利马国内航班；升级或异常高机票可能产生补差。"
+      },
+      "internalPricing": {
+        "calculationVersion": "V97-2026-08-07",
+        "publishedPriceUSD": 1849.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "minimumTargetProfitUSDPerPerson": 150,
+        "estimatedReferenceCostUSDPerPerson": 1276.9,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "referenceTravelers": 2,
+        "referenceOccupancy": "double_or_matrimonial_shared",
+        "includedHotelAllowancePerPersonUSD": {
+          "lima_2_nights": 79.2,
+          "cusco_4_nights": 101.8,
+          "aguas_calientes_1_night": 32.45,
+          "total": 213.45
+        },
+        "defaultTrainReferenceUSDPerPerson": 160,
+        "domesticFlightReferenceUSDPerPerson": 200,
+        "domesticFlightGuardrailMaxUSDPerPerson": 230,
+        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1849.9,
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "sacred-valley",
+          "machu-picchu",
+          "south-valley",
+          "rainbow-mountain",
+          "vinicunca"
+        ],
+        "durationKeys": [
+          "8d7n",
+          "8-dias",
+          "7-noches",
+          "8-days",
+          "7-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "CUZ001",
+          "CUZ003CON",
+          "MAPI003",
+          "CUZ005",
+          "CUZ007"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "islas-ballestas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu",
+          "valle-sur",
+          "tipon",
+          "pikillacta",
+          "andahuaylillas",
+          "montana-de-colores",
+          "vinicunca"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "multidestino"
+        ],
+        "keywords": [
+          "秘鲁海岸与安第斯：利马、帕拉卡斯、伊卡、库斯科、马丘比丘和彩虹山 8天7晚",
+          "peru 8 days lima cusco machu picchu rainbow mountain",
+          "lima paracas ica huacachina cusco machu picchu 8d7n"
+        ]
+      },
+      "accommodationSummary": [
+        {
+          "destination": "lima",
+          "nights": 2,
+          "label": "利马 - 2晚"
+        },
+        {
+          "destination": "cusco",
+          "nights": 4,
+          "label": "库斯科 - 4晚"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "马丘比丘镇 - 1晚"
+        }
+      ],
+      "hotelSelection": {
+        "required": true,
+        "includedInBasePrice": true,
+        "allowNoHotel": false,
+        "customerCanChangeHotel": true,
+        "upgradeEnabled": true,
+        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
+        "defaultHotelCodes": {
+          "lima": "arawi-miraflores-3s",
+          "cusco": "cusco-boutique-3s",
+          "aguas-calientes": "luz-garden-3s"
+        },
+        "includedAllowancePerPersonUSD": {
+          "lima": 79.2,
+          "cusco": 101.8,
+          "aguas-calientes": 32.45
+        }
+      },
+      "defaultHotelsByDestination": {
+        "lima": "arawi-miraflores-3s",
+        "cusco": "cusco-boutique-3s",
+        "aguas-calientes": "luz-garden-3s"
+      },
+      "trainSelection": {
+        "required": true,
+        "source": "assets/data/trains.json",
+        "mode": "flexible_any_company",
+        "sameCompanyRoundTrip": false,
+        "allowMixedCompanies": true,
+        "fixedSelection": false,
+        "customerCanChangeTrain": true,
+        "defaultTrainCodes": {
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU"
+        },
+        "allowedCompanies": [
+          "incarail",
+          "perurail"
+        ],
+        "allowedRoutes": {
+          "outbound": [
+            "OLLA_MAPI",
+            "CUSCO_MAPI",
+            "URU_MAPI"
+          ],
+          "return": [
+            "MAPI_CUSCO",
+            "MAPI_OLLA",
+            "MAPI_URU"
+          ]
+        },
+        "allowedCategories": "all_available",
+        "returnOptionsRule": "any_company_afternoon_return",
+        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "22:00"
+          },
+          "return": {
+            "min": "15:00",
+            "max": "22:00"
+          }
+        }
+      },
+      "defaultTrainSelection": {
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+        "resolvedOutbound": {
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "OLLA_MAPI",
+          "departureStation": "Ollantaytambo",
+          "arrivalStation": "Machu Picchu",
+          "departureTime": "16:36",
+          "arrivalTime": "18:09",
+          "currency": "USD",
+          "adultCostUSD": 85,
+          "childCostUSD": 68
+        },
+        "resolvedReturn": {
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "MAPI_CUSCO",
+          "departureStation": "Machu Picchu",
+          "arrivalStation": "Cusco Av. El Sol 843",
+          "departureTime": "20:20",
+          "arrivalTime": "00:10",
+          "currency": "USD",
+          "adultCostUSD": 75,
+          "childCostUSD": 60
+        },
+        "pricingSnapshot": {
+          "outboundAdultCost": 85,
+          "returnAdultCost": 75,
+          "totalAdultTrainCost": 160,
+          "currency": "USD"
+        }
+      },
+      "tripMode": "overnight",
+      "machuPicchuMode": "overnight-classic",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "capacity": 15,
+      "itineraryStatus": "complete",
+      "slug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-zh",
+      "title": "秘鲁海岸与安第斯：利马、帕拉卡斯、伊卡、库斯科、马丘比丘和彩虹山 8天7晚",
+      "typeLabel": "8天 / 7晚",
+      "badge": "全新线路",
+      "location": "利马 / 帕拉卡斯 / 伊卡 / 库斯科 / 圣谷 / 马丘比丘 / 南谷 / 彩虹山",
+      "shortDescription": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
+      "priceLabel": "每人 USD 1,849.90 起（双人入住，含酒店、火车和国内航班）",
+      "experienceType": [
+        "Cultural",
+        "Naturaleza",
+        "Aventura suave",
+        "Multidestino"
+      ],
+      "highlights": [
+        "利马接机及米拉弗洛雷斯2晚",
+        "帕拉卡斯、鸟岛、伊卡、瓦卡奇纳沙漠活动",
+        "利马–库斯科往返国内航班",
+        "库斯科安第斯迎宾体验",
+        "圣谷 + The Voyager 16:36",
+        "马丘比丘 + The Voyager 20:20返程",
+        "南谷：Tipón、Pikillacta、Andahuaylillas",
+        "彩虹山含早餐、午餐和门票"
+      ],
+      "details": [
+        "7晚：利马2、库斯科4、马丘比丘镇1",
+        "基础酒店：Arawi Miraflores Express、Hotel Cusco Boutique、Hotel Luz Garden",
+        "国内航班视可用性确认",
+        "马丘比丘后安排较晚出发的南谷，休息更合理"
+      ],
+      "includes": [
+        "行程所列机场接送",
+        "利马2晚、库斯科4晚、马丘比丘镇1晚及早餐",
+        "利马–库斯科、库斯科–利马国内航班",
+        "帕拉卡斯–鸟岛–伊卡–瓦卡奇纳，含船、税费、酒庄、沙丘车和基础滑沙",
+        "库斯科安第斯迎宾体验",
+        "圣谷含导游、旅游通票及自助午餐",
+        "The Voyager 16:36 奥扬泰坦博–马丘比丘",
+        "马丘比丘门票、Consettur巴士及导游",
+        "The Voyager 20:20 双模式返回库斯科",
+        "南谷行程及所需门票",
+        "彩虹山含交通、导游、早餐、午餐和门票",
+        "酒店接送及WhatsApp协助"
+      ],
+      "excludes": [
+        "国际航班",
+        "未注明包含的餐饮",
+        "已出票国内机票外的额外行李",
+        "马匹、ATV或其他自选活动",
+        "提前入住/延迟退房、小费、保险、个人消费及升级"
+      ],
+      "importantInfo": [
+        "价格按每人双人入住计算，房型变化会重新计算。",
+        "国内航班在受保护的机票预算内包含；异常高票价需出票前重新报价。",
+        "航班时间将配合行程及第8天国际转机。",
+        "马丘比丘线路以官方可用性为准。",
+        "鸟岛、沙丘和彩虹山受天气和当地运营影响。",
+        "20:20火车约00:10抵达库斯科，因此第6天安排较晚出发的南谷。",
+        "与单独购买的国际航班衔接请预留充足时间。"
+      ],
+      "pickupInfo": "从所选酒店及指定机场接送。最终时间取决于航班、火车、马丘比丘、天气及运营。",
+      "faq": [
+        {
+          "q": "酒店包含吗？",
+          "a": "包含：利马2晚、库斯科4晚、马丘比丘镇1晚；更换酒店仅计算升级差价。"
+        },
+        {
+          "q": "国内航班包含吗？",
+          "a": "包含，第3天利马–库斯科、第8天库斯科–利马。国际航班不含。"
+        },
+        {
+          "q": "包含哪些火车？",
+          "a": "Inca Rail The Voyager 去程16:36，返程20:20双模式。"
+        },
+        {
+          "q": "包含哪些门票？",
+          "a": "马丘比丘、Consettur、旅游通票、南谷、彩虹山及帕拉卡斯/伊卡列明费用。"
+        },
+        {
+          "q": "为何马丘比丘后去南谷？",
+          "a": "返程火车约00:10到库斯科，南谷出发较晚，更适合休息。"
+        },
+        {
+          "q": "第8天可衔接国际航班吗？",
+          "a": "可以，只要预留安全转机时间。"
+        }
+      ],
+      "itineraryLanguage": "zh",
+      "description": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
+      "duration": {
+        "label": "8天 / 7晚",
+        "maxGroupSize": 15,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "抵达利马及接机",
+          "description": "豪尔赫·查韦斯机场接机，送往米拉弗洛雷斯酒店。根据抵达时间自由活动。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "帕拉卡斯、鸟岛、伊卡和瓦卡奇纳",
+          "description": "清晨出发，游览鸟岛、伊卡及瓦卡奇纳，含沙丘车和基础滑沙，晚间返回利马。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "利马–库斯科航班与安第斯迎宾",
+          "description": "机场接送、包含的国内航班、库斯科接机、适应高原及迎宾体验。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "圣谷 Connection 与火车",
+          "description": "圣谷导览、旅游通票和自助午餐。The Voyager 16:36，约18:09抵达马丘比丘镇。",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "马丘比丘 Overnight 与返回库斯科",
+          "description": "巴士和导游参观马丘比丘，20:20乘The Voyager双模式返回，约00:10抵达库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "南谷：Tipón、Pikillacta、Andahuaylillas",
+          "description": "上午游览南谷，下午返回库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "彩虹山 Vinicunca",
+          "description": "凌晨出发，早餐、导游徒步、门票、午餐，下午返回库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "库斯科–利马航班及结束",
+          "description": "送往库斯科机场并搭乘包含的国内航班回利马，按国际航班衔接协调。",
+          "overnight": "行程结束",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "抵达利马及接机",
+          "description": "豪尔赫·查韦斯机场接机，送往米拉弗洛雷斯酒店。根据抵达时间自由活动。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "帕拉卡斯、鸟岛、伊卡和瓦卡奇纳",
+          "description": "清晨出发，游览鸟岛、伊卡及瓦卡奇纳，含沙丘车和基础滑沙，晚间返回利马。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "利马–库斯科航班与安第斯迎宾",
+          "description": "机场接送、包含的国内航班、库斯科接机、适应高原及迎宾体验。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "圣谷 Connection 与火车",
+          "description": "圣谷导览、旅游通票和自助午餐。The Voyager 16:36，约18:09抵达马丘比丘镇。",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "马丘比丘 Overnight 与返回库斯科",
+          "description": "巴士和导游参观马丘比丘，20:20乘The Voyager双模式返回，约00:10抵达库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "南谷：Tipón、Pikillacta、Andahuaylillas",
+          "description": "上午游览南谷，下午返回库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "彩虹山 Vinicunca",
+          "description": "凌晨出发，早餐、导游徒步、门票、午餐，下午返回库斯科。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "库斯科–利马航班及结束",
+          "description": "送往库斯科机场并搭乘包含的国内航班回利马，按国际航班衔接协调。",
+          "overnight": "行程结束",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "seo": {
+        "title": "秘鲁海岸与安第斯：利马、帕拉卡斯、伊卡、库斯科、马丘比丘和彩虹山 8天7晚",
+        "description": "8天完整线路，包含酒店、秘鲁国内航班、火车、门票、接送及主要行程。",
+        "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-zh",
+        "language": "zh"
+      },
+      "hotelPricingNote": "双人入住每人价格。基础酒店已包含；酒店选择弹窗只计算所选酒店的升级差价。",
+      "domesticFlightsIncluded": true,
+      "domesticFlightSelection": {
+        "includedInBasePrice": true,
+        "segments": [
+          {
+            "day": 3,
+            "route": "LIM_CUZ",
+            "from": "Lima (LIM)",
+            "to": "Cusco (CUZ)",
+            "cabin": "economy"
+          },
+          {
+            "day": 8,
+            "route": "CUZ_LIM",
+            "from": "Cusco (CUZ)",
+            "to": "Lima (LIM)",
+            "cabin": "economy"
+          }
+        ],
+        "referenceCostUSDPerPerson": 200,
+        "guardrailMaxCostUSDPerPerson": 230,
+        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+      },
+      "priceIncludesDomesticFlights": true,
+      "publicPriceIncludesDomesticFlights": true
     },
     {
       "id": "pkg_peru_9d8n",

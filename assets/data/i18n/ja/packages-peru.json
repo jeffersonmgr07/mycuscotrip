@@ -1,6 +1,6 @@
 {
-  "version": "V94",
-  "updatedAt": "2026-08-01",
+  "version": "V97",
+  "updatedAt": "2026-08-07",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "海外旅行者向けの旅行体験です。明確な行程、現地サポート、安心の予約手配を提供します。",
@@ -1882,6 +1882,551 @@
         ]
       },
       "capacity": 30
+    },
+    {
+      "id": "pkg_peru_8d7n_lima_cusco",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 8,
+      "nights": 7,
+      "featured": true,
+      "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+      "images": {
+        "cover": "./assets/img/packages/peru/7d6n/cover.jpg",
+        "gallery": [
+          "./assets/img/packages/peru/lima-night/cover.jpg",
+          "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "./assets/img/tours/valle-sagrado/cover.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "./assets/img/tours/valle-sur/cover.jpg",
+          "./assets/img/tours/montana-colores/cover.jpg"
+        ]
+      },
+      "showItineraryImages": true,
+      "priceMode": "static_base_plus_configurable_services",
+      "status": "published",
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1849.9,
+        "child": 1849.9,
+        "currency": "USD",
+        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
+        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
+        "estimatedAverageProfitUSD": 184.28,
+        "minimumTargetProfitUSD": 150,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4,
+        "bankWithdrawalEffectivePercent": 1.77,
+        "basis": "per_person_double_occupancy",
+        "exchangeRateUSDToPEN": 3.75,
+        "label": "ホテル・列車・国内線込みの1名あたり基本料金",
+        "description": "2名1室利用を基準。基本ホテル、The Voyager列車、リマ–クスコ–リマ国内線を含みます。アップグレードや特別に高い航空運賃は追加料金となる場合があります。"
+      },
+      "internalPricing": {
+        "calculationVersion": "V97-2026-08-07",
+        "publishedPriceUSD": 1849.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "minimumTargetProfitUSDPerPerson": 150,
+        "estimatedReferenceCostUSDPerPerson": 1276.9,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "referenceTravelers": 2,
+        "referenceOccupancy": "double_or_matrimonial_shared",
+        "includedHotelAllowancePerPersonUSD": {
+          "lima_2_nights": 79.2,
+          "cusco_4_nights": 101.8,
+          "aguas_calientes_1_night": 32.45,
+          "total": 213.45
+        },
+        "defaultTrainReferenceUSDPerPerson": 160,
+        "domesticFlightReferenceUSDPerPerson": 200,
+        "domesticFlightGuardrailMaxUSDPerPerson": 230,
+        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1849.9,
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "sacred-valley",
+          "machu-picchu",
+          "south-valley",
+          "rainbow-mountain",
+          "vinicunca"
+        ],
+        "durationKeys": [
+          "8d7n",
+          "8-dias",
+          "7-noches",
+          "8-days",
+          "7-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "CUZ001",
+          "CUZ003CON",
+          "MAPI003",
+          "CUZ005",
+          "CUZ007"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "islas-ballestas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu",
+          "valle-sur",
+          "tipon",
+          "pikillacta",
+          "andahuaylillas",
+          "montana-de-colores",
+          "vinicunca"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "multidestino"
+        ],
+        "keywords": [
+          "ペルー海岸とアンデス：リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテン 8日間 / 7泊",
+          "peru 8 days lima cusco machu picchu rainbow mountain",
+          "lima paracas ica huacachina cusco machu picchu 8d7n"
+        ]
+      },
+      "accommodationSummary": [
+        {
+          "destination": "lima",
+          "nights": 2,
+          "label": "リマ - 2泊"
+        },
+        {
+          "destination": "cusco",
+          "nights": 4,
+          "label": "クスコ - 4泊"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "マチュピチュ村 - 1泊"
+        }
+      ],
+      "hotelSelection": {
+        "required": true,
+        "includedInBasePrice": true,
+        "allowNoHotel": false,
+        "customerCanChangeHotel": true,
+        "upgradeEnabled": true,
+        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
+        "defaultHotelCodes": {
+          "lima": "arawi-miraflores-3s",
+          "cusco": "cusco-boutique-3s",
+          "aguas-calientes": "luz-garden-3s"
+        },
+        "includedAllowancePerPersonUSD": {
+          "lima": 79.2,
+          "cusco": 101.8,
+          "aguas-calientes": 32.45
+        }
+      },
+      "defaultHotelsByDestination": {
+        "lima": "arawi-miraflores-3s",
+        "cusco": "cusco-boutique-3s",
+        "aguas-calientes": "luz-garden-3s"
+      },
+      "trainSelection": {
+        "required": true,
+        "source": "assets/data/trains.json",
+        "mode": "flexible_any_company",
+        "sameCompanyRoundTrip": false,
+        "allowMixedCompanies": true,
+        "fixedSelection": false,
+        "customerCanChangeTrain": true,
+        "defaultTrainCodes": {
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU"
+        },
+        "allowedCompanies": [
+          "incarail",
+          "perurail"
+        ],
+        "allowedRoutes": {
+          "outbound": [
+            "OLLA_MAPI",
+            "CUSCO_MAPI",
+            "URU_MAPI"
+          ],
+          "return": [
+            "MAPI_CUSCO",
+            "MAPI_OLLA",
+            "MAPI_URU"
+          ]
+        },
+        "allowedCategories": "all_available",
+        "returnOptionsRule": "any_company_afternoon_return",
+        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "22:00"
+          },
+          "return": {
+            "min": "15:00",
+            "max": "22:00"
+          }
+        }
+      },
+      "defaultTrainSelection": {
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+        "resolvedOutbound": {
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "OLLA_MAPI",
+          "departureStation": "Ollantaytambo",
+          "arrivalStation": "Machu Picchu",
+          "departureTime": "16:36",
+          "arrivalTime": "18:09",
+          "currency": "USD",
+          "adultCostUSD": 85,
+          "childCostUSD": 68
+        },
+        "resolvedReturn": {
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "MAPI_CUSCO",
+          "departureStation": "Machu Picchu",
+          "arrivalStation": "Cusco Av. El Sol 843",
+          "departureTime": "20:20",
+          "arrivalTime": "00:10",
+          "currency": "USD",
+          "adultCostUSD": 75,
+          "childCostUSD": 60
+        },
+        "pricingSnapshot": {
+          "outboundAdultCost": 85,
+          "returnAdultCost": 75,
+          "totalAdultTrainCost": 160,
+          "currency": "USD"
+        }
+      },
+      "tripMode": "overnight",
+      "machuPicchuMode": "overnight-classic",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "capacity": 15,
+      "itineraryStatus": "complete",
+      "slug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-ja",
+      "title": "ペルー海岸とアンデス：リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテン 8日間 / 7泊",
+      "typeLabel": "8日間 / 7泊",
+      "badge": "新しい周遊プラン",
+      "location": "リマ / パラカス / イカ / クスコ / 聖なる谷 / マチュピチュ / 南部の谷 / レインボーマウンテン",
+      "shortDescription": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
+      "priceLabel": "1名 USD 1,849.90〜（2名1室基準、ホテル・列車・国内線込み）",
+      "experienceType": [
+        "Cultural",
+        "Naturaleza",
+        "Aventura suave",
+        "Multidestino"
+      ],
+      "highlights": [
+        "リマ空港送迎とミラフローレス2泊",
+        "パラカス、バジェスタス諸島、イカ、ワカチナ",
+        "リマ–クスコ往復国内線込み",
+        "クスコでアンデスの歓迎体験",
+        "聖なる谷 + The Voyager 16:36",
+        "マチュピチュ + The Voyager 20:20帰路",
+        "南部の谷：ティポン、ピキジャクタ、アンダワイリリャス",
+        "レインボーマウンテン（朝食・昼食・入場込み）"
+      ],
+      "details": [
+        "7泊：リマ2、クスコ4、マチュピチュ村1",
+        "基本ホテル：Arawi Miraflores Express、Hotel Cusco Boutique、Hotel Luz Garden",
+        "国内線は空席・運賃条件により確定",
+        "マチュピチュ翌日は遅めに出発できる南部の谷"
+      ],
+      "includes": [
+        "指定空港送迎",
+        "リマ2泊・クスコ4泊・マチュピチュ村1泊（朝食付き）",
+        "リマ–クスコ、クスコ–リマ国内線",
+        "パラカス・バジェスタス・イカ・ワカチナ（船、税、ワイナリー、バギー、基本サンドボード）",
+        "クスコのアンデス歓迎体験",
+        "聖なる谷（ガイド、観光共通券、ビュッフェ昼食）",
+        "The Voyager 16:36 オリャンタイタンボ–マチュピチュ",
+        "マチュピチュ入場、Consetturバス、ガイド",
+        "The Voyager 20:20 バイモーダルでクスコへ",
+        "南部の谷ツアーと必要入場料",
+        "レインボーマウンテン（送迎、ガイド、朝食、昼食、入場）",
+        "ホテル送迎とWhatsAppサポート"
+      ],
+      "excludes": [
+        "国際線",
+        "明記されていない食事・飲み物",
+        "発券運賃外の追加手荷物",
+        "馬、ATVなど任意アクティビティ",
+        "アーリー/レイトチェックイン、チップ、保険、個人費用、アップグレード"
+      ],
+      "importantInfo": [
+        "2名1室基準の1名料金です。客室条件で再計算されます。",
+        "国内線は保護された航空運賃枠内で含まれ、高騰時は発券前に再見積もりします。",
+        "国内線時刻は旅程と8日目の接続を考慮して選びます。",
+        "マチュピチュの入場ルートは公式空席状況によります。",
+        "バジェスタス、砂丘、レインボーマウンテンは天候・運行条件によります。",
+        "20:20の列車はクスコ到着約00:10のため、6日目は遅めに始まる南部の谷です。",
+        "別切り国際線との接続には十分な時間を確保してください。"
+      ],
+      "pickupInfo": "選択ホテルと指定空港から送迎。最終時刻は航空便、列車、マチュピチュ、天候、運行状況で確定します。",
+      "faq": [
+        {
+          "q": "ホテルは含まれますか？",
+          "a": "はい。リマ2泊、クスコ4泊、マチュピチュ村1泊。ホテル変更時は差額のみ加算。"
+        },
+        {
+          "q": "国内線は含まれますか？",
+          "a": "はい。3日目リマ–クスコ、8日目クスコ–リマ。国際線は含みません。"
+        },
+        {
+          "q": "どの列車ですか？",
+          "a": "Inca Rail The Voyager 往路16:36、復路20:20バイモーダル。"
+        },
+        {
+          "q": "入場料は？",
+          "a": "マチュピチュ、Consettur、観光共通券、南部の谷、レインボーマウンテン、パラカス/イカの指定料金を含みます。"
+        },
+        {
+          "q": "なぜマチュピチュの翌日に南部の谷？",
+          "a": "列車が約00:10到着のため、遅めに開始できる行程にしています。"
+        },
+        {
+          "q": "8日目に国際線接続できますか？",
+          "a": "安全な乗継時間があれば可能です。"
+        }
+      ],
+      "itineraryLanguage": "ja",
+      "description": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
+      "duration": {
+        "label": "8日間 / 7泊",
+        "maxGroupSize": 15,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "リマ到着・空港出迎え",
+          "description": "ホルヘ・チャベス空港で出迎え、ミラフローレスのホテルへ。到着時刻により自由時間。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "パラカス、バジェスタス、イカ、ワカチナ",
+          "description": "早朝出発。島クルーズ、イカ、ワカチナでバギーと基本サンドボード。夜リマ帰着。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "リマ–クスコ国内線とアンデス歓迎体験",
+          "description": "空港送迎、国内線、クスコ到着送迎、順応時間と歓迎体験。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "聖なる谷 Connection と列車",
+          "description": "聖なる谷、観光共通券、昼食後、The Voyager 16:36。マチュピチュ村18:09頃着。",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "マチュピチュ Overnight・クスコ帰着",
+          "description": "バス、ガイド付き見学後、The Voyager 20:20バイモーダル。クスコ00:10頃着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "南部の谷：ティポン、ピキジャクタ、アンダワイリリャス",
+          "description": "午前出発の南部の谷ツアー。午後クスコ帰着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "レインボーマウンテン",
+          "description": "未明出発、朝食、ガイド付きハイキング、入場、昼食、クスコ帰着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "クスコ–リマ国内線・終了",
+          "description": "空港送迎とリマへの国内線。国際線接続に合わせて調整。",
+          "overnight": "旅行終了",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "リマ到着・空港出迎え",
+          "description": "ホルヘ・チャベス空港で出迎え、ミラフローレスのホテルへ。到着時刻により自由時間。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "パラカス、バジェスタス、イカ、ワカチナ",
+          "description": "早朝出発。島クルーズ、イカ、ワカチナでバギーと基本サンドボード。夜リマ帰着。",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "リマ–クスコ国内線とアンデス歓迎体験",
+          "description": "空港送迎、国内線、クスコ到着送迎、順応時間と歓迎体験。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "聖なる谷 Connection と列車",
+          "description": "聖なる谷、観光共通券、昼食後、The Voyager 16:36。マチュピチュ村18:09頃着。",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "マチュピチュ Overnight・クスコ帰着",
+          "description": "バス、ガイド付き見学後、The Voyager 20:20バイモーダル。クスコ00:10頃着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "南部の谷：ティポン、ピキジャクタ、アンダワイリリャス",
+          "description": "午前出発の南部の谷ツアー。午後クスコ帰着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "レインボーマウンテン",
+          "description": "未明出発、朝食、ガイド付きハイキング、入場、昼食、クスコ帰着。",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "クスコ–リマ国内線・終了",
+          "description": "空港送迎とリマへの国内線。国際線接続に合わせて調整。",
+          "overnight": "旅行終了",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "seo": {
+        "title": "ペルー海岸とアンデス：リマ、パラカス、イカ、クスコ、マチュピチュ、レインボーマウンテン 8日間 / 7泊",
+        "description": "ホテル、国内線、列車、入場料、送迎、主要ツアーを含む8日間の周遊プラン。",
+        "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-rainbow-mountain-8-days-7-nights-ja",
+        "language": "ja"
+      },
+      "hotelPricingNote": "2名1室基準。基本ホテル込み。ホテル選択モーダルでは選択したホテルの差額のみ計算します。",
+      "domesticFlightsIncluded": true,
+      "domesticFlightSelection": {
+        "includedInBasePrice": true,
+        "segments": [
+          {
+            "day": 3,
+            "route": "LIM_CUZ",
+            "from": "Lima (LIM)",
+            "to": "Cusco (CUZ)",
+            "cabin": "economy"
+          },
+          {
+            "day": 8,
+            "route": "CUZ_LIM",
+            "from": "Cusco (CUZ)",
+            "to": "Lima (LIM)",
+            "cabin": "economy"
+          }
+        ],
+        "referenceCostUSDPerPerson": 200,
+        "guardrailMaxCostUSDPerPerson": 230,
+        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+      },
+      "priceIncludesDomesticFlights": true,
+      "publicPriceIncludesDomesticFlights": true
     },
     {
       "id": "pkg_peru_9d8n",

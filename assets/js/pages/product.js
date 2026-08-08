@@ -9974,7 +9974,7 @@ document.addEventListener("click", function (event) {
 })();
 
 /* =========================================================
-   MCT V94 — Circuito Perú 7D/6N con Humantay
+   MCT V94/V97 — Paquetes Perú con hotel base incluido
    Hoteles base incluidos + upgrades y trenes configurables
    ========================================================= */
 (function () {
@@ -9985,11 +9985,14 @@ document.addEventListener("click", function (event) {
     const proto = Object.getPrototypeOf(page);
     if (!proto) return false;
 
-    const PACKAGE_ID = "pkg_peru_7d6n_humantay";
+    const PACKAGE_IDS = new Set([
+      "pkg_peru_7d6n_humantay",
+      "pkg_peru_8d7n_lima_cusco"
+    ]);
 
     const isTarget = (ctx, product) => {
       const source = product || ctx?.product || {};
-      return String(source?.id || source?.raw?.id || "") === PACKAGE_ID;
+      return PACKAGE_IDS.has(String(source?.id || source?.raw?.id || ""));
     };
 
     const escape = (ctx, value) => ctx.escapeHtml?.(value) || String(value ?? "")

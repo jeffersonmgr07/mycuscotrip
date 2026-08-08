@@ -1,6 +1,6 @@
 {
-  "version": "V94",
-  "updatedAt": "2026-08-01",
+  "version": "V97",
+  "updatedAt": "2026-08-07",
   "sourceFile": "assets/data/packages-peru.json",
   "scope": "peru-dynamic-packages",
   "description": "Arquivo de configuração para gerar pacotes dinâmicos combinados do Peru. Não contém itinerários fixos (hardcoded); define cards, rotas comerciais, blocos de destino, referências a tours, regras operacionais, filtros de chegada/saída e metadados para All Experiences e product.html.",
@@ -2002,6 +2002,551 @@
       },
       "hotelPricingNote": "A hospedagem é somada à parte, conforme o hotel e o tipo de quarto escolhidos em Lima, Cusco, Machu Picchu Pueblo e Puno.",
       "capacity": 30
+    },
+    {
+      "id": "pkg_peru_8d7n_lima_cusco",
+      "productKind": "package",
+      "productFamily": "peru-package",
+      "days": 8,
+      "nights": 7,
+      "featured": true,
+      "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+      "images": {
+        "cover": "./assets/img/packages/peru/7d6n/cover.jpg",
+        "gallery": [
+          "./assets/img/packages/peru/lima-night/cover.jpg",
+          "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "./assets/img/tours/valle-sagrado/cover.jpg",
+          "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "./assets/img/tours/valle-sur/cover.jpg",
+          "./assets/img/tours/montana-colores/cover.jpg"
+        ]
+      },
+      "showItineraryImages": true,
+      "priceMode": "static_base_plus_configurable_services",
+      "status": "published",
+      "currency": "USD",
+      "basePricing": {
+        "adult": 1849.9,
+        "child": 1849.9,
+        "currency": "USD",
+        "mode": "published_price_including_default_hotels_trains_and_domestic_flights",
+        "protectedNetAfterMaxDiscountAndPaypal": 1487.5,
+        "protectedNetAfterMaxDiscountPaypalAndBankWithdrawal": 1461.18,
+        "estimatedAverageProfitUSD": 184.28,
+        "minimumTargetProfitUSD": 150,
+        "maxDiscountPercent": 15,
+        "paypalPercent": 5.4,
+        "bankWithdrawalEffectivePercent": 1.77,
+        "basis": "per_person_double_occupancy",
+        "exchangeRateUSDToPEN": 3.75,
+        "label": "Preço base por pessoa com hotéis, trens e voos domésticos incluídos",
+        "description": "Tarifa para dois adultos compartilhando quarto. Inclui hotéis base, trens The Voyager e voos Lima–Cusco–Lima; upgrades ou diferenças aéreas extraordinárias podem gerar suplemento."
+      },
+      "internalPricing": {
+        "calculationVersion": "V97-2026-08-07",
+        "publishedPriceUSD": 1849.9,
+        "fullPaymentPriceAfter15PercentDiscountUSD": 1572.42,
+        "netAfter15PercentDiscountAndPaypalUSD": 1487.5,
+        "netAfter15PercentDiscountPaypalAndBankWithdrawalUSD": 1461.18,
+        "minimumTargetProfitUSDPerPerson": 150,
+        "estimatedReferenceCostUSDPerPerson": 1276.9,
+        "estimatedProfitAfterMaxDiscountAndFeesUSDPerPerson": 184.28,
+        "referenceTravelers": 2,
+        "referenceOccupancy": "double_or_matrimonial_shared",
+        "includedHotelAllowancePerPersonUSD": {
+          "lima_2_nights": 79.2,
+          "cusco_4_nights": 101.8,
+          "aguas_calientes_1_night": 32.45,
+          "total": 213.45
+        },
+        "defaultTrainReferenceUSDPerPerson": 160,
+        "domesticFlightReferenceUSDPerPerson": 200,
+        "domesticFlightGuardrailMaxUSDPerPerson": 230,
+        "pricingGuardrail": "Reconfirm domestic air fare, hotel, train, Machu Picchu admission and supplier rates before final confirmation. If the combined Lima-Cusco-Lima airfare exceeds USD 230 per person, recalculate or apply an airfare supplement before confirming."
+      },
+      "paymentOptions": {
+        "fullPaymentDiscountPercent": 15,
+        "partialPaymentPerPerson": 49.9
+      },
+      "priceFrom": 1849.9,
+      "search": {
+        "kind": "package",
+        "destinations": [
+          "peru",
+          "lima",
+          "paracas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "sacred-valley",
+          "machu-picchu",
+          "south-valley",
+          "rainbow-mountain",
+          "vinicunca"
+        ],
+        "durationKeys": [
+          "8d7n",
+          "8-dias",
+          "7-noches",
+          "8-days",
+          "7-nights"
+        ],
+        "includedTourCodes": [
+          "PER003",
+          "CUZ001",
+          "CUZ003CON",
+          "MAPI003",
+          "CUZ005",
+          "CUZ007"
+        ],
+        "includedTags": [
+          "lima",
+          "paracas",
+          "islas-ballestas",
+          "ica",
+          "huacachina",
+          "cusco",
+          "valle-sagrado",
+          "machu-picchu",
+          "valle-sur",
+          "tipon",
+          "pikillacta",
+          "andahuaylillas",
+          "montana-de-colores",
+          "vinicunca"
+        ],
+        "themes": [
+          "cultural",
+          "naturaleza",
+          "aventura",
+          "multidestino"
+        ],
+        "keywords": [
+          "peru costa e andes: lima, paracas, ica, cusco, machu picchu e montanha colorida 8d/7n",
+          "peru 8 days lima cusco machu picchu rainbow mountain",
+          "lima paracas ica huacachina cusco machu picchu 8d7n"
+        ]
+      },
+      "accommodationSummary": [
+        {
+          "destination": "lima",
+          "nights": 2,
+          "label": "Lima - 2 noites"
+        },
+        {
+          "destination": "cusco",
+          "nights": 4,
+          "label": "Cusco - 4 noites"
+        },
+        {
+          "destination": "aguas-calientes",
+          "nights": 1,
+          "label": "Machu Picchu Pueblo - 1 noite"
+        }
+      ],
+      "hotelSelection": {
+        "required": true,
+        "includedInBasePrice": true,
+        "allowNoHotel": false,
+        "customerCanChangeHotel": true,
+        "upgradeEnabled": true,
+        "priceAdjustmentRule": "selected_hotel_cost_minus_included_allowance",
+        "defaultHotelCodes": {
+          "lima": "arawi-miraflores-3s",
+          "cusco": "cusco-boutique-3s",
+          "aguas-calientes": "luz-garden-3s"
+        },
+        "includedAllowancePerPersonUSD": {
+          "lima": 79.2,
+          "cusco": 101.8,
+          "aguas-calientes": 32.45
+        }
+      },
+      "defaultHotelsByDestination": {
+        "lima": "arawi-miraflores-3s",
+        "cusco": "cusco-boutique-3s",
+        "aguas-calientes": "luz-garden-3s"
+      },
+      "trainSelection": {
+        "required": true,
+        "source": "assets/data/trains.json",
+        "mode": "flexible_any_company",
+        "sameCompanyRoundTrip": false,
+        "allowMixedCompanies": true,
+        "fixedSelection": false,
+        "customerCanChangeTrain": true,
+        "defaultTrainCodes": {
+          "outbound": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "return": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU"
+        },
+        "allowedCompanies": [
+          "incarail",
+          "perurail"
+        ],
+        "allowedRoutes": {
+          "outbound": [
+            "OLLA_MAPI",
+            "CUSCO_MAPI",
+            "URU_MAPI"
+          ],
+          "return": [
+            "MAPI_CUSCO",
+            "MAPI_OLLA",
+            "MAPI_URU"
+          ]
+        },
+        "allowedCategories": "all_available",
+        "returnOptionsRule": "any_company_afternoon_return",
+        "priceAdjustmentRule": "selected_train_total_cost_minus_default_train_total_cost",
+        "timeWindows": {
+          "outbound": {
+            "min": "05:00",
+            "max": "22:00"
+          },
+          "return": {
+            "min": "15:00",
+            "max": "22:00"
+          }
+        }
+      },
+      "defaultTrainSelection": {
+        "outboundTrainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+        "returnTrainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+        "resolvedOutbound": {
+          "trainCode": "INCA_OLLA_MAPI_VOYAGER_1636_OLLANTAYTAMB",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "OLLA_MAPI",
+          "departureStation": "Ollantaytambo",
+          "arrivalStation": "Machu Picchu",
+          "departureTime": "16:36",
+          "arrivalTime": "18:09",
+          "currency": "USD",
+          "adultCostUSD": 85,
+          "childCostUSD": 68
+        },
+        "resolvedReturn": {
+          "trainCode": "INCA_MAPI_CUSCO_VOYAGER_2020_MACHU_PICCHU",
+          "company": "incarail",
+          "companyName": "Inca Rail",
+          "serviceName": "The Voyager",
+          "route": "MAPI_CUSCO",
+          "departureStation": "Machu Picchu",
+          "arrivalStation": "Cusco Av. El Sol 843",
+          "departureTime": "20:20",
+          "arrivalTime": "00:10",
+          "currency": "USD",
+          "adultCostUSD": 75,
+          "childCostUSD": 60
+        },
+        "pricingSnapshot": {
+          "outboundAdultCost": 85,
+          "returnAdultCost": 75,
+          "totalAdultTrainCost": 160,
+          "currency": "USD"
+        }
+      },
+      "tripMode": "overnight",
+      "machuPicchuMode": "overnight-classic",
+      "priceIncludesTrain": true,
+      "publicPriceIncludesTrain": true,
+      "capacity": 15,
+      "itineraryStatus": "complete",
+      "slug": "peru-lima-paracas-ica-cusco-machu-picchu-montanha-colorida-8-dias-7-noites",
+      "title": "Peru Costa e Andes: Lima, Paracas, Ica, Cusco, Machu Picchu e Montanha Colorida 8D/7N",
+      "typeLabel": "8 dias / 7 noites",
+      "badge": "Novo circuito",
+      "location": "Lima / Paracas / Ica / Cusco / Vale Sagrado / Machu Picchu / Vale Sul / Montanha Colorida",
+      "shortDescription": "Circuito completo de 8 dias com hotéis, voos domésticos, trens, ingressos, traslados e principais excursões incluídos.",
+      "priceLabel": "A partir de USD 1.849,90 por pessoa, base dupla, com hotéis, trens e voos domésticos incluídos",
+      "experienceType": [
+        "Cultural",
+        "Naturaleza",
+        "Aventura suave",
+        "Multidestino"
+      ],
+      "highlights": [
+        "Recepção em Lima e 2 noites em Miraflores",
+        "Paracas, Ilhas Ballestas, Ica e Huacachina com buggy e sandboard",
+        "Voos Lima–Cusco e Cusco–Lima incluídos",
+        "Boas-vindas ancestral em Cusco",
+        "Vale Sagrado + The Voyager 16:36",
+        "Machu Picchu + retorno The Voyager 20:20",
+        "Vale Sul: Tipón, Pikillacta e Andahuaylillas",
+        "Montanha Colorida com café da manhã, almoço e ingresso"
+      ],
+      "details": [
+        "7 noites: 2 Lima, 4 Cusco e 1 Machu Picchu Pueblo",
+        "Hotéis base: Arawi Miraflores Express, Hotel Cusco Boutique e Hotel Luz Garden",
+        "Voos domésticos Lima–Cusco–Lima incluídos, sujeitos a disponibilidade",
+        "Vale Sul após Machu Picchu para permitir melhor descanso"
+      ],
+      "includes": [
+        "Recepção e traslados de aeroporto previstos no programa",
+        "2 noites em Lima, 4 em Cusco e 1 em Machu Picchu Pueblo com café da manhã",
+        "Voos domésticos Lima–Cusco e Cusco–Lima",
+        "Full day Paracas, Ballestas, Ica e Huacachina com barco, taxas, vinícola, buggy e sandboard básico",
+        "Boas-vindas ancestral em Cusco",
+        "Vale Sagrado com guia, Boleto Turístico Geral e almoço buffet",
+        "The Voyager 16:36 Ollantaytambo–Machu Picchu",
+        "Machu Picchu com ingresso, ônibus Consettur e guia",
+        "The Voyager bimodal 20:20 Machu Picchu–Cusco",
+        "Vale Sul com ingressos do programa",
+        "Montanha Colorida com transporte, guia, café da manhã, almoço e ingresso",
+        "Recojos, traslados operacionais e assistência por WhatsApp"
+      ],
+      "excludes": [
+        "Voos internacionais",
+        "Refeições e bebidas não indicadas como incluídas",
+        "Bagagem extra fora da tarifa aérea emitida",
+        "Cavalos, ATV ou atividades opcionais",
+        "Early check-in, late check-out, gorjetas, seguro, gastos pessoais e upgrades"
+      ],
+      "importantInfo": [
+        "Preço por pessoa em base dupla; a acomodação é recalculada conforme passageiros e quarto.",
+        "Voos domésticos incluídos dentro de uma margem aérea protegida; tarifas extraordinárias devem ser recotadas antes da emissão.",
+        "Horários dos voos serão escolhidos para preservar o itinerário e a conexão do dia 8.",
+        "Circuito de Machu Picchu depende da disponibilidade oficial.",
+        "Ballestas, dunas e Montanha Colorida dependem do clima e da operação.",
+        "O trem das 20:20 chega a Cusco por volta de 00:10; por isso o dia 6 usa o Vale Sul, com saída mais tarde.",
+        "Recomenda-se ampla margem para conexão com voo internacional em bilhete separado."
+      ],
+      "pickupInfo": "Os recojos são coordenados nos hotéis e aeroportos indicados. Horários finais dependem de voos, trens, Machu Picchu, clima e operação.",
+      "faq": [
+        {
+          "q": "Os hotéis estão incluídos?",
+          "a": "Sim, 2 noites em Lima, 4 em Cusco e 1 em Machu Picchu Pueblo; mudanças de hotel calculam apenas o suplemento."
+        },
+        {
+          "q": "Os voos domésticos estão incluídos?",
+          "a": "Sim, Lima–Cusco no dia 3 e Cusco–Lima no dia 8. O voo internacional não está incluído."
+        },
+        {
+          "q": "Quais trens estão incluídos?",
+          "a": "Inca Rail The Voyager 16:36 na ida e 20:20 bimodal no retorno."
+        },
+        {
+          "q": "Quais ingressos estão incluídos?",
+          "a": "Machu Picchu, ônibus Consettur, Boleto Turístico Geral, Vale Sul, Montanha Colorida e taxas indicadas de Paracas/Ica."
+        },
+        {
+          "q": "Por que Vale Sul depois de Machu Picchu?",
+          "a": "Porque o trem chega por volta de 00:10 e o Vale Sul começa mais tarde."
+        },
+        {
+          "q": "Posso conectar com meu voo internacional no dia 8?",
+          "a": "Sim, se houver margem segura; o voo Cusco–Lima será coordenado com o horário informado."
+        }
+      ],
+      "itineraryLanguage": "pt",
+      "description": "Circuito completo de 8 dias com hotéis, voos domésticos, trens, ingressos, traslados e principais excursões incluídos.",
+      "duration": {
+        "label": "8 dias / 7 noites",
+        "maxGroupSize": 15,
+        "guideLanguages": [
+          "es",
+          "en"
+        ]
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Chegada a Lima e recepção personalizada",
+          "description": "Recepção no aeroporto Jorge Chávez e traslado ao hotel em Miraflores. Tempo livre conforme o horário de chegada.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ilhas Ballestas, Ica e Huacachina",
+          "description": "Saída cedo para Ballestas, Ica e Huacachina, incluindo barco, vinícola, buggy e sandboard básico conforme operação. Retorno a Lima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Voo Lima–Cusco e boas-vindas ancestral",
+          "description": "Traslado ao aeroporto, voo doméstico incluído, recepção em Cusco, aclimatação e experiência ancestral.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Vale Sagrado Conexão e trem a Machu Picchu Pueblo",
+          "description": "Vale Sagrado com guia, Boleto Turístico e almoço buffet. The Voyager 16:36 desde Ollantaytambo, chegada 18:09.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Machu Picchu Overnight e retorno a Cusco",
+          "description": "Ônibus Consettur, visita guiada a Machu Picchu e retorno The Voyager bimodal 20:20, chegada a Cusco por volta de 00:10.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Vale Sul: Tipón, Pikillacta e Andahuaylillas",
+          "description": "Tour matinal pelo Vale Sul e retorno a Cusco à tarde.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Montanha Colorida (Vinicunca)",
+          "description": "Saída de madrugada, café da manhã, caminhada guiada, ingresso, almoço e retorno a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Voo Cusco–Lima e fim do programa",
+          "description": "Traslado ao aeroporto e voo doméstico incluído para Lima, coordenado com a conexão internacional.",
+          "overnight": "Fim da viagem",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "dailyItinerary": [
+        {
+          "day": 1,
+          "title": "Chegada a Lima e recepção personalizada",
+          "description": "Recepção no aeroporto Jorge Chávez e traslado ao hotel em Miraflores. Tempo livre conforme o horário de chegada.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/lima-night/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/lima-night/cover.jpg"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Paracas, Ilhas Ballestas, Ica e Huacachina",
+          "description": "Saída cedo para Ballestas, Ica e Huacachina, incluindo barco, vinícola, buggy e sandboard básico conforme operação. Retorno a Lima.",
+          "overnight": "Lima",
+          "image": "./assets/img/packages/peru/paracas-huacachina/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/paracas-huacachina/cover.jpg"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Voo Lima–Cusco e boas-vindas ancestral",
+          "description": "Traslado ao aeroporto, voo doméstico incluído, recepção em Cusco, aclimatação e experiência ancestral.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+          "images": [
+            "./assets/img/tours/bienvenida-ancestral-cusco/cover.jpg"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Vale Sagrado Conexão e trem a Machu Picchu Pueblo",
+          "description": "Vale Sagrado com guia, Boleto Turístico e almoço buffet. The Voyager 16:36 desde Ollantaytambo, chegada 18:09.",
+          "overnight": "Aguas Calientes",
+          "image": "./assets/img/tours/valle-sagrado/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sagrado/cover.jpg"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Machu Picchu Overnight e retorno a Cusco",
+          "description": "Ônibus Consettur, visita guiada a Machu Picchu e retorno The Voyager bimodal 20:20, chegada a Cusco por volta de 00:10.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+          "images": [
+            "./assets/img/tours/machu-picchu-overnight-clasico/cover.jpg"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Vale Sul: Tipón, Pikillacta e Andahuaylillas",
+          "description": "Tour matinal pelo Vale Sul e retorno a Cusco à tarde.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/valle-sur/cover.jpg",
+          "images": [
+            "./assets/img/tours/valle-sur/cover.jpg"
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Montanha Colorida (Vinicunca)",
+          "description": "Saída de madrugada, café da manhã, caminhada guiada, ingresso, almoço e retorno a Cusco.",
+          "overnight": "Cusco",
+          "image": "./assets/img/tours/montana-colores/cover.jpg",
+          "images": [
+            "./assets/img/tours/montana-colores/cover.jpg"
+          ]
+        },
+        {
+          "day": 8,
+          "title": "Voo Cusco–Lima e fim do programa",
+          "description": "Traslado ao aeroporto e voo doméstico incluído para Lima, coordenado com a conexão internacional.",
+          "overnight": "Fim da viagem",
+          "image": "./assets/img/packages/peru/7d6n/cover.jpg",
+          "images": [
+            "./assets/img/packages/peru/7d6n/cover.jpg"
+          ]
+        }
+      ],
+      "seo": {
+        "title": "Peru Costa e Andes: Lima, Paracas, Ica, Cusco, Machu Picchu e Montanha Colorida 8D/7N",
+        "description": "Circuito completo de 8 dias com hotéis, voos domésticos, trens, ingressos, traslados e principais excursões incluídos.",
+        "canonicalSlug": "peru-lima-paracas-ica-cusco-machu-picchu-montanha-colorida-8-dias-7-noites",
+        "language": "pt"
+      },
+      "hotelPricingNote": "Tarifa por pessoa em base dupla. Hotéis base incluídos; o modal calcula apenas o suplemento da opção escolhida.",
+      "domesticFlightsIncluded": true,
+      "domesticFlightSelection": {
+        "includedInBasePrice": true,
+        "segments": [
+          {
+            "day": 3,
+            "route": "LIM_CUZ",
+            "from": "Lima (LIM)",
+            "to": "Cusco (CUZ)",
+            "cabin": "economy"
+          },
+          {
+            "day": 8,
+            "route": "CUZ_LIM",
+            "from": "Cusco (CUZ)",
+            "to": "Lima (LIM)",
+            "cabin": "economy"
+          }
+        ],
+        "referenceCostUSDPerPerson": 200,
+        "guardrailMaxCostUSDPerPerson": 230,
+        "fareRule": "included_subject_to_date_schedule_and_availability; baggage follows the fare issued"
+      },
+      "priceIncludesDomesticFlights": true,
+      "publicPriceIncludesDomesticFlights": true
     },
     {
       "id": "pkg_peru_9d8n",
