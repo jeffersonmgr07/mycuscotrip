@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Planifica tu viaje a Perú | My Cusco Trip</title>
+  <meta name="description" content="Cuéntanos cómo imaginas tu viaje a Perú y recibe una propuesta personalizada de My Cusco Trip.">
+  <link rel="canonical" href="https://mycuscotrip.com/planifica-tu-viaje.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cuéntanos sobre tu próximo viaje 🇵🇪 | My Cusco Trip">
+  <meta property="og:description" content="Responde unas preguntas rápidas y te ayudaremos a preparar experiencias que se adapten a tus fechas y a tu forma de viajar.">
+  <meta property="og:url" content="https://mycuscotrip.com/planifica-tu-viaje.html">
+  <meta property="og:image" content="https://mycuscotrip.com/public/share-image-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mycuscotrip.com/public/share-image-v2.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="./assets/css/main.css" rel="stylesheet">
+  <link href="./assets/css/components.css" rel="stylesheet">
+  <link href="./assets/css/header.css" rel="stylesheet">
+  <link href="./assets/css/footer.css" rel="stylesheet">
+  <link href="./assets/css/responsive.css" rel="stylesheet">
+  <link href="./assets/css/trip-planner.css?v=20260809-1" rel="stylesheet">
+</head>
+<body class="trip-planner-page">
+  <div id="header-container"></div>
+
+  <noscript>
+    <div class="tp-noscript">Necesitas activar JavaScript para completar este formulario.</div>
+  </noscript>
+
+  <main class="trip-planner-main">
+    <div class="container">
+      <div class="trip-planner-shell">
+        <section class="trip-planner-intro" aria-labelledby="tripPlannerTitle">
+          <span class="trip-planner-intro__eyebrow"><i class="fa-solid fa-route"></i> Configuremos tu viaje</span>
+          <h1 id="tripPlannerTitle">Cuéntanos sobre tu próximo viaje 🇵🇪</h1>
+          <p>Responde unas preguntas rápidas y te ayudaremos a preparar experiencias que se adapten a tus fechas y a tu forma de viajar.</p>
+        </section>
+
+        <section class="trip-planner-card" aria-label="Planificador de viaje">
+          <div class="trip-planner-progress">
+            <div class="trip-planner-progress__meta">
+              <span id="tpProgressStep">Paso 1 de 5</span>
+              <span id="tpProgressLabel">Tus datos</span>
+            </div>
+            <div class="trip-planner-progress__bar" aria-hidden="true"><span id="tpProgressFill" class="trip-planner-progress__fill"></span></div>
+          </div>
+
+          <form id="tripPlannerForm" class="trip-planner-form" novalidate>
+            <section class="tp-step is-active" data-step="1">
+              <div class="tp-step__head">
+                <h2>Empecemos por ti</h2>
+                <p>Con estos datos podremos enviarte tu propuesta y mantener el contacto de forma sencilla.</p>
+              </div>
+
+              <div class="tp-grid">
+                <div class="tp-field">
+                  <label for="tpFirstName">Nombre</label>
+                  <input id="tpFirstName" type="text" maxlength="60" autocomplete="given-name" placeholder="Tu nombre">
+                </div>
+                <div class="tp-field">
+                  <label for="tpLastName">Apellido</label>
+                  <input id="tpLastName" type="text" maxlength="60" autocomplete="family-name" placeholder="Tu apellido">
+                </div>
+              </div>
+
+              <div class="tp-grid" style="margin-top:14px">
+                <div class="tp-field">
+                  <label for="tpEmail">Correo electrónico</label>
+                  <input id="tpEmail" type="email" maxlength="180" autocomplete="email" inputmode="email" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="tp-field">
+                  <span class="tp-field__label">WhatsApp</span>
+                  <div class="tp-phone">
+                    <select id="tpPhoneCountry" aria-label="Código de país"></select>
+                    <input id="tpPhone" type="tel" maxlength="18" autocomplete="tel-national" inputmode="tel" placeholder="Número">
+                  </div>
+                </div>
+              </div>
+
+              <div class="tp-section">
+                <h3 class="tp-section__title">¿Cuántas personas viajan?</h3>
+                <div class="tp-counter-grid">
+                  <div class="tp-counter">
+                    <div class="tp-counter__copy"><strong>Adultos</strong><small>18 años o más</small></div>
+                    <div class="tp-counter__control">
+                      <button class="tp-counter__btn" type="button" data-counter-action="decrease" data-counter-target="adults" aria-label="Quitar adulto">−</button>
+                      <span id="tpAdultsValue" class="tp-counter__value">2</span>
+                      <button class="tp-counter__btn" type="button" data-counter-action="increase" data-counter-target="adults" aria-label="Agregar adulto">+</button>
+                    </div>
+                  </div>
+                  <div class="tp-counter">
+                    <div class="tp-counter__copy"><strong>Niños</strong><small>0 a 17 años</small></div>
+                    <div class="tp-counter__control">
+                      <button class="tp-counter__btn" type="button" data-counter-action="decrease" data-counter-target="children" aria-label="Quitar niño">−</button>
+                      <span id="tpChildrenValue" class="tp-counter__value">0</span>
+                      <button class="tp-counter__btn" type="button" data-counter-action="increase" data-counter-target="children" aria-label="Agregar niño">+</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="tpChildAgesWrapper" class="tp-conditional" hidden>
+                  <div id="tpChildAges" class="tp-child-ages"></div>
+                </div>
+              </div>
+
+              <div class="tp-nav">
+                <span></span>
+                <button type="button" class="tp-btn tp-btn--primary" data-next>Continuar <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </section>
+
+            <section class="tp-step" data-step="2">
+              <div class="tp-step__head">
+                <h2>¿Cuándo quieres viajar?</h2>
+                <p>¡Perfecto! Ahora ubiquemos tus fechas y el estado de tus vuelos.</p>
+              </div>
+
+              <div class="tp-section">
+                <h3 class="tp-section__title">¿Ya tienes fechas definidas?</h3>
+                <div class="tp-choice-grid tp-choice-grid--single">
+                  <label class="tp-choice"><input type="radio" name="dateStatus" value="exact"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-regular fa-calendar-check"></i></span>Sí, ya tengo fechas</span></label>
+                  <label class="tp-choice"><input type="radio" name="dateStatus" value="approximate"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-regular fa-calendar"></i></span>Tengo una fecha aproximada</span></label>
+                  <label class="tp-choice"><input type="radio" name="dateStatus" value="planning"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-compass"></i></span>Todavía estoy planificando</span></label>
+                </div>
+              </div>
+
+              <div id="tpExactDates" class="tp-section tp-conditional" hidden>
+                <div class="tp-grid">
+                  <div class="tp-field"><label for="tpStartDate">Fecha de llegada</label><input id="tpStartDate" type="date"></div>
+                  <div class="tp-field"><label for="tpEndDate">Fecha de salida</label><input id="tpEndDate" type="date"></div>
+                </div>
+                <div id="tpExactDuration" class="tp-inline-note" hidden><strong>Duración calculada:</strong> <span id="tpExactDurationText">Completa las dos fechas.</span></div>
+              </div>
+
+              <div id="tpApproxDates" class="tp-section tp-conditional" hidden>
+                <div class="tp-grid">
+                  <div class="tp-field"><label for="tpApproxMonth">Mes</label><select id="tpApproxMonth"><option value="">Mes</option><option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option></select></div>
+                  <div class="tp-field"><label for="tpApproxYear">Año</label><select id="tpApproxYear" data-year-select></select></div>
+                </div>
+                <div class="tp-section">
+                  <h3 class="tp-section__title">¿Qué semana te acomoda más?</h3>
+                  <div class="tp-chip-grid">
+                    <label class="tp-chip"><input type="radio" name="approxWeek" value="first"><span class="tp-chip__body">Primera semana</span></label>
+                    <label class="tp-chip"><input type="radio" name="approxWeek" value="second"><span class="tp-chip__body">Segunda semana</span></label>
+                    <label class="tp-chip"><input type="radio" name="approxWeek" value="third"><span class="tp-chip__body">Tercera semana</span></label>
+                    <label class="tp-chip"><input type="radio" name="approxWeek" value="fourth"><span class="tp-chip__body">Cuarta semana</span></label>
+                    <label class="tp-chip"><input type="radio" name="approxWeek" value="flexible"><span class="tp-chip__body">Última / flexible</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tpPlanningDates" class="tp-section tp-conditional" hidden>
+                <h3 class="tp-section__title">¿En qué mes te gustaría viajar?</h3>
+                <div class="tp-grid">
+                  <div class="tp-field"><label for="tpPlanningMonth">Mes aproximado</label><select id="tpPlanningMonth"><option value="">Mes</option><option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option></select></div>
+                  <div class="tp-field"><label for="tpPlanningYear">Año aproximado</label><select id="tpPlanningYear" data-year-select></select></div>
+                </div>
+              </div>
+
+              <div class="tp-section">
+                <h3 class="tp-section__title">¿Ya tienes tus vuelos?</h3>
+                <div class="tp-choice-grid tp-choice-grid--single">
+                  <label class="tp-choice"><input type="radio" name="flightStatus" value="purchased"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-plane-circle-check"></i></span>Sí, ya los compré</span></label>
+                  <label class="tp-choice"><input type="radio" name="flightStatus" value="dates_no_ticket"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-plane"></i></span>Tengo fechas pero aún no compro los vuelos</span></label>
+                  <label class="tp-choice"><input type="radio" name="flightStatus" value="planning"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-regular fa-clock"></i></span>Todavía estoy planificando</span></label>
+                </div>
+                <div id="tpFlightOriginWrap" class="tp-field tp-conditional" style="margin-top:12px" hidden><label for="tpFlightOrigin">Ciudad o país desde donde viajas <span style="font-weight:400;color:#7a8883">(opcional)</span></label><input id="tpFlightOrigin" type="text" maxlength="100" placeholder="Ej.: Medellín, Colombia"></div>
+              </div>
+
+              <div id="tpDurationQuestion" class="tp-section tp-conditional" hidden>
+                <h3 class="tp-section__title">¿Cuántos días te gustaría dedicar a tu viaje?</h3>
+                <div class="tp-chip-grid">
+                  <label class="tp-chip"><input type="radio" name="duration" value="3-4"><span class="tp-chip__body">3–4 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="5"><span class="tp-chip__body">5 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="6"><span class="tp-chip__body">6 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="7"><span class="tp-chip__body">7 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="8-10"><span class="tp-chip__body">8–10 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="11+"><span class="tp-chip__body">Más de 10 días</span></label>
+                  <label class="tp-chip"><input type="radio" name="duration" value="unknown"><span class="tp-chip__body">Todavía no lo sé</span></label>
+                </div>
+              </div>
+
+              <div class="tp-nav">
+                <button type="button" class="tp-btn tp-btn--secondary" data-back><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+                <button type="button" class="tp-btn tp-btn--primary" data-next>Continuar <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </section>
+
+            <section class="tp-step" data-step="3">
+              <div class="tp-step__head">
+                <h2>¿Qué te gustaría que organicemos?</h2>
+                <p>Elige la opción que más se parece a lo que necesitas. Luego podremos afinarla contigo.</p>
+              </div>
+              <div class="tp-choice-grid tp-choice-grid--single">
+                <label class="tp-choice"><input type="radio" name="serviceType" value="tours"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-ticket"></i></span>Solo tours y experiencias</span></label>
+                <label class="tp-choice"><input type="radio" name="serviceType" value="tours_hotel"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-hotel"></i></span>Tours + alojamiento</span></label>
+                <label class="tp-choice"><input type="radio" name="serviceType" value="tours_hotel_transfers"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-van-shuttle"></i></span>Tours + alojamiento + traslados</span></label>
+                <label class="tp-choice"><input type="radio" name="serviceType" value="complete"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-suitcase-rolling"></i></span>Viaje completo</span></label>
+                <label class="tp-choice"><input type="radio" name="serviceType" value="unsure"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-regular fa-circle-question"></i></span>Todavía no estoy seguro/a</span></label>
+              </div>
+              <div class="tp-inline-note">No necesitas tener todo decidido. Nuestro equipo puede ayudarte a elegir una estructura que tenga sentido para tus días y tu ritmo de viaje.</div>
+              <div class="tp-nav">
+                <button type="button" class="tp-btn tp-btn--secondary" data-back><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+                <button type="button" class="tp-btn tp-btn--primary" data-next>Continuar <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </section>
+
+            <section class="tp-step" data-step="4">
+              <div class="tp-step__head">
+                <h2>¿Qué experiencias no pueden faltar?</h2>
+                <p>Puedes marcar varias opciones. Si todavía no lo tienes claro, también podemos recomendarte.</p>
+              </div>
+
+              <div class="tp-section">
+                <h3 class="tp-section__title">¿Qué lugares te gustaría conocer?</h3>
+                <div class="tp-destination-grid">
+                  <label class="tp-destination tp-destination--featured"><input type="checkbox" name="destination" value="machu_picchu"><span class="tp-destination__body"><span class="tp-destination__icon"><i class="fa-solid fa-mountain-sun"></i></span>Machu Picchu</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="cusco"><span class="tp-destination__body">Cusco</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="sacred_valley"><span class="tp-destination__body">Valle Sagrado</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="rainbow_mountain"><span class="tp-destination__body">Montaña de 7 Colores</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="humantay"><span class="tp-destination__body">Laguna Humantay</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="lima"><span class="tp-destination__body">Lima</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="paracas_ica"><span class="tp-destination__body">Paracas / Ica</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="arequipa"><span class="tp-destination__body">Arequipa</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="puno"><span class="tp-destination__body">Puno / Lago Titicaca</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="amazon"><span class="tp-destination__body">Amazonía</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="other"><span class="tp-destination__body">Otros</span></label>
+                  <label class="tp-destination"><input type="checkbox" name="destination" value="recommend"><span class="tp-destination__body">Quiero que me recomienden</span></label>
+                </div>
+                <div id="tpOtherDestinationWrap" class="tp-field tp-conditional" style="margin-top:12px" hidden><label for="tpOtherDestination">¿Qué otro lugar tienes en mente?</label><input id="tpOtherDestination" maxlength="120" placeholder="Escribe el destino"></div>
+              </div>
+
+              <div class="tp-section">
+                <h3 class="tp-section__title">¿Quieres concentrar tu viaje en Cusco o combinar otros destinos del Perú?</h3>
+                <div class="tp-choice-grid tp-choice-grid--single">
+                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_machu"><span class="tp-choice__body">Solo Cusco + Machu Picchu</span></label>
+                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_lima"><span class="tp-choice__body">Cusco + Lima</span></label>
+                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_others"><span class="tp-choice__body">Cusco + otros destinos</span></label>
+                  <label class="tp-choice"><input type="radio" name="scope" value="recommend"><span class="tp-choice__body">Quiero una recomendación</span></label>
+                </div>
+                <div id="tpScopeExtrasWrap" class="tp-conditional" style="margin-top:12px" hidden>
+                  <div class="tp-chip-grid">
+                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="arequipa"><span class="tp-chip__body">Arequipa</span></label>
+                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="puno"><span class="tp-chip__body">Puno</span></label>
+                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="paracas_ica"><span class="tp-chip__body">Paracas / Ica</span></label>
+                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="amazon"><span class="tp-chip__body">Amazonía</span></label>
+                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="other"><span class="tp-chip__body">Otros</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tp-section">
+                <div class="tp-field"><label for="tpComments">¿Hay algo más que deberíamos saber? <span style="font-weight:400;color:#7a8883">(opcional)</span></label><textarea id="tpComments" maxlength="1000" placeholder="Ej.: celebramos aniversario, viajamos con adultos mayores, preferimos caminatas suaves, alimentación especial, etc."></textarea></div>
+              </div>
+
+              <div class="tp-nav">
+                <button type="button" class="tp-btn tp-btn--secondary" data-back><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+                <button type="button" class="tp-btn tp-btn--primary" data-next>Revisar viaje <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </section>
+
+            <section class="tp-step" data-step="5">
+              <div class="tp-step__head">
+                <h2>Revisa tu viaje</h2>
+                <p>Ya casi terminamos. Confirma que esta información represente lo que estás buscando.</p>
+              </div>
+              <div class="tp-summary-card"><div id="tpSummary" class="tp-summary"></div></div>
+              <div class="tp-inline-note"><strong>Último paso:</strong> te enviaremos un código de 6 dígitos a tu correo para confirmar que podemos contactarte correctamente.</div>
+              <div class="tp-nav">
+                <button id="tpEditBtn" type="button" class="tp-btn tp-btn--secondary"><i class="fa-solid fa-pen"></i> Editar</button>
+                <button id="tpRequestBtn" type="button" class="tp-btn tp-btn--accent">Solicitar mi propuesta <i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </section>
+
+            <div id="tpFormError" class="tp-error" role="alert"></div>
+          </form>
+
+          <section id="tpSuccess" class="tp-success" aria-live="polite">
+            <div class="tp-success__icon"><i class="fa-solid fa-check"></i></div>
+            <h2>¡Listo, <span id="tpSuccessName"></span>! 🇵🇪</h2>
+            <p>Ya recibimos los datos de tu viaje.</p>
+            <p>Jefferson o uno de nuestros asesores revisará tus fechas y te contactará para preparar las mejores opciones.</p>
+            <p><strong>¿Quieres continuar por WhatsApp?</strong></p>
+            <a id="tpSuccessWhatsApp" class="tp-btn tp-btn--primary" href="https://wa.me/51900608980" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Continuar por WhatsApp</a>
+          </section>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <div id="tpVerifyModal" class="tp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="tpVerifyTitle">
+    <div class="tp-modal__dialog">
+      <div class="tp-modal__head">
+        <button id="tpVerifyClose" class="tp-modal__close" type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <h2 id="tpVerifyTitle">Verifica tu correo</h2>
+        <p>Te enviamos un código de 6 dígitos a:<br><strong id="tpVerifyEmail"></strong></p>
+      </div>
+      <div class="tp-modal__body">
+        <p style="margin:0;color:#64736d;line-height:1.55">Ingresa el código. Estará disponible durante 10 minutos.</p>
+        <div class="tp-otp" aria-label="Código de verificación">
+          <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Dígito 1">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+        </div>
+        <div id="tpVerifyStatus" class="tp-status" role="status"></div>
+        <div class="tp-modal__actions">
+          <button id="tpVerifyBtn" type="button" class="tp-btn tp-btn--primary">Verificar</button>
+          <button id="tpResendBtn" type="button" class="tp-btn tp-btn--secondary" disabled>Reenviar código</button>
+        </div>
+        <div id="tpResendTimer" class="tp-modal__timer">Podrás reenviar en 60 s</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tpProcessingOverlay" class="tp-overlay" hidden aria-live="polite" aria-busy="true">
+    <div class="tp-overlay__box"><div class="tp-spinner" aria-hidden="true"></div><strong id="tpProcessingText">Procesando…</strong></div>
+  </div>
+
+  <script>
+    const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
+    const BASE_PATH = IS_GITHUB_PAGES ? "/mycuscotrip/" : "/";
+    async function loadComponent(name, targetId) {
+      try {
+        const response = await fetch(`${BASE_PATH}components/${name}.html`, { cache: "no-store" });
+        if (!response.ok) throw new Error(response.status);
+        document.getElementById(targetId).innerHTML = await response.text();
+        return true;
+      } catch (error) {
+        console.warn(`[TripPlanner] No se pudo cargar ${name}`, error);
+        return false;
+      }
+    }
+    async function initializeTripPlannerShell() {
+      await Promise.all([loadComponent("header", "header-container"), loadComponent("footer", "footer-container")]);
+      window.initMyCuscoTripHeader?.();
+      window.MyCuscoTripFooter?.initFooterAccordions?.();
+    }
+    document.readyState === "loading"
+      ? document.addEventListener("DOMContentLoaded", initializeTripPlannerShell)
+      : initializeTripPlannerShell();
+  </script>
+  <script src="./assets/js/config/tracking-config.js"></script>
+  <script src="./assets/js/components/tracking.js"></script>
+  <script src="./assets/js/i18n.js"></script>
+  <script src="./assets/js/components/header.js"></script>
+  <script src="./assets/js/components/footer.js"></script>
+  <script src="./assets/js/core/api-client.js"></script>
+  <script src="./assets/js/pages/trip-planner.js?v=20260809-1"></script>
+</body>
+</html>

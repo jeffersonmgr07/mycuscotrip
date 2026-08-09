@@ -1,6 +1,6 @@
 /*
 My Cusco Trip - Backend ligero para Google Apps Script
-Versión: 2026-08-03-v4.1-cupones-validacion-ui-fix
+Versión: 2026-08-09-v4.3-trip-planner-leads
 
 Qué hace:
 - Recibe leads del popup de cupón.
@@ -11,6 +11,7 @@ Qué hace:
 - Crea preferencias Mercado Pago para reservas en soles/PEN usando access token privado.
 - Captura/verifica pagos PayPal y Mercado Pago, marca la reserva como pagada, genera voucher JSON y envía correos.
 - Permite consultar una reserva/voucher por código y apellido desde mi-reserva.html.
+- Agrega planificador de viaje para prospectos con hoja LEADS_WEB, OTP de 6 dígitos, verificación de email, UTMs y evento Lead.
 
 Instalación rápida:
 1) Crea un Google Sheet vacío.
@@ -29,7 +30,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-08-03-v4.1-cupones-validacion-ui-fix';
+const BACKEND_VERSION = '2026-08-09-v4.3-trip-planner-leads';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -37,7 +38,8 @@ const SHEETS = {
   RESERVATIONS: 'Reservas',
   PASSENGERS: 'Pasajeros',
   PAYMENTS: 'Pagos',
-  AUDIT: 'Auditoria'
+  AUDIT: 'Auditoria',
+  LEADS_WEB: 'LEADS_WEB'
 };
 
 const HEADERS = {
@@ -56,6 +58,15 @@ const HEADERS = {
   ],
   Auditoria: [
     'Fecha','Accion','CodigoReserva','Detalle','JSON'
+  ],
+  LEADS_WEB: [
+    'ID','FechaRegistro','FechaActualizacion','Estado','Nombre','Apellido','Email','EmailVerificado',
+    'WhatsApp','PaisTelefono','Adultos','Ninos','EdadesNinos','EstadoFechas','FechaInicio','FechaFin',
+    'MesEstimado','SemanaEstimada','DuracionDias','EstadoVuelos','OrigenViaje','TipoServicio','Destinos',
+    'OtrosDestino','AlcanceViaje','AlcanceOtrosDestinos','Comentarios','OrigenLead','PaisCampana',
+    'CampanaParametro','UTMSource','UTMMedium','UTMCampaign','UTMContent','UTMTerm','FBCLID',
+    'PaginaOrigen','Referrer','ClientRequestID','CodigoVerificacion','CodigoExpira','UltimoEnvioCodigo',
+    'Reenvios','IntentosVerificacion','FechaVerificacion','NotificacionInternaEn','JSON'
   ]
 };
 
@@ -98,6 +109,44 @@ function setupCouponSystem() {
     publicCoupon: publicCoupon,
     popupTtlHours: number_(getProp_('COUPON_TTL_HOURS', '48'), 48),
     graceUntilEndOfDay: boolean_(getProp_('COUPON_GRACE_END_OF_DAY', 'true'), true)
+  };
+}
+
+
+/**
+ * Ejecuta esta función una sola vez para habilitar el planificador de viaje.
+ * Crea/verifica exclusivamente la hoja LEADS_WEB y agrega valores seguros
+ * de configuración sin sobrescribir las credenciales de pagos ya existentes.
+ */
+function setupLeadPlannerSystem() {
+  const props = PropertiesService.getScriptProperties();
+  props.setProperties({
+    LEAD_CODE_TTL_MINUTES: '10',
+    LEAD_RESEND_COOLDOWN_SECONDS: '60',
+    LEAD_MAX_RESENDS: '5',
+    LEAD_MAX_VERIFY_ATTEMPTS: '8',
+    LEAD_CREATE_WINDOW_MINUTES: '15',
+    LEAD_CREATE_MAX_PER_WINDOW: '3',
+    LEAD_TIME_ZONE: 'America/Lima',
+    LEAD_NOTIFICATION_EMAIL: 'reservas@mycuscotrip.com',
+    LEAD_PLAN_URL: 'https://mycuscotrip.com/planifica-tu-viaje.html'
+  }, false);
+
+  if (!clean_(props.getProperty('LEAD_VERIFICATION_PEPPER'))) {
+    props.setProperty('LEAD_VERIFICATION_PEPPER', Utilities.getUuid() + Utilities.getUuid());
+  }
+
+  const sh = getSheet_(SHEETS.LEADS_WEB, HEADERS.LEADS_WEB);
+  ensureHeaders_(sh, HEADERS.LEADS_WEB);
+  sh.setFrozenRows(1);
+
+  return {
+    ok: true,
+    version: BACKEND_VERSION,
+    sheet: SHEETS.LEADS_WEB,
+    codeTtlMinutes: number_(getProp_('LEAD_CODE_TTL_MINUTES', '10'), 10),
+    resendCooldownSeconds: number_(getProp_('LEAD_RESEND_COOLDOWN_SECONDS', '60'), 60),
+    message: 'Planificador de viaje y verificación de leads configurados correctamente.'
   };
 }
 
@@ -192,9 +241,39 @@ function setupScriptPropertiesExample() {
     COUPON_MAX_USES: '1',
     PUBLIC_COUPON_CODE: 'BETSWELCOME05',
     PUBLIC_COUPON_PERCENT: '5',
+    COUPON_SENDER_EMAIL: 'contact@mycuscotrip.com',
+    COUPON_REPLY_TO: 'contact@mycuscotrip.com',
+    COUPON_EMAIL_NAME: 'My Cusco Trip',
+    COUPON_LOGO_URL: 'https://mycuscotrip.com/assets/img/logos/Logo1.png',
+    COUPON_CTA_URL: 'https://mycuscotrip.com/go',
+    COUPON_EMAIL_TEST_TO: '',
     RESERVATION_TTL_HOURS: '72'
   }, false);
   return { ok: true, message: 'Propiedades de ejemplo creadas. Reemplaza los valores por los reales.' };
+}
+
+
+/**
+ * Ejecuta esta función una sola vez para registrar únicamente las propiedades
+ * de la plantilla de correo. No modifica credenciales PayPal ni Mercado Pago.
+ */
+function setupCouponEmailProperties() {
+  PropertiesService.getScriptProperties().setProperties({
+    COUPON_SENDER_EMAIL: 'contact@mycuscotrip.com',
+    COUPON_REPLY_TO: 'contact@mycuscotrip.com',
+    COUPON_EMAIL_NAME: 'My Cusco Trip',
+    COUPON_LOGO_URL: 'https://mycuscotrip.com/assets/img/logos/Logo1.png',
+    COUPON_CTA_URL: 'https://mycuscotrip.com/go'
+  }, false);
+
+  return {
+    ok: true,
+    sender: getProp_('COUPON_SENDER_EMAIL', 'contact@mycuscotrip.com'),
+    replyTo: getProp_('COUPON_REPLY_TO', 'contact@mycuscotrip.com'),
+    logoUrl: getProp_('COUPON_LOGO_URL', 'https://mycuscotrip.com/assets/img/logos/Logo1.png'),
+    ctaUrl: getProp_('COUPON_CTA_URL', 'https://mycuscotrip.com/go'),
+    alias: testCouponSenderAlias_()
+  };
 }
 
 function clearPayPalCache() {
@@ -281,6 +360,9 @@ function doPost(e) {
     if (action === 'createMercadoPagoPreference') return json_(createMercadoPagoPreference_(payload));
     if (action === 'captureMercadoPagoPayment') return json_(captureMercadoPagoPayment_(payload));
     if (action === 'lookupReservation') return json_(lookupReservation_(payload));
+    if (action === 'createTravelLead') return json_(createTravelLead_(payload));
+    if (action === 'resendTravelLeadCode') return json_(resendTravelLeadCode_(payload));
+    if (action === 'verifyTravelLeadEmail') return json_(verifyTravelLeadEmail_(payload));
 
     return json_({ ok: false, error: 'Acción POST no reconocida: ' + action });
   } catch (err) {
@@ -288,6 +370,794 @@ function doPost(e) {
     return json_({ ok: false, error: getErrorMessage_(err) });
   }
 }
+
+
+/* ========================================================================
+   PLANIFICADOR DE VIAJE / LEADS WEB
+   ======================================================================== */
+
+function createTravelLead_(p) {
+  const raw = p && p.payload && typeof p.payload === 'object' ? p.payload : (p || {});
+  const lead = validateTravelLeadPayload_(raw);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+
+  try {
+    const existingByRequest = findTravelLeadByClientRequestId_(lead.clientRequestId);
+    if (existingByRequest) {
+      const row = existingByRequest.row;
+      const state = clean_(row.Estado);
+      return {
+        ok: true,
+        existing: true,
+        leadId: row.ID,
+        status: state,
+        maskedEmail: maskEmail_(row.Email),
+        codeExpiresAt: toIsoSafe_(row.CodigoExpira),
+        resendAvailableAt: calculateResendAvailableAt_(row.UltimoEnvioCodigo),
+        emailSent: true,
+        alreadyVerified: normalizeText_(state) === 'verified'
+      };
+    }
+
+    enforceTravelLeadCreateRateLimit_(lead.email, lead.whatsapp);
+
+    const now = new Date();
+    const leadId = generateUniqueTravelLeadId_();
+    const code = generateTravelLeadVerificationCode_();
+    const codeExpiry = addMinutes_(now, number_(getProp_('LEAD_CODE_TTL_MINUTES', '10'), 10));
+    const codeHash = hashTravelLeadVerificationCode_(leadId, lead.email, code);
+
+    const rowObject = {
+      ID: leadId,
+      FechaRegistro: now,
+      FechaActualizacion: now,
+      Estado: 'PENDING_EMAIL',
+      Nombre: lead.name,
+      Apellido: lead.lastName,
+      Email: lead.email,
+      EmailVerificado: false,
+      WhatsApp: lead.whatsapp,
+      PaisTelefono: lead.phoneCountry + (lead.phoneDialCode ? ' (' + lead.phoneDialCode + ')' : ''),
+      Adultos: lead.adults,
+      Ninos: lead.children,
+      EdadesNinos: lead.childAges.join(', '),
+      EstadoFechas: travelLeadLabel_('dateStatus', lead.dateStatus),
+      FechaInicio: lead.startDate,
+      FechaFin: lead.endDate,
+      MesEstimado: lead.estimatedMonthLabel || lead.estimatedMonth,
+      SemanaEstimada: travelLeadLabel_('week', lead.estimatedWeek),
+      DuracionDias: travelLeadDurationLabel_(lead),
+      EstadoVuelos: travelLeadLabel_('flightStatus', lead.flightStatus),
+      OrigenViaje: lead.travelOrigin,
+      TipoServicio: travelLeadLabel_('serviceType', lead.serviceType),
+      Destinos: lead.destinations.map(function(value) { return travelLeadLabel_('destination', value); }).join(', '),
+      OtrosDestino: lead.otherDestination,
+      AlcanceViaje: travelLeadLabel_('scope', lead.scope),
+      AlcanceOtrosDestinos: lead.scopeExtras.map(function(value) { return travelLeadLabel_('destination', value); }).join(', '),
+      Comentarios: lead.comments,
+      OrigenLead: lead.originLead,
+      PaisCampana: lead.campaignCountry,
+      CampanaParametro: lead.campaignParam,
+      UTMSource: lead.utmSource,
+      UTMMedium: lead.utmMedium,
+      UTMCampaign: lead.utmCampaign,
+      UTMContent: lead.utmContent,
+      UTMTerm: lead.utmTerm,
+      FBCLID: lead.fbclid,
+      PaginaOrigen: lead.pageOrigin,
+      Referrer: lead.referrer,
+      ClientRequestID: lead.clientRequestId,
+      CodigoVerificacion: codeHash,
+      CodigoExpira: codeExpiry,
+      UltimoEnvioCodigo: now,
+      Reenvios: 0,
+      IntentosVerificacion: 0,
+      FechaVerificacion: '',
+      NotificacionInternaEn: '',
+      JSON: JSON.stringify(lead)
+    };
+
+    appendTravelLeadRow_(rowObject);
+    const emailResult = sendTravelLeadVerificationEmail_(rowObject, code);
+
+    logAudit_('createTravelLead', leadId, 'Prospecto web creado en estado PENDING_EMAIL', {
+      email: lead.email,
+      source: lead.originLead,
+      campaign: lead.utmCampaign || lead.campaignParam,
+      emailSent: Boolean(emailResult && emailResult.sent)
+    });
+
+    return {
+      ok: true,
+      leadId: leadId,
+      status: 'PENDING_EMAIL',
+      maskedEmail: maskEmail_(lead.email),
+      codeExpiresAt: codeExpiry.toISOString(),
+      resendAvailableAt: addSeconds_(now, number_(getProp_('LEAD_RESEND_COOLDOWN_SECONDS', '60'), 60)).toISOString(),
+      emailSent: Boolean(emailResult && emailResult.sent)
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function resendTravelLeadCode_(p) {
+  const raw = p && p.payload && typeof p.payload === 'object' ? p.payload : (p || {});
+  const leadId = clean_(raw.leadId);
+  const email = cleanEmail_(raw.email);
+  if (!leadId || !isValidEmail_(email)) {
+    return { ok: false, errorCode: 'INVALID_REQUEST', error: 'Solicitud de reenvío inválida.' };
+  }
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+
+  try {
+    const item = findTravelLeadById_(leadId);
+    if (!item || cleanEmail_(item.row.Email) !== email) {
+      return { ok: false, errorCode: 'LEAD_NOT_FOUND', error: 'No encontramos la solicitud pendiente.' };
+    }
+
+    const row = item.row;
+    if (normalizeText_(row.Estado) === 'verified') {
+      return { ok: false, errorCode: 'ALREADY_VERIFIED', error: 'Este correo ya fue verificado.' };
+    }
+
+    const now = new Date();
+    const cooldown = Math.max(15, number_(getProp_('LEAD_RESEND_COOLDOWN_SECONDS', '60'), 60));
+    const lastSentAt = parseDate_(row.UltimoEnvioCodigo);
+    if (lastSentAt) {
+      const elapsed = Math.floor((now.getTime() - lastSentAt.getTime()) / 1000);
+      if (elapsed < cooldown) {
+        return {
+          ok: false,
+          errorCode: 'RESEND_COOLDOWN',
+          error: 'Espera unos segundos antes de solicitar otro código.',
+          retryAfterSeconds: cooldown - elapsed
+        };
+      }
+    }
+
+    const resendCount = Math.max(0, Math.floor(number_(row.Reenvios, 0)));
+    const maxResends = Math.max(1, Math.floor(number_(getProp_('LEAD_MAX_RESENDS', '5'), 5)));
+    if (resendCount >= maxResends) {
+      return {
+        ok: false,
+        errorCode: 'RESEND_LIMIT',
+        error: 'Alcanzaste el límite de reenvíos para esta solicitud. Puedes completar nuevamente el formulario más adelante.'
+      };
+    }
+
+    const code = generateTravelLeadVerificationCode_();
+    const expiry = addMinutes_(now, number_(getProp_('LEAD_CODE_TTL_MINUTES', '10'), 10));
+    const codeHash = hashTravelLeadVerificationCode_(leadId, email, code);
+
+    updateRowFields_(item, {
+      FechaActualizacion: now,
+      CodigoVerificacion: codeHash,
+      CodigoExpira: expiry,
+      UltimoEnvioCodigo: now,
+      Reenvios: resendCount + 1,
+      IntentosVerificacion: 0
+    });
+
+    const refreshed = findTravelLeadById_(leadId);
+    const emailResult = sendTravelLeadVerificationEmail_(refreshed ? refreshed.row : row, code);
+
+    logAudit_('resendTravelLeadCode', leadId, 'Código de verificación reenviado', {
+      resendCount: resendCount + 1,
+      emailSent: Boolean(emailResult && emailResult.sent)
+    });
+
+    return {
+      ok: true,
+      leadId: leadId,
+      status: 'PENDING_EMAIL',
+      codeExpiresAt: expiry.toISOString(),
+      resendAvailableAt: addSeconds_(now, cooldown).toISOString(),
+      emailSent: Boolean(emailResult && emailResult.sent)
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function verifyTravelLeadEmail_(p) {
+  const raw = p && p.payload && typeof p.payload === 'object' ? p.payload : (p || {});
+  const leadId = clean_(raw.leadId);
+  const email = cleanEmail_(raw.email);
+  const code = String(raw.code || '').replace(/\D/g, '').slice(0, 6);
+
+  if (!leadId || !isValidEmail_(email) || !/^\d{6}$/.test(code)) {
+    return { ok: false, errorCode: 'INVALID_REQUEST', error: 'Ingresa un código válido de 6 dígitos.' };
+  }
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+
+  let verifiedRow = null;
+  let shouldNotify = false;
+  try {
+    const item = findTravelLeadById_(leadId);
+    if (!item || cleanEmail_(item.row.Email) !== email) {
+      return { ok: false, errorCode: 'LEAD_NOT_FOUND', error: 'No encontramos la solicitud pendiente.' };
+    }
+
+    const row = item.row;
+    if (normalizeText_(row.Estado) === 'verified' || boolean_(row.EmailVerificado, false)) {
+      return buildTravelLeadVerifiedResponse_(row, false);
+    }
+
+    const maxAttempts = Math.max(3, Math.floor(number_(getProp_('LEAD_MAX_VERIFY_ATTEMPTS', '8'), 8)));
+    const attempts = Math.max(0, Math.floor(number_(row.IntentosVerificacion, 0)));
+    if (attempts >= maxAttempts) {
+      return {
+        ok: false,
+        errorCode: 'TOO_MANY_ATTEMPTS',
+        error: 'Se alcanzó el límite de intentos. Solicita un nuevo código.'
+      };
+    }
+
+    const now = new Date();
+    const expiry = parseDate_(row.CodigoExpira);
+    if (!expiry || expiry.getTime() < now.getTime()) {
+      return {
+        ok: false,
+        errorCode: 'CODE_EXPIRED',
+        error: 'El código expiró. Solicita uno nuevo.',
+        canResend: true
+      };
+    }
+
+    const expected = clean_(row.CodigoVerificacion);
+    const actual = hashTravelLeadVerificationCode_(leadId, email, code);
+    if (!expected || !constantTimeEquals_(expected, actual)) {
+      updateRowFields_(item, {
+        FechaActualizacion: now,
+        IntentosVerificacion: attempts + 1
+      });
+      return {
+        ok: false,
+        errorCode: 'INVALID_CODE',
+        error: 'El código no es correcto. Revisa los 6 dígitos e inténtalo nuevamente.',
+        attemptsRemaining: Math.max(0, maxAttempts - attempts - 1)
+      };
+    }
+
+    updateRowFields_(item, {
+      FechaActualizacion: now,
+      Estado: 'VERIFIED',
+      EmailVerificado: true,
+      CodigoVerificacion: '',
+      CodigoExpira: '',
+      FechaVerificacion: now,
+      IntentosVerificacion: attempts + 1
+    });
+
+    const updated = findTravelLeadById_(leadId);
+    verifiedRow = updated ? updated.row : Object.assign({}, row, {
+      Estado: 'VERIFIED',
+      EmailVerificado: true,
+      FechaVerificacion: now
+    });
+    shouldNotify = !clean_(verifiedRow.NotificacionInternaEn);
+  } finally {
+    lock.releaseLock();
+  }
+
+  if (verifiedRow && shouldNotify) {
+    const notification = sendTravelLeadInternalNotification_(verifiedRow);
+    if (notification && notification.sent) {
+      const latest = findTravelLeadById_(leadId);
+      if (latest) updateRowFields_(latest, { NotificacionInternaEn: new Date(), FechaActualizacion: new Date() });
+    }
+  }
+
+  logAudit_('verifyTravelLeadEmail', leadId, 'Prospecto verificado correctamente', {
+    email: email,
+    source: verifiedRow && verifiedRow.OrigenLead || ''
+  });
+
+  return buildTravelLeadVerifiedResponse_(verifiedRow, true);
+}
+
+function validateTravelLeadPayload_(raw) {
+  const lead = {
+    clientRequestId: truncate_(clean_(raw.clientRequestId || Utilities.getUuid()), 100),
+    locale: normalizeLocale_(raw.locale || 'es'),
+    name: truncate_(clean_(raw.name), 60),
+    lastName: truncate_(clean_(raw.lastName), 60),
+    email: cleanEmail_(raw.email),
+    whatsapp: normalizeTravelLeadPhone_(raw.whatsapp),
+    phoneCountry: truncate_(clean_(raw.phoneCountry).toUpperCase(), 3),
+    phoneDialCode: truncate_(clean_(raw.phoneDialCode), 8),
+    adults: Math.floor(number_(raw.adults, 0)),
+    children: Math.floor(number_(raw.children, 0)),
+    childAges: Array.isArray(raw.childAges) ? raw.childAges.slice(0, 20).map(function(v) { return Math.floor(number_(v, -1)); }) : [],
+    dateStatus: clean_(raw.dateStatus),
+    startDate: normalizeLeadDate_(raw.startDate),
+    endDate: normalizeLeadDate_(raw.endDate),
+    estimatedMonth: truncate_(clean_(raw.estimatedMonth), 7),
+    estimatedMonthLabel: truncate_(clean_(raw.estimatedMonthLabel), 40),
+    estimatedWeek: clean_(raw.estimatedWeek),
+    duration: truncate_(clean_(raw.duration), 12),
+    flightStatus: clean_(raw.flightStatus),
+    travelOrigin: truncate_(clean_(raw.travelOrigin), 100),
+    serviceType: clean_(raw.serviceType),
+    destinations: sanitizeLeadArray_(raw.destinations, 15),
+    otherDestination: truncate_(clean_(raw.otherDestination), 120),
+    scope: clean_(raw.scope),
+    scopeExtras: sanitizeLeadArray_(raw.scopeExtras, 10),
+    comments: truncate_(clean_(raw.comments), 1000),
+    originLead: truncate_(clean_(raw.originLead || 'WEB').toUpperCase(), 30),
+    campaignCountry: truncate_(clean_(raw.campaignCountry).toUpperCase(), 5),
+    campaignParam: truncate_(clean_(raw.campaignParam), 120),
+    utmSource: truncate_(clean_(raw.utmSource), 180),
+    utmMedium: truncate_(clean_(raw.utmMedium), 180),
+    utmCampaign: truncate_(clean_(raw.utmCampaign), 220),
+    utmContent: truncate_(clean_(raw.utmContent), 220),
+    utmTerm: truncate_(clean_(raw.utmTerm), 220),
+    fbclid: truncate_(clean_(raw.fbclid), 300),
+    pageOrigin: truncate_(clean_(raw.pageOrigin), 500),
+    referrer: truncate_(clean_(raw.referrer), 500)
+  };
+
+  if (lead.name.length < 2) throw new Error('Nombre requerido.');
+  if (lead.lastName.length < 2) throw new Error('Apellido requerido.');
+  if (!isValidEmail_(lead.email)) throw new Error('Correo electrónico inválido.');
+  if (!isValidPhone_(lead.whatsapp)) throw new Error('WhatsApp inválido.');
+  if (lead.adults < 1 || lead.adults > 20) throw new Error('La cantidad de adultos no es válida.');
+  if (lead.children < 0 || lead.children > 20) throw new Error('La cantidad de niños no es válida.');
+  if (lead.children !== lead.childAges.length) throw new Error('Completa la edad de cada niño.');
+  if (lead.childAges.some(function(age) { return age < 0 || age > 17; })) throw new Error('La edad de los niños debe estar entre 0 y 17 años.');
+
+  const allowedDateStatuses = ['exact','approximate','planning'];
+  if (allowedDateStatuses.indexOf(lead.dateStatus) < 0) throw new Error('Indica el estado de tus fechas.');
+
+  if (lead.dateStatus === 'exact') {
+    if (!lead.startDate || !lead.endDate) throw new Error('Completa la fecha de llegada y salida.');
+    const days = calculateInclusiveDays_(lead.startDate, lead.endDate);
+    if (days <= 0) throw new Error('La fecha de salida debe ser igual o posterior a la llegada.');
+    lead.duration = String(days);
+    lead.estimatedMonth = '';
+    lead.estimatedMonthLabel = '';
+    lead.estimatedWeek = '';
+  } else {
+    if (!/^\d{4}-\d{2}$/.test(lead.estimatedMonth)) throw new Error('Selecciona un mes y año aproximados.');
+    if (lead.dateStatus === 'approximate' && ['first','second','third','fourth','flexible'].indexOf(lead.estimatedWeek) < 0) {
+      throw new Error('Selecciona una semana aproximada.');
+    }
+    if (['3-4','5','6','7','8-10','11+','unknown'].indexOf(lead.duration) < 0) {
+      throw new Error('Selecciona una duración aproximada.');
+    }
+    lead.startDate = '';
+    lead.endDate = '';
+  }
+
+  if (['purchased','dates_no_ticket','planning'].indexOf(lead.flightStatus) < 0) throw new Error('Indica el estado de tus vuelos.');
+  if (['tours','tours_hotel','tours_hotel_transfers','complete','unsure'].indexOf(lead.serviceType) < 0) throw new Error('Selecciona el tipo de servicio.');
+
+  const allowedDestinations = ['machu_picchu','cusco','sacred_valley','rainbow_mountain','humantay','lima','paracas_ica','arequipa','puno','amazon','other','recommend'];
+  lead.destinations = lead.destinations.filter(function(value) { return allowedDestinations.indexOf(value) >= 0; });
+  if (!lead.destinations.length) throw new Error('Selecciona al menos un destino o solicita una recomendación.');
+
+  if (['cusco_machu','cusco_lima','cusco_others','recommend'].indexOf(lead.scope) < 0) throw new Error('Selecciona el alcance de tu viaje.');
+  if (lead.scope === 'cusco_others') {
+    const allowedScopeExtras = ['arequipa','puno','paracas_ica','amazon','other'];
+    lead.scopeExtras = lead.scopeExtras.filter(function(value) { return allowedScopeExtras.indexOf(value) >= 0; });
+    if (!lead.scopeExtras.length) throw new Error('Selecciona al menos otro destino para combinar con Cusco.');
+  } else {
+    lead.scopeExtras = [];
+  }
+
+  return lead;
+}
+
+function appendTravelLeadRow_(rowObject) {
+  const sh = getSheet_(SHEETS.LEADS_WEB, HEADERS.LEADS_WEB);
+  ensureHeaders_(sh, HEADERS.LEADS_WEB);
+  const values = HEADERS.LEADS_WEB.map(function(header) {
+    const value = rowObject[header];
+    return value == null ? '' : value;
+  });
+  sh.appendRow(values);
+}
+
+function findTravelLeadById_(leadId) {
+  const normalized = clean_(leadId);
+  if (!normalized) return null;
+  return readRows_(SHEETS.LEADS_WEB, HEADERS.LEADS_WEB).find(function(item) {
+    return clean_(item.row.ID) === normalized;
+  }) || null;
+}
+
+function findTravelLeadByClientRequestId_(clientRequestId) {
+  const normalized = clean_(clientRequestId);
+  if (!normalized) return null;
+  return readRows_(SHEETS.LEADS_WEB, HEADERS.LEADS_WEB).find(function(item) {
+    return clean_(item.row.ClientRequestID) === normalized;
+  }) || null;
+}
+
+function enforceTravelLeadCreateRateLimit_(email, whatsapp) {
+  const windowMinutes = Math.max(5, number_(getProp_('LEAD_CREATE_WINDOW_MINUTES', '15'), 15));
+  const maxCreates = Math.max(1, Math.floor(number_(getProp_('LEAD_CREATE_MAX_PER_WINDOW', '3'), 3)));
+  const threshold = Date.now() - windowMinutes * 60 * 1000;
+  const normalizedEmail = cleanEmail_(email);
+  const normalizedPhone = String(whatsapp || '').replace(/\D/g, '');
+
+  const recent = readRows_(SHEETS.LEADS_WEB, HEADERS.LEADS_WEB).filter(function(item) {
+    const created = parseDate_(item.row.FechaRegistro);
+    if (!created || created.getTime() < threshold) return false;
+    const sameEmail = cleanEmail_(item.row.Email) === normalizedEmail;
+    const samePhone = String(item.row.WhatsApp || '').replace(/\D/g, '') === normalizedPhone;
+    return sameEmail || samePhone;
+  }).length;
+
+  if (recent >= maxCreates) {
+    throw new Error('Has realizado varias solicitudes en poco tiempo. Espera unos minutos antes de intentarlo nuevamente.');
+  }
+}
+
+function generateUniqueTravelLeadId_() {
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const bytes = Utilities.computeDigest(
+      Utilities.DigestAlgorithm.SHA_256,
+      Utilities.getUuid() + '|' + new Date().getTime() + '|' + attempt
+    );
+    let value = 0;
+    for (let i = 0; i < 4; i++) value = (value * 256 + (bytes[i] & 0xff)) >>> 0;
+    const numeric = 100000 + (value % 900000);
+    const id = 'MCT-LEAD-' + numeric;
+    if (!findTravelLeadById_(id)) return id;
+  }
+  throw new Error('No se pudo generar un ID único para la solicitud.');
+}
+
+function generateTravelLeadVerificationCode_() {
+  const bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    Utilities.getUuid() + '|' + new Date().getTime() + '|' + Math.random()
+  );
+  let value = 0;
+  for (let i = 0; i < 4; i++) value = (value * 256 + (bytes[i] & 0xff)) >>> 0;
+  return String(100000 + (value % 900000));
+}
+
+function hashTravelLeadVerificationCode_(leadId, email, code) {
+  const pepper = ensureTravelLeadPepper_();
+  const material = [clean_(leadId), cleanEmail_(email), String(code || ''), pepper].join('|');
+  const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, material, Utilities.Charset.UTF_8);
+  return digest.map(function(byte) {
+    const value = byte < 0 ? byte + 256 : byte;
+    return ('0' + value.toString(16)).slice(-2);
+  }).join('');
+}
+
+function ensureTravelLeadPepper_() {
+  const props = PropertiesService.getScriptProperties();
+  let pepper = clean_(props.getProperty('LEAD_VERIFICATION_PEPPER'));
+  if (!pepper) {
+    pepper = Utilities.getUuid() + Utilities.getUuid();
+    props.setProperty('LEAD_VERIFICATION_PEPPER', pepper);
+  }
+  return pepper;
+}
+
+function constantTimeEquals_(a, b) {
+  const left = String(a || '');
+  const right = String(b || '');
+  if (left.length !== right.length) return false;
+  let diff = 0;
+  for (let i = 0; i < left.length; i++) diff |= left.charCodeAt(i) ^ right.charCodeAt(i);
+  return diff === 0;
+}
+
+function sendTravelLeadVerificationEmail_(row, code) {
+  const email = cleanEmail_(row.Email || row.email);
+  if (!isValidEmail_(email)) return { sent: false, error: 'Correo inválido.' };
+
+  const name = clean_(row.Nombre || row.name || 'viajero');
+  const sender = getCouponSenderConfig_();
+  const logoBlob = fetchCouponLogoBlob_();
+  const planUrl = getProp_('LEAD_PLAN_URL', 'https://mycuscotrip.com/planifica-tu-viaje.html');
+  const subject = 'Confirma los datos de tu viaje | My Cusco Trip';
+  const logoHtml = logoBlob
+    ? '<img src="cid:mctLogo" width="190" alt="My Cusco Trip" style="display:block;width:190px;max-width:72%;height:auto;margin:0 auto 15px;border:0;background:transparent">'
+    : '<div style="font-size:21px;font-weight:800;color:#fff;margin-bottom:12px">My Cusco Trip</div>';
+
+  const safeName = escapeHtml_(name);
+  const safeCode = escapeHtml_(code);
+  const safePlanUrl = escapeHtml_(planUrl);
+  const htmlBody = [
+    '<!doctype html><html><body style="margin:0;padding:0;background:#f2f6f3;font-family:Arial,Helvetica,sans-serif;color:#25322d">',
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f2f6f3;padding:24px 10px"><tr><td align="center">',
+    '<table role="presentation" width="620" cellspacing="0" cellpadding="0" style="width:100%;max-width:620px;background:#fff;border-radius:20px;overflow:hidden">',
+    '<tr><td align="center" style="background:#0a3a26;padding:28px 24px;color:#fff">',
+    logoHtml,
+    '<h1 style="margin:0;color:#fff;font-size:26px;line-height:1.2">Confirma los datos de tu viaje</h1>',
+    '</td></tr>',
+    '<tr><td style="padding:28px 26px">',
+    '<p style="margin:0 0 15px;font-size:16px;line-height:1.65">Hola ' + safeName + ',</p>',
+    '<p style="margin:0 0 20px;font-size:16px;line-height:1.65">Gracias por confiar en My Cusco Trip para ayudarte a planificar tu próximo viaje a Perú.</p>',
+    '<p style="margin:0 0 12px;text-align:center;color:#61716a;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.7px">Tu código de verificación es</p>',
+    '<div style="margin:0 auto 20px;max-width:310px;padding:17px 18px;border-radius:16px;background:#eef6f1;border:1px solid #d7e8de;text-align:center;color:#0a3a26;font-size:34px;line-height:1;font-weight:800;letter-spacing:8px">' + safeCode + '</div>',
+    '<p style="margin:0 0 18px;text-align:center;font-size:15px;line-height:1.6;color:#4b5b54">Este código estará disponible durante <strong>10 minutos</strong>.</p>',
+    '<p style="margin:0 0 22px;font-size:14px;line-height:1.65;color:#6b7772">Si no solicitaste esta propuesta, puedes ignorar este correo.</p>',
+    '<p style="margin:0;text-align:center"><a href="' + safePlanUrl + '" style="display:inline-block;background:#0a3a26;color:#fff;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:12px">Volver a My Cusco Trip</a></p>',
+    '</td></tr>',
+    '<tr><td align="center" style="background:#eef3ef;padding:18px 22px;color:#68766f;font-size:12px;line-height:1.5">My Cusco Trip · WhatsApp +51 900 608 980</td></tr>',
+    '</table></td></tr></table></body></html>'
+  ].join('');
+
+  const plainBody = [
+    'Hola ' + name + ',',
+    '',
+    'Gracias por confiar en My Cusco Trip para ayudarte a planificar tu próximo viaje a Perú.',
+    '',
+    'Tu código de verificación es: ' + code,
+    '',
+    'Este código estará disponible durante 10 minutos.',
+    '',
+    'My Cusco Trip',
+    'WhatsApp +51 900 608 980'
+  ].join('\n');
+
+  const options = {
+    htmlBody: htmlBody,
+    name: sender.name,
+    replyTo: sender.replyTo
+  };
+  if (sender.canUseAlias) options.from = sender.senderEmail;
+  if (logoBlob) options.inlineImages = { mctLogo: logoBlob };
+
+  try {
+    GmailApp.sendEmail(email, subject, plainBody, options);
+    return { sent: true, fromAlias: sender.canUseAlias, logoEmbedded: Boolean(logoBlob) };
+  } catch (gmailError) {
+    try {
+      const fallback = {
+        to: email,
+        subject: subject,
+        body: plainBody,
+        htmlBody: htmlBody,
+        name: sender.name,
+        replyTo: sender.replyTo
+      };
+      if (logoBlob) fallback.inlineImages = { mctLogo: logoBlob };
+      MailApp.sendEmail(fallback);
+      return { sent: true, fallback: true, fromAlias: false, logoEmbedded: Boolean(logoBlob) };
+    } catch (fallbackError) {
+      logAudit_('TRAVEL_LEAD_EMAIL_ERROR', clean_(row.ID), getErrorMessage_(fallbackError), {
+        email: email,
+        gmailError: getErrorMessage_(gmailError)
+      });
+      return { sent: false, error: getErrorMessage_(fallbackError) };
+    }
+  }
+}
+
+function sendTravelLeadInternalNotification_(row) {
+  const to = cleanEmail_(getProp_('LEAD_NOTIFICATION_EMAIL', 'reservas@mycuscotrip.com'));
+  if (!isValidEmail_(to)) return { sent: false, error: 'LEAD_NOTIFICATION_EMAIL inválido.' };
+
+  const name = [clean_(row.Nombre), clean_(row.Apellido)].filter(Boolean).join(' ').trim();
+  const when = clean_(row.FechaInicio) || clean_(row.MesEstimado) || 'Por definir';
+  const subject = 'Nuevo prospecto verificado | ' + (name || 'Sin nombre') + ' | ' + when;
+  const phoneDigits = String(row.WhatsApp || '').replace(/\D/g, '');
+  const waUrl = phoneDigits ? 'https://wa.me/' + phoneDigits : 'https://wa.me/51900608980';
+
+  const passengers = [
+    number_(row.Adultos, 0) + ' adulto(s)',
+    number_(row.Ninos, 0) > 0 ? number_(row.Ninos, 0) + ' niño(s)' : ''
+  ].filter(Boolean).join(' · ');
+
+  const rows = [
+    ['Nombre', name],
+    ['WhatsApp', clean_(row.WhatsApp)],
+    ['Email', clean_(row.Email)],
+    ['Pasajeros', passengers],
+    ['Fechas', row.FechaInicio ? (clean_(row.FechaInicio) + ' → ' + clean_(row.FechaFin)) : clean_(row.MesEstimado) + (row.SemanaEstimada ? ' · ' + clean_(row.SemanaEstimada) : '')],
+    ['Duración', clean_(row.DuracionDias)],
+    ['Vuelos', clean_(row.EstadoVuelos)],
+    ['Servicio solicitado', clean_(row.TipoServicio)],
+    ['Destinos', clean_(row.Destinos)],
+    ['Alcance', clean_(row.AlcanceViaje)],
+    ['Comentarios', clean_(row.Comentarios) || 'Sin comentarios'],
+    ['Origen lead', clean_(row.OrigenLead)],
+    ['Campaña', clean_(row.UTMCampaign || row.CampanaParametro)]
+  ];
+
+  const htmlRows = rows.map(function(pair) {
+    return '<tr><td style="padding:8px 10px;border-bottom:1px solid #e5ece8;color:#6b7772;font-size:13px;width:34%">' + escapeHtml_(pair[0]) + '</td><td style="padding:8px 10px;border-bottom:1px solid #e5ece8;color:#17372a;font-size:14px;font-weight:700">' + escapeHtml_(pair[1]) + '</td></tr>';
+  }).join('');
+
+  const htmlBody = [
+    '<div style="font-family:Arial,Helvetica,sans-serif;color:#25322d;max-width:680px;margin:auto">',
+    '<div style="background:#0a3a26;color:#fff;padding:22px 24px;border-radius:18px 18px 0 0"><h2 style="margin:0;color:#fff">Nuevo prospecto verificado</h2><p style="margin:7px 0 0;color:#dbeadf">' + escapeHtml_(row.ID) + '</p></div>',
+    '<div style="border:1px solid #dbe5df;border-top:0;padding:18px 18px 24px;border-radius:0 0 18px 18px;background:#fff">',
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse">' + htmlRows + '</table>',
+    '<p style="text-align:center;margin:22px 0 0"><a href="' + escapeHtml_(waUrl) + '" style="display:inline-block;background:#0a3a26;color:#fff;text-decoration:none;font-weight:800;padding:14px 20px;border-radius:12px">Contactar por WhatsApp</a></p>',
+    '</div></div>'
+  ].join('');
+
+  try {
+    MailApp.sendEmail({
+      to: to,
+      subject: subject,
+      body: rows.map(function(pair) { return pair[0] + ': ' + pair[1]; }).join('\n'),
+      htmlBody: htmlBody,
+      name: 'My Cusco Trip'
+    });
+    return { sent: true };
+  } catch (err) {
+    logAudit_('TRAVEL_LEAD_INTERNAL_EMAIL_ERROR', clean_(row.ID), getErrorMessage_(err), { to: to });
+    return { sent: false, error: getErrorMessage_(err) };
+  }
+}
+
+function buildTravelLeadVerifiedResponse_(row, shouldTrackLead) {
+  const totalTravelers = Math.max(0, number_(row.Adultos, 0)) + Math.max(0, number_(row.Ninos, 0));
+  const name = clean_(row.Nombre);
+  const when = clean_(row.FechaInicio) || clean_(row.MesEstimado) || 'fecha por definir';
+  const message = 'Hola, soy ' + name + '. Ya completé los datos de mi viaje en My Cusco Trip. Somos ' +
+    totalTravelers + ' ' + (totalTravelers === 1 ? 'viajero' : 'viajeros') + ' y estamos planificando viajar en ' + when + '.';
+
+  return {
+    ok: true,
+    verified: true,
+    leadId: clean_(row.ID),
+    status: 'VERIFIED',
+    name: name,
+    totalTravelers: totalTravelers,
+    travelWhen: when,
+    whatsappUrl: 'https://wa.me/51900608980?text=' + encodeURIComponent(message),
+    shouldTrackLead: Boolean(shouldTrackLead),
+    metaEventId: 'MCT-TRIP-' + clean_(row.ID)
+  };
+}
+
+function travelLeadLabel_(kind, value) {
+  const maps = {
+    dateStatus: {
+      exact: 'Fechas definidas',
+      approximate: 'Fecha aproximada',
+      planning: 'Todavía planificando'
+    },
+    week: {
+      first: 'Primera semana',
+      second: 'Segunda semana',
+      third: 'Tercera semana',
+      fourth: 'Cuarta semana',
+      flexible: 'Última semana / flexible'
+    },
+    flightStatus: {
+      purchased: 'Vuelos comprados',
+      dates_no_ticket: 'Tiene fechas, vuelos aún no comprados',
+      planning: 'Todavía planificando vuelos'
+    },
+    serviceType: {
+      tours: 'Solo tours y experiencias',
+      tours_hotel: 'Tours + alojamiento',
+      tours_hotel_transfers: 'Tours + alojamiento + traslados',
+      complete: 'Viaje completo',
+      unsure: 'Todavía no está seguro/a'
+    },
+    scope: {
+      cusco_machu: 'Solo Cusco + Machu Picchu',
+      cusco_lima: 'Cusco + Lima',
+      cusco_others: 'Cusco + otros destinos',
+      recommend: 'Quiere una recomendación'
+    },
+    destination: {
+      machu_picchu: 'Machu Picchu',
+      cusco: 'Cusco',
+      sacred_valley: 'Valle Sagrado',
+      rainbow_mountain: 'Montaña de 7 Colores',
+      humantay: 'Laguna Humantay',
+      lima: 'Lima',
+      paracas_ica: 'Paracas / Ica',
+      arequipa: 'Arequipa',
+      puno: 'Puno / Lago Titicaca',
+      amazon: 'Amazonía',
+      other: 'Otros',
+      recommend: 'Quiere recomendación'
+    }
+  };
+  return maps[kind] && maps[kind][value] ? maps[kind][value] : clean_(value);
+}
+
+function travelLeadDurationLabel_(lead) {
+  if (lead.dateStatus === 'exact') {
+    const days = calculateInclusiveDays_(lead.startDate, lead.endDate);
+    return days > 0 ? days + ' días' : '';
+  }
+  const labels = {
+    '3-4': '3–4 días',
+    '5': '5 días',
+    '6': '6 días',
+    '7': '7 días',
+    '8-10': '8–10 días',
+    '11+': 'Más de 10 días',
+    unknown: 'Todavía no lo sabe'
+  };
+  return labels[lead.duration] || clean_(lead.duration);
+}
+
+function normalizeTravelLeadPhone_(value) {
+  const raw = clean_(value);
+  const digits = raw.replace(/\D/g, '');
+  return digits ? '+' + digits : '';
+}
+
+function sanitizeLeadArray_(value, max) {
+  if (!Array.isArray(value)) return [];
+  const out = [];
+  value.slice(0, max || 20).forEach(function(item) {
+    const cleaned = truncate_(clean_(item), 80);
+    if (cleaned && out.indexOf(cleaned) < 0) out.push(cleaned);
+  });
+  return out;
+}
+
+function normalizeLeadDate_(value) {
+  const text = clean_(value);
+  return /^\d{4}-\d{2}-\d{2}$/.test(text) ? text : '';
+}
+
+function calculateInclusiveDays_(start, end) {
+  if (!start || !end) return 0;
+  const a = new Date(start + 'T12:00:00');
+  const b = new Date(end + 'T12:00:00');
+  if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return 0;
+  const diff = Math.floor((b.getTime() - a.getTime()) / 86400000);
+  return diff >= 0 ? diff + 1 : 0;
+}
+
+function addMinutes_(date, minutes) {
+  return new Date(date.getTime() + number_(minutes, 0) * 60 * 1000);
+}
+
+function addSeconds_(date, seconds) {
+  return new Date(date.getTime() + number_(seconds, 0) * 1000);
+}
+
+function calculateResendAvailableAt_(lastSent) {
+  const date = parseDate_(lastSent);
+  if (!date) return '';
+  return addSeconds_(date, number_(getProp_('LEAD_RESEND_COOLDOWN_SECONDS', '60'), 60)).toISOString();
+}
+
+function toIsoSafe_(value) {
+  const date = parseDate_(value);
+  return date ? date.toISOString() : '';
+}
+
+function maskEmail_(email) {
+  const cleanEmail = cleanEmail_(email);
+  const parts = cleanEmail.split('@');
+  if (parts.length !== 2) return cleanEmail;
+  const user = parts[0];
+  const visible = user.length <= 2 ? user.slice(0, 1) : user.slice(0, 2);
+  return visible + Array(Math.max(3, user.length - visible.length + 1)).join('*') + '@' + parts[1];
+}
+
+/**
+ * Prueba manual visible en el selector de Apps Script.
+ * Requiere LEAD_EMAIL_TEST_TO en Propiedades del script.
+ */
+function testLeadPlannerEmail() {
+  const target = cleanEmail_(getProp_('LEAD_EMAIL_TEST_TO', ''));
+  if (!isValidEmail_(target)) throw new Error('Configura LEAD_EMAIL_TEST_TO con un correo válido.');
+  const record = {
+    ID: 'MCT-LEAD-TEST',
+    Nombre: 'Viajero de prueba',
+    Email: target
+  };
+  return sendTravelLeadVerificationEmail_(record, '583921');
+}
+
 
 function createCouponLead_(p) {
   const name = clean_(p.name);
@@ -854,24 +1724,270 @@ function sendCouponEmails_(record) {
     'Vigente hasta: ' + expiryLabel,
     'Página: ' + record.page
   ].join('\n');
-  MailApp.sendEmail(corporate, subjectAdmin, bodyAdmin);
 
+  // El aviso administrativo no debe bloquear la creación del cupón si falla.
+  try {
+    MailApp.sendEmail(corporate, subjectAdmin, bodyAdmin);
+  } catch (adminError) {
+    logAudit_('COUPON_ADMIN_EMAIL_ERROR', '', getErrorMessage_(adminError), {
+      couponCode: record.couponCode,
+      corporate: corporate
+    });
+  }
+
+  return sendCouponClientEmail_(record);
+}
+
+/**
+ * Envía al cliente la plantilla visual del cupón con Logo1.png embebido.
+ * Si contact@mycuscotrip.com está autorizado como alias, se usa como remitente.
+ * De lo contrario, el mensaje sale desde la cuenta propietaria del script y
+ * contact@mycuscotrip.com queda configurado como dirección de respuesta.
+ */
+function sendCouponClientEmail_(record) {
+  const locale = normalizeLocale_(record.locale || 'es');
   const copy = couponEmailCopy_(locale);
-  const subjectClient = copy.subject;
-  const htmlBody = '<div style="font-family:Arial,sans-serif;color:#1f2937;line-height:1.6;max-width:620px;margin:auto">' +
-    '<div style="background:#0a3a26;padding:24px;border-radius:18px 18px 0 0;color:#fff">' +
-      '<h2 style="margin:0">' + escapeHtml_(copy.title) + '</h2>' +
-    '</div>' +
-    '<div style="border:1px solid #d9e3de;border-top:0;padding:24px;border-radius:0 0 18px 18px">' +
-      '<p>' + escapeHtml_(copy.intro) + '</p>' +
-      '<p style="display:inline-block;padding:12px 18px;border-radius:12px;background:#eef6f1;font-size:24px;font-weight:800;color:#0a3a26;letter-spacing:1px">' + escapeHtml_(record.couponCode) + '</p>' +
-      '<p>' + escapeHtml_(copy.discount) + ': <strong>' + escapeHtml_(discountLabel) + '</strong></p>' +
-      '<p>' + escapeHtml_(copy.validUntil) + ': <strong>' + escapeHtml_(expiryLabel) + '</strong></p>' +
-      '<p>' + escapeHtml_(copy.grace) + '</p>' +
-      '<p>' + escapeHtml_(copy.use) + '</p>' +
-    '</div>' +
-  '</div>';
-  MailApp.sendEmail({ to: record.email, subject: subjectClient, htmlBody: htmlBody, name: 'My Cusco Trip' });
+  const expiryLabel = formatCouponExpiry_(parseDate_(record.expiresAt), locale);
+  const discountLabel = couponLabel_(record.type, record.value, record.currency, locale);
+  const ctaUrl = getProp_('COUPON_CTA_URL', 'https://mycuscotrip.com/go');
+  const sender = getCouponSenderConfig_();
+  const logoBlob = fetchCouponLogoBlob_();
+  const htmlBody = buildCouponEmailHtml_(record, copy, expiryLabel, discountLabel, ctaUrl, Boolean(logoBlob));
+  const plainBody = buildCouponEmailPlainText_(record, copy, expiryLabel, discountLabel, ctaUrl);
+  const options = {
+    htmlBody: htmlBody,
+    name: sender.name,
+    replyTo: sender.replyTo
+  };
+
+  if (sender.canUseAlias) options.from = sender.senderEmail;
+  if (logoBlob) options.inlineImages = { mctLogo: logoBlob };
+
+  try {
+    GmailApp.sendEmail(record.email, copy.subject, plainBody, options);
+    logAudit_('sendCouponClientEmail', '', 'Correo de cupón enviado a ' + record.email, {
+      couponCode: record.couponCode,
+      from: sender.canUseAlias ? sender.senderEmail : 'cuenta_propietaria_del_script',
+      replyTo: sender.replyTo,
+      logoEmbedded: Boolean(logoBlob)
+    });
+    return {
+      ok: true,
+      sent: true,
+      fromAlias: sender.canUseAlias,
+      logoEmbedded: Boolean(logoBlob)
+    };
+  } catch (gmailError) {
+    // Respaldo con MailApp: conserva HTML, logo embebido y reply-to, pero no alias.
+    try {
+      const fallback = {
+        to: record.email,
+        subject: copy.subject,
+        body: plainBody,
+        htmlBody: htmlBody,
+        name: sender.name,
+        replyTo: sender.replyTo
+      };
+      if (logoBlob) fallback.inlineImages = { mctLogo: logoBlob };
+      MailApp.sendEmail(fallback);
+      logAudit_('sendCouponClientEmailFallback', '', 'Correo enviado mediante MailApp', {
+        couponCode: record.couponCode,
+        originalError: getErrorMessage_(gmailError)
+      });
+      return {
+        ok: true,
+        sent: true,
+        fromAlias: false,
+        logoEmbedded: Boolean(logoBlob),
+        fallback: true
+      };
+    } catch (fallbackError) {
+      logAudit_('COUPON_CLIENT_EMAIL_ERROR', '', getErrorMessage_(fallbackError), {
+        couponCode: record.couponCode,
+        email: record.email,
+        gmailError: getErrorMessage_(gmailError)
+      });
+      // El cupón ya quedó creado en Sheets. No se interrumpe el registro.
+      return {
+        ok: false,
+        sent: false,
+        error: getErrorMessage_(fallbackError)
+      };
+    }
+  }
+}
+
+function buildCouponEmailHtml_(record, copy, expiryLabel, discountLabel, ctaUrl, hasLogo) {
+  const safeCode = escapeHtml_(record.couponCode);
+  const safeDiscount = escapeHtml_(discountLabel);
+  const safeExpiry = escapeHtml_(expiryLabel);
+  const safeCtaUrl = escapeHtml_(ctaUrl);
+  const logoHtml = hasLogo
+    ? '<img src="cid:mctLogo" width="190" alt="My Cusco Trip" style="display:block;width:190px;max-width:72%;height:auto;margin:0 auto 16px;border:0;outline:none;text-decoration:none;background:transparent">'
+    : '<div style="font-size:20px;font-weight:800;letter-spacing:.3px;color:#ffffff;margin:0 0 14px">My Cusco Trip</div>';
+
+  return [
+    '<!doctype html>',
+    '<html>',
+    '<body style="margin:0;padding:0;background:#f3f6f4;font-family:Arial,Helvetica,sans-serif;color:#1f2937">',
+      '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#f3f6f4;margin:0;padding:24px 10px">',
+        '<tr><td align="center">',
+          '<table role="presentation" width="620" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:620px;border-collapse:separate;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 10px 28px rgba(10,58,38,.10)">',
+            '<tr><td align="center" style="background:#0a3a26;padding:28px 24px 26px;color:#ffffff">',
+              logoHtml,
+              '<h1 style="margin:0;font-size:27px;line-height:1.2;font-weight:800;color:#ffffff">' + escapeHtml_(copy.title) + '</h1>',
+            '</td></tr>',
+            '<tr><td style="padding:28px 26px 30px">',
+              '<p style="margin:0 0 20px;font-size:16px;line-height:1.65;color:#374151">' + escapeHtml_(copy.intro) + '</p>',
+
+              '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px;border-collapse:separate">',
+                '<tr><td align="center" style="padding:18px 14px;background:#eef6f1;border:1px solid #d8e9df;border-radius:16px">',
+                  '<div style="font-size:12px;line-height:1.2;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:#4b685a;margin-bottom:7px">' + escapeHtml_(copy.codeLabel) + '</div>',
+                  '<div style="font-size:27px;line-height:1.15;font-weight:800;letter-spacing:1.4px;color:#0a3a26;word-break:break-word">' + safeCode + '</div>',
+                '</td></tr>',
+              '</table>',
+
+              '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;border-collapse:separate">',
+                '<tr>',
+                  '<td width="50%" valign="top" style="padding-right:6px">',
+                    '<div style="min-height:76px;padding:15px 12px;text-align:center;background:#0a3a26;border-radius:14px;color:#ffffff">',
+                      '<div style="font-size:12px;line-height:1.2;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#cce2d5;margin-bottom:7px">' + escapeHtml_(copy.discount) + '</div>',
+                      '<div style="font-size:20px;line-height:1.2;font-weight:800;color:#ffffff">' + safeDiscount + '</div>',
+                    '</div>',
+                  '</td>',
+                  '<td width="50%" valign="top" style="padding-left:6px">',
+                    '<div style="min-height:76px;padding:15px 12px;text-align:center;background:#f8f2df;border:1px solid #eadcae;border-radius:14px;color:#5b4712">',
+                      '<div style="font-size:12px;line-height:1.2;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#806b32;margin-bottom:7px">' + escapeHtml_(copy.validUntil) + '</div>',
+                      '<div style="font-size:16px;line-height:1.25;font-weight:800;color:#5b4712">' + safeExpiry + '</div>',
+                    '</div>',
+                  '</td>',
+                '</tr>',
+              '</table>',
+
+              '<div style="padding:16px 17px;background:#fff8e6;border-left:4px solid #d5a72c;border-radius:10px;margin:0 0 22px">',
+                '<p style="margin:0;font-size:15px;line-height:1.6;color:#59491d"><strong>' + escapeHtml_(copy.hurryTitle) + '</strong> ' + escapeHtml_(copy.hurry) + '</p>',
+              '</div>',
+
+              '<p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:#4b5563">' + escapeHtml_(copy.use) + '</p>',
+              '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px">',
+                '<tr><td align="center">',
+                  '<a href="' + safeCtaUrl + '" target="_blank" style="display:inline-block;background:#0a3a26;color:#ffffff;text-decoration:none;font-size:16px;line-height:1;font-weight:800;padding:16px 25px;border-radius:12px">' + escapeHtml_(copy.cta) + '</a>',
+                '</td></tr>',
+              '</table>',
+              '<p style="margin:0;text-align:center;font-size:12px;line-height:1.5;color:#6b7280">' + escapeHtml_(copy.orVisit) + '<br><a href="' + safeCtaUrl + '" target="_blank" style="color:#0a3a26;text-decoration:underline">' + safeCtaUrl + '</a></p>',
+            '</td></tr>',
+            '<tr><td align="center" style="padding:18px 22px;background:#edf3ef;border-top:1px solid #dce6e0">',
+              '<p style="margin:0;font-size:12px;line-height:1.5;color:#647269">My Cusco Trip · Cusco, Perú</p>',
+            '</td></tr>',
+          '</table>',
+        '</td></tr>',
+      '</table>',
+    '</body>',
+    '</html>'
+  ].join('');
+}
+
+function buildCouponEmailPlainText_(record, copy, expiryLabel, discountLabel, ctaUrl) {
+  return [
+    copy.title,
+    '',
+    copy.intro,
+    '',
+    copy.codeLabel + ': ' + record.couponCode,
+    copy.discount + ': ' + discountLabel,
+    copy.validUntil + ': ' + expiryLabel,
+    '',
+    copy.hurryTitle + ' ' + copy.hurry,
+    '',
+    copy.use,
+    ctaUrl
+  ].join('\n');
+}
+
+function getCouponSenderConfig_() {
+  const senderEmail = cleanEmail_(getProp_('COUPON_SENDER_EMAIL', 'contact@mycuscotrip.com'));
+  const replyTo = cleanEmail_(getProp_('COUPON_REPLY_TO', senderEmail || 'contact@mycuscotrip.com'));
+  const name = clean_(getProp_('COUPON_EMAIL_NAME', 'My Cusco Trip')) || 'My Cusco Trip';
+  let aliases = [];
+
+  try {
+    aliases = GmailApp.getAliases().map(function(alias) { return cleanEmail_(alias); });
+  } catch (err) {
+    logAudit_('COUPON_ALIAS_LOOKUP_ERROR', '', getErrorMessage_(err), {});
+  }
+
+  return {
+    senderEmail: senderEmail,
+    replyTo: replyTo,
+    name: name,
+    aliases: aliases,
+    canUseAlias: Boolean(senderEmail && aliases.indexOf(senderEmail) >= 0)
+  };
+}
+
+function fetchCouponLogoBlob_() {
+  const logoUrl = getProp_('COUPON_LOGO_URL', 'https://mycuscotrip.com/assets/img/logos/Logo1.png');
+  if (!logoUrl) return null;
+
+  try {
+    const response = UrlFetchApp.fetch(logoUrl, {
+      method: 'get',
+      muteHttpExceptions: true,
+      followRedirects: true
+    });
+    const status = response.getResponseCode();
+    if (status < 200 || status >= 300) {
+      throw new Error('Logo HTTP ' + status);
+    }
+    return response.getBlob().setName('Logo1.png');
+  } catch (err) {
+    logAudit_('COUPON_LOGO_FETCH_ERROR', '', getErrorMessage_(err), { logoUrl: logoUrl });
+    return null;
+  }
+}
+
+/**
+ * Comprueba si contact@mycuscotrip.com está autorizado como alias de Gmail.
+ * No envía ningún correo.
+ */
+function testCouponSenderAlias_() {
+  const config = getCouponSenderConfig_();
+  const result = {
+    target: config.senderEmail,
+    available: config.canUseAlias,
+    aliases: config.aliases,
+    replyTo: config.replyTo
+  };
+  Logger.log(JSON.stringify(result, null, 2));
+  return result;
+}
+
+/**
+ * Envía una prueba de la plantilla sin crear un cupón en Google Sheets.
+ * Define COUPON_EMAIL_TEST_TO en Propiedades del script o reemplaza el valor.
+ */
+function testCouponEmailTemplate_() {
+  const testTo = cleanEmail_(getProp_('COUPON_EMAIL_TEST_TO', '')) || cleanEmail_(Session.getActiveUser().getEmail());
+  if (!isValidEmail_(testTo)) {
+    throw new Error('Configura COUPON_EMAIL_TEST_TO con un correo válido en Propiedades del script.');
+  }
+
+  const now = new Date();
+  const record = {
+    couponCode: 'MCTPRUEBA-15X',
+    type: 'percent',
+    value: 15,
+    currency: 'USD',
+    expiresAt: calculateCouponExpiry_(now, 48).toISOString(),
+    name: 'Cliente de prueba',
+    whatsapp: '+51999999999',
+    email: testTo,
+    page: '/go',
+    locale: 'es',
+    source: 'email_template_test'
+  };
+
+  return sendCouponClientEmail_(record);
 }
 
 function sendReservationPaidEmails_(code, voucher, capture) {
@@ -1611,9 +2727,45 @@ function couponLabel_(type, value, currency, locale) {
 function couponEmailCopy_(locale) {
   const lang = normalizeLocale_(locale);
   const copies = {
-    es: { subject: 'Tu cupón de descuento para My Cusco Trip', title: '¡Tu cupón está listo!', intro: 'Gracias por registrarte. Este es tu código personal para reservar con My Cusco Trip:', discount: 'Descuento', validUntil: 'Válido hasta', grace: 'La vigencia mínima es de 48 horas y se extiende hasta el final del día de vencimiento.', use: 'Ingresa este código en el campo de descuento antes de pagar tu reserva.' },
-    en: { subject: 'Your My Cusco Trip discount coupon', title: 'Your coupon is ready!', intro: 'Thank you for signing up. This is your personal code for booking with My Cusco Trip:', discount: 'Discount', validUntil: 'Valid until', grace: 'It remains valid for at least 48 hours and is extended until the end of the expiration day.', use: 'Enter this code in the discount field before paying for your booking.' },
-    pt: { subject: 'Seu cupom de desconto My Cusco Trip', title: 'Seu cupom está pronto!', intro: 'Obrigado por se cadastrar. Este é o seu código pessoal para reservar com a My Cusco Trip:', discount: 'Desconto', validUntil: 'Válido até', grace: 'A validade mínima é de 48 horas e se estende até o final do dia de vencimento.', use: 'Digite este código no campo de desconto antes de pagar sua reserva.' }
+    es: {
+      subject: 'Tu cupón de descuento para My Cusco Trip',
+      title: '¡Tu cupón está listo!',
+      intro: 'Gracias por registrarte. Guarda este código personal para aplicarlo a tu reserva en My Cusco Trip.',
+      codeLabel: 'Código de cupón',
+      discount: 'Descuento',
+      validUntil: 'Válido hasta',
+      hurryTitle: '¡Aprovecha esta oportunidad!',
+      hurry: 'Tienes al menos 48 horas para usar tu cupón y reservar tu tour con el mayor descuento aplicable a tu solicitud.',
+      use: 'Ingresa a nuestra web, arma tu viaje y coloca este código en el campo de descuento antes de realizar el pago.',
+      cta: 'Reservar con mi cupón',
+      orVisit: 'También puedes ingresar directamente en:'
+    },
+    en: {
+      subject: 'Your My Cusco Trip discount coupon',
+      title: 'Your coupon is ready!',
+      intro: 'Thank you for signing up. Save this personal code and apply it to your My Cusco Trip booking.',
+      codeLabel: 'Coupon code',
+      discount: 'Discount',
+      validUntil: 'Valid until',
+      hurryTitle: 'Take advantage of this opportunity!',
+      hurry: 'You have at least 48 hours to use your coupon and book your tour with the highest discount applicable to your request.',
+      use: 'Visit our website, build your trip and enter this code in the discount field before completing payment.',
+      cta: 'Book with my coupon',
+      orVisit: 'You can also visit:'
+    },
+    pt: {
+      subject: 'Seu cupom de desconto My Cusco Trip',
+      title: 'Seu cupom está pronto!',
+      intro: 'Obrigado por se cadastrar. Guarde este código pessoal para aplicá-lo à sua reserva na My Cusco Trip.',
+      codeLabel: 'Código do cupom',
+      discount: 'Desconto',
+      validUntil: 'Válido até',
+      hurryTitle: 'Aproveite esta oportunidade!',
+      hurry: 'Você tem pelo menos 48 horas para usar o seu cupom e reservar o passeio com o maior desconto aplicável à sua solicitação.',
+      use: 'Acesse nosso site, monte sua viagem e digite este código no campo de desconto antes de efetuar o pagamento.',
+      cta: 'Reservar com meu cupom',
+      orVisit: 'Você também pode acessar:'
+    }
   };
   return copies[lang] || copies.es;
 }
@@ -1621,7 +2773,7 @@ function couponEmailCopy_(locale) {
 function formatCouponExpiry_(date, locale) {
   if (!date) return '';
   const lang = normalizeLocale_(locale);
-  const pattern = lang === 'en' ? 'MMM d, yyyy h:mm a' : 'dd/MM/yyyy HH:mm';
+  const pattern = lang === 'en' ? 'MMM d, yyyy · h:mm a' : 'dd/MM/yyyy · HH:mm';
   return Utilities.formatDate(date, getCouponTimeZone_(), pattern);
 }
 
