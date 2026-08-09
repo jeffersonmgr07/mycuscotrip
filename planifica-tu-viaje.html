@@ -25,7 +25,7 @@
   <link href="./assets/css/header.css" rel="stylesheet">
   <link href="./assets/css/footer.css" rel="stylesheet">
   <link href="./assets/css/responsive.css" rel="stylesheet">
-  <link href="./assets/css/trip-planner.css?v=20260809-1" rel="stylesheet">
+  <link href="./assets/css/trip-planner.css?v=20260809-2" rel="stylesheet">
 </head>
 <body class="trip-planner-page">
   <div id="header-container"></div>
@@ -37,13 +37,12 @@
   <main class="trip-planner-main">
     <div class="container">
       <div class="trip-planner-shell">
-        <section class="trip-planner-intro" aria-labelledby="tripPlannerTitle">
-          <span class="trip-planner-intro__eyebrow"><i class="fa-solid fa-route"></i> Configuremos tu viaje</span>
-          <h1 id="tripPlannerTitle">Cuéntanos sobre tu próximo viaje 🇵🇪</h1>
-          <p>Responde unas preguntas rápidas y te ayudaremos a preparar experiencias que se adapten a tus fechas y a tu forma de viajar.</p>
-        </section>
-
         <section class="trip-planner-card" aria-label="Planificador de viaje">
+          <div class="trip-planner-intro" aria-labelledby="tripPlannerTitle">
+            <h1 id="tripPlannerTitle">Cuéntanos sobre tu próximo viaje 🇵🇪</h1>
+            <div class="trip-planner-reward"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Completa y verifica tus datos y recibe un cupón de <strong>10% de descuento</strong> para tu próxima reserva.</span></div>
+          </div>
+
           <div class="trip-planner-progress">
             <div class="trip-planner-progress__meta">
               <span id="tpProgressStep">Paso 1 de 5</span>
@@ -56,7 +55,7 @@
             <section class="tp-step is-active" data-step="1">
               <div class="tp-step__head">
                 <h2>Empecemos por ti</h2>
-                <p>Con estos datos podremos enviarte tu propuesta y mantener el contacto de forma sencilla.</p>
+                <p>Con estos datos podremos enviarte las mejores opciones de itinerario y mantenernos en contacto de forma sencilla.</p>
               </div>
 
               <div class="tp-grid">
@@ -118,7 +117,7 @@
             <section class="tp-step" data-step="2">
               <div class="tp-step__head">
                 <h2>¿Cuándo quieres viajar?</h2>
-                <p>¡Perfecto! Ahora ubiquemos tus fechas y el estado de tus vuelos.</p>
+                <p>Ahora ubiquemos tus fechas de viaje.</p>
               </div>
 
               <div class="tp-section">
@@ -163,7 +162,7 @@
                 </div>
               </div>
 
-              <div class="tp-section">
+              <div id="tpFlightsSection" class="tp-section">
                 <h3 class="tp-section__title">¿Ya tienes tus vuelos?</h3>
                 <div class="tp-choice-grid tp-choice-grid--single">
                   <label class="tp-choice"><input type="radio" name="flightStatus" value="purchased"><span class="tp-choice__body"><span class="tp-choice__icon"><i class="fa-solid fa-plane-circle-check"></i></span>Sí, ya los compré</span></label>
@@ -237,31 +236,12 @@
               </div>
 
               <div class="tp-section">
-                <h3 class="tp-section__title">¿Quieres concentrar tu viaje en Cusco o combinar otros destinos del Perú?</h3>
-                <div class="tp-choice-grid tp-choice-grid--single">
-                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_machu"><span class="tp-choice__body">Solo Cusco + Machu Picchu</span></label>
-                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_lima"><span class="tp-choice__body">Cusco + Lima</span></label>
-                  <label class="tp-choice"><input type="radio" name="scope" value="cusco_others"><span class="tp-choice__body">Cusco + otros destinos</span></label>
-                  <label class="tp-choice"><input type="radio" name="scope" value="recommend"><span class="tp-choice__body">Quiero una recomendación</span></label>
-                </div>
-                <div id="tpScopeExtrasWrap" class="tp-conditional" style="margin-top:12px" hidden>
-                  <div class="tp-chip-grid">
-                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="arequipa"><span class="tp-chip__body">Arequipa</span></label>
-                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="puno"><span class="tp-chip__body">Puno</span></label>
-                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="paracas_ica"><span class="tp-chip__body">Paracas / Ica</span></label>
-                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="amazon"><span class="tp-chip__body">Amazonía</span></label>
-                    <label class="tp-chip"><input type="checkbox" name="scopeExtra" value="other"><span class="tp-chip__body">Otros</span></label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="tp-section">
                 <div class="tp-field"><label for="tpComments">¿Hay algo más que deberíamos saber? <span style="font-weight:400;color:#7a8883">(opcional)</span></label><textarea id="tpComments" maxlength="1000" placeholder="Ej.: celebramos aniversario, viajamos con adultos mayores, preferimos caminatas suaves, alimentación especial, etc."></textarea></div>
               </div>
 
               <div class="tp-nav">
                 <button type="button" class="tp-btn tp-btn--secondary" data-back><i class="fa-solid fa-arrow-left"></i> Atrás</button>
-                <button type="button" class="tp-btn tp-btn--primary" data-next>Revisar viaje <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="button" class="tp-btn tp-btn--primary" data-next>Revisar <i class="fa-solid fa-arrow-right"></i></button>
               </div>
             </section>
 
@@ -271,10 +251,10 @@
                 <p>Ya casi terminamos. Confirma que esta información represente lo que estás buscando.</p>
               </div>
               <div class="tp-summary-card"><div id="tpSummary" class="tp-summary"></div></div>
-              <div class="tp-inline-note"><strong>Último paso:</strong> te enviaremos un código de 6 dígitos a tu correo para confirmar que podemos contactarte correctamente.</div>
+              <div class="tp-inline-note"><strong>Último paso:</strong> te enviaremos un código de 6 dígitos para verificar tu correo. Al confirmarlo, recibirás tu cupón personal del 10%.</div>
               <div class="tp-nav">
                 <button id="tpEditBtn" type="button" class="tp-btn tp-btn--secondary"><i class="fa-solid fa-pen"></i> Editar</button>
-                <button id="tpRequestBtn" type="button" class="tp-btn tp-btn--accent">Solicitar mi propuesta <i class="fa-solid fa-paper-plane"></i></button>
+                <button id="tpRequestBtn" type="button" class="tp-btn tp-btn--accent">Enviar <i class="fa-solid fa-paper-plane"></i></button>
               </div>
             </section>
 
@@ -286,6 +266,7 @@
             <h2>¡Listo, <span id="tpSuccessName"></span>! 🇵🇪</h2>
             <p>Ya recibimos los datos de tu viaje.</p>
             <p>Jefferson o uno de nuestros asesores revisará tus fechas y te contactará para preparar las mejores opciones.</p>
+            <div id="tpSuccessCoupon" class="tp-success__coupon" hidden></div>
             <p><strong>¿Quieres continuar por WhatsApp?</strong></p>
             <a id="tpSuccessWhatsApp" class="tp-btn tp-btn--primary" href="https://wa.me/51900608980" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Continuar por WhatsApp</a>
           </section>
@@ -356,6 +337,6 @@
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/footer.js"></script>
   <script src="./assets/js/core/api-client.js"></script>
-  <script src="./assets/js/pages/trip-planner.js?v=20260809-1"></script>
+  <script src="./assets/js/pages/trip-planner.js?v=20260809-2"></script>
 </body>
 </html>

@@ -34,13 +34,6 @@
     unsure: "Todavía no estoy seguro/a"
   };
 
-  const SCOPE_LABELS = {
-    cusco_machu: "Solo Cusco + Machu Picchu",
-    cusco_lima: "Cusco + Lima",
-    cusco_others: "Cusco + otros destinos",
-    recommend: "Quiero una recomendación"
-  };
-
   const FLIGHT_LABELS = {
     purchased: "Sí, ya los compré",
     dates_no_ticket: "Tengo fechas pero aún no compro los vuelos",
@@ -173,9 +166,7 @@
         durationChoice: "",
         flightStatus: "",
         serviceType: "",
-        destinations: [],
-        scope: "",
-        scopeExtras: []
+        destinations: []
       };
 
       this.cacheDom();
@@ -204,6 +195,7 @@
       this.overlayText = q("#tpProcessingText");
       this.success = q("#tpSuccess");
       this.successName = q("#tpSuccessName");
+      this.successCoupon = q("#tpSuccessCoupon");
       this.successWhatsApp = q("#tpSuccessWhatsApp");
       this.summary = q("#tpSummary");
       this.otpInputs = qa(".tp-otp input", this.verifyModal);
@@ -368,16 +360,9 @@
       }
       if (target.name === "duration") this.state.durationChoice = target.value;
       if (target.name === "serviceType") this.state.serviceType = target.value;
-      if (target.name === "scope") {
-        this.state.scope = target.value;
-        q("#tpScopeExtrasWrap").hidden = target.value !== "cusco_others";
-      }
       if (target.name === "destination") {
         this.state.destinations = qa('input[name="destination"]:checked', this.form).map(input => input.value);
         q("#tpOtherDestinationWrap").hidden = !this.state.destinations.includes("other");
-      }
-      if (target.name === "scopeExtra") {
-        this.state.scopeExtras = qa('input[name="scopeExtra"]:checked', this.form).map(input => input.value);
       }
       if (target.id === "tpStartDate" || target.id === "tpEndDate") this.updateExactDuration();
     }
@@ -388,6 +373,12 @@
       q("#tpPlanningDates").hidden = this.state.dateStatus !== "planning";
       q("#tpDurationQuestion").hidden = this.state.dateStatus === "exact" || !this.state.dateStatus;
       q("#tpExactDuration").hidden = this.state.dateStatus !== "exact";
+      const flightsSection = q("#tpFlightsSection");
+      if (flightsSection) flightsSection.hidden = this.state.dateStatus === "planning";
+      if (this.state.dateStatus === "planning") {
+        this.state.flightStatus = "planning";
+        q("#tpFlightOriginWrap").hidden = true;
+      }
       this.updateExactDuration();
     }
 
@@ -421,7 +412,7 @@
       const percent = (this.currentStep / TOTAL_STEPS) * 100;
       if (this.progressFill) this.progressFill.style.width = `${percent}%`;
       if (this.progressStep) this.progressStep.textContent = `Paso ${this.currentStep} de ${TOTAL_STEPS}`;
-      const labels = ["Tus datos", "Fechas y vuelos", "Qué organizamos", "Experiencias", "Resumen"];
+      const labels = ["Tus datos", "Fechas", "Qué organizamos", "Experiencias", "Resumen"];
       if (this.progressLabel) this.progressLabel.textContent = labels[this.currentStep - 1] || "";
       this.hideError();
     }
@@ -469,9 +460,13 @@
         if (dateStatus === "planning") {
           if (!q("#tpPlanningMonth").value || !q("#tpPlanningYear").value) return this.validationFail("Selecciona el mes y año en que te gustaría viajar.");
         }
-        const flightStatus = q('input[name="flightStatus"]:checked')?.value || "";
-        if (!flightStatus) return this.validationFail("Indica el estado de tus vuelos.");
-        this.state.flightStatus = flightStatus;
+        if (dateStatus === "planning") {
+          this.state.flightStatus = "planning";
+        } else {
+          const flightStatus = q('input[name="flightStatus"]:checked')?.value || "";
+          if (!flightStatus) return this.validationFail("Indica el estado de tus vuelos.");
+          this.state.flightStatus = flightStatus;
+        }
         if (dateStatus !== "exact") {
           const duration = q('input[name="duration"]:checked')?.value || "";
           if (!duration) return this.validationFail("Selecciona una duración aproximada.");
@@ -489,14 +484,6 @@
         const destinations = qa('input[name="destination"]:checked').map(input => input.value);
         if (!destinations.length) return this.validationFail("Selecciona al menos un destino o pide una recomendación.");
         this.state.destinations = destinations;
-        const scope = q('input[name="scope"]:checked')?.value || "";
-        if (!scope) return this.validationFail("Selecciona el alcance que imaginas para tu viaje.");
-        this.state.scope = scope;
-        if (scope === "cusco_others") {
-          const extras = qa('input[name="scopeExtra"]:checked').map(input => input.value);
-          if (!extras.length) return this.validationFail("Selecciona al menos otro destino para combinar con Cusco.");
-          this.state.scopeExtras = extras;
-        }
       }
       return true;
     }
@@ -555,7 +542,6 @@
       const exactDays = computeDays(startDate, endDate);
       const durationValue = this.state.dateStatus === "exact" ? String(exactDays) : (q('input[name="duration"]:checked')?.value || "");
       const destinationValues = qa('input[name="destination"]:checked').map(input => input.value);
-      const scopeExtras = qa('input[name="scopeExtra"]:checked').map(input => input.value);
 
       return {
         clientRequestId: getClientRequestId(),
@@ -576,13 +562,13 @@
         estimatedMonthLabel: estimate.label,
         estimatedWeek: estimate.week,
         duration: durationValue,
-        flightStatus: q('input[name="flightStatus"]:checked')?.value || "",
-        travelOrigin: q("#tpFlightOrigin").value.trim(),
+        flightStatus: this.state.dateStatus === "planning" ? "planning" : (q('input[name="flightStatus"]:checked')?.value || ""),
+        travelOrigin: this.state.dateStatus === "planning" ? "" : q("#tpFlightOrigin").value.trim(),
         serviceType: q('input[name="serviceType"]:checked')?.value || "",
         destinations: destinationValues,
         otherDestination: q("#tpOtherDestination").value.trim(),
-        scope: q('input[name="scope"]:checked')?.value || "",
-        scopeExtras,
+        scope: "",
+        scopeExtras: [],
         comments: q("#tpComments").value.trim(),
         originLead: this.detectOriginLead(params),
         campaignCountry: String(params.get("country") || "").toUpperCase(),
@@ -614,15 +600,18 @@
       const duration = payload.dateStatus === "exact" ? `${payload.duration} días` : (DURATION_LABELS[payload.duration] || payload.duration);
       const destinations = payload.destinations.map(value => DESTINATION_LABELS[value] || value).join(", ");
 
-      this.summary.innerHTML = [
+      const summaryItems = [
         ["Viajeros", travelers],
         ["Cuándo", when],
-        ["Duración", duration || "Por definir"],
-        ["Vuelos", FLIGHT_LABELS[payload.flightStatus] || ""],
-        ["Qué organizamos", SERVICE_LABELS[payload.serviceType] || ""],
-        ["Destinos", destinations],
-        ["Alcance", SCOPE_LABELS[payload.scope] || ""]
-      ].map(([label, value]) => `<div class="tp-summary__item"><div class="tp-summary__label">${label}</div><div class="tp-summary__value">${this.escapeHtml(value)}</div></div>`).join("");
+        ["Duración", duration || "Por definir"]
+      ];
+      if (payload.dateStatus !== "planning") summaryItems.push(["Vuelos", FLIGHT_LABELS[payload.flightStatus] || ""]);
+      summaryItems.push(["Qué organizamos", SERVICE_LABELS[payload.serviceType] || ""]);
+      summaryItems.push(["Destinos", destinations]);
+
+      this.summary.innerHTML = summaryItems
+        .map(([label, value]) => `<div class="tp-summary__item"><div class="tp-summary__label">${label}</div><div class="tp-summary__value">${this.escapeHtml(value)}</div></div>`)
+        .join("");
     }
 
     async submitLead() {
@@ -635,7 +624,7 @@
 
       const button = q("#tpRequestBtn");
       button.disabled = true;
-      this.setProcessing(true, "Preparando tu solicitud…");
+      this.setProcessing(true, "Guardando tus datos…");
       const payload = this.buildPayload();
 
       try {
@@ -818,6 +807,17 @@
       this.success.classList.add("is-visible");
       const name = result.name || q("#tpFirstName").value.trim();
       this.successName.textContent = name;
+      if (this.successCoupon) {
+        const couponCode = result.rewardCouponCode || "";
+        const couponPercent = Number(result.rewardCouponPercent || 10);
+        if (couponCode) {
+          this.successCoupon.hidden = false;
+          this.successCoupon.innerHTML = `También enviamos a tu correo un cupón personal de <strong>${this.escapeHtml(couponPercent)}% de descuento</strong>: <strong>${this.escapeHtml(couponCode)}</strong>. Es de un solo uso y no vence.`;
+        } else {
+          this.successCoupon.hidden = true;
+          this.successCoupon.textContent = "";
+        }
+      }
       const payload = this.buildPayload();
       const total = payload.adults + payload.children;
       let when = "las próximas fechas";

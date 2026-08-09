@@ -1,0 +1,22 @@
+MY CUSCO TRIP — VALIDACIÓN PLANIFICADOR V2
+
+Validaciones estáticas realizadas:
+- planifica-tu-viaje.html contiene 5 pasos.
+- Se eliminó la pregunta de alcance/scope del HTML.
+- Existe tpFlightsSection para ocultar vuelos cuando dateStatus=planning.
+- Botón paso 4: Revisar.
+- Botón final: Enviar.
+- Título integrado dentro de la card.
+- Mensaje compacto de cupón 10% presente.
+- trip-planner.js: sintaxis validada con node --check.
+- Code.gs: sintaxis validada copiándolo temporalmente a .js y usando node --check.
+- Backend V2 conserva todas las 131 funciones del backend V1.
+- Se agregaron 5 funciones específicas para cupón-beneficio del planificador.
+- No se eliminaron funciones preexistentes.
+- CSS: llaves balanceadas.
+- Cupón de beneficio: percent, 10%, MaxUsos=1, sin VigenteHasta, vinculado al email.
+- Verificación de email sigue siendo previa a la generación del cupón.
+- Meta Pixel Lead sigue ejecutándose después de verificación.
+
+No se realizaron llamadas reales a Google Sheets, Gmail, PayPal, Mercado Pago ni Meta porque requieren la implementación publicada y credenciales/servicios externos.
+No se afirma validación visual automatizada en navegador.

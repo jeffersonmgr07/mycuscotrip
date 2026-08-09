@@ -20,7 +20,7 @@ body.trip-planner-page {
 
 .trip-planner-main {
   min-height: 100vh;
-  padding: 118px 0 72px;
+  padding: 92px 0 44px;
 }
 
 .trip-planner-shell {
@@ -30,7 +30,7 @@ body.trip-planner-page {
 
 .trip-planner-intro {
   text-align: center;
-  padding: 0 8px 24px;
+  padding: 18px 22px 8px;
 }
 
 .trip-planner-intro__eyebrow {
@@ -51,9 +51,28 @@ body.trip-planner-page {
 .trip-planner-intro h1 {
   margin: 0;
   color: var(--tp-green-2);
-  font-size: clamp(2rem, 6vw, 3.45rem);
-  line-height: 1.08;
+  font-size: clamp(1.45rem, 3.6vw, 2rem);
+  line-height: 1.15;
   font-weight: 800;
+}
+
+.trip-planner-reward {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 9px;
+  padding: 8px 11px;
+  border-radius: 12px;
+  background: #f7f2df;
+  color: #624d16;
+  font-size: .84rem;
+  line-height: 1.35;
+}
+
+.trip-planner-reward i {
+  flex: 0 0 auto;
+  color: #9b761c;
 }
 
 .trip-planner-intro p {
@@ -73,7 +92,7 @@ body.trip-planner-page {
 }
 
 .trip-planner-progress {
-  padding: 20px 22px 0;
+  padding: 8px 22px 0;
 }
 
 .trip-planner-progress__meta {
@@ -81,7 +100,7 @@ body.trip-planner-page {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   color: var(--tp-muted);
   font-size: 0.83rem;
   font-weight: 700;
@@ -89,7 +108,7 @@ body.trip-planner-page {
 
 .trip-planner-progress__bar {
   width: 100%;
-  height: 8px;
+  height: 6px;
   overflow: hidden;
   border-radius: 999px;
   background: #e5ece8;
@@ -105,7 +124,7 @@ body.trip-planner-page {
 }
 
 .trip-planner-form {
-  padding: 18px 22px 24px;
+  padding: 12px 22px 16px;
 }
 
 .tp-step {
@@ -123,13 +142,13 @@ body.trip-planner-page {
 }
 
 .tp-step__head {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .tp-step__head h2 {
-  margin: 0 0 7px;
+  margin: 0 0 5px;
   color: var(--tp-green-2);
-  font-size: clamp(1.45rem, 4.8vw, 2.1rem);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
   line-height: 1.18;
   font-weight: 800;
 }
@@ -141,7 +160,7 @@ body.trip-planner-page {
 }
 
 .tp-section {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .tp-section:first-of-type { margin-top: 0; }
@@ -432,7 +451,7 @@ body.trip-planner-page {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 26px;
+  margin-top: 18px;
   padding: 10px;
   border: 1px solid rgba(5,50,32,.09);
   border-radius: 18px;
@@ -643,7 +662,7 @@ body.trip-planner-page {
 
 .tp-success {
   display: none;
-  padding: 30px 22px 28px;
+  padding: 22px 22px 20px;
   text-align: center;
 }
 
@@ -677,6 +696,22 @@ body.trip-planner-page {
 
 .tp-success .tp-btn { margin-top: 15px; }
 
+.tp-success__coupon {
+  max-width: 520px;
+  margin: 14px auto 4px;
+  padding: 13px 15px;
+  border: 1px solid #d7e6dd;
+  border-radius: 14px;
+  background: #eef6f1;
+  color: var(--tp-green-2);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.tp-success__coupon strong {
+  font-weight: 800;
+}
+
 .tp-noscript {
   margin: 110px auto 30px;
   width: min(92%, 720px);
@@ -688,10 +723,11 @@ body.trip-planner-page {
 }
 
 @media (max-width: 760px) {
-  .trip-planner-main { padding-top: 100px; }
+  .trip-planner-main { padding-top: 84px; }
   .trip-planner-card { border-radius: 20px; }
-  .trip-planner-progress { padding: 17px 16px 0; }
-  .trip-planner-form { padding: 16px 16px 20px; }
+  .trip-planner-intro { padding: 15px 16px 7px; }
+  .trip-planner-progress { padding: 7px 16px 0; }
+  .trip-planner-form { padding: 10px 16px 14px; }
   .tp-grid,
   .tp-grid--three,
   .tp-choice-grid,
@@ -705,9 +741,9 @@ body.trip-planner-page {
 }
 
 @media (max-width: 520px) {
-  .trip-planner-main { padding-bottom: 42px; }
-  .trip-planner-intro { padding-bottom: 18px; }
-  .trip-planner-intro p { font-size: .94rem; }
+  .trip-planner-main { padding-bottom: 28px; }
+  .trip-planner-intro h1 { font-size: 1.32rem; }
+  .trip-planner-reward { font-size: .78rem; padding: 7px 9px; }
   .tp-phone { grid-template-columns: 118px minmax(0,1fr); }
   .tp-phone select { padding-left: 10px; padding-right: 25px; font-size: .9rem; }
   .tp-counter-grid { grid-template-columns: 1fr; }
