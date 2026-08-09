@@ -836,3 +836,90 @@ body.trip-planner-page {
   .tp-success-modal__head { padding: 22px 18px 18px; }
   .tp-success-modal__body { padding: 20px 16px; }
 }
+
+/* V4: compactación puntual del formulario */
+.trip-planner-main {
+  padding-top: 82px;
+  padding-bottom: 28px;
+}
+
+.trip-planner-intro {
+  padding: 10px 18px 4px;
+}
+
+.trip-planner-intro h1 {
+  font-size: clamp(1.28rem, 3vw, 1.7rem);
+  line-height: 1.1;
+}
+
+.trip-planner-reward {
+  margin-top: 7px;
+  padding: 7px 10px;
+}
+
+.trip-planner-progress {
+  padding: 5px 18px 0;
+}
+
+.trip-planner-progress__meta {
+  margin-bottom: 5px;
+}
+
+.trip-planner-form {
+  padding: 9px 18px 12px;
+}
+
+.tp-step__head {
+  margin-bottom: 10px;
+}
+
+.tp-step__head h2 {
+  margin-bottom: 4px;
+}
+
+.tp-step__head p {
+  line-height: 1.45;
+}
+
+.tp-section {
+  margin-top: 14px;
+}
+
+.tp-section__title {
+  margin-bottom: 9px;
+}
+
+.tp-nav {
+  margin-top: 14px;
+}
+
+@media (max-width: 760px) {
+  .trip-planner-main {
+    padding-top: 74px;
+    padding-bottom: 20px;
+  }
+
+  .trip-planner-intro {
+    padding: 9px 14px 4px;
+  }
+
+  .trip-planner-progress {
+    padding: 5px 14px 0;
+  }
+
+  .trip-planner-form {
+    padding: 8px 14px 11px;
+  }
+}
+
+@media (max-width: 520px) {
+  .trip-planner-intro h1 {
+    font-size: 1.22rem;
+  }
+
+  .trip-planner-reward {
+    margin-top: 6px;
+    padding: 6px 8px;
+    font-size: .76rem;
+  }
+}
