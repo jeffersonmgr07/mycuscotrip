@@ -3,13 +3,12 @@
 /**
  * My Cusco Trip - Planificador de viaje / calificación de prospectos
  * Página: /planifica-tu-viaje.html
- * No almacena códigos de verificación en el navegador.
+ * Guarda el prospecto directamente y muestra confirmación sin verificación OTP.
  */
 (function () {
   const TOTAL_STEPS = 5;
   const WHATSAPP_BUSINESS = "51900608980";
   const STORAGE_CLIENT_KEY = "mct_trip_planner_client_request_id";
-  const STORAGE_PENDING_KEY = "mct_trip_planner_pending_lead";
 
   const DESTINATION_LABELS = {
     machu_picchu: "Machu Picchu",
@@ -154,9 +153,6 @@
 
       this.currentStep = 1;
       this.countries = [];
-      this.pendingLead = null;
-      this.resendTimer = null;
-      this.resendRemaining = 0;
       this.state = {
         adults: 2,
         children: 0,
@@ -174,7 +170,6 @@
       this.populateYears();
       this.setDateMinimums();
       this.loadCountries().finally(() => this.applyUrlPrefill());
-      this.restorePendingLead();
       this.renderCounters();
       this.renderStep();
     }
@@ -185,20 +180,10 @@
       this.progressStep = q("#tpProgressStep");
       this.progressLabel = q("#tpProgressLabel");
       this.formError = q("#tpFormError");
-      this.verifyModal = q("#tpVerifyModal");
-      this.verifyEmail = q("#tpVerifyEmail");
-      this.verifyStatus = q("#tpVerifyStatus");
-      this.verifyBtn = q("#tpVerifyBtn");
-      this.resendBtn = q("#tpResendBtn");
-      this.resendTimerText = q("#tpResendTimer");
       this.overlay = q("#tpProcessingOverlay");
       this.overlayText = q("#tpProcessingText");
-      this.success = q("#tpSuccess");
-      this.successName = q("#tpSuccessName");
-      this.successCoupon = q("#tpSuccessCoupon");
-      this.successWhatsApp = q("#tpSuccessWhatsApp");
+      this.successModal = q("#tpSuccessModal");
       this.summary = q("#tpSummary");
-      this.otpInputs = qa(".tp-otp input", this.verifyModal);
     }
 
     bindEvents() {
@@ -220,13 +205,10 @@
         this.hideError();
       });
 
-      q("#tpVerifyClose")?.addEventListener("click", () => this.closeVerificationModal());
-      this.verifyModal?.addEventListener("click", event => {
-        if (event.target === this.verifyModal) this.closeVerificationModal();
+      q("#tpSuccessClose")?.addEventListener("click", () => this.closeSuccessModal());
+      this.successModal?.addEventListener("click", event => {
+        if (event.target === this.successModal) this.closeSuccessModal();
       });
-      this.verifyBtn?.addEventListener("click", () => this.verifyCode());
-      this.resendBtn?.addEventListener("click", () => this.resendCode());
-      this.bindOtpInputs();
     }
 
     async loadCountries() {
@@ -624,23 +606,14 @@
 
       const button = q("#tpRequestBtn");
       button.disabled = true;
-      this.setProcessing(true, "Guardando tus datos…");
+      this.setProcessing(true, "Enviando tus datos…");
       const payload = this.buildPayload();
 
       try {
         if (!window.MyCuscoTripApiClient?.postAction) throw new Error("No se pudo conectar con el sistema de solicitudes.");
         const result = await window.MyCuscoTripApiClient.postAction("createTravelLead", payload);
-        this.pendingLead = {
-          leadId: result.leadId,
-          email: payload.email,
-          codeExpiresAt: result.codeExpiresAt || "",
-          resendAvailableAt: result.resendAvailableAt || ""
-        };
-        safeStorageSet(STORAGE_PENDING_KEY, JSON.stringify(this.pendingLead));
-        this.openVerificationModal(result);
-        if (result.emailSent === false) {
-          this.setVerifyStatus("La solicitud fue guardada, pero el correo no pudo enviarse. Puedes usar “Reenviar código” en unos segundos.", "error");
-        }
+        this.showSuccess(result);
+        this.trackSubmittedLead(result);
       } catch (error) {
         const message = error?.body?.error || error?.body?.message || error?.message || "No pudimos guardar tu solicitud. Inténtalo nuevamente.";
         this.showError(message);
@@ -650,151 +623,6 @@
       }
     }
 
-    openVerificationModal(result = {}) {
-      if (!this.verifyModal) return;
-      const email = result.maskedEmail || maskEmail(this.pendingLead?.email || q("#tpEmail").value);
-      this.verifyEmail.textContent = email;
-      this.verifyModal.hidden = false;
-      document.body.style.overflow = "hidden";
-      this.clearOtp();
-      this.setVerifyStatus("", "");
-      this.startResendCooldown(result.resendAvailableAt || this.pendingLead?.resendAvailableAt || "");
-      window.setTimeout(() => this.otpInputs[0]?.focus(), 80);
-    }
-
-    closeVerificationModal() {
-      if (!this.verifyModal) return;
-      this.verifyModal.hidden = true;
-      document.body.style.overflow = "";
-    }
-
-    restorePendingLead() {
-      const raw = safeStorageGet(STORAGE_PENDING_KEY);
-      if (!raw) return;
-      try {
-        const pending = JSON.parse(raw);
-        if (pending?.leadId && pending?.email) this.pendingLead = pending;
-      } catch (error) {
-        safeStorageRemove(STORAGE_PENDING_KEY);
-      }
-    }
-
-    bindOtpInputs() {
-      this.otpInputs.forEach((input, index) => {
-        input.addEventListener("input", event => {
-          const value = event.target.value.replace(/\D/g, "").slice(-1);
-          event.target.value = value;
-          this.setVerifyStatus("", "");
-          if (value && index < this.otpInputs.length - 1) this.otpInputs[index + 1].focus();
-        });
-        input.addEventListener("keydown", event => {
-          if (event.key === "Backspace" && !input.value && index > 0) this.otpInputs[index - 1].focus();
-          if (event.key === "Enter") this.verifyCode();
-        });
-        input.addEventListener("paste", event => {
-          const text = (event.clipboardData?.getData("text") || "").replace(/\D/g, "").slice(0, 6);
-          if (!text) return;
-          event.preventDefault();
-          text.split("").forEach((char, i) => { if (this.otpInputs[i]) this.otpInputs[i].value = char; });
-          this.otpInputs[Math.min(text.length, 6) - 1]?.focus();
-        });
-      });
-    }
-
-    getOtpCode() {
-      return this.otpInputs.map(input => input.value.replace(/\D/g, "")).join("");
-    }
-
-    clearOtp() {
-      this.otpInputs.forEach(input => { input.value = ""; });
-    }
-
-    async verifyCode() {
-      if (!this.pendingLead?.leadId) {
-        this.setVerifyStatus("No encontramos la solicitud pendiente. Vuelve a solicitar tu propuesta.", "error");
-        return;
-      }
-      const code = this.getOtpCode();
-      if (!/^\d{6}$/.test(code)) {
-        this.setVerifyStatus("Ingresa los 6 dígitos del código.", "error");
-        return;
-      }
-
-      this.verifyBtn.disabled = true;
-      this.setProcessing(true, "Verificando tu correo…");
-      try {
-        const result = await window.MyCuscoTripApiClient.postAction("verifyTravelLeadEmail", {
-          leadId: this.pendingLead.leadId,
-          email: this.pendingLead.email,
-          code
-        });
-        this.closeVerificationModal();
-        safeStorageRemove(STORAGE_PENDING_KEY);
-        this.showSuccess(result);
-        this.trackVerifiedLead(result);
-      } catch (error) {
-        const message = error?.body?.error || error?.body?.message || error?.message || "El código no pudo verificarse.";
-        this.setVerifyStatus(message, "error");
-        if (error?.body?.errorCode === "CODE_EXPIRED") this.resendBtn.disabled = false;
-        this.clearOtp();
-        this.otpInputs[0]?.focus();
-      } finally {
-        this.verifyBtn.disabled = false;
-        this.setProcessing(false);
-      }
-    }
-
-    async resendCode() {
-      if (!this.pendingLead?.leadId || this.resendRemaining > 0) return;
-      this.resendBtn.disabled = true;
-      this.setProcessing(true, "Enviando un nuevo código…");
-      try {
-        const result = await window.MyCuscoTripApiClient.postAction("resendTravelLeadCode", {
-          leadId: this.pendingLead.leadId,
-          email: this.pendingLead.email
-        });
-        this.pendingLead.codeExpiresAt = result.codeExpiresAt || "";
-        this.pendingLead.resendAvailableAt = result.resendAvailableAt || "";
-        safeStorageSet(STORAGE_PENDING_KEY, JSON.stringify(this.pendingLead));
-        this.clearOtp();
-        this.setVerifyStatus(result.emailSent === false ? "El código se actualizó, pero el correo no pudo enviarse. Inténtalo nuevamente después del tiempo de espera." : "Te enviamos un nuevo código.", result.emailSent === false ? "error" : "success");
-        this.startResendCooldown(result.resendAvailableAt || "");
-      } catch (error) {
-        const body = error?.body || {};
-        const message = body.error || body.message || error?.message || "No pudimos reenviar el código.";
-        this.setVerifyStatus(message, "error");
-        if (body.retryAfterSeconds) this.startResendCooldown(new Date(Date.now() + Number(body.retryAfterSeconds) * 1000).toISOString());
-        else this.resendBtn.disabled = false;
-      } finally {
-        this.setProcessing(false);
-      }
-    }
-
-    startResendCooldown(availableAt) {
-      if (this.resendTimer) window.clearInterval(this.resendTimer);
-      const target = availableAt ? new Date(availableAt).getTime() : Date.now() + 60000;
-      const tick = () => {
-        this.resendRemaining = Math.max(0, Math.ceil((target - Date.now()) / 1000));
-        if (this.resendRemaining > 0) {
-          this.resendBtn.disabled = true;
-          this.resendTimerText.textContent = `Podrás reenviar en ${this.resendRemaining} s`;
-        } else {
-          this.resendBtn.disabled = false;
-          this.resendTimerText.textContent = "Puedes solicitar un nuevo código.";
-          if (this.resendTimer) window.clearInterval(this.resendTimer);
-        }
-      };
-      tick();
-      this.resendTimer = window.setInterval(tick, 1000);
-    }
-
-    setVerifyStatus(message, type) {
-      if (!this.verifyStatus) return;
-      this.verifyStatus.textContent = message || "";
-      this.verifyStatus.className = "tp-status";
-      if (type) this.verifyStatus.classList.add(`is-${type}`);
-    }
-
     setProcessing(active, text) {
       if (!this.overlay) return;
       this.overlay.hidden = !active;
@@ -802,38 +630,22 @@
     }
 
     showSuccess(result) {
-      this.form.hidden = true;
-      q(".trip-planner-progress").hidden = true;
-      this.success.classList.add("is-visible");
-      const name = result.name || q("#tpFirstName").value.trim();
-      this.successName.textContent = name;
-      if (this.successCoupon) {
-        const couponCode = result.rewardCouponCode || "";
-        const couponPercent = Number(result.rewardCouponPercent || 10);
-        if (couponCode) {
-          this.successCoupon.hidden = false;
-          this.successCoupon.innerHTML = `También enviamos a tu correo un cupón personal de <strong>${this.escapeHtml(couponPercent)}% de descuento</strong>: <strong>${this.escapeHtml(couponCode)}</strong>. Es de un solo uso y no vence.`;
-        } else {
-          this.successCoupon.hidden = true;
-          this.successCoupon.textContent = "";
-        }
-      }
-      const payload = this.buildPayload();
-      const total = payload.adults + payload.children;
-      let when = "las próximas fechas";
-      if (payload.dateStatus === "exact") when = formatDate(payload.startDate);
-      else if (payload.estimatedMonthLabel) when = payload.estimatedMonthLabel;
-      const message = `Hola, soy ${name}. Ya completé los datos de mi viaje en My Cusco Trip. Somos ${total} ${total === 1 ? "viajero" : "viajeros"} y estamos planificando viajar en ${when}.`;
-      const url = `https://wa.me/${WHATSAPP_BUSINESS}?text=${encodeURIComponent(message)}`;
-      this.successWhatsApp.href = result.whatsappUrl || url;
-      const top = q(".trip-planner-card")?.getBoundingClientRect().top + window.scrollY - 94;
-      window.scrollTo({ top: Math.max(0, top || 0), behavior: "smooth" });
+      if (!this.successModal) return;
+      this.successModal.hidden = false;
+      document.body.style.overflow = "hidden";
     }
 
-    trackVerifiedLead(result) {
+    closeSuccessModal() {
+      if (!this.successModal) return;
+      this.successModal.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    trackSubmittedLead(result) {
       if (!result?.shouldTrackLead) return;
-      const leadId = result.leadId || this.pendingLead?.leadId || "";
-      const key = `mct_verified_lead_pixel_${leadId}`;
+      const leadId = result.leadId || "";
+      if (!leadId) return;
+      const key = `mct_submitted_lead_pixel_${leadId}`;
       try {
         if (localStorage.getItem(key) === "1") return;
       } catch (error) { /* no-op */ }

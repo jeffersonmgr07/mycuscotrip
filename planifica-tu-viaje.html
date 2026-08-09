@@ -40,7 +40,7 @@
         <section class="trip-planner-card" aria-label="Planificador de viaje">
           <div class="trip-planner-intro" aria-labelledby="tripPlannerTitle">
             <h1 id="tripPlannerTitle">Cuéntanos sobre tu próximo viaje 🇵🇪</h1>
-            <div class="trip-planner-reward"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Completa y verifica tus datos y recibe un cupón de <strong>10% de descuento</strong> para tu próxima reserva.</span></div>
+            <div class="trip-planner-reward"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Completa tus datos y recibe por correo un cupón personal de <strong>10% de descuento</strong> para tu próxima reserva.</span></div>
           </div>
 
           <div class="trip-planner-progress">
@@ -251,7 +251,7 @@
                 <p>Ya casi terminamos. Confirma que esta información represente lo que estás buscando.</p>
               </div>
               <div class="tp-summary-card"><div id="tpSummary" class="tp-summary"></div></div>
-              <div class="tp-inline-note"><strong>Último paso:</strong> te enviaremos un código de 6 dígitos para verificar tu correo. Al confirmarlo, recibirás tu cupón personal del 10%.</div>
+              <div class="tp-inline-note"><strong>Último paso:</strong> al enviar, recibiremos tus datos y en breve te enviaremos por correo tu cupón personal del 10%.</div>
               <div class="tp-nav">
                 <button id="tpEditBtn" type="button" class="tp-btn tp-btn--secondary"><i class="fa-solid fa-pen"></i> Editar</button>
                 <button id="tpRequestBtn" type="button" class="tp-btn tp-btn--accent">Enviar <i class="fa-solid fa-paper-plane"></i></button>
@@ -261,15 +261,6 @@
             <div id="tpFormError" class="tp-error" role="alert"></div>
           </form>
 
-          <section id="tpSuccess" class="tp-success" aria-live="polite">
-            <div class="tp-success__icon"><i class="fa-solid fa-check"></i></div>
-            <h2>¡Listo, <span id="tpSuccessName"></span>! 🇵🇪</h2>
-            <p>Ya recibimos los datos de tu viaje.</p>
-            <p>Jefferson o uno de nuestros asesores revisará tus fechas y te contactará para preparar las mejores opciones.</p>
-            <div id="tpSuccessCoupon" class="tp-success__coupon" hidden></div>
-            <p><strong>¿Quieres continuar por WhatsApp?</strong></p>
-            <a id="tpSuccessWhatsApp" class="tp-btn tp-btn--primary" href="https://wa.me/51900608980" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Continuar por WhatsApp</a>
-          </section>
         </section>
       </div>
     </div>
@@ -277,29 +268,18 @@
 
   <div id="footer-container"></div>
 
-  <div id="tpVerifyModal" class="tp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="tpVerifyTitle">
-    <div class="tp-modal__dialog">
-      <div class="tp-modal__head">
-        <button id="tpVerifyClose" class="tp-modal__close" type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
-        <h2 id="tpVerifyTitle">Verifica tu correo</h2>
-        <p>Te enviamos un código de 6 dígitos a:<br><strong id="tpVerifyEmail"></strong></p>
+  <div id="tpSuccessModal" class="tp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="tpSuccessTitle">
+    <div class="tp-modal__dialog tp-success-modal__dialog">
+      <div class="tp-modal__head tp-success-modal__head">
+        <button id="tpSuccessClose" class="tp-modal__close" type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="tp-success-modal__icon"><i class="fa-solid fa-check"></i></div>
+        <h2 id="tpSuccessTitle">¡Hemos recibido tus datos!</h2>
       </div>
-      <div class="tp-modal__body">
-        <p style="margin:0;color:#64736d;line-height:1.55">Ingresa el código. Estará disponible durante 10 minutos.</p>
-        <div class="tp-otp" aria-label="Código de verificación">
-          <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Dígito 1">
-          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
-          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
-          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
-          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
-          <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
-        </div>
-        <div id="tpVerifyStatus" class="tp-status" role="status"></div>
-        <div class="tp-modal__actions">
-          <button id="tpVerifyBtn" type="button" class="tp-btn tp-btn--primary">Verificar</button>
-          <button id="tpResendBtn" type="button" class="tp-btn tp-btn--secondary" disabled>Reenviar código</button>
-        </div>
-        <div id="tpResendTimer" class="tp-modal__timer">Podrás reenviar en 60 s</div>
+      <div class="tp-modal__body tp-success-modal__body">
+        <p>Estamos preparando las mejores opciones para tu viaje.</p>
+        <p>Mientras tanto, puedes explorar experiencias y alternativas en nuestra web.</p>
+        <a class="tp-btn tp-btn--primary tp-success-modal__cta" href="https://mycuscotrip.com/go">Explorar opciones <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="tp-success-modal__coupon-note"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>En breve recibirás por correo un cupón de <strong>10% de descuento</strong> para tu próxima experiencia en Cusco.</span></div>
       </div>
     </div>
   </div>
@@ -337,6 +317,6 @@
   <script src="./assets/js/components/header.js"></script>
   <script src="./assets/js/components/footer.js"></script>
   <script src="./assets/js/core/api-client.js"></script>
-  <script src="./assets/js/pages/trip-planner.js?v=20260809-2"></script>
+  <script src="./assets/js/pages/trip-planner.js?v=20260809-3"></script>
 </body>
 </html>

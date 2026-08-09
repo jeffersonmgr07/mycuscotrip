@@ -767,3 +767,72 @@ body.trip-planner-page {
   .tp-spinner,
   .trip-planner-progress__fill { animation: none !important; transition: none !important; }
 }
+
+/* V3: confirmación directa del formulario, sin verificación OTP */
+.tp-success-modal__dialog {
+  width: min(100%, 500px);
+}
+
+.tp-success-modal__head {
+  text-align: center;
+  padding-top: 28px;
+}
+
+.tp-success-modal__head h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 4.5vw, 1.85rem);
+}
+
+.tp-success-modal__icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  color: #fff;
+  font-size: 1.45rem;
+}
+
+.tp-success-modal__body {
+  text-align: center;
+}
+
+.tp-success-modal__body > p {
+  margin: 0 auto 10px;
+  color: var(--tp-muted);
+  line-height: 1.6;
+}
+
+.tp-success-modal__cta {
+  width: 100%;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.tp-success-modal__coupon-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border: 1px solid #d7e6dd;
+  border-radius: 14px;
+  background: #eef6f1;
+  color: var(--tp-green-2);
+  font-size: .9rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.tp-success-modal__coupon-note i {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+@media (max-width: 760px) {
+  .tp-success-modal__head { padding: 22px 18px 18px; }
+  .tp-success-modal__body { padding: 20px 16px; }
+}
