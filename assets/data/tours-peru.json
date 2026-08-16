@@ -423,11 +423,11 @@
       },
       "capacity": 18,
       "images": {
-        "cover": "./assets/img/placeholder/experience.jpg",
+        "cover": "./assets/img/peru/per003-islas-ballestas.jpg",
         "gallery": [
-          "./assets/img/placeholder/experience.jpg",
-          "./assets/img/placeholder/experience.jpg",
-          "./assets/img/placeholder/experience.jpg"
+          "./assets/img/peru/per003-islas-ballestas.jpg",
+          "./assets/img/peru/per003-ica-bodega.jpg",
+          "./assets/img/peru/per003-huacachina-buggies.jpg"
         ]
       },
       "includes": [

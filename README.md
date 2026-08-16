@@ -2,6 +2,61 @@
 
 Intervención incremental sobre el motor existente. No se reescribió `quote-packages.js` ni `package-generator.js`, no se introdujeron frameworks ni backend nuevo, y ningún archivo fuera de esta lista fue tocado (verificado con `diff -rq` contra el ZIP original).
 
+Este documento acumula **dos rondas de trabajo**. La Ronda 1 (funcionalidades del cotizador: destinos, Lima, vuelos, circuitos, overnight directo) está descrita en detalle más abajo. La **Ronda 2** (mejoras puntuales al formato de impresión/PDF + 1 cambio funcional de horarios) se describe primero, en su propia sección.
+
+---
+
+## RONDA 2 — Mejoras puntuales de impresión/PDF (2026-08-16)
+
+Todos los cambios de esta ronda son **exclusivos del formato de impresión/PDF**, excepto el último punto (horarios de llegada/salida), que es funcional porque esos horarios alimentan la lógica de armado del itinerario.
+
+### 1. Barras de título unificadas en impresión
+Las secciones "Servicios incluidos", "Alojamientos incluidos", "Detalles de pago", "Itinerario detallado" y "Condiciones importantes" tenían una barra verde con un espacio en blanco arriba y esquinas cuadradas, distinta a la de "Datos del cliente"/"Datos del viaje". Causa raíz encontrada con `getComputedStyle()` real (no solo leyendo CSS): una regla vieja y suelta (`.print-section { padding-top: 3.4mm !important; margin-top: 3.6mm !important; }`, línea ~3096 de `quote-packages.css`) sobrevivía a varios parches posteriores porque nada la neutralizaba puntualmente. Se agregó **un solo bloque nuevo, incondicional, al final de la hoja de estilos** (`.print-section { margin-top:0; padding-top:0; } .print-section h3 { margin:0 0 1mm; border-radius:2.5mm; }`) que gana el cascade sin tocar ni entender los ~6 bloques conflictivos anteriores. Verificado por Playwright: el espacio sobre la barra ahora es idéntico (mismo valor en píxeles) al de "Datos del cliente"/"Datos del viaje" en los 3 tipos de sección revisados.
+
+### 2. Nueva sección impresa "Vuelos incluidos"
+Aparece solo cuando la cotización incluye vuelos (después de "Itinerario detallado", antes de "Condiciones importantes"). Muestra aerolínea + logo, cantidad de pasajeros cubiertos, y dos "tickets" (ida/vuelta) con fecha, hora y aeropuerto completo de salida y llegada (mapeo `LIM`→"Aeropuerto Internacional Jorge Chávez (Lima)", `CUZ`→"Aeropuerto Internacional Alejandro Velasco Astete (Cusco)"). El número de vuelo se muestra solo si el dato existiera en `domestic-flights.json` (hoy no existe ese campo en el catálogo, así que no se inventa). La fecha del vuelo de ida usa el día real en que ocurre el traslado a Cusco (considera el offset de 3 días si hay extensión Lima); la de retorno usa la fecha final del viaje.
+
+### 3. Etiquetas de "Detalles de pago" enriquecidas (mismo número de filas)
+Sin agregar ni quitar ninguna fila:
+- "Adultos x2" → **"Adultos (Experiencias y tours) x2"** (y lo mismo para Niños).
+- "Alojamiento" → **"Alojamiento (Habitación triple, 6 noches)"**, con el paréntesis en peso normal (no negrita) — usa el nombre de tipo de habitación que ya existe en `hotels.json` (p. ej. "Habitación triple"), no se inventó una palabra nueva.
+- "Trenes" → **"Trenes (ida y vuelta por 2 adultos)"** o **"... por 2 adultos + 1 niño"** según pasajeros (solo si hay tren elegido).
+- "Extras" → **"Extras (boletos, entradas, almuerzos y más) x2"**.
+- "Vuelo nacional" → renombrado a **"Vuelo Lima-Cusco-Lima (ida y vuelta por 2 adultos)"**.
+
+### 4. Nueva sección impresa "Plan flexible de pagos"
+Aparece después de "Condiciones importantes" y antes del banner de oferta especial. Muestra el **total cotizado sin ningún descuento** (ni cupón ni el 5% por pago total) dividido en 4 cuotas: 1ª = 40%, las 3 restantes = 20% cada una.
+
+**Cronograma de fechas** (interpretación mía de tus indicaciones — avísame si esperabas algo distinto):
+- **Con margen suficiente** antes del viaje: cuota 1 a los 2 días desde hoy, y cada cuota siguiente 15 días después de la anterior (2 → 17 → 32 → 47 días, ~47 en total).
+- **Si el viaje está más cerca que esos 47 días:** las fechas se comprimen dividiendo los días que faltan para viajar en 4 partes iguales, empezando hoy (cuota 1 = hoy). Ejemplo verificado con Playwright: viaje a 20 días → cuotas en +0, +5, +10 y +15 días, dejando 5 días de margen antes de viajar — igual al ejemplo que diste.
+- Se agregó una nota debajo del cronograma explicando que el descuento del 5% por pago total solo aplica si la reserva se paga completa con 90 días o más de anticipación al viaje (tu mención de "90 días"). **Esto es solo texto informativo en el PDF** — no cambié la lógica real de cálculo del descuento en pantalla (`getPaymentBreakdown()`), porque nada me indicó que ese cálculo en vivo debía cambiar, y me pediste explícitamente no tocar nada más de lo pedido.
+- Se agregó una nueva condición a "Condiciones importantes": si no se paga alguna cuota en la fecha acordada, la reserva y el itinerario cotizado quedan sin efecto, sin derecho a reclamo sobre lo ya pagado.
+
+### 5. Horarios de llegada/salida = horarios del vuelo (cambio funcional, no solo impresión)
+Cuando "Incluir vuelos" está activo y hay vuelo de ida/vuelta elegido, sus horarios **prevalecen** sobre lo escrito manualmente (o vacío) en "Hora de llegada"/"Hora de salida":
+- `arrivalTime` = hora de llegada del vuelo de ida **+ 1 hora** de margen operativo.
+- `departureTime` = hora de salida del vuelo de retorno, directamente.
+
+Si el usuario edita el campo manualmente después de tener vuelos elegidos, el horario del vuelo se reimpone de inmediato (verificado con Playwright: escribir "06:00" a mano con un vuelo ya elegido no lo deja fijo, vuelve al horario del vuelo). Esto es funcional porque `arrivalTime`/`departureTime` deciden qué tours pueden agendarse el día 1 y el último día del itinerario. Se usó `renderItineraryPreview()` (no `generateAndRenderOptions()`) para refrescar la vista previa tras elegir un vuelo, para no reiniciar el hotel/tren ya elegidos — `generateAndRenderOptions()` sí sigue reiniciándolos al editar la hora a mano, igual que ya lo hacía antes de esta tarea (comportamiento preexistente, no tocado).
+
+### Auditoría de imágenes — extensión Lima (pediste esta revisión aparte)
+Encontré la causa exacta de las imágenes genéricas/repetidas:
+- **Día 1 "Llegada a Lima" y Día 3 "Continuación Lima → Cusco":** ambos caían al mismo fallback genérico `./assets/img/quote/fallbacks/cusco.jpg` porque `getActivityImage()` no tenía ninguna regla para detectar texto relacionado con Lima. Corregido: ahora usan dos rutas dedicadas nuevas, **`./assets/img/quote/fallbacks/lima-llegada.jpg`** y **`./assets/img/quote/fallbacks/lima-cusco.jpg`**. Sube tus fotos con esos nombres exactos en `assets/img/quote/fallbacks/` y se mostrarán automáticamente — no hace falta tocar código.
+- **Día 2 (PER003, Islas Ballestas/Ica/Huacachina):** el tour usa la imagen genérica compartida de todo el sitio `./assets/img/placeholder/experience.jpg` (repetida 4 veces en su propio JSON) — **no se podía simplemente reemplazar ese archivo**, porque lo comparten otros tours del sitio que aún no tienen foto propia. En su lugar, actualicé `assets/data/tours-peru.json` (tour `PER003`) para que apunte a 3 rutas dedicadas nuevas: **`./assets/img/peru/per003-islas-ballestas.jpg`**, **`./assets/img/peru/per003-ica-bodega.jpg`** y **`./assets/img/peru/per003-huacachina-buggies.jpg`**. Sube tus 3 fotos con esos nombres en `assets/img/peru/` (carpeta nueva) y se mostrarán automáticamente.
+
+Ninguna de estas 5 rutas nuevas existe todavía como archivo — hasta que subas las fotos, esos 3 días mostrarán un ícono de imagen rota en vez del placeholder genérico anterior. Avísame si prefieres que mientras tanto sigan mostrando algo genérico en vez de romperse visualmente.
+
+### Archivos tocados en la Ronda 2
+`quote-packages.html`, `assets/js/pages/quote-packages.js`, `assets/css/quote-packages.css` (los 3 ya listados en la Ronda 1 — se sumaron cambios) y `assets/data/tours-peru.json` (nuevo en esta ronda, solo se tocó el campo `images` del tour `PER003`).
+
+### Pruebas de la Ronda 2
+26/26 casos Playwright nuevos (barras de título, sección de vuelos, etiquetas de pago, plan de cuotas con cronograma normal y comprimido, sincronización de horarios con vuelos, imágenes de Lima) + los 32/32 casos de la Ronda 1 (19 + 13) siguen pasando sin cambios — cero regresiones.
+
+---
+
+## RONDA 1 — Funcionalidades del cotizador
+
 ---
 
 ## ARCHIVOS MODIFICADOS
@@ -128,4 +183,11 @@ Durante las pruebas encontré y corregí 2 bugs propios (no preexistentes): el `
 
 ## Integración
 
-Copia estos 7 archivos a las mismas rutas relativas de tu proyecto real. No se requiere ningún cambio en ningún otro archivo. El proyecto sigue siendo 100% HTML/CSS/JS vanilla + JSON, compatible con GitHub Pages.
+Copia estos 8 archivos a las mismas rutas relativas de tu proyecto real (los 7 de la Ronda 1 + `assets/data/tours-peru.json` de la Ronda 2). No se requiere ningún cambio en ningún otro archivo. El proyecto sigue siendo 100% HTML/CSS/JS vanilla + JSON, compatible con GitHub Pages.
+
+Después de copiar los archivos, sube tus fotos con estos nombres exactos para que reemplacen los placeholders genéricos (ver detalle en la sección "Auditoría de imágenes" de la Ronda 2):
+- `assets/img/quote/fallbacks/lima-llegada.jpg`
+- `assets/img/quote/fallbacks/lima-cusco.jpg`
+- `assets/img/peru/per003-islas-ballestas.jpg`
+- `assets/img/peru/per003-ica-bodega.jpg`
+- `assets/img/peru/per003-huacachina-buggies.jpg`

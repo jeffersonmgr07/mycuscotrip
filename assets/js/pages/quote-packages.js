@@ -263,6 +263,14 @@
       return "./assets/img/quote/fallbacks/cusco.jpg";
     }
 
+    if (title.includes("llegada") && title.includes("lima")) {
+      return "./assets/img/quote/fallbacks/lima-llegada.jpg";
+    }
+
+    if (title.includes("continuacion") && title.includes("lima")) {
+      return "./assets/img/quote/fallbacks/lima-cusco.jpg";
+    }
+
     if (title.includes("recojo") || title.includes("aeropuerto") || title.includes("terminal")) {
       return "./assets/img/quote/fallbacks/recojo-aeropuerto-cusco.jpg";
     }
@@ -591,6 +599,9 @@
           defaultDate: state.arrivalTime,
           onChange(_, value) {
             state.arrivalTime = value || "09:00";
+            // Si hay vuelos incluidos con vuelo de ida elegido, su horario prevalece sobre
+            // cualquier edición manual (ver syncArrivalDepartureFromFlights).
+            syncArrivalDepartureFromFlights();
             generateAndRenderOptions();
           }
         });
@@ -606,6 +617,7 @@
           defaultDate: state.departureTime,
           onChange(_, value) {
             state.departureTime = value || "20:00";
+            syncArrivalDepartureFromFlights();
             generateAndRenderOptions();
           }
         });
@@ -2278,6 +2290,51 @@
     return { subtotal, discountableSubtotal, nonDiscountableSubtotal, manualDiscount, fullDiscount, discount, total, advance, balance };
   }
 
+  function getPassengerPhrase() {
+    const adultsPart = `${state.adults} ${state.adults === 1 ? t("quote.print.adultSingular", "adulto") : t("quote.print.adultPlural", "adultos")}`;
+    const childrenPart = state.children > 0 ? ` + ${state.children} ${state.children === 1 ? t("quote.print.childSingular", "niño") : t("quote.print.childPlural", "niños")}` : "";
+    return `${adultsPart}${childrenPart}`;
+  }
+
+  function getAccommodationDetailText() {
+    const hotelItems = Object.values(state.selectedHotels).filter((item) => item?.type === "hotel");
+    if (!hotelItems.length) return "";
+    return hotelItems
+      .map((item) => {
+        const nights = Number(item.nights || 0);
+        const nightsLabel = `${nights} ${nights === 1 ? t("quote.print.nightSingular", "noche") : t("quote.print.nightPlural", "noches")}`;
+        return `${item.roomsSummary || t("quote.roomToConfirm", "Habitación por confirmar")}, ${nightsLabel}`;
+      })
+      .join(" · ");
+  }
+
+  // Plan flexible de pagos (solo impresión/PDF): 4 cuotas (40% + 20% + 20% + 20%) calculadas
+  // sobre el total cotizado SIN descuento. Cronograma por defecto (cuando hay margen suficiente
+  // antes del viaje): cuota 1 a +2 días, y las siguientes 3 cada +15 días (47 días en total). Si
+  // el viaje está más cerca que ese margen, las fechas se comprimen proporcionalmente dividiendo
+  // los días restantes hasta el viaje en 4 partes iguales, empezando hoy.
+  function getPaymentPlanSchedule() {
+    const today = new Date();
+    const DEFAULT_SPAN_DAYS = 47;
+    const daysUntilTravel = state.dates.start ? getDateDiffDays(today, state.dates.start) : null;
+
+    let offsets;
+    if (daysUntilTravel === null || daysUntilTravel > DEFAULT_SPAN_DAYS) {
+      offsets = [2, 17, 32, 47];
+    } else {
+      const gap = Math.max(0, Math.floor(daysUntilTravel / 4));
+      offsets = [0, gap, gap * 2, gap * 3];
+    }
+
+    const percentages = [0.4, 0.2, 0.2, 0.2];
+    const total = getPaymentBreakdown().subtotal;
+    return offsets.map((offset, index) => ({
+      date: addDays(today, offset),
+      percentage: percentages[index],
+      amount: roundQuoteAmount(total * percentages[index], state.currency)
+    }));
+  }
+
 
   function updateSummary() {
     ensureQuoteReference();
@@ -2504,13 +2561,25 @@
       const trainTotal = getTrainsTotal();
       const extrasTotal = getExtrasTotal();
       const flightsTotal = getFlightsTotal();
+      const passengerPhrase = getPassengerPhrase();
+      const hasTrainSelection = Boolean(state.selectedTrains.outbound || state.selectedTrains.return);
+      const accommodationDetail = getAccommodationDetailText();
+
+      const accommodationLabel = accommodationDetail
+        ? `${escapeHtml(t("quote.print.accommodation", "Alojamiento"))} <span class="print-payment-detail">(${escapeHtml(accommodationDetail)})</span>`
+        : escapeHtml(t("quote.print.accommodation", "Alojamiento"));
+
+      const trainsLabel = hasTrainSelection
+        ? t("quote.print.trainsLabelDetailed", "Trenes (ida y vuelta por {passengers})", { passengers: passengerPhrase })
+        : t("quote.print.trainsLabel", "Trenes");
+
       const rows = [
-        [t("booking.adultsCount", "Adultos x{n}", { n: state.adults }), money(bases.adult)],
-        ...(state.children > 0 ? [[t("booking.childrenCount", "Niños x{n}", { n: state.children }), money(bases.child)]] : []),
-        [t("quote.print.accommodation", "Alojamiento"), money(hotelTotal)],
-        [t("quote.print.trainsLabel", "Trenes"), trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")],
-        ...(extrasTotal > 0 ? [[t("quote.print.extrasLabel", "Extras"), money(extrasTotal)]] : []),
-        ...(flightsTotal > 0 ? [[t("quote.summary.flight", "Vuelo nacional"), money(flightsTotal)]] : []),
+        [t("quote.print.adultsDetailed", "Adultos (Experiencias y tours) x{n}", { n: state.adults }), money(bases.adult)],
+        ...(state.children > 0 ? [[t("quote.print.childrenDetailed", "Niños (Experiencias y tours) x{n}", { n: state.children }), money(bases.child)]] : []),
+        [accommodationLabel, money(hotelTotal), true],
+        [trainsLabel, trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")],
+        ...(extrasTotal > 0 ? [[t("quote.print.extrasLabelDetailed", "Extras (boletos, entradas, almuerzos y más) x{n}", { n: getPassengerCount() }), money(extrasTotal)]] : []),
+        ...(flightsTotal > 0 ? [[t("quote.print.flightLineLabel", "Vuelo Lima-Cusco-Lima (ida y vuelta por {passengers})", { passengers: passengerPhrase }), money(flightsTotal)]] : []),
         ...(payment.manualDiscount > 0 ? [[`${t("quote.summary.discount", "Descuento")} ${state.manualDiscount?.code || t("quote.print.couponApplied", "aplicado")}`, `- ${money(payment.manualDiscount)}`]] : []),
         ...(payment.fullDiscount > 0 ? [[t("quote.print.fullPaymentDiscount", "Descuento pago total 5%"), `- ${money(payment.fullDiscount)}`]] : []),
         [t("quote.print.totalQuoted", "Total cotizado"), money(payment.total)],
@@ -2519,9 +2588,9 @@
       ];
       paymentTarget.innerHTML = `
         <div class="print-payment-list print-payment-list--quote">
-          ${rows.map(([label, value], index) => `
+          ${rows.map(([label, value, rawLabel], index) => `
             <div class="print-payment-row ${index >= rows.length - (payment.balance > 0 ? 3 : 2) ? "print-payment-row--strong" : ""}">
-              <strong>${escapeHtml(label)}</strong>
+              <strong>${rawLabel ? label : escapeHtml(label)}</strong>
               <span>${escapeHtml(value)}</span>
             </div>
           `).join("")}
@@ -2560,6 +2629,72 @@
           }).join("")}
         </div>
       `).join("");
+    }
+
+    const flightSection = $("#printFlightSection");
+    const flightTarget = $("#printFlightDetails");
+    const hasFlightDetails = Boolean(state.includeFlights && state.selectedAirline && (state.selectedOutboundFlight || state.selectedReturnFlight));
+    if (flightSection) flightSection.hidden = !hasFlightDetails;
+    if (flightTarget) {
+      if (!hasFlightDetails) {
+        flightTarget.innerHTML = "";
+      } else {
+        const outboundDate = state.dates.start ? addDays(state.dates.start, getLimaDayOffset()) : null;
+        const returnDate = state.dates.end || null;
+
+        const renderTicket = (flight, direction, date) => {
+          if (!flight) return "";
+          const label = direction === "outbound" ? t("quote.flight.outboundLabel", "Vuelo Lima → Cusco") : t("quote.flight.returnLabel", "Vuelo Cusco → Lima");
+          const dayOffsetSuffix = flight.arrivalDayOffset ? ` (+1 ${t("quote.flight.day", "día")})` : "";
+          return `
+            <div class="print-flight-ticket">
+              <div class="print-flight-ticket-header">
+                <span>${escapeHtml(label)}</span>
+                ${date ? `<span>${escapeHtml(formatDate(date))}</span>` : ""}
+              </div>
+              <div class="print-flight-ticket-row">
+                <div><small>${escapeHtml(t("booking.departure", "Salida"))}</small><b>${escapeHtml(flight.departure || "--:--")} · ${escapeHtml(getAirportName(flight.origin))}</b></div>
+                <div><small>${escapeHtml(t("booking.arrival", "Llegada"))}</small><b>${escapeHtml(flight.arrival || "--:--")}${escapeHtml(dayOffsetSuffix)} · ${escapeHtml(getAirportName(flight.destination))}</b></div>
+                ${flight.flightNumber ? `<div><small>${escapeHtml(t("quote.flight.number", "N° de vuelo"))}</small><b>${escapeHtml(flight.flightNumber)}</b></div>` : ""}
+              </div>
+            </div>
+          `;
+        };
+
+        flightTarget.innerHTML = `
+          <div class="print-flight-summary">
+            <img class="print-flight-airline-logo" src="${escapeHtml(resolveAssetPath(getAirlineLogoPath(state.selectedAirline)))}" alt="${escapeHtml(getAirlineLabel(state.selectedAirline))}">
+            <div>
+              <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong>
+              <span>${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</span>
+            </div>
+          </div>
+          <div class="print-flight-ticket-grid">
+            ${renderTicket(state.selectedOutboundFlight, "outbound", outboundDate)}
+            ${renderTicket(state.selectedReturnFlight, "return", returnDate)}
+          </div>
+        `;
+      }
+    }
+
+    const paymentPlanSection = $("#printPaymentPlanSection");
+    const paymentPlanTarget = $("#printPaymentPlan");
+    if (paymentPlanSection) paymentPlanSection.hidden = !option;
+    if (paymentPlanTarget && option) {
+      const schedule = getPaymentPlanSchedule();
+      paymentPlanTarget.innerHTML = `
+        <p class="print-payment-plan-intro">${escapeHtml(t("quote.print.paymentPlanIntro", "Este plan de pagos se calcula sobre el total cotizado sin descuentos aplicados: {total}.", { total: money(payment.subtotal) }))}</p>
+        <div class="print-payment-plan-grid">
+          ${schedule.map((cuota, index) => `
+            <div class="print-payment-plan-row">
+              <strong>${escapeHtml(t("quote.print.paymentPlanInstallment", "Cuota {n} · {percent}%", { n: index + 1, percent: Math.round(cuota.percentage * 100) }))}</strong>
+              <span>${escapeHtml(formatDateShort(cuota.date))}</span>
+              <span class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</span>
+            </div>
+          `).join("")}
+        </div>
+        <p class="print-payment-plan-note">${escapeHtml(t("quote.print.paymentPlanDiscountNote", "El descuento por pago total (5%) solo puede aplicarse cuando la reserva se confirma y se paga en su totalidad con una anticipación de 90 días o más a la fecha de viaje. Si el viaje es en menos de 90 días, no aplica descuento y el plan de cuotas se calcula sobre el precio regular."))}</p>
+      `;
     }
 
     const offer = $("#printBookingOffer");
@@ -3310,6 +3445,15 @@
     return "";
   }
 
+  const AIRPORT_NAMES = {
+    LIM: "Aeropuerto Internacional Jorge Chávez (Lima)",
+    CUZ: "Aeropuerto Internacional Alejandro Velasco Astete (Cusco)"
+  };
+
+  function getAirportName(code) {
+    return AIRPORT_NAMES[code] || code || "";
+  }
+
   function renderAirlineSelector() {
     const container = $("#flightAirlineContainer");
     if (!container) return;
@@ -3429,6 +3573,23 @@
     modal.hidden = false;
   }
 
+  // Cuando "Incluir vuelos" está activo, los horarios de los vuelos elegidos prevalecen sobre
+  // la hora de llegada/salida (escrita a mano o vacía): la llegada usa la hora de arribo del
+  // vuelo de ida + 1 hora de margen operativo, y la salida usa directamente la hora de
+  // despegue del vuelo de retorno. Esto es funcional (no solo de impresión), porque
+  // arrivalTime/departureTime determinan qué tours pueden agendarse el día 1 y el último día.
+  function syncArrivalDepartureFromFlights() {
+    if (!state.includeFlights) return;
+    if (state.selectedOutboundFlight) {
+      state.arrivalTime = addMinutesToTime(state.selectedOutboundFlight.arrival, 60);
+      setFlatpickrDate(state.pickers.arrival, state.arrivalTime, false);
+    }
+    if (state.selectedReturnFlight) {
+      state.departureTime = state.selectedReturnFlight.departure;
+      setFlatpickrDate(state.pickers.departure, state.departureTime, false);
+    }
+  }
+
   function confirmFlightSelection() {
     const direction = state.activeFlightDirection;
     if (!direction) return;
@@ -3437,6 +3598,11 @@
     if (direction === "outbound") state.selectedOutboundFlight = flight;
     else state.selectedReturnFlight = flight;
     closeModals();
+    syncArrivalDepartureFromFlights();
+    // Nota: no se usa generateAndRenderOptions() aquí porque regenera state.options y llama a
+    // selectPackageOption(), que reinicia hotel/tren/extras ya elegidos. renderItineraryPreview()
+    // refresca el itinerario en pantalla con los nuevos horarios sin perder esas selecciones.
+    renderItineraryPreview();
     renderFlightSelectors();
     updateSummary();
     updatePrintableTemplate();
