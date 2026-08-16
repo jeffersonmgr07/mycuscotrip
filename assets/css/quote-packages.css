@@ -7224,13 +7224,16 @@ body.is-generating-pdf .print-section {
    comparte exactamente la misma lógica visual: recuadro de operador angosto
    + 2 tramos de igual proporción, a todo el ancho útil de la cotización).
    ============================================= */
+#printQuotation .print-flight-grid,
+#printQuotation .print-train-grid,
 .print-flight-grid,
 .print-train-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) minmax(0, 1fr);
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) minmax(0, 1fr) !important;
   gap: 2.2mm;
   align-items: stretch;
   width: 100%;
+  min-width: 0;
 }
 
 .print-flight-airline-box,
@@ -7270,6 +7273,16 @@ body.is-generating-pdf .print-section {
   max-width: 18mm;
   height: auto;
   object-fit: contain;
+}
+
+/* El logo ferroviario debe verse como una tarjeta compacta con esquinas
+   redondeadas. Se redondea la propia imagen, no solo su contenedor. */
+#printQuotation .print-train-operator-logo,
+.print-train-operator-logo {
+  display: block;
+  border-radius: 2.5mm;
+  overflow: hidden;
+  background: #fff;
 }
 
 .print-flight-leg,
@@ -7405,13 +7418,6 @@ body.is-generating-pdf .print-section {
   font-style: italic;
 }
 
-@media (max-width: 768px) {
-  .print-flight-grid,
-  .print-train-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* =============================================
    Detalles de pago: detalle secundario (no negrita) junto a la etiqueta
    ============================================= */
@@ -7424,12 +7430,19 @@ body.is-generating-pdf .print-section {
 /* =============================================
    Sección impresa: Plan flexible de pagos
    ============================================= */
+#printQuotation .print-payment-plan-columns,
 .print-payment-plan-columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
   gap: 4mm;
-  align-items: start;
+  align-items: stretch;
   width: 100%;
+  min-width: 0;
+}
+
+#printQuotation .print-payment-plan-col,
+.print-payment-plan-col {
+  min-width: 0;
 }
 
 .print-payment-plan-col-title {
@@ -7516,12 +7529,6 @@ body.is-generating-pdf .print-section {
 
 .print-payment-plan-col--conditions li:last-child {
   margin-bottom: 0;
-}
-
-@media (max-width: 768px) {
-  .print-payment-plan-columns {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* =============================================

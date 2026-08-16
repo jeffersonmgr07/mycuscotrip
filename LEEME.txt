@@ -1,0 +1,13 @@
+PARCHE SOLO FORMATO DE IMPRESIÓN — MY CUSCO TRIP v35
+
+Reemplazar en el repositorio:
+assets/css/quote-packages.css
+
+Cambios realizados únicamente en impresión/PDF:
+- Vuelos incluidos: mantiene 3 columnas horizontales (operador + ida + vuelta).
+- Tickets de tren incluidos: mantiene 3 columnas horizontales (operador + ida + retorno).
+- Plan flexible de pagos: mantiene 2 columnas 50/50 (cuotas + condiciones).
+- Logo del operador ferroviario: esquinas redondeadas.
+- Eliminadas únicamente las reglas responsive que colapsaban estas grillas a una sola columna.
+
+No se modificaron HTML, JavaScript, cálculos, datos ni paginación.
