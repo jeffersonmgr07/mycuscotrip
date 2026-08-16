@@ -2,7 +2,7 @@
 
 Intervención incremental sobre el motor existente. No se reescribió `quote-packages.js` ni `package-generator.js`, no se introdujeron frameworks ni backend nuevo, y ningún archivo fuera de esta lista fue tocado (verificado con `diff -rq` contra el ZIP original).
 
-Este documento acumula **dos rondas de trabajo**. La Ronda 1 (funcionalidades del cotizador: destinos, Lima, vuelos, circuitos, overnight directo) está descrita en detalle más abajo. La **Ronda 2** (mejoras puntuales al formato de impresión/PDF + 1 cambio funcional de horarios) se describe primero, en su propia sección.
+Este documento acumula **4 rondas de trabajo**. La Ronda 1 (funcionalidades del cotizador: destinos, Lima, vuelos, circuitos, overnight directo) está descrita en detalle más abajo. Las rondas 2, 2.1, 3 y 4 (todas mejoras puntuales al formato de impresión/PDF, en ese orden cronológico, la última siguiendo una especificación formal punto por punto) se describen primero, cada una en su propia sección. **La Ronda 4 es la más reciente y describe el estado final de las 3 secciones que cambiaron de estructura (Vuelos, Tickets de tren, Plan flexible) — si hay alguna diferencia con lo descrito en rondas anteriores, la Ronda 4 es la vigente.**
 
 ---
 
@@ -107,6 +107,68 @@ Los mismos 3 de siempre: `quote-packages.html`, `assets/js/pages/quote-packages.
 
 ### Pruebas
 26/26 casos Playwright (incluye los ajustados a la nueva tabla de cuotas) + 32/32 de la Ronda 1, todos en verde. Además, generé un PDF real con `page.pdf()` (motor de impresión de Chromium, el mismo que usa "Imprimir" del navegador) con hotel + tren + vuelos + 3 extras elegidos, y confirmé hoja por hoja: el total cotizado aparece completo en la hoja 1, la hoja 2 empieza en Alojamientos, la hoja 3 empieza en Itinerario, y los márgenes de 10mm están donde se esperaba.
+
+---
+
+## RONDA 4 — Reestructuración puntual según especificación formal (2026-08-16)
+
+Esta ronda implementa al pie de la letra el documento "Reestructuración puntual del PDF de cotización My Cusco Trip" que enviaste. Es una intervención quirúrgica: cambia el orden de secciones, la estructura de Vuelos incluidos y Plan flexible de pagos, y crea Tickets de tren incluidos — nada más. Todo lo demás (encabezado, Datos del cliente/viaje, Servicios incluidos, Detalles de pago, Itinerario detallado, Alojamientos incluidos, Condiciones importantes, Oferta especial, Footer) conserva exactamente su diseño, colores, tipografía y contenido — solo cambia de posición cuando el documento lo pedía.
+
+### A. Archivos modificados
+Los mismos 3 de siempre:
+- `quote-packages.html` — orden de secciones + nueva sección `#printTrainSection`.
+- `assets/js/pages/quote-packages.js` — lógica de renderizado de Vuelos, Tickets de tren (nueva) y Plan flexible.
+- `assets/css/quote-packages.css` — estilos de esas 3 secciones y las reglas de paginación, **editadas en el mismo lugar donde ya existían** (no se apilaron reglas nuevas al final del archivo por encima de las de la ronda anterior).
+
+### B. Cambios realizados
+
+**Orden del PDF** (criterio de aceptación del documento, verificado con un PDF real):
+```
+Encabezado → Datos cliente/viaje → Servicios incluidos → Detalles de pago
+→ Vuelos incluidos [solo si existen]
+════════ SALTO DE PÁGINA (único salto forzado) ════════
+→ Itinerario detallado → Tickets de tren incluidos [solo si existen]
+→ Alojamientos incluidos [solo si existen] → Plan flexible de pagos
+→ Condiciones importantes → Oferta especial de reserva → Footer
+```
+"Detalles de pago" ya no vive lejos de "Servicios incluidos": los dos, más "Vuelos incluidos" si aplica, quedan juntos en la hoja inicial. Trenes/Hoteles/Plan flexible ya NO tienen salto de página propio — fluyen naturalmente y aprovechan el espacio que quede después del itinerario, exactamente como pedía el punto 41 del documento (lo verifiqué con un itinerario de 8 días: Tickets de tren, Alojamientos, Plan flexible y Condiciones importantes comparten la misma hoja donde termina el Día 8, sin salto artificial).
+
+**Vuelos incluidos**: ahora ocupa el 100% del ancho útil (igual que Servicios/Detalles de pago), con 3 recuadros: uno angosto (≈18%) "OPERADO POR / [Aerolínea] / [logo]", y dos de igual proporción (ida y vuelta, ancho idéntico, verificado programáticamente) con hora, código de aeropuerto, ciudad corta ("Lima → Cusco" en vez del nombre completo del aeropuerto, para no ganar altura innecesaria), y "Directo · duración". El equipaje ya no son 4 bloques verticales con íconos — es una sola línea de texto compartida para toda la sección: "Artículo personal incluido · Carry-on no incluido · Equipaje 23 kg no incluido · Asiento aleatorio". El +1 día de un vuelo que llega después de medianoche se muestra junto a la hora ("00:15 +1"), no como texto aparte.
+
+**Tickets de tren incluidos** (sección nueva): misma lógica visual que Vuelos — recuadro de operador angosto + tren de ida + tren de retorno de igual ancho. Reutiliza el logo de operador que ya existía (`getTrainLogoPath()`, Inca Rail / PeruRail), sin descargar nada nuevo. Cada tramo muestra hora y estación de salida, una flecha hacia abajo, hora y estación de llegada, y el nombre del servicio (p. ej. "The Voyager") — igual al ejemplo del documento. Es tolerante a que ida y vuelta sean de operadores distintos (si difieren, el recuadro izquierdo muestra ambos nombres y cada tramo agrega el suyo) y a que solo exista un tramo (ida o retorno, no ambos).
+
+**Plan flexible de pagos**: pasó de "tabla + condiciones debajo" a 2 columnas lado a lado a todo el ancho: izquierda "Plan de cuotas" (línea "Base: {total}" + tabla Cuota/%/Fecha/Monto), derecha "Condiciones de pago" (descuento del 5% con 90+ días, sin descuento si es antes, incumplimiento de cuota). Proporción verificada en 50/50. La cláusula de incumplimiento de cuotas, que en la ronda anterior había quedado mezclada dentro de "Condiciones importantes", se movió por completo a "Condiciones de pago" dentro de Plan flexible — donde corresponde según el punto 33 del documento — y "Condiciones importantes" volvió a sus 5 puntos originales aprobados.
+
+**Renderizado condicional**: Vuelos incluidos, Tickets de tren y Alojamientos incluidos no dejan ningún rastro (ni placeholder, ni card vacío, ni espacio reservado) cuando no aplican — verificado revisando que su `innerHTML` quede vacío y la sección oculta.
+
+**Paginación**: se limpiaron las reglas de la ronda anterior en el mismo lugar donde vivían (no se agregaron `!important` nuevos apilados al final). Ahora solo hay un salto de página forzado (antes de "Itinerario detallado"); "Detalles de pago" sigue protegido de partirse a media fila (la causa original del bug del total cotizado cortado); se agregó `break-inside: avoid` explícito a la oferta especial (antes solo lo tenía dentro de `@media print`, no en la ruta de html2pdf).
+
+### C. Qué NO se modificó
+Se mantuvieron intactos —diseño, colores, tipografía, contenido y estructura interna— y solo cambiaron de posición cuando correspondía:
+- Encabezado / logo / datos de la agencia, título "COTIZACIÓN", código/emisión/válido hasta.
+- Datos del cliente, Datos del viaje.
+- Servicios incluidos, Detalles de pago (misma posición relativa entre sí).
+- Itinerario detallado (cero cambios de diseño; los bloques por día conservan su propio `break-inside: avoid`, y la sección completa NO lo tiene, tal como pide el punto 40).
+- Alojamientos incluidos (mismas cards, nombres, ciudad, noches, habitación, imágenes — solo cambió de posición).
+- Condiciones importantes (mismos 5 puntos originales, solo se le quitó la cláusula de cuotas que no le correspondía).
+- Oferta especial de reserva, Footer.
+- Cálculos de tours, hoteles, trenes, vuelos, extras, descuentos, total, pago 100%, cuotas y fechas de cuotas: ningún número cambió, solo su presentación impresa.
+- PayPal, checkout, Apps Script, y el cotizador interactivo (pantalla): no se tocó nada fuera de la plantilla imprimible.
+
+### D. Pruebas
+Con Playwright, generando PDFs reales con el motor de impresión de Chromium (`page.pdf()`, el mismo mecanismo detrás de "Imprimir" del navegador):
+- Con vuelos + con trenes + con hoteles + extras (caso completo): orden correcto, anchos de Vuelos/Trenes/Plan flexible idénticos al de Servicios incluidos, ancho ida = ancho vuelta en vuelos y trenes, ida y vuelta en la misma fila (no se cae una debajo de la otra), plan de pagos ~50/50, una sola línea de equipaje compartida.
+- Sin vuelos: sección oculta, sin restos de HTML.
+- Sin trenes: sección oculta, sin restos de HTML.
+- Sin hoteles: sección oculta.
+- Sin trenes ni hoteles: Itinerario queda seguido directo de Plan flexible.
+- Itinerario largo (8 días): confirma que Tickets de tren/Hoteles/Plan flexible/Condiciones comparten la misma hoja donde termina el itinerario, sin saltos artificiales.
+- Los 32/32 casos de la Ronda 1 (19+13) y los 26/26 de la Ronda 2 (actualizados donde el propio documento pedía cambiar el comportamiento anterior) siguen en verde.
+
+16/16 casos nuevos + 32/32 + 26/26 = **74/74 en verde**, cero errores de JavaScript en todo el flujo.
+
+### E. Código
+Se entregan los 3 archivos completos ya modificados (`quote-packages.html`, `assets/css/quote-packages.css`, `assets/js/pages/quote-packages.js`) en esta misma carpeta, listos para copiar a las mismas rutas relativas de tu proyecto.
 
 ---
 

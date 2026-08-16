@@ -2631,6 +2631,72 @@
       `).join("");
     }
 
+    const trainSection = $("#printTrainSection");
+    const trainTarget = $("#printTrainDetails");
+    const outboundTrain = state.selectedTrains.outbound;
+    const returnTrain = state.selectedTrains.return;
+    const hasTrainDetails = Boolean(outboundTrain || returnTrain);
+    if (trainSection) trainSection.hidden = !hasTrainDetails;
+    if (trainTarget) {
+      if (!hasTrainDetails) {
+        trainTarget.innerHTML = "";
+      } else {
+        const getTrainOperatorLabel = (train) => (train?.isLocalTrain ? "PeruRail" : (train?.companyName || train?.company || ""));
+        const sameOperator = Boolean(outboundTrain && returnTrain && normalizeText(getTrainOperatorLabel(outboundTrain)) === normalizeText(getTrainOperatorLabel(returnTrain)));
+        const bothTrains = Boolean(outboundTrain && returnTrain);
+        const primaryTrain = outboundTrain || returnTrain;
+
+        // Tolerante a operadores distintos en ida/vuelta (sección 21 del PDF): si difieren, el
+        // recuadro izquierdo muestra ambos nombres y cada tramo agrega su propio operador.
+        const renderTrainLeg = (train, direction) => {
+          if (!train) return "";
+          const label = direction === "outbound" ? t("quote.train.outboundLegLabel", "Tren de ida") : t("quote.train.returnLegLabel", "Tren de retorno");
+          const arrivalText = train.arrivalDayOffset ? `${train.arrivalTime || "--:--"} +1` : (train.arrivalTime || "--:--");
+          return `
+            <div class="print-train-leg">
+              <div class="print-train-leg-top">
+                <span class="print-train-leg-label">${escapeHtml(label)}</span>
+                ${bothTrains && !sameOperator ? `<span class="print-train-leg-operator">${escapeHtml(getTrainOperatorLabel(train))}</span>` : ""}
+              </div>
+              <div class="print-train-leg-route">
+                <div class="print-train-leg-point">
+                  <strong>${escapeHtml(train.departureTime || "--:--")}</strong>
+                  <span>${escapeHtml(train.departureStation || "")}</span>
+                </div>
+                <div class="print-train-leg-arrow">↓</div>
+                <div class="print-train-leg-point">
+                  <strong>${escapeHtml(arrivalText)}</strong>
+                  <span>${escapeHtml(train.arrivalStation || "")}</span>
+                </div>
+              </div>
+              <div class="print-train-leg-service">${escapeHtml(train.serviceName || train.category || train.code || "")}</div>
+            </div>
+          `;
+        };
+
+        const operatorBoxContent = !bothTrains || sameOperator
+          ? `
+            <span class="print-train-operated-by">${escapeHtml(t("quote.print.operatedBy", "Operado por"))}</span>
+            <strong>${escapeHtml(getTrainOperatorLabel(primaryTrain))}</strong>
+            <img class="print-train-operator-logo" src="${escapeHtml(resolveAssetPath(getTrainLogoPath(primaryTrain)))}" alt="${escapeHtml(getTrainOperatorLabel(primaryTrain))}">
+          `
+          : `
+            <span class="print-train-operated-by">${escapeHtml(t("quote.print.operators", "Operadores"))}</span>
+            <strong>${escapeHtml(getTrainOperatorLabel(outboundTrain))} / ${escapeHtml(getTrainOperatorLabel(returnTrain))}</strong>
+          `;
+
+        trainTarget.innerHTML = `
+          <div class="print-train-grid">
+            <div class="print-train-operator-box">
+              ${operatorBoxContent}
+            </div>
+            ${renderTrainLeg(outboundTrain, "outbound")}
+            ${renderTrainLeg(returnTrain, "return")}
+          </div>
+        `;
+      }
+    }
+
     const flightSection = $("#printFlightSection");
     const flightTarget = $("#printFlightDetails");
     const hasFlightDetails = Boolean(state.includeFlights && state.selectedAirline && (state.selectedOutboundFlight || state.selectedReturnFlight));
@@ -2647,8 +2713,8 @@
         // recuadros de igual proporción junto al recuadro (más angosto) de la aerolínea.
         const renderLeg = (flight, direction, date) => {
           if (!flight) return "";
-          const label = direction === "outbound" ? t("quote.flight.outboundLegLabel", "Ida · Lima → Cusco") : t("quote.flight.returnLegLabel", "Vuelta · Cusco → Lima");
-          const dayOffsetSuffix = flight.arrivalDayOffset ? ` (+1 ${t("quote.flight.day", "día")})` : "";
+          const label = direction === "outbound" ? t("quote.flight.outboundLegLabel", "Vuelo de ida") : t("quote.flight.returnLegLabel", "Vuelo de vuelta");
+          const arrivalText = flight.arrivalDayOffset ? `${flight.arrival || "--:--"} +1` : (flight.arrival || "--:--");
           return `
             <div class="print-flight-leg">
               <div class="print-flight-leg-top">
@@ -2661,47 +2727,32 @@
                   <span>${escapeHtml(flight.origin || "")}</span>
                 </div>
                 <div class="print-flight-leg-line">
-                  <span>✈</span>
-                  <span>${escapeHtml(t("quote.flight.direct", "Directo"))}</span>
-                  <span>${escapeHtml(getFlightDurationLabel(flight))}</span>
+                  <span>→</span>
                 </div>
                 <div class="print-flight-leg-point print-flight-leg-point--end">
-                  <strong>${escapeHtml(flight.arrival || "--:--")}${escapeHtml(dayOffsetSuffix)}</strong>
+                  <strong>${escapeHtml(arrivalText)}</strong>
                   <span>${escapeHtml(flight.destination || "")}</span>
                 </div>
               </div>
-              <div class="print-flight-leg-airports">${escapeHtml(getAirportName(flight.origin))} → ${escapeHtml(getAirportName(flight.destination))}${flight.flightNumber ? ` · ${escapeHtml(t("quote.flight.number", "N° de vuelo"))} ${escapeHtml(flight.flightNumber)}` : ""}</div>
-              <div class="print-fare-list">
-                <div class="print-fare-item print-fare-item--yes">
-                  <span class="print-fare-icon"><i class="fas fa-bag-shopping"></i></span>
-                  <span class="print-fare-label">${escapeHtml(t("quote.flight.personalItem", "Artículo personal"))}</span>
-                </div>
-                <div class="print-fare-item print-fare-item--no">
-                  <span class="print-fare-icon"><i class="fas fa-suitcase-rolling"></i><i class="fas fa-slash print-fare-icon-slash"></i></span>
-                  <span class="print-fare-label">${escapeHtml(t("quote.flight.noCarryOn", "Mano (10kg)"))}</span>
-                </div>
-                <div class="print-fare-item print-fare-item--no">
-                  <span class="print-fare-icon"><i class="fas fa-suitcase"></i><i class="fas fa-slash print-fare-icon-slash"></i></span>
-                  <span class="print-fare-label">${escapeHtml(t("quote.flight.noCheckedBag", "Facturado (23kg)"))}</span>
-                </div>
-                <div class="print-fare-item print-fare-item--yes">
-                  <span class="print-fare-icon"><i class="fas fa-chair"></i></span>
-                  <span class="print-fare-label">${escapeHtml(t("quote.flight.randomSeat", "Asiento aleatorio"))}</span>
-                </div>
+              <div class="print-flight-leg-meta">
+                <span>${escapeHtml(getFlightCityName(flight.origin))} → ${escapeHtml(getFlightCityName(flight.destination))}</span>
+                <span>${escapeHtml(t("quote.flight.direct", "Directo"))} · ${escapeHtml(getFlightDurationLabel(flight))}</span>
               </div>
             </div>
           `;
         };
 
         flightTarget.innerHTML = `
-          <p class="print-flight-intro">${escapeHtml(t("quote.print.operatedBy", "Operado por"))} <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong> · ${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</p>
           <div class="print-flight-grid">
             <div class="print-flight-airline-box">
+              <span class="print-flight-operated-by">${escapeHtml(t("quote.print.operatedBy", "Operado por"))}</span>
+              <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong>
               <img class="print-flight-airline-logo" src="${escapeHtml(resolveAssetPath(getAirlineLogoPath(state.selectedAirline)))}" alt="${escapeHtml(getAirlineLabel(state.selectedAirline))}">
             </div>
             ${renderLeg(state.selectedOutboundFlight, "outbound", outboundDate)}
             ${renderLeg(state.selectedReturnFlight, "return", returnDate)}
           </div>
+          <p class="print-flight-baggage">${escapeHtml(t("quote.flight.baggageSummary", "Artículo personal incluido · Carry-on no incluido · Equipaje 23 kg no incluido · Asiento aleatorio"))}</p>
         `;
       }
     }
@@ -2712,34 +2763,39 @@
     if (paymentPlanTarget && option) {
       const schedule = getPaymentPlanSchedule();
       paymentPlanTarget.innerHTML = `
-        <p class="print-payment-plan-intro">${escapeHtml(t("quote.print.paymentPlanIntro", "Este plan de pagos se calcula sobre el total cotizado sin descuentos aplicados: {total}.", { total: money(payment.subtotal) }))}</p>
-        <table class="print-payment-plan-table">
-          <thead>
-            <tr>
-              <th>${escapeHtml(t("quote.print.paymentPlanColInstallment", "Cuota"))}</th>
-              <th>${escapeHtml(t("quote.print.paymentPlanColPercent", "%"))}</th>
-              <th>${escapeHtml(t("quote.print.paymentPlanColDate", "Fecha"))}</th>
-              <th>${escapeHtml(t("quote.print.paymentPlanColAmount", "Monto"))}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${schedule.map((cuota, index) => `
-              <tr>
-                <td>${escapeHtml(t("quote.print.paymentPlanCuotaN", "Cuota {n}", { n: index + 1 }))}</td>
-                <td>${Math.round(cuota.percentage * 100)}%</td>
-                <td>${escapeHtml(formatDateShort(cuota.date))}</td>
-                <td class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-        <div class="print-payment-plan-conditions">
-          <strong>${escapeHtml(t("quote.print.paymentPlanConditionsTitle", "Condiciones del plan de pagos"))}</strong>
-          <ul>
-            <li>${escapeHtml(t("quote.print.paymentPlanDiscountNote90", "El descuento por pago total (5%) solo aplica si la reserva se confirma y se paga en su totalidad con una anticipación de 90 días o más a la fecha de viaje."))}</li>
-            <li>${escapeHtml(t("quote.print.paymentPlanDiscountNoteUnder90", "Si el viaje es en menos de 90 días, no aplica descuento y el plan de cuotas se calcula sobre el precio regular."))}</li>
-            <li>${escapeHtml(t("quote.print.paymentPlanForfeitNote", "El incumplimiento de cualquiera de las cuotas en la fecha acordada deja sin efecto la reserva y el itinerario cotizado, sin derecho a reclamo sobre los montos ya abonados."))}</li>
-          </ul>
+        <div class="print-payment-plan-columns">
+          <div class="print-payment-plan-col print-payment-plan-col--cuotas">
+            <strong class="print-payment-plan-col-title">${escapeHtml(t("quote.print.paymentPlanCuotasTitle", "Plan de cuotas"))}</strong>
+            <p class="print-payment-plan-base">${escapeHtml(t("quote.print.paymentPlanBase", "Base: {total}", { total: money(payment.subtotal) }))}</p>
+            <table class="print-payment-plan-table">
+              <thead>
+                <tr>
+                  <th>${escapeHtml(t("quote.print.paymentPlanColInstallment", "Cuota"))}</th>
+                  <th>${escapeHtml(t("quote.print.paymentPlanColPercent", "%"))}</th>
+                  <th>${escapeHtml(t("quote.print.paymentPlanColDate", "Fecha"))}</th>
+                  <th>${escapeHtml(t("quote.print.paymentPlanColAmount", "Monto"))}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${schedule.map((cuota, index) => `
+                  <tr>
+                    <td>${escapeHtml(t("quote.print.paymentPlanCuotaN", "Cuota {n}", { n: index + 1 }))}</td>
+                    <td>${Math.round(cuota.percentage * 100)}%</td>
+                    <td>${escapeHtml(formatDateShort(cuota.date))}</td>
+                    <td class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+          <div class="print-payment-plan-col print-payment-plan-col--conditions">
+            <strong class="print-payment-plan-col-title">${escapeHtml(t("quote.print.paymentPlanConditionsTitle", "Condiciones de pago"))}</strong>
+            <ul>
+              <li>${escapeHtml(t("quote.print.paymentPlanDiscountNote90", "El descuento por pago total (5%) solo aplica si la reserva se confirma y se paga en su totalidad con una anticipación de 90 días o más a la fecha de viaje."))}</li>
+              <li>${escapeHtml(t("quote.print.paymentPlanDiscountNoteUnder90", "Si el viaje es en menos de 90 días, no aplica descuento y el plan de cuotas se calcula sobre el precio regular."))}</li>
+              <li>${escapeHtml(t("quote.print.paymentPlanForfeitNote", "El incumplimiento de cualquiera de las cuotas en la fecha acordada deja sin efecto la reserva y el itinerario cotizado, sin derecho a reclamo sobre los montos ya abonados."))}</li>
+            </ul>
+          </div>
         </div>
       `;
     }
@@ -3492,13 +3548,13 @@
     return "";
   }
 
-  const AIRPORT_NAMES = {
-    LIM: "Aeropuerto Internacional Jorge Chávez (Lima)",
-    CUZ: "Aeropuerto Internacional Alejandro Velasco Astete (Cusco)"
+  const FLIGHT_CITY_NAMES = {
+    LIM: "Lima",
+    CUZ: "Cusco"
   };
 
-  function getAirportName(code) {
-    return AIRPORT_NAMES[code] || code || "";
+  function getFlightCityName(code) {
+    return FLIGHT_CITY_NAMES[code] || code || "";
   }
 
   function renderAirlineSelector() {

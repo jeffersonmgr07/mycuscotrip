@@ -7220,29 +7220,27 @@ body.is-generating-pdf .print-section {
 }
 
 /* =============================================
-   Sección impresa: Vuelos incluidos
+   Sección impresa: Vuelos incluidos (y Tickets de tren incluidos, que
+   comparte exactamente la misma lógica visual: recuadro de operador angosto
+   + 2 tramos de igual proporción, a todo el ancho útil de la cotización).
    ============================================= */
-.print-flight-intro {
-  font-size: 7.4pt;
-  color: #35443e;
-  margin: 0 0 2mm;
-}
-
-.print-flight-intro strong {
-  color: #062803;
-}
-
-.print-flight-grid {
+.print-flight-grid,
+.print-train-grid {
   display: grid;
-  grid-template-columns: 0.55fr 1fr 1fr;
+  grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 2.2mm;
   align-items: stretch;
+  width: 100%;
 }
 
-.print-flight-airline-box {
+.print-flight-airline-box,
+.print-train-operator-box {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  gap: 0.8mm;
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2.5mm;
   background: #fbfdfb;
@@ -7251,14 +7249,31 @@ body.is-generating-pdf .print-section {
   page-break-inside: avoid;
 }
 
-.print-flight-airline-logo {
+.print-flight-operated-by,
+.print-train-operated-by {
+  font-size: 6.2pt;
+  color: #6c7a73;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.print-flight-airline-box strong,
+.print-train-operator-box strong {
+  font-size: 7.6pt;
+  color: #062803;
+  line-height: 1.15;
+}
+
+.print-flight-airline-logo,
+.print-train-operator-logo {
   width: 100%;
-  max-width: 20mm;
+  max-width: 18mm;
   height: auto;
   object-fit: contain;
 }
 
-.print-flight-leg {
+.print-flight-leg,
+.print-train-leg {
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2.5mm;
   background: #fbfdfb;
@@ -7267,14 +7282,16 @@ body.is-generating-pdf .print-section {
   page-break-inside: avoid;
 }
 
-.print-flight-leg-top {
+.print-flight-leg-top,
+.print-train-leg-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 1.2mm;
 }
 
-.print-flight-leg-label {
+.print-flight-leg-label,
+.print-train-leg-label {
   font-size: 6.8pt;
   font-weight: 800;
   color: #0a3a26;
@@ -7319,86 +7336,78 @@ body.is-generating-pdf .print-section {
 
 .print-flight-leg-line {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.2mm;
+  justify-content: center;
   color: #8a958f;
+  font-size: 8pt;
 }
 
-.print-flight-leg-line span {
-  font-size: 6pt;
-  white-space: nowrap;
-  line-height: 1.25;
-}
-
-.print-flight-leg-airports {
-  font-size: 6.4pt;
-  color: #6c7a73;
-  line-height: 1.3;
-  margin-bottom: 1.2mm;
-  padding-bottom: 1.2mm;
-  border-bottom: 1px dashed rgba(6, 40, 3, 0.12);
-}
-
-.print-fare-list {
+.print-flight-leg-meta {
   display: flex;
   justify-content: space-between;
-  gap: 1.5mm;
+  gap: 2mm;
+  font-size: 6.4pt;
+  color: #6c7a73;
 }
 
-.print-fare-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5mm;
-  flex: 1;
-  min-width: 0;
-}
-
-.print-fare-icon {
-  position: relative;
-  width: 6mm;
-  height: 6mm;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 7.4pt;
-}
-
-.print-fare-item--yes .print-fare-icon {
-  background: #e5f3e8;
-  color: #0a3a26;
-}
-
-.print-fare-item--no .print-fare-icon {
-  background: #f0f1ef;
-  color: #b7bfba;
-}
-
-.print-fare-icon-slash {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #c0392b;
-  font-size: 7.4pt;
-}
-
-.print-fare-label {
-  font-size: 5.8pt;
+.print-flight-baggage {
+  margin: 2mm 0 0;
+  font-size: 6.8pt;
   color: #53645d;
   text-align: center;
-  line-height: 1.15;
 }
 
-.print-fare-item--no .print-fare-label {
-  color: #9aa39d;
+/* =============================================
+   Sección impresa: Tickets de tren incluidos (partes que difieren de
+   Vuelos incluidos: la ruta se muestra apilada, con flecha hacia abajo,
+   en vez de en línea horizontal).
+   ============================================= */
+.print-train-leg-operator {
+  font-size: 6.4pt;
+  color: #6c7a73;
+}
+
+.print-train-leg-route {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6mm;
+  margin-bottom: 1mm;
+}
+
+.print-train-leg-point {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2mm;
+}
+
+.print-train-leg-point strong {
+  font-size: 9pt;
+  color: #062803;
+  line-height: 1.1;
+}
+
+.print-train-leg-point span {
+  font-size: 6.6pt;
+  color: #6c7a73;
+  text-align: right;
+}
+
+.print-train-leg-arrow {
+  font-size: 7pt;
+  color: #8a958f;
+  padding-left: 0.5mm;
+}
+
+.print-train-leg-service {
+  font-size: 6.6pt;
+  color: #53645d;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {
-  .print-flight-grid {
+  .print-flight-grid,
+  .print-train-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -7415,17 +7424,33 @@ body.is-generating-pdf .print-section {
 /* =============================================
    Sección impresa: Plan flexible de pagos
    ============================================= */
-.print-payment-plan-intro {
+.print-payment-plan-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4mm;
+  align-items: start;
+  width: 100%;
+}
+
+.print-payment-plan-col-title {
+  display: block;
   font-size: 7.8pt;
+  color: #0a3a26;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.4mm;
+}
+
+.print-payment-plan-base {
+  font-size: 7.4pt;
   color: #35443e;
-  margin: 0 0 2mm;
-  line-height: 1.35;
+  margin: 0 0 1.6mm;
 }
 
 .print-payment-plan-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  margin-bottom: 3mm;
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2mm;
   overflow: hidden;
@@ -7434,12 +7459,13 @@ body.is-generating-pdf .print-section {
 .print-payment-plan-table th {
   background: #f0f5f1;
   color: #0a3a26;
-  font-size: 6.8pt;
+  font-size: 6.6pt;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   text-align: left;
-  padding: 1.4mm 3mm;
+  padding: 1.4mm 2mm;
   border-bottom: 1px solid rgba(6, 40, 3, 0.14);
+  white-space: nowrap;
 }
 
 .print-payment-plan-table th:last-child,
@@ -7448,10 +7474,11 @@ body.is-generating-pdf .print-section {
 }
 
 .print-payment-plan-table td {
-  font-size: 7.6pt;
+  font-size: 7.2pt;
   color: #35443e;
-  padding: 1.3mm 3mm;
+  padding: 1.3mm 2mm;
   border-bottom: 1px solid rgba(6, 40, 3, 0.08);
+  white-space: nowrap;
 }
 
 .print-payment-plan-table tr:last-child td {
@@ -7468,38 +7495,38 @@ body.is-generating-pdf .print-section {
   color: #0a3a26;
 }
 
-.print-payment-plan-conditions {
+.print-payment-plan-col--conditions {
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2mm;
   background: #f7faf7;
   padding: 2mm 3mm;
 }
 
-.print-payment-plan-conditions strong {
-  display: block;
-  font-size: 7.6pt;
-  color: #0a3a26;
-  margin-bottom: 1mm;
-}
-
-.print-payment-plan-conditions ul {
+.print-payment-plan-col--conditions ul {
   margin: 0;
   padding-left: 3.6mm;
 }
 
-.print-payment-plan-conditions li {
+.print-payment-plan-col--conditions li {
   font-size: 7pt;
   color: #5d6a64;
   line-height: 1.4;
   margin-bottom: 0.8mm;
 }
 
-.print-payment-plan-conditions li:last-child {
+.print-payment-plan-col--conditions li:last-child {
   margin-bottom: 0;
 }
 
+@media (max-width: 768px) {
+  .print-payment-plan-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* =============================================
-   V-final-2: paginación de 3 hojas + espaciado entre secciones.
+   V-final-3: único salto de página (antes de "Itinerario detallado") +
+   espaciado entre secciones + evitar cortes a media fila en cards compactos.
    Reglas incondicionales (fuera de @media print) para que apliquen igual en
    window.print() y en la captura de html2canvas/html2pdf (que no evalúa
    @media print). Se repiten los selectores #printQuotation .x / .x para
@@ -7515,19 +7542,21 @@ body.is-generating-pdf .print-section {
 
 /* Detalles de pago ya no puede partirse a media fila entre hojas: antes había
    una excepción explícita que permitía cortarlo (para no forzar una hoja en
-   blanco), pero ahora que tiene su propio salto de página controlado, ya no
-   hace falta y causaba que el total cotizado quedara cortado. */
+   blanco), pero eso causaba que el total cotizado quedara cortado. */
 #printQuotation .print-section--payment,
 .print-section--payment {
   break-inside: avoid !important;
   page-break-inside: avoid !important;
 }
 
-/* Saltos de página forzados: hoja 2 empieza en "Alojamientos incluidos",
-   hoja 3 empieza en "Itinerario detallado". Con @page{margin:0} el borde de
-   la sección queda pegado al borde físico de la hoja si el aire se agrega
-   como padding (queda DENTRO del borde); por eso se usa margin-top (queda
-   FUERA del borde) para simular el margen superior de página. */
+/* Único salto de página obligatorio: justo antes de "Itinerario detallado"
+   (marcado con la clase print-section--page-break en el HTML). Con
+   @page{margin:0} el borde de la sección queda pegado al borde físico de la
+   hoja si el aire se agrega como padding (queda DENTRO del borde); por eso
+   se usa margin-top (queda FUERA del borde) para simular el margen superior
+   de la nueva página. Trenes, hoteles y plan flexible NO tienen esta clase:
+   deben fluir de forma natural y aprovechar el espacio restante, tal como
+   pide la tarea. */
 #printQuotation .print-section--page-break,
 .print-section--page-break {
   break-before: page !important;
@@ -7536,11 +7565,21 @@ body.is-generating-pdf .print-section {
   margin-top: 10mm !important;
 }
 
-/* Margen superior/inferior de al menos 10mm en la hoja 1 (las hojas 2 y 3 ya
-   quedan cubiertas por el margin-top de arriba, al iniciar con un salto de
-   página forzado). */
+/* Margen superior/inferior de al menos 10mm en la hoja 1 (la hoja del salto
+   forzado ya queda cubierta por el margin-top de arriba). */
 #printQuotation .print-sheet,
 .print-sheet {
   padding-top: 10mm !important;
   padding-bottom: 10mm !important;
+}
+
+/* Cards compactos (Vuelos, Tickets de tren, Plan flexible) ya heredan
+   break-inside:avoid de .print-section (regla base, sin !important, nunca
+   sobreescrita). La oferta especial usa su propia clase .print-booking-offer
+   y solo tenía esa protección dentro de @media print; se agrega también sin
+   condición para que aplique igual en el flujo de html2pdf. */
+#printQuotation .print-booking-offer,
+.print-booking-offer {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
