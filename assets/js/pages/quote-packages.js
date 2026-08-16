@@ -2671,23 +2671,33 @@
                 </div>
               </div>
               <div class="print-flight-leg-airports">${escapeHtml(getAirportName(flight.origin))} → ${escapeHtml(getAirportName(flight.destination))}${flight.flightNumber ? ` · ${escapeHtml(t("quote.flight.number", "N° de vuelo"))} ${escapeHtml(flight.flightNumber)}` : ""}</div>
-              <div class="print-flight-fare-list">
-                <span class="print-fare-item print-fare-item--yes">✓ ${escapeHtml(t("quote.flight.personalItem", "Artículo personal / bolso"))}</span>
-                <span class="print-fare-item print-fare-item--no">✕ ${escapeHtml(t("quote.flight.noCarryOn", "Equipaje de mano (10kg)"))}</span>
-                <span class="print-fare-item print-fare-item--no">✕ ${escapeHtml(t("quote.flight.noCheckedBag", "Equipaje facturado (23kg)"))}</span>
-                <span class="print-fare-item print-fare-item--yes">✓ ${escapeHtml(t("quote.flight.randomSeat", "Asiento aleatorio"))}</span>
+              <div class="print-fare-list">
+                <div class="print-fare-item print-fare-item--yes">
+                  <span class="print-fare-icon"><i class="fas fa-bag-shopping"></i></span>
+                  <span class="print-fare-label">${escapeHtml(t("quote.flight.personalItem", "Artículo personal"))}</span>
+                </div>
+                <div class="print-fare-item print-fare-item--no">
+                  <span class="print-fare-icon"><i class="fas fa-suitcase-rolling"></i><i class="fas fa-slash print-fare-icon-slash"></i></span>
+                  <span class="print-fare-label">${escapeHtml(t("quote.flight.noCarryOn", "Mano (10kg)"))}</span>
+                </div>
+                <div class="print-fare-item print-fare-item--no">
+                  <span class="print-fare-icon"><i class="fas fa-suitcase"></i><i class="fas fa-slash print-fare-icon-slash"></i></span>
+                  <span class="print-fare-label">${escapeHtml(t("quote.flight.noCheckedBag", "Facturado (23kg)"))}</span>
+                </div>
+                <div class="print-fare-item print-fare-item--yes">
+                  <span class="print-fare-icon"><i class="fas fa-chair"></i></span>
+                  <span class="print-fare-label">${escapeHtml(t("quote.flight.randomSeat", "Asiento aleatorio"))}</span>
+                </div>
               </div>
             </div>
           `;
         };
 
         flightTarget.innerHTML = `
+          <p class="print-flight-intro">${escapeHtml(t("quote.print.operatedBy", "Operado por"))} <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong> · ${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</p>
           <div class="print-flight-grid">
             <div class="print-flight-airline-box">
               <img class="print-flight-airline-logo" src="${escapeHtml(resolveAssetPath(getAirlineLogoPath(state.selectedAirline)))}" alt="${escapeHtml(getAirlineLabel(state.selectedAirline))}">
-              <span class="print-flight-operated-by">${escapeHtml(t("quote.print.operatedBy", "Operado por"))}</span>
-              <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong>
-              <small>${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</small>
             </div>
             ${renderLeg(state.selectedOutboundFlight, "outbound", outboundDate)}
             ${renderLeg(state.selectedReturnFlight, "return", returnDate)}
@@ -2703,17 +2713,34 @@
       const schedule = getPaymentPlanSchedule();
       paymentPlanTarget.innerHTML = `
         <p class="print-payment-plan-intro">${escapeHtml(t("quote.print.paymentPlanIntro", "Este plan de pagos se calcula sobre el total cotizado sin descuentos aplicados: {total}.", { total: money(payment.subtotal) }))}</p>
-        <div class="print-payment-plan-grid">
-          ${schedule.map((cuota, index) => `
-            <div class="print-payment-plan-row">
-              <strong>${escapeHtml(t("quote.print.paymentPlanInstallment", "Cuota {n} · {percent}%", { n: index + 1, percent: Math.round(cuota.percentage * 100) }))}</strong>
-              <span>${escapeHtml(formatDateShort(cuota.date))}</span>
-              <span class="print-payment-plan-spacer"></span>
-              <span class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</span>
-            </div>
-          `).join("")}
+        <table class="print-payment-plan-table">
+          <thead>
+            <tr>
+              <th>${escapeHtml(t("quote.print.paymentPlanColInstallment", "Cuota"))}</th>
+              <th>${escapeHtml(t("quote.print.paymentPlanColPercent", "%"))}</th>
+              <th>${escapeHtml(t("quote.print.paymentPlanColDate", "Fecha"))}</th>
+              <th>${escapeHtml(t("quote.print.paymentPlanColAmount", "Monto"))}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${schedule.map((cuota, index) => `
+              <tr>
+                <td>${escapeHtml(t("quote.print.paymentPlanCuotaN", "Cuota {n}", { n: index + 1 }))}</td>
+                <td>${Math.round(cuota.percentage * 100)}%</td>
+                <td>${escapeHtml(formatDateShort(cuota.date))}</td>
+                <td class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        <div class="print-payment-plan-conditions">
+          <strong>${escapeHtml(t("quote.print.paymentPlanConditionsTitle", "Condiciones del plan de pagos"))}</strong>
+          <ul>
+            <li>${escapeHtml(t("quote.print.paymentPlanDiscountNote90", "El descuento por pago total (5%) solo aplica si la reserva se confirma y se paga en su totalidad con una anticipación de 90 días o más a la fecha de viaje."))}</li>
+            <li>${escapeHtml(t("quote.print.paymentPlanDiscountNoteUnder90", "Si el viaje es en menos de 90 días, no aplica descuento y el plan de cuotas se calcula sobre el precio regular."))}</li>
+            <li>${escapeHtml(t("quote.print.paymentPlanForfeitNote", "El incumplimiento de cualquiera de las cuotas en la fecha acordada deja sin efecto la reserva y el itinerario cotizado, sin derecho a reclamo sobre los montos ya abonados."))}</li>
+          </ul>
         </div>
-        <p class="print-payment-plan-note">${escapeHtml(t("quote.print.paymentPlanDiscountNote", "El descuento por pago total (5%) solo puede aplicarse cuando la reserva se confirma y se paga en su totalidad con una anticipación de 90 días o más a la fecha de viaje. Si el viaje es en menos de 90 días, no aplica descuento y el plan de cuotas se calcula sobre el precio regular."))}</p>
       `;
     }
 
@@ -3235,7 +3262,7 @@
       const previousHidden = element.hidden;
       element.hidden = false;
       window.html2pdf().set({
-        margin: [8, 8, 8, 8],
+        margin: [10, 8, 10, 8],
         filename: `${ref}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },

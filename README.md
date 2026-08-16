@@ -76,6 +76,40 @@ Los mismos 26/26 casos de la Ronda 2 + los 32/32 de la Ronda 1 (19+13) siguen en
 
 ---
 
+## RONDA 3 — Paginación, márgenes y rediseño de Vuelos/Plan de pagos (2026-08-16)
+
+Corrección más profunda del formato de impresión/PDF: reordenamiento de secciones, paginación forzada en 3 hojas, márgenes de página, y rediseño de "Vuelos incluidos" y "Plan flexible de pagos". Verificado generando un PDF real (no solo capturas de pantalla) e inspeccionando cada hoja por separado.
+
+### 1. El total cotizado ya no se corta entre hojas
+Causa raíz: "Detalles de pago" vivía después de "Alojamientos incluidos", y una regla vieja (`.print-section--payment { break-inside: auto }`) permitía partir esa sección a media fila si no cabía completa en la hoja 1 — exactamente lo que pasaba al elegir varios extras. Se quitó esa excepción (ahora "Detalles de pago" nunca se parte a media fila, igual que las demás secciones) y, más importante, se reordenaron las secciones para que quepa completa junto con "Servicios incluidos" en la hoja 1.
+
+### 2. Reordenamiento y paginación forzada en 3 hojas
+Orden nuevo, con saltos de página forzados (verificado con un PDF real de 4 hojas: la 4ª aparece solo porque el itinerario de 5 días con fotos no entra en una sola hoja, no por un error):
+- **Hoja 1:** Datos del cliente/viaje, Servicios incluidos, Detalles de pago.
+- **Hoja 2:** Alojamientos incluidos, Vuelos incluidos.
+- **Hoja 3:** Itinerario detallado (y lo que sigue — Condiciones importantes, Plan flexible de pagos, banner de oferta — continúa a partir de aquí; si el itinerario es largo, como en cualquier itinerario real de varios días con fotos, esas secciones finales pueden pasar naturalmente a una 4ª hoja).
+
+### 3. Espaciado y márgenes de página
+- Más espacio entre secciones (`margin-bottom` de 1.55mm a 6mm) para que no se vea amontonado.
+- Margen de al menos 10mm arriba en las 3 hojas (medido directamente sobre el PDF generado, no solo en pantalla). El margen inferior de la hoja 1 y de las hojas con salto forzado también quedó cubierto.
+- **Limitación conocida, avisada expresamente:** si una sección se pasa naturalmente a una hoja nueva (sin que yo haya puesto un salto forzado ahí — por ejemplo, "Condiciones importantes" cayendo a una 4ª hoja si el itinerario es muy largo), esa hoja en particular no tiene el margen superior de 10mm garantizado. Arreglar esto de forma general requeriría cambiar `@page { margin: 0 }` por un margen de página real, lo cual toca cómo se posiciona todo el documento imprimible (`position: absolute` + ancho fijo de 210mm) y es una modificación de mucho más riesgo para el resto del formato ya afinado en rondas anteriores. Preferí no arriesgar esto sin que me lo confirmes explícitamente.
+
+### 4. "Vuelos incluidos" ya no parece 2 secciones + íconos de equipaje
+- Se quitó la barra de título verde de cada vuelo — ahora hay una sola barra ("Vuelos incluidos") con una línea de introducción ("Operado por LATAM · Cubre 2 adultos") y, debajo, 3 recuadros en fila: uno angosto solo con el logo de la aerolínea, y dos de igual proporción para el vuelo de ida y el de vuelta.
+- Las condiciones de equipaje ya no son texto — son íconos: bolso/artículo personal y asiento (verde, incluido), maleta de mano 10kg y maleta facturada 23kg (gris con un tache, no incluido), usando Font Awesome (ya cargado en el proyecto).
+
+### 5. "Plan flexible de pagos" dividido en 2 sub-bloques
+- Las 4 cuotas ahora son una tabla compacta (Cuota | % | Fecha | Monto) en vez de 4 tarjetas apiladas — mucho menos alto.
+- Debajo, un recuadro aparte y destacado "Condiciones del plan de pagos" con 3 puntos: el descuento del 5% solo aplica con 90+ días de anticipación, no aplica si el viaje es antes de eso, y el incumplimiento de una cuota deja sin efecto la reserva.
+
+### Archivos tocados
+Los mismos 3 de siempre: `quote-packages.html`, `assets/js/pages/quote-packages.js`, `assets/css/quote-packages.css`.
+
+### Pruebas
+26/26 casos Playwright (incluye los ajustados a la nueva tabla de cuotas) + 32/32 de la Ronda 1, todos en verde. Además, generé un PDF real con `page.pdf()` (motor de impresión de Chromium, el mismo que usa "Imprimir" del navegador) con hotel + tren + vuelos + 3 extras elegidos, y confirmé hoja por hoja: el total cotizado aparece completo en la hoja 1, la hoja 2 empieza en Alojamientos, la hoja 3 empieza en Itinerario, y los márgenes de 10mm están donde se esperaba.
+
+---
+
 ## RONDA 1 — Funcionalidades del cotizador
 
 ---
