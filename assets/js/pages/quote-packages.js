@@ -2642,36 +2642,55 @@
         const outboundDate = state.dates.start ? addDays(state.dates.start, getLimaDayOffset()) : null;
         const returnDate = state.dates.end || null;
 
-        const renderTicket = (flight, direction, date) => {
+        // Sin barra de título propia por vuelo: los 2 tramos (ida/vuelta) se muestran como
+        // parte de un mismo itinerario dentro de la única barra "Vuelos incluidos", en
+        // recuadros de igual proporción junto al recuadro (más angosto) de la aerolínea.
+        const renderLeg = (flight, direction, date) => {
           if (!flight) return "";
-          const label = direction === "outbound" ? t("quote.flight.outboundLabel", "Vuelo Lima → Cusco") : t("quote.flight.returnLabel", "Vuelo Cusco → Lima");
+          const label = direction === "outbound" ? t("quote.flight.outboundLegLabel", "Ida · Lima → Cusco") : t("quote.flight.returnLegLabel", "Vuelta · Cusco → Lima");
           const dayOffsetSuffix = flight.arrivalDayOffset ? ` (+1 ${t("quote.flight.day", "día")})` : "";
           return `
-            <div class="print-flight-ticket">
-              <div class="print-flight-ticket-header">
-                <span>${escapeHtml(label)}</span>
-                ${date ? `<span>${escapeHtml(formatDate(date))}</span>` : ""}
+            <div class="print-flight-leg">
+              <div class="print-flight-leg-top">
+                <span class="print-flight-leg-label">${escapeHtml(label)}</span>
+                ${date ? `<span class="print-flight-leg-date">${escapeHtml(formatDate(date))}</span>` : ""}
               </div>
-              <div class="print-flight-ticket-row">
-                <div><small>${escapeHtml(t("booking.departure", "Salida"))}</small><b>${escapeHtml(flight.departure || "--:--")} · ${escapeHtml(getAirportName(flight.origin))}</b></div>
-                <div><small>${escapeHtml(t("booking.arrival", "Llegada"))}</small><b>${escapeHtml(flight.arrival || "--:--")}${escapeHtml(dayOffsetSuffix)} · ${escapeHtml(getAirportName(flight.destination))}</b></div>
-                ${flight.flightNumber ? `<div><small>${escapeHtml(t("quote.flight.number", "N° de vuelo"))}</small><b>${escapeHtml(flight.flightNumber)}</b></div>` : ""}
+              <div class="print-flight-leg-route">
+                <div class="print-flight-leg-point">
+                  <strong>${escapeHtml(flight.departure || "--:--")}</strong>
+                  <span>${escapeHtml(flight.origin || "")}</span>
+                </div>
+                <div class="print-flight-leg-line">
+                  <span>✈</span>
+                  <span>${escapeHtml(t("quote.flight.direct", "Directo"))}</span>
+                  <span>${escapeHtml(getFlightDurationLabel(flight))}</span>
+                </div>
+                <div class="print-flight-leg-point print-flight-leg-point--end">
+                  <strong>${escapeHtml(flight.arrival || "--:--")}${escapeHtml(dayOffsetSuffix)}</strong>
+                  <span>${escapeHtml(flight.destination || "")}</span>
+                </div>
+              </div>
+              <div class="print-flight-leg-airports">${escapeHtml(getAirportName(flight.origin))} → ${escapeHtml(getAirportName(flight.destination))}${flight.flightNumber ? ` · ${escapeHtml(t("quote.flight.number", "N° de vuelo"))} ${escapeHtml(flight.flightNumber)}` : ""}</div>
+              <div class="print-flight-fare-list">
+                <span class="print-fare-item print-fare-item--yes">✓ ${escapeHtml(t("quote.flight.personalItem", "Artículo personal / bolso"))}</span>
+                <span class="print-fare-item print-fare-item--no">✕ ${escapeHtml(t("quote.flight.noCarryOn", "Equipaje de mano (10kg)"))}</span>
+                <span class="print-fare-item print-fare-item--no">✕ ${escapeHtml(t("quote.flight.noCheckedBag", "Equipaje facturado (23kg)"))}</span>
+                <span class="print-fare-item print-fare-item--yes">✓ ${escapeHtml(t("quote.flight.randomSeat", "Asiento aleatorio"))}</span>
               </div>
             </div>
           `;
         };
 
         flightTarget.innerHTML = `
-          <div class="print-flight-summary">
-            <img class="print-flight-airline-logo" src="${escapeHtml(resolveAssetPath(getAirlineLogoPath(state.selectedAirline)))}" alt="${escapeHtml(getAirlineLabel(state.selectedAirline))}">
-            <div>
+          <div class="print-flight-grid">
+            <div class="print-flight-airline-box">
+              <img class="print-flight-airline-logo" src="${escapeHtml(resolveAssetPath(getAirlineLogoPath(state.selectedAirline)))}" alt="${escapeHtml(getAirlineLabel(state.selectedAirline))}">
+              <span class="print-flight-operated-by">${escapeHtml(t("quote.print.operatedBy", "Operado por"))}</span>
               <strong>${escapeHtml(getAirlineLabel(state.selectedAirline))}</strong>
-              <span>${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</span>
+              <small>${escapeHtml(t("quote.print.flightCoverage", "Cubre {passengers}", { passengers: getPassengerPhrase() }))}</small>
             </div>
-          </div>
-          <div class="print-flight-ticket-grid">
-            ${renderTicket(state.selectedOutboundFlight, "outbound", outboundDate)}
-            ${renderTicket(state.selectedReturnFlight, "return", returnDate)}
+            ${renderLeg(state.selectedOutboundFlight, "outbound", outboundDate)}
+            ${renderLeg(state.selectedReturnFlight, "return", returnDate)}
           </div>
         `;
       }
@@ -2689,6 +2708,7 @@
             <div class="print-payment-plan-row">
               <strong>${escapeHtml(t("quote.print.paymentPlanInstallment", "Cuota {n} · {percent}%", { n: index + 1, percent: Math.round(cuota.percentage * 100) }))}</strong>
               <span>${escapeHtml(formatDateShort(cuota.date))}</span>
+              <span class="print-payment-plan-spacer"></span>
               <span class="print-payment-plan-amount">${escapeHtml(money(cuota.amount))}</span>
             </div>
           `).join("")}

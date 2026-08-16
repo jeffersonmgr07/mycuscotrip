@@ -55,6 +55,27 @@ Ninguna de estas 5 rutas nuevas existe todavía como archivo — hasta que subas
 
 ---
 
+## RONDA 2.1 — Ajustes puntuales tras revisión (2026-08-16)
+
+Tres correcciones exclusivas de impresión/PDF sobre lo entregado en la Ronda 2:
+
+### 1. "Vuelos incluidos" ya no parece 2 secciones
+Cada vuelo (ida/vuelta) tenía su propia barra verde de título, dando la impresión de ser 2 secciones distintas. Se quitó esa barra por vuelo — ahora hay **una sola** barra de título ("Vuelos incluidos") y debajo, un itinerario en 3 recuadros de la misma altura: uno angosto con el logo de la aerolínea + "Operado por [Aerolínea]" + pasajeros cubiertos, y dos recuadros de igual proporción (ida/vuelta) con hora + código de aeropuerto de salida y llegada, ícono de avión + "Directo" + duración en el medio, nombre completo de ambos aeropuertos debajo, y una lista de condiciones de tarifa: incluye artículo personal/bolso y asiento aleatorio; **no incluye** equipaje de mano (10kg) ni facturado (23kg) — mostrados tachados en gris, como me indicaste. Todo más compacto verticalmente que la referencia que enviaste; mantuve la paleta de colores propia del proyecto (verde oscuro/blanco), no los colores de tu imagen de referencia — la usé solo como guía de estructura.
+
+### 2. Espacio en blanco en "Plan flexible de pagos"
+Las filas tenían la etiqueta ("Cuota 1 · 40%") pegada a la izquierda y la fecha+monto empujados al extremo derecho, dejando un hueco grande en el medio. Ahora "Cuota 1 · 40%" y la fecha están agrupados juntos a la izquierda, y el monto queda al margen derecho — igual al ejemplo que diste.
+
+### 3. Texto del pie de página
+"Gracias por cotizar con My Cusco Trip." → **"Gracias por elegir My Cusco Trip."**
+
+### Archivos tocados en esta sub-ronda
+Los mismos 3 de la Ronda 2 (`quote-packages.html`, `assets/js/pages/quote-packages.js`, `assets/css/quote-packages.css`) — ya actualizados en este paquete. No se tocó `assets/data/tours-peru.json` de nuevo.
+
+### Pruebas
+Los mismos 26/26 casos de la Ronda 2 + los 32/32 de la Ronda 1 (19+13) siguen en verde. Verificado visualmente con capturas de pantalla en modo impresión real.
+
+---
+
 ## RONDA 1 — Funcionalidades del cotizador
 
 ---

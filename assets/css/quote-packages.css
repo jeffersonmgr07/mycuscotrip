@@ -7222,91 +7222,160 @@ body.is-generating-pdf .print-section {
 /* =============================================
    Sección impresa: Vuelos incluidos
    ============================================= */
-.print-flight-summary {
-  display: flex;
-  align-items: center;
-  gap: 3mm;
-  margin-bottom: 2mm;
-}
-
-.print-flight-airline-logo {
-  width: 16mm;
-  height: auto;
-  object-fit: contain;
-}
-
-.print-flight-summary strong {
-  display: block;
-  font-size: 8.4pt;
-  color: #062803;
-}
-
-.print-flight-summary span {
-  display: block;
-  font-size: 7.4pt;
-  color: #53645d;
-}
-
-.print-flight-ticket-grid {
+.print-flight-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3mm;
+  grid-template-columns: 0.8fr 1fr 1fr;
+  gap: 2.2mm;
+  align-items: stretch;
 }
 
-.print-flight-ticket {
+.print-flight-airline-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6mm;
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2.5mm;
-  overflow: hidden;
   background: #fbfdfb;
+  padding: 2mm 1.5mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
-.print-flight-ticket-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0a3a26;
-  color: #fff;
-  padding: 1.6mm 3mm;
-  font-size: 7.6pt;
-  font-weight: 700;
+.print-flight-airline-logo {
+  width: 12mm;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.4mm;
 }
 
-.print-flight-ticket-row {
-  display: grid;
-  gap: 1.6mm;
-  padding: 2.2mm 3mm;
-}
-
-.print-flight-ticket-row div {
-  display: flex;
-  justify-content: space-between;
-  gap: 3mm;
-  font-size: 7.6pt;
-  border-bottom: 1px dashed rgba(6, 40, 3, 0.12);
-  padding-bottom: 1.4mm;
-}
-
-.print-flight-ticket-row div:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.print-flight-ticket-row small {
+.print-flight-airline-box .print-flight-operated-by {
+  font-size: 6.2pt;
   color: #6c7a73;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  font-size: 6.6pt;
+  letter-spacing: 0.03em;
 }
 
-.print-flight-ticket-row b {
+.print-flight-airline-box strong {
+  font-size: 7.6pt;
   color: #062803;
+  line-height: 1.15;
+}
+
+.print-flight-airline-box small {
+  font-size: 6.6pt;
+  color: #53645d;
+}
+
+.print-flight-leg {
+  border: 1px solid rgba(6, 40, 3, 0.14);
+  border-radius: 2.5mm;
+  background: #fbfdfb;
+  padding: 1.8mm 2.4mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-flight-leg-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.2mm;
+}
+
+.print-flight-leg-label {
+  font-size: 6.8pt;
+  font-weight: 800;
+  color: #0a3a26;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.print-flight-leg-date {
+  font-size: 6.6pt;
+  color: #53645d;
+}
+
+.print-flight-leg-route {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2mm;
+  margin-bottom: 1mm;
+}
+
+.print-flight-leg-point {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.print-flight-leg-point strong {
+  font-size: 9pt;
+  color: #062803;
+  line-height: 1.1;
+}
+
+.print-flight-leg-point span {
+  font-size: 6.4pt;
+  color: #6c7a73;
+}
+
+.print-flight-leg-point--end {
+  align-items: flex-end;
   text-align: right;
 }
 
+.print-flight-leg-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2mm;
+  color: #8a958f;
+}
+
+.print-flight-leg-line span {
+  font-size: 6pt;
+  white-space: nowrap;
+  line-height: 1.25;
+}
+
+.print-flight-leg-airports {
+  font-size: 6.4pt;
+  color: #6c7a73;
+  line-height: 1.3;
+  margin-bottom: 1.2mm;
+  padding-bottom: 1.2mm;
+  border-bottom: 1px dashed rgba(6, 40, 3, 0.12);
+}
+
+.print-flight-fare-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8mm 2.4mm;
+}
+
+.print-fare-item {
+  font-size: 6.2pt;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7mm;
+  white-space: nowrap;
+}
+
+.print-fare-item--yes {
+  color: #0a3a26;
+}
+
+.print-fare-item--no {
+  color: #9aa39d;
+  text-decoration: line-through;
+}
+
 @media (max-width: 768px) {
-  .print-flight-ticket-grid {
+  .print-flight-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -7338,13 +7407,17 @@ body.is-generating-pdf .print-section {
 
 .print-payment-plan-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto auto 1fr auto;
   gap: 3mm;
   align-items: center;
   padding: 1.6mm 3mm;
   border: 1px solid rgba(6, 40, 3, 0.12);
   border-radius: 2mm;
   background: #fbfdfb;
+}
+
+.print-payment-plan-spacer {
+  min-width: 0;
 }
 
 .print-payment-plan-row strong {
