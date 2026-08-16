@@ -1,110 +1,131 @@
-# Auditoría completa + traducciones EN/PT/FR al 100% — Entrega
+# My Cusco Trip — Modificación técnica del cotizador `quote-packages`
 
-Esta carpeta contiene **únicamente** los archivos nuevos o modificados sobre tu ZIP `mycuscotrip-main(31).zip` (95 archivos: 23 nuevos + 72 modificados, 0 eliminados). Cópialos a las mismas rutas relativas en tu proyecto real y súbelos a GitHub.
-
----
-
-## 1. Tours y paquetes con información faltante (para que la busques tú)
-
-Se auditaron 121 productos en `assets/data/*.json`. **65 tienen al menos un problema.** Nada de esto se inventó ni se completó automáticamente — es información real que solo tú puedes conseguir (fotos propias, precios confirmados).
-
-### Los 3 hallazgos más urgentes
-- **`tours-peru.json`** (Lima, Paracas/Ica, Nazca, Arequipa/Colca, Puno/Titicaca, Tarapoto, Iquitos, Puerto Maldonado): **13 de 13 productos** sin ninguna foto propia (todo con imagen placeholder genérica) y con el precio marcado por el propio archivo como `"pendiente de confirmar"` en el 100% de los casos.
-- **`trekkings-cusco.json`** (Camino Inca 2D/1N y 4D/3N, Salkantay 4D/3N y 5D/4N, Ausangate, Ausangate+Vinicunca, Inca Jungle 3D/2N y 4D/3N): **8 de 8 treks** sin ninguna foto real, ni de portada ni del itinerario día a día.
-- **`tours-cusco.json`**: los 12 tours SÍ tienen foto de portada/galería real, pero **el 100% de los pasos de itinerario** usa la misma imagen genérica en vez de foto propia del punto de la ruta. El caso más severo: `siete-lagunas-ausangate` también tiene su 3ª foto de galería genérica.
-
-### Imágenes rotas de verdad (no placeholder, archivo faltante)
-- `machu-picchu-overnight-clasico`: `3.jpg` y `4.jpg` no existen en disco.
-
-### Fotos de la ciudad equivocada
-- Hoteles `tambopata-comfort-lodge-3s` y `tambopata-premium-eco-lodge-4s`: muestran una foto de **Cusco**, no de la selva.
-- Paquete privado `machu-picchu-tambopata-familia-privado-6d5n` (oculto del catálogo pero se envía a un cliente real, código `CUSFAM001`): varias fotos de itinerario también son de Cusco en vez de selva/Tambopata.
-
-### Machu Picchu (tours-machu-picchu.json, 10 productos)
-- `machu-picchu-full-day-clasico`, `machu-picchu-overnight-express`, `machu-picchu-panoramico-vistadome`, `machu-picchu-the-prime`, `machu-picchu-first-class-overnight`, `machu-picchu-luxury-hiram-bingham`, `machu-picchu-luxury-overnight`: alguna foto de galería genérica (no de portada).
-- `machu-picchu-full-day-express` y `machu-picchu-first-class`: sin problemas.
-
-### Hoteles (`hotels.json`, 17 hoteles)
-- 4 destinos sin ningún hotel cargado: **Paracas, Ica, Tarapoto, Iquitos** (ya marcado en el propio archivo como "preparado sin hoteles, agregar cuando existan tarifas").
-- 13 de 17 hoteles con precio marcado "pendiente de confirmar" (solo `cusco-boutique-3s` tiene tarifa neta confirmada).
-
-### Sin problemas
-`packages-cusco.json`, `experiencias-diarias.json`, `agencias-tours.json` — completos. `packages-peru.json` solo tiene una nota cosmética (dos paquetes distintos comparten la misma foto de portada).
-
-### Menor prioridad (ya marcados como borrador/privado en el propio dato)
-`tambopata-lodge-3d-2n-privado` (`status: draft`) y el paquete privado familiar mencionado arriba.
-
-**Nada de contenido de texto (descripción/incluye) falta** — el vacío es 100% de fotos y precios, no de redacción.
+Intervención incremental sobre el motor existente. No se reescribió `quote-packages.js` ni `package-generator.js`, no se introdujeron frameworks ni backend nuevo, y ningún archivo fuera de esta lista fue tocado (verificado con `diff -rq` contra el ZIP original).
 
 ---
 
-## 2. Traducciones — Inglés y Portugués: llevados al 100%
+## ARCHIVOS MODIFICADOS
 
-Se auditó cada idioma comparándolo contra el español (páginas HTML completas, diccionario `ui-translations.json`, y los JSON de tours/paquetes), y luego se corrigió TODO lo que apareció, no solo la muestra inicial del audit.
+### `quote-packages.html`
+**Qué se modificó:** se agregaron 3 bloques HTML nuevos (Destinos del viaje, Circuito de Machu Picchu, Vuelos nacionales), 1 fila nueva en el panel de resumen (`#flightSummaryRow`) y 1 modal nuevo (`#flightSelectionModal`, calcado del de trenes). Se subieron las versiones de caché (`?v=`) de `quote-packages.css`, `package-generator.js` y `quote-packages.js`.
+**Por qué:** son los puntos de entrada visuales que pide el documento (destinos, circuito, vuelos) y no existía ningún HTML previo para ellos. Subir el `?v=` es necesario para que el navegador no sirva las versiones viejas en caché tras el despliegue.
 
-### Inglés (partía de ~95% completo)
-- Creadas las 6 páginas raíz que faltaban (`hoteles.html`, `mercadopago-retorno.html`, `organiza-tu-viaje.html`, `paypal-retorno.html`, `union-eterna-andes.html`, `admin-experiences.html`).
-- Corregidos ~18 fragmentos sueltos en español y 43 textos estáticos que no coincidían con el diccionario ya correcto (afecta solo a SEO/buscadores, el JS ya los mostraba bien en pantalla).
-- **Bonus no pedido pero corregido**: `en/trenes/index.html` tenía 49+ elementos sin traducir pese a que el diccionario de esa página ya tenía el inglés correcto, y `en/trenes/paypal-retorno.html` era una copia completa en español — ambos ya están en inglés.
+### `assets/js/pages/quote-packages.js`
+**Qué se modificó:**
+1. `isOvernightTrainSelectionConfig()`: `option?.connectionMode` (truthy) → `option?.connectionMode === "sacred-valley-connection"`.
+2. `getAccommodationPlan()`: mismo fix de comparación + ahora también agrega Lima al plan de alojamiento cuando corresponde.
+3. `getDynamicTrainTimeWindow()`: nueva rama para Overnight directo (ver `isDirectOvernightSelection()`).
+4. `buildItineraryItems()`: nueva rama para partir el Overnight directo en 2 días (traslado + visita); firma extendida con un segundo parámetro opcional `overrideTotalDays` (sin romper compatibilidad con las llamadas existentes).
+5. `generateAndRenderOptions()`: ahora filtra por destinos seleccionados y descuenta los días de la extensión Lima antes de pedir opciones al generador.
+6. `getNonDiscountableSubtotal()`, `updateSummary()`, `updatePrintableTemplate()`, `renderReservationSummary()`, `selectPackageOption()`, `canOpenReservationModal()`, `buildQuoteReservationPayload()`, `clearDependentSections()`, `init()`: se extendieron para integrar vuelos, circuito Machu Picchu, destinos y Lima en el flujo existente (resumen, impresión, PDF, WhatsApp, reserva).
+7. Se agregó el bloque completo nuevo "Extensión: Destinos, extensión Lima, vuelos nacionales, circuito Machu Picchu" (antes de `bindEvents()`).
+**Por qué:** corregir el bug de clasificación pedido en la sección 1 del documento y cablear las 5 funcionalidades nuevas (destinos, Lima, vuelos, circuito, overnight directo) sobre el `state` y los patrones de render/modal ya existentes (mismo estilo que hoteles/trenes, mismo `document.addEventListener("click", ...)`).
 
-### Portugués (partía de ~78-80% completo — el que más trabajo necesitó de los dos)
-- Creadas las 6 páginas raíz faltantes + `pt/landing/machu-picchu-alternativas.html` (no existía).
-- **`pt/astronomia-andina-cusco.html` y `pt/ayahuasca-cusco.html` estaban en gran parte en INGLÉS, no español** (copia-pega equivocado) — reescritas en portugués real.
-- Más de 1,000 campos corregidos en los JSON de tours/paquetes (`tours-cusco`, `tours-peru`, `tours-machu-picchu`, `trekkings-cusco`, `packages-cusco`, `packages-peru`), incluyendo dos paquetes de `packages-peru.json` que estaban prácticamente 100% sin traducir (itinerario día a día completo, FAQ, todo).
-- El formulario completo de registro de pasajeros (`pt/registro-pasajeros.html`) tenía la mayoría de sus textos en español — 113 correcciones puntuales.
-- Corregido un bug real: `pt/mi-reserva.html` mostraba "Mi Reserva" (español) en un template JS mientras el resto de la página ya decía correctamente "Minha Reserva".
+### `assets/js/core/package-generator.js`
+**Qué se modificó:**
+1. `applyOperationalRules()`: se agregó `if (option.machuPicchuMode === "overnight") option.requiresOvernight = true;` (y el equivalente para `overnight-express`), sin pisar ningún `true` ya existente.
+2. `getShortPackageCommercialSeeds()`: se agregó la semilla `3d2n-opcion-6-machu-overnight-directo` (`["CUZ001","CUZ002","MAPI003"]`) y su equivalente en 4D/3N (`4d3n-machu-overnight-directo-ultimo-dia-*`).
+**Por qué:** `requiresOvernight` históricamente solo se marcaba al forzar la conexión Valle Sagrado; un Machu Picchu Overnight sin Valle Sagrado es un caso válido nuevo y necesita el mismo trato (noche en Aguas Calientes, ventana de tren). Las semillas nuevas son la variante de itinerario pedida en la sección 4, reutilizando el producto `MAPI003` existente sin duplicarlo.
 
-**Ambos idiomas: verificados con un barrido final buscando cualquier resto de español — limpio.**
+### `assets/css/quote-packages.css`
+**Qué se modificó:** se agregó un bloque nuevo al final del archivo con los estilos de las tarjetas de destino/aerolínea/circuito/ruta (reutilizando la paleta y el patrón `.quote-choice-dot`/`.is-selected` ya existentes) y un fix puntual (`#flightAirlineContainer[hidden], #flightSelectorsContainer[hidden] { display: none; }`).
+**Por qué:** ese fix corrige un bug real que encontré probando: mis propias clases `.quote-airline-grid`/`.quote-train-selector-grid` definen `display: grid` con la misma especificidad CSS que la regla `[hidden]` del navegador, y por orden de cascada le ganaban — el contenedor quedaba visible aunque tuviera el atributo `hidden`. Nada de esto existía antes de esta tarea; es autocontenido a los 2 elementos nuevos.
 
----
+### `assets/data/ui-translations.json`
+**Qué se modificó:** `"search.tours"` (bloque `es`) pasó de `"Tours y experiencias"` a `"Tours"`.
+**Por qué:** sección 31 del documento — ese texto se salía del botón en mobile. Ningún otro idioma ni ninguna otra clave fue tocada.
 
-## 3. Francés — llevado al 100%, incluyendo 2 bugs funcionales reales que rompían la web para visitantes franceses
-
-Este era el idioma menos avanzado (~55-60% completo al empezar) y el que pediste dejar sin absolutamente nada pendiente. Se hizo un trabajo más profundo que en los otros dos idiomas porque, al revisar, aparecieron problemas más graves que simple texto sin traducir:
-
-### Bugs funcionales encontrados y corregidos (no eran solo de traducción)
-1. **Los 8 treks de Cusco no tenían NINGÚN precio, itinerario, incluye/no incluye ni opciones de pago en francés** (`assets/data/i18n/fr/trekkings-cusco.json` — los campos faltaban por completo, no solo estaban sin traducir). Un visitante francés que abriera cualquier página de trekking veía el producto roto. Reconstruido completo y traducido.
-2. **Machu Picchu Overnight Clásico y Overnight Premium (`mapi_001`, `mapi_003`) tenían itinerarios truncados** (5-6 pasos en vez de los 9-14 reales, con horarios) **y les faltaban secciones enteras** que sí se muestran en la página (beneficios comerciales, información importante, resumen de alojamiento). Reconstruidos completos.
-3. **7 de los 11 paquetes de Perú** (`packages-peru.json`) no tenían descripción, highlights ni itinerario día a día en absoluto en francés. Reescritos completos (5 a 15 días de itinerario cada uno).
-4. **`fr/registro-pasajeros.html` tenía un bug de JavaScript que rompía todo el script de la página** (un salto de línea suelto dentro de un string), dejando el formulario de pasajeros no funcional para visitantes franceses. Corregido junto con la traducción (~90% de esa página estaba en español, no el 24% estimado).
-
-### Todo lo demás
-- Creadas las 6 páginas raíz faltantes + **toda la landing "Machu Picchu + tours" en francés desde cero** (no existía en absoluto): 2 páginas HTML, su JS propio, y su JSON de datos.
-- **Las 25 páginas legales/informativas en francés** (Términos y Condiciones, Política de Privacidad, Política de Cookies, FAQ, Sobre Nosotros, etc.) mostraban solo un texto de relleno genérico idéntico en las 25 — es decir, **no existía contenido legal real en francés**. Se reescribieron las 25 con contenido real y fiel al español (para los términos legales se tradujo directamente del español completo, no del inglés, porque el inglés resultó ser un resumen incompleto).
-- Cientos de campos corregidos en los JSON de tours/paquetes, más el campo `highlights` que faltaba por completo en varios productos.
-- ~90 fragmentos de español detectados y corregidos en `ui-translations.json` (entre el archivo compartido y el propio de francés), y en páginas de catálogo, cotizador de vuelos, agencias, etc. — varias páginas (`cotizador-vuelos.html`, `agencias.html`) estaban prácticamente 100% sin traducir en su cuerpo.
-
-**Verificado con un barrido final de todas las páginas fr/ buscando cualquier resto de español — limpio.**
-
-### Nota honesta (no arreglado, fuera del alcance pedido)
-`fr/detalle-reserva.html` (voucher de viaje) tiene un sistema interno de idiomas que solo soporta español/inglés — algunas etiquetas internas (cantidad de pasajeros, cumpleaños, desglose de pago) seguirán en español para visitantes franceses hasta que se agregue una rama `fr` a ese sistema. Es un cambio de funcionalidad más grande, no until una traducción faltante, así que no lo hice sin que me lo pidas explícitamente.
+### `assets/css/search-bar.css`
+**Qué se modificó:** en `.search-bar .mct-tab` (breakpoint `≤768px`) se reemplazó `white-space: nowrap;` por `white-space: normal; overflow: hidden; overflow-wrap: break-word; word-break: break-word;`.
+**Por qué:** sección 31 — no depender de `nowrap` para evitar que un texto i18n más largo vuelva a desbordar el botón en el futuro. El alto fijo de 70px ya admite 2 líneas.
 
 ---
 
-## 4. Carpetas y archivos para eliminar (ahorro potencial: ~70MB de 227MB, ~31%)
+## ARCHIVOS NUEVOS
 
-### Seguro eliminar ya (~43.4MB)
-- `docs/*.pdf` + `docs/Guia Completa -v1.rtf` (43MB) — son cotizaciones de un cliente real ("Esmeralda Lancho"), no algo que el sitio use. Contienen el nombre real de un cliente en un repo que alimenta un sitio público — razón de privacidad además de peso.
-- 84 archivos de bitácora en la raíz: todos los `CAMBIOS_V*.md`, `README_*.md` (incluido el propio `README.md`/`README.txt`, que resultaron ser bitácoras de parche, no un README real), `LEEME*`, `VALIDACION_*`, `INSTRUCCIONES_*`. Cero referencias en HTML/JS — son historial puro de sesiones de parches anteriores.
-- 89 archivos `.../none` de 1 byte repartidos en carpetas de imágenes — basura de algún script antiguo; confirmé que las carpetas donde están NO están vacías (tienen sus imágenes reales al lado, no hay riesgo de fotos rotas al borrarlos).
-- 4 archivos JS/CSS huérfanos que ninguna página carga: `assets/js/agencias-portal.js`, `assets/js/lib/flatpickr-config.js`, `assets/css/agencias-portal.css`, `assets/css/passenger-reservation-modal-v6.css`.
-
-### Verificar antes de eliminar
-- `hoteles/assets/img/**` (27MB): es un duplicado byte-a-byte de `assets/img/hotels/**`, pero `hoteles/assets/data/hotels.json` depende de esa copia local con rutas relativas. Si corriges esas rutas a absolutas primero, puedes borrar esta carpeta y ahorrar 27MB más.
-- `backend/`, `hoteles/backend/`, `trenes/backend/`, `google-apps-script/`, `google-apps-script-hoteles.gs` (~180KB): no son basura — son los scripts reales para desplegar tus backends de Google Sheets (agencias, hoteles, trenes). Decide si quieres tenerlos en un repo público o moverlos a un lugar privado, pero no los borres sin más.
-
-### NO eliminar (parece basura pero no lo es)
-- `hoteles/` y `trenes/` (sin contar imágenes): están **vivos y enlazados** desde el menú principal del sitio ("Trenes a Machu Picchu", "Hoteles recomendados"). `trenes/assets/img/**` (14MB) son fotos únicas, no duplicadas en ningún otro lado.
-- `go/index.html`: redirect corto en uso para WhatsApp/redes.
-- `tools/*.js`: scripts de mantenimiento reales (generador de sitemap, auditoría de traducciones).
+### `assets/data/domestic-flights.json`
+Catálogo estático de horarios de referencia LATAM/JetSMART Lima↔Cusco, transcrito exactamente de las capturas del documento (24 LATAM LIM→CUZ, 21 LATAM CUZ→LIM, 18 JetSMART LIM→CUZ, 9 JetSMART CUZ→LIM — verificado programáticamente que ningún `referenceFareUsd` de LATAM supera USD 86.00 y que no hay rutas+horarios duplicados). `referenceFareUsd` nunca se muestra ni se usa para cobrar; solo queda como trazabilidad interna, tal como pide la sección 22.
 
 ---
 
-## 5. Validaciones hechas antes de entregar
-- Los 95 archivos comparados archivo-por-archivo contra tu ZIP original (0 archivos eliminados sin querer).
-- Todos los JSON tocados validados con `python3 -c "import json; json.load(...)"` — parsean correctamente.
-- El nuevo `assets/js/pages/landing-machu-picchu-tours-fr.js` validado con `node --check` — sintaxis correcta.
+## RESUMEN DE IMPLEMENTACIÓN
+
+### Trenes
+- Corregido el bug de `connectionMode` truthy en los 2 sitios reales donde importaba (`isOvernightTrainSelectionConfig`, `getAccommodationPlan`).
+- `getDynamicTrainTimeWindow()` ahora distingue 3 casos: Full Day (04:00–12:00 ida / 14:00–22:30 retorno), Overnight + Valle Sagrado (15:00–22:00 ida / 14:00–22:30 retorno) y Overnight directo (04:00–22:00 ida, permite trenes tempranos / 14:00–22:30 retorno).
+- Se mantienen intactas todas las reglas ya existentes de operador, ruta, nacionalidad, categoría, compatibilidad ida/retorno, PeruRail/Inca Rail — no se tocó `getTrainOptions()`.
+
+### Overnight
+- `applyOperationalRules()` ahora deriva `requiresOvernight`/`requiresOvernightExpress` directamente del modo real del tour Machu Picchu incluido, no solo de la conexión Valle Sagrado.
+- Nueva variante "Machu Picchu Overnight directo" (3D/2N y 4D/3N), sin `CUZ003CON`/`CUZ003VIPCON`, reutilizando `MAPI003` sin duplicar el producto en el JSON.
+- El itinerario de esta variante se reparte en 2 días (traslado a Aguas Calientes + visita/retorno), igual que la conexión Valle Sagrado, pero con un traslado sintético en vez de un segundo tour real — cambio acotado a `totalDays >= 3` para no afectar el fallback existente de 2D/1N.
+- Badge y texto comercial propios ("Overnight directo") para que la opción sea identificable en la lista.
+
+### Destinos
+- Sección nueva "Destinos de tu viaje" (Cusco/Machu Picchu/Lima, Cusco y Machu Picchu inician marcados). Validado: no se puede desmarcar el último destino activo.
+- **Solo Cusco:** se genera el paquete normal (el motor siempre incluye Machu Picchu por diseño) y se retira Machu Picchu + cualquier conexión Valle Sagrado del resultado — al quedar sin tour MAPI, trenes/hotel Aguas Calientes/circuito se ocultan solos porque ya dependían de `getMachuTour()`.
+- **Solo Machu Picchu:** nunca rellena artificialmente el resto del rango de fechas — ofrece únicamente Full Day (1 día) u Overnight (2 días), tal como pide el ejemplo del documento.
+
+### Lima
+- Extensión fija de 3 días (Llegada Lima / `PER003` Paracas-Ica-Huacachina / Continuación a Cusco), prepuesta al itinerario Cusco/Machu Picchu ya generado sin tocar la lógica interna de `buildItineraryItems()` (solo se le pasa un total de días ajustado).
+- Reutiliza `PER003` de `tours-peru.json` tal cual — no se duplicó. Si trae `pricingStatus: "reference_pending_confirmation"` (que sí lo trae hoy), **no se inventa costo**: no suma nada al total y el itinerario muestra "Tarifa por confirmar con el operador".
+- Hoteles de Lima: `getHotelsForDestination()` ya era genérica por destino; solo hizo falta que `getAccommodationPlan()` también emitiera la entrada `lima` — el modal de hoteles funciona igual que para Cusco/Aguas Calientes sin cambios adicionales.
+
+### Vuelos
+- Checkbox "Incluir vuelos Lima – Cusco – Lima" → selección única de aerolínea (JetSMART/LATAM, tarjetas, no checkboxes múltiples) → selector de vuelo ida/vuelta con logo, horarios, "Directo" y badge "+1 día" cuando aplica.
+- Tarifa comercial centralizada en `DOMESTIC_FLIGHT_FLAT_RATES` (sameMonth/months2to3/after3Months × JetSMART/LATAM), calculada una sola vez en `getFlightRoundTripRateUSD()` y usada en todos lados (nunca `referenceFareUsd`).
+- `flightTotalUSD = tarifa × (adultos + niños)`, integrado en subtotal/total/USD-PEN/resumen/impresión/PDF/WhatsApp.
+- Aviso "Horario sujeto a disponibilidad al momento de emisión." visible en la sección y en el resumen de reserva.
+- Si vuelos pasa a OFF: se limpian aerolínea y vuelos seleccionados, sin sumar tarifa.
+
+### Circuitos
+- Circuito 1/2/3 con sus rutas (1A–1D, 2A–2B, 3A–3D), sin preselección inicial.
+- Cambiar de circuito limpia la ruta previamente elegida.
+- Si Machu Picchu está en la cotización sin ruta seleccionada: mensaje de validación visible, se permite seguir viendo la vista previa, pero **"Reservar" queda bloqueado** hasta elegir circuito y ruta (`canOpenReservationModal()`).
+- Circuito/ruta guardados en `state`, mostrados en el resumen de reserva, la impresión y el payload de WhatsApp/reserva. No se altera el precio del ticket por elegir un circuito u otro (no hay ninguna regla real de precio diferenciado por circuito en el proyecto).
+
+### Mobile
+- Fix del overflow de "Tours y experiencias" → "Tours" (clave i18n `search.tours`, español).
+- CSS del tab del search-bar ya no depende de `white-space: nowrap`.
+- Revisé el posible conflicto `.mct-submit` vs `.mct-submit-group .mct-submit` que pide el documento: hoy el botón **ya está centrado correctamente** vía `margin: 12px auto 10px` (una técnica estructural, no `position:absolute` ni offsets mágicos) — no hay bug de layout activo, así que no se tocó nada ahí para no arriesgar algo que ya funciona.
+- Las nuevas grillas (destinos, aerolíneas, circuito, rutas) pasan a una columna en `≤768px`.
 
 ---
 
-**Carpeta lista para subir a GitHub**: `/Users/jefferson/Downloads/mycuscotrip-archivos-modificados-v2/` (95 archivos: 23 nuevos, 72 modificados, en sus rutas relativas correctas).
+## PRUEBAS
+
+Todo se probó con Playwright (navegador real, no simulado) contra el proyecto ya modificado. **32/32 casos pasaron.**
+
+**Los 8 casos obligatorios del documento (con datos reales del propio catálogo):**
+
+| Caso | Resultado |
+|---|---|
+| TRAIN TEST 1 — Full Day: ida 04:00–12:00, retorno ≥14:00 | ✅ |
+| TRAIN TEST 2 — Overnight+Valle Sagrado: ida 15:00–22:00 | ✅ |
+| TRAIN TEST 3 — Overnight directo: permite tren temprano (<12:00) | ✅ |
+| DESTINATION TEST — Solo Machu Picchu con rango de 10 días no crea 10 días artificiales | ✅ |
+| LIMA TEST — Día 1 Llegada a Lima, Día 3 Continuación a Cusco | ✅ |
+| LATAM FILTER TEST — ningún vuelo LATAM > USD 86.00 | ✅ |
+| LATAM DUPLICATE TEST — sin duplicados de ruta+horario | ✅ |
+| FLIGHT PRICING TEST — tarifas correctas por franja de fecha | ✅ |
+| ARRIVAL +1 TEST — CUZ 22:45→LIM 00:15 guarda `arrivalDayOffset:1` y lo muestra | ✅ |
+| MOBILE TEST — 320/375/390/430px sin overflow horizontal | ✅ |
+
+**Regresión (13 casos adicionales):** generación normal de paquetes 5D/4N, selección de hotel Cusco, selección de tren ida/retorno, cambio de nacionalidad (fuerza USD para extranjeros), cambio de moneda PEN↔USD recalcula el total, marcar un extra opcional cambia el total, parámetros de URL (`?days=&adultos=&fechaInicio=`) se aplican al cargar, el nuevo requisito de circuito/ruta bloquea "Reservar" hasta completarlo y luego lo desbloquea correctamente, cero errores de JavaScript en todo el flujo.
+
+Durante las pruebas encontré y corregí 2 bugs propios (no preexistentes): el `hidden` que no ocultaba visualmente los contenedores de vuelos (ver arriba, CSS) y el botón de vuelos que decía "Elegir tren" por reutilizar la clave de traducción del tren en vez de una propia.
+
+---
+
+## PENDIENTES (nada inventado — se avisa expresamente)
+
+- **Persistencia en `localStorage`:** el documento pide "integrar con el mecanismo actual de persistencia/localStorage" para el nuevo estado. Auditando el código confirmé que **ese mecanismo no existe hoy**: hay una constante `STORAGE_KEY = "mct_quote_package_state_v81"` definida pero nunca usada — `grep -n "localStorage"` en `quote-packages.js` no arroja ningún resultado. El cotizador vive solo en memoria durante la sesión de la pestaña. No inventé un sistema de persistencia nuevo desde cero (sería una función completa, no una integración incremental); si lo quieres, es un paso siguiente concreto y acotado.
+- **`.mct-submit` vs `.mct-submit-group .mct-submit`:** revisado, no hay bug activo hoy (ver sección Mobile arriba). Lo dejo señalado por si en el futuro se agrega una regla `width`/`min-width` dentro de `.mct-submit-group .mct-submit`, que sí ganaría por especificidad sobre `.mct-submit` suelto.
+- **Precio diferenciado por circuito/ruta de Machu Picchu:** no existe ninguna regla real en el proyecto que asocie un precio distinto a 1A vs 2A vs 3D, así que no se inventó ninguna — el circuito/ruta es puramente informativo y de disponibilidad, tal como pide la sección 28 ("No alterar automáticamente el precio del ticket salvo que exista una regla explícita real").
+- **Selección Lima ON con Cusco/Machu Picchu OFF:** el documento solo da el ejemplo combinado (Lima+Cusco+Machu Picchu+Vuelos ON). No implementé validación específica para "Lima sola" como producto independiente porque no hay ningún ejemplo ni regla de negocio para ese caso en el documento — hoy simplemente antepone sus 3 días igual, sin bloquear la combinación, pero tampoco fue un caso pedido explícitamente para probar.
+
+---
+
+## Integración
+
+Copia estos 7 archivos a las mismas rutas relativas de tu proyecto real. No se requiere ningún cambio en ningún otro archivo. El proyecto sigue siendo 100% HTML/CSS/JS vanilla + JSON, compatible con GitHub Pages.

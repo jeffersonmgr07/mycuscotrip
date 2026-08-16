@@ -215,6 +215,21 @@
               2980
             )
           : null,
+        // Machu Picchu Overnight DIRECTO: sin Valle Sagrado Conexión (ni CUZ003CON ni
+        // CUZ003VIPCON). Reutiliza el producto MAPI003 existente, no lo duplica. Permite trenes
+        // de ida tempranos (ver isDirectOvernightSelection() en quote-packages.js) porque el
+        // objetivo es poder llegar antes a Aguas Calientes si la disponibilidad de entradas lo
+        // requiere.
+        seed(
+          ["CUZ001", "CUZ002", "MAPI003"],
+          "3d2n-opcion-6-machu-overnight-directo",
+          {
+            day1Mode: "showcase",
+            machuDayIndex: 1,
+            allowLastDayTourBeforeTransferOut: false
+          },
+          2975
+        ),
         seed(
           ["CUZ001", "CUZ002", "MAPI002", "CUZ007"],
           "3d2n-opcion-4-city-tour-machu-express-vinicunca-ultimo-dia",
@@ -281,6 +296,18 @@
           );
         });
       }
+
+      // Machu Picchu Overnight DIRECTO también disponible en 4D/3N, sin Valle Sagrado Conexión.
+      ["CUZ007", "CUZ006", "CUZ008", "CUZ009"].forEach((lastDayCode, index) => {
+        seeds.push(
+          seed(
+            ["CUZ001", "CUZ002", "MAPI003", lastDayCode],
+            `4d3n-machu-overnight-directo-ultimo-dia-${lastDayCode}`,
+            lastDayActiveHints(lastDayCode),
+            3945 - index
+          )
+        );
+      });
 
       ["CUZ006", "CUZ007", "CUZ008", "CUZ009", "CUZ003FD", "CUZ004", "CUZ005"].forEach((day3Code, index) => {
         seeds.push(
@@ -772,6 +799,13 @@
     if (option.sacredValleyMode === "connection") {
       option.connectionMode = "sacred-valley-connection";
     }
+
+    // requiresOvernight/requiresOvernightExpress históricamente solo se marcaban al forzar la
+    // conexión Valle Sagrado. Un Machu Picchu Overnight "directo" (sin Valle Sagrado) es un caso
+    // válido nuevo y también necesita noche en Aguas Calientes y ventana de tren nocturna: se
+    // deriva siempre del modo real del tour Machu Picchu incluido, sin pisar un true ya existente.
+    if (option.machuPicchuMode === "overnight") option.requiresOvernight = true;
+    if (option.machuPicchuMode === "overnight-express") option.requiresOvernightExpress = true;
 
     return option;
   }

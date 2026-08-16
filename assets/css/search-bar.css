@@ -610,7 +610,13 @@ body {
     border: 0;
     background: #f4f1ec;
     color: #0d3d2a;
-    white-space: nowrap;
+    /* No depender de nowrap: con textos i18n más largos el label se salía del botón.
+       Se permite envolver en 2 líneas (el alto fijo de 70px lo admite) y, si aun así
+       una palabra es más larga que el ancho disponible, se corta dentro del botón. */
+    white-space: normal;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
     letter-spacing: -0.15px;
   }
 

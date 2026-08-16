@@ -7029,3 +7029,177 @@ body.is-generating-pdf .print-logo {
 body.is-generating-pdf .print-section {
   margin-bottom: 1.55mm !important;
 }
+
+/* =============================================
+   Extensión: Destinos, extensión Lima, vuelos nacionales, circuito Machu Picchu
+   ============================================= */
+
+.quote-destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quote-destination-card,
+.quote-airline-card,
+.quote-flight-toggle,
+.quote-circuit-card,
+.quote-route-card {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  border: 2px solid rgba(6, 40, 3, 0.12);
+  border-radius: 18px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.quote-destination-card:hover,
+.quote-airline-card:hover,
+.quote-flight-toggle:hover,
+.quote-circuit-card:hover,
+.quote-route-card:hover {
+  border-color: rgba(10, 58, 38, 0.38);
+  box-shadow: 0 10px 22px rgba(10, 58, 38, 0.08);
+}
+
+.quote-destination-card.is-selected,
+.quote-airline-card.is-selected,
+.quote-flight-toggle:has(input:checked),
+.quote-circuit-card.is-selected,
+.quote-route-card.is-selected {
+  border-color: #0a3a26;
+  background: #f4fbf5;
+}
+
+.quote-destination-card input[type="checkbox"],
+.quote-flight-toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.quote-destination-card strong,
+.quote-airline-card strong,
+.quote-flight-toggle strong,
+.quote-circuit-card strong {
+  display: block;
+  color: #062803;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.98rem;
+  margin-bottom: 3px;
+}
+
+.quote-destination-card small,
+.quote-airline-card small,
+.quote-flight-toggle small {
+  color: #5d6a64;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.quote-destinations-help {
+  display: block;
+  margin-top: 8px;
+  color: #b3261e;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.quote-airline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+/* .quote-airline-grid y .quote-train-selector-grid definen display:grid con la misma
+   especificidad que la hoja de estilos por defecto del navegador para [hidden] (0,1,0);
+   sin esta regla, el atributo hidden queda "empatado" y pierde por orden de cascada,
+   dejando el contenedor visible aunque tenga hidden. Se usa un selector de ID para ganar
+   siempre, sin tocar el resto de usos de estas clases en el sitio. */
+#flightAirlineContainer[hidden],
+#flightSelectorsContainer[hidden] {
+  display: none;
+}
+
+.quote-airline-card {
+  align-items: center;
+}
+
+.quote-airline-card img {
+  width: 64px;
+  height: 40px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.quote-flight-toggle {
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.quote-circuit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.quote-circuit-card {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.quote-route-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quote-route-card {
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.quote-route-card span {
+  color: #172b27;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.quote-flight-day-offset {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #fff3d6;
+  color: #8a5a00;
+  font-size: 0.7rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.quote-availability-disclaimer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(6, 40, 3, 0.15);
+  color: #5d6a64;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .quote-destinations-grid,
+  .quote-airline-grid,
+  .quote-circuit-grid,
+  .quote-route-grid {
+    grid-template-columns: 1fr;
+  }
+}

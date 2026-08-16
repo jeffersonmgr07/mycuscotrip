@@ -11,9 +11,38 @@
     toursCusco: "./assets/data/tours-cusco.json",
     toursMachuPicchu: "./assets/data/tours-machu-picchu.json",
     trekkingsCusco: "./assets/data/trekkings-cusco.json",
+    toursPeru: "./assets/data/tours-peru.json",
     hotels: "./assets/data/hotels.json",
-    trains: "./assets/data/trains.json"
+    trains: "./assets/data/trains.json",
+    domesticFlights: "./assets/data/domestic-flights.json"
   };
+
+  // Tarifas comerciales fijas de vuelos nacionales Lima-Cusco-Lima (ida + vuelta, por pasajero,
+  // adulto y niño pagan igual). Centralizadas aquí: NUNCA se cobra el referenceFareUsd de
+  // domestic-flights.json, que es solo un catálogo de horarios de referencia sin valor comercial.
+  const DOMESTIC_FLIGHT_FLAT_RATES = {
+    jetsmart: { sameMonth: 120, months2to3: 100, after3Months: 90 },
+    latam: { sameMonth: 150, months2to3: 125, after3Months: 110 }
+  };
+
+  const MACHU_PICCHU_CIRCUITS = [
+    { id: "circuito-1", label: "Circuito 1", routes: [
+      { id: "1a", label: "1A — Ruta Montaña Machu Picchu" },
+      { id: "1b", label: "1B — Ruta Terraza Superior" },
+      { id: "1c", label: "1C — Ruta Inti Punku" },
+      { id: "1d", label: "1D — Ruta Puente Inca" }
+    ] },
+    { id: "circuito-2", label: "Circuito 2", routes: [
+      { id: "2a", label: "2A — Ruta Clásica Diseñada" },
+      { id: "2b", label: "2B — Ruta Terraza Inferior" }
+    ] },
+    { id: "circuito-3", label: "Circuito 3", routes: [
+      { id: "3a", label: "3A — Ruta Montaña Huayna Picchu" },
+      { id: "3b", label: "3B — Ruta Realeza Diseñada" },
+      { id: "3c", label: "3C — Ruta Gran Caverna" },
+      { id: "3d", label: "3D — Ruta Huchuy Picchu" }
+    ] }
+  ];
 
   const EXCHANGE_FALLBACK = 3.75;
   const STORAGE_KEY = "mct_quote_package_state_v81";
@@ -70,7 +99,19 @@
     paypalTimer: null,
     initialSource: "",
     initialIntent: "",
-    pickers: { travelRange: null, arrival: null, departure: null }
+    pickers: { travelRange: null, arrival: null, departure: null },
+
+    // --- Extensión: destinos, extensión Lima, vuelos nacionales, circuito Machu Picchu ---
+    selectedDestinations: { cusco: true, machuPicchu: true, lima: false },
+    limaExtension: { nights: 0 },
+    includeFlights: false,
+    selectedAirline: null,
+    selectedOutboundFlight: null,
+    selectedReturnFlight: null,
+    activeFlightDirection: null,
+    pendingFlightKey: null,
+    machuPicchuCircuit: null,
+    machuPicchuRoute: null
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -326,16 +367,18 @@
   }
 
   async function loadData() {
-    const [packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains] = await Promise.all([
+    const [packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, toursPeru, hotels, trains, domesticFlights] = await Promise.all([
       fetchJSON(DATA_PATHS.packagesCusco, {}),
       fetchJSON(DATA_PATHS.toursCusco, { products: [] }),
       fetchJSON(DATA_PATHS.toursMachuPicchu, { tours: [] }),
       fetchJSON(DATA_PATHS.trekkingsCusco, { products: [] }),
+      fetchJSON(DATA_PATHS.toursPeru, { products: [] }),
       fetchJSON(DATA_PATHS.hotels, { destinations: {} }),
-      fetchJSON(DATA_PATHS.trains, { trains: [] })
+      fetchJSON(DATA_PATHS.trains, { trains: [] }),
+      fetchJSON(DATA_PATHS.domesticFlights, { routes: {} })
     ]);
 
-    state.data = { packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, hotels, trains };
+    state.data = { packagesCusco, toursCusco, toursMachuPicchu, trekkingsCusco, toursPeru, hotels, trains, domesticFlights };
     state.exchangeRate = Number(packagesCusco?.exchangeRateUSDToPEN || hotels?.pricingEngine?.exchangeRateUSDToPEN || EXCHANGE_FALLBACK) || EXCHANGE_FALLBACK;
     updateExchangeRateHelp();
   }
@@ -606,31 +649,28 @@
       return;
     }
 
+    const cuscoOn = isDestinationSelected("cusco");
+    const mpOn = isDestinationSelected("machuPicchu");
+    const limaOffset = getLimaDayOffset();
+
     const params = {
-      days: state.dates.days,
-      nights: state.dates.nights,
+      days: Math.max(state.dates.days - limaOffset, 0),
+      nights: Math.max(state.dates.nights - limaOffset, 0),
       arrivalTime: state.arrivalTime,
       departureTime: state.departureTime,
       productFamily: "cusco-package"
     };
 
-    if (window.MyCuscoTripPackageGenerator?.generatePackageOptions) {
-      state.options = window.MyCuscoTripPackageGenerator.generatePackageOptions(params, {
-        data: {
-          packagesCusco: state.data.packagesCusco,
-          toursCusco: state.data.toursCusco,
-          toursMachuPicchu: state.data.toursMachuPicchu,
-          trekkingsCusco: state.data.trekkingsCusco
-        }
-      });
-
-      // Si la duración no existe en el generador automático, usamos una ruta mínima de respaldo.
-      // Esto permite que Machu Picchu 2D/1N llegue al cotizador desde el search bar.
-      if (!state.options.length) {
-        state.options = getFallbackOptions(params);
-      }
+    if (!cuscoOn && mpOn) {
+      // Solo Machu Picchu: nunca se rellena artificialmente el resto del rango de fechas.
+      state.options = getSoloMachuPicchuOptions();
+    } else if (cuscoOn && !mpOn) {
+      // Solo Cusco: se genera igual que siempre y se retira Machu Picchu del resultado.
+      state.options = generateBaseOptions(params).map(stripMachuPicchuFromOption);
+    } else if (!cuscoOn && !mpOn) {
+      state.options = [];
     } else {
-      state.options = getFallbackOptions(params);
+      state.options = generateBaseOptions(params);
     }
 
     state.showAllItineraryOptions = false;
@@ -815,6 +855,7 @@
 
   function getOptionCommercialBadge(option, index) {
     if (index === 0) return t("quote.badge.recommended", "Recomendado");
+    if (option?.machuPicchuMode === "overnight" && option?.connectionMode !== "sacred-valley-connection") return t("quote.badge.overnightDirect", "Overnight directo");
     if (option?.connectionMode === "sacred-valley-connection" || option?.sacredValleyMode === "connection") return t("quote.badge.bestSeller", "Más vendido");
     if (option?.hasTrekkingAfterMachuPicchu) return t("quote.badge.adventure", "Aventura");
     if (Number(option?.freeUsefulDays || 0) === 0) return t("quote.badge.bestUseOfTime", "Aprovecha mejor el tiempo");
@@ -824,6 +865,9 @@
   function getOptionCommercialText(option, index) {
     if (!option) return t("quote.routeText.default", "Ruta sugerida según tus fechas y horarios.");
     const codes = toArray(option.includedTourCodes);
+    if (option.machuPicchuMode === "overnight" && option.connectionMode !== "sacred-valley-connection") {
+      return t("quote.routeText.overnightDirect", "Machu Picchu Overnight sin Valle Sagrado: viajas directo a Aguas Calientes, con más flexibilidad de horario de tren para llegar antes si lo necesitas.");
+    }
     if (option.sacredValleyMode === "connection") {
       return t("quote.routeText.connection", "Ruta recomendada: combina Valle Sagrado con conexión hacia Aguas Calientes y Machu Picchu al día siguiente, evitando traslados innecesarios.");
     }
@@ -902,6 +946,8 @@
     renderItineraryPreview();
     renderHotelSelectors();
     renderTrainSelectors();
+    renderMachuCircuitSection();
+    renderFlightSelectors();
     renderExtras();
     updateSummary();
     updatePrintableTemplate();
@@ -911,13 +957,13 @@
     }
   }
 
-  function buildItineraryItems(option = getSelectedOption()) {
+  function buildItineraryItems(option = getSelectedOption(), overrideTotalDays = null) {
     if (!option) return [];
 
     const tours = getOptionTours(option).filter((tour) => !normalizeText(tour?.title).includes("transfer"));
     const remaining = [...tours];
     const startDate = state.dates.start;
-    const totalDays = Math.max(Number(state.dates.days || option.days || 1), 1);
+    const totalDays = Math.max(Number(overrideTotalDays || state.dates.days || option.days || 1), 1);
     const lastDayNumber = totalDays;
     const days = Array.from({ length: totalDays }, (_, index) => ({
       day: index + 1,
@@ -1045,6 +1091,13 @@
       const valleyDay = totalDays >= 4 ? 2 : Math.min(2, totalDays);
       put(valleyDay, valleyConnection, t("quote.day.connectionToAguasCalientes", "Conexión hacia Aguas Calientes para dormir cerca de Machu Picchu."));
       if (machu) put(Math.min(valleyDay + 1, totalDays), machu, t("quote.day.machuAfterConnection", "Machu Picchu se programa al día siguiente de la conexión del Valle Sagrado."));
+    } else if (machu && totalDays >= 3 && hasTourWord(machu, ["overnight", "2 dias", "2 días"])) {
+      // Machu Picchu Overnight DIRECTO (sin Valle Sagrado Conexión): se reparte en 2 días como
+      // el caso de conexión, pero con un traslado sintético en vez de un segundo tour real.
+      const travelDay = 2;
+      const visitDay = Math.min(3, totalDays);
+      putSynthetic(travelDay, t("quote.day.overnightTravelTitle", "Traslado a Aguas Calientes"), t("quote.day.overnightTravelNote", "Traslado a la estación, tren hacia Aguas Calientes, check-in y noche cerca de Machu Picchu."), "15:00");
+      put(visitDay, machu, t("quote.day.overnightVisitNote", "Visita a Machu Picchu al día siguiente, con retorno el mismo día."));
     } else {
       if (machu) put(totalDays >= 3 ? 2 : Math.min(2, totalDays), machu, t("quote.day.fullDayCompatibleValley", "Versión Full Day compatible con Valle Sagrado Full Day o ruta clásica."));
       if (valleyFullDay) put(totalDays >= 4 ? 3 : Math.min(2, totalDays), valleyFullDay, t("quote.day.valleyFullDayNoOvernight", "Valle Sagrado en versión Full Day, sin noche previa en Aguas Calientes."));
@@ -1237,7 +1290,7 @@
       return;
     }
 
-    const days = buildItineraryItems(option);
+    const days = buildFullItineraryWithLima(option);
     target.innerHTML = days.map((day) => {
       const activityHtml = day.activities.map((activity, index) => {
         const tour = activity.tour;
@@ -1278,11 +1331,16 @@
   }
 
   function getAccommodationPlan(option = getSelectedOption()) {
-    if (!option || !state.dates.nights) return [];
-    const requiresAguas = Boolean(option.requiresOvernight || option.connectionMode || getMachuTour(option)?.trainSelection?.allowedRoutes?.outbound?.includes("OLLA_MAPI"));
+    const plan = [];
+    if (isDestinationSelected("lima") && state.limaExtension.nights > 0) {
+      plan.push({ destination: "lima", label: "Lima", nights: state.limaExtension.nights });
+    }
+
+    if (!option || !state.dates.nights) return plan;
+    // Bug histórico: ver nota en isOvernightTrainSelectionConfig — connectionMode "none" es truthy.
+    const requiresAguas = Boolean(option.requiresOvernight || option.connectionMode === "sacred-valley-connection" || getMachuTour(option)?.trainSelection?.allowedRoutes?.outbound?.includes("OLLA_MAPI"));
     const aguasNights = requiresAguas && state.dates.nights > 1 ? 1 : 0;
     const cuscoNights = Math.max(state.dates.nights - aguasNights, 0);
-    const plan = [];
     if (cuscoNights > 0) plan.push({ destination: "cusco", label: "Cusco", nights: cuscoNights });
     if (aguasNights > 0) plan.push({ destination: "aguas-calientes", label: "Aguas Calientes", nights: aguasNights });
     return plan;
@@ -1711,12 +1769,27 @@
     const option = getSelectedOption();
     const outboundRoutes = toArray(config?.allowedRoutes?.outbound);
     const outboundMin = timeToMinutes(config?.timeWindows?.outbound?.min || "00:00");
+    // Bug histórico: connectionMode ("none" | "sacred-valley-connection") es siempre un string
+    // truthy, así que comparar con Boolean(option?.connectionMode) marcaba overnight incluso en
+    // paquetes Full Day. Se compara explícitamente contra el único valor real de conexión.
     return Boolean(
       option?.requiresOvernight ||
-      option?.connectionMode ||
+      option?.requiresOvernightExpress ||
+      option?.connectionMode === "sacred-valley-connection" ||
       option?.sacredValleyMode === "connection" ||
       (outboundRoutes.includes("OLLA_MAPI") && outboundMin >= 12 * 60)
     );
+  }
+
+  // Distingue las 3 franjas horarias de tren de ida pedidas: Full Day (04:00-12:00),
+  // Overnight con conexión Valle Sagrado (15:00-22:00, el día se ocupa con el Valle Sagrado)
+  // y Overnight directo (sin Valle Sagrado: se permite tren temprano para llegar antes a Aguas
+  // Calientes si la disponibilidad de entradas lo requiere).
+  function isDirectOvernightSelection() {
+    const option = getSelectedOption();
+    const isOvernight = Boolean(option?.requiresOvernight || option?.requiresOvernightExpress);
+    const isSacredValleyConnection = option?.connectionMode === "sacred-valley-connection";
+    return isOvernight && !isSacredValleyConnection;
   }
 
   function getDynamicTrainTimeWindow(normalizedDirection, config) {
@@ -1724,6 +1797,10 @@
 
     if (normalizedDirection === "return") {
       return { min: "14:00", max: "22:30" };
+    }
+
+    if (overnightMode && isDirectOvernightSelection()) {
+      return { min: "04:00", max: "22:00" };
     }
 
     if (overnightMode) {
@@ -2166,7 +2243,9 @@
   }
 
   function getNonDiscountableSubtotal() {
-    return getExtrasTotal();
+    // Vuelos nacionales y la extensión Lima (PER003) son tarifas planas de terceros: se cobran
+    // aparte, sin el 5% de descuento por pago total ni cupones (igual que los extras/tickets).
+    return roundQuoteAmount(getExtrasTotal() + getFlightsTotal() + getPer003ExtraTotal(), state.currency);
   }
 
   function getSubtotalBeforeDiscount() {
@@ -2220,6 +2299,9 @@
     toggleRow("#trainSummaryRow", trainTotal > 0);
     setText("#extrasSummaryTotal", money(extrasTotal));
     toggleRow("#extrasSummaryRow", extrasTotal > 0);
+    const flightsTotal = getFlightsTotal();
+    setText("#flightSummaryTotal", money(flightsTotal));
+    toggleRow("#flightSummaryRow", flightsTotal > 0);
     setText("#discountSummaryTotal", `- ${money(payment.discount)}`);
     toggleRow("#discountSummaryRow", payment.discount > 0);
     setText("#quoteGrandTotal", money(payment.total));
@@ -2354,7 +2436,7 @@
 
     const selectedExtras = getAvailableExtras().filter((extra) => extra.required === true || state.selectedExtras.has(extra.code));
     const trainItems = [state.selectedTrains.outbound, state.selectedTrains.return].filter(Boolean);
-    const itineraryTours = buildItineraryItems(option)
+    const itineraryTours = buildFullItineraryWithLima(option)
       .flatMap((day) => day.activities.map((activity) => getActivityDisplayTitle(activity, day)))
       .filter(Boolean);
     const uniqueTours = [...new Set(itineraryTours)];
@@ -2421,12 +2503,14 @@
       const hotelTotal = getHotelTotal();
       const trainTotal = getTrainsTotal();
       const extrasTotal = getExtrasTotal();
+      const flightsTotal = getFlightsTotal();
       const rows = [
         [t("booking.adultsCount", "Adultos x{n}", { n: state.adults }), money(bases.adult)],
         ...(state.children > 0 ? [[t("booking.childrenCount", "Niños x{n}", { n: state.children }), money(bases.child)]] : []),
         [t("quote.print.accommodation", "Alojamiento"), money(hotelTotal)],
         [t("quote.print.trainsLabel", "Trenes"), trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")],
         ...(extrasTotal > 0 ? [[t("quote.print.extrasLabel", "Extras"), money(extrasTotal)]] : []),
+        ...(flightsTotal > 0 ? [[t("quote.summary.flight", "Vuelo nacional"), money(flightsTotal)]] : []),
         ...(payment.manualDiscount > 0 ? [[`${t("quote.summary.discount", "Descuento")} ${state.manualDiscount?.code || t("quote.print.couponApplied", "aplicado")}`, `- ${money(payment.manualDiscount)}`]] : []),
         ...(payment.fullDiscount > 0 ? [[t("quote.print.fullPaymentDiscount", "Descuento pago total 5%"), `- ${money(payment.fullDiscount)}`]] : []),
         [t("quote.print.totalQuoted", "Total cotizado"), money(payment.total)],
@@ -2447,7 +2531,7 @@
 
     const printItinerary = $("#printItinerary");
     if (printItinerary) {
-      printItinerary.innerHTML = buildItineraryItems(option).map((day) => `
+      printItinerary.innerHTML = buildFullItineraryWithLima(option).map((day) => `
         <div class="print-itinerary-item print-itinerary-item--activity-images">
           <div class="print-itinerary-dayline">
             <span class="print-itinerary-day-badge">Día ${day.displayDay}</span>
@@ -2490,7 +2574,7 @@
   }
 
   function clearDependentSections() {
-    ["#hotelSection", "#trainSection", "#extrasSection"].forEach((selector) => {
+    ["#hotelSection", "#trainSection", "#extrasSection", "#machuCircuitSection", "#flightSection"].forEach((selector) => {
       const el = $(selector);
       if (el) el.hidden = true;
     });
@@ -2557,18 +2641,35 @@
     ].filter(Boolean);
     const paypalUSD = getPaymentAmountForPayPalUSD(payment);
 
+    const destinationLabels = { cusco: "Cusco", machuPicchu: "Machu Picchu", lima: "Lima" };
+    const destinationsText = Object.keys(state.selectedDestinations)
+      .filter((key) => isDestinationSelected(key))
+      .map((key) => destinationLabels[key])
+      .join(" · ");
+
+    const circuitLabel = getMachuCircuitRouteLabel();
+    const flightsTotal = getFlightsTotal();
+    const flightText = state.includeFlights && state.selectedAirline
+      ? `${getAirlineLabel(state.selectedAirline)}${state.selectedOutboundFlight ? ` · ${t("quote.flight.outboundLabel", "Vuelo Lima → Cusco")} ${state.selectedOutboundFlight.departure}-${state.selectedOutboundFlight.arrival}` : ""}${state.selectedReturnFlight ? ` · ${t("quote.flight.returnLabel", "Vuelo Cusco → Lima")} ${state.selectedReturnFlight.departure}-${state.selectedReturnFlight.arrival}` : ""}`
+      : "";
+
     target.innerHTML = `
       <div><span>${t("quote.summary.code", "Código")}</span><strong>${escapeHtml(getQuoteReferenceValue())}</strong></div>
+      ${destinationsText ? `<div><span>${t("quote.summary.destinations", "Destinos")}</span><strong>${escapeHtml(destinationsText)}</strong></div>` : ""}
       <div><span>${t("quote.summary.itinerary", "Itinerario")}</span><strong>${escapeHtml(option?.rawCard?.recommendedTitle || option?.title || t("quote.print.toBeConfirmed", "Por confirmar"))}</strong></div>
       <div><span>${t("quote.summary.dates", "Fechas")}</span><strong>${escapeHtml(getTravelRangeLabel())}</strong></div>
       <div><span>${t("quote.summary.passengers", "Pasajeros")}</span><strong>${state.adults} adulto(s), ${state.children} niño(s)</strong></div>
       ${hotelRows.length ? hotelRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>${t("quote.summary.accommodation", "Alojamiento")}</span><strong>${t("quote.summary.noAccommodation", "Sin alojamiento seleccionado")}</strong></div>`}
       ${trainRows.length ? trainRows.map((row) => `<div><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(money(row.amount))}</strong></div>`).join("") : `<div><span>${t("quote.summary.trains", "Trenes")}</span><strong>${t("quote.summary.trainsPending", "Por elegir / no aplica")}</strong></div>`}
+      ${circuitLabel ? `<div><span>${t("quote.summary.machuCircuit", "Circuito Machu Picchu")}</span><strong>${escapeHtml(circuitLabel)}</strong></div>` : ""}
+      ${flightText ? `<div><span>${t("quote.summary.flight", "Vuelo nacional")}</span><strong>${escapeHtml(flightText)}</strong></div>` : ""}
+      ${flightsTotal > 0 ? `<div><span>${t("quote.summary.flightTotal", "Total vuelos")}</span><strong>${escapeHtml(money(flightsTotal))}</strong></div>` : ""}
       ${payment.discount > 0 ? `<div><span>${t("quote.summary.discount", "Descuento")}</span><strong>- ${escapeHtml(money(payment.discount))}</strong></div>` : ""}
       <div class="quote-reservation-summary__total"><span>${t("quote.summary.total", "Total cotizado")}</span><strong>${escapeHtml(money(payment.total))}</strong></div>
       <div><span>${payment.balance > 0 ? t("quote.summary.payNowBalance", "Anticipo a pagar ahora") : t("quote.summary.payNowFull", "Pago a realizar ahora")}</span><strong>${escapeHtml(money(payment.advance))}</strong></div>
       ${payment.balance > 0 ? `<div><span>${t("quote.summary.balancePending", "Saldo pendiente")}</span><strong>${escapeHtml(money(payment.balance))}</strong></div>` : ""}
       <div><span>${t("quote.summary.paypalAmount", "Monto PayPal")}</span><strong>USD ${paypalUSD}</strong></div>
+      <p class="quote-availability-disclaimer">${escapeHtml(t("quote.availabilityDisclaimer", "Horario sujeto a disponibilidad al momento de emisión."))}</p>
     `;
   }
 
@@ -2774,6 +2875,15 @@
         outbound: state.selectedTrains.outbound ? `${state.selectedTrains.outbound.companyName || state.selectedTrains.outbound.company} · ${state.selectedTrains.outbound.serviceName || ""}` : "",
         return: state.selectedTrains.return ? `${state.selectedTrains.return.companyName || state.selectedTrains.return.company} · ${state.selectedTrains.return.serviceName || ""}` : ""
       },
+      destinations: { ...state.selectedDestinations },
+      machuPicchuCircuit: state.machuPicchuCircuit || "",
+      machuPicchuRoute: state.machuPicchuRoute || "",
+      flights: state.includeFlights ? {
+        airline: state.selectedAirline || "",
+        outbound: state.selectedOutboundFlight ? `${state.selectedOutboundFlight.departure} → ${state.selectedOutboundFlight.arrival}` : "",
+        return: state.selectedReturnFlight ? `${state.selectedReturnFlight.departure} → ${state.selectedReturnFlight.arrival}` : "",
+        totalUSD: Number(convert(getFlightsTotal(), state.currency, "USD").toFixed(2))
+      } : null,
       contact: getReservationContactData(),
       passengers: collectPassengerData(),
       ...extra
@@ -2803,6 +2913,14 @@
     const trainConfig = getTrainSelectionConfig();
     if (trainConfig && (!state.selectedTrains.outbound || !state.selectedTrains.return)) {
       if (showMessage) alert(t("quote.alert.selectTrains", "Selecciona tren de ida y retorno antes de iniciar la reserva."));
+      return false;
+    }
+    if (machuPicchuCircuitIsRequiredButMissing()) {
+      if (showMessage) alert(t("quote.alert.selectMachuCircuit", "Selecciona el circuito y la ruta de Machu Picchu según disponibilidad confirmada."));
+      return false;
+    }
+    if (state.includeFlights && (!state.selectedOutboundFlight || !state.selectedReturnFlight)) {
+      if (showMessage) alert(t("quote.alert.selectFlights", "Elige tu vuelo de ida y de retorno antes de iniciar la reserva."));
       return false;
     }
     return true;
@@ -2974,6 +3092,556 @@
     }
   }
 
+  // =========================================================================
+  // EXTENSIÓN: Destinos, extensión Lima, vuelos nacionales, circuito Machu Picchu
+  // =========================================================================
+
+  function isDestinationSelected(key) {
+    return Boolean(state.selectedDestinations[key]);
+  }
+
+  function getPeruTourByCode(code) {
+    const products = toArray(state.data.toursPeru?.products);
+    return products.find((tour) => tour?.internalCode === code || tour?.id === code) || null;
+  }
+
+  function renderDestinations() {
+    $$("#destinationsGrid [data-destination-card]").forEach((card) => {
+      const key = card.dataset.destinationCard;
+      const checked = isDestinationSelected(key);
+      card.classList.toggle("is-selected", checked);
+      const input = card.querySelector("input[type=checkbox]");
+      if (input) input.checked = checked;
+    });
+  }
+
+  function handleDestinationToggle(key, checked) {
+    const next = { ...state.selectedDestinations, [key]: checked };
+    const selectedCount = Object.values(next).filter(Boolean).length;
+    const help = $("#destinationsHelp");
+
+    if (selectedCount < 1) {
+      // Debe permanecer como mínimo un destino seleccionado: se revierte el cambio.
+      if (help) {
+        help.hidden = false;
+        help.textContent = t("quote.destinations.minOne", "Debes mantener al menos un destino seleccionado.");
+      }
+      renderDestinations();
+      return;
+    }
+
+    if (help) help.hidden = true;
+    state.selectedDestinations = next;
+
+    if (key === "machuPicchu" && !checked) {
+      // Si Machu Picchu pasa a OFF: limpiar trenes, circuito, ruta y hotel de Aguas Calientes.
+      state.selectedTrains = { outbound: null, return: null };
+      state.machuPicchuCircuit = null;
+      state.machuPicchuRoute = null;
+      delete state.selectedHotels["aguas-calientes"];
+    }
+
+    if (key === "lima") {
+      state.limaExtension.nights = checked ? 2 : 0;
+      if (!checked) delete state.selectedHotels.lima;
+    }
+
+    renderDestinations();
+    state.selectedOptionIndex = -1;
+    state.selectedHotels = { ...state.selectedHotels };
+    generateAndRenderOptions();
+  }
+
+  function isMachuPicchuCodeLocal(code) {
+    return /^MAPI/i.test(String(code || ""));
+  }
+
+  function isSacredValleyConnectionCodeLocal(code) {
+    return code === "CUZ003CON" || code === "CUZ003VIPCON";
+  }
+
+  // "Solo Cusco": se genera el paquete Cusco normal (el motor siempre incluye Machu Picchu
+  // por diseño) y luego se retira Machu Picchu y cualquier conexión Valle Sagrado del resultado.
+  // Al quedar sin tour MAPI en includedTourCodes, toda la UI dependiente (trenes, hotel Aguas
+  // Calientes, circuito) se oculta sola porque ya depende de getMachuTour()/getAccommodationPlan().
+  function stripMachuPicchuFromOption(option) {
+    const cleanCodes = toArray(option.includedTourCodes).filter((code) => {
+      return !isMachuPicchuCodeLocal(code) && !isSacredValleyConnectionCodeLocal(code);
+    });
+    return {
+      ...option,
+      includedTourCodes: cleanCodes,
+      includedTours: cleanCodes.map(findTourByCode).filter(Boolean),
+      machuPicchuMode: "none",
+      connectionMode: "none",
+      sacredValleyMode: cleanCodes.some((code) => SACRED_VALLEY_CODES.has(code)) ? "full-day" : "none",
+      requiresOvernight: false,
+      requiresOvernightExpress: false
+    };
+  }
+
+  // "Solo Machu Picchu": únicamente Full Day u Overnight, sin rellenar artificialmente el resto
+  // del rango de fechas elegido (a diferencia del motor de paquetes Cusco, que sí ocupa cada día).
+  function getSoloMachuPicchuOptions() {
+    const fullDayTour = findTourByCode("MAPI001") || getAllTours().find((tour) => isMachuPicchuTour(tour) && !hasTourWord(tour, ["overnight", "express"]));
+    const overnightTour = findTourByCode("MAPI003") || getAllTours().find((tour) => isMachuPicchuTour(tour) && hasTourWord(tour, ["overnight"]) && !hasTourWord(tour, ["express"]));
+    const options = [];
+
+    if (fullDayTour) {
+      options.push({
+        id: "solo-mp-full-day",
+        slug: "machu-picchu-full-day",
+        title: t("search.tourFullDayExpress", fullDayTour.title || "Machu Picchu Full Day"),
+        days: 1,
+        nights: 0,
+        includedTourCodes: [getTourCode(fullDayTour)],
+        includedTours: [fullDayTour],
+        machuPicchuMode: "full-day",
+        connectionMode: "none",
+        sacredValleyMode: "none",
+        requiresOvernight: false,
+        arrivalDepartureProfile: { label: t("quote.customSchedule", "Horario personalizado") },
+        generationReason: "solo-machu-picchu-full-day"
+      });
+    }
+
+    if (overnightTour) {
+      options.push({
+        id: "solo-mp-overnight",
+        slug: "machu-picchu-overnight",
+        title: overnightTour.title || "Machu Picchu Overnight",
+        days: 2,
+        nights: 1,
+        includedTourCodes: [getTourCode(overnightTour)],
+        includedTours: [overnightTour],
+        machuPicchuMode: "overnight",
+        connectionMode: "none",
+        sacredValleyMode: "none",
+        requiresOvernight: true,
+        arrivalDepartureProfile: { label: t("quote.customSchedule", "Horario personalizado") },
+        generationReason: "solo-machu-picchu-overnight"
+      });
+    }
+
+    return options;
+  }
+
+  function getLimaDayOffset() {
+    return isDestinationSelected("lima") && state.limaExtension.nights > 0 ? 3 : 0;
+  }
+
+  function generateBaseOptions(params) {
+    if (window.MyCuscoTripPackageGenerator?.generatePackageOptions) {
+      const options = window.MyCuscoTripPackageGenerator.generatePackageOptions(params, {
+        data: {
+          packagesCusco: state.data.packagesCusco,
+          toursCusco: state.data.toursCusco,
+          toursMachuPicchu: state.data.toursMachuPicchu,
+          trekkingsCusco: state.data.trekkingsCusco
+        }
+      });
+      if (options.length) return options;
+    }
+    return getFallbackOptions(params);
+  }
+
+  // --- Vuelos nacionales ---
+
+  function getFlightPricingTier(referenceDate) {
+    const today = new Date();
+    const target = parseISODate(referenceDate) || today;
+    const monthDiff = (target.getFullYear() - today.getFullYear()) * 12 + (target.getMonth() - today.getMonth());
+    if (monthDiff <= 0) return "sameMonth";
+    if (monthDiff <= 2) return "months2to3";
+    return "after3Months";
+  }
+
+  function getFlightRoundTripRateUSD(airline) {
+    const tier = getFlightPricingTier(state.dates.start ? formatISODate(state.dates.start) : null);
+    return Number(DOMESTIC_FLIGHT_FLAT_RATES[airline]?.[tier] || 0);
+  }
+
+  function getFlightsTotal() {
+    if (!state.includeFlights || !state.selectedAirline) return 0;
+    const rateUSD = getFlightRoundTripRateUSD(state.selectedAirline);
+    const totalUSD = rateUSD * getPassengerCount();
+    return roundQuoteAmount(convert(totalUSD, "USD", state.currency), state.currency);
+  }
+
+  function getFlightRouteKey(direction) {
+    return direction === "outbound" ? "LIM-CUZ" : "CUZ-LIM";
+  }
+
+  function getFlightOptions(direction) {
+    if (!state.selectedAirline) return [];
+    const routeKey = getFlightRouteKey(direction);
+    const list = toArray(state.data.domesticFlights?.routes?.[routeKey]?.[state.selectedAirline]);
+    return list
+      .map((flight, index) => ({
+        ...flight,
+        key: `${routeKey}-${state.selectedAirline}-${index}`,
+        airline: state.selectedAirline,
+        origin: direction === "outbound" ? "LIM" : "CUZ",
+        destination: direction === "outbound" ? "CUZ" : "LIM",
+        direct: true
+      }))
+      .sort((a, b) => timeToMinutes(a.departure) - timeToMinutes(b.departure));
+  }
+
+  function getFlightDurationLabel(flight) {
+    const departureMinutes = timeToMinutes(flight.departure);
+    let arrivalMinutes = timeToMinutes(flight.arrival);
+    if (flight.arrivalDayOffset) arrivalMinutes += 24 * 60;
+    const diff = Math.max(0, arrivalMinutes - departureMinutes);
+    const h = Math.floor(diff / 60);
+    const m = diff % 60;
+    return `${h}h ${String(m).padStart(2, "0")}min`;
+  }
+
+  function getAirlineLogoPath(airline) {
+    if (airline === "jetsmart") return "./assets/img/airlines/jetsmart.png";
+    if (airline === "latam") return "./assets/img/airlines/latam.png";
+    return "./assets/img/placeholder/experience.jpg";
+  }
+
+  function getAirlineLabel(airline) {
+    if (airline === "jetsmart") return "JetSMART";
+    if (airline === "latam") return "LATAM";
+    return "";
+  }
+
+  function renderAirlineSelector() {
+    const container = $("#flightAirlineContainer");
+    if (!container) return;
+    container.hidden = !state.includeFlights;
+    if (!state.includeFlights) return;
+
+    container.innerHTML = ["jetsmart", "latam"].map((airline) => {
+      const selected = state.selectedAirline === airline;
+      return `
+        <button type="button" class="quote-airline-card ${selected ? "is-selected" : ""}" data-airline="${escapeHtml(airline)}">
+          <span class="quote-choice-dot" aria-hidden="true"></span>
+          <img src="${escapeHtml(getAirlineLogoPath(airline))}" alt="${escapeHtml(getAirlineLabel(airline))}" loading="lazy">
+          <div>
+            <strong>${escapeHtml(getAirlineLabel(airline))}</strong>
+            <small>${escapeHtml(t("quote.flight.roundTripFrom", "Ida y vuelta desde {price}/pasajero", { price: money(convert(getFlightRoundTripRateUSDForAirline(airline), "USD", state.currency)) }))}</small>
+          </div>
+        </button>
+      `;
+    }).join("");
+  }
+
+  function getFlightRoundTripRateUSDForAirline(airline) {
+    const tier = getFlightPricingTier(state.dates.start ? formatISODate(state.dates.start) : null);
+    return Number(DOMESTIC_FLIGHT_FLAT_RATES[airline]?.[tier] || 0);
+  }
+
+  function selectAirline(airline) {
+    if (state.selectedAirline === airline) return;
+    state.selectedAirline = airline;
+    state.selectedOutboundFlight = null;
+    state.selectedReturnFlight = null;
+    renderFlightSelectors();
+    updateSummary();
+    updatePrintableTemplate();
+  }
+
+  function renderFlightSelectedCard(container, direction, flight) {
+    if (!container) return;
+    const label = direction === "outbound" ? t("quote.flight.outboundLabel", "Vuelo Lima → Cusco") : t("quote.flight.returnLabel", "Vuelo Cusco → Lima");
+    const logo = flight ? `<img class="quote-train-selected-logo" src="${escapeHtml(getAirlineLogoPath(flight.airline))}" alt="${escapeHtml(getAirlineLabel(flight.airline))}">` : "";
+    const dayOffsetBadge = flight?.arrivalDayOffset ? ` <span class="quote-flight-day-offset">+1 ${escapeHtml(t("quote.flight.day", "día"))}</span>` : "";
+    container.innerHTML = `
+      <div class="quote-train-selected-content">
+        ${logo}
+        <div>
+          <span>${label}</span>
+          <strong>${flight ? `${escapeHtml(getAirlineLabel(flight.airline))} · ${escapeHtml(flight.origin)} → ${escapeHtml(flight.destination)}` : t("booking.noSelection", "Sin selección")}</strong>
+          <p>${flight ? `${escapeHtml(flight.departure)} → ${escapeHtml(flight.arrival)}${dayOffsetBadge} · ${escapeHtml(t("quote.flight.direct", "Directo"))}` : t("quote.flight.pendingHelp", "Elige una opción de vuelo para completar la cotización.")}</p>
+        </div>
+      </div>
+      <button type="button" class="btn quote-secondary-btn" data-flight-direction="${direction}">
+        <i class="fas fa-plane"></i> ${flight ? t("quote.flight.change", "Cambiar vuelo") : t("quote.flight.choose", "Elegir vuelo")}
+      </button>
+    `;
+  }
+
+  function renderFlightSelectors() {
+    const section = $("#flightSection");
+    const selectorsContainer = $("#flightSelectorsContainer");
+    if (!section) return;
+
+    section.hidden = !getSelectedOption();
+    renderAirlineSelector();
+
+    const showSelectors = state.includeFlights && Boolean(state.selectedAirline);
+    if (selectorsContainer) selectorsContainer.hidden = !showSelectors;
+    if (!showSelectors) return;
+
+    renderFlightSelectedCard($("#outboundFlightSelected"), "outbound", state.selectedOutboundFlight);
+    renderFlightSelectedCard($("#returnFlightSelected"), "return", state.selectedReturnFlight);
+  }
+
+  function openFlightModal(direction) {
+    if (!state.selectedAirline) return;
+    state.activeFlightDirection = direction === "return" ? "return" : "outbound";
+    const current = state.activeFlightDirection === "return" ? state.selectedReturnFlight : state.selectedOutboundFlight;
+    state.pendingFlightKey = current?.key || null;
+
+    const modal = $("#flightSelectionModal");
+    const title = $("#flightSelectionModalTitle");
+    const list = $("#flightSelectionModalList");
+    if (!modal || !list) return;
+
+    const label = state.activeFlightDirection === "outbound" ? "Lima → Cusco" : "Cusco → Lima";
+    if (title) title.textContent = t("quote.flight.modalTitle", "Elige tu vuelo {label}", { label });
+
+    const options = getFlightOptions(state.activeFlightDirection);
+    if (!options.length) {
+      list.innerHTML = `
+        <div class="quote-empty-state">
+          <strong>${escapeHtml(t("quote.flight.noneCompatible", "No hay vuelos disponibles para esta ruta."))}</strong>
+        </div>
+      `;
+    } else {
+      list.innerHTML = options.map((flight) => {
+        const selected = flight.key === state.pendingFlightKey;
+        const dayOffsetBadge = flight.arrivalDayOffset ? ` <span class="quote-flight-day-offset">+1 ${escapeHtml(t("quote.flight.day", "día"))}</span>` : "";
+        return `
+          <button type="button" class="quote-modal-card quote-train-modal-card ${selected ? "is-selected" : ""}" data-flight-key="${escapeHtml(flight.key)}">
+            <span class="quote-choice-dot" aria-hidden="true"></span>
+            <div class="quote-train-modal-card__body">
+              <div class="quote-train-title-row">
+                <img class="quote-train-inline-logo" src="${escapeHtml(getAirlineLogoPath(flight.airline))}" alt="${escapeHtml(getAirlineLabel(flight.airline))}" loading="lazy">
+                <div><strong>${escapeHtml(getAirlineLabel(flight.airline))}</strong></div>
+              </div>
+              <div class="quote-train-schedule-row">
+                <div><small>${escapeHtml(t("booking.departure", "Salida"))}</small><b>${escapeHtml(flight.origin)} · ${escapeHtml(flight.departure)}</b></div>
+                <div><small>${escapeHtml(t("booking.arrival", "Llegada"))}</small><b>${escapeHtml(flight.destination)} · ${escapeHtml(flight.arrival)}${dayOffsetBadge}</b></div>
+              </div>
+              <em>${escapeHtml(t("quote.flight.direct", "Directo"))} · ${escapeHtml(getFlightDurationLabel(flight))}</em>
+            </div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    modal.hidden = false;
+  }
+
+  function confirmFlightSelection() {
+    const direction = state.activeFlightDirection;
+    if (!direction) return;
+    const flight = getFlightOptions(direction).find((item) => item.key === state.pendingFlightKey);
+    if (!flight) return;
+    if (direction === "outbound") state.selectedOutboundFlight = flight;
+    else state.selectedReturnFlight = flight;
+    closeModals();
+    renderFlightSelectors();
+    updateSummary();
+    updatePrintableTemplate();
+  }
+
+  function handleIncludeFlightsToggle(checked) {
+    state.includeFlights = checked;
+    if (!checked) {
+      // Si vuelos pasa a OFF: limpiar aerolínea y vuelos seleccionados, sin sumar tarifa.
+      state.selectedAirline = null;
+      state.selectedOutboundFlight = null;
+      state.selectedReturnFlight = null;
+    }
+    renderFlightSelectors();
+    updateSummary();
+    updatePrintableTemplate();
+  }
+
+  // --- Circuito Machu Picchu ---
+
+  function renderMachuCircuitSection() {
+    const section = $("#machuCircuitSection");
+    const circuitGrid = $("#machuCircuitGrid");
+    const routeGrid = $("#machuRouteGrid");
+    const help = $("#machuCircuitHelp");
+    if (!section || !circuitGrid || !routeGrid) return;
+
+    const option = getSelectedOption();
+    const hasMachu = Boolean(option && getMachuTour(option));
+    section.hidden = !hasMachu;
+    if (!hasMachu) return;
+
+    circuitGrid.innerHTML = MACHU_PICCHU_CIRCUITS.map((circuit) => {
+      const selected = state.machuPicchuCircuit === circuit.id;
+      return `
+        <button type="button" class="quote-circuit-card ${selected ? "is-selected" : ""}" data-circuit-id="${escapeHtml(circuit.id)}">
+          <span class="quote-choice-dot" aria-hidden="true"></span>
+          <strong>${escapeHtml(circuit.label)}</strong>
+        </button>
+      `;
+    }).join("");
+
+    const activeCircuit = MACHU_PICCHU_CIRCUITS.find((circuit) => circuit.id === state.machuPicchuCircuit);
+    routeGrid.innerHTML = activeCircuit ? activeCircuit.routes.map((route) => {
+      const selected = state.machuPicchuRoute === route.id;
+      return `
+        <button type="button" class="quote-route-card ${selected ? "is-selected" : ""}" data-route-id="${escapeHtml(route.id)}">
+          <span class="quote-choice-dot" aria-hidden="true"></span>
+          <span>${escapeHtml(route.label)}</span>
+        </button>
+      `;
+    }).join("") : "";
+
+    if (help) help.hidden = Boolean(state.machuPicchuRoute);
+  }
+
+  function selectMachuCircuit(circuitId) {
+    if (state.machuPicchuCircuit !== circuitId) {
+      // Al cambiar de circuito se limpia cualquier ruta incompatible previamente elegida.
+      state.machuPicchuRoute = null;
+    }
+    state.machuPicchuCircuit = circuitId;
+    renderMachuCircuitSection();
+    updateSummary();
+    updatePrintableTemplate();
+  }
+
+  function selectMachuRoute(routeId) {
+    state.machuPicchuRoute = routeId;
+    renderMachuCircuitSection();
+    updateSummary();
+    updatePrintableTemplate();
+  }
+
+  function machuPicchuCircuitIsRequiredButMissing() {
+    const option = getSelectedOption();
+    if (!option || !getMachuTour(option)) return false;
+    return !state.machuPicchuCircuit || !state.machuPicchuRoute;
+  }
+
+  function getMachuCircuitRouteLabel() {
+    const circuit = MACHU_PICCHU_CIRCUITS.find((item) => item.id === state.machuPicchuCircuit);
+    const route = circuit?.routes.find((item) => item.id === state.machuPicchuRoute);
+    if (!circuit || !route) return "";
+    return `${circuit.label} · ${route.label}`;
+  }
+
+  // --- Extensión Lima: 3 días fijos (llegada, PER003, continuación a Cusco) prepuestos al itinerario ---
+
+  function buildLimaExtensionDays() {
+    if (!getLimaDayOffset()) return [];
+    const per003 = getPeruTourByCode("PER003") || getPeruTourByCode("peru_003");
+    const startDate = state.dates.start;
+    const pricingPending = per003?.basePricing?.pricingStatus === "reference_pending_confirmation" || per003?.internalPricing?.costSource === "pending_supplier_rate";
+
+    return [
+      {
+        day: 1,
+        displayDay: 1,
+        date: startDate,
+        activities: [{
+          tour: null,
+          syntheticTitle: t("quote.lima.arrivalTitle", "Llegada a Lima"),
+          note: t("quote.lima.arrivalNote", "Recojo en el aeropuerto de Lima y traslado al hotel."),
+          startTime: state.arrivalTime || "--:--"
+        }]
+      },
+      {
+        day: 2,
+        displayDay: 2,
+        date: startDate ? addDays(startDate, 1) : null,
+        activities: [{
+          tour: per003,
+          note: per003
+            ? (pricingPending ? t("quote.lima.pricePending", "Tarifa por confirmar con el operador.") : "")
+            : t("quote.lima.per003Missing", "Full Day Paracas, Ica y Huacachina (PER003) — tarifa por confirmar.")
+        }]
+      },
+      {
+        day: 3,
+        displayDay: 3,
+        date: startDate ? addDays(startDate, 2) : null,
+        activities: [{
+          tour: null,
+          syntheticTitle: t("quote.lima.continuationTitle", "Continuación Lima → Cusco"),
+          note: t("quote.lima.continuationNote", "Traslado al aeropuerto de Lima y vuelo o transporte terrestre hacia Cusco.")
+        }]
+      }
+    ];
+  }
+
+  function getCuscoPortionDays() {
+    const offset = getLimaDayOffset();
+    return Math.max(Number(state.dates.days || 0) - offset, 0);
+  }
+
+  // Envoltorio que antepone la extensión Lima (si aplica) al itinerario Cusco/Machu Picchu ya
+  // existente, sin tocar la lógica interna de buildItineraryItems (solo se le pasa un total de
+  // días ajustado cuando corresponde, vía su segundo parámetro opcional).
+  function buildFullItineraryWithLima(option = getSelectedOption()) {
+    const limaDays = buildLimaExtensionDays();
+    const offset = limaDays.length;
+    const cuscoTotalDays = offset ? getCuscoPortionDays() : null;
+    const cuscoDays = buildItineraryItems(option, cuscoTotalDays);
+    const renumbered = cuscoDays.map((day) => ({ ...day, day: day.day + offset, displayDay: day.day + offset }));
+    return [...limaDays, ...renumbered];
+  }
+
+  function getPer003ExtraTotal() {
+    if (!getLimaDayOffset()) return 0;
+    const per003 = getPeruTourByCode("PER003") || getPeruTourByCode("peru_003");
+    if (!per003) return 0;
+    const pricingPending = per003?.basePricing?.pricingStatus === "reference_pending_confirmation" || per003?.internalPricing?.costSource === "pending_supplier_rate";
+    if (pricingPending) return 0; // "Tarifa por confirmar": no se inventa un costo operacional.
+    const adultUSD = Number(per003?.basePricing?.adult || 0) * state.adults;
+    const childUSD = Number(per003?.basePricing?.child ?? per003?.basePricing?.adult ?? 0) * state.children;
+    return roundQuoteAmount(convert(adultUSD + childUSD, "USD", state.currency), state.currency);
+  }
+
+  function bindDestinationsAndExtensionEvents() {
+    $$("#destinationsGrid [data-destination-toggle]").forEach((input) => {
+      input.addEventListener("change", (event) => {
+        handleDestinationToggle(event.target.dataset.destinationToggle, event.target.checked);
+      });
+    });
+
+    $("#includeFlightsToggle")?.addEventListener("change", (event) => {
+      handleIncludeFlightsToggle(event.target.checked);
+    });
+
+    document.addEventListener("click", (event) => {
+      const airlineBtn = event.target.closest("[data-airline]");
+      if (airlineBtn) {
+        selectAirline(airlineBtn.dataset.airline);
+        return;
+      }
+
+      const flightDirectionBtn = event.target.closest("[data-flight-direction]");
+      if (flightDirectionBtn) {
+        openFlightModal(flightDirectionBtn.dataset.flightDirection);
+        return;
+      }
+
+      const flightCard = event.target.closest("[data-flight-key]");
+      if (flightCard) {
+        state.pendingFlightKey = flightCard.dataset.flightKey;
+        $$("#flightSelectionModal [data-flight-key]").forEach((card) => card.classList.toggle("is-selected", card === flightCard));
+        return;
+      }
+
+      const circuitBtn = event.target.closest("[data-circuit-id]");
+      if (circuitBtn) {
+        selectMachuCircuit(circuitBtn.dataset.circuitId);
+        return;
+      }
+
+      const routeBtn = event.target.closest("[data-route-id]");
+      if (routeBtn) {
+        selectMachuRoute(routeBtn.dataset.routeId);
+      }
+    });
+
+    $("#confirmFlightSelectionBtn")?.addEventListener("click", confirmFlightSelection);
+  }
+
   function bindEvents() {
     document.addEventListener("click", (event) => {
       const mobileToggle = event.target.closest("#toggleMobileSummaryBtn");
@@ -3131,6 +3799,8 @@
     setText("#childrenCount", state.children);
     initPickers();
     bindEvents();
+    bindDestinationsAndExtensionEvents();
+    renderDestinations();
     await loadData();
     const hasInitialQuery = applyInitialQueryParams();
     applyCurrencyRulesByNationality();
