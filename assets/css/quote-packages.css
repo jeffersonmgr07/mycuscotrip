@@ -2254,7 +2254,7 @@ body.quote-datepicker-open {
 @media print {
   @page {
     size: A4;
-    margin: 0;
+    margin: 10mm 8mm;
   }
 
   html,
@@ -7221,19 +7221,16 @@ body.is-generating-pdf .print-section {
 
 /* =============================================
    Sección impresa: Vuelos incluidos (y Tickets de tren incluidos, que
-   comparte exactamente la misma lógica visual: recuadro de operador angosto
-   + 2 tramos de igual proporción, a todo el ancho útil de la cotización).
+   comparte la misma lógica visual: recuadro de operador angosto +
+   2 tramos de igual proporción, ocupando el 100% del ancho útil).
    ============================================= */
-#printQuotation .print-flight-grid,
-#printQuotation .print-train-grid,
 .print-flight-grid,
 .print-train-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) minmax(0, 1fr) !important;
+  display: grid;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 2.2mm;
   align-items: stretch;
   width: 100%;
-  min-width: 0;
 }
 
 .print-flight-airline-box,
@@ -7243,18 +7240,18 @@ body.is-generating-pdf .print-section {
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 0.8mm;
+  gap: 0.7mm;
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2.5mm;
   background: #fbfdfb;
-  padding: 2mm 1.5mm;
+  padding: 1.6mm 1.2mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 .print-flight-operated-by,
 .print-train-operated-by {
-  font-size: 6.2pt;
+  font-size: 6pt;
   color: #6c7a73;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -7262,27 +7259,18 @@ body.is-generating-pdf .print-section {
 
 .print-flight-airline-box strong,
 .print-train-operator-box strong {
-  font-size: 7.6pt;
+  font-size: 7.1pt;
   color: #062803;
-  line-height: 1.15;
+  line-height: 1.12;
 }
 
 .print-flight-airline-logo,
 .print-train-operator-logo {
   width: 100%;
-  max-width: 18mm;
+  max-width: 14mm;
   height: auto;
   object-fit: contain;
-}
-
-/* El logo ferroviario debe verse como una tarjeta compacta con esquinas
-   redondeadas. Se redondea la propia imagen, no solo su contenedor. */
-#printQuotation .print-train-operator-logo,
-.print-train-operator-logo {
-  display: block;
-  border-radius: 2.5mm;
-  overflow: hidden;
-  background: #fff;
+  border-radius: 2mm;
 }
 
 .print-flight-leg,
@@ -7290,7 +7278,7 @@ body.is-generating-pdf .print-section {
   border: 1px solid rgba(6, 40, 3, 0.14);
   border-radius: 2.5mm;
   background: #fbfdfb;
-  padding: 1.8mm 2.4mm;
+  padding: 1.7mm 2.2mm 1.5mm;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -7300,7 +7288,8 @@ body.is-generating-pdf .print-section {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 1.2mm;
+  gap: 1.5mm;
+  margin-bottom: 1mm;
 }
 
 .print-flight-leg-label,
@@ -7312,110 +7301,137 @@ body.is-generating-pdf .print-section {
   letter-spacing: 0.02em;
 }
 
-.print-flight-leg-date {
-  font-size: 6.6pt;
+.print-flight-leg-date,
+.print-train-leg-operator {
+  font-size: 6.3pt;
   color: #53645d;
 }
 
-.print-flight-leg-route {
+.print-flight-leg-route,
+.print-train-leg-route--horizontal {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0, auto) 1fr minmax(0, auto);
   align-items: center;
   gap: 1.2mm;
-  margin-bottom: 1mm;
+  margin-bottom: 0.9mm;
 }
 
-.print-flight-leg-point {
+.print-flight-leg-point,
+.print-train-leg-point {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-.print-flight-leg-point strong {
-  font-size: 9pt;
+.print-flight-leg-point strong,
+.print-train-leg-point strong {
+  font-size: 8.9pt;
   color: #062803;
-  line-height: 1.1;
+  line-height: 1.08;
 }
 
-.print-flight-leg-point span {
-  font-size: 6.4pt;
+.print-flight-leg-point span,
+.print-train-leg-point span {
+  font-size: 6.35pt;
   color: #6c7a73;
 }
 
-.print-flight-leg-point--end {
+.print-flight-leg-point--end,
+.print-train-leg-point--end {
   align-items: flex-end;
   text-align: right;
 }
 
-.print-flight-leg-line {
+.print-flight-leg-line,
+.print-train-leg-line {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #8a958f;
-  font-size: 8pt;
+  font-size: 7.6pt;
 }
 
-.print-flight-leg-meta {
+.print-flight-leg-meta,
+.print-train-leg-meta {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 2mm;
-  font-size: 6.4pt;
+  font-size: 6.25pt;
   color: #6c7a73;
+  margin-bottom: 0.8mm;
 }
 
-.print-flight-baggage {
-  margin: 2mm 0 0;
-  font-size: 6.8pt;
-  color: #53645d;
-  text-align: center;
-}
-
-/* =============================================
-   Sección impresa: Tickets de tren incluidos (partes que difieren de
-   Vuelos incluidos: la ruta se muestra apilada, con flecha hacia abajo,
-   en vez de en línea horizontal).
-   ============================================= */
-.print-train-leg-operator {
-  font-size: 6.4pt;
-  color: #6c7a73;
-}
-
-.print-train-leg-route {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6mm;
-  margin-bottom: 1mm;
-}
-
-.print-train-leg-point {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 2mm;
-}
-
-.print-train-leg-point strong {
-  font-size: 9pt;
-  color: #062803;
-  line-height: 1.1;
-}
-
-.print-train-leg-point span {
-  font-size: 6.6pt;
-  color: #6c7a73;
-  text-align: right;
-}
-
-.print-train-leg-arrow {
-  font-size: 7pt;
-  color: #8a958f;
-  padding-left: 0.5mm;
+.print-train-leg-meta {
+  margin-bottom: 0;
 }
 
 .print-train-leg-service {
-  font-size: 6.6pt;
+  font-size: 6.5pt;
   color: #53645d;
   font-style: italic;
+}
+
+.print-flight-amenities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8mm 1.2mm;
+  padding-top: 1mm;
+  border-top: 1px dashed rgba(6, 40, 3, 0.12);
+}
+
+.print-flight-amenity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8mm;
+  min-width: 0;
+  font-size: 5.9pt;
+  line-height: 1.2;
+  color: #4f5d57;
+}
+
+.print-flight-amenity-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.8mm;
+  height: 3.8mm;
+  border-radius: 50%;
+  background: #eef5ef;
+  font-size: 6pt;
+  flex: 0 0 auto;
+}
+
+.print-flight-amenity.is-included {
+  color: #305140;
+}
+
+.print-flight-amenity.is-excluded {
+  color: #7a8680;
+}
+
+.print-flight-amenity.is-excluded .print-flight-amenity-icon {
+  background: #f2f2f2;
+  opacity: 0.8;
+}
+
+.print-flight-amenity.is-excluded span:last-child {
+  text-decoration: line-through;
+  text-decoration-thickness: 0.08em;
+}
+
+@media (max-width: 768px) {
+  .print-flight-grid,
+  .print-train-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .print-flight-grid,
+  .print-train-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =============================================
@@ -7430,19 +7446,12 @@ body.is-generating-pdf .print-section {
 /* =============================================
    Sección impresa: Plan flexible de pagos
    ============================================= */
-#printQuotation .print-payment-plan-columns,
 .print-payment-plan-columns {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 4mm;
-  align-items: stretch;
+  align-items: start;
   width: 100%;
-  min-width: 0;
-}
-
-#printQuotation .print-payment-plan-col,
-.print-payment-plan-col {
-  min-width: 0;
 }
 
 .print-payment-plan-col-title {
@@ -7531,6 +7540,12 @@ body.is-generating-pdf .print-section {
   margin-bottom: 0;
 }
 
+@media (max-width: 768px) {
+  .print-payment-plan-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* =============================================
    V-final-3: único salto de página (antes de "Itinerario detallado") +
    espaciado entre secciones + evitar cortes a media fila en cards compactos.
@@ -7569,15 +7584,19 @@ body.is-generating-pdf .print-section {
   break-before: page !important;
   page-break-before: always !important;
   padding-top: 0 !important;
-  margin-top: 10mm !important;
+  margin-top: 0 !important;
 }
 
-/* Margen superior/inferior de al menos 10mm en la hoja 1 (la hoja del salto
-   forzado ya queda cubierta por el margin-top de arriba). */
+/* Márgenes reales de impresión/PDF: se controlan con @page (print nativo)
+   y con html2pdf (savePdf). El contenedor no debe sumar padding extra para
+   no empujar el contenido más de la cuenta. */
 #printQuotation .print-sheet,
-.print-sheet {
-  padding-top: 10mm !important;
-  padding-bottom: 10mm !important;
+.print-sheet,
+body.is-generating-pdf .print-sheet {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 /* Cards compactos (Vuelos, Tickets de tren, Plan flexible) ya heredan
@@ -7589,4 +7608,39 @@ body.is-generating-pdf .print-section {
 .print-booking-offer {
   break-inside: avoid !important;
   page-break-inside: avoid !important;
+}
+
+
+/* =============================================
+   V36: evitar cortes de secciones compactas entre hojas. Si no entra una
+   sección completa, debe pasar a la siguiente hoja.
+   ============================================= */
+#printQuotation .print-section--flights,
+#printQuotation .print-section--trains,
+#printQuotation .print-section--hotels,
+#printQuotation .print-section--payment-plan,
+#printQuotation .print-notes,
+#printQuotation .print-booking-offer,
+.print-section--flights,
+.print-section--trains,
+.print-section--hotels,
+.print-section--payment-plan,
+.print-notes,
+.print-booking-offer {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+#printQuotation .print-section--flights h3,
+#printQuotation .print-section--trains h3,
+#printQuotation .print-section--hotels h3,
+#printQuotation .print-section--payment-plan h3,
+#printQuotation .print-notes h3,
+.print-section--flights h3,
+.print-section--trains h3,
+.print-section--hotels h3,
+.print-section--payment-plan h3,
+.print-notes h3 {
+  break-after: avoid !important;
+  page-break-after: avoid !important;
 }
