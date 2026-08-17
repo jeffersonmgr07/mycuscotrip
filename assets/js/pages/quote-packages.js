@@ -2507,8 +2507,17 @@
 
     const services = $("#printSelectedServices");
     if (services) {
+      const baseItineraryTitle = option?.rawCard?.recommendedTitle || option?.title || t("quote.print.itineraryToBeSelected", "Itinerario por confirmar");
+      const printableItineraryTitle = (() => {
+        if (!state.selectedDestinations?.lima) return baseItineraryTitle;
+        const normalized = normalizeText(baseItineraryTitle);
+        if (normalized.includes("lima") && normalized.includes("ica") && normalized.includes("paracas")) return baseItineraryTitle;
+        const coreTitle = String(baseItineraryTitle || "").replace(/^ruta recomendada\s*/i, "").trim();
+        return `Ruta recomendada Lima, Ica, Paracas, ${coreTitle}`;
+      })();
+
       const rows = [
-        [t("quote.print.itineraryLabel", "Itinerario seleccionado"), option?.rawCard?.recommendedTitle || option?.title || t("quote.print.itineraryToBeSelected", "Itinerario por confirmar")],
+        [t("quote.print.itineraryLabel", "Itinerario seleccionado"), printableItineraryTitle],
         [t("booking.train.outbound", "Tren de ida"), trainSummary(state.selectedTrains.outbound)],
         [t("booking.train.return", "Tren de retorno"), trainSummary(state.selectedTrains.return)],
         [t("quote.print.toursIncluded", "Tours incluidos"), uniqueTours.length ? uniqueTours.join(" · ") : t("quote.print.toBeConfirmed", "Por confirmar")],
@@ -2614,6 +2623,9 @@
             const places = getActivityPlacesText(activity, day);
             const note = activity.note || tour?.duration?.label || tour?.typeLabel || tour?.category || "";
             const image = getActivityImage(activity, day);
+            const machuTicketBadge = tour && isMachuPicchuTour(tour)
+              ? `Incluye ticket de ingreso a Machu Picchu${getMachuCircuitRouteLabel() ? ` · ${getMachuCircuitRouteLabel()}` : ""}`
+              : "";
             return `
               <div class="print-itinerary-activity-block print-itinerary-activity-block--with-image">
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}">
@@ -2623,6 +2635,7 @@
                   <p>${escapeHtml(description)}</p>
                   ${places ? `<p class="print-itinerary-places"><strong>Lugares principales:</strong> ${escapeHtml(places)}</p>` : ""}
                   ${note ? `<span class="print-itinerary-note-badge">${escapeHtml(note)}</span>` : ""}
+                  ${machuTicketBadge ? `<span class="print-machu-ticket-badge">${escapeHtml(machuTicketBadge)}</span>` : ""}
                 </div>
               </div>
             `;
@@ -2755,8 +2768,8 @@
                   <strong>${escapeHtml(flight.departure || "--:--")}</strong>
                   <span>${escapeHtml(flight.origin || "")}</span>
                 </div>
-                <div class="print-flight-leg-line">
-                  <span>→</span>
+                <div class="print-flight-leg-line" aria-hidden="true">
+                  <span class="print-flight-route-plane">✈</span>
                 </div>
                 <div class="print-flight-leg-point print-flight-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>

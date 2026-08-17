@@ -7883,3 +7883,70 @@ body.is-generating-pdf #printQuotation .print-payment-plan-col {
     flex-wrap: nowrap !important;
   }
 }
+
+/* =============================================
+   V38 — retoques exclusivos de impresión/PDF
+   ============================================= */
+
+/* Vuelo: sustituye la flecha diminuta por un avión más visible. */
+#printQuotation .print-flight-leg-line,
+body.is-generating-pdf #printQuotation .print-flight-leg-line {
+  color: #4f5d57 !important;
+  font-size: 11pt !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+#printQuotation .print-flight-route-plane,
+body.is-generating-pdf #printQuotation .print-flight-route-plane {
+  display: inline-block !important;
+  font-size: 11.5pt !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  color: #52645c !important;
+  transform: translateY(-0.2mm) !important;
+}
+
+/* Tren: flecha horizontal más grande, gruesa y legible. */
+#printQuotation .print-train-leg-line,
+body.is-generating-pdf #printQuotation .print-train-leg-line {
+  color: #52645c !important;
+  font-size: 10.5pt !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+#printQuotation .print-train-leg-line span,
+body.is-generating-pdf #printQuotation .print-train-leg-line span {
+  display: inline-block !important;
+  font-size: 10.5pt !important;
+  font-weight: 900 !important;
+  transform: scaleX(1.18) !important;
+  transform-origin: center !important;
+}
+
+/* Badge exclusivo del día Machu Picchu: ticket + circuito/ruta seleccionada. */
+#printQuotation .print-machu-ticket-badge,
+body.is-generating-pdf #printQuotation .print-machu-ticket-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  max-width: 100% !important;
+  margin-top: 1.1mm !important;
+  padding: 1mm 2.2mm !important;
+  border: 0.25mm solid rgba(145, 112, 34, 0.24) !important;
+  border-radius: 999px !important;
+  background: #fff8e8 !important;
+  color: #765614 !important;
+  font-size: 6.45pt !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+/* Condiciones de pago: una línea visual extra debajo del título para que las
+   viñetas comiencen a una altura más equilibrada respecto del bloque de cuotas. */
+#printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title,
+body.is-generating-pdf #printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title {
+  margin-bottom: 4mm !important;
+}
