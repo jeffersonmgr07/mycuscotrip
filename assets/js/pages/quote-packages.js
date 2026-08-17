@@ -2589,11 +2589,11 @@
 
       const rows = [
         {
-          labelHtml: `<strong>${escapeHtml(t("quote.print.adultsLabel", "Adultos"))}</strong> <span class="print-payment-detail print-payment-detail--inline">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.adults}</span>`,
+          labelHtml: `<strong>${escapeHtml(t("quote.print.adultsLabel", "Adultos"))}</strong><span class="print-payment-detail print-payment-detail--block">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.adults}</span>`,
           value: money(bases.adult)
         },
         ...(state.children > 0 ? [{
-          labelHtml: `<strong>${escapeHtml(t("quote.print.childrenLabel", "Niños"))}</strong> <span class="print-payment-detail print-payment-detail--inline">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.children}</span>`,
+          labelHtml: `<strong>${escapeHtml(t("quote.print.childrenLabel", "Niños"))}</strong><span class="print-payment-detail print-payment-detail--block">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.children}</span>`,
           value: money(bases.child)
         }] : []),
         {
@@ -2646,9 +2646,10 @@
       `;
     }
 
+    const printableItineraryDays = buildFullItineraryWithLima(option);
     const printItinerary = $("#printItinerary");
     if (printItinerary) {
-      printItinerary.innerHTML = buildFullItineraryWithLima(option).map((day) => `
+      printItinerary.innerHTML = printableItineraryDays.map((day) => `
         <div class="print-itinerary-item print-itinerary-item--activity-images">
           <div class="print-itinerary-dayline">
             <span class="print-itinerary-day-badge">Día ${day.displayDay}</span>
@@ -2698,9 +2699,28 @@
         const bothTrains = Boolean(outboundTrain && returnTrain);
         const primaryTrain = outboundTrain || returnTrain;
 
-        // Tolerante a operadores distintos en ida/vuelta (sección 21 del PDF): si difieren, el
-        // recuadro izquierdo muestra ambos nombres y cada tramo agrega su propio operador.
-        const renderTrainLeg = (train, direction) => {
+        // Fecha real de cada tramo ferroviario según el itinerario ya impreso.
+        // Full Day: ida y retorno comparten el día Machu Picchu.
+        // Overnight: ida corresponde al día de conexión/traslado a Aguas Calientes
+        // y retorno al día de visita a Machu Picchu.
+        const machuTrainDay = printableItineraryDays.find((day) =>
+          day.activities.some((activity) => activity.tour && isMachuPicchuTour(activity.tour))
+        );
+        const connectionTrainDay = printableItineraryDays.find((day) =>
+          day.activities.some((activity) =>
+            (activity.tour && isSacredValleyConnectionTour(activity.tour)) ||
+            (!activity.tour && normalizeText(activity.syntheticTitle || "").includes("aguas calientes"))
+          )
+        );
+        const overnightTrainMode = isOvernightTrainSelectionConfig();
+        const outboundTrainDate = overnightTrainMode
+          ? (connectionTrainDay?.date || machuTrainDay?.date || null)
+          : (machuTrainDay?.date || null);
+        const returnTrainDate = machuTrainDay?.date || outboundTrainDate;
+
+        // Tolerante a operadores distintos en ida/vuelta. En V41 el icono del tren
+        // queda solo en el centro: se elimina por completo la flecha solicitada.
+        const renderTrainLeg = (train, direction, date) => {
           if (!train) return "";
           const label = direction === "outbound" ? t("quote.train.outboundLegLabel", "Tren de ida") : t("quote.train.returnLegLabel", "Tren de retorno");
           const arrivalText = train.arrivalDayOffset ? `${train.arrivalTime || "--:--"} +1` : (train.arrivalTime || "--:--");
@@ -2708,7 +2728,10 @@
             <div class="print-train-leg">
               <div class="print-train-leg-top">
                 <span class="print-train-leg-label">${escapeHtml(label)}</span>
-                ${bothTrains && !sameOperator ? `<span class="print-train-leg-operator">${escapeHtml(getTrainOperatorLabel(train))}</span>` : ""}
+                <span class="print-train-leg-top-meta">
+                  ${date ? `<span class="print-train-leg-date">${escapeHtml(formatDate(date))}</span>` : ""}
+                  ${bothTrains && !sameOperator ? `<span class="print-train-leg-operator">${escapeHtml(getTrainOperatorLabel(train))}</span>` : ""}
+                </span>
               </div>
               <div class="print-train-leg-route print-train-leg-route--horizontal">
                 <div class="print-train-leg-point print-train-leg-point--start">
@@ -2716,7 +2739,7 @@
                   <span>${escapeHtml(train.departureStation || "")}</span>
                 </div>
                 <div class="print-train-leg-line" aria-hidden="true">
-                  <span class="print-train-route-symbol"><i class="fas fa-train"></i><span class="print-train-route-arrow">→</span></span>
+                  <span class="print-train-route-symbol"><i class="fas fa-train"></i></span>
                 </div>
                 <div class="print-train-leg-point print-train-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>
@@ -2746,8 +2769,8 @@
             <div class="print-train-operator-box">
               ${operatorBoxContent}
             </div>
-            ${renderTrainLeg(outboundTrain, "outbound")}
-            ${renderTrainLeg(returnTrain, "return")}
+            ${renderTrainLeg(outboundTrain, "outbound", outboundTrainDate)}
+            ${renderTrainLeg(returnTrain, "return", returnTrainDate)}
           </div>
         `;
       }
@@ -3398,14 +3421,18 @@
     if (window.html2pdf && element) {
       const previousHidden = element.hidden;
       element.hidden = false;
+      document.body.classList.add("is-generating-pdf");
       window.html2pdf().set({
-        margin: [10, 8, 10, 8],
+        margin: [10, 9, 10, 9],
         filename: `${ref}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["avoid-all", "css", "legacy"] }
-      }).from(element).save().finally(() => { element.hidden = previousHidden; });
+      }).from(element).save().finally(() => {
+        element.hidden = previousHidden;
+        document.body.classList.remove("is-generating-pdf");
+      });
     } else {
       window.print();
     }

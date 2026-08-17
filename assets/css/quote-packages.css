@@ -2254,7 +2254,7 @@ body.quote-datepicker-open {
 @media print {
   @page {
     size: A4;
-    margin: 10mm 8mm;
+    margin: 10mm 9mm;
   }
 
   html,
@@ -8142,4 +8142,83 @@ body.is-generating-pdf #printQuotation .print-train-route-symbol > i {
 body.is-generating-pdf #printQuotation .print-train-route-arrow {
   display: inline-block !important;
   margin-left: 0 !important;
+}
+
+
+/* =============================================
+   V41 — últimos retoques exclusivos de impresión/PDF
+   ============================================= */
+
+/* Fecha de cada tramo ferroviario, equivalente a la fecha mostrada en vuelos. */
+#printQuotation .print-train-leg-top-meta,
+body.is-generating-pdf #printQuotation .print-train-leg-top-meta {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 0.35mm !important;
+  min-width: 0 !important;
+}
+
+#printQuotation .print-train-leg-date,
+body.is-generating-pdf #printQuotation .print-train-leg-date {
+  font-size: 6.3pt !important;
+  color: #53645d !important;
+  font-weight: 400 !important;
+  white-space: nowrap !important;
+}
+
+/* Tren: se conserva únicamente la silueta entre salida y llegada.
+   La flecha se elimina desde el HTML para evitar que ambos símbolos se unan. */
+#printQuotation .print-train-route-symbol,
+body.is-generating-pdf #printQuotation .print-train-route-symbol {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  color: #78877f !important;
+}
+
+#printQuotation .print-train-route-symbol > i,
+body.is-generating-pdf #printQuotation .print-train-route-symbol > i {
+  font-size: 10.5pt !important;
+  color: #78877f !important;
+}
+
+/* Seguridad lateral A4: el área útil con margen de 9mm por lado es 192mm.
+   Se usa 191mm para dejar 0.5mm adicional de seguridad a cada lado y evitar
+   que html2canvas/html2pdf rasterice el borde derecho fuera del lienzo. */
+@media print {
+  #printQuotation,
+  #printQuotation .print-sheet {
+    width: 191mm !important;
+    max-width: 191mm !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+}
+
+body.is-generating-pdf #printQuotation,
+body.is-generating-pdf #printQuotation .print-sheet {
+  width: 191mm !important;
+  max-width: 191mm !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Ningún bloque interno puede exceder el ancho útil y cortar su borde derecho. */
+#printQuotation .print-section,
+#printQuotation .print-info-box,
+#printQuotation .print-flight-grid,
+#printQuotation .print-train-grid,
+#printQuotation .print-payment-plan-columns,
+body.is-generating-pdf #printQuotation .print-section,
+body.is-generating-pdf #printQuotation .print-info-box,
+body.is-generating-pdf #printQuotation .print-flight-grid,
+body.is-generating-pdf #printQuotation .print-train-grid,
+body.is-generating-pdf #printQuotation .print-payment-plan-columns {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
