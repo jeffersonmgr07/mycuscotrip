@@ -8036,7 +8036,7 @@ body.is-generating-pdf #printQuotation .print-train-route-symbol {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 1mm !important;
+  gap: 2.8mm !important;
   color: #66766e !important;
   white-space: nowrap !important;
 }
@@ -8106,4 +8106,40 @@ body.is-generating-pdf #printQuotation .print-payment-row-value {
 #printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title,
 body.is-generating-pdf #printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title {
   margin-bottom: 5mm !important;
+}
+
+
+/* =============================================
+   V40 — retoques finales exclusivos de impresión/PDF
+   ============================================= */
+/* El avión usa un glifo Unicode para que html2canvas/html2pdf no dependa de
+   que Font Awesome haya terminado de rasterizar. Se conserva grande y claro. */
+#printQuotation .print-flight-route-plane,
+body.is-generating-pdf #printQuotation .print-flight-route-plane {
+  display: inline-block !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 34pt !important;
+  font-weight: 400 !important;
+  line-height: 0.8 !important;
+  color: #b7c1bc !important;
+  transform: none !important;
+  opacity: 0.92 !important;
+}
+
+/* Tren: icono y flecha son dos elementos distintos, con separación visible. */
+#printQuotation .print-train-route-symbol,
+body.is-generating-pdf #printQuotation .print-train-route-symbol {
+  gap: 2.8mm !important;
+}
+
+#printQuotation .print-train-route-symbol > i,
+body.is-generating-pdf #printQuotation .print-train-route-symbol > i {
+  display: inline-block !important;
+  margin: 0 !important;
+}
+
+#printQuotation .print-train-route-arrow,
+body.is-generating-pdf #printQuotation .print-train-route-arrow {
+  display: inline-block !important;
+  margin-left: 0 !important;
 }

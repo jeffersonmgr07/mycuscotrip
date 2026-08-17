@@ -2808,7 +2808,7 @@
                   <span>${escapeHtml(flight.origin || "")}</span>
                 </div>
                 <div class="print-flight-leg-line" aria-hidden="true">
-                  <i class="fas fa-plane print-flight-route-plane"></i>
+                  <span class="print-flight-route-plane">✈</span>
                 </div>
                 <div class="print-flight-leg-point print-flight-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>
