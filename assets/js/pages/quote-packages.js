@@ -2658,18 +2658,22 @@
                 <span class="print-train-leg-label">${escapeHtml(label)}</span>
                 ${bothTrains && !sameOperator ? `<span class="print-train-leg-operator">${escapeHtml(getTrainOperatorLabel(train))}</span>` : ""}
               </div>
-              <div class="print-train-leg-route">
-                <div class="print-train-leg-point">
+              <div class="print-train-leg-route print-train-leg-route--horizontal">
+                <div class="print-train-leg-point print-train-leg-point--start">
                   <strong>${escapeHtml(train.departureTime || "--:--")}</strong>
                   <span>${escapeHtml(train.departureStation || "")}</span>
                 </div>
-                <div class="print-train-leg-arrow">↓</div>
-                <div class="print-train-leg-point">
+                <div class="print-train-leg-line">
+                  <span>→</span>
+                </div>
+                <div class="print-train-leg-point print-train-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>
                   <span>${escapeHtml(train.arrivalStation || "")}</span>
                 </div>
               </div>
-              <div class="print-train-leg-service">${escapeHtml(train.serviceName || train.category || train.code || "")}</div>
+              <div class="print-train-leg-meta">
+                <span class="print-train-leg-service">${escapeHtml(train.serviceName || train.category || train.code || "")}</span>
+              </div>
             </div>
           `;
         };
@@ -2711,6 +2715,27 @@
         // Sin barra de título propia por vuelo: los 2 tramos (ida/vuelta) se muestran como
         // parte de un mismo itinerario dentro de la única barra "Vuelos incluidos", en
         // recuadros de igual proporción junto al recuadro (más angosto) de la aerolínea.
+        const renderBaggageBadges = () => `
+          <div class="print-flight-amenities" aria-label="${escapeHtml(t("quote.flight.baggageSummary", "Condiciones de equipaje y asiento"))}">
+            <span class="print-flight-amenity is-included">
+              <span class="print-flight-amenity-icon" aria-hidden="true">👜</span>
+              <span>${escapeHtml(t("quote.flight.personalItemIncluded", "Artículo personal"))}</span>
+            </span>
+            <span class="print-flight-amenity is-excluded">
+              <span class="print-flight-amenity-icon" aria-hidden="true">🧳</span>
+              <span>${escapeHtml(t("quote.flight.carryOnExcluded", "Carry-on"))}</span>
+            </span>
+            <span class="print-flight-amenity is-excluded">
+              <span class="print-flight-amenity-icon" aria-hidden="true">🧳</span>
+              <span>${escapeHtml(t("quote.flight.checkedBagExcluded", "Maleta 23 kg"))}</span>
+            </span>
+            <span class="print-flight-amenity is-included">
+              <span class="print-flight-amenity-icon" aria-hidden="true">💺</span>
+              <span>${escapeHtml(t("quote.flight.randomSeatIncluded", "Asiento aleatorio"))}</span>
+            </span>
+          </div>
+        `;
+
         const renderLeg = (flight, direction, date) => {
           if (!flight) return "";
           const label = direction === "outbound" ? t("quote.flight.outboundLegLabel", "Vuelo de ida") : t("quote.flight.returnLegLabel", "Vuelo de vuelta");
@@ -2738,6 +2763,7 @@
                 <span>${escapeHtml(getFlightCityName(flight.origin))} → ${escapeHtml(getFlightCityName(flight.destination))}</span>
                 <span>${escapeHtml(t("quote.flight.direct", "Directo"))} · ${escapeHtml(getFlightDurationLabel(flight))}</span>
               </div>
+              ${renderBaggageBadges()}
             </div>
           `;
         };
@@ -2752,7 +2778,6 @@
             ${renderLeg(state.selectedOutboundFlight, "outbound", outboundDate)}
             ${renderLeg(state.selectedReturnFlight, "return", returnDate)}
           </div>
-          <p class="print-flight-baggage">${escapeHtml(t("quote.flight.baggageSummary", "Artículo personal incluido · Carry-on no incluido · Equipaje 23 kg no incluido · Asiento aleatorio"))}</p>
         `;
       }
     }
