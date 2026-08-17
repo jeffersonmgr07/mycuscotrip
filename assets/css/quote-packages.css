@@ -7420,20 +7420,6 @@ body.is-generating-pdf .print-section {
   text-decoration-thickness: 0.08em;
 }
 
-@media (max-width: 768px) {
-  .print-flight-grid,
-  .print-train-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .print-flight-grid,
-  .print-train-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* =============================================
    Detalles de pago: detalle secundario (no negrita) junto a la etiqueta
    ============================================= */
@@ -7540,12 +7526,6 @@ body.is-generating-pdf .print-section {
   margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
-  .print-payment-plan-columns {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* =============================================
    V-final-3: único salto de página (antes de "Itinerario detallado") +
    espaciado entre secciones + evitar cortes a media fila en cards compactos.
@@ -7643,4 +7623,263 @@ body.is-generating-pdf .print-sheet {
 .print-notes h3 {
   break-after: avoid !important;
   page-break-after: avoid !important;
+}
+
+
+/* ==========================================================
+   V37 — CORRECCIÓN DEFINITIVA SOLO FORMATO DE IMPRESIÓN/PDF
+   Mantener siempre en una sola fila: operador + ida + vuelta.
+   Se usa FLEX (no Grid) para máxima compatibilidad con html2canvas/html2pdf.
+   ========================================================== */
+#printQuotation .print-flight-grid,
+#printQuotation .print-train-grid,
+body.is-generating-pdf #printQuotation .print-flight-grid,
+body.is-generating-pdf #printQuotation .print-train-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  gap: 2.2mm !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Columna pequeña del operador. */
+#printQuotation .print-flight-airline-box,
+#printQuotation .print-train-operator-box,
+body.is-generating-pdf #printQuotation .print-flight-airline-box,
+body.is-generating-pdf #printQuotation .print-train-operator-box {
+  flex: 0 0 16% !important;
+  width: 16% !important;
+  min-width: 0 !important;
+  max-width: 16% !important;
+  box-sizing: border-box !important;
+  border: 0.35mm solid #c7d3cc !important;
+  border-radius: 2.5mm !important;
+  overflow: hidden !important;
+}
+
+/* Ida y vuelta ocupan exactamente el mismo ancho. */
+#printQuotation .print-flight-leg,
+#printQuotation .print-train-leg,
+body.is-generating-pdf #printQuotation .print-flight-leg,
+body.is-generating-pdf #printQuotation .print-train-leg {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  border: 0.35mm solid #c7d3cc !important;
+  border-radius: 2.5mm !important;
+  overflow: hidden !important;
+}
+
+/* Refuerzo de los cuatro bordes: evita que el lado derecho se pierda al rasterizar PDF. */
+#printQuotation .print-flight-airline-box,
+#printQuotation .print-train-operator-box,
+#printQuotation .print-flight-leg,
+#printQuotation .print-train-leg,
+#printQuotation .print-payment-plan-col--conditions,
+#printQuotation .print-payment-plan-table {
+  border-color: #c3d0c8 !important;
+  border-style: solid !important;
+  box-sizing: border-box !important;
+}
+
+/* Logo aéreo más compacto; logo ferroviario también redondeado. */
+#printQuotation .print-flight-airline-logo {
+  max-width: 11.5mm !important;
+  max-height: 11.5mm !important;
+  object-fit: contain !important;
+}
+
+#printQuotation .print-train-operator-logo {
+  max-width: 14mm !important;
+  max-height: 10mm !important;
+  object-fit: contain !important;
+  border-radius: 2.2mm !important;
+  overflow: hidden !important;
+}
+
+/* Vuelos: los servicios/equipaje ocupan el espacio inferior de CADA tramo. */
+#printQuotation .print-flight-leg {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 1.6mm 2mm 1.4mm !important;
+}
+
+#printQuotation .print-flight-leg-meta {
+  margin-bottom: 0.8mm !important;
+}
+
+#printQuotation .print-flight-amenities {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.7mm 1mm !important;
+  margin-top: auto !important;
+  padding-top: 1mm !important;
+  border-top: 0.25mm dashed #d5ded8 !important;
+}
+
+#printQuotation .print-flight-amenity {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.7mm !important;
+  min-width: 0 !important;
+  font-size: 5.7pt !important;
+  line-height: 1.15 !important;
+  text-decoration: none !important;
+}
+
+#printQuotation .print-flight-amenity-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 4mm !important;
+  width: 4mm !important;
+  height: 4mm !important;
+  border-radius: 50% !important;
+  font-size: 6.3pt !important;
+  background: #edf4ef !important;
+}
+
+#printQuotation .print-flight-amenity-copy {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+#printQuotation .print-flight-amenity-status {
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+  font-size: 6pt !important;
+}
+
+#printQuotation .print-flight-amenity.is-included .print-flight-amenity-status {
+  color: #17663c !important;
+}
+
+#printQuotation .print-flight-amenity.is-excluded,
+#printQuotation .print-flight-amenity.is-excluded .print-flight-amenity-copy {
+  color: #7d8983 !important;
+  text-decoration: none !important;
+}
+
+#printQuotation .print-flight-amenity.is-excluded .print-flight-amenity-status {
+  color: #a04a4a !important;
+}
+
+/* Trenes: mismo lenguaje visual que vuelos — salida izquierda, llegada derecha. */
+#printQuotation .print-train-leg {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 1.6mm 2mm 1.4mm !important;
+}
+
+#printQuotation .print-train-leg-route,
+#printQuotation .print-train-leg-route--horizontal {
+  display: grid !important;
+  grid-template-columns: minmax(0, auto) 1fr minmax(0, auto) !important;
+  align-items: center !important;
+  gap: 1.2mm !important;
+  margin-bottom: 1mm !important;
+}
+
+#printQuotation .print-train-leg-point {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+#printQuotation .print-train-leg-point--end {
+  align-items: flex-end !important;
+  text-align: right !important;
+}
+
+#printQuotation .print-train-leg-point strong {
+  font-size: 9pt !important;
+}
+
+#printQuotation .print-train-leg-point span {
+  max-width: 31mm !important;
+  font-size: 6.25pt !important;
+  line-height: 1.15 !important;
+  overflow-wrap: anywhere !important;
+}
+
+#printQuotation .print-train-leg-line {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  color: #8a958f !important;
+}
+
+#printQuotation .print-train-leg-meta {
+  margin-top: auto !important;
+  padding-top: 0.9mm !important;
+  border-top: 0.25mm dashed #d5ded8 !important;
+}
+
+#printQuotation .print-train-leg-service {
+  font-size: 6.4pt !important;
+  font-style: normal !important;
+  color: #53645d !important;
+}
+
+/* Plan flexible: dos mitades reales, nunca apiladas en la plantilla de impresión. */
+#printQuotation .print-payment-plan-columns,
+body.is-generating-pdf #printQuotation .print-payment-plan-columns {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  gap: 4mm !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#printQuotation .print-payment-plan-col,
+body.is-generating-pdf #printQuotation .print-payment-plan-col {
+  flex: 1 1 0 !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Paginación: secciones compactas enteras; condiciones + oferta permanecen juntas si es posible. */
+#printQuotation .print-section--flights,
+#printQuotation .print-section--trains,
+#printQuotation .print-section--hotels,
+#printQuotation .print-section--payment-plan,
+#printQuotation .print-notes,
+#printQuotation .print-booking-offer {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+#printQuotation .print-notes {
+  break-after: avoid-page !important;
+  page-break-after: avoid !important;
+}
+
+#printQuotation .print-booking-offer {
+  break-after: avoid-page !important;
+  page-break-after: avoid !important;
+}
+
+/* La plantilla A4 conserva márgenes de 10mm arriba/abajo por @page y html2pdf.
+   Estas reglas impiden que el viewport móvil cambie la geometría del PDF. */
+@media (max-width: 768px) {
+  #printQuotation .print-flight-grid,
+  #printQuotation .print-train-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #printQuotation .print-payment-plan-columns {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
 }

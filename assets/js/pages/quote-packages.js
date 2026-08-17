@@ -2718,20 +2718,24 @@
         const renderBaggageBadges = () => `
           <div class="print-flight-amenities" aria-label="${escapeHtml(t("quote.flight.baggageSummary", "Condiciones de equipaje y asiento"))}">
             <span class="print-flight-amenity is-included">
-              <span class="print-flight-amenity-icon" aria-hidden="true">👜</span>
-              <span>${escapeHtml(t("quote.flight.personalItemIncluded", "Artículo personal"))}</span>
+              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-bag-shopping"></i></span>
+              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.personalItemIncluded", "Artículo personal"))}</span>
+              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-excluded">
-              <span class="print-flight-amenity-icon" aria-hidden="true">🧳</span>
-              <span>${escapeHtml(t("quote.flight.carryOnExcluded", "Carry-on"))}</span>
+              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase-rolling"></i></span>
+              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.carryOnExcluded", "Carry-on"))}</span>
+              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-excluded">
-              <span class="print-flight-amenity-icon" aria-hidden="true">🧳</span>
-              <span>${escapeHtml(t("quote.flight.checkedBagExcluded", "Maleta 23 kg"))}</span>
+              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase"></i></span>
+              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.checkedBagExcluded", "Maleta 23 kg"))}</span>
+              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-included">
-              <span class="print-flight-amenity-icon" aria-hidden="true">💺</span>
-              <span>${escapeHtml(t("quote.flight.randomSeatIncluded", "Asiento aleatorio"))}</span>
+              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-chair"></i></span>
+              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.randomSeatIncluded", "Asiento aleatorio"))}</span>
+              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
             </span>
           </div>
         `;
