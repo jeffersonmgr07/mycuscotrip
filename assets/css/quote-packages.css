@@ -7950,3 +7950,160 @@ body.is-generating-pdf #printQuotation .print-machu-ticket-badge {
 body.is-generating-pdf #printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title {
   margin-bottom: 4mm !important;
 }
+
+/* =============================================
+   V39 — retoques exclusivos del formato de impresión/PDF
+   ============================================= */
+
+/* 1) Las secciones indicadas conservan su barra de título, pero NO un marco
+   exterior general. Los recuadros internos mantienen sus propios bordes. */
+#printQuotation .print-section--flights,
+#printQuotation .print-section--trains,
+#printQuotation .print-section--itinerary,
+#printQuotation .print-section--payment-plan,
+body.is-generating-pdf #printQuotation .print-section--flights,
+body.is-generating-pdf #printQuotation .print-section--trains,
+body.is-generating-pdf #printQuotation .print-section--itinerary,
+body.is-generating-pdf #printQuotation .print-section--payment-plan {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+/* 2) Avión central: aproximadamente 3 veces más grande que V38 y en un tono
+   más claro para que funcione como elemento visual y no compita con horarios. */
+#printQuotation .print-flight-leg-line,
+body.is-generating-pdf #printQuotation .print-flight-leg-line {
+  min-width: 13mm !important;
+  overflow: visible !important;
+  color: #b2bdb7 !important;
+}
+
+#printQuotation .print-flight-route-plane,
+body.is-generating-pdf #printQuotation .print-flight-route-plane {
+  display: inline-block !important;
+  font-size: 34pt !important;
+  font-weight: 400 !important;
+  line-height: 0.8 !important;
+  color: #b2bdb7 !important;
+  transform: rotate(45deg) !important;
+  transform-origin: center !important;
+}
+
+/* 3) Equipaje/asiento: estado (check/X) ANTES del icono del ítem. */
+#printQuotation .print-flight-amenity,
+body.is-generating-pdf #printQuotation .print-flight-amenity {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.65mm !important;
+}
+
+#printQuotation .print-flight-amenity-status,
+body.is-generating-pdf #printQuotation .print-flight-amenity-status {
+  order: 0 !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  width: 3.1mm !important;
+  text-align: center !important;
+  font-size: 6.5pt !important;
+}
+
+#printQuotation .print-flight-amenity-icon,
+body.is-generating-pdf #printQuotation .print-flight-amenity-icon {
+  order: 1 !important;
+  flex: 0 0 4mm !important;
+}
+
+#printQuotation .print-flight-amenity-copy,
+body.is-generating-pdf #printQuotation .print-flight-amenity-copy {
+  order: 2 !important;
+  text-align: left !important;
+}
+
+/* 4) Trenes: silueta + flecha horizontal. La flecha queda ~50% mayor que V38. */
+#printQuotation .print-train-leg-line,
+body.is-generating-pdf #printQuotation .print-train-leg-line {
+  min-width: 13mm !important;
+  overflow: visible !important;
+  color: #66766e !important;
+}
+
+#printQuotation .print-train-route-symbol,
+body.is-generating-pdf #printQuotation .print-train-route-symbol {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1mm !important;
+  color: #66766e !important;
+  white-space: nowrap !important;
+}
+
+#printQuotation .print-train-route-symbol > i,
+body.is-generating-pdf #printQuotation .print-train-route-symbol > i {
+  font-size: 9.5pt !important;
+  color: #78877f !important;
+}
+
+#printQuotation .print-train-route-arrow,
+body.is-generating-pdf #printQuotation .print-train-route-arrow {
+  display: inline-block !important;
+  font-size: 15.8pt !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  transform: scaleX(1.18) !important;
+  transform-origin: center !important;
+}
+
+/* 5) Detalles de pago: el concepto principal queda en negrita y los detalles
+   secundarios se ordenan debajo o en línea, siempre con peso normal. */
+#printQuotation .print-payment-row-label,
+body.is-generating-pdf #printQuotation .print-payment-row-label {
+  min-width: 0 !important;
+  text-align: left !important;
+  color: #35443e !important;
+}
+
+#printQuotation .print-payment-row-label > strong,
+body.is-generating-pdf #printQuotation .print-payment-row-label > strong {
+  color: #062803 !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+}
+
+#printQuotation .print-payment-row-label .print-payment-detail,
+body.is-generating-pdf #printQuotation .print-payment-row-label .print-payment-detail {
+  color: #53645d !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  font-size: 6.9pt !important;
+  line-height: 1.23 !important;
+}
+
+#printQuotation .print-payment-detail--inline,
+body.is-generating-pdf #printQuotation .print-payment-detail--inline {
+  display: inline !important;
+  margin-left: 0.7mm !important;
+}
+
+#printQuotation .print-payment-detail--block,
+body.is-generating-pdf #printQuotation .print-payment-detail--block {
+  display: block !important;
+  margin-top: 0.65mm !important;
+  white-space: normal !important;
+}
+
+#printQuotation .print-payment-row-value,
+body.is-generating-pdf #printQuotation .print-payment-row-value {
+  text-align: right !important;
+  align-self: start !important;
+  white-space: nowrap !important;
+}
+
+/* 6) Un poco más de aire debajo de "Condiciones de pago" antes de viñetas. */
+#printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title,
+body.is-generating-pdf #printQuotation .print-payment-plan-col--conditions .print-payment-plan-col-title {
+  margin-bottom: 5mm !important;
+}

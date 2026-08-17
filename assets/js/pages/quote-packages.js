@@ -2572,35 +2572,74 @@
       const flightsTotal = getFlightsTotal();
       const passengerPhrase = getPassengerPhrase();
       const hasTrainSelection = Boolean(state.selectedTrains.outbound || state.selectedTrains.return);
-      const accommodationDetail = getAccommodationDetailText();
+      const hotelPaymentItems = Object.values(state.selectedHotels).filter((item) => item?.type === "hotel");
+      const accommodationPlan = getAccommodationPlan();
+      const accommodationLinesHtml = hotelPaymentItems.map((item) => {
+        const destinationLabel = accommodationPlan.find((plan) => plan.destination === item.destination)?.label || item.hotel?.location || item.destination || t("quote.print.accommodationFallback", "Alojamiento");
+        const nights = Number(item.nights || 0);
+        const nightsLabel = `${nights} ${nights === 1 ? t("quote.print.nightSingular", "noche") : t("quote.print.nightPlural", "noches")}`;
+        const roomLabel = item.roomsSummary || t("quote.roomToConfirm", "Habitación por confirmar");
+        return `<span class="print-payment-detail print-payment-detail--block">${escapeHtml(destinationLabel)} · ${escapeHtml(roomLabel)} · ${escapeHtml(nightsLabel)}</span>`;
+      }).join("");
 
-      const accommodationLabel = accommodationDetail
-        ? `${escapeHtml(t("quote.print.accommodation", "Alojamiento"))} <span class="print-payment-detail">(${escapeHtml(accommodationDetail)})</span>`
-        : escapeHtml(t("quote.print.accommodation", "Alojamiento"));
-
-      const trainsLabel = hasTrainSelection
-        ? t("quote.print.trainsLabelDetailed", "Trenes (ida y vuelta por {passengers})", { passengers: passengerPhrase })
-        : t("quote.print.trainsLabel", "Trenes");
+      const flightPassengerPhrase = [
+        `${String(state.adults).padStart(2, "0")} ${state.adults === 1 ? t("quote.print.adultSingular", "adulto") : t("quote.print.adultPlural", "adultos")}`,
+        ...(state.children > 0 ? [`${String(state.children).padStart(2, "0")} ${state.children === 1 ? t("quote.print.childSingular", "niño") : t("quote.print.childPlural", "niños")}`] : [])
+      ].join(" + ");
 
       const rows = [
-        [t("quote.print.adultsDetailed", "Adultos (Experiencias y tours) x{n}", { n: state.adults }), money(bases.adult)],
-        ...(state.children > 0 ? [[t("quote.print.childrenDetailed", "Niños (Experiencias y tours) x{n}", { n: state.children }), money(bases.child)]] : []),
-        [accommodationLabel, money(hotelTotal), true],
-        [trainsLabel, trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")],
-        ...(extrasTotal > 0 ? [[t("quote.print.extrasLabelDetailed", "Extras (boletos, entradas, almuerzos y más) x{n}", { n: getPassengerCount() }), money(extrasTotal)]] : []),
-        ...(flightsTotal > 0 ? [[t("quote.print.flightLineLabel", "Vuelo Lima-Cusco-Lima (ida y vuelta por {passengers})", { passengers: passengerPhrase }), money(flightsTotal)]] : []),
-        ...(payment.manualDiscount > 0 ? [[`${t("quote.summary.discount", "Descuento")} ${state.manualDiscount?.code || t("quote.print.couponApplied", "aplicado")}`, `- ${money(payment.manualDiscount)}`]] : []),
-        ...(payment.fullDiscount > 0 ? [[t("quote.print.fullPaymentDiscount", "Descuento pago total 5%"), `- ${money(payment.fullDiscount)}`]] : []),
-        [t("quote.print.totalQuoted", "Total cotizado"), money(payment.total)],
-        [getPaymentMode() === "partial" ? t("quote.print.payNowPartial", "Pagarás ahora") : t("quote.print.payNowFull", "Pago 100%"), money(payment.advance)],
-        ...(payment.balance > 0 ? [[t("quote.print.balancePending", "Saldo pendiente"), money(payment.balance)]] : [])
+        {
+          labelHtml: `<strong>${escapeHtml(t("quote.print.adultsLabel", "Adultos"))}</strong> <span class="print-payment-detail print-payment-detail--inline">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.adults}</span>`,
+          value: money(bases.adult)
+        },
+        ...(state.children > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(t("quote.print.childrenLabel", "Niños"))}</strong> <span class="print-payment-detail print-payment-detail--inline">(${escapeHtml(t("quote.print.experiencesToursDetail", "Experiencias y tours"))}) x${state.children}</span>`,
+          value: money(bases.child)
+        }] : []),
+        {
+          labelHtml: `<strong>${escapeHtml(t("quote.print.accommodation", "Alojamiento"))}</strong>${accommodationLinesHtml}`,
+          value: money(hotelTotal)
+        },
+        {
+          labelHtml: `<strong>${escapeHtml(t("quote.print.trainsLabel", "Trenes"))}</strong>${hasTrainSelection ? `<span class="print-payment-detail print-payment-detail--block">(${escapeHtml(t("quote.print.roundTripForPassengers", "ida y vuelta por {passengers}", { passengers: passengerPhrase }))})</span>` : ""}`,
+          value: trainTotal > 0 ? money(trainTotal) : t("quote.print.localTrainNoExtra", "Tren local seleccionado · sin adicional")
+        },
+        ...(extrasTotal > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(t("quote.print.extrasLabel", "Extras"))}</strong> <span class="print-payment-detail print-payment-detail--inline">(${escapeHtml(t("quote.print.extrasDetail", "boletos, entradas, almuerzos y más"))}) x${getPassengerCount()}</span>`,
+          value: money(extrasTotal)
+        }] : []),
+        ...(flightsTotal > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(t("quote.print.airTicketsLabel", "Tickets aéreos"))}</strong><span class="print-payment-detail print-payment-detail--block">(Lima–Cusco–Lima por ${escapeHtml(flightPassengerPhrase)})</span>`,
+          value: money(flightsTotal)
+        }] : []),
+        ...(payment.manualDiscount > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(`${t("quote.summary.discount", "Descuento")} ${state.manualDiscount?.code || t("quote.print.couponApplied", "aplicado")}`)}</strong>`,
+          value: `- ${money(payment.manualDiscount)}`
+        }] : []),
+        ...(payment.fullDiscount > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(t("quote.print.fullPaymentDiscount", "Descuento pago total 5%"))}</strong>`,
+          value: `- ${money(payment.fullDiscount)}`
+        }] : []),
+        {
+          labelHtml: `<strong>${escapeHtml(t("quote.print.totalQuoted", "Total cotizado"))}</strong>`,
+          value: money(payment.total)
+        },
+        {
+          labelHtml: `<strong>${escapeHtml(getPaymentMode() === "partial" ? t("quote.print.payNowPartial", "Pagarás ahora") : t("quote.print.payNowFull", "Pago 100%"))}</strong>`,
+          value: money(payment.advance)
+        },
+        ...(payment.balance > 0 ? [{
+          labelHtml: `<strong>${escapeHtml(t("quote.print.balancePending", "Saldo pendiente"))}</strong>`,
+          value: money(payment.balance)
+        }] : [])
       ];
+
       paymentTarget.innerHTML = `
         <div class="print-payment-list print-payment-list--quote">
-          ${rows.map(([label, value, rawLabel], index) => `
+          ${rows.map((row, index) => `
             <div class="print-payment-row ${index >= rows.length - (payment.balance > 0 ? 3 : 2) ? "print-payment-row--strong" : ""}">
-              <strong>${rawLabel ? label : escapeHtml(label)}</strong>
-              <span>${escapeHtml(value)}</span>
+              <div class="print-payment-row-label">${row.labelHtml}</div>
+              <span class="print-payment-row-value">${escapeHtml(row.value)}</span>
             </div>
           `).join("")}
         </div>
@@ -2676,8 +2715,8 @@
                   <strong>${escapeHtml(train.departureTime || "--:--")}</strong>
                   <span>${escapeHtml(train.departureStation || "")}</span>
                 </div>
-                <div class="print-train-leg-line">
-                  <span>→</span>
+                <div class="print-train-leg-line" aria-hidden="true">
+                  <span class="print-train-route-symbol"><i class="fas fa-train"></i><span class="print-train-route-arrow">→</span></span>
                 </div>
                 <div class="print-train-leg-point print-train-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>
@@ -2731,24 +2770,24 @@
         const renderBaggageBadges = () => `
           <div class="print-flight-amenities" aria-label="${escapeHtml(t("quote.flight.baggageSummary", "Condiciones de equipaje y asiento"))}">
             <span class="print-flight-amenity is-included">
+              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
               <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-bag-shopping"></i></span>
               <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.personalItemIncluded", "Artículo personal"))}</span>
-              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-excluded">
+              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
               <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase-rolling"></i></span>
               <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.carryOnExcluded", "Carry-on"))}</span>
-              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-excluded">
+              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
               <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase"></i></span>
               <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.checkedBagExcluded", "Maleta 23 kg"))}</span>
-              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
             </span>
             <span class="print-flight-amenity is-included">
+              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
               <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-chair"></i></span>
               <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.randomSeatIncluded", "Asiento aleatorio"))}</span>
-              <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
             </span>
           </div>
         `;
@@ -2769,7 +2808,7 @@
                   <span>${escapeHtml(flight.origin || "")}</span>
                 </div>
                 <div class="print-flight-leg-line" aria-hidden="true">
-                  <span class="print-flight-route-plane">✈</span>
+                  <i class="fas fa-plane print-flight-route-plane"></i>
                 </div>
                 <div class="print-flight-leg-point print-flight-leg-point--end">
                   <strong>${escapeHtml(arrivalText)}</strong>
