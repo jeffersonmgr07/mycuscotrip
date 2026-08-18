@@ -2791,21 +2791,11 @@
         // parte de un mismo itinerario dentro de la única barra "Vuelos incluidos", en
         // recuadros de igual proporción junto al recuadro (más angosto) de la aerolínea.
         const renderBaggageBadges = () => `
-          <div class="print-flight-amenities" aria-label="${escapeHtml(t("quote.flight.baggageSummary", "Condiciones de equipaje y asiento"))}">
+          <div class="print-flight-amenities" aria-label="${escapeHtml(t("quote.flight.includedFareItems", "Incluye artículo personal y asiento aleatorio"))}">
             <span class="print-flight-amenity is-included">
               <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>
               <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-bag-shopping"></i></span>
               <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.personalItemIncluded", "Artículo personal"))}</span>
-            </span>
-            <span class="print-flight-amenity is-excluded">
-              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
-              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase-rolling"></i></span>
-              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.carryOnExcluded", "Carry-on"))}</span>
-            </span>
-            <span class="print-flight-amenity is-excluded">
-              <i class="fas fa-circle-xmark print-flight-amenity-status" aria-hidden="true"></i>
-              <span class="print-flight-amenity-icon" aria-hidden="true"><i class="fas fa-suitcase"></i></span>
-              <span class="print-flight-amenity-copy">${escapeHtml(t("quote.flight.checkedBagExcluded", "Maleta 23 kg"))}</span>
             </span>
             <span class="print-flight-amenity is-included">
               <i class="fas fa-circle-check print-flight-amenity-status" aria-hidden="true"></i>

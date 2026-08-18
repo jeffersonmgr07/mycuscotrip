@@ -8222,3 +8222,51 @@ body.is-generating-pdf #printQuotation .print-payment-plan-columns {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* ==========================================================
+   V42 — último ajuste exclusivo del formato de impresión/PDF
+   1) Vuelos más compactos: solo se muestran los 2 beneficios incluidos.
+   2) Flujo de páginas natural: el itinerario ya no fuerza una hoja nueva.
+      Si Vuelos no cabe en la primera hoja, pasa a la siguiente y el
+      Itinerario continúa inmediatamente debajo, sin generar una hoja vacía.
+   ========================================================== */
+
+/* Compactar el pie de cada recuadro de vuelo. Con solo Artículo personal y
+   Asiento aleatorio, ambos beneficios quedan en una única fila. */
+#printQuotation .print-flight-amenities,
+body.is-generating-pdf #printQuotation .print-flight-amenities {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 1.2mm !important;
+  padding-top: 0.7mm !important;
+  margin-top: 0 !important;
+  border-top: 1px dashed rgba(6, 40, 3, 0.12) !important;
+}
+
+#printQuotation .print-flight-amenity,
+body.is-generating-pdf #printQuotation .print-flight-amenity {
+  min-height: 0 !important;
+  line-height: 1.05 !important;
+}
+
+/* Reducir aire inferior sin tocar la estructura ni los datos del vuelo. */
+#printQuotation .print-flight-leg,
+body.is-generating-pdf #printQuotation .print-flight-leg {
+  padding-bottom: 1.1mm !important;
+}
+
+#printQuotation .print-flight-leg-meta,
+body.is-generating-pdf #printQuotation .print-flight-leg-meta {
+  margin-bottom: 0.55mm !important;
+}
+
+/* Eliminar el salto rígido antes del itinerario. La paginación pasa a ser
+   completamente natural: cada sección baja a la página siguiente solo si
+   ya no cabe en el espacio disponible. */
+#printQuotation .print-section--page-break,
+.print-section--page-break,
+body.is-generating-pdf #printQuotation .print-section--page-break {
+  break-before: auto !important;
+  page-break-before: auto !important;
+  margin-top: 3mm !important;
+}
