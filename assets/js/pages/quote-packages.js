@@ -848,8 +848,8 @@
     return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
   }
 
-  function getDayOneArrivalRule() {
-    const arrival = timeToMinutes(state.arrivalTime || "09:00");
+  function getDayOneArrivalRule(arrivalTimeOverride = null) {
+    const arrival = timeToMinutes(arrivalTimeOverride || state.arrivalTime || "09:00");
     if (arrival < timeToMinutes("09:00")) return "welcome-city";
     if (arrival < timeToMinutes("12:00")) return "city-only";
     if (arrival < timeToMinutes("15:00")) return "welcome-only";
@@ -969,12 +969,13 @@
     }
   }
 
-  function buildItineraryItems(option = getSelectedOption(), overrideTotalDays = null) {
+  function buildItineraryItems(option = getSelectedOption(), overrideTotalDays = null, itineraryContext = {}) {
     if (!option) return [];
 
     const tours = getOptionTours(option).filter((tour) => !normalizeText(tour?.title).includes("transfer"));
     const remaining = [...tours];
-    const startDate = state.dates.start;
+    const startDate = itineraryContext.startDate || state.dates.start;
+    const arrivalTime = itineraryContext.arrivalTime || state.arrivalTime || "09:00";
     const totalDays = Math.max(Number(overrideTotalDays || state.dates.days || option.days || 1), 1);
     const lastDayNumber = totalDays;
     const days = Array.from({ length: totalDays }, (_, index) => ({
@@ -1072,10 +1073,10 @@
     }
 
     // Día 1: siempre inicia con recojo/recepción. Las actividades permitidas dependen estrictamente de la hora de llegada.
-    putSynthetic(1, t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), state.arrivalTime || "--:--");
+    putSynthetic(1, t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), t("quote.day.pickupReceptionTitle", "Recojo aeropuerto · Recepción en Cusco"), arrivalTime || "--:--");
 
-    const availableFrom = getAvailableStartTime(state.arrivalTime);
-    const dayOneRule = getDayOneArrivalRule();
+    const availableFrom = getAvailableStartTime(arrivalTime);
+    const dayOneRule = getDayOneArrivalRule(arrivalTime);
     const welcome = take(isWelcomeTour);
     const city = take(isCityTour);
     let usedWelcome = false;
@@ -3563,7 +3564,9 @@
   }
 
   function getLimaDayOffset() {
-    return isDestinationSelected("lima") && state.limaExtension.nights > 0 ? 3 : 0;
+    // Lima ocupa dos días exclusivos (llegada + Full Day Paracas/Ica/Huacachina).
+    // El tercer día ya es simultáneamente Lima → Cusco + primer día operativo en Cusco.
+    return isDestinationSelected("lima") && state.limaExtension.nights > 0 ? 2 : 0;
   }
 
   function generateBaseOptions(params) {
@@ -3774,14 +3777,14 @@
     modal.hidden = false;
   }
 
-  // Cuando "Incluir vuelos" está activo, los horarios de los vuelos elegidos prevalecen sobre
-  // la hora de llegada/salida (escrita a mano o vacía): la llegada usa la hora de arribo del
-  // vuelo de ida + 1 hora de margen operativo, y la salida usa directamente la hora de
-  // despegue del vuelo de retorno. Esto es funcional (no solo de impresión), porque
-  // arrivalTime/departureTime determinan qué tours pueden agendarse el día 1 y el último día.
+  // Cuando "Incluir vuelos" está activo, los horarios elegidos actualizan la operación.
+  // En paquetes SIN Lima, el vuelo de ida sigue alimentando la hora de llegada general.
+  // En paquetes CON Lima, la hora general corresponde a la llegada inicial a Lima y NO debe
+  // sobrescribirse: la llegada LIM → CUZ se usa específicamente como hora de llegada del
+  // Día 3 mediante getCuscoArrivalTimeForLimaExtension().
   function syncArrivalDepartureFromFlights() {
     if (!state.includeFlights) return;
-    if (state.selectedOutboundFlight) {
+    if (state.selectedOutboundFlight && !isDestinationSelected("lima")) {
       state.arrivalTime = addMinutesToTime(state.selectedOutboundFlight.arrival, 60);
       setFlatpickrDate(state.pickers.arrival, state.arrivalTime, false);
     }
@@ -3891,7 +3894,7 @@
     return `${circuit.label} · ${route.label}`;
   }
 
-  // --- Extensión Lima: 3 días fijos (llegada, PER003, continuación a Cusco) prepuestos al itinerario ---
+  // --- Extensión Lima: 2 días exclusivos + Día 3 compartido con el inicio de Cusco ---
 
   function buildLimaExtensionDays() {
     if (!getLimaDayOffset()) return [];
@@ -3921,16 +3924,6 @@
             ? (pricingPending ? t("quote.lima.pricePending", "Tarifa por confirmar con el operador.") : "")
             : t("quote.lima.per003Missing", "Full Day Paracas, Ica y Huacachina (PER003) — tarifa por confirmar.")
         }]
-      },
-      {
-        day: 3,
-        displayDay: 3,
-        date: startDate ? addDays(startDate, 2) : null,
-        activities: [{
-          tour: null,
-          syntheticTitle: t("quote.lima.continuationTitle", "Continuación Lima → Cusco"),
-          note: t("quote.lima.continuationNote", "Traslado al aeropuerto de Lima y vuelo o transporte terrestre hacia Cusco.")
-        }]
       }
     ];
   }
@@ -3940,15 +3933,73 @@
     return Math.max(Number(state.dates.days || 0) - offset, 0);
   }
 
-  // Envoltorio que antepone la extensión Lima (si aplica) al itinerario Cusco/Machu Picchu ya
-  // existente, sin tocar la lógica interna de buildItineraryItems (solo se le pasa un total de
-  // días ajustado cuando corresponde, vía su segundo parámetro opcional).
+  function getCuscoArrivalTimeForLimaExtension() {
+    // Cuando el usuario seleccionó un vuelo LIM → CUZ, su hora REAL de llegada es
+    // la referencia para aplicar exactamente las mismas reglas del Día 1 de Cusco.
+    if (state.includeFlights && state.selectedOutboundFlight?.arrival) {
+      return state.selectedOutboundFlight.arrival;
+    }
+    // Si el vuelo no está incluido/seleccionado, conservamos la hora disponible
+    // actualmente para no inventar un horario.
+    return state.arrivalTime || "09:00";
+  }
+
+  function buildLimaToCuscoActivity() {
+    const flight = state.includeFlights ? state.selectedOutboundFlight : null;
+    if (flight) {
+      const arrivalText = flight.arrivalDayOffset ? `${flight.arrival || "--:--"} +1` : (flight.arrival || "--:--");
+      return {
+        tour: null,
+        syntheticTitle: t("quote.lima.continuationTitle", "Vuelo Lima → Cusco"),
+        note: t(
+          "quote.lima.continuationFlightNote",
+          "Traslado al aeropuerto de Lima y vuelo hacia Cusco. Salida {departure} · llegada {arrival}.",
+          { departure: flight.departure || "--:--", arrival: arrivalText }
+        ),
+        startTime: flight.departure || ""
+      };
+    }
+
+    return {
+      tour: null,
+      syntheticTitle: t("quote.lima.continuationTitle", "Continuación Lima → Cusco"),
+      note: t("quote.lima.continuationNote", "Traslado al aeropuerto de Lima y continuación hacia Cusco. Al llegar, recojo en el aeropuerto y comienzo del programa en Cusco."),
+      startTime: ""
+    };
+  }
+
+  // Lima ocupa únicamente los días 1 y 2 como bloque independiente. El Día 3 se construye
+  // como el Día 1 de Cusco y se le antepone el traslado/vuelo Lima → Cusco. De esta forma
+  // ese mismo día puede incluir recojo en el aeropuerto, Bienvenida Ancestral, City Tour u
+  // otras actividades compatibles con la hora real de llegada del vuelo elegido.
   function buildFullItineraryWithLima(option = getSelectedOption()) {
     const limaDays = buildLimaExtensionDays();
     const offset = limaDays.length;
-    const cuscoTotalDays = offset ? getCuscoPortionDays() : null;
-    const cuscoDays = buildItineraryItems(option, cuscoTotalDays);
-    const renumbered = cuscoDays.map((day) => ({ ...day, day: day.day + offset, displayDay: day.day + offset }));
+    if (!offset) return buildItineraryItems(option);
+
+    const cuscoTotalDays = getCuscoPortionDays();
+    if (cuscoTotalDays <= 0) return limaDays;
+
+    const cuscoStartDate = state.dates.start ? addDays(state.dates.start, offset) : null;
+    const cuscoArrivalTime = getCuscoArrivalTimeForLimaExtension();
+    const cuscoDays = buildItineraryItems(option, cuscoTotalDays, {
+      startDate: cuscoStartDate,
+      arrivalTime: cuscoArrivalTime
+    });
+
+    if (cuscoDays[0]) {
+      cuscoDays[0] = {
+        ...cuscoDays[0],
+        activities: [buildLimaToCuscoActivity(), ...cuscoDays[0].activities]
+      };
+    }
+
+    const renumbered = cuscoDays.map((day) => ({
+      ...day,
+      day: day.day + offset,
+      displayDay: day.day + offset
+    }));
+
     return [...limaDays, ...renumbered];
   }
 
