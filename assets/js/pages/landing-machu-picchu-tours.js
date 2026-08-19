@@ -12,7 +12,15 @@
     data: null,
     adults: 1,
     children: 0,
-    mainProduct: { selected: true, date: null, mealOptionId: "no-meal" },
+    infants: 0,
+    mainProduct: {
+      selected: true,
+      date: null,
+      circuitId: null,
+      outboundTrainId: null,
+      returnTrainId: null,
+      mealOptionId: "no-meal"
+    },
     addons: {},
     coupon: null,
     couponDraftCode: "",
@@ -243,6 +251,7 @@
         updatedAt: Date.now(),
         adults: state.adults,
         children: state.children,
+        infants: state.infants,
         mainProduct: state.mainProduct,
         addons: state.addons,
         coupon: state.coupon,
@@ -265,6 +274,7 @@
       }
       if (typeof snapshot.adults === "number") state.adults = snapshot.adults;
       if (typeof snapshot.children === "number") state.children = snapshot.children;
+      if (typeof snapshot.infants === "number") state.infants = snapshot.infants;
       if (snapshot.mainProduct) state.mainProduct = { ...state.mainProduct, ...snapshot.mainProduct };
       Object.keys(snapshot.addons || {}).forEach((id) => {
         if (state.addons[id]) state.addons[id] = { ...state.addons[id], ...snapshot.addons[id] };
@@ -286,6 +296,50 @@
   }
 
   // ---------- Core reusable business logic ----------
+
+  function getPayingPassengerCount() {
+    return state.adults + state.children;
+  }
+
+  function getTotalTravelerCount() {
+    return getPayingPassengerCount() + state.infants;
+  }
+
+  function getChildPrice(product) {
+    if (Number.isFinite(Number(product?.childPrice))) return Number(product.childPrice);
+    if (String(product?.childPricing?.type || "") === "fixed" && Number.isFinite(Number(product?.childPricing?.price))) {
+      return Number(product.childPricing.price);
+    }
+    const childDiscount = Number(product?.childPricing?.discountAmount || 0);
+    return Math.max(0, Number(product?.adultPrice || 0) - childDiscount);
+  }
+
+  function findSelectedCircuit(product) {
+    return (product?.circuitSelection?.options || []).find((item) => item.id === state.mainProduct.circuitId) || null;
+  }
+
+  function getCircuitAvailability(circuit, dateStr) {
+    if (!circuit || !dateStr) return { available: false, reason: "Selecciona una fecha" };
+    const range = (circuit.unavailableRanges || []).find((item) => dateStr >= item.from && dateStr <= item.to);
+    return range ? { available: false, reason: range.reason || "No disponible" } : { available: true, reason: "Disponible" };
+  }
+
+  function getSelectedTrainPricing(product) {
+    const config = product?.trainSelection || {};
+    const outbound = (config.outbound || []).find((item) => item.id === state.mainProduct.outboundTrainId) || (config.outbound || [])[0] || null;
+    const returnTrain = (config.return || []).find((item) => item.id === state.mainProduct.returnTrainId) || (config.return || [])[0] || null;
+    const bundle = (config.bundles || []).find((item) => item.outboundId === outbound?.id && item.returnId === returnTrain?.id) || null;
+    const adultSupplement = Number(bundle?.adultSupplement ?? (Number(outbound?.adultSupplement || 0) + Number(returnTrain?.adultSupplement || 0)));
+    const childSupplement = Number(bundle?.childSupplement ?? (Number(outbound?.childSupplement || 0) + Number(returnTrain?.childSupplement || 0)));
+    return {
+      outbound,
+      returnTrain,
+      bundle,
+      adultSupplement,
+      childSupplement,
+      total: round2((state.adults * adultSupplement) + (state.children * childSupplement))
+    };
+  }
 
   function getSelectedToursWithDates() {
     const list = [];
@@ -359,6 +413,22 @@
       }
     });
 
+    if (state.mainProduct.selected && state.mainProduct.date) {
+      const circuits = state.data?.mainProduct?.circuitSelection?.options || [];
+      const availableCircuits = circuits.filter((circuit) => getCircuitAvailability(circuit, state.mainProduct.date).available);
+      const selectedCircuit = findSelectedCircuit(state.data.mainProduct);
+      if (!availableCircuits.length) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "No hay circuitos disponibles para esta fecha. Selecciona otro día.");
+      } else if (!selectedCircuit) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "Selecciona uno de los circuitos disponibles.");
+      } else if (!getCircuitAvailability(selectedCircuit, state.mainProduct.date).available) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "El circuito seleccionado no está disponible para esta fecha.");
+      }
+    }
+
     const dated = selectedTours.filter((t) => t.date);
     const byDate = {};
     dated.forEach((t) => {
@@ -390,19 +460,22 @@
   function calculateBookingSummary() {
     const data = state.data;
     const currency = data.currency;
-    const totalPax = state.adults + state.children;
+    const payingPax = getPayingPassengerCount();
     const lines = [];
     let subtotal = 0;
 
     if (state.mainProduct.selected) {
       const p = data.mainProduct;
-      const childDiscount = Number(p.childPricing?.discountAmount || 0);
-      const childPrice = Math.max(0, p.adultPrice - childDiscount);
+      const childPrice = getChildPrice(p);
       const adultsTotal = state.adults * p.adultPrice;
       const childrenTotal = state.children * childPrice;
       const meal = (p.mealOptions || []).find((m) => m.id === state.mainProduct.mealOptionId) || p.mealOptions[0];
-      const mealTotal = (meal?.pricePerPerson || 0) * totalPax;
-      const lineTotal = adultsTotal + childrenTotal + mealTotal;
+      const mealTotal = (meal?.pricePerPerson || 0) * payingPax;
+      const trainPricing = getSelectedTrainPricing(p);
+      const selectedCircuit = findSelectedCircuit(p);
+      const circuitAvailable = selectedCircuit && getCircuitAvailability(selectedCircuit, state.mainProduct.date).available;
+      const circuitSupplement = circuitAvailable ? Number(selectedCircuit.groupSupplement || 0) : 0;
+      const lineTotal = adultsTotal + childrenTotal + mealTotal + trainPricing.total + circuitSupplement;
       subtotal += lineTotal;
       lines.push({
         id: p.id,
@@ -410,6 +483,12 @@
         date: state.mainProduct.date,
         adultPrice: p.adultPrice,
         childPrice,
+        circuitLabel: selectedCircuit?.label || null,
+        circuitSupplement,
+        outboundTrainLabel: trainPricing.outbound?.label || null,
+        returnTrainLabel: trainPricing.returnTrain?.label || null,
+        trainBundleLabel: trainPricing.bundle?.label || null,
+        trainTotal: trainPricing.total,
         mealLabel: meal && meal.pricePerPerson > 0 ? meal.label : null,
         mealTotal,
         lineTotal
@@ -419,12 +498,12 @@
     (data.addons || []).forEach((addon) => {
       const sel = state.addons[addon.id];
       if (!sel || !sel.selected) return;
-      const baseTotal = addon.pricePerPerson * totalPax;
+      const baseTotal = addon.pricePerPerson * payingPax;
       let extrasTotal = 0;
       const extraLabels = [];
       (addon.extras || []).forEach((extra) => {
         if (sel.extras && sel.extras[extra.id]) {
-          extrasTotal += extra.pricePerPerson * totalPax;
+          extrasTotal += extra.pricePerPerson * payingPax;
           extraLabels.push(extra.label);
         }
       });
@@ -456,6 +535,7 @@
       currency,
       adults: state.adults,
       children: state.children,
+      infants: state.infants,
       lines,
       subtotal: round2(subtotal),
       discount,
@@ -587,13 +667,95 @@
 
   // ---------- Rendering: main product ----------
 
+  function formatTrainSupplement(option, currency) {
+    const adult = Number(option?.adultSupplement || 0);
+    const child = Number(option?.childSupplement || 0);
+    if (!adult && !child) return "Incluido";
+    return `+${formatCurrency(adult, currency)} adulto · +${formatCurrency(child, currency)} niño`;
+  }
+
+  function renderTrainOptions(options, selectedId, name, currency) {
+    return (options || []).map((option) => `
+      <label class="mpt-choice-card${selectedId === option.id ? " is-selected" : ""}">
+        <input type="radio" name="${escapeHtml(name)}" value="${escapeHtml(option.id)}" ${selectedId === option.id ? "checked" : ""}/>
+        <span class="mpt-choice-card__content">
+          <span class="mpt-choice-card__title-row">
+            <strong>${escapeHtml(option.label)}</strong>
+            ${option.badge ? `<small class="mpt-choice-card__badge">${escapeHtml(option.badge)}</small>` : ""}
+          </span>
+          <small>${escapeHtml(option.schedule || "Horario sujeto a confirmación")}</small>
+          <span>${escapeHtml(option.description || "")}</span>
+          <b>${escapeHtml(formatTrainSupplement(option, currency))}</b>
+        </span>
+      </label>
+    `).join("");
+  }
+
+  function renderCircuitOptions() {
+    const target = document.getElementById("mptCircuitOptions");
+    if (!target) return;
+    const product = state.data.mainProduct;
+    const circuits = product.circuitSelection?.options || [];
+    const dateStr = state.mainProduct.date;
+    if (!dateStr) {
+      state.mainProduct.circuitId = null;
+      target.innerHTML = `<div class="mpt-circuit-placeholder"><i class="fas fa-calendar-day"></i><span>Selecciona primero la fecha de visita para consultar los circuitos.</span></div>`;
+      return;
+    }
+
+    const selectedCircuit = findSelectedCircuit(product);
+    if (selectedCircuit && !getCircuitAvailability(selectedCircuit, dateStr).available) {
+      state.mainProduct.circuitId = null;
+    }
+    const availableCount = circuits.filter((circuit) => getCircuitAvailability(circuit, dateStr).available).length;
+    const payingPax = Math.max(1, getPayingPassengerCount());
+
+    target.innerHTML = `
+      <div class="mpt-circuit-date"><i class="fas fa-ticket"></i> Disponibilidad para <strong>${escapeHtml(formatDateSpanish(dateStr))}</strong></div>
+      <div class="mpt-circuit-grid" role="radiogroup" aria-label="Circuito de Machu Picchu">
+        ${circuits.map((circuit) => {
+          const status = getCircuitAvailability(circuit, dateStr);
+          const supplement = Number(circuit.groupSupplement || 0);
+          const selected = state.mainProduct.circuitId === circuit.id;
+          const priceText = supplement > 0
+            ? `+${formatCurrency(supplement, state.data.currency)} por reserva · ${formatCurrency(supplement / payingPax, state.data.currency)} por viajero pagante en este grupo`
+            : "Incluido en la tarifa base";
+          return `
+            <label class="mpt-circuit-card${selected ? " is-selected" : ""}${status.available ? "" : " is-disabled"}">
+              <input type="radio" name="mptCircuit" value="${escapeHtml(circuit.id)}" ${selected ? "checked" : ""} ${status.available ? "" : "disabled"}/>
+              <span class="mpt-circuit-card__body">
+                <span class="mpt-circuit-card__head">
+                  <strong>${escapeHtml(circuit.label)}</strong>
+                  <small class="${status.available ? "is-available" : "is-unavailable"}">${escapeHtml(status.reason)}</small>
+                </span>
+                <span>${escapeHtml(circuit.description || "")}</span>
+                <b>${escapeHtml(priceText)}</b>
+              </span>
+            </label>`;
+        }).join("")}
+      </div>
+      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>Sin circuitos disponibles</strong><span>Los circuitos 1, 2 y 3 están agotados para esta fecha. Elige otro día para continuar.</span></div></div>`}
+    `;
+
+    target.querySelectorAll('input[name="mptCircuit"]').forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        if (!event.target.checked) return;
+        state.mainProduct.circuitId = event.target.value;
+        setFieldError("circuit-selection", "");
+        renderCircuitOptions();
+        renderSummary();
+        trackLandingEvent("machu_picchu_circuit_selected", { circuit_id: event.target.value, date: state.mainProduct.date });
+      });
+    });
+  }
+
   function renderMainProduct() {
     const p = state.data.mainProduct;
     const currency = state.data.currency;
     const childPolicy = state.data.childPolicy;
-    const childDiscount = Number(p.childPricing?.discountAmount || 0);
-    const childPrice = Math.max(0, p.adultPrice - childDiscount);
+    const childPrice = getChildPrice(p);
     const container = document.getElementById("mptMainProduct");
+    if (state.pickers[p.id]?.destroy) state.pickers[p.id].destroy();
 
     container.innerHTML = `
       <div class="mpt-main-product">
@@ -608,6 +770,7 @@
             <div class="mpt-price-row">
               <div class="mpt-price-pill"><span>Adulto</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
               <div class="mpt-price-pill"><span>Niño (${childPolicy.minAge}-${childPolicy.maxAge} años)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
+              <div class="mpt-price-pill"><span>Menor de 2 años</span><strong>Gratis</strong><small>Sin asiento propio</small></div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
@@ -623,13 +786,42 @@
                 <label for="mptChildren">Niños</label>
                 <select id="mptChildren" aria-label="Cantidad de niños para toda la reserva">${qtyOptions(0, 10, state.children)}</select>
               </div>
+              <div class="mpt-field">
+                <label for="mptInfants">Infantes (&lt; 2 años)</label>
+                <select id="mptInfants" aria-label="Cantidad de infantes para toda la reserva">${qtyOptions(0, 5, state.infants)}</select>
+              </div>
             </div>
+            <section class="mpt-config-block" aria-labelledby="mptCircuitTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">1</span><div><strong id="mptCircuitTitle">Elige tu circuito de Machu Picchu</strong><small>Las opciones se habilitan según la fecha seleccionada.</small></div></div>
+              </div>
+              <div id="mptCircuitOptions"></div>
+              <span class="mpt-field-error" id="${errorId("circuit-selection")}" role="alert"></span>
+            </section>
             <div>
               <strong style="font-size:0.85rem;">Incluye:</strong>
               <ul class="mpt-includes">${(p.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
             </div>
-            <div>
-              <strong style="font-size:0.85rem;">Alimentación (opcional):</strong>
+            <section class="mpt-config-block" aria-labelledby="mptTrainTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">2</span><div><strong id="mptTrainTitle">Personaliza tus trenes</strong><small>El Voyager está incluido. Puedes mejorar uno o ambos trayectos.</small></div></div>
+              </div>
+              <div class="mpt-train-groups">
+                <fieldset class="mpt-choice-group">
+                  <legend>Tren de ida</legend>
+                  ${renderTrainOptions(p.trainSelection?.outbound, state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
+                </fieldset>
+                <fieldset class="mpt-choice-group">
+                  <legend>Tren de retorno</legend>
+                  ${renderTrainOptions(p.trainSelection?.return, state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
+                </fieldset>
+              </div>
+              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> Si eliges The Prime y el retorno temprano, se aplica automáticamente la tarifa combinada.</p>
+            </section>
+            <section class="mpt-config-block" aria-labelledby="mptMealTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">3</span><div><strong id="mptMealTitle">Añade una experiencia gastronómica</strong><small>El almuerzo es opcional y se calcula por viajero pagante.</small></div></div>
+              </div>
               <div class="mpt-meal-options" role="radiogroup" aria-label="Opciones de alimentación">
                 ${(p.mealOptions || []).map((m) => `
                   <label class="mpt-meal-option">
@@ -639,7 +831,7 @@
                 `).join("")}
               </div>
               <p style="color:var(--mct-muted,#6c7a76); font-size:0.78rem; margin-top:6px;">${escapeHtml(p.mealDisclaimer || "")}</p>
-            </div>
+            </section>
           </div>
         </div>
       </div>
@@ -647,13 +839,36 @@
 
     document.getElementById("mptAdults").addEventListener("change", (e) => {
       state.adults = Math.max(1, Number(e.target.value) || 1);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children });
+      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
+      renderCircuitOptions();
       renderSummary();
     });
     document.getElementById("mptChildren").addEventListener("change", (e) => {
       state.children = Math.max(0, Number(e.target.value) || 0);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children });
+      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
+      renderCircuitOptions();
       renderSummary();
+    });
+    document.getElementById("mptInfants").addEventListener("change", (e) => {
+      state.infants = Math.max(0, Number(e.target.value) || 0);
+      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
+      renderSummary();
+    });
+    container.querySelectorAll('input[name="mptOutboundTrain"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if (!e.target.checked) return;
+        state.mainProduct.outboundTrainId = e.target.value;
+        renderMainProduct();
+        renderSummary();
+      });
+    });
+    container.querySelectorAll('input[name="mptReturnTrain"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if (!e.target.checked) return;
+        state.mainProduct.returnTrainId = e.target.value;
+        renderMainProduct();
+        renderSummary();
+      });
     });
     container.querySelectorAll('input[name="mptMeal"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
@@ -674,12 +889,14 @@
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
+        renderCircuitOptions();
         trackLandingEvent("main_product_date_selected", { date: dateStr });
         validateAllDates();
         renderSummary();
       }
     });
     if (state.mainProduct.date) dateInput.value = state.mainProduct.date;
+    renderCircuitOptions();
   }
 
   // ---------- Rendering: add-ons ----------
@@ -803,21 +1020,31 @@
     const content = document.getElementById("mptSummaryContent");
     const currency = summary.currency;
 
-    const linesHtml = summary.lines.map((line) => `
+    const linesHtml = summary.lines.map((line) => {
+      const meta = [
+        formatDateSpanish(line.date),
+        line.circuitLabel,
+        line.trainBundleLabel || ([line.outboundTrainLabel, line.returnTrainLabel].filter(Boolean).join(" + ") || null),
+        line.mealLabel,
+        line.extras && line.extras.length ? line.extras.join(", ") : null
+      ].filter(Boolean).join(" · ");
+      return `
       <div class="mpt-summary__item">
         <div>
           <div class="mpt-summary__item-name">${escapeHtml(line.title)}</div>
-          <div class="mpt-summary__item-meta">${escapeHtml(formatDateSpanish(line.date))}${line.mealLabel ? ` · ${escapeHtml(line.mealLabel)}` : ""}${line.extras && line.extras.length ? ` · ${line.extras.map(escapeHtml).join(", ")}` : ""}</div>
+          <div class="mpt-summary__item-meta">${escapeHtml(meta)}</div>
         </div>
         <strong>${formatCurrency(line.lineTotal, currency)}</strong>
       </div>
-    `).join("");
+    `;
+    }).join("");
 
     content.innerHTML = `
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
         <span><i class="fas fa-user"></i> ${summary.adults} adulto(s)</span>
         <span><i class="fas fa-child"></i> ${summary.children} niño(s)</span>
+        ${summary.infants ? `<span><i class="fas fa-baby"></i> ${summary.infants} infante(s)</span>` : ""}
       </div>
       <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Aún no has agregado experiencias.</p>'}</div>
 
@@ -997,15 +1224,21 @@
     if (!reservation || !state.data) return;
     if (Number(reservation.adults) > 0) state.adults = Number(reservation.adults);
     if (Number.isFinite(Number(reservation.children))) state.children = Number(reservation.children);
+    if (Number.isFinite(Number(reservation.infants))) state.infants = Number(reservation.infants);
     const services = Array.isArray(reservation.services) ? reservation.services : [];
     const mainId = state.data.mainProduct.id;
     const mainService = services.find((service) => String(service.id || service.productId || "") === String(mainId));
     if (mainService) {
       state.mainProduct.selected = true;
       state.mainProduct.date = mainService.date || null;
+      const configuration = mainService.configuration || {};
+      if (configuration.circuitId) state.mainProduct.circuitId = configuration.circuitId;
+      if (configuration.outboundTrainId) state.mainProduct.outboundTrainId = configuration.outboundTrainId;
+      if (configuration.returnTrainId) state.mainProduct.returnTrainId = configuration.returnTrainId;
+      if (configuration.mealOptionId) state.mainProduct.mealOptionId = configuration.mealOptionId;
       const selectedMealLabel = Array.isArray(mainService.extras) ? mainService.extras[0] : "";
       const meal = (state.data.mainProduct.mealOptions || []).find((option) => option.label === selectedMealLabel);
-      if (meal) state.mainProduct.mealOptionId = meal.id;
+      if (!configuration.mealOptionId && meal) state.mainProduct.mealOptionId = meal.id;
     }
     (state.data.addons || []).forEach((addon) => {
       const service = services.find((item) => String(item.id || item.productId || "") === String(addon.id));
@@ -1162,7 +1395,7 @@
   function renderAdditionalPassengerFields(holderTravels) {
     const target = document.getElementById("mptAdditionalPassengers");
     if (!target) return;
-    const totalPax = state.adults + state.children;
+    const totalPax = getTotalTravelerCount();
     const startNumber = holderTravels ? 2 : 1;
     const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
     if (!slots) {
@@ -1276,7 +1509,7 @@
       pickupLocation: String(data.get("holderPickupLocation") || "").trim(),
       travels: holderTravels
     };
-    const totalPax = state.adults + state.children;
+    const totalPax = getTotalTravelerCount();
     const startNumber = holderTravels ? 2 : 1;
     const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
     const passengers = [];
@@ -1320,13 +1553,34 @@
     const services = [];
     if (state.mainProduct.selected) {
       const meal = (state.data.mainProduct.mealOptions || []).find((item) => item.id === state.mainProduct.mealOptionId);
+      const circuit = findSelectedCircuit(state.data.mainProduct);
+      const trainPricing = getSelectedTrainPricing(state.data.mainProduct);
+      const extras = [
+        circuit?.label,
+        trainPricing.bundle?.label || trainPricing.outbound?.label,
+        trainPricing.bundle ? null : trainPricing.returnTrain?.label,
+        meal && meal.pricePerPerson > 0 ? meal.label : null
+      ].filter(Boolean);
       services.push({
         id: state.data.mainProduct.id,
         productId: state.data.mainProduct.id,
         title: state.data.mainProduct.title,
         date: state.mainProduct.date,
         origin: state.data.mainProduct.origin,
-        extras: meal && meal.pricePerPerson > 0 ? [meal.label] : [],
+        extras,
+        configuration: {
+          circuitId: circuit?.id || "",
+          circuitLabel: circuit?.label || "",
+          circuitSupplement: Number(circuit?.groupSupplement || 0),
+          outboundTrainId: trainPricing.outbound?.id || "",
+          outboundTrainLabel: trainPricing.outbound?.label || "",
+          returnTrainId: trainPricing.returnTrain?.id || "",
+          returnTrainLabel: trainPricing.returnTrain?.label || "",
+          trainBundleId: trainPricing.bundle?.id || "",
+          trainBundleLabel: trainPricing.bundle?.label || "",
+          mealOptionId: meal?.id || "no-meal",
+          mealLabel: meal?.label || "Sin almuerzo"
+        },
         lineTotal: summary.lines.find((line) => line.id === state.data.mainProduct.id)?.lineTotal || 0
       });
     }
@@ -1361,7 +1615,8 @@
       date: state.mainProduct.date,
       adults: state.adults,
       children: state.children,
-      totalPassengers: state.adults + state.children,
+      infants: state.infants,
+      totalPassengers: getTotalTravelerCount(),
       currency: summary.currency,
       paymentMode: "full",
       serviceTotal: formatCurrency(summary.subtotal, summary.currency),
@@ -1375,7 +1630,7 @@
       holderIsPassenger: holderTravels,
       holder,
       passengers,
-      travelers: { adults: state.adults, children: state.children, passengers },
+      travelers: { adults: state.adults, children: state.children, infants: state.infants, passengers },
       pickup: { location: holder.pickupLocation, city: "Cusco" },
       services,
       couponCode: state.coupon?.code || "",
@@ -1387,6 +1642,7 @@
         date: state.mainProduct.date,
         adults: state.adults,
         children: state.children,
+        infants: state.infants,
         services: services.map((service) => ({ id: service.id, title: service.title, date: service.date, lineTotal: service.lineTotal })),
         serviceTotal: formatCurrency(summary.subtotal, summary.currency),
         payNow: formatCurrency(summary.total, summary.currency),
@@ -1726,6 +1982,8 @@
   function initState() {
     state.mainProduct.selected = Boolean(state.data.mainProduct.selectedByDefault);
     state.mainProduct.mealOptionId = (state.data.mainProduct.mealOptions || []).find((m) => m.default)?.id || "no-meal";
+    state.mainProduct.outboundTrainId = (state.data.mainProduct.trainSelection?.outbound || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.outbound?.[0]?.id || null;
+    state.mainProduct.returnTrainId = (state.data.mainProduct.trainSelection?.return || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.return?.[0]?.id || null;
     (state.data.addons || []).forEach((addon) => {
       state.addons[addon.id] = { selected: false, date: null, extras: {} };
     });

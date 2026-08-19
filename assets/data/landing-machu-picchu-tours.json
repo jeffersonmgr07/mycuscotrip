@@ -1,9 +1,9 @@
 {
-  "version": "1.2.0",
-  "updatedAt": "2026-08-03",
+  "version": "2.0.0",
+  "updatedAt": "2026-08-19",
   "landingId": "machu-picchu-y-tours-peru",
   "currency": "USD",
-  "priceNote": "PENDIENTE DE CONFIRMAR: se usó USD 399 (precio de venta real) para adultPrice de mainProduct. Si el precio definitivo pasa a ser PEN 199, cambiar 'currency' a \"PEN\" y 'adultPrice' aquí — es el único lugar que hay que tocar, el JS no tiene precios hardcodeados.",
+  "priceNote": "Tarifas web directas preparadas para soportar un cupón de 15%, la comisión de PayPal y el retiro acumulado. La disponibilidad de circuitos se actualiza únicamente en mainProduct.circuitSelection.options[].unavailableRanges.",
   "whatsapp": {
     "phone": "51900608980",
     "messageTemplate": "Hola, deseo confirmar mi selección de tours. Código: {reservationCode}. {servicesSummary} Somos {totalPassengers} viajeros. Total: {currency} {total}. Origen: {source}."
@@ -13,11 +13,12 @@
     "documentationNote": "Los datos de cada viajero deben coincidir exactamente con su documento de identidad o pasaporte vigente el día del viaje."
   },
   "childPolicy": {
-    "minAge": 3,
-    "maxAge": 11,
-    "infantMaxAge": 2,
-    "infantPricingAvailable": false,
-    "infantNote": "Los bebés de 0 a 2 años no requieren entrada a Machu Picchu ni a los tours complementarios, pero deben registrarse en la reserva. Tarifa de bebés: configurar aquí cuando esté disponible.",
+    "minAge": 2,
+    "maxAge": 12,
+    "infantMaxAge": 1,
+    "infantPricingAvailable": true,
+    "infantPrice": 0,
+    "infantNote": "Los infantes menores de 2 años viajan sin costo y sin asiento propio, pero deben registrarse en la reserva.",
     "documentationMessage": "La tarifa de niño aplica de {minAge} a {maxAge} años cumplidos a la fecha del viaje. Se validará con el documento de identidad o pasaporte del menor."
   },
   "destinationGroups": {
@@ -61,10 +62,11 @@
       "../assets/img/tours/machu-picchu-full-day/2.jpg"
     ],
     "shortDescription": "Visita Machu Picchu en un solo día desde Cusco, con tren turístico, buses oficiales, ingreso, guía profesional y asistencia durante toda la experiencia.",
-    "adultPrice": 399,
+    "adultPrice": 399.9,
+    "childPrice": 335.9,
     "childPricing": {
-      "type": "fixed_discount",
-      "discountAmount": 80
+      "type": "fixed",
+      "price": 335.9
     },
     "includes": [
       "Recojo en tu hotel o dirección en Cusco",
@@ -75,6 +77,109 @@
       "Traslado y retorno hacia la estación de trenes",
       "Asistencia y orientación 24/7"
     ],
+    "circuitSelection": {
+      "required": true,
+      "updatedAt": "2026-08-19",
+      "availabilityNote": "Disponibilidad cargada manualmente. Los rangos son inclusivos y pueden actualizarse diariamente en este archivo.",
+      "options": [
+        {
+          "id": "circuit-1",
+          "label": "Circuito 1 – Terraza Superior",
+          "shortLabel": "Circuito 1",
+          "description": "Vistas panorámicas clásicas desde la terraza superior de Machu Picchu.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Servicio privado para circuito alternativo",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-08-30",
+              "reason": "Agotado"
+            }
+          ]
+        },
+        {
+          "id": "circuit-2",
+          "label": "Circuito 2 – Ruta Clásica",
+          "shortLabel": "Circuito 2",
+          "description": "Recorrido clásico por los principales sectores de la ciudadela.",
+          "groupSupplement": 0,
+          "supplementLabel": "Incluido en la tarifa base",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-30",
+              "reason": "Agotado"
+            }
+          ]
+        },
+        {
+          "id": "circuit-3",
+          "label": "Circuito 3 – Realeza Diseñada",
+          "shortLabel": "Circuito 3",
+          "description": "Ruta por la parte baja y los espacios vinculados a la realeza inca.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Servicio privado para circuito alternativo",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-15",
+              "reason": "Agotado"
+            }
+          ]
+        }
+      ]
+    },
+    "trainSelection": {
+      "outbound": [
+        {
+          "id": "voyager-outbound",
+          "label": "The Voyager Bimodal",
+          "schedule": "04:10 – 08:01",
+          "description": "Servicio turístico incluido desde Cusco hasta Machu Picchu Pueblo.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "prime-outbound",
+          "label": "The Prime de Inca Rail",
+          "schedule": "Horario sujeto a confirmación",
+          "description": "Upgrade panorámico con vagón al aire libre para disfrutar el Valle Sagrado.",
+          "adultSupplement": 64.9,
+          "childSupplement": 31,
+          "badge": "Recomendado"
+        }
+      ],
+      "return": [
+        {
+          "id": "voyager-return",
+          "label": "The Voyager Bimodal",
+          "schedule": "21:30 – 01:15",
+          "description": "Retorno nocturno incluido hasta Cusco.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "early-return",
+          "label": "Retorno temprano",
+          "schedule": "Salida 19:00",
+          "description": "Regresa aproximadamente 2 horas y 30 minutos antes y evita llegar tan tarde a Cusco.",
+          "adultSupplement": 42.9,
+          "childSupplement": 21
+        }
+      ],
+      "bundles": [
+        {
+          "id": "prime-early-bundle",
+          "outboundId": "prime-outbound",
+          "returnId": "early-return",
+          "label": "The Prime + retorno temprano",
+          "adultSupplement": 105.9,
+          "childSupplement": 53
+        }
+      ]
+    },
     "mealOptions": [
       {
         "id": "no-meal",
@@ -83,15 +188,9 @@
         "default": true
       },
       {
-        "id": "standard-lunch",
-        "label": "Almuerzo estándar",
-        "pricePerPerson": 20,
-        "default": false
-      },
-      {
         "id": "tinkuy-buffet",
-        "label": "Buffet Tinkuy en Belmond Sanctuary Lodge",
-        "pricePerPerson": 45,
+        "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
+        "pricePerPerson": 71.9,
         "default": false
       }
     ],
