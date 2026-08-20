@@ -860,6 +860,11 @@
                 <span class="mpt-rate-tab__copy"><small>Kleinkind</small><strong>Kostenlos</strong><em>Unter 2 Jahren, ohne eigenen Sitzplatz</em></span>
               </div>
             </div>
+            <div class="mpt-product-assurances" aria-label="Buchungsvorteile">
+              <span><i class="fas fa-receipt" aria-hidden="true"></i> Gesamtpreis vor der Zahlung sichtbar</span>
+              <span><i class="fab fa-paypal" aria-hidden="true"></i> Sichere Zahlung mit PayPal</span>
+              <span><i class="fas fa-headset" aria-hidden="true"></i> Lokale Betreuung per WhatsApp</span>
+            </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Datum</label>

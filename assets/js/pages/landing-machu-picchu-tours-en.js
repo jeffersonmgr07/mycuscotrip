@@ -865,6 +865,11 @@
                 <span class="mpt-rate-tab__copy"><small>Infant</small><strong>Free</strong><em>Under age 2, without a seat</em></span>
               </div>
             </div>
+            <div class="mpt-product-assurances" aria-label="Booking benefits">
+              <span><i class="fas fa-receipt" aria-hidden="true"></i> Total shown before payment</span>
+              <span><i class="fab fa-paypal" aria-hidden="true"></i> Secure PayPal payment</span>
+              <span><i class="fas fa-headset" aria-hidden="true"></i> Local WhatsApp support</span>
+            </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Date</label>

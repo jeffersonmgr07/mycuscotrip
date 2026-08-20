@@ -860,6 +860,11 @@
                 <span class="mpt-rate-tab__copy"><small>Bebê</small><strong>Grátis</strong><em>Menor de 2 anos, sem assento</em></span>
               </div>
             </div>
+            <div class="mpt-product-assurances" aria-label="Benefícios da reserva">
+              <span><i class="fas fa-receipt" aria-hidden="true"></i> Total exibido antes do pagamento</span>
+              <span><i class="fab fa-paypal" aria-hidden="true"></i> Pagamento seguro com PayPal</span>
+              <span><i class="fas fa-headset" aria-hidden="true"></i> Suporte local pelo WhatsApp</span>
+            </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Data</label>

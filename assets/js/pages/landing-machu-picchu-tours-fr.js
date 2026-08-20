@@ -860,6 +860,11 @@
                 <span class="mpt-rate-tab__copy"><small>Bébé</small><strong>Gratuit</strong><em>Moins de 2 ans, sans siège</em></span>
               </div>
             </div>
+            <div class="mpt-product-assurances" aria-label="Avantages de la réservation">
+              <span><i class="fas fa-receipt" aria-hidden="true"></i> Total affiché avant le paiement</span>
+              <span><i class="fab fa-paypal" aria-hidden="true"></i> Paiement sécurisé avec PayPal</span>
+              <span><i class="fas fa-headset" aria-hidden="true"></i> Assistance locale sur WhatsApp</span>
+            </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Date</label>

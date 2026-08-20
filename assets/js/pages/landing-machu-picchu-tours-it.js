@@ -860,6 +860,11 @@
                 <span class="mpt-rate-tab__copy"><small>Neonato</small><strong>Gratis</strong><em>Meno di 2 anni, senza posto a sedere</em></span>
               </div>
             </div>
+            <div class="mpt-product-assurances" aria-label="Vantaggi della prenotazione">
+              <span><i class="fas fa-receipt" aria-hidden="true"></i> Totale visibile prima del pagamento</span>
+              <span><i class="fab fa-paypal" aria-hidden="true"></i> Pagamento sicuro con PayPal</span>
+              <span><i class="fas fa-headset" aria-hidden="true"></i> Assistenza locale su WhatsApp</span>
+            </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Data</label>
