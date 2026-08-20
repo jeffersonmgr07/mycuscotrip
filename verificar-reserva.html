@@ -186,6 +186,10 @@
 <span class="label">Titular de la reserva</span>
 <div class="value" id="titular">-</div>
 </div>
+<div class="field full">
+<span class="label">Fecha / hora de pago o confirmación</span>
+<div class="value" id="pago">-</div>
+</div>
 </div>
 <div class="footer-note">
         Si necesita asistencia adicional, comuníquese con MyCuscoTrip por nuestros canales oficiales.
@@ -198,6 +202,7 @@
     document.getElementById("codigo").textContent = params.get("codigo") || "-";
     document.getElementById("titular").textContent = params.get("titular") || "-";
     document.getElementById("fecha").textContent = params.get("fecha") || "-";
+    document.getElementById("pago").textContent = params.get("pago") || "-";
   </script>
 <script src="./assets/js/config/tracking-config.js"></script>
 <script src="./assets/js/components/tracking.js"></script>

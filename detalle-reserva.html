@@ -2673,6 +2673,9 @@
 <button class="action-btn secondary" id="backBtn" onclick="window.location.href='./mi-reserva.html'">
 <i class="fa-solid fa-arrow-left"></i> Volver
           </button>
+<button class="action-btn secondary" id="ticketsBtn" onclick="window.location.href='./pages/ayuda/descargar-tickets-servicios.html'">
+<i class="fa-solid fa-ticket"></i> Ver tickets
+          </button>
 <button class="action-btn primary" id="printBtn" onclick="window.print()">
 <i class="fa-solid fa-print"></i> Imprimir voucher
           </button>
@@ -2908,7 +2911,8 @@
       const params = new URLSearchParams({
         codigo: reserva.codigo || "",
         titular: reserva.titularReserva || "",
-        fecha: reserva.fechaViaje || reserva.fechaVoucher || ""
+        fecha: reserva.fechaViaje || reserva.fechaVoucher || "",
+        pago: reserva.fechaPago || reserva.paymentTimestamp || reserva.fechaEmision || ""
       });
       return `${window.location.origin}${window.location.pathname.replace('detalle-reserva.html', 'verificar-reserva.html')}?${params.toString()}`;
     }
@@ -3726,6 +3730,21 @@
       return String(valorA || "").trim().toUpperCase() === String(valorB || "").trim().toUpperCase();
     }
 
+    function getReservationAccess(codigo) {
+      try {
+        const raw = sessionStorage.getItem(`mct_reservation_access_${codigo}`);
+        if (!raw) return null;
+        const access = JSON.parse(raw);
+        if (!access?.identifier || Number(access.expiresAt || 0) < Date.now()) {
+          sessionStorage.removeItem(`mct_reservation_access_${codigo}`);
+          return null;
+        }
+        return access;
+      } catch (_) {
+        return null;
+      }
+    }
+
     async function obtenerReservaActual() {
       const params = new URLSearchParams(window.location.search);
       const codigoUrl = params.get("codigo");
@@ -3744,19 +3763,30 @@
       }
 
       if (!codigoUrl) return null;
+      const access = getReservationAccess(codigoUrl);
+      // Un URL con solo el código no debe ser suficiente para revelar el voucher.
+      if (!access) return null;
 
       if (window.MyCuscoTripApiClient?.lookupReservation) {
         try {
-          const result = await window.MyCuscoTripApiClient.lookupReservation({ code: codigoUrl });
+          const identifier = String(access.identifier || "").trim();
+          const result = await window.MyCuscoTripApiClient.lookupReservation({
+            code: codigoUrl,
+            reservationCode: codigoUrl,
+            identifier,
+            email: identifier.includes("@") ? identifier.toLowerCase() : "",
+            lastName: identifier.includes("@") ? "" : identifier
+          });
           if (result?.found && result.voucher) {
             localStorage.setItem("reservaSeleccionada", JSON.stringify(result.voucher));
             return result.voucher;
           }
         } catch (error) {
-          console.warn("No se pudo consultar voucher en backend. Se usará respaldo estático.", error);
+          console.warn("No se pudo consultar voucher en backend. Se usará respaldo estático autorizado.", error);
         }
       }
 
+      // Compatibilidad histórica: el JSON estático solo se consulta después de validar acceso en Mi Reserva.
       const response = await fetch("./data/reservas.json", { cache: "no-store" });
       if (!response.ok) throw new Error("No se pudo cargar data/reservas.json");
       const reservas = await response.json();

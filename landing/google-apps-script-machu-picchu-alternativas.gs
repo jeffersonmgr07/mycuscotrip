@@ -199,11 +199,11 @@ function safeSheetValue_(value) {
 
 function lookupReservationDocuments_(params) {
   const reservationCode = normalizeText_(params.reservationCode).toUpperCase();
-  const email = normalizeText_(params.email).toLowerCase();
+  const identifier = normalizeText_(params.identifier || params.lastName || params.email);
   const requestedType = normalizeText_(params.documentType || 'all').toLowerCase();
 
-  if (!reservationCode || !isValidEmail_(email)) {
-    return { ok: false, message: 'Ingresa el código de reserva y el correo registrado.' };
+  if (!reservationCode || !identifier) {
+    return { ok: false, message: 'Ingresa el código de reserva y el apellido del titular.' };
   }
 
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -217,16 +217,27 @@ function lookupReservationDocuments_(params) {
   const index = headerIndex_(headers);
   const codeIdx = firstIndex_(index, ['reservationcode', 'codigoreserva', 'codigo', 'bookingcode']);
   const emailIdx = firstIndex_(index, ['email', 'correo', 'correoregistrado']);
+  const surnameIdx = firstIndex_(index, ['holderlastname', 'titularapellido', 'apellido', 'apellidotitular']);
 
-  if (codeIdx < 0 || emailIdx < 0) {
-    throw new Error('La hoja Documentos_Reserva debe incluir las columnas reservationCode y email.');
+  if (codeIdx < 0) throw new Error('La hoja Documentos_Reserva debe incluir reservationCode.');
+
+  const reservationIdentity = getReservationIdentityForDocuments_(ss, reservationCode);
+  let authorized = reservationIdentity ? identityMatchesForDocuments_(reservationIdentity.email, reservationIdentity.lastName, identifier) : false;
+
+  if (!authorized) {
+    authorized = values.some(function(row) {
+      if (normalizeText_(row[codeIdx]).toUpperCase() !== reservationCode) return false;
+      return identityMatchesForDocuments_(emailIdx >= 0 ? row[emailIdx] : '', surnameIdx >= 0 ? row[surnameIdx] : '', identifier);
+    });
   }
+  if (!authorized) return { ok: true, documents: [], message: 'No existe una reserva con esos datos.' };
 
+  const now = new Date();
+  const timeZone = 'America/Lima';
   const documents = [];
   values.forEach(function(row) {
     const rowCode = normalizeText_(row[codeIdx]).toUpperCase();
-    const rowEmail = normalizeText_(row[emailIdx]).toLowerCase();
-    if (rowCode !== reservationCode || rowEmail !== email) return;
+    if (rowCode !== reservationCode) return;
 
     const type = getByAliases_(row, index, ['documenttype', 'tipodocumento', 'tipo']) || 'Documento de viaje';
     const normalizedType = normalizeText_(type).toLowerCase();
@@ -234,17 +245,82 @@ function lookupReservationDocuments_(params) {
     if (requestedType === 'voucher' && !isVoucher) return;
     if (requestedType === 'tickets' && isVoucher) return;
 
+    const serviceDateRaw = getByAliases_(row, index, ['servicedate', 'fechaservicio', 'fechaviaje']);
+    const explicitAvailableRaw = getByAliases_(row, index, ['availablefrom', 'disponibledesde', 'fechahabilitacion']);
+    const releaseDaysRaw = getByAliases_(row, index, ['releasedays', 'diasantes', 'diasliberacion']);
+    const serviceDate = parseDocumentDate_(serviceDateRaw);
+    let availableFrom = parseDocumentDate_(explicitAvailableRaw);
+    const releaseDays = Math.max(0, Number(releaseDaysRaw || 10) || 10);
+    if (!availableFrom && serviceDate && !isVoucher) {
+      availableFrom = new Date(serviceDate.getTime());
+      availableFrom.setDate(availableFrom.getDate() - releaseDays);
+    }
+    const locked = !isVoucher && availableFrom && startOfDay_(now).getTime() < startOfDay_(availableFrom).getTime();
+
     documents.push({
       type: type,
       title: getByAliases_(row, index, ['title', 'titulo', 'nombre']) || type,
       description: getByAliases_(row, index, ['description', 'descripcion', 'detalle']) || '',
-      url: sanitizeDocumentUrl_(getByAliases_(row, index, ['url', 'enlace', 'link', 'archivo'])),
-      status: getByAliases_(row, index, ['status', 'estado']) || 'Disponible',
+      url: locked ? '' : sanitizeDocumentUrl_(getByAliases_(row, index, ['url', 'enlace', 'link', 'archivo'])),
+      status: locked ? 'Aún no habilitado' : (getByAliases_(row, index, ['status', 'estado']) || 'Disponible'),
+      serviceDate: serviceDateRaw || '',
+      releaseDays: releaseDays,
+      locked: Boolean(locked),
+      availableFrom: availableFrom ? Utilities.formatDate(availableFrom, timeZone, 'yyyy-MM-dd') : '',
+      availableFromLabel: availableFrom ? Utilities.formatDate(availableFrom, timeZone, 'dd/MM/yyyy') : '',
       updatedAt: getByAliases_(row, index, ['updatedat', 'actualizado', 'fechaactualizacion']) || ''
     });
   });
 
   return { ok: true, reservationCode: reservationCode, documents: documents };
+}
+
+function getReservationIdentityForDocuments_(ss, reservationCode) {
+  const sheet = ss.getSheetByName('Reservas');
+  if (!sheet || sheet.getLastRow() < 2) return null;
+  const values = sheet.getDataRange().getDisplayValues();
+  const headers = values.shift().map(function(value) { return normalizeHeader_(value); });
+  const index = headerIndex_(headers);
+  const codeIdx = firstIndex_(index, ['codigoreserva', 'reservationcode', 'codigo']);
+  const emailIdx = firstIndex_(index, ['titularemail', 'email', 'correo']);
+  const surnameIdx = firstIndex_(index, ['titularapellido', 'apellido', 'holderlastname']);
+  if (codeIdx < 0) return null;
+  for (let i = 0; i < values.length; i++) {
+    if (normalizeText_(values[i][codeIdx]).toUpperCase() === reservationCode) {
+      return { email: emailIdx >= 0 ? values[i][emailIdx] : '', lastName: surnameIdx >= 0 ? values[i][surnameIdx] : '' };
+    }
+  }
+  return null;
+}
+
+function normalizeIdentityText_(value) {
+  return String(value === undefined || value === null ? '' : value)
+    .trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function identityMatchesForDocuments_(email, lastName, identifier) {
+  const id = normalizeIdentityText_(identifier);
+  if (!id) return false;
+  if (id.indexOf('@') >= 0) return normalizeIdentityText_(email) === id;
+  const storedTokens = normalizeIdentityText_(lastName).split(/\s+/).filter(String);
+  const suppliedTokens = id.split(/\s+/).filter(String);
+  if (!storedTokens.length || !suppliedTokens.length) return false;
+  return suppliedTokens.every(function(token) { return storedTokens.indexOf(token) >= 0; });
+}
+
+function parseDocumentDate_(value) {
+  const text = normalizeText_(value);
+  if (!text) return null;
+  let match = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12, 0, 0);
+  match = text.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+  if (match) return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]), 12, 0, 0);
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date;
+}
+
+function startOfDay_(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
 }
 
 function normalizeHeader_(value) {

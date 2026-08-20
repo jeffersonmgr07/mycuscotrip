@@ -1,6 +1,6 @@
 (function () {
   const copy = {
-    es: { hero: "Ingresa tu código de reserva y el correo electrónico registrado —o el apellido del titular— para revisar el viaje y retomar un pago pendiente.", identifier: "Correo electrónico o apellido", placeholder: "Ej. viajero@email.com", help: "Por seguridad, el código debe coincidir con el correo o apellido registrado.", search: "Buscar reserva", searching: "Buscando...", required: "Ingresa el código de reserva y el correo o apellido registrado.", notFound: "No encontramos una reserva con esos datos.", error: "No se pudo consultar la reserva. Verifica los datos o contacta a tu asesor." },
+    es: { hero: "Ingresa tu código de reserva y uno o ambos apellidos del titular para revisar el viaje, abrir tu travel voucher y consultar tus tickets.", identifier: "Apellido del titular (uno o ambos)", placeholder: "Ej. Villanueva o Villanueva Cortés", help: "Puedes ingresar un solo apellido o los dos. No es necesario escribir tildes para que la búsqueda coincida.", search: "Buscar reserva", searching: "Buscando...", required: "Ingresa el código de reserva y al menos un apellido del titular.", notFound: "No encontramos una reserva con esos datos.", error: "No se pudo consultar la reserva. Verifica los datos o contacta a tu asesor." },
     en: { hero: "Enter your reservation code and the registered email address —or the holder's last name— to review the trip and resume a pending payment.", identifier: "Email address or last name", placeholder: "e.g. traveler@email.com", help: "For security, the code must match the registered email address or last name.", search: "Find reservation", searching: "Searching...", required: "Enter the reservation code and the registered email or last name.", notFound: "We could not find a reservation with those details.", error: "The reservation could not be retrieved. Check the details or contact your advisor." },
     pt: { hero: "Insira o código da reserva e o e-mail cadastrado —ou o sobrenome do titular— para revisar a viagem e retomar um pagamento pendente.", identifier: "E-mail ou sobrenome", placeholder: "Ex. viajante@email.com", help: "Por segurança, o código deve coincidir com o e-mail ou sobrenome cadastrado.", search: "Buscar reserva", searching: "Buscando...", required: "Insira o código da reserva e o e-mail ou sobrenome cadastrado.", notFound: "Não encontramos uma reserva com esses dados.", error: "Não foi possível consultar a reserva. Verifique os dados ou fale com seu consultor." },
     fr: { hero: "Saisissez le code de réservation et l’e-mail enregistré —ou le nom du titulaire— pour consulter le voyage et reprendre un paiement en attente.", identifier: "E-mail ou nom de famille", placeholder: "Ex. voyageur@email.com", help: "Pour votre sécurité, le code doit correspondre à l’e-mail ou au nom enregistré.", search: "Rechercher la réservation", searching: "Recherche...", required: "Saisissez le code et l’e-mail ou le nom enregistré.", notFound: "Aucune réservation ne correspond à ces informations.", error: "Impossible de consulter la réservation. Vérifiez les informations ou contactez votre conseiller." },
@@ -28,10 +28,27 @@
     return String(record?.apellido || record?.lastName || record?.holder?.lastName || record?.payload?.holder?.lastName || "").trim();
   }
 
+  function surnameMatches(storedSurname, suppliedSurname) {
+    const stored = normalized(storedSurname).split(/\s+/).filter(Boolean);
+    const supplied = normalized(suppliedSurname).split(/\s+/).filter(Boolean);
+    if (!stored.length || !supplied.length) return false;
+    if (stored.join(" ") === supplied.join(" ")) return true;
+    // Permite ingresar uno o ambos apellidos del titular, sin exigir tildes.
+    return supplied.every((token) => stored.includes(token));
+  }
+
   function identityMatches(record, identifier) {
-    const value = normalized(identifier);
+    const value = String(identifier || "").trim();
     if (!value) return false;
-    return [reservationEmail(record), reservationLastName(record)].some((candidate) => normalized(candidate) === value);
+    if (value.includes("@")) return normalized(reservationEmail(record)) === normalized(value);
+    return surnameMatches(reservationLastName(record), value);
+  }
+
+  function rememberAccess(code, identifier) {
+    try {
+      const access = { code, identifier, expiresAt: Date.now() + 30 * 60 * 1000 };
+      sessionStorage.setItem(`mct_reservation_access_${code}`, JSON.stringify(access));
+    } catch (_) {}
   }
 
   function findLocal(code, identifier) {
@@ -139,12 +156,14 @@
       try {
         const local = findLocal(code, identifier);
         if (local) {
+          rememberAccess(code, identifier);
           location.assign(productRecoveryUrl(local, code));
           return;
         }
 
         const backend = await lookupBackend(code, identifier);
         if (backend) {
+          rememberAccess(code, identifier);
           const data = backend.payload || backend;
           if (data.productSlug || data.slug || data.paymentStatus === "pending") {
             try { localStorage.setItem(`mct_pre_reservation_${code}`, JSON.stringify(data)); } catch (_) {}
@@ -160,6 +179,7 @@
         const staticReservations = await fetchStaticReservations();
         const record = staticReservations.find((item) => normalized(item?.codigo) === normalized(code));
         if (record && identityMatches(record, identifier)) {
+          rememberAccess(code, identifier);
           localStorage.setItem("reservaSeleccionada", JSON.stringify(record));
           const prefix = localizedPrefix();
           location.assign(`${prefix}detalle-reserva.html?codigo=${encodeURIComponent(code)}`);

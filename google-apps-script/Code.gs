@@ -1915,13 +1915,18 @@ function capturePayPalOrder_(p) {
 
 function lookupReservation_(p) {
   const code = normalizeCode_(p.code || p.codigo || p.reservationCode);
-  const lastName = normalizeText_(p.lastName || p.apellido || '');
+  const rawIdentifier = clean_(p.identifier || '');
+  const email = cleanEmail_(p.email || (rawIdentifier.indexOf('@') >= 0 ? rawIdentifier : ''));
+  const lastName = clean_(p.lastName || p.apellido || (rawIdentifier && rawIdentifier.indexOf('@') < 0 ? rawIdentifier : ''));
   if (!code) return { ok: false, error: 'Código requerido.' };
+  if (!email && !lastName) return { ok: false, error: 'Ingresa el correo o apellido del titular.' };
 
   const reservation = findReservation_(code);
   if (!reservation) return { ok: true, found: false, message: 'No existe una reserva con esos datos.' };
 
-  if (lastName && normalizeText_(reservation.row.ApellidoClave || reservation.row.TitularApellido) !== lastName) {
+  const emailMatches = email && cleanEmail_(reservation.row.TitularEmail) === email;
+  const surnameMatches = lastName && surnameMatches_(reservation.row.ApellidoClave || reservation.row.TitularApellido, lastName);
+  if (!emailMatches && !surnameMatches) {
     return { ok: true, found: false, message: 'No existe una reserva con esos datos.' };
   }
 
@@ -1979,6 +1984,8 @@ function buildVoucherFromReservation_(code, capture, allowPending) {
     apellido: row.TitularApellido,
     fechaVoucher: formatDateHuman_(new Date(), lang),
     fechaEmision: Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd'),
+    fechaPago: payload.paymentTimestamp || payload.paymentDate || '',
+    codigoCotizacion: payload.quoteCode || payload.quotationCode || '',
     fechaViaje: row.FechaViaje || payload.date || '',
     duracion: payload.duration || payload.summary && payload.summary.duration || row.FechaViaje || payload.date || '',
     idioma: lang,
@@ -1990,6 +1997,8 @@ function buildVoucherFromReservation_(code, capture, allowPending) {
     agenteAsignado: 'Jefferson García',
     agenteTelefono: '+51 900 608 980',
     codigoCupon: row.CodigoCupon || '',
+    hotelInfo: Array.isArray(payload.hotelInfo) ? payload.hotelInfo : (Array.isArray(payload.hotels) ? payload.hotels : []),
+    vuelos: Array.isArray(payload.vuelos) ? payload.vuelos : (Array.isArray(payload.flights) ? payload.flights : []),
     turistas: passengers.map(function(p) {
       return {
         nombreCompleto: [p.Nombres, p.Apellidos].filter(Boolean).join(' ').trim(),
@@ -2025,6 +2034,18 @@ function buildVoucherFromReservation_(code, capture, allowPending) {
 
 function buildServicesFromPayload_(payload) {
   const summary = payload.summary || {};
+  if (Array.isArray(payload.services) && payload.services.length) {
+    return payload.services.map(function(service, index) {
+      return {
+        codigo: clean_(service.codigo || service.code || ('SRV' + String(index + 1).padStart(3, '0'))),
+        nombre: clean_(service.nombre || service.name || service.title || 'Servicio turístico'),
+        fecha: clean_(service.fecha || service.date || payload.date || summary.date || ''),
+        horaInicio: clean_(service.horaInicio || service.startTime || '-'),
+        horaFin: clean_(service.horaFin || service.endTime || '-'),
+        incluido: service.incluido !== false && service.included !== false
+      };
+    });
+  }
   const services = [];
   if (payload.productTitle || summary.title) {
     services.push({
@@ -3167,6 +3188,86 @@ function normalizeCode_(value) {
 
 function normalizeText_(value) {
   return String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+
+function surnameMatches_(storedSurname, suppliedSurname) {
+  const stored = normalizeText_(storedSurname).split(/\s+/).filter(String);
+  const supplied = normalizeText_(suppliedSurname).split(/\s+/).filter(String);
+  if (!stored.length || !supplied.length) return false;
+  if (stored.join(' ') === supplied.join(' ')) return true;
+  return supplied.every(function(token) { return stored.indexOf(token) >= 0; });
+}
+
+function fnv1a24_(value) {
+  const text = String(value || '');
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    hash ^= text.charCodeAt(i);
+    // Math.imul is available in Apps Script V8.
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return (hash & 0xffffff).toString(16).toUpperCase().padStart(6, '0');
+}
+
+/**
+ * Código manual: CUZ + 6 hex derivado de la fecha/hora exacta del pago.
+ * Mantiene FNV-1a/24 bits como el frontend V93 y reintenta con nonce si hay colisión.
+ */
+function generateReservationCodeFromPaymentTimestamp_(paymentTimestamp) {
+  const paidAt = parseDate_(paymentTimestamp);
+  if (!paidAt || isNaN(paidAt.getTime())) throw new Error('Fecha/hora de pago inválida. Usa ISO 8601 con zona horaria.');
+  const epochMs = paidAt.getTime();
+  for (let nonce = 0; nonce < 1000; nonce++) {
+    const code = 'CUZ' + fnv1a24_(epochMs + ':PAYMENT:' + nonce);
+    if (!findReservation_(code)) return code;
+  }
+  throw new Error('No se pudo generar un código de reserva único.');
+}
+
+/**
+ * Helper privado para reservas manuales ya pagadas. No está expuesto en doGet/doPost.
+ * Debe invocarse solo desde el editor de Apps Script con un payload privado.
+ */
+function createManualPaidReservation_(input) {
+  const payload = input && typeof input === 'object' ? input : {};
+  const holder = payload.holder || {};
+  const paidAt = parseDate_(payload.paymentTimestamp);
+  if (!paidAt || isNaN(paidAt.getTime())) throw new Error('paymentTimestamp es obligatorio.');
+  const firstName = clean_(holder.firstName);
+  const lastName = clean_(holder.lastName);
+  if (!firstName || !lastName) throw new Error('Nombre y apellido del titular son obligatorios.');
+
+  const code = normalizeCode_(payload.code) || generateReservationCodeFromPaymentTimestamp_(payload.paymentTimestamp);
+  if (findReservation_(code)) throw new Error('Ya existe una reserva con el código ' + code);
+
+  const currency = normalizeCurrency_(payload.currency || 'USD');
+  const serviceTotal = round2_(payload.serviceTotalValue || payload.totalService || 0);
+  const amountPaid = round2_(payload.amountPaid || payload.payNowValue || serviceTotal);
+  const discount = round2_(payload.discountAmount || Math.max(0, serviceTotal - amountPaid));
+  const publicBaseUrl = getPublicBaseUrl_();
+  const voucherUrl = publicBaseUrl + '/detalle-reserva.html?codigo=' + encodeURIComponent(code);
+  const rowPayload = Object.assign({}, payload, { code: code, paymentTimestamp: paidAt.toISOString() });
+
+  getSheet_(SHEETS.RESERVATIONS, HEADERS.Reservas).appendRow([
+    paidAt, code, 'Confirmada', 'Pagado', '', clean_(payload.productId || 'MCT-MANUAL'), clean_(payload.productTitle),
+    clean_(payload.date), currency, serviceTotal, amountPaid, 0, clean_(payload.paymentMode || 'Pago completo'),
+    firstName, lastName, cleanEmail_(holder.email), clean_(holder.whatsapp), clean_(holder.language || 'Español'),
+    normalizeCode_(payload.couponCode || ''), discount, clean_(payload.paymentProvider || 'Pago confirmado'),
+    clean_(payload.paypalOrderId || ''), clean_(payload.paypalCaptureId || ''), '', '', voucherUrl,
+    normalizeText_(lastName), JSON.stringify(rowPayload), ''
+  ]);
+
+  savePassengers_(code, payload.passengers || [], holder);
+  getSheet_(SHEETS.PAYMENTS, HEADERS.Pagos).appendRow([
+    paidAt, code, payload.paymentProvider || 'Pago confirmado', 'COMPLETED', currency, amountPaid,
+    payload.paypalOrderId || '', payload.paypalCaptureId || '', '', '', JSON.stringify({ manual: true, paymentTimestamp: paidAt.toISOString() })
+  ]);
+
+  const voucher = buildVoucherFromReservation_(code, null, true);
+  updateReservationFields_(code, { VoucherURL: voucherUrl, VoucherJSON: JSON.stringify(voucher) });
+  logAudit_('createManualPaidReservation', code, 'Reserva manual pagada registrada', { quoteCode: payload.quoteCode || '', paymentTimestamp: paidAt.toISOString() });
+  return { ok: true, reservationCode: code, voucherUrl: voucherUrl, voucher: voucher };
 }
 
 function normalizeCurrency_(value) {

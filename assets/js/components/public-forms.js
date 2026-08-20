@@ -133,21 +133,27 @@
     if(v.includes("tren"))return "fa-train";if(v.includes("machu"))return "fa-mountain-sun";if(v.includes("consetur")||v.includes("bus"))return "fa-bus";if(v.includes("voucher"))return "fa-file-lines";return "fa-ticket";
   }
   function renderDocuments(container,documents,mode){
-    if(!documents?.length){container.innerHTML='<div class="lookup-empty"><i class="fa-regular fa-folder-open"></i><p>No encontramos documentos disponibles para los datos ingresados. Verifica el código y el correo o comunícate con reservas.</p></div>';return;}
+    if(!documents?.length){const msg=mode==="tickets"?"Todavía no hay tickets publicados para esta reserva. Normalmente se habilitan 10 días antes de cada servicio y algunos pueden liberarse desde 5 días antes.":"No encontramos documentos disponibles para los datos ingresados. Verifica el código y el apellido o comunícate con reservas.";container.innerHTML=`<div class="lookup-empty"><i class="fa-regular fa-folder-open"></i><p>${msg}</p></div>`;return;}
     container.innerHTML=documents.map(doc=>{
       const title=escapeHtml(doc.title||doc.name||"Documento de viaje");
       const type=escapeHtml(doc.type||"Servicio");
       const desc=escapeHtml(doc.description||doc.status||"Documento asignado a tu reserva.");
       const url=escapeHtml(doc.url||"");
-      const print=mode==="voucher"?'<button type="button" data-print-document><i class="fa-solid fa-print"></i> Imprimir</button>':"";
-      const action=url?`<a href="${url}" target="_blank" rel="noopener"><i class="fa-solid fa-download"></i> Descargar</a>`:'<span class="document-card__type">Pendiente de asignación</span>';
-      return `<article class="document-card"><div class="document-card__head"><div><span class="document-card__type"><i class="fa-solid ${getDocIcon(type)}"></i>${type}</span><h3>${title}</h3><p>${desc}</p></div></div><div class="document-card__actions">${action}${print}</div></article>`;
+      const locked=Boolean(doc.locked);
+      const available=escapeHtml(doc.availableFromLabel||doc.availableFrom||"");
+      const actionLabel=mode==="voucher"?"Abrir / imprimir":"Descargar";
+      const actionIcon=mode==="voucher"?"fa-file-arrow-down":"fa-download";
+      const action=locked?`<span class="document-card__type"><i class="fa-solid fa-lock"></i> Disponible ${available?`desde ${available}`:"próximamente"}</span>`:(url?`<a href="${url}" target="_blank" rel="noopener"><i class="fa-solid ${actionIcon}"></i> ${actionLabel}</a>`:'<span class="document-card__type">Pendiente de asignación</span>');
+      return `<article class="document-card"><div class="document-card__head"><div><span class="document-card__type"><i class="fa-solid ${getDocIcon(type)}"></i>${type}</span><h3>${title}</h3><p>${desc}</p></div></div><div class="document-card__actions">${action}</div></article>`;
     }).join("");
-    container.querySelectorAll("[data-print-document]").forEach(btn=>btn.addEventListener("click",()=>window.print()));
   }
   function initDocumentLookups(root=document){
     root.querySelectorAll("form[data-document-lookup]").forEach(form=>{
       if(form.dataset.initialized==="true")return;form.dataset.initialized="true";
+      try{
+        const candidates=Object.keys(sessionStorage).filter(k=>k.startsWith("mct_reservation_access_"));
+        for(const key of candidates){const access=JSON.parse(sessionStorage.getItem(key)||"null");if(access?.identifier&&Number(access.expiresAt||0)>=Date.now()){if(form.reservationCode&&!form.reservationCode.value)form.reservationCode.value=access.code||"";const idInput=form.identifier||form.email;if(idInput&&!idInput.value)idInput.value=access.identifier||"";break;}}
+      }catch(_){}
       form.addEventListener("submit",async(event)=>{
         event.preventDefault(); if(!form.reportValidity())return;
         const results=document.querySelector(form.dataset.results||"#lookupResults");
@@ -155,9 +161,12 @@
         if(submit){submit.disabled=true;submit.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Buscando…';}
         if(results) results.innerHTML='<div class="lookup-empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Consultando documentos…</p></div>';
         try{
-          const params=new URLSearchParams({action:cfg.documentLookupAction||"lookup_documents",reservationCode:form.reservationCode.value.trim(),email:form.email.value.trim().toLowerCase(),documentType:form.dataset.documentType||"all"});
+          const code=form.reservationCode.value.trim().toUpperCase();
+          const identifier=String(form.identifier?.value||form.email?.value||"").trim();
+          const params=new URLSearchParams({action:cfg.documentLookupAction||"lookup_documents",reservationCode:code,identifier,lastName:identifier.includes("@")?"":identifier,email:identifier.includes("@")?identifier.toLowerCase():"",documentType:form.dataset.documentType||"all"});
           const response=await jsonp(`${cfg.endpoint}?${params.toString()}`);
           if(!response?.ok) throw new Error(response?.message||"No encontramos la reserva.");
+          try{sessionStorage.setItem(`mct_reservation_access_${code}`,JSON.stringify({code,identifier,expiresAt:Date.now()+30*60*1000}));}catch(_){}
           renderDocuments(results,response.documents||[],form.dataset.documentType);
         }catch(error){if(results)results.innerHTML=`<div class="public-form__status is-visible is-error" role="alert">${escapeHtml(error.message)}</div>`;}
         finally{if(submit){submit.disabled=false;submit.innerHTML=original;}}
@@ -173,5 +182,6 @@
   }
   function init(){initCountrySelects();initMinorToggles();initPublicForms();initDocumentLookups();initBlogFilters();}
   window.MyCuscoTripPublicForms={init,initCountrySelects,initPublicForms,initDocumentLookups};
+  document.addEventListener("mct:static-page-translated",()=>initDocumentLookups(document));
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init):init();
 })();
