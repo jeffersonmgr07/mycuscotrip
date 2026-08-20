@@ -2747,6 +2747,394 @@
       }
     }
 
+
+
+    /* ================================================================
+       V99 — Travel Voucher impreso únicamente
+       - margen superior 0
+       - información adicional en tarjetas balanceadas
+       - resumen de pagos confirmado
+       - bloques indivisibles entre páginas
+       ================================================================ */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0 8mm 8mm 8mm !important;
+      }
+
+      html,
+      body,
+      .voucher-page,
+      .voucher-shell,
+      #voucherPrint,
+      .print-voucher,
+      .pv-classic {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+
+      .pv-classic {
+        width: 100% !important;
+        font-size: 9px !important;
+        line-height: 1.08 !important;
+      }
+
+      /* Cabecera más alta útil: sin aire superior y sin desplazamientos. */
+      .pv-top {
+        grid-template-columns: 190px 1fr !important;
+        gap: 8px !important;
+        align-items: start !important;
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+      }
+
+      .pv-left {
+        align-items: center !important;
+        max-width: 190px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .pv-left img {
+        width: 154px !important;
+        margin: 0 0 1px 0 !important;
+        padding: 0 !important;
+      }
+
+      .pv-subcopy {
+        width: 184px !important;
+        margin: 0 0 1px 0 !important;
+        font-size: 8px !important;
+        line-height: .98 !important;
+        text-align: center !important;
+      }
+
+      .pv-contact {
+        width: 184px !important;
+        margin: 0 !important;
+        font-size: 7.7px !important;
+        line-height: .98 !important;
+        text-align: center !important;
+      }
+
+      .pv-right {
+        justify-self: end !important;
+        width: 300px !important;
+        max-width: 300px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        transform: none !important;
+        text-align: center !important;
+      }
+
+      .pv-date {
+        margin: 0 0 1px 0 !important;
+        font-size: 10px !important;
+        line-height: 1 !important;
+      }
+
+      .pv-title {
+        margin: 0 0 3px 0 !important;
+        font-size: 17px !important;
+        line-height: 1 !important;
+      }
+
+      .pv-code-row {
+        gap: 6px !important;
+        margin: 0 !important;
+      }
+
+      .pv-code-box {
+        min-width: 150px !important;
+        padding: 3px 7px !important;
+      }
+
+      .pv-code-box span { font-size: 7px !important; }
+      .pv-code-box strong { font-size: 12px !important; }
+
+      .pv-qr-box img {
+        width: 48px !important;
+        height: 48px !important;
+        padding: 2px !important;
+      }
+
+      .pv-meta-grid {
+        gap: 4px !important;
+        margin: 0 0 3px 0 !important;
+      }
+
+      .pv-meta-item {
+        min-height: 31px !important;
+        padding: 3px 5px !important;
+      }
+
+      .pv-meta-item strong {
+        font-size: 7.3px !important;
+        margin-bottom: 1px !important;
+      }
+
+      .pv-meta-item span,
+      .pv-meta-duration span,
+      .pv-meta-language span,
+      .pv-meta-passengers span,
+      .pv-meta-phone span,
+      .pv-meta-coupon span {
+        font-size: 8.7px !important;
+        line-height: 1.02 !important;
+      }
+
+      .pv-section-title {
+        margin-top: 3px !important;
+        padding: 2.4px 7px !important;
+        font-size: 9.8px !important;
+        line-height: 1 !important;
+      }
+
+      .pv-tourists-grid { margin-bottom: 3px !important; }
+      .pv-tourists-grid-row > div {
+        min-height: 17px !important;
+        padding: 2px 4px !important;
+        font-size: 8.2px !important;
+        line-height: 1 !important;
+      }
+      .pv-tourists-grid-head > div {
+        min-height: 16px !important;
+        font-size: 7.2px !important;
+      }
+
+      .pv-services-table { margin-bottom: 3px !important; }
+      .pv-services-table th,
+      .pv-services-table td {
+        padding: 2.5px 3.5px !important;
+        font-size: 8.3px !important;
+        line-height: 1 !important;
+      }
+      .pv-services-table th { font-size: 7.6px !important; }
+      .pv-status-pill {
+        min-width: 42px !important;
+        padding: 1.5px 4px !important;
+        font-size: 7px !important;
+      }
+
+      /* Nueva composición: incluidos a la izquierda; asistencia/pagos/no incluidos/recomendaciones a la derecha. */
+      .pv-info-section-v99 {
+        margin-top: 0 !important;
+      }
+
+      .pv-info-grid-v99 {
+        display: grid !important;
+        grid-template-columns: 1.18fr .82fr !important;
+        grid-auto-flow: dense !important;
+        gap: 5px !important;
+        margin-top: 0 !important;
+        align-items: start !important;
+      }
+
+      .pv-info-card {
+        border: 1px solid #d7dbe0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        background: #fff !important;
+        min-width: 0 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .pv-included-card-v99 {
+        grid-column: 1 !important;
+        grid-row: 1 / span 4 !important;
+      }
+      .pv-assistance-card-v99,
+      .pv-payment-card-v99,
+      .pv-excludes-card-v99,
+      .pv-recommendations-card-v99 {
+        grid-column: 2 !important;
+      }
+
+      .pv-card-title {
+        margin: 0 !important;
+        padding: 3.5px 6px !important;
+        background: #f0f2f1 !important;
+        border-bottom: 1px solid #d7dbe0 !important;
+        color: #253b2f !important;
+        font-size: 8.6px !important;
+        line-height: 1 !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: .015em !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .pv-card-body {
+        padding: 5px 6px !important;
+        font-size: 8.1px !important;
+        line-height: 1.13 !important;
+      }
+
+      .pv-include-group + .pv-include-group { margin-top: 4px !important; }
+      .pv-include-group-title {
+        margin-bottom: 2px !important;
+        font-size: 8.1px !important;
+      }
+      .pv-include-list li {
+        margin-bottom: 1px !important;
+        padding-left: 13px !important;
+        font-size: 8px !important;
+        line-height: 1.12 !important;
+      }
+      .pv-include-list li::before {
+        width: 9px !important;
+        height: 9px !important;
+        font-size: 6.3px !important;
+      }
+
+      .pv-assistance-body-v99 > div:first-child {
+        margin-bottom: 4px !important;
+      }
+      .pv-agent-inline-v99 {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        padding-top: 3px !important;
+        border-top: 1px solid #ecefed !important;
+        font-size: 8.4px !important;
+      }
+      .pv-agent-inline-v99 span { font-weight: 700 !important; white-space: nowrap !important; }
+
+      .pv-simple-list-v99 {
+        margin: 0 !important;
+        padding-left: 13px !important;
+      }
+      .pv-simple-list-v99 li {
+        margin: 0 0 1px 0 !important;
+        padding: 0 !important;
+        line-height: 1.12 !important;
+      }
+
+      /* Resumen económico de la reserva. */
+      .pv-payment-summary { margin: 0 !important; }
+      .pv-payment-status-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin-bottom: 4px !important;
+        font-size: 7.7px !important;
+        color: #46554e !important;
+      }
+      .pv-paid-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 2px 5px !important;
+        border-radius: 999px !important;
+        border: 1px solid #a7d9b8 !important;
+        background: #ecfdf3 !important;
+        color: #137333 !important;
+        font-size: 6.9px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .pv-payment-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 3px !important;
+      }
+      .pv-payment-metric {
+        border: 1px solid #e0e4e2 !important;
+        border-radius: 5px !important;
+        padding: 3px 4px !important;
+        background: #fbfcfb !important;
+      }
+      .pv-payment-metric span {
+        display: block !important;
+        color: #67736e !important;
+        font-size: 6.7px !important;
+        line-height: 1 !important;
+        margin-bottom: 2px !important;
+      }
+      .pv-payment-metric strong {
+        display: block !important;
+        color: #253b2f !important;
+        font-size: 8.2px !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+      .pv-payment-metric.discount strong { color: #14733f !important; }
+      .pv-payment-metric.balance {
+        background: #eef8f2 !important;
+        border-color: #c9e4d3 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .pv-payment-foot {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 2px 8px !important;
+        margin-top: 4px !important;
+        padding-top: 3px !important;
+        border-top: 1px solid #ecefed !important;
+        color: #56635d !important;
+        font-size: 6.9px !important;
+        line-height: 1.08 !important;
+      }
+
+      /* Nunca cortar tarjetas, recomendaciones o el bloque promocional. */
+      .pv-info-card,
+      .pv-signature-section,
+      .pv-signature-main,
+      .pv-ad-banner-slot {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .pv-signature-section {
+        margin-top: 5px !important;
+        border-radius: 9px !important;
+        overflow: hidden !important;
+      }
+      .pv-signature-main {
+        grid-template-columns: 90px 1fr !important;
+        gap: 7px !important;
+        padding: 6px 9px !important;
+      }
+      .pv-signature-brand img {
+        width: 72px !important;
+        max-height: 45px !important;
+      }
+      .pv-social-title { font-size: 8.9px !important; }
+      .pv-socials { gap: 3px !important; }
+      .pv-social-pill {
+        padding: 3px 4px !important;
+        font-size: 6.9px !important;
+        min-height: 15px !important;
+      }
+      .pv-tripadvisor-award {
+        width: 82px !important;
+        min-width: 82px !important;
+        max-width: 82px !important;
+        flex-basis: 82px !important;
+        height: 30px !important;
+        transform: none !important;
+      }
+      .pv-tripadvisor-award img {
+        max-width: 80px !important;
+        max-height: 28px !important;
+      }
+      .pv-ad-banner-slot {
+        padding: 3px !important;
+        min-height: 0 !important;
+      }
+      .pv-ad-banner-slot img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        object-fit: contain !important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -3630,6 +4018,74 @@
       `;
     }
 
+    function formatMoneyPrint(currency, value) {
+      const amount = Number(value || 0);
+      const code = String(currency || "USD").toUpperCase();
+      try {
+        return new Intl.NumberFormat(currentLanguage === "en" ? "en-US" : "es-PE", {
+          style: "currency",
+          currency: code,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }).format(amount).replace("US$", "USD");
+      } catch (_) {
+        return `${code} ${amount.toFixed(2)}`;
+      }
+    }
+
+    function formatPaymentTimestampPrint(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      try {
+        const locale = currentLanguage === "en" ? "en-US" : "es-PE";
+        const formatted = new Intl.DateTimeFormat(locale, {
+          timeZone: "America/Lima",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        }).format(date);
+        return formatted.replace(/\./g, "").replace(/,\s*/g, " · ");
+      } catch (_) {
+        return date.toLocaleString();
+      }
+    }
+
+    function buildPaymentSummaryPrint(reserva) {
+      const pagos = reserva && reserva.pagos && typeof reserva.pagos === "object" ? reserva.pagos : {};
+      const currency = String(pagos.moneda || "USD").toUpperCase();
+      const original = Number(pagos.totalServicio || 0);
+      const paid = Number(pagos.pagadoAhora || 0);
+      const balance = Math.max(0, Number(pagos.saldoPendiente || 0));
+      const discount = Math.max(0, original - paid - balance);
+      const discountPct = original > 0 ? (discount / original) * 100 : 0;
+      const statusRaw = String(pagos.estado || "").trim();
+      const paidStatus = balance <= 0.005 && paid > 0;
+      const paymentDate = formatPaymentTimestampPrint(reserva.fechaPago || reserva.paymentTimestamp || "");
+      const provider = String(pagos.proveedor || "").trim();
+
+      if (!(original > 0 || paid > 0 || balance > 0 || statusRaw)) return "";
+
+      return `
+        <div class="pv-payment-summary">
+          <div class="pv-payment-status-row">
+            <span class="pv-paid-badge ${paidStatus ? "is-paid" : ""}">${esc(paidStatus ? (currentLanguage === "en" ? "PAID" : "PAGADO") : (statusRaw || "PENDIENTE"))}</span>
+            <span>${esc(currentLanguage === "en" ? "All services shown on this voucher are paid" : "Todos los servicios incluidos en este voucher están pagados")}</span>
+          </div>
+          <div class="pv-payment-grid">
+            <div class="pv-payment-metric"><span>${esc(currentLanguage === "en" ? "Original amount" : "Monto original")}</span><strong>${esc(formatMoneyPrint(currency, original))}</strong></div>
+            <div class="pv-payment-metric discount"><span>${esc(currentLanguage === "en" ? "Discount applied" : "Descuento aplicado")}${discountPct > 0 ? ` · ${esc(discountPct.toFixed(discountPct % 1 ? 1 : 0))}%` : ""}</span><strong>${discount > 0 ? `− ${esc(formatMoneyPrint(currency, discount))}` : esc(formatMoneyPrint(currency, 0))}</strong></div>
+            <div class="pv-payment-metric paid"><span>${esc(currentLanguage === "en" ? "Total paid" : "Total pagado")}</span><strong>${esc(formatMoneyPrint(currency, paid))}</strong></div>
+            <div class="pv-payment-metric balance"><span>${esc(currentLanguage === "en" ? "Outstanding balance" : "Saldo pendiente")}</span><strong>${esc(formatMoneyPrint(currency, balance))}</strong></div>
+          </div>
+          ${(paymentDate || provider) ? `<div class="pv-payment-foot">${paymentDate ? `<span><b>${esc(currentLanguage === "en" ? "Payment date:" : "Fecha de pago:")}</b> ${esc(paymentDate)}</span>` : ""}${provider ? `<span><b>${esc(currentLanguage === "en" ? "Payment:" : "Pago:")}</b> ${esc(provider)}</span>` : ""}</div>` : ""}
+        </div>
+      `;
+    }
+
     function renderPrintVoucher(reserva) {
       const t = i18n[currentLanguage];
       const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
@@ -3639,8 +4095,7 @@
       const noIncluye = Array.isArray(reserva.noIncluye) ? reserva.noIncluye : [];
       const incluye = Array.isArray(reserva.incluye) ? reserva.incluye : [];
       const infoAdicional = Array.isArray(reserva.informacionAdicional) ? reserva.informacionAdicional : [];
-      const pagosExtras = reserva.pagos && Array.isArray(reserva.pagos.extras) ? reserva.pagos.extras : [];
-      const pagoTotal = reserva.pagos && reserva.pagos.totalPendiente ? reserva.pagos.totalPendiente : null;
+      const paymentSummary = buildPaymentSummaryPrint(reserva);
       const qrUrl = buildQrUrl(buildVerificationUrl(reserva));
 
       return `
@@ -3790,45 +4245,45 @@
             </div>
           ` : ""}
 
-          <div class="pv-section">
-            <div class="pv-section-title">Información adicional</div>
-          <div class="pv-bottom">
-            <div class="pv-info-box">
-              ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div>${renderIncludesPrint(incluye)}<br>` : ""}
-              ${noIncluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Not included / additional services" : "Servicios no incluidos / adicionales")}</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
-              ${infoAdicional.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Recommendations" : "Recomendaciones")}</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
-            </div>
+          <div class="pv-section pv-info-section-v99">
+            <div class="pv-section-title">${esc(currentLanguage === "en" ? "Additional information" : "Información adicional")}</div>
+            <div class="pv-info-grid-v99">
+              ${incluye.length ? `
+                <div class="pv-info-card pv-included-card-v99">
+                  <div class="pv-card-title">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div>
+                  <div class="pv-card-body">${renderIncludesPrint(incluye)}</div>
+                </div>
+              ` : ""}
 
-            <div class="pv-side-box">
-              <div class="pv-assist-box">
-                <div class="pv-subtitle">Asistencia personalizada</div>
-                <div class="pv-assist-text">Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
-                <div class="pv-agent-name">${esc(reserva.agenteAsignado || t.noData)}</div>
-                <div class="pv-agent-phone">${esc(reserva.agenteTelefono || t.noData)}</div>
+              <div class="pv-info-card pv-assistance-card-v99">
+                <div class="pv-card-title">${esc(currentLanguage === "en" ? "Personal assistance" : "Asistencia personalizada")}</div>
+                <div class="pv-card-body pv-assistance-body-v99">
+                  <div>Para toda clase de asistencia durante su viaje puede contactarse con su agente de viajes asignado:</div>
+                  <div class="pv-agent-inline-v99"><strong>${esc(reserva.agenteAsignado || t.noData)}</strong><span>${esc(reserva.agenteTelefono || t.noData)}</span></div>
+                </div>
               </div>
 
-              ${(pagoTotal || pagosExtras.length) ? `
-                <div class="pv-payments-box">
-                  <div class="pv-subtitle">${esc(t.pendingPayments)}</div>
+              ${paymentSummary ? `
+                <div class="pv-info-card pv-payment-card-v99">
+                  <div class="pv-card-title">${esc(currentLanguage === "en" ? "Payment summary" : "Resumen de pagos")}</div>
+                  <div class="pv-card-body">${paymentSummary}</div>
+                </div>
+              ` : ""}
 
-                  ${pagoTotal ? `
-                    <div class="pv-payment-card">
-                      <div class="pv-payment-title">${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</div>
-                      ${Array.isArray(pagoTotal.detalle) ? `<div class="pv-payment-lines">${pagoTotal.detalle.map(d => `<div>${esc(d)}</div>`).join("")}</div>` : ""}
-                    </div>
-                  ` : ""}
+              ${noIncluye.length ? `
+                <div class="pv-info-card pv-excludes-card-v99">
+                  <div class="pv-card-title">${esc(currentLanguage === "en" ? "Not included / additional services" : "Servicios no incluidos / adicionales")}</div>
+                  <div class="pv-card-body"><ul class="pv-simple-list-v99">${noIncluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}</ul></div>
+                </div>
+              ` : ""}
 
-                  ${pagosExtras.map(p => `
-                    <div class="pv-payment-card">
-                      <div class="pv-payment-title">${esc(getLocalizedField(p.label, currentLanguage) || t.goToPayment)}</div>
-                      ${p.badge ? `<div class="pv-payment-badge">${esc(getLocalizedField(p.badge, currentLanguage) || p.badge)}</div>` : ""}
-                      ${Array.isArray(p.detalle) ? `<div class="pv-payment-lines">${p.detalle.map(d => `<div>${esc(d)}</div>`).join("")}</div>` : ""}
-                    </div>
-                  `).join("")}
+              ${infoAdicional.length ? `
+                <div class="pv-info-card pv-recommendations-card-v99">
+                  <div class="pv-card-title">${esc(currentLanguage === "en" ? "Recommendations" : "Recomendaciones")}</div>
+                  <div class="pv-card-body"><ul class="pv-simple-list-v99">${infoAdicional.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}</ul></div>
                 </div>
               ` : ""}
             </div>
-          </div>
           </div>
 
           <div class="pv-signature-section">
