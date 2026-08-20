@@ -2075,6 +2075,14 @@
     bindPassengerModalEvents();
 
     document.getElementById("mptMobileBarContinue").addEventListener("click", onContinueClick);
+    document.getElementById("mptMobileBarDetails")?.addEventListener("click", () => {
+      const summary = document.getElementById("mptSummary");
+      if (!summary) return;
+      summary.scrollIntoView({ behavior: "smooth", block: "start" });
+      summary.classList.add("is-mobile-highlighted");
+      window.setTimeout(() => summary.classList.remove("is-mobile-highlighted"), 1600);
+      trackLandingEvent("mobile_summary_details_click", {});
+    });
 
     document.querySelectorAll("[data-mpt-scroll-to]").forEach((btn) => {
       btn.addEventListener("click", () => {

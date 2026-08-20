@@ -1965,3 +1965,207 @@ button:focus-visible {
     scrollbar-gutter: auto;
   }
 }
+
+/* =========================================================
+   V6 — Mobile-only space and usability refinements.
+   Desktop remains unchanged.
+   ========================================================= */
+@media (max-width: 860px) {
+  /* Use the complete phone width for the main Machu Picchu configurator. */
+  #mptMainProduct {
+    width: calc(100% + 32px);
+    margin-left: -16px;
+  }
+
+  .mpt-main-product {
+    width: 100%;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .mpt-main-product__grid:has(.mpt-config-block) .mpt-main-product__media {
+    height: auto;
+    min-height: 0;
+  }
+
+  .mpt-main-product__grid:has(.mpt-config-block) .mpt-main-product__media img {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .mpt-main-product__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .mpt-main-product__body {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  /* Remove the redundant outer boxes; option cards remain visible. */
+  .mpt-config-block {
+    gap: 10px;
+    padding: 4px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .mpt-circuit-placeholder,
+  .mpt-circuit-date {
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .mpt-circuit-card,
+  .mpt-choice-card {
+    padding: 11px;
+  }
+
+  /* The traveler selector opens in the document flow and cannot be clipped. */
+  .mpt-traveler-menu {
+    position: static;
+    width: 100%;
+    max-width: none;
+    margin-top: 7px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+  }
+
+  .mpt-traveler-row {
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .mpt-traveler-row > span:first-child {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .mpt-traveler-row small {
+    line-height: 1.35;
+    white-space: normal;
+  }
+
+  .mpt-counter {
+    grid-template-columns: 30px 25px 30px;
+    gap: 3px;
+  }
+
+  .mpt-counter button {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Keep every price in one aligned column in the booking summary. */
+  .mpt-summary {
+    scroll-margin-top: calc(var(--mpt-sticky-offset, 82px) + 10px);
+    padding: 20px 16px;
+  }
+
+  .mpt-summary__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .mpt-summary__item > div {
+    min-width: 0;
+  }
+
+  .mpt-summary__item > strong {
+    min-width: max-content;
+    color: var(--color-primary, #062803);
+    font-size: 0.84rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.45;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .mpt-summary__item-meta {
+    overflow-wrap: anywhere;
+  }
+
+  .mpt-summary__totals-row strong,
+  .mpt-summary__total > :last-child {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .mpt-summary.is-mobile-highlighted {
+    box-shadow: 0 0 0 3px rgba(13, 235, 9, 0.55), var(--mct-shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.16));
+  }
+
+  .mpt-mobile-bar__total {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .mpt-mobile-bar__label-row {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .mpt-mobile-bar__label-row > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mpt-mobile-bar__label-row > button {
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background: transparent;
+    color: var(--color-primary, #062803);
+    font: 800 0.7rem/1.2 "Montserrat", sans-serif;
+    cursor: pointer;
+  }
+
+  .mpt-mobile-bar .mpt-btn {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 720px) {
+  #mptMainProduct {
+    width: calc(100% + 28px);
+    margin-left: -14px;
+  }
+}
+
+@media (max-width: 370px) {
+  .mpt-mobile-bar {
+    gap: 8px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .mpt-mobile-bar__total strong {
+    font-size: 1rem;
+  }
+
+  .mpt-mobile-bar .mpt-btn {
+    height: 44px;
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size: 0.9rem;
+  }
+
+  .mpt-summary__item {
+    gap: 7px;
+  }
+
+  .mpt-summary__item > strong {
+    font-size: 0.78rem;
+  }
+}
