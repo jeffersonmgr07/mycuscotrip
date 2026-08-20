@@ -477,6 +477,94 @@
       color: #475467;
     }
 
+    .include-group + .include-group {
+      margin-top: 20px;
+    }
+
+    .include-group-title {
+      margin: 0 0 10px;
+      color: var(--brand-primary);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .92rem;
+      font-weight: 800;
+    }
+
+    .include-checklist {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .include-checklist li {
+      position: relative;
+      margin: 0 0 11px;
+      padding-left: 39px;
+      color: #34463f;
+      line-height: 1.52;
+    }
+
+    .include-checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: .05em;
+      width: 25px;
+      height: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #073f12;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .pv-include-group + .pv-include-group {
+      margin-top: 5px;
+    }
+
+    .pv-include-group-title {
+      margin-bottom: 3px;
+      color: #253b2f;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .pv-include-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pv-include-list li {
+      position: relative;
+      margin: 0 0 2px;
+      padding-left: 14px;
+      line-height: 1.18;
+    }
+
+    .pv-include-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: .05em;
+      width: 10px;
+      height: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #073f12;
+      color: #fff;
+      font-size: 7px;
+      font-weight: 900;
+      line-height: 1;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     .agent-box {
       border: 1px solid var(--line);
       border-radius: 16px;
@@ -2087,7 +2175,7 @@
 
       @page {
         size: A4 portrait;
-        margin: 3mm 8mm 8mm;
+        margin: 15mm 8mm 8mm;
       }
     }
   
@@ -2271,7 +2359,7 @@
     @media print {
       @page {
         size: A4;
-        margin: 6mm 8mm 8mm 8mm;
+        margin: 15mm 8mm 8mm 8mm;
       }
 
       html,
@@ -2331,7 +2419,7 @@
         min-width: 0 !important;
         max-width: 280px !important;
         margin: 0 12px 0 0 !important;
-        padding: 9px 0 0 0 !important;
+        padding: 0 !important;
         transform: none !important;
         text-align: center !important;
       }
@@ -2557,7 +2645,7 @@
     /* Ajuste fino final: legibilidad de Datos de los turistas y bloque Travel Voucher */
     @media print {
       .pv-right {
-        padding-top: 14px !important;
+        padding-top: 0 !important;
       }
 
       .pv-tourists-grid-row > div {
@@ -2945,7 +3033,6 @@
 
       const locale = lang === "en" ? "en-US" : "es-PE";
       const formatted = date.toLocaleDateString(locale, {
-        weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric"
@@ -2963,6 +3050,53 @@
         return field[lang] || field.es || field.en || "";
       }
       return field;
+    }
+
+    function normalizeIncludeGroups(items) {
+      const source = Array.isArray(items) ? items : [];
+      const groups = [];
+      let loose = [];
+
+      source.forEach(item => {
+        if (item && typeof item === "object" && !Array.isArray(item) && Array.isArray(item.items)) {
+          if (loose.length) {
+            groups.push({ title: "", items: loose });
+            loose = [];
+          }
+          groups.push({
+            title: getLocalizedField(item.title || item.group || "", currentLanguage),
+            items: item.items.map(value => getLocalizedField(value, currentLanguage)).filter(Boolean)
+          });
+        } else {
+          const value = getLocalizedField(item, currentLanguage);
+          if (value) loose.push(value);
+        }
+      });
+
+      if (loose.length) groups.push({ title: "", items: loose });
+      return groups.filter(group => group.items.length);
+    }
+
+    function renderIncludesWeb(items) {
+      return normalizeIncludeGroups(items).map(group => `
+        <div class="include-group">
+          ${group.title ? `<div class="include-group-title">${esc(group.title)}</div>` : ""}
+          <ul class="include-checklist">
+            ${group.items.map(item => `<li>${esc(item)}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
+    }
+
+    function renderIncludesPrint(items) {
+      return normalizeIncludeGroups(items).map(group => `
+        <div class="pv-include-group">
+          ${group.title ? `<div class="pv-include-group-title">${esc(group.title)}</div>` : ""}
+          <ul class="pv-include-list">
+            ${group.items.map(item => `<li>${esc(item)}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
     }
 
 
@@ -3109,7 +3243,7 @@
       const parts = parseDateParts(value);
       if (!parts) return value || "";
       const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-      return `${String(parts.day).padStart(2, "0")}-${months[parts.month - 1] || String(parts.month).padStart(2, "0")}-${parts.year}`;
+      return `${String(parts.day).padStart(2, "0")} ${months[parts.month - 1] || String(parts.month).padStart(2, "0")} ${parts.year}`;
     }
 
     function getServiceNamePrint(nombre) {
@@ -3266,7 +3400,7 @@
                           <td>${esc(turista.tipoDocumento || t.noData)}</td>
                           <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                           <td>${esc(turista.nacionalidad || t.noData)}</td>
-                          <td>${esc(turista.fechaNacimiento || t.noData)}</td>
+                          <td>${esc(turista.fechaNacimiento || "")}</td>
                         </tr>
                         `;
                       }).join("")}
@@ -3325,7 +3459,7 @@
                         <tr>
                           <td>${esc(s.codigo || t.noData)}</td>
                           <td>${esc(getLocalizedField(s.nombre, currentLanguage) || t.noData)}</td>
-                          <td>${esc(s.fecha || t.noData)}</td>
+                          <td>${esc(formatServiceDatePrint(s.fecha) || t.noData)}</td>
                           <td>${esc(s.horaInicio || t.noData)}</td>
                           <td>${esc(s.horaFin || t.noData)}</td>
                           <td>${s.incluido
@@ -3382,9 +3516,7 @@
                 <h2>${esc(t.includes)}</h2>
               </div>
               <div class="card-body">
-                <ul class="list-clean">
-                  ${incluye.map(i => `<li>${esc(getLocalizedField(i, currentLanguage) || t.noData)}</li>`).join("")}
-                </ul>
+                ${renderIncludesWeb(incluye)}
               </div>
             </article>` : '<div></div>'}
 
@@ -3571,7 +3703,7 @@
                   <div role="cell">${esc(turista.tipoDocumento || t.noData)}</div>
                   <div role="cell">${esc(turista.numeroDocumento || turista.documento || t.noData)}</div>
                   <div role="cell">${esc(turista.nacionalidad || t.noData)}</div>
-                  <div role="cell">${esc(turista.fechaNacimiento || t.noData)}</div>
+                  <div role="cell">${esc(turista.fechaNacimiento || "")}</div>
                 </div>
                 `;
               }).join("")}
@@ -3662,7 +3794,7 @@
             <div class="pv-section-title">Información adicional</div>
           <div class="pv-bottom">
             <div class="pv-info-box">
-              ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div><div>${incluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
+              ${incluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Included services" : "Servicios incluidos")}</div>${renderIncludesPrint(incluye)}<br>` : ""}
               ${noIncluye.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Not included / additional services" : "Servicios no incluidos / adicionales")}</div><div>${noIncluye.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div><br>` : ""}
               ${infoAdicional.length ? `<div class="pv-subtitle">${esc(currentLanguage === "en" ? "Recommendations" : "Recomendaciones")}</div><div>${infoAdicional.map(i => `• ${esc(getLocalizedField(i, currentLanguage) || t.noData)}`).join("<br>")}</div>` : ""}
             </div>
