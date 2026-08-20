@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "updatedAt": "2026-08-19",
+  "version": "2.1.0-es",
+  "updatedAt": "2026-08-20",
   "landingId": "machu-picchu-y-tours-peru",
   "currency": "USD",
   "priceNote": "Tarifas web directas preparadas para soportar un cupón de 15%, la comisión de PayPal y el retiro acumulado. La disponibilidad de circuitos se actualiza únicamente en mainProduct.circuitSelection.options[].unavailableRanges.",

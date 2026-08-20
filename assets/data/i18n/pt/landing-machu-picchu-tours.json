@@ -1,9 +1,9 @@
 {
-  "version": "1.3.0",
-  "updatedAt": "2026-08-03",
+  "version": "2.1.0-pt",
+  "updatedAt": "2026-08-20",
   "landingId": "machu-picchu-y-tours-peru",
   "currency": "USD",
-  "priceNote": "Preço base em USD. Altere somente currency e adultPrice se a tarifa comercial for atualizada.",
+  "priceNote": "Tarifas diretas da web preparadas para suportar um cupom de 15%, as taxas do PayPal e saques acumulados. A disponibilidade dos circuitos é atualizada somente em mainProduct.circuitSelection.options[].unavailableRanges.",
   "whatsapp": {
     "phone": "51900608980",
     "messageTemplate": "Olá, desejo confirmar minha seleção de passeios. Código: {reservationCode}. {servicesSummary}. Somos {totalPassengers} viajantes. Total: {currency} {total}. Origem: {source}."
@@ -13,12 +13,13 @@
     "documentationNote": "Os dados de cada passageiro devem coincidir exatamente com o documento de identidade ou passaporte válido na data da viagem."
   },
   "childPolicy": {
-    "minAge": 3,
-    "maxAge": 11,
-    "infantMaxAge": 2,
-    "infantPricingAvailable": false,
-    "infantNote": "Bebês de 0 a 2 anos não precisam de ingresso para Machu Picchu nem para os passeios adicionais, mas devem ser registrados na reserva. A tarifa para bebês será configurada quando estiver disponível.",
-    "documentationMessage": "A tarifa infantil é válida para crianças de {minAge} a {maxAge} anos completos na data da viagem. A idade será verificada pelo documento de identidade ou passaporte."
+    "minAge": 2,
+    "maxAge": 12,
+    "infantMaxAge": 1,
+    "infantPricingAvailable": true,
+    "infantNote": "Bebês menores de 2 anos viajam gratuitamente e sem assento próprio, mas devem ser cadastrados na reserva.",
+    "documentationMessage": "A tarifa infantil se aplica a viajantes de {minAge} a {maxAge} anos completos na data da viagem. A idade será verificada com o documento de identidade ou passaporte da criança.",
+    "infantPrice": 0
   },
   "destinationGroups": {
     "cusco": [
@@ -61,10 +62,10 @@
       "../../assets/img/tours/machu-picchu-full-day/2.jpg"
     ],
     "shortDescription": "Visite Machu Picchu em um único dia saindo de Cusco, com trem turístico, ônibus oficiais, ingresso, guia profissional e assistência durante toda a experiência.",
-    "adultPrice": 399,
+    "adultPrice": 399.9,
     "childPricing": {
-      "type": "fixed_discount",
-      "discountAmount": 80
+      "type": "fixed",
+      "price": 335.9
     },
     "includes": [
       "Embarque no hotel ou endereço em Cusco",
@@ -83,20 +84,118 @@
         "default": true
       },
       {
-        "id": "standard-lunch",
-        "label": "Almoço padrão",
-        "pricePerPerson": 20,
-        "default": false
-      },
-      {
         "id": "tinkuy-buffet",
-        "label": "Buffet Tinkuy no Belmond Sanctuary Lodge",
-        "pricePerPerson": 45,
+        "label": "Almoço buffet Tinkuy no Belmond Sanctuary Lodge",
+        "pricePerPerson": 71.9,
         "default": false
       }
     ],
     "mealSelectionType": "single",
-    "mealDisclaimer": "A alimentação não está incluída no preço base. Selecione apenas uma opção."
+    "mealDisclaimer": "O almoço não está incluído na tarifa base. Selecione apenas uma opção.",
+    "childPrice": 335.9,
+    "circuitSelection": {
+      "required": true,
+      "updatedAt": "2026-08-19",
+      "availabilityNote": "A disponibilidade é inserida manualmente. Os intervalos de datas são inclusivos e podem ser atualizados diariamente neste arquivo.",
+      "options": [
+        {
+          "id": "circuit-1",
+          "label": "Circuito 1 – Terraço Superior",
+          "shortLabel": "Circuito 1",
+          "description": "Vistas panorâmicas clássicas a partir do terraço superior de Machu Picchu.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Serviço privado para circuito alternativo",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-08-30",
+              "reason": "Esgotado"
+            }
+          ]
+        },
+        {
+          "id": "circuit-2",
+          "label": "Circuito 2 – Rota Clássica",
+          "shortLabel": "Circuito 2",
+          "description": "Rota clássica pelos principais setores da cidadela.",
+          "groupSupplement": 0,
+          "supplementLabel": "Incluído na tarifa base",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-30",
+              "reason": "Esgotado"
+            }
+          ]
+        },
+        {
+          "id": "circuit-3",
+          "label": "Circuito 3 – Realeza Projetada",
+          "shortLabel": "Circuito 3",
+          "description": "Rota pela parte baixa e pelos espaços ligados à realeza inca.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Serviço privado para circuito alternativo",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-15",
+              "reason": "Esgotado"
+            }
+          ]
+        }
+      ]
+    },
+    "trainSelection": {
+      "outbound": [
+        {
+          "id": "voyager-outbound",
+          "label": "The Voyager Bimodal",
+          "schedule": "04:10 – 08:01",
+          "description": "Serviço turístico incluído de Cusco até Machu Picchu Pueblo.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "prime-outbound",
+          "label": "The Prime by Inca Rail",
+          "schedule": "Horário sujeito a confirmação",
+          "description": "Upgrade panorâmico com vagão ao ar livre para apreciar o Vale Sagrado.",
+          "adultSupplement": 64.9,
+          "childSupplement": 31,
+          "badge": "Recomendado"
+        }
+      ],
+      "return": [
+        {
+          "id": "voyager-return",
+          "label": "The Voyager Bimodal",
+          "schedule": "21:30 – 01:15",
+          "description": "Retorno noturno incluído até Cusco.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "early-return",
+          "label": "Retorno antecipado",
+          "schedule": "Saída às 19:00",
+          "description": "Retorne aproximadamente 2 horas e 30 minutos antes e evite chegar tão tarde a Cusco.",
+          "adultSupplement": 42.9,
+          "childSupplement": 21
+        }
+      ],
+      "bundles": [
+        {
+          "id": "prime-early-bundle",
+          "outboundId": "prime-outbound",
+          "returnId": "early-return",
+          "label": "The Prime + retorno antecipado",
+          "adultSupplement": 105.9,
+          "childSupplement": 53
+        }
+      ]
+    }
   },
   "addons": [
     {

@@ -5,6 +5,7 @@
   const LANDING_NAME = "Machu Picchu + Tours in Peru";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
+  const MIN_BOOKING_ADVANCE_DAYS = 2;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 
@@ -12,7 +13,15 @@
     data: null,
     adults: 1,
     children: 0,
-    mainProduct: { selected: true, date: null, mealOptionId: "no-meal" },
+    infants: 0,
+    mainProduct: {
+      selected: true,
+      date: null,
+      circuitId: null,
+      outboundTrainId: null,
+      returnTrainId: null,
+      mealOptionId: "no-meal"
+    },
     addons: {},
     coupon: null,
     couponDraftCode: "",
@@ -82,14 +91,6 @@
     return Math.round((Number(value) || 0) * 100) / 100;
   }
 
-  function qtyOptions(min, max, selected) {
-    let html = "";
-    for (let n = min; n <= max; n += 1) {
-      html += `<option value="${n}" ${n === selected ? "selected" : ""}>${n}</option>`;
-    }
-    return html;
-  }
-
   function parseISODate(value) {
     if (!value) return null;
     const parts = String(value).split("-").map(Number);
@@ -102,6 +103,45 @@
     const m = String(date.getMonth() + 1).padStart(2, "0");
     const d = String(date.getDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
+  }
+
+  function getMinimumBookingDate() {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + MIN_BOOKING_ADVANCE_DAYS);
+    return date;
+  }
+
+  function travelerCountLabel(count, singular, plural) {
+    return `${count} ${count === 1 ? singular : plural}`;
+  }
+
+  function getTravelerSummaryLabel() {
+    return [
+      travelerCountLabel(state.adults, "adult", "adults"),
+      state.children ? travelerCountLabel(state.children, "child", "children") : "",
+      state.infants ? travelerCountLabel(state.infants, "infant", "infants") : ""
+    ].filter(Boolean).join(", ");
+  }
+
+  function updateTravelerPickerUI() {
+    const summary = document.getElementById("mptTravelerSummary");
+    if (summary) summary.textContent = getTravelerSummaryLabel();
+
+    const limits = {
+      adults: { min: 1, max: 10 },
+      children: { min: 0, max: 10 },
+      infants: { min: 0, max: 5 }
+    };
+    Object.keys(limits).forEach((type) => {
+      const value = Number(state[type] || 0);
+      const output = document.querySelector(`[data-traveler-value="${type}"]`);
+      if (output) output.textContent = String(value);
+      document.querySelectorAll(`[data-traveler-type="${type}"]`).forEach((button) => {
+        const delta = Number(button.dataset.delta || 0);
+        button.disabled = delta < 0 ? value <= limits[type].min : value >= limits[type].max;
+      });
+    });
   }
 
   function formatDateSpanish(value) {
@@ -243,6 +283,7 @@
         updatedAt: Date.now(),
         adults: state.adults,
         children: state.children,
+        infants: state.infants,
         mainProduct: state.mainProduct,
         addons: state.addons,
         coupon: state.coupon,
@@ -265,6 +306,7 @@
       }
       if (typeof snapshot.adults === "number") state.adults = snapshot.adults;
       if (typeof snapshot.children === "number") state.children = snapshot.children;
+      if (typeof snapshot.infants === "number") state.infants = snapshot.infants;
       if (snapshot.mainProduct) state.mainProduct = { ...state.mainProduct, ...snapshot.mainProduct };
       Object.keys(snapshot.addons || {}).forEach((id) => {
         if (state.addons[id]) state.addons[id] = { ...state.addons[id], ...snapshot.addons[id] };
@@ -286,6 +328,50 @@
   }
 
   // ---------- Core reusable business logic ----------
+
+  function getPayingPassengerCount() {
+    return state.adults + state.children;
+  }
+
+  function getTotalTravelerCount() {
+    return getPayingPassengerCount() + state.infants;
+  }
+
+  function getChildPrice(product) {
+    if (Number.isFinite(Number(product?.childPrice))) return Number(product.childPrice);
+    if (String(product?.childPricing?.type || "") === "fixed" && Number.isFinite(Number(product?.childPricing?.price))) {
+      return Number(product.childPricing.price);
+    }
+    const childDiscount = Number(product?.childPricing?.discountAmount || 0);
+    return Math.max(0, Number(product?.adultPrice || 0) - childDiscount);
+  }
+
+  function findSelectedCircuit(product) {
+    return (product?.circuitSelection?.options || []).find((item) => item.id === state.mainProduct.circuitId) || null;
+  }
+
+  function getCircuitAvailability(circuit, dateStr) {
+    if (!circuit || !dateStr) return { available: false, reason: "Select a date" };
+    const range = (circuit.unavailableRanges || []).find((item) => dateStr >= item.from && dateStr <= item.to);
+    return range ? { available: false, reason: range.reason || "Unavailable" } : { available: true, reason: "Available" };
+  }
+
+  function getSelectedTrainPricing(product) {
+    const config = product?.trainSelection || {};
+    const outbound = (config.outbound || []).find((item) => item.id === state.mainProduct.outboundTrainId) || (config.outbound || [])[0] || null;
+    const returnTrain = (config.return || []).find((item) => item.id === state.mainProduct.returnTrainId) || (config.return || [])[0] || null;
+    const bundle = (config.bundles || []).find((item) => item.outboundId === outbound?.id && item.returnId === returnTrain?.id) || null;
+    const adultSupplement = Number(bundle?.adultSupplement ?? (Number(outbound?.adultSupplement || 0) + Number(returnTrain?.adultSupplement || 0)));
+    const childSupplement = Number(bundle?.childSupplement ?? (Number(outbound?.childSupplement || 0) + Number(returnTrain?.childSupplement || 0)));
+    return {
+      outbound,
+      returnTrain,
+      bundle,
+      adultSupplement,
+      childSupplement,
+      total: round2((state.adults * adultSupplement) + (state.children * childSupplement))
+    };
+  }
 
   function getSelectedToursWithDates() {
     const list = [];
@@ -347,17 +433,33 @@
     clearAllFieldErrors();
     let valid = true;
     const selectedTours = getSelectedToursWithDates();
-    const todayStr = formatDateISO(new Date());
+    const minimumBookingDateStr = formatDateISO(getMinimumBookingDate());
 
     selectedTours.forEach((t) => {
       if (!t.date) {
         valid = false;
         if (!silent) setFieldError(t.id, "Select a date to continue.");
-      } else if (t.date < todayStr) {
+      } else if (t.date < minimumBookingDateStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "The date cannot be earlier than today.");
+        if (!silent) setFieldError(t.id, "Book at least 2 days in advance.");
       }
     });
+
+    if (state.mainProduct.selected && state.mainProduct.date) {
+      const circuits = state.data?.mainProduct?.circuitSelection?.options || [];
+      const availableCircuits = circuits.filter((circuit) => getCircuitAvailability(circuit, state.mainProduct.date).available);
+      const selectedCircuit = findSelectedCircuit(state.data.mainProduct);
+      if (!availableCircuits.length) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "No circuits are available for this date. Select another day.");
+      } else if (!selectedCircuit) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "Select one of the available circuits.");
+      } else if (!getCircuitAvailability(selectedCircuit, state.mainProduct.date).available) {
+        valid = false;
+        if (!silent) setFieldError("circuit-selection", "The selected circuit is not available for this date.");
+      }
+    }
 
     const dated = selectedTours.filter((t) => t.date);
     const byDate = {};
@@ -390,19 +492,22 @@
   function calculateBookingSummary() {
     const data = state.data;
     const currency = data.currency;
-    const totalPax = state.adults + state.children;
+    const payingPax = getPayingPassengerCount();
     const lines = [];
     let subtotal = 0;
 
     if (state.mainProduct.selected) {
       const p = data.mainProduct;
-      const childDiscount = Number(p.childPricing?.discountAmount || 0);
-      const childPrice = Math.max(0, p.adultPrice - childDiscount);
+      const childPrice = getChildPrice(p);
       const adultsTotal = state.adults * p.adultPrice;
       const childrenTotal = state.children * childPrice;
       const meal = (p.mealOptions || []).find((m) => m.id === state.mainProduct.mealOptionId) || p.mealOptions[0];
-      const mealTotal = (meal?.pricePerPerson || 0) * totalPax;
-      const lineTotal = adultsTotal + childrenTotal + mealTotal;
+      const mealTotal = (meal?.pricePerPerson || 0) * payingPax;
+      const trainPricing = getSelectedTrainPricing(p);
+      const selectedCircuit = findSelectedCircuit(p);
+      const circuitAvailable = selectedCircuit && getCircuitAvailability(selectedCircuit, state.mainProduct.date).available;
+      const circuitSupplement = circuitAvailable ? Number(selectedCircuit.groupSupplement || 0) : 0;
+      const lineTotal = adultsTotal + childrenTotal + mealTotal + trainPricing.total + circuitSupplement;
       subtotal += lineTotal;
       lines.push({
         id: p.id,
@@ -410,6 +515,12 @@
         date: state.mainProduct.date,
         adultPrice: p.adultPrice,
         childPrice,
+        circuitLabel: selectedCircuit?.label || null,
+        circuitSupplement,
+        outboundTrainLabel: trainPricing.outbound?.label || null,
+        returnTrainLabel: trainPricing.returnTrain?.label || null,
+        trainBundleLabel: trainPricing.bundle?.label || null,
+        trainTotal: trainPricing.total,
         mealLabel: meal && meal.pricePerPerson > 0 ? meal.label : null,
         mealTotal,
         lineTotal
@@ -419,12 +530,12 @@
     (data.addons || []).forEach((addon) => {
       const sel = state.addons[addon.id];
       if (!sel || !sel.selected) return;
-      const baseTotal = addon.pricePerPerson * totalPax;
+      const baseTotal = addon.pricePerPerson * payingPax;
       let extrasTotal = 0;
       const extraLabels = [];
       (addon.extras || []).forEach((extra) => {
         if (sel.extras && sel.extras[extra.id]) {
-          extrasTotal += extra.pricePerPerson * totalPax;
+          extrasTotal += extra.pricePerPerson * payingPax;
           extraLabels.push(extra.label);
         }
       });
@@ -456,6 +567,7 @@
       currency,
       adults: state.adults,
       children: state.children,
+      infants: state.infants,
       lines,
       subtotal: round2(subtotal),
       discount,
@@ -587,13 +699,95 @@
 
   // ---------- Rendering: main product ----------
 
+  function formatTrainSupplement(option, currency) {
+    const adult = Number(option?.adultSupplement || 0);
+    const child = Number(option?.childSupplement || 0);
+    if (!adult && !child) return "Included";
+    return `+${formatCurrency(adult, currency)} adult · +${formatCurrency(child, currency)} child`;
+  }
+
+  function renderTrainOptions(options, selectedId, name, currency) {
+    return (options || []).map((option) => `
+      <label class="mpt-choice-card${selectedId === option.id ? " is-selected" : ""}">
+        <input type="radio" name="${escapeHtml(name)}" value="${escapeHtml(option.id)}" ${selectedId === option.id ? "checked" : ""}/>
+        <span class="mpt-choice-card__content">
+          <span class="mpt-choice-card__title-row">
+            <strong>${escapeHtml(option.label)}</strong>
+            ${option.badge ? `<small class="mpt-choice-card__badge">${escapeHtml(option.badge)}</small>` : ""}
+          </span>
+          <small>${escapeHtml(option.schedule || "Schedule subject to confirmation")}</small>
+          <span>${escapeHtml(option.description || "")}</span>
+          <b>${escapeHtml(formatTrainSupplement(option, currency))}</b>
+        </span>
+      </label>
+    `).join("");
+  }
+
+  function renderCircuitOptions() {
+    const target = document.getElementById("mptCircuitOptions");
+    if (!target) return;
+    const product = state.data.mainProduct;
+    const circuits = product.circuitSelection?.options || [];
+    const dateStr = state.mainProduct.date;
+    if (!dateStr) {
+      state.mainProduct.circuitId = null;
+      target.innerHTML = `<div class="mpt-circuit-placeholder"><i class="fas fa-calendar-day"></i><span>Select your visit date first to check the available circuits.</span></div>`;
+      return;
+    }
+
+    const selectedCircuit = findSelectedCircuit(product);
+    if (selectedCircuit && !getCircuitAvailability(selectedCircuit, dateStr).available) {
+      state.mainProduct.circuitId = null;
+    }
+    const availableCount = circuits.filter((circuit) => getCircuitAvailability(circuit, dateStr).available).length;
+    const payingPax = Math.max(1, getPayingPassengerCount());
+
+    target.innerHTML = `
+      <div class="mpt-circuit-date"><i class="fas fa-ticket"></i> Availability for <strong>${escapeHtml(formatDateSpanish(dateStr))}</strong></div>
+      <div class="mpt-circuit-grid" role="radiogroup" aria-label="Machu Picchu circuit">
+        ${circuits.map((circuit) => {
+          const status = getCircuitAvailability(circuit, dateStr);
+          const supplement = Number(circuit.groupSupplement || 0);
+          const selected = state.mainProduct.circuitId === circuit.id;
+          const priceText = supplement > 0
+            ? `+${formatCurrency(supplement, state.data.currency)} per booking · ${formatCurrency(supplement / payingPax, state.data.currency)} per paying traveler in this group`
+            : "Included in the base price";
+          return `
+            <label class="mpt-circuit-card${selected ? " is-selected" : ""}${status.available ? "" : " is-disabled"}">
+              <input type="radio" name="mptCircuit" value="${escapeHtml(circuit.id)}" ${selected ? "checked" : ""} ${status.available ? "" : "disabled"}/>
+              <span class="mpt-circuit-card__body">
+                <span class="mpt-circuit-card__head">
+                  <strong>${escapeHtml(circuit.label)}</strong>
+                  <small class="${status.available ? "is-available" : "is-unavailable"}">${escapeHtml(status.reason)}</small>
+                </span>
+                <span>${escapeHtml(circuit.description || "")}</span>
+                <b>${escapeHtml(priceText)}</b>
+              </span>
+            </label>`;
+        }).join("")}
+      </div>
+      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>No circuits available</strong><span>Circuits 1, 2 and 3 are sold out for this date. Choose another day to continue.</span></div></div>`}
+    `;
+
+    target.querySelectorAll('input[name="mptCircuit"]').forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        if (!event.target.checked) return;
+        state.mainProduct.circuitId = event.target.value;
+        setFieldError("circuit-selection", "");
+        renderCircuitOptions();
+        renderSummary();
+        trackLandingEvent("machu_picchu_circuit_selected", { circuit_id: event.target.value, date: state.mainProduct.date });
+      });
+    });
+  }
+
   function renderMainProduct() {
     const p = state.data.mainProduct;
     const currency = state.data.currency;
     const childPolicy = state.data.childPolicy;
-    const childDiscount = Number(p.childPricing?.discountAmount || 0);
-    const childPrice = Math.max(0, p.adultPrice - childDiscount);
+    const childPrice = getChildPrice(p);
     const container = document.getElementById("mptMainProduct");
+    if (state.pickers[p.id]?.destroy) state.pickers[p.id].destroy();
 
     container.innerHTML = `
       <div class="mpt-main-product">
@@ -605,31 +799,94 @@
           <div class="mpt-main-product__body">
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
-            <div class="mpt-price-row">
-              <div class="mpt-price-pill"><span>Adult</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
-              <div class="mpt-price-pill"><span>Child (${childPolicy.minAge}-${childPolicy.maxAge} years)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
+            <div class="mpt-rate-tabs" aria-label="Rates by age">
+              <div class="mpt-rate-tab mpt-rate-tab--featured">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Adult</small><strong>${formatCurrency(p.adultPrice, currency)}</strong><em>Ages 13 and over</em></span>
+              </div>
+              <div class="mpt-rate-tab">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-child-reaching" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Child</small><strong>${formatCurrency(childPrice, currency)}</strong><em>Ages ${childPolicy.minAge}-${childPolicy.maxAge}</em></span>
+              </div>
+              <div class="mpt-rate-tab">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-baby" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Infant</small><strong>Free</strong><em>Under age 2, without a seat</em></span>
+              </div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Date</label>
                 <input id="${dateInputId(p.id)}" type="text" placeholder="Select a date" readonly aria-describedby="${errorId(p.id)}"/>
+                <small class="mpt-field-help"><i class="fas fa-clock" aria-hidden="true"></i> Book at least 2 days in advance.</small>
                 <span class="mpt-field-error" id="${errorId(p.id)}" role="alert"></span>
               </div>
               <div class="mpt-field">
-                <label for="mptAdults">Adults</label>
-                <select id="mptAdults" aria-label="Number of adults for the entire booking">${qtyOptions(1, 10, state.adults)}</select>
-              </div>
-              <div class="mpt-field">
-                <label for="mptChildren">Children</label>
-                <select id="mptChildren" aria-label="Number of children for the entire booking">${qtyOptions(0, 10, state.children)}</select>
+                <label id="mptTravelerLabel">Travelers</label>
+                <details class="mpt-traveler-picker" id="mptTravelerPicker">
+                  <summary aria-labelledby="mptTravelerLabel mptTravelerSummary">
+                    <span class="mpt-traveler-picker__summary"><i class="fas fa-users" aria-hidden="true"></i><span id="mptTravelerSummary">${escapeHtml(getTravelerSummaryLabel())}</span></span>
+                    <i class="fas fa-chevron-down mpt-traveler-picker__chevron" aria-hidden="true"></i>
+                  </summary>
+                  <div class="mpt-traveler-menu" role="group" aria-label="Number of travelers">
+                    <div class="mpt-traveler-row">
+                      <span><strong>Adults</strong><small>Ages 13 and over</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="adults" data-delta="-1" aria-label="Remove one adult"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="adults" aria-live="polite">${state.adults}</output>
+                        <button type="button" data-traveler-type="adults" data-delta="1" aria-label="Add one adult"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                    <div class="mpt-traveler-row">
+                      <span><strong>Children</strong><small>Ages 2 to 12</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="children" data-delta="-1" aria-label="Remove one child"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="children" aria-live="polite">${state.children}</output>
+                        <button type="button" data-traveler-type="children" data-delta="1" aria-label="Add one child"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                    <div class="mpt-traveler-row">
+                      <span><strong>Infants</strong><small>Under age 2 · free</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="infants" data-delta="-1" aria-label="Remove one infant"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="infants" aria-live="polite">${state.infants}</output>
+                        <button type="button" data-traveler-type="infants" data-delta="1" aria-label="Add one infant"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </details>
               </div>
             </div>
+            <section class="mpt-config-block" aria-labelledby="mptCircuitTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">1</span><div><strong id="mptCircuitTitle">Choose your Machu Picchu circuit</strong><small>Options are enabled according to the selected date.</small></div></div>
+              </div>
+              <div id="mptCircuitOptions"></div>
+              <span class="mpt-field-error" id="${errorId("circuit-selection")}" role="alert"></span>
+            </section>
             <div>
               <strong style="font-size:0.85rem;">Includes:</strong>
               <ul class="mpt-includes">${(p.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
             </div>
-            <div>
-              <strong style="font-size:0.85rem;">Meals (optional):</strong>
+            <section class="mpt-config-block" aria-labelledby="mptTrainTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">2</span><div><strong id="mptTrainTitle">Customize your trains</strong><small>The Voyager is included. You can upgrade one or both journeys.</small></div></div>
+              </div>
+              <div class="mpt-train-groups">
+                <fieldset class="mpt-choice-group">
+                  <legend>Outbound train</legend>
+                  ${renderTrainOptions(p.trainSelection?.outbound, state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
+                </fieldset>
+                <fieldset class="mpt-choice-group">
+                  <legend>Return train</legend>
+                  ${renderTrainOptions(p.trainSelection?.return, state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
+                </fieldset>
+              </div>
+              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> When you select <strong>The Prime for the outbound journey</strong> and the <strong>early 19:00 return</strong>, the system automatically applies the special combined price: <strong>+US$105.90 per adult and +US$53.00 per child</strong>.</p>
+            </section>
+            <section class="mpt-config-block" aria-labelledby="mptMealTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">3</span><div><strong id="mptMealTitle">Add a dining experience</strong><small>Lunch is optional and is calculated per paying traveler.</small></div></div>
+              </div>
               <div class="mpt-meal-options" role="radiogroup" aria-label="Meal options">
                 ${(p.mealOptions || []).map((m) => `
                   <label class="mpt-meal-option">
@@ -639,21 +896,43 @@
                 `).join("")}
               </div>
               <p style="color:var(--mct-muted,#6c7a76); font-size:0.78rem; margin-top:6px;">${escapeHtml(p.mealDisclaimer || "")}</p>
-            </div>
+            </section>
           </div>
         </div>
       </div>
     `;
 
-    document.getElementById("mptAdults").addEventListener("change", (e) => {
-      state.adults = Math.max(1, Number(e.target.value) || 1);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children });
-      renderSummary();
+    container.querySelectorAll("[data-traveler-type]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.travelerType;
+        const delta = Number(button.dataset.delta || 0);
+        const limits = type === "adults" ? { min: 1, max: 10 } : type === "infants" ? { min: 0, max: 5 } : { min: 0, max: 10 };
+        state[type] = Math.min(limits.max, Math.max(limits.min, Number(state[type] || 0) + delta));
+        updateTravelerPickerUI();
+        trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
+        renderCircuitOptions();
+        renderSummary();
+      });
     });
-    document.getElementById("mptChildren").addEventListener("change", (e) => {
-      state.children = Math.max(0, Number(e.target.value) || 0);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children });
-      renderSummary();
+    updateTravelerPickerUI();
+    document.getElementById("mptTravelerPicker").addEventListener("toggle", (event) => {
+      if (event.currentTarget.open) trackLandingEvent("traveler_picker_opened", {});
+    });
+    container.querySelectorAll('input[name="mptOutboundTrain"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if (!e.target.checked) return;
+        state.mainProduct.outboundTrainId = e.target.value;
+        renderMainProduct();
+        renderSummary();
+      });
+    });
+    container.querySelectorAll('input[name="mptReturnTrain"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if (!e.target.checked) return;
+        state.mainProduct.returnTrainId = e.target.value;
+        renderMainProduct();
+        renderSummary();
+      });
     });
     container.querySelectorAll('input[name="mptMeal"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
@@ -666,20 +945,22 @@
 
     const dateInput = document.getElementById(dateInputId(p.id));
     state.pickers[p.id] = window.flatpickr(dateInput, {
-      minDate: "today",
+      minDate: getMinimumBookingDate(),
       dateFormat: "Y-m-d",
       altInput: true,
-      altFormat: "M j, Y",
-      locale: "default",
+      altFormat: "d M Y",
+      locale: "en",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
+        renderCircuitOptions();
         trackLandingEvent("main_product_date_selected", { date: dateStr });
         validateAllDates();
         renderSummary();
       }
     });
     if (state.mainProduct.date) dateInput.value = state.mainProduct.date;
+    renderCircuitOptions();
   }
 
   // ---------- Rendering: add-ons ----------
@@ -701,7 +982,7 @@
               <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / person</div>
             </div>
             <button class="mpt-card__disclosure" type="button" data-addon-expand data-addon-id="${escapeHtml(addon.id)}" aria-expanded="${sel.selected ? "true" : "false"}" aria-controls="${escapeHtml(detailsId)}">
-              <span>See what is included</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
+              <span>See what's included</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="mpt-card__expandable" id="${escapeHtml(detailsId)}">
               <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
@@ -737,11 +1018,11 @@
       const sel = state.addons[addon.id];
       const dateInput = document.getElementById(dateInputId(addon.id));
       state.pickers[addon.id] = window.flatpickr(dateInput, {
-        minDate: "today",
+        minDate: getMinimumBookingDate(),
         dateFormat: "Y-m-d",
         altInput: true,
-        altFormat: "M j, Y",
-        locale: "default",
+        altFormat: "d M Y",
+        locale: "en",
         defaultDate: sel.date || undefined,
         onChange(selectedDates, dateStr) {
           state.addons[addon.id].date = dateStr || null;
@@ -803,21 +1084,31 @@
     const content = document.getElementById("mptSummaryContent");
     const currency = summary.currency;
 
-    const linesHtml = summary.lines.map((line) => `
+    const linesHtml = summary.lines.map((line) => {
+      const meta = [
+        formatDateSpanish(line.date),
+        line.circuitLabel,
+        line.trainBundleLabel || ([line.outboundTrainLabel, line.returnTrainLabel].filter(Boolean).join(" + ") || null),
+        line.mealLabel,
+        line.extras && line.extras.length ? line.extras.join(", ") : null
+      ].filter(Boolean).join(" · ");
+      return `
       <div class="mpt-summary__item">
         <div>
           <div class="mpt-summary__item-name">${escapeHtml(line.title)}</div>
-          <div class="mpt-summary__item-meta">${escapeHtml(formatDateSpanish(line.date))}${line.mealLabel ? ` · ${escapeHtml(line.mealLabel)}` : ""}${line.extras && line.extras.length ? ` · ${line.extras.map(escapeHtml).join(", ")}` : ""}</div>
+          <div class="mpt-summary__item-meta">${escapeHtml(meta)}</div>
         </div>
         <strong>${formatCurrency(line.lineTotal, currency)}</strong>
       </div>
-    `).join("");
+    `;
+    }).join("");
 
     content.innerHTML = `
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
         <span><i class="fas fa-user"></i> ${summary.adults} adult(s)</span>
         <span><i class="fas fa-child"></i> ${summary.children} child(ren)</span>
+        ${summary.infants ? `<span><i class="fas fa-baby"></i> ${summary.infants} infant(s)</span>` : ""}
       </div>
       <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">You have not added any experiences yet.</p>'}</div>
 
@@ -835,7 +1126,7 @@
       </div>
 
       <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continue with my booking</button>
-      <p class="mpt-availability-note">Dates and times are subject to availability. Our team will verify tickets, trains and operating conditions before issuing the services.</p>
+      <p class="mpt-availability-note">Dates and times are subject to availability. Our team will verify admission tickets, trains and operating conditions before issuing the services.</p>
     `;
 
     renderOperationalWarnings(summary.warnings);
@@ -905,7 +1196,7 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "selectCountry": "Select country", "selectCode": "Select code", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay", "saving": "Creating your reservation…", "connecting": "Connecting securely to PayPal…", "summaryTitle": "Booking summary", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "The date cannot be earlier than today.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "The payment was not completed. Your booking is still saved and you can try again.", "processingTitle": "We are preparing your booking"};
+  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "selectCountry": "Select country", "selectCode": "Select code", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay", "saving": "Creating your reservation…", "connecting": "Connecting securely to PayPal…", "summaryTitle": "Booking summary", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "Book at least 2 days in advance.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "The payment was not completed. Your booking is still saved and you can try again.", "processingTitle": "We are preparing your booking"};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
@@ -997,15 +1288,21 @@
     if (!reservation || !state.data) return;
     if (Number(reservation.adults) > 0) state.adults = Number(reservation.adults);
     if (Number.isFinite(Number(reservation.children))) state.children = Number(reservation.children);
+    if (Number.isFinite(Number(reservation.infants))) state.infants = Number(reservation.infants);
     const services = Array.isArray(reservation.services) ? reservation.services : [];
     const mainId = state.data.mainProduct.id;
     const mainService = services.find((service) => String(service.id || service.productId || "") === String(mainId));
     if (mainService) {
       state.mainProduct.selected = true;
       state.mainProduct.date = mainService.date || null;
+      const configuration = mainService.configuration || {};
+      if (configuration.circuitId) state.mainProduct.circuitId = configuration.circuitId;
+      if (configuration.outboundTrainId) state.mainProduct.outboundTrainId = configuration.outboundTrainId;
+      if (configuration.returnTrainId) state.mainProduct.returnTrainId = configuration.returnTrainId;
+      if (configuration.mealOptionId) state.mainProduct.mealOptionId = configuration.mealOptionId;
       const selectedMealLabel = Array.isArray(mainService.extras) ? mainService.extras[0] : "";
       const meal = (state.data.mainProduct.mealOptions || []).find((option) => option.label === selectedMealLabel);
-      if (meal) state.mainProduct.mealOptionId = meal.id;
+      if (!configuration.mealOptionId && meal) state.mainProduct.mealOptionId = meal.id;
     }
     (state.data.addons || []).forEach((addon) => {
       const service = services.find((item) => String(item.id || item.productId || "") === String(addon.id));
@@ -1088,27 +1385,42 @@
 
   let checkoutCountriesPromise = null;
 
+  function localizeCheckoutCountries(countries) {
+    let displayNames = null;
+    try {
+      displayNames = typeof Intl.DisplayNames === "function"
+        ? new Intl.DisplayNames([CHECKOUT_I18N.locale], { type: "region" })
+        : null;
+    } catch (error) {
+      displayNames = null;
+    }
+    return (countries || []).map((country) => ({
+      ...country,
+      label: country.code && displayNames ? (displayNames.of(country.code) || country.name) : country.name
+    }));
+  }
+
   function loadCheckoutCountries() {
     if (checkoutCountriesPromise) return checkoutCountriesPromise;
     const url = `${getSiteBasePath()}assets/data/countries.json`.replace(/([^:]\/)\/{2,}/g, "$1");
     checkoutCountriesPromise = fetch(url, { cache: "force-cache" })
       .then((response) => {
         if (!response.ok) throw new Error(`Countries ${response.status}`);
-        return response.json();
+        return response.json().then(localizeCheckoutCountries);
       })
       .catch((error) => {
         console.warn("Could not load country list:", error);
         return [
-          { name: "Perú", dialCode: "+51" },
-          { name: "Estados Unidos", dialCode: "+1" },
-          { name: "México", dialCode: "+52" },
-          { name: "Colombia", dialCode: "+57" },
-          { name: "Brasil", dialCode: "+55" },
-          { name: "Chile", dialCode: "+56" },
-          { name: "Argentina", dialCode: "+54" },
-          { name: "España", dialCode: "+34" },
-          { name: "Portugal", dialCode: "+351" }
-        ];
+          { code: "PE", name: "Perú", dialCode: "+51" },
+          { code: "US", name: "Estados Unidos", dialCode: "+1" },
+          { code: "MX", name: "México", dialCode: "+52" },
+          { code: "CO", name: "Colombia", dialCode: "+57" },
+          { code: "BR", name: "Brasil", dialCode: "+55" },
+          { code: "CL", name: "Chile", dialCode: "+56" },
+          { code: "AR", name: "Argentina", dialCode: "+54" },
+          { code: "ES", name: "España", dialCode: "+34" },
+          { code: "PT", name: "Portugal", dialCode: "+351" }
+        ].map((country) => localizeCheckoutCountries([country])[0]);
       });
     return checkoutCountriesPromise;
   }
@@ -1135,14 +1447,14 @@
     const countries = await loadCheckoutCountries();
     scope.querySelectorAll("select[data-country-select]").forEach((select) => {
       const current = select.value || select.dataset.default || "Perú";
-      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option>${countries.map((country) => `<option value="${escapeHtml(country.name)}">${escapeHtml(country.name)}</option>`).join("")}`;
+      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option>${countries.map((country) => `<option value="${escapeHtml(country.name)}">${escapeHtml(country.label || country.name)}</option>`).join("")}`;
       select.value = current;
       if (!select.value) select.value = "Perú";
     });
     scope.querySelectorAll("select[data-phone-code-select]").forEach((select) => {
       const current = select.value || "+51";
       select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCode)}</option>${countries.map((country) => {
-        const label = `${country.dialCode} · ${country.name}`;
+        const label = `${country.dialCode} · ${country.label || country.name}`;
         return `<option value="${escapeHtml(country.dialCode)}" data-full-label="${escapeHtml(label)}">${escapeHtml(label)}</option>`;
       }).join("")}`;
       select.value = current;
@@ -1162,7 +1474,7 @@
   function renderAdditionalPassengerFields(holderTravels) {
     const target = document.getElementById("mptAdditionalPassengers");
     if (!target) return;
-    const totalPax = state.adults + state.children;
+    const totalPax = getTotalTravelerCount();
     const startNumber = holderTravels ? 2 : 1;
     const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
     if (!slots) {
@@ -1276,7 +1588,7 @@
       pickupLocation: String(data.get("holderPickupLocation") || "").trim(),
       travels: holderTravels
     };
-    const totalPax = state.adults + state.children;
+    const totalPax = getTotalTravelerCount();
     const startNumber = holderTravels ? 2 : 1;
     const slots = holderTravels ? Math.max(totalPax - 1, 0) : totalPax;
     const passengers = [];
@@ -1320,13 +1632,34 @@
     const services = [];
     if (state.mainProduct.selected) {
       const meal = (state.data.mainProduct.mealOptions || []).find((item) => item.id === state.mainProduct.mealOptionId);
+      const circuit = findSelectedCircuit(state.data.mainProduct);
+      const trainPricing = getSelectedTrainPricing(state.data.mainProduct);
+      const extras = [
+        circuit?.label,
+        trainPricing.bundle?.label || trainPricing.outbound?.label,
+        trainPricing.bundle ? null : trainPricing.returnTrain?.label,
+        meal && meal.pricePerPerson > 0 ? meal.label : null
+      ].filter(Boolean);
       services.push({
         id: state.data.mainProduct.id,
         productId: state.data.mainProduct.id,
         title: state.data.mainProduct.title,
         date: state.mainProduct.date,
         origin: state.data.mainProduct.origin,
-        extras: meal && meal.pricePerPerson > 0 ? [meal.label] : [],
+        extras,
+        configuration: {
+          circuitId: circuit?.id || "",
+          circuitLabel: circuit?.label || "",
+          circuitSupplement: Number(circuit?.groupSupplement || 0),
+          outboundTrainId: trainPricing.outbound?.id || "",
+          outboundTrainLabel: trainPricing.outbound?.label || "",
+          returnTrainId: trainPricing.returnTrain?.id || "",
+          returnTrainLabel: trainPricing.returnTrain?.label || "",
+          trainBundleId: trainPricing.bundle?.id || "",
+          trainBundleLabel: trainPricing.bundle?.label || "",
+          mealOptionId: meal?.id || "no-meal",
+          mealLabel: meal?.label || "No lunch"
+        },
         lineTotal: summary.lines.find((line) => line.id === state.data.mainProduct.id)?.lineTotal || 0
       });
     }
@@ -1361,7 +1694,8 @@
       date: state.mainProduct.date,
       adults: state.adults,
       children: state.children,
-      totalPassengers: state.adults + state.children,
+      infants: state.infants,
+      totalPassengers: getTotalTravelerCount(),
       currency: summary.currency,
       paymentMode: "full",
       serviceTotal: formatCurrency(summary.subtotal, summary.currency),
@@ -1375,7 +1709,7 @@
       holderIsPassenger: holderTravels,
       holder,
       passengers,
-      travelers: { adults: state.adults, children: state.children, passengers },
+      travelers: { adults: state.adults, children: state.children, infants: state.infants, passengers },
       pickup: { location: holder.pickupLocation, city: "Cusco" },
       services,
       couponCode: state.coupon?.code || "",
@@ -1387,6 +1721,7 @@
         date: state.mainProduct.date,
         adults: state.adults,
         children: state.children,
+        infants: state.infants,
         services: services.map((service) => ({ id: service.id, title: service.title, date: service.date, lineTotal: service.lineTotal })),
         serviceTotal: formatCurrency(summary.subtotal, summary.currency),
         payNow: formatCurrency(summary.total, summary.currency),
@@ -1726,6 +2061,8 @@
   function initState() {
     state.mainProduct.selected = Boolean(state.data.mainProduct.selectedByDefault);
     state.mainProduct.mealOptionId = (state.data.mainProduct.mealOptions || []).find((m) => m.default)?.id || "no-meal";
+    state.mainProduct.outboundTrainId = (state.data.mainProduct.trainSelection?.outbound || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.outbound?.[0]?.id || null;
+    state.mainProduct.returnTrainId = (state.data.mainProduct.trainSelection?.return || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.return?.[0]?.id || null;
     (state.data.addons || []).forEach((addon) => {
       state.addons[addon.id] = { selected: false, date: null, extras: {} };
     });
@@ -1792,5 +2129,5 @@
   }
 
   // Exposed for automated testing (Playwright) — not used by the page itself.
-  window.__mptLanding = { validateDestinationTransition, calculateBookingSummary, getState: () => state };
+  window.__mptLanding = { validateDestinationTransition, calculateBookingSummary, getMinimumBookingDate, getTravelerSummaryLabel, getState: () => state };
 })();

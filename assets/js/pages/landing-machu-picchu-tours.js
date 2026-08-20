@@ -5,6 +5,7 @@
   const LANDING_NAME = "Machu Picchu + Tours en Perú";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
+  const MIN_BOOKING_ADVANCE_DAYS = 2;
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 
@@ -90,14 +91,6 @@
     return Math.round((Number(value) || 0) * 100) / 100;
   }
 
-  function qtyOptions(min, max, selected) {
-    let html = "";
-    for (let n = min; n <= max; n += 1) {
-      html += `<option value="${n}" ${n === selected ? "selected" : ""}>${n}</option>`;
-    }
-    return html;
-  }
-
   function parseISODate(value) {
     if (!value) return null;
     const parts = String(value).split("-").map(Number);
@@ -110,6 +103,45 @@
     const m = String(date.getMonth() + 1).padStart(2, "0");
     const d = String(date.getDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
+  }
+
+  function getMinimumBookingDate() {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + MIN_BOOKING_ADVANCE_DAYS);
+    return date;
+  }
+
+  function travelerCountLabel(count, singular, plural) {
+    return `${count} ${count === 1 ? singular : plural}`;
+  }
+
+  function getTravelerSummaryLabel() {
+    return [
+      travelerCountLabel(state.adults, "adulto", "adultos"),
+      state.children ? travelerCountLabel(state.children, "niño", "niños") : "",
+      state.infants ? travelerCountLabel(state.infants, "infante", "infantes") : ""
+    ].filter(Boolean).join(", ");
+  }
+
+  function updateTravelerPickerUI() {
+    const summary = document.getElementById("mptTravelerSummary");
+    if (summary) summary.textContent = getTravelerSummaryLabel();
+
+    const limits = {
+      adults: { min: 1, max: 10 },
+      children: { min: 0, max: 10 },
+      infants: { min: 0, max: 5 }
+    };
+    Object.keys(limits).forEach((type) => {
+      const value = Number(state[type] || 0);
+      const output = document.querySelector(`[data-traveler-value="${type}"]`);
+      if (output) output.textContent = String(value);
+      document.querySelectorAll(`[data-traveler-type="${type}"]`).forEach((button) => {
+        const delta = Number(button.dataset.delta || 0);
+        button.disabled = delta < 0 ? value <= limits[type].min : value >= limits[type].max;
+      });
+    });
   }
 
   function formatDateSpanish(value) {
@@ -401,15 +433,15 @@
     clearAllFieldErrors();
     let valid = true;
     const selectedTours = getSelectedToursWithDates();
-    const todayStr = formatDateISO(new Date());
+    const minimumBookingDateStr = formatDateISO(getMinimumBookingDate());
 
     selectedTours.forEach((t) => {
       if (!t.date) {
         valid = false;
         if (!silent) setFieldError(t.id, "Selecciona una fecha para continuar.");
-      } else if (t.date < todayStr) {
+      } else if (t.date < minimumBookingDateStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "La fecha no puede ser anterior a hoy.");
+        if (!silent) setFieldError(t.id, "Reserva con al menos 2 días de anticipación.");
       }
     });
 
@@ -767,28 +799,61 @@
           <div class="mpt-main-product__body">
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
-            <div class="mpt-price-row">
-              <div class="mpt-price-pill"><span>Adulto</span><strong>${formatCurrency(p.adultPrice, currency)}</strong></div>
-              <div class="mpt-price-pill"><span>Niño (${childPolicy.minAge}-${childPolicy.maxAge} años)</span><strong>${formatCurrency(childPrice, currency)}</strong></div>
-              <div class="mpt-price-pill"><span>Menor de 2 años</span><strong>Gratis</strong><small>Sin asiento propio</small></div>
+            <div class="mpt-rate-tabs" aria-label="Tarifas por edad">
+              <div class="mpt-rate-tab mpt-rate-tab--featured">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Adulto</small><strong>${formatCurrency(p.adultPrice, currency)}</strong><em>Desde 13 años</em></span>
+              </div>
+              <div class="mpt-rate-tab">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-child-reaching" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Niño</small><strong>${formatCurrency(childPrice, currency)}</strong><em>${childPolicy.minAge}-${childPolicy.maxAge} años</em></span>
+              </div>
+              <div class="mpt-rate-tab">
+                <span class="mpt-rate-tab__icon"><i class="fas fa-baby" aria-hidden="true"></i></span>
+                <span class="mpt-rate-tab__copy"><small>Infante</small><strong>Gratis</strong><em>Menor de 2 años, sin asiento</em></span>
+              </div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
                 <label for="${dateInputId(p.id)}">Fecha</label>
                 <input id="${dateInputId(p.id)}" type="text" placeholder="Selecciona una fecha" readonly aria-describedby="${errorId(p.id)}"/>
+                <small class="mpt-field-help"><i class="fas fa-clock" aria-hidden="true"></i> Reserva con mínimo 2 días de anticipación.</small>
                 <span class="mpt-field-error" id="${errorId(p.id)}" role="alert"></span>
               </div>
               <div class="mpt-field">
-                <label for="mptAdults">Adultos</label>
-                <select id="mptAdults" aria-label="Cantidad de adultos para toda la reserva">${qtyOptions(1, 10, state.adults)}</select>
-              </div>
-              <div class="mpt-field">
-                <label for="mptChildren">Niños</label>
-                <select id="mptChildren" aria-label="Cantidad de niños para toda la reserva">${qtyOptions(0, 10, state.children)}</select>
-              </div>
-              <div class="mpt-field">
-                <label for="mptInfants">Infantes (&lt; 2 años)</label>
-                <select id="mptInfants" aria-label="Cantidad de infantes para toda la reserva">${qtyOptions(0, 5, state.infants)}</select>
+                <label id="mptTravelerLabel">Viajeros</label>
+                <details class="mpt-traveler-picker" id="mptTravelerPicker">
+                  <summary aria-labelledby="mptTravelerLabel mptTravelerSummary">
+                    <span class="mpt-traveler-picker__summary"><i class="fas fa-users" aria-hidden="true"></i><span id="mptTravelerSummary">${escapeHtml(getTravelerSummaryLabel())}</span></span>
+                    <i class="fas fa-chevron-down mpt-traveler-picker__chevron" aria-hidden="true"></i>
+                  </summary>
+                  <div class="mpt-traveler-menu" role="group" aria-label="Cantidad de viajeros">
+                    <div class="mpt-traveler-row">
+                      <span><strong>Adultos</strong><small>13 años a más</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="adults" data-delta="-1" aria-label="Quitar un adulto"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="adults" aria-live="polite">${state.adults}</output>
+                        <button type="button" data-traveler-type="adults" data-delta="1" aria-label="Agregar un adulto"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                    <div class="mpt-traveler-row">
+                      <span><strong>Niños</strong><small>2 a 12 años</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="children" data-delta="-1" aria-label="Quitar un niño"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="children" aria-live="polite">${state.children}</output>
+                        <button type="button" data-traveler-type="children" data-delta="1" aria-label="Agregar un niño"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                    <div class="mpt-traveler-row">
+                      <span><strong>Infantes</strong><small>Menores de 2 años · gratis</small></span>
+                      <span class="mpt-counter">
+                        <button type="button" data-traveler-type="infants" data-delta="-1" aria-label="Quitar un infante"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <output data-traveler-value="infants" aria-live="polite">${state.infants}</output>
+                        <button type="button" data-traveler-type="infants" data-delta="1" aria-label="Agregar un infante"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </details>
               </div>
             </div>
             <section class="mpt-config-block" aria-labelledby="mptCircuitTitle">
@@ -816,7 +881,7 @@
                   ${renderTrainOptions(p.trainSelection?.return, state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
                 </fieldset>
               </div>
-              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> Si eliges The Prime y el retorno temprano, se aplica automáticamente la tarifa combinada.</p>
+              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> Al elegir <strong>The Prime para la ida</strong> y el <strong>retorno temprano de las 19:00</strong>, el sistema aplica automáticamente el precio especial combinado: <strong>+US$ 105.90 por adulto y +US$ 53.00 por niño</strong>.</p>
             </section>
             <section class="mpt-config-block" aria-labelledby="mptMealTitle">
               <div class="mpt-config-block__head">
@@ -837,22 +902,21 @@
       </div>
     `;
 
-    document.getElementById("mptAdults").addEventListener("change", (e) => {
-      state.adults = Math.max(1, Number(e.target.value) || 1);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
-      renderCircuitOptions();
-      renderSummary();
+    container.querySelectorAll("[data-traveler-type]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.travelerType;
+        const delta = Number(button.dataset.delta || 0);
+        const limits = type === "adults" ? { min: 1, max: 10 } : type === "infants" ? { min: 0, max: 5 } : { min: 0, max: 10 };
+        state[type] = Math.min(limits.max, Math.max(limits.min, Number(state[type] || 0) + delta));
+        updateTravelerPickerUI();
+        trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
+        renderCircuitOptions();
+        renderSummary();
+      });
     });
-    document.getElementById("mptChildren").addEventListener("change", (e) => {
-      state.children = Math.max(0, Number(e.target.value) || 0);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
-      renderCircuitOptions();
-      renderSummary();
-    });
-    document.getElementById("mptInfants").addEventListener("change", (e) => {
-      state.infants = Math.max(0, Number(e.target.value) || 0);
-      trackLandingEvent("traveler_count_changed", { adults: state.adults, children: state.children, infants: state.infants });
-      renderSummary();
+    updateTravelerPickerUI();
+    document.getElementById("mptTravelerPicker").addEventListener("toggle", (event) => {
+      if (event.currentTarget.open) trackLandingEvent("traveler_picker_opened", {});
     });
     container.querySelectorAll('input[name="mptOutboundTrain"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
@@ -881,7 +945,7 @@
 
     const dateInput = document.getElementById(dateInputId(p.id));
     state.pickers[p.id] = window.flatpickr(dateInput, {
-      minDate: "today",
+      minDate: getMinimumBookingDate(),
       dateFormat: "Y-m-d",
       altInput: true,
       altFormat: "d M Y",
@@ -954,7 +1018,7 @@
       const sel = state.addons[addon.id];
       const dateInput = document.getElementById(dateInputId(addon.id));
       state.pickers[addon.id] = window.flatpickr(dateInput, {
-        minDate: "today",
+        minDate: getMinimumBookingDate(),
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "d M Y",
@@ -1321,27 +1385,42 @@
 
   let checkoutCountriesPromise = null;
 
+  function localizeCheckoutCountries(countries) {
+    let displayNames = null;
+    try {
+      displayNames = typeof Intl.DisplayNames === "function"
+        ? new Intl.DisplayNames([CHECKOUT_I18N.locale], { type: "region" })
+        : null;
+    } catch (error) {
+      displayNames = null;
+    }
+    return (countries || []).map((country) => ({
+      ...country,
+      label: country.code && displayNames ? (displayNames.of(country.code) || country.name) : country.name
+    }));
+  }
+
   function loadCheckoutCountries() {
     if (checkoutCountriesPromise) return checkoutCountriesPromise;
     const url = `${getSiteBasePath()}assets/data/countries.json`.replace(/([^:]\/)\/{2,}/g, "$1");
     checkoutCountriesPromise = fetch(url, { cache: "force-cache" })
       .then((response) => {
         if (!response.ok) throw new Error(`Countries ${response.status}`);
-        return response.json();
+        return response.json().then(localizeCheckoutCountries);
       })
       .catch((error) => {
         console.warn("Could not load country list:", error);
         return [
-          { name: "Perú", dialCode: "+51" },
-          { name: "Estados Unidos", dialCode: "+1" },
-          { name: "México", dialCode: "+52" },
-          { name: "Colombia", dialCode: "+57" },
-          { name: "Brasil", dialCode: "+55" },
-          { name: "Chile", dialCode: "+56" },
-          { name: "Argentina", dialCode: "+54" },
-          { name: "España", dialCode: "+34" },
-          { name: "Portugal", dialCode: "+351" }
-        ];
+          { code: "PE", name: "Perú", dialCode: "+51" },
+          { code: "US", name: "Estados Unidos", dialCode: "+1" },
+          { code: "MX", name: "México", dialCode: "+52" },
+          { code: "CO", name: "Colombia", dialCode: "+57" },
+          { code: "BR", name: "Brasil", dialCode: "+55" },
+          { code: "CL", name: "Chile", dialCode: "+56" },
+          { code: "AR", name: "Argentina", dialCode: "+54" },
+          { code: "ES", name: "España", dialCode: "+34" },
+          { code: "PT", name: "Portugal", dialCode: "+351" }
+        ].map((country) => localizeCheckoutCountries([country])[0]);
       });
     return checkoutCountriesPromise;
   }
@@ -1368,14 +1447,14 @@
     const countries = await loadCheckoutCountries();
     scope.querySelectorAll("select[data-country-select]").forEach((select) => {
       const current = select.value || select.dataset.default || "Perú";
-      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option>${countries.map((country) => `<option value="${escapeHtml(country.name)}">${escapeHtml(country.name)}</option>`).join("")}`;
+      select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCountry)}</option>${countries.map((country) => `<option value="${escapeHtml(country.name)}">${escapeHtml(country.label || country.name)}</option>`).join("")}`;
       select.value = current;
       if (!select.value) select.value = "Perú";
     });
     scope.querySelectorAll("select[data-phone-code-select]").forEach((select) => {
       const current = select.value || "+51";
       select.innerHTML = `<option value="">${escapeHtml(CHECKOUT_I18N.selectCode)}</option>${countries.map((country) => {
-        const label = `${country.dialCode} · ${country.name}`;
+        const label = `${country.dialCode} · ${country.label || country.name}`;
         return `<option value="${escapeHtml(country.dialCode)}" data-full-label="${escapeHtml(label)}">${escapeHtml(label)}</option>`;
       }).join("")}`;
       select.value = current;
@@ -2050,5 +2129,11 @@
   }
 
   // Exposed for automated testing (Playwright) — not used by the page itself.
-  window.__mptLanding = { validateDestinationTransition, calculateBookingSummary, getState: () => state };
+  window.__mptLanding = {
+    validateDestinationTransition,
+    calculateBookingSummary,
+    getMinimumBookingDate,
+    getTravelerSummaryLabel,
+    getState: () => state
+  };
 })();

@@ -2,7 +2,7 @@
   "use strict";
 
   const LANDING_ID = "landing-machu-picchu-tours";
-  const LANDING_NAME = "Machu Picchu + Circuits au Pérou";
+  const LANDING_NAME = "Machu Picchu + Touren in Peru";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const MIN_BOOKING_ADVANCE_DAYS = 2;
@@ -66,7 +66,7 @@
         });
       }
     } catch (error) {
-      console.warn(`Impossible de charger le composant ${componentName} :`, error);
+      console.warn(`Komponente konnte nicht geladen werden ${componentName}:`, error);
     }
   }
 
@@ -80,7 +80,7 @@
   }
 
   function formatMoney(value) {
-    return Number(value || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return Number(value || 0).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   function formatCurrency(value, currency) {
@@ -118,9 +118,9 @@
 
   function getTravelerSummaryLabel() {
     return [
-      travelerCountLabel(state.adults, "adulte", "adultes"),
-      state.children ? travelerCountLabel(state.children, "enfant", "enfants") : "",
-      state.infants ? travelerCountLabel(state.infants, "bébé", "bébés") : ""
+      travelerCountLabel(state.adults, "Erwachsener", "Erwachsene"),
+      state.children ? travelerCountLabel(state.children, "Kind", "Kinder") : "",
+      state.infants ? travelerCountLabel(state.infants, "Kleinkind", "Kleinkinder") : ""
     ].filter(Boolean).join(", ");
   }
 
@@ -146,8 +146,8 @@
 
   function formatDateSpanish(value) {
     const date = parseISODate(value);
-    if (!date) return "date non sélectionnée";
-    return date.toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
+    if (!date) return "kein Datum ausgewählt";
+    return date.toLocaleDateString("de-DE", { month: "short", day: "2-digit", year: "numeric" });
   }
 
   function daysBetween(dateAStr, dateBStr) {
@@ -351,9 +351,9 @@
   }
 
   function getCircuitAvailability(circuit, dateStr) {
-    if (!circuit || !dateStr) return { available: false, reason: "Sélectionnez une date" };
+    if (!circuit || !dateStr) return { available: false, reason: "Datum auswählen" };
     const range = (circuit.unavailableRanges || []).find((item) => dateStr >= item.from && dateStr <= item.to);
-    return range ? { available: false, reason: range.reason || "Indisponible" } : { available: true, reason: "Disponible" };
+    return range ? { available: false, reason: range.reason || "Nicht verfügbar" } : { available: true, reason: "Verfügbar" };
   }
 
   function getSelectedTrainPricing(product) {
@@ -404,7 +404,7 @@
         if (diff !== null && diff < minGap + 1) {
           return {
             valid: false,
-            message: "Pour voyager entre Lima/Ica et Cusco, il faut prévoir au moins un jour de trajet. Sélectionnez une date ultérieure pour continuer.",
+            message: "Für die Reise zwischen Lima/Ica und Cusco ist mindestens ein Transfertag erforderlich. Wählen Sie ein späteres Datum, um fortzufahren.",
             conflictingIds: [a.id, b.id]
           };
         }
@@ -438,10 +438,10 @@
     selectedTours.forEach((t) => {
       if (!t.date) {
         valid = false;
-        if (!silent) setFieldError(t.id, "Sélectionnez une date pour continuer.");
+        if (!silent) setFieldError(t.id, "Wählen Sie ein Datum, um fortzufahren.");
       } else if (t.date < minimumBookingDateStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "Réservez au moins 2 jours à l’avance.");
+        if (!silent) setFieldError(t.id, "Buchen Sie mindestens 2 Tage im Voraus.");
       }
     });
 
@@ -451,13 +451,13 @@
       const selectedCircuit = findSelectedCircuit(state.data.mainProduct);
       if (!availableCircuits.length) {
         valid = false;
-        if (!silent) setFieldError("circuit-selection", "Aucun circuit n’est disponible à cette date. Sélectionnez un autre jour.");
+        if (!silent) setFieldError("circuit-selection", "Für dieses Datum sind keine Rundgänge verfügbar. Wählen Sie einen anderen Tag.");
       } else if (!selectedCircuit) {
         valid = false;
-        if (!silent) setFieldError("circuit-selection", "Sélectionnez l’un des circuits disponibles.");
+        if (!silent) setFieldError("circuit-selection", "Wählen Sie einen der verfügbaren Rundgänge.");
       } else if (!getCircuitAvailability(selectedCircuit, state.mainProduct.date).available) {
         valid = false;
-        if (!silent) setFieldError("circuit-selection", "Le circuit sélectionné n’est pas disponible à cette date.");
+        if (!silent) setFieldError("circuit-selection", "Der ausgewählte Rundgang ist für dieses Datum nicht verfügbar.");
       }
     }
 
@@ -470,7 +470,7 @@
     Object.values(byDate).forEach((ids) => {
       if (ids.length > 1) {
         valid = false;
-        if (!silent) ids.forEach((id) => setFieldError(id, "Deux excursions ne peuvent pas avoir la même date."));
+        if (!silent) ids.forEach((id) => setFieldError(id, "Zwei Touren können nicht am selben Datum stattfinden."));
       }
     });
 
@@ -627,15 +627,15 @@
     if (!code) {
       state.coupon = null;
       renderSummary();
-      setCouponMessage("Saisissez un code de réduction.", "error");
+      setCouponMessage("Geben Sie einen Rabattcode ein.", "error");
       return;
     }
 
-    setCouponMessage("Validation du code…", "");
+    setCouponMessage("Code wird geprüft…", "");
 
     try {
       if (!window.MyCuscoTripApiClient?.validateCoupon) {
-        throw new Error("Nous n'avons pas pu valider le code pour le moment. Veuillez réessayer.");
+        throw new Error("Der Rabattcode konnte derzeit nicht geprüft werden. Bitte versuchen Sie es erneut.");
       }
 
       const summary = calculateBookingSummary();
@@ -643,22 +643,22 @@
         couponCode: code,
         subtotal: Number(summary.subtotal || 0),
         currency: summary.currency || state.data.currency || "USD",
-        locale: "fr",
+        locale: "de",
         page: window.location.pathname
       });
       const result = await Promise.race([
         validationPromise,
-        new Promise((_, reject) => window.setTimeout(() => reject(new Error("La validation du code a pris trop de temps. Veuillez réessayer.")), 12000))
+        new Promise((_, reject) => window.setTimeout(() => reject(new Error("Die Prüfung des Rabattcodes hat zu lange gedauert. Bitte versuchen Sie es erneut.")), 12000))
       ]);
 
       if (!result || result.mock) {
-        throw new Error("Nous n'avons pas pu valider le code pour le moment. Veuillez réessayer.");
+        throw new Error("Der Rabattcode konnte derzeit nicht geprüft werden. Bitte versuchen Sie es erneut.");
       }
 
       if (!result.valid) {
         state.coupon = null;
         renderSummary();
-        setCouponMessage(result.message || "Code invalide ou inactif.", "error");
+        setCouponMessage(result.message || "Ungültiger oder inaktiver Code.", "error");
         trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: result.reason || "" });
         return;
       }
@@ -674,7 +674,7 @@
       state.couponDraftCode = state.coupon.code;
 
       renderSummary();
-      setCouponMessage(`Code appliqué : ${result.label || state.coupon.code}.`, "success");
+      setCouponMessage(`Rabattcode angewendet: ${result.label || state.coupon.code}.`, "success");
       trackLandingEvent("coupon_applied", {
         coupon_code: state.coupon.code,
         coupon_valid: true,
@@ -682,10 +682,10 @@
         coupon_value: state.coupon.value
       });
     } catch (error) {
-      console.error("Coupon validation failed:", error);
+      console.error("Prüfung des Rabattcodes fehlgeschlagen:", error);
       state.coupon = null;
       renderSummary();
-      setCouponMessage(error?.message || "Nous n'avons pas pu valider le code pour le moment. Veuillez réessayer.", "error");
+      setCouponMessage(error?.message || "Der Rabattcode konnte derzeit nicht geprüft werden. Bitte versuchen Sie es erneut.", "error");
       trackLandingEvent("coupon_applied", { coupon_code: code, coupon_valid: false, coupon_reason: "backend_unavailable" });
     }
   }
@@ -702,8 +702,8 @@
   function formatTrainSupplement(option, currency) {
     const adult = Number(option?.adultSupplement || 0);
     const child = Number(option?.childSupplement || 0);
-    if (!adult && !child) return "Inclus";
-    return `+${formatCurrency(adult, currency)} adulte · +${formatCurrency(child, currency)} enfant`;
+    if (!adult && !child) return "Inklusive";
+    return `+${formatCurrency(adult, currency)} Erwachsener · +${formatCurrency(child, currency)} Kind`;
   }
 
   function renderTrainOptions(options, selectedId, name, currency) {
@@ -715,7 +715,7 @@
             <strong>${escapeHtml(option.label)}</strong>
             ${option.badge ? `<small class="mpt-choice-card__badge">${escapeHtml(option.badge)}</small>` : ""}
           </span>
-          <small>${escapeHtml(option.schedule || "Horaire sous réserve de confirmation")}</small>
+          <small>${escapeHtml(option.schedule || "Fahrplan vorbehaltlich Bestätigung")}</small>
           <span>${escapeHtml(option.description || "")}</span>
           <b>${escapeHtml(formatTrainSupplement(option, currency))}</b>
         </span>
@@ -731,7 +731,7 @@
     const dateStr = state.mainProduct.date;
     if (!dateStr) {
       state.mainProduct.circuitId = null;
-      target.innerHTML = `<div class="mpt-circuit-placeholder"><i class="fas fa-calendar-day"></i><span>Sélectionnez d’abord la date de visite pour consulter les circuits.</span></div>`;
+      target.innerHTML = `<div class="mpt-circuit-placeholder"><i class="fas fa-calendar-day"></i><span>Wählen Sie zuerst Ihr Besuchsdatum, um die verfügbaren Rundgänge zu prüfen.</span></div>`;
       return;
     }
 
@@ -743,15 +743,15 @@
     const payingPax = Math.max(1, getPayingPassengerCount());
 
     target.innerHTML = `
-      <div class="mpt-circuit-date"><i class="fas fa-ticket"></i> Disponibilité pour <strong>${escapeHtml(formatDateSpanish(dateStr))}</strong></div>
-      <div class="mpt-circuit-grid" role="radiogroup" aria-label="Circuit de Machu Picchu">
+      <div class="mpt-circuit-date"><i class="fas fa-ticket"></i> Verfügbarkeit für <strong>${escapeHtml(formatDateSpanish(dateStr))}</strong></div>
+      <div class="mpt-circuit-grid" role="radiogroup" aria-label="Machu-Picchu-Rundgang">
         ${circuits.map((circuit) => {
           const status = getCircuitAvailability(circuit, dateStr);
           const supplement = Number(circuit.groupSupplement || 0);
           const selected = state.mainProduct.circuitId === circuit.id;
           const priceText = supplement > 0
-            ? `+${formatCurrency(supplement, state.data.currency)} par réservation · ${formatCurrency(supplement / payingPax, state.data.currency)} par voyageur payant de ce groupe`
-            : "Inclus dans le tarif de base";
+            ? `+${formatCurrency(supplement, state.data.currency)} pro Buchung · ${formatCurrency(supplement / payingPax, state.data.currency)} pro zahlendem Reisenden in dieser Gruppe`
+            : "Im Grundpreis enthalten";
           return `
             <label class="mpt-circuit-card${selected ? " is-selected" : ""}${status.available ? "" : " is-disabled"}">
               <input type="radio" name="mptCircuit" value="${escapeHtml(circuit.id)}" ${selected ? "checked" : ""} ${status.available ? "" : "disabled"}/>
@@ -766,7 +766,7 @@
             </label>`;
         }).join("")}
       </div>
-      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>Aucun circuit disponible</strong><span>Les circuits 1, 2 et 3 sont complets à cette date. Choisissez un autre jour pour continuer.</span></div></div>`}
+      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>Keine Rundgänge verfügbar</strong><span>Die Rundgänge 1, 2 und 3 sind für dieses Datum ausverkauft. Wählen Sie einen anderen Tag, um fortzufahren.</span></div></div>`}
     `;
 
     target.querySelectorAll('input[name="mptCircuit"]').forEach((radio) => {
@@ -799,57 +799,57 @@
           <div class="mpt-main-product__body">
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
-            <div class="mpt-rate-tabs" aria-label="Tarifs par âge">
+            <div class="mpt-rate-tabs" aria-label="Preise nach Alter">
               <div class="mpt-rate-tab mpt-rate-tab--featured">
                 <span class="mpt-rate-tab__icon"><i class="fas fa-user" aria-hidden="true"></i></span>
-                <span class="mpt-rate-tab__copy"><small>Adulte</small><strong>${formatCurrency(p.adultPrice, currency)}</strong><em>À partir de 13 ans</em></span>
+                <span class="mpt-rate-tab__copy"><small>Erwachsener</small><strong>${formatCurrency(p.adultPrice, currency)}</strong><em>Ab 13 Jahren</em></span>
               </div>
               <div class="mpt-rate-tab">
                 <span class="mpt-rate-tab__icon"><i class="fas fa-child-reaching" aria-hidden="true"></i></span>
-                <span class="mpt-rate-tab__copy"><small>Enfant</small><strong>${formatCurrency(childPrice, currency)}</strong><em>${childPolicy.minAge}-${childPolicy.maxAge} ans</em></span>
+                <span class="mpt-rate-tab__copy"><small>Kind</small><strong>${formatCurrency(childPrice, currency)}</strong><em>${childPolicy.minAge}-${childPolicy.maxAge} Jahre</em></span>
               </div>
               <div class="mpt-rate-tab">
                 <span class="mpt-rate-tab__icon"><i class="fas fa-baby" aria-hidden="true"></i></span>
-                <span class="mpt-rate-tab__copy"><small>Bébé</small><strong>Gratuit</strong><em>Moins de 2 ans, sans siège</em></span>
+                <span class="mpt-rate-tab__copy"><small>Kleinkind</small><strong>Kostenlos</strong><em>Unter 2 Jahren, ohne eigenen Sitzplatz</em></span>
               </div>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
-                <label for="${dateInputId(p.id)}">Date</label>
-                <input id="${dateInputId(p.id)}" type="text" placeholder="Sélectionnez une date" readonly aria-describedby="${errorId(p.id)}"/>
-                <small class="mpt-field-help"><i class="fas fa-clock" aria-hidden="true"></i> Réservez au moins 2 jours à l’avance.</small>
+                <label for="${dateInputId(p.id)}">Datum</label>
+                <input id="${dateInputId(p.id)}" type="text" placeholder="Datum auswählen" readonly aria-describedby="${errorId(p.id)}"/>
+                <small class="mpt-field-help"><i class="fas fa-clock" aria-hidden="true"></i> Buchen Sie mindestens 2 Tage im Voraus.</small>
                 <span class="mpt-field-error" id="${errorId(p.id)}" role="alert"></span>
               </div>
               <div class="mpt-field">
-                <label id="mptTravelerLabel">Voyageurs</label>
+                <label id="mptTravelerLabel">Reisende</label>
                 <details class="mpt-traveler-picker" id="mptTravelerPicker">
                   <summary aria-labelledby="mptTravelerLabel mptTravelerSummary">
                     <span class="mpt-traveler-picker__summary"><i class="fas fa-users" aria-hidden="true"></i><span id="mptTravelerSummary">${escapeHtml(getTravelerSummaryLabel())}</span></span>
                     <i class="fas fa-chevron-down mpt-traveler-picker__chevron" aria-hidden="true"></i>
                   </summary>
-                  <div class="mpt-traveler-menu" role="group" aria-label="Nombre de voyageurs">
+                  <div class="mpt-traveler-menu" role="group" aria-label="Anzahl der Reisenden">
                     <div class="mpt-traveler-row">
-                      <span><strong>Adultes</strong><small>À partir de 13 ans</small></span>
+                      <span><strong>Erwachsene</strong><small>Ab 13 Jahren</small></span>
                       <span class="mpt-counter">
-                        <button type="button" data-traveler-type="adults" data-delta="-1" aria-label="Retirer un adulte"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="adults" data-delta="-1" aria-label="Einen Erwachsenen entfernen"><i class="fas fa-minus" aria-hidden="true"></i></button>
                         <output data-traveler-value="adults" aria-live="polite">${state.adults}</output>
-                        <button type="button" data-traveler-type="adults" data-delta="1" aria-label="Ajouter un adulte"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="adults" data-delta="1" aria-label="Einen Erwachsenen hinzufügen"><i class="fas fa-plus" aria-hidden="true"></i></button>
                       </span>
                     </div>
                     <div class="mpt-traveler-row">
-                      <span><strong>Enfants</strong><small>De 2 à 12 ans</small></span>
+                      <span><strong>Kinder</strong><small>2 bis 12 Jahre</small></span>
                       <span class="mpt-counter">
-                        <button type="button" data-traveler-type="children" data-delta="-1" aria-label="Retirer un enfant"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="children" data-delta="-1" aria-label="Ein Kind entfernen"><i class="fas fa-minus" aria-hidden="true"></i></button>
                         <output data-traveler-value="children" aria-live="polite">${state.children}</output>
-                        <button type="button" data-traveler-type="children" data-delta="1" aria-label="Ajouter un enfant"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="children" data-delta="1" aria-label="Ein Kind hinzufügen"><i class="fas fa-plus" aria-hidden="true"></i></button>
                       </span>
                     </div>
                     <div class="mpt-traveler-row">
-                      <span><strong>Bébés</strong><small>Moins de 2 ans · gratuit</small></span>
+                      <span><strong>Kleinkinder</strong><small>Unter 2 Jahren · kostenlos</small></span>
                       <span class="mpt-counter">
-                        <button type="button" data-traveler-type="infants" data-delta="-1" aria-label="Retirer un bébé"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="infants" data-delta="-1" aria-label="Ein Kleinkind entfernen"><i class="fas fa-minus" aria-hidden="true"></i></button>
                         <output data-traveler-value="infants" aria-live="polite">${state.infants}</output>
-                        <button type="button" data-traveler-type="infants" data-delta="1" aria-label="Ajouter un bébé"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                        <button type="button" data-traveler-type="infants" data-delta="1" aria-label="Ein Kleinkind hinzufügen"><i class="fas fa-plus" aria-hidden="true"></i></button>
                       </span>
                     </div>
                   </div>
@@ -858,39 +858,39 @@
             </div>
             <section class="mpt-config-block" aria-labelledby="mptCircuitTitle">
               <div class="mpt-config-block__head">
-                <div><span class="mpt-step">1</span><div><strong id="mptCircuitTitle">Choisissez votre circuit de Machu Picchu</strong><small>Les options sont activées selon la date sélectionnée.</small></div></div>
+                <div><span class="mpt-step">1</span><div><strong id="mptCircuitTitle">Wählen Sie Ihren Machu-Picchu-Rundgang</strong><small>Die Optionen werden entsprechend dem ausgewählten Datum aktiviert.</small></div></div>
               </div>
               <div id="mptCircuitOptions"></div>
               <span class="mpt-field-error" id="${errorId("circuit-selection")}" role="alert"></span>
             </section>
             <div>
-              <strong style="font-size:0.85rem;">Comprend :</strong>
+              <strong style="font-size:0.85rem;">Inklusive:</strong>
               <ul class="mpt-includes">${(p.includes || []).map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
             </div>
             <section class="mpt-config-block" aria-labelledby="mptTrainTitle">
               <div class="mpt-config-block__head">
-                <div><span class="mpt-step">2</span><div><strong id="mptTrainTitle">Personnalisez vos trains</strong><small>Le Voyager est inclus. Vous pouvez surclasser un trajet ou les deux.</small></div></div>
+                <div><span class="mpt-step">2</span><div><strong id="mptTrainTitle">Passen Sie Ihre Züge an</strong><small>The Voyager ist inklusive. Sie können eine oder beide Strecken aufwerten.</small></div></div>
               </div>
               <div class="mpt-train-groups">
                 <fieldset class="mpt-choice-group">
-                  <legend>Train aller</legend>
+                  <legend>Zug für die Hinfahrt</legend>
                   ${renderTrainOptions(p.trainSelection?.outbound, state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
                 </fieldset>
                 <fieldset class="mpt-choice-group">
-                  <legend>Train retour</legend>
+                  <legend>Zug für die Rückfahrt</legend>
                   ${renderTrainOptions(p.trainSelection?.return, state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
                 </fieldset>
               </div>
-              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> En choisissant <strong>The Prime à l’aller</strong> et le <strong>retour anticipé de 19 h 00</strong>, le système applique automatiquement le tarif combiné spécial : <strong>+105,90 USD par adulte et +53,00 USD par enfant</strong>.</p>
+              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> Wenn Sie <strong>The Prime für die Hinfahrt</strong> und die <strong>frühe Rückfahrt um 19:00 Uhr</strong> wählen, wendet das System automatisch den speziellen Kombinationspreis an: <strong>+105,90 US$ pro Erwachsenem und +53,00 US$ pro Kind</strong>.</p>
             </section>
             <section class="mpt-config-block" aria-labelledby="mptMealTitle">
               <div class="mpt-config-block__head">
-                <div><span class="mpt-step">3</span><div><strong id="mptMealTitle">Ajoutez une expérience gastronomique</strong><small>Le déjeuner est facultatif et calculé par voyageur payant.</small></div></div>
+                <div><span class="mpt-step">3</span><div><strong id="mptMealTitle">Fügen Sie ein kulinarisches Erlebnis hinzu</strong><small>Das Mittagessen ist optional und wird pro zahlendem Reisenden berechnet.</small></div></div>
               </div>
-              <div class="mpt-meal-options" role="radiogroup" aria-label="Options de restauration">
+              <div class="mpt-meal-options" role="radiogroup" aria-label="Verpflegungsoptionen">
                 ${(p.mealOptions || []).map((m) => `
                   <label class="mpt-meal-option">
-                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/personne)` : " (inclus sans supplément)"}</span>
+                    <span>${escapeHtml(m.label)}${m.pricePerPerson > 0 ? ` (+${formatCurrency(m.pricePerPerson, currency)}/Person)` : " (ohne Aufpreis enthalten)"}</span>
                     <input type="radio" name="mptMeal" value="${escapeHtml(m.id)}" ${state.mainProduct.mealOptionId === m.id ? "checked" : ""}/>
                   </label>
                 `).join("")}
@@ -949,7 +949,7 @@
       dateFormat: "Y-m-d",
       altInput: true,
       altFormat: "d M Y",
-      locale: "fr",
+      locale: "de",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
@@ -979,10 +979,10 @@
           <div class="mpt-card__body">
             <div class="mpt-card__summary">
               <h3>${escapeHtml(addon.title)}</h3>
-              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / personne</div>
+              <div class="mpt-card__price">${formatCurrency(addon.pricePerPerson, currency)} / Person</div>
             </div>
             <button class="mpt-card__disclosure" type="button" data-addon-expand data-addon-id="${escapeHtml(addon.id)}" aria-expanded="${sel.selected ? "true" : "false"}" aria-controls="${escapeHtml(detailsId)}">
-              <span>Voir ce qui est inclus</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
+              <span>Inklusivleistungen anzeigen</span><i class="fas fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="mpt-card__expandable" id="${escapeHtml(detailsId)}">
               <p class="mpt-card__desc">${escapeHtml(addon.shortDescription)}</p>
@@ -991,22 +991,22 @@
               <div class="mpt-card__toggle-row">
                 <label class="mpt-card__checkbox">
                   <input type="checkbox" data-addon-id="${escapeHtml(addon.id)}" ${sel.selected ? "checked" : ""}/>
-                  Ajouter à mon voyage
+                  Zu meiner Reise hinzufügen
                 </label>
               </div>
               <div class="mpt-card__details">
                 <div class="mpt-field">
-                  <label for="${dateInputId(addon.id)}">Date de ${escapeHtml(addon.title)}</label>
-                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Sélectionnez une date" readonly aria-describedby="${errorId(addon.id)}"/>
+                  <label for="${dateInputId(addon.id)}">Datum für ${escapeHtml(addon.title)}</label>
+                  <input id="${dateInputId(addon.id)}" type="text" placeholder="Datum auswählen" readonly aria-describedby="${errorId(addon.id)}"/>
                   <span class="mpt-field-error" id="${errorId(addon.id)}" role="alert"></span>
                 </div>
                 ${(addon.extras || []).map((extra) => `
                   <label class="mpt-card__extra">
                     <input type="checkbox" data-extra-toggle data-addon-id="${escapeHtml(addon.id)}" data-extra-id="${escapeHtml(extra.id)}" ${sel.extras?.[extra.id] ? "checked" : ""}/>
-                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/personne)
+                    ${escapeHtml(extra.label)} (+${formatCurrency(extra.pricePerPerson, currency)}/Person)
                   </label>
                 `).join("")}
-                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Retirer de mon voyage</button>
+                <button type="button" class="mpt-card__remove" data-addon-remove data-addon-id="${escapeHtml(addon.id)}">Aus meiner Reise entfernen</button>
               </div>
             </div>
           </div>
@@ -1022,7 +1022,7 @@
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "d M Y",
-        locale: "fr",
+        locale: "de",
         defaultDate: sel.date || undefined,
         onChange(selectedDates, dateStr) {
           state.addons[addon.id].date = dateStr || null;
@@ -1106,27 +1106,27 @@
     content.innerHTML = `
       <div id="mptOperationalWarnings"></div>
       <div class="mpt-summary__travelers">
-        <span><i class="fas fa-user"></i> ${summary.adults} adulte(s)</span>
-        <span><i class="fas fa-child"></i> ${summary.children} enfant(s)</span>
-        ${summary.infants ? `<span><i class="fas fa-baby"></i> ${summary.infants} bébé(s)</span>` : ""}
+        <span><i class="fas fa-user"></i> ${summary.adults} Erwachsene(r)</span>
+        <span><i class="fas fa-child"></i> ${summary.children} Kind(er)</span>
+        ${summary.infants ? `<span><i class="fas fa-baby"></i> ${summary.infants} Kleinkind(er)</span>` : ""}
       </div>
-      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Vous n’avez pas encore ajouté d’expériences.</p>'}</div>
+      <div class="mpt-summary__list">${linesHtml || '<p style="color:var(--mct-muted,#6c7a76); font-size:0.88rem;">Sie haben noch keine Erlebnisse hinzugefügt.</p>'}</div>
 
       <div class="mpt-coupon">
-        <input id="mptCouponInput" type="text" placeholder="Code de réduction" aria-label="Code de réduction" value="${escapeHtml(state.coupon?.code || state.couponDraftCode || "")}"/>
-        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Appliquer</button>
+        <input id="mptCouponInput" type="text" placeholder="Rabattcode" aria-label="Rabattcode" value="${escapeHtml(state.coupon?.code || state.couponDraftCode || "")}"/>
+        <button class="mpt-btn mpt-btn--secondary mpt-coupon__apply" id="mptCouponApply" type="button">Anwenden</button>
       </div>
-      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Retirer le code</button>` : ""}
+      ${state.coupon ? `<button class="mpt-card__remove" id="mptCouponRemove" type="button" style="margin-bottom:8px;">Rabattcode entfernen</button>` : ""}
       <p class="mpt-coupon-message${state.couponFeedback?.type === "error" ? " is-error" : state.couponFeedback?.type === "success" ? " is-success" : ""}" id="mptCouponMessage">${escapeHtml(state.couponFeedback?.message || "")}</p>
 
       <div class="mpt-summary__totals">
         <div class="mpt-summary__totals-row"><span>Subtotal</span><strong>${formatCurrency(summary.subtotal, currency)}</strong></div>
-        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Réduction</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
+        ${summary.discount > 0 ? `<div class="mpt-summary__totals-row mpt-summary__discount"><span>Rabatt</span><strong>-${formatCurrency(summary.discount, currency)}</strong></div>` : ""}
         <div class="mpt-summary__totals-row mpt-summary__total"><span>Total</span><span aria-live="polite">${formatCurrency(summary.total, currency)}</span></div>
       </div>
 
-      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Continuer ma réservation</button>
-      <p class="mpt-availability-note">Les dates et horaires sont soumis à disponibilité. Notre équipe vérifiera les billets, les trains et les conditions d’exploitation avant d’émettre les services.</p>
+      <button class="mpt-btn mpt-btn--primary" id="mptSummaryContinue" type="button" style="margin-top:14px;">Mit meiner Buchung fortfahren</button>
+      <p class="mpt-availability-note">Daten und Uhrzeiten unterliegen der Verfügbarkeit. Unser Team prüft Eintrittskarten, Züge und Betriebsbedingungen, bevor die Leistungen ausgestellt werden.</p>
     `;
 
     renderOperationalWarnings(summary.warnings);
@@ -1196,7 +1196,7 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "fr", "locale": "fr-FR", "name": "Machu Picchu + Tours au Pérou", "data": "assets/data/i18n/fr/landing-machu-picchu-tours.json", "copy": "Code copié", "noDate": "date non sélectionnée", "modalTitle": "Détails des passagers", "codeLabel": "Code de réservation :", "payNow": "Montant à payer maintenant :", "important": "Information importante", "importantText": "Saisissez les prénoms, noms et documents exactement comme ils apparaissent sur le document de voyage officiel. Ces informations seront utilisées pour émettre les billets d'entrée, les billets de train et les services touristiques.", "holderTitle": "Titulaire de la réservation / Passager 1", "holderOnly": "Titulaire de la réservation", "required": "Informations obligatoires pour continuer", "first": "Prénom(s)", "last": "Nom(s) de famille", "docType": "Type de document", "select": "Sélectionner", "passport": "Passeport", "dni": "Carte d'identité nationale (DNI)", "idcard": "Carte d'identité", "other": "Autre", "docNum": "Numéro de document", "nationality": "Nationalité", "selectCountry": "Sélectionnez un pays", "selectCode": "Sélectionnez un code", "birth": "Date de naissance", "whatsapp": "WhatsApp", "email": "E-mail", "language": "Langue demandée", "pickup": "Hôtel ou adresse de prise en charge à Cusco", "pickupPh": "Nom de l'hôtel et adresse, si vous les connaissez", "holderTravels": "Le titulaire de la réservation voyage également.", "tourists": "Enregistrement des voyageurs", "touristsNote": "Vous pouvez renseigner les autres passagers maintenant ou entre 15 et 30 jours avant le voyage.", "traveler": "Passager", "later": "Compléter ces informations plus tard", "cancel": "Annuler", "edit": "Modifier les informations", "continue": "Continuer", "pay": "Payer", "saving": "Création de votre réservation…", "connecting": "Connexion sécurisée à PayPal…", "summaryTitle": "Résumé de votre réservation", "review": "Vérifiez votre réservation avant le paiement", "holder": "Titulaire", "pickupShort": "Prise en charge", "services": "Services", "total": "Total à payer", "paypalNote": "En continuant, vous serez redirigé en toute sécurité vers PayPal pour payer 100 % de la réservation.", "formRequired": "Complétez les informations obligatoires pour continuer.", "backendError": "La réservation n'a pas pu être enregistrée ni PayPal démarré. Vérifiez votre connexion et réessayez.", "noApproval": "PayPal n'a pas renvoyé de lien d'approbation de paiement.", "paymentUnavailable": "Le système de paiement n'est pas disponible.", "dateTransition": "Pour voyager entre Lima/Ica et Cusco, il faut prévoir au moins un jour de trajet. Sélectionnez une date ultérieure pour continuer.", "selectDate": "Sélectionnez une date pour continuer.", "pastDate": "Réservez au moins 2 jours à l’avance.", "duplicateDate": "Deux tours ne peuvent pas avoir la même date.", "statusEdit": "Vérifiez les informations et cliquez sur continuer.", "reviewButton": "Continuer", "modalAriaClose": "Fermer la fenêtre", "requestedLanguages": ["Français", "Español", "English", "Português", "Italiano", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "Le paiement n'a pas été finalisé. Votre réservation est toujours enregistrée et vous pouvez réessayer.", "processingTitle": "Nous préparons votre réservation"};
+  const CHECKOUT_I18N = {"lang":"de","locale":"de-DE","name":"Machu Picchu + Touren in Peru","data":"assets/data/i18n/de/landing-machu-picchu-tours.json","copy":"Code kopiert","noDate":"kein Datum ausgewählt","modalTitle":"Angaben zu den Reisenden","codeLabel":"Buchungscode:","payNow":"Jetzt zu zahlender Betrag:","important":"Wichtige Informationen","importantText":"Geben Sie Namen, Nachnamen und Dokumentdaten genau so ein, wie sie im offiziellen Reisedokument stehen. Diese Angaben werden für Eintrittskarten, Zugtickets und touristische Leistungen verwendet.","holderTitle":"Buchungsinhaber / Reisender 1","holderOnly":"Buchungsinhaber","required":"Pflichtangaben zum Fortfahren","first":"Vorname(n)","last":"Nachname(n)","docType":"Dokumenttyp","select":"Auswählen","passport":"Reisepass","dni":"Nationaler Ausweis (DNI)","idcard":"Personalausweis","other":"Andere","docNum":"Dokumentnummer","nationality":"Staatsangehörigkeit","selectCountry":"Land auswählen","selectCode":"Vorwahl auswählen","birth":"Geburtsdatum","whatsapp":"WhatsApp","email":"E-Mail","language":"Gewünschte Sprache","pickup":"Hotel oder Abholadresse in Cusco","pickupPh":"Name und Adresse des Hotels, falls bekannt","holderTravels":"Der Buchungsinhaber reist ebenfalls mit.","tourists":"Registrierung der Reisenden","touristsNote":"Sie können die Daten weiterer Reisender jetzt oder 15 bis 30 Tage vor der Reise eingeben.","traveler":"Reisender","later":"Diese Angaben später vervollständigen","cancel":"Abbrechen","edit":"Angaben bearbeiten","continue":"Weiter","pay":"Bezahlen","saving":"Ihre Buchung wird erstellt…","connecting":"Sichere Verbindung zu PayPal wird hergestellt…","summaryTitle":"Buchungsübersicht","review":"Prüfen Sie Ihre Buchung vor der Zahlung","holder":"Buchungsinhaber","pickupShort":"Abholung","services":"Leistungen","total":"Gesamtbetrag","paypalNote":"Beim Fortfahren werden Sie sicher zu PayPal weitergeleitet, um 100 % der Buchung zu bezahlen.","formRequired":"Vervollständigen Sie die Pflichtangaben, um fortzufahren.","backendError":"Die Buchung konnte nicht registriert oder PayPal nicht gestartet werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.","noApproval":"PayPal hat keinen Link zur Zahlungsfreigabe zurückgegeben.","paymentUnavailable":"Das Zahlungssystem ist nicht verfügbar.","dateTransition":"Für die Reise zwischen Lima/Ica und Cusco ist mindestens ein Transfertag erforderlich. Wählen Sie ein späteres Datum, um fortzufahren.","selectDate":"Wählen Sie ein Datum, um fortzufahren.","pastDate":"Buchen Sie mindestens 2 Tage im Voraus.","duplicateDate":"Zwei Touren können nicht am selben Datum stattfinden.","statusEdit":"Prüfen Sie die Angaben und fahren Sie fort.","reviewButton":"Weiter","modalAriaClose":"Fenster schließen","requestedLanguages":["Deutsch","English","Español","Português","Italiano","Français","日本語","中文普通话"],"cancelledReturn":"Die Zahlung wurde nicht abgeschlossen. Ihre Buchung bleibt gespeichert und Sie können es erneut versuchen.","processingTitle":"Wir bereiten Ihre Buchung vor"};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
@@ -1409,7 +1409,7 @@
         return response.json().then(localizeCheckoutCountries);
       })
       .catch((error) => {
-        console.warn("Could not load country list:", error);
+        console.warn("Länderliste konnte nicht geladen werden:", error);
         return [
           { code: "PE", name: "Perú", dialCode: "+51" },
           { code: "US", name: "Estados Unidos", dialCode: "+1" },
@@ -1658,7 +1658,7 @@
           trainBundleId: trainPricing.bundle?.id || "",
           trainBundleLabel: trainPricing.bundle?.label || "",
           mealOptionId: meal?.id || "no-meal",
-          mealLabel: meal?.label || "Sans déjeuner"
+          mealLabel: meal?.label || "Ohne Mittagessen"
         },
         lineTotal: summary.lines.find((line) => line.id === state.data.mainProduct.id)?.lineTotal || 0
       });
@@ -2027,7 +2027,7 @@
         const expanded = !card.classList.contains("is-expanded");
         card.classList.toggle("is-expanded", expanded);
         disclosure.setAttribute("aria-expanded", expanded ? "true" : "false");
-        disclosure.querySelector("span").textContent = expanded ? "Masquer les détails" : "Voir ce qui est inclus";
+        disclosure.querySelector("span").textContent = expanded ? "Details ausblenden" : "Inklusivleistungen anzeigen";
         return;
       }
       const removeBtn = e.target.closest("[data-addon-remove]");
@@ -2075,8 +2075,8 @@
 
   async function fetchLandingData() {
     const basePath = getSiteBasePath();
-    const response = await fetch(`${basePath}assets/data/i18n/fr/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
-    if (!response.ok) throw new Error("Impossible de charger les informations de la page.");
+    const response = await fetch(`${basePath}assets/data/i18n/de/landing-machu-picchu-tours.json`.replace(/([^:]\/)\/{2,}/g, "$1"), { cache: "no-store" });
+    if (!response.ok) throw new Error("Die Informationen der Landingpage konnten nicht geladen werden.");
     return response.json();
   }
 
@@ -2091,7 +2091,7 @@
       try {
         window.initMyCuscoTripHeader();
       } catch (error) {
-        console.warn("Le script du header ne s'est pas initialisé :", error);
+        console.warn("Das JavaScript der Kopfzeile wurde nicht initialisiert:", error);
       }
     }
     syncStickySummaryOffset();
