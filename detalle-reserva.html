@@ -2001,7 +2001,7 @@
       }
 
       .pv-meta-grid {
-        margin-bottom: 4px !important;
+        margin-bottom: 6px !important;
       }
 
       .pv-meta-item {
@@ -2011,8 +2011,8 @@
       }
 
       .pv-section-title {
-        margin-top: 4px !important;
-        padding-top: 3px !important;
+        margin-top: 6px !important;
+        padding-top: 5px !important;
         padding-bottom: 3px !important;
       }
 
@@ -2104,7 +2104,7 @@
       .pv-meta-grid {
         margin-top: 2px !important;
         margin-bottom: 4px !important;
-        gap: 5px !important;
+        gap: 7.5px !important;
       }
 
       .pv-meta-item {
@@ -2575,7 +2575,7 @@
 
       .pv-services-table th,
       .pv-services-table td {
-        padding: 3px 4px !important;
+        padding: 4.5px 5px !important;
         font-size: 9px !important;
         line-height: 1.05 !important;
         white-space: nowrap !important;
@@ -2597,7 +2597,7 @@
 
       .pv-bottom {
         gap: 8px !important;
-        margin-top: 5px !important;
+        margin-top: 8px !important;
       }
 
       .pv-info-box,
@@ -2750,16 +2750,16 @@
 
 
     /* ================================================================
-       V99 — Travel Voucher impreso únicamente
-       - margen superior 0
-       - información adicional en tarjetas balanceadas
-       - resumen de pagos confirmado
-       - bloques indivisibles entre páginas
+       V100 — Travel Voucher impreso únicamente
+       - margen real de 10 mm en todas las páginas
+       - mayor respiración vertical entre secciones y tarjetas
+       - marca de agua central muy tenue
+       - conserva distribución, tipografía y datos de V99
        ================================================================ */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 0 8mm 8mm 8mm !important;
+        margin: 10mm 8mm 10mm 8mm !important;
       }
 
       html,
@@ -2884,13 +2884,14 @@
       }
 
       .pv-section-title {
-        margin-top: 3px !important;
-        padding: 2.4px 7px !important;
+        margin-top: 5px !important;
+        margin-bottom: 2px !important;
+        padding: 3.5px 7px !important;
         font-size: 9.8px !important;
         line-height: 1 !important;
       }
 
-      .pv-tourists-grid { margin-bottom: 3px !important; }
+      .pv-tourists-grid { margin-bottom: 5px !important; }
       .pv-tourists-grid-row > div {
         min-height: 17px !important;
         padding: 2px 4px !important;
@@ -2902,7 +2903,7 @@
         font-size: 7.2px !important;
       }
 
-      .pv-services-table { margin-bottom: 3px !important; }
+      .pv-services-table { margin-bottom: 5px !important; }
       .pv-services-table th,
       .pv-services-table td {
         padding: 2.5px 3.5px !important;
@@ -2953,7 +2954,7 @@
 
       .pv-card-title {
         margin: 0 !important;
-        padding: 3.5px 6px !important;
+        padding: 5px 8px !important;
         background: #f0f2f1 !important;
         border-bottom: 1px solid #d7dbe0 !important;
         color: #253b2f !important;
@@ -2967,18 +2968,18 @@
       }
 
       .pv-card-body {
-        padding: 5px 6px !important;
+        padding: 7px 8px !important;
         font-size: 8.1px !important;
-        line-height: 1.13 !important;
+        line-height: 1.18 !important;
       }
 
-      .pv-include-group + .pv-include-group { margin-top: 4px !important; }
+      .pv-include-group + .pv-include-group { margin-top: 6px !important; }
       .pv-include-group-title {
-        margin-bottom: 2px !important;
+        margin-bottom: 3px !important;
         font-size: 8.1px !important;
       }
       .pv-include-list li {
-        margin-bottom: 1px !important;
+        margin-bottom: 1.5px !important;
         padding-left: 13px !important;
         font-size: 8px !important;
         line-height: 1.12 !important;
@@ -2996,7 +2997,7 @@
         display: flex !important;
         justify-content: space-between !important;
         gap: 8px !important;
-        padding-top: 3px !important;
+        padding-top: 5px !important;
         border-top: 1px solid #ecefed !important;
         font-size: 8.4px !important;
       }
@@ -3007,9 +3008,9 @@
         padding-left: 13px !important;
       }
       .pv-simple-list-v99 li {
-        margin: 0 0 1px 0 !important;
+        margin: 0 0 2px 0 !important;
         padding: 0 !important;
-        line-height: 1.12 !important;
+        line-height: 1.16 !important;
       }
 
       /* Resumen económico de la reserva. */
@@ -3018,7 +3019,7 @@
         display: flex !important;
         align-items: center !important;
         gap: 5px !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 6px !important;
         font-size: 7.7px !important;
         color: #46554e !important;
       }
@@ -3040,7 +3041,7 @@
       .pv-payment-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 3px !important;
+        gap: 4.5px !important;
       }
       .pv-payment-metric {
         border: 1px solid #e0e4e2 !important;
@@ -3073,8 +3074,8 @@
         display: flex !important;
         flex-wrap: wrap !important;
         gap: 2px 8px !important;
-        margin-top: 4px !important;
-        padding-top: 3px !important;
+        margin-top: 6px !important;
+        padding-top: 5px !important;
         border-top: 1px solid #ecefed !important;
         color: #56635d !important;
         font-size: 6.9px !important;
@@ -3098,7 +3099,7 @@
       .pv-signature-main {
         grid-template-columns: 90px 1fr !important;
         gap: 7px !important;
-        padding: 6px 9px !important;
+        padding: 8px 10px !important;
       }
       .pv-signature-brand img {
         width: 72px !important;
@@ -3124,7 +3125,7 @@
         max-height: 28px !important;
       }
       .pv-ad-banner-slot {
-        padding: 3px !important;
+        padding: 4.5px !important;
         min-height: 0 !important;
       }
       .pv-ad-banner-slot img {
@@ -3132,6 +3133,27 @@
         height: auto !important;
         max-height: none !important;
         object-fit: contain !important;
+      }
+
+      /* Marca de agua: elemento fijo para repetirse en cada página impresa. */
+      .pv-print-watermark {
+        display: block !important;
+        position: fixed !important;
+        left: 50% !important;
+        top: 50% !important;
+        width: 235px !important;
+        height: auto !important;
+        transform: translate(-50%, -50%) rotate(-10deg) !important;
+        opacity: .032 !important;
+        filter: grayscale(1) invert(1) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+        z-index: 0 !important;
+      }
+
+      .pv-classic > *:not(.pv-print-watermark) {
+        position: relative !important;
+        z-index: 1 !important;
       }
     }
 
@@ -4100,6 +4122,7 @@
 
       return `
         <div class="pv-classic">
+          <img class="pv-print-watermark" src="./assets/img/logos/Logo1.png" alt="" aria-hidden="true">
           <div class="pv-top">
             <div class="pv-left">
               <img src="./assets/img/reserva/logo-color.png" alt="MyCuscoTrip">
