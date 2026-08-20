@@ -159,7 +159,6 @@
         {
           "id": "prime-outbound",
           "label": "The Prime by Inca Rail",
-          "schedule": "Orario soggetto a conferma",
           "description": "Upgrade panoramico con carrozza all’aperto per ammirare la Valle Sacra.",
           "adultSupplement": 64.9,
           "childSupplement": 31,

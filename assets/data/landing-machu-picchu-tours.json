@@ -143,7 +143,6 @@
         {
           "id": "prime-outbound",
           "label": "The Prime de Inca Rail",
-          "schedule": "Horario sujeto a confirmación",
           "description": "Upgrade panorámico con vagón al aire libre para disfrutar el Valle Sagrado.",
           "adultSupplement": 64.9,
           "childSupplement": 31,

@@ -6,6 +6,7 @@
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-y-tours-peru-v5";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
   const MIN_BOOKING_ADVANCE_DAYS = 2;
+  const CALENDAR_OCCUPIED_LABEL = "Día ocupado";
   const UPSELL_SESSION_KEY = "mpt_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 
@@ -376,15 +377,65 @@
   function getSelectedToursWithDates() {
     const list = [];
     if (state.mainProduct.selected) {
-      list.push({ id: state.data.mainProduct.id, origin: state.data.mainProduct.origin, date: state.mainProduct.date });
+      list.push({ id: state.data.mainProduct.id, title: state.data.mainProduct.title, origin: state.data.mainProduct.origin, date: state.mainProduct.date });
     }
     Object.keys(state.addons).forEach((id) => {
       const sel = state.addons[id];
       if (!sel.selected) return;
       const addon = state.data.addons.find((a) => a.id === id);
-      list.push({ id, origin: addon?.origin || "", date: sel.date });
+      list.push({ id, title: addon?.title || id, origin: addon?.origin || "", date: sel.date });
     });
     return list;
+  }
+
+  function getCalendarCode(tourId) {
+    const codes = {
+      "machu-picchu-full-day": "MP",
+      "bienvenida-ancestral-cusco": "BA",
+      "laguna-humantay": "LH",
+      "montana-colores-vinicunca": "MC",
+      "valle-sagrado-full-day": "VS",
+      "siete-lagunas-ausangate": "7L",
+      "valle-sur-cusco": "VSUR",
+      "paracas-ica-huacachina": "ICA"
+    };
+    return codes[tourId] || "TOUR";
+  }
+
+  function getOccupiedToursByDate(excludedTourId) {
+    return getSelectedToursWithDates().reduce((dates, tour) => {
+      if (!tour.date || tour.id === excludedTourId) return dates;
+      dates[tour.date] = dates[tour.date] || [];
+      dates[tour.date].push({ ...tour, code: getCalendarCode(tour.id) });
+      return dates;
+    }, {});
+  }
+
+  function decorateCalendarDay(dayElement, date, excludedTourId) {
+    const occupiedTours = getOccupiedToursByDate(excludedTourId)[formatDateISO(date)] || [];
+    if (!occupiedTours.length) return;
+    const tourNames = occupiedTours.map((tour) => tour.title).join(", ");
+    const codes = occupiedTours.map((tour) => tour.code).join("/");
+    dayElement.classList.add("mpt-date-occupied");
+    dayElement.title = `${CALENDAR_OCCUPIED_LABEL}: ${tourNames}`;
+    dayElement.setAttribute("aria-label", `${dayElement.getAttribute("aria-label") || formatDateISO(date)}. ${CALENDAR_OCCUPIED_LABEL}: ${tourNames}`);
+    const badge = document.createElement("span");
+    badge.className = "mpt-date-occupied__badge";
+    badge.textContent = codes;
+    badge.setAttribute("aria-hidden", "true");
+    dayElement.appendChild(badge);
+  }
+
+  function getCalendarFocusDate(tourId) {
+    const ownDate = tourId === state.data.mainProduct.id ? state.mainProduct.date : state.addons[tourId]?.date;
+    if (ownDate) return ownDate;
+    if (state.mainProduct.date && tourId !== state.data.mainProduct.id) return state.mainProduct.date;
+    const occupiedDates = Object.keys(getOccupiedToursByDate(tourId)).sort();
+    return occupiedDates[0] || getMinimumBookingDate();
+  }
+
+  function refreshDatePickers() {
+    Object.values(state.pickers).forEach((picker) => picker?.redraw?.());
   }
 
   /**
@@ -559,6 +610,7 @@
     }
     discount = round2(discount);
     const total = round2(Math.max(0, subtotal - discount));
+    lines.sort((a, b) => String(a.date || "9999-12-31").localeCompare(String(b.date || "9999-12-31")));
 
     const selectedTours = getSelectedToursWithDates();
     const dated = selectedTours.filter((t) => t.date);
@@ -715,7 +767,7 @@
             <strong>${escapeHtml(option.label)}</strong>
             ${option.badge ? `<small class="mpt-choice-card__badge">${escapeHtml(option.badge)}</small>` : ""}
           </span>
-          <small>${escapeHtml(option.schedule || "Horario sujeto a confirmación")}</small>
+          ${option.schedule ? `<small>${escapeHtml(option.schedule)}</small>` : ""}
           <span>${escapeHtml(option.description || "")}</span>
           <b>${escapeHtml(formatTrainSupplement(option, currency))}</b>
         </span>
@@ -871,17 +923,27 @@
               <div class="mpt-config-block__head">
                 <div><span class="mpt-step">2</span><div><strong id="mptTrainTitle">Personaliza tus trenes</strong><small>El Voyager está incluido. Puedes mejorar uno o ambos trayectos.</small></div></div>
               </div>
-              <div class="mpt-train-groups">
+              <div class="mpt-train-groups mpt-train-groups--included">
                 <fieldset class="mpt-choice-group">
                   <legend>Tren de ida</legend>
-                  ${renderTrainOptions(p.trainSelection?.outbound, state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
+                  ${renderTrainOptions((p.trainSelection?.outbound || []).slice(0, 1), state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
                 </fieldset>
                 <fieldset class="mpt-choice-group">
                   <legend>Tren de retorno</legend>
-                  ${renderTrainOptions(p.trainSelection?.return, state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
+                  ${renderTrainOptions((p.trainSelection?.return || []).slice(0, 1), state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
                 </fieldset>
               </div>
-              <p class="mpt-bundle-note"><i class="fas fa-tags"></i> Al elegir <strong>The Prime para la ida</strong> y el <strong>retorno temprano de las 19:00</strong>, el sistema aplica automáticamente el precio especial combinado: <strong>+US$ 105.90 por adulto y +US$ 53.00 por niño</strong>.</p>
+              <p class="mpt-train-upgrade-label"><i class="fas fa-arrow-up-right-dots" aria-hidden="true"></i> Opciones de upgrade para el tren de ida y/o retorno</p>
+              <div class="mpt-train-groups mpt-train-groups--upgrades">
+                <fieldset class="mpt-choice-group">
+                  <legend>Upgrade de ida</legend>
+                  ${renderTrainOptions((p.trainSelection?.outbound || []).slice(1), state.mainProduct.outboundTrainId, "mptOutboundTrain", currency)}
+                </fieldset>
+                <fieldset class="mpt-choice-group">
+                  <legend>Upgrade de retorno</legend>
+                  ${renderTrainOptions((p.trainSelection?.return || []).slice(1), state.mainProduct.returnTrainId, "mptReturnTrain", currency)}
+                </fieldset>
+              </div>
             </section>
             <section class="mpt-config-block" aria-labelledby="mptMealTitle">
               <div class="mpt-config-block__head">
@@ -953,10 +1015,20 @@
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
         state.mainProduct.date = dateStr || null;
+        refreshDatePickers();
         renderCircuitOptions();
         trackLandingEvent("main_product_date_selected", { date: dateStr });
         validateAllDates();
         renderSummary();
+      }
+      ,
+      disable: [(date) => Boolean(getOccupiedToursByDate(p.id)[formatDateISO(date)])],
+      onOpen(selectedDates, dateStr, instance) {
+        instance.jumpToDate(getCalendarFocusDate(p.id));
+        instance.redraw();
+      },
+      onDayCreate(selectedDates, dateStr, instance, dayElement) {
+        decorateCalendarDay(dayElement, dayElement.dateObj, p.id);
       }
     });
     if (state.mainProduct.date) dateInput.value = state.mainProduct.date;
@@ -1024,8 +1096,17 @@
         altFormat: "d M Y",
         locale: "es",
         defaultDate: sel.date || undefined,
+        disable: [(date) => Boolean(getOccupiedToursByDate(addon.id)[formatDateISO(date)])],
+        onOpen(selectedDates, dateStr, instance) {
+          instance.jumpToDate(getCalendarFocusDate(addon.id));
+          instance.redraw();
+        },
+        onDayCreate(selectedDates, dateStr, instance, dayElement) {
+          decorateCalendarDay(dayElement, dayElement.dateObj, addon.id);
+        },
         onChange(selectedDates, dateStr) {
           state.addons[addon.id].date = dateStr || null;
+          refreshDatePickers();
           trackLandingEvent("addon_date_selected", { addon_id: addon.id, date: dateStr });
           validateAllDates();
           renderSummary();
@@ -1044,13 +1125,18 @@
     if (disclosure) disclosure.setAttribute("aria-expanded", card.classList.contains("is-expanded") ? "true" : "false");
     if (selected) {
       trackLandingEvent("addon_added", { addon_id: id });
-      if (!state.addons[id].date) state.pickers[id]?.open();
+      if (!state.addons[id].date) {
+        state.pickers[id]?.jumpToDate?.(getCalendarFocusDate(id));
+        state.pickers[id]?.redraw?.();
+        state.pickers[id]?.open();
+      }
     } else {
       trackLandingEvent("addon_removed", { addon_id: id });
       state.addons[id].date = null;
       state.pickers[id]?.clear();
       setFieldError(id, "");
     }
+    refreshDatePickers();
     validateAllDates({ silent: true });
     renderSummary();
   }
@@ -2134,6 +2220,9 @@
     calculateBookingSummary,
     getMinimumBookingDate,
     getTravelerSummaryLabel,
+    getOccupiedToursByDate,
+    getCalendarFocusDate,
+    decorateCalendarDay,
     getState: () => state
   };
 })();
