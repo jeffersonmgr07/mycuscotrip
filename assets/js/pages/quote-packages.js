@@ -21,9 +21,16 @@
   // adulto y niño pagan igual). Centralizadas aquí: NUNCA se cobra el referenceFareUsd de
   // domestic-flights.json, que es solo un catálogo de horarios de referencia sin valor comercial.
   const DOMESTIC_FLIGHT_FLAT_RATES = {
-    jetsmart: { sameMonth: 120, months2to3: 100, after3Months: 90 },
-    latam: { sameMonth: 150, months2to3: 125, after3Months: 110 }
+    jetsmart: { sameMonth: 160, months2to3: 140, after3Months: 130 },
+    latam: { sameMonth: 190, months2to3: 165, after3Months: 150 }
   };
+
+  // Ajuste comercial interno por circuito Machu Picchu. Se cobra UNA sola vez por reserva,
+  // no por pasajero, y se reparte entre adultos + niños facturables para integrarlo de forma
+  // transparente dentro del subtotal de "Experiencias y tours". Los infantes no pagantes no
+  // forman parte del divisor porque el cotizador no los incluye en getPassengerCount().
+  const MACHU_CIRCUIT_FIXED_ADJUSTMENT_USD = 60;
+  const MACHU_CIRCUITS_WITH_ADJUSTMENT = new Set(["circuito-1", "circuito-3"]);
 
   const MACHU_PICCHU_CIRCUITS = [
     { id: "circuito-1", label: "Circuito 1", routes: [
@@ -2217,12 +2224,30 @@
   }
 
 
+  function getMachuCircuitAdjustmentUSD() {
+    const option = getSelectedOption();
+    if (!option || !getMachuTour(option)) return 0;
+    return MACHU_CIRCUITS_WITH_ADJUSTMENT.has(state.machuPicchuCircuit)
+      ? MACHU_CIRCUIT_FIXED_ADJUSTMENT_USD
+      : 0;
+  }
+
+  function getMachuCircuitAdjustmentPerPassengerUSD() {
+    const passengerCount = getPassengerCount();
+    if (passengerCount <= 0) return 0;
+    return getMachuCircuitAdjustmentUSD() / passengerCount;
+  }
+
   function getBaseTotals() {
     const option = getSelectedOption();
     if (!option) return { adult: 0, child: 0, total: 0 };
 
-    const adultPriceUSD = getOptionBaseAdult(option) + getLogisticsBasePriceUSDPerPassenger();
-    const childPriceUSD = getOptionBaseChild(option) + getLogisticsBasePriceUSDPerPassenger();
+    // El ajuste fijo del Circuito 1/3 se prorratea entre adultos + niños facturables.
+    // Al sumarse aquí queda incorporado en las líneas existentes de "Experiencias y tours"
+    // sin crear una línea visible de recargo separada en el resumen o en la impresión.
+    const circuitAdjustmentPerPassengerUSD = getMachuCircuitAdjustmentPerPassengerUSD();
+    const adultPriceUSD = getOptionBaseAdult(option) + getLogisticsBasePriceUSDPerPassenger() + circuitAdjustmentPerPassengerUSD;
+    const childPriceUSD = getOptionBaseChild(option) + getLogisticsBasePriceUSDPerPassenger() + circuitAdjustmentPerPassengerUSD;
     const adultUSD = adultPriceUSD * state.adults;
     const childUSD = childPriceUSD * state.children;
 
