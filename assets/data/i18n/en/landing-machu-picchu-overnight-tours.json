@@ -1,0 +1,391 @@
+{
+  "version": "1.0.0-en-overnight",
+  "updatedAt": "2026-08-23",
+  "landingId": "machu-picchu-overnight-y-tours-peru",
+  "currency": "USD",
+  "priceNote": "Direct web rates for the 2-day/1-night Machu Picchu Overnight tour. The selected start date occupies two consecutive days; circuit availability is checked for day two.",
+  "whatsapp": {
+    "phone": "51900608980",
+    "messageTemplate": "Hello, I would like to confirm my tour selection. Code: {reservationCode}. {servicesSummary}. We are {totalPassengers} travelers. Total: {currency} {total}. Source: {source}."
+  },
+  "disclaimers": {
+    "availability": "Dates and times are subject to availability. Our team will verify tickets, trains and operating conditions before issuing the services.",
+    "documentationNote": "Each traveler’s details must exactly match the valid identity document or passport they will use on the travel date."
+  },
+  "childPolicy": {
+    "minAge": 2,
+    "maxAge": 12,
+    "infantMaxAge": 1,
+    "infantPricingAvailable": true,
+    "infantNote": "Infants under age 2 travel free and without their own seat, but they must be registered in the booking.",
+    "documentationMessage": "The child rate applies to travelers aged {minAge} to {maxAge} on the travel date. Age will be verified with the child's identity document or passport.",
+    "infantPrice": 0
+  },
+  "destinationGroups": {
+    "cusco": [
+      "machu-picchu-overnight",
+      "laguna-humantay",
+      "montana-colores-vinicunca",
+      "valle-sagrado-full-day",
+      "bienvenida-ancestral-cusco",
+      "siete-lagunas-ausangate",
+      "valle-sur-cusco"
+    ],
+    "lima-ica": [
+      "paracas-ica-huacachina"
+    ]
+  },
+  "minGapDaysBetweenGroups": 1,
+  "operationalWarnings": [
+    {
+      "id": "machu-picchu-overnight-late-train-humantay-next-day",
+      "condition": {
+        "firstServiceId": "machu-picchu-overnight",
+        "firstServiceLateAfterHour": 19,
+        "secondServiceId": "laguna-humantay",
+        "daysApart": 1
+      },
+      "message": "Your Machu Picchu return is at night and the Humantay Lake tour starts before dawn the next day. Rest time would be very short. We recommend changing the date or requesting an earlier return train."
+    }
+  ],
+  "mainProduct": {
+    "id": "machu-picchu-overnight",
+    "slug": "machu-picchu-overnight-clasico",
+    "title": "Machu Picchu Overnight 2 Days/1 Night",
+    "origin": "cusco",
+    "badge": "2 days / 1 night",
+    "selectedByDefault": true,
+    "removable": false,
+    "image": "../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+    "gallery": [
+      "../assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
+      "../assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
+    ],
+    "shortDescription": "Travel to Aguas Calientes on day one, stay overnight and visit Machu Picchu the next day with hotel, breakfast, train, admission, buses and guide included.",
+    "adultPrice": 489.9,
+    "childPricing": {
+      "type": "fixed",
+      "price": 489.9
+    },
+    "includes": [
+      "Pickup from your hotel or address in Cusco",
+      "Outbound tourist train on day 1 and return train on day 2 in Inca Rail's The Voyager category",
+      "One night at the 3-star Hotel Luz Garden in Aguas Calientes",
+      "Breakfast at the hotel",
+      "Round-trip Consettur bus between Machu Picchu Pueblo and the citadel",
+      "Official Machu Picchu admission for day two",
+      "Professional guide in English or Spanish",
+      "Ground transfers and 24/7 local assistance"
+    ],
+    "mealOptions": [
+      {
+        "id": "no-meal",
+        "label": "No lunch",
+        "pricePerPerson": 0,
+        "default": true
+      },
+      {
+        "id": "tinkuy-buffet",
+        "label": "Tinkuy buffet lunch at Belmond Sanctuary Lodge",
+        "pricePerPerson": 71.9,
+        "default": false
+      }
+    ],
+    "mealSelectionType": "single",
+    "mealDisclaimer": "Lunch is not included in the base price. Select only one option.",
+    "childPrice": 489.9,
+    "circuitSelection": {
+      "required": true,
+      "updatedAt": "2026-08-19",
+      "availabilityNote": "Availability is entered manually. Date ranges are inclusive and can be updated daily in this file.",
+      "options": [
+        {
+          "id": "circuit-1",
+          "label": "Circuit 1 – Upper Terrace",
+          "shortLabel": "Circuit 1",
+          "description": "Classic panoramic views from Machu Picchu's upper terrace.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Private service for an alternative circuit",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-08-30",
+              "reason": "Sold out"
+            }
+          ]
+        },
+        {
+          "id": "circuit-2",
+          "label": "Circuit 2 – Classic Route",
+          "shortLabel": "Circuit 2",
+          "description": "The classic route through the citadel's main sectors.",
+          "groupSupplement": 0,
+          "supplementLabel": "Included in the base price",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-30",
+              "reason": "Sold out"
+            }
+          ]
+        },
+        {
+          "id": "circuit-3",
+          "label": "Circuit 3 – Designed Royalty",
+          "shortLabel": "Circuit 3",
+          "description": "A route through the lower area and spaces associated with Inca royalty.",
+          "groupSupplement": 75.9,
+          "supplementLabel": "Private service for an alternative circuit",
+          "unavailableRanges": [
+            {
+              "from": "2026-08-19",
+              "to": "2026-09-15",
+              "reason": "Sold out"
+            }
+          ]
+        }
+      ]
+    },
+    "trainSelection": {
+      "outbound": [
+        {
+          "id": "voyager-outbound",
+          "label": "The Voyager de Inca Rail",
+          "schedule": "Day 1 · departure at 4:30 a.m. or 6:40 a.m.",
+          "description": "Included The Voyager train to Machu Picchu Pueblo.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "prime-outbound",
+          "label": "The Prime by Inca Rail",
+          "description": "Panoramic upgrade with an open-air carriage for enjoying the Sacred Valley.",
+          "adultSupplement": 64.9,
+          "childSupplement": 31,
+          "badge": "Recommended",
+          "schedule": "Day 1 · 4:10 a.m.–8:01 a.m."
+        }
+      ],
+      "return": [
+        {
+          "id": "voyager-return",
+          "label": "The Voyager Bimodal",
+          "schedule": "Day 2 · 9:30 p.m.–1:15 a.m.",
+          "description": "Included evening return to Cusco after day two.",
+          "adultSupplement": 0,
+          "childSupplement": 0,
+          "default": true
+        },
+        {
+          "id": "early-return",
+          "label": "Early return",
+          "schedule": "Day 2 · departure at 7:00 p.m.",
+          "description": "Return approximately 2 hours and 30 minutes earlier on day two.",
+          "adultSupplement": 42.9,
+          "childSupplement": 21
+        }
+      ],
+      "bundles": [
+        {
+          "id": "prime-early-bundle",
+          "outboundId": "prime-outbound",
+          "returnId": "early-return",
+          "label": "The Prime + early return",
+          "adultSupplement": 105.9,
+          "childSupplement": 53
+        }
+      ]
+    },
+    "durationDays": 2,
+    "nights": 1,
+    "visitDayOffset": 1,
+    "bookingDateLabel": "Start date",
+    "bookingDatePlaceholder": "Select the first day",
+    "bookingDateHelp": "Book at least 2 days in advance. Two consecutive days will be occupied.",
+    "accommodation": {
+      "title": "Accommodation included",
+      "hotelName": "Hotel Luz Garden",
+      "summary": "1 night in Aguas Calientes · 3★ category · breakfast included",
+      "label": "Hotel Luz Garden 3★ with breakfast",
+      "hotelCode": "luz-garden-3s",
+      "stars": 3,
+      "nights": 1,
+      "breakfastIncluded": true,
+      "includedInBasePrice": true,
+      "image": "../assets/img/hotels/luz-garden/cover.jpg"
+    }
+  },
+  "addons": [
+    {
+      "id": "bienvenida-ancestral-cusco",
+      "slug": "bienvenida-ancestral-cusco",
+      "title": "Ancestral Welcome in Cusco",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/bienvenida-ancestral-cusco/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/bienvenida-ancestral-cusco/1.jpg",
+        "../../assets/img/tours/bienvenida-ancestral-cusco/2.jpg"
+      ],
+      "shortDescription": "Begin your stay with a panoramic route, an Andean ceremony and memorable views of Cusco.",
+      "pricePerPerson": 11.9,
+      "includes": [
+        "Panoramic bus",
+        "Bilingual guide",
+        "Andean ceremony",
+        "Textile center visit",
+        "Panoramic viewpoint"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "laguna-humantay",
+      "slug": "laguna-humantay",
+      "title": "Humantay Lake",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/laguna-humantay/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/laguna-humantay/1.jpg",
+        "../../assets/img/tours/laguna-humantay/2.jpg"
+      ],
+      "shortDescription": "Hike to the turquoise lake at the foot of snowcapped Humantay, one of Cusco’s most impressive excursions.",
+      "pricePerPerson": 69,
+      "includes": [
+        "Pickup in Cusco",
+        "Tourist transportation",
+        "Professional guide",
+        "Admission to the lake area",
+        "Breakfast",
+        "Lunch"
+      ],
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "montana-colores-vinicunca",
+      "slug": "montana-de-colores",
+      "title": "Vinicunca Rainbow Mountain",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/montana-colores/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/montana-colores/1.jpg",
+        "../../assets/img/tours/montana-colores/2.jpg"
+      ],
+      "shortDescription": "See the Andes’ famous rainbow-colored mountain on a full-day excursion from Cusco.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Pickup in Cusco",
+        "Tourist transportation",
+        "Professional guide in English or Spanish",
+        "Breakfast and lunch according to the operating plan"
+      ],
+      "excludesNote": "Local admission and the optional horse are not included unless expressly confirmed.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sagrado-full-day",
+      "slug": "valle-sagrado-full-day",
+      "title": "Sacred Valley of the Incas",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/valle-sagrado/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/valle-sagrado/1.jpg",
+        "../../assets/img/tours/valle-sagrado/2.jpg"
+      ],
+      "shortDescription": "Explore Pisac, Urubamba, Ollantaytambo and Chinchero on a complete cultural route through the Sacred Valley.",
+      "pricePerPerson": 29.9,
+      "includes": [
+        "Pickup in Cusco",
+        "Tourist transportation",
+        "Professional guide in English or Spanish",
+        "Return to Cusco at the end of the tour"
+      ],
+      "excludesNote": "Tourist Ticket and buffet lunch are not included.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "siete-lagunas-ausangate",
+      "slug": "siete-lagunas-ausangate",
+      "title": "Seven Lakes of Ausangate",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/siete-lagunas-ausangate/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/siete-lagunas-ausangate/1.jpg",
+        "../../assets/img/tours/siete-lagunas-ausangate/2.jpg"
+      ],
+      "shortDescription": "Explore seven high-Andean lakes surrounded by mountains, glaciers and the landscapes of Ausangate.",
+      "pricePerPerson": 86.9,
+      "includes": [
+        "Pickup in Cusco",
+        "Round-trip tourist transportation",
+        "Professional guide",
+        "Breakfast",
+        "Lunch",
+        "First-aid kit and oxygen"
+      ],
+      "excludesNote": "Local admission fees, hot springs and the optional horse are not included unless expressly confirmed.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "valle-sur-cusco",
+      "slug": "valle-sur",
+      "title": "Cusco South Valley",
+      "origin": "cusco",
+      "image": "../../assets/img/tours/valle-sur/cover.jpg",
+      "gallery": [
+        "../../assets/img/tours/valle-sur/1.jpg",
+        "../../assets/img/tours/valle-sur/2.jpg"
+      ],
+      "shortDescription": "Visit Tipón, Pikillacta and Andahuaylillas on a half-day cultural route south of Cusco.",
+      "pricePerPerson": 20.9,
+      "includes": [
+        "Pickup in Cusco",
+        "Tourist transportation",
+        "Professional guide in English or Spanish"
+      ],
+      "excludesNote": "Partial Tourist Ticket and admission to Andahuaylillas are not included.",
+      "extras": [],
+      "requiresDateSelection": true
+    },
+    {
+      "id": "paracas-ica-huacachina",
+      "slug": "paracas-ica-huacachina",
+      "title": "Paracas, Ica and Huacachina Full Day",
+      "origin": "lima-ica",
+      "image": "../../assets/img/packages/peru/paracas-huacachina/cover.jpg",
+      "gallery": [
+        "../../assets/img/packages/peru/paracas-huacachina/1.jpg"
+      ],
+      "shortDescription": "Visit the Ballestas Islands, Ica and the Huacachina dunes on a complete day trip from Lima.",
+      "pricePerPerson": 89,
+      "includes": [
+        "Tourist transportation from Lima",
+        "Boat tour to the Ballestas Islands",
+        "Local assistance",
+        "Visit to Ica and Huacachina",
+        "Dune buggies and sandboarding according to operating conditions"
+      ],
+      "excludesNote": "Meals are not included.",
+      "extras": [
+        {
+          "id": "lunch",
+          "label": "Add lunch",
+          "pricePerPerson": 20,
+          "type": "toggle"
+        }
+      ],
+      "requiresDateSelection": true
+    }
+  ],
+  "upsellModal": {
+    "title": "Add more experiences to your days in Peru",
+    "text": "Machu Picchu is already selected. You can add tours in Cusco, the Sacred Valley or the Peruvian coast, each with its own date.",
+    "benefit": "Organize several experiences in one booking and one payment.",
+    "viewAddonsButton": "View additional experiences",
+    "continueAloneButton": "Continue with Machu Picchu only"
+  }
+}
