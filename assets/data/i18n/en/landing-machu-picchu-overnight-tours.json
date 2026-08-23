@@ -56,16 +56,16 @@
     "badge": "2 days / 1 night",
     "selectedByDefault": true,
     "removable": false,
-    "image": "../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+    "image": "../../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
     "gallery": [
-      "../assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
-      "../assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
+      "../../assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
+      "../../assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
     ],
     "shortDescription": "Travel to Aguas Calientes on day one, stay overnight and visit Machu Picchu the next day with hotel, breakfast, train, admission, buses and guide included.",
     "adultPrice": 489.9,
     "childPricing": {
       "type": "fixed",
-      "price": 489.9
+      "price": 411.5
     },
     "includes": [
       "Pickup from your hotel or address in Cusco",
@@ -93,7 +93,7 @@
     ],
     "mealSelectionType": "single",
     "mealDisclaimer": "Lunch is not included in the base price. Select only one option.",
-    "childPrice": 489.9,
+    "childPrice": 411.5,
     "circuitSelection": {
       "required": true,
       "updatedAt": "2026-08-19",
@@ -105,14 +105,9 @@
           "shortLabel": "Circuit 1",
           "description": "Classic panoramic views from Machu Picchu's upper terrace.",
           "groupSupplement": 75.9,
-          "supplementLabel": "Private service for an alternative circuit",
-          "unavailableRanges": [
-            {
-              "from": "2026-08-19",
-              "to": "2026-08-30",
-              "reason": "Sold out"
-            }
-          ]
+          "supplementLabel": "+USD 75.90 per booking",
+          "unavailableRanges": [],
+          "enabled": true
         },
         {
           "id": "circuit-2",
@@ -127,7 +122,9 @@
               "to": "2026-09-30",
               "reason": "Sold out"
             }
-          ]
+          ],
+          "enabled": false,
+          "disabledReason": "Not available"
         },
         {
           "id": "circuit-3",
@@ -135,16 +132,19 @@
           "shortLabel": "Circuit 3",
           "description": "A route through the lower area and spaces associated with Inca royalty.",
           "groupSupplement": 75.9,
-          "supplementLabel": "Private service for an alternative circuit",
+          "supplementLabel": "+USD 75.90 per booking",
           "unavailableRanges": [
             {
               "from": "2026-08-19",
               "to": "2026-09-15",
               "reason": "Sold out"
             }
-          ]
+          ],
+          "enabled": false,
+          "disabledReason": "Not available"
         }
-      ]
+      ],
+      "perReservationLabel": "per booking"
     },
     "trainSelection": {
       "outbound": [
@@ -200,9 +200,9 @@
     "durationDays": 2,
     "nights": 1,
     "visitDayOffset": 1,
-    "bookingDateLabel": "Start date",
-    "bookingDatePlaceholder": "Select the first day",
-    "bookingDateHelp": "Book at least 2 days in advance. Two consecutive days will be occupied.",
+    "bookingDateLabel": "Machu Picchu tour date",
+    "bookingDatePlaceholder": "Select the tour date",
+    "bookingDateHelp": "You can book from tomorrow. Two consecutive days will be reserved.",
     "accommodation": {
       "title": "Accommodation included",
       "hotelName": "Hotel Luz Garden",
@@ -213,7 +213,70 @@
       "nights": 1,
       "breakfastIncluded": true,
       "includedInBasePrice": true,
-      "image": "../assets/img/hotels/luz-garden/cover.jpg"
+      "image": "../../assets/img/hotels/luz-garden/cover.jpg"
+    },
+    "hotelSelection": {
+      "title": "Choose your hotel",
+      "subtitle": "Hotel Luz Garden is included and preselected. You may choose an available upgrade.",
+      "ariaLabel": "Hotel in Aguas Calientes",
+      "availableLabel": "Available",
+      "unavailableLabel": "Coming soon",
+      "includedLabel": "Included in the base price",
+      "perReservationLabel": "per booking",
+      "pricingNote": "Vista Machu Picchu adds USD 20 for each room for up to 2 guests; for 3 guests, the total supplement is USD 40.",
+      "options": [
+        {
+          "id": "luz-garden",
+          "hotelCode": "luz-garden-3s",
+          "label": "Hotel Luz Garden",
+          "description": "1 night in Aguas Calientes · 3★ category · breakfast included.",
+          "summary": "1 night · 3★ · breakfast included",
+          "image": "../../assets/img/hotels/luz-garden/cover.jpg",
+          "available": true,
+          "default": true,
+          "supplementPerRoom": 0,
+          "roomCapacity": 2
+        },
+        {
+          "id": "inti-punku",
+          "hotelCode": "inti-punku",
+          "label": "Hotel Inti Punku",
+          "description": "Accommodation option in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "vista-machu-picchu",
+          "hotelCode": "vista-machu-picchu",
+          "label": "Hotel Vista Machu Picchu",
+          "description": "Accommodation upgrade with breakfast included.",
+          "summary": "1 night · breakfast included · upgrade available",
+          "image": "../../assets/img/hotels/vista-machu-picchu/cover.jpg",
+          "available": true,
+          "supplementPerRoom": 20,
+          "roomCapacity": 2
+        },
+        {
+          "id": "casa-andina",
+          "hotelCode": "casa-andina-machu-picchu",
+          "label": "Hotel Casa Andina",
+          "description": "Accommodation option in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "taypikala",
+          "hotelCode": "taypikala-machu-picchu",
+          "label": "Hotel Taypikala",
+          "description": "Accommodation option in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "inkaterra",
+          "hotelCode": "inkaterra-machu-picchu",
+          "label": "Inkaterra Machu Picchu",
+          "description": "Premium accommodation option in Machu Picchu Pueblo.",
+          "available": false
+        }
+      ]
     }
   },
   "addons": [

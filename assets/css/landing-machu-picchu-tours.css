@@ -525,6 +525,143 @@ button:focus-visible {
   accent-color: var(--color-primary, #062803);
 }
 
+.mpt-hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mpt-hotel-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 74px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(23, 43, 39, 0.16);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.mpt-hotel-card:hover:not(.is-disabled) {
+  border-color: rgba(6, 40, 3, 0.55);
+}
+
+.mpt-hotel-card.is-selected,
+.mpt-hotel-card:has(input:checked) {
+  border-color: var(--color-primary, #062803);
+  background: rgba(13, 235, 9, 0.05);
+  box-shadow: 0 0 0 2px rgba(6, 40, 3, 0.08);
+}
+
+.mpt-hotel-card.is-disabled {
+  cursor: not-allowed;
+  border-style: dashed;
+  background: #f3f4f3;
+  opacity: 0.62;
+}
+
+.mpt-hotel-card > input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--color-primary, #062803);
+}
+
+.mpt-hotel-card > img,
+.mpt-hotel-card__icon {
+  width: 74px;
+  height: 62px;
+  border-radius: 9px;
+}
+
+.mpt-hotel-card > img {
+  display: block;
+  object-fit: cover;
+}
+
+.mpt-hotel-card__icon {
+  display: grid;
+  place-items: center;
+  background: #e9efea;
+  color: var(--color-primary, #062803);
+  font-size: 1.25rem;
+}
+
+.mpt-hotel-card__content {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.mpt-hotel-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mpt-hotel-card__head small {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.mpt-hotel-card__head .is-available {
+  color: #0a6f2a;
+  background: #e9f8ed;
+}
+
+.mpt-hotel-card__head .is-unavailable {
+  color: #6b625e;
+  background: #e8e6e4;
+}
+
+.mpt-hotel-card__content > span:not(.mpt-hotel-card__head) {
+  color: var(--mct-muted, #6c7a76);
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+.mpt-hotel-card__content b {
+  color: var(--color-primary, #062803);
+  font-size: 0.8rem;
+}
+
+.mpt-hotel-note {
+  margin: 0;
+  color: var(--mct-muted, #6c7a76);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .mpt-hotel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mpt-hotel-card {
+    grid-template-columns: auto 64px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .mpt-hotel-card > img,
+  .mpt-hotel-card__icon {
+    width: 64px;
+    height: 58px;
+  }
+
+  .mpt-hotel-card__head {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
 /* ---------- Product configurator: circuits, trains and premium lunch ---------- */
 .mpt-config-block {
   display: grid;

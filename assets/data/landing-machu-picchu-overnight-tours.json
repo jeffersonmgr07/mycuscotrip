@@ -63,10 +63,10 @@
     ],
     "shortDescription": "Viaja a Aguas Calientes el primer día, descansa una noche y visita Machu Picchu al día siguiente con hotel, desayuno, tren, entrada, buses y guía incluidos.",
     "adultPrice": 489.9,
-    "childPrice": 489.9,
+    "childPrice": 411.5,
     "childPricing": {
       "type": "fixed",
-      "price": 489.9
+      "price": 411.5
     },
     "includes": [
       "Recojo en tu hotel o dirección en Cusco",
@@ -81,6 +81,7 @@
     "circuitSelection": {
       "required": true,
       "updatedAt": "2026-08-19",
+      "perReservationLabel": "por reserva",
       "availabilityNote": "Disponibilidad cargada manualmente. Los rangos son inclusivos y pueden actualizarse diariamente en este archivo.",
       "options": [
         {
@@ -88,21 +89,18 @@
           "label": "Circuito 1 – Terraza Superior",
           "shortLabel": "Circuito 1",
           "description": "Vistas panorámicas clásicas desde la terraza superior de Machu Picchu.",
+          "enabled": true,
           "groupSupplement": 75.9,
-          "supplementLabel": "Servicio privado para circuito alternativo",
-          "unavailableRanges": [
-            {
-              "from": "2026-08-19",
-              "to": "2026-08-30",
-              "reason": "Agotado"
-            }
-          ]
+          "supplementLabel": "+USD 75.90 por reserva",
+          "unavailableRanges": []
         },
         {
           "id": "circuit-2",
           "label": "Circuito 2 – Ruta Clásica",
           "shortLabel": "Circuito 2",
           "description": "Recorrido clásico por los principales sectores de la ciudadela.",
+          "enabled": false,
+          "disabledReason": "No disponible",
           "groupSupplement": 0,
           "supplementLabel": "Incluido en la tarifa base",
           "unavailableRanges": [
@@ -118,8 +116,10 @@
           "label": "Circuito 3 – Realeza Diseñada",
           "shortLabel": "Circuito 3",
           "description": "Ruta por la parte baja y los espacios vinculados a la realeza inca.",
+          "enabled": false,
+          "disabledReason": "No disponible",
           "groupSupplement": 75.9,
-          "supplementLabel": "Servicio privado para circuito alternativo",
+          "supplementLabel": "+USD 75.90 por reserva",
           "unavailableRanges": [
             {
               "from": "2026-08-19",
@@ -200,9 +200,72 @@
     "durationDays": 2,
     "nights": 1,
     "visitDayOffset": 1,
-    "bookingDateLabel": "Fecha de inicio",
-    "bookingDatePlaceholder": "Selecciona el primer día",
-    "bookingDateHelp": "Reserva con mínimo 2 días de anticipación. Se ocuparán 2 días consecutivos.",
+    "bookingDateLabel": "Fecha de tour Machu Picchu",
+    "bookingDatePlaceholder": "Selecciona la fecha del tour",
+    "bookingDateHelp": "Puedes reservar desde mañana. Se ocuparán 2 días consecutivos.",
+    "hotelSelection": {
+      "title": "Elige tu hotel",
+      "subtitle": "Hotel Luz Garden está incluido y preseleccionado. Puedes elegir un upgrade disponible.",
+      "ariaLabel": "Hotel en Aguas Calientes",
+      "availableLabel": "Disponible",
+      "unavailableLabel": "Próximamente",
+      "includedLabel": "Incluido en la tarifa base",
+      "perReservationLabel": "por reserva",
+      "pricingNote": "Vista Machu Picchu añade USD 20 por cada habitación de hasta 2 huéspedes; para 3 huéspedes, el suplemento total es USD 40.",
+      "options": [
+        {
+          "id": "luz-garden",
+          "hotelCode": "luz-garden-3s",
+          "label": "Hotel Luz Garden",
+          "description": "1 noche en Aguas Calientes · categoría 3★ · desayuno incluido.",
+          "summary": "1 noche · 3★ · desayuno incluido",
+          "image": "../assets/img/hotels/luz-garden/cover.jpg",
+          "available": true,
+          "default": true,
+          "supplementPerRoom": 0,
+          "roomCapacity": 2
+        },
+        {
+          "id": "inti-punku",
+          "hotelCode": "inti-punku",
+          "label": "Hotel Inti Punku",
+          "description": "Opción de alojamiento en Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "vista-machu-picchu",
+          "hotelCode": "vista-machu-picchu",
+          "label": "Hotel Vista Machu Picchu",
+          "description": "Upgrade de alojamiento con desayuno incluido.",
+          "summary": "1 noche · desayuno incluido · upgrade disponible",
+          "image": "../assets/img/hotels/vista-machu-picchu/cover.jpg",
+          "available": true,
+          "supplementPerRoom": 20,
+          "roomCapacity": 2
+        },
+        {
+          "id": "casa-andina",
+          "hotelCode": "casa-andina-machu-picchu",
+          "label": "Hotel Casa Andina",
+          "description": "Opción de alojamiento en Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "taypikala",
+          "hotelCode": "taypikala-machu-picchu",
+          "label": "Hotel Taypikala",
+          "description": "Opción de alojamiento en Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "inkaterra",
+          "hotelCode": "inkaterra-machu-picchu",
+          "label": "Inkaterra Machu Picchu",
+          "description": "Opción de alojamiento premium en Machu Picchu Pueblo.",
+          "available": false
+        }
+      ]
+    },
     "accommodation": {
       "title": "Alojamiento incluido",
       "hotelName": "Hotel Luz Garden",

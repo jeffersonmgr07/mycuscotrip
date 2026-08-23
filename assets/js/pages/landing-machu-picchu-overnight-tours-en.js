@@ -5,7 +5,7 @@
   const LANDING_NAME = "Machu Picchu Overnight + Tours in Peru";
   const DRAFT_KEY = "mct_landing_draft_machu-picchu-overnight-y-tours-peru-v1";
   const DRAFT_TTL_MS = 90 * 60 * 1000;
-  const MIN_BOOKING_ADVANCE_DAYS = 2;
+  const MIN_BOOKING_ADVANCE_DAYS = 1;
   const CALENDAR_OCCUPIED_LABEL = "Booked day";
   const UPSELL_SESSION_KEY = "mpto_upsell_shown";
   const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
@@ -21,6 +21,7 @@
       circuitId: null,
       outboundTrainId: null,
       returnTrainId: null,
+      hotelId: null,
       mealOptionId: "no-meal"
     },
     addons: {},
@@ -353,8 +354,22 @@
 
   function getCircuitAvailability(circuit, dateStr) {
     if (!circuit || !dateStr) return { available: false, reason: "Select a date" };
+    if (circuit.enabled === false) return { available: false, reason: circuit.disabledReason || "Not available" };
     const range = (circuit.unavailableRanges || []).find((item) => dateStr >= item.from && dateStr <= item.to);
     return range ? { available: false, reason: range.reason || "Unavailable" } : { available: true, reason: "Available" };
+  }
+
+
+  function getSelectedHotel(product) {
+    const hotels = product?.hotelSelection?.options || [];
+    return hotels.find((hotel) => hotel.id === state.mainProduct.hotelId) || hotels.find((hotel) => hotel.default) || hotels[0] || null;
+  }
+
+  function getHotelSupplement(hotel, payingPax = getPayingPassengerCount()) {
+    if (!hotel?.available || !Number(hotel.supplementPerRoom || 0)) return 0;
+    const roomCapacity = Math.max(1, Number(hotel.roomCapacity || 2));
+    const rooms = Math.max(1, Math.ceil(Math.max(1, payingPax) / roomCapacity));
+    return round2(rooms * Number(hotel.supplementPerRoom || 0));
   }
 
   function getSelectedTrainPricing(product) {
@@ -549,7 +564,7 @@
         if (!silent) setFieldError(t.id, "Select a date to continue.");
       } else if (t.date < minimumBookingDateStr) {
         valid = false;
-        if (!silent) setFieldError(t.id, "Book at least 2 days in advance.");
+        if (!silent) setFieldError(t.id, "You can book this Overnight tour from tomorrow.");
       }
     });
 
@@ -614,10 +629,12 @@
       const meal = (p.mealOptions || []).find((m) => m.id === state.mainProduct.mealOptionId) || p.mealOptions[0];
       const mealTotal = (meal?.pricePerPerson || 0) * payingPax;
       const trainPricing = getSelectedTrainPricing(p);
+      const selectedHotel = getSelectedHotel(p);
+      const hotelSupplement = getHotelSupplement(selectedHotel, payingPax);
       const selectedCircuit = findSelectedCircuit(p);
       const circuitAvailable = selectedCircuit && getCircuitAvailability(selectedCircuit, getMainProductVisitDate()).available;
       const circuitSupplement = circuitAvailable ? Number(selectedCircuit.groupSupplement || 0) : 0;
-      const lineTotal = adultsTotal + childrenTotal + mealTotal + trainPricing.total + circuitSupplement;
+      const lineTotal = adultsTotal + childrenTotal + mealTotal + trainPricing.total + circuitSupplement + hotelSupplement;
       subtotal += lineTotal;
       lines.push({
         id: p.id,
@@ -633,6 +650,8 @@
         returnTrainLabel: trainPricing.returnTrain?.label || null,
         trainBundleLabel: trainPricing.bundle?.label || null,
         trainTotal: trainPricing.total,
+        hotelLabel: selectedHotel?.label || null,
+        hotelSupplement,
         mealLabel: meal && meal.pricePerPerson > 0 ? meal.label : null,
         mealTotal,
         lineTotal
@@ -819,6 +838,29 @@
     return `+${formatCurrency(adult, currency)} adult · +${formatCurrency(child, currency)} child`;
   }
 
+  function renderHotelOptions(product, currency) {
+    const selection = product.hotelSelection || {};
+    return (selection.options || []).map((hotel) => {
+      const selected = state.mainProduct.hotelId === hotel.id;
+      const supplement = getHotelSupplement(hotel);
+      const priceText = !hotel.available
+        ? (selection.unavailableLabel || "Unavailable")
+        : supplement > 0
+          ? `+${formatCurrency(supplement, currency)} ${selection.perReservationLabel || "per booking"}`
+          : (selection.includedLabel || "Included");
+      return `
+        <label class="mpt-hotel-card${selected ? " is-selected" : ""}${hotel.available ? "" : " is-disabled"}">
+          <input type="radio" name="mptHotel" value="${escapeHtml(hotel.id)}" ${selected ? "checked" : ""} ${hotel.available ? "" : "disabled"}/>
+          ${hotel.image ? `<img src="${escapeHtml(hotel.image)}" alt="" loading="lazy"/>` : `<span class="mpt-hotel-card__icon"><i class="fas fa-hotel" aria-hidden="true"></i></span>`}
+          <span class="mpt-hotel-card__content">
+            <span class="mpt-hotel-card__head"><strong>${escapeHtml(hotel.label)}</strong><small class="${hotel.available ? "is-available" : "is-unavailable"}">${escapeHtml(hotel.available ? (selection.availableLabel || "Available") : (selection.unavailableLabel || "Unavailable"))}</small></span>
+            <span>${escapeHtml(hotel.description || "")}</span>
+            <b>${escapeHtml(priceText)}</b>
+          </span>
+        </label>`;
+    }).join("");
+  }
+
   function renderTrainOptions(options, selectedId, name, currency) {
     return (options || []).map((option) => `
       <label class="mpt-choice-card${selectedId === option.id ? " is-selected" : ""}">
@@ -853,7 +895,6 @@
       state.mainProduct.circuitId = null;
     }
     const availableCount = circuits.filter((circuit) => getCircuitAvailability(circuit, dateStr).available).length;
-    const payingPax = Math.max(1, getPayingPassengerCount());
 
     target.innerHTML = `
       <div class="mpt-circuit-date"><i class="fas fa-ticket"></i> Availability for <strong>${escapeHtml(formatDateSpanish(dateStr))}</strong></div>
@@ -863,8 +904,8 @@
           const supplement = Number(circuit.groupSupplement || 0);
           const selected = state.mainProduct.circuitId === circuit.id;
           const priceText = supplement > 0
-            ? `+${formatCurrency(supplement, state.data.currency)} per booking · ${formatCurrency(supplement / payingPax, state.data.currency)} per paying traveler in this group`
-            : "Included in the base price";
+            ? `+${formatCurrency(supplement, state.data.currency)} ${product.circuitSelection.perReservationLabel || "per booking"}`
+            : (circuit.supplementLabel || "Included in the base price");
           return `
             <label class="mpt-circuit-card${selected ? " is-selected" : ""}${status.available ? "" : " is-disabled"}">
               <input type="radio" name="mptCircuit" value="${escapeHtml(circuit.id)}" ${selected ? "checked" : ""} ${status.available ? "" : "disabled"}/>
@@ -879,7 +920,7 @@
             </label>`;
         }).join("")}
       </div>
-      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>No circuits available</strong><span>Circuits 1, 2 and 3 are sold out for this date. Choose another day to continue.</span></div></div>`}
+      ${availableCount ? "" : `<div class="mpt-circuit-soldout"><i class="fas fa-circle-xmark"></i><div><strong>Circuit 1 is unavailable</strong><span>Choose another day to continue.</span></div></div>`}
     `;
 
     target.querySelectorAll('input[name="mptCircuit"]').forEach((radio) => {
@@ -899,6 +940,7 @@
     const currency = state.data.currency;
     const childPolicy = state.data.childPolicy;
     const childPrice = getChildPrice(p);
+    const selectedHotel = getSelectedHotel(p);
     const container = document.getElementById("mptMainProduct");
     if (state.pickers[p.id]?.destroy) state.pickers[p.id].destroy();
 
@@ -912,7 +954,7 @@
           <div class="mpt-main-product__body">
             <h3>${escapeHtml(p.title)}</h3>
             <p class="mpt-main-product__desc">${escapeHtml(p.shortDescription)}</p>
-            ${p.accommodation ? `<p class="mpt-availability-note"><i class="fas fa-hotel" aria-hidden="true"></i> <strong>${escapeHtml(p.accommodation.hotelName)}</strong> · ${escapeHtml(p.accommodation.summary)}</p>` : ""}
+            ${selectedHotel ? `<p class="mpt-availability-note"><i class="fas fa-hotel" aria-hidden="true"></i> <strong>${escapeHtml(selectedHotel.label)}</strong> · ${escapeHtml(selectedHotel.summary || selectedHotel.description || "")}</p>` : ""}
             <div class="mpt-rate-tabs" aria-label="Rates by age">
               <div class="mpt-rate-tab mpt-rate-tab--featured">
                 <span class="mpt-rate-tab__icon"><i class="fas fa-user" aria-hidden="true"></i></span>
@@ -926,11 +968,6 @@
                 <span class="mpt-rate-tab__icon"><i class="fas fa-baby" aria-hidden="true"></i></span>
                 <span class="mpt-rate-tab__copy"><small>Infant</small><strong>Free</strong><em>Under age 2, without a seat</em></span>
               </div>
-            </div>
-            <div class="mpt-product-assurances" aria-label="Booking benefits">
-              <span><i class="fas fa-receipt" aria-hidden="true"></i> Total shown before payment</span>
-              <span><i class="fab fa-paypal" aria-hidden="true"></i> Secure PayPal payment</span>
-              <span><i class="fas fa-headset" aria-hidden="true"></i> Local WhatsApp support</span>
             </div>
             <div class="mpt-field-grid">
               <div class="mpt-field">
@@ -1012,9 +1049,18 @@
                 </fieldset>
               </div>
             </section>
+            <section class="mpt-config-block" aria-labelledby="mptHotelTitle">
+              <div class="mpt-config-block__head">
+                <div><span class="mpt-step">3</span><div><strong id="mptHotelTitle">${escapeHtml(p.hotelSelection?.title || "Choose your hotel")}</strong><small>${escapeHtml(p.hotelSelection?.subtitle || "")}</small></div></div>
+              </div>
+              <div class="mpt-hotel-grid" role="radiogroup" aria-label="${escapeHtml(p.hotelSelection?.ariaLabel || "Hotel in Aguas Calientes")}">
+                ${renderHotelOptions(p, currency)}
+              </div>
+              <p class="mpt-hotel-note">${escapeHtml(p.hotelSelection?.pricingNote || "")}</p>
+            </section>
             <section class="mpt-config-block" aria-labelledby="mptMealTitle">
               <div class="mpt-config-block__head">
-                <div><span class="mpt-step">3</span><div><strong id="mptMealTitle">Add a dining experience</strong><small>Lunch is optional and is calculated per paying traveler.</small></div></div>
+                <div><span class="mpt-step">4</span><div><strong id="mptMealTitle">Add a dining experience</strong><small>Lunch is optional and is calculated per paying traveler.</small></div></div>
               </div>
               <div class="mpt-meal-options" role="radiogroup" aria-label="Meal options">
                 ${(p.mealOptions || []).map((m) => `
@@ -1061,6 +1107,15 @@
         state.mainProduct.returnTrainId = e.target.value;
         renderMainProduct();
         renderSummary();
+      });
+    });
+    container.querySelectorAll('input[name="mptHotel"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        if (!e.target.checked) return;
+        state.mainProduct.hotelId = e.target.value;
+        renderMainProduct();
+        renderSummary();
+        trackLandingEvent("hotel_selected", { hotel_id: e.target.value });
       });
     });
     container.querySelectorAll('input[name="mptMeal"]').forEach((radio) => {
@@ -1241,6 +1296,7 @@
         formatDateRange(line.date, line.endDate),
         line.circuitLabel,
         line.trainBundleLabel || ([line.outboundTrainLabel, line.returnTrainLabel].filter(Boolean).join(" + ") || null),
+        line.hotelLabel,
         line.mealLabel,
         line.extras && line.extras.length ? line.extras.join(", ") : null
       ].filter(Boolean).join(" · ");
@@ -1348,7 +1404,7 @@
 
   // ---------- Product-style passenger modal + PayPal checkout ----------
 
-  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu Overnight + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-overnight-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "selectCountry": "Select country", "selectCode": "Select code", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay", "saving": "Creating your reservation…", "connecting": "Connecting securely to PayPal…", "summaryTitle": "Booking summary", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "Book at least 2 days in advance.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "The payment was not completed. Your booking is still saved and you can try again.", "processingTitle": "We are preparing your booking"};
+  const CHECKOUT_I18N = {"lang": "en", "locale": "en-US", "name": "Machu Picchu Overnight + Tours in Peru", "data": "assets/data/i18n/en/landing-machu-picchu-overnight-tours.json", "copy": "Code copied", "noDate": "date not selected", "modalTitle": "Traveler details", "codeLabel": "Booking code:", "payNow": "Amount due now:", "important": "Important information", "importantText": "Enter names, surnames and document details exactly as they appear on the official travel document. These details will be used to issue admission tickets, train tickets and tour services.", "holderTitle": "Booking holder / Traveler 1", "holderOnly": "Booking holder", "required": "Required details to continue", "first": "First name(s)", "last": "Last name(s)", "docType": "Document type", "select": "Select", "passport": "Passport", "dni": "National ID (DNI)", "idcard": "Identity card", "other": "Other", "docNum": "Document number", "nationality": "Nationality", "selectCountry": "Select country", "selectCode": "Select code", "birth": "Date of birth", "whatsapp": "WhatsApp", "email": "Email", "language": "Requested language", "pickup": "Hotel or pickup address in Cusco", "pickupPh": "Hotel name and address, if known", "holderTravels": "The booking holder is also traveling.", "tourists": "Traveler registration", "touristsNote": "You may enter additional traveler details now or 15 to 30 days before travel.", "traveler": "Traveler", "later": "Complete these details later", "cancel": "Cancel", "edit": "Edit details", "continue": "Continue", "pay": "Pay", "saving": "Creating your reservation…", "connecting": "Connecting securely to PayPal…", "summaryTitle": "Booking summary", "review": "Review your booking before payment", "holder": "Booking holder", "pickupShort": "Pickup", "services": "Services", "total": "Total due", "paypalNote": "You will be securely redirected to PayPal to pay 100% of the booking.", "formRequired": "Complete the required details to continue.", "backendError": "The booking could not be registered or PayPal could not be started. Check your connection and try again.", "noApproval": "PayPal did not return a payment approval link.", "paymentUnavailable": "The payment backend is unavailable.", "dateTransition": "Travel between Lima/Ica and Cusco requires at least one transfer day. Select a later date to continue.", "selectDate": "Select a date to continue.", "pastDate": "You can book this Overnight tour from tomorrow.", "duplicateDate": "Two tours cannot be scheduled for the same date.", "statusEdit": "Review the details and continue.", "reviewButton": "Continue", "modalAriaClose": "Close modal", "requestedLanguages": ["English", "Español", "Português", "Italiano", "Français", "Deutsch", "日本語", "中文普通话"], "cancelledReturn": "The payment was not completed. Your booking is still saved and you can try again.", "processingTitle": "We are preparing your booking"};
 
   function setPassengerMessage(message, isError) {
     const target = document.getElementById("mptPassengerMessage");
@@ -1451,6 +1507,7 @@
       if (configuration.circuitId) state.mainProduct.circuitId = configuration.circuitId;
       if (configuration.outboundTrainId) state.mainProduct.outboundTrainId = configuration.outboundTrainId;
       if (configuration.returnTrainId) state.mainProduct.returnTrainId = configuration.returnTrainId;
+      if (configuration.hotelId) state.mainProduct.hotelId = configuration.hotelId;
       if (configuration.mealOptionId) state.mainProduct.mealOptionId = configuration.mealOptionId;
       const selectedMealLabel = Array.isArray(mainService.extras) ? mainService.extras[0] : "";
       const meal = (state.data.mainProduct.mealOptions || []).find((option) => option.label === selectedMealLabel);
@@ -1786,9 +1843,11 @@
       const meal = (state.data.mainProduct.mealOptions || []).find((item) => item.id === state.mainProduct.mealOptionId);
       const circuit = findSelectedCircuit(state.data.mainProduct);
       const trainPricing = getSelectedTrainPricing(state.data.mainProduct);
+      const hotel = getSelectedHotel(state.data.mainProduct);
+      const hotelSupplement = getHotelSupplement(hotel);
       const extras = [
         circuit?.label,
-        state.data.mainProduct.accommodation?.label,
+        hotel?.label,
         trainPricing.bundle?.label || trainPricing.outbound?.label,
         trainPricing.bundle ? null : trainPricing.returnTrain?.label,
         meal && meal.pricePerPerson > 0 ? meal.label : null
@@ -1814,9 +1873,12 @@
           returnTrainLabel: trainPricing.returnTrain?.label || "",
           trainBundleId: trainPricing.bundle?.id || "",
           trainBundleLabel: trainPricing.bundle?.label || "",
+          hotelId: hotel?.id || "",
+          hotelLabel: hotel?.label || "",
+          hotelSupplement,
           mealOptionId: meal?.id || "no-meal",
-          accommodationHotelCode: state.data.mainProduct.accommodation?.hotelCode || "",
-          accommodationLabel: state.data.mainProduct.accommodation?.label || "",
+          accommodationHotelCode: hotel?.hotelCode || "",
+          accommodationLabel: hotel?.label || "",
           mealLabel: meal?.label || "No lunch"
         },
         lineTotal: summary.lines.find((line) => line.id === state.data.mainProduct.id)?.lineTotal || 0
@@ -2234,6 +2296,7 @@
     state.mainProduct.mealOptionId = (state.data.mainProduct.mealOptions || []).find((m) => m.default)?.id || "no-meal";
     state.mainProduct.outboundTrainId = (state.data.mainProduct.trainSelection?.outbound || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.outbound?.[0]?.id || null;
     state.mainProduct.returnTrainId = (state.data.mainProduct.trainSelection?.return || []).find((item) => item.default)?.id || state.data.mainProduct.trainSelection?.return?.[0]?.id || null;
+    state.mainProduct.hotelId = (state.data.mainProduct.hotelSelection?.options || []).find((hotel) => hotel.default)?.id || state.data.mainProduct.hotelSelection?.options?.[0]?.id || null;
     (state.data.addons || []).forEach((addon) => {
       state.addons[addon.id] = { selected: false, date: null, extras: {} };
     });

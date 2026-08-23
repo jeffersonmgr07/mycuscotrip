@@ -56,16 +56,16 @@
     "badge": "2 Tage / 1 Nacht",
     "selectedByDefault": true,
     "removable": false,
-    "image": "../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
+    "image": "../../assets/img/tours/machu-picchu-overnight-clasico/cover.jpg",
     "gallery": [
-      "../assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
-      "../assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
+      "../../assets/img/tours/machu-picchu-overnight-clasico/1.jpg",
+      "../../assets/img/tours/machu-picchu-overnight-clasico/2.jpg"
     ],
     "shortDescription": "Fahren Sie am ersten Tag nach Aguas Calientes, übernachten Sie dort und besuchen Sie Machu Picchu am nächsten Tag – Hotel, Frühstück, Zug, Eintritt, Busse und Guide inklusive.",
     "adultPrice": 489.9,
     "childPricing": {
       "type": "fixed",
-      "price": 489.9
+      "price": 411.5
     },
     "includes": [
       "Abholung von Ihrem Hotel oder Ihrer Adresse in Cusco",
@@ -93,7 +93,7 @@
     ],
     "mealSelectionType": "single",
     "mealDisclaimer": "Das Mittagessen ist nicht im Grundpreis enthalten. Wählen Sie nur eine Option.",
-    "childPrice": 489.9,
+    "childPrice": 411.5,
     "circuitSelection": {
       "required": true,
       "updatedAt": "2026-08-19",
@@ -105,14 +105,9 @@
           "shortLabel": "Rundgang 1",
           "description": "Klassische Panoramablicke von der oberen Terrasse von Machu Picchu.",
           "groupSupplement": 75.9,
-          "supplementLabel": "Privater Service für einen alternativen Rundgang",
-          "unavailableRanges": [
-            {
-              "from": "2026-08-19",
-              "to": "2026-08-30",
-              "reason": "Ausverkauft"
-            }
-          ]
+          "supplementLabel": "+USD 75.90 pro Buchung",
+          "unavailableRanges": [],
+          "enabled": true
         },
         {
           "id": "circuit-2",
@@ -127,7 +122,9 @@
               "to": "2026-09-30",
               "reason": "Ausverkauft"
             }
-          ]
+          ],
+          "enabled": false,
+          "disabledReason": "Nicht verfügbar"
         },
         {
           "id": "circuit-3",
@@ -135,16 +132,19 @@
           "shortLabel": "Rundgang 3",
           "description": "Eine Route durch den unteren Bereich und Räume, die mit dem Inka-Adel verbunden sind.",
           "groupSupplement": 75.9,
-          "supplementLabel": "Privater Service für einen alternativen Rundgang",
+          "supplementLabel": "+USD 75.90 pro Buchung",
           "unavailableRanges": [
             {
               "from": "2026-08-19",
               "to": "2026-09-15",
               "reason": "Ausverkauft"
             }
-          ]
+          ],
+          "enabled": false,
+          "disabledReason": "Nicht verfügbar"
         }
-      ]
+      ],
+      "perReservationLabel": "pro Buchung"
     },
     "trainSelection": {
       "outbound": [
@@ -200,9 +200,9 @@
     "durationDays": 2,
     "nights": 1,
     "visitDayOffset": 1,
-    "bookingDateLabel": "Startdatum",
-    "bookingDatePlaceholder": "Ersten Tag auswählen",
-    "bookingDateHelp": "Buchen Sie mindestens 2 Tage im Voraus. Zwei aufeinanderfolgende Tage werden belegt.",
+    "bookingDateLabel": "Datum der Machu-Picchu-Tour",
+    "bookingDatePlaceholder": "Wählen Sie das Tourdatum",
+    "bookingDateHelp": "Sie können ab morgen buchen. Zwei aufeinanderfolgende Tage werden belegt.",
     "accommodation": {
       "title": "Unterkunft inklusive",
       "hotelName": "Hotel Luz Garden",
@@ -213,7 +213,70 @@
       "nights": 1,
       "breakfastIncluded": true,
       "includedInBasePrice": true,
-      "image": "../assets/img/hotels/luz-garden/cover.jpg"
+      "image": "../../assets/img/hotels/luz-garden/cover.jpg"
+    },
+    "hotelSelection": {
+      "title": "Wählen Sie Ihr Hotel",
+      "subtitle": "Das Hotel Luz Garden ist inklusive und vorausgewählt. Sie können ein verfügbares Upgrade wählen.",
+      "ariaLabel": "Hotel in Aguas Calientes",
+      "availableLabel": "Verfügbar",
+      "unavailableLabel": "Demnächst",
+      "includedLabel": "Im Grundpreis enthalten",
+      "perReservationLabel": "pro Buchung",
+      "pricingNote": "Vista Machu Picchu kostet zusätzlich 20 USD je Zimmer für bis zu 2 Gäste; bei 3 Gästen beträgt der Gesamtzuschlag 40 USD.",
+      "options": [
+        {
+          "id": "luz-garden",
+          "hotelCode": "luz-garden-3s",
+          "label": "Hotel Luz Garden",
+          "description": "1 Nacht in Aguas Calientes · Kategorie 3★ · Frühstück inklusive.",
+          "summary": "1 Nacht · 3★ · Frühstück inklusive",
+          "image": "../../assets/img/hotels/luz-garden/cover.jpg",
+          "available": true,
+          "default": true,
+          "supplementPerRoom": 0,
+          "roomCapacity": 2
+        },
+        {
+          "id": "inti-punku",
+          "hotelCode": "inti-punku",
+          "label": "Hotel Inti Punku",
+          "description": "Unterkunftsoption in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "vista-machu-picchu",
+          "hotelCode": "vista-machu-picchu",
+          "label": "Hotel Vista Machu Picchu",
+          "description": "Unterkunfts-Upgrade inklusive Frühstück.",
+          "summary": "1 Nacht · Frühstück inklusive · Upgrade verfügbar",
+          "image": "../../assets/img/hotels/vista-machu-picchu/cover.jpg",
+          "available": true,
+          "supplementPerRoom": 20,
+          "roomCapacity": 2
+        },
+        {
+          "id": "casa-andina",
+          "hotelCode": "casa-andina-machu-picchu",
+          "label": "Hotel Casa Andina",
+          "description": "Unterkunftsoption in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "taypikala",
+          "hotelCode": "taypikala-machu-picchu",
+          "label": "Hotel Taypikala",
+          "description": "Unterkunftsoption in Machu Picchu Pueblo.",
+          "available": false
+        },
+        {
+          "id": "inkaterra",
+          "hotelCode": "inkaterra-machu-picchu",
+          "label": "Inkaterra Machu Picchu",
+          "description": "Premium-Unterkunftsoption in Machu Picchu Pueblo.",
+          "available": false
+        }
+      ]
     }
   },
   "addons": [
