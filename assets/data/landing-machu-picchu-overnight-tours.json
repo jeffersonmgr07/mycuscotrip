@@ -191,7 +191,7 @@
       {
         "id": "tinkuy-buffet",
         "label": "Almuerzo buffet Tinkuy by Belmond Sanctuary Lodge",
-        "pricePerPerson": 71.9,
+        "pricePerPerson": 49.9,
         "default": false
       }
     ],
@@ -208,7 +208,7 @@
       "subtitle": "Hotel Luz Garden está incluido y preseleccionado. Puedes elegir un upgrade disponible.",
       "ariaLabel": "Hotel en Aguas Calientes",
       "availableLabel": "Disponible",
-      "unavailableLabel": "Próximamente",
+      "unavailableLabel": "No disponible",
       "includedLabel": "Incluido en la tarifa base",
       "perReservationLabel": "por reserva",
       "pricingNote": "Vista Machu Picchu añade USD 20 por cada habitación de hasta 2 huéspedes; para 3 huéspedes, el suplemento total es USD 40.",
