@@ -471,7 +471,7 @@
         ]
       },
       "commercialLabel": "Flexible package 4 days / 3 nights",
-      "recommendedTitle": "Ruta recomendada Cusco, Sacred Valley and Machu Picchu",
+      "recommendedTitle": "Recommended route: Cusco, Sacred Valley and Machu Picchu",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -707,7 +707,7 @@
         ]
       },
       "commercialLabel": "Flexible package 6 days / 5 nights",
-      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 6 days / 5 nights",
+      "recommendedTitle": "Complete route: Cusco and Machu Picchu 6 days / 5 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -828,7 +828,7 @@
         ]
       },
       "commercialLabel": "Flexible package 7 days / 6 nights",
-      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 7 days / 6 nights",
+      "recommendedTitle": "Complete route: Cusco and Machu Picchu 7 days / 6 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -950,7 +950,7 @@
         ]
       },
       "commercialLabel": "Flexible package 8 days / 7 nights",
-      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 8 days / 7 nights",
+      "recommendedTitle": "Complete route: Cusco and Machu Picchu 8 days / 7 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -1070,7 +1070,7 @@
         ]
       },
       "commercialLabel": "Flexible package 9 days / 8 nights",
-      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 9 days / 8 nights",
+      "recommendedTitle": "Complete route: Cusco and Machu Picchu 9 days / 8 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -1194,7 +1194,7 @@
         ]
       },
       "commercialLabel": "Flexible package 10 days / 9 nights",
-      "recommendedTitle": "Ruta completa Cusco and Machu Picchu 10 days / 9 nights",
+      "recommendedTitle": "Complete route: Cusco and Machu Picchu 10 days / 9 nights",
       "optionDisplayMode": "commercial-cards",
       "itinerarySummary": [
         "Cusco",
@@ -1292,7 +1292,7 @@
       ],
       "salesNotes": [
         "Ideal para viajes cortos.",
-        "Debe priorizar Machu Picchu Full Day and solo agregar half day si los horarios lo permiten."
+        "Prioritize Machu Picchu Full Day and only add a half-day experience when schedules allow it."
       ]
     },
     {
@@ -1594,7 +1594,7 @@
       ],
       "salesNotes": [
         "Allows more complete packages with rest days in between.",
-        "No renderizar todas las combinaciones; priorizar las mejores opciones por ranking."
+        "Do not render every combination; prioritize the highest-ranked options."
       ]
     },
     {
@@ -1772,7 +1772,7 @@
       "dedupeAgainst": [
         "CUZ004"
       ],
-      "description": "Valle VIP incluye Maras/Moray; si se selecciona esta variante, no agregar Maras and Moray como day independiente.",
+      "description": "Sacred Valley VIP includes Maras/Moray; when this variant is selected, do not add Maras and Moray as a separate day.",
       "baseTourCodes": [
         "CUZ003VIP",
         "CUZ003VIPCON"

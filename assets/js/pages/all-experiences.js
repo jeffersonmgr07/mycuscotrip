@@ -684,7 +684,10 @@
   }
 
   function getPriceLabel(product) {
-    if (product.productKind === "package" || product.priceMode === "dynamic_from_selected_itinerary") {
+    if (product.priceMode === "on_request") {
+      return tr("Precio según disponibilidad", "Price based on availability");
+    }
+    if (product.productKind === "package" || product.priceMode === "dynamic_from_selected_itinerary" || product.priceMode === "quote") {
       return product.productFamily === "peru-package"
         ? tr("Cotización flexible", "Flexible quote")
         : tr("Precio según selección", "Price based on selection");

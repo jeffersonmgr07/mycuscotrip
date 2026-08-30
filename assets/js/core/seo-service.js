@@ -73,6 +73,11 @@
   }
 
   async function loadCatalogItems() {
+    if (window.MyCuscoTripDataLoader && window.MyCuscoTripCatalogNormalizer) {
+      const allData = await window.MyCuscoTripDataLoader.loadAllData();
+      return window.MyCuscoTripCatalogNormalizer.normalizeCatalog(allData);
+    }
+
     const results = await Promise.all(DATA_SOURCES.map(async (url) => {
       try {
         const response = await fetch(url, { cache: "no-store" });
@@ -96,15 +101,20 @@
   }
 
   function getDescription(product) {
-    return product?.shortDescription || product?.metaDescription || product?.description || "Reserva tours, paquetes y experiencias en Cusco, Machu Picchu y Peru con My Cusco Trip.";
+    return product?.shortDescription || product?.raw?.shortDescription || product?.metaDescription || product?.description || product?.raw?.description || "Reserva tours, paquetes y experiencias en Cusco, Machu Picchu y Peru con My Cusco Trip.";
   }
 
   function getPrice(product) {
-    const adult = product?.basePricing?.adult
-      || product?.pricing?.publishedAdultUSD
-      || product?.basePricingByNationality?.foreign?.adult
-      || product?.basePricingByNationality?.national?.adult;
-    return typeof adult === "number" ? adult.toFixed(2) : null;
+    if (product?.priceMode === "on_request" || product?.priceMode === "quote") return null;
+    const commercialRule = window.MCT_getCommercialProductRule?.(product);
+    if (commercialRule?.priceMode === "on_request" || commercialRule?.priceMode === "quote") return null;
+    const adult = commercialRule?.adult
+      ?? product?.price?.amount
+      ?? product?.basePricing?.adult
+      ?? product?.pricing?.publishedAdultUSD
+      ?? product?.basePricingByNationality?.foreign?.adult
+      ?? product?.basePricingByNationality?.national?.adult;
+    return Number.isFinite(Number(adult)) && Number(adult) > 0 ? Number(adult).toFixed(2) : null;
   }
 
   function buildTravelAgencySchema() {
@@ -165,12 +175,17 @@
     if (!slug || !/product\.html$/i.test(window.location.pathname)) return;
 
     const products = await loadCatalogItems();
-    const product = products.find((item) => item && item.slug === slug);
+    const product = window.MyCuscoTripCatalogNormalizer?.getProductBySlug
+      ? window.MyCuscoTripCatalogNormalizer.getProductBySlug(slug, products)
+      : products.find((item) => item && item.slug === slug);
     if (!product) return;
 
+    const locale = String(window.MCT_LOCALE || document.documentElement.lang || "es").slice(0, 2).toLowerCase();
+    const localePrefix = locale === "es" ? "" : `/${locale}`;
+    const canonicalSlug = product.slug || slug;
     const title = `${product.title} | My Cusco Trip`;
     const description = getDescription(product).slice(0, 158);
-    const canonical = `${SITE_URL}/product.html?slug=${encodeURIComponent(slug)}`;
+    const canonical = `${SITE_URL}${localePrefix}/product.html?slug=${encodeURIComponent(canonicalSlug)}`;
     const image = getImage(product);
 
     document.title = title;
@@ -187,6 +202,28 @@
     setMetaName("twitter:image", image);
 
     setJsonLd("mct-product-schema", buildProductSchema(product, canonical));
+    setProductHreflang(product);
+  }
+
+  function setProductHreflang(product) {
+    const identity = window.MCT_getCommercialProductIdentity?.(product);
+    const localized = window.MCT_COMMERCIAL_CONFIG?.localizedSlugsByIdentity?.[identity];
+    if (!localized) return;
+    document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((node) => node.remove());
+    ["es", "en"].forEach((lang) => {
+      const localizedSlug = localized[lang];
+      if (!localizedSlug) return;
+      const link = document.createElement("link");
+      link.rel = "alternate";
+      link.hreflang = lang;
+      link.href = `${SITE_URL}${lang === "es" ? "" : `/${lang}`}/product.html?slug=${encodeURIComponent(localizedSlug)}`;
+      document.head.appendChild(link);
+    });
+    const xDefault = document.createElement("link");
+    xDefault.rel = "alternate";
+    xDefault.hreflang = "x-default";
+    xDefault.href = `${SITE_URL}/product.html?slug=${encodeURIComponent(localized.es || product.slug || "")}`;
+    document.head.appendChild(xDefault);
   }
 
   function applySiteSchema() {

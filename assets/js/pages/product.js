@@ -129,9 +129,7 @@ class MyCuscoTripProductPage {
         product.paymentOptions = {};
       }
 
-      if (!product.paymentOptions.fullPaymentDiscountPercent) {
-        product.paymentOptions.fullPaymentDiscountPercent = 10;
-      }
+      product.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
 
       this.product = product;
       this.productType = product.productKind || (this.isPackage(product) ? "package" : "tour");
@@ -299,7 +297,15 @@ class MyCuscoTripProductPage {
     merged.itinerary = Array.isArray(raw.itinerary) ? raw.itinerary : [];
     merged.faq = Array.isArray(raw.faq) ? raw.faq : [];
     merged.serviceModes = raw.serviceModes || product.serviceModes || {};
-    merged.paymentOptions = raw.paymentOptions || product.paymentOptions || {};
+    merged.paymentOptions = { ...(raw.paymentOptions || product.paymentOptions || {}) };
+    merged.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
+
+    const commercialRule = window.MCT_getCommercialProductRule?.(merged);
+    if (Number.isFinite(Number(commercialRule?.adult)) && Number(commercialRule.adult) > 0) {
+      merged.basePricing = { ...(merged.basePricing || {}), adult: Number(commercialRule.adult), currency: merged.currency || "USD" };
+    }
+    merged.publicPriceMode = commercialRule?.priceMode || merged.priceMode || "";
+
     merged.days = Number(product.days || raw.days || 0);
     merged.nights = Number(product.nights || raw.nights || 0);
     merged.typeLabel = product.typeLabel || raw.typeLabel || merged.duration.label || "";
@@ -433,12 +439,15 @@ class MyCuscoTripProductPage {
     this.setText("productBadge", badge);
     this.setText("productTitle", title);
     this.setText("productDescription", description);
-    if (this.isPeruPackage(product) && basePrice > 0) {
+    const commercialRule = window.MCT_getCommercialProductRule?.(product);
+    if (commercialRule?.priceMode === "on_request") {
+      this.setText("productBasePrice", this.t("cards.priceByAvailability", "Precio según disponibilidad"));
+    } else if (this.isPackage(product) && !(basePrice > 0)) {
+      this.setText("productBasePrice", this.t("product.configureTripForPrice", "Configura tu viaje para calcular el precio"));
+    } else if (basePrice > 0) {
       this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
-    } else if (this.isPeruPackage(product)) {
-      this.setText("productBasePrice", this.t("cards.flexibleQuote", "Cotización flexible"));
     } else {
-      this.setText("productBasePrice", `${currency} ${this.formatMoney(basePrice)}`);
+      this.setText("productBasePrice", this.t("product.selectDateForPrice", "Selecciona tu fecha para ver el precio"));
     }
 
     this.setText("detailCapacity", this.t("product.maxTravelers", "Máximo {count} viajeros por grupo", { count: capacity }));
@@ -482,6 +491,7 @@ class MyCuscoTripProductPage {
         onChange: (_, dateStr, instance) => {
           this.date = dateStr;
           this.refreshItineraryDates();
+          this.updatePricing();
 
           if (instance.altInput) {
             instance.altInput.style.width = "100%";
@@ -2095,7 +2105,8 @@ class MyCuscoTripProductPage {
   getDiscountInfo(serviceTotal, fullDiscountPercent = 0, currency = this.product?.currency || "USD") {
     const total = Math.max(0, Number(serviceTotal || 0));
     const couponDiscount = this.getAppliedCouponDiscount(total, currency);
-    const fullPercent = this.paymentMode === "full" ? Math.max(0, Number(fullDiscountPercent || 0)) : 0;
+    const configuredFullPercent = Math.max(0, Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0));
+    const fullPercent = this.paymentMode === "full" ? configuredFullPercent : 0;
     const fullDiscount = total * (fullPercent / 100);
     const discount = Math.max(couponDiscount, fullDiscount, 0);
     const source = discount > 0 && couponDiscount >= fullDiscount ? "coupon" : (discount > 0 ? "full_payment" : "none");
@@ -2240,7 +2251,7 @@ class MyCuscoTripProductPage {
 
     const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal + trainAdjustmentTotal;
 
-    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
+    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent ?? 0);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
 
     let discount = 0;
@@ -2257,7 +2268,7 @@ class MyCuscoTripProductPage {
       payLater = 0;
       infoText = this.getDiscountInfoText(
         discountInfo,
-        this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent })
+        this.t("product.fullPaymentDiscountText", "Booking is subject to availability verification.", { percent: fullDiscountPercent })
       );
     } else {
       const totalPassengers = this.getTotalPassengers();
@@ -2448,7 +2459,7 @@ class MyCuscoTripProductPage {
     const baseServiceTotal = Number(quote.total || 0);
     const serviceTotal = baseServiceTotal + accommodationTotal;
 
-    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
+    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent ?? 0);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
 
     let discount = 0;
@@ -2465,7 +2476,7 @@ class MyCuscoTripProductPage {
       payLater = 0;
       infoText = this.getDiscountInfoText(
         discountInfo,
-        this.t("product.fullPaymentDiscountText", "Pay in full now and get a {percent}% discount.", { percent: fullDiscountPercent })
+        this.t("product.fullPaymentDiscountText", "Booking is subject to availability verification.", { percent: fullDiscountPercent })
       );
     } else {
       const totalPassengers = this.getTotalPassengers();
@@ -2706,7 +2717,7 @@ class MyCuscoTripProductPage {
     const accommodationTotal = this.calculateAccommodationTotal();
     const serviceTotal = adultsTotal + childrenTotal + extrasTotal + accommodationTotal + trainAdjustmentTotal;
 
-    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent || 10);
+    const fullDiscountPercent = Number(this.product.paymentOptions?.fullPaymentDiscountPercent ?? 0);
     const partialPerPerson = Number(this.product.paymentOptions?.partialPaymentPerPerson || 49.9);
 
     let payNow = serviceTotal;
@@ -5140,8 +5151,10 @@ document.addEventListener("click", function (event) {
     const title = product.title || this.t("search.tourMachuPicchuClassic", "Machu Picchu Full Day Clásico");
     const desc = product.seoDescription || product.description || product.shortDescription || this.t("product.seoMachuFullDayDescription", "Tour a Machu Picchu desde Cusco con tren turístico, bus, ingreso oficial y guía profesional.");
     const cleanDesc = String(desc).replace(/\s+/g, " ").slice(0, 170);
-    const slug = product.slug || this.slug || "machu-picchu-full-day-clasico";
-    const url = `https://mycuscotrip.com/product.html?slug=${encodeURIComponent(slug)}`;
+    const slug = product.slug || this.slug || "";
+    const locale = this.getLocale?.() || "es";
+    const localePrefix = locale === "es" ? "" : `/${locale}`;
+    const url = `https://mycuscotrip.com${localePrefix}/product.html?slug=${encodeURIComponent(slug)}`;
     const cover = product.images?.cover ? this.resolveAssetPath(product.images.cover) : "./public/machu-picchu-full-day-clasico-og-v69.jpg";
     const image = slug === "machu-picchu-full-day-clasico"
       ? "https://mycuscotrip.com/public/machu-picchu-full-day-clasico-og-v69.jpg"
@@ -5259,11 +5272,11 @@ document.addEventListener("click", function (event) {
     const result = oldUpdatePricing.apply(this, arguments);
     const info = document.getElementById("paymentInfo");
     if (info) {
-      const percent = Number(this.product?.paymentOptions?.fullPaymentDiscountPercent || 10);
+      const percent = Number(this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 0);
       const currency = this.product?.currency || "USD";
       const partial = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 49.9);
       info.textContent = this.paymentMode === "full"
-        ? this.t("product.fullPaymentDiscountNoteA", "Pagando el total ahora estás obteniendo un {percent}% de descuento.", { percent })
+        ? this.t("product.fullPaymentDiscountNoteA", "Reserva sujeta a verificación de disponibilidad.", { percent })
         : this.t("product.depositReservationNote", "Reserva con anticipo de {currency} {amount} por persona y completa el saldo días antes de tu viaje.", { currency, amount: this.formatMoney(partial) });
     }
     return result;
@@ -7756,13 +7769,15 @@ document.addEventListener("click", function (event) {
       const paypalPercent = Number(rules.paypalFeePercent ?? 5.4) / 100;
       const paypalFixed = Number(rules.paypalFixedUSD ?? 0.3);
       const bankPercent = Number(rules.bankWithdrawPercent ?? 3) / 100;
-      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 10) / 100;
+      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 0) / 100;
       const chargedNeeded = ((targetNetTotal / Math.max(0.0001, 1 - bankPercent)) + paypalFixed) / Math.max(0.0001, 1 - paypalPercent);
-      const publicBaseTotal = chargedNeeded / Math.max(0.0001, 1 - discountPercent);
-      const roundedTotal = Math.ceil(publicBaseTotal * 100) / 100;
-      const publicPerPerson = roundedTotal / pax;
+      const calculatedPublicBaseTotal = chargedNeeded / Math.max(0.0001, 1 - discountPercent);
+      const roundedTotal = Math.ceil(calculatedPublicBaseTotal * 100) / 100;
+      const configuredPublicPerPerson = Number(window.MCT_getCommercialProductRule?.(this.product)?.adult || 0);
+      const publicPerPerson = configuredPublicPerPerson > 0 ? configuredPublicPerPerson : (roundedTotal / pax);
+      const publicBaseTotal = publicPerPerson * pax;
       const targetNetPerPerson = targetNetTotal / pax;
-      return { pax, guideCost, targetNetTotal, targetNetPerPerson, publicBaseTotal: roundedTotal, publicPerPerson, paypalPercent, paypalFixed, bankPercent, discountPercent };
+      return { pax, guideCost, targetNetTotal, targetNetPerPerson, publicBaseTotal, publicPerPerson, paypalPercent, paypalFixed, bankPercent, discountPercent };
     };
 
     const originalRenderProduct = proto.renderProduct;
@@ -7791,15 +7806,15 @@ document.addEventListener("click", function (event) {
       const trainAdjustmentTotal = this.calculateSelectedTrainAdjustmentTotal?.() || 0;
       const accommodationTotal = this.calculateAccommodationTotal?.() || 0;
       const serviceTotal = base.publicBaseTotal + extrasTotal + trainAdjustmentTotal + accommodationTotal;
-      const fullDiscountPercent = 10;
-      if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
+      const fullDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
+      if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
       const partialPerPerson = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 149);
       const discountInfo = this.getDiscountInfo?.(serviceTotal, fullDiscountPercent) || { discount: serviceTotal * 0.10, percent: 10 };
       const discount = Number(discountInfo.discount || 0);
       const discountedTotal = Math.max(serviceTotal - discount, 0);
       let payNow = discountedTotal;
       let payLater = 0;
-      let infoText = this.t("product.fullPaymentDiscountNoteB", "Pagando el total ahora obtienes un {percent}% de descuento.", { percent: fullDiscountPercent });
+      let infoText = this.t("product.fullPaymentDiscountNoteB", "Reserva sujeta a verificación de disponibilidad.", { percent: fullDiscountPercent });
       if (this.paymentMode !== "full") {
         payNow = Math.min(pax * partialPerPerson, discountedTotal);
         payLater = Math.max(discountedTotal - payNow, 0);
@@ -7987,7 +8002,7 @@ document.addEventListener("click", function (event) {
     try {
       page.ensureProductPrintButtonV78?.();
       if (isMachuClassic.call(page)) {
-        if (page.product?.paymentOptions) page.product.paymentOptions.fullPaymentDiscountPercent = 10;
+        if (page.product?.paymentOptions) page.product.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
         page.updatePricing?.();
         const lang = document.getElementById("detailLanguages");
         if (lang) lang.textContent = this.t("product.guideProfessionalEsEn", "Guía profesional: español, inglés (otros idiomas, consultar)");
@@ -8475,10 +8490,11 @@ document.addEventListener("click", function (event) {
       const paypalPercent = Number(rules.paypalFeePercent ?? 5.4) / 100;
       const paypalFixed = Number(rules.paypalFixedUSD ?? 0.3);
       const bankPercent = Number(rules.bankWithdrawPercent ?? 3) / 100;
-      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 10) / 100;
+      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 0) / 100;
       const chargedNeeded = ((targetNetTotal / Math.max(0.0001, 1 - bankPercent)) + paypalFixed) / Math.max(0.0001, 1 - paypalPercent);
       const publicBaseTotalRaw = chargedNeeded / Math.max(0.0001, 1 - discountPercent);
-      const publicPerPerson = roundToPointNinety(publicBaseTotalRaw / pax);
+      const configuredPublicPerPerson = Number(window.MCT_getCommercialProductRule?.(this.product)?.adult || 0);
+      const publicPerPerson = configuredPublicPerPerson > 0 ? configuredPublicPerPerson : roundToPointNinety(publicBaseTotalRaw / pax);
       const publicBaseTotal = publicPerPerson * pax;
       const targetNetPerPerson = targetNetTotal / pax;
       return { pax, guideCost, targetNetTotal, targetNetPerPerson, publicBaseTotal, publicPerPerson, paypalPercent, paypalFixed, bankPercent, discountPercent };
@@ -8943,10 +8959,11 @@ document.addEventListener("click", function (event) {
       const paypalPercent = Number(rules.paypalFeePercent ?? 5.4) / 100;
       const paypalFixed = Number(rules.paypalFixedUSD ?? 0.3);
       const bankPercent = Number(rules.bankWithdrawPercent ?? 3) / 100;
-      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 10) / 100;
+      const discountPercent = Number(rules.maxPublicDiscountBufferPercent ?? this.product?.paymentOptions?.fullPaymentDiscountPercent ?? 0) / 100;
       const chargedNeeded = ((targetNetTotal / Math.max(0.0001, 1 - bankPercent)) + paypalFixed) / Math.max(0.0001, 1 - paypalPercent);
       const publicBaseTotalRaw = chargedNeeded / Math.max(0.0001, 1 - discountPercent);
-      const publicPerPerson = roundToPoint90(publicBaseTotalRaw / pax);
+      const configuredPublicPerPerson = Number(window.MCT_getCommercialProductRule?.(this.product)?.adult || 0);
+      const publicPerPerson = configuredPublicPerPerson > 0 ? configuredPublicPerPerson : roundToPoint90(publicBaseTotalRaw / pax);
       const publicBaseTotal = publicPerPerson * pax;
       const targetNetPerPerson = targetNetTotal / pax;
       return { pax, guideCost, hotelCost, targetNetTotal, targetNetPerPerson, publicBaseTotal, publicPerPerson, paypalPercent, paypalFixed, bankPercent, discountPercent };
@@ -8980,15 +8997,15 @@ document.addEventListener("click", function (event) {
       const trainAdjustmentTotal = this.calculateSelectedTrainAdjustmentTotal?.() || 0;
       const accommodationTotal = this.calculateOvernightHotelUpgradeTotalV84?.() || 0;
       const serviceTotal = base.publicBaseTotal + extrasTotal + trainAdjustmentTotal + accommodationTotal;
-      if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
-      const fullDiscountPercent = 10;
+      if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
+      const fullDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
       const partialPerPerson = Number(this.product?.paymentOptions?.partialPaymentPerPerson || 149);
       const discountInfo = this.getDiscountInfo?.(serviceTotal, fullDiscountPercent) || { discount: serviceTotal * 0.10, percent: 10 };
       const discount = Number(discountInfo.discount || 0);
       const discountedTotal = Math.max(serviceTotal - discount, 0);
       let payNow = discountedTotal;
       let payLater = 0;
-      let infoText = this.t("product.fullPaymentDiscountNoteB", "Pagando el total ahora obtienes un {percent}% de descuento.", { percent: fullDiscountPercent });
+      let infoText = this.t("product.fullPaymentDiscountNoteB", "Reserva sujeta a verificación de disponibilidad.", { percent: fullDiscountPercent });
       if (this.paymentMode !== "full") {
         payNow = Math.min(pax * partialPerPerson, discountedTotal);
         payLater = Math.max(discountedTotal - payNow, 0);
@@ -9052,7 +9069,7 @@ document.addEventListener("click", function (event) {
     proto.renderProduct = function (product) {
       const result = previousRenderProduct?.apply(this, arguments);
       if (isOvernightClassic(this)) {
-        if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = 10;
+        if (this.product?.paymentOptions) this.product.paymentOptions.fullPaymentDiscountPercent = Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0);
         const lang = document.getElementById("detailLanguages");
         if (lang) lang.textContent = this.t("product.guideProfessionalEsEn", "Guía profesional: español, inglés (otros idiomas, consultar)");
         const serviceSection = document.getElementById("serviceModeSection");
@@ -10508,3 +10525,93 @@ document.addEventListener("click", function (event) {
     [150, 500, 1200, 2200].forEach((delay) => setTimeout(patchV98LimaCusco8D7N, delay));
   }
 })();
+
+/* =========================================================
+   MCT V99 — Ajuste comercial público septiembre 2026
+   - evita USD 0 antes de fecha válida
+   - bloquea venta directa de premium con tarifa a consultar
+   - mantiene cupones manuales y elimina descuento automático
+   ========================================================= */
+(function () {
+  function patchCommercialV99() {
+    const page = window.MyCuscoTripProductPage;
+    if (!page) return false;
+    const proto = Object.getPrototypeOf(page);
+    if (!proto || proto.__mctCommercialV99Applied) return Boolean(proto?.__mctCommercialV99Applied);
+
+    proto.getCommercialRuleV99 = function () {
+      return window.MCT_getCommercialProductRule?.(this.product || this.slug) || null;
+    };
+
+    proto.renderPendingPricingStateV99 = function (mode = "pending") {
+      const isEn = this.getLocale?.() === "en";
+      const isOnRequest = mode === "on_request";
+      const isPackagePrice = this.productType === "package" || this.isPackage?.(this.product);
+      const info = isOnRequest
+        ? (isEn ? "Price based on availability. Contact us so we can verify the selected services before confirming your booking." : "Precio según disponibilidad. Contáctanos para verificar los servicios seleccionados antes de confirmar la reserva.")
+        : isPackagePrice
+          ? (isEn ? "Configure your trip to calculate the price." : "Configura tu viaje para calcular el precio.")
+          : (isEn ? "Select your travel date to see the price." : "Selecciona tu fecha para ver el precio.");
+
+      const hideRowFor = (id) => {
+        const row = document.getElementById(id)?.closest(".booking-summary__line");
+        if (row) row.hidden = true;
+      };
+      ["adultsTotal", "childrenTotal", "extrasTotal", "accommodationTotal", "discountTotal", "serviceTotal", "payLaterTotal", "trainAdjustmentTotal"].forEach(hideRowFor);
+      const payNowWrap = document.getElementById("payNowTotal")?.closest(".booking-summary__total");
+      if (payNowWrap) payNowWrap.hidden = true;
+      const paymentInfo = document.getElementById("paymentInfo");
+      if (paymentInfo) paymentInfo.textContent = info;
+
+      if (isOnRequest) {
+        this.setText?.("productBasePrice", isEn ? "Price based on availability" : "Precio según disponibilidad");
+      } else if (isPackagePrice) {
+        this.setText?.("productBasePrice", isEn ? "Configure your trip to calculate the price" : "Configura tu viaje para calcular el precio");
+      }
+
+      const button = document.getElementById("paypalButton");
+      if (button && isOnRequest) {
+        button.disabled = true;
+        button.textContent = isEn ? "Check availability" : "Consultar disponibilidad";
+      }
+      return true;
+    };
+
+    const previousUpdatePricing = proto.updatePricing;
+    proto.updatePricing = function () {
+      const rule = this.getCommercialRuleV99?.();
+      if (rule?.priceMode === "on_request") return this.renderPendingPricingStateV99?.("on_request");
+      if (!this.date) return this.renderPendingPricingStateV99?.("pending");
+
+      const button = document.getElementById("paypalButton");
+      if (button) {
+        button.disabled = false;
+        button.textContent = this.getLocale?.() === "en" ? "Continue to booking" : "Reservar ahora";
+      }
+      const payNowWrap = document.getElementById("payNowTotal")?.closest(".booking-summary__total");
+      if (payNowWrap) payNowWrap.hidden = false;
+
+      const result = previousUpdatePricing?.apply(this, arguments);
+      const info = document.getElementById("paymentInfo");
+      const hasCoupon = Boolean(this.appliedCoupon);
+      if (info && this.paymentMode === "full" && !hasCoupon) {
+        info.textContent = this.getLocale?.() === "en"
+          ? "Booking is subject to availability verification. Once the selected services are validated, we confirm the booking and coordinate the final details."
+          : "Reserva sujeta a verificación de disponibilidad. Una vez validados los servicios seleccionados, confirmamos la reserva y coordinamos los detalles finales.";
+      }
+      const discountRow = document.getElementById("discountRow");
+      if (discountRow && !hasCoupon) discountRow.hidden = true;
+      return result;
+    };
+
+    proto.__mctCommercialV99Applied = true;
+    try { page.updatePricing?.(); } catch (error) { console.warn("MCT V99 pricing initialization warning:", error); }
+    return true;
+  }
+
+  if (!patchCommercialV99()) {
+    document.addEventListener("DOMContentLoaded", patchCommercialV99);
+    [80, 200, 500, 1000, 1800].forEach((delay) => setTimeout(patchCommercialV99, delay));
+  }
+})();
+

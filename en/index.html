@@ -639,7 +639,16 @@
         background: #25d366;
       }
     }
-  </style>
+  
+    .hero-commercial-copy { max-width: 850px; margin: 0 auto; text-align: center; }
+    .hero-commercial-copy h1 { margin: 0; color: #fff; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.08; }
+    .hero-commercial-copy p { max-width: 760px; margin: 16px auto 0; color: rgba(255,255,255,.96); font-size: clamp(1rem, 1.9vw, 1.2rem); line-height: 1.6; }
+    .hero-commercial-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:22px; }
+    .hero-commercial-btn { min-width:190px; }
+    .hero-commercial-btn--secondary { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.75); color:#fff; backdrop-filter:blur(5px); }
+    .hero-tripadvisor-trust { display:inline-flex; align-items:center; gap:5px; margin-top:15px; color:#fff; font-weight:700; }
+    @media (max-width: 640px) { .hero-commercial-actions { flex-direction:column; align-items:stretch; } .hero-commercial-btn { width:100%; } }
+</style>
 <link href="../assets/css/coupon-popup.css?v=20260804-83" rel="stylesheet"/>
 <script id="mct-static-schema" type="application/ld+json">
 {
@@ -729,9 +738,14 @@
 </div>
 <div class="container">
 <div class="hero-content">
-<div class="hero-text">
-<h2 class="hero-title-main"><span class="hero-title-pre" data-i18n="home.heroLine1">Planning a trip to</span><br/><span class="hero-title-highlight" data-i18n="home.heroHighlight">Machu Picchu?</span></h2>
-<h2 data-i18n="home.heroLine2">Find the perfect experience here</h2>
+<div class="hero-text hero-commercial-copy">
+<h1>Visit Machu Picchu from Cusco without the hassle</h1>
+<p>Train, admission ticket, buses, guide and local assistance coordinated around your travel date. Check availability and choose the best option for your trip.</p>
+<div class="hero-commercial-actions">
+<a class="btn hero-commercial-btn" href="#search-bar-container">Check availability</a>
+<a class="btn hero-commercial-btn hero-commercial-btn--secondary" href="https://wa.me/51900608980" rel="noopener" target="_blank">Chat on WhatsApp</a>
+</div>
+<div class="hero-tripadvisor-trust">★ <span data-mct-tripadvisor-rating>4.4</span> on Tripadvisor</div>
 </div>
 <div id="search-bar-container"></div>
 <div class="hero-search-hint">
@@ -759,7 +773,7 @@
 <div class="destinos-grid featured-products-grid" id="products-container"></div>
 <p class="ota-featured-note" data-i18n="home.featuredNote">Prices, schedules and availability may vary according to season, trains and entrance availability.</p>
 <div class="more-experiences-wrap">
-<a class="btn more-experiences-btn" href="all-experiences.html" data-i18n="home.moreExperiences">See more experiences</a>
+<a class="btn more-experiences-btn" href="all-experiences.html" data-i18n="home.moreExperiences">View all experiences</a>
 </div>
 </div>
 </section>
@@ -796,7 +810,7 @@
 </div>
 </div>
 <div class="package-showcase-grid">
-<a class="package-showcase-card" href="product.html?slug=machu-picchu-overnight-clasico" style="--pkg-image:url('/assets/img/quote/fallbacks/machu-picchu.jpg');">
+<a class="package-showcase-card" href="product.html?slug=machu-picchu-overnight-classic" style="--pkg-image:url('/assets/img/quote/fallbacks/machu-picchu.jpg');">
 <span class="package-showcase-card__tag"><i class="fa-solid fa-train"></i> Overnight</span>
 <h3>Machu Picchu 2D/1N</h3>
 <p data-i18n="home.pkg2dDesc">The most comfortable way to visit the citadel with one night in Machu Picchu Pueblo.</p>
@@ -818,36 +832,6 @@
 <span class="package-showcase-card__tag"><i class="fa-solid fa-person-hiking"></i> <span data-i18n="chips.adventure">Adventure</span></span>
 <h3>Cusco Adventure 5D/4N</h3>
 <p data-i18n="home.pkg5dDesc">Machu Picchu, the Sacred Valley and a natural route such as Vinicunca or Humantay.</p>
-<span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
-</a>
-<a class="package-showcase-card" href="product.html?slug=cusco-package-6-days-5-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/laguna-humantay.jpg');">
-<span class="package-showcase-card__tag"><i class="fa-solid fa-mountain-sun"></i> <span data-i18n="home.tagComplete">Complete</span></span>
-<h3>Cusco and Nature 6D/5N</h3>
-<p data-i18n="home.pkg6dDesc">More time to combine Machu Picchu, the Sacred Valley and nature tours.</p>
-<span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
-</a>
-<a class="package-showcase-card" href="product.html?slug=cusco-package-7-days-6-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/valle-sur.jpg');">
-<span class="package-showcase-card__tag"><i class="fa-solid fa-route"></i> Flexible</span>
-<h3>Deep Cusco 7D/6N</h3>
-<p data-i18n="home.pkg7dDesc">A full week to add cultural experiences and adventure routes without rushing.</p>
-<span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
-</a>
-<a class="package-showcase-card" href="product.html?slug=cusco-package-8-days-7-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/maras-moray.jpg');">
-<span class="package-showcase-card__tag"><i class="fa-solid fa-camera-retro"></i> <span data-i18n="home.tagExperiences">Experiences</span></span>
-<h3>Cusco Experiences 8D/7N</h3>
-<p data-i18n="home.pkg8dDesc">More days to visit Machu Picchu, the Sacred Valley, Maras, Moray and nature routes.</p>
-<span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
-</a>
-<a class="package-showcase-card" href="product.html?slug=cusco-package-9-days-8-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/siete-lagunas.jpg');">
-<span class="package-showcase-card__tag"><i class="fa-solid fa-water"></i> <span data-i18n="chips.nature">Nature</span></span>
-<h3>Complete Cusco 9D/8N</h3>
-<p data-i18n="home.pkg9dDesc">A broader route to combine Cusco icons with hikes and Andean landscapes.</p>
-<span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
-</a>
-<a class="package-showcase-card" href="product.html?slug=cusco-package-10-days-9-nights&amp;option=0" style="--pkg-image:url('/assets/img/quote/fallbacks/palcoyo.jpg');">
-<span class="package-showcase-card__tag"><i class="fa-solid fa-gem"></i> <span data-i18n="home.tagGrandTrip">Grand trip</span></span>
-<h3>Slow Cusco 10D/9N</h3>
-<p data-i18n="home.pkg10dDesc">The most complete alternative to explore Cusco with rest time and custom routes.</p>
 <span class="package-showcase-card__footer" data-i18n="home.viewPackage">View package <i class="fa-solid fa-arrow-right"></i></span>
 </a>
 </div>

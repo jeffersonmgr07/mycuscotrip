@@ -167,9 +167,34 @@
     return `${prefix}${cleanPath === "index.html" ? "" : cleanPath}${query}${url.hash}`;
   }
 
+  function applyLocaleRobotsPolicy(lang) {
+    const incomplete = new Set(window.MCT_COMMERCIAL_CONFIG?.incompleteSeoLocales || ["pt", "fr", "it", "de", "ja", "zh"]);
+    const shouldNoindex = incomplete.has(lang);
+    let meta = document.head?.querySelector('meta[name="robots"]');
+
+    if (shouldNoindex) {
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute("name", "robots");
+        document.head?.appendChild(meta);
+      }
+      meta.setAttribute("content", "noindex,follow,max-image-preview:large");
+      return;
+    }
+
+    // ES/EN conservan cualquier noindex intencional de páginas privadas/checkout/admin.
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "robots");
+      meta.setAttribute("content", "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1");
+      document.head?.appendChild(meta);
+    }
+  }
+
   async function initI18n(locale) {
     const lang = normalizeLocale(locale || getLocaleFromUrl());
     activeLocale = lang;
+    applyLocaleRobotsPolicy(lang);
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.setAttribute("lang", lang === "zh" ? "zh-Hans" : lang);
     document.body?.setAttribute("data-locale", lang);

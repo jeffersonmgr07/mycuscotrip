@@ -148,6 +148,7 @@
         shortDescription: item.shortDescription || item.description || "Experiencia organizada por My Cusco Trip.",
         image: this.getImage(item),
         price: this.getDisplayPrice(item),
+        priceMode: window.MCT_getCommercialProductRule?.(item)?.priceMode || item.priceMode || "static",
         currency: item.currency || this.getDisplayPrice(item)?.currency || "USD",
         search: item.search || {},
         raw: item,
@@ -175,6 +176,7 @@
         shortDescription: card.shortDescription || "Paquete dinámico para viajar a Cusco y Machu Picchu.",
         image: this.getImage(card),
         price: null,
+        priceMode: window.MCT_getCommercialProductRule?.(card)?.priceMode || card.priceMode || "dynamic_from_selected_itinerary",
         currency: config?.defaultCurrency || card.currency || "USD",
         search: card.search || {},
         raw: card,
@@ -196,9 +198,11 @@
     }
 
     getDisplayPrice(item) {
+      const commercialRule = window.MCT_getCommercialProductRule?.(item);
+      if (commercialRule?.priceMode === "on_request" || commercialRule?.priceMode === "quote") return null;
       const byNationality = item?.basePricingByNationality || {};
       const preferred = byNationality.foreign || byNationality.national || byNationality.andean_community;
-      const adult = Number(preferred?.adult ?? item?.basePricing?.adult ?? item?.price ?? item?.adultPrice ?? 0);
+      const adult = Number(commercialRule?.adult ?? preferred?.adult ?? item?.basePricing?.adult ?? item?.price ?? item?.adultPrice ?? 0);
       const currency = preferred?.currency || item?.basePricing?.currency || item?.currency || "USD";
       if (!adult) return null;
       return { amount: adult, currency };
@@ -206,16 +210,13 @@
 
     getFeaturedMachuPicchuItems(catalog) {
       const published = catalog.filter((item) => String(item.status || "published").toLowerCase() !== "draft");
-      const tours = published.filter((item) => item.productKind === "tour");
-      const machuTours = tours.filter((item) => this.isMachuPicchuItem(item));
-
-      let candidates = machuTours.filter((item) => item.featured);
-      if (candidates.length < this.limit) {
-        candidates = this.uniqueBySlug([...candidates, ...machuTours]);
-      }
-
-      candidates.sort((a, b) => this.getCommercialOrder(a) - this.getCommercialOrder(b));
-      return candidates.slice(0, this.limit);
+      const desired = window.MCT_COMMERCIAL_CONFIG?.homeFeaturedIdentities || ["MAPI001", "MAPI003", "CUZ007", "CUZ006", "CUZ003FD", "pkg_cusco_4d3n"];
+      const byIdentity = new Map();
+      published.forEach((item) => {
+        const identity = window.MCT_getCommercialProductIdentity?.(item) || item.internalCode || item.id || item.slug;
+        if (identity && !byIdentity.has(identity)) byIdentity.set(identity, item);
+      });
+      return desired.map((identity) => byIdentity.get(identity)).filter(Boolean).slice(0, this.limit);
     }
 
     isMachuPicchuItem(item) {
@@ -313,7 +314,13 @@
       const optionParam = item.productKind === "package" ? "&option=0" : "";
       const href = this.resolvePath(`product.html?slug=${encodeURIComponent(item.slug)}${optionParam}`);
       const image = this.resolvePath(item.image || "assets/img/quote/fallbacks/machu-picchu.jpg");
-      const price = item.price ? `${item.price.currency} ${this.formatMoney(item.price.amount)}` : this.t("cards.flexibleQuote", "Cotización flexible");
+      const isQuote = item.priceMode === "quote" || item.priceMode === "dynamic_from_selected_itinerary";
+      const isOnRequest = item.priceMode === "on_request";
+      const price = item.price
+        ? `${item.price.currency} ${this.formatMoney(item.price.amount)}`
+        : isOnRequest
+          ? this.t("cards.priceByAvailability", "Precio según disponibilidad")
+          : this.t("cards.quoteTrip", "Cotizar viaje");
       const description = this.truncate(item.shortDescription, 118);
 
       return `
@@ -336,7 +343,7 @@
             <p>${this.escapeHtml(description)}</p>
             <div class="product-card__footer">
               <div class="product-card__price">
-                <small>${this.escapeHtml(this.t("cards.from", "Desde"))}</small>
+                ${item.price ? `<small>${this.escapeHtml(this.t("cards.from", "Desde"))}</small>` : ""}
                 <strong>${this.escapeHtml(price)}</strong>
               </div>
               <a class="btn product-card__cta" href="${this.escapeHtml(href)}">${this.escapeHtml(this.t("cards.viewExperience", "Ver experiencia"))}</a>

@@ -45,6 +45,10 @@ function normalizeImage(item) {
   return "";
 }
 
+function getCommercialRule(item) {
+  return window.MCT_getCommercialProductRule?.(item) || null;
+}
+
 function normalizePrice(item) {
   if (!item) {
     return {
@@ -54,7 +58,16 @@ function normalizePrice(item) {
     };
   }
 
+  const commercialRule = getCommercialRule(item);
+  if (commercialRule?.priceMode === "on_request") {
+    return { amount: 0, currency: "USD", mode: "on_request" };
+  }
+  if (commercialRule?.priceMode === "quote") {
+    return { amount: 0, currency: "USD", mode: "quote" };
+  }
+
   const basePricingAmount = firstValid(
+    commercialRule?.adult,
     item.basePricing?.adult,
     item.basePricing?.publishedAdultUSD,
     item.pricing?.publishedAdultUSD,
@@ -137,7 +150,7 @@ function normalizeTour(item, source = "unknown") {
     badge: safeString(item.badge, ""),
     featured: safeBoolean(item.featured, false),
     status: safeString(item.status, "draft"),
-    priceMode: "static_from_product",
+    priceMode: price.mode,
     price,
     currency: price.currency,
     shortDescription: safeString(item.shortDescription, item.description || ""),
@@ -169,8 +182,11 @@ function normalizePackageCard(card, config = {}, source = "unknown") {
     card.price
   );
 
+  const commercialRule = getCommercialRule(card);
   const price = {
-    amount: safeNumber(baseAmount, 0),
+    amount: commercialRule?.priceMode === "on_request" || commercialRule?.priceMode === "quote"
+      ? 0
+      : safeNumber(commercialRule?.adult ?? baseAmount, 0),
     currency: safeString(
       firstValid(
         card.basePricing?.currency,
@@ -181,7 +197,7 @@ function normalizePackageCard(card, config = {}, source = "unknown") {
       ),
       "USD"
     ),
-    mode: safeString(card.priceMode, baseAmount ? "static_base_plus_configurable_services" : "dynamic_from_selected_itinerary")
+    mode: safeString(commercialRule?.priceMode, safeString(card.priceMode, baseAmount ? "static_base_plus_configurable_services" : "dynamic_from_selected_itinerary"))
   };
 
   const durationLabel = safeString(card.typeLabel, `${days} días / ${nights} noches`);
@@ -293,8 +309,15 @@ function getProductBySlug(slug, catalog = []) {
 
   if (!normalizedSlug || !Array.isArray(catalog)) return null;
 
+  const exact = catalog.find((product) => safeString(product.slug, "").toLowerCase() === normalizedSlug);
+  if (exact) return exact;
+
+  const identity = window.MCT_COMMERCIAL_CONFIG?.slugToIdentity?.[normalizedSlug];
+  if (!identity) return null;
+
   return catalog.find((product) => {
-    return safeString(product.slug, "").toLowerCase() === normalizedSlug;
+    const productIdentity = String(product.internalCode || product.id || "").trim();
+    return productIdentity === identity;
   }) || null;
 }
 

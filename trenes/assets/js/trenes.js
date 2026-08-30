@@ -47,10 +47,10 @@
       hero: {
         kicker: 'PeruRail + Inca Rail',
         title: 'Compra tu tren a Machu Picchu y obtén los mejores beneficios',
-        badgeGuide: 'Tour guiado gratuito dentro de Machu Picchu',
+        badgeGuide: 'Guiado promocional en Machu Picchu sujeto a disponibilidad y coordinación.',
         badgeAssist: 'Asistencia 24/7',
         badgeBenefits: 'Beneficios exclusivos por tu compra',
-        subtitle: 'Por la compra de tus trenes ida y vuelta, accede a beneficios exclusivos, reserva y paga online con asistencia personalizada para disfrutar mejor tu visita.'
+        subtitle: 'Por la compra de tus trenes ida y vuelta, accede a beneficios exclusivos y asistencia personalizada. El ingreso oficial a Machu Picchu y el bus Consettur no están incluidos salvo que se indiquen expresamente o se agreguen a la reserva.'
       },
       search: {
         roundtrip: 'Ida y vuelta', bestOption: 'Mejor opción', oneway: 'Solo ida', returnOnly: 'Solo retorno', outboundDate: 'Fecha de viaje', returnDate: 'Fecha de retorno', passengers: 'Pasajeros', adults: 'Adultos', adultAge: '12 años o más', children: 'Niños', childAge: '3 a 11 años', childFareNote: 'La tarifa de niño se calcula con el precio cargado en el JSON: adulto × 0.80.', coupon: 'Cupón', couponPlaceholder: 'Opcional', button: 'Buscar'
@@ -66,7 +66,7 @@
       pax: { adult: 'adulto', adults: 'adultos', child: 'niño', children: 'niños', ageChild: 'Edad niño' }
     },
     en: {
-      hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Free guided tour inside Machu Picchu', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'When you buy your round-trip train tickets, access exclusive benefits, book and pay online, and enjoy your visit with personalized assistance.' },
+      hero: { kicker: 'PeruRail + Inca Rail', title: 'Buy your train to Machu Picchu and get the best benefits', badgeGuide: 'Promotional Machu Picchu guided service subject to availability and coordination.', badgeAssist: '24/7 assistance', badgeBenefits: 'Exclusive benefits with your purchase', subtitle: 'With round-trip train tickets, access exclusive benefits and personalized assistance. Official Machu Picchu admission and the Consettur bus are not included unless expressly stated or added to the booking.' },
       search: { tripType: 'Trip type', roundtrip: 'Round trip', bestOption: 'Best option', oneway: 'One way', returnOnly: 'Return only', outboundDate: 'Travel date', returnDate: 'Return date', passengers: 'Passengers', adults: 'Adults', adultAge: '12 years or older', children: 'Children', childAge: '3 to 11 years old', childFareNote: 'Child fare uses the price loaded in the JSON: adult × 0.80.', coupon: 'Coupon', couponPlaceholder: 'Optional', button: 'Search' },
       routes: { outboundFrom: 'Departure from', returnTo: 'Return to', seeMore: 'See more', seeLess: 'See less' },
       stations: { cusco: 'Cusco', ollantaytambo: 'Ollantaytambo', urubamba: 'Urubamba', hidroelectrica: 'Hydroelectric', machuPicchu: 'Machu Picchu' },

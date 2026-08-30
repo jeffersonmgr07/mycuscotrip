@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Tour Details and Secure Booking | My Cusco Trip</title>
-<meta content="Review itinerary, inclusions, hotels, trains, pricing and booking options for your selected Peru travel experience." name="description"/><link href="https://mycuscotrip.com/product.html" hreflang="es" rel="alternate"/><link href="https://mycuscotrip.com/en/product.html" hreflang="en" rel="alternate"/><link href="https://mycuscotrip.com/pt/product.html" hreflang="pt" rel="alternate"/><link href="https://mycuscotrip.com/fr/product.html" hreflang="fr" rel="alternate"/><link href="https://mycuscotrip.com/de/product.html" hreflang="de" rel="alternate"/><link href="https://mycuscotrip.com/it/product.html" hreflang="it" rel="alternate"/><link href="https://mycuscotrip.com/zh/product.html" hreflang="zh" rel="alternate"/><link href="https://mycuscotrip.com/ja/product.html" hreflang="ja" rel="alternate"/><link href="https://mycuscotrip.com/product.html" hreflang="x-default" rel="alternate"/>
+<meta content="Review itinerary, inclusions, hotels, trains, pricing and booking options for your selected Peru travel experience." name="description"/>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&amp;family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
@@ -47,11 +47,7 @@
 <span class="experience-badge" id="productBadge">Top ventas</span>
 <h1 id="productTitle">Loading experience...</h1>
 <div class="experience-meta-row">
-<div class="experience-rating">
-<span class="experience-rating__score">4.9</span>
-<span class="experience-rating__stars">★ ★ ★ ★ ★</span>
-<span class="experience-rating__reviews">(24 reviews)</span>
-</div>
+<div class="experience-rating"><span class="experience-rating__stars">★</span> <span class="experience-rating__score" data-mct-tripadvisor-rating>4.4</span> <span class="experience-rating__reviews">on Tripadvisor</span></div>
 <div class="experience-actions">
 <button class="experience-action-btn" type="button">
 <i class="fas fa-share-nodes"></i>
@@ -98,8 +94,8 @@
 <div class="benefit-item">
 <i class="fas fa-bolt"></i>
 <div>
-<strong data-i18n="product.quickConfirmation">Fast confirmation</strong>
-<p data-i18n="product.quickConfirmationText">A process designed for online payment and follow-up confirmation.</p>
+<strong data-i18n="product.quickConfirmation">Availability verification</strong>
+<p data-i18n="product.quickConfirmationText">After we receive your booking request, we verify availability for the selected services and confirm the booking once they are validated.</p>
 </div>
 </div>
 <div class="benefit-item">
@@ -120,7 +116,7 @@
 <li><i class="fas fa-clock"></i> <span id="detailDuration"></span></li>
 <li><i class="fas fa-language"></i> <span id="detailLanguages"></span></li>
 <li><i class="fas fa-location-dot"></i> <span id="detailLocation"></span></li>
-<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Online booking with automatic calculation</span></li>
+<li><i class="fas fa-ticket"></i> <span data-i18n="product.onlineBooking">Booking subject to availability verification</span></li>
 </ul>
 </article>
 <article class="experience-card">
@@ -192,7 +188,7 @@
 <div class="booking-panel">
 <div class="booking-panel__price">
 <span data-i18n="cards.from">From</span>
-<strong id="productBasePrice">USD 0</strong>
+<strong id="productBasePrice">Select your travel date to see the price</strong>
 <small data-i18n="product.perAdult">per adult</small>
 </div>
 <form class="booking-panel__form" id="productBookingForm">
@@ -283,35 +279,35 @@
 <div class="booking-summary">
 <div class="booking-summary__line">
 <span>Adults</span>
-<strong id="adultsTotal">USD 0</strong>
+<strong id="adultsTotal">—</strong>
 </div>
 <div class="booking-summary__line">
 <span>Children</span>
-<strong id="childrenTotal">USD 0</strong>
+<strong id="childrenTotal">—</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="accommodationTotalRow">
 <span data-i18n="product.accommodation">Accommodation</span>
-<strong id="accommodationTotal">USD 0</strong>
+<strong id="accommodationTotal">—</strong>
 </div>
-<div class="booking-summary__line">
+<div class="booking-summary__line" hidden>
 <span>Extras</span>
-<strong id="extrasTotal">USD 0</strong>
+<strong id="extrasTotal">—</strong>
 </div>
 <div class="booking-summary__line" hidden="" id="discountRow">
 <span data-i18n="product.discount">Discount</span>
-<strong id="discountTotal">- USD 0</strong>
+<strong id="discountTotal">—</strong>
 </div>
-<div class="booking-summary__line" id="serviceTotalRow">
+<div class="booking-summary__line" hidden id="serviceTotalRow">
 <span data-i18n="product.serviceTotal">Service total</span>
-<strong id="serviceTotal">USD 0</strong>
+<strong id="serviceTotal">—</strong>
 </div>
-<div class="booking-summary__total">
+<div class="booking-summary__total" hidden>
 <span id="payNowLabel" data-i18n="product.payNow">Pay now</span>
-<strong id="payNowTotal">USD 0</strong>
+<strong id="payNowTotal">—</strong>
 </div>
 <div class="booking-summary__later" hidden="" id="payLaterRow">
 <span data-i18n="product.payLater">Pay later</span>
-<strong id="payLaterTotal">USD 0</strong>
+<strong id="payLaterTotal">—</strong>
 </div>
 </div>
 </div>
@@ -375,7 +371,7 @@
 <div class="passenger-modal__meta-row">
 <div class="passenger-modal__paynow-card" aria-live="polite">
 <span>Amount to pay now:</span>
-<strong id="passengerPayNowAmount">USD 0.00</strong>
+<strong id="passengerPayNowAmount">—</strong>
 </div>
 </div>
 <p aria-hidden="true" class="passenger-modal__subtitle" hidden id="passengerReservationTimestamp"></p>
@@ -551,6 +547,7 @@
 <script src="../assets/js/core/payment-service.js"></script>
 <script src="../assets/js/core/package-content-service.js"></script>
 <script src="../assets/js/config/tracking-config.js"></script>
+<script src="../assets/js/core/seo-service.js"></script>
 <script src="../assets/js/components/tracking.js"></script>
 <script src="../assets/js/components/header.js"></script>
 <script src="../assets/js/pages/product.js?v=20260803-8"></script>

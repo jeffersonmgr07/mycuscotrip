@@ -233,6 +233,9 @@
   }
 
   function getPrice(item) {
+    const commercialRule = window.MCT_getCommercialProductRule?.(item);
+    if (commercialRule?.priceMode === "on_request" || commercialRule?.priceMode === "quote") return null;
+    if (Number.isFinite(Number(commercialRule?.adult)) && Number(commercialRule.adult) > 0) return Number(commercialRule.adult);
     if (item.priceMode && String(item.priceMode).includes("dynamic")) return null;
     if (item.basePricing?.adult) return Number(item.basePricing.adult);
     if (item.pricing?.publishedAdultUSD) return Number(item.pricing.publishedAdultUSD);
@@ -278,6 +281,7 @@
       days: Number(item.days || 0),
       nights: Number(item.nights || 0),
       price,
+      priceMode: window.MCT_getCommercialProductRule?.(item)?.priceMode || item.priceMode || (price ? "static" : "dynamic"),
       currency,
       search: item.search || {},
       url: item.slug ? `${getLocalePrefix()}product.html?slug=${encodeURIComponent(item.slug)}` : `${getLocalePrefix()}all-experiences.html`
@@ -597,9 +601,11 @@
         ? t("cards.comingSoon", "Próximamente")
         : item.price
           ? `${t("cards.from", "Desde")} ${formatMoney(item.price, item.currency)}`
-          : item.productKind === "package"
-            ? t("cards.flexibleQuote", "Cotización flexible")
-            : t("cards.checkPrice", "Consultar precio");
+          : item.priceMode === "on_request"
+            ? t("cards.priceByAvailability", "Precio según disponibilidad")
+            : item.productKind === "package"
+              ? t("cards.flexibleQuote", "Cotización flexible")
+              : t("cards.checkPrice", "Consultar precio");
 
       const cardUrl = isDraft
         ? `https://wa.me/51900608980?text=${encodeURIComponent(`Hola My Cusco Trip, quiero información sobre ${item.title}.`)}`
