@@ -3158,6 +3158,8 @@
     }
 
 </style>
+<link href="./assets/css/voucher-approved-print.css" rel="stylesheet"/>
+<script src="./assets/js/pages/voucher-approved-print.js"></script>
 </head>
 <body>
 <div id="header-container"></div>
@@ -3171,10 +3173,10 @@
 <button class="action-btn secondary" id="backBtn" onclick="window.location.href='./mi-reserva.html'">
 <i class="fa-solid fa-arrow-left"></i> Volver
           </button>
-<button class="action-btn secondary" id="ticketsBtn" onclick="window.location.href='./pages/ayuda/descargar-tickets-servicios.html'">
+<a class="action-btn secondary" id="ticketsBtn" href="./pages/ayuda/descargar-tickets-servicios.html">
 <i class="fa-solid fa-ticket"></i> Ver tickets
-          </button>
-<button class="action-btn primary" id="printBtn" onclick="window.print()">
+          </a>
+<button class="action-btn primary" id="printBtn" onclick="window.MyCuscoTripApprovedVoucher.print()">
 <i class="fa-solid fa-print"></i> Imprimir voucher
           </button>
 </div>
@@ -3410,7 +3412,7 @@
         codigo: reserva.codigo || "",
         titular: reserva.titularReserva || "",
         fecha: reserva.fechaViaje || reserva.fechaVoucher || "",
-        pago: reserva.fechaPago || reserva.paymentTimestamp || reserva.fechaEmision || ""
+        pago: reserva.fechaPagoTexto || reserva.fechaPago || reserva.paymentTimestamp || reserva.fechaEmision || ""
       });
       return `${window.location.origin}${window.location.pathname.replace('detalle-reserva.html', 'verificar-reserva.html')}?${params.toString()}`;
     }
@@ -3604,6 +3606,7 @@
     }
 
     function buildPassengerSummary(reserva, turistas, lang = "es") {
+      if (reserva?.resumenPasajeros) return getLocalizedField(reserva.resumenPasajeros, lang);
       const total = Number(reserva?.cantidadPaxs || turistas?.length || 0);
       const serviceParts = parseDateParts(reserva?.fechaViaje || reserva?.fechaVoucher || reserva?.fechaEmision || "");
       let adults = 0;
@@ -4057,6 +4060,8 @@
 
     function formatPaymentTimestampPrint(value) {
       if (!value) return "";
+      // A date without a recorded time must not become the previous day in Lima.
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(value))) return formatDateLocalized(value, currentLanguage);
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return String(value);
       try {
@@ -4086,7 +4091,9 @@
       const discountPct = original > 0 ? (discount / original) * 100 : 0;
       const statusRaw = String(pagos.estado || "").trim();
       const paidStatus = balance <= 0.005 && paid > 0;
-      const paymentDate = formatPaymentTimestampPrint(reserva.fechaPago || reserva.paymentTimestamp || "");
+      const paymentDateBase = formatPaymentTimestampPrint(reserva.fechaPago || reserva.paymentTimestamp || "");
+      const paymentPeriod = getLocalizedField(reserva.periodoPago, currentLanguage);
+      const paymentDate = [paymentDateBase, paymentPeriod].filter(Boolean).join(" · ");
       const provider = String(pagos.proveedor || "").trim();
 
       if (!(original > 0 || paid > 0 || balance > 0 || statusRaw)) return "";
@@ -4109,6 +4116,8 @@
     }
 
     function renderPrintVoucher(reserva) {
+      const approved = window.MyCuscoTripApprovedVoucher?.render(reserva);
+      if (approved) return approved;
       const t = i18n[currentLanguage];
       const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
       const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
@@ -4409,6 +4418,23 @@
       return reservaEncontrada || null;
     }
 
+    function configureTicketsButton(reserva) {
+      const button = document.getElementById("ticketsBtn");
+      if (!button) return;
+      button.href = "./pages/ayuda/descargar-tickets-servicios.html";
+      button.removeAttribute("download");
+      button.innerHTML = `<i class="fa-solid fa-ticket"></i> ${currentLanguage === "en" ? "View tickets" : "Ver tickets"}`;
+      const tickets = reserva?.ticketsMachuPicchu;
+      if (!tickets?.url) return;
+      try {
+        const url = new URL(tickets.url, new URL(BASE_PATH, window.location.origin));
+        if (url.origin !== window.location.origin || !url.pathname.toLowerCase().endsWith(".pdf")) return;
+        button.href = url.href;
+        button.download = tickets.nombreArchivo || "Entradas_Machu_Picchu.pdf";
+        button.innerHTML = `<i class="fa-solid fa-download"></i> ${currentLanguage === "en" ? "Download Machu Picchu tickets" : "Descargar tickets de Machu Picchu"}`;
+      } catch (_) { /* Preserve the help link if the attachment URL is invalid. */ }
+    }
+
     async function initVoucher() {
       const webEl = document.getElementById("voucherWeb");
       const printEl = document.getElementById("voucherPrint");
@@ -4418,6 +4444,8 @@
 
       try {
         const reserva = await obtenerReservaActual();
+        configureTicketsButton(reserva);
+        document.body.classList.toggle("mct-approved-voucher", Boolean(window.MyCuscoTripApprovedVoucher?.supports(reserva)));
 
         if (!reserva) {
           emptyEl.style.display = "block";

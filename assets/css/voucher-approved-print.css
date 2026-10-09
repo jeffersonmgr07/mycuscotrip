@@ -1,0 +1,76 @@
+/* Only the approved Elizabeth voucher uses these fixed A4 print pages. */
+@page mct-approved-voucher {
+  size: A4 portrait;
+  margin: 0 !important;
+}
+
+@media print {
+  body.mct-approved-voucher,
+  body.mct-approved-voucher .voucher-page,
+  body.mct-approved-voucher .voucher-shell,
+  body.mct-approved-voucher #voucherPrint {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    overflow: visible !important;
+    line-height: 0 !important;
+    page: mct-approved-voucher;
+  }
+
+  body.mct-approved-voucher .mct-approved-print {
+    display: block !important;
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.mct-approved-voucher .mct-approved-print-page {
+    position: relative !important;
+    display: block !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    break-after: page;
+    page-break-after: always;
+    page: mct-approved-voucher;
+  }
+
+  body.mct-approved-voucher .mct-approved-print-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  body.mct-approved-voucher .mct-approved-print-page img {
+    display: block !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: fill !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body.mct-approved-voucher .mct-approved-print-link {
+    position: absolute !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: transparent !important;
+    background: transparent !important;
+    text-decoration: none !important;
+    border: 0 !important;
+    font-size: 1px !important;
+  }
+}

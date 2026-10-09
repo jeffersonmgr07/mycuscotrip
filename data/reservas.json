@@ -763,5 +763,268 @@
       },
       "extras": []
     }
+  },
+  {
+    "codigo": "CUZDC9949",
+    "apellido": "SEVILLANO ZAMBRANO",
+    "fechaVoucher": "2026-10-08",
+    "fechaEmision": "2026-10-08",
+    "fechaReserva": "2026-10-06",
+    "fechaPago": "2026-10-06",
+    "periodoPago": {
+      "es": "noche",
+      "en": "evening"
+    },
+    "fechaPagoTexto": "6 de octubre de 2026 · noche (hora de Perú)",
+    "fechaViaje": "2026-12-20",
+    "fechaFinViaje": "2026-12-23",
+    "duracion": "04 días / 03 noches",
+    "idioma": "Español",
+    "titularReserva": "Elizabeth Rocio Sevillano Zambrano",
+    "telefonoContacto": "+51 910 375 933",
+    "cantidadPaxs": 3,
+    "resumenPasajeros": {
+      "es": "3 pasajeros · 1 peruano y 2 estadounidenses",
+      "en": "3 travelers · 1 Peruvian and 2 US nationals"
+    },
+    "destino": "Cusco, Valle Sagrado y Machu Picchu",
+    "packTour": "Cusco y Machu Picchu · 4 días / 3 noches · Itinerario especial",
+    "agenteAsignado": "Jefferson García",
+    "agenteTelefono": "+51 900 608 980",
+    "agenteFoto": "./assets/img/agentes/jefferson-garcia.jpg",
+    "hotelInfo": [
+      {
+        "nombre": "Hotel Cusco Boutique",
+        "ubicacion": "Cusco",
+        "checkIn": "20 dic. 2026 · llegada prevista 21:00",
+        "checkOut": "23 dic. 2026 · horario por coordinar",
+        "noches": "03",
+        "habitacion": "1 habitación triple",
+        "observaciones": "Desayuno buffet incluido. Noches: 20, 21 y 22 de diciembre de 2026."
+      }
+    ],
+    "turistas": [
+      {
+        "nombreCompleto": "Elizabeth Rocio Sevillano Zambrano",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "08886476",
+        "nacionalidad": "Peruana",
+        "fechaNacimiento": "",
+        "telefono": "+51 910 375 933"
+      },
+      {
+        "nombreCompleto": "Noe Santos",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "566245839",
+        "nacionalidad": "Estadounidense",
+        "fechaNacimiento": "",
+        "telefono": ""
+      },
+      {
+        "nombreCompleto": "George Garcia",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "A63468314",
+        "nacionalidad": "Estadounidense",
+        "fechaNacimiento": "",
+        "telefono": "",
+        "tarifaIngreso": "Menor de edad (3–17 años)"
+      }
+    ],
+    "servicios": [
+      {
+        "codigo": "TRA001",
+        "nombre": "Día 1 · Recojo de llegada y recepción; traslado al hotel",
+        "fecha": "2026-12-20",
+        "horaInicio": "21:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "CUSVIP",
+        "nombre": "Día 2 · Valle Sagrado VIP: Pisac, Urubamba y Ollantaytambo; retorno a Cusco",
+        "fecha": "2026-12-21",
+        "horaInicio": "08:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA008",
+        "nombre": "Día 3 · Traslado Cusco → estación de Ollantaytambo",
+        "fecha": "2026-12-22",
+        "horaInicio": "04:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "TRENIDA",
+        "nombre": "PeruRail Expedition · Ollantaytambo → Aguas Calientes",
+        "fecha": "2026-12-22",
+        "horaInicio": "06:10",
+        "horaFin": "07:55",
+        "incluido": true
+      },
+      {
+        "codigo": "CONS10",
+        "nombre": "Bus Consettur · Subida a Machu Picchu",
+        "fecha": "2026-12-22",
+        "horaInicio": "Por coordinar",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "MAPI2B",
+        "nombre": "Ingreso oficial y visita guiada · Circuito 2, ruta 2-B: Terraza Inferior",
+        "fecha": "2026-12-22",
+        "horaInicio": "15:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "CONS20",
+        "nombre": "Bus Consettur · Bajada a Aguas Calientes",
+        "fecha": "2026-12-22",
+        "horaInicio": "Por coordinar",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "TRENRET",
+        "nombre": "PeruRail Expedition · Aguas Calientes → Ollantaytambo",
+        "fecha": "2026-12-22",
+        "horaInicio": "18:10",
+        "horaFin": "20:00",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA009",
+        "nombre": "Traslado Ollantaytambo → Cusco; tercera noche en Cusco",
+        "fecha": "2026-12-22",
+        "horaInicio": "20:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "CUS100",
+        "nombre": "Día 4 · Tour panorámico Cusco y ceremonia andina simbólica",
+        "fecha": "2026-12-23",
+        "horaInicio": "09:00",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "CUS001",
+        "nombre": "City Tour: Qoricancha, Sacsayhuamán, Qenqo, Puca Pucara y Tambomachay",
+        "fecha": "2026-12-23",
+        "horaInicio": "13:30",
+        "horaFin": "—",
+        "incluido": true
+      },
+      {
+        "codigo": "TRA002",
+        "nombre": "Traslado de salida desde el hotel; salida prevista a las 21:00",
+        "fecha": "2026-12-23",
+        "horaInicio": "19:00",
+        "horaFin": "—",
+        "incluido": true
+      }
+    ],
+    "vuelos": [],
+    "incluye": [
+      "Recojo de llegada, recepción y traslado al Hotel Cusco Boutique.",
+      "Valle Sagrado VIP full day con retorno y noche en Cusco.",
+      "Machu Picchu Full Day con traslados Cusco ↔ estación de Ollantaytambo.",
+      "Trenes PeruRail Expedition de ida y retorno para los 3 pasajeros, el 22/12/2026.",
+      "Bus Consettur de subida y bajada.",
+      "Ingreso oficial a Machu Picchu: Circuito 2, ruta 2-B — Terraza Inferior, 22/12/2026 a las 15:00.",
+      "Guía profesional certificado.",
+      "Tour panorámico Cusco y ceremonia andina simbólica.",
+      "City Tour Cusco y centros arqueológicos.",
+      "3 noches en Hotel Cusco Boutique, 1 habitación triple, con desayuno buffet.",
+      "Boleto Turístico General de Cusco.",
+      "Ingreso al templo Qoricancha e ingreso a las Minas de Sal de Maras, según cotización.",
+      "Traslado de salida al aeropuerto o terminal terrestre.",
+      "Coordinación local y soporte durante el viaje."
+    ],
+    "noIncluye": [
+      "Pasajes aéreos o terrestres de llegada y salida de Cusco.",
+      "Alimentación no indicada como incluida y gastos personales.",
+      "Servicios fuera del itinerario."
+    ],
+    "informacionAdicional": [
+      "Viaje del 20 al 23 de diciembre de 2026. Horarios en formato de 24 horas, hora local de Perú.",
+      "El ingreso oficial a Machu Picchu es el 22/12/2026 a las 15:00; tolerancia impresa en los boletos: 30 minutos. Circuito 2, ruta 2-B — Terraza Inferior.",
+      "Portar el DNI o pasaporte original y vigente indicado en cada boleto. Los boletos son personales, no transferibles, no reembolsables y no permiten reingreso.",
+      "George Garcia figura con tarifa de menor de edad (3–17 años) en su boleto oficial.",
+      "20:00 del 22/12 corresponde a llegada del tren a Ollantaytambo; luego continúa el traslado a Cusco.",
+      "Los horarios de tren son los acordados en el correo. Los únicos tickets adjuntos en este voucher son las entradas oficiales a Machu Picchu.",
+      "Coordinar con el agente las horas del guía y buses para el ingreso a las 15:00 y el retorno en tren a las 18:10.",
+      "Cotización de referencia: COT-PE-20261004-GU49. Precio especial final del grupo: USD 1,139.90."
+    ],
+    "ticketsMachuPicchu": {
+      "url": "data/tickets/295672d793042fff26bf7619a07a19e8.pdf",
+      "nombreArchivo": "Entradas_Machu_Picchu_CUZDC9949.pdf",
+      "fecha": "2026-12-22",
+      "hora": "15:00",
+      "circuito": "Circuito 2 — ruta 2-B: Terraza Inferior",
+      "cantidad": 3
+    },
+    "pagos": {
+      "moneda": "USD",
+      "totalServicio": 1265.68,
+      "pagadoAhora": 1139.9,
+      "saldoPendiente": 0,
+      "estado": "PAGADO",
+      "porcentajePagado": 100,
+      "totalPendiente": {
+        "label": "Reserva pagada al 100%",
+        "descripcion": "Pago total registrado el 6 de octubre de 2026 por la noche (hora de Perú).",
+        "montoUsd": 0,
+        "url": "",
+        "detalle": [
+          "Precio final para 3 pasajeros: USD 1,139.90",
+          "TOTAL PAGADO: USD 1,139.90",
+          "SALDO PENDIENTE: USD 0.00"
+        ],
+        "badge": "PAGADO 100%"
+      },
+      "extras": []
+    },
+    "formatoImpresion": {
+      "tipo": "voucher-aprobado-svg-v1",
+      "codigo": "CUZDC9949",
+      "paginas": [
+        {
+          "url": "assets/img/vouchers/CUZDC9949/page-1.svg",
+          "descripcion": "Travel Voucher CUZDC9949 · página 1 de 3",
+          "enlaces": [
+            {
+              "url": "https://mycuscotrip.com/data/tickets/295672d793042fff26bf7619a07a19e8.pdf",
+              "left": 8.39947,
+              "top": 88.27582,
+              "width": 42.1386,
+              "height": 1.90049
+            }
+          ]
+        },
+        {
+          "url": "assets/img/vouchers/CUZDC9949/page-2.svg",
+          "descripcion": "Travel Voucher CUZDC9949 · página 2 de 3",
+          "enlaces": []
+        },
+        {
+          "url": "assets/img/vouchers/CUZDC9949/page-3.svg",
+          "descripcion": "Travel Voucher CUZDC9949 · página 3 de 3",
+          "enlaces": [
+            {
+              "url": "https://mycuscotrip.com/mi-reserva.html?codigo=CUZDC9949",
+              "left": 7.39153,
+              "top": 73.40628,
+              "width": 35.03663,
+              "height": 1.28283
+            }
+          ]
+        }
+      ]
+    }
   }
 ]
