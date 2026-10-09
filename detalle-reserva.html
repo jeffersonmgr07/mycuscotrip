@@ -3796,11 +3796,11 @@
                   <table>
                     <thead>
                       <tr>
-                        <th>${esc(t.fullName)}</th>
+                        <th>${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Name" : "Nombre") : t.fullName)}</th>
                         <th>${esc(t.documentType)}</th>
                         <th>${esc(t.documentNumber)}</th>
-                        <th>${esc(t.nationality)}</th>
-                        <th>${esc(t.birthDate)}</th>
+                        <th>${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Country" : "País") : t.nationality)}</th>
+                        <th>${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Age" : "Edad") : t.birthDate)}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -3813,7 +3813,7 @@
                           <td>${esc(turista.tipoDocumento || t.noData)}</td>
                           <td>${esc(turista.numeroDocumento || turista.documento || t.noData)}</td>
                           <td>${esc(turista.nacionalidad || t.noData)}</td>
-                          <td>${esc(turista.fechaNacimiento || "")}</td>
+                          <td>${esc(reserva.mostrarEdad ? (Number.isFinite(Number(turista.edad)) && turista.edad !== "" && turista.edad != null ? `${turista.edad} ${currentLanguage === "en" ? "years" : "años"}` : t.noData) : (turista.fechaNacimiento || ""))}</td>
                         </tr>
                         `;
                       }).join("")}
@@ -3987,14 +3987,14 @@
               ${(pagoTotal || pagosExtras.length) ? `
               <article class="card">
                 <div class="card-head">
-                  <h2>${esc(t.pendingPayments)}</h2>
+                  <h2>${esc(reserva.pagos?.presentacion === "resumen-simple" ? (currentLanguage === "en" ? "Booking" : "Reserva") : t.pendingPayments)}</h2>
                 </div>
                 <div class="card-body">
                   <div class="pay-stack">
                     ${pagoTotal ? `
                       <div class="pay-card billing-card">
                         ${pagoTotal.badge ? `<div class="pay-badge">${esc(getLocalizedField(pagoTotal.badge, currentLanguage) || pagoTotal.badge)}</div>` : ""}
-                        <h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>
+                        ${reserva.pagos?.presentacion === "resumen-simple" ? "" : `<h3>${esc(getLocalizedField(pagoTotal.label, currentLanguage) || t.completePayment)}</h3>`}
                         <p>${esc(getLocalizedField(pagoTotal.descripcion, currentLanguage) || "")}</p>
 
                         ${Array.isArray(pagoTotal.detalle) && pagoTotal.detalle.length ? `
@@ -4175,11 +4175,11 @@
             <div class="pv-section-title">${esc(t.passengers)}</div>
             <div class="pv-tourists-grid" role="table" aria-label="${esc(t.passengers)}">
               <div class="pv-tourists-grid-row pv-tourists-grid-head" role="row">
-                <div role="columnheader">${esc(t.fullName)}</div>
+                <div role="columnheader">${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Name" : "Nombre") : t.fullName)}</div>
                 <div role="columnheader">${esc(t.documentType)}</div>
                 <div role="columnheader">${esc(t.documentNumber)}</div>
-                <div role="columnheader">${esc(t.nationality)}</div>
-                <div role="columnheader">${esc(t.birthDate)}</div>
+                <div role="columnheader">${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Country" : "País") : t.nationality)}</div>
+                <div role="columnheader">${esc(reserva.mostrarEdad ? (currentLanguage === "en" ? "Age" : "Edad") : t.birthDate)}</div>
               </div>
               ${turistas.map(turista => {
                 const nombreTurista = turista.nombreCompleto || `${turista.nombres || ""} ${turista.apellidos || ""}`.trim() || t.noData;
@@ -4190,7 +4190,7 @@
                   <div role="cell">${esc(turista.tipoDocumento || t.noData)}</div>
                   <div role="cell">${esc(turista.numeroDocumento || turista.documento || t.noData)}</div>
                   <div role="cell">${esc(turista.nacionalidad || t.noData)}</div>
-                  <div role="cell">${esc(turista.fechaNacimiento || "")}</div>
+                  <div role="cell">${esc(reserva.mostrarEdad ? (Number.isFinite(Number(turista.edad)) && turista.edad !== "" && turista.edad != null ? `${turista.edad} ${currentLanguage === "en" ? "years" : "años"}` : t.noData) : (turista.fechaNacimiento || ""))}</div>
                 </div>
                 `;
               }).join("")}
@@ -4373,6 +4373,20 @@
         try {
           const reservaLocal = JSON.parse(reservaRaw);
           if (!codigoUrl || codigoCoincideExacto(reservaLocal?.codigo, codigoUrl)) {
+            // This manually maintained voucher must reflect updates after a new deployment.
+            if (codigoCoincideExacto(reservaLocal?.codigo, "CUZDC9949")) {
+              try {
+                const response = await fetch("./data/reservas.json", { cache: "no-store" });
+                if (response.ok) {
+                  const records = await response.json();
+                  const current = Array.isArray(records) ? records.find((item) => codigoCoincideExacto(item.codigo, reservaLocal.codigo)) : null;
+                  if (current) {
+                    localStorage.setItem("reservaSeleccionada", JSON.stringify(current));
+                    return current;
+                  }
+                }
+              } catch (_) { /* Keep the previously loaded voucher if offline. */ }
+            }
             return reservaLocal;
           }
         } catch (error) {
