@@ -3158,8 +3158,6 @@
     }
 
 </style>
-<link href="./assets/css/voucher-approved-print.css" rel="stylesheet"/>
-<script src="./assets/js/pages/voucher-approved-print.js"></script>
 </head>
 <body>
 <div id="header-container"></div>
@@ -3176,7 +3174,7 @@
 <a class="action-btn secondary" id="ticketsBtn" href="./pages/ayuda/descargar-tickets-servicios.html">
 <i class="fa-solid fa-ticket"></i> Ver tickets
           </a>
-<button class="action-btn primary" id="printBtn" onclick="window.MyCuscoTripApprovedVoucher.print()">
+<button class="action-btn primary" id="printBtn" onclick="window.print()">
 <i class="fa-solid fa-print"></i> Imprimir voucher
           </button>
 </div>
@@ -4098,6 +4096,23 @@
 
       if (!(original > 0 || paid > 0 || balance > 0 || statusRaw)) return "";
 
+      if (pagos.presentacion === "resumen-simple") {
+        const date = parseDateParts(reserva.fechaPago || "");
+        const dateText = date ? `${String(date.day).padStart(2, "0")}/${String(date.month).padStart(2, "0")}/${date.year}` : paymentDate;
+        return `
+          <div class="pv-payment-summary">
+            <div class="pv-payment-status-row">
+              <span class="pv-paid-badge ${paidStatus ? "is-paid" : ""}">${esc(paidStatus ? (currentLanguage === "en" ? "PAID 100%" : "PAGADO 100%") : (statusRaw || "PENDIENTE"))}</span>
+            </div>
+            <div class="pv-payment-grid">
+              <div class="pv-payment-metric paid"><span>${esc(currentLanguage === "en" ? "Total paid" : "Total pagado")}</span><strong>${esc(formatMoneyPrint(currency, paid))}</strong></div>
+              <div class="pv-payment-metric balance"><span>${esc(currentLanguage === "en" ? "Outstanding balance" : "Saldo pendiente")}</span><strong>${esc(formatMoneyPrint(currency, balance))}</strong></div>
+            </div>
+            ${dateText ? `<div class="pv-payment-foot"><span><b>${esc(currentLanguage === "en" ? "Payment date:" : "Pago registrado:")}</b> ${esc(dateText)}</span></div>` : ""}
+          </div>
+        `;
+      }
+
       return `
         <div class="pv-payment-summary">
           <div class="pv-payment-status-row">
@@ -4116,8 +4131,6 @@
     }
 
     function renderPrintVoucher(reserva) {
-      const approved = window.MyCuscoTripApprovedVoucher?.render(reserva);
-      if (approved) return approved;
       const t = i18n[currentLanguage];
       const turistas = Array.isArray(reserva.turistas) ? reserva.turistas : [];
       const hoteles = Array.isArray(reserva.hotelInfo) ? reserva.hotelInfo : [];
@@ -4459,7 +4472,6 @@
       try {
         const reserva = await obtenerReservaActual();
         configureTicketsButton(reserva);
-        document.body.classList.toggle("mct-approved-voucher", Boolean(window.MyCuscoTripApprovedVoucher?.supports(reserva)));
 
         if (!reserva) {
           emptyEl.style.display = "block";
