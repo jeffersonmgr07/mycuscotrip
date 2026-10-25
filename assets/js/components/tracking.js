@@ -258,6 +258,53 @@
     debug(eventName, normalized, providers);
   }
 
+  /**
+   * Keep the catalog tags aligned with the same JSON data used by the landing.
+   * Static tags in each HTML head also let Meta read the item without JavaScript.
+   * The catalog fare is the base adult fare, before optional extras or coupons.
+   */
+  function trackCatalogProduct(product, currency) {
+    const id = String(product?.id || "").trim();
+    const amount = product?.adultPrice;
+    const price = Number(amount);
+    const currencyCode = String(currency || "").trim().toUpperCase();
+    if (!id || amount === null || amount === undefined || amount === "" ||
+        !Number.isFinite(price) || price <= 0 || !/^[A-Z]{3}$/.test(currencyCode)) return false;
+
+    const properties = {
+      "product:retailer_item_id": id,
+      "product:brand": config.business.name,
+      // A request can be made; this does not confirm tickets for a particular date.
+      "product:availability": "available for order",
+      "product:condition": "new",
+      "product:price:amount": price.toFixed(2),
+      "product:price:currency": currencyCode,
+      "og:price:amount": price.toFixed(2),
+      "og:price:currency": currencyCode
+    };
+    Object.entries(properties).forEach(([property, value]) => {
+      let meta = document.querySelector(`meta[property="${property}"]`);
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute("property", property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute("content", value);
+    });
+
+    track("view_item", {
+      item_id: id,
+      item_name: product.title || id,
+      item_category: "tour",
+      content_type: "product",
+      value: price,
+      currency: currencyCode,
+      event_category: "catalog",
+      product_slug: product.slug || id
+    });
+    return true;
+  }
+
   function trackPageView() {
     track("page_view", {
       page_title: document.title,
@@ -341,7 +388,8 @@
     config,
     init,
     track,
-    trackPageView
+    trackPageView,
+    trackCatalogProduct
   };
 
   window.mctTrack = track;
