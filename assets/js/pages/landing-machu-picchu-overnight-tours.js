@@ -2349,6 +2349,7 @@
     bindGlobalEvents();
     validateAllDates({ silent: true });
     renderSummary();
+    window.MyCuscoTripTracking?.trackCatalogProduct?.(state.data.mainProduct, state.data.currency);
     trackLandingEvent("landing_view", {});
     if (cancelledPayment?.reservation) {
       await openPassengerModal({ reservation: cancelledPayment.reservation, paymentCancelled: true });
