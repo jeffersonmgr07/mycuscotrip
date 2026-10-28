@@ -35,7 +35,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="../assets/css/landing-paquetes-cusco.css?v=20261027-packages-paypal-2"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css"/>
+<link rel="stylesheet" href="../assets/css/landing-reservation-modal.css"/>
+<link rel="stylesheet" href="../assets/css/passenger-modal-scroll-fix.css"/>
+<link rel="stylesheet" href="../assets/css/landing-paquetes-cusco.css?v=20261028-package-modal-3"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -137,22 +140,18 @@
     </section>
   </div>
   <aside class="quote-card" id="personalizar" aria-labelledby="quote-heading"><p class="eyebrow" id="quote-heading">Reserva tu viaje · 3 días</p>
-    <p class="price"><span>Por adulto</span> US$499.00</p><p class="price-basis">Por adulto, en USD. No incluye alojamiento. Tarifa del paquete completo por persona; disponibilidad sujeta a confirmación.</p>
-    <p class="price-basis">Niños: US$479.00 por persona. Tarifa válida de 3 a 11 años cumplidos a la fecha del viaje. Menores de 3 años: consultar por WhatsApp.</p>
+    <p class="price"><span>Precio por adulto</span> US$499.00</p>
     <form id="package-quote-form" method="post">
-      <div class="field"><label for="start">Llegada a Cusco</label><input type="date" id="start" name="start" required/><p class="form-help">Duración: 3 días / 2 noches. Confirma la disponibilidad con nuestro equipo antes de pagar.</p></div>
-      <div class="travelers"><div class="field"><label for="adults">Adultos (12 años o más)</label><input id="adults" name="adults" type="number" min="1" max="30" value="2" required/></div><div class="field"><label for="children">Niños (3 a 11 años)</label><input id="children" name="children" type="number" min="0" max="30" value="0" required/></div></div>
-      <div class="field"><label for="firstName">Nombre del titular</label><input id="firstName" name="firstName" autocomplete="given-name" maxlength="100" required/></div>
-      <div class="field"><label for="lastName">Apellidos</label><input id="lastName" name="lastName" autocomplete="family-name" maxlength="100" required/></div>
-      <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required/></div>
-      <div class="field"><label for="whatsapp">WhatsApp con código de país</label><input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" maxlength="30" required/></div>
-      <p id="package-total" class="price" aria-live="polite"></p>
-      <p id="package-breakdown" class="form-help"></p>
-      <label class="checkout-confirm"><input type="checkbox" name="confirmed" required/> He confirmado la disponibilidad y los servicios con My Cusco Trip. Entiendo que el precio no incluye alojamiento. Si viajo con niños, también he confirmado que tendrán de 3 a 11 años cumplidos a la fecha del viaje.</label>
-      <button class="button" type="button" id="package-pay" disabled>Continuar a PayPal</button>
-      <p class="form-help">Revisarás el importe en PayPal antes de autorizar el pago. Los datos de los pasajeros se completan con nuestro equipo.</p>
+      <div class="field"><label for="start">Fecha de llegada a Cusco</label><input type="text" id="start" name="start" placeholder="Elige tu fecha de llegada" autocomplete="off" required/><p class="form-help">Duración: 3 días / 2 noches</p></div>
+      <div class="travelers">
+        <div class="traveler-row"><label for="adults"><strong>Adultos</strong><span>12 años o más · US$499.00</span></label><div class="stepper"><button type="button" data-step="-1" data-count="adults" aria-label="Quitar un adulto">−</button><input id="adults" name="adults" type="number" min="1" max="30" value="2" required aria-label="Cantidad de adultos"/><button type="button" data-step="1" data-count="adults" aria-label="Agregar un adulto">+</button></div></div>
+        <div class="traveler-row"><label for="children"><strong>Niños</strong><span>3 a 11 años · US$479.00</span></label><div class="stepper"><button type="button" data-step="-1" data-count="children" aria-label="Quitar un niño">−</button><input id="children" name="children" type="number" min="0" max="30" value="0" required aria-label="Cantidad de niños"/><button type="button" data-step="1" data-count="children" aria-label="Agregar un niño">+</button></div></div>
+      </div>
+      <div class="package-totals" aria-live="polite"><div class="total-line"><strong>Total a pagar</strong><strong id="package-total"></strong></div><dl id="package-breakdown"></dl><p class="form-help">No incluye alojamiento.</p></div>
+      <label class="checkout-confirm"><input type="checkbox" name="confirmed" required/><span>He confirmado disponibilidad y acepto los <a href="../pages/legales/terminos-condiciones-generales.html" target="_blank" rel="noopener">términos y condiciones</a>.</span></label>
+      <button class="button" type="button" id="package-pay" disabled>Registrar reserva</button>
       <p id="package-payment-message" role="status" aria-live="polite"></p>
-      <noscript>Activa JavaScript para calcular el total y pagar, o contáctanos por WhatsApp.</noscript>
+      <noscript>Activa JavaScript para registrar tu reserva o contáctanos por WhatsApp.</noscript>
     </form>
     <a class="contact-link" href="https://wa.me/51900608980?text=Hola%2C+me+interesa+Cusco+y+Machu+Picchu+en+3+d%C3%ADas+%2F+2+noches.+Quisiera+una+propuesta+personalizada+y+confirmar+los+servicios+incluidos." data-track="click_whatsapp" target="_blank" rel="noopener noreferrer">Consultar disponibilidad o agregar alojamiento ↗</a>
   </aside>
@@ -166,6 +165,126 @@
 </main>
 <footer class="site-footer"><div class="container footer-inner"><p><span class="footer-brand">My Cusco Trip</span>Experiencias organizadas por un equipo local.</p><p><a href="../all-experiences.html">Explorar experiencias</a> · <a href="https://wa.me/51900608980?text=Hola%2C+me+interesa+Cusco+y+Machu+Picchu+en+3+d%C3%ADas+%2F+2+noches.+Quisiera+una+propuesta+personalizada+y+confirmar+los+servicios+incluidos." data-track="click_whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a><br/>© 2026 My Cusco Trip</p></div></footer>
 <div class="mobile-action"><span><strong>3 días / 2 noches</strong>Cusco y Machu Picchu</span><a href="#personalizar" class="button">Reservar</a></div>
+
+<div class="passenger-modal" hidden="" id="passengerReservationModal">
+<div class="passenger-modal__backdrop" data-close-passenger-modal=""></div>
+<div aria-labelledby="passengerModalTitle" aria-modal="true" class="passenger-modal__dialog" role="dialog">
+<div class="passenger-modal__header">
+<div class="passenger-modal__titlebar">
+<h2 id="passengerModalTitle" data-i18n="product.passengerDetailsTitle">Datos de los pasajeros</h2>
+<div class="passenger-modal__code-wrap">
+<span class="passenger-modal__code-label" data-i18n="product.reservationCodeLabel">Código de reserva:</span>
+<button aria-label="Copiar código de reserva" class="passenger-modal__code-pill" id="passengerReservationCodeCopy" type="button">
+<span id="passengerReservationCode">CUZ000000</span>
+</button>
+</div>
+<button aria-label="Cerrar modal" class="passenger-modal__close" id="closePassengerModalBtn" type="button">
+×
+</button>
+</div>
+<div class="passenger-modal__meta-row">
+<div class="passenger-modal__paynow-card" aria-live="polite">
+<span>Monto a pagar ahora:</span>
+<strong id="passengerPayNowAmount">—</strong>
+</div>
+</div>
+<p aria-hidden="true" class="passenger-modal__subtitle" hidden id="passengerReservationTimestamp"></p>
+<details class="passenger-modal__warning passenger-modal__important">
+<summary data-i18n="product.importantInformation">Información importante</summary>
+<p>Ingresa los nombres, apellidos y documentos exactamente como figuran en la documentación oficial. Estos datos se usarán para emitir boletos, tickets de transporte, trenes e ingresos a Machu Picchu; si están errados, podrían impedir el uso de servicios del itinerario.</p>
+</details>
+</div>
+<div class="passenger-modal__body">
+<button aria-expanded="false" class="passenger-modal__details-toggle" id="passengerDetailsToggle" type="button" data-i18n="product.viewBookingDetails">Ver detalles de la reserva</button>
+<div class="passenger-modal__snapshot" id="passengerPaymentSnapshot"></div>
+<form class="passenger-modal__form" id="passengerReservationForm" novalidate="">
+<section class="passenger-modal__section passenger-modal__section--holder">
+<div class="passenger-modal__section-title">
+<strong id="holderSectionTitle">Titular de reserva / Pasajero 1</strong>
+<span>Datos obligatorios para continuar</span>
+</div>
+<div class="passenger-modal__grid">
+<label>
+<span>Nombres</span>
+<input autocomplete="given-name" minlength="2" name="holderFirstName" required="" type="text"/>
+</label>
+<label>
+<span>Apellidos</span>
+<input autocomplete="family-name" minlength="2" name="holderLastName" required="" type="text"/>
+</label>
+<label>
+<span>Tipo de documento</span>
+<select name="holderDocumentType" required="">
+<option value="" data-i18n="product.select">Selecciona</option>
+<option value="passport">Pasaporte</option>
+<option value="dni">DNI</option>
+<option value="id_card">Documento de identidad</option>
+<option value="other">Otro</option>
+</select>
+</label>
+<label>
+<span>Número de documento</span>
+<input autocomplete="off" name="holderDocumentNumber" required="" type="text"/>
+</label>
+<label>
+<span>Nacionalidad</span>
+<select autocomplete="country-name" data-country-select="" name="holderNationality" required="">
+<option value="" data-i18n="product.selectCountry">Selecciona país</option>
+</select>
+</label>
+<label>
+<span>Fecha de nacimiento</span>
+<input name="holderBirthdate" required="" type="date"/>
+</label>
+<label class="passenger-phone-field">
+<span>WhatsApp</span>
+<div class="passenger-phone-row">
+<select aria-label="Código de país" name="holderWhatsappCountryCode" data-phone-code-select="" required=""></select>
+<input autocomplete="tel" inputmode="tel" name="holderWhatsapp" placeholder="Número" required="" type="tel"/>
+</div>
+</label>
+<label>
+<span>Correo</span>
+<input autocomplete="email" name="holderEmail" required="" type="email"/>
+</label>
+<label>
+<span>Idioma solicitado</span>
+<select id="holderLanguageSelect" name="holderLanguage" required="">
+<option value="Español" selected="">Español</option>
+<option value="English">English</option>
+<option value="Português">Portugués</option>
+<option value="Italiano">Italiano</option>
+<option value="Français">Francés</option>
+<option value="Deutsch">Alemán</option>
+<option value="日本語">Japonés</option>
+<option value="中文普通话">Chino mandarín</option>
+</select>
+</label>
+<p class="passenger-modal__language-warning" id="holderLanguageWarning" hidden="">Este idioma puede generar un costo adicional y no queda confirmado automáticamente. Por ahora los tours se confirman en español o inglés. Un asesor de viajes se contactará contigo lo antes posible para informar disponibilidad y posible recargo.</p>
+</div>
+<label class="passenger-modal__check">
+<input checked="" id="holderTravelsCheckbox" name="holderTravels" type="checkbox"/>
+<span>El titular también forma parte del grupo de pasajeros.</span>
+</label>
+</section>
+<section class="passenger-modal__section">
+<div class="passenger-modal__section-title">
+<strong>Registro de turistas</strong>
+<span>Puedes completar pasajeros adicionales ahora o hasta 15 a 30 días antes de la fecha del viaje.</span>
+</div>
+<div class="passenger-modal__additional" id="additionalPassengersContainer"></div>
+</section>
+<div class="passenger-modal__review" id="passengerCheckoutReview" hidden=""></div>
+<p aria-live="polite" class="passenger-modal__message" data-passenger-message=""></p>
+<div class="passenger-modal__actions">
+<button class="btn passenger-modal__cancel-btn" type="button" data-close-passenger-modal>Cancelar</button>
+<button class="btn booking-main-btn" type="submit">Continuar</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
 <script type="application/json" id="package-landing-data">{
   "id": "pkg_cusco_3d2n",
   "title": "Cusco y Machu Picchu en 3 días / 2 noches",
@@ -179,7 +298,10 @@
 }</script>
 <script src="../assets/js/config/tracking-config.js"></script>
 <script src="../assets/js/components/tracking.js?v=20261025-meta-catalog-1"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/es.js"></script>
+<script src="../assets/js/components/package-passenger-fields.js?v=20261028-package-modal-3"></script>
 <script src="../assets/js/core/api-client.js"></script>
-<script src="../assets/js/pages/landing-paquetes-cusco.js?v=20261027-packages-paypal-2"></script>
+<script src="../assets/js/pages/landing-paquetes-cusco.js?v=20261028-package-modal-3"></script>
 </body>
 </html>
