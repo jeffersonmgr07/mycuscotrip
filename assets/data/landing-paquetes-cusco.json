@@ -13,7 +13,7 @@
       "title": "Cusco y Machu Picchu en 3 días / 2 noches",
       "eyebrow": "Una escapada a los Andes",
       "headline": "Tres días que se quedan contigo.",
-      "description": "Descubre Cusco y visita Machu Picchu en un viaje de 3 días y 2 noches. Coordinamos la ruta según tus vuelos y te ayudamos a elegir trenes, entradas y alojamiento.",
+      "description": "Descubre Cusco y visita Machu Picchu en un viaje de 3 días y 2 noches. Coordinamos la ruta según tus vuelos y te ayudamos a elegir trenes, entradas y alojamiento. Precio por persona sin alojamiento. Podemos coordinar hoteles con un costo adicional.",
       "image": "assets/img/tours/city-tour/cover.jpg",
       "imageAlt": "Experiencia cultural y centros arqueológicos de Cusco",
       "highlights": [
@@ -35,8 +35,9 @@
           "description": "Tiempo libre según tu vuelo y coordinación del traslado de salida. Evitamos añadir una excursión larga antes del aeropuerto."
         }
       ],
-      "catalogPriceUSD": null,
-      "priceBasis": ""
+      "catalogPriceUSD": 499,
+      "priceBasis": "Por adulto, en USD. No incluye alojamiento. Tarifa del paquete completo por persona; disponibilidad sujeta a confirmación.",
+      "childPriceUSD": 479
     },
     {
       "id": "pkg_cusco_4d3n",
@@ -48,7 +49,7 @@
       "title": "Cusco, Valle Sagrado y Machu Picchu en 4 días / 3 noches",
       "eyebrow": "Los clásicos de tu primer viaje",
       "headline": "Cusco, el Valle y una visita inolvidable.",
-      "description": "Recorre Cusco, el Valle Sagrado y Machu Picchu en 4 días y 3 noches. Una propuesta personalizable con asistencia local y servicios coordinados según tus fechas.",
+      "description": "Recorre Cusco, el Valle Sagrado y Machu Picchu en 4 días y 3 noches. Una propuesta personalizable con asistencia local y servicios coordinados según tus fechas. Precio por persona sin alojamiento. Podemos coordinar hoteles con un costo adicional.",
       "image": "assets/img/tours/valle-sagrado/cover.jpg",
       "imageAlt": "Paisajes y centros arqueológicos del Valle Sagrado de los Incas",
       "highlights": [
@@ -74,8 +75,9 @@
           "description": "Últimas horas en Cusco y traslado coordinado según el horario de tu vuelo o salida terrestre."
         }
       ],
-      "catalogPriceUSD": null,
-      "priceBasis": ""
+      "catalogPriceUSD": 569,
+      "priceBasis": "Por adulto, en USD. No incluye alojamiento. Tarifa del paquete completo por persona; disponibilidad sujeta a confirmación.",
+      "childPriceUSD": 539
     },
     {
       "id": "pkg_cusco_5d4n",
@@ -87,7 +89,7 @@
       "title": "Cusco, Machu Picchu y Montaña de Colores en 5 días / 4 noches",
       "eyebrow": "Cultura y paisajes de altura",
       "headline": "Cinco días para vivir más de Cusco.",
-      "description": "Combina Cusco, Valle Sagrado, Montaña de Colores y Machu Picchu en 5 días y 4 noches. Adaptamos las experiencias, el alojamiento y los trenes a tu viaje.",
+      "description": "Combina Cusco, Valle Sagrado, Montaña de Colores y Machu Picchu en 5 días y 4 noches. Adaptamos las experiencias, el alojamiento y los trenes a tu viaje. Precio por persona sin alojamiento. Podemos coordinar hoteles con un costo adicional.",
       "image": "assets/img/tours/montana-colores/cover.jpg",
       "imageAlt": "Montaña de Colores Vinicunca en la región Cusco",
       "highlights": [
@@ -117,8 +119,9 @@
           "description": "Tiempo libre según tu horario y coordinación del traslado al aeropuerto o terminal terrestre."
         }
       ],
-      "catalogPriceUSD": null,
-      "priceBasis": ""
+      "catalogPriceUSD": 629,
+      "priceBasis": "Por adulto, en USD. No incluye alojamiento. Tarifa del paquete completo por persona; disponibilidad sujeta a confirmación.",
+      "childPriceUSD": 599
     },
     {
       "id": "pkg_cusco_6d5n",
@@ -130,7 +133,7 @@
       "title": "Cusco, Machu Picchu y Laguna Humantay en 6 días / 5 noches",
       "eyebrow": "Una ruta con más tiempo para explorar",
       "headline": "Seis días entre historia y naturaleza.",
-      "description": "Explora Cusco, Valle Sagrado, Laguna Humantay, Maras y Moray y Machu Picchu en 6 días y 5 noches. Diseñamos la propuesta según tus fechas, intereses y ritmo de viaje.",
+      "description": "Explora Cusco, Valle Sagrado, Laguna Humantay, Maras y Moray y Machu Picchu en 6 días y 5 noches. Diseñamos la propuesta según tus fechas, intereses y ritmo de viaje. Precio por persona sin alojamiento. Podemos coordinar hoteles con un costo adicional.",
       "image": "assets/img/tours/laguna-humantay/cover.jpg",
       "imageAlt": "Laguna Humantay y paisaje de montaña en Cusco",
       "highlights": [
@@ -164,8 +167,9 @@
           "description": "Tiempo libre según tus vuelos y coordinación del traslado al aeropuerto o terminal terrestre."
         }
       ],
-      "catalogPriceUSD": null,
-      "priceBasis": ""
+      "catalogPriceUSD": 699,
+      "priceBasis": "Por adulto, en USD. No incluye alojamiento. Tarifa del paquete completo por persona; disponibilidad sujeta a confirmación.",
+      "childPriceUSD": 669
     }
   ]
 }
