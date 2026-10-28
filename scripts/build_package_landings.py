@@ -179,17 +179,17 @@ def render(package, config):
   </div>
   <aside class="quote-card" id="personalizar" aria-labelledby="quote-heading"><p class="eyebrow" id="quote-heading">Reserva tu viaje · {package['days']} días</p>
     {price_html}
-    <p class="price-basis">Niños: US${package.get('childPriceUSD', 0):.2f} por persona. Consulta la edad aplicable antes de reservar con menores.</p>
+    <p class="price-basis">Niños: US${package.get('childPriceUSD', 0):.2f} por persona. Tarifa válida de 3 a 11 años cumplidos a la fecha del viaje. Menores de 3 años: consultar por WhatsApp.</p>
     <form id="package-quote-form" method="post">
       <div class="field"><label for="start">Llegada a Cusco</label><input type="date" id="start" name="start" required/><p class="form-help">Duración: {esc(duration)}. Confirma la disponibilidad con nuestro equipo antes de pagar.</p></div>
-      <div class="travelers"><div class="field"><label for="adults">Adultos</label><input id="adults" name="adults" type="number" min="1" max="30" value="2" required/></div><div class="field"><label for="children">Niños</label><input id="children" name="children" type="number" min="0" max="30" value="0" required/></div></div>
+      <div class="travelers"><div class="field"><label for="adults">Adultos (12 años o más)</label><input id="adults" name="adults" type="number" min="1" max="30" value="2" required/></div><div class="field"><label for="children">Niños (3 a 11 años)</label><input id="children" name="children" type="number" min="0" max="30" value="0" required/></div></div>
       <div class="field"><label for="firstName">Nombre del titular</label><input id="firstName" name="firstName" autocomplete="given-name" maxlength="100" required/></div>
       <div class="field"><label for="lastName">Apellidos</label><input id="lastName" name="lastName" autocomplete="family-name" maxlength="100" required/></div>
       <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required/></div>
       <div class="field"><label for="whatsapp">WhatsApp con código de país</label><input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" maxlength="30" required/></div>
       <p id="package-total" class="price" aria-live="polite"></p>
       <p id="package-breakdown" class="form-help"></p>
-      <label class="checkout-confirm"><input type="checkbox" name="confirmed" required/> He confirmado la disponibilidad y los servicios con My Cusco Trip. Entiendo que el precio no incluye alojamiento. Si viajo con niños, también he confirmado que cumplen la edad de la tarifa infantil.</label>
+      <label class="checkout-confirm"><input type="checkbox" name="confirmed" required/> He confirmado la disponibilidad y los servicios con My Cusco Trip. Entiendo que el precio no incluye alojamiento. Si viajo con niños, también he confirmado que tendrán de 3 a 11 años cumplidos a la fecha del viaje.</label>
       <button class="button" type="button" id="package-pay" disabled>Continuar a PayPal</button>
       <p class="form-help">Revisarás el importe en PayPal antes de autorizar el pago. Los datos de los pasajeros se completan con nuestro equipo.</p>
       <p id="package-payment-message" role="status" aria-live="polite"></p>
@@ -202,7 +202,7 @@ def render(package, config):
   <details><summary>¿Este paquete incluye alojamiento?</summary><p>No. El precio publicado no incluye alojamiento. Si deseas agregarlo, contáctanos por WhatsApp: coordinaremos categoría, habitaciones y precio adicional. El alojamiento no se suma automáticamente al pago de esta página.</p></details>
   <details><summary>¿Las entradas a Machu Picchu están garantizadas?</summary><p>Primero verificamos la disponibilidad para tu fecha. Te indicaremos el circuito, los horarios y las condiciones antes de confirmar la reserva o solicitar el pago de los servicios.</p></details>
   <details><summary>¿Puedo cambiar una experiencia o el orden de los días?</summary><p>Sí. Podemos evaluar cambios según tus vuelos, el tiempo de aclimatación, tus intereses y la operación de cada tour. Tu propuesta final mostrará el itinerario acordado.</p></details>
-  <details><summary>¿Cómo se calcula el precio para niños o grupos?</summary><p>El total se calcula sumando adultos por la tarifa de adulto y niños por la tarifa infantil indicada. Confirma con nuestro equipo las edades aplicables antes de pagar. El alojamiento y otros servicios adicionales se coordinan y cotizan aparte.</p></details>
+  <details><summary>¿Cómo se calcula el precio para niños o grupos?</summary><p>El total se calcula sumando adultos por la tarifa de adulto y niños por la tarifa infantil indicada. La tarifa infantil aplica de 3 a 11 años cumplidos a la fecha del viaje. Desde los 12 años se aplica la tarifa de adulto. Para menores de 3 años, consulta por WhatsApp antes de reservar. El alojamiento y otros servicios adicionales se coordinan y cotizan aparte.</p></details>
 </div></section>
 </main>
 <footer class="site-footer"><div class="container footer-inner"><p><span class="footer-brand">My Cusco Trip</span>Experiencias organizadas por un equipo local.</p><p><a href="../all-experiences.html">Explorar experiencias</a> · <a href="{esc(wa_url)}" data-track="click_whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a><br/>© 2026 My Cusco Trip</p></div></footer>
