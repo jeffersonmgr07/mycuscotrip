@@ -28,7 +28,7 @@ class Page(HTMLParser):
             self.meta.setdefault(key, []).append(attrs.get("content"))
         elif tag == "input":
             self.inputs[attrs.get("name")] = attrs
-        elif tag == "form":
+        elif tag == "form" and attrs.get("id") == "package-quote-form":
             self.form = attrs
         elif tag == "img":
             self.images.append(attrs["src"])
@@ -67,7 +67,7 @@ class PackageLandings(unittest.TestCase):
                 self.assertNotIn("action", page.form)
                 self.assertEqual(page.form["method"], "post")
                 self.assertNotIn("quote-packages.html", source)
-                self.assertIn("Continuar a PayPal", source)
+                self.assertIn("Registrar reserva", source)
                 self.assertIn("No incluye alojamiento", source)
                 self.assertIn("disabled", source)
                 self.assertIn("start", page.inputs)
