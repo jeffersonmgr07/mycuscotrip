@@ -12,6 +12,11 @@
     const openButton = document.getElementById("package-pay"), payButton = passengerForm.querySelector('[type="submit"]');
     const fields = new window.MctPackagePassengerFields(() => Number(get("adults").value) + Number(get("children").value));
     let busy = false, pending = null, reviewed = false, bookingCode = "", openedSignature = "";
+    function newReservationCode() {
+      const bytes = new Uint8Array(3);
+      crypto.getRandomValues(bytes);
+      return "CUZ" + Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("").toUpperCase();
+    }
     function counts() {
       const adults = Number(get("adults").value), children = Number(get("children").value);
       if (!Number.isInteger(adults) || adults < 1 || adults > 30 || !Number.isInteger(children) || children < 0 || children > 30) return null;
@@ -57,14 +62,14 @@
       event.preventDefault(); if(!form.reportValidity()||!counts())return;
       if(!get("start").value||get("start").value<today){document.getElementById("package-payment-message").textContent="Elige una fecha de llegada válida.";return;}
       const signature=JSON.stringify([get("start").value,counts()]);
-      if(signature!==openedSignature){pending=null;bookingCode=`CUZ${Date.now().toString(16).toUpperCase()}${crypto.randomUUID().slice(0,8).toUpperCase()}`;fields.renderAdditionalPassengerFields();openedSignature=signature;}
+      if(signature!==openedSignature){pending=null;bookingCode=newReservationCode();fields.renderAdditionalPassengerFields();openedSignature=signature;}
       document.getElementById("passengerReservationCode").textContent=bookingCode;
       document.getElementById("passengerPayNowAmount").textContent=money(counts().total);
       resetReview();message.textContent="";modal.hidden=false;document.body.classList.add("passenger-modal-open");
       passengerForm.elements.holderFirstName.focus();
       tracking?.track?.("begin_checkout",{item_id:product.id,value:counts().total,currency:"USD"});
     });
-    passengerForm.addEventListener("input",()=>{if(!busy){resetReview();if(pending?.saved){bookingCode=`CUZ${Date.now().toString(16).toUpperCase()}${crypto.randomUUID().slice(0,8).toUpperCase()}`;document.getElementById("passengerReservationCode").textContent=bookingCode;}pending=null;}});
+    passengerForm.addEventListener("input",()=>{if(!busy){resetReview();if(pending?.saved){bookingCode=newReservationCode();document.getElementById("passengerReservationCode").textContent=bookingCode;}pending=null;}});
     passengerForm.addEventListener("submit",async event=>{
       event.preventDefault();if(busy||!passengerForm.reportValidity())return;
       const c=counts(), data=new FormData(passengerForm), holderTravels=data.get("holderTravels")==="on";
@@ -88,7 +93,16 @@
         if(!api||!await api.isBackendEnabled())throw Error("El pago no está disponible. Contáctanos por WhatsApp.");
         if(!pending)pending={code:bookingCode,reservationCode:bookingCode,createdAt:new Date().toISOString(),source:"landing-paquetes-cusco",landingId:product.id,productId:product.id,productSlug:product.slug,productTitle:product.title,productType:"package",sourcePage:location.pathname,landingPath:location.pathname,date:get("start").value,adults:c.adults,children:c.children,infants:0,totalPassengers:c.adults+c.children,currency:"USD",paymentMode:"full",payNowValue:c.total,serviceTotalValue:c.total,payLaterValue:0,status:"pre_reservation",paymentStatus:"pending",holderIsPassenger:holderTravels,holder,passengers,travelers:{adults:c.adults,children:c.children,infants:0,passengers},accommodationIncluded:false,availabilityConfirmed:true,childEligibilityConfirmed:c.children>0,pricing:{subtotal:c.total,discount:0,total:c.total,currency:"USD"},services:[{id:product.id,title:product.title,date:get("start").value,lineTotal:c.total,extras:["Sin alojamiento"]}]};
         if(!pending.saved){
-          message.textContent="Registrando tu reserva…";const result=await api.createPreReservation(pending);
+          message.textContent="Registrando tu reserva…";
+          let result;
+          for (let attempt = 0; attempt < 3; attempt++) {
+            result = await api.createPreReservation(pending);
+            // Retry only the server's explicit collision rejection, never a timeout.
+            if (result?.ok || result?.error !== 'Ya existe una reserva con ese código. Intenta nuevamente.' || attempt === 2) break;
+            bookingCode = newReservationCode();
+            pending.code = pending.reservationCode = bookingCode;
+            document.getElementById("passengerReservationCode").textContent = bookingCode;
+          }
           if(!result?.ok||result.mock)throw Error(result?.error||result?.message||"No se pudo registrar la reserva.");
           pending.code=pending.reservationCode=result.reservationCode||result.code||pending.code;pending.saved=true;
           document.getElementById("passengerReservationCode").textContent=pending.code;

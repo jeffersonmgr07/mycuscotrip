@@ -31,3 +31,9 @@ Comprobaciones realizadas:
 - Sintaxis JavaScript y git diff --check.
 
 No se han realizado cobros ni llamadas de escritura al backend real. La prueba completa en PayPal y la revisión visual en navegador real siguen pendientes.
+
+## Modal limpio de las capturas
+
+Las cuatro landings utilizan la cabecera verde compacta con título y código corto, información importante desplegable dentro del cuerpo, campos en dos columnas en escritorio y una en móvil. El monto se mantiene en el panel de reserva y en la revisión previa al pago. Se limita el cambio a las landings por prioridad; no se altera el resto de experiencias.
+
+Código: CUZ más seis dígitos hexadecimales aleatorios (crypto.getRandomValues), como CUZ017EDE. El backend es quien confirma su disponibilidad. Se permite un máximo de tres intentos únicamente ante el rechazo explícito de código existente, sin reintentar errores ambiguos o de red. El código devuelto por el servidor sigue usándose para el pago. Las pruebas incluyen esa colisión y el formato corto.
