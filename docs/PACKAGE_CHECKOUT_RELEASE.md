@@ -9,29 +9,25 @@
 
 Precios por persona, paquete completo, sin alojamiento. Las noches describen la duración del viaje. El alojamiento se coordina por WhatsApp y se cotiza aparte; no se agrega al total automáticamente. La tarifa infantil aplica de 3 a 11 años cumplidos a la fecha del viaje. Desde los 12 años se aplica la tarifa de adulto. Los menores de 3 años se coordinan por WhatsApp; no se les asigna automáticamente una tarifa gratuita.
 
-## Flujo
+## Flujo actual
 
-Las cuatro URLs existentes conservan sus rutas. La página calcula adulto × cantidad + niño × cantidad, solicita fecha y contacto del titular y muestra las condiciones antes de abrir PayPal. No enlaza al cotizador. Los demás pasajeros se registran pendientes para completar con el equipo.
+El panel muestra precio por adulto, llegada, adultos y niños en filas con controles −/+, total y desglose. La tarifa de 3 días es USD499 por adulto. El calendario Flatpickr está configurado en español, con disableMobile para mantener el estilo MCT también en teléfonos. Si no carga, se muestra un mensaje y no se abre una reserva sin fecha.
 
-Se reutiliza assets/js/core/api-client.js y el backend existente: validación de tarifa de solo lectura → createPreReservation → createPayPalOrder → enlace de aprobación PayPal. paypal-retorno.html continúa capturando y verificando el pago con el backend; la landing nunca emite Purchase por abrir PayPal. Los reintentos sin cambios conservan la pre-reserva. No se guardan contactos ni documentos en el navegador desde estas páginas.
+Registrar reserva abre el mismo HTML del modal de product.html, insertado por el generador, y usa landing-reservation-modal.css y passenger-modal-scroll-fix.css. El adaptador package-passenger-fields.js reutiliza los campos y nacionalidades del modal de experiencias. El titular, los pasajeros y una revisión del total se completan antes de iniciar el pago.
 
-## Paso necesario de publicación
+La secuencia usa el contrato existente del cliente API: createPreReservation → createPayPalOrder → aprobación PayPal → paypal-retorno.html. Se elimina la dependencia de validatePackageFare como llamada adicional: esa acción nueva bloqueaba el flujo contra despliegues anteriores. Las validaciones de tarifa que incluye Code.gs se mantienen dentro del servidor al registrar y crear la orden cuando se despliega esa versión. No se modifica ni se publica Apps Script en esta corrección.
 
-1. Actualizar el proyecto Google Apps Script con google-apps-script/Code.gs y publicar una nueva versión del despliegue web existente. GitHub Pages no actualiza Apps Script. Mantener la URL /exec del despliegue actual o actualizar backend-config.json si cambia.
-2. Publicar/mergear los cambios del sitio. La comprobación validatePackageFare falla sin crear reservas cuando Apps Script aún no reconoce la nueva acción. El cliente verá un mensaje para contactar al equipo.
-3. Probar en un entorno sandbox el total, aprobación, retorno/captura y cancelación. No se han realizado cobros reales ni llamadas de escritura al backend durante el desarrollo.
-4. Confirmar el detalle comercial definitivo de servicios incluidos (tren/circuito/ingresos/comidas). La disponibilidad debe confirmarse con el operador antes de pagar; no hay inventario en tiempo real.
+Los errores de pre-reserva impiden crear órdenes. Un error posterior de PayPal permite reintentar con la misma reserva si los datos no cambian. El modal no emite Purchase ni considera pagada una reserva al abrir PayPal. Los datos personales se envían al backend al continuar al pago; no se almacenan en localStorage desde este adaptador.
 
-El backend comprueba las tarifas fijas de este flujo al registrar y al crear la orden; rechaza alteraciones del total y cantidades. El retorno de cancelación acepta únicamente las cuatro rutas internas nuevas. No se cambia la política de precios del cotizador ni de otros productos.
+## Publicación y validación
 
-## Validación
+Publicar los archivos del sitio mediante la PR. La actualización de Code.gs sigue siendo necesaria para disponer de la validación de tarifas del lado del servidor y del retorno de cancelación a las cuatro URLs. La compra ya no exige que exista la acción adicional validatePackageFare. Probar en sandbox la aprobación, captura y cancelación antes de dar por verificado un cobro completo.
 
-- python3 scripts/build_package_landings.py --check --require-catalog
-- python3 tests/check_package_landings.py
-- python3 tests/check_meta_catalog.py
-- node tests/check_package_checkout.cjs
-- node --check assets/js/pages/landing-paquetes-cusco.js
-- node --check < google-apps-script/Code.gs
-- Pruebas DOM con JSDOM en las cuatro páginas: importes mixtos, no duplicar envíos, bloqueo ante backend antiguo antes de escribir, fallo de PayPal y reintento sin duplicar reserva.
+Comprobaciones realizadas:
+- Generación estática --check --require-catalog y tests/check_package_landings.py.
+- Regresión de microdatos Full Day / Overnight.
+- node tests/check_package_checkout.cjs: importes y validaciones del servidor.
+- NODE_PATH=/ruta/a/node_modules node tests/check_package_modal.cjs (requiere jsdom): cuatro páginas, calendario personalizado, controles de cantidades, total mixto, modal, titular/pasajeros, revisión, doble envío, errores y reintentos.
+- Sintaxis JavaScript y git diff --check.
 
-No se ha probado un pago de extremo a extremo en PayPal, ni se ha desplegado Apps Script. Pendiente revisión visual en navegador real.
+No se han realizado cobros ni llamadas de escritura al backend real. La prueba completa en PayPal y la revisión visual en navegador real siguen pendientes.
