@@ -361,6 +361,7 @@ function doPost(e) {
 
     if (action === 'createCouponLead') return json_(createCouponLead_(payload));
     if (action === 'validateCoupon') return json_(validateCoupon_(payload));
+    if (action === 'validatePackageFare') return json_(validatePackageFare_(payload.payload || payload));
     if (action === 'createPreReservation') return json_(createPreReservation_(payload));
     if (action === 'createPayPalOrder') return json_(createPayPalOrder_(payload));
     if (action === 'capturePayPalOrder') return json_(capturePayPalOrder_(payload));
@@ -1639,8 +1640,40 @@ function validateCoupon_(p) {
   };
 }
 
+// Fixed fares for the four direct-checkout package landings. No hotel included.
+// Keep these amounts aligned with assets/data/landing-paquetes-cusco.json.
+function validatePackageFare_(payload) {
+  const fares = {
+    pkg_cusco_3d2n: [499, 479], pkg_cusco_4d3n: [569, 539],
+    pkg_cusco_5d4n: [629, 599], pkg_cusco_6d5n: [699, 669]
+  };
+  const fare = fares[payload.productId];
+  const adults = payload.adults, children = payload.children;
+  if (payload.source !== 'landing-paquetes-cusco' || !fare ||
+      !Number.isInteger(adults) || adults < 1 || adults > 30 ||
+      !Number.isInteger(children) || children < 0 || children > 30 ||
+      payload.currency !== 'USD' || payload.paymentMode !== 'full' ||
+      payload.accommodationIncluded !== false || payload.availabilityConfirmed !== true ||
+      (children > 0 && payload.childEligibilityConfirmed !== true) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(String(payload.date || ''))) {
+    return { ok: false, error: 'Revisa el paquete, la fecha, los viajeros y las condiciones de la reserva.' };
+  }
+  const total = adults * fare[0] + children * fare[1];
+  if (payload.payNowValue !== total || payload.serviceTotalValue !== total ||
+      !payload.pricing || payload.pricing.total !== total || payload.pricing.subtotal !== total ||
+      payload.pricing.discount !== 0 || payload.payLaterValue !== 0 || payload.infants !== 0 ||
+      payload.totalPassengers !== adults + children) {
+    return { ok: false, error: 'El importe no coincide con las tarifas del paquete. Actualiza la página.' };
+  }
+  return { ok: true, version: 'packages-20261027', total: total, currency: 'USD' };
+}
+
 function createPreReservation_(p) {
   const payload = p.payload && typeof p.payload === 'object' ? p.payload : p;
+  if (payload.source === 'landing-paquetes-cusco') {
+    const fareCheck = validatePackageFare_(payload);
+    if (!fareCheck.ok) return fareCheck;
+  }
   const code = normalizeCode_(payload.code || payload.reservationCode) || generateReservationCode_();
   const holder = payload.holder || {};
   const holderEmail = cleanEmail_(holder.email);
@@ -1766,6 +1799,12 @@ function createPayPalOrder_(p) {
   ensureReservationCanPay_(reservation);
 
   const row = reservation.row;
+  const storedPackage = parseJsonSafe_(row.JSON, {});
+  if (storedPackage.source === 'landing-paquetes-cusco') {
+    const fareCheck = validatePackageFare_(storedPackage);
+    if (!fareCheck.ok) return fareCheck;
+    if (round2_(row.MontoPagarAhora) !== fareCheck.total) return { ok: false, error: 'El total de la reserva no coincide con la tarifa.' };
+  }
   const currency = normalizeCurrency_(row.Moneda || payload.currency || 'USD');
   if (currency !== 'USD') {
     return { ok: false, error: 'PayPal está configurado para reservas cotizadas en dólares/USD. Usa Mercado Pago para soles/PEN.' };
@@ -2839,6 +2878,7 @@ function getReservationOriginPage_(row) {
   const candidate = clean_(payload.landingPath || payload.sourcePage || '');
 
   // Solo se aceptan rutas internas conocidas para evitar redirecciones externas.
+  if (/^\/landing\/cusco-machu-picchu-(?:3-dias-2-noches|4-dias-3-noches|5-dias-4-noches|6-dias-5-noches)\.html$/i.test(candidate)) return candidate;
   if (/^\/(?:en\/|pt\/)?landing\/machu-picchu-y-tours-peru\.html$/i.test(candidate)) {
     return candidate;
   }
