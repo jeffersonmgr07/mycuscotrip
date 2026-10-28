@@ -25,7 +25,7 @@ assert.match(source,/const fareCheck = validatePackageFare_\(storedPackage\)/);
 for(const p of config.packages) {
   const html=fs.readFileSync(path.join(root, 'landing',p.slug+'.html'),'utf8');
   assert.ok(!html.includes('quote-packages.html'));
-  assert.ok(html.includes('Continuar a PayPal'));
+  assert.ok(html.includes('Registrar reserva'));
   assert.ok(html.includes('No incluye alojamiento'));
   assert.ok(html.includes(`"childPrice": ${p.childPriceUSD}`));
 }
