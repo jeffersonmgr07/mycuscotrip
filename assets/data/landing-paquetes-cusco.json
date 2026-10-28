@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "whatsapp": "51900608980",
+  "packages": [
+    {
+      "id": "pkg_cusco_3d2n",
+      "packageId": "pkg_cusco_3d2n",
+      "packageSlug": "paquetes-cusco-3-dias-2-noches",
+      "slug": "cusco-machu-picchu-3-dias-2-noches",
+      "days": 3,
+      "nights": 2,
+      "title": "Cusco y Machu Picchu en 3 días / 2 noches",
+      "eyebrow": "Una escapada a los Andes",
+      "headline": "Tres días que se quedan contigo.",
+      "description": "Descubre Cusco y visita Machu Picchu en un viaje de 3 días y 2 noches. Coordinamos la ruta según tus vuelos y te ayudamos a elegir trenes, entradas y alojamiento.",
+      "image": "assets/img/tours/city-tour/cover.jpg",
+      "imageAlt": "Experiencia cultural y centros arqueológicos de Cusco",
+      "highlights": [
+        "Cusco y sus centros arqueológicos",
+        "Machu Picchu en un día",
+        "Tiempo para llegar y salir con calma"
+      ],
+      "itinerary": [
+        {
+          "title": "Llegada a Cusco y primer encuentro con la ciudad",
+          "description": "Recepción y tiempo para aclimatarte. Si llegas temprano, podemos organizar el City Tour; si llegas por la tarde, adaptamos la primera jornada a tus horarios."
+        },
+        {
+          "title": "Tu día en Machu Picchu",
+          "description": "Excursión Full Day desde Cusco: traslado a la estación, tren, bus a la ciudadela y visita guiada, según los servicios de tu propuesta. Regreso a Cusco por la noche."
+        },
+        {
+          "title": "Despedida de Cusco",
+          "description": "Tiempo libre según tu vuelo y coordinación del traslado de salida. Evitamos añadir una excursión larga antes del aeropuerto."
+        }
+      ],
+      "catalogPriceUSD": null,
+      "priceBasis": ""
+    },
+    {
+      "id": "pkg_cusco_4d3n",
+      "packageId": "pkg_cusco_4d3n",
+      "packageSlug": "paquetes-cusco-4-dias-3-noches",
+      "slug": "cusco-machu-picchu-4-dias-3-noches",
+      "days": 4,
+      "nights": 3,
+      "title": "Cusco, Valle Sagrado y Machu Picchu en 4 días / 3 noches",
+      "eyebrow": "Los clásicos de tu primer viaje",
+      "headline": "Cusco, el Valle y una visita inolvidable.",
+      "description": "Recorre Cusco, el Valle Sagrado y Machu Picchu en 4 días y 3 noches. Una propuesta personalizable con asistencia local y servicios coordinados según tus fechas.",
+      "image": "assets/img/tours/valle-sagrado/cover.jpg",
+      "imageAlt": "Paisajes y centros arqueológicos del Valle Sagrado de los Incas",
+      "highlights": [
+        "Una primera mirada a Cusco",
+        "Valle Sagrado de los Incas",
+        "Machu Picchu con visita guiada"
+      ],
+      "itinerary": [
+        {
+          "title": "Bienvenido a Cusco",
+          "description": "Llegada, recepción y tiempo para aclimatarte. El City Tour puede organizarse si la hora de tu vuelo lo permite."
+        },
+        {
+          "title": "Valle Sagrado de los Incas",
+          "description": "Un día entre pueblos, paisajes y centros arqueológicos del Valle Sagrado, con regreso a Cusco en la ruta sugerida."
+        },
+        {
+          "title": "Machu Picchu",
+          "description": "Excursión Full Day con tren y visita guiada, de acuerdo con los servicios confirmados en tu propuesta. También podemos evaluar una alternativa Overnight reorganizando la ruta."
+        },
+        {
+          "title": "Tiempo libre y traslado de salida",
+          "description": "Últimas horas en Cusco y traslado coordinado según el horario de tu vuelo o salida terrestre."
+        }
+      ],
+      "catalogPriceUSD": null,
+      "priceBasis": ""
+    },
+    {
+      "id": "pkg_cusco_5d4n",
+      "packageId": "pkg_cusco_5d4n",
+      "packageSlug": "paquetes-cusco-5-dias-4-noches",
+      "slug": "cusco-machu-picchu-5-dias-4-noches",
+      "days": 5,
+      "nights": 4,
+      "title": "Cusco, Machu Picchu y Montaña de Colores en 5 días / 4 noches",
+      "eyebrow": "Cultura y paisajes de altura",
+      "headline": "Cinco días para vivir más de Cusco.",
+      "description": "Combina Cusco, Valle Sagrado, Montaña de Colores y Machu Picchu en 5 días y 4 noches. Adaptamos las experiencias, el alojamiento y los trenes a tu viaje.",
+      "image": "assets/img/tours/montana-colores/cover.jpg",
+      "imageAlt": "Montaña de Colores Vinicunca en la región Cusco",
+      "highlights": [
+        "Cusco y Valle Sagrado",
+        "Montaña de Colores tras aclimatarte",
+        "Machu Picchu como cierre de tu ruta"
+      ],
+      "itinerary": [
+        {
+          "title": "Llegada y aclimatación en Cusco",
+          "description": "Recepción y una primera jornada tranquila. Si llegas temprano, evaluamos el City Tour según tu energía y horario."
+        },
+        {
+          "title": "Valle Sagrado",
+          "description": "Recorrido cultural y paisajístico por el Valle Sagrado, con retorno a Cusco para descansar."
+        },
+        {
+          "title": "Montaña de Colores",
+          "description": "Salida a Vinicunca después de las primeras jornadas de aclimatación. Podemos evaluar otra experiencia si prefieres una ruta con menor exigencia física."
+        },
+        {
+          "title": "Machu Picchu",
+          "description": "Viaje en tren y visita guiada a Machu Picchu en la modalidad Full Day de la ruta sugerida. El circuito y los horarios se confirman según disponibilidad."
+        },
+        {
+          "title": "Despedida de Cusco",
+          "description": "Tiempo libre según tu horario y coordinación del traslado al aeropuerto o terminal terrestre."
+        }
+      ],
+      "catalogPriceUSD": null,
+      "priceBasis": ""
+    },
+    {
+      "id": "pkg_cusco_6d5n",
+      "packageId": "pkg_cusco_6d5n",
+      "packageSlug": "paquetes-cusco-6-dias-5-noches",
+      "slug": "cusco-machu-picchu-6-dias-5-noches",
+      "days": 6,
+      "nights": 5,
+      "title": "Cusco, Machu Picchu y Laguna Humantay en 6 días / 5 noches",
+      "eyebrow": "Una ruta con más tiempo para explorar",
+      "headline": "Seis días entre historia y naturaleza.",
+      "description": "Explora Cusco, Valle Sagrado, Laguna Humantay, Maras y Moray y Machu Picchu en 6 días y 5 noches. Diseñamos la propuesta según tus fechas, intereses y ritmo de viaje.",
+      "image": "assets/img/tours/laguna-humantay/cover.jpg",
+      "imageAlt": "Laguna Humantay y paisaje de montaña en Cusco",
+      "highlights": [
+        "Cusco y Valle Sagrado",
+        "Laguna Humantay, Maras y Moray",
+        "Machu Picchu y asistencia local"
+      ],
+      "itinerary": [
+        {
+          "title": "Llegada a Cusco",
+          "description": "Recepción y aclimatación. Si tu vuelo llega temprano, podemos sumar el City Tour según tu horario."
+        },
+        {
+          "title": "Valle Sagrado de los Incas",
+          "description": "Un día para conocer los paisajes y centros arqueológicos del Valle Sagrado, con regreso a Cusco."
+        },
+        {
+          "title": "Laguna Humantay",
+          "description": "Excursión de naturaleza tras las primeras jornadas de aclimatación. La caminata se adapta a tu condición y a la operación de la fecha elegida."
+        },
+        {
+          "title": "Maras y Moray",
+          "description": "Una jornada cultural de medio día para conocer Moray y las Salineras de Maras. La tarde queda libre para descansar antes de Machu Picchu."
+        },
+        {
+          "title": "Tu visita a Machu Picchu",
+          "description": "Excursión Full Day en tren con visita guiada, de acuerdo con los servicios de tu propuesta y la disponibilidad de entradas."
+        },
+        {
+          "title": "Salida de Cusco",
+          "description": "Tiempo libre según tus vuelos y coordinación del traslado al aeropuerto o terminal terrestre."
+        }
+      ],
+      "catalogPriceUSD": null,
+      "priceBasis": ""
+    }
+  ]
+}
