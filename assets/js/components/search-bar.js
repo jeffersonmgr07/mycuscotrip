@@ -145,6 +145,7 @@ class MyCuscoTripSearchBar {
 
   init() {
     this.renderIntentOptions();
+    this.setupDestinationPicker();
     this.setupTabs();
     this.setupQuantityControls();
     this.setupEventListeners();
@@ -209,6 +210,116 @@ class MyCuscoTripSearchBar {
 
     const stillExists = options.some((option) => option.value === previousValue);
     this.intentSelect.value = stillExists ? previousValue : options[0]?.value || "";
+    this.syncDestinationPicker();
+  }
+
+  setupDestinationPicker() {
+    // Solo el buscador del inicio: las otras páginas conservan su select actual.
+    if (!this.intentSelect || !document.querySelector(".hero #search-bar-container")) return;
+
+    const host = document.createElement("div");
+    host.className = "mct-destination-control";
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "mct-destination-trigger";
+    trigger.setAttribute("aria-haspopup", "listbox");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("aria-label", this.intentSelect.getAttribute("aria-label") || "Destino");
+    const text = document.createElement("span");
+    const arrow = document.createElement("i");
+    arrow.className = "fa-solid fa-chevron-down";
+    arrow.setAttribute("aria-hidden", "true");
+    trigger.append(text, arrow);
+
+    const optionsPanel = document.createElement("div");
+    optionsPanel.className = "mct-destination-options";
+    optionsPanel.setAttribute("role", "listbox");
+    optionsPanel.id = "mctDestinationOptions";
+    optionsPanel.hidden = true;
+    trigger.setAttribute("aria-controls", optionsPanel.id);
+    host.append(trigger, optionsPanel);
+    this.intentSelect.insertAdjacentElement("afterend", host);
+    this.intentSelect.classList.add("mct-native-select-hidden");
+    this.intentSelect.setAttribute("aria-hidden", "true");
+    this.intentSelect.tabIndex = -1;
+
+    this.destinationHost = host;
+    this.destinationButton = trigger;
+    this.destinationText = text;
+    this.destinationPanel = optionsPanel;
+    this.syncDestinationPicker();
+
+    trigger.addEventListener("click", () => {
+      if (optionsPanel.hidden) {
+        this.closeQuantityPanel();
+        this.flatpickrInstance?.close();
+        optionsPanel.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+      } else {
+        this.closeDestinationPicker();
+      }
+    });
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        optionsPanel.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+        const all = Array.from(optionsPanel.querySelectorAll(".mct-destination-option"));
+        const current = all.findIndex((item) => item.getAttribute("aria-selected") === "true");
+        all[event.key === "ArrowUp" ? Math.max(0, current - 1) : Math.min(all.length - 1, current + 1)]?.focus();
+      } else if (event.key === "Escape") {
+        this.closeDestinationPicker();
+      }
+    });
+    optionsPanel.addEventListener("keydown", (event) => {
+      const all = Array.from(optionsPanel.querySelectorAll(".mct-destination-option"));
+      const index = all.indexOf(document.activeElement);
+      let next = index;
+      if (event.key === "ArrowDown") next = Math.min(all.length - 1, index + 1);
+      else if (event.key === "ArrowUp") next = Math.max(0, index - 1);
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = all.length - 1;
+      else if (event.key === "Escape") {
+        event.preventDefault();
+        this.closeDestinationPicker();
+        trigger.focus();
+        return;
+      } else return;
+      event.preventDefault();
+      all[next]?.focus();
+    });
+    document.addEventListener("pointerdown", (event) => {
+      if (!host.contains(event.target)) this.closeDestinationPicker();
+    });
+  }
+
+  syncDestinationPicker() {
+    if (!this.destinationPanel || !this.intentSelect) return;
+    const selected = this.intentSelect.selectedOptions[0];
+    this.destinationText.textContent = selected?.textContent || "";
+    this.destinationPanel.replaceChildren();
+    Array.from(this.intentSelect.options).forEach((option) => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "mct-destination-option";
+      item.setAttribute("role", "option");
+      item.setAttribute("aria-selected", String(option.value === this.intentSelect.value));
+      item.textContent = option.textContent;
+      item.addEventListener("click", () => {
+        this.intentSelect.value = option.value;
+        this.intentSelect.dispatchEvent(new Event("change", { bubbles: true }));
+        this.syncDestinationPicker();
+        this.closeDestinationPicker();
+        this.destinationButton.focus();
+      });
+      this.destinationPanel.appendChild(item);
+    });
+  }
+
+  closeDestinationPicker() {
+    if (!this.destinationPanel) return;
+    this.destinationPanel.hidden = true;
+    this.destinationButton?.setAttribute("aria-expanded", "false");
   }
 
   applyTabRules(options = {}) {
@@ -279,9 +390,18 @@ class MyCuscoTripSearchBar {
       clickOpens: false,
       disableMobile: true,
       static: false,
+      position: "below center",
       plugins,
+      onReady: (_selectedDates, _dateStr, instance) => {
+        if (this.destinationHost) instance.calendarContainer.classList.add("mct-home-calendar");
+      },
       onOpen: () => {
         this.closeQuantityPanel();
+        this.closeDestinationPicker();
+        if (this.destinationHost) document.body.classList.add("mct-home-date-open");
+      },
+      onClose: () => {
+        document.body.classList.remove("mct-home-date-open");
       },
       onChange: (selectedDates) => {
         this.handleDateChange(selectedDates);
