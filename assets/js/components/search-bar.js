@@ -390,7 +390,7 @@ class MyCuscoTripSearchBar {
       clickOpens: false,
       disableMobile: true,
       static: false,
-      position: "below center",
+      position: this.destinationHost ? "below center" : "auto",
       plugins,
       onReady: (_selectedDates, _dateStr, instance) => {
         if (this.destinationHost) instance.calendarContainer.classList.add("mct-home-calendar");
