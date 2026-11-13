@@ -765,3 +765,255 @@ body {
     font-size: 0.85rem;
   }
 }
+
+
+/* Inicio MCT: centrado de pestañas y buscador, escritorio y móvil. */
+.hero .search-bar .mct-card {
+  margin-inline: auto;
+}
+@media (min-width: 1101px) {
+  .hero .search-bar .mct-tabs {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    margin: -27px auto 0;
+  }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .hero .search-bar .mct-tabs {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -58%);
+    width: calc(100% - 32px);
+  }
+}
+@media (max-width: 768px) {
+  .hero .search-bar {
+    width: 100%;
+    margin-inline: auto;
+  }
+  .hero .search-bar .mct-card {
+    width: 100%;
+    max-width: 100%;
+  }
+  .hero .search-bar .mct-tabs {
+    left: 50%;
+    right: auto;
+    width: calc(100% - 40px);
+    transform: translateX(-50%);
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero .search-bar .mct-bar {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  .hero .search-bar .mct-field {
+    align-items: center;
+    text-align: center;
+  }
+  .hero .search-bar .mct-input,
+  .hero .search-bar .mct-qty-toggle {
+    text-align: center;
+  }
+  .hero .search-bar .mct-qty-toggle {
+    justify-content: center;
+  }
+  .hero .search-bar .mct-hint.in-card {
+    text-align: center;
+  }
+  .hero .search-bar .mct-submit-group {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .hero .search-bar .mct-submit {
+    margin-inline: auto;
+  }
+}
+
+/* Selector de destino propio de My Cusco Trip, sin menú nativo. */
+.hero .search-bar .mct-native-select-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  clip-path: inset(50%) !important;
+}
+.hero .search-bar .mct-destination-control {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.hero .search-bar .mct-destination-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #0d3d2a;
+  font: 800 16px "Open Sans", sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.hero .search-bar .mct-destination-trigger span {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.hero .search-bar .mct-destination-trigger i {
+  margin: 0;
+  color: #0d3d2a;
+  font-size: 13px;
+  transition: transform .15s ease;
+}
+.hero .search-bar .mct-destination-trigger[aria-expanded="true"] i {
+  transform: rotate(180deg);
+}
+.hero .search-bar .mct-destination-trigger:focus-visible {
+  outline: 2px solid #0a3a26;
+  outline-offset: 4px;
+}
+.hero .search-bar .mct-destination-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -10px;
+  z-index: 100050;
+  width: max(100%, 240px);
+  max-width: min(340px, calc(100vw - 32px));
+  max-height: min(360px, 55vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border: 1px solid #dce8df;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(10, 58, 38, .23);
+}
+.hero .search-bar .mct-destination-options[hidden] {
+  display: none !important;
+}
+.hero .search-bar .mct-destination-option {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #183e2c;
+  font: 700 14px "Open Sans", sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.hero .search-bar .mct-destination-option:hover,
+.hero .search-bar .mct-destination-option:focus-visible,
+.hero .search-bar .mct-destination-option[aria-selected="true"] {
+  background: #eaf5ee;
+  color: #07512c;
+  outline: none;
+}
+@media (max-width: 768px) {
+  .hero .search-bar .mct-destination-control {
+    max-width: 100%;
+  }
+  .hero .search-bar .mct-destination-trigger {
+    justify-content: center;
+    padding: 0 24px;
+    position: relative;
+    text-align: center;
+  }
+  .hero .search-bar .mct-destination-trigger i {
+    position: absolute;
+    right: 0;
+  }
+  .hero .search-bar .mct-destination-options {
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(340px, calc(100vw - 48px));
+  }
+}
+
+/* Calendario del buscador de inicio: proporciones inspiradas en Latam
+   Expeditions, con colores MCT y días flexibles que ya no se recortan. */
+.mct-home-calendar.flatpickr-calendar {
+  width: min(354px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  border-radius: 18px !important;
+  overflow: visible !important;
+  box-shadow: 0 20px 52px rgba(6, 40, 3, .22) !important;
+}
+.mct-home-calendar .flatpickr-innerContainer,
+.mct-home-calendar .flatpickr-rContainer,
+.mct-home-calendar .flatpickr-days,
+.mct-home-calendar .dayContainer,
+.mct-home-calendar .flatpickr-weekdays {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+.mct-home-calendar .flatpickr-innerContainer {
+  display: block !important;
+}
+.mct-home-calendar .dayContainer {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  padding: 8px 0 !important;
+  transform: none !important;
+}
+.mct-home-calendar .flatpickr-day {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 39px !important;
+  line-height: 39px !important;
+  border-radius: 9px !important;
+  font-size: 13px !important;
+}
+.mct-home-calendar .flatpickr-months {
+  padding: 2px 2px 9px;
+}
+.mct-home-calendar .flatpickr-weekday {
+  color: #6c8074 !important;
+  font-size: 12px !important;
+}
+.mct-home-calendar .flatpickr-day:hover:not(.selected):not(.flatpickr-disabled) {
+  background: #e9f5ed !important;
+  color: #0a3a26 !important;
+}
+.mct-home-calendar .flatpickr-confirm {
+  width: 100% !important;
+  border-radius: 11px !important;
+  margin-top: 5px;
+}
+@media (max-width: 768px) {
+  body.mct-home-date-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .36);
+    z-index: 99990;
+  }
+  .mct-home-calendar.flatpickr-calendar.open {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto !important;
+    z-index: 100000 !important;
+  }
+}
