@@ -841,6 +841,9 @@ body {
   pointer-events: none !important;
   clip-path: inset(50%) !important;
 }
+.hero .search-bar .mct-intent-field {
+  z-index: 160;
+}
 .hero .search-bar .mct-destination-control {
   position: relative;
   width: 100%;
