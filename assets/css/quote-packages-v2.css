@@ -80,3 +80,5 @@
 @media print{
   .quote-v2 .v2-intake,.quote-v2 .v2-live-banner,.quote-v2 .v2-bottom-bar,.quote-v2 .v2-summary-help{display:none!important}
 }
+/* V2 en pruebas: no publicar tarifas aéreas fijas ni promociones sin validación. */
+.quote-v2 #flightSection,.quote-v2 .quote-discount-box,.quote-v2 #printBookingOffer{display:none!important}
