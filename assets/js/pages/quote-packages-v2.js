@@ -62,6 +62,12 @@
   function buildFlightLink() {
     const status = params.get("v2FlightStatus") || chosenFlightStatus();
     if (status === "complete") return "";
+    const rawOrigin=params.get("v2Origin")||value("v2Origin");
+    if(status==="none" && (rawOrigin==="BAQ" || rawOrigin==="OTHER")) {
+      const place=rawOrigin==="BAQ"?"Barranquilla":"mi ciudad";
+      const msg="Hola, necesito cotizar vuelos desde "+place+" a Cusco para viajar del "+(params.get("startDate")||value("v2Start"))+" al "+(params.get("endDate")||value("v2End"))+". ¿Podrían ayudarme con opciones y horarios?";
+      return "https://wa.me/51900608980?text="+encodeURIComponent(msg);
+    }
     const q = new URLSearchParams({
       origin: status === "lima" ? "LIM" : (params.get("v2Origin") || value("v2Origin") || "LIM"),
       destination:"CUZ", trip:"roundtrip",
@@ -126,6 +132,9 @@
       ? "Tienes vuelos hasta Lima. Revisa el tramo Lima–Cusco antes de confirmar horarios; la posible noche en Lima no está incluida en el presupuesto."
       : "Aún no tienes vuelos. Revisa rutas y tarifas verificables antes de cerrar el itinerario; el presupuesto de vuelos internacionales no está incluido.";
     link.href=flightLink; link.hidden=false;
+    const assisted=flightLink.startsWith("https://wa.me/");
+    link.textContent=assisted?"Solicitar búsqueda asistida de vuelos":"Consultar vuelos en Latam Expeditions";
+    if(assisted)message.textContent+=" Para este aeropuerto todavía no hay selección directa en el buscador de Latam Expeditions.";
   }
   $("v2Edit").addEventListener("click",()=>{
     const url=new URL(window.location.href);url.searchParams.delete("v2ready");window.location.assign(url.href);
