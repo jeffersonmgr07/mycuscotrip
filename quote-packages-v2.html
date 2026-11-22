@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Cotizador de paquetes | My Cusco Trip</title>
+  <title>Cotizador Inteligente V2 | My Cusco Trip</title>
   <meta name="description" content="Cotiza paquetes turísticos para Cusco y Machu Picchu con hoteles, trenes, moneda y modalidad de pago." />
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -16,10 +16,12 @@
   <link rel="stylesheet" href="./assets/css/header.css" />
   <link rel="stylesheet" href="./assets/css/footer.css" />
   <link rel="stylesheet" href="./assets/css/responsive.css" />
-  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=83" />
+  <link rel="stylesheet" href="./assets/css/quote-packages.css?v=84" />
   <link rel="stylesheet" href="./assets/css/coupon-popup.css?v=20260804-83">
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="./assets/css/quote-packages-v2.css?v=1" />
 </head>
-<body>
+<body class="quote-v2">
   <div id="header-container"></div>
 
   <a class="wa-float" href="https://wa.me/51900608980" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -30,7 +32,7 @@
     <section class="quote-hero">
       <div class="container quote-hero__container">
         <span class="quote-eyebrow">Cotiza aquí tu paquete turístico</span>
-        <h1>Arma tu paquete a Cusco y Machu Picchu a tu medida</h1>
+        <h1>Crea tu viaje a Cusco y Machu Picchu</h1>
         <p>
           Elige tus fechas, indica opcionalmente tus horarios aproximados de llegada y salida,
           selecciona tus hoteles, trenes y modalidad de pago. Detectaremos automáticamente
@@ -38,6 +40,56 @@
         </p>
       </div>
     </section>
+
+    <section id="v2Wizard" class="v2-intake" aria-label="Asistente de viaje">
+      <div class="v2-shell">
+        <div class="v2-head"><span>My Cusco Trip · Planificador de viajes</span><h2>Tu viaje empieza aquí</h2><p>Tres preguntas para organizar Cusco y Machu Picchu según tus vuelos, fechas y acompañantes.</p></div>
+        <nav class="v2-progress" aria-label="Avance del cotizador"><span class="is-current">1. Vuelos</span><span>2. Fechas</span><span>3. Viajeros</span></nav>
+        <form id="v2Form" novalidate>
+          <fieldset class="v2-step" data-step="1"><legend>¿Ya tienes tus vuelos?</legend>
+            <div class="v2-options">
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="none" checked><strong>Aún no tengo vuelos</strong><small>Quiero encontrar vuelos desde mi ciudad hasta Cusco.</small></label>
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="lima"><strong>Tengo vuelo hasta Lima</strong><small>Me falta la conexión a Cusco y quizá una noche en Lima.</small></label>
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="complete"><strong>Ya tengo vuelos a Cusco</strong><small>Quiero organizar mis tours, hoteles y traslados.</small></label>
+            </div>
+            <div class="v2-fields" id="v2OriginWrap"><div class="v2-field"><label for="v2Origin">Ciudad desde donde viajarás</label><select id="v2Origin">
+              <option value="">Seleccionar ciudad</option><option value="BAQ">Barranquilla (BAQ)</option><option value="BOG">Bogotá (BOG)</option><option value="MDE">Medellín (MDE)</option><option value="CLO">Cali (CLO)</option><option value="LIM">Lima (LIM)</option><option value="SCL">Santiago (SCL)</option><option value="EZE">Buenos Aires (EZE)</option><option value="MEX">Ciudad de México (MEX)</option><option value="MIA">Miami (MIA)</option><option value="OTHER">Otra ciudad (se elegirá en el buscador)</option>
+            </select></div></div>
+            <label id="v2LimaNightWrap" class="v2-checkline" hidden><input type="checkbox" id="v2LimaNight"><span>Quiero evaluar una noche adicional en Lima, antes de viajar a Cusco.</span></label>
+            <p id="v2FlightNotice" class="v2-hint" role="status"></p>
+          </fieldset>
+          <fieldset class="v2-step" data-step="2" hidden><legend>¿Cuándo estarás en Cusco?</legend>
+            <div class="v2-fields">
+              <div class="v2-field"><label for="v2Start">Fecha de llegada</label><input type="date" id="v2Start" required></div>
+              <div class="v2-field"><label for="v2End">Fecha de salida</label><input type="date" id="v2End" required></div>
+              <div class="v2-field"><label for="v2ArrivalTime">Hora de llegada</label><input type="time" id="v2ArrivalTime" value="09:00" required></div>
+              <div class="v2-field"><label for="v2DepartureTime">Hora de salida</label><input type="time" id="v2DepartureTime" value="20:00" required></div>
+            </div>
+            <p class="v2-hint">Actualmente el generador prepara paquetes de 3 a 10 días. Si no tienes vuelos confirmados, coloca horarios tentativos y podrás cambiarlos.</p>
+          </fieldset>
+          <fieldset class="v2-step" data-step="3" hidden><legend>¿Quiénes viajan?</legend>
+            <div class="v2-fields">
+              <div class="v2-field"><label for="v2Adults">Adultos (12+ años)</label><input type="number" id="v2Adults" min="1" max="12" value="2" required></div>
+              <div class="v2-field"><label for="v2Children">Niños (3 a 11 años)</label><input type="number" id="v2Children" min="0" max="9" value="0" required></div>
+              <div class="v2-field"><label for="v2Pace">Estilo de viaje</label><select id="v2Pace"><option value="equilibrado">Equilibrado: cultura y naturaleza</option><option value="tranquilo">Tranquilo: pocas caminatas</option><option value="aventurero">Aventura y trekking</option></select></div>
+              <div class="v2-field"><label for="v2Nationality">Nacionalidad para tarifas</label><select id="v2Nationality"><option value="foreign">Extranjeros</option><option value="andean_community">Comunidad Andina</option><option value="national">Peruanos</option></select></div>
+            </div>
+            <label class="v2-checkline"><input type="checkbox" id="v2Seniors"><span>Viajan adultos de 60 años o más. Dar prioridad a paseos de menor esfuerzo.</span></label>
+            <label class="v2-checkline"><input type="checkbox" id="v2Teen"><span>Viajan menores de 12 a 15 años. Tener en cuenta el ritmo familiar.</span></label>
+            <label class="v2-checkline"><input type="checkbox" id="v2Car"><span>Quiero comparar la alternativa económica por Hidroeléctrica (implica traslados largos y caminata).</span></label>
+            <p class="v2-hint">Recomendamos Machu Picchu y Valle Sagrado. El circuito clásico se solicita según disponibilidad oficial de ingresos, no se garantiza solo por comprar con anticipación.</p>
+          </fieldset>
+          <p id="v2Error" class="v2-error" role="alert"></p>
+          <div class="v2-actions"><button type="button" id="v2Back" class="v2-btn v2-btn--secondary" hidden>Atrás</button><button type="submit" id="v2Next" class="v2-btn">Continuar</button></div>
+          <small class="v2-mini">Cotización estimada. La disponibilidad y los precios finales de entradas, trenes y hoteles deben ser confirmados antes de reservar. El pago en línea está desactivado durante las pruebas de V2.</small>
+        </form>
+      </div>
+    </section>
+    <div class="v2-live-banner" role="status">
+      <p id="v2ReadyMessage">Aquí podrás personalizar tu viaje; todos los servicios se confirman al verificar disponibilidad.</p>
+      <a id="v2FlightLink" href="https://latamexpeditions.com/vuelos.html" target="_blank" rel="noopener noreferrer" hidden>Buscar vuelos</a>
+      <button type="button" id="v2Edit" class="v2-btn v2-btn--secondary">Cambiar respuestas</button>
+    </div>
 
     <section class="quote-content">
       <div class="container quote-layout">
@@ -105,6 +157,43 @@
                   <small id="exchangeRateHelp">El tipo de cambio se calculará desde el JS.</small>
                 </div>
               </div>
+            </div>
+
+            <div class="quote-field-group">
+              <div class="quote-field-group__header">
+                <h3>Destinos de tu viaje</h3>
+                <p>Elige qué destinos quieres incluir en tu paquete. Debes dejar al menos uno marcado.</p>
+              </div>
+
+              <div class="quote-destinations-grid" id="destinationsGrid">
+                <label class="quote-destination-card" data-destination-card="cusco">
+                  <input type="checkbox" id="destinationCusco" data-destination-toggle="cusco" checked>
+                  <span class="quote-choice-dot" aria-hidden="true"></span>
+                  <div>
+                    <strong>Cusco</strong>
+                    <small>Tours, city tour, Valle Sagrado y trekkings.</small>
+                  </div>
+                </label>
+
+                <label class="quote-destination-card" data-destination-card="machuPicchu">
+                  <input type="checkbox" id="destinationMachuPicchu" data-destination-toggle="machuPicchu" checked>
+                  <span class="quote-choice-dot" aria-hidden="true"></span>
+                  <div>
+                    <strong>Machu Picchu</strong>
+                    <small>Full Day u Overnight, con tren y circuito a elegir.</small>
+                  </div>
+                </label>
+
+                <label class="quote-destination-card" data-destination-card="lima">
+                  <input type="checkbox" id="destinationLima" data-destination-toggle="lima">
+                  <span class="quote-choice-dot" aria-hidden="true"></span>
+                  <div>
+                    <strong>Lima</strong>
+                    <small>Extensión inicial con Paracas, Ica y Huacachina Full Day.</small>
+                  </div>
+                </label>
+              </div>
+              <small id="destinationsHelp" class="quote-destinations-help" hidden></small>
             </div>
 
             <div class="quote-travelers">
@@ -200,6 +289,65 @@
             </div>
           </article>
 
+          <article id="machuCircuitSection" class="quote-card" hidden>
+            <div class="quote-card__header">
+              <h2>Circuito de Machu Picchu</h2>
+              <p>
+                Elige el circuito y la ruta con la que ingresarás a la ciudadela. La disponibilidad de rutas
+                cambia todos los días, así que la confirmamos manualmente antes de cerrar tu cotización.
+              </p>
+            </div>
+
+            <div class="quote-circuit-grid" id="machuCircuitGrid"></div>
+            <div class="quote-route-grid" id="machuRouteGrid"></div>
+            <small id="machuCircuitHelp" class="quote-destinations-help" hidden>Selecciona el circuito y la ruta de Machu Picchu según disponibilidad confirmada.</small>
+          </article>
+
+          <article id="flightSection" class="quote-card" hidden>
+            <div class="quote-card__header">
+              <h2>Vuelos nacionales Lima – Cusco – Lima</h2>
+              <p>
+                Horario sujeto a disponibilidad al momento de emisión. Al elegir un vuelo indicas el horario que
+                deseas reservar, no un asiento confirmado.
+              </p>
+            </div>
+
+            <label class="quote-flight-toggle">
+              <input type="checkbox" id="includeFlightsToggle">
+              <span class="quote-choice-dot" aria-hidden="true"></span>
+              <div>
+                <strong>Incluir vuelos Lima – Cusco – Lima</strong>
+                <small>Tarifa comercial fija por pasajero, ida y vuelta.</small>
+              </div>
+            </label>
+
+            <div id="flightAirlineContainer" class="quote-airline-grid" hidden></div>
+
+            <div id="flightSelectorsContainer" class="quote-train-selector-grid" hidden>
+              <div id="outboundFlightSelected" class="quote-train-selector-card">
+                <div>
+                  <span>Vuelo Lima → Cusco</span>
+                  <strong>Sin selección</strong>
+                  <p>Elige una opción de vuelo para completar la cotización.</p>
+                </div>
+                <button type="button" class="btn quote-secondary-btn" data-flight-direction="outbound">
+                  <i class="fas fa-plane-departure"></i> Elegir vuelo
+                </button>
+              </div>
+
+              <div id="returnFlightSelected" class="quote-train-selector-card">
+                <div>
+                  <span>Vuelo Cusco → Lima</span>
+                  <strong>Sin selección</strong>
+                  <p>Elige una opción de vuelo para completar la cotización.</p>
+                </div>
+                <button type="button" class="btn quote-secondary-btn" data-flight-direction="return">
+                  <i class="fas fa-plane-arrival"></i> Elegir vuelo
+                </button>
+              </div>
+            </div>
+          </article>
+
           <article id="extrasSection" class="quote-card" hidden>
             <div class="quote-card__header">
               <h2>Personaliza con extras</h2>
@@ -284,6 +432,11 @@
                 <strong id="extrasSummaryTotal">S/ 0.00</strong>
               </div>
 
+              <div class="quote-summary__line" id="flightSummaryRow" hidden>
+                <span>Vuelo nacional</span>
+                <strong id="flightSummaryTotal">S/ 0.00</strong>
+              </div>
+
               <div class="quote-summary__line" id="discountSummaryRow" hidden>
                 <span>Descuento</span>
                 <strong id="discountSummaryTotal">- S/ 0.00</strong>
@@ -317,8 +470,8 @@
             <div class="quote-payment-mode">
               <label for="paymentMode">Modalidad de pago</label>
               <select id="paymentMode">
-                <option value="full">Pago 100% con descuento</option>
-                <option value="partial">Anticipo sin descuento</option>
+                <option value="full" disabled>Pago completo (pendiente de validación)</option>
+                <option value="partial" selected>Plan de pago referencial</option>
               </select>
             </div>
 
@@ -397,19 +550,34 @@
           <div id="printSelectedServices"></div>
         </section>
 
-        <section class="print-section print-section--hotels">
-          <h3>Alojamientos incluidos</h3>
-          <div id="printHotelImages" class="print-hotel-images"></div>
-        </section>
-
         <section class="print-section print-section--payment">
           <h3>Detalles de pago</h3>
           <div id="printPaymentDetails"></div>
         </section>
 
-        <section class="print-section print-section--itinerary">
+        <section id="printFlightSection" class="print-section print-section--flights" hidden>
+          <h3>Vuelos incluidos</h3>
+          <div id="printFlightDetails"></div>
+        </section>
+
+        <section class="print-section print-section--itinerary print-section--page-break">
           <h3>Itinerario detallado</h3>
           <div id="printItinerary" class="print-itinerary-list"></div>
+        </section>
+
+        <section id="printTrainSection" class="print-section print-section--trains" hidden>
+          <h3>Tickets de tren incluidos</h3>
+          <div id="printTrainDetails"></div>
+        </section>
+
+        <section class="print-section print-section--hotels">
+          <h3>Alojamientos incluidos</h3>
+          <div id="printHotelImages" class="print-hotel-images"></div>
+        </section>
+
+        <section id="printPaymentPlanSection" class="print-section print-section--payment-plan" hidden>
+          <h3>Plan flexible de pagos</h3>
+          <div id="printPaymentPlan"></div>
         </section>
 
         <section class="print-section print-notes">
@@ -423,7 +591,6 @@
           </ul>
         </section>
 
-
         <section id="printBookingOffer" class="print-booking-offer" hidden>
           <div class="print-booking-offer__content">
             <span class="print-booking-offer__eyebrow">Oferta especial de reserva</span>
@@ -433,7 +600,7 @@
         </section>
 
         <footer class="print-footer">
-          <p>Gracias por cotizar con My Cusco Trip.</p>
+          <p>Gracias por elegir My Cusco Trip.</p>
         </footer>
       </div>
     </section>
@@ -485,6 +652,32 @@
         <div class="quote-modal__footer">
           <button type="button" id="confirmTrainSelectionBtn" class="btn quote-main-btn">
             Confirmar tren seleccionado
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="flightSelectionModal" class="quote-modal" hidden>
+      <div class="quote-modal__backdrop" data-close-modal></div>
+
+      <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="flightSelectionModalTitle">
+        <button type="button" class="quote-modal__close" data-close-modal aria-label="Cerrar modal de vuelos">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="quote-modal__header">
+          <p class="quote-modal__eyebrow">Selección de vuelo</p>
+          <h2 id="flightSelectionModalTitle">Elige tu vuelo</h2>
+          <p id="flightSelectionModalIntro">Horario sujeto a disponibilidad al momento de emisión.</p>
+        </div>
+
+        <div class="quote-modal__body">
+          <div id="flightSelectionModalList" class="quote-modal__list"></div>
+        </div>
+
+        <div class="quote-modal__footer">
+          <button type="button" id="confirmFlightSelectionBtn" class="btn quote-main-btn">
+            Confirmar vuelo seleccionado
           </button>
         </div>
       </div>
@@ -567,6 +760,9 @@
         </div>
       </div>
     </div>
+
+    <div class="v2-bottom-bar" aria-label="Resumen rápido"><div><small>Presupuesto estimado</small><strong id="v2FloatingTotal">Por calcular</strong></div><button type="button" id="v2GoSummary">Ver total</button></div>
+
   </main>
 
   <div id="footer-container"></div>
@@ -631,9 +827,9 @@
     })();
   </script>
 
-  <script src="./assets/js/core/package-generator.js?v=81"></script>
+  <script src="./assets/js/core/package-generator.js?v=82"></script>
   <script src="./assets/js/core/api-client.js"></script>
-  <script src="./assets/js/pages/quote-packages.js?v=20260803-8"></script>
+  <script src="./assets/js/pages/quote-packages.js?v=20260815-1"></script>
   <script>
     // Respaldo mínimo: si el navegador carga un JS antiguo por caché, este botón móvil igual abre/cierra el resumen.
     document.addEventListener('click', function(event) {
@@ -652,5 +848,6 @@
     });
   </script>
   <script src="./assets/js/components/coupon-popup.js?v=20260804-83"></script>
+  <script src="./assets/js/pages/quote-packages-v2.js?v=1"></script>
 </body>
 </html>
