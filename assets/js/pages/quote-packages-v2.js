@@ -49,12 +49,12 @@
     $("v2LimaTourWrap").hidden=status!=="lima" || limaNights()===0;
     updateFlightSearchLink();
   }
-  const flightOrigin=params.get("v2Origin")||value("v2Origin");
   function buildFlightLink() {
-    const status=params.get("v2FlightStatus")||chosenFlightStatus();
-    const choice=params.get("v2FlightChoice")||chosenFlightChoice();
+    // Durante la edición se usan las nuevas respuestas, no los parámetros anteriores.
+    const status=ready ? (params.get("v2FlightStatus")||chosenFlightStatus()) : chosenFlightStatus();
+    const choice=ready ? (params.get("v2FlightChoice")||chosenFlightChoice()) : chosenFlightChoice();
     if(status==="complete" || (status==="none"&&choice!=="search"))return "";
-    const origin=status==="lima"?"LIM":(params.get("v2Origin")||value("v2Origin"));
+    const origin=status==="lima"?"LIM":(ready ? (params.get("v2Origin")||value("v2Origin")) : value("v2Origin"));
     if(!origin)return "";
     if(origin==="BAQ"||origin==="OTHER"){
       const city=origin==="BAQ"?"Barranquilla":"otra ciudad";
@@ -62,11 +62,12 @@
       return "https://wa.me/51900608980?text="+encodeURIComponent(text);
     }
     const query=new URLSearchParams({origin,destination:"CUZ",trip:"roundtrip",cabin:"economy"});
-    const start=params.get("startDate")||value("v2Start"),end=params.get("endDate")||value("v2End");
+    const start=ready ? (params.get("startDate")||value("v2Start")) : value("v2Start");
+    const end=ready ? (params.get("endDate")||value("v2End")) : value("v2End");
     if(start && start>=today)query.set("departure",start);
     if(end && end>=start && start>=today)query.set("return",end);
-    const adults=params.get("adults")||value("v2Adults");
-    const children=params.get("children")||value("v2Children");
+    const adults=ready ? (params.get("adults")||value("v2Adults")) : value("v2Adults");
+    const children=ready ? (params.get("children")||value("v2Children")) : value("v2Children");
     if(adults)query.set("adults",adults);
     if(children)query.set("children",children);
     return "https://latamexpeditions.com/vuelos.html?"+query.toString();
