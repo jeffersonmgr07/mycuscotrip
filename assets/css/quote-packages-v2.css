@@ -1,84 +1,178 @@
-/* Cotizador V2 — capa independiente, sin modificar la V1 */
-.quote-v2 .quote-hero {padding:40px 0 24px;background:linear-gradient(125deg,#103e35,#176653 65%,#238675);color:#fff}
-.quote-v2 .quote-hero h1{color:#fff;max-width:840px;font-size:clamp(27px,4.6vw,46px);line-height:1.15}
-.quote-v2 .quote-hero p{color:#eefaf5;max-width:750px}
-.quote-v2 .quote-eyebrow{color:#c9f7e5}
-.quote-v2 .v2-intake{background:#f4f8f6;padding:22px 14px 48px}
+/* Cotizador V2: interfaz móvil independiente, no modifica la V1 */
+.quote-v2 .quote-hero{
+  padding:33px 0 27px;
+  background:linear-gradient(125deg,#103e35,#176653 65%,#238675);
+  color:#fff;
+}
+.quote-v2 .quote-hero h1{
+  margin:0 0 7px;
+  color:#fff;
+  max-width:860px;
+  font-size:clamp(27px,4.2vw,43px);
+  line-height:1.17;
+}
+.quote-v2 .quote-hero p{
+  margin:0;
+  font-size:clamp(13px,1.7vw,15px);
+  color:#e3f5ed;
+  line-height:1.5;
+}
+.quote-v2 .v2-intake{background:#f4f8f6;padding:20px 14px 40px}
 .quote-v2:not(.v2-ready) .quote-content{display:none}
 .quote-v2.v2-ready .v2-intake{display:none}
-.quote-v2 .v2-shell{margin:0 auto;max-width:780px;background:#fff;border:1px solid #e0eae5;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(14,65,45,.08)}
-.quote-v2 .v2-head{padding:24px 26px 16px;border-bottom:1px solid #e8efeb}
-.quote-v2 .v2-head span{display:block;color:#18805e;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.quote-v2 .v2-head h2{font-size:clamp(22px,3vw,27px);margin:6px 0 8px;color:#123a31}
-.quote-v2 .v2-head p{color:#65766f;line-height:1.6;margin:0}
-.quote-v2 .v2-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:20px 26px 0}
-.quote-v2 .v2-progress span{display:block;padding:9px 5px;border-radius:9px;text-align:center;background:#eef3ef;color:#6d7974;font-size:12px;font-weight:700}
-.quote-v2 .v2-progress .is-current{background:#def5e9;color:#086344}
-.quote-v2 .v2-progress .is-done{background:#e9f1ec;color:#37725a}
-.quote-v2 #v2Form{padding:16px 26px 26px}
-.quote-v2 .v2-step{border:0;padding:0;margin:0;min-width:0}
+.quote-v2 .v2-shell{
+  margin:0 auto;max-width:780px;
+  background:#fff;border:1px solid #e1ebe5;border-radius:19px;
+  box-shadow:0 15px 42px rgba(14,65,45,.08);overflow:hidden;
+}
+.quote-v2 .v2-progress{display:flex;align-items:center;gap:17px;padding:19px 24px 6px}
+.quote-v2 #v2ProgressLabel{white-space:nowrap;color:#567366;font-size:12px;font-weight:750;letter-spacing:.01em}
+.quote-v2 .v2-progress-track{height:5px;background:#e7f0eb;border-radius:8px;flex:1;overflow:hidden}
+.quote-v2 #v2ProgressFill{display:block;width:25%;height:100%;background:linear-gradient(90deg,#07875a,#51bd85);border-radius:8px;transition:width .32s ease}
+.quote-v2 #v2Form{padding:20px 24px 25px}
+.quote-v2 .v2-step{border:0;padding:0;margin:0;min-width:0;animation:v2-enter .27s ease both}
 .quote-v2 .v2-step[hidden],.quote-v2 [hidden]{display:none!important}
-.quote-v2 .v2-step legend{font-size:20px;font-weight:800;color:#163b31;padding:0 0 14px}
-.quote-v2 .v2-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.quote-v2 .v2-choice{position:relative;display:flex;flex-direction:column;gap:7px;border:1.5px solid #d7e5de;border-radius:14px;padding:17px 14px;cursor:pointer;min-height:115px}
-.quote-v2 .v2-choice input{position:absolute;top:13px;right:13px;accent-color:#08714c}
-.quote-v2 .v2-choice strong{padding-right:18px;font-size:14px;color:#173c32}
-.quote-v2 .v2-choice small{color:#6d7d74;line-height:1.45}
-.quote-v2 .v2-choice:has(input:checked){border-color:#078d5c;background:#effbf5;box-shadow:inset 0 0 0 1px #078d5c}
-.quote-v2 .v2-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:18px}
+.quote-v2 .v2-step legend,.quote-v2 .v2-question{
+  color:#153a30;font-size:clamp(19px,2.5vw,23px);
+  font-weight:800;line-height:1.28;
+  padding:0;margin:0 0 16px;
+}
+.quote-v2 .v2-step legend{display:table}
+.quote-v2 .v2-short-intro{font-size:13px;line-height:1.45;color:#61796a;margin:-7px 0 17px}
+.quote-v2 .v2-options{display:grid;gap:12px}
+.quote-v2 .v2-options--three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.quote-v2 .v2-options--two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.quote-v2 .v2-choice{
+  position:relative;display:flex;flex-direction:column;gap:5px;
+  cursor:pointer;min-height:123px;padding:16px 14px;
+  border:1.5px solid #dce9e1;border-radius:14px;
+  background:linear-gradient(#fff,#fff);
+  transition:border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.quote-v2 .v2-choice input{
+  position:absolute;top:15px;right:14px;accent-color:#087951;
+  width:17px;height:17px;cursor:pointer;
+}
+.quote-v2 .v2-choice-icon{
+  width:35px;height:35px;display:inline-flex;align-items:center;justify-content:center;
+  background:#e9f6ee;color:#08764f;border-radius:10px;font-size:14px;
+  margin-bottom:4px;transition:transform .22s ease,background .22s ease,color .22s ease;
+}
+.quote-v2 .v2-choice strong{font-size:14px;line-height:1.35;color:#183d31;padding-right:12px}
+.quote-v2 .v2-choice small{font-size:12px;color:#718177;line-height:1.35}
+.quote-v2 .v2-choice:hover{transform:translateY(-2px);border-color:#7ac49e;box-shadow:0 8px 18px rgba(9,88,54,.08)}
+.quote-v2 .v2-choice:has(input:checked){background:#effbf4;border-color:#078a59;box-shadow:inset 0 0 0 1px #078a59,0 7px 18px rgba(7,138,89,.07)}
+.quote-v2 .v2-choice:has(input:checked) .v2-choice-icon{background:#07875a;color:#fff;transform:scale(1.07)}
+.quote-v2 .v2-choice:has(input:focus-visible){outline:3px solid #9eddbb;outline-offset:2px}
+.quote-v2 .v2-flight-extra{margin-top:16px;animation:v2-enter .25s ease both}
+.quote-v2 .v2-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:9px}
 .quote-v2 .v2-field{display:flex;flex-direction:column;gap:7px}
-.quote-v2 .v2-field label{font-size:13px;font-weight:700;color:#25493c}
-.quote-v2 .v2-field input,.quote-v2 .v2-field select{width:100%;height:48px;border-radius:10px;border:1px solid #bdcfc5;background:white;padding:0 12px;font:inherit;font-size:15px;color:#163b31}
-.quote-v2 .v2-field input:focus,.quote-v2 .v2-field select:focus{outline:3px solid #b8e9d3;outline-offset:1px}
-.quote-v2 .v2-checkline{display:flex;gap:10px;align-items:flex-start;padding:13px 14px;background:#f1f6f3;border-radius:10px;margin-top:16px;color:#365348;font-size:14px;line-height:1.45}
-.quote-v2 .v2-checkline input{width:19px;height:19px;accent-color:#087b52;flex-shrink:0;margin-top:1px}
-.quote-v2 .v2-hint{font-size:13px;line-height:1.55;background:#eef7f2;color:#285642;padding:14px;border-radius:11px;margin-top:16px}
-.quote-v2 .v2-hint a{color:#0b7049;font-weight:800;text-decoration:underline}
-.quote-v2 .v2-error{font-size:13px;color:#a32626;padding:10px 0;font-weight:700}
-.quote-v2 .v2-actions{display:flex;justify-content:space-between;gap:12px;padding-top:22px}
-.quote-v2 .v2-btn{border-radius:10px;min-height:47px;padding:11px 18px;border:1px solid #0c7550;background:#0b774e;color:#fff;font-size:14px;font-weight:800;cursor:pointer}
-.quote-v2 .v2-btn:hover{background:#075e40}
-.quote-v2 .v2-btn--secondary{background:white;border-color:#c9d9d1;color:#20634a}
-.quote-v2 .v2-btn--secondary:hover{background:#eef8f2}
-.quote-v2 .v2-mini{display:block;color:#6b7e75;font-size:12px;line-height:1.5;padding-top:15px}
-.quote-v2 .v2-live-banner{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#f0f9f4;border:1px solid #b3dac5;padding:13px 18px;border-radius:14px;margin:22px auto;max-width:1120px}
-.quote-v2 .v2-live-banner p{margin:0;color:#254d3a;font-size:13px;line-height:1.55}
-.quote-v2 .v2-live-banner a{color:#0b734e;font-weight:800;white-space:nowrap}
+.quote-v2 .v2-field label{color:#2b5442;font-size:13px;font-weight:750}
+.quote-v2 .v2-field input,.quote-v2 .v2-field select{
+  width:100%;height:48px;border:1px solid #bed2c6;background:#fff;
+  border-radius:11px;padding:0 12px;font:inherit;font-size:15px;color:#163c30;
+  transition:border-color .2s,box-shadow .2s;
+}
+.quote-v2 .v2-field input:focus,.quote-v2 .v2-field select:focus{outline:0;border-color:#07875a;box-shadow:0 0 0 3px rgba(9,141,93,.14)}
+.quote-v2 .v2-flight-extra .v2-field{max-width:400px}
+.quote-v2 .v2-search-link{
+  display:inline-flex;gap:9px;align-items:center;
+  color:#08744e;font-size:13px;font-weight:800;text-decoration:none;
+  padding:11px 0;margin-top:3px;
+}
+.quote-v2 .v2-search-link:hover{text-decoration:underline}
+.quote-v2 .v2-inline-choice{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  border:1px solid #e4eee7;padding:12px 13px;margin-top:11px;
+  border-radius:11px;background:#f8fbf9;color:#375746;font-size:13px;line-height:1.35;
+}
+.quote-v2 .v2-inline-choice input{width:18px;height:18px;flex-shrink:0;accent-color:#07875a}
+.quote-v2 .v2-short-note{color:#748579;font-size:12px;line-height:1.45;margin:13px 0 0}
+.quote-v2 .v2-error{color:#a02a2a;font-weight:700;font-size:13px;margin:8px 0 0;line-height:1.45}
+.quote-v2 .v2-error:empty{display:none}
+.quote-v2 .v2-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-top:23px}
+.quote-v2 .v2-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:#0c7851;color:#fff;border:1px solid #0c7851;
+  border-radius:11px;min-height:47px;padding:11px 20px;font:inherit;
+  font-size:13px;font-weight:800;cursor:pointer;
+  transition:background .2s,transform .2s,box-shadow .2s;
+}
+.quote-v2 .v2-btn:hover{background:#075e40;transform:translateY(-1px);box-shadow:0 6px 14px rgba(9,80,49,.1)}
+.quote-v2 .v2-btn:active{transform:translateY(0)}
+.quote-v2 .v2-btn--secondary{background:#fff;color:#246249;border-color:#cbdcd2}
+.quote-v2 .v2-btn--secondary:hover{background:#f1f8f4}
+.quote-v2 .v2-mini{display:block;margin-top:15px;font-size:11px;line-height:1.4;color:#819085}
+.quote-v2 .v2-live-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:#f0f9f4;border:1px solid #b5ddc8;
+  border-radius:13px;padding:13px 16px;margin:22px auto;max-width:1120px;
+}
+.quote-v2 .v2-live-banner p{margin:0;flex:1;font-size:13px;color:#25513b;line-height:1.5}
+.quote-v2 .v2-live-banner a{font-size:13px;color:#0a774e;font-weight:800;white-space:nowrap}
+.quote-v2 .v2-live-banner .v2-btn{min-height:38px;padding:7px 12px}
 .quote-v2:not(.v2-ready) .v2-live-banner{display:none}
 .quote-v2 .quote-package-option.v2-risk-option{border-color:#efcfa2}
 .quote-v2 .v2-option-warning{display:block;font-size:12px;font-weight:700;color:#86540e;margin-top:5px}
-.quote-v2 .v2-recommendation{font-size:13px;background:#e9f5ed;border-radius:11px;padding:13px 15px;color:#235942;margin:10px 0 16px;line-height:1.5}
+.quote-v2 .v2-recommendation{background:#e9f5ed;border-radius:10px;padding:12px 14px;color:#235942;font-size:12px;margin:9px 0 14px;line-height:1.5}
 .quote-v2 .v2-bottom-bar{display:none}
 .quote-v2 .quote-payment-btn,.quote-v2 .quote-paypal-box,.quote-v2 #continuePaymentBtn{display:none!important}
-.quote-v2 #v2QuoteHelpBtn{background:#0c7851;color:#fff;padding:13px 16px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;border:0;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.quote-v2 #v2QuoteHelpBtn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#0c7851;color:#fff;border:0;border-radius:10px;
+  padding:13px 16px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;
+}
 .quote-v2 .v2-summary-help{padding-top:12px;border-top:1px solid #e4eee8}
+@keyframes v2-enter{from{opacity:.25;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:768px){
-  .quote-v2 .quote-hero{padding:25px 0 17px}
-  .quote-v2 .quote-hero h1{font-size:28px;line-height:1.2}
-  .quote-v2 .quote-hero p{font-size:14px;line-height:1.5}
-  .quote-v2 .v2-intake{padding:12px 10px 30px}
+  .quote-v2 .quote-hero{padding:25px 0 22px}
+  .quote-v2 .quote-hero h1{font-size:27px;line-height:1.2}
+  .quote-v2 .quote-hero p{font-size:13px}
+  .quote-v2 .v2-intake{padding:13px 10px 30px}
   .quote-v2 .v2-shell{border-radius:14px}
-  .quote-v2 .v2-head{padding:20px 16px 12px}
-  .quote-v2 .v2-progress{padding:14px 16px 0;gap:5px}
-  .quote-v2 .v2-progress span{font-size:11px;padding:9px 3px}
+  .quote-v2 .v2-progress{padding:17px 17px 2px}
   .quote-v2 #v2Form{padding:18px 16px 22px}
-  .quote-v2 .v2-options{grid-template-columns:1fr;gap:9px}
-  .quote-v2 .v2-choice{min-height:0;padding:13px 15px;gap:3px}
-  .quote-v2 .v2-choice strong{font-size:14px}
+  .quote-v2 .v2-options--three,.quote-v2 .v2-options--two{grid-template-columns:1fr;gap:9px}
+  .quote-v2 .v2-choice{
+    min-height:0;padding:13px 14px 13px 58px;
+    justify-content:center;gap:3px;
+  }
+  .quote-v2 .v2-choice input{top:50%;right:14px;transform:translateY(-50%)}
+  .quote-v2 .v2-choice-icon{
+    position:absolute;left:13px;top:50%;transform:translateY(-50%);
+    width:34px;height:34px;margin:0;
+  }
+  .quote-v2 .v2-choice:has(input:checked) .v2-choice-icon{transform:translateY(-50%) scale(1.06)}
+  .quote-v2 .v2-choice strong{font-size:14px;padding-right:25px}
+  .quote-v2 .v2-choice small{font-size:12px}
   .quote-v2 .v2-fields{grid-template-columns:1fr;gap:13px}
   .quote-v2 .v2-field input,.quote-v2 .v2-field select{font-size:16px}
   .quote-v2 .v2-actions .v2-btn{flex:1;min-width:0}
-  .quote-v2 .v2-live-banner{margin:15px 10px;display:block}
-  .quote-v2 .v2-live-banner a{display:block;margin-top:8px;white-space:normal}
+  .quote-v2 .v2-live-banner{margin:14px 10px;flex-wrap:wrap}
+  .quote-v2 .v2-live-banner p{flex-basis:100%}
+  .quote-v2 .v2-live-banner a{white-space:normal}
   .quote-v2.v2-ready .quote-page{padding-bottom:74px}
-  .quote-v2.v2-ready .v2-bottom-bar{position:fixed;display:flex;bottom:0;left:0;right:0;z-index:98;background:#fff;box-shadow:0 -6px 30px #0c44291c;border-top:1px solid #dce9e1;padding:10px 15px;align-items:center;justify-content:space-between;gap:12px}
+  .quote-v2.v2-ready .v2-bottom-bar{
+    position:fixed;bottom:0;left:0;right:0;z-index:98;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:#fff;border-top:1px solid #dce9e1;
+    box-shadow:0 -6px 30px #0c44291c;padding:10px 15px;
+  }
   .quote-v2 .v2-bottom-bar strong{color:#155c3b;font-size:17px}
   .quote-v2 .v2-bottom-bar small{display:block;color:#6b7e73;font-size:11px}
   .quote-v2 .v2-bottom-bar button{background:#0c7851;border:0;border-radius:10px;color:white;font:inherit;font-size:13px;font-weight:800;padding:12px 15px}
   .quote-v2 .quote-card{border-radius:14px}
 }
+@media(max-width:390px){
+  .quote-v2 .quote-hero h1{font-size:25px}
+  .quote-v2 .v2-choice{padding-right:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .quote-v2 .v2-step,.quote-v2 .v2-flight-extra{animation:none}
+  .quote-v2 .v2-choice,.quote-v2 .v2-choice-icon,.quote-v2 .v2-btn,.quote-v2 #v2ProgressFill{transition:none}
+}
 @media print{
   .quote-v2 .v2-intake,.quote-v2 .v2-live-banner,.quote-v2 .v2-bottom-bar,.quote-v2 .v2-summary-help{display:none!important}
 }
-/* V2 en pruebas: no publicar tarifas aéreas fijas ni promociones sin validación. */
+/* En desarrollo: vuelos de precio fijo, promociones y pago no se ofrecen en V2. */
 .quote-v2 #flightSection,.quote-v2 .quote-discount-box,.quote-v2 #printBookingOffer{display:none!important}
