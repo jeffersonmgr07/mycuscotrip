@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="./assets/css/quote-packages.css?v=84" />
   <link rel="stylesheet" href="./assets/css/coupon-popup.css?v=20260804-83">
   <meta name="robots" content="noindex,nofollow" />
-  <link rel="stylesheet" href="./assets/css/quote-packages-v2.css?v=1" />
+  <link rel="stylesheet" href="./assets/css/quote-packages-v2.css?v=2" />
 </head>
 <body class="quote-v2">
   <div id="header-container"></div>
@@ -28,67 +28,104 @@
     <img src="./assets/img/logos/LogoWhatsapp.png" alt="WhatsApp" />
   </a>
 
+
   <main class="quote-page">
     <section class="quote-hero">
       <div class="container quote-hero__container">
-        <span class="quote-eyebrow">Cotiza aquí tu paquete turístico</span>
-        <h1>Crea tu viaje a Cusco y Machu Picchu</h1>
-        <p>
-          Elige tus fechas, indica opcionalmente tus horarios aproximados de llegada y salida,
-          selecciona tus hoteles, trenes y modalidad de pago. Detectaremos automáticamente
-          el itinerario compatible y podrás imprimir o guardar tu cotización.
-        </p>
+        <h1>Arma tu viaje a Machu Picchu</h1>
+        <p>Elige tus fechas, servicios y más.</p>
       </div>
     </section>
 
-    <section id="v2Wizard" class="v2-intake" aria-label="Asistente de viaje">
+    <section id="v2Wizard" class="v2-intake" aria-label="Armar mi viaje">
       <div class="v2-shell">
-        <div class="v2-head"><span>My Cusco Trip · Planificador de viajes</span><h2>Tu viaje empieza aquí</h2><p>Tres preguntas para organizar Cusco y Machu Picchu según tus vuelos, fechas y acompañantes.</p></div>
-        <nav class="v2-progress" aria-label="Avance del cotizador"><span class="is-current">1. Vuelos</span><span>2. Fechas</span><span>3. Viajeros</span></nav>
+        <div class="v2-progress" aria-label="Progreso del cotizador">
+          <span id="v2ProgressLabel">Paso 1 de 4</span>
+          <div class="v2-progress-track" aria-hidden="true"><span id="v2ProgressFill"></span></div>
+        </div>
         <form id="v2Form" novalidate>
-          <fieldset class="v2-step" data-step="1"><legend>¿Ya tienes tus vuelos?</legend>
-            <div class="v2-options">
-              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="none" checked><strong>Aún no tengo vuelos</strong><small>Quiero encontrar vuelos desde mi ciudad hasta Cusco.</small></label>
-              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="lima"><strong>Tengo vuelo hasta Lima</strong><small>Me falta la conexión a Cusco y quizá una noche en Lima.</small></label>
-              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="complete"><strong>Ya tengo vuelos a Cusco</strong><small>Quiero organizar mis tours, hoteles y traslados.</small></label>
+          <fieldset class="v2-step" data-step="1">
+            <legend>¿Ya tienes tus vuelos?</legend>
+            <div class="v2-options v2-options--three">
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="none"><span class="v2-choice-icon"><i class="fas fa-plane-departure" aria-hidden="true"></i></span><strong>Aún no tengo vuelos</strong><small>Quiero buscar opciones.</small></label>
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="lima"><span class="v2-choice-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span><strong>Tengo vuelo hasta Lima</strong><small>Me falta llegar a Cusco.</small></label>
+              <label class="v2-choice"><input type="radio" name="v2FlightStatus" value="complete"><span class="v2-choice-icon"><i class="fas fa-check-circle" aria-hidden="true"></i></span><strong>Tengo vuelos a Cusco</strong><small>Quiero armar mi paquete.</small></label>
             </div>
-            <div class="v2-fields" id="v2OriginWrap"><div class="v2-field"><label for="v2Origin">Ciudad desde donde viajarás</label><select id="v2Origin">
-              <option value="">Seleccionar ciudad</option><option value="BAQ">Barranquilla (BAQ)</option><option value="BOG">Bogotá (BOG)</option><option value="MDE">Medellín (MDE)</option><option value="CLO">Cali (CLO)</option><option value="LIM">Lima (LIM)</option><option value="SCL">Santiago (SCL)</option><option value="EZE">Buenos Aires (EZE)</option><option value="MEX">Ciudad de México (MEX)</option><option value="MIA">Miami (MIA)</option><option value="OTHER">Otra ciudad (se elegirá en el buscador)</option>
-            </select></div></div>
-            <label id="v2LimaNightWrap" class="v2-checkline" hidden><input type="checkbox" id="v2LimaNight"><span>Quiero evaluar una noche adicional en Lima, antes de viajar a Cusco.</span></label>
-            <p id="v2FlightNotice" class="v2-hint" role="status"></p>
           </fieldset>
-          <fieldset class="v2-step" data-step="2" hidden><legend>¿Cuándo estarás en Cusco?</legend>
+
+          <fieldset class="v2-step" data-step="2" hidden>
+            <div id="v2FlightNoGroup" hidden>
+              <h2 class="v2-question">¿Deseas buscar vuelos a Cusco?</h2>
+              <div class="v2-options v2-options--two">
+                <label class="v2-choice"><input type="radio" name="v2FlightChoice" value="search"><span class="v2-choice-icon"><i class="fas fa-search" aria-hidden="true"></i></span><strong>Sí, buscar vuelos</strong><small>Desde mi ciudad.</small></label>
+                <label class="v2-choice"><input type="radio" name="v2FlightChoice" value="skip"><span class="v2-choice-icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span><strong>Por ahora no deseo vuelos</strong><small>Solo armar mi paquete.</small></label>
+              </div>
+              <div id="v2OriginWrap" class="v2-flight-extra" hidden>
+                <div class="v2-field">
+                  <label for="v2Origin">Ciudad de partida</label>
+                  <select id="v2Origin">
+                    <option value="">Selecciona tu ciudad</option>
+                    <option value="BAQ">Barranquilla (BAQ)</option><option value="BOG">Bogotá (BOG)</option>
+                    <option value="MDE">Medellín (MDE)</option><option value="CLO">Cali (CLO)</option>
+                    <option value="LIM">Lima (LIM)</option><option value="SCL">Santiago (SCL)</option>
+                    <option value="EZE">Buenos Aires (EZE)</option><option value="MEX">Ciudad de México (MEX)</option>
+                    <option value="MIA">Miami (MIA)</option><option value="OTHER">Otra ciudad</option>
+                  </select>
+                </div>
+                <a id="v2FlightSearch" class="v2-search-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Consultar vuelos <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+            </div>
+            <div id="v2FlightLimaGroup" hidden>
+              <h2 class="v2-question">¿Qué prefieres hacer en Lima?</h2>
+              <p class="v2-short-intro">Puedes conocer Lima 1 o 2 noches, o continuar directo a Cusco.</p>
+              <div class="v2-options v2-options--three">
+                <label class="v2-choice"><input type="radio" name="v2LimaOption" value="0"><span class="v2-choice-icon"><i class="fas fa-plane" aria-hidden="true"></i></span><strong>Ir directo a Cusco</strong><small>Sin noches en Lima.</small></label>
+                <label class="v2-choice"><input type="radio" name="v2LimaOption" value="1"><span class="v2-choice-icon"><i class="fas fa-moon" aria-hidden="true"></i></span><strong>1 noche en Lima</strong><small>Un día para conocer.</small></label>
+                <label class="v2-choice"><input type="radio" name="v2LimaOption" value="2"><span class="v2-choice-icon"><i class="fas fa-city" aria-hidden="true"></i></span><strong>2 noches en Lima</strong><small>Explorar con calma.</small></label>
+              </div>
+              <label class="v2-inline-choice" id="v2LimaTourWrap" hidden><input id="v2LimaTours" type="checkbox"><span>También quiero hacer turismo en Lima.</span></label>
+              <p class="v2-short-note">La estancia y los vuelos desde Lima se cotizan por separado.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="v2-step" data-step="3" hidden>
+            <legend>¿Cuándo estarás en Cusco?</legend>
             <div class="v2-fields">
-              <div class="v2-field"><label for="v2Start">Fecha de llegada</label><input type="date" id="v2Start" required></div>
-              <div class="v2-field"><label for="v2End">Fecha de salida</label><input type="date" id="v2End" required></div>
-              <div class="v2-field"><label for="v2ArrivalTime">Hora de llegada</label><input type="time" id="v2ArrivalTime" value="09:00" required></div>
-              <div class="v2-field"><label for="v2DepartureTime">Hora de salida</label><input type="time" id="v2DepartureTime" value="20:00" required></div>
+              <div class="v2-field"><label for="v2Start">Llegada a Cusco</label><input id="v2Start" type="date" required></div>
+              <div class="v2-field"><label for="v2End">Salida de Cusco</label><input id="v2End" type="date" required></div>
+              <div class="v2-field"><label for="v2ArrivalTime">Hora de llegada</label><input id="v2ArrivalTime" type="time" value="09:00" required></div>
+              <div class="v2-field"><label for="v2DepartureTime">Hora de salida</label><input id="v2DepartureTime" type="time" value="20:00" required></div>
             </div>
-            <p class="v2-hint">Actualmente el generador prepara paquetes de 3 a 10 días. Si no tienes vuelos confirmados, coloca horarios tentativos y podrás cambiarlos.</p>
+            <p class="v2-short-note">¿Sin vuelos confirmados? Puedes usar horarios aproximados.</p>
           </fieldset>
-          <fieldset class="v2-step" data-step="3" hidden><legend>¿Quiénes viajan?</legend>
+
+          <fieldset class="v2-step" data-step="4" hidden>
+            <legend>¿Quiénes viajan?</legend>
             <div class="v2-fields">
-              <div class="v2-field"><label for="v2Adults">Adultos (12+ años)</label><input type="number" id="v2Adults" min="1" max="12" value="2" required></div>
-              <div class="v2-field"><label for="v2Children">Niños (3 a 11 años)</label><input type="number" id="v2Children" min="0" max="9" value="0" required></div>
-              <div class="v2-field"><label for="v2Pace">Estilo de viaje</label><select id="v2Pace"><option value="equilibrado">Equilibrado: cultura y naturaleza</option><option value="tranquilo">Tranquilo: pocas caminatas</option><option value="aventurero">Aventura y trekking</option></select></div>
-              <div class="v2-field"><label for="v2Nationality">Nacionalidad para tarifas</label><select id="v2Nationality"><option value="foreign">Extranjeros</option><option value="andean_community">Comunidad Andina</option><option value="national">Peruanos</option></select></div>
+              <div class="v2-field"><label for="v2Adults">Adultos (12+ años)</label><input id="v2Adults" type="number" min="1" max="12" step="1" value="2" required></div>
+              <div class="v2-field"><label for="v2Children">Niños (3 a 11 años)</label><input id="v2Children" type="number" min="0" max="9" step="1" value="0" required></div>
+              <div class="v2-field"><label for="v2Pace">Tipo de viaje</label><select id="v2Pace"><option value="equilibrado">Cultura y naturaleza</option><option value="tranquilo">Más tranquilo</option><option value="aventurero">Aventura y trekking</option></select></div>
+              <div class="v2-field"><label for="v2Nationality">Nacionalidad</label><select id="v2Nationality"><option value="foreign">Extranjeros</option><option value="andean_community">Comunidad Andina</option><option value="national">Peruanos</option></select></div>
             </div>
-            <label class="v2-checkline"><input type="checkbox" id="v2Seniors"><span>Viajan adultos de 60 años o más. Dar prioridad a paseos de menor esfuerzo.</span></label>
-            <label class="v2-checkline"><input type="checkbox" id="v2Teen"><span>Viajan menores de 12 a 15 años. Tener en cuenta el ritmo familiar.</span></label>
-            <label class="v2-checkline"><input type="checkbox" id="v2Car"><span>Quiero comparar la alternativa económica por Hidroeléctrica (implica traslados largos y caminata).</span></label>
-            <p class="v2-hint">Recomendamos Machu Picchu y Valle Sagrado. El circuito clásico se solicita según disponibilidad oficial de ingresos, no se garantiza solo por comprar con anticipación.</p>
+            <label class="v2-inline-choice"><input type="checkbox" id="v2Seniors"><span>Viajan adultos de 60 años o más.</span></label>
+            <label class="v2-inline-choice"><input type="checkbox" id="v2Teen"><span>Viajan jóvenes de 12 a 15 años.</span></label>
+            <label class="v2-inline-choice"><input type="checkbox" id="v2Car"><span>Me interesa Machu Picchu por Hidroeléctrica.</span></label>
           </fieldset>
-          <p id="v2Error" class="v2-error" role="alert"></p>
-          <div class="v2-actions"><button type="button" id="v2Back" class="v2-btn v2-btn--secondary" hidden>Atrás</button><button type="submit" id="v2Next" class="v2-btn">Continuar</button></div>
-          <small class="v2-mini">Cotización estimada. La disponibilidad y los precios finales de entradas, trenes y hoteles deben ser confirmados antes de reservar. El pago en línea está desactivado durante las pruebas de V2.</small>
+
+          <p id="v2Error" class="v2-error" role="alert" aria-live="polite"></p>
+          <div class="v2-actions">
+            <button id="v2Back" class="v2-btn v2-btn--secondary" type="button" hidden><i class="fas fa-arrow-left" aria-hidden="true"></i> Atrás</button>
+            <button id="v2Next" class="v2-btn" type="submit">Continuar <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+          <small class="v2-mini">Precios sujetos a disponibilidad. Sin pago durante las pruebas.</small>
         </form>
       </div>
     </section>
+
     <div class="v2-live-banner" role="status">
-      <p id="v2ReadyMessage">Aquí podrás personalizar tu viaje; todos los servicios se confirman al verificar disponibilidad.</p>
-      <a id="v2FlightLink" href="https://latamexpeditions.com/vuelos.html" target="_blank" rel="noopener noreferrer" hidden>Buscar vuelos</a>
-      <button type="button" id="v2Edit" class="v2-btn v2-btn--secondary">Cambiar respuestas</button>
+      <p id="v2ReadyMessage">Personaliza los servicios de tu viaje.</p>
+      <a id="v2FlightLink" href="https://latamexpeditions.com/vuelos.html" target="_blank" rel="noopener noreferrer" hidden>Ver vuelos</a>
+      <button type="button" id="v2Edit" class="v2-btn v2-btn--secondary">Editar respuestas</button>
     </div>
 
     <section class="quote-content">
@@ -848,6 +885,6 @@
     });
   </script>
   <script src="./assets/js/components/coupon-popup.js?v=20260804-83"></script>
-  <script src="./assets/js/pages/quote-packages-v2.js?v=1"></script>
+  <script src="./assets/js/pages/quote-packages-v2.js?v=2"></script>
 </body>
 </html>
