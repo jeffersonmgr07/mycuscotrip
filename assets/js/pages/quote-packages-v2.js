@@ -1,4 +1,4 @@
-/* Cotizador V2: asistente de preparación y preferencias; conserva el motor y precios de la V1. */
+/* Cotizador V2: flujo de vuelos condicional. No altera el motor ni la V1. */
 (function () {
   "use strict";
   const $ = id => document.getElementById(id);
@@ -7,137 +7,199 @@
   const form = $("v2Form");
   if (!form) return;
   document.body.classList.toggle("v2-ready", ready);
+
+  const pad = number => String(number).padStart(2, "0");
+  const iso = date => [date.getFullYear(),pad(date.getMonth()+1),pad(date.getDate())].join("-");
+  const today = iso(new Date());
+  ["v2Start","v2End"].forEach(id => { $(id).min=today; });
+  const value = id => $(id)?.value || "";
+  const radio = name => form.querySelector('input[name="'+name+'"]:checked')?.value || "";
+  const chosenFlightStatus = () => radio("v2FlightStatus");
+  const chosenFlightChoice = () => radio("v2FlightChoice");
+  const limaNights = () => Number(radio("v2LimaOption") || 0);
+  const currentFlow = () => chosenFlightStatus()==="complete" ? [1,3,4] : [1,2,3,4];
   let step = 1;
-  const pad = n => String(n).padStart(2, "0");
-  const iso = d => [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join("-");
-  const now = new Date();
-  const today = iso(now);
-  ["v2Start", "v2End"].forEach(id => { $(id).min = today; });
-  function value(id) { return ($(id) && $(id).value) || ""; }
-  function chosenFlightStatus() { return (form.querySelector('input[name="v2FlightStatus"]:checked') || {}).value || "complete"; }
-  function switchStep(next) {
-    step = Math.max(1,Math.min(3,next));
-    document.querySelectorAll(".v2-step").forEach(el => el.hidden = Number(el.dataset.step) !== step);
-    document.querySelectorAll(".v2-progress span").forEach((el,i) => {
-      el.classList.toggle("is-current",i+1===step);
-      el.classList.toggle("is-done",i+1<step);
+
+  function updateProgress() {
+    const flow=currentFlow(),index=Math.max(0,flow.indexOf(step));
+    $("v2ProgressLabel").textContent="Paso "+(index+1)+" de "+flow.length;
+    $("v2ProgressFill").style.width=((index+1)/flow.length*100)+"%";
+    $("v2Back").hidden=index===0;
+    $("v2Next").innerHTML=index===flow.length-1
+      ? 'Crear mi itinerario <i class="fas fa-arrow-right" aria-hidden="true"></i>'
+      : 'Continuar <i class="fas fa-arrow-right" aria-hidden="true"></i>';
+  }
+  function switchStep(next,{scroll=true}={}) {
+    step=next;
+    document.querySelectorAll(".v2-step").forEach(section=>{
+      section.hidden=Number(section.dataset.step)!==step;
     });
-    $("v2Back").hidden = step === 1;
-    $("v2Next").textContent = step === 3 ? "Crear mi itinerario" : "Continuar";
-    $("v2Error").textContent = "";
-    $("v2Wizard").scrollIntoView({ behavior:"smooth", block:"start" });
+    syncDetails();
+    updateProgress();
+    $("v2Error").textContent="";
+    if(scroll) {
+      $("v2Wizard").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+    }
   }
-  function flightNotice() {
-    const status = chosenFlightStatus();
-    $("v2OriginWrap").hidden = status !== "none";
-    $("v2LimaNightWrap").hidden = status !== "lima";
-    $("v2FlightNotice").textContent = status === "complete"
-      ? "Perfecto. Usa las fechas y horas de llegada y salida de Cusco para armar los recorridos."
-      : status === "lima"
-        ? "Para calcular los tours necesitamos las fechas de Cusco. El vuelo Lima–Cusco y una posible noche en Lima se revisarán aparte: todavía no están incluidos en el total."
-        : "Primero recomendamos comparar tus vuelos hasta Cusco. Puedes continuar con fechas tentativas y corregir el itinerario cuando confirmes tus horarios.";
+  function syncDetails() {
+    const status=chosenFlightStatus(),choice=chosenFlightChoice();
+    $("v2FlightNoGroup").hidden=status!=="none";
+    $("v2FlightLimaGroup").hidden=status!=="lima";
+    $("v2OriginWrap").hidden=status!=="none" || choice!=="search";
+    $("v2LimaTourWrap").hidden=status!=="lima" || limaNights()===0;
+    updateFlightSearchLink();
   }
-  form.querySelectorAll('input[name="v2FlightStatus"]').forEach(r => r.addEventListener("change",flightNotice));
-  $("v2Start").addEventListener("change", () => {
-    $("v2End").min = value("v2Start") || today;
-    if(value("v2End") && value("v2End") < value("v2Start")) $("v2End").value = "";
+  const flightOrigin=params.get("v2Origin")||value("v2Origin");
+  function buildFlightLink() {
+    const status=params.get("v2FlightStatus")||chosenFlightStatus();
+    const choice=params.get("v2FlightChoice")||chosenFlightChoice();
+    if(status==="complete" || (status==="none"&&choice!=="search"))return "";
+    const origin=status==="lima"?"LIM":(params.get("v2Origin")||value("v2Origin"));
+    if(!origin)return "";
+    if(origin==="BAQ"||origin==="OTHER"){
+      const city=origin==="BAQ"?"Barranquilla":"otra ciudad";
+      const text="Hola, quiero buscar vuelos desde "+city+" a Cusco para mi viaje. ¿Podrían ayudarme?";
+      return "https://wa.me/51900608980?text="+encodeURIComponent(text);
+    }
+    const query=new URLSearchParams({origin,destination:"CUZ",trip:"roundtrip",cabin:"economy"});
+    const start=params.get("startDate")||value("v2Start"),end=params.get("endDate")||value("v2End");
+    if(start && start>=today)query.set("departure",start);
+    if(end && end>=start && start>=today)query.set("return",end);
+    const adults=params.get("adults")||value("v2Adults");
+    const children=params.get("children")||value("v2Children");
+    if(adults)query.set("adults",adults);
+    if(children)query.set("children",children);
+    return "https://latamexpeditions.com/vuelos.html?"+query.toString();
+  }
+  function updateFlightSearchLink() {
+    const link=$("v2FlightSearch");
+    if(chosenFlightStatus()!=="none" || chosenFlightChoice()!=="search" || !value("v2Origin")){
+      link.hidden=true;link.removeAttribute("href");return;
+    }
+    const url=buildFlightLink();
+    link.hidden=!url;
+    if(url){
+      link.href=url;
+      link.innerHTML=url.startsWith("https://wa.me/")?'Pedir ayuda con vuelos <i class="fas fa-external-link-alt" aria-hidden="true"></i>':'Ver vuelos a Cusco <i class="fas fa-external-link-alt" aria-hidden="true"></i>';
+    }
+  }
+  form.querySelectorAll('input[name="v2FlightStatus"]').forEach(input=>input.addEventListener("change",()=>{
+    syncDetails();updateProgress();
+  }));
+  form.querySelectorAll('input[name="v2FlightChoice"],input[name="v2LimaOption"]').forEach(input=>input.addEventListener("change",syncDetails));
+  $("v2Origin").addEventListener("change",updateFlightSearchLink);
+  $("v2Start").addEventListener("change",()=>{
+    $("v2End").min=value("v2Start")||today;
+    if(value("v2End")&&value("v2End")<value("v2Start"))$("v2End").value="";
   });
-  function validStep() {
-    $("v2Error").textContent = "";
-    if (step === 1) {
-      if (chosenFlightStatus() === "none" && !value("v2Origin")) return "Selecciona tu ciudad de origen.";
+
+  function validateStep() {
+    if(step===1 && !chosenFlightStatus())return "Selecciona una opción para continuar.";
+    if(step===2){
+      if(chosenFlightStatus()==="none"){
+        if(!chosenFlightChoice())return "¿Deseas buscar vuelos o continuar sin ellos?";
+        if(chosenFlightChoice()==="search"&&!value("v2Origin"))return "Elige tu ciudad de partida.";
+      }
+      if(chosenFlightStatus()==="lima"&&!radio("v2LimaOption"))return "Elige cómo deseas continuar desde Lima.";
     }
-    if (step === 2) {
-      const a = value("v2Start"), b = value("v2End");
-      if (!a || !b || a < today || b < a) return "Indica fechas de llegada y salida válidas.";
-      const days = Math.round((Date.parse(b+"T12:00:00Z")-Date.parse(a+"T12:00:00Z"))/86400000)+1;
-      if (days < 3 || days > 10) return "El motor actual arma paquetes de 3 a 10 días. Para otras duraciones, solicita un viaje personalizado.";
-      if (!value("v2ArrivalTime") || !value("v2DepartureTime")) return "Indica tus horarios aproximados en Cusco.";
+    if(step===3){
+      const a=value("v2Start"),b=value("v2End");
+      if(!a||!b||a<today||b<a)return "Indica fechas válidas de llegada y salida.";
+      const days=Math.round((Date.parse(b+"T12:00:00Z")-Date.parse(a+"T12:00:00Z"))/86400000)+1;
+      if(days<3||days>10)return "Elige entre 3 y 10 días en Cusco.";
+      if(!value("v2ArrivalTime")||!value("v2DepartureTime"))return "Indica los horarios de llegada y salida.";
     }
-    if (step === 3) {
-      if (Number(value("v2Adults")) < 1 || Number(value("v2Adults")) > 12 || Number(value("v2Children")) < 0) return "Revisa la cantidad de viajeros.";
+    if(step===4){
+      const adults=Number(value("v2Adults")),children=Number(value("v2Children"));
+      if(!Number.isInteger(adults)||adults<1||adults>12||!Number.isInteger(children)||children<0||children>9)
+        return "Revisa la cantidad de viajeros.";
     }
     return "";
   }
-  function buildFlightLink() {
-    const status = params.get("v2FlightStatus") || chosenFlightStatus();
-    if (status === "complete") return "";
-    const rawOrigin=params.get("v2Origin")||value("v2Origin");
-    if(status==="none" && (rawOrigin==="BAQ" || rawOrigin==="OTHER")) {
-      const place=rawOrigin==="BAQ"?"Barranquilla":"mi ciudad";
-      const msg="Hola, necesito cotizar vuelos desde "+place+" a Cusco para viajar del "+(params.get("startDate")||value("v2Start"))+" al "+(params.get("endDate")||value("v2End"))+". ¿Podrían ayudarme con opciones y horarios?";
-      return "https://wa.me/51900608980?text="+encodeURIComponent(msg);
-    }
-    const q = new URLSearchParams({
-      origin: status === "lima" ? "LIM" : (params.get("v2Origin") || value("v2Origin") || "LIM"),
-      destination:"CUZ", trip:"roundtrip",
-      departure:params.get("startDate") || value("v2Start"),
-      return:params.get("endDate") || value("v2End"),
-      adults:params.get("adults") || value("v2Adults") || "2",
-      children:params.get("children") || value("v2Children") || "0",
-      cabin:"economy"
-    });
-    return "https://latamexpeditions.com/vuelos.html?" + q.toString();
-  }
+
   function completeWizard() {
-    const url = new URL(window.location.href);
-    const inputs = {
-      v2ready:"1", source:"cotizador-v2-publico",
-      startDate:value("v2Start"), endDate:value("v2End"),
-      arrivalTime:value("v2ArrivalTime"), departureTime:value("v2DepartureTime"),
-      adults:value("v2Adults"), children:value("v2Children"),
-      nationality:value("v2Nationality"), currency:value("v2Nationality")==="national"?"PEN":"USD",
-      v2FlightStatus:chosenFlightStatus(),v2Origin:value("v2Origin"),
-      v2LimaNight:$("v2LimaNight").checked?"1":"0",
+    const nights=chosenFlightStatus()==="lima" ? limaNights() : 0;
+    const url=new URL(window.location.href);
+    const choices={
+      v2ready:"1",source:"cotizador-v2-publico",
+      startDate:value("v2Start"),endDate:value("v2End"),
+      arrivalTime:value("v2ArrivalTime"),departureTime:value("v2DepartureTime"),
+      adults:value("v2Adults"),children:value("v2Children"),
+      nationality:value("v2Nationality"),currency:value("v2Nationality")==="national"?"PEN":"USD",
+      v2FlightStatus:chosenFlightStatus(),
+      v2FlightChoice:chosenFlightStatus()==="none"?chosenFlightChoice():"",
+      v2Origin:chosenFlightStatus()==="none"&&chosenFlightChoice()==="search"?value("v2Origin"):"",
+      v2LimaNights:String(nights),v2LimaNight:nights>0?"1":"0",
+      v2LimaTours:nights>0&&$("v2LimaTours").checked?"1":"0",
       v2Seniors:$("v2Seniors").checked?"1":"0",
       v2Teen:$("v2Teen").checked?"1":"0",
       v2Pace:value("v2Pace"),v2Car:$("v2Car").checked?"1":"0"
     };
-    Object.keys(inputs).forEach(key => url.searchParams.set(key,inputs[key]));
+    Object.entries(choices).forEach(([key,val])=>url.searchParams.set(key,val));
     window.location.assign(url.href);
   }
-  $("v2Back").addEventListener("click", () => switchStep(step-1));
-  form.addEventListener("submit", ev => {
-    ev.preventDefault();
-    const error = validStep();
-    if (error) { $("v2Error").textContent = error; return; }
-    if (step < 3) switchStep(step+1);
+
+  $("v2Back").addEventListener("click",()=>{
+    const flow=currentFlow(),idx=flow.indexOf(step);
+    if(idx>0)switchStep(flow[idx-1]);
+  });
+  form.addEventListener("submit",event=>{
+    event.preventDefault();
+    const problem=validateStep();
+    if(problem){$("v2Error").textContent=problem;return;}
+    const flow=currentFlow(),idx=flow.indexOf(step);
+    if(idx<flow.length-1)switchStep(flow[idx+1]);
     else completeWizard();
   });
-  function populatePrefill() {
-    const keys = {
-      "v2Start":"startDate","v2End":"endDate","v2ArrivalTime":"arrivalTime",
-      "v2DepartureTime":"departureTime","v2Adults":"adults","v2Children":"children",
-      "v2Nationality":"nationality","v2Origin":"v2Origin","v2Pace":"v2Pace"
+
+  function populatePrefill(){
+    const fields={
+      v2Start:"startDate",v2End:"endDate",v2ArrivalTime:"arrivalTime",
+      v2DepartureTime:"departureTime",v2Adults:"adults",v2Children:"children",
+      v2Nationality:"nationality",v2Origin:"v2Origin",v2Pace:"v2Pace"
     };
-    Object.entries(keys).forEach(([id,key])=>{if(params.has(key) && $(id)) $(id).value=params.get(key);});
-    ["v2LimaNight","v2Seniors","v2Teen","v2Car"].forEach(id=>{if(params.get(id)==="1")$(id).checked=true;});
-    const status=params.get("v2FlightStatus");
-    const radio = status && form.querySelector('input[name="v2FlightStatus"][value="'+status+'"]');
-    if(radio) radio.checked=true;
+    Object.entries(fields).forEach(([id,key])=>{if(params.has(key))$(id).value=params.get(key);});
+    ["v2LimaTours","v2Seniors","v2Teen","v2Car"].forEach(id=>{if(params.get(id)==="1")$(id).checked=true;});
+    const choices={
+      v2FlightStatus:params.get("v2FlightStatus"),
+      v2FlightChoice:params.get("v2FlightChoice"),
+      v2LimaOption:params.get("v2LimaNights")||(params.get("v2LimaNight")==="1"?"1":null)
+    };
+    Object.entries(choices).forEach(([name,val])=>{
+      if(val!==null&&val!==""){
+        const item=[...form.querySelectorAll('input[name="'+name+'"]')].find(input=>input.value===val);
+        if(item)item.checked=true;
+      }
+    });
     $("v2End").min=value("v2Start")||today;
   }
   populatePrefill();
-  flightNotice();
-  switchStep(1);
-  if (!ready) return;
-  const flightStatus = params.get("v2FlightStatus")||"complete";
-  const flightLink = buildFlightLink();
-  const message = $("v2ReadyMessage"),link=$("v2FlightLink");
-  if(flightStatus==="complete") {
-    message.textContent="Tu itinerario se calcula con los horarios que indicaste. Elige hoteles y trenes para obtener un total estimado. Los servicios se confirman al verificar disponibilidad.";
-    link.hidden=true;
+  switchStep(1,{scroll:false});
+  if(!ready)return;
+
+  const flightStatus=params.get("v2FlightStatus")||"complete";
+  const flightLink=buildFlightLink();
+  const message=$("v2ReadyMessage"),link=$("v2FlightLink");
+  const nights=Number(params.get("v2LimaNights")||0);
+  if(flightStatus==="complete"){
+    message.textContent="Elige tus experiencias, hoteles y trenes.";
+  } else if(flightStatus==="lima"){
+    message.textContent=nights>0?"Elegiste "+nights+" noche"+(nights===1?"":"s")+" en Lima. Se cotiza aparte.":"Revisa tu conexión Lima–Cusco.";
   }else{
-    message.textContent=flightStatus==="lima"
-      ? "Tienes vuelos hasta Lima. Revisa el tramo Lima–Cusco antes de confirmar horarios; la posible noche en Lima no está incluida en el presupuesto."
-      : "Aún no tienes vuelos. Revisa rutas y tarifas verificables antes de cerrar el itinerario; el presupuesto de vuelos internacionales no está incluido.";
-    link.href=flightLink; link.hidden=false;
-    const assisted=flightLink.startsWith("https://wa.me/");
-    link.textContent=assisted?"Solicitar búsqueda asistida de vuelos":"Consultar vuelos en Latam Expeditions";
-    if(assisted)message.textContent+=" Para este aeropuerto todavía no hay selección directa en el buscador de Latam Expeditions.";
+    message.textContent=params.get("v2FlightChoice")==="skip"
+      ?"Tu paquete se cotiza sin vuelos."
+      :"Puedes consultar tus vuelos antes de reservar.";
   }
+  if(flightLink){
+    link.href=flightLink;
+    link.hidden=false;
+    link.textContent=flightLink.startsWith("https://wa.me/")?"Solicitar vuelos por WhatsApp":"Ver vuelos";
+  }else link.hidden=true;
+
   $("v2Edit").addEventListener("click",()=>{
-    const url=new URL(window.location.href);url.searchParams.delete("v2ready");window.location.assign(url.href);
+    const url=new URL(window.location.href);
+    url.searchParams.delete("v2ready");
+    window.location.assign(url.href);
   });
   const note = $("clientNotes");
   const snippets=[
@@ -147,7 +209,9 @@
     params.get("v2Seniors")==="1"?"Viajan personas de 60 años o más: priorizar rutas suaves.":"",
     params.get("v2Teen")==="1"?"Viajan menores entre 12 y 15 años.":"",
     params.get("v2Car")==="1"?"Desea consultar opción económica por Hidroeléctrica (NO cotizada en el total).":"",
-    params.get("v2LimaNight")==="1"?"Desea evaluar una noche adicional en Lima (NO cotizada).":""
+    Number(params.get("v2LimaNights")||0)>0?"Desea "+params.get("v2LimaNights")+" noche(s) en Lima (NO cotizado).":"",
+    params.get("v2LimaTours")==="1"?"Desea turismo en Lima (NO cotizado).":"",
+    params.get("v2FlightChoice")==="skip"?"No desea cotizar vuelos por ahora.":""
   ].filter(Boolean).join("\n");
   if(note && !note.value.includes("asistente V2")) note.value=(note.value?note.value+"\n":"")+snippets;
   function showRecommendation() {
