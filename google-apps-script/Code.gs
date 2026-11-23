@@ -1909,6 +1909,14 @@ function createPayPalOrder_(p) {
         couponStatus: couponValidation
       };
     }
+    if (couponValidation.campaign === 'black_friday_2026') {
+      const expectedTotal = round2_(Math.max(0, number_(row.TotalServicio,0)-number_(couponValidation.discountAmount,0)));
+      const recordedTotal = round2_(number_(row.MontoPagarAhora,0)+number_(row.SaldoPendiente,0));
+      if (Math.abs(expectedTotal-recordedTotal)>0.05 ||
+          Math.abs(number_(row.DescuentoCupon,0)-number_(couponValidation.discountAmount,0))>0.05)
+        return {ok:false,error:'Los importes del cupón cambiaron. Crea una nueva reserva.'};
+    }
+
   }
 
   const returnUrl = buildReturnUrl_(code);
@@ -2558,6 +2566,14 @@ function createMercadoPagoPreference_(p) {
       locale: row.IdiomaSolicitado || 'es'
     });
     if (!couponValidation.valid) return { ok: false, error: couponValidation.message || 'Cupón no disponible.', couponStatus: couponValidation };
+    if (couponValidation.campaign === 'black_friday_2026') {
+      const expectedTotal = round2_(Math.max(0, number_(row.TotalServicio,0)-number_(couponValidation.discountAmount,0)));
+      const recordedTotal = round2_(number_(row.MontoPagarAhora,0)+number_(row.SaldoPendiente,0));
+      if (Math.abs(expectedTotal-recordedTotal)>0.05 ||
+          Math.abs(number_(row.DescuentoCupon,0)-number_(couponValidation.discountAmount,0))>0.05)
+        return {ok:false,error:'Los importes del cupón cambiaron. Crea una nueva reserva.'};
+    }
+
   }
 
   if (row.CodigoCupon && mctBfIsCode_(row.CodigoCupon)) {
