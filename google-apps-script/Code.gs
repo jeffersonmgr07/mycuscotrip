@@ -1759,7 +1759,11 @@ function createPreReservation_(p) {
     });
     if (!validation.valid) return { ok: false, error: validation.message || 'Cupón inválido.', couponStatus: validation };
     couponData = validation;
-    couponDiscount = round2_(validation.discountAmount || calculateCouponDiscount_(validation, serviceTotal, currency));
+    // En Black Friday un subtotal elegible de 0 no debe convertirse en descuento
+    // sobre extras mediante el fallback histórico de valor truthy.
+    couponDiscount = validation.campaign === 'black_friday_2026'
+      ? round2_(validation.discountAmount)
+      : round2_(validation.discountAmount || calculateCouponDiscount_(validation, serviceTotal, currency));
 
     // Para las landings de pago completo, el backend verifica que el total
     // mostrado coincida con el cupón almacenado en Google Sheets.
