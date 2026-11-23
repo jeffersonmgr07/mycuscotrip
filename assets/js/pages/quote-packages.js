@@ -420,7 +420,16 @@
   }
 
   function calculateDurationFromDates(selectedDates) {
+    const previousStart = state.dates?.start ? formatISODate(state.dates.start) : "";
     const start = selectedDates?.[0] ? parseISODate(selectedDates[0]) : null;
+    const newStart = start ? formatISODate(start) : "";
+    if (previousStart !== newStart && state.manualDiscount?.campaign === "black_friday_2026") {
+      state.manualDiscount = null;
+      const input = $("#discountCodeInput");
+      if (input) input.value = "";
+      const message = $("#discountCodeMessage");
+      if (message) message.textContent = "La fecha cambió. Vuelve a aplicar tu cupón Black Friday.";
+    }
     const end = selectedDates?.[1] ? parseISODate(selectedDates[1]) : null;
     if (!start || !end) {
       state.dates = { start, end, days: 0, nights: 0 };
@@ -2440,6 +2449,7 @@
 
       const result = await window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
+        travelDate: state.dates.start ? formatISODate(state.dates.start) : "",
         subtotal: getDiscountableSubtotal(),
         currency: state.currency,
         locale: document.documentElement.lang || "es",
@@ -2461,6 +2471,7 @@
 
       state.manualDiscount = {
         code: result.couponCode || code,
+        campaign: result.campaign || "",
         type: String(result.type || "percent").toLowerCase() === "fixed" ? "fixed" : "percent",
         value: Number(result.value ?? result.discountPercent ?? 0),
         currency: result.currency || state.currency,
