@@ -12,6 +12,61 @@
     const openButton = document.getElementById("package-pay"), payButton = passengerForm.querySelector('[type="submit"]');
     const fields = new window.MctPackagePassengerFields(() => Number(get("adults").value) + Number(get("children").value));
     let busy = false, pending = null, reviewed = false, bookingCode = "", openedSignature = "";
+    let appliedCoupon = null;
+    const discountBox = document.createElement("div");
+    discountBox.className = "package-coupon-field";
+    discountBox.innerHTML = '<label for="package-coupon-code">Código promocional</label><div class="package-coupon-row"><input type="text" id="package-coupon-code" maxlength="45" autocomplete="off" placeholder="Ingresa tu cupón" aria-label="Código de descuento"><button type="button" id="package-coupon-apply" class="button button-secondary">Aplicar</button></div><p class="form-help" id="package-coupon-status" role="status" aria-live="polite">Black Friday: un cupón por compra, descuento según fecha de viaje.</p>';
+    form.insertBefore(discountBox, form.querySelector(".package-totals"));
+    const couponInput = discountBox.querySelector("#package-coupon-code");
+    const couponButton = discountBox.querySelector("#package-coupon-apply");
+    const couponStatus = discountBox.querySelector("#package-coupon-status");
+    function finalTotal(c = counts()) {
+      if (!c) return 0;
+      const value = appliedCoupon ? Number(appliedCoupon.value || 0) : 0;
+      const discount = appliedCoupon?.type === "fixed"
+        ? (appliedCoupon.currency === "USD" ? Math.min(c.total, value) : 0)
+        : c.total * Math.max(0, value) / 100;
+      return Math.round(Math.max(0, c.total - discount) * 100) / 100;
+    }
+    function clearCoupon(messageText) {
+      if (!appliedCoupon) return;
+      appliedCoupon = null;
+      pending = null; openedSignature = "";
+      couponInput.value = "";
+      couponStatus.textContent = messageText || "Vuelve a aplicar tu cupón.";
+      resetReview();
+      update();
+    }
+    couponInput.addEventListener("input", () => {
+      if (appliedCoupon) clearCoupon("Código modificado. Vuelve a aplicar el cupón.");
+    });
+    couponButton.addEventListener("click", async () => {
+      const code = couponInput.value.trim().toUpperCase();
+      const c = counts(), date = get("start").value;
+      if (!code || !date || !c) { couponStatus.textContent = "Elige tu fecha y escribe un código válido."; return; }
+      couponButton.disabled = true;
+      couponStatus.textContent = "Validando el descuento…";
+      try {
+        const api = window.MyCuscoTripApiClient;
+        if (!api?.validateCoupon) throw Error("Validación de cupones no disponible.");
+        const response = await api.validateCoupon({
+          couponCode: code, travelDate: date, subtotal: c.total,
+          currency: "USD", locale: "es", productId: product.id, page: location.pathname
+        });
+        if (!response?.valid) throw Error(response?.message || "Cupón inválido.");
+        appliedCoupon = {
+          couponCode: response.couponCode || code, type: response.type || "percent",
+          value: Number(response.value || 0), currency: response.currency || "USD",
+          campaign: response.campaign || ""
+        };
+        couponInput.value = appliedCoupon.couponCode;
+        couponStatus.textContent = "Cupón aplicado: " + (response.label || (appliedCoupon.value + "% de descuento"));
+        pending = null; openedSignature = ""; resetReview(); update();
+      } catch (err) {
+        appliedCoupon = null; couponStatus.textContent = err.message || "No se pudo aplicar el cupón.";
+        update();
+      } finally { couponButton.disabled = false; }
+    });
     function newReservationCode() {
       const bytes = new Uint8Array(3);
       crypto.getRandomValues(bytes);
@@ -25,12 +80,18 @@
     function resetReview() { reviewed = false; review.hidden = true; payButton.textContent = "Continuar"; }
     function update() {
       const c = counts();
-      document.getElementById("package-total").textContent = c ? money(c.total) : "—";
+      document.getElementById("package-total").textContent = c ? money(finalTotal(c)) : "—";
       const breakdown = document.getElementById("package-breakdown");
       breakdown.replaceChildren();
       if(c) for(const [label,n,price] of [["Adultos",c.adults,product.adultPrice],["Niños",c.children,product.childPrice]]) {
         const dt = document.createElement("dt"), dd = document.createElement("dd");
         dt.textContent = `${label}: ${n} × ${money(price)}`; dd.textContent = money(n*price); breakdown.append(dt,dd);
+      }
+      if (c && appliedCoupon) {
+        const dt = document.createElement("dt"), dd = document.createElement("dd");
+        dt.textContent = "Descuento " + appliedCoupon.couponCode;
+        dd.textContent = "- " + money(c.total - finalTotal(c));
+        breakdown.append(dt, dd);
       }
       document.querySelectorAll("[data-step]").forEach(b => { const input=get(b.dataset.count); b.disabled=Number(b.dataset.step)<0 ? Number(input.value)<=Number(input.min) : Number(input.value)>=Number(input.max); });
     }
@@ -38,7 +99,7 @@
     form.addEventListener("input",update); update();
     const today = new Intl.DateTimeFormat("en-CA", {timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
     if (window.flatpickr) {
-      window.flatpickr(get("start"), { locale: window.flatpickr.l10ns.es, dateFormat:"Y-m-d", altInput:true, altFormat:"j F Y", minDate:today, disableMobile:true, allowInput:false, onReady:(_,__,instance)=>instance.calendarContainer.classList.add("mct-package-calendar") });
+      window.flatpickr(get("start"), { locale: window.flatpickr.l10ns.es, dateFormat:"Y-m-d", altInput:true, altFormat:"j F Y", minDate:today, disableMobile:true, allowInput:false, onChange:()=>clearCoupon("Fecha modificada. Vuelve a aplicar tu cupón Black Friday."), onReady:(_,__,instance)=>instance.calendarContainer.classList.add("mct-package-calendar") });
       openButton.disabled = false; openButton.type = "submit";
     } else { document.getElementById("package-payment-message").textContent="No se pudo cargar el calendario. Recarga la página o contáctanos por WhatsApp."; }
     // Populate the same country and telephone controls used by the experience modal.
@@ -61,10 +122,10 @@
     form.addEventListener("submit",event=>{
       event.preventDefault(); if(!form.reportValidity()||!counts())return;
       if(!get("start").value||get("start").value<today){document.getElementById("package-payment-message").textContent="Elige una fecha de llegada válida.";return;}
-      const signature=JSON.stringify([get("start").value,counts()]);
+      const signature=JSON.stringify([get("start").value,counts(),appliedCoupon?.couponCode || ""]);
       if(signature!==openedSignature){pending=null;bookingCode=newReservationCode();fields.renderAdditionalPassengerFields();openedSignature=signature;}
       document.getElementById("passengerReservationCode").textContent=bookingCode;
-      document.getElementById("passengerPayNowAmount").textContent=money(counts().total);
+      document.getElementById("passengerPayNowAmount").textContent=money(finalTotal());
       resetReview();message.textContent="";modal.hidden=false;document.body.classList.add("passenger-modal-open");
       passengerForm.elements.holderFirstName.focus();
       tracking?.track?.("begin_checkout",{item_id:product.id,value:counts().total,currency:"USD"});
@@ -84,14 +145,14 @@
       }
       if(!reviewed){
         review.replaceChildren();const title=document.createElement("h3");title.textContent="Revisa tu reserva";review.append(title);
-        for(const text of [product.title,`Llegada: ${get("start").value}`,`${c.adults} adultos · ${c.children} niños`,`${holder.firstName} ${holder.lastName}`,`Total a pagar: ${money(c.total)}`,"No incluye alojamiento."]){const p=document.createElement("p");p.textContent=text;review.append(p);}
+        for(const text of [product.title,`Llegada: ${get("start").value}`,`${c.adults} adultos · ${c.children} niños`,`${holder.firstName} ${holder.lastName}`,`Total a pagar: ${money(finalTotal(c))}`,"No incluye alojamiento."]){const p=document.createElement("p");p.textContent=text;review.append(p);}
         review.hidden=false;reviewed=true;payButton.textContent="Continuar al pago";review.scrollIntoView?.({block:"nearest",behavior:"smooth"});return;
       }
       busy=true;const controls=[...passengerForm.querySelectorAll("input,select,button")];const disabled=controls.map(x=>x.disabled);controls.forEach(x=>x.disabled=true);
       try {
         const api=window.MyCuscoTripApiClient;
         if(!api||!await api.isBackendEnabled())throw Error("El pago no está disponible. Contáctanos por WhatsApp.");
-        if(!pending)pending={code:bookingCode,reservationCode:bookingCode,createdAt:new Date().toISOString(),source:"landing-paquetes-cusco",landingId:product.id,productId:product.id,productSlug:product.slug,productTitle:product.title,productType:"package",sourcePage:location.pathname,landingPath:location.pathname,date:get("start").value,adults:c.adults,children:c.children,infants:0,totalPassengers:c.adults+c.children,currency:"USD",paymentMode:"full",payNowValue:c.total,serviceTotalValue:c.total,payLaterValue:0,status:"pre_reservation",paymentStatus:"pending",holderIsPassenger:holderTravels,holder,passengers,travelers:{adults:c.adults,children:c.children,infants:0,passengers},accommodationIncluded:false,availabilityConfirmed:true,childEligibilityConfirmed:c.children>0,pricing:{subtotal:c.total,discount:0,total:c.total,currency:"USD"},services:[{id:product.id,title:product.title,date:get("start").value,lineTotal:c.total,extras:["Sin alojamiento"]}]};
+        if(!pending)pending={code:bookingCode,reservationCode:bookingCode,createdAt:new Date().toISOString(),source:"landing-paquetes-cusco",landingId:product.id,productId:product.id,productSlug:product.slug,productTitle:product.title,productType:"package",sourcePage:location.pathname,landingPath:location.pathname,date:get("start").value,adults:c.adults,children:c.children,infants:0,totalPassengers:c.adults+c.children,currency:"USD",paymentMode:"full",couponCode:appliedCoupon?.couponCode || "",appliedCoupon:appliedCoupon || null,payNowValue:finalTotal(c),serviceTotalValue:c.total,payLaterValue:0,status:"pre_reservation",paymentStatus:"pending",holderIsPassenger:holderTravels,holder,passengers,travelers:{adults:c.adults,children:c.children,infants:0,passengers},accommodationIncluded:false,availabilityConfirmed:true,childEligibilityConfirmed:c.children>0,pricing:{subtotal:c.total,discount:Math.round((c.total-finalTotal(c))*100)/100,total:finalTotal(c),currency:"USD"},services:[{id:product.id,title:product.title,date:get("start").value,lineTotal:c.total,extras:["Sin alojamiento"]}]};
         if(!pending.saved){
           message.textContent="Registrando tu reserva…";
           let result;
@@ -108,10 +169,10 @@
           document.getElementById("passengerReservationCode").textContent=pending.code;
         }
         message.textContent="Conectando con PayPal…";
-        const result=await api.createPayPalOrder({code:pending.code,reservationCode:pending.code,currency:"USD",amountToPayNowValue:c.total,productId:product.id,productTitle:product.title});
+        const result=await api.createPayPalOrder({code:pending.code,reservationCode:pending.code,currency:"USD",amountToPayNowValue:finalTotal(c),productId:product.id,productTitle:product.title});
         if(!result?.ok||result.mock||!result.approvalUrl)throw Error(result?.error||result?.message||"PayPal no devolvió el enlace de pago.");
         const url=new URL(result.approvalUrl);if(url.protocol!=="https:"||!/^(?:www\.)?(?:sandbox\.)?paypal\.com$/.test(url.hostname))throw Error("Enlace de pago no válido.");
-        try{sessionStorage.setItem(`mct_pending_payment_${pending.code}`,JSON.stringify({payload:{productId:product.id,productTitle:product.title,currency:"USD",payNowValue:c.total}}));}catch(_){}
+        try{sessionStorage.setItem(`mct_pending_payment_${pending.code}`,JSON.stringify({payload:{productId:product.id,productTitle:product.title,currency:"USD",payNowValue:finalTotal(c)}}));}catch(_){}
         location.assign(url.href);
       }catch(error){message.textContent=error.message||"No se pudo iniciar el pago.";}finally{busy=false;controls.forEach((x,i)=>x.disabled=disabled[i]);}
     });
