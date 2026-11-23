@@ -125,7 +125,7 @@ function mctBfState_(v,now) {
   if(String(v[3])==='BLOQUEADO')return 'BLOQUEADO';
   if(mctBfDateMs_(v[8]) && now>=mctBfDateMs_(v[8]))return 'VENCIDO';
   if(now>=MCT_BF26.end)return 'VENCIDO';
-  if(v[10]&&mctBfDateMs_(v[11])>now)return 'RESERVADO';
+  if(v[10]&&(mctBfDateMs_(v[11])>now||Boolean(v[12])))return 'RESERVADO';
   if(v[7])return 'ACTIVO';
   if(v[4])return 'ASIGNADO';
   return 'DISPONIBLE';
@@ -148,7 +148,7 @@ function mctBfValidate_(params,activate) {
       if(assigned && buyer && assigned!==buyer)throw new Error('Este cupón corresponde a otro correo.');
       if(p.reservationCode && assigned!==buyer)throw new Error('Debes reservar con el correo asociado al cupón.');
       var reserved=String(v[10]||''),until=mctBfDateMs_(v[11]);
-      if(reserved&&until>now&&reserved!==String(p.reservationCode||''))throw new Error('Este cupón está reservado en otra compra.');
+      if(reserved&&(until>now||Boolean(v[12]))&&reserved!==String(p.reservationCode||''))throw new Error('Este cupón está reservado en otra compra.');
       var activated=mctBfDateMs_(v[7]);
       if(!activated&&activate) {
         activated=now;v[7]=new Date(now);
@@ -197,8 +197,29 @@ function mctBfBindOrder_(code,reservationCode,providerOrder) {
     var x=mctBfFind_(code),v=x.data;
     if(String(v[10])!==String(reservationCode)||mctBfState_(v,Date.now())!=='RESERVADO')
       throw new Error('Cupón no reservado por esta compra.');
-    v[12]=mctBfClean_(providerOrder,120);v[15]=new Date();
+    v[12]=mctBfClean_(providerOrder,120);
+    // La orden de la pasarela puede capturarse después del hold inicial;
+    // mantener exclusividad hasta el vencimiento de cinco horas.
+    v[11]=new Date(mctBfDateMs_(v[8]));
+    v[15]=new Date();
     x.sheet.getRange(x.row,1,1,v.length).setValues([v]);
+  }finally{lock.releaseLock();}
+}
+/** Operación manual, solo editor. Verificar previamente que la orden no se haya cobrado.
+ * No recupera las cinco horas; la primera aplicación y vencimiento no cambian.
+ */
+function mctBfAdminLiberarReserva(codigo, codigoReserva, verificacion) {
+  if(verificacion!=='PAGO_NO_APROBADO_VERIFICADO')
+    throw new Error('Comprueba primero en la pasarela que no existe pago aprobado.');
+  var lock=LockService.getScriptLock();lock.waitLock(30000);
+  try {
+    var x=mctBfFind_(codigo),v=x.data;
+    if(String(v[10])!==String(codigoReserva)||v[3]==='UTILIZADO')
+      throw new Error('Reserva no encontrada o ya pagada.');
+    v[10]='';v[11]='';v[12]='';v[3]=v[7]?'ACTIVO':(v[4]?'ASIGNADO':'DISPONIBLE');
+    v[15]=new Date();
+    x.sheet.getRange(x.row,1,1,v.length).setValues([v]);
+    return {ok:true,venceEn:v[8]};
   }finally{lock.releaseLock();}
 }
 /** Se llama SOLO desde la confirmación de pago verificada por servidor. */
