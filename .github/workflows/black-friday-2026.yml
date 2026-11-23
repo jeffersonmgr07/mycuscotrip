@@ -17,9 +17,14 @@ jobs:
       - name: Check syntax
         run: |
           node --check < google-apps-script/Code.gs
+          node --check < google-apps-script/BlackFriday2026.gs
+          node --check assets/js/black-friday-claim.js
+          node --check assets/js/components/black-friday-badge.js
           node --check assets/js/pages/product.js
           node --check assets/js/pages/quote-packages.js
           node --check assets/js/pages/landing-paquetes-cusco.js
           for file in assets/js/pages/landing-machu-picchu-{tours,overnight-tours}*.js; do node --check "$file"; done
       - name: Black Friday fare and tier tests
-        run: node tests/check_package_checkout.cjs
+        run: |
+          node tests/check_package_checkout.cjs
+          node tests/check_bf26_100.cjs
