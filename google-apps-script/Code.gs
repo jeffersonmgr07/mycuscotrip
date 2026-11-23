@@ -1780,6 +1780,11 @@ function createPreReservation_(p) {
     }
   }
 
+  if (couponData && couponData.campaign === 'black_friday_2026' &&
+      getProp_('MCT_BF26_ENABLE_PAYMENTS', 'false') !== 'true') {
+    return {ok:false,error:'El descuento Black Friday está habilitado para cotizar, pero su pago online aún no está habilitado.'};
+  }
+
   const existing = findReservation_(code);
   if (existing) {
     return { ok: false, error: 'Ya existe una reserva con ese código. Intenta nuevamente.' };
@@ -1981,6 +1986,11 @@ function capturePayPalOrder_(p) {
   const captureId = getCaptureId_(capture);
   const currency = reservation.row.Moneda || getCaptureCurrency_(capture);
   const amount = round2_(reservation.row.MontoPagarAhora || getCaptureAmount_(capture));
+  if (completed && (clean_(reservation.row.PayPalOrderID) !== orderId ||
+      normalizeCurrency_(getCaptureCurrency_(capture)) !== normalizeCurrency_(currency) ||
+      Math.abs(round2_(getCaptureAmount_(capture)) - amount) > 0.01)) {
+    throw new Error('La captura PayPal no coincide con la orden o importe de la reserva. Revisión manual requerida.');
+  }
 
   appendPayment_(reservationCode, 'PayPal', capture.status || 'CAPTURED', currency, amount, orderId, captureId, '', '', capture);
 
@@ -2617,6 +2627,13 @@ function captureMercadoPagoPayment_(p) {
   const amount = round2_(payment.transaction_amount || reservation.row.MontoPagarAhora || 0);
   const currency = normalizeCurrency_(payment.currency_id || reservation.row.Moneda || 'PEN');
   const finalPreferenceId = preferenceId || clean_(reservation.row.MercadoPagoPreferenceID);
+  if (approved && (
+      normalizeCode_(payment.external_reference || payment.metadata && payment.metadata.reservation_code || '') !== code ||
+      normalizeCurrency_(reservation.row.Moneda) !== currency ||
+      Math.abs(round2_(reservation.row.MontoPagarAhora) - amount) > 0.01 ||
+      (preferenceId && clean_(reservation.row.MercadoPagoPreferenceID) !== preferenceId))) {
+    throw new Error('El pago Mercado Pago no coincide con la reserva o el importe. Revisión manual requerida.');
+  }
 
   appendPayment_(code, 'Mercado Pago', status, currency, amount, '', '', finalPreferenceId, paymentId, payment);
 
@@ -2883,16 +2900,18 @@ function updateCouponStatus_(code, status) {
 }
 
 function markCouponRedeemedForReservation_(reservationCode) {
+  const bfReservation = findReservation_(reservationCode);
+  if (!bfReservation || !bfReservation.row.CodigoCupon) return;
+  if (mctBfIsCode_(bfReservation.row.CodigoCupon)) {
+    mctBfConsume_(bfReservation.row.CodigoCupon, reservationCode,
+      bfReservation.row.PayPalCaptureID || bfReservation.row.MercadoPagoPaymentID);
+    return;
+  }
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
     const reservation = findReservation_(reservationCode);
     if (!reservation || !reservation.row.CodigoCupon) return;
-    if (mctBfIsCode_(reservation.row.CodigoCupon)) {
-      mctBfConsume_(reservation.row.CodigoCupon, reservationCode,
-        reservation.row.PayPalCaptureID || reservation.row.MercadoPagoPaymentID);
-      return;
-    }
     const coupon = findCoupon_(reservation.row.CodigoCupon);
     if (!coupon) throw new Error('No se encontró el cupón de la reserva.');
     const uses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
