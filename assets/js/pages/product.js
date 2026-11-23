@@ -489,6 +489,12 @@ class MyCuscoTripProductPage {
           }
         },
         onChange: (_, dateStr, instance) => {
+          if (this.date !== dateStr && this.appliedCoupon?.campaign === "black_friday_2026") {
+            this.appliedCoupon = null;
+            const input = document.getElementById("discountCode");
+            if (input) input.value = "";
+            this.setDiscountMessage(this.t("product.enterDiscountCode", "Reaplica tu cupón para la nueva fecha."), false);
+          }
           this.date = dateStr;
           this.refreshItineraryDates();
           this.updatePricing();
@@ -2168,6 +2174,7 @@ class MyCuscoTripProductPage {
       const currentSummary = this.getBookingSummary?.() || {};
       const result = await window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
+        travelDate: this.date || "",
         subtotal: Number(currentSummary.rawServiceTotal || 0),
         currency: this.product?.currency || "USD",
         locale: document.documentElement.lang || "es",
@@ -2187,6 +2194,7 @@ class MyCuscoTripProductPage {
       const couponType = String(result.type || (result.discountPercent ? "percent" : "percent")).toLowerCase() === "fixed" ? "fixed" : "percent";
       this.appliedCoupon = {
         couponCode: result.couponCode || code,
+        campaign: result.campaign || "",
         type: couponType,
         value: Number(result.value ?? result.discountPercent ?? 0),
         currency: result.currency || this.product?.currency || "USD",
