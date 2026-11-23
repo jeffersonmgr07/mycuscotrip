@@ -490,6 +490,7 @@ class MyCuscoTripProductPage {
         },
         onChange: (_, dateStr, instance) => {
           if (this.date !== dateStr && this.appliedCoupon?.campaign === "black_friday_2026") {
+            window.MCTBlackFridayBadge?.clear();
             this.appliedCoupon = null;
             const input = document.getElementById("discountCode");
             if (input) input.value = "";
@@ -2090,6 +2091,20 @@ class MyCuscoTripProductPage {
     return Number(this.appliedCoupon?.value ?? this.appliedCoupon?.discountPercent ?? this.appliedCoupon?.percent ?? 0) || 0;
   }
 
+  getBlackFridayEligibleSubtotal(serviceTotal = null) {
+    const total = Math.max(0, Number(serviceTotal ?? this.dynamicQuote?.serviceTotal ?? 0));
+    if (this.productType === "package" && this.dynamicQuote) {
+      const sections = this.dynamicQuote.sections || [];
+      const base = sections.filter(s => ["tours", "machu_picchu"].includes(s.type))
+        .reduce((sum, section) => sum + Math.max(0, Number(section.total || 0)), 0);
+      return Math.min(total, base);
+    }
+    const adults = Math.max(0, Number(this.product?.basePricing?.adult || 0));
+    const child = Math.max(0, Number(this.product?.basePricing?.child ?? adults));
+    const base = this.adults * adults + this.children * child;
+    return Math.min(Math.max(base,0), serviceTotal == null ? base : total);
+  }
+
   getAppliedCouponDiscount(serviceTotal, currency = this.product?.currency || "USD") {
     const coupon = this.appliedCoupon;
     const total = Math.max(0, Number(serviceTotal || 0));
@@ -2105,7 +2120,9 @@ class MyCuscoTripProductPage {
       return Math.min(total, value);
     }
 
-    return Math.min(total, total * (value / 100));
+    const discountBase = coupon.campaign === "black_friday_2026"
+      ? this.getBlackFridayEligibleSubtotal(total) : total;
+    return Math.min(total, discountBase * (value / 100));
   }
 
   getDiscountInfo(serviceTotal, fullDiscountPercent = 0, currency = this.product?.currency || "USD") {
@@ -2176,6 +2193,8 @@ class MyCuscoTripProductPage {
         couponCode: code,
         travelDate: this.date || "",
         subtotal: Number(currentSummary.rawServiceTotal || 0),
+        eligibleSubtotal: this.getBlackFridayEligibleSubtotal(Number(currentSummary.rawServiceTotal || 0)),
+        activate: true,
         currency: this.product?.currency || "USD",
         locale: document.documentElement.lang || "es",
         productId: this.product?.id || this.product?.code || this.slug || "",
@@ -2204,6 +2223,12 @@ class MyCuscoTripProductPage {
       if (input) input.value = this.appliedCoupon.couponCode;
       this.setDiscountMessage(this.t("product.discountApplied", "Discount code applied successfully."), false);
       this.updatePricing();
+      if (result.campaign === "black_friday_2026") {
+        window.MCTBlackFridayBadge?.mount("#discountMessage", result, {
+          currency: this.product?.currency || "USD",
+          discountAmount: this.getAppliedCouponDiscount(Number(currentSummary.rawServiceTotal || 0))
+        });
+      } else window.MCTBlackFridayBadge?.clear();
     } catch (error) {
       console.error("No se pudo validar el cupón:", error);
       this.appliedCoupon = null;
@@ -2706,6 +2731,7 @@ class MyCuscoTripProductPage {
         payNow: `${currency} ${this.formatMoney(this.dynamicQuote.payNow || 0)}`,
         payLater: `${currency} ${this.formatMoney(this.dynamicQuote.payLater || 0)}`,
         rawServiceTotal: Number(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0),
+        rawEligibleSubtotal: this.getBlackFridayEligibleSubtotal(Number(this.dynamicQuote.serviceTotal || this.dynamicQuote.total || 0)),
         rawPayNow: Number(this.dynamicQuote.payNow || 0),
         rawPayLater: Number(this.dynamicQuote.payLater || 0),
         paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit"),
@@ -2777,6 +2803,7 @@ class MyCuscoTripProductPage {
       payNow: `${currency} ${this.formatMoney(payNow)}`,
       payLater: `${currency} ${this.formatMoney(payLater)}`,
       rawServiceTotal: Number(serviceTotal || 0),
+      rawEligibleSubtotal: this.getBlackFridayEligibleSubtotal(serviceTotal),
       rawPayNow: Number(payNow || 0),
       rawPayLater: Number(payLater || 0),
       paymentMode: this.paymentMode === "full" ? this.t("product.fullPayment", "Full payment") : this.t("product.depositOnly", "Reserve with a deposit"),
@@ -3024,6 +3051,8 @@ class MyCuscoTripProductPage {
       payNow: summary.payNow,
       payLater: summary.payLater,
       serviceTotalValue: Number(summary.rawServiceTotal || 0),
+      eligibleSubtotalValue: this.appliedCoupon?.campaign === "black_friday_2026"
+        ? Number(summary.rawEligibleSubtotal || 0) : Number(summary.rawServiceTotal || 0),
       payNowValue: Number(summary.rawPayNow || 0),
       payLaterValue: Number(summary.rawPayLater || 0),
       couponCode: this.appliedCoupon?.couponCode || summary.couponCode || "",
