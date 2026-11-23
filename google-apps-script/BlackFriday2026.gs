@@ -272,6 +272,47 @@ function mctBfReporteAdministrativo() {
     estados:counts,enviosDisponibles:MailApp.getRemainingDailyQuota()};
   Logger.log(JSON.stringify(result));return result;
 }
+/** Ejecutar desde Apps Script para actualizar un panel privado en Google Sheets.
+ * No existe endpoint público de exportación ni vista administrativa en GitHub Pages.
+ */
+function mctBfActualizarPanelPrivado() {
+  var lock=LockService.getScriptLock();lock.waitLock(30000);
+  try {
+    var book=SpreadsheetApp.openById(SPREADSHEET_ID),name='MCT_BF26_Panel';
+    var src=mctBfRows_(mctBfCouponsSheet_()),now=Date.now();
+    var headers=['Estado actual','Distribución','Código privado (solo administración)',
+      'Hash SHA-256','Cliente','Correo','Emisión','Primera aplicación',
+      'Vencimiento','% fijo','Reserva','Bloqueada hasta','Orden proveedor',
+      'Transacción','Utilizado el'];
+    var sh=book.getSheetByName(name);
+    if(!sh)sh=book.insertSheet(name);
+    sh.clearContents();
+    sh.getRange(1,1,1,headers.length).setValues([headers]);
+    if(src.length){
+      var data=src.map(function(x){var v=x.data;return [mctBfState_(v,now),v[2],v[1],
+        v[0],v[5],v[4],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14]];});
+      sh.getRange(2,1,data.length,headers.length).setValues(data);
+    }
+    sh.getRange(1,1,1,headers.length).setFontWeight('bold').setBackground('#073b2b').setFontColor('#ffffff');
+    sh.setFrozenRows(1);
+    return {ok:true,total:src.length,hoja:name,actualizadoEn:new Date().toISOString()};
+  } finally {lock.releaseLock();}
+}
+/** Refresca estado de vencidos en la tabla principal (no reactiva cupones). */
+function mctBfActualizarEstados() {
+  var lock=LockService.getScriptLock();lock.waitLock(30000);
+  try {
+    var sh=mctBfCouponsSheet_(),rows=mctBfRows_(sh),changes=0,now=Date.now();
+    rows.forEach(function(r){
+      var state=mctBfState_(r.data,now);
+      if(String(r.data[3])!==state){
+        sh.getRange(r.row,4).setValue(state);changes++;
+      }
+    });
+    return {ok:true,cambios:changes};
+  }finally{lock.releaseLock();}
+}
+
 function mctBfLeadFind_(sh,email) {
   return mctBfRows_(sh).find(function(r){return mctBfEmail_(r.data[0])===email;});
 }
