@@ -355,7 +355,10 @@ function doGet(e) {
   try {
     const params = e && e.parameter || {};
     const action = String(params.action || 'health').trim();
-    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script', version: BACKEND_VERSION, time: new Date().toISOString() });
+    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script',
+      version: BACKEND_VERSION, time: new Date().toISOString(),
+      blackFriday2026Ready: typeof mctBfValidate_ === 'function',
+      blackFriday100Coupons: typeof prepararCampanaBlackFridayMCT === 'function' });
     if (action === 'couponHealth') return json_(couponHealth_(params));
     if (action === 'validateCoupon') return json_(validateCoupon_(params));
     if (action === 'lookupReservation') return json_(lookupReservation_(params));
@@ -1976,11 +1979,26 @@ function capturePayPalOrder_(p) {
   const code = normalizeCode_(p.reservationCode || p.code || '');
   if (!orderId) return { ok: false, error: 'PayPal order ID requerido.' };
 
+  let reservation = code ? findReservation_(code) : findReservationByPayPalOrder_(orderId);
+  if (!reservation || clean_(reservation.row.PayPalOrderID) !== orderId)
+    return {ok:false,error:'La orden PayPal no está asociada a la reserva solicitada.'};
+  if (normalizeText_(reservation.row.EstadoPago).indexOf('pagado') >= 0)
+    return {ok:true,paid:true,alreadyPaid:true,reservationCode:reservation.row.CodigoReserva};
+  ensureReservationCanPay_(reservation);
+  if (mctBfIsCode_(reservation.row.CodigoCupon)) {
+    const original = parseJsonSafe_(reservation.row.JSON, {});
+    const verified = validateCoupon_({
+      couponCode: reservation.row.CodigoCupon,
+      travelDate: reservation.row.FechaViaje, email: reservation.row.TitularEmail,
+      reservationCode: reservation.row.CodigoReserva,
+      eligibleSubtotal: original.eligibleSubtotalValue == null
+        ? reservation.row.TotalServicio : original.eligibleSubtotalValue,
+      subtotal: reservation.row.TotalServicio, currency: reservation.row.Moneda
+    });
+    if (!verified.valid) return {ok:false,error:verified.message || 'Cupón vencido antes de confirmar pago.'};
+  }
   const capture = paypalRequest_('post', '/v2/checkout/orders/' + encodeURIComponent(orderId) + '/capture', {});
   const completed = String(capture.status || '').toUpperCase() === 'COMPLETED';
-
-  let reservation = code ? findReservation_(code) : findReservationByPayPalOrder_(orderId);
-  if (!reservation) return { ok: false, error: 'Reserva no encontrada para este pago.', paypal: capture };
 
   const reservationCode = reservation.row.CodigoReserva;
   const captureId = getCaptureId_(capture);
