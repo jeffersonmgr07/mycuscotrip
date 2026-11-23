@@ -1680,8 +1680,22 @@ function validateCoupon_(p) {
     return couponInvalid_(locale, 'COUPON_EMAIL_MISMATCH', true);
   }
 
+  const blackFriday = isBlackFriday2026Coupon_(row);
+  let blackFridayRate = null;
+  if (blackFriday) {
+    const requestedFor = normalizeCode_(p.reservationCode || '');
+    const reservedFor = normalizeCode_(row.CodigoReserva || '');
+    const reservedUntil = parseDate_(row.ReservadoHasta);
+    if (reservedFor && reservedUntil && reservedUntil.getTime() > now.getTime() && reservedFor !== requestedFor) {
+      return couponInvalid_(locale, 'COUPON_RESERVED', true);
+    }
+    blackFridayRate = blackFriday2026Rate_(p.travelDate || p.date || p.startDate, now);
+    if (!blackFridayRate) return couponInvalid_(locale, 'COUPON_TRAVEL_DATE_REQUIRED', true);
+  }
+
   const type = normalizeCouponType_(row.Tipo || (number_(row.Porcentaje, 0) > 0 ? 'percent' : 'fixed'));
-  const value = Math.max(0, number_(row.Valor, type === 'percent' ? number_(row.Porcentaje, 0) : 0));
+  const value = blackFriday ? blackFridayRate.percent :
+    Math.max(0, number_(row.Valor, type === 'percent' ? number_(row.Porcentaje, 0) : 0));
   const currency = normalizeCurrency_(row.Moneda || p.currency || 'USD');
   if (value <= 0) return couponInvalid_(locale, 'COUPON_INVALID_VALUE', true);
 
@@ -1703,6 +1717,8 @@ function validateCoupon_(p) {
     type: type,
     value: value,
     currency: currency,
+    campaign: blackFriday ? 'black_friday_2026' : '',
+    daysUntilTravel: blackFridayRate ? blackFridayRate.days : null,
     discountPercent: type === 'percent' ? value : 0,
     discountAmount: discountAmount,
     expiresAt: expiresAt ? expiresAt.toISOString() : '',
@@ -3165,6 +3181,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Cupón generado correctamente.', COUPON_EMPTY: 'Ingresa un código de descuento.', COUPON_NOT_FOUND: 'Código no encontrado.',
       COUPON_INACTIVE: 'Este código no está disponible.', COUPON_ALREADY_USED: 'Este código ya fue utilizado.', COUPON_NOT_STARTED: 'Este código todavía no está vigente.',
       COUPON_EXPIRED: 'Este código ha expirado.', COUPON_EMAIL_MISMATCH: 'Este cupón corresponde a otro correo.', COUPON_CURRENCY_MISMATCH: 'Este cupón fijo no corresponde a la moneda de la reserva.', COUPON_INVALID_VALUE: 'El valor del cupón no es válido.',
+      COUPON_RESERVED: 'Este cupón está reservado en otra reserva pendiente.', COUPON_TRAVEL_DATE_REQUIRED: 'Selecciona una fecha de viaje válida para calcular el descuento Black Friday.',
       COUPON_VALID: 'Cupón válido.', COUPON_TOTAL_MISMATCH: 'El total de la reserva no coincide con el descuento vigente. Actualiza la página e inténtalo nuevamente.'
     },
     en: {
@@ -3172,6 +3189,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Coupon created successfully.', COUPON_EMPTY: 'Enter a discount code.', COUPON_NOT_FOUND: 'Coupon code not found.',
       COUPON_INACTIVE: 'This coupon is not available.', COUPON_ALREADY_USED: 'This coupon has already been used.', COUPON_NOT_STARTED: 'This coupon is not active yet.',
       COUPON_EXPIRED: 'This coupon has expired.', COUPON_EMAIL_MISMATCH: 'This coupon belongs to a different email address.', COUPON_CURRENCY_MISMATCH: 'This fixed coupon does not match the booking currency.', COUPON_INVALID_VALUE: 'The coupon value is invalid.',
+      COUPON_RESERVED: 'This coupon is reserved for another pending booking.', COUPON_TRAVEL_DATE_REQUIRED: 'Choose a valid travel date for the Black Friday discount.',
       COUPON_VALID: 'Valid coupon.', COUPON_TOTAL_MISMATCH: 'The booking total does not match the current discount. Refresh the page and try again.'
     },
     pt: {
@@ -3179,6 +3197,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Cupom gerado com sucesso.', COUPON_EMPTY: 'Digite um código de desconto.', COUPON_NOT_FOUND: 'Código não encontrado.',
       COUPON_INACTIVE: 'Este cupom não está disponível.', COUPON_ALREADY_USED: 'Este cupom já foi utilizado.', COUPON_NOT_STARTED: 'Este cupom ainda não está vigente.',
       COUPON_EXPIRED: 'Este cupom expirou.', COUPON_EMAIL_MISMATCH: 'Este cupom pertence a outro e-mail.', COUPON_CURRENCY_MISMATCH: 'Este cupom de valor fixo não corresponde à moeda da reserva.', COUPON_INVALID_VALUE: 'O valor do cupom não é válido.',
+      COUPON_RESERVED: 'Este cupom está reservado para outra reserva pendente.', COUPON_TRAVEL_DATE_REQUIRED: 'Escolha uma data de viagem válida para o desconto Black Friday.',
       COUPON_VALID: 'Cupom válido.', COUPON_TOTAL_MISMATCH: 'O total da reserva não corresponde ao desconto vigente. Atualize a página e tente novamente.'
     }
   };
