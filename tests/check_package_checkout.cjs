@@ -47,23 +47,5 @@ for(const p of config.packages) {
 }
 console.log('PASS: 16 fare scenarios, tampered totals/counts/conditions rejected, four static checkouts and no quote navigation.');
 
-/* Validate exact Black Friday date boundaries using the real helper from Code.gs. */
-const blackFridayCode = source.slice(source.indexOf('function isBlackFriday2026Coupon_('), source.indexOf('function reserveBlackFriday2026Coupon_('));
-const bf = vm.createContext({
-  normalizeText_: s => String(s || '').toLowerCase(),
-  Utilities: { formatDate: () => '2026-11-23' }
-});
-vm.runInContext(blackFridayCode, bf);
-function travelDate(days) {
-  return new Date(Date.UTC(2026,10,23) + days*86400000).toISOString().slice(0,10);
-}
-for (const [days,percent] of [[0,10],[14,10],[15,15],[29,15],[30,25],[59,25],[60,40],[90,40],[91,50],[200,50]]) {
-  assert.equal(bf.blackFriday2026Rate_(travelDate(days), new Date('2026-11-23T14:00:00Z')).percent, percent, 'days '+days);
-}
-assert.equal(bf.blackFriday2026Rate_(travelDate(-1)), null);
-assert.equal(bf.blackFriday2026Rate_('2027-02-30'), null);
-for (const p of ['assets/js/pages/product.js', 'assets/js/pages/quote-packages.js',
-  'assets/js/pages/landing-machu-picchu-tours.js', 'assets/js/pages/landing-machu-picchu-overnight-tours.js']) {
-  assert.match(fs.readFileSync(path.join(root,p),'utf8'), /travelDate:/);
-}
-console.log('PASS: Black Friday boundaries, coupon amounts and frontend date wiring.');
+
+// Las pruebas del motor independiente BF2026 están en check_bf26_100.cjs.
