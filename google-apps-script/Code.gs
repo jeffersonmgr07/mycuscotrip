@@ -1750,13 +1750,29 @@ function validatePackageFare_(payload) {
     return { ok: false, error: 'Revisa el paquete, la fecha, los viajeros y las condiciones de la reserva.' };
   }
   const total = adults * fare[0] + children * fare[1];
-  if (payload.payNowValue !== total || payload.serviceTotalValue !== total ||
-      !payload.pricing || payload.pricing.total !== total || payload.pricing.subtotal !== total ||
-      payload.pricing.discount !== 0 || payload.payLaterValue !== 0 || payload.infants !== 0 ||
+  const couponCode = normalizeCode_(payload.couponCode || payload.appliedCoupon && payload.appliedCoupon.couponCode || '');
+  let couponDiscount = 0;
+  if (couponCode) {
+    const check = validateCoupon_({
+      couponCode: couponCode, travelDate: payload.date,
+      email: payload.holder && payload.holder.email || '',
+      reservationCode: payload.code || payload.reservationCode || '',
+      subtotal: total, currency: 'USD'
+    });
+    if (!check.valid) return { ok: false, error: check.message || 'Cupón no válido.' };
+    couponDiscount = round2_(check.discountAmount);
+  }
+  const finalTotal = round2_(total - couponDiscount);
+  if (Math.abs(number_(payload.payNowValue,-1) - finalTotal) > 0.05 ||
+      Math.abs(number_(payload.serviceTotalValue,-1) - total) > 0.05 ||
+      !payload.pricing || Math.abs(number_(payload.pricing.total,-1) - finalTotal) > 0.05 ||
+      Math.abs(number_(payload.pricing.subtotal,-1) - total) > 0.05 ||
+      Math.abs(number_(payload.pricing.discount,-1) - couponDiscount) > 0.05 ||
+      payload.payLaterValue !== 0 || payload.infants !== 0 ||
       payload.totalPassengers !== adults + children) {
     return { ok: false, error: 'El importe no coincide con las tarifas del paquete. Actualiza la página.' };
   }
-  return { ok: true, version: 'packages-20261027', total: total, currency: 'USD' };
+  return { ok: true, version: 'packages-20261123-bf', total: finalTotal, baseTotal: total, currency: 'USD' };
 }
 
 function createPreReservation_(p) {
@@ -1795,6 +1811,7 @@ function createPreReservation_(p) {
       subtotal: serviceTotal,
       currency: currency,
       reservationCode: code,
+      travelDate: payload.date,
       locale: language
     });
     if (!validation.valid) return { ok: false, error: validation.message || 'Cupón inválido.', couponStatus: validation };
@@ -1804,7 +1821,7 @@ function createPreReservation_(p) {
     // Para las landings de pago completo, el backend verifica que el total
     // mostrado coincida con el cupón almacenado en Google Sheets.
     const isLanding = Boolean(payload.landingId || String(payload.source || '').indexOf('landing') >= 0);
-    if (isLanding && String(payload.paymentMode || '').toLowerCase() === 'full') {
+    if ((isLanding || couponData.campaign === 'black_friday_2026') && String(payload.paymentMode || '').toLowerCase() === 'full') {
       const expectedAmount = round2_(Math.max(0, serviceTotal - couponDiscount));
       if (Math.abs(expectedAmount - amountNow) > 0.05) {
         return {
@@ -1815,6 +1832,11 @@ function createPreReservation_(p) {
         };
       }
       amountNow = expectedAmount;
+    }
+    if (couponData.campaign === 'black_friday_2026' && String(payload.paymentMode || '').toLowerCase() !== 'full') {
+      if (Math.abs(round2_(amountNow + payLater) - round2_(serviceTotal - couponDiscount)) > 0.05) {
+        return { ok: false, error: couponMessage_(normalizeLocale_(language), 'COUPON_TOTAL_MISMATCH') };
+      }
     }
   }
 
@@ -1832,6 +1854,11 @@ function createPreReservation_(p) {
     couponDiscount: couponDiscount,
     expiresAt: expiresAt.toISOString()
   });
+
+  if (couponData && couponData.campaign === 'black_friday_2026') {
+    const hold = reserveBlackFriday2026Coupon_(couponCode, code, holderEmail, payload.date, serviceTotal, currency);
+    if (!hold.valid) return { ok: false, error: hold.message || 'Cupón no disponible.', couponStatus: hold };
+  }
 
   getSheet_(SHEETS.RESERVATIONS, HEADERS.Reservas).appendRow([
     now,
@@ -1910,6 +1937,7 @@ function createPayPalOrder_(p) {
       subtotal: row.TotalServicio,
       currency: currency,
       reservationCode: code,
+      travelDate: row.FechaViaje,
       locale: row.IdiomaSolicitado || 'es'
     });
     if (!couponValidation.valid) {
@@ -2536,6 +2564,16 @@ function createMercadoPagoPreference_(p) {
   const amount = round2_(row.MontoPagarAhora || payload.amountToPayNowValue || payload.amount || 0);
   if (amount <= 0) return { ok: false, error: 'Monto de pago inválido.' };
 
+  if (row.CodigoCupon) {
+    const couponValidation = validateCoupon_({
+      couponCode: row.CodigoCupon, email: row.TitularEmail,
+      subtotal: row.TotalServicio, currency: currency,
+      reservationCode: code, travelDate: row.FechaViaje,
+      locale: row.IdiomaSolicitado || 'es'
+    });
+    if (!couponValidation.valid) return { ok: false, error: couponValidation.message || 'Cupón no disponible.', couponStatus: couponValidation };
+  }
+
   const returnUrl = buildMercadoPagoReturnUrl_(code);
   const cancelUrl = buildCancelUrl_(code, row);
   const webhookUrl = clean_(getProp_('MERCADOPAGO_WEBHOOK_URL', ''));
@@ -2883,24 +2921,34 @@ function updateCouponStatus_(code, status) {
 }
 
 function markCouponRedeemedForReservation_(reservationCode) {
-  const reservation = findReservation_(reservationCode);
-  if (!reservation || !reservation.row.CodigoCupon) return;
-  const coupon = findCoupon_(reservation.row.CodigoCupon);
-  if (!coupon) return;
-
-  const currentUses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
-  const nextUses = currentUses + 1;
-  const maxUses = Math.max(0, Math.floor(number_(coupon.row.MaxUsos, 0)));
-  const finalStatus = maxUses > 0 && nextUses >= maxUses ? 'Canjeado' : 'Vigente';
-
-  updateRowFields_(coupon, {
-    Estado: finalStatus,
-    Usos: nextUses,
-    CanjeadoEn: new Date(),
-    CodigoReserva: reservationCode,
-    PayPalOrderID: reservation.row.PayPalOrderID || coupon.row.PayPalOrderID || '',
-    ReservadoHasta: ''
-  });
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const reservation = findReservation_(reservationCode);
+    if (!reservation || !reservation.row.CodigoCupon) return;
+    const coupon = findCoupon_(reservation.row.CodigoCupon);
+    if (!coupon) throw new Error('No se encontró el cupón de la reserva.');
+    const uses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
+    const maxUses = Math.max(0, Math.floor(number_(coupon.row.MaxUsos, 0)));
+    if (maxUses > 0 && uses >= maxUses) {
+      if (normalizeCode_(coupon.row.CodigoReserva) === normalizeCode_(reservationCode)) return;
+      throw new Error('ALERTA: Cupón utilizado anteriormente en otra reserva.');
+    }
+    if (isBlackFriday2026Coupon_(coupon.row)) {
+      const owner = normalizeCode_(coupon.row.CodigoReserva);
+      if (owner && owner !== normalizeCode_(reservationCode)) {
+        throw new Error('ALERTA: Cupón reservado por otra reserva.');
+      }
+    }
+    const nextUses = uses + 1;
+    updateRowFields_(coupon, {
+      Estado: maxUses > 0 && nextUses >= maxUses ? 'Canjeado' : 'Vigente',
+      Usos: nextUses, CanjeadoEn: new Date(),
+      CodigoReserva: reservationCode,
+      PayPalOrderID: reservation.row.PayPalOrderID || coupon.row.PayPalOrderID || '',
+      ReservadoHasta: ''
+    });
+  } finally { lock.releaseLock(); }
 }
 
 function updateRowFields_(item, fields) {
