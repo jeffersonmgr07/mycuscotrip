@@ -31,6 +31,7 @@
     function clearCoupon(messageText) {
       if (!appliedCoupon) return;
       appliedCoupon = null;
+      window.MCTBlackFridayBadge?.clear();
       pending = null; openedSignature = "";
       couponInput.value = "";
       couponStatus.textContent = messageText || "Vuelve a aplicar tu cupón.";
@@ -51,6 +52,7 @@
         if (!api?.validateCoupon) throw Error("Validación de cupones no disponible.");
         const response = await api.validateCoupon({
           couponCode: code, travelDate: date, subtotal: c.total,
+          eligibleSubtotal: c.total, activate: true,
           currency: "USD", locale: "es", productId: product.id, page: location.pathname
         });
         if (!response?.valid) throw Error(response?.message || "Cupón inválido.");
@@ -62,7 +64,11 @@
         couponInput.value = appliedCoupon.couponCode;
         couponStatus.textContent = "Cupón aplicado: " + (response.label || (appliedCoupon.value + "% de descuento"));
         pending = null; openedSignature = ""; resetReview(); update();
+        window.MCTBlackFridayBadge?.mount("#package-coupon-status", response, {
+          currency: "USD", discountAmount: c.total - finalTotal(c)
+        });
       } catch (err) {
+        window.MCTBlackFridayBadge?.clear();
         appliedCoupon = null; couponStatus.textContent = err.message || "No se pudo aplicar el cupón.";
         update();
       } finally { couponButton.disabled = false; }
@@ -152,7 +158,7 @@
       try {
         const api=window.MyCuscoTripApiClient;
         if(!api||!await api.isBackendEnabled())throw Error("El pago no está disponible. Contáctanos por WhatsApp.");
-        if(!pending)pending={code:bookingCode,reservationCode:bookingCode,createdAt:new Date().toISOString(),source:"landing-paquetes-cusco",landingId:product.id,productId:product.id,productSlug:product.slug,productTitle:product.title,productType:"package",sourcePage:location.pathname,landingPath:location.pathname,date:get("start").value,adults:c.adults,children:c.children,infants:0,totalPassengers:c.adults+c.children,currency:"USD",paymentMode:"full",couponCode:appliedCoupon?.couponCode || "",appliedCoupon:appliedCoupon || null,payNowValue:finalTotal(c),serviceTotalValue:c.total,payLaterValue:0,status:"pre_reservation",paymentStatus:"pending",holderIsPassenger:holderTravels,holder,passengers,travelers:{adults:c.adults,children:c.children,infants:0,passengers},accommodationIncluded:false,availabilityConfirmed:true,childEligibilityConfirmed:c.children>0,pricing:{subtotal:c.total,discount:Math.round((c.total-finalTotal(c))*100)/100,total:finalTotal(c),currency:"USD"},services:[{id:product.id,title:product.title,date:get("start").value,lineTotal:c.total,extras:["Sin alojamiento"]}]};
+        if(!pending)pending={code:bookingCode,reservationCode:bookingCode,createdAt:new Date().toISOString(),source:"landing-paquetes-cusco",landingId:product.id,productId:product.id,productSlug:product.slug,productTitle:product.title,productType:"package",sourcePage:location.pathname,landingPath:location.pathname,date:get("start").value,adults:c.adults,children:c.children,infants:0,totalPassengers:c.adults+c.children,currency:"USD",paymentMode:"full",couponCode:appliedCoupon?.couponCode || "",appliedCoupon:appliedCoupon || null,payNowValue:finalTotal(c),serviceTotalValue:c.total,eligibleSubtotalValue:c.total,payLaterValue:0,status:"pre_reservation",paymentStatus:"pending",holderIsPassenger:holderTravels,holder,passengers,travelers:{adults:c.adults,children:c.children,infants:0,passengers},accommodationIncluded:false,availabilityConfirmed:true,childEligibilityConfirmed:c.children>0,pricing:{subtotal:c.total,discount:Math.round((c.total-finalTotal(c))*100)/100,total:finalTotal(c),currency:"USD"},services:[{id:product.id,title:product.title,date:get("start").value,lineTotal:c.total,extras:["Sin alojamiento"]}]};
         if(!pending.saved){
           message.textContent="Registrando tu reserva…";
           let result;
