@@ -150,6 +150,12 @@ function mctBfValidate_(params,activate) {
       var reserved=String(v[10]||''),until=mctBfDateMs_(v[11]);
       if(reserved&&(until>now||Boolean(v[12]))&&reserved!==String(p.reservationCode||''))throw new Error('Este cupón está reservado en otra compra.');
       var activated=mctBfDateMs_(v[7]);
+      // Validar fecha y precio ANTES de iniciar el reloj irreversible.
+      var rate=mctBfRate_(p.travelDate||p.date,activated||now);
+      var eligible=Math.max(0,Number(p.eligibleSubtotal!=null?p.eligibleSubtotal:(p.subtotal||0)));
+      var subtotal=Math.max(0,Number(p.subtotal||eligible));
+      if(!isFinite(eligible)||!isFinite(subtotal)||eligible>subtotal+0.01)
+        throw new Error('Importe elegible incorrecto.');
       if(!activated&&activate) {
         activated=now;v[7]=new Date(now);
         v[8]=new Date(Math.min(now+MCT_BF26.durationMs,MCT_BF26.end-1000));
@@ -160,12 +166,8 @@ function mctBfValidate_(params,activate) {
       }
       var expires=mctBfDateMs_(v[8]);
       if(!expires||now>=expires)throw new Error('Este cupón ha caducado.');
-      var rate=mctBfRate_(p.travelDate||p.date,activated);
       var fixed=String(v[9]||'')!==''?Number(v[9]):null;
       var percent=fixed!==null&&Number.isInteger(fixed)&&fixed>=1&&fixed<=50?fixed:rate.percent;
-      var eligible=Math.max(0,Number(p.eligibleSubtotal!=null?p.eligibleSubtotal:(p.subtotal||0)));
-      var subtotal=Math.max(0,Number(p.subtotal||eligible));
-      if(!isFinite(eligible)||!isFinite(subtotal)||eligible>subtotal+0.01)throw new Error('Importe elegible incorrecto.');
       var discount=Math.round(eligible*percent)/100;
       return {ok:true,valid:true,couponCode:code,type:'percent',value:percent,
         discountPercent:percent,discountAmount:Math.round(discount*100)/100,
