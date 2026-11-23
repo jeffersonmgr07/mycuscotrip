@@ -1,62 +1,76 @@
-# Black Friday 2026 — My Cusco Trip (50 cupones personales)
+# My Cusco Trip · Black Friday 2026 · Instalación y administración
 
-## Vigencia de la campaña
-- Inicio: lunes **23/11/2026, 00:00:00**, zona `America/Lima`.
-- Fin: domingo **29/11/2026, 23:59:59**, zona `America/Lima`.
-- **50 códigos distintos**, de **un solo uso por compra** (`MaxUsos=1`), para distribuir individualmente.
-- Los códigos se generan en **Google Apps Script/Sheets**, **no** en el repositorio público.
-- No acumulable con otro cupón. La lógica de pago total existente mantiene el mayor de sus descuentos.
-- La fecha considerada es el **inicio del viaje**, calculando días naturales desde la fecha actual en Perú.
+**ESTADO: SOLO RAMA DRAFT. No está desplegado ni activo en producción.**
 
-| Anticipación desde hoy | Descuento |
-|---|---:|
-| 0–14 días | 10% |
-| 15–29 días | 15% |
-| 30–59 días | 25% |
-| 60–90 días (90 incluido) | 40% |
-| 91 días o más | 50% |
+## Reglas y alcance
+- Campaña: 23–29 noviembre 2026, hora America/Lima, hasta las 23:59:59 del domingo.
+- 100 códigos privados: 20 manuales y 80 automáticos.
+- Formato MCT26-XXXX-XXXX-XXXX-XXXX, 16 caracteres aleatorios de un alfabeto sin ambiguos, hash SHA-256.
+- 1 compra pagada por cupón, sin limitar la cantidad de pasajeros admitidos por cada tour.
+- Anticipación desde la PRIMERA APLICACIÓN hasta el inicio del viaje: 0–30 días 10%; 31–60 días 20%; 61–75 días 30%; 76–100 días 40%; más de 100 días 50%. Criterios internos no visibles en la web pública.
+- Cinco horas a partir del primer clic en Aplicar, con reloj definitivo del servidor. Caduca antes si termina la campaña.
+- No acumulable. La tarifa base elegible no incluye vuelos, mejoras hoteleras, trenes adicionales ni extras.
+- Los cupones de la campaña no se mezclan con la hoja Cupones existente ni los cupones de popup y planificador.
 
-El tramo de 0–29 días se desglosó en dos subtramos para implementar los **10% y 15%** solicitados. Revisar esta definición comercial antes de activar.
+## ARCHIVOS DEL BACKEND: instalar ambos en el mismo Apps Script de My Cusco Trip
+1. Hacer respaldo de todo el script actual y comparar la última versión desplegada con GitHub.
+2. REEMPLAZAR el contenido de Code.gs por el archivo **google-apps-script/Code.gs** de esta rama.
+3. CREAR un segundo archivo llamado **BlackFriday2026.gs** y pegar **google-apps-script/BlackFriday2026.gs**.
+4. No copiar archivos de Latam Expeditions, no tocar variables ni propiedad privada de esa plataforma y NO ejecutar setupScriptPropertiesExample() porque puede sobrescribir claves de pago.
+5. Guardar los dos archivos. Ejecutar **prepararCampanaBlackFridayMCT()** una vez desde el editor autorizado. Debe retornar total=100, manual=20 y automaticos=80. Repetir devuelve creadosAhora=0.
+6. Ejecutar **pruebaCampanaBlackFridayMCT()**, **mctBfActualizarPanelPrivado()** y **mctBfReporteAdministrativo()**.
+7. Revisar Google Sheets privado, en las hojas MCT_BF26_Cupones, MCT_BF26_Registros y MCT_BF26_Panel. Solo allí se guardan los códigos legibles. Prohibido publicar esas hojas.
+8. Apps Script: Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar. Mantener la misma URL /exec del backend-config.json.
+9. Verificar /exec?action=health: blackFriday2026Ready=true y blackFriday100Coupons=true.
+10. SOLO DESPUÉS se puede revisar/fusionar el PR de frontend. Ninguna modificación frontend que dependa de las funciones nuevas debe llegar a main antes que el backend.
 
-## Instalación (NO queda activo solo por subirlo a GitHub)
+**IMPORTANTE: LOS 100 CÓDIGOS NO EXISTEN EN PRODUCCIÓN HASTA EJECUTAR LA FUNCIÓN EN APPS SCRIPT.** GitHub solo guarda el generador; ningún código real se incluye en el repositorio.
 
-1. Revisar/aceptar esta rama en GitHub y publicarla en Pages cuando se apruebe.
-2. Abrir el **proyecto de Google Apps Script en producción** conectado a la hoja de My Cusco Trip.
-3. Copiar el contenido completo actualizado de `google-apps-script/Code.gs` (sin borrar configuraciones propias que estén solo en producción). Guardar una copia de respaldo antes.
-4. **No ejecutar `setupScriptPropertiesExample()`**, ya que podría alterar credenciales.
-5. Ejecutar manualmente **`setupBlackFriday2026Coupons()`** con la cuenta autorizada. Esta rutina es idempotente: crea los códigos faltantes hasta completar 50.
-6. Abrir Google Sheets → hoja **`Cupones`**, filtrar `Fuente=black_friday_2026`. Verificar 50 registros, `MaxUsos=1`, `Usos=0`, `Estado=Vigente`. Los códigos están en `CodigoCupon`.
-7. Asignar **un código a cada turista**. Si debe ser estrictamente personal, rellenar `CorreoVinculado` con el correo de ese cliente **antes de distribuirlo**.
-8. En Apps Script: **Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar**, conservando la misma URL `/exec`.
-9. Probar primero contra una cuenta de ensayo y un pago sandbox controlado. Confirmar que luego del pago se guarde `Canjeado` y `Usos=1`, y que una segunda compra con el mismo código sea rechazada.
+## Administración exclusivamente privada
+La pestaña MCT_BF26_Panel es el panel de administración. El sistema contiene estados disponible, asignado, activo, reservado, utilizado, vencido y bloqueado, con emisión, primera aplicación, fin, correo, cliente, reserva, orden y transacción.
 
-El script no ha sido ejecutado desde GitHub ni tiene acceso por sí mismo a la hoja de Google en vivo: **ningún cupón existe en producción hasta completar los pasos 2–8**.
+Desde el editor de Apps Script:
+- **mctBfReporteAdministrativo()** muestra números, no códigos.
+- **mctBfActualizarPanelPrivado()** regenera el panel en Google Sheets.
+- **mctBfActualizarEstados()** actualiza estados caducados.
+- **mctBfAdminAsignarManual(codigo,correo,nombre)** vincula un código MANUAL a un turista. Nunca entregar sin vincularlo primero.
+- **mctBfAdminPorcentajeFijo(codigo,35)** fija 35% para ese cupón. Con null vuelve a porcentaje automático.
+- **mctBfAdminLiberarReserva(codigo,reserva,'PAGO_NO_APROBADO_VERIFICADO')** solo tras verificar con la pasarela que esa orden no se ha cobrado. Conserva el reloj y vencimiento original.
 
-## Productos y rutas conectados
-- `product.html` para productos individuales, paquetes, full days y experiencias, incluidos los idiomas soportados.
-- `quote-packages.html` para cotizaciones de paquetes (descuento sobre el subtotal descontable según las reglas existentes).
-- Landings de Machu Picchu Full Day y Overnight en ES/EN/PT/IT/DE/FR.
-- Cuatro landings de paquetes Cusco 3D2N, 4D3N, 5D4N y 6D5N, con formulario de cupón y monto final sincronizado con PayPal.
+El OTP se genera por correo, 6 cifras y 10 minutos de validez, hash del OTP en la hoja, máximo 5 intentos, 60 segundos entre envíos, 5 envíos por correo al día y límite global del envío. Un correo verificado recibe un solo código; al solicitar nuevamente y verificar, recupera el MISMO.
 
-**Alcance no cubierto:** módulos independientes de **solo trenes** o **solo hoteles** con sus propios backends/checkout, y pagos gestionados íntegramente fuera del flujo de reserva principal. No afirmar que esos checkouts ya acepten BF26 sin una integración aparte.
+La reserva inicial bloquea el cupón 25 minutos. Una vez generada una orden en el proveedor, permanece exclusivo hasta el vencimiento o liberación tras comprobar la cancelación. Se consume definitivamente solo después de una captura PayPal o aprobación Mercado Pago que el servidor valide.
 
-## Reglas técnicas
-- El backend usa `Fuente=black_friday_2026` para detectar campaña y calcula la tasa a partir de `travelDate` y la fecha de Perú; no confía en un porcentaje suministrado por el navegador.
-- `Valor` / `Porcentaje` iniciales de la hoja muestran **10** por compatibilidad con el esquema: el porcentaje definitivo cambia de acuerdo con la fecha de viaje y se obtiene desde `validateCoupon_`.
-- Al crear pre-reserva se guarda una reserva temporal de uso de código en `CodigoReserva` y `ReservadoHasta` (duración general de la pre-reserva, 72 h por defecto). No permite reservar el mismo código en dos pre-reservas vigentes.
-- Se comprueba vigencia al crear pre-reserva y al abrir pago por PayPal o Mercado Pago.
-- Solo se marca `Canjeado` tras confirmación de pago del proveedor; las notificaciones repetidas de la **misma reserva** no aumentan `Usos`.
-- El descuento **no se acumula** con otro cupón. El cotizador conserva exclusiones de extras/tickets/vuelos definidas previamente.
-- Se conserva el resto del sistema de cupones existentes (popup y planner).
+## ACTIVACIÓN DE COBROS: SEGURIDAD COMERCIAL
+La Script Property **MCT_BF26_ENABLE_PAYMENTS** debe permanecer false o ausente durante pruebas y hasta la revisión de rentabilidad. Mientras esté false, se permite registrar usuarios y aplicar cupones, pero se rechaza pre-reserva pagada BF.
 
-## Pruebas
-```bash
-node tests/check_package_checkout.cjs
-node --check assets/js/pages/landing-paquetes-cusco.js
-node --check assets/js/pages/product.js
-node --check assets/js/pages/quote-packages.js
-```
-Hay que completar pruebas de extremo a extremo (fecha, descuento, cierre de campaña, saldo de pago, captura real o sandbox, reversos/abandono) **antes** de publicar al cliente.
+Para habilitar pagos, hace falta contrastar los importes base contra un catálogo autoritativo de servidor, los márgenes de cada tour y las comisiones, probar los proveedores PayPal y Mercado Pago en un entorno controlado y certificar que ningún flujo del navegador puede modificar el valor a pagar. Después establecer MCT_BF26_ENABLE_PAYMENTS=true y desplegar nueva versión. **NO activar true sin esas verificaciones.**
 
-## Aviso comercial
-Con 40–50% de descuento se puede vender por debajo del costo de tren, entrada o guía. La política aquí refleja el pedido, pero la rentabilidad de cada producto debe validarse antes de habilitar los 50 cupones.
+**Limitación actual de integración:** El cotizador de paquetes tiene un fallback de PayPal creado en el navegador. Con cupón Black Friday ese camino se bloquea y debe confirmarse la cotización por asesor hasta que se implemente su pago seguro y tarificación verificable. Las cuatro páginas de paquetes de Cusco con pago directo poseen tarifas fijas verificadas por el servidor. Otros productos dinámicos aún necesitan validación autoritativa del precio. Los flujos separados de solo trenes u hoteles no están incluidos. No se modifica Bókun, Viator ni otras OTAs.
+
+## PRUEBAS EXIGIDAS ANTES DEL LANZAMIENTO
+- Pruebas unitarias GitHub Actions: tests/check_bf26_100.cjs y tests/check_package_checkout.cjs.
+- Generación de 100, re-ejecución sin duplicar, 20 manuales/80 automáticos, hashes únicos.
+- Registro y recuperación del mismo correo, OTP incorrecto y vencido, límites de reenvío.
+- Descuentos en todos los límites de días y porcentaje fijo.
+- Cinco horas desde Aplicar, reaplicación sin reinicio, vencimiento absoluto al final de la campaña.
+- Dos pre-reservas simultáneas, correo diferente, bloqueo y liberación verificable.
+- Confirmación de PayPal/Mercado Pago y consumo único con ID de transacción, reintentos idempotentes y abandono.
+- Reserva de 1 o más viajeros dentro de las capacidades originales.
+- Pruebas de PC/móvil y español, inglés, portugués.
+- Validez real de entradas Machu Picchu, trenes incluidos, operativa local y rentabilidad del 40%-50%.
+
+## Archivos del frontend
+- black-friday.html
+- assets/js/black-friday-claim.js
+- assets/css/black-friday-2026.css
+- assets/js/components/black-friday-badge.js y assets/css/black-friday-badge.css
+- assets/js/pages/product.js y assets/js/pages/quote-packages.js
+- assets/js/pages/landing-paquetes-cusco.js y su CSS
+- Landings Full Day y Overnight ES/EN/PT/IT/DE/FR y fichas/productos ES/EN/PT (además de otros idiomas ya existentes).
+- Cuatro landings de paquetes Cusco 3D2N–6D5N.
+- google-apps-script/Code.gs y nuevo google-apps-script/BlackFriday2026.gs.
+
+No cambiar credenciales ni URL backend a ciegas. Los códigos y hashes auténticos residen en las hojas privadas, no en GitHub.
+
+**El PR se mantiene Draft y NO fusionado.**
