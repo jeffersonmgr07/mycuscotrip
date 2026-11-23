@@ -31,7 +31,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-08-09-v4.5-trip-planner-direct-submit';
+const BACKEND_VERSION = '2026-11-23-v4.6-black-friday-2026';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -86,6 +86,81 @@ function setupSheets() {
  * Crea/verifica las hojas, establece la zona horaria de la hoja y registra
  * el cupón público inicial del popup dentro de Google Sheets.
  */
+/**
+ * Ejecutar desde Apps Script para generar 50 códigos BF2026 en la hoja Cupones.
+ * Idempotente y compatible con los cupones anteriores; no publica códigos en GitHub.
+ */
+function setupBlackFriday2026Coupons() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    repairCouponSheetSchema_();
+    setupSheets();
+    const existing = readRows_(SHEETS.COUPONS, HEADERS.Cupones);
+    const known = {};
+    existing.forEach(function(item) { known[normalizeCode_(item.row.CodigoCupon)] = true; });
+    const issued = existing.filter(function(item) { return isBlackFriday2026Coupon_(item.row); });
+    if (issued.length > 50) throw new Error('Más de 50 cupones de Black Friday detectados.');
+    const created = [];
+    for (let i = issued.length; i < 50; i++) {
+      let code;
+      do { code = 'BF26-' + Utilities.getUuid().replace(/-/g, '').slice(0, 10).toUpperCase(); } while (known[code]);
+      known[code] = true;
+      appendCouponRecord_({
+        couponCode: code, status: 'Vigente', type: 'percent',
+        // El valor de esta columna es de compatibilidad; el % real se calcula por fecha.
+        value: 10, currency: 'USD', active: true, maxUses: 1, uses: 0,
+        startsAt: '2026-11-23T00:00:00-05:00',
+        expiresAt: '2026-11-29T23:59:59-05:00',
+        source: 'black_friday_2026', locale: 'es', createdAt: new Date().toISOString(),
+        notes: '10% 0-14 días; 15% 15-29; 25% 30-59; 40% 60-90; 50% >90. Único uso.'
+      });
+      created.push(code);
+    }
+    const all = readRows_(SHEETS.COUPONS, HEADERS.Cupones)
+      .filter(function(item) { return isBlackFriday2026Coupon_(item.row); })
+      .map(function(item) { return normalizeCode_(item.row.CodigoCupon); });
+    Logger.log('Black Friday 2026 / cupones: ' + all.join(', '));
+    return {ok:true, total:all.length, newCodes:created, codes:all,
+      expiresAt:'2026-11-29T23:59:59-05:00'};
+  } finally { lock.releaseLock(); }
+}
+
+function isBlackFriday2026Coupon_(row) {
+  return normalizeText_(row && row.Fuente) === 'black_friday_2026';
+}
+
+/** Usa días de calendario en America/Lima; el navegador no controla el hoy. */
+function blackFriday2026Rate_(travelDate, now) {
+  const day = String(travelDate || '').trim().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return null;
+  const parts = day.split('-').map(Number);
+  const target = Date.UTC(parts[0], parts[1] - 1, parts[2]);
+  if (new Date(target).toISOString().slice(0, 10) !== day) return null;
+  const today = Utilities.formatDate(now || new Date(), 'America/Lima', 'yyyy-MM-dd');
+  const t = today.split('-').map(Number);
+  const days = Math.round((target - Date.UTC(t[0], t[1] - 1, t[2])) / 86400000);
+  if (days < 0) return null;
+  return {days: days, percent: days < 15 ? 10 : days < 30 ? 15 : days < 60 ? 25 : days <= 90 ? 40 : 50};
+}
+
+/** Bloqueo exclusivo por reserva. Libera automáticamente al vencer la reserva. */
+function reserveBlackFriday2026Coupon_(code, reservationCode, email, travelDate, subtotal, currency) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const validation = validateCoupon_({couponCode:code, reservationCode:reservationCode,
+      email:email, travelDate:travelDate, subtotal:subtotal, currency:currency});
+    if (!validation.valid) return validation;
+    const coupon = findCoupon_(code);
+    if (coupon && isBlackFriday2026Coupon_(coupon.row)) {
+      const ttl = Math.max(1, number_(getProp_('RESERVATION_TTL_HOURS','72'),72));
+      updateRowFields_(coupon, {CodigoReserva:reservationCode, ReservadoHasta:addHours_(new Date(),ttl)});
+    }
+    return validation;
+  } finally { lock.releaseLock(); }
+}
+
 function setupCouponSystem() {
   // Actualiza únicamente la configuración de cupones y conserva intactas
   // las credenciales PayPal/Mercado Pago ya guardadas.
