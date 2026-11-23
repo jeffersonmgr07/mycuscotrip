@@ -768,6 +768,7 @@
       const summary = calculateBookingSummary();
       const validationPromise = window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
+        travelDate: state.mainProduct.date || "",
         subtotal: Number(summary.subtotal || 0),
         currency: summary.currency || state.data.currency || "USD",
         locale: "de",
@@ -793,6 +794,7 @@
       const couponType = String(result.type || (result.discountPercent ? "percent" : "percent")).toLowerCase() === "fixed" ? "fixed" : "percent";
       state.coupon = {
         code: result.couponCode || code,
+        campaign: result.campaign || "",
         type: couponType,
         value: Number(result.value ?? result.discountPercent ?? 0),
         currency: result.currency || summary.currency || state.data.currency || "USD",
@@ -1131,6 +1133,13 @@
       locale: "de",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
+        if (state.mainProduct.date !== (dateStr || null) && state.coupon?.campaign === "black_friday_2026") {
+          state.coupon = null;
+          state.couponDraftCode = "";
+          const input = document.getElementById("mptCouponInput");
+          if (input) input.value = "";
+          setCouponMessage("Fecha modificada. Vuelve a aplicar el cupón Black Friday.", "");
+        }
         state.mainProduct.date = dateStr || null;
         refreshDatePickers();
         renderCircuitOptions();
