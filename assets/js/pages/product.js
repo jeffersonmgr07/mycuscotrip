@@ -2131,8 +2131,10 @@ class MyCuscoTripProductPage {
     const configuredFullPercent = Math.max(0, Number(window.MCT_COMMERCIAL_CONFIG?.autoFullPaymentDiscountPercent || 0));
     const fullPercent = this.paymentMode === "full" ? configuredFullPercent : 0;
     const fullDiscount = total * (fullPercent / 100);
-    const discount = Math.max(couponDiscount, fullDiscount, 0);
-    const source = discount > 0 && couponDiscount >= fullDiscount ? "coupon" : (discount > 0 ? "full_payment" : "none");
+    const blackFriday = this.appliedCoupon?.campaign === "black_friday_2026";
+    const discount = blackFriday ? couponDiscount : Math.max(couponDiscount, fullDiscount, 0);
+    const source = blackFriday ? "coupon" :
+      (discount > 0 && couponDiscount >= fullDiscount ? "coupon" : (discount > 0 ? "full_payment" : "none"));
     const percent = total > 0 ? (discount / total) * 100 : 0;
 
     return {
