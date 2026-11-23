@@ -1871,6 +1871,13 @@ function createPayPalOrder_(p) {
   const amount = round2_(row.MontoPagarAhora || payload.amountToPayNowValue || payload.amount || 0);
   if (amount <= 0) return { ok: false, error: 'Monto de pago inválido.' };
 
+  if (row.CodigoCupon && mctBfIsCode_(row.CodigoCupon)) {
+    const original = parseJsonSafe_(row.JSON, {});
+    const hold = mctBfReserve_(row.CodigoCupon, code, row.TitularEmail, row.FechaViaje,
+      original.eligibleSubtotalValue == null ? row.TotalServicio : original.eligibleSubtotalValue,
+      row.TotalServicio, currency);
+    if (!hold.valid) return {ok:false,error:hold.message||'Cupón no disponible.'};
+  }
   if (row.CodigoCupon) {
     const couponValidation = validateCoupon_({
       couponCode: row.CodigoCupon,
@@ -1942,7 +1949,8 @@ function createPayPalOrder_(p) {
     PayPalOrderID: paypalOrder.id,
     JSON: mergeReservationJson_(row.JSON, { paypalOrder: paypalOrder, paypalReturnUrl: returnUrl })
   });
-  associateCouponWithPayment_(row.CodigoCupon, code, paypalOrder.id);
+  if (mctBfIsCode_(row.CodigoCupon)) mctBfBindOrder_(row.CodigoCupon, code, paypalOrder.id);
+  else associateCouponWithPayment_(row.CodigoCupon, code, paypalOrder.id);
 
   appendPayment_(code, 'PayPal', 'ORDER_CREATED', currency, amount, paypalOrder.id, '', '', '', paypalOrder);
   logAudit_('createPayPalOrder', code, 'Orden PayPal creada ' + paypalOrder.id, paypalOrder);
@@ -2520,6 +2528,13 @@ function createMercadoPagoPreference_(p) {
     if (!couponValidation.valid) return { ok: false, error: couponValidation.message || 'Cupón no disponible.', couponStatus: couponValidation };
   }
 
+  if (row.CodigoCupon && mctBfIsCode_(row.CodigoCupon)) {
+    const original = parseJsonSafe_(row.JSON, {});
+    const hold = mctBfReserve_(row.CodigoCupon, code, row.TitularEmail, row.FechaViaje,
+      original.eligibleSubtotalValue == null ? row.TotalServicio : original.eligibleSubtotalValue,
+      row.TotalServicio, currency);
+    if (!hold.valid) return {ok:false,error:hold.message||'Cupón no disponible.'};
+  }
   const returnUrl = buildMercadoPagoReturnUrl_(code);
   const cancelUrl = buildCancelUrl_(code, row);
   const webhookUrl = clean_(getProp_('MERCADOPAGO_WEBHOOK_URL', ''));
@@ -2557,6 +2572,7 @@ function createMercadoPagoPreference_(p) {
   const approvalUrl = mode === 'live' ? preference.init_point : (preference.sandbox_init_point || preference.init_point);
   if (!approvalUrl) return { ok: false, error: 'Mercado Pago no devolvió enlace de pago.', mercadoPago: preference };
 
+  if (mctBfIsCode_(row.CodigoCupon)) mctBfBindOrder_(row.CodigoCupon, code, preference.id);
   updateReservationFields_(code, {
     ProveedorPago: 'Mercado Pago',
     MercadoPagoPreferenceID: preference.id,
@@ -2872,6 +2888,11 @@ function markCouponRedeemedForReservation_(reservationCode) {
   try {
     const reservation = findReservation_(reservationCode);
     if (!reservation || !reservation.row.CodigoCupon) return;
+    if (mctBfIsCode_(reservation.row.CodigoCupon)) {
+      mctBfConsume_(reservation.row.CodigoCupon, reservationCode,
+        reservation.row.PayPalCaptureID || reservation.row.MercadoPagoPaymentID);
+      return;
+    }
     const coupon = findCoupon_(reservation.row.CodigoCupon);
     if (!coupon) throw new Error('No se encontró el cupón de la reserva.');
     const uses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
