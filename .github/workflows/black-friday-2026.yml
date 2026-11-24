@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - feat/black-friday-2026-cupones-50
+      - feat/bf2026-dark-landing-payment-validation
 permissions:
   contents: read
 jobs:
