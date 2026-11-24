@@ -38,7 +38,36 @@
       };
       render("");
       select.value = "+51";
-      $("bf-country-search").addEventListener("input", e => render(e.target.value));
+      const search = $("bf-country-search");
+      const popup = $("bf-country-search-container");
+      const trigger = $("bf-country-search-toggle");
+      function closeSearch() {
+        popup.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+        search.value = "";
+        render("");
+      }
+      trigger.addEventListener("click", () => {
+        const opening = !popup.classList.contains("is-open");
+        popup.classList.toggle("is-open", opening);
+        trigger.setAttribute("aria-expanded", String(opening));
+        if (opening) search.focus();
+        else closeSearch();
+      });
+      search.addEventListener("input", e => {
+        render(e.target.value);
+        if (!select.options.length) {
+          select.replaceChildren(new Option("No se encontraron países", ""));
+        }
+      });
+      search.addEventListener("keydown", event => {
+        if (event.key === "Escape") { closeSearch(); trigger.focus(); }
+        if (event.key === "Enter" && select.options.length) { event.preventDefault(); select.focus(); }
+      });
+      select.addEventListener("change", closeSearch);
+      document.addEventListener("click", event => {
+        if (!event.target.closest(".bf-country-field")) closeSearch();
+      });
     } catch (error) {
       select.replaceChildren(new Option("🇵🇪 Perú · +51", "+51"));
       status("No se pudo cargar la lista de países; puedes usar +51.", false);

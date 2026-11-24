@@ -1,76 +1,76 @@
-# My Cusco Trip · Black Friday 2026 · Instalación y administración
+# My Cusco Trip · Black Friday 2026
+## Instalación y despliegue del diseño oscuro + pagos con descuento
 
-**ESTADO: SOLO RAMA DRAFT. No está desplegado ni activo en producción.**
+**Estado:** desarrollo preparado en GitHub (rama/PR). NO es una instalación de Apps Script: los archivos deben copiarse al proyecto real y desplegarse antes de publicar el nuevo frontend.
 
-## Reglas y alcance
-- Campaña: 23–29 noviembre 2026, hora America/Lima, hasta las 23:59:59 del domingo.
-- 100 códigos privados: 20 manuales y 80 automáticos.
-- Formato MCT26-XXXX-XXXX-XXXX-XXXX, 16 caracteres aleatorios de un alfabeto sin ambiguos, hash SHA-256.
-- 1 compra pagada por cupón, sin limitar la cantidad de pasajeros admitidos por cada tour.
-- Anticipación desde la PRIMERA APLICACIÓN hasta el inicio del viaje: 0–30 días 10%; 31–60 días 20%; 61–75 días 30%; 76–100 días 40%; más de 100 días 50%. Criterios internos no visibles en la web pública.
-- Cinco horas a partir del primer clic en Aplicar, con reloj definitivo del servidor. Caduca antes si termina la campaña.
-- No acumulable. La tarifa base elegible no incluye vuelos, mejoras hoteleras, trenes adicionales ni extras.
-- Los cupones de la campaña no se mezclan con la hoja Cupones existente ni los cupones de popup y planificador.
+### Archivos del backend que debes pegar, exactamente
 
-## ARCHIVOS DEL BACKEND: instalar ambos en el mismo Apps Script de My Cusco Trip
-1. Hacer respaldo de todo el script actual y comparar la última versión desplegada con GitHub.
-2. REEMPLAZAR el contenido de Code.gs por el archivo **google-apps-script/Code.gs** de esta rama.
-3. CREAR un segundo archivo llamado **BlackFriday2026.gs** y pegar **google-apps-script/BlackFriday2026.gs**.
-4. No copiar archivos de Latam Expeditions, no tocar variables ni propiedad privada de esa plataforma y NO ejecutar setupScriptPropertiesExample() porque puede sobrescribir claves de pago.
-5. Guardar los dos archivos. Ejecutar **prepararCampanaBlackFridayMCT()** una vez desde el editor autorizado. Debe retornar total=100, manual=20 y automaticos=80. Repetir devuelve creadosAhora=0.
-6. Ejecutar **pruebaCampanaBlackFridayMCT()**, **mctBfActualizarPanelPrivado()** y **mctBfReporteAdministrativo()**.
-7. Revisar Google Sheets privado, en las hojas MCT_BF26_Cupones, MCT_BF26_Registros y MCT_BF26_Panel. Solo allí se guardan los códigos legibles. Prohibido publicar esas hojas.
-8. Apps Script: Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar. Mantener la misma URL /exec del backend-config.json.
-9. Verificar /exec?action=health: blackFriday2026Ready=true y blackFriday100Coupons=true.
-10. SOLO DESPUÉS se puede revisar/fusionar el PR de frontend. Ninguna modificación frontend que dependa de las funciones nuevas debe llegar a main antes que el backend.
+En el mismo proyecto de **Google Apps Script de My Cusco Trip** (el que ya conecta la hoja privada y las pasarelas PayPal y Mercado Pago):
 
-**IMPORTANTE: LOS 100 CÓDIGOS NO EXISTEN EN PRODUCCIÓN HASTA EJECUTAR LA FUNCIÓN EN APPS SCRIPT.** GitHub solo guarda el generador; ningún código real se incluye en el repositorio.
+1. **Reemplazar el contenido de Code.gs** con **google-apps-script/Code.gs**, previo respaldo y comparación con cualquier cambio más reciente que exista solo en Apps Script.
+2. **Crear/actualizar BlackFriday2026.gs** con **google-apps-script/BlackFriday2026.gs**.
+3. **Crear BlackFridayPricing2026.gs** con **google-apps-script/BlackFridayPricing2026.gs**.
 
-## Administración exclusivamente privada
-La pestaña MCT_BF26_Panel es el panel de administración. El sistema contiene estados disponible, asignado, activo, reservado, utilizado, vencido y bloqueado, con emisión, primera aplicación, fin, correo, cliente, reserva, orden y transacción.
+Los tres archivos trabajan juntos; no reemplazar los archivos originales por piezas de Latam Expeditions, ni copiar las hojas ni los cupones de esa marca. Nunca ejecutar setupScriptPropertiesExample(): podría cambiar propiedades de pago.
 
-Desde el editor de Apps Script:
-- **mctBfReporteAdministrativo()** muestra números, no códigos.
-- **mctBfActualizarPanelPrivado()** regenera el panel en Google Sheets.
-- **mctBfActualizarEstados()** actualiza estados caducados.
-- **mctBfAdminAsignarManual(codigo,correo,nombre)** vincula un código MANUAL a un turista. Nunca entregar sin vincularlo primero.
-- **mctBfAdminPorcentajeFijo(codigo,35)** fija 35% para ese cupón. Con null vuelve a porcentaje automático.
-- **mctBfAdminLiberarReserva(codigo,reserva,'PAGO_NO_APROBADO_VERIFICADO')** solo tras verificar con la pasarela que esa orden no se ha cobrado. Conserva el reloj y vencimiento original.
+**Hojas nuevas privadas**: MCT_BF26_Cupones, MCT_BF26_Registros y MCT_BF26_Panel. Los códigos legibles, correos y hashes SHA-256 permanecen exclusivamente en la hoja privada y las entregas autorizadas.
 
-El OTP se genera por correo, 6 cifras y 10 minutos de validez, hash del OTP en la hoja, máximo 5 intentos, 60 segundos entre envíos, 5 envíos por correo al día y límite global del envío. Un correo verificado recibe un solo código; al solicitar nuevamente y verificar, recupera el MISMO.
+### Activación y prueba paso a paso
 
-La reserva inicial bloquea el cupón 25 minutos. Una vez generada una orden en el proveedor, permanece exclusivo hasta el vencimiento o liberación tras comprobar la cancelación. Se consume definitivamente solo después de una captura PayPal o aprobación Mercado Pago que el servidor valide.
+1. Realizar un respaldo de Apps Script y comprobar que las propiedades originales PAYPAL_MODE / PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / MERCADOPAGO_MODE / MERCADOPAGO_ACCESS_TOKEN siguen intactas.
+2. Pegar los tres archivos .gs, guardar y autorizar permisos de lectura del Sheet, MailApp y UrlFetchApp según solicite Apps Script.
+3. Ejecutar **prepararCampanaBlackFridayMCT()** desde el editor: debe devolver 100 códigos, 20 MANUAL y 80 AUTOMATICO. Es idempotente y no crea duplicados al repetir.
+4. Ejecutar **pruebaCampanaBlackFridayMCT()**, **mctBfActualizarPanelPrivado()** y **mctBfReporteAdministrativo()**.
+5. Revisar la pestaña MCT_BF26_Panel en Sheets, que solo debe compartir la agencia con sus administradores.
+6. **Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar**. Mantener la URL /exec anterior utilizada en assets/data/backend-config.json.
+7. Comprobar que /exec?action=health devuelve blackFriday2026Ready=true, blackFriday100Coupons=true, blackFridayPricingReady=true y blackFridayPaymentsEnabled=true.
+8. Hacer prueba OTP con un correo propio (correo de seis dígitos y caducidad 10 min); recuperar el mismo código con un segundo OTP; usarlo en una cotización de ensayo; verificar que al pulsar Aplicar empieza un único contador de cinco horas.
+9. Probar un checkout autorizado con **PayPal sandbox**, importe base, descuento y monto real capturado. Comprobar que el cupón queda UTILIZADO exactamente una vez en Google Sheets.
+10. Probar pago rechazado/abandonado, reintentos de orden, otro correo de titular y dos reservas simultáneas. Validar márgenes operativos por producto (incluye tren/entradas/guía en Machu Picchu).
+11. Solamente después de validar backend + pagos, fusionar/publicar el PR frontend. Esta es la política obligatoria para no publicar una interfaz que dependa de endpoints sin desplegar.
 
-## ACTIVACIÓN DE COBROS: SEGURIDAD COMERCIAL
-La Script Property **MCT_BF26_ENABLE_PAYMENTS** debe permanecer false o ausente durante pruebas y hasta la revisión de rentabilidad. Mientras esté false, se permite registrar usuarios y aplicar cupones, pero se rechaza pre-reserva pagada BF.
+### Cobros con cupones: habilitados en rutas verificadas
 
-Para habilitar pagos, hace falta contrastar los importes base contra un catálogo autoritativo de servidor, los márgenes de cada tour y las comisiones, probar los proveedores PayPal y Mercado Pago en un entorno controlado y certificar que ningún flujo del navegador puede modificar el valor a pagar. Después establecer MCT_BF26_ENABLE_PAYMENTS=true y desplegar nueva versión. **NO activar true sin esas verificaciones.**
+**En esta revisión los pagos Black Friday están habilitados por defecto SOLO en rutas cuyo precio puede recalcular el servidor**. Script Property MCT_BF26_ENABLE_PAYMENTS ausente o con valor true habilita esa comprobación de checkout. Si necesitas un cierre de emergencia, definir esta propiedad como false (los pagos normales sin Black Friday no se desactivan).
 
-**Limitación actual de integración:** El cotizador de paquetes tiene un fallback de PayPal creado en el navegador. Con cupón Black Friday ese camino se bloquea y debe confirmarse la cotización por asesor hasta que se implemente su pago seguro y tarificación verificable. Las cuatro páginas de paquetes de Cusco con pago directo poseen tarifas fijas verificadas por el servidor. Otros productos dinámicos aún necesitan validación autoritativa del precio. Los flujos separados de solo trenes u hoteles no están incluidos. No se modifica Bókun, Viator ni otras OTAs.
+El tercer archivo BlackFridayPricing2026.gs realiza una verificación independiente contra los catálogos oficiales alojados bajo https://mycuscotrip.com/assets/data/ antes de aceptar un cobro descontado. Se calcula el importe de la orden con las tarifas del servidor y el % de cupón guardado, nunca tomando el total del navegador como autoridad.
 
-## PRUEBAS EXIGIDAS ANTES DEL LANZAMIENTO
-- Pruebas unitarias GitHub Actions: tests/check_bf26_100.cjs y tests/check_package_checkout.cjs.
-- Generación de 100, re-ejecución sin duplicar, 20 manuales/80 automáticos, hashes únicos.
-- Registro y recuperación del mismo correo, OTP incorrecto y vencido, límites de reenvío.
-- Descuentos en todos los límites de días y porcentaje fijo.
-- Cinco horas desde Aplicar, reaplicación sin reinicio, vencimiento absoluto al final de la campaña.
-- Dos pre-reservas simultáneas, correo diferente, bloqueo y liberación verificable.
-- Confirmación de PayPal/Mercado Pago y consumo único con ID de transacción, reintentos idempotentes y abandono.
-- Reserva de 1 o más viajeros dentro de las capacidades originales.
-- Pruebas de PC/móvil y español, inglés, portugués.
-- Validez real de entradas Machu Picchu, trenes incluidos, operativa local y rentabilidad del 40%-50%.
+Flujos habilitables:
+- Cuatro landings con tarifa fija Cusco 3D2N, 4D3N, 5D4N y 6D5N (sin alojamiento adicional).
+- Landings Machu Picchu Full Day y Overnight en sus idiomas existentes: coteja tarifas base de adultos/niños, circuito, extras, mejoras de tren y hotel y tours adicionales.
+- Tours individuales de precio fijo cuando no hay upgrades/extras y el total coincide exactamente con la tarifa base oficial.
 
-## Archivos del frontend
-- black-friday.html
-- assets/js/black-friday-claim.js
-- assets/css/black-friday-2026.css
-- assets/js/components/black-friday-badge.js y assets/css/black-friday-badge.css
-- assets/js/pages/product.js y assets/js/pages/quote-packages.js
-- assets/js/pages/landing-paquetes-cusco.js y su CSS
-- Landings Full Day y Overnight ES/EN/PT/IT/DE/FR y fichas/productos ES/EN/PT (además de otros idiomas ya existentes).
-- Cuatro landings de paquetes Cusco 3D2N–6D5N.
-- google-apps-script/Code.gs y nuevo google-apps-script/BlackFriday2026.gs.
+Los siguientes pedidos **no quedan habilitados para cobro Black Friday automático**:
+- Cotizador dinámico quote-packages.html: contiene un fallback PayPal generado en el navegador. El descuento se muestra y la cotización se puede compartir, pero la captura queda bloqueada hasta que exista una cotización firmada/verificable del servidor.
+- Productos dinámicos complejos o con tarifas sin catálogo verificable: deben pasar por cotización/confirmación manual antes de autorizar cobro.
+- Solo vuelos, solo hoteles y solo trenes con backends separados; plataformas externas Bókun/Viator no se modifican.
 
-No cambiar credenciales ni URL backend a ciegas. Los códigos y hashes auténticos residen en las hojas privadas, no en GitHub.
+**No eliminar la verificación para cobrar otros productos sin tarificación autoritativa.** La pasarela PayPal puede capturar fielmente un precio incorrecto enviado por el frontend; que el pago se complete no demuestra que la tarifa original fuera legítima.
 
-**El PR se mantiene Draft y NO fusionado.**
+### Reglas de cupones
+
+Campaña 23–29 noviembre 2026, horario America/Lima. 100 códigos con formato MCT26-XXXX-XXXX-XXXX-XXXX, 20 manuales y 80 automáticos. Una sola compra pagada por código, sin límite adicional de pasajeros aparte del de cada producto.
+
+El descuento depende del número de días entre la **primera aplicación** y el inicio del viaje: 0–30 días 10%; 31–60 días 20%; 61–75 días 30%; 76–100 días 40%; más de 100 días 50%. Se aplica únicamente a tarifa base elegible; no a vuelos, mejoras, comidas ni extras. No se acumula.
+
+La emisión del cupón NO inicia el contador. La primera aplicación crea un vencimiento definitivo cinco horas después, sin superar las 23:59:59 del 29 de noviembre. Salir, volver a entrar o aplicar el mismo cupón no reinicia el plazo.
+
+Los códigos manuales se asignan por correo desde el editor con **mctBfAdminAsignarManual(codigo,correo,nombre)**. El porcentaje de excepción se configura con **mctBfAdminPorcentajeFijo(codigo,porcentaje)**; un valor null restaura los tramos. El registro público pide consentimiento para privacidad (obligatorio), marketing opcional y verificación OTP. Un correo puede recuperar su código anterior pero no obtener dos. Hay límite de envíos, intentos y honeypot básico; para campañas de mayor volumen conviene verificación CAPTCHA server-side.
+
+Un cupón pasa a UTILIZADO solo después de verificar captura/aprobación de PayPal o Mercado Pago, asociando código de reserva e ID transaccional. Una orden ya generada se reutiliza cuando se reintenta para evitar duplicidad. Para liberar manualmente una orden, primero verificar en el proveedor que no existe pago aprobado.
+
+### Archivos del frontend actualizados en el PR
+
+- black-friday.html — hero con foto de Machu Picchu, texto y formulario en dos columnas, reutiliza header y footer de My Cusco Trip.
+- assets/css/black-friday-2026.css — negro/verde lima, overlay y animación lenta de desplazamiento del fondo; media queries y reducción de movimiento.
+- assets/js/black-friday-claim.js — buscador de países con banderas, registro y verificación OTP existentes.
+- google-apps-script/Code.gs — verificación y captura de orden con cupón.
+- google-apps-script/BlackFridayPricing2026.gs — cálculo del subtotal y extras a partir de catálogos oficiales.
+- tests/check_bf26_pricing.cjs y .github/workflows/black-friday-2026.yml — comprobaciones automáticas.
+- El módulo original google-apps-script/BlackFriday2026.gs (SHA-256, OTP, emisión, estados y caducidad) permanece SIN sustituir el sistema histórico.
+
+### Confirmaciones antes de lanzar
+
+Las pruebas GitHub Actions son simuladas (sin dinero) y comprueban generación de 100 códigos, límites, OTP, bloqueo, expiración, comprobación de tarifas y manipulaciones. Para comprobar el éxito completo se requieren pruebas manuales con el Apps Script publicado y PayPal/Mercado Pago de prueba, revisión de correos MailApp, pantalla móvil, margen por producto y notificaciones duplicadas.
+
+**No confundas un merge GitHub con un despliegue Apps Script.** Esta instrucción exige primero actualizar el servidor, luego activar la web.
