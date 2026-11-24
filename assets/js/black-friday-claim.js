@@ -24,54 +24,93 @@
     return /^[A-Z]{2}$/.test(code) ? String.fromCodePoint(...[...code].map(c => 127397 + c.charCodeAt(0))) : "🌐";
   }
   async function setupCountries() {
-    const select = $("bf-country");
+    const input = $("bf-country");
+    const trigger = $("bf-country-trigger");
+    const menu = $("bf-country-menu");
+    const search = $("bf-country-search");
+    const options = $("bf-country-options");
+    if (!input || !trigger || !menu || !search || !options) return;
+    let countries = [{code:"PE",name:"Perú",dialCode:"+51"}];
     try {
       const response = await fetch(root + "assets/data/countries.json");
-      if (!response.ok) throw new Error();
-      const countries = await response.json();
-      const render = text => {
-        const query = String(text || "").trim().toLocaleLowerCase();
-        const current = select.value || "+51";
-        select.replaceChildren(...countries.filter(c => [c.name, c.dialCode, c.code].some(v => String(v).toLocaleLowerCase().includes(query)))
-          .map(c => new Option(flag(c.code) + " " + c.name + " · " + c.dialCode, c.dialCode)));
-        if ([...select.options].some(o => o.value === current)) select.value = current;
-      };
-      render("");
-      select.value = "+51";
-      const search = $("bf-country-search");
-      const popup = $("bf-country-search-container");
-      const trigger = $("bf-country-search-toggle");
-      function closeSearch() {
-        popup.classList.remove("is-open");
-        trigger.setAttribute("aria-expanded", "false");
-        search.value = "";
-        render("");
-      }
-      trigger.addEventListener("click", () => {
-        const opening = !popup.classList.contains("is-open");
-        popup.classList.toggle("is-open", opening);
-        trigger.setAttribute("aria-expanded", String(opening));
-        if (opening) search.focus();
-        else closeSearch();
-      });
-      search.addEventListener("input", e => {
-        render(e.target.value);
-        if (!select.options.length) {
-          select.replaceChildren(new Option("No se encontraron países", ""));
-        }
-      });
-      search.addEventListener("keydown", event => {
-        if (event.key === "Escape") { closeSearch(); trigger.focus(); }
-        if (event.key === "Enter" && select.options.length) { event.preventDefault(); select.focus(); }
-      });
-      select.addEventListener("change", closeSearch);
-      document.addEventListener("click", event => {
-        if (!event.target.closest(".bf-country-field")) closeSearch();
-      });
-    } catch (error) {
-      select.replaceChildren(new Option("🇵🇪 Perú · +51", "+51"));
-      status("No se pudo cargar la lista de países; puedes usar +51.", false);
+      if (!response.ok) throw new Error("Countries unavailable");
+      const loaded = await response.json();
+      if (Array.isArray(loaded) && loaded.length) countries = loaded;
+    } catch (err) {
+      console.warn("My Cusco Trip: usando código de Perú por defecto.", err);
     }
+    function choose(country) {
+      input.value = country.dialCode;
+      $("bf-country-flag").textContent = flag(country.code);
+      $("bf-country-dial").textContent = country.dialCode;
+      close();
+    }
+    function render(query = "") {
+      const q = String(query || "").trim().toLocaleLowerCase();
+      const list = countries.filter(country =>
+        [country.name,country.dialCode,country.code]
+          .some(value => String(value).toLocaleLowerCase().includes(q)));
+      const fragment = document.createDocumentFragment();
+      list.slice(0,200).forEach(country => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "bf-country-option";
+        button.setAttribute("role", "option");
+        button.setAttribute("aria-selected", String(input.value === country.dialCode));
+        const flagEl = document.createElement("span");
+        flagEl.className = "bf-option-flag";
+        flagEl.textContent = flag(country.code);
+        const nameEl = document.createElement("span");
+        nameEl.textContent = country.name;
+        const prefixEl = document.createElement("span");
+        prefixEl.className = "bf-option-code";
+        prefixEl.textContent = country.dialCode;
+        button.append(flagEl,nameEl,prefixEl);
+        button.addEventListener("click", () => choose(country));
+        fragment.append(button);
+      });
+      if (!list.length) {
+        const notice = document.createElement("p");
+        notice.className = "bf-country-empty";
+        notice.textContent = "No se encontraron países.";
+        fragment.append(notice);
+      }
+      options.replaceChildren(fragment);
+    }
+    function close() {
+      menu.hidden = true;
+      trigger.setAttribute("aria-expanded","false");
+      search.value = "";
+    }
+    function open() {
+      render("");
+      menu.hidden = false;
+      trigger.setAttribute("aria-expanded","true");
+      search.focus();
+    }
+    trigger.addEventListener("click", () => menu.hidden ? open() : close());
+    search.addEventListener("input", () => render(search.value));
+    search.addEventListener("keydown", event => {
+      if (event.key === "Escape") {close();trigger.focus();}
+      if (event.key === "ArrowDown") {
+        event.preventDefault();options.querySelector(".bf-country-option")?.focus();
+      }
+    });
+    options.addEventListener("keydown", event => {
+      if (event.key === "Escape") {close();trigger.focus();}
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        const buttons = [...options.querySelectorAll(".bf-country-option")];
+        const current = buttons.indexOf(document.activeElement);
+        const next = event.key === "ArrowDown" ? Math.min(current+1,buttons.length-1) : Math.max(current-1,0);
+        buttons[next]?.focus();
+      }
+    });
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".bf-country-field")) close();
+    });
+    const preferred = countries.find(country => country.code === "PE") || countries[0];
+    choose(preferred);
   }
   let busy = false;
   let pending = {};
