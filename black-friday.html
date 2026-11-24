@@ -17,17 +17,13 @@
 <link href="./assets/css/header.css" rel="stylesheet">
 <link href="./assets/css/footer.css" rel="stylesheet">
 <link href="./assets/css/responsive.css" rel="stylesheet">
-<link href="./assets/css/black-friday-2026.css?v=20261123-dark2" rel="stylesheet">
+<link href="./assets/css/black-friday-2026.css?v=20261123-fixes3" rel="stylesheet">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Black Friday 2026 · My Cusco Trip">
 <meta property="og:description" content="Tu próximo viaje merece algo extraordinario. Reclama tu cupón personal, descuentos de hasta el 50%.">
-<meta property="og:image" content="https://mycuscotrip.com/assets/img/tours/machu-picchu-full-day/cover.jpg">
+<meta property="og:image" content="https://mycuscotrip.com/assets/img/machu-picchu/machu-picchu-hero.jpg">
 </head>
 <body class="mct-black-friday">
-<div class="bf-topline" role="region" aria-label="Promoción Black Friday">
-  <div class="bf-topline__ticker"><span>✦ BLACK FRIDAY 2026 · CUPONES EXCLUSIVOS · HASTA 50% DE DESCUENTO EN EXPERIENCIAS SELECCIONADAS · SOLO HASTA EL 29 DE NOVIEMBRE ✦ </span><span aria-hidden="true">BLACK FRIDAY 2026 · CUPONES EXCLUSIVOS · HASTA 50% DE DESCUENTO EN EXPERIENCIAS SELECCIONADAS · SOLO HASTA EL 29 DE NOVIEMBRE ✦ </span></div>
-  <span class="bf-topline__location"><span aria-hidden="true">🇵🇪</span> Perú <span class="bf-topline__separator"></span> ES</span>
-</div>
 <div id="header-container"></div>
 <main id="bf-main">
   <section class="bf-hero" aria-labelledby="bf-title">
@@ -45,10 +41,9 @@
         </div>
         <div class="bf-conditions">
           <strong>Promoción válida del 23 al 29 de noviembre de 2026.</strong>
-          <p>Los cupones son válidos para una sola compra. El plazo de uso de cinco horas comienza cuando aplicas el código en una reserva.</p>
-          <p>El descuento aplica a tarifas base elegibles. No aplica para vuelos, mejoras de hotel ni servicios adicionales. Sujeto a disponibilidad y condiciones de cada tour.</p>
+          <p>Los cupones son válidos para una sola compra. Una vez aplicado el cupón, tendrás un tiempo limitado para utilizarlo, que se te indicará al momento de aplicarlo.</p>
+          <p>El descuento aplica a tarifas base elegibles. No aplica para vuelos, mejoras de hotel ni servicios adicionales, sujeto a disponibilidad y condiciones de cada tour.</p>
         </div>
-        <div class="bf-destinations" aria-label="Destinos de My Cusco Trip"><span><i class="fa-solid fa-location-dot"></i> Machu Picchu</span><span>Valle Sagrado</span><span>Montaña de Colores</span></div>
       </div>
       <div class="bf-card" id="reclama">
         <div class="bf-card__inner">
@@ -64,11 +59,15 @@
             <label for="bf-phone" class="bf-phone-heading">Número de WhatsApp</label>
             <div class="bf-fields bf-phone-fields">
               <div class="bf-country-field">
-                <select id="bf-country" name="countryCode" required aria-label="Código telefónico internacional"></select>
-                <button type="button" class="bf-country-search-trigger" id="bf-country-search-toggle" aria-expanded="false" aria-controls="bf-country-search-container" aria-label="Buscar un país"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <div class="bf-country-search" id="bf-country-search-container">
-                  <label for="bf-country-search">Buscar país o prefijo</label>
-                  <input id="bf-country-search" type="search" placeholder="Perú, Colombia, +51…" autocomplete="off">
+                <input type="hidden" id="bf-country" name="countryCode" value="+51">
+                <button type="button" id="bf-country-trigger" class="bf-country-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="bf-country-menu" aria-label="Elegir código telefónico internacional">
+                  <span class="bf-country-selected"><span id="bf-country-flag" aria-hidden="true">🇵🇪</span> <span id="bf-country-dial">+51</span></span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div id="bf-country-menu" class="bf-country-menu" hidden>
+                  <label for="bf-country-search">Selecciona tu país</label>
+                  <input id="bf-country-search" type="search" placeholder="Busca país o prefijo" autocomplete="off">
+                  <div id="bf-country-options" class="bf-country-options" role="listbox" aria-label="Países y códigos telefónicos"></div>
                 </div>
               </div>
               <label class="bf-phone-label"><span class="bf-visually-hidden">WhatsApp sin prefijo</span><input id="bf-phone" name="whatsapp" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{6,14}" maxlength="14" required placeholder="999 999 999" aria-label="WhatsApp sin prefijo"></label>
@@ -88,7 +87,7 @@
             <p class="bf-success-title"><i class="fa-solid fa-circle-check"></i> ¡Tu cupón está listo!</p>
             <div class="bf-private-code" id="bf-private-code"></div>
             <button class="bf-btn" id="bf-copy" type="button">Copiar mi cupón <i class="fa-solid fa-copy"></i></button>
-            <p class="bf-success-note">Te enviamos una copia por email. Recuerda: tus cinco horas comienzan al pulsar «Aplicar» en la reserva.</p>
+            <p class="bf-success-note">Te enviamos una copia por email. El tiempo límite para usarlo se mostrará cuando lo apliques a tu reserva.</p>
             <div class="bf-form-links"><a href="./all-experiences.html">Explorar experiencias</a><a href="./paquetes-cusco.html">Ver paquetes</a></div>
           </div>
           <p id="bf-message" class="bf-message" role="status" aria-live="polite"></p>
@@ -103,6 +102,6 @@
 <script src="./assets/js/components/header.js"></script>
 <script src="./assets/js/components/footer.js"></script>
 <script src="./assets/js/core/api-client.js"></script>
-<script src="./assets/js/black-friday-claim.js?v=20261123-dark2"></script>
+<script src="./assets/js/black-friday-claim.js?v=20261123-fixes3"></script>
 </body>
 </html>
