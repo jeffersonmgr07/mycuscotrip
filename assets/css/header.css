@@ -4,12 +4,12 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: #053220;
+  background: #042d1d;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .header.scrolled {
-  background: rgba(5, 50, 32, 0.96);
+  background: rgba(4, 45, 29, 0.96);
   backdrop-filter: blur(8px);
 }
 
@@ -254,7 +254,7 @@
     top: 86px;
     left: 0;
     right: 0;
-    background: #053220;
+    background: #042d1d;
     flex-direction: column;
     gap: 0;
     padding: 18px 20px 24px;
