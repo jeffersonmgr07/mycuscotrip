@@ -1,0 +1,30 @@
+name: Black Friday 2026 coupons
+on:
+  pull_request:
+  push:
+    branches:
+      - feat/black-friday-2026-cupones-50
+permissions:
+  contents: read
+jobs:
+  coupon-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check syntax
+        run: |
+          node --check < google-apps-script/Code.gs
+          node --check < google-apps-script/BlackFriday2026.gs
+          node --check assets/js/black-friday-claim.js
+          node --check assets/js/components/black-friday-badge.js
+          node --check assets/js/pages/product.js
+          node --check assets/js/pages/quote-packages.js
+          node --check assets/js/pages/landing-paquetes-cusco.js
+          for file in assets/js/pages/landing-machu-picchu-{tours,overnight-tours}*.js; do node --check "$file"; done
+      - name: Black Friday fare and tier tests
+        run: |
+          node tests/check_package_checkout.cjs
+          node tests/check_bf26_100.cjs

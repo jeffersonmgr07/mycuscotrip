@@ -31,7 +31,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-08-09-v4.5-trip-planner-direct-submit';
+const BACKEND_VERSION = '2026-11-23-v4.6-black-friday-2026';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -86,6 +86,17 @@ function setupSheets() {
  * Crea/verifica las hojas, establece la zona horaria de la hoja y registra
  * el cupón público inicial del popup dentro de Google Sheets.
  */
+/**
+ * Ejecutar desde Apps Script para generar 50 códigos BF2026 en la hoja Cupones.
+ * Idempotente y compatible con los cupones anteriores; no publica códigos en GitHub.
+ */
+function setupBlackFriday2026Coupons() { return prepararCampanaBlackFridayMCT(); }
+function isBlackFriday2026Coupon_(row) { return false; }
+function reserveBlackFriday2026Coupon_(code, reservationCode, email, travelDate, subtotal, currency, eligible) {
+  return mctBfReserve_(code,reservationCode,email,travelDate,
+    eligible == null ? subtotal : eligible,subtotal,currency);
+}
+
 function setupCouponSystem() {
   // Actualiza únicamente la configuración de cupones y conserva intactas
   // las credenciales PayPal/Mercado Pago ya guardadas.
@@ -344,7 +355,10 @@ function doGet(e) {
   try {
     const params = e && e.parameter || {};
     const action = String(params.action || 'health').trim();
-    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script', version: BACKEND_VERSION, time: new Date().toISOString() });
+    if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script',
+      version: BACKEND_VERSION, time: new Date().toISOString(),
+      blackFriday2026Ready: typeof mctBfValidate_ === 'function',
+      blackFriday100Coupons: typeof prepararCampanaBlackFridayMCT === 'function' });
     if (action === 'couponHealth') return json_(couponHealth_(params));
     if (action === 'validateCoupon') return json_(validateCoupon_(params));
     if (action === 'lookupReservation') return json_(lookupReservation_(params));
@@ -360,6 +374,8 @@ function doPost(e) {
     const action = String(payload.action || '').trim();
 
     if (action === 'createCouponLead') return json_(createCouponLead_(payload));
+    if (action === 'mctBfStart') return json_(mctBfLeadStart_(payload));
+    if (action === 'mctBfVerify') return json_(mctBfLeadVerify_(payload));
     if (action === 'validateCoupon') return json_(validateCoupon_(payload));
     if (action === 'validatePackageFare') return json_(validatePackageFare_(payload.payload || payload));
     if (action === 'createPreReservation') return json_(createPreReservation_(payload));
@@ -1561,6 +1577,7 @@ function validateCoupon_(p) {
   const locale = normalizeLocale_(p.locale || p.language || 'es');
   const code = normalizeCode_(p.couponCode || p.code);
   if (!code) return couponInvalid_(locale, 'COUPON_EMPTY');
+  if (mctBfIsCode_(code)) return mctBfValidate_(p, p.activate === true);
 
   if (isPublicCouponCode_(code)) ensurePublicCouponReady_();
   const coupon = findCoupon_(code);
@@ -1605,8 +1622,22 @@ function validateCoupon_(p) {
     return couponInvalid_(locale, 'COUPON_EMAIL_MISMATCH', true);
   }
 
+  const blackFriday = isBlackFriday2026Coupon_(row);
+  let blackFridayRate = null;
+  if (blackFriday) {
+    const requestedFor = normalizeCode_(p.reservationCode || '');
+    const reservedFor = normalizeCode_(row.CodigoReserva || '');
+    const reservedUntil = parseDate_(row.ReservadoHasta);
+    if (reservedFor && reservedUntil && reservedUntil.getTime() > now.getTime() && reservedFor !== requestedFor) {
+      return couponInvalid_(locale, 'COUPON_RESERVED', true);
+    }
+    blackFridayRate = blackFriday2026Rate_(p.travelDate || p.date || p.startDate, now);
+    if (!blackFridayRate) return couponInvalid_(locale, 'COUPON_TRAVEL_DATE_REQUIRED', true);
+  }
+
   const type = normalizeCouponType_(row.Tipo || (number_(row.Porcentaje, 0) > 0 ? 'percent' : 'fixed'));
-  const value = Math.max(0, number_(row.Valor, type === 'percent' ? number_(row.Porcentaje, 0) : 0));
+  const value = blackFriday ? blackFridayRate.percent :
+    Math.max(0, number_(row.Valor, type === 'percent' ? number_(row.Porcentaje, 0) : 0));
   const currency = normalizeCurrency_(row.Moneda || p.currency || 'USD');
   if (value <= 0) return couponInvalid_(locale, 'COUPON_INVALID_VALUE', true);
 
@@ -1628,6 +1659,8 @@ function validateCoupon_(p) {
     type: type,
     value: value,
     currency: currency,
+    campaign: blackFriday ? 'black_friday_2026' : '',
+    daysUntilTravel: blackFridayRate ? blackFridayRate.days : null,
     discountPercent: type === 'percent' ? value : 0,
     discountAmount: discountAmount,
     expiresAt: expiresAt ? expiresAt.toISOString() : '',
@@ -1659,13 +1692,29 @@ function validatePackageFare_(payload) {
     return { ok: false, error: 'Revisa el paquete, la fecha, los viajeros y las condiciones de la reserva.' };
   }
   const total = adults * fare[0] + children * fare[1];
-  if (payload.payNowValue !== total || payload.serviceTotalValue !== total ||
-      !payload.pricing || payload.pricing.total !== total || payload.pricing.subtotal !== total ||
-      payload.pricing.discount !== 0 || payload.payLaterValue !== 0 || payload.infants !== 0 ||
+  const couponCode = normalizeCode_(payload.couponCode || payload.appliedCoupon && payload.appliedCoupon.couponCode || '');
+  let couponDiscount = 0;
+  if (couponCode) {
+    const check = validateCoupon_({
+      couponCode: couponCode, travelDate: payload.date,
+      email: payload.holder && payload.holder.email || '',
+      reservationCode: payload.code || payload.reservationCode || '',
+      subtotal: total, currency: 'USD'
+    });
+    if (!check.valid) return { ok: false, error: check.message || 'Cupón no válido.' };
+    couponDiscount = round2_(check.discountAmount);
+  }
+  const finalTotal = round2_(total - couponDiscount);
+  if (Math.abs(number_(payload.payNowValue,-1) - finalTotal) > 0.05 ||
+      Math.abs(number_(payload.serviceTotalValue,-1) - total) > 0.05 ||
+      !payload.pricing || Math.abs(number_(payload.pricing.total,-1) - finalTotal) > 0.05 ||
+      Math.abs(number_(payload.pricing.subtotal,-1) - total) > 0.05 ||
+      Math.abs(number_(payload.pricing.discount,-1) - couponDiscount) > 0.05 ||
+      payload.payLaterValue !== 0 || payload.infants !== 0 ||
       payload.totalPassengers !== adults + children) {
     return { ok: false, error: 'El importe no coincide con las tarifas del paquete. Actualiza la página.' };
   }
-  return { ok: true, version: 'packages-20261027', total: total, currency: 'USD' };
+  return { ok: true, version: 'packages-20261123-bf', total: finalTotal, baseTotal: total, currency: 'USD' };
 }
 
 function createPreReservation_(p) {
@@ -1702,18 +1751,24 @@ function createPreReservation_(p) {
       couponCode: couponCode,
       email: holderEmail,
       subtotal: serviceTotal,
+      eligibleSubtotal: payload.eligibleSubtotalValue != null ? payload.eligibleSubtotalValue : serviceTotal,
       currency: currency,
       reservationCode: code,
+      travelDate: payload.date,
       locale: language
     });
     if (!validation.valid) return { ok: false, error: validation.message || 'Cupón inválido.', couponStatus: validation };
     couponData = validation;
-    couponDiscount = round2_(validation.discountAmount || calculateCouponDiscount_(validation, serviceTotal, currency));
+    // En Black Friday un subtotal elegible de 0 no debe convertirse en descuento
+    // sobre extras mediante el fallback histórico de valor truthy.
+    couponDiscount = validation.campaign === 'black_friday_2026'
+      ? round2_(validation.discountAmount)
+      : round2_(validation.discountAmount || calculateCouponDiscount_(validation, serviceTotal, currency));
 
     // Para las landings de pago completo, el backend verifica que el total
     // mostrado coincida con el cupón almacenado en Google Sheets.
     const isLanding = Boolean(payload.landingId || String(payload.source || '').indexOf('landing') >= 0);
-    if (isLanding && String(payload.paymentMode || '').toLowerCase() === 'full') {
+    if ((isLanding || couponData.campaign === 'black_friday_2026') && String(payload.paymentMode || '').toLowerCase() === 'full') {
       const expectedAmount = round2_(Math.max(0, serviceTotal - couponDiscount));
       if (Math.abs(expectedAmount - amountNow) > 0.05) {
         return {
@@ -1725,6 +1780,16 @@ function createPreReservation_(p) {
       }
       amountNow = expectedAmount;
     }
+    if (couponData.campaign === 'black_friday_2026' && String(payload.paymentMode || '').toLowerCase() !== 'full') {
+      if (Math.abs(round2_(amountNow + payLater) - round2_(serviceTotal - couponDiscount)) > 0.05) {
+        return { ok: false, error: couponMessage_(normalizeLocale_(language), 'COUPON_TOTAL_MISMATCH') };
+      }
+    }
+  }
+
+  if (couponData && couponData.campaign === 'black_friday_2026' &&
+      getProp_('MCT_BF26_ENABLE_PAYMENTS', 'false') !== 'true') {
+    return {ok:false,error:'El descuento Black Friday está habilitado para cotizar, pero su pago online aún no está habilitado.'};
   }
 
   const existing = findReservation_(code);
@@ -1741,6 +1806,12 @@ function createPreReservation_(p) {
     couponDiscount: couponDiscount,
     expiresAt: expiresAt.toISOString()
   });
+
+  if (couponData && couponData.campaign === 'black_friday_2026') {
+    const hold = reserveBlackFriday2026Coupon_(couponCode, code, holderEmail, payload.date, serviceTotal, currency,
+      payload.eligibleSubtotalValue != null ? payload.eligibleSubtotalValue : serviceTotal);
+    if (!hold.valid) return { ok: false, error: hold.message || 'Cupón no disponible.', couponStatus: hold };
+  }
 
   getSheet_(SHEETS.RESERVATIONS, HEADERS.Reservas).appendRow([
     now,
@@ -1812,13 +1883,23 @@ function createPayPalOrder_(p) {
   const amount = round2_(row.MontoPagarAhora || payload.amountToPayNowValue || payload.amount || 0);
   if (amount <= 0) return { ok: false, error: 'Monto de pago inválido.' };
 
+  if (row.CodigoCupon && mctBfIsCode_(row.CodigoCupon)) {
+    const original = parseJsonSafe_(row.JSON, {});
+    const hold = mctBfReserve_(row.CodigoCupon, code, row.TitularEmail, row.FechaViaje,
+      original.eligibleSubtotalValue == null ? row.TotalServicio : original.eligibleSubtotalValue,
+      row.TotalServicio, currency);
+    if (!hold.valid) return {ok:false,error:hold.message||'Cupón no disponible.'};
+  }
   if (row.CodigoCupon) {
     const couponValidation = validateCoupon_({
       couponCode: row.CodigoCupon,
       email: row.TitularEmail,
       subtotal: row.TotalServicio,
+      eligibleSubtotal: parseJsonSafe_(row.JSON, {}).eligibleSubtotalValue != null
+        ? parseJsonSafe_(row.JSON, {}).eligibleSubtotalValue : row.TotalServicio,
       currency: currency,
       reservationCode: code,
+      travelDate: row.FechaViaje,
       locale: row.IdiomaSolicitado || 'es'
     });
     if (!couponValidation.valid) {
@@ -1828,6 +1909,14 @@ function createPayPalOrder_(p) {
         couponStatus: couponValidation
       };
     }
+    if (couponValidation.campaign === 'black_friday_2026') {
+      const expectedTotal = round2_(Math.max(0, number_(row.TotalServicio,0)-number_(couponValidation.discountAmount,0)));
+      const recordedTotal = round2_(number_(row.MontoPagarAhora,0)+number_(row.SaldoPendiente,0));
+      if (Math.abs(expectedTotal-recordedTotal)>0.05 ||
+          Math.abs(number_(row.DescuentoCupon,0)-number_(couponValidation.discountAmount,0))>0.05)
+        return {ok:false,error:'Los importes del cupón cambiaron. Crea una nueva reserva.'};
+    }
+
   }
 
   const returnUrl = buildReturnUrl_(code);
@@ -1880,7 +1969,8 @@ function createPayPalOrder_(p) {
     PayPalOrderID: paypalOrder.id,
     JSON: mergeReservationJson_(row.JSON, { paypalOrder: paypalOrder, paypalReturnUrl: returnUrl })
   });
-  associateCouponWithPayment_(row.CodigoCupon, code, paypalOrder.id);
+  if (mctBfIsCode_(row.CodigoCupon)) mctBfBindOrder_(row.CodigoCupon, code, paypalOrder.id);
+  else associateCouponWithPayment_(row.CodigoCupon, code, paypalOrder.id);
 
   appendPayment_(code, 'PayPal', 'ORDER_CREATED', currency, amount, paypalOrder.id, '', '', '', paypalOrder);
   logAudit_('createPayPalOrder', code, 'Orden PayPal creada ' + paypalOrder.id, paypalOrder);
@@ -1901,16 +1991,36 @@ function capturePayPalOrder_(p) {
   const code = normalizeCode_(p.reservationCode || p.code || '');
   if (!orderId) return { ok: false, error: 'PayPal order ID requerido.' };
 
+  let reservation = code ? findReservation_(code) : findReservationByPayPalOrder_(orderId);
+  if (!reservation || clean_(reservation.row.PayPalOrderID) !== orderId)
+    return {ok:false,error:'La orden PayPal no está asociada a la reserva solicitada.'};
+  if (normalizeText_(reservation.row.EstadoPago).indexOf('pagado') >= 0)
+    return {ok:true,paid:true,alreadyPaid:true,reservationCode:reservation.row.CodigoReserva};
+  ensureReservationCanPay_(reservation);
+  if (mctBfIsCode_(reservation.row.CodigoCupon)) {
+    const original = parseJsonSafe_(reservation.row.JSON, {});
+    const verified = validateCoupon_({
+      couponCode: reservation.row.CodigoCupon,
+      travelDate: reservation.row.FechaViaje, email: reservation.row.TitularEmail,
+      reservationCode: reservation.row.CodigoReserva,
+      eligibleSubtotal: original.eligibleSubtotalValue == null
+        ? reservation.row.TotalServicio : original.eligibleSubtotalValue,
+      subtotal: reservation.row.TotalServicio, currency: reservation.row.Moneda
+    });
+    if (!verified.valid) return {ok:false,error:verified.message || 'Cupón vencido antes de confirmar pago.'};
+  }
   const capture = paypalRequest_('post', '/v2/checkout/orders/' + encodeURIComponent(orderId) + '/capture', {});
   const completed = String(capture.status || '').toUpperCase() === 'COMPLETED';
-
-  let reservation = code ? findReservation_(code) : findReservationByPayPalOrder_(orderId);
-  if (!reservation) return { ok: false, error: 'Reserva no encontrada para este pago.', paypal: capture };
 
   const reservationCode = reservation.row.CodigoReserva;
   const captureId = getCaptureId_(capture);
   const currency = reservation.row.Moneda || getCaptureCurrency_(capture);
   const amount = round2_(reservation.row.MontoPagarAhora || getCaptureAmount_(capture));
+  if (completed && (clean_(reservation.row.PayPalOrderID) !== orderId ||
+      normalizeCurrency_(getCaptureCurrency_(capture)) !== normalizeCurrency_(currency) ||
+      Math.abs(round2_(getCaptureAmount_(capture)) - amount) > 0.01)) {
+    throw new Error('La captura PayPal no coincide con la orden o importe de la reserva. Revisión manual requerida.');
+  }
 
   appendPayment_(reservationCode, 'PayPal', capture.status || 'CAPTURED', currency, amount, orderId, captureId, '', '', capture);
 
@@ -2445,6 +2555,34 @@ function createMercadoPagoPreference_(p) {
   const amount = round2_(row.MontoPagarAhora || payload.amountToPayNowValue || payload.amount || 0);
   if (amount <= 0) return { ok: false, error: 'Monto de pago inválido.' };
 
+  if (row.CodigoCupon) {
+    const couponValidation = validateCoupon_({
+      couponCode: row.CodigoCupon, email: row.TitularEmail,
+      subtotal: row.TotalServicio,
+      eligibleSubtotal: parseJsonSafe_(row.JSON, {}).eligibleSubtotalValue != null
+        ? parseJsonSafe_(row.JSON, {}).eligibleSubtotalValue : row.TotalServicio,
+      currency: currency,
+      reservationCode: code, travelDate: row.FechaViaje,
+      locale: row.IdiomaSolicitado || 'es'
+    });
+    if (!couponValidation.valid) return { ok: false, error: couponValidation.message || 'Cupón no disponible.', couponStatus: couponValidation };
+    if (couponValidation.campaign === 'black_friday_2026') {
+      const expectedTotal = round2_(Math.max(0, number_(row.TotalServicio,0)-number_(couponValidation.discountAmount,0)));
+      const recordedTotal = round2_(number_(row.MontoPagarAhora,0)+number_(row.SaldoPendiente,0));
+      if (Math.abs(expectedTotal-recordedTotal)>0.05 ||
+          Math.abs(number_(row.DescuentoCupon,0)-number_(couponValidation.discountAmount,0))>0.05)
+        return {ok:false,error:'Los importes del cupón cambiaron. Crea una nueva reserva.'};
+    }
+
+  }
+
+  if (row.CodigoCupon && mctBfIsCode_(row.CodigoCupon)) {
+    const original = parseJsonSafe_(row.JSON, {});
+    const hold = mctBfReserve_(row.CodigoCupon, code, row.TitularEmail, row.FechaViaje,
+      original.eligibleSubtotalValue == null ? row.TotalServicio : original.eligibleSubtotalValue,
+      row.TotalServicio, currency);
+    if (!hold.valid) return {ok:false,error:hold.message||'Cupón no disponible.'};
+  }
   const returnUrl = buildMercadoPagoReturnUrl_(code);
   const cancelUrl = buildCancelUrl_(code, row);
   const webhookUrl = clean_(getProp_('MERCADOPAGO_WEBHOOK_URL', ''));
@@ -2482,6 +2620,7 @@ function createMercadoPagoPreference_(p) {
   const approvalUrl = mode === 'live' ? preference.init_point : (preference.sandbox_init_point || preference.init_point);
   if (!approvalUrl) return { ok: false, error: 'Mercado Pago no devolvió enlace de pago.', mercadoPago: preference };
 
+  if (mctBfIsCode_(row.CodigoCupon)) mctBfBindOrder_(row.CodigoCupon, code, preference.id);
   updateReservationFields_(code, {
     ProveedorPago: 'Mercado Pago',
     MercadoPagoPreferenceID: preference.id,
@@ -2526,6 +2665,13 @@ function captureMercadoPagoPayment_(p) {
   const amount = round2_(payment.transaction_amount || reservation.row.MontoPagarAhora || 0);
   const currency = normalizeCurrency_(payment.currency_id || reservation.row.Moneda || 'PEN');
   const finalPreferenceId = preferenceId || clean_(reservation.row.MercadoPagoPreferenceID);
+  if (approved && (
+      normalizeCode_(payment.external_reference || payment.metadata && payment.metadata.reservation_code || '') !== code ||
+      normalizeCurrency_(reservation.row.Moneda) !== currency ||
+      Math.abs(round2_(reservation.row.MontoPagarAhora) - amount) > 0.01 ||
+      (preferenceId && clean_(reservation.row.MercadoPagoPreferenceID) !== preferenceId))) {
+    throw new Error('El pago Mercado Pago no coincide con la reserva o el importe. Revisión manual requerida.');
+  }
 
   appendPayment_(code, 'Mercado Pago', status, currency, amount, '', '', finalPreferenceId, paymentId, payment);
 
@@ -2792,24 +2938,41 @@ function updateCouponStatus_(code, status) {
 }
 
 function markCouponRedeemedForReservation_(reservationCode) {
-  const reservation = findReservation_(reservationCode);
-  if (!reservation || !reservation.row.CodigoCupon) return;
-  const coupon = findCoupon_(reservation.row.CodigoCupon);
-  if (!coupon) return;
-
-  const currentUses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
-  const nextUses = currentUses + 1;
-  const maxUses = Math.max(0, Math.floor(number_(coupon.row.MaxUsos, 0)));
-  const finalStatus = maxUses > 0 && nextUses >= maxUses ? 'Canjeado' : 'Vigente';
-
-  updateRowFields_(coupon, {
-    Estado: finalStatus,
-    Usos: nextUses,
-    CanjeadoEn: new Date(),
-    CodigoReserva: reservationCode,
-    PayPalOrderID: reservation.row.PayPalOrderID || coupon.row.PayPalOrderID || '',
-    ReservadoHasta: ''
-  });
+  const bfReservation = findReservation_(reservationCode);
+  if (!bfReservation || !bfReservation.row.CodigoCupon) return;
+  if (mctBfIsCode_(bfReservation.row.CodigoCupon)) {
+    mctBfConsume_(bfReservation.row.CodigoCupon, reservationCode,
+      bfReservation.row.PayPalCaptureID || bfReservation.row.MercadoPagoPaymentID);
+    return;
+  }
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const reservation = findReservation_(reservationCode);
+    if (!reservation || !reservation.row.CodigoCupon) return;
+    const coupon = findCoupon_(reservation.row.CodigoCupon);
+    if (!coupon) throw new Error('No se encontró el cupón de la reserva.');
+    const uses = Math.max(0, Math.floor(number_(coupon.row.Usos, 0)));
+    const maxUses = Math.max(0, Math.floor(number_(coupon.row.MaxUsos, 0)));
+    if (maxUses > 0 && uses >= maxUses) {
+      if (normalizeCode_(coupon.row.CodigoReserva) === normalizeCode_(reservationCode)) return;
+      throw new Error('ALERTA: Cupón utilizado anteriormente en otra reserva.');
+    }
+    if (isBlackFriday2026Coupon_(coupon.row)) {
+      const owner = normalizeCode_(coupon.row.CodigoReserva);
+      if (owner && owner !== normalizeCode_(reservationCode)) {
+        throw new Error('ALERTA: Cupón reservado por otra reserva.');
+      }
+    }
+    const nextUses = uses + 1;
+    updateRowFields_(coupon, {
+      Estado: maxUses > 0 && nextUses >= maxUses ? 'Canjeado' : 'Vigente',
+      Usos: nextUses, CanjeadoEn: new Date(),
+      CodigoReserva: reservationCode,
+      PayPalOrderID: reservation.row.PayPalOrderID || coupon.row.PayPalOrderID || '',
+      ReservadoHasta: ''
+    });
+  } finally { lock.releaseLock(); }
 }
 
 function updateRowFields_(item, fields) {
@@ -3090,6 +3253,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Cupón generado correctamente.', COUPON_EMPTY: 'Ingresa un código de descuento.', COUPON_NOT_FOUND: 'Código no encontrado.',
       COUPON_INACTIVE: 'Este código no está disponible.', COUPON_ALREADY_USED: 'Este código ya fue utilizado.', COUPON_NOT_STARTED: 'Este código todavía no está vigente.',
       COUPON_EXPIRED: 'Este código ha expirado.', COUPON_EMAIL_MISMATCH: 'Este cupón corresponde a otro correo.', COUPON_CURRENCY_MISMATCH: 'Este cupón fijo no corresponde a la moneda de la reserva.', COUPON_INVALID_VALUE: 'El valor del cupón no es válido.',
+      COUPON_RESERVED: 'Este cupón está reservado en otra reserva pendiente.', COUPON_TRAVEL_DATE_REQUIRED: 'Selecciona una fecha de viaje válida para calcular el descuento Black Friday.',
       COUPON_VALID: 'Cupón válido.', COUPON_TOTAL_MISMATCH: 'El total de la reserva no coincide con el descuento vigente. Actualiza la página e inténtalo nuevamente.'
     },
     en: {
@@ -3097,6 +3261,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Coupon created successfully.', COUPON_EMPTY: 'Enter a discount code.', COUPON_NOT_FOUND: 'Coupon code not found.',
       COUPON_INACTIVE: 'This coupon is not available.', COUPON_ALREADY_USED: 'This coupon has already been used.', COUPON_NOT_STARTED: 'This coupon is not active yet.',
       COUPON_EXPIRED: 'This coupon has expired.', COUPON_EMAIL_MISMATCH: 'This coupon belongs to a different email address.', COUPON_CURRENCY_MISMATCH: 'This fixed coupon does not match the booking currency.', COUPON_INVALID_VALUE: 'The coupon value is invalid.',
+      COUPON_RESERVED: 'This coupon is reserved for another pending booking.', COUPON_TRAVEL_DATE_REQUIRED: 'Choose a valid travel date for the Black Friday discount.',
       COUPON_VALID: 'Valid coupon.', COUPON_TOTAL_MISMATCH: 'The booking total does not match the current discount. Refresh the page and try again.'
     },
     pt: {
@@ -3104,6 +3269,7 @@ function couponMessage_(locale, key) {
       COUPON_CREATED: 'Cupom gerado com sucesso.', COUPON_EMPTY: 'Digite um código de desconto.', COUPON_NOT_FOUND: 'Código não encontrado.',
       COUPON_INACTIVE: 'Este cupom não está disponível.', COUPON_ALREADY_USED: 'Este cupom já foi utilizado.', COUPON_NOT_STARTED: 'Este cupom ainda não está vigente.',
       COUPON_EXPIRED: 'Este cupom expirou.', COUPON_EMAIL_MISMATCH: 'Este cupom pertence a outro e-mail.', COUPON_CURRENCY_MISMATCH: 'Este cupom de valor fixo não corresponde à moeda da reserva.', COUPON_INVALID_VALUE: 'O valor do cupom não é válido.',
+      COUPON_RESERVED: 'Este cupom está reservado para outra reserva pendente.', COUPON_TRAVEL_DATE_REQUIRED: 'Escolha uma data de viagem válida para o desconto Black Friday.',
       COUPON_VALID: 'Cupom válido.', COUPON_TOTAL_MISMATCH: 'O total da reserva não corresponde ao desconto vigente. Atualize a página e tente novamente.'
     }
   };

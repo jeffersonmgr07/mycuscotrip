@@ -420,7 +420,17 @@
   }
 
   function calculateDurationFromDates(selectedDates) {
+    const previousStart = state.dates?.start ? formatISODate(state.dates.start) : "";
     const start = selectedDates?.[0] ? parseISODate(selectedDates[0]) : null;
+    const newStart = start ? formatISODate(start) : "";
+    if (previousStart !== newStart && state.manualDiscount?.campaign === "black_friday_2026") {
+      window.MCTBlackFridayBadge?.clear();
+      state.manualDiscount = null;
+      const input = $("#discountCodeInput");
+      if (input) input.value = "";
+      const message = $("#discountCodeMessage");
+      if (message) message.textContent = "La fecha cambió. Vuelve a aplicar tu cupón Black Friday.";
+    }
     const end = selectedDates?.[1] ? parseISODate(selectedDates[1]) : null;
     if (!start || !end) {
       state.dates = { start, end, days: 0, nights: 0 };
@@ -2293,7 +2303,11 @@
   function getManualDiscountAmount(discountableSubtotal) {
     const discount = state.manualDiscount;
     if (!discount) return 0;
-    if (discount.type === "percent") return discountableSubtotal * (Number(discount.value || 0) / 100);
+    if (discount.type === "percent") {
+      const base = discount.campaign === "black_friday_2026"
+        ? Math.min(discountableSubtotal, getBaseTotals().total) : discountableSubtotal;
+      return base * (Number(discount.value || 0) / 100);
+    }
     if (discount.type === "fixed") return convert(Number(discount.value || 0), discount.currency || state.currency, state.currency);
     return 0;
   }
@@ -2440,7 +2454,10 @@
 
       const result = await window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
-        subtotal: getDiscountableSubtotal(),
+        travelDate: state.dates.start ? formatISODate(state.dates.start) : "",
+        subtotal: getSubtotalBeforeDiscount(),
+        eligibleSubtotal: getBaseTotals().total,
+        activate: true,
         currency: state.currency,
         locale: document.documentElement.lang || "es",
         page: window.location.pathname,
@@ -2461,6 +2478,7 @@
 
       state.manualDiscount = {
         code: result.couponCode || code,
+        campaign: result.campaign || "",
         type: String(result.type || "percent").toLowerCase() === "fixed" ? "fixed" : "percent",
         value: Number(result.value ?? result.discountPercent ?? 0),
         currency: result.currency || state.currency,
@@ -2472,6 +2490,12 @@
       if (message) message.textContent = `${state.manualDiscount.label || t("quote.discount.applied", "Descuento aplicado")}.`;
       updateSummary();
       updatePrintableTemplate();
+      if (result.campaign === "black_friday_2026") {
+        window.MCTBlackFridayBadge?.mount("#discountCodeMessage", result, {
+          currency: state.currency,
+          discountAmount: getManualDiscountAmount(getDiscountableSubtotal())
+        });
+      } else window.MCTBlackFridayBadge?.clear();
     } catch (error) {
       console.error("No se pudo validar el cupón:", error);
       state.manualDiscount = null;
@@ -3334,6 +3358,12 @@
     const buttons = window.paypal.Buttons({
       style: { layout: "vertical", shape: "pill", label: "pay" },
       onClick: (_data, actions) => {
+        // El cotizador no posee contrato de tarifas firmado en backend.
+        // Impedir captura en navegador cuando hay un cupón BF: primero conciliación manual.
+        if (state.manualDiscount?.campaign === "black_friday_2026") {
+          setText("#quotePaypalStatus", "Tu cotización Black Friday está lista. Para confirmar el precio y reservar, comunícate con un asesor por WhatsApp.");
+          return actions.reject();
+        }
         if (!validatePrimaryPassengerData(true)) return actions.reject();
         return actions.resolve();
       },

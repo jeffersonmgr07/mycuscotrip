@@ -1,0 +1,54 @@
+:root{--bf-green:#093e2b;--bf-deep:#052a20;--bf-gold:#e8c476;--bf-soft:#f5f8f3}
+#bf-main{font-family:"Open Sans",Arial,sans-serif;background:#fff;color:#173c2c}
+#bf-main h1,#bf-main h2,#bf-main h3{font-family:Montserrat,sans-serif;line-height:1.15}
+.bf-hero{position:relative;background:linear-gradient(145deg,#052b21,#0b513a);color:#fff;overflow:hidden;padding:90px 0 78px}
+.bf-hero__backdrop{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 20%,#bfa55b38,transparent 48%)}
+.bf-hero__grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:58px;align-items:center}
+.bf-eyebrow{font:700 12px Montserrat,sans-serif;letter-spacing:.18em;color:var(--bf-gold);text-transform:uppercase}
+.bf-hero h1{font-size:clamp(45px,5.6vw,83px);font-weight:800;line-height:1.03;letter-spacing:-.04em;margin:17px 0 22px}
+.bf-hero h1 em{display:block;color:var(--bf-gold);font-style:normal}
+.bf-hero h2{font-weight:700;font-size:clamp(23px,2.7vw,38px);max-width:650px}
+.bf-hero__text>p{font-size:18px;max-width:670px;line-height:1.7;color:#ecf4ed}
+.bf-hero__text strong{color:var(--bf-gold)}
+.bf-hero__facts{display:flex;gap:20px;flex-wrap:wrap;margin:27px 0}
+.bf-hero__facts span{font-size:13px;font-weight:700;color:#e6f4ea}.bf-hero__facts i{color:var(--bf-gold)}
+.bf-primary-link,.bf-btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--bf-gold);color:#13392a;border:0;border-radius:12px;padding:16px 24px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.bf-primary-link:hover,.bf-btn:hover{transform:translateY(-2px);box-shadow:0 13px 28px #0003}
+.bf-hero__photo{position:relative;min-height:485px;border-radius:28px;overflow:hidden;box-shadow:0 35px 60px #0004;border:1px solid #ffffff55}
+.bf-hero__photo img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+.bf-hero__photo::after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#04271fbd)}
+.bf-hero__photo span{position:absolute;bottom:28px;left:28px;z-index:1;color:white;font-weight:800;font-size:18px}
+.bf-experiences{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding-top:34px;padding-bottom:34px}
+.bf-destination{height:170px;position:relative;overflow:hidden;border-radius:17px;background:#e4ece6}
+.bf-destination img{width:100%;height:100%;object-fit:cover}
+.bf-destination:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#062f24c7)}
+.bf-destination span{position:absolute;z-index:1;bottom:17px;left:20px;color:#fff;font-weight:800}
+.bf-claim-bg{padding:65px 0 95px;background:var(--bf-soft)}
+.bf-claim-grid{display:grid;grid-template-columns:1fr minmax(370px,.95fr);gap:76px;align-items:start}
+.bf-claim-copy h2{font-size:clamp(28px,3vw,45px);margin:20px 0}
+.bf-claim-copy p,.bf-claim-copy li{color:#4c5d53;line-height:1.8;font-size:15px}
+.bf-claim-copy ul{padding-left:23px}
+.bf-claim-copy li::marker{color:#117e4d}
+.bf-claim-card{background:white;border:1px solid #dce7da;border-radius:24px;padding:34px;box-shadow:0 22px 60px #173f2211}
+.bf-claim-card h2{font-size:25px;margin:0 0 10px}
+.bf-claim-card p{line-height:1.6;color:#526459}
+.bf-claim-card label:not(.bf-check){display:block;font-size:13px;font-weight:700;color:#315440;margin:16px 0}
+.bf-claim-card input:not([type="checkbox"]),.bf-claim-card select{display:block;border:1px solid #c8d5cd;border-radius:10px;min-height:48px;padding:12px;width:100%;margin-top:6px;background:#fff;color:#1a392b;font:inherit}
+.bf-claim-card input:focus-visible,.bf-claim-card select:focus-visible{outline:3px solid #86cba3;outline-offset:1px}
+.bf-fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.bf-phone-fields{grid-template-columns:1.08fr 1fr}
+.bf-check{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.6;margin:18px 0;color:#38564a}
+.bf-check input{accent-color:#0a673f;margin-top:3px}
+.bf-check a{color:#097648}
+.bf-claim-card .bf-btn{width:100%;margin-top:15px}
+.bf-claim-card button:disabled{opacity:.58;cursor:wait;transform:none}
+.bf-message{min-height:22px;color:#aa3131;font-size:13px;overflow-wrap:anywhere}
+.bf-message.is-success{color:#0b7140}
+.bf-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.bf-private-code{font:800 clamp(15px,2.3vw,23px) Montserrat,sans-serif;letter-spacing:.04em;padding:19px 10px;border-radius:12px;border:1px dashed #2a9d60;background:#e8f7eb;text-align:center;overflow-wrap:anywhere}
+.bf-success-title{font-weight:800;color:#0a7a44!important;font-size:18px}
+.bf-success-title i{margin-right:8px}
+.bf-inline-btn{background:transparent;border:0;padding:12px 6px;color:#076d44;cursor:pointer;text-decoration:underline}
+.bf-secondary-link{display:inline-block;margin:10px 12px 0 0;color:#076d44;font-weight:700;font-size:13px}
+@media(max-width:900px){.bf-hero__grid,.bf-claim-grid{grid-template-columns:1fr;gap:35px}.bf-hero{padding:50px 0}.bf-hero__photo{min-height:340px}.bf-claim-bg{padding:44px 0}}
+@media(max-width:540px){.bf-experiences{grid-template-columns:1fr 1fr;gap:10px}.bf-destination{height:124px}.bf-destination:last-child{grid-column:1/-1}.bf-fields{grid-template-columns:1fr}.bf-phone-fields{grid-template-columns:1fr 1fr}.bf-claim-card{padding:22px}.bf-hero h1{font-size:48px}.bf-hero__facts{gap:9px}.bf-hero__photo{min-height:275px}}

@@ -541,12 +541,14 @@
     const payingPax = getPayingPassengerCount();
     const lines = [];
     let subtotal = 0;
+    let eligibleSubtotal = 0;
 
     if (state.mainProduct.selected) {
       const p = data.mainProduct;
       const childPrice = getChildPrice(p);
       const adultsTotal = state.adults * p.adultPrice;
       const childrenTotal = state.children * childPrice;
+      eligibleSubtotal += adultsTotal + childrenTotal;
       const meal = (p.mealOptions || []).find((m) => m.id === state.mainProduct.mealOptionId) || p.mealOptions[0];
       const mealTotal = (meal?.pricePerPerson || 0) * payingPax;
       const trainPricing = getSelectedTrainPricing(p);
@@ -577,6 +579,7 @@
       const sel = state.addons[addon.id];
       if (!sel || !sel.selected) return;
       const baseTotal = addon.pricePerPerson * payingPax;
+      eligibleSubtotal += baseTotal;
       let extrasTotal = 0;
       const extraLabels = [];
       (addon.extras || []).forEach((extra) => {
@@ -600,7 +603,10 @@
 
     let discount = 0;
     if (state.coupon) {
-      if (state.coupon.type === "percent") discount = subtotal * (Number(state.coupon.value || 0) / 100);
+      if (state.coupon.type === "percent") {
+        const base = state.coupon.campaign === "black_friday_2026" ? eligibleSubtotal : subtotal;
+        discount = base * (Number(state.coupon.value || 0) / 100);
+      }
       else if (state.coupon.type === "fixed") discount = Math.min(subtotal, Number(state.coupon.value || 0));
     }
     discount = round2(discount);
@@ -617,6 +623,7 @@
       infants: state.infants,
       lines,
       subtotal: round2(subtotal),
+      eligibleSubtotal: round2(eligibleSubtotal),
       discount,
       total,
       transition: validateDestinationTransition(dated),
@@ -688,7 +695,10 @@
       const summary = calculateBookingSummary();
       const validationPromise = window.MyCuscoTripApiClient.validateCoupon({
         couponCode: code,
+        travelDate: state.mainProduct.date || "",
         subtotal: Number(summary.subtotal || 0),
+        eligibleSubtotal: Number(summary.eligibleSubtotal || 0),
+        activate: true,
         currency: summary.currency || state.data.currency || "USD",
         locale: "fr",
         page: window.location.pathname
@@ -713,6 +723,7 @@
       const couponType = String(result.type || (result.discountPercent ? "percent" : "percent")).toLowerCase() === "fixed" ? "fixed" : "percent";
       state.coupon = {
         code: result.couponCode || code,
+        campaign: result.campaign || "",
         type: couponType,
         value: Number(result.value ?? result.discountPercent ?? 0),
         currency: result.currency || summary.currency || state.data.currency || "USD",
@@ -722,6 +733,11 @@
 
       renderSummary();
       setCouponMessage(`Code appliqué : ${result.label || state.coupon.code}.`, "success");
+      window.MCTBlackFridayBadge?.mount("#mptCouponMessage", result, {
+        currency: summary.currency,
+        discountAmount: result.campaign === "black_friday_2026"
+          ? Math.round(summary.eligibleSubtotal * Number(result.value || 0)) / 100 : 0
+      });
       trackLandingEvent("coupon_applied", {
         coupon_code: state.coupon.code,
         coupon_valid: true,
@@ -1014,6 +1030,13 @@
       locale: "fr",
       defaultDate: state.mainProduct.date || undefined,
       onChange(selectedDates, dateStr) {
+        if (state.mainProduct.date !== (dateStr || null) && state.coupon?.campaign === "black_friday_2026") {
+          state.coupon = null;
+          state.couponDraftCode = "";
+          const input = document.getElementById("mptCouponInput");
+          if (input) input.value = "";
+          setCouponMessage("Fecha modificada. Vuelve a aplicar el cupón Black Friday.", "");
+        }
         state.mainProduct.date = dateStr || null;
         refreshDatePickers();
         renderCircuitOptions();
@@ -1787,6 +1810,7 @@
       payNow: formatCurrency(summary.total, summary.currency),
       payLater: formatCurrency(0, summary.currency),
       serviceTotalValue: summary.subtotal,
+      eligibleSubtotalValue: summary.eligibleSubtotal,
       payNowValue: summary.total,
       payLaterValue: 0,
       status: "pre_reservation",

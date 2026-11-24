@@ -1,0 +1,10 @@
+
+.mct-bf26-wrap{text-align:center;max-width:510px;width:100%;margin:16px auto;font-family:Montserrat,"Open Sans",sans-serif}
+.mct-bf26-glow{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;padding:20px;border-radius:16px;background:linear-gradient(140deg,#073624,#0c5337);color:white;border:2px solid #e8c476;box-shadow:0 0 10px #e6cb7d66,0 0 23px #e6cb7d44;animation:mctBfPulse 2.8s ease-in-out infinite}
+.mct-bf26-glow strong{font-size:clamp(17px,2vw,23px);font-weight:800}
+.mct-bf26-glow span{font-size:14px;font-weight:600}
+.mct-bf26-glow [data-bf-timer]{font-size:16px;font-variant-numeric:tabular-nums;color:#f6df9b;font-weight:800}
+.mct-bf26-note{color:#69736b;font-size:12px;margin:10px 0 0;font-style:italic}
+.mct-bf26-wrap.is-expired .mct-bf26-glow{animation:none;opacity:.65}
+@keyframes mctBfPulse{0%,100%{box-shadow:0 0 9px #e5c87288,0 0 18px #e5c87244}50%{box-shadow:0 0 18px #e5c872cc,0 0 35px #e5c87277}}
+@media(prefers-reduced-motion:reduce){.mct-bf26-glow{animation:none}}
