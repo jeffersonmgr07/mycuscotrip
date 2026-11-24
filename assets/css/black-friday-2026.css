@@ -280,7 +280,10 @@
 }
 @media(max-width:900px) {
   #bf-main .bf-layout {grid-template-columns:minmax(0,1fr)}
-  #bf-main .bf-editorial {padding-top:0}
+  /* Móvil y tablets: el formulario debe aparecer antes del texto promocional.
+     En escritorio se conserva la composición original en dos columnas. */
+  #bf-main .bf-card {order:1}
+  #bf-main .bf-editorial {order:2;padding-top:0}
   #bf-main .bf-editorial h1 {max-width:680px;font-size:clamp(39px,8vw,67px)}
   #bf-main .bf-description {max-width:700px}
   #bf-main .bf-card {max-width:670px;width:100%;margin:0 auto}
