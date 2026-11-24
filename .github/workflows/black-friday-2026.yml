@@ -3,6 +3,7 @@ on:
   pull_request:
   push:
     branches:
+      - main
       - feat/bf2026-dark-landing-payment-validation
 permissions:
   contents: read
@@ -30,3 +31,4 @@ jobs:
           node tests/check_package_checkout.cjs
           node tests/check_bf26_100.cjs
           node tests/check_bf26_pricing.cjs
+          node tests/check_bf26_brand.cjs
