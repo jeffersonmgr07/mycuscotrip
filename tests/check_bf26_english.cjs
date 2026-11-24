@@ -61,6 +61,6 @@ assert.match(script, /Coupon copied/);
 assert.match(en, /id="bf-registration"/);
 assert.match(en, /id="bf-verify"/);
 assert.match(en, /id="bf-success"/);
-assert.match(en, /black-friday-claim\.js\?v=20261124-en1/);
-assert.match(es, /black-friday-claim\.js\?v=20261124-en1/);
+assert.match(en, /black-friday-claim\.js\?v=20261124-en2/);
+assert.match(es, /black-friday-claim\.js\?v=20261124-en2/);
 console.log("PASS: English Black Friday page, form, SEO, translated OTP messages, shared styles and working ES↔EN routes.");
