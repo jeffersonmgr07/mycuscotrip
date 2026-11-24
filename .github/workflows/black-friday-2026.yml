@@ -32,3 +32,4 @@ jobs:
           node tests/check_bf26_100.cjs
           node tests/check_bf26_pricing.cjs
           node tests/check_bf26_brand.cjs
+          node tests/check_bf26_badge_timer.cjs
