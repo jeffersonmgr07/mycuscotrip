@@ -24,6 +24,11 @@ assert.ok(fs.existsSync(path.join(root,"assets/img/machu-picchu/machu-picchu-her
 assert.match(css,/@keyframes bf-machu-float/);
 assert.match(css,/@keyframes bf-border-shift/);
 assert.match(css,/#bf-main \.bf-country-option/);
+assert.doesNotMatch(css, /input:not\(\[type="checkbox"\]\),\s*\/\*/, "malformed input selector must not recur");
+assert.match(css, /input:not\(\[type="checkbox"\]\):not\(\[type="hidden"\]\)\s*\{[\s\S]*?display:block/, "visible fields must have block styles");
+assert.match(css, /\.bf-card \.bf-fields > \* \{min-width:0\}/, "fields should not overflow their grid columns");
+assert.match(css, /\.bf-country-options \{max-height:230px/, "country options must remain scrollable");
+
 assert.match(claim,/bf-country-trigger/);
 assert.match(claim,/createDocumentFragment/);
 assert.match(badgeHtml,/mct-bf26-time/);
