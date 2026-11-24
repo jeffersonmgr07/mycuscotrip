@@ -61,10 +61,11 @@
               <label>Apellido<input id="bf-last" name="lastName" maxlength="90" placeholder="Tu apellido" autocomplete="family-name" required></label>
             </div>
             <label>Correo electrónico<input id="bf-email" type="email" name="email" maxlength="254" placeholder="correo@ejemplo.com" autocomplete="email" required></label>
-            <label>Número de WhatsApp</label>
+            <label for="bf-phone" class="bf-phone-heading">Número de WhatsApp</label>
             <div class="bf-fields bf-phone-fields">
               <div class="bf-country-field">
                 <select id="bf-country" name="countryCode" required aria-label="Código telefónico internacional"></select>
+                <button type="button" class="bf-country-search-trigger" id="bf-country-search-toggle" aria-expanded="false" aria-controls="bf-country-search-container" aria-label="Buscar un país"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <div class="bf-country-search" id="bf-country-search-container">
                   <label for="bf-country-search">Buscar país o prefijo</label>
                   <input id="bf-country-search" type="search" placeholder="Perú, Colombia, +51…" autocomplete="off">
