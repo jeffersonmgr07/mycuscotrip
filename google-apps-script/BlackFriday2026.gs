@@ -325,23 +325,36 @@ function mctBfEmailEscapeHtml_(value) {
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
   });
 }
-function mctBfEmailHtml_(kind, firstName, value) {
+function mctBfEmailHtml_(kind, firstName, value, locale) {
+  var english = String(locale || 'es').toLowerCase().slice(0,2) === 'en';
   var verifying = kind === 'otp';
-  var name = mctBfEmailEscapeHtml_(firstName || 'viajero');
+  var name = mctBfEmailEscapeHtml_(firstName || (english ? 'traveler' : 'viajero'));
   var code = mctBfEmailEscapeHtml_(value);
-  var title = verifying ? 'Confirma tu correo electrónico' : '¡Tu cupón Black Friday está listo!';
-  var eyebrow = verifying ? 'VERIFICACIÓN DE CORREO' : 'TU CUPÓN PERSONAL';
-  var description = verifying
-    ? 'Utiliza el siguiente código de seis dígitos para verificar tu correo. Por seguridad, caduca en <strong>10 minutos</strong>.'
-    : 'Ya puedes descubrir tu descuento especial al elegir la fecha de tu próxima experiencia o paquete.';
-  var info = verifying
-    ? 'Si no solicitaste este código, ignora este mensaje. No lo compartas con otras personas.'
-    : 'Este cupón es personal y válido para una sola compra. Una vez aplicado en la reserva, se mostrará el tiempo disponible para utilizarlo.';
+  var title = english
+    ? (verifying ? 'Verify your email address' : 'Your Black Friday coupon is ready!')
+    : (verifying ? 'Confirma tu correo electrónico' : '¡Tu cupón Black Friday está listo!');
+  var eyebrow = english
+    ? (verifying ? 'EMAIL VERIFICATION' : 'YOUR PERSONAL COUPON')
+    : (verifying ? 'VERIFICACIÓN DE CORREO' : 'TU CUPÓN PERSONAL');
+  var description = english
+    ? (verifying
+        ? 'Use the six-digit code below to verify your email address. It expires in <strong>10 minutes</strong>.'
+        : 'Discover your special discount when choosing the date of your next Cusco experience or travel package.')
+    : (verifying
+        ? 'Utiliza el siguiente código de seis dígitos para verificar tu correo. Por seguridad, caduca en <strong>10 minutos</strong>.'
+        : 'Ya puedes descubrir tu descuento especial al elegir la fecha de tu próxima experiencia o paquete.');
+  var info = english
+    ? (verifying
+        ? 'If you did not request this code, please ignore this email. Do not share it with anyone.'
+        : 'This coupon is personal and valid for one purchase. Once you apply it to a booking, the remaining time to use it will be displayed.')
+    : (verifying
+        ? 'Si no solicitaste este código, ignora este mensaje. No lo compartas con otras personas.'
+        : 'Este cupón es personal y válido para una sola compra. Una vez aplicado en la reserva, se mostrará el tiempo disponible para utilizarlo.');
   var button = verifying ? '' :
     '<tr><td align="center" style="padding:9px 32px 32px;">' +
-      '<a href="https://mycuscotrip.com/machu-picchu-tours.html" style="display:inline-block;background:#087d45;border-radius:10px;padding:15px 27px;color:#ffffff;font-size:14px;font-weight:800;text-decoration:none;">Explorar experiencias</a>' +
+      '<a href="' + (english ? 'https://mycuscotrip.com/en/machu-picchu-tours.html' : 'https://mycuscotrip.com/machu-picchu-tours.html') + '" style="display:inline-block;background:#087d45;border-radius:10px;padding:15px 27px;color:#ffffff;font-size:14px;font-weight:800;text-decoration:none;">' + (english ? 'Explore tours' : 'Explorar experiencias') + '</a>' +
     '</td></tr>';
-  return '<!doctype html><html lang="es"><head><meta charset="utf-8"></head>' +
+  return '<!doctype html><html lang="' + (english ? 'en' : 'es') + '"><head><meta charset="utf-8"></head>' +
     '<body style="margin:0;padding:0;background:#eef3ee;font-family:Arial,Helvetica,sans-serif;color:#23533f;">' +
     '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eef3ee;padding:28px 12px;border-collapse:separate;"><tr><td align="center">' +
     '<table role="presentation" cellspacing="0" cellpadding="0" width="100%" style="max-width:610px;background:#ffffff;border-radius:20px;overflow:hidden;border-collapse:separate;">' +
@@ -351,7 +364,7 @@ function mctBfEmailHtml_(kind, firstName, value) {
     '</td></tr>' +
     '<tr><td style="padding:31px 32px 12px;">' +
       '<h1 style="margin:0 0 17px;font-size:26px;line-height:1.25;color:#164f39;font-weight:800;">' + title + '</h1>' +
-      '<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4e6458;">Hola <strong>' + name + '</strong>,</p>' +
+      '<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4e6458;">' + (english ? 'Hello' : 'Hola') + ' <strong>' + name + '</strong>,</p>' +
       '<p style="margin:0;font-size:15px;line-height:1.65;color:#4e6458;">' + description + '</p>' +
     '</td></tr>' +
     '<tr><td style="padding:15px 32px 18px;">' +
@@ -365,13 +378,16 @@ function mctBfEmailHtml_(kind, firstName, value) {
     '<tr><td style="padding:0 32px 21px;">' +
       '<p style="font-size:14px;line-height:1.7;color:#536b5d;margin:0 0 11px;">' + info + '</p>' +
       '<p style="font-size:12px;line-height:1.6;color:#65786b;margin:0;">' +
-        (verifying ? 'Equipo My Cusco Trip · Cusco, Perú' :
-          'Promoción válida del 23 al 29 de noviembre de 2026. Descuento sobre tarifa base elegible; excluye vuelos, mejoras de hotel y extras. Sujeto a disponibilidad.') +
+        (english
+          ? (verifying ? 'My Cusco Trip Team · Cusco, Peru' :
+              'Promotion valid November 23–29, 2026. Discounts apply to eligible base fares only. Flights, hotel upgrades and extras are excluded. Subject to availability.')
+          : (verifying ? 'Equipo My Cusco Trip · Cusco, Perú' :
+              'Promoción válida del 23 al 29 de noviembre de 2026. Descuento sobre tarifa base elegible; excluye vuelos, mejoras de hotel y extras. Sujeto a disponibilidad.')) +
       '</p>' +
     '</td></tr>' + button +
     '<tr><td align="center" style="background:#f4f7f3;padding:21px 28px;border-top:1px solid #dce6dc;">' +
-      '<p style="margin:0;font-size:12px;color:#476555;font-weight:700;">My Cusco Trip · Viaja a Cusco sin complicaciones</p>' +
-      '<p style="margin:8px 0 0;font-size:12px;color:#6f8577;">Cusco, Perú · <a href="https://mycuscotrip.com" style="color:#0d8052;text-decoration:none;">mycuscotrip.com</a></p>' +
+      '<p style="margin:0;font-size:12px;color:#476555;font-weight:700;">' + (english ? 'My Cusco Trip · Explore Cusco without the hassle' : 'My Cusco Trip · Viaja a Cusco sin complicaciones') + '</p>' +
+      '<p style="margin:8px 0 0;font-size:12px;color:#6f8577;">' + (english ? 'Cusco, Peru' : 'Cusco, Perú') + ' · <a href="https://mycuscotrip.com" style="color:#0d8052;text-decoration:none;">mycuscotrip.com</a></p>' +
     '</td></tr></table></td></tr></table></body></html>';
 }
 
@@ -421,10 +437,15 @@ function mctBfLeadStart_(data) {
       // Orden de columnas: primer campo Correo (no timestamp)
       v[0]=email;
       try {MailApp.sendEmail({to:email,name:'My Cusco Trip',
-        subject:'Verifica tu correo · Black Friday My Cusco Trip',
-        body:'Hola '+first+',\n\nTu código de verificación es '+code+
-          '. Caduca en 10 minutos. Si no lo solicitaste, ignora este correo.\n\nMy Cusco Trip',
-        htmlBody:mctBfEmailHtml_('otp',first,code)});}
+        subject:String(p.locale||'').toLowerCase()==='en'
+          ? 'Verify your email · My Cusco Trip Black Friday'
+          : 'Verifica tu correo · Black Friday My Cusco Trip',
+        body:String(p.locale||'').toLowerCase()==='en'
+          ? 'Hello '+first+',\n\nYour verification code is '+code+
+            '. It expires in 10 minutes. If you did not request it, ignore this email.\n\nMy Cusco Trip'
+          : 'Hola '+first+',\n\nTu código de verificación es '+code+
+            '. Caduca en 10 minutos. Si no lo solicitaste, ignora este correo.\n\nMy Cusco Trip',
+        htmlBody:mctBfEmailHtml_('otp',first,code,p.locale)});}
       catch(ex){throw new Error('No se pudo enviar el correo. Inténtalo nuevamente.');}
       if(old)sh.getRange(old.row,1,1,v.length).setValues([v]);
       else sh.appendRow(v);
@@ -463,10 +484,16 @@ function mctBfLeadVerify_(data) {
       v[7]='';v[8]='';v[9]=0;v[12]=new Date();v[13]=String(c.data[0]);v[15]=new Date();
       sh.getRange(lead.row,1,1,v.length).setValues([v]);
     } finally {lock.releaseLock();}
-    try {MailApp.sendEmail({to:email,name:'My Cusco Trip',subject:'Tu cupón exclusivo · Black Friday My Cusco Trip',
-      body:'Hola '+first+',\n\nTu cupón exclusivo es: '+code+
-        '\n\nUtilízalo en mycuscotrip.com. Una vez aplicado, se mostrará el tiempo límite para utilizarlo. Es personal y de un solo uso.\n\nMy Cusco Trip',
-      htmlBody:mctBfEmailHtml_('coupon',first,code)});}
+    try {MailApp.sendEmail({to:email,name:'My Cusco Trip',
+      subject:String(data.locale||'').toLowerCase()==='en'
+        ? 'Your exclusive Black Friday coupon · My Cusco Trip'
+        : 'Tu cupón exclusivo · Black Friday My Cusco Trip',
+      body:String(data.locale||'').toLowerCase()==='en'
+        ? 'Hello '+first+',\n\nYour exclusive coupon is: '+code+
+          '\n\nUse it at mycuscotrip.com/en/. When applied, you will see the time limit to complete your booking. It is personal and valid for one purchase.\n\nMy Cusco Trip'
+        : 'Hola '+first+',\n\nTu cupón exclusivo es: '+code+
+          '\n\nUtilízalo en mycuscotrip.com. Una vez aplicado, se mostrará el tiempo límite para utilizarlo. Es personal y de un solo uso.\n\nMy Cusco Trip',
+      htmlBody:mctBfEmailHtml_('coupon',first,code,data.locale)});}
     catch(err){/* El código ya está asignado; se permite recuperarlo con un nuevo OTP. */}
     return {ok:true,code:code,message:'Correo verificado. Tu cupón es personal y de un solo uso.'};
   }catch(err){return {ok:false,error:String(err.message||'No se pudo verificar.')};}
