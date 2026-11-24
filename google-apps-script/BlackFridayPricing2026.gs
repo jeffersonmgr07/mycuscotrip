@@ -106,9 +106,10 @@ function mctBfCheckoutPricing_(p) {
       const includedExtras=Array.isArray(service.extras)?service.extras:[];
       if(new Set(includedExtras).size!==includedExtras.length)
         return {ok:false,error:'Servicios adicionales duplicados.'};
+      if(includedExtras.some(extraId=>!(addon.extras||[]).some(x=>x.id===extraId)))
+        return {ok:false,error:'Extra no reconocido en el catálogo del tour.'};
       const addonsTotal=includedExtras.reduce(function(sum,extraId){
         const extra=(addon.extras||[]).find(x=>x.id===extraId);
-        if(!extra)throw new Error('Extra no reconocido en el catálogo del tour.');
         return sum+Number(extra.pricePerPerson||0)*pax;
       },0);
       const addonBase=Number(addon.pricePerPerson||0)*pax;
