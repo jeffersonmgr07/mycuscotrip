@@ -17,7 +17,7 @@ assert.match(landing,/Los cupones son válidos para una sola compra.*tiempo limi
 assert.match(landing,/id="header-container"/);
 assert.match(landing,/id="footer-container"/);
 assert.match(landing,/id="bf-country-trigger"/);
-assert.match(landing, /class="bf-btn bf-success-explore" href="\.\/explora-peru\.html"/, "successful coupon claim directs users to Explora Perú");
+assert.match(landing, /class="bf-btn bf-success-explore" href="\.\/machu-picchu-tours\.html"/, "successful coupon claim directs users to Machu Picchu tours");
 assert.match(landing, /cuando lo apliques, te indicaremos el tiempo disponible/, "coupon validity explained without unnecessary detail");
 assert.match(landing, /id="bf-copy"/, "copy coupon action retained");
 assert.match(css, /#bf-main \.bf-success-explore/, "coupon CTA styling available");
@@ -44,6 +44,7 @@ assert.match(claim,/createDocumentFragment/);
 assert.match(badgeHtml,/mct-bf26-time/);
 assert.match(badgeCss,/#eb3bae/);
 assert.match(badgeCss,/@keyframes mctBfPulse/);
+assert.match(badgeCss, /\.mct-bf26-savings \{[\s\S]*?background:#0a5135;color:#ffffff/, "savings displays in small dark green badge with white text");
 assert.match(badgeCss,/background:#ffffff/);
 assert.match(backend,/function mctBfEmailHtml_/);
 assert.match(backend,/htmlBody:mctBfEmailHtml_\('otp'/);
