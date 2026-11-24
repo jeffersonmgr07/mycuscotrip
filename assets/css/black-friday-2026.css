@@ -266,7 +266,10 @@
 }
 #bf-main .bf-success-title {color:#cdf58c;font-weight:800;font-size:20px;margin:20px 0}
 #bf-main .bf-private-code {border:1px dashed #9beb65;border-radius:12px;background:#122b1a;padding:20px;color:#e8ffbb;font:800 clamp(16px,2vw,21px) Montserrat,sans-serif;overflow-wrap:anywhere;text-align:center}
-#bf-main .bf-success-note {color:#b5c5b9;font-size:13px;line-height:1.7;margin-top:18px}
+#bf-main .bf-success-note {color:#e0eee2;font-size:14px;line-height:1.7;margin:20px 0 0}
+#bf-main .bf-success-explore {margin-top:20px}
+#bf-main .bf-success-copy {display:flex;justify-content:center;align-items:center;gap:8px;margin:14px auto 0;font-size:13px;font-weight:700}
+#bf-main .bf-success-email {margin-top:10px;font-size:12px;color:#98b1a1;text-align:center;line-height:1.55}
 #bf-main .bf-trap,#bf-main .bf-visually-hidden {
   position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
   overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;
