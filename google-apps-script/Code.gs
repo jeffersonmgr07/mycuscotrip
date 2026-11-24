@@ -358,7 +358,9 @@ function doGet(e) {
     if (action === 'health') return json_({ ok: true, service: 'my-cusco-trip-apps-script',
       version: BACKEND_VERSION, time: new Date().toISOString(),
       blackFriday2026Ready: typeof mctBfValidate_ === 'function',
-      blackFriday100Coupons: typeof prepararCampanaBlackFridayMCT === 'function' });
+      blackFriday100Coupons: typeof prepararCampanaBlackFridayMCT === 'function',
+      blackFridayPricingReady: typeof mctBfCheckoutPricing_ === 'function',
+      blackFridayPaymentsEnabled: getProp_('MCT_BF26_ENABLE_PAYMENTS','true') === 'true' });
     if (action === 'couponHealth') return json_(couponHealth_(params));
     if (action === 'validateCoupon') return json_(validateCoupon_(params));
     if (action === 'lookupReservation') return json_(lookupReservation_(params));
@@ -1787,9 +1789,16 @@ function createPreReservation_(p) {
     }
   }
 
-  if (couponData && couponData.campaign === 'black_friday_2026' &&
-      getProp_('MCT_BF26_ENABLE_PAYMENTS', 'false') !== 'true') {
-    return {ok:false,error:'El descuento Black Friday está habilitado para cotizar, pero su pago online aún no está habilitado.'};
+  if (couponData && couponData.campaign === 'black_friday_2026') {
+    // Unlike the legacy flow, the BF amount MUST be recomputed from trusted
+    // prices hosted by My Cusco Trip. No charge from browser-supplied fares.
+    if (getProp_('MCT_BF26_ENABLE_PAYMENTS', 'true') !== 'true')
+      return {ok:false,error:'Los cobros Black Friday están pausados por administración.'};
+    const trusted = mctBfCheckoutPricing_(payload);
+    if (!trusted.ok) return trusted;
+    if (Math.abs(trusted.serviceTotal-serviceTotal)>0.05 ||
+        Math.abs(trusted.eligible-number_(payload.eligibleSubtotalValue,-1))>0.05)
+      return {ok:false,error:'El precio no coincide con nuestro catálogo. Actualiza la cotización.'};
   }
 
   const existing = findReservation_(code);
@@ -1871,6 +1880,15 @@ function createPayPalOrder_(p) {
 
   const row = reservation.row;
   const storedPackage = parseJsonSafe_(row.JSON, {});
+  if (mctBfIsCode_(row.CodigoCupon)) {
+    if (getProp_('MCT_BF26_ENABLE_PAYMENTS', 'true') !== 'true')
+      return {ok:false,error:'Los cobros Black Friday están pausados por administración.'};
+    const trusted = mctBfCheckoutPricing_(storedPackage);
+    if (!trusted.ok) return trusted;
+    if (!mctBfFareEqual_(trusted.serviceTotal,row.TotalServicio) ||
+        !mctBfFareEqual_(trusted.eligible,storedPackage.eligibleSubtotalValue))
+      return {ok:false,error:'La tarifa de la reserva ya no coincide con la tarifa oficial.'};
+  }
   if (storedPackage.source === 'landing-paquetes-cusco') {
     const fareCheck = validatePackageFare_(storedPackage);
     if (!fareCheck.ok) return fareCheck;
@@ -2547,6 +2565,16 @@ function createMercadoPagoPreference_(p) {
   ensureReservationCanPay_(reservation);
 
   const row = reservation.row;
+  if (mctBfIsCode_(row.CodigoCupon)) {
+    if (getProp_('MCT_BF26_ENABLE_PAYMENTS', 'true') !== 'true')
+      return {ok:false,error:'Los cobros Black Friday están pausados por administración.'};
+    const stored = parseJsonSafe_(row.JSON,{});
+    const trusted = mctBfCheckoutPricing_(stored);
+    if (!trusted.ok) return trusted;
+    if (!mctBfFareEqual_(trusted.serviceTotal,row.TotalServicio) ||
+        !mctBfFareEqual_(trusted.eligible,stored.eligibleSubtotalValue))
+      return {ok:false,error:'El precio de la reserva no coincide con el catálogo.'};
+  }
   const currency = normalizeCurrency_(row.Moneda || payload.currency || 'PEN');
   if (currency !== 'PEN') {
     return { ok: false, error: 'Mercado Pago está configurado para reservas cotizadas en soles/PEN. Usa PayPal para USD.' };
