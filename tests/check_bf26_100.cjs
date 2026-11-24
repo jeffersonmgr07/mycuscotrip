@@ -55,6 +55,21 @@ assert.equal(context.mctBfLeadStart_(claim).ok,true);
 const otp2=mails.at(-1).body.match(/\b\d{6}\b/)[0];
 assert.equal(context.mctBfLeadVerify_({email:claim.email,otp:otp2}).code,code);
 assert.equal(db.MCT_BF26_Cupones.rows.filter(r=>r[4]==="marta@example.com").length,1);
+
+// English registration uses the same inventory but delivers bilingual branded emails.
+const englishClaim={...claim,email:"alex@example.com",firstName:"Alex",locale:"en"};
+assert.equal(context.mctBfLeadStart_(englishClaim).ok,true);
+assert.match(mails.at(-1).subject,/Verify your email/);
+assert.match(mails.at(-1).htmlBody,/<html lang="en">/);
+assert.match(mails.at(-1).htmlBody,/Verify your email address/);
+const englishOtp=mails.at(-1).body.match(/\b\d{6}\b/)[0];
+const englishResult=context.mctBfLeadVerify_({email:englishClaim.email,otp:englishOtp,locale:"en"});
+assert.equal(englishResult.ok,true);
+assert.match(mails.at(-1).subject,/Your exclusive Black Friday coupon/);
+assert.match(mails.at(-1).htmlBody,/<html lang="en">/);
+assert.match(mails.at(-1).htmlBody,/Your Black Friday coupon is ready!/);
+assert.match(mails.at(-1).htmlBody,/https:\/\/mycuscotrip\.com\/en\/machu-picchu-tours\.html/);
+
 const date="2027-04-05",input={couponCode:code,date,subtotal:400,eligibleSubtotal:300};
 assert.equal(context.mctBfValidate_(input,false).valid,false);
 const applied=context.mctBfValidate_(input,true);
