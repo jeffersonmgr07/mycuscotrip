@@ -17,6 +17,10 @@ assert.match(landing,/Los cupones son válidos para una sola compra.*tiempo limi
 assert.match(landing,/id="header-container"/);
 assert.match(landing,/id="footer-container"/);
 assert.match(landing,/id="bf-country-trigger"/);
+assert.match(landing, /class="bf-btn bf-success-explore" href="\.\/explora-peru\.html"/, "successful coupon claim directs users to Explora Perú");
+assert.match(landing, /cuando lo apliques, te indicaremos el tiempo disponible/, "coupon validity explained without unnecessary detail");
+assert.match(landing, /id="bf-copy"/, "copy coupon action retained");
+assert.match(css, /#bf-main \.bf-success-explore/, "coupon CTA styling available");
 assert.doesNotMatch(landing,/fa-magnifying-glass/,"no magnifying glass");
 assert.doesNotMatch(css,/\.mct-black-friday #header-container \.header/,"do not override shared header");
 assert.doesNotMatch(css,/\.mct-black-friday #footer-container \.footer/,"do not override shared footer");
