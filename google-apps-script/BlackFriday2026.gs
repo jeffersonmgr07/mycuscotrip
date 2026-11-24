@@ -315,6 +315,66 @@ function mctBfActualizarEstados() {
   }finally{lock.releaseLock();}
 }
 
+/**
+ * Plantillas transaccionales My Cusco Trip. HTML escapado y estilo inline para
+ * Gmail, Outlook y clientes móviles; se conserva body en texto plano.
+ * El código de verificación y los cupones NO se registran en el frontend.
+ */
+function mctBfEmailEscapeHtml_(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g,function(ch){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+function mctBfEmailHtml_(kind, firstName, value) {
+  var verifying = kind === 'otp';
+  var name = mctBfEmailEscapeHtml_(firstName || 'viajero');
+  var code = mctBfEmailEscapeHtml_(value);
+  var title = verifying ? 'Confirma tu correo electrónico' : '¡Tu cupón Black Friday está listo!';
+  var eyebrow = verifying ? 'VERIFICACIÓN DE CORREO' : 'TU CUPÓN PERSONAL';
+  var description = verifying
+    ? 'Utiliza el siguiente código de seis dígitos para verificar tu correo. Por seguridad, caduca en <strong>10 minutos</strong>.'
+    : 'Ya puedes descubrir tu descuento especial al elegir la fecha de tu próxima experiencia o paquete.';
+  var info = verifying
+    ? 'Si no solicitaste este código, ignora este mensaje. No lo compartas con otras personas.'
+    : 'Este cupón es personal y válido para una sola compra. Una vez aplicado en la reserva, se mostrará el tiempo disponible para utilizarlo.';
+  var button = verifying ? '' :
+    '<tr><td align="center" style="padding:9px 32px 32px;">' +
+      '<a href="https://mycuscotrip.com/machu-picchu-tours.html" style="display:inline-block;background:#087d45;border-radius:10px;padding:15px 27px;color:#ffffff;font-size:14px;font-weight:800;text-decoration:none;">Explorar experiencias</a>' +
+    '</td></tr>';
+  return '<!doctype html><html lang="es"><head><meta charset="utf-8"></head>' +
+    '<body style="margin:0;padding:0;background:#eef3ee;font-family:Arial,Helvetica,sans-serif;color:#23533f;">' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eef3ee;padding:28px 12px;border-collapse:separate;"><tr><td align="center">' +
+    '<table role="presentation" cellspacing="0" cellpadding="0" width="100%" style="max-width:610px;background:#ffffff;border-radius:20px;overflow:hidden;border-collapse:separate;">' +
+    '<tr><td align="center" style="padding:27px 25px 22px;background:#053220;">' +
+      '<img src="https://mycuscotrip.com/assets/img/logos/Logo1.png" alt="My Cusco Trip" width="185" style="display:block;width:185px;max-width:85%;height:auto;border:0;margin:0 auto 12px;">' +
+      '<div style="font-size:11px;letter-spacing:2px;color:#ffd8f2;font-weight:800;">BLACK FRIDAY 2026</div>' +
+    '</td></tr>' +
+    '<tr><td style="padding:31px 32px 12px;">' +
+      '<h1 style="margin:0 0 17px;font-size:26px;line-height:1.25;color:#164f39;font-weight:800;">' + title + '</h1>' +
+      '<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#4e6458;">Hola <strong>' + name + '</strong>,</p>' +
+      '<p style="margin:0;font-size:15px;line-height:1.65;color:#4e6458;">' + description + '</p>' +
+    '</td></tr>' +
+    '<tr><td style="padding:15px 32px 18px;">' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border:2px solid #e83baa;border-radius:15px;background:#fff9fd;">' +
+        '<tr><td align="center" style="padding:24px 12px;">' +
+          '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#ae387f;margin-bottom:12px;">' + eyebrow + '</div>' +
+          '<div style="font-size:' + (verifying?'36':'24') + 'px;line-height:1.35;font-weight:800;letter-spacing:' + (verifying?'6':'1') + 'px;color:#134f39;word-break:break-word;">' + code + '</div>' +
+        '</td></tr>' +
+      '</table>' +
+    '</td></tr>' +
+    '<tr><td style="padding:0 32px 21px;">' +
+      '<p style="font-size:14px;line-height:1.7;color:#536b5d;margin:0 0 11px;">' + info + '</p>' +
+      '<p style="font-size:12px;line-height:1.6;color:#65786b;margin:0;">' +
+        (verifying ? 'Equipo My Cusco Trip · Cusco, Perú' :
+          'Promoción válida del 23 al 29 de noviembre de 2026. Descuento sobre tarifa base elegible; excluye vuelos, mejoras de hotel y extras. Sujeto a disponibilidad.') +
+      '</p>' +
+    '</td></tr>' + button +
+    '<tr><td align="center" style="background:#f4f7f3;padding:21px 28px;border-top:1px solid #dce6dc;">' +
+      '<p style="margin:0;font-size:12px;color:#476555;font-weight:700;">My Cusco Trip · Viaja a Cusco sin complicaciones</p>' +
+      '<p style="margin:8px 0 0;font-size:12px;color:#6f8577;">Cusco, Perú · <a href="https://mycuscotrip.com" style="color:#0d8052;text-decoration:none;">mycuscotrip.com</a></p>' +
+    '</td></tr></table></td></tr></table></body></html>';
+}
+
 function mctBfLeadFind_(sh,email) {
   return mctBfRows_(sh).find(function(r){return mctBfEmail_(r.data[0])===email;});
 }
@@ -363,7 +423,8 @@ function mctBfLeadStart_(data) {
       try {MailApp.sendEmail({to:email,name:'My Cusco Trip',
         subject:'Verifica tu correo · Black Friday My Cusco Trip',
         body:'Hola '+first+',\n\nTu código de verificación es '+code+
-          '. Caduca en 10 minutos. Si no lo solicitaste, ignora este correo.\n\nMy Cusco Trip'});}
+          '. Caduca en 10 minutos. Si no lo solicitaste, ignora este correo.\n\nMy Cusco Trip',
+        htmlBody:mctBfEmailHtml_('otp',first,code)});}
       catch(ex){throw new Error('No se pudo enviar el correo. Inténtalo nuevamente.');}
       if(old)sh.getRange(old.row,1,1,v.length).setValues([v]);
       else sh.appendRow(v);
@@ -404,7 +465,8 @@ function mctBfLeadVerify_(data) {
     } finally {lock.releaseLock();}
     try {MailApp.sendEmail({to:email,name:'My Cusco Trip',subject:'Tu cupón exclusivo · Black Friday My Cusco Trip',
       body:'Hola '+first+',\n\nTu cupón exclusivo es: '+code+
-        '\n\nUtilízalo en mycuscotrip.com. El plazo de cinco horas empieza la primera vez que pulsas Aplicar. Es personal y de un solo uso.\n\nMy Cusco Trip'});}
+        '\n\nUtilízalo en mycuscotrip.com. Una vez aplicado, se mostrará el tiempo límite para utilizarlo. Es personal y de un solo uso.\n\nMy Cusco Trip',
+      htmlBody:mctBfEmailHtml_('coupon',first,code)});}
     catch(err){/* El código ya está asignado; se permite recuperarlo con un nuevo OTP. */}
     return {ok:true,code:code,message:'Correo verificado. Tu cupón es personal y de un solo uso.'};
   }catch(err){return {ok:false,error:String(err.message||'No se pudo verificar.')};}
