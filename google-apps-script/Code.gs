@@ -1937,6 +1937,17 @@ function createPayPalOrder_(p) {
 
   }
 
+  // A pending BF reservation may be retried, but must not generate multiple
+  // payable PayPal orders for the same reserved one-use coupon.
+  if (mctBfIsCode_(row.CodigoCupon) && row.PayPalOrderID) {
+    const existingOrder = paypalRequest_('get', '/v2/checkout/orders/' + encodeURIComponent(row.PayPalOrderID), null);
+    const existingApproval = getPayPalApprovalUrl_(existingOrder);
+    if (!existingApproval)
+      return {ok:false,error:'La orden PayPal anterior ya no está disponible. Solicita asistencia para revisar el pago.'};
+    return {ok:true,reservationCode:code,orderID:row.PayPalOrderID,
+      paypalOrderId:row.PayPalOrderID,approvalUrl:existingApproval,
+      status:existingOrder.status,reused:true};
+  }
   const returnUrl = buildReturnUrl_(code);
   const cancelUrl = buildCancelUrl_(code, row);
   const orderPayload = {
@@ -2610,6 +2621,15 @@ function createMercadoPagoPreference_(p) {
       original.eligibleSubtotalValue == null ? row.TotalServicio : original.eligibleSubtotalValue,
       row.TotalServicio, currency);
     if (!hold.valid) return {ok:false,error:hold.message||'Cupón no disponible.'};
+  }
+  if (mctBfIsCode_(row.CodigoCupon) && row.MercadoPagoPreferenceID) {
+    const previous = mercadoPagoRequest_('get','/checkout/preferences/' +
+      encodeURIComponent(row.MercadoPagoPreferenceID),null);
+    const previousUrl = previous.init_point || previous.sandbox_init_point;
+    if (!previousUrl)
+      return {ok:false,error:'La preferencia de pago anterior no está disponible. Solicita asistencia.'};
+    return {ok:true,reservationCode:code,preferenceId:row.MercadoPagoPreferenceID,
+      approvalUrl:previousUrl,initPoint:previous.init_point||'',reused:true};
   }
   const returnUrl = buildMercadoPagoReturnUrl_(code);
   const cancelUrl = buildCancelUrl_(code, row);
