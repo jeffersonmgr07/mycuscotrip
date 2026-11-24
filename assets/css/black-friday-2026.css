@@ -139,9 +139,55 @@
   color:#f6faf6;
   line-height:1.4;
 }
-#bf-main .bf-fields {display:grid;grid-template-columns:1fr 1fr;gap:15px}
+#bf-main .bf-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;align-items:end}
 #bf-main .bf-phone-fields {grid-template-columns:minmax(145px,.71fr) minmax(0,1.29fr);gap:10px;margin-top:-8px;margin-bottom:10px}
-#bf-main .bf-card input:not([type="checkbox"]),/* Menú de países totalmente personalizado, sin desplegable nativo ni icono de búsqueda. */
+/* Inputs de la campaña: los estilos se aplican únicamente a los campos visibles.
+   Cada input ocupa una línea completa debajo de su etiqueta. */
+#bf-main .bf-card input:not([type="checkbox"]):not([type="hidden"]) {
+  display:block;
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:51px;
+  margin:8px 0 0;
+  padding:12px 14px;
+  background:#101e18;
+  border:1px solid #496054;
+  border-radius:11px;
+  color:#f7fff5;
+  font:500 14px "Open Sans",Arial,sans-serif;
+  line-height:1.4;
+  box-shadow:none;
+  outline:none;
+  -webkit-appearance:none;
+  appearance:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+#bf-main .bf-card input:not([type="checkbox"]):not([type="hidden"])::placeholder {
+  color:#9aaea1;
+  opacity:1;
+}
+#bf-main .bf-card input:not([type="checkbox"]):not([type="hidden"]):focus-visible {
+  border-color:#bafd80;
+  box-shadow:0 0 0 3px rgba(194,250,126,.13);
+}
+#bf-main .bf-card #bf-registration > label:not(.bf-check),
+#bf-main .bf-card #bf-verify > label,
+#bf-main .bf-card .bf-fields > label {
+  display:block;
+  width:100%;
+  min-width:0;
+  line-height:1.4;
+}
+#bf-main .bf-card #bf-registration,
+#bf-main .bf-card #bf-verify {width:100%;min-width:0}
+#bf-main .bf-card .bf-fields > * {min-width:0}
+#bf-main .bf-card #bf-registration .bf-phone-heading {margin-bottom:8px}
+#bf-main .bf-card .bf-phone-fields {margin-top:0}
+#bf-main .bf-card .bf-phone-label {margin:0!important}
+#bf-main .bf-card .bf-phone-label input {margin:0!important}
+#bf-main .bf-card .bf-country-trigger {margin:0!important}
+/* Menú de países personalizado sin estilos nativos. */
 #bf-main .bf-country-field {position:relative;min-width:0}
 #bf-main .bf-card .bf-country-trigger {
   display:flex;align-items:center;justify-content:space-between;gap:8px;
@@ -161,7 +207,7 @@
 #bf-main .bf-country-trigger[aria-expanded="true"] i {transform:rotate(180deg)}
 #bf-main .bf-country-menu {
   position:absolute;z-index:100;top:calc(100% + 7px);left:0;
-  width:clamp(260px,25vw,335px);max-width:calc(100vw - 45px);
+  width:min(330px,calc(100vw - 60px));max-width:calc(100vw - 60px);
   padding:12px;background:#0a1d13;
   border:1px solid #6f9d72;border-radius:14px;
   box-shadow:0 18px 42px rgba(0,0,0,.75);
@@ -255,6 +301,9 @@
   #bf-main .bf-card__inner {padding:25px 20px}
   #bf-main .bf-card__eyebrow {font-size:10px}
   #bf-main .bf-fields {gap:10px}
+  #bf-main .bf-card input:not([type="checkbox"]):not([type="hidden"]) {font-size:14px;max-width:100%}
+  #bf-main .bf-country-menu {width:min(310px,calc(100vw - 52px));max-width:calc(100vw - 52px)}
+  #bf-main .bf-country-options {max-height:190px}
   #bf-main .bf-card form>.bf-fields label {font-size:12px}
   #bf-main .bf-card input:not([type=checkbox]),#bf-main .bf-card select {font-size:13px}
   #bf-main .bf-conditions {font-size:12px}
