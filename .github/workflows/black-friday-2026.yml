@@ -18,6 +18,7 @@ jobs:
         run: |
           node --check < google-apps-script/Code.gs
           node --check < google-apps-script/BlackFriday2026.gs
+          node --check < google-apps-script/BlackFridayPricing2026.gs
           node --check assets/js/black-friday-claim.js
           node --check assets/js/components/black-friday-badge.js
           node --check assets/js/pages/product.js
@@ -28,3 +29,4 @@ jobs:
         run: |
           node tests/check_package_checkout.cjs
           node tests/check_bf26_100.cjs
+          node tests/check_bf26_pricing.cjs
