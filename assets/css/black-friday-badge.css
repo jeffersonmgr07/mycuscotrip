@@ -42,7 +42,10 @@
   font:400 clamp(12px,3vw,15px)/1.45 "Open Sans",Arial,sans-serif;
 }
 .mct-bf26-savings {
-  margin:8px 0 0;color:#28644c;
+  display:inline-flex;align-items:center;justify-content:center;
+  align-self:center;width:auto;max-width:100%;
+  margin:9px 0 0;padding:5px 13px;
+  border-radius:999px;background:#0a5135;color:#ffffff;
   font:600 12px/1.5 "Open Sans",Arial,sans-serif;
 }
 .mct-bf26-wrap.is-expired .mct-bf26-glow {
