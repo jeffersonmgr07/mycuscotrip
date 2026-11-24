@@ -169,6 +169,7 @@
     const form = $("bf-registration");
     if (!form.reportValidity()) return;
     const payload = {
+      locale: isEnglish ? "en" : "es",
       firstName: $("bf-first").value.trim(),
       lastName: $("bf-last").value.trim(),
       email: $("bf-email").value.trim().toLowerCase(),
@@ -197,7 +198,7 @@
     setBusy(true);
     status(tr("Verificando tu correo…", "Verifying your email…"));
     try {
-      const result = await api("mctBfVerify", {email: pending.email, otp: $("bf-otp").value.trim()});
+      const result = await api("mctBfVerify", {email: pending.email, otp: $("bf-otp").value.trim(), locale: isEnglish ? "en" : "es"});
       const code = String(result.code || "");
       if (!/^MCT26-/.test(code)) throw new Error(tr("No recibimos el cupón. Revisa tu correo.", "We could not retrieve your coupon. Please check your email."));
       $("bf-private-code").textContent = code;
