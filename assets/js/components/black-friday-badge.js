@@ -37,7 +37,7 @@
     if(!anchor||!anchor.parentNode||document.getElementById("mct-bf26-badge"))return;
     const box=document.createElement("div");
     box.id="mct-bf26-badge";box.className="mct-bf26-wrap";
-    box.innerHTML='<div class="mct-bf26-glow"><strong data-bf-title></strong><span data-bf-savings></span><span data-bf-timer></span></div><p class="mct-bf26-note" data-bf-note></p>';
+    box.innerHTML='<div class="mct-bf26-glow"><strong data-bf-title></strong></div><div class="mct-bf26-time" data-bf-timer></div><p class="mct-bf26-note" data-bf-note></p><p class="mct-bf26-savings" data-bf-savings></p>';
     anchor.insertAdjacentElement("afterend",box);
     refresh();
   }
