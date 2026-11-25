@@ -27,7 +27,6 @@
     "City Tour de Cusco, Maras y Moray, Valle Sagrado y excursión guiada a Machu Picchu.",
     "Recojos desde el hotel donde corresponda según el itinerario.",
     "Guía profesional en español o inglés.",
-    "Boleto turístico general para las visitas que correspondan.",
     "Entrada oficial a Machu Picchu y bus de subida y bajada según el programa.",
     "Tren turístico de ida a Aguas Calientes y de retorno a Ollantaytambo según horarios confirmados.",
     "Asistencia durante toda la experiencia y traslados turísticos indicados."
@@ -35,6 +34,7 @@
   const EXCLUDED = [
     "Pasajes aéreos nacionales o internacionales.",
     "Entrada al Templo Qoricancha.",
+    "Boleto turístico general.",
     "Almuerzos, cenas, bebidas y gastos personales no señalados.",
     "Tour opcional en bus panorámico del día 5 (S/ 30 por persona, seleccionable como extra).",
     "Cualquier otro ingreso o servicio no expresamente indicado como incluido."
@@ -119,7 +119,7 @@
     $("packageOptions").hidden=true;
     document.querySelector(".booking-panel__price > span").textContent="Precio único";
     $("productBasePrice").textContent=money(PRICE);
-    document.querySelector(".booking-panel__price > small").textContent="por persona · hoteles incluidos";
+    document.querySelector(".booking-panel__price > small").textContent="por persona";
     const benefits=document.querySelector(".experience-benefits");
     if(benefits) benefits.innerHTML=
       '<div class="benefit-item"><i class="fas fa-hotel"></i><div><strong>Hoteles incluidos</strong><p>3 noches en Cusco y 1 noche en Aguas Calientes, con desayuno.</p></div></div>'+
@@ -129,7 +129,7 @@
     document.querySelector(".booking-discount-box").hidden=true;
     $("paymentMode").closest(".booking-field").hidden=true;
     $("departureTimeSection").hidden=true;$("trainSelectionSection").hidden=true;$("serviceModeSection").hidden=true;
-    $("packageAccommodationSection").hidden=false;$("extrasSection").hidden=false;
+    $("packageAccommodationSection").hidden=true;$("extrasSection").hidden=true;
     $("hotelSelectorsContainer").innerHTML=
       '<label class="mct-single-label">Alojamiento incluido</label><div class="mct-single-hotel-summary" id="hotelSummary"></div>'+
       '<button type="button" class="btn booking-secondary-btn mct-single-edit-hotel" id="chooseHotelBtn">Elegir hotel y habitaciones</button>'+
@@ -194,10 +194,11 @@
   function openHotel() {renderHotelsModal();$("hotelSelectionModal").hidden=false;document.body.classList.add("mct-single-modal-open");}
   function styleBirthdates(root=document) {
     if(!window.flatpickr)return;
-    root.querySelectorAll('input[data-birthdate],input[name="holderBirthdate"]').forEach(el=>{
+    root.querySelectorAll('input[data-birthdate],input[data-expiry],input[name="holderBirthdate"]').forEach(el=>{
       if(el._flatpickr)return;
       el.type="text";
-      flatpickr(el,{locale:flatpickr.l10ns.es,maxDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d/m/Y",allowInput:false,disableMobile:true,onChange:()=>el.setCustomValidity("")});
+      const expiry=el.hasAttribute("data-expiry");
+      flatpickr(el,{locale:flatpickr.l10ns.es,...(expiry?{minDate:"today"}:{maxDate:"today"}),dateFormat:"Y-m-d",altInput:true,altFormat:"d/m/Y",allowInput:true,disableMobile:true,appendTo:document.body,onReady:(_,__,fp)=>{fp.altInput.placeholder="dd/mm/aaaa";fp.altInput.setAttribute("inputmode","numeric");},onChange:()=>el.setCustomValidity("")});
     });
   }
   function renderExtraPassengers() {
@@ -212,9 +213,9 @@
         '<label>Tipo de documento <select required name="'+prefix+'documentType"><option value="">Selecciona</option><option value="passport">Pasaporte</option><option value="dni">DNI</option><option value="id_card">Documento de identidad</option><option value="other">Otro</option></select></label>'+
         '<label>Número de documento <input required name="'+prefix+'documentNumber" type="text" autocomplete="off"></label>'+
         '<label>Nacionalidad <select required name="'+prefix+'nationality">'+options+'</select></label>'+
-        '<label>Fecha de nacimiento <input required data-birthdate name="'+prefix+'birthdate" placeholder="dd/mm/aaaa" type="text"></label></fieldset>';
+        '<label>Fecha de nacimiento <input required data-birthdate name="'+prefix+'birthdate" placeholder="dd/mm/aaaa" type="text"></label><label>Fecha de vencimiento del documento (si aplica) <input data-expiry name="'+prefix+'documentExpiry" placeholder="dd/mm/aaaa" type="text"></label></fieldset>';
     }).join("");
-    styleBirthdates($("additionalPassengersContainer"));
+    // Initialize after the dialog becomes visible.
   }
   function reservationCode() {
     const random=new Uint32Array(1); if(window.crypto && crypto.getRandomValues) crypto.getRandomValues(random);else random[0]=Math.floor(Math.random()*999999999);
@@ -230,19 +231,19 @@
     $("passengerReservationForm").querySelector('[type="submit"]').textContent="Pagar";
     $("passengerReservationForm").reset();$("holderTravelsCheckbox").checked=true;
     renderExtraPassengers();
-    styleBirthdates();
     $("passengerReservationModal").hidden=false;
+    styleBirthdates();
     document.body.classList.add("mct-single-modal-open");
   }
   function formPayload() {
     const fd=new FormData($("passengerReservationForm")), count=travelers(), isPassenger=$("holderTravelsCheckbox").checked;
-    const holder={firstName:String(fd.get("holderFirstName")||"").trim(),lastName:String(fd.get("holderLastName")||"").trim(),documentType:String(fd.get("holderDocumentType")||""),documentNumber:String(fd.get("holderDocumentNumber")||"").trim(),nationality:String(fd.get("holderNationality")||""),birthdate:String(fd.get("holderBirthdate")||""),whatsappCountryCode:String(fd.get("holderWhatsappCountryCode")||"+51"),whatsapp:String(fd.get("holderWhatsapp")||"").trim(),email:String(fd.get("holderEmail")||"").trim(),language:String(fd.get("holderLanguage")||"Español"),travels:isPassenger};
+    const holder={firstName:String(fd.get("holderFirstName")||"").trim(),lastName:String(fd.get("holderLastName")||"").trim(),documentType:String(fd.get("holderDocumentType")||""),documentNumber:String(fd.get("holderDocumentNumber")||"").trim(),nationality:String(fd.get("holderNationality")||""),birthdate:String(fd.get("holderBirthdate")||""),documentExpiry:String(fd.get("holderDocumentExpiry")||""),whatsappCountryCode:String(fd.get("holderWhatsappCountryCode")||"+51"),whatsapp:String(fd.get("holderWhatsapp")||"").trim(),email:String(fd.get("holderEmail")||"").trim(),language:String(fd.get("holderLanguage")||"Español"),travels:isPassenger};
     const passengers=[];
     if(isPassenger) passengers.push({passengerNumber:1,role:"holder_passenger",completionStatus:"complete",...holder});
     const start=isPassenger?2:1;
     for(let i=start;i<=count;i++){
       const read=k=>String(fd.get("passenger_"+i+"_"+k)||"").trim();
-      passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate")});
+      passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate"),documentExpiry:read("documentExpiry")});
     }
     const price=summary();const code=$("passengerReservationCode").textContent;
     return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"mercado_pago",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"mercado_pago"}};
@@ -292,7 +293,7 @@
     document.querySelector("[data-close-hotel-modal]").addEventListener("click",()=>closeModal("hotelSelectionModal"));
     $("cancelHotelModalBtn").textContent="Guardar selección";
     $("paypalButton").addEventListener("click",openPassenger);
-    $("holderTravelsCheckbox").addEventListener("change",renderExtraPassengers);
+    $("holderTravelsCheckbox").addEventListener("change",()=>{renderExtraPassengers();styleBirthdates();});
     $("holderLanguageSelect").innerHTML='<option value="Español">Español</option><option value="English">English</option>';
     $("holderLanguageWarning").hidden=true;
     ["closePassengerModalBtn"].forEach(id=>$(id).addEventListener("click",()=>closeModal("passengerReservationModal")));
@@ -303,9 +304,20 @@
     });
     $("passengerPaymentSnapshot").hidden=true;
     $("passengerReservationForm").addEventListener("submit",submitReservation);
-    const countries=[["PE","Perú","+51"],["CO","Colombia","+57"],["CL","Chile","+56"],["VE","Venezuela","+58"],["MX","México","+52"],["AR","Argentina","+54"],["BO","Bolivia","+591"],["EC","Ecuador","+593"],["BR","Brasil","+55"],["US","Estados Unidos","+1"],["ES","España","+34"],["OT","Otro país","+51"]];
-    const national=document.querySelector('[name="holderNationality"]');countries.forEach(c=>national.add(new Option(c[1],c[0])));national.value="PE";
-    const phone=document.querySelector('[name="holderWhatsappCountryCode"]');countries.forEach(c=>phone.add(new Option(c[1]+" ("+c[2]+")",c[2])));phone.value="+51";
+    const countries=[["Perú","+51"],["México","+52"],["Colombia","+57"],["Chile","+56"],["Argentina","+54"],["Brasil","+55"],["Bolivia","+591"],["Ecuador","+593"],["Uruguay","+598"],["Paraguay","+595"],["Venezuela","+58"],["España","+34"],["Reino Unido","+44"],["Francia","+33"],["Alemania","+49"],["Italia","+39"],["Portugal","+351"],["Países Bajos","+31"],["Bélgica","+32"],["Suiza","+41"],["Austria","+43"],["Irlanda","+353"],["Noruega","+47"],["Suecia","+46"],["Dinamarca","+45"],["Finlandia","+358"],["Polonia","+48"],["República Checa","+420"],["Hungría","+36"],["Grecia","+30"],["Rumanía","+40"],["Turquía","+90"],["Rusia","+7"],["Ucrania","+380"],["Australia","+61"],["Nueva Zelanda","+64"],["Japón","+81"],["China","+86"],["Hong Kong","+852"],["Taiwán","+886"],["Corea del Sur","+82"],["India","+91"],["Indonesia","+62"],["Tailandia","+66"],["Vietnam","+84"],["Filipinas","+63"],["Malasia","+60"],["Singapur","+65"],["Israel","+972"],["Emiratos Árabes Unidos","+971"],["Arabia Saudita","+966"],["Qatar","+974"],["Sudáfrica","+27"],["Marruecos","+212"],["Egipto","+20"],["Kenia","+254"],["Tanzania","+255"],["Ghana","+233"],["Nigeria","+234"],["Costa Rica","+506"],["Panamá","+507"],["Guatemala","+502"],["El Salvador","+503"],["Honduras","+504"],["Nicaragua","+505"],["República Dominicana","+1"],["Puerto Rico","+1"],["Cuba","+53"],["Jamaica","+1"],["Afganistán","+93"],["Albania","+355"],["Argelia","+213"],["Andorra","+376"],["Angola","+244"],["Antigua y Barbuda","+1"],["Armenia","+374"],["Azerbaiyán","+994"],["Bahamas","+1"],["Bangladés","+880"],["Barbados","+1"],["Baréin","+973"],["Belice","+501"],["Benín","+229"],["Bielorrusia","+375"],["Bosnia y Herzegovina","+387"],["Botsuana","+267"],["Brunéi","+673"],["Bulgaria","+359"],["Burkina Faso","+226"],["Burundi","+257"],["Bután","+975"],["Cabo Verde","+238"],["Camboya","+855"],["Camerún","+237"],["Chad","+235"],["Chipre","+357"],["Comoras","+269"],["Congo","+242"],["Costa de Marfil","+225"],["Croacia","+385"],["Dominica","+1"],["Eritrea","+291"],["Eslovaquia","+421"],["Eslovenia","+386"],["Estonia","+372"],["Etiopía","+251"],["Fiyi","+679"],["Gabón","+241"],["Gambia","+220"],["Georgia","+995"],["Granada","+1"],["Guinea","+224"],["Guinea-Bisáu","+245"],["Guyana","+592"],["Haití","+509"],["Irán","+98"],["Irak","+964"],["Islandia","+354"],["Jordania","+962"],["Kazajistán","+7"],["Kirguistán","+996"],["Kuwait","+965"],["Laos","+856"],["Letonia","+371"],["Líbano","+961"],["Lituania","+370"],["Luxemburgo","+352"],["Madagascar","+261"],["Malaui","+265"],["Maldivas","+960"],["Malí","+223"],["Malta","+356"],["Mauricio","+230"],["Moldavia","+373"],["Mónaco","+377"],["Mongolia","+976"],["Montenegro","+382"],["Mozambique","+258"],["Myanmar","+95"],["Namibia","+264"],["Nepal","+977"],["Níger","+227"],["Omán","+968"],["Pakistán","+92"],["Palestina","+970"],["Papúa Nueva Guinea","+675"],["Ruanda","+250"],["Serbia","+381"],["Seychelles","+248"],["Sri Lanka","+94"],["Túnez","+216"],["Uganda","+256"],["Uzbekistán","+998"],["Zambia","+260"],["Zimbabue","+263"],["Corea del Norte","+850"],["Congo Democrático","+243"],["Djibouti","+253"],["Guinea Ecuatorial","+240"],["Islas Marshall","+692"],["Islas Salomón","+677"],["Kiribati","+686"],["Lesoto","+266"],["Liberia","+231"],["Libia","+218"],["Liechtenstein","+423"],["Mauritania","+222"],["Micronesia","+691"],["Nauru","+674"],["Palaos","+680"],["República Centroafricana","+236"],["Samoa","+685"],["San Cristóbal y Nieves","+1"],["San Marino","+378"],["San Vicente y las Granadinas","+1"],["Santa Lucía","+1"],["Santo Tomé y Príncipe","+239"],["Senegal","+221"],["Sierra Leona","+232"],["Siria","+963"],["Somalia","+252"],["Sudán","+249"],["Sudán del Sur","+211"],["Surinam","+597"],["Tayikistán","+992"],["Timor Oriental","+670"],["Togo","+228"],["Tonga","+676"],["Trinidad y Tobago","+1"],["Turkmenistán","+993"],["Tuvalu","+688"],["Vanuatu","+678"],["Vaticano","+39"],["Yemen","+967"],["Esuatini","+268"],["Kosovo","+383"],["Macedonia del Norte","+389"],["Sáhara Occidental","+212"],["Guam","+1"],["Islas Vírgenes de EE. UU.","+1"],["Islas Vírgenes Británicas","+1"],["Bermudas","+1"],["Islas Caimán","+1"],["Aruba","+297"],["Curazao","+599"],["Bonaire","+599"],["Guadalupe","+590"],["Martinica","+596"],["Guayana Francesa","+594"],["Reunión","+262"],["Mayotte","+262"],["Nueva Caledonia","+687"],["Polinesia Francesa","+689"],["Wallis y Futuna","+681"],["Groenlandia","+299"],["Islas Feroe","+298"],["Gibraltar","+350"],["Macao","+853"],["Islas Cook","+682"],["Niue","+683"],["Tokelau","+690"],["Islas Malvinas","+500"],["Santa Elena","+290"],["San Pedro y Miquelón","+508"],["Islas Marianas del Norte","+1"],["Samoa Americana","+1"],["Anguila","+1"],["Montserrat","+1"],["Turcas y Caicos","+1"],["San Martín","+590"],["Sint Maarten","+1"],["Jersey","+44"],["Guernsey","+44"],["Isla de Man","+44"],["Isla Norfolk","+672"],["Isla de Navidad","+61"],["Islas Cocos","+61"],["San Bartolomé","+590"],["Svalbard y Jan Mayen","+47"],["Islas Pitcairn","+64"],["Canadá","+1"],["Estados Unidos","+1"]];
+    const national=document.querySelector('[name="holderNationality"]');
+    national.replaceChildren(new Option("Selecciona país",""));
+    [...countries].sort((a,b)=>a[0].localeCompare(b[0],"es")).forEach(([name])=>national.add(new Option(name,name)));
+    national.value="Perú";
+    const phone=document.querySelector('[name="holderWhatsappCountryCode"]');
+    phone.replaceChildren();
+    countries.forEach(([name,code])=>{const option=new Option(code+" · "+name,code);option.dataset.fullLabel=option.textContent;phone.add(option);});
+    phone.value="+51";
+    const compact=()=>Array.from(phone.options).forEach((o,i)=>o.textContent=i===phone.selectedIndex?o.value:o.dataset.fullLabel);
+    const expand=()=>Array.from(phone.options).forEach(o=>o.textContent=o.dataset.fullLabel);
+    phone.addEventListener("pointerdown",expand);phone.addEventListener("keydown",expand);
+    phone.addEventListener("change",compact);phone.addEventListener("blur",compact);
+    phone.closest("form").addEventListener("reset",()=>setTimeout(compact,0));compact();
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal("hotelSelectionModal");closeModal("passengerReservationModal");}});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
