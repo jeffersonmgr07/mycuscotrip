@@ -149,3 +149,26 @@ body.mct-single-5d4n .mct-date-grid button:disabled { color:#a5b0a8; cursor:not-
 body.mct-single-5d4n .mct-date-back { background:#e8f4ec; color:#0d4b35; margin:0 12px 12px; padding:9px; font-weight:700; }
 body.mct-single-5d4n .flatpickr-calendar { z-index:2147483646!important; }
 @media(max-width:480px){body.mct-single-5d4n .mct-picker-search{font-size:16px;}body.mct-single-5d4n .mct-picker-option{min-height:43px;}body.mct-single-5d4n .mct-date-grid button{min-height:38px;}}
+
+/* Dedicated customer-facing currency conversion step. */
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step .passenger-modal__section,
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step .passenger-modal__important,
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step .passenger-modal__meta-row,
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step .passenger-modal__details-toggle {display:none!important;}
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step .passenger-modal__dialog {width:min(96vw,640px)!important;}
+body.mct-single-5d4n #passengerReservationModal.mct-fx-step #passengerCheckoutReview {display:block!important;background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;margin:0!important;}
+body.mct-single-5d4n .mct-fx-card {background:#fff;border:1px solid #d5e2d9;border-radius:18px;padding:24px;color:#173c2c;min-width:0;}
+body.mct-single-5d4n .mct-fx-intro {text-align:center;margin-bottom:20px;}
+body.mct-single-5d4n .mct-fx-intro i {font-size:24px;color:#0d4b35;background:#e7f2ea;border-radius:50%;width:48px;height:48px;display:inline-grid;place-items:center;margin-bottom:10px;}
+body.mct-single-5d4n .mct-fx-intro h3 {font-size:20px;font-weight:800;margin:0 0 8px;}
+body.mct-single-5d4n .mct-fx-intro p,.mct-fx-note {color:#52665a;font-size:14px;line-height:1.55;}
+body.mct-single-5d4n .mct-fx-lines {display:grid;gap:0;}
+body.mct-single-5d4n .mct-fx-lines>div {display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #e5ece7;font-size:14px;}
+body.mct-single-5d4n .mct-fx-lines strong {white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right;}
+body.mct-single-5d4n .mct-fx-reference {color:#0d4b35;font-weight:700;}
+body.mct-single-5d4n .mct-fx-source {font-size:12px;color:#607369;margin:10px 0 18px;}
+body.mct-single-5d4n .mct-fx-total {background:#edf6ef;border:1px solid #d0e5d6;padding:18px 14px;border-radius:12px;display:flex;flex-direction:column;gap:6px;text-align:center;}
+body.mct-single-5d4n .mct-fx-total strong {font-size:30px;color:#0d4b35;font-weight:800;line-height:1.2;}
+body.mct-single-5d4n .mct-fx-note {margin:14px 0 10px;font-size:12px;}
+body.mct-single-5d4n .mct-fx-back {background:none;border:0;color:#0d4b35;text-decoration:underline;cursor:pointer;padding:8px 0;font:inherit;font-size:13px;}
+@media(max-width:480px){body.mct-single-5d4n .mct-fx-card{padding:16px;}body.mct-single-5d4n .mct-fx-lines>div{font-size:13px;}body.mct-single-5d4n .mct-fx-total strong{font-size:26px;}}
