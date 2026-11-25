@@ -380,6 +380,7 @@ function doPost(e) {
     if (action === 'mctBfVerify') return json_(mctBfLeadVerify_(payload));
     if (action === 'validateCoupon') return json_(validateCoupon_(payload));
     if (action === 'validatePackageFare') return json_(validatePackageFare_(payload.payload || payload));
+    if (action === 'validateCusco5d4nFare') return json_(validateCusco5d4nFixedFare_(payload.payload || payload));
     if (action === 'createPreReservation') return json_(createPreReservation_(payload));
     if (action === 'createPayPalOrder') return json_(createPayPalOrder_(payload));
     if (action === 'capturePayPalOrder') return json_(capturePayPalOrder_(payload));
@@ -1719,10 +1720,75 @@ function validatePackageFare_(payload) {
   return { ok: true, version: 'packages-20261123-bf', total: finalTotal, baseTotal: total, currency: 'USD' };
 }
 
+
+/**
+ * Cotización cerrada para página Cusco 5D/4N en soles.
+ * No confiar en importes, habitaciones, extras ni moneda enviados desde el navegador.
+ * Activar solo después de validar las tarifas y desplegar Code.gs:
+ * MCT_CUSCO5D4N_ENABLE_PAYMENTS=true.
+ * El frontend y este validador usan el tipo de cambio manual USD/PEN 3.75.
+ */
+function validateCusco5d4nFixedFare_(p) {
+  const payload = p && p.payload && typeof p.payload === 'object' ? p.payload : (p || {});
+  if (getProp_('MCT_CUSCO5D4N_ENABLE_PAYMENTS','false') !== 'true') {
+    return {ok:false,error:'Este programa todavía no está habilitado para cobros. Contacta a My Cusco Trip.'};
+  }
+  const adults = Number(payload.adults);
+  const children = Number(payload.children);
+  const people = adults + children;
+  const rooms = payload.roomAllocation || {};
+  const doubles = Number(rooms.doubles);
+  const triples = Number(rooms.triples);
+  const hotel = String(payload.selectedHotel || '');
+  const extra = String(payload.extraCode || '');
+  const isoDate = String(payload.date || '');
+  const validDate = /^\d{4}-\d{2}-\d{2}$/.test(isoDate) &&
+    !isNaN(new Date(isoDate+'T12:00:00').getTime()) &&
+    new Date(isoDate+'T12:00:00').getTime() >= new Date(new Date().toDateString()).getTime();
+  if (payload.source !== 'cusco-5d4n-unico' ||
+      payload.productId !== 'MCT-CUSCO-5D4N-UNICO' ||
+      payload.currency !== 'PEN' || payload.paymentMode !== 'full' ||
+      payload.paymentProvider !== 'mercado_pago' ||
+      payload.accommodationIncluded !== true ||
+      !Number.isInteger(adults) || adults < 1 ||
+      !Number.isInteger(children) || children < 0 ||
+      people < 2 || people > 9 ||
+      !validDate ||
+      (hotel !== 'cusco-boutique-3s' && hotel !== 'royal-qosqo-3s') ||
+      (extra !== '' && extra !== 'panoramico') ||
+      !Number.isInteger(doubles) || doubles < 0 ||
+      !Number.isInteger(triples) || triples < 0 ||
+      doubles * 2 + triples * 3 !== people ||
+      payload.totalPassengers !== people ||
+      payload.infants !== 0 ||
+      payload.couponCode ||
+      payload.appliedCoupon) {
+    return {ok:false,error:'Revisa fecha, número de viajeros, hotel, habitaciones y extras seleccionados.'};
+  }
+  const base = round2_(people * 729.90);
+  const hotelUpgrade = hotel === 'royal-qosqo-3s' ? round2_(people * 3 * 10 * 3.75) : 0;
+  const optionalExtra = extra === 'panoramico' ? people * 30 : 0;
+  const total = round2_(base + hotelUpgrade + optionalExtra);
+  if (Math.abs(number_(payload.serviceTotalValue,-1) - total) > 0.005 ||
+      Math.abs(number_(payload.payNowValue,-1) - total) > 0.005 ||
+      number_(payload.payLaterValue,-1) !== 0 ||
+      !payload.pricing ||
+      Math.abs(number_(payload.pricing.total,-1) - total) > 0.005 ||
+      Math.abs(number_(payload.pricing.subtotal,-1) - total) > 0.005 ||
+      number_(payload.pricing.discount,-1) !== 0) {
+    return {ok:false,error:'Los importes no coinciden con la tarifa autorizada. Actualiza tu reserva.'};
+  }
+  return {ok:true,version:'cusco5d4n-pen-v1',currency:'PEN',total:total};
+}
+
 function createPreReservation_(p) {
   const payload = p.payload && typeof p.payload === 'object' ? p.payload : p;
   if (payload.source === 'landing-paquetes-cusco') {
     const fareCheck = validatePackageFare_(payload);
+    if (!fareCheck.ok) return fareCheck;
+  }
+  if (payload.source === 'cusco-5d4n-unico') {
+    const fareCheck = validateCusco5d4nFixedFare_(payload);
     if (!fareCheck.ok) return fareCheck;
   }
   const code = normalizeCode_(payload.code || payload.reservationCode) || generateReservationCode_();
@@ -2576,6 +2642,15 @@ function createMercadoPagoPreference_(p) {
   ensureReservationCanPay_(reservation);
 
   const row = reservation.row;
+  const fixedCuscoPayload = parseJsonSafe_(row.JSON,{});
+  if (fixedCuscoPayload.source === 'cusco-5d4n-unico') {
+    const verify = validateCusco5d4nFixedFare_(fixedCuscoPayload);
+    if (!verify.ok) return verify;
+    if (Math.abs(number_(row.MontoPagarAhora,-1)-verify.total)>0.005 ||
+        Math.abs(number_(row.TotalServicio,-1)-verify.total)>0.005 ||
+        normalizeCurrency_(row.Moneda)!=='PEN')
+      return {ok:false,error:'La reserva tiene un importe distinto al validado en el servidor.'};
+  }
   if (mctBfIsCode_(row.CodigoCupon)) {
     if (getProp_('MCT_BF26_ENABLE_PAYMENTS', 'true') !== 'true')
       return {ok:false,error:'Los cobros Black Friday están pausados por administración.'};
