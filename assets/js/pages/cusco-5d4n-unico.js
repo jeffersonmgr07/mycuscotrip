@@ -249,6 +249,11 @@
       const api=window.MyCuscoTripApiClient;
       if(!api)throw Error("No se cargó el servicio de reservas.");
       const payload=formPayload();
+      // Prevalidación obligatoria: si el Apps Script no ha sido actualizado o activado,
+      // se detiene antes de registrar una pre-reserva o solicitar un cobro.
+      const verified=await api.postAction("validateCusco5d4nFare",payload);
+      if(!verified || verified.ok!==true || verified.version!=="cusco5d4n-pen-v1" || Math.abs(Number(verified.total)-payload.payNowValue)>0.005)
+        throw Error(verified&&verified.error || "La tarifa todavía no está habilitada en el servidor. No se realizó ningún cobro.");
       const created=await api.createPreReservation(payload);
       if(!created || created.mock || created.ok===false)throw Error(created&&created.error || "No se pudo crear la pre-reserva en el servidor.");
       const code=created.reservationCode||created.code||payload.code;
@@ -271,6 +276,7 @@
       ensureRooms();renderPrice();
     }));
     $("singleExtraSelect").addEventListener("change",e=>{state.extra=e.target.value;renderPrice();});
+    $("productBookingForm").addEventListener("submit",e=>{e.preventDefault();openPassenger();});
     $("chooseHotelBtn").addEventListener("click",openHotel);
     ["closeHotelModalBtn","cancelHotelModalBtn"].forEach(id=>$(id).addEventListener("click",()=>closeModal("hotelSelectionModal")));
     document.querySelector("[data-close-hotel-modal]").addEventListener("click",()=>closeModal("hotelSelectionModal"));
