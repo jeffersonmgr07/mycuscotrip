@@ -110,7 +110,7 @@
       ["¿Cómo funciona la elección del hotel?","Hotel Cusco Boutique está incluido por las tres noches en Cusco. Puedes cambiarlo a Hotel Royal Qosqo con un adicional de US$ 10 por persona y por noche (3 noches), convertido a soles. La noche en Hotel Luz Garden está siempre incluida."],
       ["¿Las horas del tren y el acceso a Machu Picchu son definitivos?","No. El horario de tren, el circuito y la hora de ingreso se confirman según disponibilidad para la fecha elegida."],
       ["¿Qué pasa con los niños?","Hasta que se publique una tarifa infantil diferenciada, el importe por niño es igual a la tarifa general indicada."],
-      ["¿Cómo pago?","La página registra una pre-reserva y redirige a Mercado Pago para pagar en soles, siempre que el backend esté actualizado y confirme el importe."],
+      ["¿Cómo pago?","El precio se expresa en soles. Antes de pagar, podrás revisar su equivalente en dólares y completar el pago seguro con PayPal."],
       ["¿Se incluye la entrada al Qoricancha?","No, la entrada al Templo Qoricancha se abona por separado."]
     ].map(x=>'<details class="mct-single-faq"><summary>'+esc(x[0])+'</summary><p>'+esc(x[1])+'</p></details>').join("");
     renderGallery();
@@ -125,7 +125,7 @@
       '<div class="benefit-item"><i class="fas fa-hotel"></i><div><strong>Hoteles incluidos</strong><p>3 noches en Cusco y 1 noche en Aguas Calientes, con desayuno.</p></div></div>'+
       '<div class="benefit-item"><i class="fas fa-calendar-check"></i><div><strong>Disponibilidad a confirmar</strong><p>Horarios de tren y circuito oficial de Machu Picchu sujetos a confirmación.</p></div></div>'+
       '<div class="benefit-item"><i class="fas fa-headset"></i><div><strong>Asistencia local</strong><p>Coordinación de traslados, excursiones y servicios en español o inglés.</p></div></div>';
-    document.querySelector(".booking-benefits-box").innerHTML='<div class="booking-benefit-line"><i class="fas fa-shield-heart"></i><p><strong>Reserva segura</strong> · Se verificará la disponibilidad de entradas, trenes y hotel. Pago completo por Mercado Pago.</p></div>';
+    document.querySelector(".booking-benefits-box").innerHTML='<div class="booking-benefit-line"><i class="fas fa-shield-heart"></i><p><strong>Reserva segura</strong> · Se verificará la disponibilidad de entradas, trenes y hotel. Pago seguro en línea.</p></div>';
     document.querySelector(".booking-discount-box").hidden=true;
     $("paymentMode").closest(".booking-field").hidden=true;
     $("departureTimeSection").hidden=true;$("trainSelectionSection").hidden=true;$("serviceModeSection").hidden=true;
@@ -355,6 +355,7 @@
   }
   function openPassenger() {
     if(!state.date || travelers()<2 || travelers()>9) {alert("Selecciona fecha y mínimo 2 viajeros (máximo 9).");return;}
+    resetFxStep();
     $("passengerReservationCode").textContent=reservationCode();
     $("passengerPayNowAmount").textContent=money(summary().total);
     $("passengerPaymentSnapshot").innerHTML='<p><strong>'+esc(state.date)+'</strong> · '+travelers()+' pasajeros · '+esc(HOTELS[state.hotel].title)+' · '+esc(roomLabel(state.rooms))+'<p><strong>'+money(summary().total)+'</strong></p>';
@@ -378,36 +379,97 @@
       passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate")});
     }
     const price=summary();const code=$("passengerReservationCode").textContent;
-    return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"mercado_pago",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"mercado_pago"}};
+    return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"paypal",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"paypal"}};
+  }
+  let fxQuote=null, fxPayload=null, savedReservation=null;
+  function usd(value){return "US$ "+Number(value).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function rateLabel(value){return Number(value).toFixed(4);}
+  function resetFxStep(){
+    fxQuote=null;fxPayload=null;savedReservation=null;
+    const modal=$("passengerReservationModal");
+    modal.classList.remove("mct-fx-step");
+    $("passengerCheckoutReview").hidden=true;$("passengerCheckoutReview").replaceChildren();
+    $("passengerModalTitle").textContent="Datos de los pasajeros";
+    const form=$("passengerReservationForm");form.querySelector('[type="submit"]').textContent="Pagar";
+    const message=form.querySelector("[data-passenger-message]");message.textContent="";message.classList.remove("is-error");
+  }
+  function renderFxStep(q){
+    const panel=$("passengerCheckoutReview");
+    const parts=String(q.date).split("-");
+    const formattedDate=parts.length===3?parts.reverse().join("/"):q.date;
+    panel.innerHTML='<div class="mct-fx-card"><div class="mct-fx-intro"><i class="fas fa-lock" aria-hidden="true"></i><h3>Pago seguro</h3><p>El pago se procesará en dólares estadounidenses a través de PayPal. Revisa el importe antes de continuar.</p></div>'+
+      '<div class="mct-fx-lines"><div><span>Importe de tu reserva</span><strong>'+esc(money(q.penTotal))+'</strong></div>'+
+      '<div><span>Tipo de cambio de compra</span><strong>S/ '+esc(Number(q.buy).toFixed(3))+'</strong></div>'+
+      '<div><span>Tipo de cambio de venta</span><strong>S/ '+esc(Number(q.sell).toFixed(3))+'</strong></div>'+
+      '<div class="mct-fx-reference"><span>Tipo de cambio referencial</span><strong>US$ 1 = S/ '+esc(rateLabel(q.rate))+'</strong></div></div>'+
+      '<p class="mct-fx-source">Promedio de compra y venta publicado por el BCRP (SBS) · '+esc(formattedDate)+'.</p>'+
+      '<div class="mct-fx-total"><span>Total a pagar en dólares</span><strong>'+esc(usd(q.usdTotal))+'</strong></div>'+
+      '<p class="mct-fx-note">Tu banco o PayPal podría aplicar su propio tipo de cambio si tu medio de pago está en otra moneda. Esta conversión es válida por 15 minutos antes de iniciar el pago.</p>'+
+      '<button type="button" class="mct-fx-back">Volver a los datos de los pasajeros</button></div>';
+    panel.querySelector(".mct-fx-back").addEventListener("click",()=>{if(!state.submitting&&!savedReservation)resetFxStep();});
+    panel.hidden=false;$("passengerReservationModal").classList.add("mct-fx-step");
+    $("passengerModalTitle").textContent="Detalles del pago";
+    const dialog=$("passengerReservationModal").querySelector(".passenger-modal__dialog");
+    if(dialog)dialog.scrollTop=0;
+    panel.scrollIntoView({block:"nearest"});
+  }
+  async function requestFx(api,payload){
+    const {holder,passengers,...fare}=payload;
+    const quote=await api.postAction("quoteCusco5d4nPayPal",fare);
+    if(!quote||quote.ok!==true||quote.version!=="cusco5d4n-paypal-v1"||
+      !quote.quoteId||!(quote.rate>0)||!(quote.usdTotal>0)||
+      Math.abs(Number(quote.penTotal)-payload.payNowValue)>0.005)
+      throw Error("No pudimos consultar el tipo de cambio.");
+    return quote;
   }
   async function submitReservation(ev) {
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
-    if(!form.reportValidity())return;
-    const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
-    if(missing){missing._mctTrigger?.setAttribute("aria-invalid","true");missing._mctTrigger?.focus();message.textContent="Completa todos los campos obligatorios de los pasajeros.";message.classList.add("is-error");return;}
     if(state.submitting)return;
-    const checked=formPayload();
-    if(!checked.holder.birthdate || checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
-    state.submitting=true;submit.disabled=true;submit.textContent="Procesando…";message.textContent="";
+    if(!fxQuote){
+      if(!form.reportValidity())return;
+      const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
+      if(missing){missing._mctTrigger?.setAttribute("aria-invalid","true");missing._mctTrigger?.focus();message.textContent="Completa todos los campos obligatorios de los pasajeros.";message.classList.add("is-error");return;}
+      const checked=formPayload();
+      if(!checked.holder.birthdate||checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
+      fxPayload=checked;
+    }
+    state.submitting=true;submit.disabled=true;submit.textContent=fxQuote?"Procesando…":"Consultando tipo de cambio…";message.textContent="";message.classList.remove("is-error");
+    let phase="quote";
     try {
       const api=window.MyCuscoTripApiClient;
-      if(!api)throw Error("No se cargó el servicio de reservas.");
-      const payload=formPayload();
-      // Prevalidación obligatoria: si el Apps Script no ha sido actualizado o activado,
-      // se detiene antes de registrar una pre-reserva o solicitar un cobro.
-      const verified=await api.postAction("validateCusco5d4nFare",payload);
-      if(!verified || verified.ok!==true || verified.version!=="cusco5d4n-pen-v1" || Math.abs(Number(verified.total)-payload.payNowValue)>0.005)
-        throw Error(verified&&verified.error || "La tarifa todavía no está habilitada en el servidor. No se realizó ningún cobro.");
-      const created=await api.createPreReservation(payload);
-      if(!created || created.mock || created.ok===false)throw Error(created&&created.error || "No se pudo crear la pre-reserva en el servidor.");
-      const code=created.reservationCode||created.code||payload.code;
-      const pay=await api.createMercadoPagoPreference({reservationCode:code,code,currency:"PEN",amountToPayNowValue:payload.payNowValue,productId:PRODUCT_ID,productTitle:payload.productTitle});
-      if(!pay || pay.ok===false || !pay.approvalUrl)throw Error(pay&&pay.error || "Mercado Pago no devolvió un enlace de pago.");
+      if(!api)throw Error("Servicio de pago no disponible.");
+      if(!fxQuote||(!savedReservation&&Date.now()>=Number(fxQuote.expiresAt))){
+        fxQuote=await requestFx(api,fxPayload);
+        renderFxStep(fxQuote);
+        return; // The customer must explicitly accept the displayed USD amount.
+      }
+      phase="reserve";
+      if(!savedReservation){
+        const payload={...fxPayload,fxQuoteId:fxQuote.quoteId,acceptedUsdTotal:fxQuote.usdTotal};
+        const created=await api.createPreReservation(payload);
+        if(!created||created.mock||created.ok!==true||created.currency!=="USD"||
+           Math.abs(Number(created.amountToPayNow)-fxQuote.usdTotal)>0.005)throw Error("No se pudo registrar la reserva.");
+        savedReservation=created.reservationCode||created.code;
+        if(!savedReservation)throw Error("No se pudo identificar la reserva.");
+        const back=$("passengerCheckoutReview").querySelector(".mct-fx-back");if(back)back.hidden=true;
+      }
+      phase="paypal";
+      const pay=await api.createPayPalOrder({reservationCode:savedReservation,currency:"USD",amountToPayNowValue:fxQuote.usdTotal,productId:PRODUCT_ID,productTitle:fxPayload.productTitle});
+      if(!pay||pay.ok!==true||!pay.approvalUrl)throw Error("No se pudo abrir PayPal.");
       const url=new URL(pay.approvalUrl);
-      if(url.protocol!=="https:" || !/(^|\.)mercadopago\.(com|com\.[a-z]{2}|[a-z]{2})$/i.test(url.hostname))throw Error("El enlace de pago no es válido.");
+      if(url.protocol!=="https:"||!/(^|\.)paypal\.com$/i.test(url.hostname))throw Error("Enlace de pago no disponible.");
       window.location.assign(url.href);
-    }catch(error){console.error("Error al reservar:",error);message.textContent=/Acción POST no reconocida.*validateCusco5d4nFare/i.test(error.message||"")?"El servicio de reservas todavía requiere una actualización. No se realizó ningún cobro.":error.message||"No se pudo iniciar el pago.";message.classList.add("is-error");submit.disabled=false;submit.textContent="Pagar";}finally{state.submitting=false;}
+    }catch(error){
+      console.error("Error de reserva:",error);
+      if(!savedReservation&&phase==="reserve"&&/conversión ha vencido|tipo de cambio antes/i.test(error.message||"")){
+        fxQuote=null;
+        $("passengerReservationModal").classList.remove("mct-fx-step");
+        $("passengerCheckoutReview").hidden=true;$("passengerModalTitle").textContent="Datos de los pasajeros";
+      }
+      message.textContent=phase==="quote"?"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente.":phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
+      message.classList.add("is-error");
+    }finally{state.submitting=false;submit.disabled=false;submit.textContent="Pagar";}
   }
   function setup() {
     renderContent();
