@@ -1,0 +1,58 @@
+/* Página exclusiva 5D/4N. Extiende product-page.css sin modificar la ficha común. */
+body.mct-single-modal-open { overflow:hidden; }
+body.mct-single-5d4n .experience-tabs a[href="#similar-mobile"],
+body.mct-single-5d4n #similar-desktop,
+body.mct-single-5d4n #similar-mobile,
+body.mct-single-5d4n #packageOptions,
+body.mct-single-5d4n .booking-discount-box { display:none !important; }
+body.mct-single-5d4n .booking-panel__price strong { font-size:2rem; font-weight:800; color:#0a6847; }
+body.mct-single-5d4n .booking-field select { color:#223729; }
+body.mct-single-5d4n .booking-main-btn { width:100%; }
+body.mct-single-5d4n .mct-single-total { display:flex !important; justify-content:space-between; align-items:center; gap:12px; padding-top:15px; border-top:1px solid #c9dfce; }
+body.mct-single-5d4n .mct-single-total strong { color:#09734a; font-size:1.22rem; white-space:nowrap; }
+body.mct-single-5d4n .booking-summary__line { display:flex !important; justify-content:space-between; gap:10px; }
+body.mct-single-5d4n .mct-single-label { display:block; margin-bottom:10px; font-size:0.9rem; font-weight:750; }
+body.mct-single-5d4n .mct-single-hotel-summary { border:1px solid #d1e7d7; border-radius:13px; padding:14px; background:#f8fcf9; display:flex; flex-direction:column; gap:5px; }
+body.mct-single-5d4n .mct-single-hotel-summary strong { color:#133d2c; font-size:1rem; }
+body.mct-single-5d4n .mct-single-hotel-summary span { color:#293f33; font-size:0.92rem; }
+body.mct-single-5d4n .mct-single-hotel-summary small { display:block; font-size:0.81rem; }
+body.mct-single-5d4n .mct-single-included { color:#047d50; font-weight:700; }
+body.mct-single-5d4n .mct-single-surcharge { color:#9b5700; font-weight:700; }
+body.mct-single-5d4n .mct-single-edit-hotel { margin-top:9px; width:100%; }
+body.mct-single-5d4n .mct-single-day-hours { margin-top:0.1rem; color:#08794b; font-size:0.86rem; font-weight:700; }
+body.mct-single-5d4n .experience-itinerary-item__media { width:100%; max-width:220px; border-radius:12px; overflow:hidden; min-height:145px; }
+body.mct-single-5d4n .experience-itinerary-item__media img { display:block; width:100%; height:100%; object-fit:cover; }
+body.mct-single-5d4n .experience-itinerary-item--visual { display:flex; align-items:stretch; gap:15px; }
+body.mct-single-5d4n .experience-itinerary-item__content { flex:1; min-width:0; }
+body.mct-single-5d4n .mct-single-faq { padding:15px 0; border-bottom:1px solid #e6e9e5; }
+body.mct-single-5d4n .mct-single-faq summary { font-weight:700; cursor:pointer; color:#1c3b2c; }
+body.mct-single-5d4n .mct-single-faq p { padding-top:9px; color:#455a4b; }
+body.mct-single-5d4n .hotel-modal__list { display:flex; flex-direction:column; gap:13px; }
+body.mct-single-5d4n .mct-single-hotel-card { cursor:pointer; border:2px solid #d4e0d7; border-radius:14px; padding:11px; display:flex; align-items:center; gap:12px; background:#fff; }
+body.mct-single-5d4n .mct-single-hotel-card.is-selected { border-color:#0d8e5b; background:#f4fbf6; }
+body.mct-single-5d4n .mct-single-hotel-card input { width:18px; height:18px; flex:0 0 auto; accent-color:#08794b; }
+body.mct-single-5d4n .mct-single-hotel-card img { width:110px; height:90px; border-radius:10px; object-fit:cover; }
+body.mct-single-5d4n .mct-single-hotel-card span { display:flex; flex-direction:column; min-width:0; gap:4px; }
+body.mct-single-5d4n .mct-single-hotel-card strong { color:#103f2a; }
+body.mct-single-5d4n .mct-single-hotel-card small { color:#526058; }
+body.mct-single-5d4n .mct-single-hotel-card em { font-style:normal; font-size:0.86rem; color:#0c754b; font-weight:700; }
+body.mct-single-5d4n .mct-single-room-picker { border:1px solid #dce6de; border-radius:13px; padding:14px; }
+body.mct-single-5d4n .mct-single-room-picker label { display:block; margin-bottom:8px; font-weight:750; }
+body.mct-single-5d4n .mct-single-room-picker select { width:100%; min-height:43px; background:white; border:1px solid #bed0c2; border-radius:8px; padding:9px; color:#21362a; }
+body.mct-single-5d4n .mct-single-room-picker p { font-size:0.8rem; margin-top:8px; }
+body.mct-single-5d4n .mct-single-fixed-hotel { display:flex; align-items:center; gap:12px; border:1px solid #dce6de; border-radius:13px; padding:10px; background:#fafdf9; }
+body.mct-single-5d4n .mct-single-fixed-hotel img { width:84px; height:64px; border-radius:8px; object-fit:cover; }
+body.mct-single-5d4n .mct-single-fixed-hotel span { display:flex; flex-direction:column; gap:5px; }
+body.mct-single-5d4n .mct-single-fixed-hotel small { color:#53715d; }
+body.mct-single-5d4n .mct-single-passenger { border:1px solid #d6e5d7; padding:12px; border-radius:12px; margin:12px 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+body.mct-single-5d4n .mct-single-passenger legend { font-weight:750; color:#116a43; padding:0 6px; }
+body.mct-single-5d4n .mct-single-passenger label { display:flex; flex-direction:column; gap:5px; font-size:0.86rem; }
+body.mct-single-5d4n .mct-single-passenger input { width:100%; min-width:0; border:1px solid #d4dad5; border-radius:8px; padding:8px; }
+body.mct-single-5d4n .mct-single-passenger span { grid-column:1/-1; font-size:0.78rem; color:#687769; }
+@media (max-width:720px) {
+ body.mct-single-5d4n .mct-single-hotel-card img { width:90px; height:82px; }
+ body.mct-single-5d4n .experience-itinerary-item--visual { flex-direction:column; }
+ body.mct-single-5d4n .experience-itinerary-item__media { max-width:none; height:165px; }
+ body.mct-single-5d4n .mct-single-passenger { grid-template-columns:1fr; }
+ body.mct-single-5d4n .mct-single-passenger span { grid-column:auto; }
+}
