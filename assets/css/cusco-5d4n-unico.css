@@ -96,3 +96,56 @@ body.mct-single-5d4n .flatpickr-next-month svg { fill:white; }
 body.mct-single-5d4n .flatpickr-day.selected,
 body.mct-single-5d4n .flatpickr-day.selected:hover { background:#0d4b35; border-color:#0d4b35; color:white; }
 @media(max-width:720px){body.mct-single-5d4n .mct-single-passenger{grid-template-columns:1fr;}body.mct-single-5d4n .booking-summary__total strong{font-size:1.05rem;} }
+
+/* Branded form controls: real HTML menus and calendar, no native select popup. */
+body.mct-single-5d4n #passengerReservationForm .mct-original-control { display:none!important; }
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger {
+  appearance:none!important; position:relative; display:block!important; width:100%!important; min-width:0!important; min-height:49px!important;
+  box-sizing:border-box!important; text-align:left!important; background:#fff!important; color:#173c2c!important;
+  border:1px solid #d3ded7!important; border-radius:12px!important; padding:12px 35px 12px 14px!important;
+  font-family:inherit!important; font-size:14px!important; font-weight:600!important; line-height:1.4!important;
+  white-space:nowrap!important; overflow:hidden; text-overflow:ellipsis; cursor:pointer; margin:0!important; box-shadow:none!important;
+}
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger:after {
+  content:""; position:absolute; width:8px; height:8px; border-right:2px solid #0d4b35; border-bottom:2px solid #0d4b35;
+  right:14px; top:50%; transform:translateY(-65%) rotate(45deg); pointer-events:none;
+}
+body.mct-single-5d4n #passengerReservationForm .mct-date-trigger:after {
+  width:14px; height:13px; border:1.7px solid #0d4b35; border-top:4px solid #0d4b35; border-radius:3px; transform:translateY(-50%); 
+}
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger.is-placeholder { color:#66766e!important; font-weight:500!important; }
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger:focus-visible,
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger[aria-expanded="true"] { outline:2px solid #0d8a5c!important; outline-offset:1px; border-color:#0d8a5c!important; }
+body.mct-single-5d4n #passengerReservationForm .mct-picker-trigger[aria-invalid="true"] { border-color:#c04d3b!important; }
+body.mct-single-5d4n #passengerReservationForm .passenger-phone-row { display:grid!important; grid-template-columns:minmax(76px,94px) minmax(0,1fr)!important; gap:8px!important; }
+body.mct-single-5d4n #passengerReservationForm .mct-phone-trigger { padding-left:10px!important; padding-right:25px!important; }
+body.mct-single-5d4n #passengerReservationForm .mct-phone-trigger:after { right:10px; width:6px; height:6px; }
+body.mct-single-5d4n .mct-picker {
+  position:fixed!important; z-index:2147483646!important; display:flex; flex-direction:column;
+  box-sizing:border-box; background:#fff; border:1px solid #cbdad0; border-radius:14px; 
+  box-shadow:0 15px 45px rgba(10,58,38,.24); overflow:auto; overscroll-behavior:contain;
+  font-family:"Open Sans",sans-serif; color:#173c2c; font-size:14px; padding:0;
+}
+body.mct-single-5d4n .mct-picker-heading { background:#0d4b35; color:white; padding:12px 15px; font-weight:700; flex:0 0 auto; font-size:14px; }
+body.mct-single-5d4n .mct-picker-search { width:calc(100% - 20px); flex:0 0 auto; box-sizing:border-box; margin:10px; border:1px solid #cbdad0; border-radius:10px; background:#f7faf8; padding:10px 12px; color:#173c2c; font:inherit; outline-color:#0d8a5c; }
+body.mct-single-5d4n .mct-picker-options { overflow:auto; min-height:0; padding:5px 6px 8px; max-height:280px; overscroll-behavior:contain; }
+body.mct-single-5d4n .mct-picker-option { display:block; width:100%; border:0; border-radius:8px; background:#fff; text-align:left; padding:11px 12px; color:#173c2c; font:inherit; cursor:pointer; }
+body.mct-single-5d4n .mct-picker-option:hover,body.mct-single-5d4n .mct-picker-option:focus-visible { background:#e8f4ec; outline:0; }
+body.mct-single-5d4n .mct-picker-option[aria-selected="true"] { background:#e0f0e5; color:#075b3a; font-weight:700; }
+body.mct-single-5d4n .mct-picker-empty { padding:10px; color:#66766e; }
+body.mct-single-5d4n .mct-date-nav { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 12px 2px; }
+body.mct-single-5d4n .mct-date-nav button,body.mct-single-5d4n .mct-date-grid button,body.mct-single-5d4n .mct-date-back { background:white; border:0; color:#173c2c; font:inherit; border-radius:8px; cursor:pointer; }
+body.mct-single-5d4n .mct-date-arrow { font-size:24px!important; width:36px; min-height:36px; background:#edf6ef!important; line-height:1; }
+body.mct-single-5d4n .mct-date-title { font-weight:750!important; padding:8px; }
+body.mct-single-5d4n .mct-date-hint { margin:4px 12px 6px; color:#607369; text-align:center; font-size:12px; }
+body.mct-single-5d4n .mct-date-grid { display:grid; gap:4px; padding:8px 12px 12px; }
+body.mct-single-5d4n .mct-date-choices { grid-template-columns:repeat(3,minmax(0,1fr)); }
+body.mct-single-5d4n .mct-date-days { grid-template-columns:repeat(7,minmax(0,1fr)); }
+body.mct-single-5d4n .mct-date-grid button { min-height:34px; font-weight:600; }
+body.mct-single-5d4n .mct-date-days span { text-align:center; align-self:center; font-size:11px; color:#6b7d72; }
+body.mct-single-5d4n .mct-date-grid button:not(:disabled):hover,body.mct-single-5d4n .mct-date-grid button:focus-visible { background:#e8f4ec; outline:2px solid #80b697; }
+body.mct-single-5d4n .mct-date-grid button.is-selected { background:#0d4b35; color:#fff; }
+body.mct-single-5d4n .mct-date-grid button:disabled { color:#a5b0a8; cursor:not-allowed; }
+body.mct-single-5d4n .mct-date-back { background:#e8f4ec; color:#0d4b35; margin:0 12px 12px; padding:9px; font-weight:700; }
+body.mct-single-5d4n .flatpickr-calendar { z-index:2147483646!important; }
+@media(max-width:480px){body.mct-single-5d4n .mct-picker-search{font-size:16px;}body.mct-single-5d4n .mct-picker-option{min-height:43px;}body.mct-single-5d4n .mct-date-grid button{min-height:38px;}}
