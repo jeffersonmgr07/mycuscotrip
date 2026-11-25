@@ -31,7 +31,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-11-25-v4.7-cusco-paypal-fx';
+const BACKEND_VERSION = '2026-11-25-v4.8-cusco-paypal-fx3';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -1793,7 +1793,7 @@ function cusco5d4nPenPayload_(p, pen) {
     pricing:{subtotal:pen,total:pen,discount:p.pricing && p.pricing.discount}});
 }
 function cusco5d4nRate_() {
-  const cache=CacheService.getScriptCache(), key='MCT_CUSCO5D4N_BCRP_SBS_V1';
+  const cache=CacheService.getScriptCache(), key='MCT_CUSCO5D4N_BCRP_SBS_V2';
   const cached=cache.get(key);
   if(cached) return JSON.parse(cached);
   const url='https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04639PD-PD04640PD/json/';
@@ -1809,7 +1809,7 @@ function cusco5d4nRate_() {
     const date=year+'-'+String(months[parts[2]]).padStart(2,'0')+'-'+parts[1].padStart(2,'0');
     const buy=Number(r.values&&r.values[0]),sell=Number(r.values&&r.values[1]);
     if(!(buy>0&&sell>=buy&&buy>=1&&sell<=10)||date>today)return null;
-    return {date:date,buy:buy,sell:sell,rate:Math.round((buy+sell)*5000)/10000,source:'BCRP / SBS'};
+    return {date:date,buy:buy,sell:sell,rate:Math.round((buy+sell)*500+1e-9)/1000,rateDecimals:3,source:'BCRP / SBS'};
   }).filter(Boolean).sort(function(a,b){return b.date.localeCompare(a.date);});
   const last=rows[0];
   if(!last||Date.parse(today)-Date.parse(last.date)>7*86400000)
@@ -1834,8 +1834,8 @@ function quoteCusco5d4nPayPal_(p) {
     usdTotal:round2_(fare.total/fx.rate),expiresAt:Date.now()+15*60000,
     fingerprint:cusco5d4nFingerprint_(payload)});
   CacheService.getScriptCache().put('MCT_CUSCO5D4N_QUOTE_'+quote.quoteId,JSON.stringify(quote),900);
-  return {ok:true,version:'cusco5d4n-paypal-v1',quoteId:quote.quoteId,penTotal:quote.penTotal,
-    usdTotal:quote.usdTotal,buy:quote.buy,sell:quote.sell,rate:quote.rate,date:quote.date,source:quote.source,expiresAt:quote.expiresAt};
+  return {ok:true,version:'cusco5d4n-paypal-v2',quoteId:quote.quoteId,penTotal:quote.penTotal,
+    usdTotal:quote.usdTotal,rate:quote.rate,date:quote.date,source:quote.source,expiresAt:quote.expiresAt};
 }
 function prepareCusco5d4nPayPal_(payload) {
   if(payload.currency!=='PEN'||payload.paymentProvider!=='paypal')return {ok:false,error:'Revisa los datos de tu reserva.'};
@@ -1855,8 +1855,10 @@ function prepareCusco5d4nPayPal_(payload) {
 }
 function verifyCusco5d4nPayPalRow_(row,p) {
   const fx=p.fxQuote||{}, pen=number_(p.originalTotal,-1);
+  // Keep already registered four-decimal reservations payable without changing their accepted amount.
+  const expectedRate=fx.rateDecimals===3?Math.round((fx.buy+fx.sell)*500+1e-9)/1000:Math.round((fx.buy+fx.sell)*5000)/10000;
   if(p.currency!=='USD'||p.paymentProvider!=='paypal'||p.originalCurrency!=='PEN'||fx.penTotal!==pen||
-      !(fx.rate>0)||fx.rate!==Math.round((fx.buy+fx.sell)*5000)/10000||
+      !(fx.rate>0)||fx.rate!==expectedRate||
       fx.fingerprint!==cusco5d4nFingerprint_(p)||fx.usdTotal!==round2_(pen/fx.rate))
     return {ok:false,error:'No se pudo validar el importe de tu reserva.'};
   const fare=validateCusco5d4nFixedFare_(cusco5d4nPenPayload_(p,pen));
