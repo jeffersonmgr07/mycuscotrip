@@ -383,7 +383,7 @@
   }
   let fxQuote=null, fxPayload=null, savedReservation=null;
   function usd(value){return "US$ "+Number(value).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function rateLabel(value){return Number(value).toFixed(4);}
+  function rateLabel(value){return Number(value).toFixed(3);}
   function resetFxStep(){
     fxQuote=null;fxPayload=null;savedReservation=null;
     const modal=$("passengerReservationModal");
@@ -399,10 +399,8 @@
     const formattedDate=parts.length===3?parts.reverse().join("/"):q.date;
     panel.innerHTML='<div class="mct-fx-card"><div class="mct-fx-intro"><i class="fas fa-lock" aria-hidden="true"></i><h3>Pago seguro</h3><p>El pago se procesará en dólares estadounidenses a través de PayPal. Revisa el importe antes de continuar.</p></div>'+
       '<div class="mct-fx-lines"><div><span>Importe de tu reserva</span><strong>'+esc(money(q.penTotal))+'</strong></div>'+
-      '<div><span>Tipo de cambio de compra</span><strong>S/ '+esc(Number(q.buy).toFixed(3))+'</strong></div>'+
-      '<div><span>Tipo de cambio de venta</span><strong>S/ '+esc(Number(q.sell).toFixed(3))+'</strong></div>'+
-      '<div class="mct-fx-reference"><span>Tipo de cambio referencial</span><strong>US$ 1 = S/ '+esc(rateLabel(q.rate))+'</strong></div></div>'+
-      '<p class="mct-fx-source">Promedio de compra y venta publicado por el BCRP (SBS) · '+esc(formattedDate)+'.</p>'+
+      '<div class="mct-fx-reference"><span>Tipo de cambio aplicado</span><strong>S/ '+esc(rateLabel(q.rate))+'</strong></div></div>'+
+      '<p class="mct-fx-source">Referencia: BCRP (SBS) · '+esc(formattedDate)+'.</p>'+
       '<div class="mct-fx-total"><span>Total a pagar en dólares</span><strong>'+esc(usd(q.usdTotal))+'</strong></div>'+
       '<p class="mct-fx-note">Tu banco o PayPal podría aplicar su propio tipo de cambio si tu medio de pago está en otra moneda. Esta conversión es válida por 15 minutos antes de iniciar el pago.</p>'+
       '<button type="button" class="mct-fx-back">Volver a los datos de los pasajeros</button></div>';
@@ -416,7 +414,7 @@
   async function requestFx(api,payload){
     const {holder,passengers,...fare}=payload;
     const quote=await api.postAction("quoteCusco5d4nPayPal",fare);
-    if(!quote||quote.ok!==true||quote.version!=="cusco5d4n-paypal-v1"||
+    if(!quote||quote.ok!==true||quote.version!=="cusco5d4n-paypal-v2"||
       !quote.quoteId||!(quote.rate>0)||!(quote.usdTotal>0)||
       Math.abs(Number(quote.penTotal)-payload.payNowValue)>0.005)
       throw Error("No pudimos consultar el tipo de cambio.");
