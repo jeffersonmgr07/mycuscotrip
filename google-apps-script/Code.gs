@@ -31,7 +31,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-11-23-v4.6-black-friday-2026';
+const BACKEND_VERSION = '2026-11-25-v4.7-cusco-paypal-fx';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -380,6 +380,7 @@ function doPost(e) {
     if (action === 'mctBfVerify') return json_(mctBfLeadVerify_(payload));
     if (action === 'validateCoupon') return json_(validateCoupon_(payload));
     if (action === 'validatePackageFare') return json_(validatePackageFare_(payload.payload || payload));
+    if (action === 'quoteCusco5d4nPayPal') return json_(quoteCusco5d4nPayPal_(payload));
     if (action === 'validateCusco5d4nFare') return json_(validateCusco5d4nFixedFare_(payload.payload || payload));
     if (action === 'createPreReservation') return json_(createPreReservation_(payload));
     if (action === 'createPayPalOrder') return json_(createPayPalOrder_(payload));
@@ -1781,15 +1782,107 @@ function validateCusco5d4nFixedFare_(p) {
   return {ok:true,version:'cusco5d4n-pen-v1',currency:'PEN',total:total};
 }
 
+
+// Dedicated PEN-to-USD checkout. The quote is created by the server, never by the browser.
+function isCusco5d4nFixed_(p) {
+  return p && (p.source === 'cusco-5d4n-unico' || p.productId === 'MCT-CUSCO-5D4N-UNICO');
+}
+function cusco5d4nPenPayload_(p, pen) {
+  return Object.assign({}, p, {currency:'PEN',paymentProvider:'mercado_pago',
+    serviceTotalValue:pen,payNowValue:pen,payLaterValue:p.payLaterValue,
+    pricing:{subtotal:pen,total:pen,discount:p.pricing && p.pricing.discount}});
+}
+function cusco5d4nRate_() {
+  const cache=CacheService.getScriptCache(), key='MCT_CUSCO5D4N_BCRP_SBS_V1';
+  const cached=cache.get(key);
+  if(cached) return JSON.parse(cached);
+  const url='https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04639PD-PD04640PD/json/';
+  const res=UrlFetchApp.fetch(url,{muteHttpExceptions:true,followRedirects:true});
+  if(res.getResponseCode()!==200) throw new Error('No se pudo consultar el tipo de cambio. Intenta nuevamente en unos minutos.');
+  const data=JSON.parse(res.getContentText());
+  const months={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,set:9,sep:9,oct:10,nov:11,dic:12};
+  const today=Utilities.formatDate(new Date(),'America/Lima','yyyy-MM-dd');
+  const rows=(data.periods||[]).map(function(r){
+    const parts=String(r.name||'').toLowerCase().match(/^(\d{1,2})\.([a-z]{3})\.(\d{2}|\d{4})$/);
+    if(!parts||!months[parts[2]])return null;
+    const year=parts[3].length===2?2000+Number(parts[3]):Number(parts[3]);
+    const date=year+'-'+String(months[parts[2]]).padStart(2,'0')+'-'+parts[1].padStart(2,'0');
+    const buy=Number(r.values&&r.values[0]),sell=Number(r.values&&r.values[1]);
+    if(!(buy>0&&sell>=buy&&buy>=1&&sell<=10)||date>today)return null;
+    return {date:date,buy:buy,sell:sell,rate:Math.round((buy+sell)*5000)/10000,source:'BCRP / SBS'};
+  }).filter(Boolean).sort(function(a,b){return b.date.localeCompare(a.date);});
+  const last=rows[0];
+  if(!last||Date.parse(today)-Date.parse(last.date)>7*86400000)
+    throw new Error('El tipo de cambio no está actualizado. Intenta nuevamente más tarde.');
+  cache.put(key,JSON.stringify(last),300);
+  return last;
+}
+function cusco5d4nFingerprint_(p) {
+  return JSON.stringify([normalizeCode_(p.code||p.reservationCode),p.productId,p.source,p.date,p.adults,p.children,
+    p.totalPassengers,p.infants,p.selectedHotel,p.roomAllocation&&p.roomAllocation.doubles,
+    p.roomAllocation&&p.roomAllocation.triples,p.extraCode||'',p.accommodationIncluded,p.paymentMode]);
+}
+function quoteCusco5d4nPayPal_(p) {
+  const payload=p.payload||p;
+  if(payload.paymentProvider!=='paypal'||payload.currency!=='PEN')return {ok:false,error:'Revisa los datos de tu reserva.'};
+  const code=normalizeCode_(payload.code||payload.reservationCode);
+  if(!code)return {ok:false,error:'No se pudo identificar tu reserva.'};
+  const fare=validateCusco5d4nFixedFare_(Object.assign({},payload,{paymentProvider:'mercado_pago'}));
+  if(!fare.ok)return fare;
+  const fx=cusco5d4nRate_();
+  const quote=Object.assign({},fx,{quoteId:Utilities.getUuid(),code:code,penTotal:fare.total,
+    usdTotal:round2_(fare.total/fx.rate),expiresAt:Date.now()+15*60000,
+    fingerprint:cusco5d4nFingerprint_(payload)});
+  CacheService.getScriptCache().put('MCT_CUSCO5D4N_QUOTE_'+quote.quoteId,JSON.stringify(quote),900);
+  return {ok:true,version:'cusco5d4n-paypal-v1',quoteId:quote.quoteId,penTotal:quote.penTotal,
+    usdTotal:quote.usdTotal,buy:quote.buy,sell:quote.sell,rate:quote.rate,date:quote.date,source:quote.source,expiresAt:quote.expiresAt};
+}
+function prepareCusco5d4nPayPal_(payload) {
+  if(payload.currency!=='PEN'||payload.paymentProvider!=='paypal')return {ok:false,error:'Revisa los datos de tu reserva.'};
+  const fare=validateCusco5d4nFixedFare_(Object.assign({},payload,{paymentProvider:'mercado_pago'}));
+  if(!fare.ok)return fare;
+  const id=String(payload.fxQuoteId||'');
+  if(!/^[a-f0-9-]{36}$/i.test(id))return {ok:false,error:'Actualiza el tipo de cambio antes de pagar.'};
+  const fx=parseJsonSafe_(CacheService.getScriptCache().get('MCT_CUSCO5D4N_QUOTE_'+id),null);
+  if(!fx||fx.expiresAt<=Date.now()||fx.fingerprint!==cusco5d4nFingerprint_(payload)||fx.penTotal!==fare.total||
+      Math.abs(number_(payload.acceptedUsdTotal,-1)-fx.usdTotal)>0.005)
+    return {ok:false,error:'La conversión ha vencido o cambió. Consulta nuevamente el tipo de cambio.'};
+  const trusted=Object.assign({},payload,{currency:'USD',paymentProvider:'paypal',serviceTotalValue:fx.usdTotal,
+    payNowValue:fx.usdTotal,payLaterValue:0,pricing:{subtotal:fx.usdTotal,total:fx.usdTotal,discount:0},
+    originalCurrency:'PEN',originalTotal:fx.penTotal,fxQuote:fx,
+    checkoutPayload:Object.assign({},payload.checkoutPayload||{},{currency:'USD',amountToPayNowValue:fx.usdTotal,provider:'paypal'})});
+  return {ok:true,payload:trusted};
+}
+function verifyCusco5d4nPayPalRow_(row,p) {
+  const fx=p.fxQuote||{}, pen=number_(p.originalTotal,-1);
+  if(p.currency!=='USD'||p.paymentProvider!=='paypal'||p.originalCurrency!=='PEN'||fx.penTotal!==pen||
+      !(fx.rate>0)||fx.rate!==Math.round((fx.buy+fx.sell)*5000)/10000||
+      fx.fingerprint!==cusco5d4nFingerprint_(p)||fx.usdTotal!==round2_(pen/fx.rate))
+    return {ok:false,error:'No se pudo validar el importe de tu reserva.'};
+  const fare=validateCusco5d4nFixedFare_(cusco5d4nPenPayload_(p,pen));
+  if(!fare.ok)return fare;
+  if(normalizeCurrency_(row.Moneda)!=='USD'||round2_(row.MontoPagarAhora)!==fx.usdTotal||
+      round2_(row.TotalServicio)!==fx.usdTotal||round2_(p.payNowValue)!==fx.usdTotal||
+      round2_(p.serviceTotalValue)!==fx.usdTotal||round2_(row.SaldoPendiente)!==0||row.CodigoCupon)
+    return {ok:false,error:'No se pudo validar el importe de tu reserva.'};
+  return {ok:true};
+}
+
 function createPreReservation_(p) {
-  const payload = p.payload && typeof p.payload === 'object' ? p.payload : p;
+  let payload = p.payload && typeof p.payload === 'object' ? p.payload : p;
   if (payload.source === 'landing-paquetes-cusco') {
     const fareCheck = validatePackageFare_(payload);
     if (!fareCheck.ok) return fareCheck;
   }
-  if (payload.source === 'cusco-5d4n-unico') {
-    const fareCheck = validateCusco5d4nFixedFare_(payload);
-    if (!fareCheck.ok) return fareCheck;
+  if (isCusco5d4nFixed_(payload)) {
+    if (payload.paymentProvider === 'paypal') {
+      const prepared = prepareCusco5d4nPayPal_(payload);
+      if (!prepared.ok) return prepared;
+      payload = prepared.payload;
+    } else {
+      const fareCheck = validateCusco5d4nFixedFare_(payload);
+      if (!fareCheck.ok) return fareCheck;
+    }
   }
   const code = normalizeCode_(payload.code || payload.reservationCode) || generateReservationCode_();
   const holder = payload.holder || {};
@@ -1946,6 +2039,10 @@ function createPayPalOrder_(p) {
 
   const row = reservation.row;
   const storedPackage = parseJsonSafe_(row.JSON, {});
+  if (isCusco5d4nFixed_(storedPackage) || row.ProductoID === 'MCT-CUSCO-5D4N-UNICO') {
+    const verified = verifyCusco5d4nPayPalRow_(row,storedPackage);
+    if(!verified.ok)return verified;
+  }
   if (mctBfIsCode_(row.CodigoCupon)) {
     if (getProp_('MCT_BF26_ENABLE_PAYMENTS', 'true') !== 'true')
       return {ok:false,error:'Los cobros Black Friday están pausados por administración.'};
@@ -2005,7 +2102,7 @@ function createPayPalOrder_(p) {
 
   // A pending BF reservation may be retried, but must not generate multiple
   // payable PayPal orders for the same reserved one-use coupon.
-  if (mctBfIsCode_(row.CodigoCupon) && row.PayPalOrderID) {
+  if ((mctBfIsCode_(row.CodigoCupon) || isCusco5d4nFixed_(storedPackage)) && row.PayPalOrderID) {
     const existingOrder = paypalRequest_('get', '/v2/checkout/orders/' + encodeURIComponent(row.PayPalOrderID), null);
     const existingApproval = getPayPalApprovalUrl_(existingOrder);
     if (!existingApproval)
@@ -3161,6 +3258,7 @@ function buildCancelUrl_(code, row) {
 
 function getReservationOriginPage_(row) {
   const payload = parseJsonSafe_(row && row.JSON, {});
+  if (isCusco5d4nFixed_(payload)) return '/cusco-5-dias-4-noches-unico.html';
   const candidate = clean_(payload.landingPath || payload.sourcePage || '');
 
   // Solo se aceptan rutas internas conocidas para evitar redirecciones externas.
