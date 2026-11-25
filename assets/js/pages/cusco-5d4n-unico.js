@@ -283,6 +283,8 @@
     $("cancelHotelModalBtn").textContent="Guardar selección";
     $("paypalButton").addEventListener("click",openPassenger);
     $("holderTravelsCheckbox").addEventListener("change",renderExtraPassengers);
+    $("holderLanguageSelect").innerHTML='<option value="Español">Español</option><option value="English">English</option>';
+    $("holderLanguageWarning").hidden=true;
     ["closePassengerModalBtn"].forEach(id=>$(id).addEventListener("click",()=>closeModal("passengerReservationModal")));
     document.querySelectorAll("[data-close-passenger-modal]").forEach(el=>el.addEventListener("click",()=>closeModal("passengerReservationModal")));
     $("passengerReservationCodeCopy").addEventListener("click",()=>navigator.clipboard?.writeText($("passengerReservationCode").textContent));
