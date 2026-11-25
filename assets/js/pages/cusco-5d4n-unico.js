@@ -84,8 +84,8 @@
   }
   function renderContent() {
     document.title="Cusco 5 días y 4 noches | My Cusco Trip";
-    $("productBadge").textContent="Paquete organizado";
-    $("productTitle").textContent="Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches";
+    $("productBadge").textContent="Paquete organizado de 5 días y 4 noches";
+    $("productTitle").textContent="Cusco, Valle Sagrado y Machu Picchu";
     $("productDescription").textContent="Descubre Cusco en cinco días con City Tour, Maras y Moray, Valle Sagrado y Machu Picchu. Incluye cuatro noches de hotel, desayunos y coordinación local. Un solo itinerario y un precio por persona en soles.";
     $("detailCapacity").textContent="Mínimo 2 viajeros · Máximo 9 por reserva";
     $("detailDuration").textContent="5 días / 4 noches";
@@ -190,16 +190,148 @@
       state.rooms=combinations(travelers())[Number($("mctRoomOption").value)];renderPrice();
     });
   }
-  function closeModal(id) {$(id).hidden=true;document.body.classList.remove("mct-single-modal-open");}
+  function closeModal(id) {closePicker();$(id).hidden=true;document.body.classList.remove("mct-single-modal-open");}
   function openHotel() {renderHotelsModal();$("hotelSelectionModal").hidden=false;document.body.classList.add("mct-single-modal-open");}
-  function styleBirthdates(root=document) {
-    if(!window.flatpickr)return;
-    root.querySelectorAll('input[data-birthdate],input[data-expiry],input[name="holderBirthdate"]').forEach(el=>{
-      if(el._flatpickr)return;
-      el.type="text";
-      const expiry=el.hasAttribute("data-expiry");
-      flatpickr(el,{locale:flatpickr.l10ns.es,...(expiry?{minDate:"today"}:{maxDate:"today"}),dateFormat:"Y-m-d",altInput:true,altFormat:"d/m/Y",allowInput:true,disableMobile:true,appendTo:document.body,onReady:(_,__,fp)=>{fp.altInput.placeholder="dd/mm/aaaa";fp.altInput.setAttribute("inputmode","numeric");},onChange:()=>el.setCustomValidity("")});
+  // Custom controls keep the original form values for the reservation API.
+  let activePicker=null, pickerSerial=0;
+  const monthNames=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  function closePicker(restore=false){
+    if(!activePicker)return;
+    const {panel,trigger}=activePicker;
+    activePicker=null;panel.remove();trigger.setAttribute("aria-expanded","false");
+    if(restore&&trigger.isConnected)trigger.focus({preventScroll:true});
+  }
+  function positionPicker(){
+    if(!activePicker)return;
+    const {panel,trigger}=activePicker;
+    const r=trigger.getBoundingClientRect(), gap=6, pad=10;
+    if(r.bottom<0||r.top>window.innerHeight||!trigger.isConnected){closePicker();return;}
+    const width=Math.min(window.innerWidth-2*pad,Math.max(r.width,panel.classList.contains("mct-birth-picker")?306:260));
+    panel.style.width=width+"px";
+    panel.style.left=Math.max(pad,Math.min(r.left,window.innerWidth-width-pad))+"px";
+    const below=window.innerHeight-r.bottom-gap-pad,above=r.top-gap-pad;
+    const useAbove=below<245&&above>below;
+    panel.style.maxHeight=Math.max(100,useAbove?above:below)+"px";
+    const height=panel.getBoundingClientRect().height;
+    panel.style.top=Math.max(pad,useAbove?r.top-gap-height:r.bottom+gap)+"px";
+  }
+  function showPicker(trigger,kind){
+    closePicker();
+    const panel=document.createElement("div");
+    panel.id="mct-picker-"+(++pickerSerial);
+    panel.className="mct-picker "+kind;
+    panel.setAttribute("role","dialog");
+    panel.setAttribute("aria-label",trigger.getAttribute("aria-label")||"Seleccionar");
+    document.body.appendChild(panel);
+    trigger.setAttribute("aria-expanded","true");trigger.setAttribute("aria-controls",panel.id);
+    activePicker={panel,trigger};
+    return panel;
+  }
+  function buttonFor(el,kind,label){
+    const trigger=document.createElement("button");
+    trigger.type="button";trigger.className="mct-picker-trigger "+kind;
+    trigger.setAttribute("aria-haspopup","dialog");trigger.setAttribute("aria-expanded","false");
+    trigger.setAttribute("aria-label",label);
+    el.classList.add("mct-original-control");el.tabIndex=-1;el.setAttribute("aria-hidden","true");
+    if(el.required){el.dataset.mctRequired="true";el.required=false;}
+    el.after(trigger);
+    return trigger;
+  }
+  function styleSelects(root=document){
+    root.querySelectorAll("#passengerReservationForm select, select[data-mct-custom]").forEach(el=>{
+      if(el.dataset.mctStyled)return;
+      el.dataset.mctStyled="true";
+      const phone=el.name==="holderWhatsappCountryCode", label=phone?"Código de país para WhatsApp":(el.closest("label")?.querySelector("span")?.textContent?.trim()||el.closest("label")?.childNodes[0]?.textContent?.trim()||"Seleccionar opción");
+      const trigger=buttonFor(el,phone?"mct-phone-trigger":"mct-select-trigger",label);
+      const full=o=>o?.dataset.fullLabel||o?.textContent||"";
+      const refresh=()=>{const opt=el.options[el.selectedIndex];trigger.textContent=phone?(el.value||"+51"):(full(opt)||"Selecciona");trigger.classList.toggle("is-placeholder",!el.value);trigger.removeAttribute("aria-invalid");};
+      el._mctRefresh=refresh;el._mctTrigger=trigger;refresh();
+      el.addEventListener("change",refresh);
+      trigger.addEventListener("click",()=>{
+        if(activePicker?.trigger===trigger){closePicker(true);return;}
+        const panel=showPicker(trigger,"mct-option-picker");
+        const heading=document.createElement("div");heading.className="mct-picker-heading";heading.textContent=label;panel.append(heading);
+        const options=Array.from(el.options).filter(o=>!o.disabled && o.value!=="");
+        let search;
+        if(options.length>10){search=document.createElement("input");search.type="search";search.className="mct-picker-search";search.placeholder=phone?"Buscar país o código":"Buscar país";search.setAttribute("aria-label",search.placeholder);panel.append(search);}
+        const list=document.createElement("div");list.className="mct-picker-options";list.setAttribute("role","listbox");panel.append(list);
+        const normalize=v=>String(v).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+        function draw(){
+          const q=normalize(search?.value||"");
+          list.replaceChildren();
+          options.filter(o=>normalize(full(o)).includes(q)).forEach(o=>{
+            const item=document.createElement("button");item.type="button";item.className="mct-picker-option";item.setAttribute("role","option");item.setAttribute("aria-selected",String(o.index===el.selectedIndex));item.textContent=full(o);
+            item.addEventListener("click",()=>{el.selectedIndex=o.index;el.dispatchEvent(new Event("change",{bubbles:true}));refresh();closePicker(true);});
+            list.append(item);
+          });
+          if(!list.children.length){const empty=document.createElement("p");empty.className="mct-picker-empty";empty.textContent="Sin resultados";list.append(empty);}
+        }
+        draw();search?.addEventListener("input",()=>{draw();positionPicker();});
+        panel.addEventListener("keydown",e=>{
+          if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();const items=[...list.querySelectorAll("button")];const i=items.indexOf(document.activeElement);items[Math.max(0,Math.min(items.length-1,i+(e.key==="ArrowDown"?1:-1)))]?.focus();}
+        });
+        positionPicker();if(search&&!matchMedia("(pointer:coarse)").matches)search.focus({preventScroll:true});
+        else if(!search)list.querySelector('[aria-selected="true"]')?.focus({preventScroll:true});
+      });
     });
+  }
+  function styleBirthdates(root=document) {
+    root.querySelectorAll('input[data-birthdate],input[name="holderBirthdate"]').forEach(el=>{
+      if(el.dataset.mctStyled)return;
+      el.dataset.mctStyled="true";el.type="text";
+      const trigger=buttonFor(el,"mct-date-trigger","Fecha de nacimiento");
+      const refresh=()=>{trigger.textContent=/^\d{4}-\d{2}-\d{2}$/.test(el.value)?el.value.split("-").reverse().join("/"):"dd/mm/aaaa";trigger.classList.toggle("is-placeholder",!el.value);trigger.removeAttribute("aria-invalid");};
+      el._mctRefresh=refresh;el._mctTrigger=trigger;refresh();
+      trigger.addEventListener("click",()=>{
+        if(activePicker?.trigger===trigger){closePicker(true);return;}
+        const now=new Date(), current=el.value?new Date(el.value+"T12:00:00"):null;
+        let year=current&&!isNaN(current)?current.getFullYear():now.getFullYear()-30;
+        let month=current&&!isNaN(current)?current.getMonth():0;
+        let view=el.value?"days":"years", decade=Math.floor(year/12)*12;
+        const panel=showPicker(trigger,"mct-birth-picker");
+        const make=(label,fn,cls="")=>{const b=document.createElement("button");b.type="button";b.className=cls;b.textContent=label;b.addEventListener("click",fn);return b;};
+        const maxYear=now.getFullYear(), minYear=maxYear-120;
+        function draw(){
+          panel.replaceChildren();
+          const head=document.createElement("div");head.className="mct-picker-heading";head.textContent="Fecha de nacimiento";panel.append(head);
+          const nav=document.createElement("div");nav.className="mct-date-nav";
+          function move(delta){
+            if(view==="years")decade=Math.max(minYear-11,Math.min(maxYear,decade+12*delta));
+            else if(view==="months")year=Math.max(minYear,Math.min(maxYear,year+delta));
+            else{const d=new Date(year,month+delta,1);if(d.getFullYear()>=minYear&&d<=now){year=d.getFullYear();month=d.getMonth();}}
+            draw();
+          }
+          const prev=make("‹",()=>move(-1),"mct-date-arrow"), next=make("›",()=>move(1),"mct-date-arrow");prev.setAttribute("aria-label","Anterior");next.setAttribute("aria-label","Siguiente");
+          const title=make(view==="years"?decade+" – "+(decade+11):view==="months"?String(year):monthNames[month]+" "+year,()=>{if(view==="days"){view="months";}else if(view==="months"){view="years";decade=Math.floor(year/12)*12;}draw();},"mct-date-title");
+          nav.append(prev,title,next);panel.append(nav);
+          const help=document.createElement("p");help.className="mct-date-hint";help.textContent=view==="years"?"Selecciona el año":view==="months"?"Selecciona el mes":"Selecciona el día";panel.append(help);
+          const grid=document.createElement("div");grid.className="mct-date-grid "+(view==="days"?"mct-date-days":"mct-date-choices");
+          if(view==="years"){
+            for(let y=decade;y<decade+12;y++){const btn=make(String(y),()=>{year=y;view="months";draw();},y===year?"is-selected":"");btn.disabled=y<minYear||y>maxYear;grid.append(btn);}
+          }else if(view==="months"){
+            monthNames.forEach((m,i)=>{const btn=make(m.slice(0,3),()=>{month=i;view="days";draw();},i===month?"is-selected":"");btn.disabled=year===maxYear&&i>now.getMonth();grid.append(btn);});
+          }else{
+            ["Lu","Ma","Mi","Ju","Vi","Sá","Do"].forEach(d=>{const span=document.createElement("span");span.textContent=d;grid.append(span);});
+            const offset=(new Date(year,month,1).getDay()+6)%7;
+            for(let i=0;i<offset;i++)grid.append(document.createElement("span"));
+            const count=new Date(year,month+1,0).getDate();
+            for(let day=1;day<=count;day++){
+              const iso=String(year)+"-"+String(month+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+              const btn=make(String(day),()=>{el.value=iso;el.dispatchEvent(new Event("change",{bubbles:true}));refresh();closePicker(true);},el.value===iso?"is-selected":"");
+              btn.disabled=new Date(year,month,day)>now;grid.append(btn);
+            }
+          }
+          panel.append(grid);
+          if(view!=="years")panel.append(make("Cambiar año",()=>{view="years";decade=Math.floor(year/12)*12;draw();},"mct-date-back"));
+          positionPicker();
+        }
+        draw();
+      });
+    });
+  }
+  function stylePassengerControls(){
+    styleSelects($("passengerReservationForm"));styleBirthdates($("passengerReservationForm"));
+    $("passengerReservationForm").querySelectorAll(".mct-original-control").forEach(el=>el._mctRefresh?.());
   }
   function renderExtraPassengers() {
     const holderTravels=$("holderTravelsCheckbox").checked;
@@ -213,7 +345,7 @@
         '<label>Tipo de documento <select required name="'+prefix+'documentType"><option value="">Selecciona</option><option value="passport">Pasaporte</option><option value="dni">DNI</option><option value="id_card">Documento de identidad</option><option value="other">Otro</option></select></label>'+
         '<label>Número de documento <input required name="'+prefix+'documentNumber" type="text" autocomplete="off"></label>'+
         '<label>Nacionalidad <select required name="'+prefix+'nationality">'+options+'</select></label>'+
-        '<label>Fecha de nacimiento <input required data-birthdate name="'+prefix+'birthdate" placeholder="dd/mm/aaaa" type="text"></label><label>Fecha de vencimiento del documento (si aplica) <input data-expiry name="'+prefix+'documentExpiry" placeholder="dd/mm/aaaa" type="text"></label></fieldset>';
+        '<label>Fecha de nacimiento <input required data-birthdate name="'+prefix+'birthdate" placeholder="dd/mm/aaaa" type="text"></label></fieldset>';
     }).join("");
     // Initialize after the dialog becomes visible.
   }
@@ -232,18 +364,18 @@
     $("passengerReservationForm").reset();$("holderTravelsCheckbox").checked=true;
     renderExtraPassengers();
     $("passengerReservationModal").hidden=false;
-    styleBirthdates();
+    stylePassengerControls();
     document.body.classList.add("mct-single-modal-open");
   }
   function formPayload() {
     const fd=new FormData($("passengerReservationForm")), count=travelers(), isPassenger=$("holderTravelsCheckbox").checked;
-    const holder={firstName:String(fd.get("holderFirstName")||"").trim(),lastName:String(fd.get("holderLastName")||"").trim(),documentType:String(fd.get("holderDocumentType")||""),documentNumber:String(fd.get("holderDocumentNumber")||"").trim(),nationality:String(fd.get("holderNationality")||""),birthdate:String(fd.get("holderBirthdate")||""),documentExpiry:String(fd.get("holderDocumentExpiry")||""),whatsappCountryCode:String(fd.get("holderWhatsappCountryCode")||"+51"),whatsapp:String(fd.get("holderWhatsapp")||"").trim(),email:String(fd.get("holderEmail")||"").trim(),language:String(fd.get("holderLanguage")||"Español"),travels:isPassenger};
+    const holder={firstName:String(fd.get("holderFirstName")||"").trim(),lastName:String(fd.get("holderLastName")||"").trim(),documentType:String(fd.get("holderDocumentType")||""),documentNumber:String(fd.get("holderDocumentNumber")||"").trim(),nationality:String(fd.get("holderNationality")||""),birthdate:String(fd.get("holderBirthdate")||""),whatsappCountryCode:String(fd.get("holderWhatsappCountryCode")||"+51"),whatsapp:String(fd.get("holderWhatsapp")||"").trim(),email:String(fd.get("holderEmail")||"").trim(),language:String(fd.get("holderLanguage")||"Español"),travels:isPassenger};
     const passengers=[];
     if(isPassenger) passengers.push({passengerNumber:1,role:"holder_passenger",completionStatus:"complete",...holder});
     const start=isPassenger?2:1;
     for(let i=start;i<=count;i++){
       const read=k=>String(fd.get("passenger_"+i+"_"+k)||"").trim();
-      passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate"),documentExpiry:read("documentExpiry")});
+      passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate")});
     }
     const price=summary();const code=$("passengerReservationCode").textContent;
     return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"mercado_pago",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"mercado_pago"}};
@@ -252,6 +384,8 @@
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(!form.reportValidity())return;
+    const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
+    if(missing){missing._mctTrigger?.setAttribute("aria-invalid","true");missing._mctTrigger?.focus();message.textContent="Completa todos los campos obligatorios de los pasajeros.";message.classList.add("is-error");return;}
     if(state.submitting)return;
     const checked=formPayload();
     if(!checked.holder.birthdate || checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
@@ -293,7 +427,7 @@
     document.querySelector("[data-close-hotel-modal]").addEventListener("click",()=>closeModal("hotelSelectionModal"));
     $("cancelHotelModalBtn").textContent="Guardar selección";
     $("paypalButton").addEventListener("click",openPassenger);
-    $("holderTravelsCheckbox").addEventListener("change",()=>{renderExtraPassengers();styleBirthdates();});
+    $("holderTravelsCheckbox").addEventListener("change",()=>{closePicker();renderExtraPassengers();stylePassengerControls();});
     $("holderLanguageSelect").innerHTML='<option value="Español">Español</option><option value="English">English</option>';
     $("holderLanguageWarning").hidden=true;
     ["closePassengerModalBtn"].forEach(id=>$(id).addEventListener("click",()=>closeModal("passengerReservationModal")));
@@ -313,11 +447,11 @@
     phone.replaceChildren();
     countries.forEach(([name,code])=>{const option=new Option(code+" · "+name,code);option.dataset.fullLabel=option.textContent;phone.add(option);});
     phone.value="+51";
-    const compact=()=>Array.from(phone.options).forEach((o,i)=>o.textContent=i===phone.selectedIndex?o.value:o.dataset.fullLabel);
-    const expand=()=>Array.from(phone.options).forEach(o=>o.textContent=o.dataset.fullLabel);
-    phone.addEventListener("pointerdown",expand);phone.addEventListener("keydown",expand);
-    phone.addEventListener("change",compact);phone.addEventListener("blur",compact);
-    phone.closest("form").addEventListener("reset",()=>setTimeout(compact,0));compact();
+    national.querySelector('option[value="Perú"]').defaultSelected=true;
+    phone.options[phone.selectedIndex].defaultSelected=true;
+    document.addEventListener("pointerdown",e=>{if(activePicker&&!activePicker.panel.contains(e.target)&&!activePicker.trigger.contains(e.target))closePicker();},true);
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&activePicker){e.preventDefault();e.stopImmediatePropagation();closePicker(true);}},true);
+    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",positionPicker,true);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal("hotelSelectionModal");closeModal("passengerReservationModal");}});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
