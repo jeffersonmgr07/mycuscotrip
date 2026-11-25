@@ -84,7 +84,7 @@
   }
   function renderContent() {
     document.title="Cusco 5 días y 4 noches | My Cusco Trip";
-    $("productBadge").textContent="Programa único · Hotel incluido";
+    $("productBadge").textContent="Paquete organizado";
     $("productTitle").textContent="Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches";
     $("productDescription").textContent="Descubre Cusco en cinco días con City Tour, Maras y Moray, Valle Sagrado y Machu Picchu. Incluye cuatro noches de hotel, desayunos y coordinación local. Un solo itinerario y un precio por persona en soles.";
     $("detailCapacity").textContent="Mínimo 2 viajeros · Máximo 9 por reserva";
@@ -127,7 +127,7 @@
       '<div class="benefit-item"><i class="fas fa-headset"></i><div><strong>Asistencia local</strong><p>Coordinación de traslados, excursiones y servicios en español o inglés.</p></div></div>';
     document.querySelector(".booking-benefits-box").innerHTML='<div class="booking-benefit-line"><i class="fas fa-shield-heart"></i><p><strong>Reserva segura</strong> · Se verificará la disponibilidad de entradas, trenes y hotel. Pago completo por Mercado Pago.</p></div>';
     document.querySelector(".booking-discount-box").hidden=true;
-    $("paymentMode").innerHTML='<option value="full">Pago completo · Mercado Pago</option>';
+    $("paymentMode").closest(".booking-field").hidden=true;
     $("departureTimeSection").hidden=true;$("trainSelectionSection").hidden=true;$("serviceModeSection").hidden=true;
     $("packageAccommodationSection").hidden=false;$("extrasSection").hidden=false;
     $("hotelSelectorsContainer").innerHTML=
@@ -136,13 +136,9 @@
       '<p class="booking-field-help">Siempre incluye 1 noche en Hotel Luz Garden (Aguas Calientes). Las otras 3 noches son en Cusco.</p>';
     $("extrasContainer").innerHTML='<select id="singleExtraSelect" aria-label="Servicios extra"><option value="">Sin servicios extra</option><option value="panoramico">Bus panorámico, día 5 (+S/ 30.00 por persona)</option></select>';
     const totals=document.querySelector(".booking-summary");
-    totals.innerHTML=
-      '<div class="booking-summary__line"><span>Viajeros</span><strong id="adultChildTotal">—</strong></div>'+
-      '<div class="booking-summary__line"><span>Mejora de hotel</span><strong id="hotelTotal">—</strong></div>'+
-      '<div class="booking-summary__line"><span>Servicios extra</span><strong id="singleExtraTotal">—</strong></div>'+
-      '<div class="booking-summary__total mct-single-total"><span>Total a pagar</span><strong id="singleTotal">—</strong></div>';
-    $("paymentInfo").textContent="Importe final en soles. Los servicios se confirman de acuerdo con disponibilidad.";
-    $("paypalButton").textContent="Reservar y pagar con Mercado Pago";
+    totals.innerHTML='<div class="booking-summary__line"><span id="adultLabel">Adultos</span><strong id="adultsTotal">—</strong></div><div class="booking-summary__line" id="childLine"><span id="childLabel">Niños</span><strong id="childrenTotal">—</strong></div><div class="booking-summary__total mct-single-total"><span>Total a pagar</span><strong id="singleTotal">—</strong></div>';
+    $("paymentInfo").hidden=true;
+    $("paypalButton").textContent="Iniciar reserva";
     const infoText = document.querySelector('[data-i18n="product.pickupMeetingText"]');
     if(infoText) infoText.textContent="Llegada: recojo en aeropuerto o terminal según horario. Tours de días 2 y 3: recojo desde el hotel. Día 1: encuentro a las 13:30 en la Plaza de Armas.";
     const important = document.querySelector('[data-i18n="product.importantInfoText"]');
@@ -163,9 +159,11 @@
     ensureRooms();
     const s=summary();
     $("adultsCount").textContent=state.adults;$("childrenCount").textContent=state.children;
-    $("adultChildTotal").textContent=money(s.base);
-    $("hotelTotal").textContent=money(s.hotel);
-    $("singleExtraTotal").textContent=money(s.extra);
+    $("adultLabel").textContent="Adultos ("+state.adults+")";
+    $("childLabel").textContent="Niños ("+state.children+")";
+    $("adultsTotal").textContent=money(state.adults*PRICE);
+    $("childrenTotal").textContent=money(state.children*PRICE);
+    $("childLine").hidden=state.children===0;
     $("singleTotal").textContent=money(s.total);
     $("hotelSummary").innerHTML='<strong>'+esc(HOTELS[state.hotel].title)+' · 3 noches</strong><span>'+esc(roomLabel(state.rooms))+'</span><small>+ Hotel Luz Garden · 1 noche incluido</small>'+
       (state.hotel==="royal-qosqo-3s"?'<small class="mct-single-surcharge">+ US$ 10 × 3 noches × '+travelers()+' viajeros · '+money(s.hotel)+'</small>':'<small class="mct-single-included">Sin costo adicional</small>');
@@ -194,17 +192,29 @@
   }
   function closeModal(id) {$(id).hidden=true;document.body.classList.remove("mct-single-modal-open");}
   function openHotel() {renderHotelsModal();$("hotelSelectionModal").hidden=false;document.body.classList.add("mct-single-modal-open");}
+  function styleBirthdates(root=document) {
+    if(!window.flatpickr)return;
+    root.querySelectorAll('input[data-birthdate],input[name="holderBirthdate"]').forEach(el=>{
+      if(el._flatpickr)return;
+      el.type="text";
+      flatpickr(el,{locale:flatpickr.l10ns.es,maxDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d/m/Y",allowInput:false,disableMobile:true,onChange:()=>el.setCustomValidity("")});
+    });
+  }
   function renderExtraPassengers() {
     const holderTravels=$("holderTravelsCheckbox").checked;
     const count=travelers()-(holderTravels?1:0);
+    const options=document.querySelector('[name="holderNationality"]').innerHTML;
     $("additionalPassengersContainer").innerHTML=Array.from({length:count},(_,i)=>{
-      const n=i+(holderTravels?2:1);
+      const n=i+(holderTravels?2:1), prefix="passenger_"+n+"_";
       return '<fieldset class="mct-single-passenger"><legend>Pasajero '+n+'</legend>'+
-        '<label>Nombre <input name="passenger_'+n+'_firstName" type="text" placeholder="Opcional por ahora"></label>'+
-        '<label>Apellidos <input name="passenger_'+n+'_lastName" type="text" placeholder="Opcional por ahora"></label>'+
-        '<label>Documento <input name="passenger_'+n+'_documentNumber" type="text" placeholder="Opcional por ahora"></label>'+
-        '<span>Podrás completar los datos de este pasajero con nuestro equipo antes de emitir tickets.</span></fieldset>';
+        '<label>Nombres <input required name="'+prefix+'firstName" type="text" autocomplete="off"></label>'+
+        '<label>Apellidos <input required name="'+prefix+'lastName" type="text" autocomplete="off"></label>'+
+        '<label>Tipo de documento <select required name="'+prefix+'documentType"><option value="">Selecciona</option><option value="passport">Pasaporte</option><option value="dni">DNI</option><option value="id_card">Documento de identidad</option><option value="other">Otro</option></select></label>'+
+        '<label>Número de documento <input required name="'+prefix+'documentNumber" type="text" autocomplete="off"></label>'+
+        '<label>Nacionalidad <select required name="'+prefix+'nationality">'+options+'</select></label>'+
+        '<label>Fecha de nacimiento <input required data-birthdate name="'+prefix+'birthdate" placeholder="dd/mm/aaaa" type="text"></label></fieldset>';
     }).join("");
+    styleBirthdates($("additionalPassengersContainer"));
   }
   function reservationCode() {
     const random=new Uint32Array(1); if(window.crypto && crypto.getRandomValues) crypto.getRandomValues(random);else random[0]=Math.floor(Math.random()*999999999);
@@ -217,9 +227,10 @@
     $("passengerPaymentSnapshot").innerHTML='<p><strong>'+esc(state.date)+'</strong> · '+travelers()+' pasajeros · '+esc(HOTELS[state.hotel].title)+' · '+esc(roomLabel(state.rooms))+'<p><strong>'+money(summary().total)+'</strong></p>';
     $("passengerCheckoutReview").hidden=true;$("passengerCheckoutReview").innerHTML="";
     $("passengerReservationForm").dataset.review="";
-    $("passengerReservationForm").querySelector('[type="submit"]').textContent="Continuar";
+    $("passengerReservationForm").querySelector('[type="submit"]').textContent="Pagar";
     $("passengerReservationForm").reset();$("holderTravelsCheckbox").checked=true;
     renderExtraPassengers();
+    styleBirthdates();
     $("passengerReservationModal").hidden=false;
     document.body.classList.add("mct-single-modal-open");
   }
@@ -229,7 +240,10 @@
     const passengers=[];
     if(isPassenger) passengers.push({passengerNumber:1,role:"holder_passenger",completionStatus:"complete",...holder});
     const start=isPassenger?2:1;
-    for(let i=start;i<=count;i++){const firstName=String(fd.get("passenger_"+i+"_firstName")||"").trim(),lastName=String(fd.get("passenger_"+i+"_lastName")||"").trim(),documentNumber=String(fd.get("passenger_"+i+"_documentNumber")||"").trim();passengers.push({passengerNumber:i,role:"traveler",completionStatus:(firstName&&lastName&&documentNumber)?"provided":"pending",firstName,lastName,documentNumber,completeLater:!(firstName&&lastName&&documentNumber)});}
+    for(let i=start;i<=count;i++){
+      const read=k=>String(fd.get("passenger_"+i+"_"+k)||"").trim();
+      passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate")});
+    }
     const price=summary();const code=$("passengerReservationCode").textContent;
     return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"mercado_pago",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"mercado_pago"}};
   }
@@ -238,13 +252,9 @@
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(!form.reportValidity())return;
     if(state.submitting)return;
-    if(form.dataset.review!=="done"){
-      const p=formPayload();
-      $("passengerCheckoutReview").hidden=false;
-      $("passengerCheckoutReview").innerHTML='<strong>Revisa tu reserva antes del pago</strong><p>'+esc(p.date)+' · '+travelers()+' viajeros · '+esc(HOTELS[state.hotel].title)+' · '+esc(roomLabel(state.rooms))+'</p><p>Total a pagar: <strong>'+money(p.payNowValue)+'</strong></p><p>La disponibilidad de trenes, entradas y habitaciones será verificada por el equipo.</p>';
-      form.dataset.review="done";submit.textContent="Confirmar y pagar en Mercado Pago";message.textContent="";return;
-    }
-    state.submitting=true;submit.disabled=true;submit.textContent="Conectando con Mercado Pago…";message.textContent="";
+    const checked=formPayload();
+    if(!checked.holder.birthdate || checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
+    state.submitting=true;submit.disabled=true;submit.textContent="Procesando…";message.textContent="";
     try {
       const api=window.MyCuscoTripApiClient;
       if(!api)throw Error("No se cargó el servicio de reservas.");
@@ -262,12 +272,12 @@
       const url=new URL(pay.approvalUrl);
       if(url.protocol!=="https:" || !/(^|\.)mercadopago\.(com|com\.[a-z]{2}|[a-z]{2})$/i.test(url.hostname))throw Error("El enlace de pago no es válido.");
       window.location.assign(url.href);
-    }catch(error){console.error("Error al reservar:",error);message.textContent=error.message||"No se pudo iniciar el pago.";message.classList.add("is-error");submit.disabled=false;submit.textContent="Reintentar pago";}finally{state.submitting=false;}
+    }catch(error){console.error("Error al reservar:",error);message.textContent=/Acción POST no reconocida.*validateCusco5d4nFare/i.test(error.message||"")?"El servicio de reservas todavía requiere una actualización. No se realizó ningún cobro.":error.message||"No se pudo iniciar el pago.";message.classList.add("is-error");submit.disabled=false;submit.textContent="Pagar";}finally{state.submitting=false;}
   }
   function setup() {
     renderContent();
     ensureRooms();renderPrice();
-    if(window.flatpickr)flatpickr($("travelDate"),{locale:flatpickr.l10ns.es,minDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d M Y",onChange:function(_,date){state.date=date;updateDates();renderPrice();}});
+    if(window.flatpickr)flatpickr($("travelDate"),{locale:flatpickr.l10ns.es,minDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d M Y",disableMobile:true,onChange:function(_,date){state.date=date;updateDates();renderPrice();}});
     document.querySelectorAll(".qty-btn").forEach(btn=>btn.addEventListener("click",()=>{
       const target=btn.dataset.target,delta=btn.dataset.action==="plus"?1:-1;
       if(target==="adults")state.adults=Math.max(1,Math.min(9,state.adults+delta));
