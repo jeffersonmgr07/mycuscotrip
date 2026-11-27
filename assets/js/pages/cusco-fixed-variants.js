@@ -98,7 +98,7 @@
     const infoText = document.querySelector('[data-i18n="product.pickupMeetingText"]');
     if(infoText) infoText.textContent="Llegada: recojo en aeropuerto o terminal según horario. Recojos y puntos de encuentro conforme al itinerario. Día 1: encuentro a las 13:30 en la Plaza de Armas.";
     const important = document.querySelector('[data-i18n="product.importantInfoText"]');
-    if(important) important.textContent="El horario y circuito de Machu Picchu dependerán de las entradas oficiales y trenes disponibles. Se recomienda aclimatarse a la altitud y reservar con anticipación.";
+    if(important) important.textContent="Programa dirigido a turistas peruanos. Consulta disponibilidad antes de reservar. Los horarios de tren y el circuito de Machu Picchu dependen de las entradas y servicios disponibles. Confirma los boletos de tren y bus incluidos antes del pago. Se recomienda aclimatarse a la altitud.";
     $("printProductItineraryBtn").addEventListener("click",()=>window.print());
     document.querySelectorAll(".experience-action-btn").forEach(btn=>{
       if(btn.id!=="printProductItineraryBtn")btn.addEventListener("click",async()=>{if(navigator.share) await navigator.share({title:document.title,url:location.href}).catch(()=>{});else if(navigator.clipboard)await navigator.clipboard.writeText(location.href);});
@@ -382,6 +382,7 @@
       if(missing){missing._mctTrigger?.setAttribute("aria-invalid","true");missing._mctTrigger?.focus();message.textContent="Completa todos los campos obligatorios de los pasajeros.";message.classList.add("is-error");return;}
       const checked=formPayload();
       if(!checked.holder.birthdate||checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
+      if(checked.passengers.some(p=>!/^per[uú]$/i.test(String(p.nationality||"").trim()))){message.textContent="Esta tarifa está dirigida a turistas peruanos. Consulta con nosotros para otras nacionalidades.";message.classList.add("is-error");return;}
       fxPayload=checked;
     }
     state.submitting=true;submit.disabled=true;submit.textContent=fxQuote?"Procesando…":"Consultando tipo de cambio…";message.textContent="";message.classList.remove("is-error");
