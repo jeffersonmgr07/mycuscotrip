@@ -1,7 +1,7 @@
 "use strict";
 (function () {
   const PRODUCT_ID = "MCT-CUSCO-5D4N-UNICO";
-  const PRICE = 729.90;
+  const PRICE = 730.00;
   // Tipo de cambio manual vigente en assets/data/currency-config.json.
   // Mantener sincronizado con validateCusco5d4nFixedFare_() en Apps Script.
   const USD_PEN = 3.75;
@@ -15,8 +15,8 @@
   const DAYS = [
     { title: "Llegada a Cusco y City Tour", hours: "13:30 · Duración aproximada: 5 horas", image: "./assets/img/packages/cusco/5d4n/cover.jpg", description: "Recepción en el aeropuerto o terminal terrestre de acuerdo con el horario de llegada y traslado al hotel. Mañana libre para aclimatarse. A las 13:30, encuentro en la Plaza de Armas del Cusco para visitar el Templo Qoricancha, Sacsayhuamán, Qenqo, Pucapucara y Tambomachay. Noche en Cusco." },
     { title: "Maras, salineras y Moray", hours: "08:00–08:30 a 14:30 · Aproximadamente 6 horas", image: "./assets/img/tours/maras-moray/cover.jpg", description: "Recojo del hotel de 08:00 a 08:30. Visita al poblado de Maras, las salineras de Maras y el complejo arqueológico de Moray. Retorno a Cusco alrededor de las 14:30. Noche en Cusco." },
-    { title: "Valle Sagrado y tren a Machu Picchu Pueblo", hours: "07:50–08:20 · Tren de referencia: 16:30", image: "./assets/img/tours/valle-sagrado/cover.jpg", description: "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Luz Garden. Los horarios dependerán del tren confirmado." },
-    { title: "Machu Picchu y retorno a Cusco", hours: "06:30–07:00 · Jornada aproximada: 14 horas", image: "./assets/img/tours/machu-picchu-full-day/cover.jpg", description: "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar." },
+    { title: "Valle Sagrado y tren a Machu Picchu Pueblo", hours: "07:50–08:20 · Tren de referencia: 16:30", image: "./assets/img/tours/valle-sagrado/cover.jpg", description: "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren opcional de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Luz Garden. Los horarios dependerán del tren confirmado." },
+    { title: "Machu Picchu y retorno a Cusco", hours: "06:30–07:00 · Jornada aproximada: 14 horas", image: "./assets/img/tours/machu-picchu-full-day/cover.jpg", description: "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren opcional de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar." },
     { title: "Despedida y traslado al aeropuerto o terminal", hours: "Según horario de salida", image: "./assets/img/packages/cusco/5d4n/cover.jpg", description: "Traslado al aeropuerto unas 2 horas antes del vuelo o al terminal terrestre 1 hora antes de la salida del bus. Si el horario permite, se puede agregar un paseo de 2 horas en bus panorámico por lugares emblemáticos de Cusco, por S/ 30 adicionales por persona." }
   ];
   const INCLUDED = [
@@ -28,13 +28,13 @@
     "Recojos desde el hotel donde corresponda según el itinerario.",
     "Guía profesional en español o inglés.",
     "Entrada oficial a Machu Picchu y bus de subida y bajada según el programa.",
-    "Tren turístico de ida a Aguas Calientes y de retorno a Ollantaytambo según horarios confirmados.",
     "Asistencia durante toda la experiencia y traslados turísticos indicados."
   ];
   const EXCLUDED = [
     "Pasajes aéreos nacionales o internacionales.",
     "Entrada al Templo Qoricancha.",
     "Boleto turístico general.",
+    "Boletos de tren de ida y retorno a Machu Picchu (puedes agregarlos al paquete).",
     "Almuerzos, cenas, bebidas y gastos personales no señalados.",
     "Tour opcional en bus panorámico del día 5 (S/ 30 por persona, seleccionable como extra).",
     "Cualquier otro ingreso o servicio no expresamente indicado como incluido."
@@ -94,7 +94,7 @@
     $("productHighlights").innerHTML = [
       "Un itinerario fijo de cinco días sin variantes ni rutas alternativas.",
       "3 noches en Cusco y 1 noche en Hotel Luz Garden de Aguas Calientes.",
-      "Entrada y visita guiada a Machu Picchu, trenes y traslados según programa.",
+      "Entrada y visita guiada a Machu Picchu y traslados según programa. Trenes opcionales.",
       "Hotel Cusco Boutique incluido; Royal Qosqo con mejora opcional."
     ].map(x=>"<li>"+esc(x)+"</li>").join("");
     $("productIncludes").innerHTML=INCLUDED.map(x=>"<li>"+esc(x)+"</li>").join("");
@@ -167,6 +167,7 @@
     $("singleTotal").textContent=money(s.total);
     $("hotelSummary").innerHTML='<strong>'+esc(HOTELS[state.hotel].title)+' · 3 noches</strong><span>'+esc(roomLabel(state.rooms))+'</span><small>+ Hotel Luz Garden · 1 noche incluido</small>'+
       (state.hotel==="royal-qosqo-3s"?'<small class="mct-single-surcharge">+ US$ 10 × 3 noches × '+travelers()+' viajeros · '+money(s.hotel)+'</small>':'<small class="mct-single-included">Sin costo adicional</small>');
+    window.MCTFixedTrains?.refresh();
     const btn=$("paypalButton");btn.disabled=travelers()<2 || travelers()>9 || !state.date;
     btn.title=!state.date?"Selecciona primero la fecha de viaje":(travelers()<2?"Mínimo 2 viajeros":"");
   }
@@ -354,6 +355,7 @@
     return "CUZ"+String(random[0]%100000000).padStart(8,"0");
   }
   function openPassenger() {
+    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!state.date || travelers()<2 || travelers()>9) {alert("Selecciona fecha y mínimo 2 viajeros (máximo 9).");return;}
     resetFxStep();
     $("passengerReservationCode").textContent=reservationCode();
@@ -424,6 +426,7 @@
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(state.submitting)return;
+    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!fxQuote){
       if(!form.reportValidity())return;
       const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
@@ -471,7 +474,7 @@
   }
   function setup() {
     renderContent();
-    ensureRooms();renderPrice();
+    ensureRooms();renderPrice();window.MCTFixedTrains?.init({days:5,travelers:()=>({adults:state.adults,children:state.children}),travelDate:()=>state.date});
     if(window.flatpickr)flatpickr($("travelDate"),{locale:flatpickr.l10ns.es,minDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d M Y",disableMobile:true,onChange:function(_,date){state.date=date;updateDates();renderPrice();}});
     document.querySelectorAll(".qty-btn").forEach(btn=>btn.addEventListener("click",()=>{
       const target=btn.dataset.target,delta=btn.dataset.action==="plus"?1:-1;
