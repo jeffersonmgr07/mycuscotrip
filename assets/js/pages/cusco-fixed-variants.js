@@ -4,7 +4,7 @@
   const OFFER=window.MCT_FIXED_CUSCO_VARIANTS?.[key];
   if(!OFFER)throw Error("Paquete no encontrado");
   const PRODUCT_ID=OFFER.id;
-  let PRICE=null, CHILD_PRICE=null, BOOKABLE=false;
+  let PRICE=OFFER.price, CHILD_PRICE=null, BOOKABLE=false;
   const DAYS=OFFER.days, INCLUDED=OFFER.includes, EXCLUDED=OFFER.excludes;
   const HOTELS={"cusco-boutique-3s":{title:"Hotel Cusco Boutique",fee:0}};
   const EXTRAS={"":{title:"Sin servicios extra",price:0}};
@@ -98,7 +98,7 @@
     const infoText = document.querySelector('[data-i18n="product.pickupMeetingText"]');
     if(infoText) infoText.textContent="Llegada: recojo en aeropuerto o terminal según horario. Recojos y puntos de encuentro conforme al itinerario. Día 1: encuentro a las 13:30 en la Plaza de Armas.";
     const important = document.querySelector('[data-i18n="product.importantInfoText"]');
-    if(important) important.textContent="Programa dirigido a turistas peruanos. Consulta disponibilidad antes de reservar. Los horarios de tren y el circuito de Machu Picchu dependen de las entradas y servicios disponibles. Confirma los boletos de tren y bus incluidos antes del pago. Se recomienda aclimatarse a la altitud.";
+    if(important) important.textContent="Programa dirigido a turistas peruanos. Consulta disponibilidad antes de reservar. Los horarios de tren y el circuito de Machu Picchu dependen de las entradas y servicios disponibles. Los trenes no están incluidos; puedes agregarlos al paquete. Consulta el bus de subida y bajada. Se recomienda aclimatarse a la altitud.";
     $("printProductItineraryBtn").addEventListener("click",()=>window.print());
     document.querySelectorAll(".experience-action-btn").forEach(btn=>{
       if(btn.id!=="printProductItineraryBtn")btn.addEventListener("click",async()=>{if(navigator.share) await navigator.share({title:document.title,url:location.href}).catch(()=>{});else if(navigator.clipboard)await navigator.clipboard.writeText(location.href);});
@@ -122,10 +122,11 @@
     $("childLine").hidden=state.children===0;
     $("singleTotal").textContent=Number.isFinite(s.total)?money(s.total):"Por confirmar";
     $("productBasePrice").textContent=Number.isFinite(PRICE)?money(PRICE):"Por confirmar";
-    const btn=$("paypalButton");btn.disabled=!BOOKABLE||!Number.isFinite(s.total)||travelers()<2||travelers()>9||!state.date;
+    const btn=$("paypalButton");btn.disabled=!Number.isFinite(s.total)||travelers()<2||travelers()>9||!state.date;
     const info=$("paymentInfo");
     info.hidden=BOOKABLE&&Number.isFinite(s.total);
-    info.textContent=state.children&&!Number.isFinite(CHILD_PRICE)?"Consulta la tarifa para niños antes de reservar.":"Consulta la tarifa y disponibilidad antes de reservar.";
+    info.textContent=state.children&&!Number.isFinite(CHILD_PRICE)?"Consulta la tarifa para niños antes de reservar.":"La reserva en línea estará disponible cuando se confirme la tarifa.";
+    window.MCTFixedTrains?.refresh();
   }
   function renderHotelsModal() {}
   async function loadOfferPrice(){
@@ -134,7 +135,8 @@
       if(!api)return;
       const data=await api.postAction("getFixedCuscoOffer",{productId:PRODUCT_ID,source:OFFER.source});
       if(data?.ok===true){
-        PRICE=typeof data.adultPrice==="number"&&data.adultPrice>0?data.adultPrice:null;
+        if(data.adultPrice!==OFFER.price){BOOKABLE=false;renderPrice();return;}
+        PRICE=OFFER.price;
         CHILD_PRICE=typeof data.childPrice==="number"&&data.childPrice>=0?data.childPrice:null;
         BOOKABLE=data.bookable===true&&Number.isFinite(PRICE);
         renderPrice();
@@ -305,7 +307,8 @@
     return "CUZ"+String(random[0]%100000000).padStart(8,"0");
   }
   function openPassenger() {
-    if(!BOOKABLE||!Number.isFinite(summary().total))return;
+    if(!Number.isFinite(summary().total))return;
+    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!state.date || travelers()<2 || travelers()>9) {alert("Selecciona fecha y mínimo 2 viajeros (máximo 9).");return;}
     resetFxStep();
     $("passengerReservationCode").textContent=reservationCode();
@@ -376,6 +379,8 @@
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(state.submitting)return;
+    if(!BOOKABLE){message.textContent="El pago en línea todavía no está disponible para esta tarifa. Contáctanos para reservar.";message.classList.add("is-error");return;}
+    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!fxQuote){
       if(!form.reportValidity())return;
       const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
@@ -424,7 +429,7 @@
   }
   function setup() {
     renderContent();
-    ensureRooms();renderPrice();loadOfferPrice();
+    ensureRooms();renderPrice();window.MCTFixedTrains?.init({days:OFFER.n,travelers:()=>({adults:state.adults,children:state.children}),travelDate:()=>state.date});loadOfferPrice();
     if(window.flatpickr)flatpickr($("travelDate"),{locale:flatpickr.l10ns.es,minDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d M Y",disableMobile:true,onChange:function(_,date){state.date=date;updateDates();renderPrice();}});
     document.querySelectorAll(".qty-btn").forEach(btn=>btn.addEventListener("click",()=>{
       const target=btn.dataset.target,delta=btn.dataset.action==="plus"?1:-1;
