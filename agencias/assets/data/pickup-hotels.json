@@ -1,0 +1,12 @@
+{
+  "hotels": [
+    {
+      "name": "Hotel Cusco Boutique",
+      "address": "Calle Teqsecocha 566"
+    },
+    {
+      "name": "Hotel Royal Qosqo",
+      "address": "Calle Teqsecocha 002"
+    }
+  ]
+}

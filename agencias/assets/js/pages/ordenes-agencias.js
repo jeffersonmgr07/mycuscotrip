@@ -13,7 +13,7 @@
 
   function requireSession() {
     const session = readJSON(SESSION_KEY, null);
-    if (!session?.email) {
+    if (!session?.email || !session.sessionToken) {
       window.location.href = './login.html';
       return null;
     }
@@ -61,7 +61,7 @@
 
   function normalizeStatus(order) {
     const raw = String(order.estadoPago || order.status || t('orders.pending', 'Pendiente')).toLowerCase();
-    if (raw.includes('pag')) return 'pagado';
+    if (raw === 'pagado') return 'pagado';
     if (raw.includes('venc')) return 'vencido';
     const due = order.fechaVencimientoPago || order.paymentDueAt || '';
     if (due && new Date(due).getTime() < Date.now()) return 'vencido';
@@ -161,14 +161,17 @@
       const response = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'listOrders', email: session.email, agencyId: session.agencyId })
+        body: JSON.stringify({ action: 'listOrders', sessionToken:session.sessionToken })
       });
       const result = await response.json();
       if (result.ok && Array.isArray(result.orders)) return result.orders;
+      if(result.code==='SESSION_EXPIRED'){location.href='./login.html';return [];}
+      throw Error(result.message||'No se pudieron cargar las órdenes');
     } catch (error) {
       console.warn('No se pudieron cargar órdenes desde Google Sheets', error);
+      throw error;
     }
-    return local;
+    return [];
   }
 
   function renderOrders() {
@@ -294,7 +297,7 @@
         </div>
         <div class="order-totals">
           <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotalNeto || order.subtotal || 0, currency)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.montoComisionado || order.total || 0, currency)}</strong></div>
         </div>
         ${order.observaciones || order.observations ? `<p class="small-print-note"><strong>${t('orders.generalNotes', 'Observaciones generales')}:</strong> ${escapeHtml(order.observaciones || order.observations)}</p>` : ''}
@@ -302,7 +305,7 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">${t('agency.printOrder', 'Imprimir orden')}</button>
+        <button type="button" class="agency-button agency-button--ghost" id="bankOrderInstructions">Transferencia bancaria</button><button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>`;
   }
 
@@ -314,6 +317,7 @@
     $('[data-close-order-detail]')?.addEventListener('click', closeOrderDetail);
     $('#printOrderDetailButton')?.addEventListener('click', printOrderDetail);
     $('#payOrderWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
+    $('#bankOrderInstructions')?.addEventListener('click',async()=>{const r=await sendToSheet('paymentInstructions',{code:order.codigoOrden||order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com')+' '+(r.email||''):r.message);});
   }
 
   function closeOrderDetail() {
@@ -359,7 +363,7 @@
     const response = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, payload })
+      body: JSON.stringify({ action, payload, sessionToken:readJSON(SESSION_KEY,{}).sessionToken })
     });
     const text = await response.text();
     try { return JSON.parse(text); } catch { return { ok:false, message:t('orders.invalidResponse', 'Respuesta no válida de Apps Script.') }; }
@@ -375,6 +379,7 @@
     const session = requireSession();
     if (!session) return;
     orders = await fetchOrders(session);
+    if(new URLSearchParams(location.search).get('view')==='payments'){document.querySelector('.agency-intro-bar h1').textContent='Mis pagos';$('#statusFilter').value='pagado';}
     renderOrders();
     I18N?.apply?.();
     $('#statusFilter').addEventListener('change', renderOrders);
@@ -383,5 +388,5 @@
     $$('[data-close-order-detail-static]').forEach((button) => button.addEventListener('click', closeOrderDetail));
   }
 
-  init();
+  init().catch(e=>{const msg=$('#ordersMessage');if(msg){msg.hidden=false;msg.textContent=e.message||'No se pudieron cargar las órdenes.';}});
 })();

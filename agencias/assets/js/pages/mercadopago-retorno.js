@@ -8,7 +8,7 @@
     const res = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, payload })
+      body: JSON.stringify({ action, payload, sessionToken:readJSON(SESSION_KEY,{}).sessionToken })
     });
     const text = await res.text();
     try { return JSON.parse(text); } catch { return { ok:false, message:'Respuesta no válida de Apps Script.' }; }

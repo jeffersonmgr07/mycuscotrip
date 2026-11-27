@@ -117,9 +117,11 @@
   }
 
   function setCurrency(currency) {
+    if($('#generateOrderButton')?.disabled)return;
     state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
     localStorage.setItem('mct_visible_currency', state.currency);
     updateCurrencyMenu();
+    state.pendingCode=null;
     renderExperiences();
     renderCart();
   }
@@ -146,11 +148,13 @@
 
   function requireSession() {
     const session = readJSON(STORAGE.SESSION, null);
-    if (!session?.email) {
+    if (!session?.email || !session.sessionToken) {
       window.location.href = './login.html';
       return null;
     }
     state.session = session;
+    state.cart = readJSON(STORAGE.CART + ':' + session.agencyId, []);
+    state.orders = readJSON(STORAGE.ORDERS + ':' + session.agencyId, []);
     return session;
   }
 
@@ -172,6 +176,8 @@
     $('#serviceDate').value = tomorrowISO();
 
     hydrateCountrySelects();
+    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{const flag=String.fromCodePoint(...x.code.split('').map(c=>127397+c.charCodeAt(0)));return '<option value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+flag+' '+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
+    fetch('./assets/data/pickup-hotels.json').then(r=>r.json()).then(data=>{const hotels=data.hotels||[];$('#pickupHotels').innerHTML=hotels.map(x=>'<option value="'+escapeHtml(x.name)+'"></option>').join('');$('#pickupHotel').addEventListener('input',()=>{const hit=hotels.find(x=>x.name.toLowerCase()===$('#pickupHotel').value.toLowerCase());if(hit)$('#pickupAddress').value=hit.address||'';});}).catch(()=>{});
     bindEvents();
     await loadCatalog();
     renderExperiences();
@@ -186,8 +192,8 @@
       if (!response.ok) throw new Error('catalog');
       const data = await response.json();
       state.services = Array.isArray(data.services) ? data.services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service) : [];
-      if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
-        state.exchangeRate = Number(data.exchangeRate);
+      if (data.exchangeRate) {
+        state.exchangeRate = Number(data.exchangeRate);localStorage.setItem('mct_exchange_rate',state.exchangeRate);
         if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
     } catch (error) {
@@ -266,7 +272,7 @@
   function renderExperiences() {
     const q = ($('#searchInput')?.value || '').trim().toLowerCase();
     const filtered = state.services.filter((service) => {
-      if (!canSeeService(service)) return false;
+      if (!canSeeService(service) || service.id === "paypal-test-product-1usd") return false;
       const text = [service.name, service.shortName, service.category, service.description, service.startLabel].join(' ').toLowerCase();
       return !q || text.includes(q);
     });
@@ -285,15 +291,15 @@
       <article class="experience-card">
         <img class="experience-cover" src="${escapeHtml(service.image || '../assets/img/placeholder/experience.jpg')}" alt="${escapeHtml(service.name)}" onerror="this.src='../assets/img/placeholder/experience.jpg'" />
         <div class="experience-body">
-          <div class="badges"><span class="badge">${escapeHtml(service.category || 'Cusco')}</span><span class="badge">${escapeHtml(service.frequency || t('agency.dailyDeparture', 'Salida diaria'))}</span></div>
+          
           <h3>${escapeHtml(service.name)}</h3>
-          <p class="experience-desc">${escapeHtml(service.description || '')}</p>
+          <p class="compact-schedule"><i class="fa-regular fa-clock"></i> ${escapeHtml(service.startLabel || '')}</p><details class="experience-expand" ${window.matchMedia("(min-width: 701px)").matches?"open":""}><summary>${currentLocale() === 'en' ? 'View more details' : 'Ver más detalles'}</summary><p class="experience-desc">${escapeHtml(service.description || '')}</p>
           <table class="mini-table">
-            <tr><td>${t('agency.schedule', 'Horario')}</td><td>${escapeHtml(service.startLabel || '')}</td></tr>
+            <tr><td>${currentLocale() === 'en' ? 'Frequency' : 'Frecuencia'}</td><td>${escapeHtml(service.frequency || '')}</td></tr>
             <tr><td>${t('agency.duration', 'Duración')}</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
             <tr><td>${t('agency.price', 'Precio')}</td><td><span class="price">${money(price)}<small>${escapeHtml(unit)}</small>${altHtml}</span></td></tr>
             <tr><td>${t('agency.entrances', 'Entradas')}</td><td>${escapeHtml(service.notIncluded || t('agency.confirm', 'Consultar según experiencia.'))}</td></tr>
-          </table>
+          </table></details>
         </div>
         <div class="card-actions">
           <button type="button" class="agency-button agency-button--primary" data-reserve="${escapeHtml(service.id)}">${t('agency.book', 'Reservar')}</button>
@@ -308,17 +314,19 @@
   function openReserve(id) {
     const service = findService(id);
     if (!service) return;
-    $('#selectedServiceId').value = id;
     $('#reserveTitle').textContent = `${t('agency.book', 'Reservar')} · ${service.name}`;
     $('#reserveForm').reset();
+    $('#selectedServiceId').value = id;
+    $('#leadDetails').open = false; $('#pickupDetails').open = false;
     syncLanguageNotice();
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
     $('#paxCount').value = 2;
     renderScheduleOptions(service);
     renderEntryTickets(service);
-    renderAdditionalPassengers();
+    $('#additionalPassengers').innerHTML = ''; renderAdditionalPassengers();
     hydrateCountrySelects($('#reserveModal'));
+    updateReserveSubtotal();
     $('#reserveModal').classList.add('show');
   }
 
@@ -372,6 +380,7 @@
   function renderAdditionalPassengers() {
     const pax = Math.max(1, Number($('#paxCount').value || 1));
     const box = $('#additionalPassengers');
+    const prior = Array.from(box.querySelectorAll('[data-passenger-extra]')).map(c=>Object.fromEntries(Array.from(c.querySelectorAll('[data-pax]')).map(x=>[x.dataset.pax,x.value])));
     box.innerHTML = '';
     for (let i = 2; i <= pax; i++) {
       box.insertAdjacentHTML('beforeend', `
@@ -382,12 +391,11 @@
             <label class="field"><span>${t('agency.lastName', 'Apellidos')}</span><input data-pax="lastName" /></label>
             <label class="field"><span>${t('agency.docType', 'Tipo de documento')}</span><select data-pax="docType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>
             <label class="field"><span>${t('agency.docNumber', 'Número de documento')}</span><input data-pax="docNumber" /></label>
-            <label class="field full"><span>${t('agency.nationality', 'Nacionalidad')}</span><select data-pax="nationality" data-country-select></select></label>
           </div>
         </div>
       `);
     }
-    hydrateCountrySelects(box);
+    Array.from(box.querySelectorAll("[data-passenger-extra]")).forEach((c,i)=>c.querySelectorAll("[data-pax]").forEach(x=>{if(prior[i]?.[x.dataset.pax] != null)x.value=prior[i][x.dataset.pax]}));
   }
 
   function addToCart(event) {
@@ -396,6 +404,7 @@
     if (!form.reportValidity()) return;
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
+    if($('#generateOrderButton').disabled)return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
@@ -405,6 +414,10 @@
       nationality: $('[data-pax="nationality"]', card)?.value.trim() || ''
     })).filter((p) => p.firstName || p.lastName || p.docNumber || p.nationality);
 
+    const leadFields = ['leadFirstName','leadLastName','leadDocNumber'];
+    const entered = leadFields.some(id => document.getElementById(id).value.trim()) || !!$('#leadPhone').value.trim() || !!$('#leadNationality').value;
+    if (entered && !leadFields.every(id => document.getElementById(id).value.trim())) { alert(currentLocale()==='en'?'Complete the lead name and document or leave them blank.':'Completa nombre, apellido y documento del titular o déjalos vacíos.'); return; }
+    if(passengers.some(p=>!p.firstName||!p.lastName||!p.docNumber)){alert(currentLocale()==='en'?'Complete each entered passenger.':'Completa los datos de cada pasajero ingresado.');return;}
     const item = {
       id: `item_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       serviceId: service.id,
@@ -428,17 +441,22 @@
       },
       entryTickets: selectedEntryTickets(service, pax),
       groupMode: $('#groupMode').value,
-      pickupPoint: $('#pickupPoint').value.trim(),
+      pickupPoint: [$('#pickupHotel').value.trim(), $('#pickupAddress').value.trim()].filter(Boolean).join(' — '),
+      pickupHotel: $('#pickupHotel').value.trim(), pickupAddress: $('#pickupAddress').value.trim(),
       notes: $('#bookingNotes').value.trim(),
       passengers
     };
+    state.pendingCode=null;
     state.cart.push(item);
-    writeJSON(STORAGE.CART, state.cart);
+    writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     closeModals();
     renderCart();
     $('#checkout').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function updateReserveSubtotal(){const service=findService($('#selectedServiceId').value);if(!service)return;const pax=Number($('#paxCount').value||1);const tickets=selectedEntryTickets(service,pax);const n=servicePrice(service)*pax+tickets.reduce((sum,x)=>sum+convert(x.pricePEN,x.currency||'PEN',x.priceUSD)*(x.pax||pax),0);$('#reserveSubtotal').textContent=money(n);}
+  $('#reserveForm')?.addEventListener('change',updateReserveSubtotal);
+  $('#reserveForm')?.addEventListener('click',()=>queueMicrotask(updateReserveSubtotal));
   function itemServiceSubtotal(item) {
     return convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD) * item.pax;
   }
@@ -481,19 +499,24 @@
     $('#subtotalAmount').textContent = money(subtotal);
     $('#feeAmount').textContent = money(fee);
     $('#grandTotal').textContent = money(total);
+    const cartLink = document.querySelector('#agencyCartLink'); if(cartLink) cartLink.textContent = (currentLocale()==='en'?'Order':'Orden')+' ('+state.cart.length+')';
     if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
     if ($('#toolbarTotal')) $('#toolbarTotal').textContent = money(total);
   }
 
   function removeItem(index) {
+    if($('#generateOrderButton').disabled)return;
+    state.pendingCode=null;
     state.cart.splice(index, 1);
-    writeJSON(STORAGE.CART, state.cart);
+    writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     renderCart();
   }
 
   function clearCart() {
+    if($('#generateOrderButton').disabled)return;
+    state.pendingCode=null;
     state.cart = [];
-    writeJSON(STORAGE.CART, state.cart);
+    writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     $('#orderBox').classList.remove('show');
     $('#orderBox').innerHTML = '';
     renderCart();
@@ -504,7 +527,7 @@
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
     const { total, fee } = feeGross(subtotal);
     const order = {
-      code: makeCode(),
+      code: state.pendingCode || (state.pendingCode = makeCode()),
       createdAt: new Date().toISOString(),
       status: 'Pendiente',
       currency: state.currency,
@@ -514,12 +537,14 @@
       total: Number(total.toFixed(2)),
       paypalBankFeeApplied: true,
       paymentDueAt: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
-      account: state.session,
+      account: {agencyId:state.session.agencyId,email:state.session.email,companyName:state.session.companyName},
       items: state.cart
     };
-    state.orders.unshift(order);
-    writeJSON(STORAGE.ORDERS, state.orders);
-    const result = await sendToSheet('createOrder', order);
+    const button = $('#generateOrderButton'); if(button.disabled)return;button.disabled=true;
+    let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{button.disabled=false;}
+    if(!result?.ok){if(result?.code==='SESSION_EXPIRED'){location.href='./login.html';return;}alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
+    state.pendingCode = null;
+    state.orders.unshift({code:order.code,status:order.status});
     showOrderModal(order, result);
     $('#orderBox').classList.add('show');
     $('#orderBox').innerHTML = `
@@ -530,7 +555,7 @@
     `;
     $('#viewLastOrderButton')?.addEventListener('click', () => showOrderModal(order));
     state.cart = [];
-    writeJSON(STORAGE.CART, state.cart);
+    writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     renderCart();
     renderOrders();
   }
@@ -587,7 +612,7 @@
         </div>
         <div class="order-totals">
           <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotal)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.fee)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total)}</strong></div>
         </div>
         <p class="small-print-note">${result?.ok === false ? t('agency.noteSheetError', 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.') : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
@@ -595,7 +620,7 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
+        <button type="button" class="agency-button agency-button--ghost" id="bankInstructions">Transferencia bancaria</button><button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>
     `;
   }
@@ -605,6 +630,7 @@
     $('#orderModal').classList.add('show');
     $('#printOrderButton')?.addEventListener('click', printOrder);
     $('#payWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
+    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\n'+(r.email||''):r.message);});
     $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
   }
 
@@ -656,10 +682,10 @@
       const response = await fetch(CONFIG.googleScriptUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action, payload })
+        body: JSON.stringify({ action, payload, sessionToken:state.session?.sessionToken })
       });
       const text = await response.text();
-      try { return JSON.parse(text); } catch { return { ok:true, message:'Solicitud enviada' }; }
+      try { return JSON.parse(text); } catch { return { ok:false, message:'Respuesta no válida del servidor' }; }
     } catch (error) {
       console.warn('No se pudo enviar a Google Sheets', error);
       return { ok:false, message:error.message };
@@ -690,7 +716,7 @@
     $('#itineraryBody').innerHTML = `
       <p class="experience-desc">${escapeHtml(description)}</p>
       ${includes.length ? `<h3>${t('agency.includes', 'Incluye')}</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
-      ${itinerary.length ? `<h3>${t('agency.itinerary', 'Itinerario')}</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : `<div class="info-note"><strong>${t('agency.detail', 'Detalle')}:</strong> ${escapeHtml(service.description || '')}</div>`}
+      ${itinerary.length ? `<h3>${t('agency.itinerary', 'Itinerario')}</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : ''}
       <div class="dialog-actions"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">${t('agency.reserveThisExperience', 'Reservar esta experiencia')}</button></div>
     `;
     $('[data-reserve-from-itinerary]')?.addEventListener('click', () => { closeModals(); openReserve(service.id); });

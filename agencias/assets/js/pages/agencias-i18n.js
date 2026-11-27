@@ -483,15 +483,16 @@
     setText('a[href="./ordenes.html"]', 'agency.orders');
     setText('a[href="./mis-datos.html"]', 'agency.myData');
     setText('#logoutButton', 'agency.logout');
-    if (window.location.pathname.endsWith('/agencias/') || window.location.pathname.endsWith('/agencias/index.html') || window.location.pathname.includes('/agencias/index')) setHtml('.info-note', 'agency.beforeReserveHtml');
+    if (window.location.pathname.endsWith('/agencias/') || window.location.pathname.endsWith('/agencias/index.html') || window.location.pathname.includes('/agencias/index')) void 0;
     setText('#experiencias .section-title h2', 'agency.availableExperiences');
     setText('#experiencias .section-title p', 'agency.availableHelp');
     setText('#checkoutTitle', 'agency.yourOrder');
     setText('#generateOrderButton', 'agency.generateOrder');
     setText('#clearCartButton', 'agency.clearOrder');
-    setText('#reserveTitle', 'agency.reserveExperience');
-    setText('#itineraryTitle', 'agency.itineraryTitle');
+    if(!document.querySelector('#reserveModal.show'))setText('#reserveTitle', 'agency.reserveExperience');
+    if(!document.querySelector('#itineraryModal.show'))setText('#itineraryTitle', 'agency.itineraryTitle');
     setText('#reserveForm > .dialog-help', 'agency.reserveHelp');
+    document.querySelectorAll('[data-ag-en]').forEach(el=>el.textContent=el.dataset.agEn);
     setText('label[for="statusFilter"], .requests-toolbar label span', 'orders.status');
     setText('#refreshOrdersButton', 'orders.refresh');
     setText('.orders-table th:nth-child(1)', 'orders.code');
@@ -593,7 +594,7 @@
 
     if (path.includes('/ordenes')) {
       setText('.agency-intro-bar .eyebrow', 'agency.portalWelcome');
-      setText('.agency-intro-bar h1', 'orders.title');
+      if(new URLSearchParams(location.search).get('view')==='payments'){const title=document.querySelector('.agency-intro-bar h1');if(title)title.textContent='My payments';}else setText('.agency-intro-bar h1', 'orders.title');
       setText('#ordersAgencyName', 'orders.subtitle');
       setText('a[href="./index.html"].agency-button', 'orders.newBooking');
       setText('#logoutButton', 'agency.logout');
@@ -609,14 +610,14 @@
       if (options[3]) options[3].textContent = t('orders.expired');
       setText('#orderDetailTitle', 'orders.detailTitle');
       const ordersInfo = document.querySelector('main > .info-note');
-      if (ordersInfo) ordersInfo.innerHTML = t('orders.pageImportantHtml');
+      if (ordersInfo) ordersInfo.innerHTML = '';
       const loading = document.querySelector('#ordersMessage');
       if (loading && loading.textContent.trim().startsWith('Cargando')) loading.textContent = 'Loading orders...';
     }
 
     const cartRows = document.querySelectorAll('.cart-total .cart-row span:first-child');
     if (cartRows[0]) cartRows[0].textContent = t('agency.subtotalLabel');
-    if (cartRows[1]) cartRows[1].textContent = t('agency.feesLabel');
+    if (cartRows[1]) cartRows[1].textContent = 'Payment charges';
     if (cartRows[2]) cartRows[2].textContent = t('agency.totalLabel');
 
     document.querySelectorAll('.password-toggle').forEach((btn) => {
