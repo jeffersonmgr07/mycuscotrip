@@ -172,3 +172,49 @@ body.mct-single-5d4n .mct-fx-total strong {font-size:30px;color:#0d4b35;font-wei
 body.mct-single-5d4n .mct-fx-note {margin:14px 0 10px;font-size:12px;}
 body.mct-single-5d4n .mct-fx-back {background:none;border:0;color:#0d4b35;text-decoration:underline;cursor:pointer;padding:8px 0;font:inherit;font-size:13px;}
 @media(max-width:480px){body.mct-single-5d4n .mct-fx-card{padding:16px;}body.mct-single-5d4n .mct-fx-lines>div{font-size:13px;}body.mct-single-5d4n .mct-fx-total strong{font-size:26px;}}
+
+/* Fixed packages: gallery and content use exactly the same outer container. */
+body.mct-single-5d4n .experience-top>.container,
+body.mct-single-5d4n .experience-content>.experience-layout,
+body.mct-single-5d4n .experience-tabs-wrap>.container {width:100%!important;max-width:1200px!important;margin-inline:auto!important;padding-inline:20px!important;box-sizing:border-box!important;}
+body.mct-single-5d4n .experience-layout {grid-template-columns:minmax(0,1fr) minmax(0,390px);gap:22px;}
+body.mct-single-5d4n .experience-main,body.mct-single-5d4n .experience-card {min-width:0;max-width:100%;box-sizing:border-box;}
+body.mct-single-5d4n .mct-single-day-hours {color:#527a17!important;font-weight:700;}
+body.mct-single-5d4n .booking-panel {scroll-margin-top:110px;}
+body.mct-single-5d4n .mct-add-train-body {padding:0 20px 20px;display:grid;gap:14px;color:#385449;}
+body.mct-single-5d4n .mct-train-hero {width:100%;max-height:200px;object-fit:cover;border-radius:14px;}
+body.mct-single-5d4n .mct-train-actions {display:flex;gap:10px;flex-wrap:wrap;}
+body.mct-single-5d4n .mct-train-actions button,body.mct-single-5d4n .mct-train-modal-footer button {border:0;border-radius:12px;background:#0d4b35;color:white;font-weight:750;padding:12px 18px;cursor:pointer;}
+body.mct-single-5d4n #mctRemoveTrains {background:#edf2ef;color:#0d4b35;}
+body.mct-single-5d4n .mct-added-train {display:grid;gap:5px;border:1px solid #d4e4d9;padding:12px;border-radius:12px;margin-bottom:8px;}
+body.mct-single-5d4n .mct-added-train span {font-size:13px;}
+body.mct-single-5d4n .mct-train-usd-row {margin-top:8px;padding-top:8px;border-top:1px solid #dae5db;}
+body.mct-single-5d4n .mct-train-pending {color:#66520f;font-size:13px;line-height:1.5;padding:10px;border-radius:9px;background:#fff7de;}
+body.mct-single-5d4n .mct-add-train-modal {position:fixed;inset:0;margin:auto;width:min(920px,calc(100% - 24px));max-height:88dvh;padding:0;border:0;border-radius:22px;background:#f3f7f4;color:#163d2b;box-shadow:0 24px 70px #0005;overflow:auto;}
+body.mct-single-5d4n .mct-add-train-modal::backdrop {background:rgba(5,28,19,.7);backdrop-filter:blur(3px);}
+body.mct-single-5d4n .mct-train-modal-header {position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#0d4b35;color:#fff;padding:18px 20px;}
+body.mct-single-5d4n .mct-train-modal-header h2 {margin:0;font-size:20px;color:white;}
+body.mct-single-5d4n .mct-train-modal-header button {border:1px solid white;background:transparent;color:white;border-radius:50%;width:36px;height:36px;font-size:24px;cursor:pointer;}
+body.mct-single-5d4n .mct-train-modal-body {padding:18px 20px;display:grid;gap:12px;}
+body.mct-single-5d4n .mct-train-modal-body h3 {margin:8px 0 0;color:#0d4b35;}
+body.mct-single-5d4n .mct-train-list {display:grid;gap:8px;max-height:320px;overflow:auto;overscroll-behavior:contain;}
+body.mct-single-5d4n .mct-add-train-card {width:100%;display:grid;grid-template-columns:66px minmax(0,1fr) auto;gap:10px;text-align:left;align-items:center;padding:12px;background:#fff;border:1px solid #d3e0d7;border-radius:12px;color:#173c2c;cursor:pointer;}
+body.mct-single-5d4n .mct-add-train-card.is-selected {border:2px solid #0d8a5c;background:#e9f5ec;}
+body.mct-single-5d4n .mct-add-train-card img {width:100%;max-height:45px;object-fit:contain;}
+body.mct-single-5d4n .mct-add-train-card span {display:grid;gap:3px;min-width:0;}
+body.mct-single-5d4n .mct-add-train-card small {font-size:11px;color:#51685a;}
+body.mct-single-5d4n .mct-add-train-price {text-align:right;white-space:nowrap;}
+body.mct-single-5d4n .mct-train-modal-footer {position:sticky;bottom:0;background:#fff;border-top:1px solid #d3e0d7;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;z-index:2;}
+body.mct-single-5d4n .mct-train-modal-footer div {display:grid;gap:3px;}
+body.mct-single-5d4n .mct-train-modal-footer button:disabled {opacity:.45;cursor:not-allowed;}
+body.mct-single-5d4n .mct-mobile-booking {display:none;}
+@media(max-width:1000px){body.mct-single-5d4n .experience-layout {grid-template-columns:minmax(0,1fr);}}
+@media(max-width:767px){
+ body.mct-single-5d4n .experience-top>.container,body.mct-single-5d4n .experience-content>.experience-layout,body.mct-single-5d4n .experience-tabs-wrap>.container {padding-inline:16px!important;}
+ body.mct-single-5d4n .mct-mobile-booking:not([hidden]) {position:fixed;bottom:0;left:0;right:0;z-index:9999;display:block;padding:10px 74px calc(10px + env(safe-area-inset-bottom)) 16px;background:#fff;box-shadow:0 -4px 22px #082b1922;}
+ body.mct-single-5d4n .mct-mobile-booking button {width:100%;background:#0d4b35;color:#fff;border:0;border-radius:999px;padding:14px;font-weight:800;text-transform:uppercase;font-size:14px;}
+ body.mct-single-5d4n .mct-add-train-card {grid-template-columns:42px minmax(0,1fr) auto;padding:9px;gap:6px;font-size:12px;}
+ body.mct-single-5d4n .mct-train-modal-body {padding:12px;}
+ body.mct-single-5d4n .mct-train-modal-footer {padding:12px;}
+ body.mct-single-5d4n .mct-train-modal-footer button {padding:10px;font-size:12px;}
+}
