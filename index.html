@@ -727,12 +727,7 @@
 </a>
 <section class="hero" id="home">
 <div aria-hidden="true" class="hero-media">
-<video autoplay="" class="hero-video hero-video-desktop" loop="" muted="" playsinline="">
-<source src="assets/videos/hero.mp4" type="video/mp4"/>
-</video>
-<video autoplay="" class="hero-video hero-video-mobile" loop="" muted="" playsinline="">
-<source src="assets/videos/hero-movil.mp4" type="video/mp4"/>
-</video>
+<video class="hero-video" loop="" muted="" playsinline="" preload="none" poster="/assets/img/machu-picchu/machu-picchu-hero.jpg" data-src="/assets/videos/hero.mp4"></video>
 <div class="hero-overlay"></div>
 <div style="width:100%;height:100%;background:linear-gradient(rgba(6,40,3,.8),rgba(5,50,32,.9));"></div>
 </div>
@@ -850,7 +845,7 @@
 </div>
 </div>
 <div aria-hidden="true" class="seo-content__media">
-<img alt="Viajeros planificando tours a Cusco y Machu Picchu" loading="lazy" src="./assets/img/machu-picchu/machu-picchu-hero.jpg"/>
+<img alt="Viajeros planificando tours a Cusco y Machu Picchu" loading="lazy" decoding="async" src="./assets/img/machu-picchu/machu-picchu-hero.jpg"/>
 <div class="seo-content__media-card">
 <strong>Viaje organizado</strong>
 <span>Tours, paquetes, hoteles, trenes y asistencia antes de reservar.</span>
@@ -1051,13 +1046,48 @@
 <script src="./assets/js/core/api-client.js"></script>
 <script src="./assets/js/components/coupon-popup.js?v=20260804-83"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const desktopVideos = document.querySelectorAll(".hero-video-desktop");
-      const mobileVideos = document.querySelectorAll(".hero-video-mobile");
-
-      desktopVideos.forEach(v => v.playbackRate = 0.6);
-      mobileVideos.forEach(v => v.playbackRate = 0.8);
-    });
+    (() => {
+      const video = document.querySelector(".hero-media .hero-video");
+      if (!video) return;
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const mobile = window.matchMedia("(max-width: 768px)");
+      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      const shouldSkip = () => motion.matches || Boolean(connection && (connection.saveData || /^(slow-2g|2g)$/.test(connection.effectiveType || "")));
+      const syncRate = () => { video.playbackRate = mobile.matches ? 0.8 : 0.6; };
+      const stop = () => {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      };
+      const start = () => {
+        if (shouldSkip() || video.hasAttribute("src")) return;
+        if (document.hidden) {
+          const onVisible = () => {
+            if (!document.hidden) {
+              document.removeEventListener("visibilitychange", onVisible);
+              start();
+            }
+          };
+          document.addEventListener("visibilitychange", onVisible);
+          return;
+        }
+        video.muted = true;
+        video.defaultMuted = true;
+        video.src = video.dataset.src;
+        syncRate();
+        const playback = video.play();
+        if (playback && playback.catch) playback.catch(stop);
+      };
+      const schedule = () => {
+        if ("requestIdleCallback" in window) window.requestIdleCallback(start, { timeout: 2000 });
+        else window.setTimeout(start, 500);
+      };
+      if (document.readyState === "complete") schedule();
+      else window.addEventListener("load", schedule, { once: true });
+      if (mobile.addEventListener) mobile.addEventListener("change", syncRate);
+      if (motion.addEventListener) motion.addEventListener("change", () => { if (motion.matches) stop(); });
+      if (connection && connection.addEventListener) connection.addEventListener("change", () => { if (shouldSkip()) stop(); });
+    })();
   </script>
 </body>
 </html>
