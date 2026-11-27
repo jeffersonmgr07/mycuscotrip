@@ -355,7 +355,6 @@
     return "CUZ"+String(random[0]%100000000).padStart(8,"0");
   }
   function openPassenger() {
-    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!state.date || travelers()<2 || travelers()>9) {alert("Selecciona fecha y mínimo 2 viajeros (máximo 9).");return;}
     resetFxStep();
     $("passengerReservationCode").textContent=reservationCode();
@@ -402,6 +401,7 @@
     panel.innerHTML='<div class="mct-fx-card"><div class="mct-fx-intro"><i class="fas fa-lock" aria-hidden="true"></i><h3>Pago seguro</h3><p>El pago se procesará en dólares estadounidenses a través de PayPal. Revisa el importe antes de continuar.</p></div>'+
       '<div class="mct-fx-lines"><div><span>Importe de tu reserva</span><strong>'+esc(money(q.penTotal))+'</strong></div>'+
       '<div class="mct-fx-reference"><span>Tipo de cambio aplicado</span><strong>S/ '+esc(rateLabel(q.rate))+'</strong></div></div>'+
+      (Number(q.trainUsdTotal)>0?'<div class="mct-fx-lines"><div><span>Paquete convertido a dólares</span><strong>'+esc(usd(Math.round((q.penTotal/q.rate+Number.EPSILON)*100)/100))+'</strong></div><div><span>Trenes en dólares</span><strong>'+esc(usd(q.trainUsdTotal))+'</strong></div></div>':'')+
       '<p class="mct-fx-source">Referencia: BCRP (SBS) · '+esc(formattedDate)+'.</p>'+
       '<div class="mct-fx-total"><span>Total a pagar en dólares</span><strong>'+esc(usd(q.usdTotal))+'</strong></div>'+
       '<p class="mct-fx-note">Tu banco o PayPal podría aplicar su propio tipo de cambio si tu medio de pago está en otra moneda. Esta conversión es válida por 15 minutos antes de iniciar el pago.</p>'+
@@ -415,25 +415,32 @@
   }
   async function requestFx(api,payload){
     const {holder,passengers,...fare}=payload;
-    const quote=await api.postAction("quoteCusco5d4nPayPal",fare);
-    if(!quote||quote.ok!==true||quote.version!=="cusco5d4n-paypal-v2"||
+    const mixed=Boolean(payload.selectedTrains);
+    const quote=await api.postAction(mixed?"quoteFixedCuscoMixedPayPal":"quoteCusco5d4nPayPal",fare);
+    if(!quote||quote.ok!==true||quote.version!==(mixed?"cusco-fixed-mixed-paypal-v1":"cusco5d4n-paypal-v2")||
       !quote.quoteId||!(quote.rate>0)||!(quote.usdTotal>0)||
       Math.abs(Number(quote.penTotal)-payload.payNowValue)>0.005)
       throw Error("No pudimos consultar el tipo de cambio.");
+    if(mixed){
+      const round=v=>Math.round((v+Number.EPSILON)*100)/100;
+      if(!Number.isFinite(quote.trainUsdTotal)||Math.abs(quote.trainUsdTotal-payload.selectedTrains.usdTotal)>0.005||
+         Math.abs(quote.usdTotal-round(round(quote.penTotal/quote.rate)+quote.trainUsdTotal))>0.005)
+        throw Error("No se pudo verificar el importe de los trenes.");
+    }
     return quote;
   }
   async function submitReservation(ev) {
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(state.submitting)return;
-    if(window.MCTFixedTrains&&!window.MCTFixedTrains.guard())return;
     if(!fxQuote){
       if(!form.reportValidity())return;
       const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
       if(missing){missing._mctTrigger?.setAttribute("aria-invalid","true");missing._mctTrigger?.focus();message.textContent="Completa todos los campos obligatorios de los pasajeros.";message.classList.add("is-error");return;}
       const checked=formPayload();
       if(!checked.holder.birthdate||checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
-      fxPayload=checked;
+      const selectedTrains=window.MCTFixedTrains?.selection();
+      fxPayload=selectedTrains?{...checked,selectedTrains}:checked;
     }
     state.submitting=true;submit.disabled=true;submit.textContent=fxQuote?"Procesando…":"Consultando tipo de cambio…";message.textContent="";message.classList.remove("is-error");
     let phase="quote";
@@ -468,7 +475,7 @@
         $("passengerReservationModal").classList.remove("mct-fx-step");
         $("passengerCheckoutReview").hidden=true;$("passengerModalTitle").textContent="Datos de los pasajeros";
       }
-      message.textContent=phase==="quote"?"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente.":phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
+      message.textContent=phase==="quote"?(fxPayload?.selectedTrains?"No pudimos confirmar el pago de los trenes. Contáctanos para reservar el paquete con tus trenes.":"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente."):phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
       message.classList.add("is-error");
     }finally{state.submitting=false;submit.disabled=false;submit.textContent="Pagar";}
   }
