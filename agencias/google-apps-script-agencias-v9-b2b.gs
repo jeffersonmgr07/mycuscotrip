@@ -594,7 +594,7 @@ function registerPayment_(payment) {
     estado: 'Recibido'
   });
   sendPaymentEmail_(payment, fileUrl, fileName);
-  return json_({ ok:true, message:'Comprobante recibido. Validaremos el pago en máximo 60 minutos.' });
+  return json_({ ok:true, message:'Comprobante recibido. Verificaremos el pago durante el horario de atención.' });
 }
 
 
@@ -631,6 +631,7 @@ function createPayPalOrder_(payload) {
   if (!order) return json_({ ok:false, message:'No encontramos la orden en Google Sheets.' });
   const status = String(order.data.estadoPago || '').trim().toLowerCase();
   if (status === 'pagado') return json_({ ok:false, message:'Esta orden ya figura como pagada.' });
+  if (status === 'vencido' || new Date(order.data.fechaVencimientoPago).getTime()<Date.now()) return json_({ok:false,message:'La orden está vencida. Consulta disponibilidad.'});
   const currency = String(order.data.moneda || payload.currency || 'USD').toUpperCase();
   if (currency !== 'USD') return json_({ ok:false, message:'PayPal debe procesarse en USD. Cambia la moneda visible a dólares y genera la orden nuevamente.' });
   const amount = Number(order.data.montoComisionado || payload.total || 0);
@@ -1057,7 +1058,7 @@ function sheetSafeValue_(headerName, value) {
     if (/^[+=@-]/.test(raw)) return "'" + raw;
     return raw;
   }
-  return value;
+  return typeof value==='string'&&/^[=+@-]/.test(value)?"'"+value:value;
 }
 
 function setCellByHeader_(sheet, row, headers, headerName, value) {
@@ -1227,16 +1228,16 @@ function agencyCreateOrderSafe_(order){
     if(!['PEN','USD'].includes(order.currency))throw Error('Moneda inválida.');
     const rate=AGENCY_EXCHANGE_RATE;const cur=order.currency;const conv=(p,u,c)=>cur==='PEN'?(c==='USD'&&u!=null?Number(u)*rate:Number(p||0)):(c==='USD'&&u!=null?Number(u):Number(p||0)/rate);
     let subtotal=0;const ids={};
-    order.items=order.items.map(i=>{
+    order.items=order.items.map((i,index)=>{
       const s=AGENCY_PRICE_CATALOG.find(x=>x.id===i.serviceId);
       const pax=Number(i.pax);if(!s||!Number.isInteger(pax)||pax<1||pax>50||!/^\d{4}-\d{2}-\d{2}$/.test(String(i.travelDate))||i.travelDate<=Utilities.formatDate(new Date(),'America/Lima','yyyy-MM-dd')||!s.schedules.includes(i.serviceTime)||!i.id||ids[i.id])throw Error('Revisa fecha, horario y pasajeros.');
       ids[i.id]=true;const tickets=(i.entryTickets||[]).map(t=>{const x=s.entryTickets.find(y=>y.id===t.id);if(!x)throw Error('Entrada inválida.');return {id:x.id,name:x.name,pricePEN:x.pricePEN,priceUSD:x.priceUSD||null,currency:x.currency||'PEN',pax:pax};});
       if(new Set(tickets.map(t=>t.id)).size!==tickets.length)throw Error('Entrada duplicada.');
       subtotal+=conv(s.pricePEN,s.priceUSD,s.currency)*pax+tickets.reduce((a,t)=>a+conv(t.pricePEN,t.priceUSD,t.currency)*pax,0);
-      return {id:String(i.id),serviceId:s.id,serviceName:s.name,travelDate:i.travelDate,serviceTime:i.serviceTime,pax:pax,unitPricePEN:s.pricePEN,unitPriceUSD:s.priceUSD,serviceCurrency:s.currency,priceUnit:s.priceUnit,entryTickets:tickets,lead:agencyCleanLead_(i.lead),passengers:agencyCleanPassengers_(i.passengers,pax),pickupHotel:String(i.pickupHotel||'').slice(0,250),pickupAddress:String(i.pickupAddress||'').slice(0,350),pickupPoint:String(i.pickupPoint||'').slice(0,600),notes:String(i.notes||'').slice(0,500),pickupWindow:''};
+      return {id:String(i.id),reservationCode:'R-'+order.code+'-'+String(index+1).padStart(2,'0'),reservationStatus:'Pendiente de pago',serviceId:s.id,serviceName:s.name,travelDate:i.travelDate,serviceTime:i.serviceTime,pax:pax,unitPricePEN:s.pricePEN,unitPriceUSD:s.priceUSD,serviceCurrency:s.currency,priceUnit:s.priceUnit,entryTickets:tickets,lead:agencyCleanLead_(i.lead),passengers:agencyCleanPassengers_(i.passengers,pax),pickupHotel:String(i.pickupHotel||'').slice(0,250),pickupAddress:String(i.pickupAddress||'').slice(0,350),pickupPoint:String(i.pickupPoint||'').slice(0,600),notes:String(i.notes||'').slice(0,500),pickupWindow:''};
     });
     const total=Number((subtotal/(1-.054-.015)).toFixed(2));if(Math.abs(Number(order.total)-total)>.02)throw Error('Tarifas actualizadas. Recarga el catálogo antes de generar la orden.');
-    order.subtotal=Number(subtotal.toFixed(2));order.total=total;order.fee=Number((total-subtotal).toFixed(2));order.exchangeRate=rate;order.status='Pendiente';order.paymentDueAt=new Date(Date.now()+3*3600000).toISOString();return createOrder_(order);
+    order.subtotal=Number(subtotal.toFixed(2));order.total=total;order.fee=Number((total-subtotal).toFixed(2));order.exchangeRate=rate;order.status='Pendiente';order.paymentDueAt=new Date(Date.now()+3*3600000).toISOString();return createOrder_({code:order.code,account:order.account,items:order.items,subtotal:order.subtotal,total:order.total,fee:order.fee,exchangeRate:rate,currency:cur,status:'Pendiente',paymentDueAt:order.paymentDueAt});
   }finally{lock.releaseLock();}
 }
 function agencyCleanLead_(p){p=p||{};const o={};['firstName','lastName','docType','docNumber','nationality','phone','language'].forEach(k=>o[k]=String(p[k]||'').trim().slice(0,150));if(o.language&&!['Español','Inglés'].includes(o.language))throw Error('Idioma inválido.');return o;}
@@ -1250,7 +1251,7 @@ function agencyUpdateReservation_(target,payload){
 }
 function agencyBankText_(currency){return PropertiesService.getScriptProperties().getProperty('AGENCY_BANK_'+(currency==='USD'?'USD':'PEN'))||'';}
 function agencySendOrderMessage_(email,name,code,items,currency,total,due,paid){
-  const esc=escapeHtml_;const rows=(items||[]).map(i=>'<li><strong>'+esc(i.serviceName)+'</strong> · '+esc(i.travelDate)+' · '+esc(i.serviceTime)+' · '+esc(i.pax)+' pax<br>'+esc([i.lead?.firstName,i.lead?.lastName].filter(Boolean).join(' ')||'Datos de pasajeros pendientes')+'<br>Recojo: '+esc(i.pickupPoint||'Por coordinar')+' · '+esc(i.pickupWindow||'Horario por confirmar')+'</li>').join('');
+  const esc=escapeHtml_;const rows=(items||[]).map(i=>'<li><strong>'+esc(i.serviceName)+'</strong> · '+esc(i.travelDate)+' · '+esc(i.serviceTime)+' · '+esc(i.pax)+' pax<br>'+esc([i.lead?.firstName,i.lead?.lastName].filter(Boolean).join(' ')||'Datos de pasajeros pendientes')+'<br>Recojo: '+esc(i.pickupPoint||'Por coordinar')+' · '+esc(i.pickupWindow||'Horario por confirmar')+(paid?'<br>Reserva: '+esc(i.reservationStatus==='Confirmada'?'Confirmada':'Pendiente de confirmación operativa'):'')+'</li>').join('');
   const bank=agencyBankText_(currency);const html='<div style="font-family:Arial;color:#073322;max-width:640px;margin:auto"><header style="background:#073322;color:white;padding:20px"><h2>My Cusco Trip</h2><h3>'+esc(code)+'</h3></header><p>Estimada agencia '+esc(name)+',</p><p>'+(paid?'Tu pago ha sido validado. Consulta el estado y los horarios de recojo de tus reservas.':'Tu orden se ha generado. Los servicios quedan sujetos a disponibilidad y pago validado.')+'</p><ul>'+rows+'</ul><p><strong>Total: '+esc(moneyEmail_(total,currency))+'</strong></p>'+(!paid?'<p>Vencimiento: '+esc(formatDateTimeEmail_(due))+'</p>'+(bank?'<p>'+esc(bank).replace(/\n/g,'<br>')+'</p><p>Responde este correo con el comprobante para su verificación.</p>':'<p>Consulta los métodos de pago en Mis órdenes.</p>'):'')+'<p><a href="'+PORTAL_BASE_URL+'/reservas.html">Consultar mis reservas</a></p></div>';
   MailApp.sendEmail({to:email,subject:(paid?'Pago confirmado - ':'Orden generada - ')+code,body:'My Cusco Trip. Consulta tu orden '+code+' en el portal.',htmlBody:html,name:BRAND_NAME,replyTo:SUPPORT_EMAIL});
 }
@@ -1259,7 +1260,7 @@ function agencySendPaid_(d){agencySendOrderMessage_(d.correoAgencia,d.agenciaNom
 function agencyConfirmManualPayment(){
  const props=PropertiesService.getScriptProperties();const code=props.getProperty('AGENCY_MANUAL_ORDER_CODE');if(!code)throw Error('Configura AGENCY_MANUAL_ORDER_CODE.');
  const lock=LockService.getScriptLock();lock.waitLock(20000);try{const t=findOrderByCode_(code);if(!t)throw Error('Orden no encontrada.');if(String(t.data.estadoPago).toLowerCase()!=='pagado'){setCellByHeader_(t.sheet,t.row,t.headers,'estadoPago','Pagado');setCellByHeader_(t.sheet,t.row,t.headers,'fechaPagoManual',new Date());}
- if(!t.data.correoConfirmacionEnviado){agencySendPaid_(t.data);setCellByHeader_(t.sheet,t.row,t.headers,'correoConfirmacionEnviado',new Date());}props.deleteProperty('AGENCY_MANUAL_ORDER_CODE');}finally{lock.releaseLock();}
+ const items=parseJsonSafe_(t.data.serviciosJson,[]);items.forEach(i=>i.reservationStatus='Confirmada');setCellByHeader_(t.sheet,t.row,t.headers,'serviciosJson',JSON.stringify(items));t.data.serviciosJson=JSON.stringify(items);if(!t.data.correoConfirmacionEnviado){agencySendPaid_(t.data);setCellByHeader_(t.sheet,t.row,t.headers,'correoConfirmacionEnviado',new Date());}props.deleteProperty('AGENCY_MANUAL_ORDER_CODE');}finally{lock.releaseLock();}
 }
 
 // Recojo: editar exclusivamente desde Apps Script (no acción Web App).

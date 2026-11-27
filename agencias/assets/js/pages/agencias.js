@@ -293,7 +293,7 @@
         <div class="experience-body">
           
           <h3>${escapeHtml(service.name)}</h3>
-          <p class="compact-schedule"><i class="fa-regular fa-clock"></i> ${escapeHtml(service.startLabel || '')}</p><details class="experience-expand"><summary>${currentLocale() === 'en' ? 'View more details' : 'Ver más detalles'}</summary><p class="experience-desc">${escapeHtml(service.description || '')}</p>
+          <p class="compact-schedule"><i class="fa-regular fa-clock"></i> ${escapeHtml(service.startLabel || '')}</p><details class="experience-expand" ${window.matchMedia("(min-width: 701px)").matches?"open":""}><summary>${currentLocale() === 'en' ? 'View more details' : 'Ver más detalles'}</summary><p class="experience-desc">${escapeHtml(service.description || '')}</p>
           <table class="mini-table">
             <tr><td>${currentLocale() === 'en' ? 'Frequency' : 'Frecuencia'}</td><td>${escapeHtml(service.frequency || '')}</td></tr>
             <tr><td>${t('agency.duration', 'Duración')}</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
@@ -415,7 +415,7 @@
     })).filter((p) => p.firstName || p.lastName || p.docNumber || p.nationality);
 
     const leadFields = ['leadFirstName','leadLastName','leadDocNumber'];
-    const entered = leadFields.some(id => document.getElementById(id).value.trim());
+    const entered = leadFields.some(id => document.getElementById(id).value.trim()) || !!$('#leadPhone').value.trim() || !!$('#leadNationality').value;
     if (entered && !leadFields.every(id => document.getElementById(id).value.trim())) { alert(currentLocale()==='en'?'Complete the lead name and document or leave them blank.':'Completa nombre, apellido y documento del titular o déjalos vacíos.'); return; }
     if(passengers.some(p=>!p.firstName||!p.lastName||!p.docNumber)){alert(currentLocale()==='en'?'Complete each entered passenger.':'Completa los datos de cada pasajero ingresado.');return;}
     const item = {
@@ -544,8 +544,7 @@
     let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{button.disabled=false;}
     if(!result?.ok){if(result?.code==='SESSION_EXPIRED'){location.href='./login.html';return;}alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
     state.pendingCode = null;
-    state.orders.unshift(order);
-    writeJSON(STORAGE.ORDERS + ':' + state.session.agencyId, state.orders);
+    state.orders.unshift({code:order.code,status:order.status});
     showOrderModal(order, result);
     $('#orderBox').classList.add('show');
     $('#orderBox').innerHTML = `
