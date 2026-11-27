@@ -17,6 +17,7 @@
   <link href="../assets/css/responsive.css" rel="stylesheet" />
   <link href="./assets/css/agencias.css" rel="stylesheet" />
   <script src="https://www.mercadopago.com/v2/security.js" view="checkout"></script>
+<link rel="stylesheet" href="./assets/css/agency-redesign.css">
 </head>
 <body class="agency-page orders-page">
   <div id="header-container"></div>
@@ -69,7 +70,7 @@
     </div>
   </div>
   <div id="footer-container"></div>
-  <script src="../assets/js/components/header.js"></script>
+  <script src="./assets/js/pages/agency-shell.js" defer></script>
   <script src="../assets/js/components/footer.js"></script>
   <script src="./assets/js/pages/agencias-i18n.js"></script>
   <script src="./assets/js/pages/ordenes-agencias.js" defer></script>
@@ -86,7 +87,7 @@
       } catch (error) { console.warn('No se pudo cargar componente', name, error); }
     }
     document.addEventListener('DOMContentLoaded', () => {
-      loadAgencyComponent('header', 'header-container');
+      
       loadAgencyComponent('footer', 'footer-container');
     });
   </script>
