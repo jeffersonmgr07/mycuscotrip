@@ -41,6 +41,26 @@
     }
   }
 
+  function finishLogin(result,email){if(!result.sessionToken){show('Actualiza el backend a la versión V9 antes de iniciar sesión.');return;}
+      const agency = result.agency || {};
+
+      write(SESSION, {
+        sessionToken: result.sessionToken,
+        agencyId: agency.id || agency.agencyId || '',
+        email: agency.correo || agency.email || email,
+        companyName: agency.nombreComercial || agency.razonSocial || agency.companyName || 'Agencia registrada',
+        contactName: agency.representanteNombres || agency.contactName || '',
+        country: agency.pais || agency.country || '',
+        representanteNombres: agency.representanteNombres || agency.contactName || '',
+        status: agency.estado || agency.status || 'Aprobado',
+        loggedAt: new Date().toISOString(),
+        source: 'google-sheets'
+      });
+
+      window.location.href = './index.html';
+  }
+  async function initGoogle(){try{const r=await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'googleConfig'})}).then(x=>x.json());if(!r.clientId)return;const js=document.createElement('script');js.src='https://accounts.google.com/gsi/client';js.async=true;js.onload=()=>{google.accounts.id.initialize({client_id:r.clientId,callback:async response=>{try{const data=await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'loginGoogle',credential:response.credential})}).then(x=>x.json());if(data.ok)finishLogin(data,'');else show(data.message||'No se pudo iniciar sesión con Google.');}catch(e){show('No se pudo conectar con Google.');}}});google.accounts.id.renderButton(document.getElementById('googleAgencyLogin'),{theme:'outline',size:'large',text:'signin_with',shape:'pill'});};document.head.append(js);}catch(e){console.warn('Google no configurado');}}
+  initGoogle();
   $('#loginForm')?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -74,21 +94,8 @@
         return;
       }
 
-      const agency = result.agency || {};
+      finishLogin(result,email); return;
 
-      write(SESSION, {
-        agencyId: agency.id || agency.agencyId || '',
-        email: agency.correo || agency.email || email,
-        companyName: agency.nombreComercial || agency.razonSocial || agency.companyName || 'Agencia registrada',
-        contactName: agency.representanteNombres || agency.contactName || '',
-        country: agency.pais || agency.country || '',
-        representanteNombres: agency.representanteNombres || agency.contactName || '',
-        status: agency.estado || agency.status || 'Aprobado',
-        loggedAt: new Date().toISOString(),
-        source: 'google-sheets'
-      });
-
-      window.location.href = './index.html';
 
     } catch (error) {
       console.error(error);

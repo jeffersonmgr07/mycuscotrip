@@ -14,7 +14,7 @@
 
   function requireSession() {
     const session = readJSON(SESSION_KEY, null);
-    if (!session?.email) { window.location.href = './login.html'; return null; }
+    if (!session?.email || !session.sessionToken) { window.location.href = './login.html'; return null; }
     return session;
   }
 
@@ -22,7 +22,7 @@
     const response = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, payload, email: payload?.account?.email, agencyId: payload?.account?.agencyId })
+      body: JSON.stringify({ action, payload, sessionToken:payload?.account?.sessionToken })
     });
     const text = await response.text();
     try { return JSON.parse(text); } catch { return { ok:false, message:'No se pudo leer la respuesta del servidor.' }; }

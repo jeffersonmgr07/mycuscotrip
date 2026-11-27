@@ -120,6 +120,7 @@
     state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
     localStorage.setItem('mct_visible_currency', state.currency);
     updateCurrencyMenu();
+    state.pendingCode=null;
     renderExperiences();
     renderCart();
   }
@@ -146,7 +147,7 @@
 
   function requireSession() {
     const session = readJSON(STORAGE.SESSION, null);
-    if (!session?.email) {
+    if (!session?.email || !session.sessionToken) {
       window.location.href = './login.html';
       return null;
     }
@@ -442,6 +443,7 @@
       notes: $('#bookingNotes').value.trim(),
       passengers
     };
+    state.pendingCode=null;
     state.cart.push(item);
     writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     closeModals();
@@ -500,12 +502,14 @@
   }
 
   function removeItem(index) {
+    state.pendingCode=null;
     state.cart.splice(index, 1);
     writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     renderCart();
   }
 
   function clearCart() {
+    state.pendingCode=null;
     state.cart = [];
     writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
     $('#orderBox').classList.remove('show');
@@ -518,7 +522,7 @@
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
     const { total, fee } = feeGross(subtotal);
     const order = {
-      code: makeCode(),
+      code: state.pendingCode || (state.pendingCode = makeCode()),
       createdAt: new Date().toISOString(),
       status: 'Pendiente',
       currency: state.currency,
@@ -528,12 +532,13 @@
       total: Number(total.toFixed(2)),
       paypalBankFeeApplied: true,
       paymentDueAt: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
-      account: state.session,
+      account: {agencyId:state.session.agencyId,email:state.session.email,companyName:state.session.companyName},
       items: state.cart
     };
     const button = $('#generateOrderButton'); if(button.disabled)return;button.disabled=true;
     let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{button.disabled=false;}
-    if(!result?.ok){alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
+    if(!result?.ok){if(result?.code==='SESSION_EXPIRED'){location.href='./login.html';return;}alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
+    state.pendingCode = null;
     state.orders.unshift(order);
     writeJSON(STORAGE.ORDERS + ':' + state.session.agencyId, state.orders);
     showOrderModal(order, result);
@@ -611,7 +616,7 @@
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
+        <button type="button" class="agency-button agency-button--ghost" id="bankInstructions">Transferencia bancaria</button><button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>
     `;
   }
@@ -621,6 +626,7 @@
     $('#orderModal').classList.add('show');
     $('#printOrderButton')?.addEventListener('click', printOrder);
     $('#payWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
+    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\\n'+(r.email||''):r.message);});
     $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
   }
 
@@ -672,10 +678,10 @@
       const response = await fetch(CONFIG.googleScriptUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action, payload })
+        body: JSON.stringify({ action, payload, sessionToken:state.session?.sessionToken })
       });
       const text = await response.text();
-      try { return JSON.parse(text); } catch { return { ok:true, message:'Solicitud enviada' }; }
+      try { return JSON.parse(text); } catch { return { ok:false, message:'Respuesta no válida del servidor' }; }
     } catch (error) {
       console.warn('No se pudo enviar a Google Sheets', error);
       return { ok:false, message:error.message };
