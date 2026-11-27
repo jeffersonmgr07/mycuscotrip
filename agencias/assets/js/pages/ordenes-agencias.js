@@ -165,8 +165,11 @@
       });
       const result = await response.json();
       if (result.ok && Array.isArray(result.orders)) return result.orders;
+      if(result.code==='SESSION_EXPIRED'){location.href='./login.html';return [];}
+      throw Error(result.message||'No se pudieron cargar las órdenes');
     } catch (error) {
       console.warn('No se pudieron cargar órdenes desde Google Sheets', error);
+      throw error;
     }
     return [];
   }
@@ -294,7 +297,7 @@
         </div>
         <div class="order-totals">
           <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotalNeto || order.subtotal || 0, currency)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.montoComisionado || order.total || 0, currency)}</strong></div>
         </div>
         ${order.observaciones || order.observations ? `<p class="small-print-note"><strong>${t('orders.generalNotes', 'Observaciones generales')}:</strong> ${escapeHtml(order.observaciones || order.observations)}</p>` : ''}
@@ -385,5 +388,5 @@
     $$('[data-close-order-detail-static]').forEach((button) => button.addEventListener('click', closeOrderDetail));
   }
 
-  init();
+  init().catch(e=>{const msg=$('#ordersMessage');if(msg){msg.hidden=false;msg.textContent=e.message||'No se pudieron cargar las órdenes.';}});
 })();

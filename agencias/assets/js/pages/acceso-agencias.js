@@ -87,7 +87,7 @@
 
     try {
       const result = await loginAgency(email, password);
-      console.log('Respuesta login Apps Script:', result);
+
 
       if (!result.ok) {
         show(result.message || 'No encontramos un acceso activo con esos datos.');

@@ -903,6 +903,7 @@ function confirmMercadoPagoPayment_(payload) {
   }
 
   if (status === 'approved') {
+    if(String(order.data.estadoPago).toLowerCase()==='pagado')return json_({ok:true,message:'Pago ya registrado.'});
     markOrderPaidMercadoPago_(code, paymentId, data.status || 'approved');
     sendMercadoPagoPaidEmail_(order.data, paymentId, data.status || 'approved');
     return json_({ ok:true, message:'Pago confirmado correctamente. La orden fue marcada como Pagada.', status:data.status || 'approved', paymentId:paymentId });
@@ -1243,7 +1244,7 @@ function agencyCleanPassengers_(p,pax){return (Array.isArray(p)?p:[]).slice(0,pa
 function agencyUpdateReservation_(target,payload){
   const lock=LockService.getScriptLock();lock.waitLock(20000);try{
   target=findOrderByCode_(String(target.data.codigoOrden));const items=parseJsonSafe_(target.data.serviciosJson,[]);const i=items.find(x=>String(x.id)===String(payload.itemId));if(!i||i.travelDate<=Utilities.formatDate(new Date(),'America/Lima','yyyy-MM-dd')||String(target.data.estadoPago).toLowerCase()==='vencido')throw Error('Reserva no editable.');
-  i.lead=agencyCleanLead_(payload.lead);i.passengers=agencyCleanPassengers_(payload.passengers,i.pax);i.pickupHotel=String(payload.pickupHotel||'').slice(0,250);i.pickupAddress=String(payload.pickupAddress||'').slice(0,350);i.pickupPoint=[i.pickupHotel,i.pickupAddress].filter(Boolean).join(' — ');i.notes=String(payload.notes||'').slice(0,500);
+  i.lead=agencyCleanLead_(payload.lead);i.passengers=agencyCleanPassengers_(payload.passengers,i.pax);const oldPickup=[i.pickupHotel,i.pickupAddress].join('|');i.pickupHotel=String(payload.pickupHotel||'').slice(0,250);i.pickupAddress=String(payload.pickupAddress||'').slice(0,350);if(oldPickup!==[i.pickupHotel,i.pickupAddress].join('|'))i.pickupWindow='';i.pickupPoint=[i.pickupHotel,i.pickupAddress].filter(Boolean).join(' — ');i.notes=String(payload.notes||'').slice(0,500);
   setCellByHeader_(target.sheet,target.row,target.headers,'serviciosJson',JSON.stringify(items));setCellByHeader_(target.sheet,target.row,target.headers,'titularJson',JSON.stringify(items[0]?.lead||{}));setCellByHeader_(target.sheet,target.row,target.headers,'pasajerosJson',JSON.stringify(items.flatMap(x=>x.passengers||[])));return json_({ok:true});
   }finally{lock.releaseLock();}
 }
@@ -1260,3 +1261,7 @@ function agencyConfirmManualPayment(){
  const lock=LockService.getScriptLock();lock.waitLock(20000);try{const t=findOrderByCode_(code);if(!t)throw Error('Orden no encontrada.');if(String(t.data.estadoPago).toLowerCase()!=='pagado'){setCellByHeader_(t.sheet,t.row,t.headers,'estadoPago','Pagado');setCellByHeader_(t.sheet,t.row,t.headers,'fechaPagoManual',new Date());}
  if(!t.data.correoConfirmacionEnviado){agencySendPaid_(t.data);setCellByHeader_(t.sheet,t.row,t.headers,'correoConfirmacionEnviado',new Date());}props.deleteProperty('AGENCY_MANUAL_ORDER_CODE');}finally{lock.releaseLock();}
 }
+
+// Recojo: editar exclusivamente desde Apps Script (no acción Web App).
+// Configurar AGENCY_PICKUP_ORDER_CODE, AGENCY_PICKUP_ITEM_ID, AGENCY_PICKUP_WINDOW.
+function agencySetPickupWindow(){const p=PropertiesService.getScriptProperties();const code=p.getProperty('AGENCY_PICKUP_ORDER_CODE'),id=p.getProperty('AGENCY_PICKUP_ITEM_ID'),window=p.getProperty('AGENCY_PICKUP_WINDOW');if(!code||!id||!window)throw Error('Faltan propiedades de recojo');if(!/^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$/.test(window))throw Error('Usa HH:mm - HH:mm');const lock=LockService.getScriptLock();lock.waitLock(20000);try{const t=findOrderByCode_(code);if(!t)throw Error('Orden no encontrada');const items=parseJsonSafe_(t.data.serviciosJson,[]);const i=items.find(x=>String(x.id)===id);if(!i)throw Error('Reserva no encontrada');i.pickupWindow=window;setCellByHeader_(t.sheet,t.row,t.headers,'serviciosJson',JSON.stringify(items));['AGENCY_PICKUP_ORDER_CODE','AGENCY_PICKUP_ITEM_ID','AGENCY_PICKUP_WINDOW'].forEach(k=>p.deleteProperty(k));}finally{lock.releaseLock();}}

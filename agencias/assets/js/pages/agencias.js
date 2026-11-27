@@ -117,6 +117,7 @@
   }
 
   function setCurrency(currency) {
+    if($('#generateOrderButton')?.disabled)return;
     state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
     localStorage.setItem('mct_visible_currency', state.currency);
     updateCurrencyMenu();
@@ -175,6 +176,7 @@
     $('#serviceDate').value = tomorrowISO();
 
     hydrateCountrySelects();
+    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{const flag=String.fromCodePoint(...x.code.split('').map(c=>127397+c.charCodeAt(0)));return '<option value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+flag+' '+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
     fetch('./assets/data/pickup-hotels.json').then(r=>r.json()).then(data=>{const hotels=data.hotels||[];$('#pickupHotels').innerHTML=hotels.map(x=>'<option value="'+escapeHtml(x.name)+'"></option>').join('');$('#pickupHotel').addEventListener('input',()=>{const hit=hotels.find(x=>x.name.toLowerCase()===$('#pickupHotel').value.toLowerCase());if(hit)$('#pickupAddress').value=hit.address||'';});}).catch(()=>{});
     bindEvents();
     await loadCatalog();
@@ -190,8 +192,8 @@
       if (!response.ok) throw new Error('catalog');
       const data = await response.json();
       state.services = Array.isArray(data.services) ? data.services.map((service) => I18N?.localizeService ? I18N.localizeService(service) : service) : [];
-      if (data.exchangeRate && !localStorage.getItem('mct_exchange_rate')) {
-        state.exchangeRate = Number(data.exchangeRate);
+      if (data.exchangeRate) {
+        state.exchangeRate = Number(data.exchangeRate);localStorage.setItem('mct_exchange_rate',state.exchangeRate);
         if ($('#exchangeRateInput')) $('#exchangeRateInput').value = state.exchangeRate.toFixed(2);
       }
     } catch (error) {
@@ -402,6 +404,7 @@
     if (!form.reportValidity()) return;
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
+    if($('#generateOrderButton').disabled)return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
@@ -502,6 +505,7 @@
   }
 
   function removeItem(index) {
+    if($('#generateOrderButton').disabled)return;
     state.pendingCode=null;
     state.cart.splice(index, 1);
     writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
@@ -509,6 +513,7 @@
   }
 
   function clearCart() {
+    if($('#generateOrderButton').disabled)return;
     state.pendingCode=null;
     state.cart = [];
     writeJSON(STORAGE.CART + ':' + state.session.agencyId, state.cart);
@@ -608,7 +613,7 @@
         </div>
         <div class="order-totals">
           <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotal)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Comisiones PayPal + banco')}</span><strong>${money(order.fee)}</strong></div>
+          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.fee)}</strong></div>
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total)}</strong></div>
         </div>
         <p class="small-print-note">${result?.ok === false ? t('agency.noteSheetError', 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.') : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
@@ -626,7 +631,7 @@
     $('#orderModal').classList.add('show');
     $('#printOrderButton')?.addEventListener('click', printOrder);
     $('#payWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
-    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\\n'+(r.email||''):r.message);});
+    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\n'+(r.email||''):r.message);});
     $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
   }
 
