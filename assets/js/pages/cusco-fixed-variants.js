@@ -124,7 +124,7 @@
     $("productBasePrice").textContent=Number.isFinite(PRICE)?money(PRICE):"Por confirmar";
     const btn=$("paypalButton");btn.disabled=!Number.isFinite(s.total)||travelers()<2||travelers()>9||!state.date;
     const info=$("paymentInfo");
-    info.hidden=BOOKABLE&&Number.isFinite(s.total);
+    info.hidden=true;
     info.textContent=state.children&&!Number.isFinite(CHILD_PRICE)?"Consulta la tarifa para niños antes de reservar.":"La reserva en línea estará disponible cuando se confirme la tarifa.";
     window.MCTFixedTrains?.refresh();
   }
@@ -154,19 +154,33 @@
     activePicker=null;panel.remove();trigger.setAttribute("aria-expanded","false");
     if(restore&&trigger.isConnected)trigger.focus({preventScroll:true});
   }
+  function mobilePicker(){return matchMedia("(max-width: 767px), (pointer: coarse)").matches;}
+  function pickerCloseButton(heading){
+    const btn=document.createElement("button");btn.type="button";btn.className="mct-picker-close";btn.textContent="×";btn.setAttribute("aria-label","Cerrar selector");btn.addEventListener("click",()=>closePicker(true));heading.append(btn);
+  }
   function positionPicker(){
     if(!activePicker)return;
     const {panel,trigger}=activePicker;
-    const r=trigger.getBoundingClientRect(), gap=6, pad=10;
-    if(r.bottom<0||r.top>window.innerHeight||!trigger.isConnected){closePicker();return;}
+    if(!trigger.isConnected){closePicker();return;}
+    const r=trigger.getBoundingClientRect(),gap=6,pad=12,vv=window.visualViewport;
+    const mobile=mobilePicker();
+    panel.classList.toggle("mct-picker-mobile",mobile);
+    if(mobile){
+      const w=vv?.width||window.innerWidth,h=vv?.height||window.innerHeight,x=vv?.offsetLeft||0,y=vv?.offsetTop||0;
+      const width=Math.max(1,Math.min(420,w-2*pad)),available=Math.max(1,h-2*pad);
+      panel.style.width=width+"px";panel.style.left=(x+(w-width)/2)+"px";
+      panel.style.maxHeight=available+"px";
+      const height=Math.min(available,panel.getBoundingClientRect().height);
+      panel.style.top=(y+Math.max(pad,(h-height)/2))+"px";
+      return;
+    }
     const width=Math.min(window.innerWidth-2*pad,Math.max(r.width,panel.classList.contains("mct-birth-picker")?306:260));
-    panel.style.width=width+"px";
-    panel.style.left=Math.max(pad,Math.min(r.left,window.innerWidth-width-pad))+"px";
+    panel.style.width=width+"px";panel.style.left=Math.max(pad,Math.min(r.left,window.innerWidth-width-pad))+"px";
     const below=window.innerHeight-r.bottom-gap-pad,above=r.top-gap-pad;
     const useAbove=below<245&&above>below;
     panel.style.maxHeight=Math.max(100,useAbove?above:below)+"px";
     const height=panel.getBoundingClientRect().height;
-    panel.style.top=Math.max(pad,useAbove?r.top-gap-height:r.bottom+gap)+"px";
+    panel.style.top=Math.max(pad,Math.min(window.innerHeight-height-pad,useAbove?r.top-gap-height:r.bottom+gap))+"px";
   }
   function showPicker(trigger,kind){
     closePicker();
@@ -203,7 +217,7 @@
       trigger.addEventListener("click",()=>{
         if(activePicker?.trigger===trigger){closePicker(true);return;}
         const panel=showPicker(trigger,"mct-option-picker");
-        const heading=document.createElement("div");heading.className="mct-picker-heading";heading.textContent=label;panel.append(heading);
+        const heading=document.createElement("div");heading.className="mct-picker-heading";heading.textContent=label;pickerCloseButton(heading);panel.append(heading);
         const options=Array.from(el.options).filter(o=>!o.disabled && o.value!=="");
         let search;
         if(options.length>10){search=document.createElement("input");search.type="search";search.className="mct-picker-search";search.placeholder=phone?"Buscar país o código":"Buscar país";search.setAttribute("aria-label",search.placeholder);panel.append(search);}
@@ -246,7 +260,7 @@
         const maxYear=now.getFullYear(), minYear=maxYear-120;
         function draw(){
           panel.replaceChildren();
-          const head=document.createElement("div");head.className="mct-picker-heading";head.textContent="Fecha de nacimiento";panel.append(head);
+          const head=document.createElement("div");head.className="mct-picker-heading";head.textContent="Fecha de nacimiento";pickerCloseButton(head);panel.append(head);
           const nav=document.createElement("div");nav.className="mct-date-nav";
           function move(delta){
             if(view==="years")decade=Math.max(minYear-11,Math.min(maxYear,decade+12*delta));
@@ -386,7 +400,7 @@
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(state.submitting)return;
-    if(!BOOKABLE){message.textContent="El pago en línea todavía no está disponible para esta tarifa. Contáctanos para reservar.";message.classList.add("is-error");return;}
+    
     if(!fxQuote){
       if(!form.reportValidity())return;
       const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
@@ -430,7 +444,7 @@
         $("passengerReservationModal").classList.remove("mct-fx-step");
         $("passengerCheckoutReview").hidden=true;$("passengerModalTitle").textContent="Datos de los pasajeros";
       }
-      message.textContent=phase==="quote"?(fxPayload?.selectedTrains?"No pudimos confirmar el pago de los trenes. Contáctanos para reservar el paquete con tus trenes.":"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente."):phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
+      message.textContent=phase==="quote"?"No pudimos confirmar el importe de tu reserva. Por favor, inténtalo nuevamente.":phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
       message.classList.add("is-error");
     }finally{state.submitting=false;submit.disabled=false;submit.textContent="Pagar";}
   }
@@ -474,9 +488,10 @@
     phone.value="+51";
     national.querySelector('option[value="Perú"]').defaultSelected=true;
     phone.options[phone.selectedIndex].defaultSelected=true;
-    document.addEventListener("pointerdown",e=>{if(activePicker&&!activePicker.panel.contains(e.target)&&!activePicker.trigger.contains(e.target))closePicker();},true);
+    document.addEventListener("pointerdown",e=>{if(activePicker&&!mobilePicker()&&!activePicker.panel.contains(e.target)&&!activePicker.trigger.contains(e.target))closePicker();},true);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&activePicker){e.preventDefault();e.stopImmediatePropagation();closePicker(true);}},true);
-    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",positionPicker,true);
+    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",e=>{if(activePicker?.panel.contains(e.target))return;positionPicker();},true);
+    window.visualViewport?.addEventListener("resize",positionPicker);window.visualViewport?.addEventListener("scroll",positionPicker);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal("hotelSelectionModal");closeModal("passengerReservationModal");}});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
