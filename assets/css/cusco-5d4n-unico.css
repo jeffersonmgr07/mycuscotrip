@@ -200,7 +200,7 @@ body.mct-single-5d4n .mct-train-modal-body h3 {margin:8px 0 0;color:#0d4b35;}
 body.mct-single-5d4n .mct-train-list {display:grid;gap:8px;max-height:320px;overflow:auto;overscroll-behavior:contain;}
 body.mct-single-5d4n .mct-add-train-card {width:100%;display:grid;grid-template-columns:66px minmax(0,1fr) auto;gap:10px;text-align:left;align-items:center;padding:12px;background:#fff;border:1px solid #d3e0d7;border-radius:12px;color:#173c2c;cursor:pointer;}
 body.mct-single-5d4n .mct-add-train-card.is-selected {border:2px solid #0d8a5c;background:#e9f5ec;}
-body.mct-single-5d4n .mct-add-train-card img {width:100%;max-height:45px;object-fit:contain;}
+body.mct-single-5d4n .mct-add-train-card img {width:100%;max-height:45px;object-fit:contain;border-radius:6px;}
 body.mct-single-5d4n .mct-add-train-card span {display:grid;gap:3px;min-width:0;}
 body.mct-single-5d4n .mct-add-train-card small {font-size:11px;color:#51685a;}
 body.mct-single-5d4n .mct-add-train-price {text-align:right;white-space:nowrap;}
@@ -211,10 +211,16 @@ body.mct-single-5d4n .mct-mobile-booking {display:none;}
 @media(max-width:1000px){body.mct-single-5d4n .experience-layout {grid-template-columns:minmax(0,1fr);}}
 @media(max-width:767px){
  body.mct-single-5d4n .experience-top>.container,body.mct-single-5d4n .experience-content>.experience-layout,body.mct-single-5d4n .experience-tabs-wrap>.container {padding-inline:16px!important;}
- body.mct-single-5d4n .mct-mobile-booking:not([hidden]) {position:fixed;bottom:0;left:0;right:0;z-index:9999;display:block;padding:10px 74px calc(10px + env(safe-area-inset-bottom)) 16px;background:#fff;box-shadow:0 -4px 22px #082b1922;}
- body.mct-single-5d4n .mct-mobile-booking button {width:100%;background:#0d4b35;color:#fff;border:0;border-radius:999px;padding:14px;font-weight:800;text-transform:uppercase;font-size:14px;}
+ body.mct-single-5d4n .mct-mobile-booking:not([hidden]) {position:fixed;bottom:0;left:0;right:0;z-index:9999;display:block;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center;background:#fff;box-shadow:0 -4px 22px #082b1922;}
+ body.mct-single-5d4n .mct-mobile-booking button {display:block;width:100%;max-width:480px;margin-inline:auto;background:#0d4b35;color:#fff;border:0;border-radius:999px;padding:14px;font-weight:800;text-transform:uppercase;font-size:14px;}
  body.mct-single-5d4n .mct-add-train-card {grid-template-columns:42px minmax(0,1fr) auto;padding:9px;gap:6px;font-size:12px;}
  body.mct-single-5d4n .mct-train-modal-body {padding:12px;}
  body.mct-single-5d4n .mct-train-modal-footer {padding:12px;}
  body.mct-single-5d4n .mct-train-modal-footer button {padding:10px;font-size:12px;}
+}
+
+/* Keep WhatsApp clear of the mobile reservation bar. */
+@media(max-width:767px){
+ body.mct-single-5d4n .wa-float {transition:bottom .22s ease;}
+ body.mct-single-5d4n.mct-mobile-booking-visible .wa-float {bottom:calc(var(--mct-booking-bar-height,76px) + 16px)!important;}
 }
