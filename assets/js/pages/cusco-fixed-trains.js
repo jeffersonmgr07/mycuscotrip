@@ -2,7 +2,7 @@
 (function(){
   const $=id=>document.getElementById(id), esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const usd=v=>"US$ "+Number(v).toFixed(2), time=v=>{const m=String(v).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):-1;};
-  let ctx, catalog=[], loading, selected={outbound:null,return:null}, draft={}, modal, ready=false;
+  let ctx, catalog=[], loading, selected={outbound:null,return:null}, draft={}, modal, ready=false, scrollStateForModal=()=>{};
   const round=x=>Math.round((x+Number.EPSILON)*100)/100;
   function perPerson(t,child){return child?t.price?.child:t.price?.adult;}
   function validPrice(t){return Number.isFinite(t.price?.adult)&&t.price.adult>0&&(!ctx.travelers().children||(Number.isFinite(t.price?.child)&&t.price.child>=0));}
@@ -40,7 +40,7 @@
     $("mctTrainPending").hidden=!pick;
   }
   function cards(list,dir){
-    return list.length?list.map(t=>'<button type="button" class="mct-add-train-card '+(draft[dir]?.code===t.code?"is-selected":"")+'" data-train-code="'+esc(t.code)+'" data-direction="'+dir+'" aria-pressed="'+(draft[dir]?.code===t.code)+'"><img src="./assets/img/trains/'+(t.company==="incarail"?"inca-rail.png":"perurail.png")+'" alt=""><span><strong>'+esc(t.serviceName)+'</strong><small>'+esc(t.companyName)+'</small><b>'+esc(t.departureTime+" → "+t.arrivalTime)+'</b><small>'+esc(t.departureStation+" → "+t.arrivalStation)+'</small></span><span class="mct-add-train-price"><strong>'+usd(t.price.adult)+'</strong><small>por adulto</small>'+(Number.isFinite(t.price.child)?'<small>Niño '+usd(t.price.child)+'</small>':'')+'</span></button>').join(""):'<p class="mct-train-empty">No hay horarios compatibles con la selección.</p>';
+    return list.length?list.map(t=>'<button type="button" class="mct-add-train-card '+(draft[dir]?.code===t.code?"is-selected":"")+'" data-train-code="'+esc(t.code)+'" data-direction="'+dir+'" aria-pressed="'+(draft[dir]?.code===t.code)+'"><img src="./assets/img/trains/'+(t.company==="incarail"?"inca-rail.png":"perurail.png")+'" alt="'+esc(t.companyName)+'"><span><strong>'+esc(t.serviceName)+'</strong><b>'+esc(t.departureTime+" → "+t.arrivalTime)+'</b><small>'+esc(t.departureStation+" → "+t.arrivalStation)+'</small></span><span class="mct-add-train-price"><strong>'+usd(t.price.adult)+'</strong><small>por persona</small></span></button>').join(""):'<p class="mct-train-empty">No hay horarios compatibles con la selección.</p>';
   }
   function draw(){
     const out=options("outbound"), ret=options("return");
@@ -57,7 +57,7 @@
     }));
   }
   async function open(){
-    modal.showModal();draft={...selected};
+    modal.showModal();scrollStateForModal();draft={...selected};
     modal.querySelector("#mctTrainOutbound").textContent="Cargando horarios…";
     modal.querySelector("#mctTrainReturn").textContent="";
     modal.querySelector("#mctTrainApply").disabled=true;
@@ -82,8 +82,15 @@
     const sticky=document.createElement("div");sticky.className="mct-mobile-booking";sticky.hidden=true;
     sticky.innerHTML='<button type="button">Iniciar reserva</button>';document.body.append(sticky);
     const booking=document.querySelector(".booking-panel");
-    sticky.querySelector("button").onclick=()=>{sticky.hidden=true;booking.scrollIntoView({behavior:"smooth",block:"start"});};
-    function scrollState(){const r=booking.getBoundingClientRect();sticky.hidden=!matchMedia("(max-width: 767px)").matches||r.top<=innerHeight-100||document.body.classList.contains("mct-single-modal-open")||modal.open;}
+    function setStickyVisible(visible){
+      sticky.hidden=!visible;
+      document.body.classList.toggle("mct-mobile-booking-visible",visible);
+      if(visible)document.body.style.setProperty("--mct-booking-bar-height",Math.ceil(sticky.getBoundingClientRect().height)+"px");
+    }
+    sticky.querySelector("button").onclick=()=>{setStickyVisible(false);booking.scrollIntoView({behavior:"smooth",block:"start"});};
+    function scrollState(){const r=booking.getBoundingClientRect();setStickyVisible(matchMedia("(max-width: 767px)").matches&&r.top>innerHeight-100&&!document.body.classList.contains("mct-single-modal-open")&&!modal.open);}
+    scrollStateForModal=scrollState;
+    if(window.ResizeObserver)new ResizeObserver(()=>{if(!sticky.hidden)document.body.style.setProperty("--mct-booking-bar-height",Math.ceil(sticky.getBoundingClientRect().height)+"px");}).observe(sticky);
     window.addEventListener("scroll",scrollState,{passive:true});window.addEventListener("resize",scrollState);
     new MutationObserver(scrollState).observe(document.body,{attributes:true,attributeFilter:["class"]});
     modal.addEventListener("close",scrollState);
