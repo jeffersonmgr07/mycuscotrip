@@ -222,3 +222,8 @@
     flex-direction: column;
   }
 }
+
+/* Shared mobile footer: half of the original 220px logo. */
+@media (max-width: 768px) {
+  .footer-logo-block img { width: 110px !important; max-width: 50% !important; height: auto !important; }
+}
