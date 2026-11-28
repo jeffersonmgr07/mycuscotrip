@@ -11,7 +11,8 @@
     paypalRate: 0.054,
     bankRate: 0.015,
     defaultExchangeRate: 3.38,
-    paypalEnabled: true
+    paypalEnabled: true,
+    mpRate: 0.029, mpFixed: 1
   };
 
   const state = {
@@ -83,19 +84,15 @@
   }
 
   function isPeruvianAgency() {
+    if(state.paymentConfig && typeof state.paymentConfig.peruvian==='boolean')return state.paymentConfig.peruvian;
     const country = String(state.session?.country || state.session?.pais || '').trim().toUpperCase();
     return country === 'PE' || country === 'PERU' || country === 'PERÚ';
   }
 
 
-  function paymentMethodFor(order) {
-    const currency = String(order?.currency || order?.moneda || state.currency || '').toUpperCase();
-    return currency === 'USD' ? 'paypal' : 'mercadopago';
-  }
+  function paymentMethodFor(order) { return order?.paymentMethod || (isPeruvianAgency() ? 'mercadopago' : 'paypal'); }
 
-  function paymentButtonLabel(order) {
-    return paymentMethodFor(order) === 'paypal' ? t('agency.payWithPayPal', 'Pagar con PayPal') : t('agency.payBooking', 'Pagar reserva');
-  }
+  function paymentButtonLabel(order) {return paymentMethodFor(order)==='transfer'?'Coordinar transferencia':paymentMethodFor(order)==='paypal'?'Pagar con PayPal':'Pago online';}
 
 
   function getMercadoPagoDeviceId() {
@@ -117,7 +114,7 @@
   }
 
   function setCurrency(currency) {
-    if($('#generateOrderButton')?.disabled)return;
+    if(state.submitting)return;
     state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
     localStorage.setItem('mct_visible_currency', state.currency);
     updateCurrencyMenu();
@@ -176,10 +173,12 @@
     $('#serviceDate').value = tomorrowISO();
 
     hydrateCountrySelects();
-    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{const flag=String.fromCodePoint(...x.code.split('').map(c=>127397+c.charCodeAt(0)));return '<option value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+flag+' '+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
+    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{return '<option data-flag="'+x.code.toLowerCase()+'" value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
     fetch('./assets/data/pickup-hotels.json').then(r=>r.json()).then(data=>{const hotels=data.hotels||[];$('#pickupHotels').innerHTML=hotels.map(x=>'<option value="'+escapeHtml(x.name)+'"></option>').join('');$('#pickupHotel').addEventListener('input',()=>{const hit=hotels.find(x=>x.name.toLowerCase()===$('#pickupHotel').value.toLowerCase());if(hit)$('#pickupAddress').value=hit.address||'';});}).catch(()=>{});
+    configurePaymentMode();
     bindEvents();
     await loadCatalog();
+    const quote=await sendToSheet("agencyPaymentConfig",{});if(quote.ok&&Number(quote.rate)>0){state.exchangeRate=Number(quote.rate);state.paymentConfig=quote;configurePaymentMode();}else{state.paymentConfig=null;if(quote.code==='SESSION_EXPIRED'){location.href='./login.html';return;}}
     renderExperiences();
     renderCart();
     renderOrders();
@@ -253,7 +252,6 @@
       renderEntryTickets(findService($('#selectedServiceId').value));
     }));
     $('#leadLanguage')?.addEventListener('change', syncLanguageNotice);
-    $('#includeTicketsToggle')?.addEventListener('change', () => renderEntryTickets(findService($('#selectedServiceId').value)));
     $('#logoutButton')?.addEventListener('click', logout);
     $('#reserveForm').addEventListener('submit', addToCart);
     $('#clearCartButton').addEventListener('click', clearCart);
@@ -293,7 +291,7 @@
         <div class="experience-body">
           
           <h3>${escapeHtml(service.name)}</h3>
-          <p class="compact-schedule"><i class="fa-regular fa-clock"></i> ${escapeHtml(service.startLabel || '')}</p><details class="experience-expand" ${window.matchMedia("(min-width: 701px)").matches?"open":""}><summary>${currentLocale() === 'en' ? 'View more details' : 'Ver más detalles'}</summary><p class="experience-desc">${escapeHtml(service.description || '')}</p>
+          <p class="compact-schedule"><i class="fa-regular fa-clock"></i> ${escapeHtml(service.startLabel || '')}</p><details class="experience-expand" ><summary>${currentLocale() === 'en' ? 'View more details' : 'Ver detalles'}</summary><p class="experience-desc">${escapeHtml(service.description || '')}</p>
           <table class="mini-table">
             <tr><td>${currentLocale() === 'en' ? 'Frequency' : 'Frecuencia'}</td><td>${escapeHtml(service.frequency || '')}</td></tr>
             <tr><td>${t('agency.duration', 'Duración')}</td><td>${escapeHtml(service.durationLabel || '')}</td></tr>
@@ -316,6 +314,7 @@
     if (!service) return;
     $('#reserveTitle').textContent = `${t('agency.book', 'Reservar')} · ${service.name}`;
     $('#reserveForm').reset();
+    $('#entryTicketOptions').innerHTML='';
     $('#selectedServiceId').value = id;
     $('#leadDetails').open = false; $('#pickupDetails').open = false;
     syncLanguageNotice();
@@ -328,6 +327,8 @@
     hydrateCountrySelects($('#reserveModal'));
     updateReserveSubtotal();
     $('#reserveModal').classList.add('show');
+    $('#reserveForm').querySelectorAll('select').forEach(x=>x.dispatchEvent(new Event('agency:refresh')));
+    if($('#serviceDate')._flatpickr){$('#serviceDate')._flatpickr.set('minDate',tomorrowISO());$('#serviceDate')._flatpickr.setDate(tomorrowISO(),false);}
   }
 
   function renderScheduleOptions(service) {
@@ -340,29 +341,14 @@
   }
 
   function renderEntryTickets(service) {
-    const box = $('#entryTicketsBox');
-    const options = $('#entryTicketOptions');
-    const toggle = $('#includeTicketsToggle');
-    if (!box || !options || !toggle) return;
-    const tickets = Array.isArray(service?.entryTickets) ? service.entryTickets : [];
-    if (!tickets.length) {
-      box.hidden = true;
-      options.innerHTML = '';
-      toggle.checked = false;
-      return;
-    }
-    box.hidden = false;
-    options.innerHTML = tickets.map((ticket) => `
-      <label class="entry-ticket-option ${toggle.checked ? '' : 'is-disabled'}">
-        <input type="checkbox" data-entry-ticket="${escapeHtml(ticket.id)}" ${toggle.checked ? '' : 'disabled'} />
-        <span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} ${t('agency.perPassenger', 'por pasajero')}${ticket.note ? ` · ${escapeHtml(ticket.note)}` : ''}</small></span>
-      </label>
-    `).join('');
+    const box=$('#entryTicketsBox'),options=$('#entryTicketOptions');const selected=new Set($('[data-entry-ticket]:checked').map(x=>x.dataset.entryTicket));
+    const tickets=Array.isArray(service?.entryTickets)?service.entryTickets:[];box.hidden=!tickets.length;
+    options.innerHTML=tickets.map(ticket=>`<label class="entry-ticket-option"><input type="checkbox" data-entry-ticket="${escapeHtml(ticket.id)}" ${selected.has(ticket.id)?'checked':''}><span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} por pasajero${ticket.note?' · '+escapeHtml(ticket.note):''}</small></span></label>`).join('');
   }
 
   function selectedEntryTickets(service, pax) {
     const tickets = Array.isArray(service?.entryTickets) ? service.entryTickets : [];
-    if (!tickets.length || !$('#includeTicketsToggle')?.checked) return [];
+    if (!tickets.length) return [];
     const selectedIds = $$('[data-entry-ticket]:checked').map((input) => input.dataset.entryTicket);
     return tickets.filter((ticket) => selectedIds.includes(ticket.id)).map((ticket) => ({
       id: ticket.id,
@@ -404,7 +390,7 @@
     if (!form.reportValidity()) return;
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
-    if($('#generateOrderButton').disabled)return;
+    if(state.submitting)return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
@@ -469,10 +455,13 @@
     return itemServiceSubtotal(item) + itemTicketsSubtotal(item);
   }
 
+  function configurePaymentMode(){const select=$('#paymentMode');if(!select)return;select.innerHTML=isPeruvianAgency()?'<option value="transfer">Transferencia coordinada</option><option value="mercadopago">Pago online</option>':'<option value="paypal">PayPal</option>';select.onchange=()=>{state.pendingCode=null;renderCart();};}
+  function paymentCurrency(){return isPeruvianAgency()?'PEN':'USD';}
   function feeGross(subtotal) {
-    if (subtotal <= 0) return { total: subtotal, fee: 0 };
-    const total = subtotal / (1 - CONFIG.paypalRate - CONFIG.bankRate);
-    return { total, fee: total - subtotal };
+    const method=$('#paymentMode').value, currency=paymentCurrency(), converted=state.cart.reduce((sum,i)=>{const cv=(p,c,u)=>currency==='PEN'?(c==='USD'&&u!=null?Number(u)*state.exchangeRate:Number(p||0)):(c==='USD'&&u!=null?Number(u):Number(p||0)/state.exchangeRate);return sum+cv(i.unitPricePEN,i.serviceCurrency,i.unitPriceUSD)*i.pax+(i.entryTickets||[]).reduce((a,x)=>a+cv(x.pricePEN,x.currency,x.priceUSD)*i.pax,0)},0);
+    const net=Number(converted.toFixed(2));
+    const total=net<=0?0:method==='mercadopago'?Math.ceil((net+1)/(1-.029)*100-1e-8)/100:method==='paypal'?Math.ceil(net/(1-.054-.015)*100-1e-8)/100:net;
+    return {total,fee:Number((total-net).toFixed(2)),net,currency,method};
   }
 
   function renderCart() {
@@ -487,7 +476,8 @@
           <div class="cart-row"><span>${t('agency.cartTime', 'Hora')}</span><span>${escapeHtml(item.serviceTime || t('agency.confirm', 'Por confirmar'))}</span></div>
           <div class="cart-row"><span>${t('agency.cartPassengers', 'Pasajeros')}</span><span>${item.pax}</span></div>
           <div class="cart-row"><span>${t('agency.holder', 'Titular')}</span><span>${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)}</span></div>
-          ${item.entryTickets?.length ? `<div class="cart-row"><span>${t('agency.tickets', 'Tickets')}</span><span>${item.entryTickets.map((ticket) => escapeHtml(ticket.name)).join('<br>')}</span></div>` : ''}
+          <div class="cart-row"><span>Experiencia · ${money(convert(item.unitPricePEN,item.serviceCurrency,item.unitPriceUSD))} × ${item.pax}</span><strong>${money(itemServiceSubtotal(item))}</strong></div>
+          ${(item.entryTickets||[]).map(ticket=>`<div class="cart-row"><span>${escapeHtml(ticket.name)} · ${money(convert(ticket.pricePEN,ticket.currency||'PEN',ticket.priceUSD))} × ${item.pax}</span><strong>${money(convert(ticket.pricePEN,ticket.currency||'PEN',ticket.priceUSD)*item.pax)}</strong></div>`).join('')}
           <div class="cart-row"><span>Subtotal</span><strong>${money(itemSubtotal(item))}</strong></div>
           <button type="button" class="agency-button agency-button--ghost agency-button--small" data-remove="${index}">${t('agency.remove', 'Quitar')}</button>
         </article>
@@ -495,10 +485,14 @@
     }
     $$('[data-remove]').forEach((button) => button.addEventListener('click', () => removeItem(Number(button.dataset.remove))));
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
-    const { total, fee } = feeGross(subtotal);
-    $('#subtotalAmount').textContent = money(subtotal);
-    $('#feeAmount').textContent = money(fee);
-    $('#grandTotal').textContent = money(total);
+    const { total, fee, net, currency, method } = feeGross(subtotal);
+    $('#subtotalAmount').textContent = money(net,currency);
+    $('#feeAmount').textContent = money(fee,currency);
+    $('#paymentFeeRow').hidden=fee<=0;
+    $('#grandTotal').textContent = money(total,currency);
+    $('#generateOrderButton').disabled=!state.paymentConfig||state.submitting;
+    $('#paymentCurrencyNote').textContent=currency!==state.currency?'Pago en '+currency+' · Tipo de cambio: '+state.exchangeRate.toFixed(4)+(state.paymentConfig?.date?' · '+state.paymentConfig.date:''):'';
+    if(!state.paymentConfig)$('#paymentCurrencyNote').textContent+=' Configuración de pago pendiente de actualizar.';
     const cartLink = document.querySelector('#agencyCartLink'); if(cartLink) cartLink.textContent = (currentLocale()==='en'?'Order':'Orden')+' ('+state.cart.length+')';
     if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
     if ($('#toolbarTotal')) $('#toolbarTotal').textContent = money(total);
@@ -524,25 +518,27 @@
 
   async function generateOrder() {
     if (!state.cart.length) { alert(t('agency.addOneService', 'Agrega al menos un servicio a tu orden.')); return; }
+    if(!state.paymentConfig){alert('No se pudo cargar la configuración de pago. Actualiza el backend y recarga la página.');return;}
     const subtotal = state.cart.reduce((sum, item) => sum + itemSubtotal(item), 0);
-    const { total, fee } = feeGross(subtotal);
+    const { total, fee, net, currency, method } = feeGross(subtotal);
     const order = {
       code: state.pendingCode || (state.pendingCode = makeCode()),
       createdAt: new Date().toISOString(),
       status: 'Pendiente',
-      currency: state.currency,
+      currency, displayCurrency:state.currency, paymentMethod:method,
       exchangeRate: state.exchangeRate,
-      subtotal: Number(subtotal.toFixed(2)),
+      subtotal: net,
       fee: Number(fee.toFixed(2)),
       total: Number(total.toFixed(2)),
-      paypalBankFeeApplied: true,
+
       paymentDueAt: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       account: {agencyId:state.session.agencyId,email:state.session.email,companyName:state.session.companyName},
       items: state.cart
     };
-    const button = $('#generateOrderButton'); if(button.disabled)return;button.disabled=true;
-    let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{button.disabled=false;}
+    const button = $('#generateOrderButton'); if(button.disabled||state.submitting)return;state.submitting=true;button.disabled=true;
+    let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{state.submitting=false;button.disabled=false;}
     if(!result?.ok){if(result?.code==='SESSION_EXPIRED'){location.href='./login.html';return;}alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
+    if(result.order)Object.assign(order,result.order);
     state.pendingCode = null;
     state.orders.unshift({code:order.code,status:order.status});
     showOrderModal(order, result);
@@ -550,7 +546,7 @@
     $('#orderBox').innerHTML = `
       <h3>${t('agency.generatedOrder', 'Orden generada')}</h3>
       <div class="order-code">${escapeHtml(order.code)}</div>
-      <p><strong>${t('agency.totalLabel', 'Total a pagar')}:</strong> ${money(order.total)}</p>
+      <p><strong>${t('agency.totalLabel', 'Total a pagar')}:</strong> ${money(order.total,order.currency)}</p>
       <button type="button" class="agency-button agency-button--primary" id="viewLastOrderButton">${t('agency.viewPrintOrder', 'Ver / imprimir orden')}</button>
     `;
     $('#viewLastOrderButton')?.addEventListener('click', () => showOrderModal(order));
@@ -561,27 +557,10 @@
   }
 
   function orderItemsRows(order) {
-    return order.items.map((item, index) => {
-      const serviceAmount = itemServiceSubtotal(item);
-      const ticketRows = (item.entryTickets || []).map((ticket) => {
-        const ticketAmount = convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD) * (ticket.pax || item.pax || 1);
-        return `<tr class="order-ticket-row"><td></td><td>${t('agency.ticket', 'Ticket')}: ${escapeHtml(ticket.name)}${ticket.note ? `<br><small>${escapeHtml(ticket.note)}</small>` : ''}</td><td>${ticket.pax || item.pax}</td><td>${money(convert(ticket.pricePEN, ticket.currency || 'PEN', ticket.priceUSD))}</td><td><strong>${money(ticketAmount)}</strong></td></tr>`;
-      }).join('');
-      const passengers = item.passengers?.length
-        ? item.passengers.map((p, i) => `<li>${t('agency.passenger', 'Pasajero')} ${i + 2}: ${escapeHtml([p.firstName, p.lastName].filter(Boolean).join(' '))} · ${escapeHtml(p.docType || '')} ${escapeHtml(p.docNumber || '')}${p.nationality ? ` · ${t('agency.nationality', 'Nacionalidad')}: ${escapeHtml(p.nationality)}` : ''}</li>`).join('')
-        : `<li>${t('agency.noAdditionalData', 'Datos adicionales pendientes.')}</li>`;
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td><strong>${escapeHtml(item.serviceName)}</strong><br><small>${t('agency.date', 'Fecha')}: ${formatDate(item.travelDate)} · ${t('agency.time', 'Hora')}: ${escapeHtml(item.serviceTime || t('agency.confirm', 'Por confirmar'))}</small><br><small>${t('agency.pickup', 'Recojo')}: ${escapeHtml(item.pickupPoint || '')}</small></td>
-          <td>${item.pax}</td>
-          <td>${money(convert(item.unitPricePEN, item.serviceCurrency, item.unitPriceUSD))}</td>
-          <td><strong>${money(serviceAmount)}</strong></td>
-        </tr>
-        ${ticketRows}
-        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>${t('agency.lead', 'Titular')}:</strong> ${escapeHtml(item.lead.firstName)} ${escapeHtml(item.lead.lastName)} · ${escapeHtml(item.lead.docType)} ${escapeHtml(item.lead.docNumber)}${item.lead.nationality ? ` · ${t('agency.nationality', 'Nacionalidad')}: ${escapeHtml(item.lead.nationality)}` : ''}${item.lead.language ? ` · ${t('agency.language', 'Idioma')}: ${escapeHtml(item.lead.language)}` : ''} · ${escapeHtml(item.lead.phone)}<br><strong>${t('agency.additionalPassengers', 'Pasajeros adicionales')}:</strong><ul>${passengers}</ul>${item.notes ? `<strong>${t('agency.observations', 'Observaciones')}:</strong> ${escapeHtml(item.notes)}` : ''}</td></tr>
-      `;
-    }).join('');
+    const cur=order.currency,rate=order.exchangeRate;
+    const conv=(p,c,u)=>cur==='PEN'?(c==='USD'&&u!=null?Number(u)*rate:Number(p||0)):(c==='USD'&&u!=null?Number(u):Number(p||0)/rate);
+    const line=(name,unit,pax)=>`<div class="ag-order-line"><span>${escapeHtml(name)}<small>${money(unit,cur)} × ${pax}</small></span><strong>${money(unit*pax,cur)}</strong></div>`;
+    return order.items.map(item=>`<article class="ag-order-service"><h3>${escapeHtml(item.serviceName)}</h3><p>${formatDate(item.travelDate)} · ${escapeHtml(item.serviceTime)} · ${item.pax} pax</p>${line('Experiencia',conv(item.unitPricePEN,item.serviceCurrency,item.unitPriceUSD),item.pax)}${(item.entryTickets||[]).map(x=>line(x.name,conv(x.pricePEN,x.currency,x.priceUSD),item.pax)).join('')}<details><summary>Datos de pasajeros y recojo</summary><p>${escapeHtml([item.lead?.firstName,item.lead?.lastName].filter(Boolean).join(' ')||'Datos pendientes')}</p><p>${escapeHtml(item.pickupPoint||'Recojo por coordinar')}</p>${(item.passengers||[]).map(p=>'<p>'+escapeHtml([p.firstName,p.lastName].join(' '))+'</p>').join('')}</details></article>`).join('');
   }
 
   function orderHTML(order, result = null) {
@@ -603,24 +582,18 @@
             </div>
           </div>
         </div>
-        <div class="info-note"><strong>${t('agency.paymentTime', 'Tiempo de pago')}:</strong> ${t('agency.paymentTimeNote', 'esta orden queda reservada por 3 horas. Para confirmar los servicios, el pago debe validarse dentro del plazo indicado y siempre sujeto a disponibilidad operativa.')}</div>
-        <div class="order-table-wrap">
-          <table class="order-table">
-            <thead><tr><th>#</th><th>${t('agency.orderTableService', 'Servicio')}</th><th>Pax</th><th>${t('agency.rate', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
-            <tbody>${orderItemsRows(order)}</tbody>
-          </table>
-        </div>
+
+        <div class="ag-order-services">${orderItemsRows(order)}</div>
         <div class="order-totals">
-          <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotal)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.fee)}</strong></div>
-          <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total)}</strong></div>
+          <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotal,order.currency)}</strong></div>
+          ${order.fee>0?`<div><span>Cargo de pago online</span><strong>${money(order.fee,order.currency)}</strong></div>`:''}
+          <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.total,order.currency)}</strong></div>
         </div>
-        <p class="small-print-note">${result?.ok === false ? t('agency.noteSheetError', 'Nota: no se confirmó el envío a Google Sheets. Revisa la conexión.') : ''}</p><div class="payment-method-note">${t('agency.paymentConfirmNoteHtml', '<strong>Confirmación:</strong> toda orden será confirmada posterior al pago y siempre quedará sujeta a disponibilidad operativa, tickets disponibles y validación del área de reservas.')}</div>
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-modal>${t('agency.close', 'Cerrar')}</button>
         <button type="button" class="agency-button paypal-button" id="payWithPayPalButton" data-order-code="${escapeHtml(order.code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--ghost" id="bankInstructions">Transferencia bancaria</button><button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
+        <button type="button" class="agency-button agency-button--primary" id="printOrderButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>
     `;
   }
@@ -630,7 +603,7 @@
     $('#orderModal').classList.add('show');
     $('#printOrderButton')?.addEventListener('click', printOrder);
     $('#payWithPayPalButton')?.addEventListener('click', () => startPayPalPayment(order));
-    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\n'+(r.email||''):r.message);});
+    $('#bankInstructions')?.addEventListener('click', async()=>{const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Contacta a reservas@mycuscotrip.com para coordinar el pago.')+'\\n'+(r.email||''):r.message);});
     $('#orderModalBody [data-close-modal]')?.addEventListener('click', closeModals);
   }
 
@@ -638,8 +611,9 @@
 
   async function startPayPalPayment(order) {
     const method = paymentMethodFor(order);
+    if(method==='transfer'){const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Coordina el pago con reservas@mycuscotrip.com.')+'\n'+(r.email||''):r.message);return;}
     const button = $('#payWithPayPalButton');
-    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
+    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : (currentLocale()==='en'?'Connecting…':'Conectando…');
     if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const action = method === 'paypal' ? 'createPayPalOrder' : 'createMercadoPagoPreference';
