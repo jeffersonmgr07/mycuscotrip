@@ -224,3 +224,22 @@ body.mct-single-5d4n .mct-mobile-booking {display:none;}
  body.mct-single-5d4n .wa-float {transition:bottom .22s ease;}
  body.mct-single-5d4n.mct-mobile-booking-visible .wa-float {bottom:calc(var(--mct-booking-bar-height,76px) + 16px)!important;}
 }
+
+/* Two-step train selector: fixed header/footer with one scrollable step. */
+body.mct-single-5d4n .mct-add-train-modal[open] {display:flex;flex-direction:column;overflow:hidden;max-height:88dvh;}
+body.mct-single-5d4n .mct-train-modal-header,body.mct-single-5d4n .mct-train-modal-footer {position:relative;flex:0 0 auto;}
+body.mct-single-5d4n .mct-train-modal-body {display:block;min-height:0;overflow-y:auto;overscroll-behavior:contain;}
+body.mct-single-5d4n .mct-train-step {padding:0!important;}
+body.mct-single-5d4n .mct-train-step-label {font-size:12px;font-weight:750;color:#527a17;margin-bottom:10px;}
+body.mct-single-5d4n .mct-train-step h3 {margin:0 0 8px;}
+body.mct-single-5d4n .mct-train-step p {margin:0 0 12px;font-size:14px;}
+body.mct-single-5d4n .mct-train-step .mct-train-list {max-height:none;overflow:visible;}
+body.mct-single-5d4n .mct-train-footer-actions {display:flex!important;align-items:center;justify-content:flex-end;gap:8px;}
+body.mct-single-5d4n #mctTrainBack {background:#edf2ef;color:#0d4b35;}
+body.mct-single-5d4n #mctTrainChosenOutbound {margin-bottom:16px;background:#fff;}
+@media(max-width:480px){
+ body.mct-single-5d4n .mct-train-modal-footer {flex-wrap:wrap;gap:8px;}
+ body.mct-single-5d4n .mct-train-footer-actions {width:100%;}
+ body.mct-single-5d4n #mctTrainApply {flex:1;min-height:42px;}
+ body.mct-single-5d4n #mctTrainBack {min-height:42px;}
+}
