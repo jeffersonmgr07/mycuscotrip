@@ -394,7 +394,7 @@
       passengers.push({passengerNumber:i,role:"traveler",completionStatus:"complete",firstName:read("firstName"),lastName:read("lastName"),documentType:read("documentType"),documentNumber:read("documentNumber"),nationality:read("nationality"),birthdate:read("birthdate")});
     }
     const price=summary();const code=$("passengerReservationCode").textContent;
-    return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"paypal",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"paypal"}};
+    return {code,reservationCode:code,source:"cusco-5d4n-unico",productId:PRODUCT_ID,productSlug:"cusco-5-dias-4-noches-unico",productTitle:"Cusco, Valle Sagrado y Machu Picchu · 5 días / 4 noches",duration:"5 días / 4 noches",productIncludes:INCLUDED,productExcludes:EXCLUDED,date:state.date,adults:state.adults,children:state.children,infants:0,totalPassengers:count,selectedHotel:state.hotel,roomAllocation:{doubles:state.rooms.doubles,triples:state.rooms.triples},extraCode:state.extra,currency:"PEN",paymentMode:"full",paymentProvider:"paypal",accommodationIncluded:true,availabilityConfirmed:false,serviceTotalValue:price.total,payNowValue:price.total,payLaterValue:0,holderIsPassenger:isPassenger,holder,passengers,pricing:{subtotal:price.total,total:price.total,discount:0},checkoutPayload:{reservationCode:code,currency:"PEN",amountToPayNowValue:price.total,productId:PRODUCT_ID,provider:"paypal"}};
   }
   let fxQuote=null, fxPayload=null, savedReservation=null;
   function usd(value){return "US$ "+Number(value).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -535,7 +535,7 @@
     phone.options[phone.selectedIndex].defaultSelected=true;
     document.addEventListener("pointerdown",e=>{if(activePicker&&!mobilePicker()&&!activePicker.panel.contains(e.target)&&!activePicker.trigger.contains(e.target))closePicker();},true);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&activePicker){e.preventDefault();e.stopImmediatePropagation();closePicker(true);}},true);
-    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",e=>{if(activePicker?.panel.contains(e.target))return;positionPicker();},true);
+    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",e=>{if(e.target instanceof Node&&activePicker?.panel.contains(e.target))return;positionPicker();},true);
     window.visualViewport?.addEventListener("resize",positionPicker);window.visualViewport?.addEventListener("scroll",positionPicker);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal("hotelSelectionModal");closeModal("passengerReservationModal");}});
   }
