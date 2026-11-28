@@ -2,7 +2,7 @@
 (function(){
   const $=id=>document.getElementById(id), esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const usd=v=>"US$ "+Number(v).toFixed(2), time=v=>{const m=String(v).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):-1;};
-  let ctx, catalog=[], loading, selected={outbound:null,return:null}, draft={}, modal, ready=false, scrollStateForModal=()=>{};
+  let ctx, catalog=[], loading, selected={outbound:null,return:null}, draft={}, modal, ready=false, step="outbound", scrollStateForModal=()=>{};
   const round=x=>Math.round((x+Number.EPSILON)*100)/100;
   function perPerson(t,child){return child?t.price?.child:t.price?.adult;}
   function validPrice(t){return Number.isFinite(t.price?.adult)&&t.price.adult>0&&(!ctx.travelers().children||(Number.isFinite(t.price?.child)&&t.price.child>=0));}
@@ -10,7 +10,7 @@
   function options(direction){
     const isFull=ctx.days===3;
     return catalog.filter(t=>{
-      if(t.direction!==direction||t.isLocalTrain||t.company==="local"||t.category==="hiram_bingham"||t.currency!=="USD"||!validPrice(t))return false;
+      if(t.direction!==(direction==="return"?"inbound":"outbound")||t.isLocalTrain||t.company==="local"||t.category==="hiram_bingham"||t.currency!=="USD"||!validPrice(t))return false;
       const dep=time(t.departureTime),arr=time(t.arrivalTime);
       if(dep<0||arr<0)return false;
       if(direction==="outbound")return t.route==="OLLA_MAPI"&&(isFull?arr<=9*60:dep>=15*60+37);
@@ -42,28 +42,44 @@
   function cards(list,dir){
     return list.length?list.map(t=>'<button type="button" class="mct-add-train-card '+(draft[dir]?.code===t.code?"is-selected":"")+'" data-train-code="'+esc(t.code)+'" data-direction="'+dir+'" aria-pressed="'+(draft[dir]?.code===t.code)+'"><img src="./assets/img/trains/'+(t.company==="incarail"?"inca-rail.png":"perurail.png")+'" alt="'+esc(t.companyName)+'"><span><strong>'+esc(t.serviceName)+'</strong><b>'+esc(t.departureTime+" → "+t.arrivalTime)+'</b><small>'+esc(t.departureStation+" → "+t.arrivalStation)+'</small></span><span class="mct-add-train-price"><strong>'+usd(t.price.adult)+'</strong><small>por persona</small></span></button>').join(""):'<p class="mct-train-empty">No hay horarios compatibles con la selección.</p>';
   }
-  function draw(){
+  function draw(resetScroll=false){
     const out=options("outbound"), ret=options("return");
-    modal.querySelector("#mctTrainOutbound").innerHTML=cards(out,"outbound");
-    modal.querySelector("#mctTrainReturn").innerHTML=draft.outbound?cards(ret,"return"):'<p class="mct-train-empty">Selecciona primero tu tren de ida.</p>';
-    modal.querySelector("#mctTrainModalTotal").textContent=usd((draft.outbound?fare(draft.outbound):0)+(draft.return?fare(draft.return):0));
-    modal.querySelector("#mctTrainApply").disabled=!(draft.outbound&&draft.return&&out.some(t=>t.code===draft.outbound.code)&&ret.some(t=>t.code===draft.return.code));
+    const outboundStep=step==="outbound";
+    const outSection=modal.querySelector("#mctTrainOutboundStep"),retSection=modal.querySelector("#mctTrainReturnStep");
+    outSection.hidden=!outboundStep;retSection.hidden=outboundStep;
+    modal.querySelector("#mctTrainStepLabel").textContent=outboundStep?"Paso 1 de 2 · Ida":"Paso 2 de 2 · Retorno";
+    modal.querySelector("#mctTrainOutbound").innerHTML=outboundStep?cards(out,"outbound"):"";
+    modal.querySelector("#mctTrainReturn").innerHTML=outboundStep?"":cards(ret,"return");
+    modal.querySelector("#mctTrainChosenOutbound").innerHTML=draft.outbound?'<strong>Tren de ida seleccionado</strong><span>'+esc(draft.outbound.companyName+" · "+draft.outbound.serviceName)+'</span><span>'+esc(dateFor("outbound"))+' · '+esc(draft.outbound.departureTime+" → "+draft.outbound.arrivalTime)+'</span><b>'+usd(fare(draft.outbound))+'</b>':"";
+    modal.querySelector("#mctTrainModalTotal").textContent=usd((draft.outbound?fare(draft.outbound):0)+(!outboundStep&&draft.return?fare(draft.return):0));
+    const apply=modal.querySelector("#mctTrainApply");
+    apply.textContent=outboundStep?"Continuar al retorno":"Confirmar selección";
+    apply.disabled=outboundStep?!(draft.outbound&&out.some(t=>t.code===draft.outbound.code)):!(draft.outbound&&draft.return&&out.some(t=>t.code===draft.outbound.code)&&ret.some(t=>t.code===draft.return.code));
+    modal.querySelector("#mctTrainBack").hidden=outboundStep;
     modal.querySelectorAll("[data-train-code]").forEach(btn=>btn.addEventListener("click",()=>{
       const dir=btn.dataset.direction, t=catalog.find(t=>t.code===btn.dataset.trainCode);
       if(!t)return;
       draft[dir]=t;if(dir==="outbound"&&draft.return&&!options("return").some(r=>r.code===draft.return.code))draft.return=null;
+      const list=btn.closest(".mct-train-list"), oldTop=list?.scrollTop||0;
       draw();
-      const next=modal.querySelector('[data-train-code="'+CSS.escape(t.code)+'"]');next?.focus({preventScroll:true});
+      const next=modal.querySelector('[data-train-code="'+CSS.escape(t.code)+'"]');if(next){next.closest(".mct-train-list").scrollTop=oldTop;next.focus({preventScroll:true});}
     }));
+    if(resetScroll){modal.querySelector(".mct-train-modal-body").scrollTop=0;modal.querySelectorAll(".mct-train-list").forEach(l=>l.scrollTop=0);}
   }
   async function open(){
-    modal.showModal();scrollStateForModal();draft={...selected};
+    step="outbound";draft={...selected};
+    modal.showModal();scrollStateForModal();
+    modal.querySelector("#mctTrainOutboundStep").hidden=false;modal.querySelector("#mctTrainReturnStep").hidden=true;
+    modal.querySelector("#mctTrainStepLabel").textContent="Paso 1 de 2 · Ida";
     modal.querySelector("#mctTrainOutbound").textContent="Cargando horarios…";
     modal.querySelector("#mctTrainReturn").textContent="";
+    modal.querySelector("#mctTrainBack").hidden=true;
+    modal.querySelector("#mctTrainApply").textContent="Continuar al retorno";
     modal.querySelector("#mctTrainApply").disabled=true;
+    modal.querySelector("#mctTrainModalTotal").textContent=usd(0);
     try{
       if(!loading)loading=fetch("./assets/data/trains.json").then(r=>{if(!r.ok)throw Error("catalog");return r.json();}).then(d=>{if(!Array.isArray(d.trains))throw Error("catalog");catalog=d.trains;}).catch(e=>{loading=null;throw e;});
-      await loading;if(modal.open)draw();
+      await loading;if(modal.open)draw(true);
     }catch(e){modal.querySelector("#mctTrainOutbound").textContent="No pudimos cargar los trenes. Inténtalo nuevamente.";}
   }
   function init(config){
@@ -72,10 +88,15 @@
     section.innerHTML='<div class="experience-card__header"><h2>Agrega trenes a tu paquete</h2></div><div class="mct-add-train-body"><img class="mct-train-hero" src="./assets/img/trenes/hero-trenes-machu-picchu.jpg" alt="Trenes turísticos hacia Machu Picchu" loading="lazy"><div id="mctAddTrainsSummary"></div><div class="mct-train-actions"><button type="button" id="mctOpenTrains">Agregar trenes</button><button type="button" id="mctRemoveTrains" hidden>Quitar trenes</button></div><small>Tarifas referenciales en dólares por persona; horarios y disponibilidad sujetos a confirmación.</small></div>';
     $("faq").before(section);
     modal=document.createElement("dialog");modal.className="mct-add-train-modal";modal.setAttribute("aria-labelledby","mctTrainModalTitle");
-    modal.innerHTML='<div class="mct-train-modal-header"><h2 id="mctTrainModalTitle">Agrega tus trenes</h2><button type="button" aria-label="Cerrar" id="mctTrainClose">×</button></div><div class="mct-train-modal-body"><p>Selecciona ambos trayectos. Los precios corresponden al boleto completo, no a un upgrade.</p><h3>Tren de ida</h3><div id="mctTrainOutbound" class="mct-train-list"></div><h3>Tren de retorno</h3><div id="mctTrainReturn" class="mct-train-list"></div></div><div class="mct-train-modal-footer"><div><small>Total para tus viajeros</small><strong id="mctTrainModalTotal">US$ 0.00</strong></div><button type="button" id="mctTrainApply" disabled>Agregar selección</button></div>';
+    modal.innerHTML='<div class="mct-train-modal-header"><h2 id="mctTrainModalTitle">Agrega tus trenes</h2><button type="button" aria-label="Cerrar" id="mctTrainClose">×</button></div><div class="mct-train-modal-body"><div id="mctTrainStepLabel" class="mct-train-step-label" aria-live="polite">Paso 1 de 2 · Ida</div><section id="mctTrainOutboundStep" class="mct-train-step"><h3>Tren de ida</h3><p>Elige el horario y servicio de tu preferencia.</p><div id="mctTrainOutbound" class="mct-train-list"></div></section><section id="mctTrainReturnStep" class="mct-train-step" hidden><div id="mctTrainChosenOutbound" class="mct-added-train"></div><h3>Tren de retorno</h3><p>Selecciona un horario compatible con tu viaje.</p><div id="mctTrainReturn" class="mct-train-list"></div></section></div><div class="mct-train-modal-footer"><div><small>Total para tus viajeros</small><strong id="mctTrainModalTotal">US$ 0.00</strong></div><div class="mct-train-footer-actions"><button type="button" id="mctTrainBack" hidden>Volver</button><button type="button" id="mctTrainApply" disabled>Continuar al retorno</button></div></div>';
     document.body.append(modal);
     $("mctOpenTrains").onclick=open;$("mctTrainClose").onclick=()=>modal.close();
-    $("mctTrainApply").onclick=()=>{selected={...draft};modal.close();setSummary();};
+    $("mctTrainBack").onclick=()=>{step="outbound";draw(true);};
+    $("mctTrainApply").onclick=()=>{
+      if(step==="outbound"){if(!draft.outbound)return;step="return";draw(true);return;}
+      if(!draft.return||!options("return").some(t=>t.code===draft.return.code))return;
+      selected={...draft};modal.close();setSummary();
+    };
     $("mctRemoveTrains").onclick=()=>{selected={outbound:null,return:null};setSummary();};
     const pending=document.createElement("p");pending.id="mctTrainPending";pending.className="mct-train-pending";pending.hidden=true;pending.textContent="Por el momento, consulta con nosotros para confirmar y pagar los trenes junto con el paquete.";
     $("paypalButton").before(pending);
