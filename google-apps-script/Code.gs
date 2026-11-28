@@ -31,7 +31,7 @@ IMPORTANTE:
 - PAYPAL_CLIENT_SECRET va únicamente en Propiedades del script.
 */
 
-const BACKEND_VERSION = '2026-11-26-v4.9-cusco-fixed-variants';
+const BACKEND_VERSION = '2026-11-28-v5.0-cusco-central-mixed-paypal';
 const SPREADSHEET_ID = '1wyggG0x_-f-qwnfiapu-G1nyCpIyFk8vwKKcqCYCP8s';
 
 const SHEETS = {
@@ -381,7 +381,7 @@ function doPost(e) {
     if (action === 'validateCoupon') return json_(validateCoupon_(payload));
     if (action === 'validatePackageFare') return json_(validatePackageFare_(payload.payload || payload));
     if (action === 'getFixedCuscoOffer') return json_(getFixedCuscoOffer_(payload));
-    if (action === 'quoteCusco5d4nPayPal') return json_(quoteCusco5d4nPayPal_(payload));
+    if (action === 'quoteCusco5d4nPayPal' || action === 'quoteFixedCuscoMixedPayPal') return json_(quoteCusco5d4nPayPal_(payload));
     if (action === 'validateCusco5d4nFare') return json_(validateCusco5d4nFixedFare_(payload.payload || payload));
     if (action === 'createPreReservation') return json_(createPreReservation_(payload));
     if (action === 'createPayPalOrder') return json_(createPayPalOrder_(payload));
@@ -1730,9 +1730,9 @@ function validatePackageFare_(payload) {
  * MCT_CUSCO5D4N_ENABLE_PAYMENTS=true.
  * El frontend y este validador usan el tipo de cambio manual USD/PEN 3.75.
  */
-function validateCusco5d4nFixedFare_(p) {
+function validateCusco5d4nFixedFare_(p, legacyPrice) {
   const payload = p && p.payload && typeof p.payload === 'object' ? p.payload : (p || {});
-  if (getProp_('MCT_CUSCO5D4N_ENABLE_PAYMENTS','false') !== 'true') {
+  if (getProp_('MCT_FIXED_CUSCO_ENABLE_PAYMENTS','true') !== 'true') {
     return {ok:false,error:'Este programa todavía no está habilitado para cobros. Contacta a My Cusco Trip.'};
   }
   const adults = Number(payload.adults);
@@ -1767,7 +1767,7 @@ function validateCusco5d4nFixedFare_(p) {
       payload.appliedCoupon) {
     return {ok:false,error:'Revisa fecha, número de viajeros, hotel, habitaciones y extras seleccionados.'};
   }
-  const base = round2_(people * 729.90);
+  const base = round2_(people * (legacyPrice === true ? 729.90 : fixedCuscoAdultPrices_()['5D4N']));
   const hotelUpgrade = hotel === 'royal-qosqo-3s' ? round2_(people * 3 * 10 * 3.75) : 0;
   const optionalExtra = extra === 'panoramico' ? people * 30 : 0;
   const total = round2_(base + hotelUpgrade + optionalExtra);
@@ -1791,6 +1791,9 @@ function fixedCuscoVariant_(p) {
   const key=m[1], days=Number(key[0]);
   return {key:key,source:'cusco-'+key.toLowerCase()+'-unico',path:'/cusco-'+days+'-dias-'+(days-1)+'-noches-unico.html'};
 }
+function fixedCuscoAdultPrices_() {
+  return {'3D2N':560,'4D3N':625,'5D4N':730,'6D5N':855,'7D6N':985};
+}
 function fixedCuscoRateProperty_(key,kind) {
   const raw=String(getProp_('MCT_CUSCO_'+key+'_'+kind+'_PRICE_PEN','')).trim();
   if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return null;
@@ -1800,8 +1803,8 @@ function fixedCuscoRateProperty_(key,kind) {
 function getFixedCuscoOffer_(request) {
   const p=request.payload||request, v=fixedCuscoVariant_(p);
   if(!v||p.source!==v.source)return {ok:false,error:'Paquete no encontrado.'};
-  const adult=fixedCuscoRateProperty_(v.key,'ADULT'),child=fixedCuscoRateProperty_(v.key,'CHILD');
-  return {ok:true,adultPrice:adult>0?adult:null,childPrice:child,bookable:adult>0&&getProp_('MCT_CUSCO_'+v.key+'_ENABLE_PAYMENTS','false')==='true'};
+  const adult=fixedCuscoAdultPrices_()[v.key],child=fixedCuscoRateProperty_(v.key,'CHILD');
+  return {ok:true,adultPrice:adult>0?adult:null,childPrice:child,bookable:adult>0&&getProp_('MCT_FIXED_CUSCO_ENABLE_PAYMENTS','true')==='true'};
 }
 function validateCuscoVariantFare_(p) {
   const v=fixedCuscoVariant_(p), offer=getFixedCuscoOffer_(p);
@@ -1820,8 +1823,8 @@ function validateCuscoVariantFare_(p) {
     return {ok:false,error:'El precio de tu reserva cambió. Actualiza la página.'};
   return {ok:true,version:'cusco-fixed-pen-v1',currency:'PEN',total:total};
 }
-function validateAnyFixedCuscoFare_(p) {
-  return fixedCuscoVariant_(p)?validateCuscoVariantFare_(p):validateCusco5d4nFixedFare_(p);
+function validateAnyFixedCuscoFare_(p,legacyPrice) {
+  return fixedCuscoVariant_(p)?validateCuscoVariantFare_(p):validateCusco5d4nFixedFare_(p,legacyPrice);
 }
 function fixedCuscoNationalPassengers_(p) {
   return !fixedCuscoVariant_(p)||(Array.isArray(p.passengers)&&p.passengers.length===p.totalPassengers&&
@@ -1862,10 +1865,66 @@ function cusco5d4nRate_() {
   cache.put(key,JSON.stringify(last),300);
   return last;
 }
+
+/** Trusted train catalogue, fetched server-side from the project's public data.
+ * Match the same route, direction, operator and time rules as the booking UI.
+ */
+function fixedCuscoTrainCatalog_() {
+  const cache=CacheService.getScriptCache(),key='MCT_FIXED_CUSCO_TRAINS_V1';
+  const saved=cache.get(key);
+  if(saved)return JSON.parse(saved);
+  const res=UrlFetchApp.fetch('https://mycuscotrip.com/assets/data/trains.json',{muteHttpExceptions:true,followRedirects:true});
+  if(res.getResponseCode()!==200)throw new Error('No se pudieron consultar los trenes.');
+  const raw=JSON.parse(res.getContentText());
+  if(!Array.isArray(raw.trains)||!raw.trains.length)throw new Error('Catálogo de trenes no disponible.');
+  const list=raw.trains.filter(t=>['OLLA_MAPI','MAPI_OLLA'].indexOf(t.route)>=0).map(t=>({
+    code:t.code,direction:t.direction,route:t.route,company:t.company,companyName:t.companyName,serviceName:t.serviceName,
+    category:t.category,isLocalTrain:t.isLocalTrain,currency:t.currency,departureTime:t.departureTime,arrivalTime:t.arrivalTime,price:t.price
+  }));
+  const serialized=JSON.stringify(list);if(serialized.length<90000)cache.put(key,serialized,180);
+  return list;
+}
+function fixedCuscoTrainMinutes_(value){
+  const m=String(value||'').match(/^(\d{1,2}):(\d{2})$/);
+  return m&&Number(m[1])<24&&Number(m[2])<60?Number(m[1])*60+Number(m[2]):-1;
+}
+function fixedCuscoTrainDays_(p){
+  const m=String(p.productId||'').match(/^MCT-CUSCO-([3-7])D[2-6]N-UNICO$/);
+  return m?Number(m[1]):0;
+}
+function fixedCuscoTrainDate_(date,offset){
+  const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+offset);
+  return d.toISOString().slice(0,10);
+}
+function fixedCuscoTrainQuote_(p){
+  if(!p.selectedTrains)return {ok:true,total:0,selection:null};
+  const s=p.selectedTrains,days=fixedCuscoTrainDays_(p),list=fixedCuscoTrainCatalog_();
+  const out=list.find(t=>t.code===s.outboundCode),back=list.find(t=>t.code===s.returnCode);
+  const valid=t=>t&&!t.isLocalTrain&&t.company!=='local'&&t.category!=='hiram_bingham'&&t.currency==='USD'&&
+    fixedCuscoTrainMinutes_(t.departureTime)>=0&&fixedCuscoTrainMinutes_(t.arrivalTime)>=0&&
+    t.price&&Number.isFinite(t.price.adult)&&t.price.adult>0&&(!p.children||(Number.isFinite(t.price.child)&&t.price.child>=0));
+  if(!days||!valid(out)||!valid(back)||out.route!=='OLLA_MAPI'||out.direction!=='outbound'||
+    back.route!=='MAPI_OLLA'||back.direction!=='inbound'||out.company!==back.company||
+    fixedCuscoTrainMinutes_(back.departureTime)<720||
+    (days===3?(fixedCuscoTrainMinutes_(out.arrivalTime)>540||fixedCuscoTrainMinutes_(back.departureTime)-fixedCuscoTrainMinutes_(out.arrivalTime)<360):fixedCuscoTrainMinutes_(out.departureTime)<937))
+    return {ok:false,error:'Selecciona trenes compatibles con tu itinerario.'};
+  const fare=t=>round2_(p.adults*t.price.adult+p.children*(t.price.child||0));
+  const offsets={3:[1,1],4:[1,2],5:[2,3],6:[2,3],7:[3,4]}[days];
+  const detail=(t,offset)=>({code:t.code,company:t.company,companyName:t.companyName,serviceName:t.serviceName,
+    departureTime:t.departureTime,arrivalTime:t.arrivalTime,date:fixedCuscoTrainDate_(p.date,offset),
+    adultPrice:t.price.adult,childPrice:t.price.child,total:fare(t)});
+  const total=round2_(fare(out)+fare(back));
+  if(Math.abs(number_(s.usdTotal,-1)-total)>0.005)return {ok:false,error:'La tarifa del tren cambió. Actualiza tu selección.'};
+  return {ok:true,total:total,selection:{outboundCode:out.code,returnCode:back.code,usdTotal:total,
+    outbound:detail(out,offsets[0]),return:detail(back,offsets[1])}};
+}
+
 function cusco5d4nFingerprint_(p) {
-  return JSON.stringify([normalizeCode_(p.code||p.reservationCode),p.productId,p.source,p.date,p.adults,p.children,
+  const parts=[normalizeCode_(p.code||p.reservationCode),p.productId,p.source,p.date,p.adults,p.children,
     p.totalPassengers,p.infants,p.selectedHotel,p.roomAllocation&&p.roomAllocation.doubles,
-    p.roomAllocation&&p.roomAllocation.triples,p.extraCode||'',p.accommodationIncluded,p.paymentMode]);
+    p.roomAllocation&&p.roomAllocation.triples,p.extraCode||'',p.accommodationIncluded,p.paymentMode];
+  if(p.selectedTrains)parts.push(p.selectedTrains.outboundCode,p.selectedTrains.returnCode,Number(p.selectedTrains.usdTotal));
+  return JSON.stringify(parts);
 }
 function quoteCusco5d4nPayPal_(p) {
   const payload=p.payload||p;
@@ -1874,13 +1933,15 @@ function quoteCusco5d4nPayPal_(p) {
   if(!code)return {ok:false,error:'No se pudo identificar tu reserva.'};
   const fare=validateAnyFixedCuscoFare_(Object.assign({},payload,{paymentProvider:'mercado_pago'}));
   if(!fare.ok)return fare;
+  const train=fixedCuscoTrainQuote_(payload);if(!train.ok)return train;
   const fx=cusco5d4nRate_();
   const quote=Object.assign({},fx,{quoteId:Utilities.getUuid(),code:code,penTotal:fare.total,
-    usdTotal:round2_(fare.total/fx.rate),expiresAt:Date.now()+15*60000,
+    fareVersion:3,trainUsdTotal:train.total,selectedTrains:train.selection,
+    usdTotal:round2_(round2_(fare.total/fx.rate)+train.total),expiresAt:Date.now()+15*60000,
     fingerprint:cusco5d4nFingerprint_(payload)});
   CacheService.getScriptCache().put('MCT_CUSCO5D4N_QUOTE_'+quote.quoteId,JSON.stringify(quote),900);
-  return {ok:true,version:'cusco5d4n-paypal-v2',quoteId:quote.quoteId,penTotal:quote.penTotal,
-    usdTotal:quote.usdTotal,rate:quote.rate,date:quote.date,source:quote.source,expiresAt:quote.expiresAt};
+  return {ok:true,version:train.selection?'cusco-fixed-mixed-paypal-v1':'cusco5d4n-paypal-v2',quoteId:quote.quoteId,penTotal:quote.penTotal,
+    usdTotal:quote.usdTotal,trainUsdTotal:train.total,rate:quote.rate,date:quote.date,source:quote.source,expiresAt:quote.expiresAt};
 }
 function prepareCusco5d4nPayPal_(payload) {
   if(!fixedCuscoNationalPassengers_(payload))return {ok:false,error:'Esta tarifa está dirigida a turistas peruanos. Consulta otras nacionalidades.'};
@@ -1895,8 +1956,16 @@ function prepareCusco5d4nPayPal_(payload) {
     return {ok:false,error:'La conversión ha vencido o cambió. Consulta nuevamente el tipo de cambio.'};
   const trusted=Object.assign({},payload,{currency:'USD',paymentProvider:'paypal',serviceTotalValue:fx.usdTotal,
     payNowValue:fx.usdTotal,payLaterValue:0,pricing:{subtotal:fx.usdTotal,total:fx.usdTotal,discount:0},
-    originalCurrency:'PEN',originalTotal:fx.penTotal,fxQuote:fx,
+    originalCurrency:'PEN',originalTotal:fx.penTotal,fxQuote:fx,selectedTrains:fx.selectedTrains||null,trainUsdTotal:fx.trainUsdTotal||0,
     checkoutPayload:Object.assign({},payload.checkoutPayload||{},{currency:'USD',amountToPayNowValue:fx.usdTotal,provider:'paypal'})});
+  if(fx.selectedTrains){
+    const trains=fx.selectedTrains;
+    trusted.services=[{code:payload.productId,name:payload.productTitle,date:payload.date,included:true},
+      {code:trains.outbound.code,name:'Tren de ida · '+trains.outbound.companyName+' '+trains.outbound.serviceName,date:trains.outbound.date,startTime:trains.outbound.departureTime,endTime:trains.outbound.arrivalTime,included:true},
+      {code:trains.return.code,name:'Tren de retorno · '+trains.return.companyName+' '+trains.return.serviceName,date:trains.return.date,startTime:trains.return.departureTime,endTime:trains.return.arrivalTime,included:true}];
+    trusted.productIncludes=(Array.isArray(payload.productIncludes)?payload.productIncludes:[]).concat(['Trenes seleccionados de ida y retorno a Machu Picchu.']);
+    trusted.productExcludes=(Array.isArray(payload.productExcludes)?payload.productExcludes:[]).filter(x=>!/^Boletos de tren de ida y retorno/i.test(String(x)));
+  }
   return {ok:true,payload:trusted};
 }
 function verifyCusco5d4nPayPalRow_(row,p) {
@@ -1905,9 +1974,11 @@ function verifyCusco5d4nPayPalRow_(row,p) {
   const expectedRate=fx.rateDecimals===3?Math.round((fx.buy+fx.sell)*500+1e-9)/1000:Math.round((fx.buy+fx.sell)*5000)/10000;
   if(p.currency!=='USD'||p.paymentProvider!=='paypal'||p.originalCurrency!=='PEN'||fx.penTotal!==pen||
       !(fx.rate>0)||fx.rate!==expectedRate||
-      fx.fingerprint!==cusco5d4nFingerprint_(p)||fx.usdTotal!==round2_(pen/fx.rate))
+      fx.fingerprint!==cusco5d4nFingerprint_(p)||fx.usdTotal!==round2_(round2_(pen/fx.rate)+Number(fx.trainUsdTotal||0))||
+      Number(p.trainUsdTotal||0)!==Number(fx.trainUsdTotal||0)||
+      (p.selectedTrains&&(!fx.selectedTrains||JSON.stringify(p.selectedTrains)!==JSON.stringify(fx.selectedTrains))))
     return {ok:false,error:'No se pudo validar el importe de tu reserva.'};
-  const fare=validateAnyFixedCuscoFare_(cusco5d4nPenPayload_(p,pen));
+  const fare=validateAnyFixedCuscoFare_(cusco5d4nPenPayload_(p,pen),!fx.fareVersion&&p.productId==='MCT-CUSCO-5D4N-UNICO');
   if(!fare.ok)return fare;
   if(normalizeCurrency_(row.Moneda)!=='USD'||round2_(row.MontoPagarAhora)!==fx.usdTotal||
       round2_(row.TotalServicio)!==fx.usdTotal||round2_(p.payNowValue)!==fx.usdTotal||
