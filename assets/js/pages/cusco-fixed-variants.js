@@ -490,7 +490,7 @@
     phone.options[phone.selectedIndex].defaultSelected=true;
     document.addEventListener("pointerdown",e=>{if(activePicker&&!mobilePicker()&&!activePicker.panel.contains(e.target)&&!activePicker.trigger.contains(e.target))closePicker();},true);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&activePicker){e.preventDefault();e.stopImmediatePropagation();closePicker(true);}},true);
-    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",e=>{if(activePicker?.panel.contains(e.target))return;positionPicker();},true);
+    window.addEventListener("resize",positionPicker);window.addEventListener("scroll",e=>{if(e.target instanceof Node&&activePicker?.panel.contains(e.target))return;positionPicker();},true);
     window.visualViewport?.addEventListener("resize",positionPicker);window.visualViewport?.addEventListener("scroll",positionPicker);
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal("hotelSelectionModal");closeModal("passengerReservationModal");}});
   }
