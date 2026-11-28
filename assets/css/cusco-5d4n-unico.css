@@ -243,3 +243,14 @@ body.mct-single-5d4n #mctTrainChosenOutbound {margin-bottom:16px;background:#fff
  body.mct-single-5d4n #mctTrainApply {flex:1;min-height:42px;}
  body.mct-single-5d4n #mctTrainBack {min-height:42px;}
 }
+
+/* Passenger selectors fit the visible viewport, including the mobile keyboard. */
+body.mct-single-5d4n .mct-picker-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+body.mct-single-5d4n .mct-picker-close{background:transparent;color:#fff;border:1px solid #ffffff80;border-radius:50%;width:30px;height:30px;flex:0 0 30px;font:inherit;font-size:22px;line-height:1;cursor:pointer;}
+body.mct-single-5d4n .mct-picker-mobile{overscroll-behavior:contain;touch-action:pan-y;}
+body.mct-single-5d4n .mct-picker-mobile.mct-option-picker{overflow:hidden;}
+body.mct-single-5d4n .mct-picker-mobile .mct-picker-options{flex:1 1 auto;max-height:none;min-height:0;overflow-y:auto;}
+body.mct-single-5d4n .mct-picker-mobile.mct-birth-picker{display:block;overflow-y:auto;}
+body.mct-single-5d4n .mct-picker-mobile.mct-birth-picker .mct-picker-heading{position:sticky;top:0;z-index:2;}
+body.mct-single-5d4n .mct-add-trains{border:2px solid #80a832!important;}
+body.mct-single-5d4n #mctTrainPending,body.mct-single-5d4n #paymentInfo{display:none!important;}
