@@ -84,7 +84,7 @@
   }
   function renderContent() {
     document.title="Cusco 5 días y 4 noches | My Cusco Trip";
-    $("productBadge").textContent="Paquete organizado de 5 días y 4 noches";
+    $("productBadge").textContent="5 días y 4 noches";
     $("productTitle").textContent="Cusco, Valle Sagrado y Machu Picchu";
     $("productDescription").textContent="Descubre Cusco en cinco días con City Tour, Maras y Moray, Valle Sagrado y Machu Picchu. Incluye cuatro noches de hotel, desayunos y coordinación local. Un solo itinerario y un precio por persona en soles.";
     $("detailCapacity").textContent="Mínimo 2 viajeros · Máximo 9 por reserva";
