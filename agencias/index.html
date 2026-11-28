@@ -30,7 +30,7 @@
         <h1 id="agencyNameHeading">Agencia afiliada</h1>
         <p id="sessionWelcome">Buenos días, agencia!</p>
       </div>
-      <div class="agency-controls agency-controls--compact"><a class="agency-button agency-create" href="#experiencias">+ <span data-ag-es="Crear orden" data-ag-en="Create order">Crear orden</span></a><select id="currencySelect" hidden><option value="PEN">PEN</option><option value="USD">USD</option></select><input id="exchangeRateInput" type="hidden" value="3.38"><input id="searchInput" type="hidden" value=""></div></section>
+      <div class="agency-controls agency-controls--compact"><select id="currencySelect" hidden><option value="PEN">PEN</option><option value="USD">USD</option></select><input id="exchangeRateInput" type="hidden" value="3.38"><input id="searchInput" type="hidden" value=""></div></section>
 
 
 
@@ -49,9 +49,9 @@
       <aside class="checkout" id="checkout" aria-labelledby="checkoutTitle">
         <h2 id="checkoutTitle">Mi orden actual</h2>
         <div id="cartItems" class="cart-items"><p class="cart-empty">Todavía no agregaste servicios.</p></div>
-        <div class="cart-total">
+        <div class="cart-total"><label class="field" id="paymentModeField"><span data-ag-es="Modalidad de pago" data-ag-en="Payment method">Modalidad de pago</span><select id="paymentMode"><option value="transfer">Transferencia coordinada</option><option value="mercadopago">Pago online</option><option value="paypal">PayPal</option></select></label><p id="paymentCurrencyNote" class="ag-payment-note"></p>
           <div class="cart-row"><span>Servicios + tickets de ingreso</span><strong id="subtotalAmount">S/ 0.00</strong></div>
-          <div class="cart-row"><span>Cargos de pago</span><strong id="feeAmount">S/ 0.00</strong></div>
+          <div class="cart-row" id="paymentFeeRow" hidden><span>Cargo de pago online</span><strong id="feeAmount">S/ 0.00</strong></div>
           <div class="cart-row"><span>Total a pagar</span><strong id="grandTotal">S/ 0.00</strong></div>
         </div>
         <div class="checkout-actions">
@@ -80,14 +80,8 @@
             <label class="field"><span>Hora de inicio</span><select id="serviceTime" required></select></label>
             <label class="field"><span>Cantidad de pasajeros</span><div class="pax-stepper"><button type="button" data-pax-step="-1" aria-label="Restar pasajero">−</button><input id="paxCount" type="number" min="1" max="50" value="2" required readonly /><button type="button" data-pax-step="1" aria-label="Sumar pasajero">+</button></div></label>
           </div>
-          <section class="entry-tickets-box full" id="entryTicketsBox" hidden>
-            <div class="entry-tickets-box__head">
-              <label class="entry-master-check"><input type="checkbox" id="includeTicketsToggle" /> <span>Incluir tickets de ingreso</span></label>
-              <small>Se aplican a todos los pasajeros de esta reserva.</small>
-            </div>
-            <div id="entryTicketOptions" class="entry-ticket-options"></div>
-          </section>
-          <details class="tourists-box full" id="leadDetails"><summary data-ag-es="Datos del titular (opcional por ahora)" data-ag-en="Lead traveler (optional for now)">Datos del titular (opcional por ahora)</summary><div class="form-grid">
+          <details class="entry-tickets-box full" id="entryTicketsBox" hidden open><summary><strong data-ag-es="Incluir tickets de ingreso" data-ag-en="Add entrance tickets">Incluir tickets de ingreso</strong><small data-ag-es="Se aplican a todos los pasajeros de esta reserva." data-ag-en="Applies to all travelers in this reservation.">Se aplican a todos los pasajeros de esta reserva.</small></summary><div id="entryTicketOptions" class="entry-ticket-options"></div></details>
+          <details class="tourists-box full" id="leadDetails"><summary><span data-ag-es="Datos del titular" data-ag-en="Lead traveler">Datos del titular</span><small data-ag-es="Opcional por ahora" data-ag-en="Optional for now">Opcional por ahora</small></summary><div class="form-grid">
           <label class="field"><span>Nombre</span><input id="leadFirstName" /></label>
           <label class="field"><span>Apellido</span><input id="leadLastName" /></label>
           <label class="field"><span>Tipo de documento</span><select id="leadDocType"><option>DNI</option><option>Pasaporte</option><option>Carnet de extranjería</option><option>Otro</option></select></label>

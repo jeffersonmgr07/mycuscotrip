@@ -491,7 +491,7 @@
     setText('#clearCartButton', 'agency.clearOrder');
     if(!document.querySelector('#reserveModal.show'))setText('#reserveTitle', 'agency.reserveExperience');
     if(!document.querySelector('#itineraryModal.show'))setText('#itineraryTitle', 'agency.itineraryTitle');
-    setText('#reserveForm > .dialog-help', 'agency.reserveHelp');
+    void 0;
     document.querySelectorAll('[data-ag-en]').forEach(el=>el.textContent=el.dataset.agEn);
     setText('label[for="statusFilter"], .requests-toolbar label span', 'orders.status');
     setText('#refreshOrdersButton', 'orders.refresh');
@@ -617,7 +617,7 @@
 
     const cartRows = document.querySelectorAll('.cart-total .cart-row span:first-child');
     if (cartRows[0]) cartRows[0].textContent = t('agency.subtotalLabel');
-    if (cartRows[1]) cartRows[1].textContent = 'Payment charges';
+    if (cartRows[1]) cartRows[1].textContent = 'Online payment fee';
     if (cartRows[2]) cartRows[2].textContent = t('agency.totalLabel');
 
     document.querySelectorAll('.password-toggle').forEach((btn) => {

@@ -440,6 +440,12 @@
           "note": "Consultar tarifa según nacionalidad.",
           "name_en": "South Valley tourist ticket",
           "note_en": "Check rate according to nationality."
+        },
+        {
+          "id": "andahuaylillas-capilla",
+          "name": "Capilla de Andahuaylillas",
+          "pricePEN": 20,
+          "name_en": "Andahuaylillas Chapel"
         }
       ],
       "name_en": "Cusco South Valley",
