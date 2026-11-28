@@ -84,6 +84,7 @@
   }
 
   function isPeruvianAgency() {
+    if(state.paymentConfig && typeof state.paymentConfig.peruvian==='boolean')return state.paymentConfig.peruvian;
     const country = String(state.session?.country || state.session?.pais || '').trim().toUpperCase();
     return country === 'PE' || country === 'PERU' || country === 'PERÚ';
   }
@@ -113,7 +114,7 @@
   }
 
   function setCurrency(currency) {
-    if($('#generateOrderButton')?.disabled)return;
+    if(state.submitting)return;
     state.currency = String(currency || 'PEN').toUpperCase() === 'USD' ? 'USD' : 'PEN';
     localStorage.setItem('mct_visible_currency', state.currency);
     updateCurrencyMenu();
@@ -172,12 +173,12 @@
     $('#serviceDate').value = tomorrowISO();
 
     hydrateCountrySelects();
-    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{const flag=String.fromCodePoint(...x.code.split('').map(c=>127397+c.charCodeAt(0)));return '<option value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+flag+' '+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
+    fetch('../assets/data/countries.json').then(r=>r.json()).then(countries=>{const select=$('#leadPhoneCountry');if(!select||!Array.isArray(countries))return;const dn=new Intl.DisplayNames([currentLocale()==='en'?'en':'es'],{type:'region'});select.innerHTML=countries.filter(x=>/^[A-Z]{2}$/.test(x.code)&&x.dialCode).map(x=>{return '<option data-flag="'+x.code.toLowerCase()+'" value="'+escapeHtml(x.dialCode)+'" '+(x.code==='PE'?'selected':'')+'>'+escapeHtml(dn.of(x.code)||x.name)+' '+escapeHtml(x.dialCode)+'</option>';}).join('');}).catch(()=>{});
     fetch('./assets/data/pickup-hotels.json').then(r=>r.json()).then(data=>{const hotels=data.hotels||[];$('#pickupHotels').innerHTML=hotels.map(x=>'<option value="'+escapeHtml(x.name)+'"></option>').join('');$('#pickupHotel').addEventListener('input',()=>{const hit=hotels.find(x=>x.name.toLowerCase()===$('#pickupHotel').value.toLowerCase());if(hit)$('#pickupAddress').value=hit.address||'';});}).catch(()=>{});
     configurePaymentMode();
     bindEvents();
     await loadCatalog();
-    const quote=await sendToSheet("agencyPaymentConfig",{});if(quote.ok&&Number(quote.rate)>0){state.exchangeRate=Number(quote.rate);state.paymentConfig=quote;}else{state.paymentConfig=null;}
+    const quote=await sendToSheet("agencyPaymentConfig",{});if(quote.ok&&Number(quote.rate)>0){state.exchangeRate=Number(quote.rate);state.paymentConfig=quote;configurePaymentMode();}else{state.paymentConfig=null;}
     renderExperiences();
     renderCart();
     renderOrders();
@@ -326,6 +327,7 @@
     hydrateCountrySelects($('#reserveModal'));
     updateReserveSubtotal();
     $('#reserveModal').classList.add('show');
+    if($('#serviceDate')._flatpickr){$('#serviceDate')._flatpickr.set('minDate',tomorrowISO());$('#serviceDate')._flatpickr.setDate(tomorrowISO(),false);}
   }
 
   function renderScheduleOptions(service) {
@@ -387,7 +389,7 @@
     if (!form.reportValidity()) return;
     const service = findService($('#selectedServiceId').value);
     if (!service) return;
-    if($('#generateOrderButton').disabled)return;
+    if(state.submitting)return;
     const pax = Math.max(1, Number($('#paxCount').value || 1));
     const passengers = $$('[data-passenger-extra]').map((card) => ({
       firstName: $('[data-pax="firstName"]', card).value.trim(),
@@ -455,7 +457,7 @@
   function configurePaymentMode(){const select=$('#paymentMode');if(!select)return;select.innerHTML=isPeruvianAgency()?'<option value="transfer">Transferencia coordinada</option><option value="mercadopago">Pago online</option>':'<option value="paypal">PayPal</option>';select.onchange=()=>{state.pendingCode=null;renderCart();};}
   function paymentCurrency(){return isPeruvianAgency()?'PEN':'USD';}
   function feeGross(subtotal) {
-    const method=$('#paymentMode').value, currency=paymentCurrency(), converted=currency===state.currency?subtotal:currency==='PEN'?subtotal*state.exchangeRate:subtotal/state.exchangeRate;
+    const method=$('#paymentMode').value, currency=paymentCurrency(), converted=state.cart.reduce((sum,i)=>{const cv=(p,c,u)=>currency==='PEN'?(c==='USD'&&u!=null?Number(u)*state.exchangeRate:Number(p||0)):(c==='USD'&&u!=null?Number(u):Number(p||0)/state.exchangeRate);return sum+cv(i.unitPricePEN,i.serviceCurrency,i.unitPriceUSD)*i.pax+(i.entryTickets||[]).reduce((a,x)=>a+cv(x.pricePEN,x.currency,x.priceUSD)*i.pax,0)},0);
     const net=Number(converted.toFixed(2));
     const total=net<=0?0:method==='mercadopago'?Math.ceil((net+1)/(1-.029)*100-1e-8)/100:method==='paypal'?Math.ceil(net/(1-.054-.015)*100-1e-8)/100:net;
     return {total,fee:Number((total-net).toFixed(2)),net,currency,method};
@@ -487,7 +489,8 @@
     $('#feeAmount').textContent = money(fee,currency);
     $('#paymentFeeRow').hidden=fee<=0;
     $('#grandTotal').textContent = money(total,currency);
-    $('#paymentCurrencyNote').textContent=currency!==state.currency?'Pago en '+currency+' · Tipo de cambio: '+state.exchangeRate.toFixed(4):'';
+    $('#generateOrderButton').disabled=!state.paymentConfig;
+    $('#paymentCurrencyNote').textContent=currency!==state.currency?'Pago en '+currency+' · Tipo de cambio: '+state.exchangeRate.toFixed(4)+(state.paymentConfig?.date?' · '+state.paymentConfig.date:''):'';
     if(!state.paymentConfig)$('#paymentCurrencyNote').textContent+=' Configuración de pago pendiente de actualizar.';
     const cartLink = document.querySelector('#agencyCartLink'); if(cartLink) cartLink.textContent = (currentLocale()==='en'?'Order':'Orden')+' ('+state.cart.length+')';
     if ($('#toolbarCount')) $('#toolbarCount').textContent = state.cart.length;
@@ -531,8 +534,8 @@
       account: {agencyId:state.session.agencyId,email:state.session.email,companyName:state.session.companyName},
       items: state.cart
     };
-    const button = $('#generateOrderButton'); if(button.disabled)return;button.disabled=true;
-    let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{button.disabled=false;}
+    const button = $('#generateOrderButton'); if(button.disabled||state.submitting)return;state.submitting=true;button.disabled=true;
+    let result; try { result = await sendToSheet('createOrder', order); } catch(e){ result={ok:false}; } finally{state.submitting=false;button.disabled=false;}
     if(!result?.ok){if(result?.code==='SESSION_EXPIRED'){location.href='./login.html';return;}alert(result?.message || 'No se pudo guardar la orden. Tus servicios siguen en la orden actual.');return;}
     if(result.order)Object.assign(order,result.order);
     state.pendingCode = null;

@@ -84,7 +84,7 @@
 
   function fillCountrySelect(select, selected = 'PE') {
     if (!select) return;
-    select.innerHTML = COUNTRIES.map(([code, label]) => `<option value="${code}">${label}</option>`).join('');
+    select.innerHTML = COUNTRIES.map(([code, label]) => `<option data-flag="${code.toLowerCase()}" value="${code}">${label}</option>`).join('');
     select.value = selected;
   }
 
@@ -96,7 +96,7 @@
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
-    }).map(([code, label, phone]) => `<option value="${phone}">${label} ${phone}</option>`).join('');
+    }).map(([code, label, phone]) => `<option data-flag="${code.toLowerCase()}" value="${phone}">${label} ${phone}</option>`).join('');
     select.value = selected;
   }
 

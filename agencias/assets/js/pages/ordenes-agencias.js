@@ -27,18 +27,13 @@
     return country === 'PE' || country === 'PERU' || country === 'PERÚ';
   }
 
-  function paymentMethodFor(order) {
-    const currency = String(order?.moneda || order?.currency || '').toUpperCase();
-    return currency === 'USD' ? 'paypal' : 'mercadopago';
-  }
+  function paymentMethodFor(order){return order.metodoPago||order.paymentMethod||(String(order.moneda||order.currency)==='USD'?'paypal':'mercadopago');}
 
   function getMercadoPagoDeviceId() {
     return String(window.MP_DEVICE_SESSION_ID || window.MP_DEVICE_SESSION_ID_PUBLIC || '').trim();
   }
 
-  function paymentButtonLabel(order) {
-    return paymentMethodFor(order) === 'paypal' ? t('agency.payWithPayPal', 'Pagar con PayPal') : t('agency.payBooking', 'Pagar reserva');
-  }
+  function paymentButtonLabel(order){const m=paymentMethodFor(order);return m==='transfer'?'Coordinar transferencia':m==='paypal'?'Pagar con PayPal':'Pago online';}
 
   function money(amount, currency = 'PEN') {
     const n = Number(amount || 0);
@@ -221,47 +216,11 @@
     }).join('');
   }
 
-  function orderItemsRows(order) {
-    const items = getOrderItems(order);
-    const currency = order.moneda || order.currency || 'PEN';
-    if (!items.length) {
-      const lead = getOrderLead(order);
-      const allPassengers = getOrderPassengers(order);
-      return `<tr><td colspan="5">${t('orders.noServiceDetail', 'No se encontró detalle de servicios en esta orden.')}</td></tr>
-        <tr class="order-passenger-row"><td></td><td colspan="4"><strong>${t('agency.lead', 'Titular')}:</strong> ${escapeHtml([lead.firstName || lead.first, lead.lastName || lead.last].filter(Boolean).join(' ') || t('orders.pending', 'Pendiente'))}<br><strong>${t('agency.additionalPassengers', 'Pasajeros')}:</strong><ul>${passengersList(allPassengers)}</ul></td></tr>`;
-    }
-    return items.map((item, index) => {
-      const lead = normalizeItemLead(item, order);
-      const passengers = normalizeItemPassengers(item);
-      const pax = Number(item.pax || item.passengersCount || 1);
-      const unit = itemUnitPrice(item, currency, order);
-      const amount = Number(item.subtotal || (unit * pax) || 0);
-      const pickup = item.pickupPoint || item.pickup || item.hotel || '';
-      const notes = item.notes || item.observations || '';
-      const leadName = [lead.firstName || lead.first || lead.nombres, lead.lastName || lead.last || lead.apellidos].filter(Boolean).join(' ');
-      const leadDoc = [lead.docType || lead.tipoDocumento, lead.docNumber || lead.doc || lead.numeroDocumento].filter(Boolean).join(' ');
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <strong>${escapeHtml(item.serviceName || item.title || item.name || t('agency.service', 'Servicio'))}</strong><br>
-            <small>${t('agency.date', 'Fecha')}: ${formatDate(item.travelDate || item.date || '')} · ${t('agency.time', 'Hora')}: ${escapeHtml(item.serviceTime || item.time || t('agency.confirm', 'Por confirmar'))}</small><br>
-            <small>${t('agency.pickup', 'Recojo')}: ${escapeHtml(pickup || t('agency.confirm', 'Por confirmar'))}</small>
-          </td>
-          <td>${pax}</td>
-          <td>${money(unit, currency)}</td>
-          <td><strong>${money(amount, currency)}</strong></td>
-        </tr>
-        <tr class="order-passenger-row">
-          <td></td>
-          <td colspan="4">
-            <strong>${t('agency.leadData', 'Datos del titular')}:</strong> ${escapeHtml(leadName || t('orders.pending', 'Pendiente'))} ${leadDoc ? `· ${escapeHtml(leadDoc)}` : ''} ${lead.phone ? `· ${escapeHtml(lead.phone)}` : ''}<br>
-            <strong>${t('agency.pickup', 'Lugar de recojo')}:</strong> ${escapeHtml(pickup || t('agency.confirm', 'Por confirmar'))}<br>
-            <strong>${t('agency.additionalPassengers', 'Pasajeros adicionales')}:</strong><ul>${passengersList(passengers)}</ul>
-            ${notes ? `<strong>${t('agency.observations', 'Observaciones')}:</strong> ${escapeHtml(notes)}` : ''}
-          </td>
-        </tr>`;
-    }).join('');
+  function orderItemsRows(order){
+    const cur=order.moneda||order.currency||'PEN',rate=orderExchangeRate(order);
+    const cv=(p,c,u)=>cur==='PEN'?(c==='USD'&&u!=null?Number(u)*rate:Number(p||0)):(c==='USD'&&u!=null?Number(u):Number(p||0)/rate);
+    const line=(name,unit,pax)=>`<div class="ag-order-line"><span>${escapeHtml(name)}<small>${money(unit,cur)} × ${pax}</small></span><strong>${money(unit*pax,cur)}</strong></div>`;
+    return getOrderItems(order).map(item=>{const pax=Number(item.pax||1),lead=normalizeItemLead(item,order);return `<article class="ag-order-service"><h3>${escapeHtml(item.serviceName||item.name||'Servicio')}</h3><p>${formatDate(item.travelDate||item.date)} · ${escapeHtml(item.serviceTime||'')} · ${pax} pax</p>${line('Experiencia',cv(item.unitPricePEN,item.serviceCurrency,item.unitPriceUSD),pax)}${(item.entryTickets||[]).map(x=>line(x.name,cv(x.pricePEN,x.currency,x.priceUSD),Number(x.pax||pax))).join('')}<details><summary>Datos de pasajeros y recojo</summary><p>${escapeHtml([lead.firstName,lead.lastName].filter(Boolean).join(' ')||'Datos pendientes')}</p><p>${escapeHtml(item.pickupPoint||'Recojo por coordinar')}</p><ul>${passengersList(normalizeItemPassengers(item))}</ul></details></article>`}).join('')||'<p>No hay detalles disponibles.</p>';
   }
 
   function orderDetailHTML(order) {
@@ -288,24 +247,19 @@
             </div>
           </div>
         </div>
-        <div class="info-note"><strong>${t('orders.important', 'Importante')}:</strong> ${t('orders.importantText', 'revisa los datos de titulares, pasajeros y recojos antes de realizar el pago. Las órdenes pendientes se confirman con pago validado dentro del plazo indicado.')}</div>
-        <div class="order-table-wrap">
-          <table class="order-table">
-            <thead><tr><th>#</th><th>${t('orders.servicePickup', 'Servicio / recojo')}</th><th>Pax</th><th>${t('agency.rate', 'Tarifa')}</th><th>Subtotal</th></tr></thead>
-            <tbody>${orderItemsRows(order)}</tbody>
-          </table>
-        </div>
+
+        <div class="ag-order-services">${orderItemsRows(order)}</div>
         <div class="order-totals">
           <div><span>${t('agency.subtotalLabel', 'Servicios + tickets de ingreso')}</span><strong>${money(order.subtotalNeto || order.subtotal || 0, currency)}</strong></div>
-          <div><span>${t('agency.feesLabel', 'Cargos de pago')}</span><strong>${money(order.comisionPaypalBanco || order.fee || 0, currency)}</strong></div>
+          ${Number(order.comisionPaypalBanco||order.fee||0)>0?`<div><span>Cargo de pago online</span><strong>${money(order.comisionPaypalBanco||order.fee||0,currency)}</strong></div>`:''}
           <div class="grand"><span>${t('agency.totalLabel', 'Total a pagar')}</span><strong>${money(order.montoComisionado || order.total || 0, currency)}</strong></div>
         </div>
         ${order.observaciones || order.observations ? `<p class="small-print-note"><strong>${t('orders.generalNotes', 'Observaciones generales')}:</strong> ${escapeHtml(order.observaciones || order.observations)}</p>` : ''}
       </div>
       <div class="dialog-actions order-modal-actions">
         <button type="button" class="agency-button agency-button--ghost" data-close-order-detail>${t('agency.close', 'Cerrar')}</button>
-        <button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${paymentButtonLabel(order)}</button>
-        <button type="button" class="agency-button agency-button--ghost" id="bankOrderInstructions">Transferencia bancaria</button><button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">${t('agency.printOrder', 'Imprimir orden')}</button>
+        ${statusKey==='pendiente'?`<button type="button" class="agency-button paypal-button" id="payOrderWithPayPalButton" data-order-code="${escapeHtml(code)}">${paymentButtonLabel(order)}</button>`:''}
+        <button type="button" class="agency-button agency-button--primary" id="printOrderDetailButton">${t('agency.printOrder', 'Imprimir orden')}</button>
       </div>`;
   }
 
@@ -332,6 +286,7 @@
     if (status === 'vencido') { alert(t('orders.expiredAlert', 'Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.')); return; }
 
     const method = paymentMethodFor(order);
+    if(method==='transfer'){const r=await sendToSheet('paymentInstructions',{code:order.codigoOrden||order.code});alert(r.ok?(r.instructions||'Coordina el pago con reservas@mycuscotrip.com.')+' '+(r.email||''):r.message);return;}
     const button = $('#payOrderWithPayPalButton');
     const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
     if (button) { button.disabled = true; button.textContent = loadingText; }
