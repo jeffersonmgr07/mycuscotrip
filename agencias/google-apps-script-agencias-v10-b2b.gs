@@ -85,10 +85,10 @@ function doPost(e) {
         if(!target||String(target.data.agenciaId)!==String(identity.agencyId))return json_({ok:false,message:'Orden no encontrada.'});
         if(action==='updateReservation')return agencyUpdateReservation_(target,payload);
         const method=String(target.data.metodoPago||'');const pe=agencyIsPE_(identity.country);
-        if(['createPayPalOrder','capturePayPalOrder'].includes(action)&&(pe||method&&method!=='paypal'))return json_({ok:false,message:'Esta orden no admite PayPal.'});
-        if(['createMercadoPagoPreference','confirmMercadoPagoPayment'].includes(action)&&(!pe||method&&method!=='mercadopago'))return json_({ok:false,message:'Esta orden no admite pago online en soles.'});
+        if(action==='createPayPalOrder'&&(pe||method&&method!=='paypal'))return json_({ok:false,message:'Esta orden no admite PayPal.'});
+        if(action==='createMercadoPagoPreference'&&(!pe||method&&method!=='mercadopago'))return json_({ok:false,message:'Esta orden no admite pago online en soles.'});
         if(['paymentInstructions','registerPayment'].includes(action)&&(!pe||method&&method!=='transfer'))return json_({ok:false,message:'Esta orden no admite transferencia.'});
-        if(action==='paymentInstructions')return json_({ok:true,instructions:agencyBankText_(target.data.moneda),email:SUPPORT_EMAIL});
+        if(action==='paymentInstructions'){if(String(target.data.estadoPago).toLowerCase()!=='pendiente'||new Date(target.data.fechaVencimientoPago).getTime()<Date.now())return json_({ok:false,message:'Esta orden ya no está pendiente de pago. Consulta a reservas.'});return json_({ok:true,instructions:agencyBankText_(target.data.moneda),email:SUPPORT_EMAIL});}
         if(action==='capturePayPalOrder'&&!target.data.paypalOrderId)return json_({ok:false,message:'No hay orden PayPal vinculada.'});
       }
       if(action==='createOrder') return agencyCreateOrderSafe_(payload);
@@ -791,7 +791,7 @@ function createMercadoPagoPreference_(payload) {
 
   const status = String(order.data.estadoPago || '').trim().toLowerCase();
   if (status === 'pagado') return json_({ ok:false, message:'Esta orden ya figura como pagada.' });
-  if (status === 'vencido') return json_({ ok:false, message:'Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.' });
+  if (status === 'vencido' || new Date(order.data.fechaVencimientoPago).getTime()<Date.now()) return json_({ ok:false, message:'Esta orden está vencida. Genera una nueva orden o consulta disponibilidad.' });
 
   const currency = String(order.data.moneda || payload.currency || 'PEN').toUpperCase();
   if (currency !== 'PEN') return json_({ ok:false, message:'Mercado Pago debe procesarse en soles. Cambia la moneda visible a soles y genera la orden nuevamente.' });

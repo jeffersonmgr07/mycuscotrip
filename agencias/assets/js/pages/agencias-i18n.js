@@ -480,8 +480,8 @@
     const setPlaceholder = (selector, key) => document.querySelectorAll(selector).forEach((el) => { el.setAttribute('placeholder', t(key)); });
 
     setText('.agency-intro-bar .eyebrow', 'agency.portalWelcome');
-    setText('a[href="./ordenes.html"]', 'agency.orders');
-    setText('a[href="./mis-datos.html"]', 'agency.myData');
+    setText('a[href="./ordenes.html"]:not(#agDrawer a)', 'agency.orders');
+    setText('a[href="./mis-datos.html"]:not(#agDrawer a)', 'agency.myData');
     setText('#logoutButton', 'agency.logout');
     if (window.location.pathname.endsWith('/agencias/') || window.location.pathname.endsWith('/agencias/index.html') || window.location.pathname.includes('/agencias/index')) void 0;
     setText('#experiencias .section-title h2', 'agency.availableExperiences');

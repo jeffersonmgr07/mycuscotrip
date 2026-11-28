@@ -178,7 +178,7 @@
     configurePaymentMode();
     bindEvents();
     await loadCatalog();
-    const quote=await sendToSheet("agencyPaymentConfig",{});if(quote.ok&&Number(quote.rate)>0){state.exchangeRate=Number(quote.rate);state.paymentConfig=quote;configurePaymentMode();}else{state.paymentConfig=null;}
+    const quote=await sendToSheet("agencyPaymentConfig",{});if(quote.ok&&Number(quote.rate)>0){state.exchangeRate=Number(quote.rate);state.paymentConfig=quote;configurePaymentMode();}else{state.paymentConfig=null;if(quote.code==='SESSION_EXPIRED'){location.href='./login.html';return;}}
     renderExperiences();
     renderCart();
     renderOrders();
@@ -327,6 +327,7 @@
     hydrateCountrySelects($('#reserveModal'));
     updateReserveSubtotal();
     $('#reserveModal').classList.add('show');
+    $('#reserveForm').querySelectorAll('select').forEach(x=>x.dispatchEvent(new Event('agency:refresh')));
     if($('#serviceDate')._flatpickr){$('#serviceDate')._flatpickr.set('minDate',tomorrowISO());$('#serviceDate')._flatpickr.setDate(tomorrowISO(),false);}
   }
 
@@ -489,7 +490,7 @@
     $('#feeAmount').textContent = money(fee,currency);
     $('#paymentFeeRow').hidden=fee<=0;
     $('#grandTotal').textContent = money(total,currency);
-    $('#generateOrderButton').disabled=!state.paymentConfig;
+    $('#generateOrderButton').disabled=!state.paymentConfig||state.submitting;
     $('#paymentCurrencyNote').textContent=currency!==state.currency?'Pago en '+currency+' · Tipo de cambio: '+state.exchangeRate.toFixed(4)+(state.paymentConfig?.date?' · '+state.paymentConfig.date:''):'';
     if(!state.paymentConfig)$('#paymentCurrencyNote').textContent+=' Configuración de pago pendiente de actualizar.';
     const cartLink = document.querySelector('#agencyCartLink'); if(cartLink) cartLink.textContent = (currentLocale()==='en'?'Order':'Orden')+' ('+state.cart.length+')';
@@ -612,7 +613,7 @@
     const method = paymentMethodFor(order);
     if(method==='transfer'){const r=await sendToSheet('paymentInstructions',{code:order.code});alert(r.ok?(r.instructions||'Coordina el pago con reservas@mycuscotrip.com.')+'\n'+(r.email||''):r.message);return;}
     const button = $('#payWithPayPalButton');
-    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
+    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : (currentLocale()==='en'?'Connecting…':'Conectando…');
     if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const action = method === 'paypal' ? 'createPayPalOrder' : 'createMercadoPagoPreference';

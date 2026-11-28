@@ -288,7 +288,7 @@
     const method = paymentMethodFor(order);
     if(method==='transfer'){const r=await sendToSheet('paymentInstructions',{code:order.codigoOrden||order.code});alert(r.ok?(r.instructions||'Coordina el pago con reservas@mycuscotrip.com.')+' '+(r.email||''):r.message);return;}
     const button = $('#payOrderWithPayPalButton');
-    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : t('agency.connectMP', 'Conectando con Mercado Pago...');
+    const loadingText = method === 'paypal' ? t('agency.connectPayPal', 'Conectando con PayPal...') : (currentLocale()==='en'?'Connecting…':'Conectando…');
     if (button) { button.disabled = true; button.textContent = loadingText; }
     try {
       const code = String(order.codigoOrden || order.code || '').replace(/[^A-Za-z0-9]/g, '');
