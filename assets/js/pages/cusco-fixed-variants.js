@@ -4,7 +4,7 @@
   const OFFER=window.MCT_FIXED_CUSCO_VARIANTS?.[key];
   if(!OFFER)throw Error("Paquete no encontrado");
   const PRODUCT_ID=OFFER.id;
-  let PRICE=null, CHILD_PRICE=null, BOOKABLE=false;
+  let PRICE=OFFER.price, CHILD_PRICE=null, BOOKABLE=false;
   const DAYS=OFFER.days, INCLUDED=OFFER.includes, EXCLUDED=OFFER.excludes;
   const HOTELS={"cusco-boutique-3s":{title:"Hotel Cusco Boutique",fee:0}};
   const EXTRAS={"":{title:"Sin servicios extra",price:0}};
@@ -98,7 +98,7 @@
     const infoText = document.querySelector('[data-i18n="product.pickupMeetingText"]');
     if(infoText) infoText.textContent="Llegada: recojo en aeropuerto o terminal según horario. Recojos y puntos de encuentro conforme al itinerario. Día 1: encuentro a las 13:30 en la Plaza de Armas.";
     const important = document.querySelector('[data-i18n="product.importantInfoText"]');
-    if(important) important.textContent="Programa dirigido a turistas peruanos. Consulta disponibilidad antes de reservar. Los horarios de tren y el circuito de Machu Picchu dependen de las entradas y servicios disponibles. Confirma los boletos de tren y bus incluidos antes del pago. Se recomienda aclimatarse a la altitud.";
+    if(important) important.textContent="Programa dirigido a turistas peruanos. Consulta disponibilidad antes de reservar. Los horarios de tren y el circuito de Machu Picchu dependen de las entradas y servicios disponibles. Los trenes no están incluidos; puedes agregarlos al paquete. Consulta el bus de subida y bajada. Se recomienda aclimatarse a la altitud.";
     $("printProductItineraryBtn").addEventListener("click",()=>window.print());
     document.querySelectorAll(".experience-action-btn").forEach(btn=>{
       if(btn.id!=="printProductItineraryBtn")btn.addEventListener("click",async()=>{if(navigator.share) await navigator.share({title:document.title,url:location.href}).catch(()=>{});else if(navigator.clipboard)await navigator.clipboard.writeText(location.href);});
@@ -122,10 +122,11 @@
     $("childLine").hidden=state.children===0;
     $("singleTotal").textContent=Number.isFinite(s.total)?money(s.total):"Por confirmar";
     $("productBasePrice").textContent=Number.isFinite(PRICE)?money(PRICE):"Por confirmar";
-    const btn=$("paypalButton");btn.disabled=!BOOKABLE||!Number.isFinite(s.total)||travelers()<2||travelers()>9||!state.date;
+    const btn=$("paypalButton");btn.disabled=!Number.isFinite(s.total)||travelers()<2||travelers()>9||!state.date;
     const info=$("paymentInfo");
     info.hidden=BOOKABLE&&Number.isFinite(s.total);
-    info.textContent=state.children&&!Number.isFinite(CHILD_PRICE)?"Consulta la tarifa para niños antes de reservar.":"Consulta la tarifa y disponibilidad antes de reservar.";
+    info.textContent=state.children&&!Number.isFinite(CHILD_PRICE)?"Consulta la tarifa para niños antes de reservar.":"La reserva en línea estará disponible cuando se confirme la tarifa.";
+    window.MCTFixedTrains?.refresh();
   }
   function renderHotelsModal() {}
   async function loadOfferPrice(){
@@ -134,7 +135,8 @@
       if(!api)return;
       const data=await api.postAction("getFixedCuscoOffer",{productId:PRODUCT_ID,source:OFFER.source});
       if(data?.ok===true){
-        PRICE=typeof data.adultPrice==="number"&&data.adultPrice>0?data.adultPrice:null;
+        if(data.adultPrice!==OFFER.price){BOOKABLE=false;renderPrice();return;}
+        PRICE=OFFER.price;
         CHILD_PRICE=typeof data.childPrice==="number"&&data.childPrice>=0?data.childPrice:null;
         BOOKABLE=data.bookable===true&&Number.isFinite(PRICE);
         renderPrice();
@@ -305,7 +307,7 @@
     return "CUZ"+String(random[0]%100000000).padStart(8,"0");
   }
   function openPassenger() {
-    if(!BOOKABLE||!Number.isFinite(summary().total))return;
+    if(!Number.isFinite(summary().total))return;
     if(!state.date || travelers()<2 || travelers()>9) {alert("Selecciona fecha y mínimo 2 viajeros (máximo 9).");return;}
     resetFxStep();
     $("passengerReservationCode").textContent=reservationCode();
@@ -352,6 +354,7 @@
     panel.innerHTML='<div class="mct-fx-card"><div class="mct-fx-intro"><i class="fas fa-lock" aria-hidden="true"></i><h3>Pago seguro</h3><p>El pago se procesará en dólares estadounidenses a través de PayPal. Revisa el importe antes de continuar.</p></div>'+
       '<div class="mct-fx-lines"><div><span>Importe de tu reserva</span><strong>'+esc(money(q.penTotal))+'</strong></div>'+
       '<div class="mct-fx-reference"><span>Tipo de cambio aplicado</span><strong>S/ '+esc(rateLabel(q.rate))+'</strong></div></div>'+
+      (Number(q.trainUsdTotal)>0?'<div class="mct-fx-lines"><div><span>Paquete convertido a dólares</span><strong>'+esc(usd(Math.round((q.penTotal/q.rate+Number.EPSILON)*100)/100))+'</strong></div><div><span>Trenes en dólares</span><strong>'+esc(usd(q.trainUsdTotal))+'</strong></div></div>':'')+
       '<p class="mct-fx-source">Referencia: BCRP (SBS) · '+esc(formattedDate)+'.</p>'+
       '<div class="mct-fx-total"><span>Total a pagar en dólares</span><strong>'+esc(usd(q.usdTotal))+'</strong></div>'+
       '<p class="mct-fx-note">Tu banco o PayPal podría aplicar su propio tipo de cambio si tu medio de pago está en otra moneda. Esta conversión es válida por 15 minutos antes de iniciar el pago.</p>'+
@@ -365,17 +368,25 @@
   }
   async function requestFx(api,payload){
     const {holder,passengers,...fare}=payload;
-    const quote=await api.postAction("quoteCusco5d4nPayPal",fare);
-    if(!quote||quote.ok!==true||quote.version!=="cusco5d4n-paypal-v2"||
+    const mixed=Boolean(payload.selectedTrains);
+    const quote=await api.postAction(mixed?"quoteFixedCuscoMixedPayPal":"quoteCusco5d4nPayPal",fare);
+    if(!quote||quote.ok!==true||quote.version!==(mixed?"cusco-fixed-mixed-paypal-v1":"cusco5d4n-paypal-v2")||
       !quote.quoteId||!(quote.rate>0)||!(quote.usdTotal>0)||
       Math.abs(Number(quote.penTotal)-payload.payNowValue)>0.005)
       throw Error("No pudimos consultar el tipo de cambio.");
+    if(mixed){
+      const round=v=>Math.round((v+Number.EPSILON)*100)/100;
+      if(!Number.isFinite(quote.trainUsdTotal)||Math.abs(quote.trainUsdTotal-payload.selectedTrains.usdTotal)>0.005||
+         Math.abs(quote.usdTotal-round(round(quote.penTotal/quote.rate)+quote.trainUsdTotal))>0.005)
+        throw Error("No se pudo verificar el importe de los trenes.");
+    }
     return quote;
   }
   async function submitReservation(ev) {
     ev.preventDefault();
     const form=$("passengerReservationForm"),message=document.querySelector("[data-passenger-message]"),submit=form.querySelector('[type="submit"]');
     if(state.submitting)return;
+    if(!BOOKABLE){message.textContent="El pago en línea todavía no está disponible para esta tarifa. Contáctanos para reservar.";message.classList.add("is-error");return;}
     if(!fxQuote){
       if(!form.reportValidity())return;
       const missing=[...form.querySelectorAll('[data-mct-required="true"]')].find(el=>!el.value);
@@ -383,7 +394,8 @@
       const checked=formPayload();
       if(!checked.holder.birthdate||checked.passengers.some(p=>!p.birthdate)){message.textContent="Completa las fechas de nacimiento de todos los pasajeros.";message.classList.add("is-error");return;}
       if(checked.passengers.some(p=>!/^per[uú]$/i.test(String(p.nationality||"").trim()))){message.textContent="Esta tarifa está dirigida a turistas peruanos. Consulta con nosotros para otras nacionalidades.";message.classList.add("is-error");return;}
-      fxPayload=checked;
+      const selectedTrains=window.MCTFixedTrains?.selection();
+      fxPayload=selectedTrains?{...checked,selectedTrains}:checked;
     }
     state.submitting=true;submit.disabled=true;submit.textContent=fxQuote?"Procesando…":"Consultando tipo de cambio…";message.textContent="";message.classList.remove("is-error");
     let phase="quote";
@@ -418,13 +430,13 @@
         $("passengerReservationModal").classList.remove("mct-fx-step");
         $("passengerCheckoutReview").hidden=true;$("passengerModalTitle").textContent="Datos de los pasajeros";
       }
-      message.textContent=phase==="quote"?"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente.":phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
+      message.textContent=phase==="quote"?(fxPayload?.selectedTrains?"No pudimos confirmar el pago de los trenes. Contáctanos para reservar el paquete con tus trenes.":"No pudimos consultar el tipo de cambio en este momento. Por favor, inténtalo nuevamente."):phase==="paypal"?"No pudimos abrir el pago. Vuelve a intentarlo.": "No pudimos completar tu reserva. Por favor, revisa tus datos o inténtalo nuevamente.";
       message.classList.add("is-error");
     }finally{state.submitting=false;submit.disabled=false;submit.textContent="Pagar";}
   }
   function setup() {
     renderContent();
-    ensureRooms();renderPrice();loadOfferPrice();
+    ensureRooms();renderPrice();window.MCTFixedTrains?.init({days:OFFER.n,travelers:()=>({adults:state.adults,children:state.children}),travelDate:()=>state.date});loadOfferPrice();
     if(window.flatpickr)flatpickr($("travelDate"),{locale:flatpickr.l10ns.es,minDate:"today",dateFormat:"Y-m-d",altInput:true,altFormat:"d M Y",disableMobile:true,onChange:function(_,date){state.date=date;updateDates();renderPrice();}});
     document.querySelectorAll(".qty-btn").forEach(btn=>btn.addEventListener("click",()=>{
       const target=btn.dataset.target,delta=btn.dataset.action==="plus"?1:-1;

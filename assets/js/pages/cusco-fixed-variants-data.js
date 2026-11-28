@@ -15,7 +15,7 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
         "title": "Machu Picchu Full Day",
         "hours": "03:40–04:00 · Aproximadamente 14 horas",
         "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
-        "description": "Recojo del hotel de 03:40 a 04:00 y traslado a Ollantaytambo. Tren previsto a las 06:10 hacia Machu Picchu Pueblo, llegada alrededor de las 08:10. Visita guiada de Machu Picchu a las 09:00. Retorno al pueblo en bus hacia las 13:00. Tren de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada a Cusco alrededor de las 18:30. Noche en Cusco. Horarios sujetos a confirmación."
+        "description": "Recojo del hotel de 03:40 a 04:00 y traslado a Ollantaytambo. Tren opcional previsto a las 06:10 hacia Machu Picchu Pueblo, llegada alrededor de las 08:10. Visita guiada de Machu Picchu a las 09:00. Retorno al pueblo en bus hacia las 13:00. Tren opcional de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada a Cusco alrededor de las 18:30. Noche en Cusco. Horarios sujetos a confirmación."
       },
       {
         "title": "Despedida y traslado al aeropuerto o terminal",
@@ -40,15 +40,16 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
     ],
     "excludes": [
       "Entrada oficial a Machu Picchu y demás boletos de ingreso a atractivos.",
+      "Boletos de tren de ida y retorno a Machu Picchu (puedes agregarlos al paquete).",
       "Boleto turístico de Cusco y entrada al Qoricancha.",
       "Pasajes aéreos.",
       "Alimentación no indicada, seguros de viaje, gastos personales y propinas.",
       "Paseo panorámico opcional del último día (S/ 30 por persona)."
     ],
     "pending": [
-      "Tarifa por persona y condiciones para niños pendientes de confirmación.",
-      "Confirmar qué boletos de tren y bus están incluidos en la tarifa final."
-    ]
+      "Confirmar si el bus de subida y bajada está incluido en la tarifa final."
+    ],
+    "price": 560
   },
   "4d3n": {
     "n": 4,
@@ -66,13 +67,13 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
         "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
         "hours": "07:50–08:20 · Tren de referencia: 16:30",
         "image": "./assets/img/tours/valle-sagrado/cover.jpg",
-        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
+        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren opcional de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
       },
       {
         "title": "Machu Picchu y retorno a Cusco",
         "hours": "06:30–07:00 · Jornada aproximada: 14 horas",
         "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
-        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
+        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren opcional de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
       },
       {
         "title": "Despedida y traslado al aeropuerto o terminal",
@@ -97,15 +98,16 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
     ],
     "excludes": [
       "Entrada oficial a Machu Picchu y demás boletos de ingreso a atractivos.",
+      "Boletos de tren de ida y retorno a Machu Picchu (puedes agregarlos al paquete).",
       "Boleto turístico de Cusco y entrada al Qoricancha.",
       "Pasajes aéreos.",
       "Alimentación no indicada, seguros de viaje, gastos personales y propinas.",
       "Paseo panorámico opcional del último día (S/ 30 por persona)."
     ],
     "pending": [
-      "Tarifa por persona y condiciones para niños pendientes de confirmación.",
-      "Confirmar qué boletos de tren y bus están incluidos en la tarifa final."
-    ]
+      "Confirmar si el bus de subida y bajada está incluido en la tarifa final."
+    ],
+    "price": 625
   },
   "6d5n": {
     "n": 6,
@@ -129,13 +131,13 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
         "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
         "hours": "07:50–08:20 · Tren de referencia: 16:30",
         "image": "./assets/img/tours/valle-sagrado/cover.jpg",
-        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
+        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren opcional de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
       },
       {
         "title": "Machu Picchu y retorno a Cusco",
         "hours": "06:30–07:00 · Jornada aproximada: 14 horas",
         "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
-        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
+        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren opcional de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
       },
       {
         "title": "Montaña de Colores – Vinicunca",
@@ -166,15 +168,16 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
     ],
     "excludes": [
       "Entrada oficial a Machu Picchu y demás boletos de ingreso a atractivos.",
+      "Boletos de tren de ida y retorno a Machu Picchu (puedes agregarlos al paquete).",
       "Boleto turístico de Cusco y entrada al Qoricancha.",
       "Pasajes aéreos.",
       "Alimentación no indicada, seguros de viaje, gastos personales y propinas.",
       "Paseo panorámico opcional del último día (S/ 30 por persona). Actividad opcional en cuatrimoto: consultar condiciones."
     ],
     "pending": [
-      "Tarifa por persona y condiciones para niños pendientes de confirmación.",
-      "Confirmar qué boletos de tren y bus están incluidos en la tarifa final."
-    ]
+      "Confirmar si el bus de subida y bajada está incluido en la tarifa final."
+    ],
+    "price": 855
   },
   "7d6n": {
     "n": 7,
@@ -204,13 +207,13 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
         "title": "Valle Sagrado y tren a Machu Picchu Pueblo",
         "hours": "07:50–08:20 · Tren de referencia: 16:30",
         "image": "./assets/img/tours/valle-sagrado/cover.jpg",
-        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
+        "description": "Recojo del hotel entre las 07:50 y las 08:20. Se desocupa el alojamiento en Cusco y se prepara equipaje para la noche en Aguas Calientes. Visitamos el mercado artesanal y el complejo arqueológico de Pisac, Urubamba y Ollantaytambo. Tren opcional de referencia a las 16:30, con llegada estimada a Machu Picchu Pueblo a las 18:10. Noche en Hotel Inka House. Los horarios dependerán del tren confirmado."
       },
       {
         "title": "Machu Picchu y retorno a Cusco",
         "hours": "06:30–07:00 · Jornada aproximada: 14 horas",
         "image": "./assets/img/tours/machu-picchu-full-day/cover.jpg",
-        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
+        "description": "Encuentro en la Plaza de Armas de Aguas Calientes entre las 06:30 y las 07:00. Visita guiada a Machu Picchu alrededor de las 08:00, según circuito y entrada disponibles. Descenso en bus al pueblo hacia las 13:00. Tren opcional de retorno de referencia a las 14:30; recojo en Ollantaytambo hacia las 16:00 y llegada prevista a Cusco a las 18:30. Noche en Cusco. Todos los horarios de tren y visita pueden variar."
       },
       {
         "title": "Laguna Humantay",
@@ -241,14 +244,15 @@ window.MCT_FIXED_CUSCO_VARIANTS = {
     ],
     "excludes": [
       "Entrada oficial a Machu Picchu y demás boletos de ingreso a atractivos.",
+      "Boletos de tren de ida y retorno a Machu Picchu (puedes agregarlos al paquete).",
       "Boleto turístico de Cusco y entrada al Qoricancha.",
       "Pasajes aéreos.",
       "Alimentación no indicada, seguros de viaje, gastos personales y propinas.",
       "Paseo panorámico opcional del último día (S/ 30 por persona). Actividad opcional en cuatrimoto: consultar condiciones."
     ],
     "pending": [
-      "Tarifa por persona y condiciones para niños pendientes de confirmación.",
-      "Confirmar qué boletos de tren y bus están incluidos en la tarifa final."
-    ]
+      "Confirmar si el bus de subida y bajada está incluido en la tarifa final."
+    ],
+    "price": 985
   }
 };

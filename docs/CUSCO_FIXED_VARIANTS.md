@@ -29,3 +29,16 @@ Desplegar Code.gs en la implementación existente, comprobar navegación y check
 
 ## Verificación realizada
 Sintaxis JavaScript del frontend y backend; comprobación de número de días y noindex para las cuatro páginas; bloqueo sin tarifa, conversión y validación PayPal con precio ficticio en memoria, rechazo de monto manipulado, bloqueo de niños sin tarifa y rechazo de nacionalidad no elegible. Verificación de que 5D4N mantiene su precio. No se ha desplegado ni ejecutado un cobro real.
+
+
+## Actualización: tarifas confirmadas y trenes opcionales (captura del usuario)
+Tarifas por adulto en soles: 3D2N 560.00; 4D3N 625.00; 5D4N 730.00; 6D5N 855.00; 7D6N 985.00. Esta tabla reemplaza las referencias anteriores a importes desconocidos y S/729.90 en este borrador. Los trenes de ida y retorno no están incluidos en ninguna opción. No se cambió la entrada a Machu Picchu ni otros servicios previamente definidos.
+El módulo cusco-fixed-trains.js usa assets/data/trains.json, precios completos por tramo y por persona (no diferencias de upgrade), fechas del itinerario, compatibilidad de operador y horarios, resumen separado PEN/USD, y CTA móvil. Los precios del catálogo son referenciales, no disponibilidad en vivo.
+### Contrato pendiente para Apps Script — NO implementado en esta actualización
+- Configurar las tarifas adultas anteriores; conservar la política infantil existente del 5D4N y confirmar las otras tarifas infantiles.
+- Actualizar la tarifa de 5D4N sin alterar reservas anteriores ya cotizadas.
+- Crear acción quoteFixedCuscoMixedPayPal, con selección de trenes por códigos outboundCode y returnCode. El valor usdTotal del navegador es solo referencia: validar catálogo autorizado, disponibilidad operativa, fechas, ruta, horarios y precios de adultos/niños en servidor.
+- Responder ok:true, version:"cusco-fixed-mixed-paypal-v1", quoteId, penTotal, trainUsdTotal, rate (3 decimales), usdTotal=round2(round2(penTotal/rate)+trainUsdTotal), date, expiresAt. Guardar cotización vinculada al producto, viajeros, trenes y moneda.
+- Adaptar createPreReservation y createPayPalOrder para validar la cotización combinada y registrar moneda original PEN, trenes USD, tipo de cambio aplicado y total USD; verificar captura contra dicho total. No confiar en importes del navegador.
+- El frontend exige una respuesta válida del nuevo endpoint antes de registrar/pagar una reserva con trenes. Las tarifas sin tren requieren igualmente que el backend acepte los precios confirmados. No hay cobros mixtos habilitados todavía.
+- Mantener la rama sin publicar hasta desplegar backend y probar la nueva integración. No se modificó Code.gs en esta ronda.
