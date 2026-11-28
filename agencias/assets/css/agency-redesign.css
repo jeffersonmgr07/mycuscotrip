@@ -67,3 +67,9 @@
 @media(max-width:1049px){.agency-private>.agency-main{margin-left:auto!important;margin-right:auto!important}.agency-private>#footer-container{margin-left:0!important}.agency-private #agDrawer .ag-drawer-head{justify-content:flex-end}.agency-private .experience-card .card-actions .agency-button{min-height:40px!important;height:40px!important}}
 @media(max-width:680px){.agency-private .experience-grid{grid-template-columns:minmax(0,1fr)!important}.agency-private .experience-card .experience-cover{height:175px!important}.ag-tour-tabs button{font-size:13px}.ag-tour-detail-row{font-size:13px;padding:9px 8px}.agency-private .experience-card .card-actions .agency-button{min-height:40px!important}}
 @media print{.agency-private>.agency-main{width:100%!important;margin:0!important}}
+
+/* Keep short private pages from pulling the site footer halfway up the screen. */
+.agency-private>.agency-main{min-height:calc(76dvh - 64px)}
+@media(min-width:1050px){.agency-private>.agency-main{min-height:76dvh}}
+.agency-private #agDrawer .ag-drawer-head>a.ag-sidebar-logo[aria-current=page]{background:transparent}
+.agency-private .ag-custom-select .ag-select-native{min-height:0!important;width:1px!important;height:1px!important;padding:0!important}

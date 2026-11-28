@@ -721,7 +721,7 @@
   }
 
   async function findItineraryItem(service) {
-    const sources = Array.isArray(service.jsonSources) ? service.jsonSources : ['../assets/data/agencias-tours.json'];
+    const sources = Array.from(new Set(['./assets/data/agencias-tours.json',...(Array.isArray(service.jsonSources)?service.jsonSources:[])]));
     let fallback=null;
     for (const source of sources) {
       try {

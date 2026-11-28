@@ -16,7 +16,7 @@
   <link href="../assets/css/footer.css" rel="stylesheet" />
   <link href="../assets/css/responsive.css" rel="stylesheet" />
   <link href="./assets/css/agencias.css" rel="stylesheet" />
-<link rel="stylesheet" href="./assets/css/agency-redesign.css">
+<link rel="stylesheet" href="./assets/css/agency-redesign.css?v=10.1">
 </head>
 <body class="agency-page agency-login-page">
   <div id="header-container"></div>
@@ -42,7 +42,7 @@
   <script src="../assets/js/components/header.js"></script>
   <script src="../assets/js/components/footer.js"></script>
   <script src="./assets/js/pages/agencias-i18n.js"></script>
-  <script src="./assets/js/pages/acceso-agencias.js" defer></script>
+  <script src="./assets/js/pages/acceso-agencias.js?v=10.1" defer></script>
   <script>
     async function loadAgencyComponent(name, targetId) { const target = document.getElementById(targetId); if (!target) return; try { const res = await fetch(`../components/${name}.html`); target.innerHTML = await res.text(); if (name === 'header' && window.MyCuscoTripHeader) new window.MyCuscoTripHeader(); if (name === 'footer' && window.MyCuscoTripFooter) window.MyCuscoTripFooter.initFooterAccordions(); } catch(e) { console.warn(e); } }
     document.addEventListener('DOMContentLoaded', () => { loadAgencyComponent('header','header-container'); loadAgencyComponent('footer','footer-container'); });
