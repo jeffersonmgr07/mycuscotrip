@@ -1,0 +1,36 @@
+name: Optimizar medios de portada (fase 1.2)
+on:
+  push:
+    branches: [optimizacion/fase-1-medios]
+    paths:
+      - scripts/optimize_home_media.py
+      - .github/workflows/optimize-home-media.yml
+permissions:
+  contents: write
+concurrency:
+  group: optimize-home-media
+  cancel-in-progress: false
+jobs:
+  optimize:
+    if: github.ref == 'refs/heads/optimizacion/fase-1-medios'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Generate and validate optimized media
+        run: |
+          python3 scripts/optimize_home_media.py
+          cat docs/RENDIMIENTO_MEDIOS_FASE1_2.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit generated assets to the test branch only
+        run: |
+          test "$(git branch --show-current)" = "optimizacion/fase-1-medios"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- assets/img/home-optimized assets/videos/hero-optimized.mp4 index.html en/index.html pt/index.html fr/index.html de/index.html it/index.html zh/index.html ja/index.html docs/RENDIMIENTO_MEDIOS_FASE1_2.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "perf(home): generate compressed WebP and MP4 variants"
+          git push origin HEAD:refs/heads/optimizacion/fase-1-medios
