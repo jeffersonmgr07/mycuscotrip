@@ -8,3 +8,62 @@
 .flatpickr-calendar{font-family:inherit;z-index:100000!important;border:1px solid #d3e1d8;border-radius:14px;box-shadow:0 12px 36px #123c2526}.flatpickr-day.selected,.flatpickr-day.selected:hover{background:#0b6748;border-color:#0b6748}.flatpickr-day.today{border-color:#0b6748}.flatpickr-day:hover{background:#e6f1e8}.flatpickr-months .flatpickr-month,.flatpickr-current-month{color:#073322}.ag-select-native{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important;min-height:0!important;pointer-events:none}.ag-custom-select{position:relative;min-width:0;width:100%}.ag-custom-select>button{display:flex;align-items:center;gap:8px;min-height:44px;width:100%;padding:10px 12px;border:1px solid #c9d9d0;border-radius:12px;background:white;color:#183b2a;font:inherit;text-align:left}.ag-custom-select>button::after{content:'⌄';margin-left:auto}.ag-custom-select img,.ag-select-popup img{width:23px;height:16px;object-fit:cover;flex:none;border-radius:2px}.ag-select-popup{position:fixed;z-index:100001;background:white;border:1px solid #c9d9d0;border-radius:12px;padding:6px;box-shadow:0 12px 28px #173d292a;max-height:min(280px,45vh);overflow:auto}.ag-select-popup button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:white;color:#183b2a;border:0;padding:10px;min-height:38px;font:inherit}.ag-select-popup button[aria-selected=true],.ag-select-popup button:hover{background:#e8f3eb}.ag-select-popup input{width:100%;padding:8px;border:1px solid #d1e1d6;border-radius:8px;margin-bottom:5px}.ag-custom-select>button:focus-visible,.ag-select-popup button:focus-visible{outline:2px solid #5f9e79}.ag-hotel-suggestions button{min-height:44px}.ag-hotel-suggestions[hidden]{display:none!important}
 
 .ag-custom-select>button:disabled{opacity:.55;cursor:not-allowed}.agency-private .agency-intro-bar{margin-bottom:16px!important}.ag-order-service details summary{cursor:pointer;margin-top:6px}.ag-custom-select>button{overflow-wrap:anywhere}.agency-page #agDrawer a[aria-current=page]{background:#ffffff17;border-radius:8px}
+
+/* V10.1 — agency-only desktop shell, compact cards and auth */
+.agency-private{display:flex!important;flex-direction:column;min-height:100vh;min-height:100dvh}
+.agency-private>.agency-main{flex:1 0 auto;width:100%;box-sizing:border-box}
+.agency-private>#footer-container{flex:0 0 auto;margin-top:auto}
+.agency-private>#header-container{flex:0 0 auto}
+.agency-private #agDrawer .ag-drawer-head{min-height:42px;margin-bottom:12px}
+.agency-private #agDrawer .ag-sidebar-logo{padding:0!important;display:none;min-height:0}
+.agency-private #agDrawer .ag-sidebar-logo img{display:block;width:180px;max-height:78px;object-fit:contain}
+.agency-private #agDrawer .ag-drawer-head #agClose{margin-left:auto}
+.agency-private #agDrawer label{display:grid;grid-template-columns:65px minmax(0,1fr);align-items:center;gap:8px;min-height:0;padding:6px 4px;font-size:13px}
+.agency-private #agDrawer .ag-custom-select{width:100%;min-width:0}
+.agency-private #agDrawer .ag-custom-select>button{min-height:33px;height:33px;padding:5px 8px;border-radius:8px;background:#f4faf6;color:#073322;font-size:12px;line-height:1.1;gap:4px}
+.agency-private #agDrawer select:not(.ag-select-native){min-height:33px!important;height:33px;padding:4px 22px 4px 8px!important;max-width:none!important;font-size:12px!important}
+.agency-private #agDrawer .ag-select-native{min-height:0!important;height:1px!important;width:1px!important;padding:0!important}
+.agency-private .experience-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}
+.agency-private .experience-card .card-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;padding:0 13px 13px!important}
+.agency-private .experience-card .card-actions .agency-button{height:36px!important;min-height:36px!important;padding:6px 10px!important;line-height:1.15!important;font-size:13px!important;font-weight:650!important;width:100%;white-space:normal;transform:none}
+.agency-private .experience-card .experience-body{padding:13px!important;gap:7px!important}
+.agency-private .experience-card .experience-cover{height:clamp(155px,14vw,225px)!important}
+.agency-private .experience-card h3{font-size:clamp(16px,1.35vw,20px)!important}
+.ag-desktop-label{display:none}.ag-mobile-label{display:inline}
+.ag-tour-tabs{display:flex;gap:6px;padding:4px;background:#edf5ef;border:1px solid #d6e4d9;border-radius:12px;margin-bottom:16px}
+.ag-tour-tabs button{flex:1;min-width:0;border:0;border-radius:9px;padding:10px 8px;background:transparent;color:#315b45;font:inherit;font-size:14px;font-weight:650;cursor:pointer}
+.ag-tour-tabs button[aria-selected=true]{background:#073322;color:white}
+.ag-tour-tabs button:focus-visible{outline:2px solid #82b991;outline-offset:2px}
+.ag-tour-details{border:1px solid #dce7df;border-radius:12px;overflow:hidden;margin:12px 0}
+.ag-tour-detail-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:10px 12px;border-bottom:1px solid #e1e9e4;font-size:14px;color:#183b2a}
+.ag-tour-detail-row:last-child{border-bottom:0}.ag-tour-detail-row span{flex:0 0 35%;color:#62776a}.ag-tour-detail-row strong{text-align:right;overflow-wrap:anywhere;min-width:0}
+#itineraryBody h3{font-size:17px;color:#073322;margin:17px 0 8px}
+.ag-tour-reserve{margin-top:16px!important}.ag-tour-reserve .agency-button{min-height:40px;padding:9px 16px!important}
+.agency-private #resEdit{padding:0!important;border:1px solid #dce7df!important;border-radius:20px!important;box-shadow:0 18px 70px #122c2455;color:#183b2a;background:#fff}
+.agency-private #resEdit::backdrop{background:#0a241db0}
+.agency-private #resEdit #resForm{padding:0 18px 18px}
+.agency-private #resEdit h2{background:#073322;color:#fff;margin:0 -18px 16px;padding:17px 18px;font-size:19px}
+.agency-private #resEdit .dialog-actions{margin-top:14px!important}
+.agency-login-page .ag-auth-actions,.agency-register-page .ag-auth-actions{display:flex!important;flex-direction:column!important;align-items:center!important;gap:10px!important;margin:15px auto 0!important;width:min(100%,320px)}
+.agency-login-page .ag-auth-actions .agency-button,.agency-register-page .ag-auth-actions .agency-button{width:100%!important;min-height:40px!important;padding:9px 14px!important;font-size:14px!important;box-sizing:border-box;line-height:1.2}
+#googleAgencyLogin{display:flex;justify-content:center;width:100%;min-height:40px}
+#googleAgencyLogin[hidden]{display:none!important}
+.ag-auth-separator{height:1px;width:100%;background:#dce7df;margin:4px 0}
+.agency-login-page .auth-card .ag-auth-actions a,.agency-register-page .ag-auth-actions a{font-weight:650!important}
+@media(min-width:1050px){
+.agency-private>#header-container{height:0!important;min-height:0!important;margin-left:0!important;position:static!important}
+.agency-private .ag-header{display:none!important}
+.agency-private #agDrawer .ag-sidebar-logo{display:flex!important;justify-content:center;width:100%}
+.agency-private #agDrawer .ag-drawer-head{margin:0 0 20px;min-height:76px}
+.agency-private>.agency-main{width:calc(100% - 235px)!important;margin-left:235px!important;padding:18px 22px 28px!important}
+.agency-private>#footer-container{width:calc(100% - 235px);margin-left:235px!important}
+.agency-private .checkout{top:18px!important}
+.agency-private .portal-layout{grid-template-columns:minmax(0,1fr) minmax(270px,330px)!important}
+.agency-private .experience-grid{max-width:1000px}
+.agency-private .experience-expand{display:none!important}
+.ag-desktop-label{display:inline}.ag-mobile-label{display:none}
+}
+@media(min-width:1050px) and (max-width:1220px){.agency-private .portal-layout{grid-template-columns:minmax(0,1fr)!important}.agency-private .checkout{position:static!important}}
+@media(max-width:1049px){.agency-private>.agency-main{margin-left:auto!important;margin-right:auto!important}.agency-private>#footer-container{margin-left:0!important}.agency-private #agDrawer .ag-drawer-head{justify-content:flex-end}.agency-private .experience-card .card-actions .agency-button{min-height:40px!important;height:40px!important}}
+@media(max-width:680px){.agency-private .experience-grid{grid-template-columns:minmax(0,1fr)!important}.agency-private .experience-card .experience-cover{height:175px!important}.ag-tour-tabs button{font-size:13px}.ag-tour-detail-row{font-size:13px;padding:9px 8px}.agency-private .experience-card .card-actions .agency-button{min-height:40px!important}}
+@media print{.agency-private>.agency-main{width:100%!important;margin:0!important}}

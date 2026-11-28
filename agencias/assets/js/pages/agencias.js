@@ -301,7 +301,7 @@
         </div>
         <div class="card-actions">
           <button type="button" class="agency-button agency-button--primary" data-reserve="${escapeHtml(service.id)}">${t('agency.book', 'Reservar')}</button>
-          <button type="button" class="agency-button agency-button--ghost" data-itinerary="${escapeHtml(service.id)}">${t('agency.viewItinerary', 'Ver itinerario')}</button>
+          <button type="button" class="agency-button agency-button--ghost" data-itinerary="${escapeHtml(service.id)}"><span class="ag-desktop-label">${currentLocale()==='en'?'View details':'Ver detalles'}</span><span class="ag-mobile-label">${t('agency.viewItinerary', 'Ver itinerario')}</span></button>
         </div>
       </article>
     `;
@@ -313,10 +313,11 @@
     const service = findService(id);
     if (!service) return;
     $('#reserveTitle').textContent = `${t('agency.book', 'Reservar')} · ${service.name}`;
+    closeModals();
     $('#reserveForm').reset();
     $('#entryTicketOptions').innerHTML='';
     $('#selectedServiceId').value = id;
-    $('#leadDetails').open = false; $('#pickupDetails').open = false;
+    $('#leadDetails').open = false; $('#pickupDetails').open = false; $('#passengersDetails').open=false; $('#entryTicketsBox').open=true;
     syncLanguageNotice();
     $('#serviceDate').min = tomorrowISO();
     $('#serviceDate').value = tomorrowISO();
@@ -327,6 +328,7 @@
     hydrateCountrySelects($('#reserveModal'));
     updateReserveSubtotal();
     $('#reserveModal').classList.add('show');
+    $('#reserveModal .modal').scrollTop=0;
     $('#reserveForm').querySelectorAll('select').forEach(x=>x.dispatchEvent(new Event('agency:refresh')));
     if($('#serviceDate')._flatpickr){$('#serviceDate')._flatpickr.set('minDate',tomorrowISO());$('#serviceDate')._flatpickr.setDate(tomorrowISO(),false);}
   }
@@ -341,7 +343,7 @@
   }
 
   function renderEntryTickets(service) {
-    const box=$('#entryTicketsBox'),options=$('#entryTicketOptions');const selected=new Set($('[data-entry-ticket]:checked').map(x=>x.dataset.entryTicket));
+    const box=$('#entryTicketsBox'),options=$('#entryTicketOptions');const selected=new Set($$('[data-entry-ticket]:checked',options).map(x=>x.dataset.entryTicket));
     const tickets=Array.isArray(service?.entryTickets)?service.entryTickets:[];box.hidden=!tickets.length;
     options.innerHTML=tickets.map(ticket=>`<label class="entry-ticket-option"><input type="checkbox" data-entry-ticket="${escapeHtml(ticket.id)}" ${selected.has(ticket.id)?'checked':''}><span><strong>${escapeHtml(ticket.name)}</strong><small>${money(ticketPrice(ticket))} por pasajero${ticket.note?' · '+escapeHtml(ticket.note):''}</small></span></label>`).join('');
   }
@@ -675,25 +677,42 @@
     list.innerHTML = '';
   }
 
+  let itineraryRequest=0;
+  function tourDetailsHTML(service){
+    const lang=currentLocale()==='en', label=(es,en)=>lang?en:es;
+    const row=(name,value)=>`<div class="ag-tour-detail-row"><span>${name}</span><strong>${value}</strong></div>`;
+    return `<p class="experience-desc">${escapeHtml(service.description||'')}</p><div class="ag-tour-details">${row(label('Frecuencia','Frequency'),escapeHtml(service.frequency||label('Por confirmar','To be confirmed')))}${row(label('Horarios','Start times'),escapeHtml((service.schedules||[]).join(' · ')||service.startLabel||''))}${row(label('Duración','Duration'),escapeHtml(service.durationLabel||''))}${row(label('Tarifa','Rate'),money(servicePrice(service))+' '+escapeHtml(service.priceUnit||label('por persona','per person')))}${serviceAltPrice(service)?row(escapeHtml(service.priceAltLabel||label('Tarifa alternativa','Alternative rate')),money(serviceAltPrice(service))):''}</div><h3>${label('Entradas','Entrance tickets')}</h3><p>${escapeHtml(service.notIncluded||label('Consultar según experiencia.','Check experience details.'))}</p>${(service.entryTickets||[]).map(x=>row(escapeHtml(x.name),money(ticketPrice(x))+' '+label('por pasajero','per traveler'))).join('')}`;
+  }
   async function openItinerary(id) {
     const service = findService(id);
     if (!service) return;
-    $('#itineraryTitle').textContent = service.name;
-    $('#itineraryBody').innerHTML = `<p class="dialog-help">${t('agency.loadingItinerary', 'Cargando itinerario detallado...')}</p>`;
+    const request=++itineraryRequest,lang=currentLocale()==='en',label=(es,en)=>lang?en:es;
+    closeModals();
+    $('#itineraryTitle').textContent=service.name;
+    $('#itineraryBody').innerHTML=`
+      <div class="ag-tour-tabs" role="tablist" aria-label="${label('Información de la experiencia','Experience information')}">
+        <button type="button" id="agTabItinerary" role="tab" aria-selected="true" aria-controls="agPaneItinerary">${label('Itinerario','Itinerary')}</button>
+        <button type="button" id="agTabDetails" role="tab" aria-selected="false" aria-controls="agPaneDetails" tabindex="-1">${label('Detalles y tarifas','Details and rates')}</button>
+      </div>
+      <section id="agPaneItinerary" role="tabpanel" aria-labelledby="agTabItinerary"><p class="dialog-help">${label('Cargando itinerario…','Loading itinerary…')}</p></section>
+      <section id="agPaneDetails" role="tabpanel" aria-labelledby="agTabDetails" hidden>${tourDetailsHTML(service)}</section>
+      <div class="dialog-actions ag-tour-reserve"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">${t('agency.reserveThisExperience','Reservar esta experiencia')}</button></div>`;
+    const tabs=Array.from($('#itineraryBody').querySelectorAll('[role=tab]'));
+    function selectTab(tab,focus=false){tabs.forEach(x=>{const on=x===tab;x.setAttribute('aria-selected',String(on));x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});if(focus)tab.focus();}
+    tabs.forEach((tab,i)=>{tab.onclick=()=>selectTab(tab);tab.onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();selectTab(tabs[e.key==='Home'?0:e.key==='End'?1:1-i],true);}}});
+    $('[data-reserve-from-itinerary]')?.addEventListener('click',()=>openReserve(service.id));
     $('#itineraryModal').classList.add('show');
-
-    const rawItem = await findItineraryItem(service);
-    const item = rawItem && I18N?.localizeService ? I18N.localizeService(rawItem) : rawItem;
-    const includes = (item?.includes && currentLocale() === 'en' && item?.includes_en === undefined && !rawItem?.includes_en) ? (service.includes || item.includes) : (item?.includes || service.includes || []);
-    const itinerary = item?.itinerary || item?.timeline || [];
-    const description = (item?.description && currentLocale() === 'en' && item?.description_en === undefined && !rawItem?.description_en) ? (service.description || item.description) : (item?.description || item?.shortDescription || service.description || '');
-    $('#itineraryBody').innerHTML = `
-      <p class="experience-desc">${escapeHtml(description)}</p>
-      ${includes.length ? `<h3>${t('agency.includes', 'Incluye')}</h3><ul class="include-list">${includes.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
-      ${itinerary.length ? `<h3>${t('agency.itinerary', 'Itinerario')}</h3><div class="itinerary-list">${itinerary.map((step, i) => itineraryStep(step, i)).join('')}</div>` : ''}
-      <div class="dialog-actions"><button type="button" class="agency-button agency-button--primary" data-reserve-from-itinerary="${escapeHtml(service.id)}">${t('agency.reserveThisExperience', 'Reservar esta experiencia')}</button></div>
-    `;
-    $('[data-reserve-from-itinerary]')?.addEventListener('click', () => { closeModals(); openReserve(service.id); });
+    $('#itineraryModal .modal').scrollTop=0;
+    tabs[0].focus({preventScroll:true});
+    const rawItem=await findItineraryItem(service);
+    if(request!==itineraryRequest||!$('#itineraryModal').classList.contains('show'))return;
+    const item=rawItem&&I18N?.localizeService?I18N.localizeService(rawItem):rawItem;
+    const includes=(item?.includes&&lang&&!rawItem?.includes_en)?(service.includes||item.includes):(item?.includes||service.includes||[]);
+    const itinerary=item?.itinerary||item?.timeline||service.itinerary||[];
+    const description=(item?.description&&lang&&!rawItem?.description_en)?(service.description||item.description):(item?.description||item?.shortDescription||service.description||'');
+    const excludes=item?.excludes||item?.notIncluded||service.notIncluded||'';
+    const excludeList=Array.isArray(excludes)?excludes:excludes?[excludes]:[];
+    $('#agPaneItinerary').innerHTML=`<p class="experience-desc">${escapeHtml(description)}</p>${Array.isArray(itinerary)&&itinerary.length?`<h3>${label('Itinerario','Itinerary')}</h3><div class="itinerary-list">${itinerary.map(itineraryStep).join('')}</div>`:''}${Array.isArray(includes)&&includes.length?`<h3>${label('Incluye','Includes')}</h3><ul class="include-list">${includes.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul>`:''}${excludeList.length?`<h3>${label('No incluye','Not included')}</h3><ul class="include-list">${excludeList.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul>`:''}`;
   }
 
   function itineraryStep(step, index) {
@@ -703,6 +722,7 @@
 
   async function findItineraryItem(service) {
     const sources = Array.isArray(service.jsonSources) ? service.jsonSources : ['../assets/data/agencias-tours.json'];
+    let fallback=null;
     for (const source of sources) {
       try {
         const response = await fetch(source, { cache: 'no-store' });
@@ -710,10 +730,10 @@
         const data = await response.json();
         const list = normalizeList(data);
         const item = list.find((x) => [x.id, x.slug, x.internalCode].includes(service.id) || [x.id, x.slug, x.internalCode].includes(service.slug));
-        if (item) return item;
+        if (item) { if(!fallback)fallback=item; if((Array.isArray(item.itinerary)&&item.itinerary.length)||(Array.isArray(item.timeline)&&item.timeline.length))return item; }
       } catch (error) { /* continue */ }
     }
-    return null;
+    return fallback;
   }
 
   function normalizeList(data) {
@@ -725,7 +745,7 @@
     return Object.values(data).flatMap((value) => Array.isArray(value) ? value : []);
   }
 
-  function closeModals() { $$('.modal-backdrop').forEach((modal) => modal.classList.remove('show')); }
+  function closeModals() { $$('.modal-backdrop').forEach((modal) => modal.classList.remove('show')); document.dispatchEvent(new Event('agency:close-controls')); }
 
   function logout() {
     localStorage.removeItem(STORAGE.SESSION);
