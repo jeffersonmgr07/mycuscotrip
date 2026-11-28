@@ -48,7 +48,7 @@
   }
   function renderContent() {
     document.title=OFFER.title+" "+OFFER.n+" días / "+(OFFER.n-1)+" noches | My Cusco Trip";
-    $("productBadge").textContent="Paquete organizado de "+OFFER.n+" días y "+(OFFER.n-1)+" noches";
+    $("productBadge").textContent=OFFER.n+" días y "+(OFFER.n-1)+" noches";
     $("productTitle").textContent=OFFER.title;
     $("productDescription").textContent="Descubre Cusco en "+OFFER.n+" días con "+OFFER.activities+". El programa contempla "+(OFFER.n-1)+" noches de alojamiento, desayuno y asistencia durante tu viaje.";
     $("detailCapacity").textContent="Mínimo 2 viajeros · Máximo 9 por reserva";
